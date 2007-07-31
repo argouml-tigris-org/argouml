@@ -286,16 +286,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         ArgoJMenu addMenu = buildAddMenu();
         popUpActions.insertElementAt(addMenu,
                 popUpActions.size() - getPopupAddOffset());
-    
-        // Show ...
-        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        Iterator i = ActionCompartmentDisplay.getActions().iterator();
-        while (i.hasNext()) {
-            showMenu.add((Action) i.next());
-        }
-        popUpActions.insertElementAt(showMenu,
-                popUpActions.size() - getPopupAddOffset());
-    
+
         // Modifier ...
         popUpActions.insertElementAt(buildModifierPopUp(),
                 popUpActions.size() - getPopupAddOffset());
@@ -305,6 +296,16 @@ public abstract class FigClassifierBox extends FigCompartmentBox
                 popUpActions.size() - getPopupAddOffset());
     
         return popUpActions;
+    }
+
+    protected ArgoJMenu buildShowPopUp() {
+        ArgoJMenu showMenu = super.buildShowPopUp();
+
+        Iterator i = ActionCompartmentDisplay.getActions().iterator();
+        while (i.hasNext()) {
+            showMenu.add((Action) i.next());
+        }
+        return showMenu;
     }
 
     protected ArgoJMenu buildAddMenu() {

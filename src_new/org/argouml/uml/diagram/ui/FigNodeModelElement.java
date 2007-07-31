@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -98,6 +99,7 @@ import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Abstract class to display diagram icons for UML ModelElements that
@@ -269,8 +271,10 @@ public abstract class FigNodeModelElement
     private Collection<Object[]> listeners = new ArrayList<Object[]>();
     
     /**
-     * The main constructor.
-     *
+     * The main constructor. <p>
+     * 
+     * The owner nor the Layer (which has a 1..1 relation to the Diagram)
+     * are set in this stage of the creation of the Fig.
      */
     protected FigNodeModelElement() {
         // this rectangle marks the whole modelelement figure; everything
@@ -307,7 +311,10 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Construct a figure at a specific position for a given model element.
+     * Construct a figure at a specific position for a given model element. <p>
+     * 
+     * The Layer (which has a 1..1 relation to the Diagram)
+     * is not yet set in this stage of the creation of the Fig.
      * 
      * @param element ModelElement associated with figure
      * @param x horizontal location
@@ -319,6 +326,19 @@ public abstract class FigNodeModelElement
         nameFig.setText(placeString());
         readyToEdit = false;
         setLocation(x, y);
+    }
+
+    /**
+     * This is the final call at creation time of the Fig, i.e. here
+     * it is put on a Diagram.
+     * 
+     * @param lay the Layer (which has a 1..1 relation to the Diagram)
+     * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
+     */
+    @Override
+    public void setLayer(Layer lay) {
+        super.setLayer(lay);
+        determineDefaultPathVisible();
     }
 
     /*
@@ -456,6 +476,12 @@ public abstract class FigNodeModelElement
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
 
+        // Show ...
+        ArgoJMenu show = buildShowPopUp();
+        if (show.getMenuComponentCount() > 0) {
+            popUpActions.addElement(show);
+        }
+        
         // popupAddOffset should be equal to the number of items added here:
         popUpActions.addElement(new JSeparator());
         popupAddOffset = 1;
@@ -505,6 +531,20 @@ public abstract class FigNodeModelElement
         }
 
         return popUpActions;
+    }
+
+    protected ArgoJMenu buildShowPopUp() {
+        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
+
+        Object owner = getOwner();
+        if (Model.getFacade().isAModelElement(owner)) {
+            Object ns = Model.getFacade().getNamespace(owner);
+            if (ns != null) {
+                /* Only show the path item when there is an owning namespace. */
+                showMenu.add(new ActionSetPath(isPathVisible(), this));
+            }
+        }
+        return showMenu;
     }
 
     /**
@@ -1305,6 +1345,9 @@ public abstract class FigNodeModelElement
             return;
         }
         MutableGraphSupport.enableSaveAction();
+        // TODO: Use this event mechanism to update 
+        // the checkmark on the Presentation Tab:
+        firePropChange("pathVisible", !visible, visible);
         pathVisible = visible;
         if (notationProviderName != null) {
             npArguments.put("pathVisible", Boolean.valueOf(visible));
@@ -1313,6 +1356,41 @@ public abstract class FigNodeModelElement
             renderingChanged();
             damage();
         }
+    }
+    
+    /**
+     * At creation time of the Fig, we determine 
+     * if the path should be visible by default. <p>
+     * 
+     * The path is a concatenation of the names of all packages by which 
+     * this modelelement is contained, 
+     * seperated by "::" (for UML at least). <p>
+     * 
+     * If the default namespace of the diagram corresponds 
+     * to the namespace of the modelelement, 
+     * then we do NOT show the path. Otherwise, we do. <p>
+     * 
+     * RRose uses the same heuristic algorithm, 
+     * but shows "(from &lt;path&gt;)" below the name, 
+     * while we follow the UML syntax.
+     */
+    protected void determineDefaultPathVisible() {
+        Object modelElement = getOwner();
+        LayerPerspective layer = (LayerPerspective) getLayer();
+        if ((layer != null) 
+                && Model.getFacade().isAModelElement(modelElement)) {
+            ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
+            Object elementNs = Model.getFacade().getNamespace(modelElement);
+            Object diagramNs = diagram.getNamespace();
+            if (elementNs != null) {
+                boolean visible = elementNs != diagramNs; 
+                npArguments.put("pathVisible", Boolean.valueOf(visible));
+                renderingChanged();
+                damage();
+            }
+            // it is done
+        }
+        // either layer or owner was null
     }
 
     /*
@@ -1803,6 +1881,37 @@ public abstract class FigNodeModelElement
     protected boolean isSingleTarget() {
 	return TargetManager.getInstance().getSingleModelTarget()
 		== getOwner();
+    }
+    
+}
+
+/**
+ * This action shows or hides the path in the name.
+ *
+ * @author Michiel
+ */
+class ActionSetPath extends UndoableAction {
+
+    private boolean isPathVisible;
+    private PathContainer myFig;
+
+    public ActionSetPath(boolean isVisible, PathContainer fig) {
+        super();
+        isPathVisible = isVisible;
+        String name = Translator.localize(isVisible ? "menu.popup.hide.path" 
+                : "menu.popup.show.path"); 
+        putValue(Action.NAME, name);
+        this.myFig = fig;
+    }
+
+    /**
+     * @param e
+     * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        myFig.setPathVisible(!isPathVisible);
     }
     
 }

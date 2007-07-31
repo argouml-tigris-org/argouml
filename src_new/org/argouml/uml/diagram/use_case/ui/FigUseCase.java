@@ -398,15 +398,6 @@ public class FigUseCase extends FigNodeModelElement
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - getPopupAddOffset());
 
-        // Show menu to display/hide the extension point compartment.
-        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        Iterator i = ActionCompartmentDisplay.getActions().iterator();
-        while (i.hasNext()) {
-            showMenu.add((Action) i.next());
-        }
-        popUpActions.insertElementAt(showMenu,
-            popUpActions.size() - getPopupAddOffset());
-
         // Modifier menu. Placed one before last, so the "Properties" entry is
         // always last.
         popUpActions.insertElementAt(
@@ -414,6 +405,21 @@ public class FigUseCase extends FigNodeModelElement
                 popUpActions.size() - getPopupAddOffset());
 
         return popUpActions;
+    }
+
+    /**
+     * Show menu to display/hide the extension point compartment.
+     * @return the menu
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#buildShowPopUp()
+     */
+    @Override
+    protected ArgoJMenu buildShowPopUp() {
+        ArgoJMenu showMenu = super.buildShowPopUp();
+        Iterator i = ActionCompartmentDisplay.getActions().iterator();
+        while (i.hasNext()) {
+            showMenu.add((Action) i.next());
+        }
+        return showMenu;
     }
 
     /**

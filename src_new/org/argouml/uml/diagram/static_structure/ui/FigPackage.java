@@ -503,8 +503,19 @@ public class FigPackage extends FigNodeModelElement
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
 
-        // Show ...
-        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
+        // Modifier ...
+        popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
+                popUpActions.size() - getPopupAddOffset());
+
+        // Visibility ...
+        popUpActions.insertElementAt(buildVisibilityPopUp(),
+                popUpActions.size() - getPopupAddOffset());
+
+        return popUpActions;
+    }
+
+    protected ArgoJMenu buildShowPopUp() {
+        ArgoJMenu showMenu = super.buildShowPopUp();
         /* Only show the menuitems if they make sense: */
         Editor ce = Globals.curEditor();
         Vector figs = ce.getSelectionManager().getFigs();
@@ -547,18 +558,7 @@ public class FigPackage extends FigNodeModelElement
             showMenu.add(new ShowVisibilityAction());
         }
 
-        popUpActions.insertElementAt(showMenu,
-            popUpActions.size() - getPopupAddOffset());
-
-        // Modifier ...
-        popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - getPopupAddOffset());
-
-        // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
-
-        return popUpActions;
+        return showMenu;
     }
 
     /**
