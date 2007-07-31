@@ -49,6 +49,7 @@ import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
@@ -359,6 +360,15 @@ public class FigComment
 
     ////////////////////////////////////////////////////////////////
     // Fig accessors
+
+    /**
+     * @return an empty menu
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#buildShowPopUp()
+     */
+    @Override
+    protected ArgoJMenu buildShowPopUp() {
+        return new ArgoJMenu("menu.popup.show");
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
