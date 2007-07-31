@@ -44,13 +44,19 @@ public class JavaBeansFigNodeStrategy implements FigNodeStrategy {
      * @see org.argouml.uml.profile.FigNodeStrategy#getIconForStereotype(java.lang.Object)
      */
     public Image getIconForStereotype(Object stereotype) {
-	if ("Bean".equals(Model.getFacade().getName(stereotype))) {
-	    return iconBean;
-	} else 	if ("Event".equals(Model.getFacade().getName(stereotype))) {
-	    return iconRay;
-	} else {
-	    return null;
+		if (stereotype != null) {
+			try {
+				if ("Bean".equals(Model.getFacade().getName(stereotype))) {
+					return iconBean;
+				} else if ("Event"
+						.equals(Model.getFacade().getName(stereotype))) {
+					return iconRay;
+				}
+			} catch (Throwable e) {
+
+			}
+		}
+		return null;
 	}
-    }
     
 }
