@@ -98,8 +98,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     public Abstraction buildAbstraction(final String name,
             final Object supplier, final Object client) {
         if (!(client instanceof NamedElement)
-                || !(supplier instanceof NamedElement) || client == null
-                || supplier == null) {
+                || !(supplier instanceof NamedElement)) {
             throw new IllegalArgumentException(
                     "The client and the supplier must be NamedElements."); //$NON-NLS-1$
         }
@@ -130,8 +129,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             final Boolean navigability1, final Object aggregationKind1,
             final Object type2, final Boolean navigability2,
             final Object aggregationKind2, final String associationName) {
-        if (!(type1 instanceof Type) || !(type2 instanceof Type)
-                || type1 == null || type2 == null) {
+        if (!(type1 instanceof Type) || !(type2 instanceof Type)) {
             throw new IllegalArgumentException(
                     "The types must be instances of Type."); //$NON-NLS-1$
         }
@@ -215,8 +213,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public AssociationClass buildAssociationClass(final Object end1,
             final Object end2) {
-        if (!(end1 instanceof Type) || !(end2 instanceof Type) || end1 == null
-                || end2 == null) {
+        if (!(end1 instanceof Type) || !(end2 instanceof Type)) {
             throw new IllegalArgumentException(
                     "end1 and end2 must be instances of Type"); //$NON-NLS-1$
         }
@@ -261,11 +258,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             final Object changeable, final Object visibility) {
         // The attribute 'targetScope' of an AssociationEnd in UML1.x is no
         // longer supported in UML2.x
-        if (!(assoc instanceof Association) || assoc == null) {
+        if (!(assoc instanceof Association)) {
             throw new IllegalArgumentException(
                     "The assoc must be instance of Association."); //$NON-NLS-1$
         }
-        if (!(type instanceof Type) || type == null) {
+        if (!(type instanceof Type)) {
             throw new IllegalArgumentException(
                     "The type of the property must be instance of Type."); //$NON-NLS-1$
         }
@@ -324,18 +321,28 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 if (changeable != null) {
                     property.setIsReadOnly((Boolean) changeable);
                 }
-                
-                // TODO: Is it like this OK?
-                if (stereo != null
-                        && property.isStereotypeApplicable((Stereotype) stereo)) {
-                    property.applyStereotype((Stereotype) stereo);
+                if (stereo != null) {
+                    if (property.isStereotypeApplicable((Stereotype) stereo)) {
+                        property.applyStereotype((Stereotype) stereo);
+                    } else {
+                        return;
+                    }
                 }
-                
                 getParams().add(property);
             }
         };
+        modelImpl.getModelEventPump().getRootContainer().setHoldEvents(true);
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(editingDomain, run));
+        if (run.getParams().isEmpty()) {
+            editingDomain.getCommandStack().undo();
+            modelImpl.getModelEventPump().getRootContainer().clearHeldEvents();
+            modelImpl.getModelEventPump().getRootContainer().setHoldEvents(
+                    false);
+            throw new UnsupportedOperationException(
+                    "This stereotype cannot be applied to the association end."); //$NON-NLS-1$
+        }
+        modelImpl.getModelEventPump().getRootContainer().setHoldEvents(false);
 
         return (Property) run.getParams().get(0);
     }
@@ -360,7 +367,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Property buildAttribute2(Object type) {
-        if (!(type instanceof Type) || type == null) {
+        if (!(type instanceof Type)) {
             throw new IllegalArgumentException(
                     "The type of the attribute must be instance of Type."); //$NON-NLS-1$
         }
@@ -375,8 +382,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Property buildAttribute2(final Object handle, final Object type) {
-        if (!(handle instanceof Type) || !(type instanceof Type)
-                || handle == null || type == null) {
+        if (!(handle instanceof Type) || !(type instanceof Type)) {
             throw new IllegalArgumentException(
                     "handle and type must be instances of Type."); //$NON-NLS-1$
         }
@@ -410,17 +416,17 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             final Object supplier, final List arguments) {
         // TODO: Is it appropriate the TemplateableElement as the client and a
         // list of TemplateParameterSubstitution as the list of parameters?
-        if (!(client instanceof TemplateableElement) || client == null) {
+        if (!(client instanceof TemplateableElement)) {
             throw new IllegalArgumentException(
                     "The supplier must be instance of TemplateableElement."); //$NON-NLS-1$
         }
-        if (!(supplier instanceof TemplateSignature) || supplier == null) {
+        if (!(supplier instanceof TemplateSignature)) {
             throw new IllegalArgumentException(
                     "The supplier must be instance of TemplateSignature."); //$NON-NLS-1$
         }
         if (arguments != null) {
             for (Object o : arguments) {
-                if (!(o instanceof TemplateParameterSubstitution) || o == null) {
+                if (!(o instanceof TemplateParameterSubstitution)) {
                     throw new IllegalArgumentException(
                             "The list of arguments must be instances of TemplateParameterSubstitutions."); //$NON-NLS-1$
                 }
@@ -464,9 +470,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public org.eclipse.uml2.uml.Class buildClass(final String name,
             final Object owner) {
-        if (!(owner instanceof org.eclipse.uml2.uml.Package) || owner == null) {
+        if (!(owner instanceof org.eclipse.uml2.uml.Package)
+                && !(owner instanceof org.eclipse.uml2.uml.Class)
+                && !(owner instanceof Interface)) {
             throw new IllegalArgumentException(
-                    "The owner must be instance of Package."); //$NON-NLS-1$
+                    "The owner must be instance of Package or UML2 Class or Interface."); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -474,7 +482,14 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 if (name != null) {
                     class_.setName(name);
                 }
-                class_.setPackage((org.eclipse.uml2.uml.Package) owner);
+                if (owner instanceof Package) {
+                    class_.setPackage((org.eclipse.uml2.uml.Package) owner);
+                } else if (owner instanceof org.eclipse.uml2.uml.Class) {
+                    ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers().add(
+                            class_);
+                } else if (owner instanceof Interface) {
+                    ((Interface) owner).getNestedClassifiers().add(class_);
+                }
                 getParams().add(class_);
             }
         };
@@ -485,10 +500,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Comment buildComment(final Object element, final Object model) {
-        if (!(model instanceof Namespace) || model == null) {
+        if (!(model instanceof Namespace)) {
             throw new IllegalArgumentException("A namespace must be supplied."); //$NON-NLS-1$
         }
-        if (!(element instanceof Element)) {
+        if (element != null && !(element instanceof Element)) {
             throw new IllegalArgumentException(
                     "The annotated element must be instance of Element."); //$NON-NLS-1$
         }
@@ -509,7 +524,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Constraint buildConstraint(final Object constrElement) {
-        if (!(constrElement instanceof Element) || constrElement == null) {
+        if (!(constrElement instanceof Element)) {
             throw new IllegalArgumentException(
                     "The constrained element must be instance of Element."); //$NON-NLS-1$
         }
@@ -535,7 +550,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     public Constraint buildConstraint(String name, Object bexpr) {
         // TODO: BooleanExpresion is removed from UML2.x, is it OK to use
         // ValueSpecification?
-        if (bexpr == null || !(bexpr instanceof ValueSpecification)) {
+        if (!(bexpr instanceof ValueSpecification)) {
             throw new IllegalArgumentException(
                     "The 'bexpr' value specification must be instance of ValueSpecification"); //$NON-NLS-1$
         }
@@ -548,9 +563,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public DataType buildDataType(final String name, final Object owner) {
-        if (!(owner instanceof org.eclipse.uml2.uml.Package) || owner == null) {
+        if (!(owner instanceof org.eclipse.uml2.uml.Package)
+                && !(owner instanceof org.eclipse.uml2.uml.Class)
+                && !(owner instanceof Interface)) {
             throw new IllegalArgumentException(
-                    "The owner must be instance of Package."); //$NON-NLS-1$
+                    "The owner must be instance of Package or UML2 Class or Interface."); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -558,7 +575,14 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 if (name != null) {
                     dataType.setName(name);
                 }
-                dataType.setPackage((org.eclipse.uml2.uml.Package) owner);
+                if (owner instanceof Package) {
+                    dataType.setPackage((org.eclipse.uml2.uml.Package) owner);
+                } else if (owner instanceof org.eclipse.uml2.uml.Class) {
+                    ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers().add(
+                            dataType);
+                } else if (owner instanceof Interface) {
+                    ((Interface) owner).getNestedClassifiers().add(dataType);
+                }
                 getParams().add(dataType);
             }
         };
@@ -571,8 +595,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     public Dependency buildDependency(final Object clientObj,
             final Object supplierObj) {
         if (!(clientObj instanceof NamedElement)
-                || !(supplierObj instanceof NamedElement) || clientObj == null
-                || supplierObj == null) {
+                || !(supplierObj instanceof NamedElement)) {
             throw new IllegalArgumentException(
                     "The client and the supplier must be instances of NamedElement."); //$NON-NLS-1$
         }
@@ -602,9 +625,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Enumeration buildEnumeration(final String name, final Object owner) {
-        if (!(owner instanceof org.eclipse.uml2.uml.Package) || owner == null) {
+        if (!(owner instanceof org.eclipse.uml2.uml.Package)
+                && !(owner instanceof org.eclipse.uml2.uml.Class)
+                && !(owner instanceof Interface)) {
             throw new IllegalArgumentException(
-                    "The owner must be instance of Package."); //$NON-NLS-1$
+                    "The owner must be instance of Package or UML2 Class or Interface."); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -612,7 +637,14 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 if (name != null) {
                     enumeration.setName(name);
                 }
-                enumeration.setPackage((org.eclipse.uml2.uml.Package) owner);
+                if (owner instanceof Package) {
+                    enumeration.setPackage((org.eclipse.uml2.uml.Package) owner);
+                } else if (owner instanceof org.eclipse.uml2.uml.Class) {
+                    ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers().add(
+                            enumeration);
+                } else if (owner instanceof Interface) {
+                    ((Interface) owner).getNestedClassifiers().add(enumeration);
+                }
                 getParams().add(enumeration);
             }
         };
@@ -624,7 +656,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public EnumerationLiteral buildEnumerationLiteral(final String name,
             final Object enumeration) {
-        if (!(enumeration instanceof Enumeration) || enumeration == null) {
+        if (!(enumeration instanceof Enumeration)) {
             throw new IllegalArgumentException(
                     "The enumeration must be instance of Enumeration."); //$NON-NLS-1$
         }
@@ -653,8 +685,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public Generalization buildGeneralization(final Object child,
             final Object parent) {
-        if (!(child instanceof Classifier) || !(parent instanceof Classifier)
-                || child == null || parent == null) {
+        if (!(child instanceof Classifier) || !(parent instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "The general (the parent) and the specific (the child) must be instances of Classifier."); //$NON-NLS-1$
         }
@@ -689,14 +720,23 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Interface buildInterface(final String name, final Object owner) {
-        if (!(owner instanceof org.eclipse.uml2.uml.Package) || owner == null) {
+        if (!(owner instanceof org.eclipse.uml2.uml.Package)
+                && !(owner instanceof org.eclipse.uml2.uml.Class)
+                && !(owner instanceof Interface)) {
             throw new IllegalArgumentException(
-                    "The owner must be instance of Package."); //$NON-NLS-1$
+                    "The owner must be instance of Package or UML2 Class or Interface."); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 Interface interface_ = createInterface();
-                interface_.setPackage((org.eclipse.uml2.uml.Package) owner);
+                if (owner instanceof Package) {
+                    interface_.setPackage((org.eclipse.uml2.uml.Package) owner);
+                } else if (owner instanceof org.eclipse.uml2.uml.Class) {
+                    ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers().add(
+                            interface_);
+                } else if (owner instanceof Interface) {
+                    ((Interface) owner).getNestedClassifiers().add(interface_);
+                }
                 if (name != null) {
                     interface_.setName(name);
                 }
@@ -732,8 +772,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public Operation buildOperation2(final Object cls, final Object returnType,
             final String name) {
-        if (!(returnType instanceof Type) || !(cls instanceof Type)
-                || returnType == null || cls == null) {
+        if ((returnType != null && !(returnType instanceof Type))
+                || !(cls instanceof Type)) {
             throw new IllegalArgumentException(
                     "cls and returnType must be instances of Type."); //$NON-NLS-1$
         }
@@ -765,15 +805,13 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public Parameter buildParameter(final Object o, final Object type) {
         // TODO: In UML2.x Event has no parameters. The Event metaclass in
-        // UML1.x
-        // corresponds to the Trigger metaclass in UML2.x (see UML
-        // Superstructure
-        // page 456).
-        if (!(o instanceof BehavioralFeature) || o == null) {
+        // UML1.x corresponds to the Trigger metaclass in UML2.x (see UML
+        // Superstructure page 456).
+        if (!(o instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
                     "The parameter must be attached to a BehavioralFeature."); //$NON-NLS-1$
         }
-        if (!(type instanceof Type) || type == null) {
+        if (!(type instanceof Type)) {
             throw new IllegalArgumentException(
                     "The type of the parameter must be instance of Type."); //$NON-NLS-1$
         }
@@ -801,12 +839,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public PackageImport buildPackageImport(final Object clientObj,
             final Object supplierObj) {
-        if (!(clientObj instanceof Namespace) || clientObj == null) {
+        if (!(clientObj instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "The client must be instance of Namespace."); //$NON-NLS-1$
         }
-        if (!(supplierObj instanceof org.eclipse.uml2.uml.Package)
-                || supplierObj == null) {
+        if (!(supplierObj instanceof org.eclipse.uml2.uml.Package)) {
             throw new IllegalArgumentException(
                     "The supplier must be instance of Package."); //$NON-NLS-1$
         }
@@ -827,19 +864,18 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     public Realization buildRealization(final Object client,
             final Object supplier, final Object namespace) {
         if (!(client instanceof NamedElement)
-                || !(supplier instanceof NamedElement) || client == null
-                || supplier == null) {
+                || !(supplier instanceof NamedElement)) {
             throw new IllegalArgumentException(
                     "The client and the supplier must be NamedElements."); //$NON-NLS-1$
         }
-        if (!(namespace instanceof Namespace)
+        if ((namespace != null && !(namespace instanceof Namespace))
                 || (((NamedElement) client).getNearestPackage() != ((NamedElement) supplier).getNearestPackage() && namespace == null)
                 || (((NamedElement) client).getNearestPackage() == ((NamedElement) supplier).getNearestPackage()
                         && ((NamedElement) supplier).getNearestPackage() == null && namespace == null)) {
             throw new IllegalArgumentException(
                     "The namespace must be instance of Namespace."); //$NON-NLS-1$
         } else {
-            if (namespace != null
+            if (((NamedElement) client).getNearestPackage() != ((NamedElement) supplier).getNearestPackage()
                     && ((Namespace) namespace).getNearestPackage() == null) {
                 throw new NullPointerException(
                         "The namespace must be contained in a package or be a package"); //$NON-NLS-1$
@@ -874,8 +910,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     public Usage buildUsage(final Object client, final Object supplier) {
         if (!(client instanceof NamedElement)
-                || !(supplier instanceof NamedElement) || client == null
-                || supplier == null) {
+                || !(supplier instanceof NamedElement)) {
             throw new IllegalArgumentException(
                     "The client and the supplier must be NamedElements."); //$NON-NLS-1$
         }

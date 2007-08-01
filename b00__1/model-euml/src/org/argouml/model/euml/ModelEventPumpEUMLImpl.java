@@ -136,6 +136,10 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     public void setRootContainer(Notifier container) {
         rootContainerAdapter.setRootContainer(container);
     }
+    
+    public RootContainerAdapter getRootContainer() {
+        return rootContainerAdapter;
+    }
 
     public void addClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
