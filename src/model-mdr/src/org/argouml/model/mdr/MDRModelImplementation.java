@@ -309,9 +309,7 @@ public class MDRModelImplementation implements ModelImplementation {
         }
 
         if (umlPackage == null) {
-            LOG.fatal("Could not find MofPackage UML");
-            System.exit(1);
-            return;
+            throw new UmlException("Could not find MofPackage UML");
         }
 
         // Create and start event pump first so it's available for all others
