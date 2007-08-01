@@ -33,6 +33,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -394,11 +395,11 @@ public class ProfileJava extends Profile {
                 } catch (MalformedURLException e) {
                     LOG.error("Exception while loading profile '"
                             + modelFilename + "'", e);
-                    return null;
+                    return Collections.EMPTY_LIST;
                 } catch (IOException e) {
                     LOG.error("Exception while loading profile '"
                             + modelFilename + "'", e);
-                    return null;
+                    return Collections.EMPTY_LIST;
                 }
             } else {
                 is = new FileInputStream(modelFile);
@@ -425,11 +426,11 @@ public class ProfileJava extends Profile {
             } catch (UmlException e) {
                 LOG.error("Exception while loading profile '" 
                         + modelFilename + "'", e);
-                return null;
+                return Collections.EMPTY_LIST;
             }
         }
         LOG.error("Profile '" + modelFilename + "' not found");
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     /**
