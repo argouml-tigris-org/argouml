@@ -42,6 +42,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -82,14 +84,19 @@ import org.argouml.model.VisibilityKind;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
 import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.uml2.common.edit.domain.UML2AdapterFactoryEditingDomain;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.edit.providers.UMLItemProviderAdapterFactory;
+import org.eclipse.uml2.uml.edit.providers.UMLReflectiveItemProviderAdapterFactory;
+import org.eclipse.uml2.uml.edit.providers.UMLResourceItemProviderAdapterFactory;
 import org.eclipse.uml2.uml.resource.UML22UMLExtendedMetaData;
 import org.eclipse.uml2.uml.resource.UML22UMLResource;
 import org.eclipse.uml2.uml.resource.UMLResource;
@@ -251,8 +258,6 @@ public class EUMLModelImplementation implements ModelImplementation {
         // org.eclipse.uml2.uml.resource jar plugin.
         String path = System.getProperty("eUML.resources"); //$NON-NLS-1$
 
-        ComposedAdapterFactory adapterFactory = null;
-
         BasicCommandStack commandStack = new BasicCommandStack() {
 
             @Override
@@ -263,23 +268,19 @@ public class EUMLModelImplementation implements ModelImplementation {
 
         };
 
-        if (path == null) {
-            // TODO: figure out how to use the ItemProviders - 
-            // delayed until the ArgoEclipse version will be out 
-//          List<AdapterFactory> factories = new ArrayList<AdapterFactory>();
-//          factories.add(new UMLResourceItemProviderAdapterFactory());
-//          factories.add(new UMLItemProviderAdapterFactory());
-//          factories.add(new EcoreItemProviderAdapterFactory());
-//          factories.add(new UMLReflectiveItemProviderAdapterFactory());
-//          adapterFactory = new ComposedAdapterFactory(factories);
-        }
+        List<AdapterFactory> factories = new ArrayList<AdapterFactory>();
+        factories.add(new UMLResourceItemProviderAdapterFactory());
+        factories.add(new UMLItemProviderAdapterFactory());
+        factories.add(new EcoreItemProviderAdapterFactory());
+        factories.add(new UMLReflectiveItemProviderAdapterFactory());
+        ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
+                factories);
 
-        editingDomain = new UML2AdapterFactoryEditingDomain(adapterFactory,
-                commandStack);
+        editingDomain = new UML2AdapterFactoryEditingDomain(
+                adapterFactory, commandStack);
 
         ResourceSet resourceSet = editingDomain.getResourceSet();
-        Map<String, Object> extensionToFactoryMap = 
-            resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
+        Map<String, Object> extensionToFactoryMap = resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap();
         Map<URI, URI> uriMap = resourceSet.getURIConverter().getURIMap();
 
         if (path != null) {
@@ -297,23 +298,28 @@ public class EUMLModelImplementation implements ModelImplementation {
             URI uri = URI.createURI("jar:file:" + path + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
             LOG.debug("eUML.resource URI --> " + uri); //$NON-NLS-1$
 
-            resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI,
-                    UMLPackage.eINSTANCE);
-            resourceSet.getPackageRegistry().put(EcorePackage.eNS_URI,
-                    EcorePackage.eINSTANCE);
-            extensionToFactoryMap.put(UMLResource.FILE_EXTENSION,
-                    UMLResource.Factory.INSTANCE);
-            uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uri
-                    .appendSegment("libraries").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
-            uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uri
-                    .appendSegment("metamodels").appendSegment("")); //$NON-NLS-1$//$NON-NLS-2$
-            uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uri
-                    .appendSegment("profiles").appendSegment("")); //$NON-NLS-1$//$NON-NLS-2$
+            resourceSet.getPackageRegistry().put(
+                    UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+            resourceSet.getPackageRegistry().put(
+                    EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+            extensionToFactoryMap.put(
+                    UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
+            uriMap.put(
+                    URI.createURI(UMLResource.LIBRARIES_PATHMAP),
+                    uri.appendSegment("libraries").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
+            uriMap.put(
+                    URI.createURI(UMLResource.METAMODELS_PATHMAP),
+                    uri.appendSegment("metamodels").appendSegment("")); //$NON-NLS-1$//$NON-NLS-2$
+            uriMap.put(
+                    URI.createURI(UMLResource.PROFILES_PATHMAP),
+                    uri.appendSegment("profiles").appendSegment("")); //$NON-NLS-1$//$NON-NLS-2$
         }
 
-        extensionToFactoryMap.put(UML22UMLResource.FILE_EXTENSION,
+        extensionToFactoryMap.put(
+                UML22UMLResource.FILE_EXTENSION,
                 UML22UMLResource.Factory.INSTANCE);
-        extensionToFactoryMap.put(XMI2UMLResource.FILE_EXTENSION,
+        extensionToFactoryMap.put(
+                XMI2UMLResource.FILE_EXTENSION,
                 XMI2UMLResource.Factory.INSTANCE);
         uriMap.putAll(UML22UMLExtendedMetaData.getURIMap());
         uriMap.putAll(XMI2UMLExtendedMetaData.getURIMap());
