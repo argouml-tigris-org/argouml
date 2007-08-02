@@ -28,7 +28,6 @@ package org.argouml.model.euml;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
@@ -37,7 +36,6 @@ import org.argouml.model.ModelManagementHelper;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
-import org.eclipse.uml2.uml.Type;
 
 
 /**
@@ -71,8 +69,11 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         return null;
     }
 
-    public Collection getAllContents(Object namespace) {
-        return ((Element) namespace).allOwnedElements();
+    public Collection getAllContents(Object element) {
+        if (!(element instanceof Element)) {
+            throw new IllegalArgumentException("The argument must be instance of Element"); //$NON-NLS-1$
+        }
+        return ((Element) element).allOwnedElements();
     }
 
     public Collection getAllImportedElements(Object pack) {
@@ -81,36 +82,36 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllModelElementsOfKind(Object nsa, Object type) {
-
-        if (nsa == null || type == null) {
-            return Collections.EMPTY_LIST;
+        if (!(nsa instanceof Namespace)) {
+            throw new IllegalArgumentException(
+                    "nsa must be instance of Namespace"); //$NON-NLS-1$
         }
+        Class theType = null;
         if (type instanceof String) {
-            return getAllModelElementsOfKind(nsa, (String) type);
+            try {
+                theType = Class.forName((String) type);
+            } catch (ClassNotFoundException e) {
+                throw new IllegalArgumentException(e);
+            }
+        } else if (type instanceof Class) {
+            theType = (Class) type;
+        } else {
+            throw new IllegalArgumentException(
+                    "type must be instance of Class or String"); //$NON-NLS-1$
         }
-        if (!(nsa instanceof org.eclipse.uml2.uml.Package) || !(type instanceof Class)) {
-            throw new IllegalArgumentException("illegal argument - namespace: "
-                    + nsa + " type: " + type);
+        if (!Element.class.isAssignableFrom(theType)) {
+            throw new IllegalArgumentException("type must represent an Element"); //$NON-NLS-1$
         }
-        
-        org.eclipse.uml2.uml.Package pkg = (org.eclipse.uml2.uml.Package) nsa;
-        Class typeClass = (Class) type;
 
-        Collection<Type> result = new HashSet<Type>();
-        for (Type ownedType : pkg.getOwnedTypes()) {
-            if (typeClass.isAssignableFrom(ownedType.getClass())) {
-                result.add(ownedType);
+        Collection<Element> result = new ArrayList<Element>();
+
+        for (Element element : ((Namespace) nsa).allOwnedElements()) {
+            if (theType.isAssignableFrom(element.getClass())) {
+                result.add(element);
             }
         }
 
-        for (org.eclipse.uml2.uml.Package nestedPackage : pkg
-                .getNestedPackages()) {
-            result.addAll(getAllModelElementsOfKind(nestedPackage, typeClass));
-        }
-        return result;        
-
-
-
+        return result;
     }
 
     /*
@@ -128,12 +129,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
     
     public Collection getAllModelElementsOfKind(Object nsa, String kind) {
-        try {
-            return getAllModelElementsOfKind(nsa, Class.forName(kind));
-        } catch (ClassNotFoundException cnfe) {
-            throw new IllegalArgumentException(
-                    "Can't derive a class name from " + kind);
-        }
+        return getAllModelElementsOfKind(nsa, kind);
     }
 
     public Collection getAllModelElementsOfKindWithModel(Object model,
