@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry path="src" kind="src"/>
-	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
-	<classpathentry path="/argouml" combineaccessrules="false" kind="src"/>
-	<classpathentry path="/argouml-core-lib" combineaccessrules="false" kind="src"/>
-	<classpathentry path="/argouml-core-model" combineaccessrules="false" kind="src"/>
-	<classpathentry path="/argouml-core-model-mdr" combineaccessrules="false" kind="src"/>
-	<classpathentry path="build-eclipse" kind="output"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model-mdr"/>
+	<classpathentry kind="lib" path="/argouml-core-model-mdr/lib/mdrapi.jar"/>
+	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
