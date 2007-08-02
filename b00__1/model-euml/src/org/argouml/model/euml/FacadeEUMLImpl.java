@@ -1968,8 +1968,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getRootElements() {
-        throw new NotYetImplementedException();
-        
+        Collection c = new ArrayList();
+        if (modelImpl.getModelManagementFactory().getRootModel() != null) {
+            c.add(modelImpl.getModelManagementFactory().getRootModel());
+        }
+        return c;
     }
 
 }
