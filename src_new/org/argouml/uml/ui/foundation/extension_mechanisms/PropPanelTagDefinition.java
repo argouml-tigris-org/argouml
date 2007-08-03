@@ -106,7 +106,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
 
         addSeparator();
 
-        UMLComboBoxNavigator typeComboBoxNav = new UMLComboBoxNavigator(this,
+        UMLComboBoxNavigator typeComboBoxNav = new UMLComboBoxNavigator(
                 Translator.localize("label.class.navigate.tooltip"),
                 getTypeComboBox());
         typeComboBoxNav.setEnabled(false);
@@ -142,7 +142,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
     protected JComponent getOwnerSelector() {
         if (ownerSelector == null) {
             ownerSelector = new Box(BoxLayout.X_AXIS);
-            ownerSelector.add(new UMLComboBoxNavigator(this,
+            ownerSelector.add(new UMLComboBoxNavigator(
                     Translator.localize("label.owner.navigate.tooltip"),
                     new UMLComboBox2(ownerComboBoxModel,
                             new ActionSetTagDefinitionOwner())

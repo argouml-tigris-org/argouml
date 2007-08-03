@@ -64,7 +64,6 @@ public class PropPanelCallAction extends PropPanelAction {
                 new UMLCallActionOperationComboBoxModel());
         addFieldBefore(Translator.localize("label.operation"),
                 new UMLComboBoxNavigator(
-                        this,
                         Translator.localize("label.operation.navigate.tooltip"),
                         operationComboBox),
                 argumentsScroll);

@@ -77,7 +77,6 @@ public class PropPanelMethod extends PropPanelFeature {
         /* The specification field shows the Operation: */
         addField(Translator.localize("label.specification"),
                 new UMLComboBoxNavigator(
-                        this,
                         Translator
                             .localize("label.specification.navigate.tooltip"),
                         getSpecificationComboBox()));

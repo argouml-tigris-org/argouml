@@ -84,7 +84,6 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
         addField(Translator.localize("label.type"),
                 new UMLComboBoxNavigator(
-                        this,
                         Translator.localize("label.class.navigate.tooltip"),
                         getTypeComboBox()));
 

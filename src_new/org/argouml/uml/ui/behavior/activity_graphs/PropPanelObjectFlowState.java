@@ -84,7 +84,6 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         // field for Type (Classifier)
         addField(Translator.localize("label.type"),
             new UMLComboBoxNavigator(
-                this,
                 Translator.localize("label.classifierinstate.navigate.tooltip"),
                 getClassifierComboBox()));
 

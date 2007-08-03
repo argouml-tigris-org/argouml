@@ -65,7 +65,6 @@ public class PropPanelCollaboration extends PropPanelNamespace {
                      new ActionSetRepresentedClassifierCollaboration());
         addField(Translator.localize("label.represented-classifier"),
                 new UMLComboBoxNavigator(
-                        this,
                         Translator.localize(
                                 "label.represented-classifier."
                                 + "navigate.tooltip"),
@@ -78,7 +77,6 @@ public class PropPanelCollaboration extends PropPanelNamespace {
                      new ActionSetRepresentedOperationCollaboration());
         addField(Translator.localize("label.represented-operation"),
                 new UMLComboBoxNavigator(
-                        this,
                         Translator.localize(
                                 "label.represented-operation."
                                 + "navigate.tooltip"),

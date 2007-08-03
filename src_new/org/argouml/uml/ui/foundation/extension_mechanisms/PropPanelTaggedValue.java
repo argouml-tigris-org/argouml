@@ -115,7 +115,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
     protected JComponent getModelElementSelector() {
         if (modelElementSelector == null) {
             modelElementSelector = new Box(BoxLayout.X_AXIS);
-            modelElementSelector.add(new UMLComboBoxNavigator(this,
+            modelElementSelector.add(new UMLComboBoxNavigator(
                     Translator.localize("label.modelelement.navigate.tooltip"),
                     new UMLComboBox2(
                             new UMLTaggedValueModelElementComboBoxModel(),
@@ -135,7 +135,7 @@ public class PropPanelTaggedValue extends PropPanelModelElement {
     protected JComponent getTypeSelector() {
         if (typeSelector == null) {
             typeSelector = new Box(BoxLayout.X_AXIS);
-            typeSelector.add(new UMLComboBoxNavigator(this,
+            typeSelector.add(new UMLComboBoxNavigator(
                     Translator.localize("label.type.navigate.tooltip"),
                     new UMLComboBox2(
                             new UMLTaggedValueTypeComboBoxModel(),

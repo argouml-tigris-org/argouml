@@ -66,7 +66,6 @@ public class PropPanelCallEvent extends PropPanelEvent {
                 new UMLCallEventOperationComboBoxModel());
         addField(Translator.localize("label.operations"),
                 new UMLComboBoxNavigator(
-                        this,
                         Translator.localize("label.operation.navigate.tooltip"),
                         operationComboBox));
 

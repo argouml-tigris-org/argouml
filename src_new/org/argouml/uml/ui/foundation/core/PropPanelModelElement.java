@@ -192,7 +192,6 @@ public abstract class PropPanelModelElement extends PropPanel {
                     new ActionSetModelElementNamespace(), true);
         }
         return new UMLComboBoxNavigator(
-                this,
                 Translator.localize("label.namespace.navigate.tooltip"),
                 namespaceSelector);
     }

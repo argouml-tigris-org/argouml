@@ -64,7 +64,6 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
                 new ActionSetAssociationRoleBase());
         addField(Translator.localize("label.base"), 
             new UMLComboBoxNavigator(
-                this,
                 Translator.localize("label.association.navigate.tooltip"), 
                 baseComboBox));
 

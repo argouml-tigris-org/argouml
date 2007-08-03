@@ -100,7 +100,6 @@ public class PropPanelLink extends PropPanelModelElement {
                     new ActionSetLinkAssociation(), true);
         }
         return new UMLComboBoxNavigator(
-                this,
                 Translator.localize("label.association.navigate.tooltip"),
                 associationSelector);
     }

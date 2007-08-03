@@ -81,7 +81,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
                 new UMLSubmachineStateComboBoxModel(),
                 ActionSetSubmachineStateSubmachine.getInstance());
         addField(Translator.localize("label.submachine"),
-                new UMLComboBoxNavigator(this, Translator.localize(
+                new UMLComboBoxNavigator(Translator.localize(
                         "tooltip.nav-submachine"), submachineBox));
         addField(Translator.localize("label.entry"),
                 getEntryScroll());

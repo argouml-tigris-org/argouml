@@ -61,7 +61,6 @@ public class PropPanelStubState extends PropPanelStateVertex {
                         ActionSetStubStateReferenceState.getInstance());
         addField(Translator.localize("label.referencestate"),
                 new UMLComboBoxNavigator(
-                        this,
                         Translator.localize("tooltip.nav-stubstate"),
                         referencestateBox));
 

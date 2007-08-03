@@ -86,7 +86,6 @@ public class PropPanelStateMachine extends PropPanelModelElement {
                      ActionSetContextStateMachine.getInstance());
         addField(Translator.localize("label.context"),
                 new UMLComboBoxNavigator(
-                        this,
                         Translator.localize("label.context.navigate.tooltip"),
                         contextComboBox));
         
