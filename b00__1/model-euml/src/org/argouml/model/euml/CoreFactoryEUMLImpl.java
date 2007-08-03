@@ -120,7 +120,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an Abstraction"));
 
         return (Abstraction) run.getParams().get(0);
     }
@@ -182,7 +182,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an Association"));
 
         return (Association) run.getParams().get(0);
     }
@@ -246,7 +246,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an AssociationClass"));
 
         return (AssociationClass) run.getParams().get(0);
     }
@@ -333,7 +333,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         };
         modelImpl.getModelEventPump().getRootContainer().setHoldEvents(true);
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an AssociationEnd (Property)"));
         if (run.getParams().isEmpty()) {
             editingDomain.getCommandStack().undo();
             modelImpl.getModelEventPump().getRootContainer().clearHeldEvents();
@@ -399,7 +399,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an Attribute (Property)"));
 
         return (Property) run.getParams().get(0);
     }
@@ -447,7 +447,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a TemplateBinding"));
 
         return (TemplateBinding) run.getParams().get(0);
     }
@@ -494,7 +494,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a Class"));
 
         return (org.eclipse.uml2.uml.Class) run.getParams().get(0);
     }
@@ -518,7 +518,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a Comment"));
 
         return (Comment) run.getParams().get(0);
     }
@@ -542,7 +542,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a Constraint"));
 
         return (Constraint) run.getParams().get(0);
     }
@@ -587,7 +587,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a DataType"));
 
         return (DataType) run.getParams().get(0);
     }
@@ -614,7 +614,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a Dependency"));
 
         return (Dependency) run.getParams().get(0);
     }
@@ -649,7 +649,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an Enumeration"));
 
         return (Enumeration) run.getParams().get(0);
     }
@@ -671,7 +671,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an EnumerationLiteral"));
 
         return (EnumerationLiteral) run.getParams().get(0);
     }
@@ -698,7 +698,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a Generalization"));
 
         return (Generalization) run.getParams().get(0);
     }
@@ -744,7 +744,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an Interface"));
 
         return (Interface) run.getParams().get(0);
     }
@@ -793,7 +793,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an Operation"));
 
         return (Operation) run.getParams().get(0);
     }
@@ -824,7 +824,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a Parameter"));
 
         return (Parameter) run.getParams().get(0);
     }
@@ -856,7 +856,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a PackageImport"));
 
         return (PackageImport) run.getParams().get(0);
     }
@@ -898,7 +898,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create a Realization"));
 
         return (Realization) run.getParams().get(0);
     }
@@ -929,29 +929,25 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run));
+                new ChangeCommand(editingDomain, run, "Create an Usage"));
 
         return (Usage) run.getParams().get(0);
     }
 
     public Object copyClass(Object source, Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        return modelImpl.getCopyHelper().copy(source, ns);
     }
 
     public Object copyDataType(Object source, Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        return modelImpl.getCopyHelper().copy(source, ns);
     }
 
     public Object copyFeature(Object source, Object classifier) {
-        // TODO Auto-generated method stub
-        return null;
+        return modelImpl.getCopyHelper().copy(source, classifier);
     }
 
     public Object copyInterface(Object source, Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        return modelImpl.getCopyHelper().copy(source, ns);
     }
 
     public Abstraction createAbstraction() {
