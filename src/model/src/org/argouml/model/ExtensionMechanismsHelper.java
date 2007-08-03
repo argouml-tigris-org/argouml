@@ -97,8 +97,22 @@ public interface ExtensionMechanismsHelper {
      * @param theModelElement is the model element
      * @param theStereotype   is the stereotype
      * @return boolean
+     * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
      */
     boolean isValidStereoType(Object theModelElement, Object theStereotype);
+
+    /**
+     * Returns <code>true</code> if the given stereotype has a baseclass that
+     * equals the baseclass of the given ModelElement or one of the superclasses
+     * of the given ModelElement.
+     * 
+     * @param theModelElement
+     *                is the model element
+     * @param theStereotype
+     *                is the stereotype
+     * @return boolean
+     */
+    boolean isValidStereotype(Object theModelElement, Object theStereotype);
 
     /**
      * Get all stereotypes from all Models in the list.
@@ -233,6 +247,19 @@ public interface ExtensionMechanismsHelper {
      * @param handle the given object
      * @param name the given name
      * @return true if there is such a stereotype
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #hasStereotype(Object,String)} instead
      */
     boolean hasStereoType(Object handle, String name);
+
+    /**
+     * Returns <code>true</code> if the given ModelElement has a Stereotype with the
+     * given name.
+     * 
+     * @param element
+     *                the given element
+     * @param name
+     *                the given name
+     * @return true if there is such a stereotype
+     */
+    boolean hasStereotype(Object element, String name);
 }

@@ -80,9 +80,17 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         return impl.getAllPossibleStereotypes(models, modelElement);
     }
 
+    /**
+     * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
+     */
     public boolean isValidStereoType(Object theModelElement,
             Object theStereotype) {
-        return impl.isValidStereoType(theModelElement, theStereotype);
+                return isValidStereotype(theModelElement, theStereotype);
+            }
+
+    public boolean isValidStereotype(Object theModelElement,
+            Object theStereotype) {
+        return impl.isValidStereotype(theModelElement, theStereotype);
     }
 
     public Collection getStereotypes(Collection models) {
@@ -142,8 +150,15 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.setTaggedValue(handle, taggedValues);
     }
 
+    /**
+     * @deprecated Use {@link #hasStereotype(Object,String)} instead
+     */
     public boolean hasStereoType(Object handle, String name) {
-        return impl.hasStereoType(handle, name);
+        return hasStereotype(handle, name);
+    }
+
+    public boolean hasStereotype(Object handle, String name) {
+        return impl.hasStereotype(handle, name);
     }
 
 }
