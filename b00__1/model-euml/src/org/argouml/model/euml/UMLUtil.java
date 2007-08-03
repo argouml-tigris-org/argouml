@@ -73,6 +73,7 @@ public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
         };
         copyCommand.append(copyToClipboard);
         copyCommand.append(pasteFromClipboard);
+        copyCommand.setLabel("Copy a tree of UML elements to a destination");
         if (copyCommand.canExecute()) {
             modelImplementation.getModelEventPump().getRootContainer().setHoldEvents(
                     true);
