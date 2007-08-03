@@ -39,6 +39,7 @@ import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
+import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Extend;
@@ -57,7 +58,6 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.TypedElement;
 import org.eclipse.uml2.uml.VisibilityKind;
 
-
 /**
  * Eclipse UML2 implementation of CoreHelper.
  */
@@ -67,118 +67,183 @@ class CoreHelperEUMLImpl implements CoreHelper {
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
-    
+
     private EditingDomain editingDomain;
 
     /**
      * Constructor.
-     *
-     * @param implementation The ModelImplementation.
+     * 
+     * @param implementation
+     *                The ModelImplementation.
      */
     public CoreHelperEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
         editingDomain = implementation.getEditingDomain();
     }
 
-    public void addAllStereotypes(final Object modelElement, final Collection stereos) {
+    public void addAllStereotypes(final Object modelElement,
+            final Collection stereos) {
         if (!(modelElement instanceof Element)) {
-            throw new IllegalArgumentException("modelElement must be instance of Element"); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    "modelElement must be instance of Element"); //$NON-NLS-1$
         }
         if (stereos == null) {
             throw new NullPointerException("stereos must be non-null"); //$NON-NLS-1$
         }
         for (Object o : stereos) {
             if (!(o instanceof Stereotype)) {
-                throw new IllegalArgumentException("The stereotypes from stereo collection must be instances of Stereotype"); //$NON-NLS-1$
+                throw new IllegalArgumentException(
+                        "The stereotypes from stereo collection must be instances of Stereotype"); //$NON-NLS-1$
             }
             if (!((Element) modelElement).isStereotypeApplicable((Stereotype) o)) {
-                throw new UnsupportedOperationException("The stereotype " + o + " cannot be applied to " + modelElement); //$NON-NLS-1$ //$NON-NLS-2$
+                throw new UnsupportedOperationException(
+                        "The stereotype " + o + " cannot be applied to " + modelElement); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 for (Object o : stereos) {
                     ((Element) modelElement).applyStereotype((Stereotype) o);
-                }                
+                }
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run, "Apply stereotypes to an Element"));
+                new ChangeCommand(
+                        editingDomain, run, "Apply stereotypes to an Element"));
     }
 
-    public void addAnnotatedElement(final Object comment, final Object annotatedElement) {
+    public void addAnnotatedElement(final Object comment,
+            final Object annotatedElement) {
         if (!(annotatedElement instanceof Element)) {
-            throw new IllegalArgumentException("annotatedElement must be instance of Element"); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    "annotatedElement must be instance of Element"); //$NON-NLS-1$
         }
         if (!(comment instanceof Comment)) {
-            throw new IllegalArgumentException("comment must be instance of Comment"); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    "comment must be instance of Comment"); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((Comment) comment).getAnnotatedElements().add((Element) annotatedElement);
+                ((Comment) comment).getAnnotatedElements().add(
+                        (Element) annotatedElement);
             }
         };
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(editingDomain, run, "Add an annotated element to a comment"));
+                new ChangeCommand(
+                        editingDomain, run, "Add a comment to a element"));
     }
 
-    public void addClient(Object dependency, Object element) {
-        throw new NotYetImplementedException();
+    public void addClient(final Object dependency, final Object element) {
+        if (!(dependency instanceof Dependency)) {
+            throw new IllegalArgumentException(
+                    "The dependency must be instance of Dependency"); //$NON-NLS-1$
+        }
+        if (!(element instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "The element must be instance of NamedElement"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Dependency) dependency).getClients().add(
+                        (NamedElement) element);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, run, "Add a client to a dependency"));
     }
 
     public void addClientDependency(Object handle, Object dependency) {
-        throw new NotYetImplementedException();
-        
+        addClient(dependency, handle);
     }
 
     public void addComment(Object element, Object comment) {
-        throw new NotYetImplementedException();
-        
+        addAnnotatedElement(comment, element);
     }
 
-    public void addConnection(Object handle, Object connection) {
-        throw new NotYetImplementedException();
-        
+    public void addConnection(final Object handle, final Object connection) {
+        if (!(handle instanceof Association)) {
+            throw new IllegalArgumentException(
+                    "The handle must be instance of Association"); //$NON-NLS-1$
+        }
+        if (!(connection instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "The connection must be instance of Property"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Property) connection).setAssociation((Association) handle);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, run,
+                        "Add an AssociationEnd (Property) to an Association"));
     }
 
     public void addConnection(Object handle, int position, Object connection) {
-        throw new NotYetImplementedException();
-        
+        addConnection(handle, connection);
     }
 
-    public void addConstraint(Object handle, Object mc) {
-        throw new NotYetImplementedException();
-        
+    public void addConstraint(final Object handle, final Object mc) {
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "The handle must be instance of Element"); //$NON-NLS-1$
+        }
+        if (!(mc instanceof Constraint)) {
+            throw new IllegalArgumentException(
+                    "mc must be instance of Constraint"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Constraint) mc).getConstrainedElements().add((Element) handle);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, run, "Add a constraint to an element"));
     }
 
     public void addDeploymentLocation(Object handle, Object node) {
         throw new NotYetImplementedException();
-        
     }
 
     public void addElementResidence(Object handle, Object residence) {
+        // TODO Is it removed from UML2 ?
         throw new NotYetImplementedException();
-        
     }
 
     public void addFeature(Object handle, int index, Object f) {
         throw new NotYetImplementedException();
-        
+
     }
 
-    public void addFeature(Object handle, Object f) {
-        throw new NotYetImplementedException();
-        
+    public void addFeature(final Object handle, final Object f) {
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "The handle must be instance of Classifier"); //$NON-NLS-1$
+        }
+        if (!(f instanceof Feature)) {
+            throw new IllegalArgumentException("f must be instance of Feature"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                // TODO: code for adding the feature
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, run, "Add a feature to a classifier"));
     }
 
     public void addLink(Object handle, Object link) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addLiteral(Object handle, int index, Object literal) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addMethod(Object handle, Object method) {
@@ -219,72 +284,72 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void addParameter(Object handle, Object parameter) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addQualifier(Object handle, int position, Object qualifier) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addRaisedSignal(Object handle, Object sig) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addSourceFlow(Object handle, Object flow) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addStereotype(Object modelElement, Object stereo) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addSupplier(Object handle, Object element) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addSupplierDependency(Object supplier, Object dependency) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addTaggedValue(Object handle, Object taggedValue) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addTargetFlow(Object handle, Object flow) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addTemplateArgument(Object handle, int index, Object argument) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addTemplateArgument(Object handle, Object argument) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addTemplateParameter(Object handle, int index, Object parameter) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void addTemplateParameter(Object handle, Object parameter) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void clearStereotypes(Object handle) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public boolean equalsAggregationKind(Object associationEnd, String kindType) {
@@ -343,7 +408,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Collection getAllPossibleNamespaces(Object modelElement, Object model) {
-        // TODO: Dummy implementation that just returns the current namespace hierarchy
+        // TODO: Dummy implementation that just returns the current namespace
+        // hierarchy
         Collection<Namespace> result = new ArrayList<Namespace>();
         result.addAll(((NamedElement) modelElement).allNamespaces());
         return result;
@@ -475,16 +541,16 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Object getSource(Object relationship) {
 
         // TODO: not implemented for UML 2 - tfm
-//      if (relationship instanceof Link) {
-//      Iterator it =
-//      modelImpl.getFacade()
-//      .getConnections(relationship).iterator();
-//      if (it.hasNext()) {
-//      return modelImpl.getFacade().getInstance(it.next());
-//      } else {
-//      return null;
-//      }
-//      }
+        // if (relationship instanceof Link) {
+        // Iterator it =
+        // modelImpl.getFacade()
+        // .getConnections(relationship).iterator();
+        // if (it.hasNext()) {
+        // return modelImpl.getFacade().getInstance(it.next());
+        // } else {
+        // return null;
+        // }
+        // }
         if (relationship instanceof Association) {
             Association assoc = (Association) relationship;
             List conns = assoc.getMemberEnds();
@@ -504,13 +570,13 @@ class CoreHelperEUMLImpl implements CoreHelper {
             }
             return col.get(0);
             // TODO: not implemented for UML 2 - tfm
-//        } else if (relationship instanceof Flow) {
-//            Flow flow = (Flow) relationship;
-//            Collection col = flow.getSource();
-//            if (col.isEmpty()) {
-//                return null;
-//            }
-//            return (col.toArray())[0];
+            // } else if (relationship instanceof Flow) {
+            // Flow flow = (Flow) relationship;
+            // Collection col = flow.getSource();
+            // if (col.isEmpty()) {
+            // return null;
+            // }
+            // return (col.toArray())[0];
         } else if (relationship instanceof Extend) {
             Extend extend = (Extend) relationship;
             return extend.getExtension(); // we have to follow the
@@ -526,23 +592,22 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     }
 
-
     public Object getDestination(Object relationship) {
 
-//        if (relationship instanceof Link) {
-//            Iterator it = modelImpl.getFacade()
-//            .getConnections(relationship).iterator();
-//            if (it.hasNext()) {
-//                it.next();
-//                if (it.hasNext()) {
-//                    return modelImpl.getFacade().getInstance(it.next());
-//                } else {
-//                    return null;
-//                }
-//            } else {
-//                return null;
-//            }
-//        }
+        // if (relationship instanceof Link) {
+        // Iterator it = modelImpl.getFacade()
+        // .getConnections(relationship).iterator();
+        // if (it.hasNext()) {
+        // it.next();
+        // if (it.hasNext()) {
+        // return modelImpl.getFacade().getInstance(it.next());
+        // } else {
+        // return null;
+        // }
+        // } else {
+        // return null;
+        // }
+        // }
 
         if (relationship instanceof Association) {
             Association assoc = (Association) relationship;
@@ -561,13 +626,13 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 return null;
             }
             return col.get(0);
-//        } else if (relationship instanceof Flow) {
-//            Flow flow = (Flow) relationship;
-//            Collection col = flow.getTarget();
-//            if (col.isEmpty()) {
-//                return null;
-//            }
-//            return getFirstItemOrNull(col);
+            // } else if (relationship instanceof Flow) {
+            // Flow flow = (Flow) relationship;
+            // Collection col = flow.getTarget();
+            // if (col.isEmpty()) {
+            // return null;
+            // }
+            // return getFirstItemOrNull(col);
         } else if (relationship instanceof Extend) {
             Extend extend = (Extend) relationship;
             return extend.getExtendedCase();
@@ -581,7 +646,6 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
 
     }
-
 
     public Object getSpecification(Object object) {
         throw new NotYetImplementedException();
@@ -615,102 +679,101 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public boolean isValidNamespace(Object element, Object namespace) {
 
-        if (!(element instanceof Element) 
-                || !(namespace instanceof Namespace)) {
+        if (!(element instanceof Element) || !(namespace instanceof Namespace)) {
             return false;
         }
 
         Element e = (Element) element;
         Namespace ns = (Namespace) namespace;
-        
+
         // TODO: Needs implementation - for now anything is valid
-        
+
         return true;
     }
 
     public void removeAnnotatedElement(Object handle, Object me) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeClientDependency(Object handle, Object dep) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeConnection(Object handle, Object connection) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeConstraint(Object handle, Object cons) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeDeploymentLocation(Object handle, Object node) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeElementResidence(Object handle, Object residence) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeFeature(Object cls, Object feature) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeLiteral(Object enumeration, Object literal) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeOwnedElement(Object handle, Object value) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeParameter(Object handle, Object parameter) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeQualifier(Object handle, Object qualifier) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeSourceFlow(Object handle, Object flow) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeStereotype(Object handle, Object stereo) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeSupplierDependency(Object supplier, Object dependency) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeTargetFlow(Object handle, Object flow) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeTemplateArgument(Object binding, Object argument) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void removeTemplateParameter(Object handle, Object parameter) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setAbstract(Object handle, boolean isAbstract) {
@@ -733,27 +796,27 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setAnnotatedElements(Object handle, Collection elems) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setAssociation(Object handle, Object association) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setAttributes(Object classifier, List attributes) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setBody(Object handle, Object expr) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setBody(Object handle, String body) {
         throw new NotYetImplementedException();
-        
+
     }
 
     @SuppressWarnings("deprecation")
@@ -768,32 +831,32 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setChild(Object handle, Object child) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setConcurrency(Object handle, Object concurrencyKind) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setConnections(Object handle, Collection ends) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setContainer(Object handle, Object component) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setDefaultElement(Object handle, Object element) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setDefaultValue(Object handle, Object expression) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setDiscriminator(Object handle, String discriminator) {
@@ -803,27 +866,27 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setEnumerationLiterals(Object enumeration, List literals) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setFeature(Object classifier, int index, Object feature) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setFeatures(Object classifier, Collection features) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setInitialValue(Object attribute, Object expression) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setKind(Object handle, Object kind) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setLeaf(Object handle, boolean isLeaf) {
@@ -837,7 +900,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setMultiplicity(Object handle, Object arg) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setName(Object handle, String name) {
@@ -854,11 +917,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setOperations(Object classifier, List operations) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setOrdering(Object handle, Object ordering) {
-//        ((Property) handle).setIsOrdered(ordering);
+        // ((Property) handle).setIsOrdered(ordering);
         throw new NotYetImplementedException();
     }
 
@@ -874,27 +937,27 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setParameter(Object handle, Object parameter) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setParameters(Object handle, Collection parameters) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setParent(Object handle, Object parent) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setPowertype(Object handle, Object powerType) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setQualifiers(Object handle, List qualifiers) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setQuery(Object handle, boolean isQuery) {
@@ -903,21 +966,21 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setRaisedSignals(Object handle, Collection raisedSignals) {
         throw new NotYetImplementedException();
-        
+
     }
-    
+
     public void setReadOnly(Object handle, boolean isReadOnly) {
         ((StructuralFeature) handle).setIsReadOnly(isReadOnly);
     }
 
     public void setResident(Object handle, Object resident) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setResidents(Object handle, Collection residents) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setRoot(Object handle, boolean isRoot) {
@@ -927,12 +990,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setSources(Object handle, Collection specifications) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setSpecification(Object handle, boolean isSpecification) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setSpecification(Object method, Object specification) {
@@ -947,19 +1010,19 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotYetImplementedException();
 
     }
-    
+
     public void setStatic(Object feature, boolean isStatic) {
         ((Feature) feature).setIsStatic(isStatic);
     }
 
     public void setTaggedValue(Object handle, String tag, String value) {
         throw new NotYetImplementedException();
-        
+
     }
 
     public void setTaggedValues(Object handle, Collection taggedValues) {
         throw new NotYetImplementedException();
-        
+
     }
 
     @SuppressWarnings("deprecation")
@@ -975,6 +1038,5 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void setVisibility(Object handle, Object visibility) {
         ((NamedElement) handle).setVisibility((VisibilityKind) visibility);
     }
-
 
 }
