@@ -113,7 +113,14 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         return null;
     }
 
+    /**
+     * @deprecated Use {@link #hasStereotype(Object,String)} instead
+     */
     public boolean hasStereoType(Object handle, String name) {
+        return hasStereotype(handle, name);
+    }
+
+    public boolean hasStereotype(Object handle, String name) {
         // TODO Auto-generated method stub
         return false;
     }
@@ -128,7 +135,14 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         return false;
     }
 
+    /**
+     * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
+     */
     public boolean isValidStereoType(Object theModelElement, Object theStereotype) {
+        return isValidStereotype(theModelElement, theStereotype);
+    }
+
+    public boolean isValidStereotype(Object theModelElement, Object theStereotype) {
         // TODO Auto-generated method stub
         return false;
     }
