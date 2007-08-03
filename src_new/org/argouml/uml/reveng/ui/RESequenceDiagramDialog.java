@@ -804,6 +804,7 @@ public class RESequenceDiagramDialog
      */
     private Object permissionLookup(Object comp, String clsName) {
         Object theClassifier = null;
+        // TODO: This could use the new CoreHelper.getPackageImports()
         Collection cdeps = Model.getFacade().getClientDependencies(comp);
         Iterator iter1 = cdeps != null ? cdeps.iterator() : null;
         while (theClassifier == null && iter1 != null && iter1.hasNext()) {
@@ -816,6 +817,11 @@ public class RESequenceDiagramDialog
                         && iter2 != null
                         && iter2.hasNext()) {
                     Object elem = iter2.next();
+                    // TODO: I'm not sure what this is trying to do, but it
+                    // probably isn't what it thinks it is.  The supplier to
+                    // an import is going to be a Package, which is not a
+                    // Classifier.  Perhaps this intends to process the 
+                    // ownedElements of the Package. - tfm - 20070803
                     if (Model.getFacade().isAClassifier(elem)
                          && clsName.equals(Model.getFacade().getName(elem))) {
                         theClassifier = elem;
