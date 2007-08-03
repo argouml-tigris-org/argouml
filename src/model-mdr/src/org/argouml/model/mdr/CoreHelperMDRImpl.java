@@ -1208,7 +1208,7 @@ class CoreHelperMDRImpl implements CoreHelper {
             for (Dependency dependency : (Collection<Dependency>) ((ModelElement) client)
                     .getClientDependency()) {
                 if (dependency instanceof Permission
-                        && Model.getExtensionMechanismsHelper().hasStereoType(
+                        && Model.getExtensionMechanismsHelper().hasStereotype(
                                 dependency,
                                 ModelManagementHelper.IMPORT_STEREOTYPE)) {
                     result.add((Permission) dependency);
@@ -1224,7 +1224,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         for (Dependency dependency : getDependencies(supplier, client)) {
             if (dependency instanceof Permission
                     && Model.getExtensionMechanismsHelper()
-                            .hasStereoType(dependency,
+                            .hasStereotype(dependency,
                                     ModelManagementHelper.IMPORT_STEREOTYPE)) {
                 return (Permission) dependency;
             }
