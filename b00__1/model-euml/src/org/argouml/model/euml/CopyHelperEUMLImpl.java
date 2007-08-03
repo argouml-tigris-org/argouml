@@ -27,6 +27,7 @@
 package org.argouml.model.euml;
 
 import org.argouml.model.CopyHelper;
+import org.eclipse.uml2.uml.Element;
 
 /**
  * The implementation of the CopyHelper for EUML2.
@@ -40,17 +41,26 @@ class CopyHelperEUMLImpl implements CopyHelper {
 
     /**
      * Constructor.
-     *
-     * @param implementation The ModelImplementation.
+     * 
+     * @param implementation
+     *                The ModelImplementation.
      */
     public CopyHelperEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
     }
 
-    public Object copy(Object source, Object destination) {
-        // TODO Auto-generated method stub
-        return null;
+    public Element copy(Object source, Object destination) {
+        if (!(source instanceof Element) || !(destination instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "The source and destination must be instances of Element"); //$NON-NLS-1$
+        }
+        Element copiedElement = UMLUtil.copy(
+                modelImpl, (Element) source, (Element) destination);
+        if (copiedElement == null) {
+            throw new UnsupportedOperationException(
+                    "Could not copy " + source + " to destination " + destination); //$NON-NLS-1$//$NON-NLS-2$
+        }
+        return copiedElement;
     }
-
 
 }
