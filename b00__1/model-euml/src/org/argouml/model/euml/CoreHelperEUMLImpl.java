@@ -35,10 +35,10 @@ import org.argouml.model.CoreHelper;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.uml2.common.edit.command.ChangeCommand;
-import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Extend;
@@ -51,6 +51,7 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.RedefinableElement;
+import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.StructuralFeature;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.TypedElement;
@@ -66,6 +67,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
+    
+    private EditingDomain editingDomain;
 
     /**
      * Constructor.
@@ -74,16 +77,49 @@ class CoreHelperEUMLImpl implements CoreHelper {
      */
     public CoreHelperEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
+        editingDomain = implementation.getEditingDomain();
     }
 
-    public void addAllStereotypes(Object modelElement, Collection stereos) {
-        throw new NotYetImplementedException();
-        
+    public void addAllStereotypes(final Object modelElement, final Collection stereos) {
+        if (!(modelElement instanceof Element)) {
+            throw new IllegalArgumentException("modelElement must be instance of Element"); //$NON-NLS-1$
+        }
+        if (stereos == null) {
+            throw new NullPointerException("stereos must be non-null"); //$NON-NLS-1$
+        }
+        for (Object o : stereos) {
+            if (!(o instanceof Stereotype)) {
+                throw new IllegalArgumentException("The stereotypes from stereo collection must be instances of Stereotype"); //$NON-NLS-1$
+            }
+            if (!((Element) modelElement).isStereotypeApplicable((Stereotype) o)) {
+                throw new UnsupportedOperationException("The stereotype " + o + " cannot be applied to " + modelElement); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                for (Object o : stereos) {
+                    ((Element) modelElement).applyStereotype((Stereotype) o);
+                }                
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run, "Apply stereotypes to an Element"));
     }
 
-    public void addAnnotatedElement(Object comment, Object annotatedElement) {
-        throw new NotYetImplementedException();
-        
+    public void addAnnotatedElement(final Object comment, final Object annotatedElement) {
+        if (!(annotatedElement instanceof Element)) {
+            throw new IllegalArgumentException("annotatedElement must be instance of Element"); //$NON-NLS-1$
+        }
+        if (!(comment instanceof Comment)) {
+            throw new IllegalArgumentException("comment must be instance of Comment"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Comment) comment).getAnnotatedElements().add((Element) annotatedElement);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run, "Add an annotated element to a comment"));
     }
 
     public void addClient(Object dependency, Object element) {
