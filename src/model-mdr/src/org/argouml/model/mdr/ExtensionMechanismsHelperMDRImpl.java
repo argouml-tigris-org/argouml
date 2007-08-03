@@ -300,7 +300,16 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
+    /**
+     * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
+     */
     public boolean isValidStereoType(Object theModelElement,
+            Object theStereotype) {
+                return isValidStereotype(theModelElement, theStereotype);
+            }
+
+
+    public boolean isValidStereotype(Object theModelElement,
             Object theStereotype) {
         if (theModelElement == null) {
             return false;
@@ -580,7 +589,15 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
+    /**
+     * @deprecated Use {@link #hasStereotype(Object,String)} instead
+     */
     public boolean hasStereoType(Object handle, String name) {
+        return hasStereotype(handle, name);
+    }
+
+
+    public boolean hasStereotype(Object handle, String name) {
         try {
             Collection sts = modelImpl.getFacade().getStereotypes(handle);
             Iterator i = sts.iterator();
