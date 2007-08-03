@@ -249,8 +249,8 @@ public class StereotypeUtility {
 
         if (Model.getFacade().isAStereotype(root)
                 && name.equals(Model.getFacade().getName(root))) {
-            if (Model.getExtensionMechanismsHelper().isValidStereoType(obj,
-            /* (MStereotype) */root)) {
+            if (Model.getExtensionMechanismsHelper().isValidStereotype(obj,
+                    root)) {
                 return root;
             }
         }

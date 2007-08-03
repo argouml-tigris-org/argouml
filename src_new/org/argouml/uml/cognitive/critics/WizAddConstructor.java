@@ -122,7 +122,7 @@ public class WizAddConstructor extends UMLWizard {
             }
 
             if (Model.getExtensionMechanismsHelper()
-        	    .isValidStereoType(obj, stereo)) {
+        	    .isValidStereotype(obj, stereo)) {
         	return Model.getModelManagementHelper()
         	    .getCorrespondingElement(stereo,
         				     Model.getFacade().getModel(obj));
