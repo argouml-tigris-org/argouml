@@ -404,7 +404,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     }
 
-    public Collection getParent(Object generalizableElement) {
+    public Collection getParents(Object generalizableElement) {
         throw new NotYetImplementedException();
         
     }
