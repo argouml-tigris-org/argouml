@@ -833,25 +833,33 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
      * Removed from UML2.x, use buildPackageImport instead.
      */
     @Deprecated
-    public PackageImport buildPermission(Object clientObj, Object supplierObj) {
-        return buildPackageImport(clientObj, supplierObj);
+    public PackageImport buildPermission(Object client, Object supplier) {
+        return buildPackageImport(client, supplier);
     }
 
-    public PackageImport buildPackageImport(final Object clientObj,
-            final Object supplierObj) {
-        if (!(clientObj instanceof Namespace)) {
+    public PackageImport buildPackageAccess(final Object client,
+            final Object supplier) {
+        PackageImport packageImport = buildPackageImport(client, supplier);
+        // TODO: Do we care if this is undoable?
+        packageImport.setVisibility(VisibilityKind.PACKAGE_LITERAL);
+        return packageImport;
+    }
+    
+    public PackageImport buildPackageImport(final Object client,
+            final Object supplier) {
+        if (!(client instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "The client must be instance of Namespace."); //$NON-NLS-1$
         }
-        if (!(supplierObj instanceof org.eclipse.uml2.uml.Package)) {
+        if (!(supplier instanceof org.eclipse.uml2.uml.Package)) {
             throw new IllegalArgumentException(
                     "The supplier must be instance of Package."); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 PackageImport packageImport = createPackageImport();
-                packageImport.setImportedPackage((org.eclipse.uml2.uml.Package) supplierObj);
-                packageImport.setImportingNamespace((Namespace) clientObj);
+                packageImport.setImportedPackage((org.eclipse.uml2.uml.Package) supplier);
+                packageImport.setImportingNamespace((Namespace) client);
                 getParams().add(packageImport);
             }
         };
