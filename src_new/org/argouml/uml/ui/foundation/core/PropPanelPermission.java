@@ -30,7 +30,12 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a Permission.
- *
+ * <p>
+ * TODO: In UML 2.x, the import and access Permissions have become
+ * PackageImports with public visibility and non-public visibility respectively.
+ * (ArgoUML only supports the <<import>> Permission currently). The friend
+ * Permission has been dropped. Also the type hierarchy has been reorganized so
+ * that PackageImport is not a subtype of Dependency.
  */
 public class PropPanelPermission extends PropPanelDependency {
 
@@ -61,5 +66,5 @@ public class PropPanelPermission extends PropPanelDependency {
         addAction(getDeleteAction());
     }
 
-} /* end class PropPanelPermission */
+}
 

@@ -355,7 +355,7 @@ public class ExplorerPopup extends JPopupMenu {
         	    " " + menuLocalize("menu.popup.extends") + " ");
             addCreateModelElementAction(
         	    menuItems,
-        	    Model.getMetaTypes().getPermission(),
+        	    Model.getMetaTypes().getPackageImport(),
         	    " " + menuLocalize("menu.popup.has-permission-on") + " ");
             addCreateModelElementAction(
         	    menuItems,

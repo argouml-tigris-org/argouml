@@ -329,35 +329,23 @@ public class Modeller {
         // import on demand
 	if (classifierName.equals("*")) {
 	    parseState.addPackageContext(mPackage);
-            Object perm = null;
-
+	    
             // try find an existing permission
-            Iterator dependenciesIt =
-                Model.getCoreHelper()
-		    .getDependencies(mPackage, parseState.getComponent())
-		        .iterator();
-            while (dependenciesIt.hasNext()) {
-
-                Object dependency = dependenciesIt.next();
-                if (Model.getFacade().isAPermission(dependency)) {
-
-                    perm = dependency;
-                    break;
-                }
-            }
+            Object pkgImport = Model.getCoreHelper().getPackageImport(mPackage,
+                    parseState.getComponent());
 
             // if no existing permission was found.
-            if (perm == null) {
-		perm =
+            if (pkgImport == null) {
+		pkgImport =
 		    Model.getCoreFactory()
-		        .buildPermission(parseState.getComponent(), mPackage);
+		        .buildPackageImport(parseState.getComponent(), mPackage);
 		String newName =
                     makePermissionName(
                             Model.getFacade().getName(
                                     parseState.getComponent()),
                                     packageName);
-		Model.getCoreHelper().setName(perm, newName);
-                newElements.add(perm);
+		Model.getCoreHelper().setName(pkgImport, newName);
+                newElements.add(pkgImport);
             }
 	}
         // single type import
@@ -389,28 +377,28 @@ public class Modeller {
                         .getDependencies(mClassifier,
 					 parseState.getComponent())
                             .iterator();
-                Object perm = null;
+                Object pkgImport = null;
                 while (dependenciesIt.hasNext()) {
 
                     Object dependency = dependenciesIt.next();
-                    if (Model.getFacade().isAPermission(dependency)) {
+                    if (Model.getFacade().isAPackageImport(dependency)) {
 
-                        perm = dependency;
+                        pkgImport = dependency;
                         break;
                     }
                 }
 
                 // if no existing permission was found.
-                if (perm == null) {
-                    perm =
+                if (pkgImport == null) {
+                    pkgImport =
 			Model.getCoreFactory()
-			    .buildPermission(parseState.getComponent(),
+			    .buildPackageImport(parseState.getComponent(),
 					     mClassifier);
 		    String newName =
                             makePermissionName(
                                     parseState.getComponent(), mClassifier);
-                    Model.getCoreHelper().setName(perm, newName);
-                    newElements.add(perm);
+                    Model.getCoreHelper().setName(pkgImport, newName);
+                    newElements.add(pkgImport);
                 }
 	    }
 	}

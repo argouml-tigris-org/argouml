@@ -462,7 +462,7 @@ public class TabProps
             propPanel = new PropPanelParameter();
         } else if (Model.getFacade().isAPartition(modelElement)) {
             propPanel = new PropPanelPartition();
-        } else if (Model.getFacade().isAPermission(modelElement)) {
+        } else if (Model.getFacade().isAPackageImport(modelElement)) {
             propPanel = new PropPanelPermission();
         } else if (Model.getFacade().isAPseudostate(modelElement)) {
             propPanel = new PropPanelPseudostate();

@@ -132,5 +132,5 @@ public class FigDependency extends FigEdgeModelElement {
         middleGroup.calcBounds();
     }
 
-} /* end class FigRealization */
+}
 
