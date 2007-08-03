@@ -750,7 +750,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
 
         if (pack instanceof Classifier || pack instanceof Package) {
             Collection<GeneralizableElement> ges = 
-                modelImpl.getCoreHelper().getParent(pack);
+                modelImpl.getCoreHelper().getParents(pack);
             Collection<ModelElement> allContents = new HashSet<ModelElement>();
             for (GeneralizableElement ge : ges) {
                 allContents.addAll(getAllContents(ge));

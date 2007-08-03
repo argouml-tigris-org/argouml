@@ -406,7 +406,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     /*
      * @see org.argouml.model.CoreHelper#getParent(java.lang.Object)
      */
-    public Collection<GeneralizableElement> getParent(
+    public Collection<GeneralizableElement> getParents(
             Object generalizableElement) {
         if (!(generalizableElement instanceof GeneralizableElement)) {
             throw new IllegalArgumentException();
