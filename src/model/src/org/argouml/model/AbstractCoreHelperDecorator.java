@@ -111,8 +111,8 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getOperationsInh(classifier);
     }
 
-    public Collection getParent(Object generalizableElement) {
-        return impl.getParent(generalizableElement);
+    public Collection getParents(Object generalizableElement) {
+        return impl.getParents(generalizableElement);
     }
 
     public List getReturnParameters(Object operation) {

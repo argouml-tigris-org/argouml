@@ -142,7 +142,7 @@ public interface CoreHelper {
      * @param generalizableElement the given element
      * @return a collection of GeneralizableElement
      */
-    Collection getParent(Object generalizableElement);
+    Collection getParents(Object generalizableElement);
 
     /**
      * Return all return parameters for an Operation.
