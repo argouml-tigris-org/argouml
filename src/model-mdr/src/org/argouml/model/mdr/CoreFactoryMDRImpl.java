@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.commonbehavior.Reception;
@@ -112,6 +113,8 @@ import org.omg.uml.modelmanagement.UmlPackage;
 class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         CoreFactory {
 
+    private static final Logger LOG = Logger.getLogger(CoreFactoryMDRImpl.class);
+    
     /**
      * The model implementation.
      */
@@ -947,7 +950,25 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     
     @SuppressWarnings("deprecation")
     public Permission buildPermission(Object client, Object supplier) {
-        return buildPackageImport(client, supplier);
+        if (!(client instanceof ModelElement) 
+                || !(supplier instanceof ModelElement)) {
+            throw new IllegalArgumentException("client is not a Namespace" +
+                        " or supplier is not a Package");
+        }
+        // Warn about historical usage which is not compliant with UML spec.
+        if (!(client instanceof Namespace) 
+                || !(supplier instanceof UmlPackage)) {
+            LOG.warn("buildPermission called with client that is not a Namespace" +
+                        " or supplier that is not a Package");
+        }
+        Permission per = buildPermissionInternal((ModelElement) client, 
+                (ModelElement) supplier);
+
+        // TODO: This should fetch the stereotype from our profile
+        modelImpl.getExtensionMechanismsFactory().buildStereotype(per, 
+                ModelManagementHelper.IMPORT_STEREOTYPE,
+                per.getNamespace());
+        return per;
     }
     
     
@@ -955,7 +976,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (!(client instanceof Namespace) 
                 || !(supplier instanceof UmlPackage)) {
             throw new IllegalArgumentException("client is not a Namespace" +
-            		" or supplier is not a Namespace");
+            		" or supplier is not a Package");
         }
         Permission per = buildPermissionInternal((ModelElement) client, 
                 (UmlPackage) supplier);
@@ -969,7 +990,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     
     private Permission buildPermissionInternal(ModelElement client, 
-            UmlPackage supplier) {
+            ModelElement supplier) {
         Permission permission = (Permission) createPermission();
         permission.getSupplier().add(supplier);
         permission.getClient().add(client);
