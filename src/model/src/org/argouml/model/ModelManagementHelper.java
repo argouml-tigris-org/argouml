@@ -263,6 +263,13 @@ public interface ModelManagementHelper {
      *   contents = self.ownedInstance->union(self.ownedLink)
      * </pre>
      * 
+     * For a Subsystem: <pre>
+     * [2] The operation contents results in a Set containing 
+     * the ModelElements owned by or imported by the Subsystem.
+     *   contents : Set(ModelElement)
+     *   contents = self.ownedElement->union(self.importedElement)
+     * </pre>
+     * 
      * @param namespace the ns to get the contents from
      * @return a collection of modelelements
      */

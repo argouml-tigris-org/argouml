@@ -132,6 +132,17 @@ public interface CoreHelper {
      * @return a collection of the operations
      */
     Collection getOperationsInh(Object classifier);
+    
+    /**
+     * Return the collection of all direct parents. <p>
+     * 
+     * This function is additional operation number 1 for 
+     * a GeneralizableElement from the UML1.4 standard.
+     * 
+     * @param generalizableElement the given element
+     * @return a collection of GeneralizableElement
+     */
+    Collection getParent(Object generalizableElement);
 
     /**
      * Return all return parameters for an Operation.
