@@ -92,23 +92,23 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory,
     // change in the way multiplicities work - tfm
     
     public Object createMultiplicity(int lower, int upper) {
-        return new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Object createMultiplicity(List range) {
-        return new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Object createMultiplicity(String str) {
-        return new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Object createMultiplicityRange(String str) {
-        return new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Object createMultiplicityRange(int lower, int upper) {
-        return new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Object createObjectSetExpression(String language, String body) {
