@@ -928,5 +928,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
         ((NamedElement) handle).setVisibility((VisibilityKind) visibility);
     }
 
+    public Object getPackageImport(Object supplier, Object client) {
+        throw new NotYetImplementedException();
+    }
+
+    public Collection getPackageImports(Object client) {
+        throw new NotYetImplementedException();
+    }
 
 }

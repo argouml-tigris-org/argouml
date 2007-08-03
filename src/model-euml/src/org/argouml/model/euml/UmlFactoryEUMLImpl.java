@@ -191,8 +191,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     fromStyle, toElement, toStyle, (Boolean) unidirectional);
         } else if (elementType == metaTypes.getGeneralization()) {
             connection = getCore().buildGeneralization(fromElement, toElement);
-        } else if (elementType == metaTypes.getPermission()) {
-            connection = getCore().buildPermission(fromElement, toElement);
+        } else if (elementType == metaTypes.getPackageImport()) {
+            connection = getCore().buildPackageImport(fromElement, toElement);
         } else if (elementType == metaTypes.getUsage()) {
             connection = getCore().buildUsage(fromElement, toElement);
         } else if (elementType == metaTypes.getGeneralization()) {

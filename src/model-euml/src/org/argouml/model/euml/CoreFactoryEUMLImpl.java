@@ -364,12 +364,45 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         // TODO Auto-generated method stub
         return null;
     }
-
-    public PackageImport buildPermission(Object clientObj, Object supplierObj) {
-        // TODO Auto-generated method stub
-        return null;
+    /**
+     * Removed from UML2.x, use buildPackageImport instead.
+     */
+    @Deprecated
+    public PackageImport buildPermission(Object client, Object supplier) {
+        return buildPackageImport(client, supplier);
     }
 
+    public PackageImport buildPackageAccess(final Object client,
+            final Object supplier) {
+        PackageImport packageImport = buildPackageImport(client, supplier);
+        // TODO: Do we care if this is undoable?
+        packageImport.setVisibility(VisibilityKind.PACKAGE_LITERAL);
+        return packageImport;
+    }
+    
+    public PackageImport buildPackageImport(final Object client,
+            final Object supplier) {
+        if (!(client instanceof Namespace)) {
+            throw new IllegalArgumentException(
+                    "The client must be instance of Namespace."); //$NON-NLS-1$
+        }
+        if (!(supplier instanceof org.eclipse.uml2.uml.Package)) {
+            throw new IllegalArgumentException(
+                    "The supplier must be instance of Package."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                PackageImport packageImport = createPackageImport();
+                packageImport.setImportedPackage((org.eclipse.uml2.uml.Package) supplier);
+                packageImport.setImportingNamespace((Namespace) client);
+                getParams().add(packageImport);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run, "Create a PackageImport"));
+
+        return (PackageImport) run.getParams().get(0);
+    }
     public InterfaceRealization buildRealization(Object client,
             Object supplier, Object namespace) {
         // TODO: namespace is ignored
@@ -507,10 +540,18 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return uml.createParameter();
     }
 
+    /**
+     * Removed from UML2.x, use createPackageImport instead.
+     */
+    @Deprecated
     public PackageImport createPermission() {
-        return uml.createPackageImport();
+        return createPackageImport();
     }
 
+    public PackageImport createPackageImport() {
+        return UMLFactory.eINSTANCE.createPackageImport();
+    }
+    
     @SuppressWarnings("deprecation")
     public Object createPrimitive() {
         return createPrimitiveType();
@@ -538,5 +579,6 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     public Usage createUsage() {
         return uml.createUsage();
     }
+
 
 }

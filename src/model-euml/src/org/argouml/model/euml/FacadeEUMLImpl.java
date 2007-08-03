@@ -1594,10 +1594,15 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof ActivityPartition;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAPermission(Object handle) {
         return handle instanceof PackageImport;
     }
-
+    
+    public boolean isAPackageImport(Object handle) {
+        return handle instanceof PackageImport;
+    }
+    
     @SuppressWarnings("deprecation")
     public boolean isAPrimitive(Object handle) {
         return isAPrimitiveType(handle);
