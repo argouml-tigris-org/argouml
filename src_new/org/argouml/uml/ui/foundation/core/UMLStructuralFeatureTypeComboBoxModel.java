@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -58,6 +57,9 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
     }
 
     /*
+     * This is explained by WFR 2 of a StructuralFeature: 
+     * The type of a StructuralFeature must be a Class, DataType, or Interface.
+     * 
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
