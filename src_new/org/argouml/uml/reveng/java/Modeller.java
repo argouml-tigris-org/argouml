@@ -329,16 +329,32 @@ public class Modeller {
         // import on demand
 	if (classifierName.equals("*")) {
 	    parseState.addPackageContext(mPackage);
-	    
+            Object pkgImport = null;
+
+            // TODO: This use of UML Permission is non-standard.
+            // Change it to a Dependency with a <<javaImport>> stereotype
+            // or something else - tfm - 20070802
+            
             // try find an existing permission
-            Object pkgImport = Model.getCoreHelper().getPackageImport(mPackage,
-                    parseState.getComponent());
+            Iterator dependenciesIt =
+                Model.getCoreHelper()
+		    .getDependencies(mPackage, parseState.getComponent())
+		        .iterator();
+            while (dependenciesIt.hasNext()) {
+
+                Object dependency = dependenciesIt.next();
+                if (Model.getFacade().isAPermission(dependency)) {
+
+                    pkgImport = dependency;
+                    break;
+                }
+            }
 
             // if no existing permission was found.
             if (pkgImport == null) {
 		pkgImport =
 		    Model.getCoreFactory()
-		        .buildPackageImport(parseState.getComponent(), mPackage);
+		        .buildPermission(parseState.getComponent(), mPackage);
 		String newName =
                     makePermissionName(
                             Model.getFacade().getName(
@@ -371,34 +387,38 @@ public class Modeller {
             if (mClassifier != null) {
 		parseState.addClassifierContext(mClassifier);
 
+		// TODO: This use of UML Permission is non-standard.
+		// Change it to a Dependency with a <<javaImport>> stereotype
+		// or something else - tfm - 20070802
+
                 // try find an existing permission
                 Iterator dependenciesIt =
 		    Model.getCoreHelper()
                         .getDependencies(mClassifier,
 					 parseState.getComponent())
                             .iterator();
-                Object pkgImport = null;
+                Object perm = null;
                 while (dependenciesIt.hasNext()) {
 
                     Object dependency = dependenciesIt.next();
-                    if (Model.getFacade().isAPackageImport(dependency)) {
+                    if (Model.getFacade().isAPermission(dependency)) {
 
-                        pkgImport = dependency;
+                        perm = dependency;
                         break;
                     }
                 }
 
                 // if no existing permission was found.
-                if (pkgImport == null) {
-                    pkgImport =
+                if (perm == null) {
+                    perm =
 			Model.getCoreFactory()
-			    .buildPackageImport(parseState.getComponent(),
+			    .buildPermission(parseState.getComponent(),
 					     mClassifier);
 		    String newName =
                             makePermissionName(
                                     parseState.getComponent(), mClassifier);
-                    Model.getCoreHelper().setName(pkgImport, newName);
-                    newElements.add(pkgImport);
+                    Model.getCoreHelper().setName(perm, newName);
+                    newElements.add(perm);
                 }
 	    }
 	}
