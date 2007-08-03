@@ -423,12 +423,34 @@ public interface CoreHelper {
      * a client ModelElement.  Does not return the inverse
      * relationship (dependency 'from client to supplier').<p>
      *
-     * @param supplierObj a MModelElement
-     * @param clientObj a MModelElement
+     * @param supplier a ModelElement
+     * @param client a ModelElement
      * @return Collection
      */
-    Collection getDependencies(Object supplierObj, Object clientObj);
+    Collection getDependencies(Object supplier, Object client);
 
+
+    /**
+     * Return the packageImport (Permission with <<import>> or <<access>>
+     * stereotype in UML 1.4) between a supplier Package and
+     * a client Namespace, if any.
+     *
+     * @param supplier a Package
+     * @param client a Namespace
+     * @return the import or null
+     */
+    Object getPackageImport(Object supplier, Object client);
+
+
+    /**
+     * Return all packageImports (Permissions with <<import>> or <<access>>
+     * stereotype in UML 1.4) that this Namespace is a client of.
+     *
+     * @param client a Namespace
+     * @return Collection of imports
+     */
+    Collection getPackageImports(Object client);
+    
     /**
      * Return all relationships between the source and destination
      * ModelElement and vice versa.<p>

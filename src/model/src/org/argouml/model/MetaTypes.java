@@ -331,9 +331,17 @@ public interface MetaTypes {
 
     /**
      * @return Returns the Permission.
+     * @deprecated for 0.25.4 by tfmorris. Removed for UML 2.x. Use
+     *             {@link #getPackageImport()}.
      */
     Object getPermission();
 
+    /**
+     * @return Return the PackageImport type.
+     * @since UML 2.0
+     */
+    Object getPackageImport();
+    
     /**
      * @return Returns the Pseudostate.
      */

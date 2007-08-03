@@ -509,14 +509,66 @@ public interface CoreFactory extends Factory {
     Object buildDependency(Object clientObj, Object supplierObj);
 
     /**
-     * Builds a modelelement permission between two modelelements.
-     *
-     * @param clientObj is the client
-     * @param supplierObj is the supplier
+     * Builds a Permission between two Namespaces. For backward compatibility
+     * with pre 0.25.4 versions of ArgoUML, this builds an import (a Permission
+     * with the <<import>> stereotype).
+     * 
+     * @param client
+     *                is the client package
+     * @param supplier
+     *                is the supplier
+     * @return Permission
+     * @see CoreFactory#buildPackageImport(Object, Object)
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #buildPackageImport(Object, Object)}.
+     */
+    @Deprecated
+    Object buildPermission(Object client, Object supplier);
+
+    /**
+     * Build an import Permission between a Namespace and a Package. All model
+     * elements in the supplier namespace will be added to the client namespace.
+     * The Permission will be placed in the client namespace.
+     * <p>
+     * UML 1.4 spec - "Import is a stereotyped permission dependency between two
+     * namespaces, denoting that the public contents of the target package are
+     * added to the namespace of the source package."
+     * <p>
+     * NOTE: For compatibility with UML 2.x, we adopt the slightly stricter
+     * requirement that the target namespace must be a Package.
+     * 
+     * @param client
+     *                is the client Namespace
+     * @param supplier
+     *                is the supplier Package
      * @return Permission
      */
-    Object buildPermission(Object clientObj, Object supplierObj);
+    Object buildPackageImport(Object client, Object supplier);
 
+
+    /**
+     * Build an access Permission between a Namespace and a Package. All model
+     * elements in the supplier namespace will be accessible from the client
+     * namespace, but they are not added to the client namespace. The Permission
+     * will be placed in the client namespace.
+     * <p>
+     * UML 1.4 spec - "Access is a stereotyped permission dependency between two
+     * namespaces, denoting that the public contents of the target namespace are
+     * accessible to the namespace of the source package."
+     * <p>
+     * NOTE: For compatibility with UML 2.x, we adopt the slightly stricter
+     * requirement that the target namespace must be a Package. In UML 2.x, this
+     * translates to a packageImport with non-public visibility.
+     * 
+     * @param client
+     *                is the client Namespace
+     * @param supplier
+     *                is the supplier Package
+     * @return Permission
+     */
+    Object buildPackageAccess(Object client, Object supplier);
+
+    
     /**
      * Builds a generalization between a parent and a child with a given name.
      * 

@@ -827,12 +827,26 @@ public interface Facade {
 
     /**
      * Recognizer for Permission.
-     *
-     * @param handle candidate
+     * 
+     * @param handle
+     *                candidate
      * @return true if handle is an Permission
+     * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. Use
+     *             {@link #isAPackageImport()}
+     * 
      */
     boolean isAPermission(Object handle);
 
+    /**
+     * Recognizer for PackageImport (was Permission in UML 1.x).
+     * 
+     * @param handle
+     *                candidate
+     * @return true if handle is an PackageImport (or Permission in UML 1.4)
+     * @since UML 2.0
+     */
+    boolean isAPackageImport(Object handle);
+    
     /**
      * Recognizer for Package.
      *

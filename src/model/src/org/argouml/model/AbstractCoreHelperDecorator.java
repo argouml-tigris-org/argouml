@@ -228,10 +228,18 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getDestination(relationship);
     }
 
-    public Collection getDependencies(Object supplierObj, Object clientObj) {
-        return impl.getDependencies(supplierObj, clientObj);
+    public Collection getDependencies(Object supplier, Object client) {
+        return impl.getDependencies(supplier, client);
     }
 
+    public Object getPackageImport(Object supplier, Object client) {
+        return impl.getPackageImport(supplier, client);
+    }
+
+    public Collection getPackageImports(Object client) {
+        return impl.getPackageImports(client);
+    }
+    
     public Collection getRelationships(Object source, Object dest) {
         return impl.getRelationships(source, dest);
     }
