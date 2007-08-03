@@ -378,10 +378,15 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return Partition.class;
     }
 
+    @SuppressWarnings("deprecation")
     public Object getPermission() {
         return Permission.class;
     }
 
+    public Object getPackageImport() {
+        return Permission.class;
+    }
+    
     public Object getPseudostate() {
         return Pseudostate.class;
     }

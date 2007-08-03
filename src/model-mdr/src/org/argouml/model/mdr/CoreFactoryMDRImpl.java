@@ -92,6 +92,7 @@ import org.omg.uml.foundation.datatypes.ScopeKindEnum;
 import org.omg.uml.foundation.datatypes.VisibilityKind;
 import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
 import org.omg.uml.modelmanagement.Model;
+import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
  * Factory to create UML classes for the UML Foundation::Core package.
@@ -343,7 +344,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createPermission() {
+    public Permission createPermission() {
         Permission myPermission = corePackage
                 .getPermission().createPermission();
         super.initialize(myPermission);
@@ -903,10 +904,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return cl;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildDataType(java.lang.String,
-     *      java.lang.Object)
-     */
+
     public Object buildDataType(String name, Object owner) {
         DataType dt = (DataType) createDataType();
         dt.setName(name);
@@ -916,9 +914,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return dt;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildEnumeration(java.lang.String, java.lang.Object)
-     */
+
     public Object buildEnumeration(String name, Object owner) {
         Enumeration e = (Enumeration) createEnumeration();
         e.setName(name);
@@ -928,10 +924,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return e;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildDependency(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public Object buildDependency(Object clientObj, Object supplierObj) {
 
         ModelElement client = (ModelElement) clientObj;
@@ -943,48 +936,69 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Dependency dep = (Dependency) createDependency();
         dep.getSupplier().add(supplier);
         dep.getClient().add(client);
-        if (supplier.getNamespace() != null) {
-            dep.setNamespace(supplier.getNamespace());
+        if (client instanceof Namespace) {
+            dep.setNamespace((Namespace) client);
         } else if (client.getNamespace() != null) {
             dep.setNamespace(client.getNamespace());
         }
         return dep;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildPermission(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildPermission(Object clientObj, Object supplierObj) {
+    
+    @SuppressWarnings("deprecation")
+    public Permission buildPermission(Object client, Object supplier) {
+        return buildPackageImport(client, supplier);
+    }
+    
+    
+    public Permission buildPackageImport(Object client, Object supplier) {
+        if (!(client instanceof Namespace) 
+                || !(supplier instanceof UmlPackage)) {
+            throw new IllegalArgumentException("client is not a Namespace" +
+            		" or supplier is not a Namespace");
+        }
+        Permission per = buildPermissionInternal((ModelElement) client, 
+                (UmlPackage) supplier);
 
-        ModelElement client = (ModelElement) clientObj;
-        ModelElement supplier = (ModelElement) supplierObj;
-        // TODO: Supplier must be a namespace per UML 1.4 spec - tfm
-        if (client == null || supplier == null || client.getNamespace() == null
-                || supplier.getNamespace() == null) {
-            throw new IllegalArgumentException("client or supplier is null "
-                    + "or their namespaces.");
-        }
-        Permission per = (Permission) createPermission();
-        per.getSupplier().add(supplier);
-        per.getClient().add(client);
-        if (supplier.getNamespace() != null) {
-            per.setNamespace(supplier.getNamespace());
-        } else if (client.getNamespace() != null) {
-            per.setNamespace(client.getNamespace());
-        }
-        // TODO: In addition to "import," a Permission can also take "friend"
-        // and "access" stereotypes, each with its own semantics
+        // TODO: This should fetch the stereotype from our profile
         modelImpl.getExtensionMechanismsFactory().buildStereotype(per, 
                 ModelManagementHelper.IMPORT_STEREOTYPE,
                 per.getNamespace());
         return per;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildGeneralization(java.lang.Object,
-     *      java.lang.Object, java.lang.String)
-     */
+    
+    private Permission buildPermissionInternal(ModelElement client, 
+            UmlPackage supplier) {
+        Permission permission = (Permission) createPermission();
+        permission.getSupplier().add(supplier);
+        permission.getClient().add(client);
+        if (client instanceof Namespace) {
+            permission.setNamespace((Namespace) client);
+        } else if (client.getNamespace() != null) {
+            permission.setNamespace(client.getNamespace());
+        }
+        return permission;
+    }
+    
+    
+    public Permission buildPackageAccess(Object client, Object supplier) {
+        if (!(client instanceof Namespace) 
+                || !(supplier instanceof UmlPackage)) {
+            throw new IllegalArgumentException("client or " +
+                        "supplier is not a Namespace");
+        }
+        Permission per = buildPermissionInternal((ModelElement) client, 
+                (UmlPackage) supplier);
+
+        // TODO: This should fetch the stereotype from our profile
+        modelImpl.getExtensionMechanismsFactory().buildStereotype(per, 
+                ModelManagementHelper.ACCESS_STEREOTYPE,
+                per.getNamespace());
+        return per;
+    }
+
+
     public Object buildGeneralization(Object child, Object parent, 
             String name) {
         if (child == null || parent == null

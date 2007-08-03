@@ -605,10 +605,15 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof Partition;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean isAPermission(Object handle) {
         return handle instanceof Permission;
     }
 
+    public boolean isAPackageImport(Object handle) {
+        return handle instanceof Permission;
+    }
+    
     public boolean isAPackage(Object handle) {
         return handle instanceof UmlPackage;
     }

@@ -41,6 +41,7 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.model.ModelManagementHelper;
 import org.argouml.model.NotImplementedException;
 import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
 import org.omg.uml.behavioralelements.activitygraphs.ClassifierInState;
@@ -104,6 +105,7 @@ import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Node;
 import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.core.Parameter;
+import org.omg.uml.foundation.core.Permission;
 import org.omg.uml.foundation.core.Relationship;
 import org.omg.uml.foundation.core.Stereotype;
 import org.omg.uml.foundation.core.StructuralFeature;
@@ -1169,17 +1171,18 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
-    public Collection getDependencies(Object supplierObj, Object clientObj) {
+    public Collection<Dependency> getDependencies(Object supplierObj,
+            Object clientObj) {
 
         if (!(supplierObj instanceof ModelElement)
                 || !(clientObj instanceof ModelElement)) {
-            throw new IllegalArgumentException("null argument");
+            throw new IllegalArgumentException("invalid argument(s)");
         }
 
         ModelElement supplier = (ModelElement) supplierObj;
         ModelElement client = (ModelElement) clientObj;
 
-        List ret = new ArrayList();
+        List<Dependency> ret = new ArrayList<Dependency>();
         try {
             Collection clientDependencies = client.getClientDependency();
             Iterator it =
@@ -1194,6 +1197,39 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new InvalidElementException(e);
         }
         return ret;
+    }
+
+    public Collection<Permission> getPackageImports(Object client) {
+        if (!(client instanceof Namespace)) {
+            throw new IllegalArgumentException("invalid argument");
+        }
+        List<Permission> result = new ArrayList<Permission>();
+        try {
+            for (Dependency dependency : (Collection<Dependency>) ((ModelElement) client)
+                    .getClientDependency()) {
+                if (dependency instanceof Permission
+                        && Model.getExtensionMechanismsHelper().hasStereoType(
+                                dependency,
+                                ModelManagementHelper.IMPORT_STEREOTYPE)) {
+                    result.add((Permission) dependency);
+                }
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        return result;
+    }
+    
+    public Permission getPackageImport(Object supplier, Object client) {
+        for (Dependency dependency : getDependencies(supplier, client)) {
+            if (dependency instanceof Permission
+                    && Model.getExtensionMechanismsHelper()
+                            .hasStereoType(dependency,
+                                    ModelManagementHelper.IMPORT_STEREOTYPE)) {
+                return (Permission) dependency;
+            }
+        }
+        return null;
     }
 
 
