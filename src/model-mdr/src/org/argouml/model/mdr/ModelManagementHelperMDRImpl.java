@@ -41,8 +41,10 @@ import javax.jmi.reflect.RefPackage;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.collaborations.Collaboration;
+import org.omg.uml.behavioralelements.commonbehavior.Instance;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.GeneralizableElement;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Permission;
@@ -562,10 +564,64 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
+    public Collection<ModelElement> getContents(Object modelelement) {
+        Set<ModelElement> results = new HashSet<ModelElement>();
+        if (modelelement == null) {
+            return results;
+        }
 
-    public Collection getContents(Object namespace) {
-        // TODO: Auto-generated method stub
-        return null;
+        /*
+         * For a Package: <pre>
+         * [1] The operation contents results in a Set containing 
+         * the ModelElements owned by or imported by the Package.
+         * contents : Set(ModelElement)
+         * contents = self.ownedElement->union(self.importedElement)
+         * </pre>
+         * For a Subsystem: <pre>
+         * [2] The operation contents results in a Set containing 
+         * the ModelElements owned by or imported by the Subsystem.
+         *   contents : Set(ModelElement)
+         *   contents = self.ownedElement->union(self.importedElement)
+         * </pre>
+         */
+        if (modelelement instanceof UmlPackage) {
+            Collection<ElementImport> c = 
+                ((UmlPackage) modelelement).getElementImport();
+            for (ElementImport ei : c) {
+                results.add(ei.getImportedElement());
+            }
+        }
+
+        /*
+         * For a Namespace: <pre>
+         * [1] The operation contents results in a Set containing 
+         * all ModelElements contained by the Namespace.
+         * contents : Set(ModelElement)
+         * contents = self.ownedElement -> union(self.namespace, contents)
+         * </pre> 
+         */
+        if (modelelement instanceof Namespace) {
+            results.addAll(((Namespace) modelelement).getOwnedElement());
+            Namespace ns = ((Namespace) modelelement).getNamespace();
+            if (ns != null) {
+                results.addAll(getContents(ns));
+            }
+        }
+
+        /*
+         * For a Instance: <pre>
+         * [5] The operation contents results in a Set containing all 
+         * ModelElements contained by the Instance.
+         *   contents: Set(ModelElement);
+         *   contents = self.ownedInstance->union(self.ownedLink)
+         * </pre>
+         */
+        if (modelelement instanceof Instance) {
+            results.addAll(((Instance) modelelement).getOwnedInstance());
+            results.addAll(((Instance) modelelement).getOwnedLink());
+        }
+
+        return results;
     }
 
 
@@ -625,8 +681,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
 
-    public Collection getAllContents(Object pack) {
-        Set results = new HashSet();
+    public Collection<ModelElement> getAllContents(Object pack) {
+        Set<ModelElement> results = new HashSet<ModelElement>();
         if (pack == null) {
             return results;
         }
@@ -643,7 +699,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
          * </pre><p>
          */
         if (pack instanceof Namespace) {
-            results.addAll(((Namespace) pack).getOwnedElement());
+            results.addAll(getContents(pack));
         }
         
         /*
@@ -663,30 +719,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
          *   parent = self.generalization.parent
          * </pre><p>
          */
-        if (pack instanceof Classifier) {
 
-            // Implementation from CoreHelperMDRImpl.getAllContents();
-            try {
-                Iterator it = ((Namespace) pack).getOwnedElement().iterator();
-                while (it.hasNext()) {
-                    ModelElement element = (ModelElement) it.next();
-                    if (element.getVisibility()
-                            .equals(VisibilityKindEnum.VK_PUBLIC)
-                            || element.getVisibility().equals(
-                                    VisibilityKindEnum.VK_PROTECTED)) {
-                        results.add(element);
-                    }
-                }
-                it = modelImpl.getFacade().getGeneralizations(pack).iterator();
-                while (it.hasNext()) {
-                    results.addAll(getAllContents(it.next()));
-                }
-            } catch (InvalidObjectException e) {
-                throw new InvalidElementException(e);
-            }
-            
-        }
-        
         /*
          * For a Package:
          * <pre>
@@ -714,11 +747,24 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
          *                         re.elementImport.visibility = #protected))
          * </pre>
          */
-        if (pack instanceof Package) {
-            // TODO: Not implemented
-            throw new RuntimeException("Not implement - getAllContents for: "
-                    + pack);
+
+        if (pack instanceof Classifier || pack instanceof Package) {
+            Collection<GeneralizableElement> ges = 
+                modelImpl.getCoreHelper().getParent(pack);
+            Collection<ModelElement> allContents = new HashSet<ModelElement>();
+            for (GeneralizableElement ge : ges) {
+                allContents.addAll(getAllContents(ge));
+            }
+            for (ModelElement element : allContents) {
+                if (element.getVisibility()
+                        .equals(VisibilityKindEnum.VK_PUBLIC)
+                        || element.getVisibility().equals(
+                                VisibilityKindEnum.VK_PROTECTED)) {
+                    results.add(element);
+                }
+            }
         }
+        
         
         /*
          * For a Collaboration:

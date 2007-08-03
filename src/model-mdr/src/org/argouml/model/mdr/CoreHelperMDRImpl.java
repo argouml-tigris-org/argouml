@@ -403,6 +403,23 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
+    /*
+     * @see org.argouml.model.CoreHelper#getParent(java.lang.Object)
+     */
+    public Collection<GeneralizableElement> getParent(
+            Object generalizableElement) {
+        if (!(generalizableElement instanceof GeneralizableElement)) {
+            throw new IllegalArgumentException();
+        }
+        Collection<Generalization> gc = 
+            ((GeneralizableElement) generalizableElement).getGeneralization();
+        Set<GeneralizableElement> result = new HashSet<GeneralizableElement>();
+        for (Generalization g : gc) {
+            result.add(g.getParent());
+        }
+        return result;
+    }
+
     public List getReturnParameters(Object operation) {
         List returnParams = new ArrayList();
         try {
