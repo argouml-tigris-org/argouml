@@ -154,8 +154,7 @@ public class TabSrc
 
     /**
      * Determines if the current tab should be enabled with the given target.
-     * Returns true if the given target is either
-     * a modelelement or is a fig with as owner a modelelement.
+     * Returns true if the given target is or represents a Classifier.
      *
      * {@inheritDoc}
      */
