@@ -65,10 +65,14 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.owner"),
-                getOwnerScroll());
+        addField(Translator.localize("label.type"),
+                new UMLComboBoxNavigator(
+                        Translator.localize("label.class.navigate.tooltip"),
+                        getTypeComboBox()));
         addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
+        addField(Translator.localize("label.owner"),
+                getOwnerScroll());
 
         addSeparator();
         
@@ -79,13 +83,6 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
                 Translator.localize("label.modifiers"));
         modifiersPanel.add(getOwnerScopeCheckbox());
         add(modifiersPanel);
-        
-        addSeparator();
-
-        addField(Translator.localize("label.type"),
-                new UMLComboBoxNavigator(
-                        Translator.localize("label.class.navigate.tooltip"),
-                        getTypeComboBox()));
 
         UMLExpressionModel2 initialModel = new UMLInitialValueExpressionModel(
                 this, "initialValue");
