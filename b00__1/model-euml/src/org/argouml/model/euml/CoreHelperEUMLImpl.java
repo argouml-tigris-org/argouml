@@ -33,15 +33,21 @@ import java.util.List;
 
 import org.argouml.model.CoreHelper;
 import org.argouml.model.NotImplementedException;
+import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.edit.command.AddCommand;
+import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Enumeration;
+import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.Feature;
 import org.eclipse.uml2.uml.Generalization;
@@ -162,6 +168,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addConnection(final Object handle, final Object connection) {
+        addConnection(handle, CommandParameter.NO_INDEX, connection);
+    }
+
+    public void addConnection(Object handle, int position, Object connection) {
         if (!(handle instanceof Association)) {
             throw new IllegalArgumentException(
                     "The handle must be instance of Association"); //$NON-NLS-1$
@@ -170,19 +180,18 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "The connection must be instance of Property"); //$NON-NLS-1$
         }
-        RunnableClass run = new RunnableClass() {
-            public void run() {
-                ((Property) connection).setAssociation((Association) handle);
-            }
-        };
+//        RunnableClass run = new RunnableClass() {
+//            public void run() {
+//                ((Property) connection).setAssociation((Association) handle);
+//            }
+//        };
+        // or this way
+        RunnableClass run = getRunnableAddCommand(
+                (Association) handle, position, (Property) connection);
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
                         editingDomain, run,
                         "Add an AssociationEnd (Property) to an Association"));
-    }
-
-    public void addConnection(Object handle, int position, Object connection) {
-        addConnection(handle, connection);
     }
 
     public void addConstraint(final Object handle, final Object mc) {
@@ -205,6 +214,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addDeploymentLocation(Object handle, Object node) {
+        // TODO: Implement
         throw new NotYetImplementedException();
     }
 
@@ -213,12 +223,23 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotYetImplementedException();
     }
 
-    public void addFeature(Object handle, int index, Object f) {
-        throw new NotYetImplementedException();
-
+    private RunnableClass getRunnableAddCommand(Element owner, int index,
+            Element element) {
+        final Command cmd = AddCommand.create(
+                editingDomain, owner, null, element, index);
+        if (cmd == null || !cmd.canExecute()) {
+            throw new UnsupportedOperationException(
+                    "The element " + element + " cannot be added to the element " + owner); //$NON-NLS-1$//$NON-NLS-2$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                cmd.execute();
+            }
+        };
+        return run;
     }
-
-    public void addFeature(final Object handle, final Object f) {
+    
+    public void addFeature(Object handle, int index, Object f) {
         if (!(handle instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "The handle must be instance of Classifier"); //$NON-NLS-1$
@@ -226,28 +247,60 @@ class CoreHelperEUMLImpl implements CoreHelper {
         if (!(f instanceof Feature)) {
             throw new IllegalArgumentException("f must be instance of Feature"); //$NON-NLS-1$
         }
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, getRunnableAddCommand(
+                                (Classifier) handle, index, (Feature) f),
+                        "Add a feature to a classifier"));
+    }
+
+    public void addFeature(final Object handle, final Object f) {
+        addFeature(handle, CommandParameter.NO_INDEX, f);
+    }
+
+    public void addLink(Object handle, Object link) {
+        // A Link is an Assocation in UML2.x
+        throw new NotYetImplementedException();
+    }
+
+    public void addLiteral(Object handle, int index, Object literal) {
+        if (!(handle instanceof Enumeration)) {
+            throw new IllegalArgumentException(
+                    "The handle must be instance of Enumeration"); //$NON-NLS-1$
+        }
+        if (!(literal instanceof EnumerationLiteral)) {
+            throw new IllegalArgumentException(
+                    "literal must be instance of EnumerationLiteral"); //$NON-NLS-1$
+        }
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, getRunnableAddCommand(
+                                (Enumeration) handle, index,
+                                (EnumerationLiteral) literal),
+                        "Add an EnumerationLiteral to an Enumeration"));
+    }
+
+    public void addMethod(final Object handle, final Object method) {
+        // In UML2.x there is no metaclass named Method, but we could use the
+        // 'method' association of BehavioralFeature
+        // TODO: It's OK like this?
+        if (!(handle instanceof BehavioralFeature)) {
+            throw new IllegalArgumentException(
+                    "The handle must be instance of BehavioralFeature"); //$NON-NLS-1$
+        }
+        if (!(method instanceof Behavior)) {
+            throw new IllegalArgumentException(
+                    "method must be instance of Behavior"); //$NON-NLS-1$
+        }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                // TODO: code for adding the feature
+                ((BehavioralFeature) handle).getMethods().add((Behavior) method);
             }
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run, "Add a feature to a classifier"));
-    }
-
-    public void addLink(Object handle, Object link) {
-        throw new NotYetImplementedException();
-
-    }
-
-    public void addLiteral(Object handle, int index, Object literal) {
-        throw new NotYetImplementedException();
-
-    }
-
-    public void addMethod(Object handle, Object method) {
-        throw new NotYetImplementedException();
+                        editingDomain, run,
+                        "Add a Behavior (method) to a BehavioralFeature (operation)"));
     }
 
     public void addOwnedElement(final Object handle, final Object me) {
