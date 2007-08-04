@@ -46,6 +46,13 @@ import org.eclipse.uml2.uml.Type;
  */
 public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
 
+    /**
+     * Getter for the attributes of a Type
+     * 
+     * @param type
+     *                The Type that owns the attributes
+     * @return the attributes or null
+     */
     public static EList<Property> getOwnedAttributes(Type type) {
         if (type instanceof AssociationClass) {
             return ((AssociationClass) type).getOwnedAttributes();
@@ -56,10 +63,28 @@ public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
         }
     }
 
+    /**
+     * Getter for the operations of a Type
+     * 
+     * @param type
+     *                The Type that owns the operations
+     * @return the operations or null
+     */
     public static EList<Operation> getOwnedOperations(Type type) {
         return org.eclipse.uml2.uml.util.UMLUtil.getOwnedOperations(type);
     }
 
+    /**
+     * Copy a tree of UML elements into a destination location
+     * 
+     * @param modelImplementation
+     *                the eUML model implementation
+     * @param source
+     *                the tree of UML elements to be copied
+     * @param destination
+     *                the destination container
+     * @return the root of the newly copied tree of UML elements or null
+     */
     public static Element copy(EUMLModelImplementation modelImplementation,
             Element source, Element destination) {
         Command copyToClipboard = CopyToClipboardCommand.create(
