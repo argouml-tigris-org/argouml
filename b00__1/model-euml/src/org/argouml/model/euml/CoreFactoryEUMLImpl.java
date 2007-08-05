@@ -837,16 +837,17 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return buildPackageImport(client, supplier);
     }
 
-    public PackageImport buildPackageAccess(final Object client,
-            final Object supplier) {
-        PackageImport packageImport = buildPackageImport(client, supplier);
-        // TODO: Do we care if this is undoable?
-        packageImport.setVisibility(VisibilityKind.PACKAGE_LITERAL);
-        return packageImport;
+    public PackageImport buildPackageAccess(Object client, Object supplier) {
+        return buildPackageImport(
+                client, supplier, VisibilityKind.PRIVATE_LITERAL);
+    }
+
+    public PackageImport buildPackageImport(Object client, Object supplier) {
+        return buildPackageImport(client, supplier, null);
     }
     
-    public PackageImport buildPackageImport(final Object client,
-            final Object supplier) {
+    private PackageImport buildPackageImport(final Object client,
+            final Object supplier, final VisibilityKind visibility) {
         if (!(client instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "The client must be instance of Namespace."); //$NON-NLS-1$
@@ -860,6 +861,9 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 PackageImport packageImport = createPackageImport();
                 packageImport.setImportedPackage((org.eclipse.uml2.uml.Package) supplier);
                 packageImport.setImportingNamespace((Namespace) client);
+                if (visibility != null) {
+                    packageImport.setVisibility(visibility);
+                }
                 getParams().add(packageImport);
             }
         };
