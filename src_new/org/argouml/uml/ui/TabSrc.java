@@ -26,11 +26,14 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JComboBox;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Predicate;
 import org.argouml.language.ui.LanguageComboBox;
 import org.argouml.model.Model;
 import org.argouml.ui.TabText;
@@ -43,7 +46,7 @@ import org.tigris.gef.presentation.FigNode;
 
 /**
  * Details panel tabbed panel for displaying a source code representation of
- * a UML model element in a particular Notation.
+ * a UML model element in a particular Language.
  */
 public class TabSrc
     extends TabText
@@ -59,16 +62,28 @@ public class TabSrc
 
     private LanguageComboBox cbLang = new LanguageComboBox();
     private JComboBox cbFiles = new JComboBox();
+    
+    /**
+     * This predicate determines if this tab is enabled.
+     */
+    private static List<Predicate> predicates;
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
     /**
      * Create a tab that contains a toolbar.
-     * Then add a notation selector onto it.
+     * Then add a language selector onto it.
      */
     public TabSrc() {
         super("tab.source", true);
+        if (predicates == null) {
+            predicates = new ArrayList<Predicate>();
+            /* Add a predicate for ArgoUML's
+             * default capabilities: */
+            predicates.add(new DefaultPredicate());
+        }
+
         setEditable(false);
         langName = (Language) cbLang.getSelectedItem();
         fileName = null;
@@ -162,8 +177,10 @@ public class TabSrc
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
 
         setShouldBeEnabled(false);
-        if (Model.getFacade().isAClassifier(target)) {
-            setShouldBeEnabled(true);
+        for (Predicate p : predicates) {
+            if (p.evaluate(target)) {
+                setShouldBeEnabled(true);
+            }
         }
 
         return shouldBeEnabled();
@@ -199,5 +216,23 @@ public class TabSrc
         setTarget(getTarget());
     }
 
+    /**
+     * This function allows extra predicates to be added.
+     * The predicates are conditions for cases where the 
+     * TabSrc should show source code. If a plugin module 
+     * is able to generate code for certain objects, for
+     * which ArgoUML itself does not generate code, then
+     * this function will allow the module to show the tab.
+     *  
+     * @param predicate
+     */
+    public static void addPredicate(Predicate predicate) {
+        predicates.add(predicate);
+    }
 
+    class DefaultPredicate implements Predicate{
+        public boolean evaluate(Object object) {
+            return (Model.getFacade().isAClassifier(object));
+        }
+    }
 } /* end class TabSrc */
