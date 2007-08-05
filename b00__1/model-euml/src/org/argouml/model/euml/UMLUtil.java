@@ -34,6 +34,7 @@ import org.eclipse.emf.edit.command.PasteFromClipboardCommand;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Type;
@@ -116,6 +117,44 @@ public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
             }
         }
         return null;
+    }
+    
+    /**
+     * Returns information about an Object.
+     * <p>
+     * If it's an Element it returns its metaclass name, and if it's a
+     * NamedElement it appends its name.
+     * 
+     * @param o
+     *                The object
+     * @return the String description
+     */
+    public static String toString(Object o) {
+        if (o == null) {
+            return "null"; //$NON-NLS-1$
+        }
+        if (!(o instanceof Element)) {
+            return o.toString();
+        }
+        
+        StringBuilder sb = new StringBuilder("'"); //$NON-NLS-1$
+        boolean named = false;
+        
+        if (o instanceof NamedElement && ((NamedElement) o).getName() != null
+                && !((NamedElement) o).getName().equals("")) { //$NON-NLS-1$
+            named = true;
+            sb.append(((NamedElement) o).getName() + " ["); //$NON-NLS-1$
+        }
+        
+        sb.append(((Element) o).eClass().getName());
+        
+        if (named) {
+            sb.append("]"); //$NON-NLS-1$
+        }
+        
+        sb.append("'"); //$NON-NLS-1$
+        
+        return sb.toString();
     }
 
 }
