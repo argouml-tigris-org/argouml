@@ -28,6 +28,7 @@ package org.argouml.model.euml;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -37,7 +38,6 @@ import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.BehavioralFeature;
@@ -55,7 +55,7 @@ import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.PackageableElement;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.RedefinableElement;
 import org.eclipse.uml2.uml.Stereotype;
@@ -113,9 +113,18 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 }
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run, "Apply stereotypes to an Element"));
+        ChangeCommand cmd;
+        if (stereos.size() == 1) {
+            cmd = new ChangeCommand(
+                    editingDomain, run,
+                    "Apply the stereotype # to the element #",
+                    stereos.iterator().next(), modelElement);
+        } else {
+            cmd = new ChangeCommand(
+                    editingDomain, run, "Apply stereotypes to the element #",
+                    modelElement);
+        }
+        editingDomain.getCommandStack().execute(cmd);
     }
 
     public void addAnnotatedElement(final Object comment,
@@ -136,7 +145,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run, "Add a comment to a element"));
+                        editingDomain, run,
+                        "Add the comment # to the element #", comment,
+                        annotatedElement));
     }
 
     public void addClient(final Object dependency, final Object element) {
@@ -156,7 +167,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run, "Add a client to a dependency"));
+                        editingDomain, run,
+                        "Add the client # to the dependency #", element,
+                        dependency));
     }
 
     public void addClientDependency(Object handle, Object dependency) {
@@ -167,7 +180,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         addAnnotatedElement(comment, element);
     }
 
-    public void addConnection(final Object handle, final Object connection) {
+    public void addConnection(Object handle, Object connection) {
         addConnection(handle, CommandParameter.NO_INDEX, connection);
     }
 
@@ -180,18 +193,14 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "The connection must be instance of Property"); //$NON-NLS-1$
         }
-//        RunnableClass run = new RunnableClass() {
-//            public void run() {
-//                ((Property) connection).setAssociation((Association) handle);
-//            }
-//        };
-        // or this way
         RunnableClass run = getRunnableAddCommand(
                 (Association) handle, position, (Property) connection);
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run,
-                        "Add an AssociationEnd (Property) to an Association"));
+                        editingDomain,
+                        run,
+                        "Add the AssociationEnd (Property) # to the Association #",
+                        connection, handle));
     }
 
     public void addConstraint(final Object handle, final Object mc) {
@@ -210,7 +219,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run, "Add a constraint to an element"));
+                        editingDomain, run,
+                        "Add the constraint # to the element #", mc, handle));
     }
 
     public void addDeploymentLocation(Object handle, Object node) {
@@ -221,6 +231,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void addElementResidence(Object handle, Object residence) {
         // TODO Is it removed from UML2 ?
         throw new NotYetImplementedException();
+    }
+    
+    private RunnableClass getRunnableAddCommand(Element owner, Element element) {
+        return getRunnableAddCommand(owner, CommandParameter.NO_INDEX, element);
     }
 
     private RunnableClass getRunnableAddCommand(Element owner, int index,
@@ -251,10 +265,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 new ChangeCommand(
                         editingDomain, getRunnableAddCommand(
                                 (Classifier) handle, index, (Feature) f),
-                        "Add a feature to a classifier"));
+                        "Add the feature # to the classifier #", f, handle));
     }
 
-    public void addFeature(final Object handle, final Object f) {
+    public void addFeature(Object handle, Object f) {
         addFeature(handle, CommandParameter.NO_INDEX, f);
     }
 
@@ -277,7 +291,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         editingDomain, getRunnableAddCommand(
                                 (Enumeration) handle, index,
                                 (EnumerationLiteral) literal),
-                        "Add an EnumerationLiteral to an Enumeration"));
+                        "Add the EnumerationLiteral # to the Enumeration #",
+                        literal, handle));
     }
 
     public void addMethod(final Object handle, final Object method) {
@@ -299,110 +314,138 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run,
-                        "Add a Behavior (method) to a BehavioralFeature (operation)"));
+                        editingDomain,
+                        run,
+                        "Add the Behavior (method) # to the BehavioralFeature (operation) #",
+                        method, handle));
     }
 
-    public void addOwnedElement(final Object handle, final Object me) {
-        EditingDomain editingDomain = modelImpl.getEditingDomain();
-        if (handle instanceof org.eclipse.uml2.uml.Package
-                && me instanceof Type) {
-            RunnableClass run = new RunnableClass() {
-                public void run() {
-                    ((org.eclipse.uml2.uml.Package) handle).getOwnedTypes().add(
-                            (Type) me);
-                }
-            };
-            editingDomain.getCommandStack().execute(
-                    new ChangeCommand(editingDomain, run));
-
-        } else if (handle instanceof org.eclipse.uml2.uml.Package
-                && me instanceof PackageableElement) {
-            RunnableClass run = new RunnableClass() {
-                public void run() {
-                    ((org.eclipse.uml2.uml.Package) handle).getPackagedElements().add(
-                            (PackageableElement) me);
-                }
-            };
-            editingDomain.getCommandStack().execute(
-                    new ChangeCommand(editingDomain, run));
-        } else {
-            throw new NotYetImplementedException();
+    public void addOwnedElement(Object handle, Object me) {
+        if (!(handle instanceof Namespace)) {
+            throw new IllegalArgumentException(
+                    "The handle must be instance of Namespace"); //$NON-NLS-1$
         }
+        if (!(me instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "'me' must be instance of Element"); //$NON-NLS-1$
+        }
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, getRunnableAddCommand(
+                                (Namespace) handle, (Element) me),
+                        "Add the owned element # to the owner #", me, handle));
     }
 
     public void addParameter(Object handle, int index, Object parameter) {
-        throw new NotYetImplementedException();
+        // TODO: In UML2.x Event has no parameters.
+        if (!(handle instanceof BehavioralFeature)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of BehavioralFeature"); //$NON-NLS-1$
+        }
+        if (!(parameter instanceof Parameter)) {
+            throw new IllegalArgumentException(
+                    "parameter must be instance of Parameter"); //$NON-NLS-1$
+        }
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, getRunnableAddCommand(
+                                (BehavioralFeature) handle, index,
+                                (Parameter) parameter),
+                        "Add the owned element # to the owner #", parameter,
+                        handle));
     }
 
     public void addParameter(Object handle, Object parameter) {
-        throw new NotYetImplementedException();
-
+        addParameter(handle, CommandParameter.NO_INDEX, parameter);
     }
 
     public void addQualifier(Object handle, int position, Object qualifier) {
-        throw new NotYetImplementedException();
-
+        if (!(handle instanceof Property) || !(qualifier instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "handle and qualifier must be instances of Property"); //$NON-NLS-1$
+        }
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, getRunnableAddCommand(
+                                (Property) handle, position,
+                                (Property) qualifier),
+                        "Add the qualifier # to the property #", qualifier,
+                        handle));
     }
 
     public void addRaisedSignal(Object handle, Object sig) {
+        // TODO: implement
         throw new NotYetImplementedException();
-
     }
 
     public void addSourceFlow(Object handle, Object flow) {
+        // TODO: implement
         throw new NotYetImplementedException();
-
     }
 
     public void addStereotype(Object modelElement, Object stereo) {
-        throw new NotYetImplementedException();
-
+        addAllStereotypes(modelElement, Collections.singleton(stereo));
     }
 
-    public void addSupplier(Object handle, Object element) {
-        throw new NotYetImplementedException();
-
+    public void addSupplier(final Object dependency, final Object element) {
+        if (!(dependency instanceof Dependency)) {
+            throw new IllegalArgumentException(
+                    "The dependency must be instance of Dependency"); //$NON-NLS-1$
+        }
+        if (!(element instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "The element must be instance of NamedElement"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Dependency) dependency).getSuppliers().add(
+                        (NamedElement) element);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        editingDomain, run,
+                        "Add the supplier # to the dependency #", element,
+                        dependency));
     }
 
     public void addSupplierDependency(Object supplier, Object dependency) {
-        throw new NotYetImplementedException();
-
+        addSupplier(dependency, supplier);
     }
 
     public void addTaggedValue(Object handle, Object taggedValue) {
+        // TODO: implement
         throw new NotYetImplementedException();
-
     }
 
     public void addTargetFlow(Object handle, Object flow) {
+        // TODO: implement
         throw new NotYetImplementedException();
-
     }
 
     public void addTemplateArgument(Object handle, int index, Object argument) {
+        // TODO Is it removed from UML2 ?
         throw new NotYetImplementedException();
-
     }
 
     public void addTemplateArgument(Object handle, Object argument) {
+        // TODO Is it removed from UML2 ?
         throw new NotYetImplementedException();
-
     }
 
     public void addTemplateParameter(Object handle, int index, Object parameter) {
+        // TODO: implement
         throw new NotYetImplementedException();
-
     }
 
     public void addTemplateParameter(Object handle, Object parameter) {
+        // TODO: implement
         throw new NotYetImplementedException();
-
     }
 
     public void clearStereotypes(Object handle) {
+        // TODO: implement
         throw new NotYetImplementedException();
-
     }
 
     public boolean equalsAggregationKind(Object associationEnd, String kindType) {
