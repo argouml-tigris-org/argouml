@@ -34,7 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.jmi.model.Association;
 import javax.jmi.model.AssociationEnd;
@@ -235,7 +234,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             return;
         }
 
-        Vector events = new Vector();
+        List events = new ArrayList();
 
         if (mdrEvent instanceof AttributeEvent) {
             AttributeEvent ae = (AttributeEvent) mdrEvent;

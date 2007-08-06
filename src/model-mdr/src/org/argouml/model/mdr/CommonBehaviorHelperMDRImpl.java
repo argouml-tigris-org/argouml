@@ -24,6 +24,7 @@
 
 package org.argouml.model.mdr;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -332,16 +333,13 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         if (handle instanceof Signal) {
             Collection actualContexts = Model.getFacade().getContexts(handle);
             if (!actualContexts.isEmpty()) {
-                Vector contexts = new Vector();
-                contexts.addAll(actualContexts);
-                Iterator toRemove = contexts.iterator();
-                while (toRemove.hasNext())
-                    removeContext(handle, toRemove.next());
+                Collection contexts = new ArrayList(actualContexts);
+                for (Object context : contexts) {
+                    removeContext(handle, context);
+                }
             }
-            if (!c.isEmpty()) {
-                Iterator toAdd = c.iterator();
-                while (toAdd.hasNext())
-                    addContext(handle, toAdd.next());
+            for (Object context : c) {
+                    addContext(handle, context);
             }
             return;
         }
@@ -420,16 +418,13 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
             Collection actualReceptions = 
                 Model.getFacade().getReceptions(handle);
             if (!actualReceptions.isEmpty()) {
-                Vector receptions = new Vector();
-                receptions.addAll(actualReceptions);
-                Iterator toRemove = receptions.iterator();
-                while (toRemove.hasNext())
-                    removeReception(handle, toRemove.next());
+                Collection receptions = new ArrayList(actualReceptions);
+                for (Object reception : receptions) {
+                    removeReception(handle, reception);
+                }
             }
-            if (!c.isEmpty()) {
-                Iterator toAdd = c.iterator();
-                while (toAdd.hasNext())
-                    addReception(handle, toAdd.next());
+            for (Object reception : c) {
+                    addReception(handle, reception);
             }
             return;
         }
