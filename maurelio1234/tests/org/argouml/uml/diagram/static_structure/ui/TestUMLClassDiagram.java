@@ -31,6 +31,8 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.java.InitNotationJava;
+import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -58,6 +60,9 @@ public class TestUMLClassDiagram extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         (new InitNotation()).init();
+        (new InitNotationUml()).init();
+        (new InitNotationJava()).init();
+
         InitializeModel.initializeDefault();
         nodeTypes =
                 new Object[] {

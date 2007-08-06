@@ -378,13 +378,13 @@ public final class CheckUMLModelHelper {
                     TestCase.assertTrue(
                             "Unexpected invalid stereotype",
                             Model.getExtensionMechanismsHelper()
-                            .isValidStereoType(base, stereo2));
+                            .isValidStereotype(base, stereo2));
                     if (!(Model.getFacade().isAClass(base))) {
                         TestCase.assertTrue(
                                 "Stereotype with base class of Class" 
                                 + " incorrectly allowed for this metaclass",
                                 !Model.getExtensionMechanismsHelper()
-                                .isValidStereoType(base, stereo1));
+                                .isValidStereotype(base, stereo1));
                     } else {
                         Object inter =
                             Model.getCoreFactory().createInterface();
@@ -394,7 +394,7 @@ public final class CheckUMLModelHelper {
                         TestCase.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()
-                                .isValidStereoType(base, stereo3));
+                                .isValidStereotype(base, stereo3));
                     }
                 }
 

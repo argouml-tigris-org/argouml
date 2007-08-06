@@ -37,6 +37,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.ArgoDiagramImpl;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
@@ -452,7 +453,7 @@ public class TestTargetManager extends TestCase {
 	final Object owner = new Object();
 	final Fig fig = new FigRect(0, 0, 12, 12); fig.setOwner(owner);
 	Object test = new Object();
-	ArgoDiagram diag = new ArgoDiagram() {
+	ArgoDiagram diag = new ArgoDiagramImpl() {
 	    public Fig getContainingFig(Object obj) {
 		if (obj == owner)
 		    return fig;

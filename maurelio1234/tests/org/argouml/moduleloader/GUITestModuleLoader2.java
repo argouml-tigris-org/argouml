@@ -25,10 +25,10 @@
 package org.argouml.moduleloader;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
+
 import org.argouml.model.InitializeModel;
 
 /**
@@ -58,14 +58,13 @@ public class GUITestModuleLoader2 extends TestCase {
     }
 
     public void testAllModules() {
-	Collection<String> all = ModuleLoader2.allModules();
-	assertNotNull(all);
+		Collection<String> all = ModuleLoader2.allModules();
+		assertNotNull(all);
 
-	Iterator<String> iter = all.iterator();
-	while (iter.hasNext()) {
-	    assertNotNull(iter.next());
+		for (String module : all) {
+			assertNotNull(module);
+		}
 	}
-    }
 
     public void testIsSelected() {
 	assertFalse(ModuleLoader2.isSelected("some-module-that-do-not-exist"));
@@ -86,14 +85,13 @@ public class GUITestModuleLoader2 extends TestCase {
     }
 
     public void testGetExtensionLocations() {
-	List<String> extensionLocations =
-	    ModuleLoader2.getInstance().getExtensionLocations();
-	assertNotNull(extensionLocations);
-	for (Iterator<String> iter = extensionLocations.iterator();
-		iter.hasNext();) {
-	    assertNotNull(iter.next());
+		List<String> extensionLocations = ModuleLoader2.getInstance()
+				.getExtensionLocations();
+		assertNotNull(extensionLocations);
+		for (String extensionLocation : extensionLocations) {
+			assertNotNull(extensionLocation);
+		}
 	}
-    }
 
     public void testAddClassNegative() {
 	try {

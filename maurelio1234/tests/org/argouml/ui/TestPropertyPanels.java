@@ -39,6 +39,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.java.InitNotationJava;
+import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -96,6 +98,8 @@ public class TestPropertyPanels extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         (new InitNotation()).init();
+        (new InitNotationUml()).init();
+        (new InitNotationJava()).init();
 
         if (theDetailsPane == null) {
             theDetailsPane =
@@ -122,6 +126,9 @@ public class TestPropertyPanels extends TestCase {
     public static Test suite() throws Exception {
         InitializeModel.initializeDefault();
         new InitNotation().init();
+        (new InitNotationUml()).init();
+        (new InitNotationJava()).init();
+
 
         // constains instances of each modelelement
         // used for testing so that we only use each modelelement

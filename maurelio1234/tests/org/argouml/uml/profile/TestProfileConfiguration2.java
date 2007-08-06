@@ -33,6 +33,7 @@ import javax.swing.ImageIcon;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectImpl;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 
@@ -145,34 +146,34 @@ public class TestProfileConfiguration2 extends TestCase {
      * Whether a formating strategy can be property activated
      */
     public void testActivateFormatingStrategy() {
-	Project p = new Project();
-	ProfileConfiguration pc = new ProfileConfiguration(p);
-	
-	Profile pr = new FakeProfile();
-	
-	pc.addProfile(pr);
-	pc.activateFormatingStrategy(pr);
-	
-	assertTrue("FormatingStrategy was not properly activated!", pc
-		.getFormatingStrategy() == pr.getFormatingStrategy());
+    	Project p = new ProjectImpl();
+		ProfileConfiguration pc = new ProfileConfiguration(p);
+
+		Profile pr = new FakeProfile();
+
+		pc.addProfile(pr);
+		pc.activateFormatingStrategy(pr);
+
+		assertTrue("FormatingStrategy was not properly activated!", pc
+				.getFormatingStrategy() == pr.getFormatingStrategy());
     }
 
     /**
      * When a profile is removed its formating strategy should also be removed  
      */
     public void testActivateFormatingStrategyAndRemoveProfile() {
-	Project p = new Project();
-	ProfileConfiguration pc = new ProfileConfiguration(p);
-	
-	Profile pr = new FakeProfile();
-	
-	pc.addProfile(pr);
-	pc.activateFormatingStrategy(pr);
-	pc.removeProfile(pr);
-	
-	assertTrue("FormatingStrategy was not properly removed " +
-			"when the profile was removed!", pc
-		.getFormatingStrategy() != pr.getFormatingStrategy());
+    	Project p = new ProjectImpl();
+		ProfileConfiguration pc = new ProfileConfiguration(p);
+
+		Profile pr = new FakeProfile();
+
+		pc.addProfile(pr);
+		pc.activateFormatingStrategy(pr);
+		pc.removeProfile(pr);
+
+		assertTrue("FormatingStrategy was not properly removed "
+				+ "when the profile was removed!",
+				pc.getFormatingStrategy() != pr.getFormatingStrategy());
     }
     
     /**
@@ -180,38 +181,36 @@ public class TestProfileConfiguration2 extends TestCase {
      * registered and provide one.   
      */
     public void testActivateInvalidFormatingStrategy() {
-	Project p = new Project();
-	ProfileConfiguration pc = new ProfileConfiguration(p);
-	
-	Profile pr1 = new FakeProfile();
-	Profile pr2 = new FakeProfile();
-	Profile pr3 = new FakeProfile();
+    	Project p = new ProjectImpl();
+		ProfileConfiguration pc = new ProfileConfiguration(p);
 
-	((FakeProfile)pr2).setFormatStrategy(null);
-	
-	pc.addProfile(pr1);
-	pc.addProfile(pr2);
-	
-	// this should not raise any exception
-	pc.activateFormatingStrategy(null);
-	
-	pc.activateFormatingStrategy(pr1);
-	pc.activateFormatingStrategy(pr2);	
-	assertTrue(
-		"Activating the formating strategy of a profile that " +
-		"does not provide one should not take any effect!",
-		pc.getFormatingStrategy() == pr1.getFormatingStrategy());
+		Profile pr1 = new FakeProfile();
+		Profile pr2 = new FakeProfile();
+		Profile pr3 = new FakeProfile();
 
-	pc.removeProfile(pr1);	
-	assertTrue("FormatingStrategy was not properly removed " +
-		   "when the providing profile was removed!",
-		   	pc.getFormatingStrategy() == null);
+		((FakeProfile) pr2).setFormatStrategy(null);
 
-	FormatingStrategy before = pc.getFormatingStrategy();
-	pc.activateFormatingStrategy(pr3);	
-	assertTrue(
-		"Activating the formating strategy of a profile that " +
-		"is has not been registered should not take any effect!",
-		   	pc.getFormatingStrategy() == before);
+		pc.addProfile(pr1);
+		pc.addProfile(pr2);
+
+		// this should not raise any exception
+		pc.activateFormatingStrategy(null);
+
+		pc.activateFormatingStrategy(pr1);
+		pc.activateFormatingStrategy(pr2);
+		assertTrue("Activating the formating strategy of a profile that "
+				+ "does not provide one should not take any effect!", pc
+				.getFormatingStrategy() == pr1.getFormatingStrategy());
+
+		pc.removeProfile(pr1);
+		assertTrue("FormatingStrategy was not properly removed "
+				+ "when the providing profile was removed!", pc
+				.getFormatingStrategy() == null);
+
+		FormatingStrategy before = pc.getFormatingStrategy();
+		pc.activateFormatingStrategy(pr3);
+		assertTrue("Activating the formating strategy of a profile that "
+				+ "is has not been registered should not take any effect!", pc
+				.getFormatingStrategy() == before);
     }
 }

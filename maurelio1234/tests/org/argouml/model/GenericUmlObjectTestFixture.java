@@ -194,10 +194,12 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	
 	runTruthTest(Model.getFacade().isAObject(o),
 	        Model.getMetaTypes().getObject());
-
+        runTruthTest(
+                Model.getFacade().isAPermission(o),
+                Model.getMetaTypes().getPermission());
 	runTruthTest(
-	        Model.getFacade().isAPermission(o),
-	        Model.getMetaTypes().getPermission());
+	        Model.getFacade().isAPackageImport(o),
+	        Model.getMetaTypes().getPackageImport());
 	runTruthTest(Model.getFacade().isAPackage(o),
 	        Model.getMetaTypes().getPackage());
 	runTruthTest(

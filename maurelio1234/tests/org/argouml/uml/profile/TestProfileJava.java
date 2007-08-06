@@ -62,7 +62,7 @@ public class TestProfileJava extends TestCase {
      * exist.
      */
     public void testLoadProfileModel() {
-        ProfileJava profile = ProfileJava.getInstance();
+        ProfileUML profile = ProfileUML.getInstance();
         Object model = profile.getModel();
         Collection stereos = Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model,

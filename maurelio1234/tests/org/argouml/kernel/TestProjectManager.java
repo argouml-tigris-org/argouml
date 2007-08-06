@@ -58,7 +58,7 @@ public class TestProjectManager extends TestCase {
      */
     public void testMakeEmptyProject() {
 	Project p = ProjectManager.getManager().makeEmptyProject();
-	assertEquals(2, p.getDiagrams().size());
+	assertEquals(2, p.getDiagramList().size());
         assertEquals(Translator.localize("misc.untitled-model"), 
                 Model.getFacade().getName(p.getModel()));
     }

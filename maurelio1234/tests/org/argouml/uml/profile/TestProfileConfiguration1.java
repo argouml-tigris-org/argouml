@@ -29,6 +29,7 @@ import java.io.File;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectImpl;
 import org.argouml.model.InitializeModel;
 
 /**
@@ -55,30 +56,30 @@ public class TestProfileConfiguration1 extends TestCase {
     }
     
     /**
-         * Tests whether the Java profile and formating strategy is set as the
+         * Tests whether the UML profile and formating strategy is set as the
          * default ones
          */
-    public void testJavaDefaultStrategyAndModel() {
-	Project p = new Project();
-	ProfileConfiguration pc = new ProfileConfiguration(p);
+    public void testUMLDefaultStrategyAndModel() {
+		Project p = new ProjectImpl();
+		ProfileConfiguration pc = new ProfileConfiguration(p);
 
-	assertTrue("Java profile has not been set as the default one!", pc
-		.getDefaultProfile() instanceof ProfileJava);
-	assertTrue("Java formating strategy has not been "
-		+ "set as the default one!",
-		pc.getFormatingStrategy() instanceof JavaFormatingStrategy);
-	assertTrue("Java's defaulf profile formating strategy is not being "
-		+ "used as the default formating strategy!", pc
-		.getFormatingStrategy() == pc.getDefaultProfile()
-		.getFormatingStrategy());
-    }
+		assertTrue("UML profile has not been set as the default one!", pc
+				.getDefaultProfile() instanceof ProfileUML);
+		assertTrue("Java formating strategy has not been "
+				+ "set as the default one!",
+				pc.getFormatingStrategy() instanceof JavaFormatingStrategy);
+		assertTrue("Java's defaulf profile formating strategy is not being "
+				+ "used as the default formating strategy!", pc
+				.getFormatingStrategy() == pc.getDefaultProfile()
+				.getFormatingStrategy());
+	}
     
     /**
      * Tests whether a new profile can be successfully added
      */
     public void testAddingNewProfile() {
-	Project p = new Project();
-	ProfileConfiguration pc = new ProfileConfiguration(p);
+    	Project p = new ProjectImpl();
+    	ProfileConfiguration pc = new ProfileConfiguration(p);
         Profile pr = new UserDefinedProfile(new File("someprofile"));
 
         pc.addProfile(pr);
@@ -91,8 +92,8 @@ public class TestProfileConfiguration1 extends TestCase {
      * from the configuration
      */
     public void testRemovingProfile() {
-	Project p = new Project();
-	ProfileConfiguration pc = new ProfileConfiguration(p);
+    	Project p = new ProjectImpl();
+    	ProfileConfiguration pc = new ProfileConfiguration(p);
         Profile pr = new UserDefinedProfile(new File("someprofile"));
 
         if (!pc.getProfiles().contains(pr)) {
@@ -109,28 +110,29 @@ public class TestProfileConfiguration1 extends TestCase {
      * is being removed. It should not throw any exceptions.
      */
     public void testRemovingUnknownProfile() {
-	Project p = new Project();
-	ProfileConfiguration pc = new ProfileConfiguration(p);
-        Profile pr = new UserDefinedProfile(new File("someprofile"));
+    	Project p = new ProjectImpl();
+		ProfileConfiguration pc = new ProfileConfiguration(p);
+		Profile pr = new UserDefinedProfile(new File("someprofile"));
 
-        if (!pc.getProfiles().contains(pr)) {
-            pc.removeProfile(pr);
-        }
+		if (!pc.getProfiles().contains(pr)) {
+			pc.removeProfile(pr);
+		}
     }    
     /**
-     * Tests whether the default profile cannot be removed
-     */
+	 * Tests whether the default profile cannot be removed
+	 */
     public void testRemovingDefaultProfile() {
-	Project p = new Project();
-	ProfileConfiguration pc = new ProfileConfiguration(p);
+    	Project p = new ProjectImpl();
+		ProfileConfiguration pc = new ProfileConfiguration(p);
 
-	Profile dp = pc.getDefaultProfile();
-	
-	pc.removeProfile(dp);	
-        assertTrue("Default profile was removed from the configuration!",
-        	!pc.getProfiles().contains(dp));
-        assertTrue("Default profile changed!",
-        	pc.getDefaultProfile() == dp);
+		Profile dp = pc.getDefaultProfile();
+		assertTrue("Default profile is not in the configuration!", pc
+				.getProfiles().contains(dp));
+		
+		pc.removeProfile(dp);
+		assertTrue("Default profile was removed from the configuration!", pc
+				.getProfiles().contains(dp));
+		assertTrue("Default profile changed!", pc.getDefaultProfile() == dp);
     }
     
 }
