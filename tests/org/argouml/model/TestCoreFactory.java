@@ -218,6 +218,7 @@ public class TestCoreFactory extends TestCase {
         Object class1 = Model.getCoreFactory().buildClass(model);
         Object class2 = Model.getCoreFactory().buildClass(model);
         Object dep = Model.getCoreFactory().buildDependency(class1, class2);
+        Model.getCoreHelper().setNamespace(dep, model);
         Object class3 = Model.getCoreFactory().buildClass(model);
         Model.getCoreHelper().addClient(dep, class3);
         Model.getPump().flushModelEvents();
@@ -550,6 +551,32 @@ public class TestCoreFactory extends TestCase {
         Collection clients =  Model.getFacade().getClients(dep);
         assertEquals(1, clients.size());
         assertEquals(templatedClass, suppliers.iterator().next());
+    }
+
+
+    /**
+     * Test building an association between classes in two different packages
+     * and verify that the 
+     */
+    public void testBuildAssociation() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object packA = Model.getModelManagementFactory().buildPackage("package-a", "111");
+        Object packB = Model.getModelManagementFactory().buildPackage("package-b", "222");
+        Object packC = Model.getModelManagementFactory().buildPackage("package-c", "222");
+
+        Model.getCoreHelper().setNamespace(packA, model);
+        Model.getCoreHelper().setNamespace(packB, packA);
+        Model.getCoreHelper().setNamespace(packC, packA);
+        Object class1 = Model.getCoreFactory().buildClass(packB);
+        Object class2 = Model.getCoreFactory().buildClass(packC);
+        Model.getModelManagementFactory().buildElementImport(packB, class2);
+
+        Object assoc = Model.getCoreFactory().buildAssociation(class1, class2);
+        assertTrue("buildAssociation() and isValidNamespace() don't agree on " +
+        		"namespace for an Association", 
+        		Model.getCoreHelper().isValidNamespace(assoc, 
+        		        Model.getFacade().getNamespace(assoc)));
+        
     }
 
 
