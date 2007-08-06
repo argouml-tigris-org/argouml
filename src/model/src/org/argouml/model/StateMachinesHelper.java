@@ -99,8 +99,8 @@ public interface StateMachinesHelper {
 
     /**
      * Returns all statemachines that can be the statemachine the given
-     * submachinestate represents. To decouple ArgoUML as much as possible from
-     * the model implementation, the parameter of the method is of type Object.
+     * submachinestate represents. 
+     * 
      * @param model the model
      * @param oSubmachineState The submachinestate we are searching the
      * statemachines for.
@@ -111,17 +111,23 @@ public interface StateMachinesHelper {
 
     /**
      * Returns all states that can be recursively contained by the given State.
-     *
-     * @param oState the Composite state we are searching the states for,
+     * <p>
+     * TODO: {@link #getAllPossibleSubvertices(Object)} and
+     * {@link #getAllSubStates(Object)} are duplicates as implemented for MDR.
+     * It isn't clear from the Javadoc or usage whether they should do different
+     * things or this just happened because no one noticed we already had
+     * another method.
+     * 
+     * @param oState
+     *                the Composite state we are searching the states for,
      * @return Collection the collection with found states
      */
     Collection getAllPossibleSubvertices(Object oState);
 
     /**
      * Connects a given statemachine to a submachinestate as being the
-     * statemachine the submachinestate represents. To decouple ArgoUML as much
-     * as possible from the model implementation, the parameters of the method
-     * are of type Object.
+     * statemachine the submachinestate represents. 
+     * 
      * @param oSubmachineState The submachinestate for which we want to set the
      * property submachine
      * @param oStatemachine The statemachine
@@ -160,7 +166,15 @@ public interface StateMachinesHelper {
 
     /**
      * Returns all substates some composite state contains.
-     * @param compState the given compositestate
+     * <p>
+     * TODO: {@link #getAllPossibleSubvertices(Object)} and
+     * {@link #getAllSubStates(Object)} are duplicates as implemented for MDR.
+     * It isn't clear from the Javadoc or usage whether they should do different
+     * things or this just happened because no one noticed we already had
+     * another method.
+     * 
+     * @param compState
+     *                the given compositestate
      * @return all substates
      */
     Collection getAllSubStates(Object compState);
