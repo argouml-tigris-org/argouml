@@ -63,7 +63,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
     private MDRModelImplementation modelImpl;
 
     /**
-     * Don't allow instantiation.
+     * Constructor.
      *
      * @param implementation
      *            To get other helpers and factories.
@@ -72,26 +72,21 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         modelImpl = implementation;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#getAllUseCases(java.lang.Object)
-     */
-    public Collection getAllUseCases(Object ns) {
+
+    public Collection<UseCase> getAllUseCases(Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
 
-        List list = new ArrayList();
+        List<UseCase> list = new ArrayList<UseCase>();
         try {
-            Iterator it = ((Namespace) ns).getOwnedElement().iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
+            for (Object o : ((Namespace) ns).getOwnedElement()) {
                 if (o instanceof Namespace) {
                     list.addAll(getAllUseCases(o));
                 }
                 if (o instanceof UseCase) {
-                    list.add(o);
+                    list.add((UseCase) o);
                 }
-                
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -99,24 +94,20 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#getAllActors(java.lang.Object)
-     */
-    public Collection getAllActors(Object ns) {
+
+    public Collection<Actor> getAllActors(Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
 
-        List list = new ArrayList();
+        List<Actor> list = new ArrayList<Actor>();
         try {
-            Iterator it = ((Namespace) ns).getOwnedElement().iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
+            for (Object o : ((Namespace) ns).getOwnedElement()) {
                 if (o instanceof Namespace) {
                     list.addAll(getAllActors(o));
                 }
                 if (o instanceof Actor) {
-                    list.add(o);
+                    list.add((Actor) o);
                 }
             }
         } catch (InvalidObjectException e) {
@@ -125,14 +116,12 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#getExtendedUseCases(java.lang.Object)
-     */
-    public Collection getExtendedUseCases(Object ausecase) {
+
+    public Collection<UseCase> getExtendedUseCases(Object ausecase) {
         if (ausecase == null) {
-            return new ArrayList();
+            return new ArrayList<UseCase>();
         }
-        List list = new ArrayList();
+        List<UseCase> list = new ArrayList<UseCase>();
         UseCase usecase = (UseCase) ausecase;
         try {
             Iterator it = usecase.getExtend().iterator();
@@ -147,14 +136,12 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#getExtendingUseCases(java.lang.Object)
-     */
-    public Collection getExtendingUseCases(Object usecase) {
+
+    public Collection<UseCase> getExtendingUseCases(Object usecase) {
         if (usecase == null) {
-            return new ArrayList();
+            return new ArrayList<UseCase>();
         }
-        List list = new ArrayList();
+        List<UseCase> list = new ArrayList<UseCase>();
         try {
             Iterator it = Model.getFacade().getExtenders(usecase).iterator();
             while (it.hasNext()) {
@@ -168,9 +155,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#getExtends(java.lang.Object, java.lang.Object)
-     */
+
     public Object getExtends(Object abase, Object anextension) {
         if (!(abase instanceof UseCase)
                 || !(anextension instanceof UseCase)) {
@@ -192,14 +177,12 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         return null;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#getIncludedUseCases(java.lang.Object)
-     */
-    public Collection getIncludedUseCases(Object ausecase) {
+
+    public Collection<UseCase> getIncludedUseCases(Object ausecase) {
         if (!(ausecase instanceof UseCase)) {
             throw new IllegalArgumentException();
         }
-        List list = new ArrayList();
+        List<UseCase> list = new ArrayList<UseCase>();
         UseCase usecase = (UseCase) ausecase;
         try {
             Iterator it = usecase.getInclude().iterator();
@@ -214,9 +197,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         return list;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#getIncludes(java.lang.Object, java.lang.Object)
-     */
+
     public Object getIncludes(Object abase, Object aninclusion) {
         if (!(abase instanceof UseCase)
                 || !(aninclusion instanceof UseCase)) {
@@ -238,9 +219,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         return null;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#getSpecificationPath(java.lang.Object)
-     */
+
     public Collection getSpecificationPath(Object ausecase) {
         UseCase uc = (UseCase) ausecase;
         Set set = new HashSet();
@@ -261,9 +240,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#setBase(java.lang.Object, java.lang.Object)
-     */
+
     public void setBase(Object extend, Object base) {
         if (base == null) {
             throw new IllegalArgumentException(
@@ -308,9 +285,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#removeExtend(java.lang.Object, java.lang.Object)
-     */
+
     public void removeExtend(Object elem, Object extend) {
         try {
             if (elem instanceof UseCase && extend instanceof Extend) {
@@ -328,9 +303,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + extend);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#removeExtensionPoint(java.lang.Object, java.lang.Object)
-     */
+
     public void removeExtensionPoint(Object elem, Object ep) {
         try {
             if (ep instanceof ExtensionPoint) {
@@ -349,9 +322,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         throw new IllegalArgumentException("elem: " + elem + " or ep: " + ep);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#removeInclude(java.lang.Object, java.lang.Object)
-     */
+
     public void removeInclude(Object usecase, Object include) {
         try {
             if (usecase instanceof UseCase && include instanceof Include) {
@@ -365,34 +336,29 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or include: " + include);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#addExtend(java.lang.Object, java.lang.Object)
-     */
+
     public void addExtend(Object elem, Object extend) {
         if (elem instanceof UseCase && extend instanceof Extend) {
-            ((UseCase) elem).getExtend().add(extend);
-            return;
+            ((UseCase) elem).getExtend().add((Extend) extend);
+        } else if (elem instanceof ExtensionPoint && extend instanceof Extend) {
+            ((Extend) extend).getExtensionPoint().add((ExtensionPoint) elem);
+        } else {
+            throw new IllegalArgumentException("elem: " + elem + " or extend: "
+                    + extend);
         }
-        if (elem instanceof ExtensionPoint && extend instanceof Extend) {
-            ((Extend) extend).getExtensionPoint().add(elem);
-            return;
-        }
-
-        throw new IllegalArgumentException("elem: " + elem + " or extend: "
-                + extend);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#addExtensionPoint(java.lang.Object, java.lang.Object)
-     */
+
     public void addExtensionPoint(Object handle, Object extensionPoint) {
         if (extensionPoint instanceof ExtensionPoint) {
             if (handle instanceof UseCase) {
-                ((UseCase) handle).getExtensionPoint().add(extensionPoint);
+                ((UseCase) handle).getExtensionPoint().add(
+                        (ExtensionPoint) extensionPoint);
                 return;
             }
             if (handle instanceof Extend) {
-                ((Extend) handle).getExtensionPoint().add(extensionPoint);
+                ((Extend) handle).getExtensionPoint().add(
+                        (ExtensionPoint) extensionPoint);
                 return;
             }
         }
@@ -400,15 +366,13 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or extensionPoint: " + extensionPoint);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#addExtensionPoint(java.lang.Object, int, java.lang.Object)
-     */
+
     public void addExtensionPoint(Object handle, int position, 
             Object extensionPoint) {
         if (extensionPoint instanceof ExtensionPoint) {
             if (handle instanceof Extend) {
                 ((Extend) handle).getExtensionPoint().add(position, 
-                        extensionPoint);
+                        (ExtensionPoint) extensionPoint);
                 return;
             }
         }
@@ -416,12 +380,10 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or extensionPoint: " + extensionPoint);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#addInclude(java.lang.Object, java.lang.Object)
-     */
+
     public void addInclude(Object usecase, Object include) {
         if (usecase instanceof UseCase && include instanceof Include) {
-            ((UseCase) usecase).getInclude().add(include);
+            ((UseCase) usecase).getInclude().add((Include) include);
             return;
         }
 
@@ -429,9 +391,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or include: " + include);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#setAddition(java.lang.Object, java.lang.Object)
-     */
+
     public void setAddition(Object handle, Object useCase) {
         if (!(useCase instanceof UseCase)) {
             throw new IllegalArgumentException("A UseCase was expected ["
@@ -451,9 +411,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#setCondition(java.lang.Object, java.lang.Object)
-     */
+
     public void setCondition(Object handle, Object booleanExpression) {
         if (handle instanceof Extend
                 && booleanExpression instanceof BooleanExpression) {
@@ -465,9 +423,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or booleanExpression: " + booleanExpression);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#setExtension(java.lang.Object, java.lang.Object)
-     */
+
     public void setExtension(Object handle, Object useCase) {
         if (!(useCase instanceof UseCase)) {
             throw new IllegalArgumentException("A use case must be supplied");
@@ -489,9 +445,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + useCase);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#setExtensionPoints(java.lang.Object, java.util.Collection)
-     */
+
     public void setExtensionPoints(Object handle, Collection extensionPoints) {
         if (handle instanceof UseCase || handle instanceof Extend) {
             Collection eps = Model.getFacade().getExtensionPoints(handle);
@@ -515,25 +469,19 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or extensionPoints: " + extensionPoints);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#setIncludes(java.lang.Object, java.util.Collection)
-     */
+
     public void setIncludes(Object handle, Collection includes) {
         if (handle instanceof UseCase) {
-            Collection inc = Model.getFacade().getIncludes(handle);
+            Collection<Include> inc = Model.getFacade().getIncludes(handle);
             if (!inc.isEmpty()) {
-                Vector in = new Vector();
+                List<Include> in = new ArrayList<Include>();
                 in.addAll(inc);
-                Iterator toRemove = in.iterator();
-                while (toRemove.hasNext()) {
-                    removeInclude(handle, toRemove.next());
+                for (Include i : in) {
+                    removeInclude(handle, i);
                 }
             }
-            if (!includes.isEmpty()) {
-                Iterator toAdd = includes.iterator();
-                while (toAdd.hasNext()) {
-                    addInclude(handle, toAdd.next());
-                }
+            for (Include i : (Collection<Include>) includes) {
+                addInclude(handle, i);
             }
             return;
         }
@@ -541,9 +489,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
                 + " or includes: " + includes);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#setLocation(java.lang.Object, java.lang.String)
-     */
+
     public void setLocation(Object handle, String loc) {
         if (handle instanceof ExtensionPoint) {
             ((ExtensionPoint) handle).setLocation(loc);
@@ -552,16 +498,13 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /*
-     * @see org.argouml.model.UseCasesHelper#setUseCase(java.lang.Object, java.lang.Object)
-     */
+
     public void setUseCase(Object elem, Object usecase) {
         if (elem instanceof ExtensionPoint
                 && (usecase instanceof UseCase || usecase == null)) {
             ((ExtensionPoint) elem).setUseCase((UseCase) usecase);
             return;
         }
-
         throw new IllegalArgumentException("elem: " + elem + " or usecase: "
                 + usecase);
     }

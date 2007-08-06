@@ -398,7 +398,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void addExtendedElement(Object handle, Object extendedElement) {
         if (handle instanceof Stereotype
                 && extendedElement instanceof ModelElement) {
-            ((ModelElement) extendedElement).getStereotype().add(handle);
+            ((ModelElement) extendedElement).getStereotype().add(
+                    (Stereotype) handle);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
@@ -409,7 +410,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void addBaseClass(Object handle, Object baseClass) {
         if (handle instanceof Stereotype) {
             if (baseClass instanceof String) {
-                ((Stereotype) handle).getBaseClass().add(baseClass);
+                ((Stereotype) handle).getBaseClass().add((String) baseClass);
                 return;
             }
             if (baseClass instanceof ModelElement) {
@@ -520,7 +521,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void addTaggedValue(Object handle, Object taggedValue) {
         if (handle instanceof ModelElement
                 && taggedValue instanceof TaggedValue) {
-            ((ModelElement) handle).getTaggedValue().add(taggedValue);
+            ((ModelElement) handle).getTaggedValue().add(
+                    (TaggedValue) taggedValue);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle

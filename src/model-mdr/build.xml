@@ -194,6 +194,19 @@ This is designed to work in two different environments:
       -->
     </mdr>
 
+    <!-- Macro to enable Java 5 generics in MDR generated sources -->
+    <macrodef name="uncommentMdrGenerics">
+      <attribute name="javadir" default="/unspecified/path"/>
+       <sequential>
+         <replace dir="@{javadir}">
+           <replacefilter token="/*&lt;" value="&lt;" />
+           <replacefilter token="&gt;*/" value="&gt;" />
+         </replace>
+       </sequential>
+     </macrodef>
+     
+     <uncommentMdrGenerics javadir="${build.javas}"/>
+  	       	
   </target>
   
   <!-- =================================================================== -->

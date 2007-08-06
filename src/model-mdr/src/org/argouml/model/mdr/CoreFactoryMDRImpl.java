@@ -137,7 +137,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createAbstraction() {
+    public Abstraction createAbstraction() {
         Abstraction myAbstraction = corePackage.getAbstraction()
                 .createAbstraction();
         super.initialize(myAbstraction);
@@ -145,7 +145,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildAbstraction(String name, Object supplier, 
+    public Abstraction buildAbstraction(String name, Object supplier, 
             Object client) {
         if (!(client instanceof Classifier)
                 || !(supplier instanceof Classifier)) {
@@ -153,22 +153,22 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     "The supplier and client of an abstraction"
                             + "should be classifiers");
         }
-        Abstraction abstraction = (Abstraction) createAbstraction();
+        Abstraction abstraction = createAbstraction();
         abstraction.setName(name);
-        abstraction.getClient().add(client);
-        abstraction.getSupplier().add(supplier);
+        abstraction.getClient().add((Classifier) client);
+        abstraction.getSupplier().add((Classifier) supplier);
         return abstraction;
     }
 
 
-    public Object createArtifact() {
+    public Artifact createArtifact() {
         Artifact artifact = corePackage.getArtifact().createArtifact();
         super.initialize(artifact);
         return artifact;
     }
     
 
-    public Object createAssociation() {
+    public UmlAssociation createAssociation() {
         UmlAssociation assoc = corePackage.getUmlAssociation()
                 .createUmlAssociation();
         super.initialize(assoc);
@@ -432,7 +432,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("one of "
                     + "the classifiers does not " + "belong to a namespace");
         }
-        UmlAssociation assoc = (UmlAssociation) createAssociation();
+        UmlAssociation assoc = createAssociation();
         assoc.setName("");
         assoc.setNamespace((Namespace) modelImpl.getCoreHelper().
                 getFirstSharedNamespace(ns1, ns2));
@@ -466,7 +466,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("one of "
                     + "the classifiers does not " + "belong to a namespace");
         }
-        UmlAssociation assoc = (UmlAssociation) createAssociation();
+        UmlAssociation assoc = createAssociation();
         assoc.setName("");
         assoc.setNamespace((Namespace) modelImpl.getCoreHelper().
                 getFirstSharedNamespace(ns1, ns2));
@@ -535,13 +535,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAssociationEnd(java.lang.Object,
-     *      java.lang.String, java.lang.Object, java.lang.Object,
-     *      java.lang.Object, boolean, java.lang.Object, java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public Object buildAssociationEnd(Object assoc, String name, Object type,
+    public AssociationEnd buildAssociationEnd(Object assoc, String name, Object type,
             Object multi, Object stereo, boolean navigable, Object order,
             Object aggregation, Object scope, Object changeable,
             Object visibility) {
@@ -582,11 +576,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                                 + "association is navigable away from "
                                 + "that end.");
             }
-            List ends = new ArrayList();
+            List<AssociationEnd> ends = new ArrayList<AssociationEnd>();
             ends.addAll(((UmlAssociation) assoc).getConnection());
-            Iterator it = ends.iterator();
-            while (it.hasNext()) {
-                AssociationEnd end = (AssociationEnd) it.next();
+            for (AssociationEnd end : ends) {
                 if (end.isNavigable()) {
                     throw new IllegalArgumentException("type is either "
                             + "datatype or " + "interface and is "
@@ -612,7 +604,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         if (stereo != null) {
             end.getStereotype().clear();
-            end.getStereotype().add(stereo);
+            end.getStereotype().add((Stereotype) stereo);
         }
         end.setNavigable(navigable);
         if (order != null) {
@@ -652,8 +644,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     private int getMaxUpper(Multiplicity m) {
         int max = 0;
-        for (Iterator i = m.getRange().iterator(); i.hasNext();) {
-            int value = ((MultiplicityRange) i.next()).getUpper();
+        for (MultiplicityRange mr : m.getRange()) {
+            int value = mr.getUpper();
             if (value > max) {
                 max = value;
             }
@@ -991,7 +983,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     
     private Permission buildPermissionInternal(ModelElement client, 
             ModelElement supplier) {
-        Permission permission = (Permission) createPermission();
+        Permission permission = createPermission();
         permission.getSupplier().add(supplier);
         permission.getClient().add(client);
         if (client instanceof Namespace) {
@@ -1020,29 +1012,22 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildGeneralization(Object child, Object parent, 
+    public Generalization buildGeneralization(Object child, Object parent, 
             String name) {
         if (child == null || parent == null
                 || !(child instanceof GeneralizableElement)
                 || !(parent instanceof GeneralizableElement)) {
             throw new IllegalArgumentException();
         }
-        Object gen = buildGeneralization(child, parent);
+        Generalization gen = buildGeneralization(child, parent);
         if (gen != null) {
-            ((Generalization) gen).setName(name);
+            gen.setName(name);
         }
         return gen;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildGeneralization(java.lang.Object,
-     *      java.lang.Object)
-     *      
-     * The well-formedness rules should move to
-     * UmlFactoryMDRImpl.isConnectionWellFormed and buildGeneralization should
-     * become private.
-     */
-    public Object buildGeneralization(Object child1, Object parent1) {
+
+    public Generalization buildGeneralization(Object child1, Object parent1) {
         // TODO: This is a part implementation of well-formedness rule
         // UML1.4.2 - 4.5.3.20 [3] Circular inheritance is not allowed.
         // not self.allParents->includes(self)
@@ -1060,9 +1045,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // TODO: This is a part implementation of well-formedness rule
         // UML1.4.2 - 4.5.3.20 [3] Circular inheritance is not allowed.
         // not self.allParents->includes(self)
-        Iterator it = parent.getGeneralization().iterator();
-        while (it.hasNext()) {
-            Generalization gen = (Generalization) it.next();
+        for (Generalization gen : parent.getGeneralization()) {
             if (gen.getParent().equals(child)) {
                 throw new IllegalArgumentException("Generalization exists" 
                         + " in opposite direction");
@@ -1096,10 +1079,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return gen;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildMethod(java.lang.String)
-     */
-    public Object buildMethod(String name) {
+
+    public Method buildMethod(String name) {
         Method method = (Method) createMethod();
         if (method != null) {
             method.setName(name);
@@ -1109,13 +1090,13 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     @SuppressWarnings("deprecation")
-    public Object buildOperation(Object classifier, Object model,
+    public Operation buildOperation(Object classifier, Object model,
             Object returnType) {
         return buildOperation(classifier, returnType);
     }
 
 
-    public Object buildOperation(Object classifier, Object returnType) {
+    public Operation buildOperation(Object classifier, Object returnType) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException("Handle is not a classifier");
         }
@@ -1131,8 +1112,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         oper.setOwnerScope(ScopeKindEnum.SK_INSTANCE);
         oper.setConcurrency(CallConcurrencyKindEnum.CCK_SEQUENTIAL);
 
-        Parameter returnParameter = (Parameter) buildParameter(oper, 
-                returnType);
+        Parameter returnParameter = buildParameter(oper, returnType);
         returnParameter.setKind(ParameterDirectionKindEnum.PDK_RETURN);
         returnParameter.setName("return");
         return oper;
@@ -1140,16 +1120,16 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     @SuppressWarnings("deprecation")
-    public Object buildOperation(Object cls, Object model, Object returnType,
+    public Operation buildOperation(Object cls, Object model, Object returnType,
             String name) {
         return buildOperation2(cls, returnType, name);
     }
     
 
-    public Object buildOperation2(Object cls, Object returnType, String name) {
-        Object oper = buildOperation(cls, returnType);
+    public Operation buildOperation2(Object cls, Object returnType, String name) {
+        Operation oper = buildOperation(cls, returnType);
         if (oper != null) {
-            ((Operation) oper).setName(name);
+            oper.setName(name);
         }
         return oper;
     }
@@ -1159,7 +1139,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * 
      * @return The newly created parameter.
      */
-    private Object buildParameter(Classifier type) {
+    private Parameter buildParameter(Classifier type) {
         Parameter param = corePackage.getParameter().createParameter();
         param.setType(type);
         return param;
@@ -1167,21 +1147,21 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     @SuppressWarnings("deprecation")
-    public Object buildParameter(Object o, Object model, Object type) {
+    public Parameter buildParameter(Object o, Object model, Object type) {
         return buildParameter(o, type);
     }
     
 
-    public Object buildParameter(Object o, Object type) {
+    public Parameter buildParameter(Object o, Object type) {
         if (o instanceof Event) {
             Event event = (Event) o;
-            Parameter res = (Parameter) buildParameter((Classifier) type);
+            Parameter res = buildParameter((Classifier) type);
             res.setKind(ParameterDirectionKindEnum.PDK_IN);
             event.getParameter().add(res);
             return res;
         } else if (o instanceof BehavioralFeature) {
             BehavioralFeature oper = (BehavioralFeature) o;
-            Parameter res = (Parameter) buildParameter((Classifier) type);
+            Parameter res = buildParameter((Classifier) type);
             oper.getParameter().add(res);
             res.setName("arg" + oper.getParameter().size());
             return res;
@@ -1191,14 +1171,14 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildRealization(Object clnt, Object spplr, Object model) {
+    public Abstraction buildRealization(Object clnt, Object spplr, Object model) {
         ModelElement client = (ModelElement) clnt;
         ModelElement supplier = (ModelElement) spplr;
         if (client == null || supplier == null || client.getNamespace() == null
                 || supplier.getNamespace() == null) {
             throw new IllegalArgumentException("faulty arguments.");
         }
-        Abstraction realization = (Abstraction) createAbstraction();
+        Abstraction realization = createAbstraction();
         Namespace nsc = client.getNamespace();
         Namespace nss = supplier.getNamespace();
         // TODO: Shouldn't this use this computed nsc value below? - tfm
@@ -1224,7 +1204,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    public Object buildUsage(Object client, Object supplier) {
+    public Usage buildUsage(Object client, Object supplier) {
         if (client == null || supplier == null) {
             throw new IllegalArgumentException("In buildUsage null arguments.");
         }
@@ -1237,8 +1217,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // TODO: UML 1.4 spec requires both client and supplier to be
         // in the same model - tfm
         Usage usage = (Usage) createUsage();
-        usage.getSupplier().add(supplier);
-        usage.getClient().add(client);
+        usage.getSupplier().add((ModelElement) supplier);
+        usage.getClient().add((ModelElement) client);
         if (((ModelElement) supplier).getNamespace() != null) {
             usage.setNamespace(((ModelElement) supplier).getNamespace());
         } else if (((ModelElement) client).getNamespace() != null) {
@@ -1249,11 +1229,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return usage;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildComment(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildComment(Object element, Object model) {
+
+    public Comment buildComment(Object element, Object model) {
         if (model == null) {
             throw new IllegalArgumentException("A namespace must be supplied.");
         }
@@ -1272,10 +1249,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return comment;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildConstraint(java.lang.Object)
-     */
-    public Object buildConstraint(Object constrElement) {
+
+    public Constraint buildConstraint(Object constrElement) {
         ModelElement constrainedElement = (ModelElement) constrElement;
         if (constrainedElement == null) {
             throw new IllegalArgumentException("the constrained element is "
@@ -1287,11 +1262,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return con;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildConstraint(java.lang.String,
-     *      java.lang.Object)
-     */
-    public Object buildConstraint(String name, Object bexpr) {
+
+    public Constraint buildConstraint(String name, Object bexpr) {
         if (bexpr == null || !(bexpr instanceof BooleanExpression)) {
             throw new IllegalArgumentException("invalid boolean expression.");
         }
@@ -1304,10 +1276,10 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    public Object buildBinding(Object client, Object supplier, List arguments) {
-        Collection clientDeps = ((ModelElement) client).getClientDependency();
-        for (Iterator it = clientDeps.iterator(); it.hasNext();) {
-            Object dep = it.next();
+    public Binding buildBinding(Object client, Object supplier, List arguments) {
+        Collection<Dependency> clientDeps = ((ModelElement) client)
+                .getClientDependency();
+        for (Dependency dep : clientDeps) {
             if (dep instanceof Binding) {
                 throw new IllegalArgumentException(
                         "client is already client of another Binding");
@@ -1317,16 +1289,15 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // Check arguments against parameters for type and number
         // TODO: Perhaps move this to a critic instead? - tfm - 20070326
         if (arguments != null) {
-            Collection params = 
+            Collection<TemplateParameter> params = 
                 ((ModelElement) supplier).getTemplateParameter();
             if (params.size() != arguments.size()) {
                 throw new IllegalArgumentException(
                         "number of arguments doesn't match number of params");
             }
-            Iterator ita = arguments.iterator();
-            for (Iterator itp = params.iterator(); itp.hasNext();) {
-                TemplateParameter param = (TemplateParameter) itp.next();
-                TemplateArgument ta = (TemplateArgument) ita.next();
+            Iterator<TemplateArgument> ita = arguments.iterator();
+            for (TemplateParameter param : params) {
+                TemplateArgument ta = ita.next();
                 // TODO: Before allowing this, we should really check that 
                 // TemplateParameter.defaultElement is defined
                 if (ta == null || ta.getModelElement() == null) {
@@ -1341,8 +1312,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         
         Binding binding = (Binding) createBinding();
-        binding.getClient().add(client);
-        binding.getSupplier().add(supplier);
+        binding.getClient().add((ModelElement) client);
+        binding.getSupplier().add((ModelElement) supplier);
         if (arguments != null) {
             binding.getArgument().addAll(arguments);
         }
@@ -1680,11 +1651,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
 
         // Delete dependencies where this is the only client
-        Collection deps = org.argouml.model.Model.getFacade()
+        Collection<Dependency> deps = org.argouml.model.Model.getFacade()
                 .getClientDependencies(elem);
-        Iterator it = deps.iterator();
-        while (it.hasNext()) {
-            Dependency dep = (Dependency) it.next();
+        for (Dependency dep : deps) {
             if (dep.getClient().size() < 2
                     && dep.getClient().contains(elem)) {
                 modelImpl.getUmlFactory().delete(dep);
@@ -1694,9 +1663,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // Delete dependencies where this is the only supplier
         deps = org.argouml.model.Model.getFacade()
                 .getSupplierDependencies(elem);
-        it = deps.iterator();
-        while (it.hasNext()) {
-            Dependency dep = (Dependency) it.next();
+        for (Dependency dep : deps) {
             if (dep.getSupplier().size() < 2
                     && dep.getSupplier().contains(elem)) {
                 modelImpl.getUmlFactory().delete(dep);
@@ -1730,14 +1697,13 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("elem: " + elem);
         }
 
-        List ownedElements = new ArrayList();
+        List<ModelElement> ownedElements = new ArrayList<ModelElement>();
         // TODO: This is a composite association, so these will get deleted
         // automatically.  The only thing we need to do is check for any
         // additional elements that need to be deleted as a result.
         ownedElements.addAll(((Namespace) elem).getOwnedElement());
-        Iterator it = ownedElements.iterator();
-        while (it.hasNext()) {
-            modelImpl.getUmlFactory().delete(it.next());
+        for (ModelElement element : ownedElements) {
+            modelImpl.getUmlFactory().delete(element);
         }
     }
 

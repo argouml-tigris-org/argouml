@@ -221,10 +221,8 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 + " Collaboration or Operation");
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildInteraction(java.lang.Object)
-     */
-    public Object buildInteraction(Object handle) {
+
+    public Interaction buildInteraction(Object handle) {
         Collaboration collab = (Collaboration) handle;
         Interaction inter = (Interaction) createInteraction();
         inter.setContext(collab);
@@ -232,10 +230,8 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return inter;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildAssociationEndRole(java.lang.Object)
-     */
-    public Object buildAssociationEndRole(Object atype) {
+
+    public AssociationEndRole buildAssociationEndRole(Object atype) {
         ClassifierRole type = (ClassifierRole) atype;
         AssociationEndRole end =
             (AssociationEndRole) createAssociationEndRole();
@@ -244,11 +240,8 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
     
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildAssociationRole(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildAssociationRole(Object from, Object to) {
+
+    public AssociationRole buildAssociationRole(Object from, Object to) {
         return buildAssociationRole((ClassifierRole) from, (ClassifierRole) to);
     }
     
@@ -272,12 +265,8 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return role;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildAssociationRole(java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.lang.Object,
-     *      java.lang.Boolean)
-     */
-    public Object buildAssociationRole(Object from, Object agg1, Object to,
+
+    public AssociationRole buildAssociationRole(Object from, Object agg1, Object to,
             Object agg2, Boolean unidirectional) {
 
         AggregationKind ak1 = checkAggregationKind(agg1);
@@ -368,12 +357,12 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         message.setCommunicationConnection(role);
 
         if (role.getConnection().size() == 2) {
-            message.setSender((ClassifierRole) ((AssociationEnd) role.
-                    getConnection().get(0)).getParticipant());
-            message.setReceiver((ClassifierRole) ((AssociationEnd) role.
-                    getConnection().get(1)).getParticipant());
+            message.setSender((ClassifierRole) role.getConnection().get(0)
+                    .getParticipant());
+            message.setReceiver((ClassifierRole) role.getConnection().get(1)
+                    .getParticipant());
 
-            Collection messages =
+            Collection<Message> messages =
                 Model.getFacade().getReceivedMessages(message.getSender());
             Message lastMsg = lastMessage(messages, message);
 
@@ -405,11 +394,9 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      *            A Message.
      * @return The last message in the collection, or null.
      */
-    private Message lastMessage(Collection c, Message m) {
+    private Message lastMessage(Collection<Message> c, Message m) {
         Message last = null;
-        Iterator it = c.iterator();
-        while (it.hasNext()) {
-            Message msg = (Message) it.next();
+        for (Message msg : c) {
             if (msg != null && msg != m) {
                 last = msg;
             }
@@ -426,20 +413,17 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     private Message findEnd(Message m) {
         while (true) {
-            Collection c = Model.getFacade().getSuccessors(m);
-            Iterator it = c.iterator();
+            Collection<Message> c = Model.getFacade().getSuccessors(m);
+            Iterator<Message> it = c.iterator();
             if (!it.hasNext()) {
                 return m;
             }
-            m = (Message) it.next();
+            m = it.next();
         }
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildMessage(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildMessage(Object acollab, Object arole) {
+
+    public Message buildMessage(Object acollab, Object arole) {
         if (!(arole instanceof AssociationRole)) {
             throw new IllegalArgumentException(
                     "An association role must be supplied - got " + arole);
@@ -459,22 +443,19 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         }
     }
 
-    private Object buildMessageCollab(Collaboration collab,
+    private Message buildMessageCollab(Collaboration collab,
             AssociationRole role) {
         Interaction inter = null;
         if (collab.getInteraction().size() == 0) {
-            inter = (Interaction) buildInteraction(collab);
+            inter = buildInteraction(collab);
         } else {
             inter = (Interaction) (collab.getInteraction().toArray())[0];
         }
         return buildMessageInteraction(inter, role);
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildActivator(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildActivator(Object owner, Object interaction) {
+
+    public Message buildActivator(Object owner, Object interaction) {
         Message theOwner = (Message) owner;
         Interaction theInteraction;
         if (interaction == null) {

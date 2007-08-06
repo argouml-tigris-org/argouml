@@ -77,9 +77,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         this.modelImpl = impl;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getSource(java.lang.Object)
-     */
+
     public Object getSource(Object trans) {
         try {
             if (trans instanceof Transition) {
@@ -92,9 +90,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + "getSource() - " + trans);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getDestination(java.lang.Object)
-     */
+
     public Object getDestination(Object trans) {
         try {
             if (trans instanceof Transition) {
@@ -107,9 +103,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + "getDestination() - " + trans);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getStateMachine(java.lang.Object)
-     */
+
     public Object getStateMachine(Object handle) {
         if (handle == null) {
             throw new IllegalArgumentException("bad argument to "
@@ -136,10 +130,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setEventAsTrigger(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setEventAsTrigger(Object transition, Object event) {
         if (!(transition instanceof Transition)) {
             throw new IllegalArgumentException("Transition either null or not "
@@ -152,17 +143,13 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         ((Transition) transition).setTrigger((Event) event);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#isAddingStatemachineAllowed(java.lang.Object)
-     */
+
     public boolean isAddingStatemachineAllowed(Object context) {
         return (context instanceof BehavioralFeature
                 || context instanceof Classifier);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#isTopState(java.lang.Object)
-     */
+
     public boolean isTopState(Object o) {
         try {
             if (o instanceof CompositeState) {
@@ -175,10 +162,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getAllPossibleStatemachines(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public Collection getAllPossibleStatemachines(Object model,
             Object oSubmachineState) {
         try {
@@ -196,9 +180,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 "Argument must be a SubmachineState");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getAllPossibleSubvertices(java.lang.Object)
-     */
+
     public Collection getAllPossibleSubvertices(Object oState) {
         ArrayList v = new ArrayList();
         List v2 = new ArrayList();
@@ -217,10 +199,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         return v;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setStatemachineAsSubmachine(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setStatemachineAsSubmachine(Object oSubmachineState,
             Object oStatemachine) {
         if (oSubmachineState instanceof SubmachineState
@@ -233,10 +212,8 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + oSubmachineState + ",oStatemachine: " + oStatemachine);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getTop(java.lang.Object)
-     */
-    public Object getTop(Object sm) {
+
+    public State getTop(Object sm) {
         if (!(sm instanceof StateMachine)) {
             throw new IllegalArgumentException();
         }
@@ -248,9 +225,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getOutgoingStates(java.lang.Object)
-     */
+
     public Collection getOutgoingStates(Object ostatevertex) {
         try {
             if (ostatevertex instanceof StateVertex) {
@@ -269,10 +244,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 "Argument must be a StateVertex");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#findOperationByName(java.lang.Object,
-     *      java.lang.String)
-     */
+
     public Object findOperationByName(Object trans, String opname) {
         if (!(trans instanceof Transition)) {
             throw new IllegalArgumentException();
@@ -297,9 +269,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         return null;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getAllSubStates(java.lang.Object)
-     */
+
     public Collection getAllSubStates(Object compState) {
         try {
             if (compState instanceof CompositeState) {
@@ -322,10 +292,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 "Argument is not a composite state");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#removeSubvertex(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void removeSubvertex(Object handle, Object subvertex) {
         try {
             if (handle instanceof CompositeState
@@ -340,10 +307,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + " or subvertex: " + subvertex);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#addSubvertex(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void addSubvertex(Object handle, Object subvertex) {
         if (handle instanceof CompositeState
                 && subvertex instanceof StateVertex) {
@@ -356,10 +320,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + " or subvertex: " + subvertex);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setBound(java.lang.Object,
-     *      int)
-     */
+
     public void setBound(Object handle, int bound) {
         if (handle instanceof SynchState) {
             ((SynchState) handle).setBound(bound);
@@ -369,10 +330,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + bound);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setConcurrent(java.lang.Object,
-     *      boolean)
-     */
+
     public void setConcurrent(Object handle, boolean concurrent) {
         if (handle instanceof CompositeState) {
             ((CompositeState) handle).setConcurrent(concurrent);
@@ -381,10 +339,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setContainer(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setContainer(Object handle, Object compositeState) {
         if (handle instanceof StateVertex
                 && (compositeState == null
@@ -397,10 +352,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + " or compositeState: " + compositeState);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setDoActivity(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setDoActivity(Object handle, Object value) {
         if (handle instanceof State
                 && (value == null || value instanceof Action)) {
@@ -411,10 +363,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + value);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setEffect(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setEffect(Object handle, Object value) {
         if (handle instanceof Transition
                 && (value == null || value instanceof Action)) {
@@ -425,10 +374,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + value);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setEntry(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setEntry(Object handle, Object value) {
         if (handle instanceof State
                 && (value == null || value instanceof Action)) {
@@ -439,10 +385,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + value);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setExit(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setExit(Object handle, Object value) {
         if (handle instanceof State
                 && (value == null || value instanceof Action)) {
@@ -453,10 +396,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + value);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setExpression(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setExpression(Object handle, Object value) {
         if (handle instanceof Guard
                 && (value == null || value instanceof BooleanExpression)) {
@@ -479,10 +419,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + value);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setGuard(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setGuard(Object handle, Object guard) {
         if (handle instanceof Transition
                 && (guard == null || guard instanceof Guard)) {
@@ -493,10 +430,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + guard);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setInternalTransitions(java.lang.Object,
-     *      java.util.Collection)
-     */
+
     public void setInternalTransitions(Object handle, Collection intTrans) {
         if (handle instanceof State) {
             Collection internalTransitions =
@@ -522,13 +456,10 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
 
     /**
      * Remove a transition.
-     * 
-     * TODO: This is not part of the public API.  Reduce visibility - tfm
-     * 
      * @param handle The state
      * @param intTrans The internal transition to remove
      */
-    public void removeTransition(Object handle, Object intTrans) {
+    private void removeTransition(Object handle, Object intTrans) {
         try {
             if (handle instanceof State && intTrans instanceof Transition) {
                 ((State) handle).getInternalTransition().remove(intTrans);
@@ -544,24 +475,19 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     /**
      * Add a transition.
      * 
-     * TODO: This is not part of the public API.  Reduce visibility - tfm
-     * 
      * @param handle The state
      * @param intTrans The internal transition to add
      */
-    public void addTransition(Object handle, Object intTrans) {
+    private void addTransition(Object handle, Object intTrans) {
         if (handle instanceof State && intTrans instanceof Transition) {
-            ((State) handle).getInternalTransition().add(intTrans);
+            ((State) handle).getInternalTransition().add((Transition) intTrans);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or subvertex: " + intTrans);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setSource(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setSource(Object handle, Object state) {
         if (handle instanceof Transition && state instanceof StateVertex) {
             ((Transition) handle).setSource((StateVertex) state);
@@ -571,10 +497,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + state);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setState(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setState(Object handle, Object element) {
         if (handle instanceof Transition && element instanceof State) {
             addTransition(element, handle);
@@ -584,10 +507,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + " or element: " + element);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setStateMachine(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setStateMachine(Object handle, Object stm) {
         if (handle instanceof State
                 && (stm == null || stm instanceof StateMachine)) {
@@ -603,10 +523,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + stm);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setSubvertices(java.lang.Object,
-     *      java.util.Collection)
-     */
+
     public void setSubvertices(Object handle, Collection subvertices) {
         if (handle instanceof CompositeState) {
             Collection vertices = Model.getFacade().getSubvertices(handle);
@@ -630,10 +547,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + " or subvertices: " + subvertices);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setTrigger(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setTrigger(Object handle, Object event) {
         if (handle instanceof Transition
                 && (event == null || event instanceof Event)) {
@@ -644,10 +558,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + event);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setWhen(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public void setWhen(Object handle, Object value) {
         if (handle instanceof TimeEvent
                 && (value == null || value instanceof TimeExpression)) {
@@ -658,10 +569,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + value);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setChangeExpression(
-     * java.lang.Object, java.lang.Object)
-     */
+
     public void setChangeExpression(Object handle, Object value) {
         if (handle instanceof ChangeEvent
                 && (value == null || value instanceof BooleanExpression)) {
@@ -673,9 +581,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + value);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getPath(java.lang.Object)
-     */
+
     public String getPath(Object o) {
         try {
             if (o instanceof StateVertex) {
@@ -696,13 +602,10 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 "Argument must be a StateVertex");
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#getStatebyName(java.lang.String,
-     *      java.lang.Object)
-     */
+
     public Object getStatebyName(String path, Object container) {
         try {
-            // TODO: This should probably through an exception if it gets
+            // TODO: This should probably throw an exception if it gets
             // invalid arguments rather than just returning null
             if (container != null 
                     && Model.getFacade().isACompositeState(container)
@@ -732,10 +635,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         return null;
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setReferenceState(java.lang.Object,
-     *      java.lang.String)
-     */
+
     public void setReferenceState(Object o, String referenced) {
         if (o instanceof StubState) {
             ((StubState) o).setReferenceState(referenced);
@@ -744,9 +644,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         throw new IllegalArgumentException("handle: " + o);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#findNamespaceForEvent(java.lang.Object, java.lang.Object)
-     */
+
     public Object findNamespaceForEvent(Object trans, Object model) {
         try {
             Object enclosing =
@@ -764,9 +662,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         }
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#addDeferrableEvent(java.lang.Object, java.lang.Object)
-     */
+
     public void addDeferrableEvent(Object state, Object deferrableEvent) {
         if (state instanceof State && deferrableEvent instanceof Event) {
             modelImpl.getUmlPackage().getStateMachines()
@@ -777,9 +673,8 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         throw new IllegalArgumentException("handle: " + state + " or evt: "
                 + deferrableEvent);
     }
-    /*
-     * @see org.argouml.model.StateMachinesHelper#removeDeferrableEvent(java.lang.Object, java.lang.Object)
-     */
+
+    
     public void removeDeferrableEvent(Object state, Object deferrableEvent) {
         try {
             if (state instanceof State && deferrableEvent instanceof Event) {
@@ -795,9 +690,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 + deferrableEvent);
     }
 
-    /*
-     * @see org.argouml.model.StateMachinesHelper#setContext(java.lang.Object, java.lang.Object)
-     */
+
     public void setContext(Object statemachine, Object modelElement) {
         if (statemachine instanceof StateMachine
                 && modelElement instanceof ModelElement) {

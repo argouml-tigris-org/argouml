@@ -40,6 +40,7 @@ import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Parameter;
 import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
@@ -136,7 +137,8 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
     public void addInState(Object classifierInState, Object state) {
         if (classifierInState instanceof ClassifierInState
                 && state instanceof State) {
-            ((ClassifierInState) classifierInState).getInState().add(state);
+            ((ClassifierInState) classifierInState).getInState().add(
+                    (State) state);
         } else {
             throw new IllegalArgumentException(
                     "classifierInState: " + classifierInState
@@ -168,7 +170,7 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
     
     public void addContent(Object partition, Object modelElement) {
         Partition p = (Partition) partition;
-        p.getContents().add(modelElement);
+        p.getContents().add((ModelElement) modelElement);
     }
 
     public void removeContent(Object partition, Object modelElement) {
@@ -181,7 +183,8 @@ class ActivityGraphsHelperMDRImpl implements ActivityGraphsHelper {
     }
 
     public void addParameter(Object objectFlowState, Object parameter) {
-        ((ObjectFlowState) objectFlowState).getParameter().add(parameter);
+        ((ObjectFlowState) objectFlowState).getParameter().add(
+                (Parameter) parameter);
     }
 
     public void removeParameter(Object objectFlowState, Object parameter) {

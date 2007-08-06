@@ -61,7 +61,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     private MDRModelImplementation modelImpl;
 
     /**
-     * Don't allow instantiation.
+     * Constructor.
      * 
      * @param implementation
      *            To get other helpers and factories.
@@ -70,9 +70,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         this.modelImpl = implementation;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createActionExpression(java.lang.String, java.lang.String)
-     */
+
     public Object createActionExpression(String language, String body) {
         ActionExpression myActionExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getActionExpression()
@@ -81,9 +79,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myActionExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createArgListsExpression(java.lang.String, java.lang.String)
-     */
+
     public Object createArgListsExpression(String language, String body) {
         ArgListsExpression myArgListsExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getArgListsExpression()
@@ -92,9 +88,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myArgListsExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createBooleanExpression(java.lang.String, java.lang.String)
-     */
+
     public Object createBooleanExpression(String language, String body) {
         BooleanExpression myBooleanExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getBooleanExpression()
@@ -103,9 +97,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myBooleanExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createExpression(java.lang.String, java.lang.String)
-     */
+
     public Object createExpression(String language, String body) {
         Expression myExpression = modelImpl.getUmlPackage().getDataTypes()
                 .getExpression().createExpression(language, body);
@@ -113,10 +105,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createIterationExpression(java.lang.String,
-     *      java.lang.String)
-     */
+
     public Object createIterationExpression(String language, String body) {
         IterationExpression myIterationExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getIterationExpression()
@@ -125,9 +114,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myIterationExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createMappingExpression(java.lang.String, java.lang.String)
-     */
+
     public Object createMappingExpression(String language, String body) {
         MappingExpression myMappingExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getMappingExpression().createMappingExpression(
@@ -136,9 +123,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myMappingExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createObjectSetExpression(java.lang.String, java.lang.String)
-     */
+
     public Object createObjectSetExpression(String language, String body) {
         ObjectSetExpression myObjectSetExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getObjectSetExpression()
@@ -147,9 +132,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myObjectSetExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createProcedureExpression(java.lang.String, java.lang.String)
-     */
+
     public Object createProcedureExpression(String language, String body) {
         ProcedureExpression myProcedureExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getProcedureExpression()
@@ -158,9 +141,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myProcedureExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createTimeExpression(java.lang.String, java.lang.String)
-     */
+
     public Object createTimeExpression(String language, String body) {
         TimeExpression myTimeExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getTimeExpression()
@@ -169,9 +150,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myTimeExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createTypeExpression(java.lang.String, java.lang.String)
-     */
+
     public Object createTypeExpression(String language, String body) {
         TypeExpression myTypeExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getTypeExpression()
@@ -180,10 +159,8 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return myTypeExpression;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createMultiplicity(int, int)
-     */
-    public Object createMultiplicity(int lower, int upper) {
+
+    public Multiplicity createMultiplicity(int lower, int upper) {
         Multiplicity multiplicity = modelImpl.getUmlPackage().getDataTypes()
                 .getMultiplicity().createMultiplicity();
         multiplicity.getRange().add(createMultiplicityRange(lower, upper));
@@ -198,7 +175,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * 
      * @see org.argouml.model.DataTypesFactory#createMultiplicity(java.util.List)
      */
-    public Object createMultiplicity(List range) {
+    public Multiplicity createMultiplicity(List range) {
         Multiplicity multiplicity = modelImpl.getUmlPackage().getDataTypes()
                 .getMultiplicity().createMultiplicity();
         multiplicity.getRange().addAll(range);
@@ -206,10 +183,8 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return multiplicity;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createMultiplicity(java.lang.String)
-     */
-    public Object createMultiplicity(String str) {
+
+    public Multiplicity createMultiplicity(String str) {
         List ranges = Collections.unmodifiableList(parseRanges(str));
         return createMultiplicity(ranges);
     }
@@ -228,11 +203,8 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return rc;
     }
 
-
-    /*
-     * @see org.argouml.model.DataTypesFactory#createMultiplicityRange(java.lang.String)
-     */
-    public Object createMultiplicityRange(String str) {
+    
+    public MultiplicityRange createMultiplicityRange(String str) {
         StringTokenizer stk = new StringTokenizer(str, ". ");
         if (!stk.hasMoreTokens()) {
             throw new IllegalArgumentException("empty multiplicity range");
@@ -256,10 +228,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
     
 
-    /*
-     * @see org.argouml.model.DataTypesFactory#createMultiplicityRange(int, int)
-     */
-    public Object createMultiplicityRange(int lower, int upper) {
+    public MultiplicityRange createMultiplicityRange(int lower, int upper) {
         MultiplicityRange range = 
             modelImpl.getUmlPackage().getDataTypes().getMultiplicityRange()
                 .createMultiplicityRange(lower, upper);
