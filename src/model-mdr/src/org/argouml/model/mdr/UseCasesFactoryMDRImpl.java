@@ -63,20 +63,16 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         modelImpl = implementation;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#createExtend()
-     */
-    public Object createExtend() {
+
+    public Extend createExtend() {
         Extend myExtend = modelImpl.getUmlPackage().getUseCases().getExtend().
             createExtend();
         super.initialize(myExtend);
         return myExtend;
     }
 
-    /*
-     * @see org.argouml.model.UseCasesFactory#createExtensionPoint()
-     */
-    public Object createExtensionPoint() {
+
+    public ExtensionPoint createExtensionPoint() {
         ExtensionPoint myExtensionPoint = modelImpl.getUmlPackage().
             getUseCases().getExtensionPoint().createExtensionPoint();
         super.initialize(myExtensionPoint);
@@ -84,7 +80,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createActor() {
+    public Actor createActor() {
         Actor myActor = modelImpl.getUmlPackage().getUseCases().getActor().
             createActor();
         super.initialize(myActor);
@@ -92,7 +88,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createInclude() {
+    public Include createInclude() {
         Include myInclude = modelImpl.getUmlPackage().getUseCases()
                 .getInclude().createInclude();
         super.initialize(myInclude);
@@ -100,7 +96,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createUseCase() {
+    public UseCase createUseCase() {
         UseCase myUseCase = modelImpl.getUmlPackage().getUseCases()
                 .getUseCase().createUseCase();
         super.initialize(myUseCase);
@@ -110,7 +106,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     @SuppressWarnings("deprecation")
-    public Object createUseCaseInstance() {
+    public UseCaseInstance createUseCaseInstance() {
         UseCaseInstance myUseCaseInstance = modelImpl.getUmlPackage().
             getUseCases().getUseCaseInstance().createUseCaseInstance();
         super.initialize(myUseCaseInstance);
@@ -118,12 +114,12 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildExtend(Object abase, Object anextension) {
+    public Extend buildExtend(Object abase, Object anextension) {
         return buildExtend(abase, anextension, null);
     }
 
 
-    public Object buildExtend(Object abase, Object anextension, Object apoint) {
+    public Extend buildExtend(Object abase, Object anextension, Object apoint) {
         UseCase base = (UseCase) abase;
         UseCase extension = (UseCase) anextension;
         ExtensionPoint point = (ExtensionPoint) apoint;
@@ -143,7 +139,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         } else {
             point = (ExtensionPoint) buildExtensionPoint(base);
         }
-        Extend extend = (Extend) createExtend();
+        Extend extend = createExtend();
         extend.setBase(base);
         extend.setExtension(extension);
         extend.getExtensionPoint().add(point);
@@ -151,16 +147,14 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildExtensionPoint(Object modelElement) {
+    public ExtensionPoint buildExtensionPoint(Object modelElement) {
         if (!(modelElement instanceof UseCase)) {
             throw new IllegalArgumentException("An extension point can only "
                     + "be built on a use case");
         }
 
         UseCase useCase = (UseCase) modelElement;
-        ExtensionPoint extensionPoint = 
-            (ExtensionPoint) createExtensionPoint();
-
+        ExtensionPoint extensionPoint = createExtensionPoint();
         extensionPoint.setUseCase(useCase);
 
         // For consistency with attribute and operation, give it a default
@@ -171,11 +165,10 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildInclude(Object/* MUseCase */abase,
-            Object/* MUseCase */anaddition) {
+    public Include buildInclude(Object abase, Object anaddition) {
         UseCase base = (UseCase) abase;
         UseCase addition = (UseCase) anaddition;
-        Include include = (Include) createInclude();
+        Include include = createInclude();
 
         include.setAddition(addition);
         include.setBase(base);
@@ -204,7 +197,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (ns == null) {
             ns = (Namespace) model;
         }
-        Actor actor = (Actor) createActor();
+        Actor actor = createActor();
         actor.setNamespace(ns);
         actor.setLeaf(false);
         actor.setRoot(false);
@@ -212,7 +205,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildActor(Object actor, Object model) {
+    public Actor buildActor(Object actor, Object model) {
         if (actor instanceof Actor) {
             return buildActor(((Actor) actor).getNamespace(), model);
         }

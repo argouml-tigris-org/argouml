@@ -32,6 +32,7 @@ import org.argouml.model.Model;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
 import org.omg.uml.behavioralelements.collaborations.CollaborationInstanceSet;
 import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
+import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
 import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
 import org.omg.uml.behavioralelements.commonbehavior.Argument;
@@ -98,59 +99,47 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         cbPackage = modelImpl.getUmlPackage().getCommonBehavior();
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createActionSequence()
-     */
-    public Object createActionSequence() {
+
+    public ActionSequence createActionSequence() {
         ActionSequence myActionSequence = cbPackage.getActionSequence()
                 .createActionSequence();
         super.initialize(myActionSequence);
         return myActionSequence;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createArgument()
-     */
-    public Object createArgument() {
+
+    public Argument createArgument() {
         Argument myArgument = cbPackage
                 .getArgument().createArgument();
         super.initialize(myArgument);
         return myArgument;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createAttributeLink()
-     */
-    public Object createAttributeLink() {
+
+    public AttributeLink createAttributeLink() {
         AttributeLink myAttributeLink = cbPackage.getAttributeLink()
                 .createAttributeLink();
         super.initialize(myAttributeLink);
         return myAttributeLink;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createCallAction()
-     */
-    public Object createCallAction() {
+
+    public CallAction createCallAction() {
         CallAction myCallAction = cbPackage.getCallAction().createCallAction();
         super.initialize(myCallAction);
         return myCallAction;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createComponentInstance()
-     */
-    public Object createComponentInstance() {
+
+    public ComponentInstance createComponentInstance() {
         ComponentInstance myComponentInstance = cbPackage
                 .getComponentInstance().createComponentInstance();
         super.initialize(myComponentInstance);
         return myComponentInstance;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createCreateAction()
-     */
-    public Object createCreateAction() {
+
+    public CreateAction createCreateAction() {
         CreateAction myCreateAction = cbPackage.getCreateAction()
                 .createCreateAction();
         super.initialize(myCreateAction);
@@ -158,208 +147,163 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createDataValue()
-     */
-    public Object createDataValue() {
+    public DataValue createDataValue() {
         DataValue myDataValue = cbPackage.getDataValue().createDataValue();
         super.initialize(myDataValue);
         return myDataValue;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createDestroyAction()
-     */
-    public Object createDestroyAction() {
+
+    public DestroyAction createDestroyAction() {
         DestroyAction myDestroyAction = cbPackage.getDestroyAction()
                 .createDestroyAction();
         super.initialize(myDestroyAction);
         return myDestroyAction;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createException()
-     */
-    public Object createException() {
+
+    public UmlException createException() {
         UmlException myUmlException = cbPackage.getUmlException()
                 .createUmlException();
         super.initialize(myUmlException);
         return myUmlException;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createLink()
-     */
-    public Object createLink() {
+
+    public Link createLink() {
         Link myLink = cbPackage.getLink().createLink();
         super.initialize(myLink);
         return myLink;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createLinkEnd()
-     */
-    public Object createLinkEnd() {
+
+    public LinkEnd createLinkEnd() {
         LinkEnd myLinkEnd = cbPackage.getLinkEnd().createLinkEnd();
         super.initialize(myLinkEnd);
         return myLinkEnd;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createLinkObject()
-     */
-    public Object createLinkObject() {
+
+    public LinkObject createLinkObject() {
         LinkObject myLinkObject = cbPackage.getLinkObject().createLinkObject();
         super.initialize(myLinkObject);
         return myLinkObject;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createNodeInstance()
-     */
-    public Object createNodeInstance() {
+
+    public NodeInstance createNodeInstance() {
         NodeInstance myNodeInstance = cbPackage.getNodeInstance()
                 .createNodeInstance();
         super.initialize(myNodeInstance);
         return myNodeInstance;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createObject()
-     */
-    public Object createObject() {
+
+    public org.omg.uml.behavioralelements.commonbehavior.Object createObject() {
         org.omg.uml.behavioralelements.commonbehavior.Object myObject = 
                 cbPackage.getObject().createObject();
         super.initialize(myObject);
         return myObject;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createReception()
-     */
-    public Object createReception() {
+
+    public Reception createReception() {
         Reception myReception = cbPackage.getReception().createReception();
         super.initialize(myReception);
         return myReception;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createReturnAction()
-     */
-    public Object createReturnAction() {
+
+    public ReturnAction createReturnAction() {
         ReturnAction myReturnAction = cbPackage.getReturnAction()
                 .createReturnAction();
         super.initialize(myReturnAction);
         return myReturnAction;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createSendAction()
-     */
-    public Object createSendAction() {
+
+    public SendAction createSendAction() {
         SendAction mySendAction = cbPackage.getSendAction().createSendAction();
         super.initialize(mySendAction);
         return mySendAction;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createSignal()
-     */
-    public Object createSignal() {
+
+    public Signal createSignal() {
         Signal mySignal = cbPackage.getSignal().createSignal();
         super.initialize(mySignal);
         return mySignal;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createStimulus()
-     */
-    public Object createStimulus() {
+
+    public Stimulus createStimulus() {
         Stimulus myStimulus = cbPackage.getStimulus().createStimulus();
         super.initialize(myStimulus);
         return myStimulus;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createSubsystemInstance()
-     */
-    public Object createSubsystemInstance() {
+
+    public SubsystemInstance createSubsystemInstance() {
         SubsystemInstance obj = cbPackage.getSubsystemInstance()
                 .createSubsystemInstance();
         super.initialize(obj);
         return obj;
     }
     
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createTerminateAction()
-     */
-    public Object createTerminateAction() {
+
+    public TerminateAction createTerminateAction() {
         TerminateAction myTerminateAction = cbPackage.getTerminateAction()
                 .createTerminateAction();
         super.initialize(myTerminateAction);
         return myTerminateAction;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#createUninterpretedAction()
-     */
-    public Object createUninterpretedAction() {
+
+    public UninterpretedAction createUninterpretedAction() {
         UninterpretedAction myUninterpretedAction = cbPackage
                 .getUninterpretedAction().createUninterpretedAction();
         super.initialize(myUninterpretedAction);
         return myUninterpretedAction;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#buildCallAction(java.lang.Object,
-     *      java.lang.String)
-     */
-    public Object buildCallAction(Object oper, String name) {
+
+    public CallAction buildCallAction(Object oper, String name) {
         if (!(oper instanceof Operation)) {
             throw new IllegalArgumentException("There should be an operation"
                     + " with a callaction.");
         }
-        Object action = createCallAction();
-        modelImpl.getCoreHelper().setName(action, name);
-        modelImpl.getCommonBehaviorHelper().setOperation(action, oper);
+        CallAction action = createCallAction();
+        action.setName(name);
+        action.setOperation((Operation) oper);
         return action;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#buildUninterpretedAction(java.lang.Object)
-     */
-    public Object buildUninterpretedAction(Object actionState) {
-        Object action = createUninterpretedAction();
+
+    public UninterpretedAction buildUninterpretedAction(Object actionState) {
+        UninterpretedAction action = createUninterpretedAction();
         if (actionState instanceof ActionState) {
-            modelImpl.getStateMachinesHelper().setEntry(actionState, action);
+            ((ActionState) actionState).setEntry(action);
         }
         return action;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#buildLink(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildLink(Object fromInstance, Object toInstance) {
-        Object link = modelImpl.getCommonBehaviorFactory().createLink();
-        Object /* MLinkEnd */le0 = modelImpl.getCommonBehaviorFactory().
-            createLinkEnd();
-        modelImpl.getCommonBehaviorHelper().setInstance(le0, fromInstance);
-        Object /* MLinkEnd */le1 = modelImpl.getCommonBehaviorFactory().
-            createLinkEnd();
-        modelImpl.getCommonBehaviorHelper().setInstance(le1, toInstance);
-        modelImpl.getCoreHelper().addConnection(link, le0);
-        modelImpl.getCoreHelper().addConnection(link, le1);
+
+    public Link buildLink(Object fromInstance, Object toInstance) {
+        Link link = createLink();
+        LinkEnd le0 =  createLinkEnd();
+        le0.setInstance((Instance) fromInstance);
+        LinkEnd le1 = createLinkEnd();
+        le1.setInstance((Instance) toInstance);
+        link.getConnection().add(le0);
+        link.getConnection().add(le1);
         return link;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#buildAction(java.lang.Object)
-     */
-    public Object buildAction(Object message) {
-        Object action = createCallAction();
-        modelImpl.getCoreHelper().setName(action, "action");
-        modelImpl.getCollaborationsHelper().setAction(message, action);
+
+    public Action buildAction(Object message) {
+        Action action = createCallAction();
+        action.setName("action");
+        ((Message) message).setAction(action);
         Object interaction = modelImpl.getFacade().getInteraction(message);
         if (interaction != null
             && modelImpl.getFacade().getContext(interaction) != null) {
@@ -373,10 +317,8 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return action;
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#buildSignal(java.lang.Object)
-     */
-    public Object buildSignal(Object element) {
+
+    public Signal buildSignal(Object element) {
         if ((element instanceof BehavioralFeature)) {
             Signal signal = buildSignalInt(element);
             cbPackage.getAContextRaisedSignal().add(
@@ -410,15 +352,13 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return signal;
     }
     
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#buildStimulus(java.lang.Object)
-     */
-    public Object buildStimulus(Object link) {
+
+    public Stimulus buildStimulus(Object link) {
         if (link instanceof Link
             && modelImpl.getCoreHelper().getSource(link) != null
             && modelImpl.getCoreHelper().getDestination(link) != null) {
 
-            Object stimulus = createStimulus();
+            Stimulus stimulus = createStimulus();
             Object sender = modelImpl.getCoreHelper().getSource(link);
             Object receiver = modelImpl.getCoreHelper().getDestination(link);
             modelImpl.getCommonBehaviorHelper().setReceiver(stimulus, receiver);
@@ -432,11 +372,9 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     }
 
-    /*
-     * @see org.argouml.model.CommonBehaviorFactory#buildReception(java.lang.Object)
-     */
-    public Object buildReception(Object aClassifier) {
-        Object reception = createReception();
+
+    public Reception buildReception(Object aClassifier) {
+        Reception reception = createReception();
         if (aClassifier instanceof Classifier) {
             modelImpl.getCoreHelper().setOwner(reception, aClassifier);
         }

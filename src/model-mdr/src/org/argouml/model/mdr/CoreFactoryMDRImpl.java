@@ -176,7 +176,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createAssociationClass() {
+    public AssociationClass createAssociationClass() {
         AssociationClass assoc = corePackage.getAssociationClass()
                 .createAssociationClass();
         super.initialize(assoc);
@@ -184,7 +184,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createAssociationEnd() {
+    public AssociationEnd createAssociationEnd() {
         AssociationEnd assocEnd = corePackage.getAssociationEnd()
                 .createAssociationEnd();
         super.initialize(assocEnd);
@@ -192,42 +192,42 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createAttribute() {
+    public Attribute createAttribute() {
         Attribute myAttribute = corePackage.getAttribute().createAttribute();
         super.initialize(myAttribute);
         return myAttribute;
     }
 
 
-    public Object createBinding() {
+    public Binding createBinding() {
         Binding myBinding = corePackage.getBinding().createBinding();
         super.initialize(myBinding);
         return myBinding;
     }
 
 
-    public Object createClass() {
+    public UmlClass createClass() {
         UmlClass myClass = corePackage.getUmlClass().createUmlClass();
         super.initialize(myClass);
         return myClass;
     }
 
 
-    public Object createComment() {
+    public Comment createComment() {
         Comment myComment = corePackage.getComment().createComment();
         super.initialize(myComment);
         return myComment;
     }
 
 
-    public Object createComponent() {
+    public Component createComponent() {
         Component myComponent = corePackage.getComponent().createComponent();
         super.initialize(myComponent);
         return myComponent;
     }
 
 
-    public Object createConstraint() {
+    public Constraint createConstraint() {
         Constraint myConstraint = corePackage.getConstraint()
                 .createConstraint();
         super.initialize(myConstraint);
@@ -235,14 +235,14 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createDataType() {
+    public DataType createDataType() {
         DataType dataType = corePackage.getDataType().createDataType();
         super.initialize(dataType);
         return dataType;
     }
 
 
-    public Object createDependency() {
+    public Dependency createDependency() {
         Dependency myDependency = corePackage.getDependency()
                 .createDependency();
         super.initialize(myDependency);
@@ -250,7 +250,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createElementResidence() {
+    public ElementResidence createElementResidence() {
         ElementResidence myElementResidence = corePackage.
                 getElementResidence().createElementResidence();
         super.initialize(myElementResidence);
@@ -258,7 +258,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildElementResidence(Object me, Object component) {
+    public ElementResidence buildElementResidence(Object me, Object component) {
         ElementResidence myElementResidence = corePackage.
         getElementResidence().createElementResidence();
         super.initialize(myElementResidence);
@@ -268,7 +268,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     
-    public Object createEnumeration() {
+    public Enumeration createEnumeration() {
         Enumeration myEnumeration = corePackage.getEnumeration()
                 .createEnumeration();
         super.initialize(myEnumeration);
@@ -276,7 +276,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    public Object createEnumerationLiteral() {
+    public EnumerationLiteral createEnumerationLiteral() {
         EnumerationLiteral myEnumerationLiteral = corePackage
                 .getEnumerationLiteral().createEnumerationLiteral();
         super.initialize(myEnumerationLiteral);
@@ -284,23 +284,22 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildEnumerationLiteral(String name, Object enumeration) {
-        EnumerationLiteral el = 
-            (EnumerationLiteral) createEnumerationLiteral();
+    public EnumerationLiteral buildEnumerationLiteral(String name, Object enumeration) {
+        EnumerationLiteral el = createEnumerationLiteral();
         el.setName(name);
         el.setEnumeration((Enumeration) enumeration);
         return el;
     }
 
     
-    public Object createFlow() {
+    public Flow createFlow() {
         Flow myFlow = corePackage.getFlow().createFlow();
         super.initialize(myFlow);
         return myFlow;
     }
 
 
-    public Object createGeneralization() {
+    public Generalization createGeneralization() {
         Generalization myGeneralization = corePackage.getGeneralization()
                 .createGeneralization();
         super.initialize(myGeneralization);
@@ -308,7 +307,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createInterface() {
+    public Interface createInterface() {
         Interface myInterface = corePackage
                 .getInterface().createInterface();
         super.initialize(myInterface);
@@ -316,7 +315,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createMethod() {
+    public Method createMethod() {
         Method myMethod = corePackage.getMethod()
                 .createMethod();
         super.initialize(myMethod);
@@ -324,14 +323,14 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createNode() {
+    public Node createNode() {
         Node myNode = corePackage.getNode().createNode();
         super.initialize(myNode);
         return myNode;
     }
 
 
-    public Object createOperation() {
+    public Operation createOperation() {
         Operation myOperation = corePackage
                 .getOperation().createOperation();
         super.initialize(myOperation);
@@ -339,7 +338,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createParameter() {
+    public Parameter createParameter() {
         Parameter myParameter = corePackage
                 .getParameter().createParameter();
         super.initialize(myParameter);
@@ -356,12 +355,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     @SuppressWarnings("deprecation")
-    public Object createPrimitive() {
+    public Primitive createPrimitive() {
         return createPrimitiveType();
     }
 
 
-    public Object createPrimitiveType() {
+    public Primitive createPrimitiveType() {
         Primitive obj = corePackage.getPrimitive().createPrimitive();
         super.initialize(obj);
         return obj;
@@ -369,7 +368,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     
 
     @SuppressWarnings("deprecation")
-    public Object createProgrammingLanguageDataType() {
+    public ProgrammingLanguageDataType createProgrammingLanguageDataType() {
         ProgrammingLanguageDataType obj = corePackage
                 .getProgrammingLanguageDataType()
                 .createProgrammingLanguageDataType();
@@ -378,7 +377,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createTemplateArgument() {
+    public TemplateArgument createTemplateArgument() {
         TemplateArgument obj = corePackage.getTemplateArgument()
                 .createTemplateArgument();
         super.initialize(obj);
@@ -386,7 +385,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
         
 
-    public Object createTemplateParameter() {
+    public TemplateParameter createTemplateParameter() {
         TemplateParameter myTemplateParameter = corePackage
                 .getTemplateParameter().createTemplateParameter();
         super.initialize(myTemplateParameter);
@@ -394,7 +393,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object createUsage() {
+    public Usage createUsage() {
         Usage myUsage = corePackage.getUsage().createUsage();
         super.initialize(myUsage);
         return myUsage;
@@ -443,12 +442,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assoc;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAssociation(java.lang.Object,
-     *      java.lang.Object, java.lang.Object, java.lang.Object,
-     *      java.lang.Boolean)
-     */
-    public Object buildAssociation(Object fromClassifier,
+
+    public UmlAssociation buildAssociation(Object fromClassifier,
             Object aggregationKind1, Object toClassifier,
             Object aggregationKind2, Boolean unidirectional) {
         if (fromClassifier == null || toClassifier == null) {
@@ -492,22 +487,16 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assoc;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAssociation(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildAssociation(Object classifier1, Object classifier2) {
+
+    public UmlAssociation buildAssociation(Object classifier1, Object classifier2) {
         Classifier c1 = (Classifier) classifier1;
         Classifier c2 = (Classifier) classifier2;
         return buildAssociation(c1, true, AggregationKindEnum.AK_NONE, c2,
                 true, AggregationKindEnum.AK_NONE);
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAssociation(java.lang.Object,
-     *      boolean, java.lang.Object, boolean, java.lang.String)
-     */
-    public Object buildAssociation(Object c1, boolean nav1, Object c2,
+
+    public UmlAssociation buildAssociation(Object c1, boolean nav1, Object c2,
             boolean nav2, String name) {
         UmlAssociation assoc = buildAssociation((Classifier) c1, nav1,
                 AggregationKindEnum.AK_NONE, (Classifier) c2, nav2,
@@ -518,18 +507,15 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assoc;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAssociationClass(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildAssociationClass(Object end1, Object end2) {
+
+    public AssociationClass buildAssociationClass(Object end1, Object end2) {
         if (end1 == null || end2 == null || !(end1 instanceof Classifier)
                 || !(end2 instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "either one of the arguments was null");
         }
         return buildAssociationClass(
-                (UmlClass) buildClass(),
+                buildClass(),
                 (Classifier) end1,
                 (Classifier) end2);
     }
@@ -593,7 +579,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     + "and multiplicity > 1");
         }
 
-        AssociationEnd end = (AssociationEnd) createAssociationEnd();
+        AssociationEnd end = createAssociationEnd();
         end.setAssociation((UmlAssociation) assoc);
         end.setParticipant((Classifier) type);
         end.setName(name);
@@ -661,11 +647,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 .createMultiplicity(1, 1);
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAssociationEnd(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildAssociationEnd(Object type, Object assoc) {
+
+    public AssociationEnd buildAssociationEnd(Object type, Object assoc) {
         if (type == null || !(type instanceof Classifier) || assoc == null
                 || !(assoc instanceof UmlAssociation)) {
             throw new IllegalArgumentException("one of the arguments is null");
@@ -693,7 +676,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException(
                     "one of the arguments was null");
         }
-        AssociationClass assoc = (AssociationClass) createAssociationClass();
+        AssociationClass assoc = createAssociationClass();
         
         // Copy attributes from our template class
         assoc.setNamespace(cl.getNamespace());
@@ -750,11 +733,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assoc;
     }
 
-    /*
-     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildAttribute(Object model, Object theType) {
+
+    public Attribute buildAttribute(Object model, Object theType) {
         Classifier clsType = (Classifier) theType;
         // Force type element into given namespace if not already there
         // side effect!
@@ -766,11 +746,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return buildAttribute2(theType);
     }
     
-    /*
-     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object,
-     *      java.lang.Object)
-     */
-    public Object buildAttribute2(Object theType) {
+
+    public Attribute buildAttribute2(Object theType) {
         Attribute attr = buildAttribute();
         attr.setType((Classifier) theType);
         return attr;
@@ -781,7 +758,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return the new attribute
      */
     Attribute buildAttribute() {
-        Attribute attr = (Attribute) createAttribute();
+        Attribute attr = createAttribute();
         attr.setName("newAttr");
         attr.setMultiplicity(getMultiplicity11());
         attr.setVisibility(VisibilityKindEnum.VK_PUBLIC);
@@ -793,8 +770,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     
 
     @SuppressWarnings("deprecation")
-    public Object buildAttribute(Object handle, Object model, Object type) {
-        Attribute attr = (Attribute) buildAttribute(model, type);
+    public Attribute buildAttribute(Object handle, Object model, Object type) {
+        Attribute attr = buildAttribute(model, type);
         if (handle instanceof Classifier) {
             Classifier cls = (Classifier) handle;
             cls.getFeature().add(attr);
@@ -808,8 +785,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    public Object buildAttribute2(Object handle, Object type) {
-        Attribute attr = (Attribute) buildAttribute2(type);
+    public Attribute buildAttribute2(Object handle, Object type) {
+        Attribute attr = buildAttribute2(type);
         if (handle instanceof Classifier) {
             Classifier cls = (Classifier) handle;
             cls.getFeature().add(attr);
@@ -823,8 +800,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    public Object buildClass() {
-        UmlClass cl = (UmlClass) createClass();
+    public UmlClass buildClass() {
+        UmlClass cl = createClass();
         cl.setName("");
         cl.setAbstract(false);
         cl.setActive(false);
@@ -836,8 +813,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildClass(Object owner) {
-        Object clazz = buildClass();
+    public UmlClass buildClass(Object owner) {
+        UmlClass clazz = buildClass();
         if (owner instanceof Namespace) {
             modelImpl.getCoreHelper().setNamespace(clazz, owner);
         }
@@ -845,16 +822,16 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildClass(String name) {
-        Object clazz = buildClass();
-        modelImpl.getCoreHelper().setName(clazz, name);
+    public UmlClass buildClass(String name) {
+        UmlClass clazz = buildClass();
+        clazz.setName(name);
         return clazz;
     }
 
 
-    public Object buildClass(String name, Object owner) {
-        Object clazz = buildClass();
-        modelImpl.getCoreHelper().setName(clazz, name);
+    public UmlClass buildClass(String name, Object owner) {
+        UmlClass clazz = buildClass();
+        clazz.setName(name);
         if (owner instanceof Namespace) {
             modelImpl.getCoreHelper().setNamespace(clazz, owner);
         }
@@ -862,8 +839,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildInterface() {
-        Interface cl = (Interface) createInterface();
+    public Interface buildInterface() {
+        Interface cl = createInterface();
         cl.setName("");
         cl.setAbstract(false);
         cl.setRoot(false);
@@ -874,8 +851,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildInterface(Object owner) {
-        Interface cl = (Interface) buildInterface();
+    public Interface buildInterface(Object owner) {
+        Interface cl = buildInterface();
         if (owner instanceof Namespace) {
             cl.setNamespace((Namespace) owner);
         }
@@ -883,15 +860,15 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildInterface(String name) {
-        Interface cl = (Interface) buildInterface();
+    public Interface buildInterface(String name) {
+        Interface cl = buildInterface();
         cl.setName(name);
         return cl;
     }
 
 
-    public Object buildInterface(String name, Object owner) {
-        Interface cl = (Interface) buildInterface();
+    public Interface buildInterface(String name, Object owner) {
+        Interface cl = buildInterface();
         cl.setName(name);
         if (owner instanceof Namespace) {
             cl.setNamespace((Namespace) owner);
@@ -900,8 +877,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildDataType(String name, Object owner) {
-        DataType dt = (DataType) createDataType();
+    public DataType buildDataType(String name, Object owner) {
+        DataType dt = createDataType();
         dt.setName(name);
         if (owner instanceof Namespace) {
             dt.setNamespace((Namespace) owner);
@@ -910,8 +887,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildEnumeration(String name, Object owner) {
-        Enumeration e = (Enumeration) createEnumeration();
+    public Enumeration buildEnumeration(String name, Object owner) {
+        Enumeration e = createEnumeration();
         e.setName(name);
         if (owner instanceof Namespace) {
             e.setNamespace((Namespace) owner);
@@ -920,7 +897,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildDependency(Object clientObj, Object supplierObj) {
+    public Dependency buildDependency(Object clientObj, Object supplierObj) {
 
         ModelElement client = (ModelElement) clientObj;
         ModelElement supplier = (ModelElement) supplierObj;
@@ -928,7 +905,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("client or supplier is null "
                     + "client = " + client + " supplier = " + supplier);
         }
-        Dependency dep = (Dependency) createDependency();
+        Dependency dep = createDependency();
         dep.getSupplier().add(supplier);
         dep.getClient().add(client);
         if (client instanceof Namespace) {
@@ -1072,7 +1049,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("child is root");
         }
 
-        Generalization gen = (Generalization) createGeneralization();
+        Generalization gen = createGeneralization();
         gen.setParent(parent);
         gen.setChild(child);
         gen.setNamespace(parent.getNamespace());
@@ -1081,7 +1058,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     public Method buildMethod(String name) {
-        Method method = (Method) createMethod();
+        Method method = createMethod();
         if (method != null) {
             method.setName(name);
         }
@@ -1101,7 +1078,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("Handle is not a classifier");
         }
         Classifier cls = (Classifier) classifier;
-        Operation oper = (Operation) createOperation();
+        Operation oper = createOperation();
         oper.setName("newOperation");
         oper.setOwner(cls);
         oper.setVisibility(VisibilityKindEnum.VK_PUBLIC);
@@ -1197,8 +1174,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Object buildTemplateArgument(Object element) {
-        TemplateArgument ta = (TemplateArgument) createTemplateArgument();
+    public TemplateArgument buildTemplateArgument(Object element) {
+        TemplateArgument ta = createTemplateArgument();
         ta.setModelElement((ModelElement) element);
         return ta;
     }
@@ -1216,7 +1193,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         // TODO: UML 1.4 spec requires both client and supplier to be
         // in the same model - tfm
-        Usage usage = (Usage) createUsage();
+        Usage usage = createUsage();
         usage.getSupplier().add((ModelElement) supplier);
         usage.getClient().add((ModelElement) client);
         if (((ModelElement) supplier).getNamespace() != null) {
@@ -1235,7 +1212,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("A namespace must be supplied.");
         }
         ModelElement elementToAnnotate = (ModelElement) element;
-        Comment comment = (Comment) createComment();
+        Comment comment = createComment();
 
         Namespace commentsModel = null;
         if (elementToAnnotate != null) {
@@ -1256,7 +1233,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("the constrained element is "
                     + "mandatory and may not be " + "null.");
         }
-        Constraint con = (Constraint) createConstraint();
+        Constraint con = createConstraint();
         con.getConstrainedElement().add(constrainedElement);
         con.setNamespace(constrainedElement.getNamespace());
         return con;
@@ -1267,7 +1244,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (bexpr == null || !(bexpr instanceof BooleanExpression)) {
             throw new IllegalArgumentException("invalid boolean expression.");
         }
-        Constraint con = (Constraint) createConstraint();
+        Constraint con = createConstraint();
         if (name != null) {
             con.setName(name);
         }
@@ -1289,7 +1266,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // Check arguments against parameters for type and number
         // TODO: Perhaps move this to a critic instead? - tfm - 20070326
         if (arguments != null) {
-            Collection<TemplateParameter> params = 
+            List<TemplateParameter> params = 
                 ((ModelElement) supplier).getTemplateParameter();
             if (params.size() != arguments.size()) {
                 throw new IllegalArgumentException(
@@ -1311,7 +1288,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
         }
         
-        Binding binding = (Binding) createBinding();
+        Binding binding = createBinding();
         binding.getClient().add((ModelElement) client);
         binding.getSupplier().add((ModelElement) supplier);
         if (arguments != null) {
@@ -1880,13 +1857,13 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *            is the namespace to put the copy in.
      * @return a newly created class.
      */
-    public Object copyClass(Object source, Object ns) {
+    public UmlClass copyClass(Object source, Object ns) {
         if (!(source instanceof UmlClass && ns instanceof Namespace)) {
             throw new IllegalArgumentException("source: " + source + ",ns: "
                     + ns);
         }
 
-        UmlClass c = (UmlClass) createClass();
+        UmlClass c = createClass();
         ((Namespace) ns).getOwnedElement().add(c);
         doCopyClass(source, c);
         return c;
@@ -1899,7 +1876,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @param classifier is the classifier to put the copy in.
      * @return a newly created feature.
      */
-    public Object copyFeature(Object source, Object classifier) {
+    public Feature copyFeature(Object source, Object classifier) {
         if (!(source instanceof Feature && classifier instanceof Classifier)) {
             throw new IllegalArgumentException("source: " + source 
                     + ",classifier: " + classifier);
@@ -1907,16 +1884,16 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         Feature f = null;
         if (source instanceof Attribute) {
-            Attribute attr = (Attribute) createAttribute();
+            Attribute attr = createAttribute();
             doCopyAttribute((Attribute) source, attr);
             f = attr;
         } else if (source instanceof Operation) {
-            Operation oper = (Operation) createOperation();
+            Operation oper = createOperation();
             doCopyOperation((Operation) source, oper);
             // TODO: build a return parameter
             f = oper;
         } else if (source instanceof Method) {
-            Method method = (Method) createMethod();
+            Method method = createMethod();
             doCopyMethod((Method) source, method);
             f = method;
         } else if (source instanceof Reception) {
@@ -1943,7 +1920,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *            is the namespace to put the copy in.
      * @return a newly created data type.
      */
-    public Object copyDataType(Object source, Object ns) {
+    public DataType copyDataType(Object source, Object ns) {
         if (!(source instanceof DataType)) {
             throw new IllegalArgumentException();
         }
@@ -1952,7 +1929,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException();
         }
 
-        DataType i = (DataType) createDataType();
+        DataType i = createDataType();
         ((Namespace) ns).getOwnedElement().add(i);
         doCopyDataType(source, i);
         return i;
@@ -1968,7 +1945,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *            is the namespace to put the copy in.
      * @return a newly created interface.
      */
-    public Object copyInterface(Object source, Object ns) {
+    public Interface copyInterface(Object source, Object ns) {
         if (!(source instanceof Interface)) {
             throw new IllegalArgumentException();
         }
@@ -1977,7 +1954,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException();
         }
 
-        Interface i = (Interface) createInterface();
+        Interface i = createInterface();
         ((Namespace) ns).getOwnedElement().add(i);
         doCopyInterface(source, i);
         return i;
@@ -2068,10 +2045,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         doCopyGeneralizableElement(source, target);
 
         // Copy all the Features
-        List features = ((Classifier) source).getFeature();
-        Iterator i = features.iterator();
-        while (i.hasNext()) {
-            Feature f = (Feature) i.next();
+        for (Feature f : ((Classifier) source).getFeature()) {
             copyFeature(f, target);
         }
     }
@@ -2180,11 +2154,10 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             // objects.
             Model targetModel = (Model) org.argouml.model.Model.getFacade()
                     .getModel(targetME);
-            Iterator it = sourceME.getStereotype().iterator();
-            while (it.hasNext()) {
+            for (Stereotype s : sourceME.getStereotype()) {
                 Stereotype st = (Stereotype) modelImpl
                         .getModelManagementHelper().getCorrespondingElement(
-                                it.next(), targetModel, true);
+                                s, targetModel, true);
                 targetME.getStereotype().add(st);
             }
         }
@@ -2289,12 +2262,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             BehavioralFeature target) {
         target.setQuery(source.isQuery());
         // copy raised signals:
-        Collection c = modelImpl.getUmlPackage().getCommonBehavior()
-            .getAContextRaisedSignal().getRaisedSignal(source);
-        Iterator i = c.iterator();
-        while (i.hasNext()) {
+        Collection<Signal> raisedSignals = modelImpl.getUmlPackage()
+                .getCommonBehavior().getAContextRaisedSignal().getRaisedSignal(
+                        source);
+        for (Signal signal : raisedSignals) {
             modelImpl.getUmlPackage().getCommonBehavior()
-                .getAContextRaisedSignal().add(target, (Signal) i.next());
+                    .getAContextRaisedSignal().add(target, signal);
         }
 
         doCopyFeature(source, target);

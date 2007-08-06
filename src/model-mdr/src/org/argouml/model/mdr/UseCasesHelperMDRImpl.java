@@ -27,10 +27,8 @@ package org.argouml.model.mdr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.jmi.reflect.InvalidObjectException;
 
@@ -124,11 +122,8 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         List<UseCase> list = new ArrayList<UseCase>();
         UseCase usecase = (UseCase) ausecase;
         try {
-            Iterator it = usecase.getExtend().iterator();
-            while (it.hasNext()) {
-                Extend extend = (Extend) it.next();
-                UseCase base = extend.getBase();
-                list.add(base);
+            for (Extend extend : usecase.getExtend()) {
+                list.add(extend.getBase());
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -143,9 +138,8 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         }
         List<UseCase> list = new ArrayList<UseCase>();
         try {
-            Iterator it = Model.getFacade().getExtenders(usecase).iterator();
-            while (it.hasNext()) {
-                Extend ext = (Extend) it.next();
+            for (Extend ext : (Collection<Extend>) Model.getFacade()
+                    .getExtenders(usecase)) {
                 UseCase extension = ext.getExtension();
                 list.add(extension);
             }
@@ -156,7 +150,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
     }
 
 
-    public Object getExtends(Object abase, Object anextension) {
+    public Extend getExtends(Object abase, Object anextension) {
         if (!(abase instanceof UseCase)
                 || !(anextension instanceof UseCase)) {
             throw new IllegalArgumentException();
@@ -164,9 +158,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         UseCase base = (UseCase) abase;
         UseCase extension = (UseCase) anextension;
         try {
-            Iterator it = extension.getExtend().iterator();
-            while (it.hasNext()) {
-                Extend extend = (Extend) it.next();
+            for (Extend extend : extension.getExtend()) {
                 if (extend.getBase() == base) {
                     return extend;
                 }
@@ -182,23 +174,21 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         if (!(ausecase instanceof UseCase)) {
             throw new IllegalArgumentException();
         }
-        List<UseCase> list = new ArrayList<UseCase>();
+        List<UseCase> result = new ArrayList<UseCase>();
         UseCase usecase = (UseCase) ausecase;
         try {
-            Iterator it = usecase.getInclude().iterator();
-            while (it.hasNext()) {
-                Include include = (Include) it.next();
+            for (Include include : usecase.getInclude()) {
                 UseCase addition = include.getBase();
-                list.add(addition);
+                result.add(addition);
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return list;
+        return result;
     }
 
 
-    public Object getIncludes(Object abase, Object aninclusion) {
+    public Include getIncludes(Object abase, Object aninclusion) {
         if (!(abase instanceof UseCase)
                 || !(aninclusion instanceof UseCase)) {
             throw new IllegalArgumentException();
@@ -206,9 +196,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         UseCase base = (UseCase) abase;
         UseCase inclusion = (UseCase) aninclusion;
         try {
-            Iterator it = inclusion.getInclude().iterator();
-            while (it.hasNext()) {
-                Include include = (Include) it.next();
+            for (Include include : inclusion.getInclude()) {
                 if (include.getBase() == base) {
                     return include;
                 }
@@ -227,9 +215,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
             set.addAll(modelImpl.getModelManagementHelper().
                     getAllSurroundingNamespaces(uc));
             Set set2 = new HashSet();
-            Iterator it = set.iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
+            for (Object o : set) {
                 if (o instanceof Subsystem || o instanceof UmlClass) {
                     set2.add(o);
                 }
@@ -261,9 +247,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
             if (base == theExtend.getBase()) {
                 return;
             }
-            Iterator it = theExtend.getExtensionPoint().iterator();
-            while (it.hasNext()) {
-                ExtensionPoint point = (ExtensionPoint) it.next();
+            for (ExtensionPoint point : theExtend.getExtensionPoint()) {
                 removeExtend(point, theExtend);
             }
             ExtensionPoint point =
@@ -448,20 +432,19 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
 
     public void setExtensionPoints(Object handle, Collection extensionPoints) {
         if (handle instanceof UseCase || handle instanceof Extend) {
-            Collection eps = Model.getFacade().getExtensionPoints(handle);
+            // TODO: This should use a minimal update strategy instead of
+            // removing all and then adding all - tfm - 20070806
+            Collection<ExtensionPoint> eps = 
+                Model.getFacade().getExtensionPoints(handle);
             if (!eps.isEmpty()) {
-                Vector extPts = new Vector();
-                extPts.addAll(eps);
-                Iterator toRemove = extPts.iterator();
-                while (toRemove.hasNext()) {
-                    removeExtensionPoint(handle, toRemove.next());
+                Collection<ExtensionPoint> extPts = 
+                    new ArrayList<ExtensionPoint>(eps);
+                for (ExtensionPoint ep : extPts) {
+                    removeExtensionPoint(handle, ep);
                 }
             }
-            if (!extensionPoints.isEmpty()) {
-                Iterator toAdd = extensionPoints.iterator();
-                while (toAdd.hasNext()) {
-                    addExtensionPoint(handle, toAdd.next());
-                }
+            for (Object ep : extensionPoints) {
+                addExtensionPoint(handle, ep);
             }
             return;
         }
@@ -474,8 +457,7 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         if (handle instanceof UseCase) {
             Collection<Include> inc = Model.getFacade().getIncludes(handle);
             if (!inc.isEmpty()) {
-                List<Include> in = new ArrayList<Include>();
-                in.addAll(inc);
+                Collection<Include> in = new ArrayList<Include>(inc);
                 for (Include i : in) {
                     removeInclude(handle, i);
                 }

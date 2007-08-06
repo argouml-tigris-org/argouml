@@ -79,18 +79,14 @@ final class ModelManagementFactoryMDRImpl extends
         modelImpl = mi;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementFactory#createModel()
-     */
-    public Object createModel() {
+
+    public Model createModel() {
         Model myModel = modelManagementPackage.getModel().createModel();
         super.initialize(myModel);
         return myModel;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementFactory#setRootModel(java.lang.Object)
-     */
+
     public void setRootModel(Object rootModel) {
         if (rootModel != null && !(rootModel instanceof Model)) {
             throw new IllegalArgumentException(
@@ -100,30 +96,23 @@ final class ModelManagementFactoryMDRImpl extends
         theRootModel = rootModel;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementFactory#getRootModel()
-     */
+
     public Object getRootModel() {
         return theRootModel;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementFactory#createElementImport()
-     */
-    public Object createElementImport() {
+
+    public ElementImport createElementImport() {
         ElementImport myElementImport =
             modelManagementPackage.getElementImport().createElementImport();
         super.initialize(myElementImport);
         return myElementImport;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementFactory#buildElementImport(
-     * java.lang.Object, java.lang.Object)
-     */
-    public Object buildElementImport(Object pack, Object me) {
+
+    public ElementImport buildElementImport(Object pack, Object me) {
         if (pack instanceof UmlPackage && me instanceof ModelElement) {
-            ElementImport ei = (ElementImport) createElementImport();
+            ElementImport ei = createElementImport();
             ei.setImportedElement((ModelElement) me);
             ei.setUmlPackage((UmlPackage) pack);
             return ei;
@@ -133,31 +122,24 @@ final class ModelManagementFactoryMDRImpl extends
                 + "Package and a ModelElement.");
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementFactory#createPackage()
-     */
-    public Object createPackage() {
+
+    public UmlPackage createPackage() {
         UmlPackage myUmlPackage =
             modelManagementPackage.getUmlPackage().createUmlPackage();
         super.initialize(myUmlPackage);
         return myUmlPackage;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementFactory#buildPackage(
-     *      java.lang.String, java.lang.String)
-     */
+
     public Object buildPackage(String name, String uuid) {
-        UmlPackage pkg = (UmlPackage) createPackage();
+        UmlPackage pkg = createPackage();
         pkg.setName(name);
         // TODO: not sure who added below message.  Needs resolution. - tfm
         LOG.warn("UUID [" + uuid + "] ignored - what to do with it?");
         return pkg;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementFactory#createSubsystem()
-     */
+
     public Object createSubsystem() {
         Subsystem mySubsystem =
             modelManagementPackage.getSubsystem().createSubsystem();
@@ -165,10 +147,7 @@ final class ModelManagementFactoryMDRImpl extends
         return mySubsystem;
     }
 
-    /*
-     * @see org.argouml.model.ModelManagementFactory#copyPackage(
-     *      java.lang.Object, java.lang.Object)
-     */
+
     public Object copyPackage(Object source, Object ns) {
         if (!(source instanceof UmlPackage)) {
             throw new IllegalArgumentException("source");
@@ -177,7 +156,7 @@ final class ModelManagementFactoryMDRImpl extends
             throw new IllegalArgumentException("namespace");
         }
 
-        UmlPackage p = (UmlPackage) createPackage();
+        UmlPackage p = createPackage();
         ((Namespace) ns).getOwnedElement().add(p);
         doCopyPackage((UmlPackage) source, p);
         return p;

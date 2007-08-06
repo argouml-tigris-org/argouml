@@ -69,7 +69,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createActionState() {
+    public ActionState createActionState() {
         ActionState myActionState = modelImpl.getUmlPackage()
                 .getActivityGraphs().getActionState().createActionState();
         super.initialize(myActionState);
@@ -77,7 +77,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createActivityGraph() {
+    public ActivityGraph createActivityGraph() {
         ActivityGraph myActivityGraph = modelImpl.getUmlPackage().
             getActivityGraphs().getActivityGraph().createActivityGraph();
         super.initialize(myActivityGraph);
@@ -85,7 +85,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createCallState() {
+    public CallState createCallState() {
         CallState myCallState = modelImpl.getUmlPackage().getActivityGraphs().
             getCallState().createCallState();
         super.initialize(myCallState);
@@ -93,7 +93,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createClassifierInState() {
+    public ClassifierInState createClassifierInState() {
         ClassifierInState myClassifierInState = modelImpl.getUmlPackage().
             getActivityGraphs().getClassifierInState().
                 createClassifierInState();
@@ -102,7 +102,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createObjectFlowState() {
+    public ObjectFlowState createObjectFlowState() {
         ObjectFlowState myObjectFlowState = modelImpl.getUmlPackage().
             getActivityGraphs().getObjectFlowState().
                 createObjectFlowState();
@@ -111,7 +111,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createPartition() {
+    public Partition createPartition() {
         Partition myPartition = modelImpl.getUmlPackage().getActivityGraphs().
             getPartition().createPartition();
         super.initialize(myPartition);
@@ -119,7 +119,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createSubactivityState() {
+    public SubactivityState createSubactivityState() {
         SubactivityState mySubactivityState = modelImpl.getUmlPackage().
             getActivityGraphs().getSubactivityState().
                 createSubactivityState();
@@ -128,10 +128,9 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildActivityGraph(Object theContext) {
+    public ActivityGraph buildActivityGraph(Object theContext) {
         if (theContext instanceof ModelElement) {
-            ActivityGraph myActivityGraph = (ActivityGraph) 
-                createActivityGraph();
+            ActivityGraph myActivityGraph = createActivityGraph();
             myActivityGraph.setContext((ModelElement) theContext);
             if (theContext instanceof Namespace) {
                 myActivityGraph.setNamespace((Namespace) theContext);
@@ -149,18 +148,19 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildObjectFlowState(Object compositeState) {
+    public ObjectFlowState buildObjectFlowState(Object compositeState) {
         if (!(compositeState instanceof CompositeState)) {
             throw new IllegalArgumentException();
         }
 
-        ObjectFlowState state = (ObjectFlowState) createObjectFlowState();
+        ObjectFlowState state = createObjectFlowState();
         state.setContainer((CompositeState) compositeState);
         return state;
     }
 
 
-    public Object buildClassifierInState(Object classifier, Collection state) {
+    public ClassifierInState buildClassifierInState(Object classifier,
+            Collection state) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException();
         }
@@ -169,7 +169,7 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                     "Collection of states must have at least one element");
         }
 
-        ClassifierInState c = (ClassifierInState) createClassifierInState();
+        ClassifierInState c = createClassifierInState();
         c.setType((Classifier) classifier);
         c.getInState().addAll(state);
         c.setNamespace(((Classifier) classifier).getNamespace());

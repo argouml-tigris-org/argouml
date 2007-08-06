@@ -42,7 +42,6 @@ import org.omg.uml.behavioralelements.collaborations.Interaction;
 import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
 import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Link;
-import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Operation;
@@ -83,50 +82,40 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         collabPkg = modelImpl.getUmlPackage().getCollaborations();
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#createAssociationEndRole()
-     */
-    public Object createAssociationEndRole() {
+
+    public AssociationEndRole createAssociationEndRole() {
         AssociationEndRole myAssociationEndRole =
             collabPkg.getAssociationEndRole().createAssociationEndRole();
         super.initialize(myAssociationEndRole);
         return myAssociationEndRole;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#createAssociationRole()
-     */
-    public Object createAssociationRole() {
+
+    public AssociationRole createAssociationRole() {
         AssociationRole myAssociationRole =
             collabPkg.getAssociationRole().createAssociationRole();
         super.initialize(myAssociationRole);
         return myAssociationRole;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#createClassifierRole()
-     */
-    public Object createClassifierRole() {
+
+    public ClassifierRole createClassifierRole() {
         ClassifierRole myClassifierRole =
             collabPkg.getClassifierRole().createClassifierRole();
         super.initialize(myClassifierRole);
         return myClassifierRole;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#createCollaboration()
-     */
-    public Object createCollaboration() {
+
+    public Collaboration createCollaboration() {
         Collaboration myCollaboration =
             collabPkg.getCollaboration().createCollaboration();
         super.initialize(myCollaboration);
         return myCollaboration;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#createCollaborationInstanceSet()
-     */
-    public Object createCollaborationInstanceSet() {
+
+    public CollaborationInstanceSet createCollaborationInstanceSet() {
         CollaborationInstanceSet obj =
             collabPkg.getCollaborationInstanceSet()
                 .createCollaborationInstanceSet();
@@ -134,64 +123,52 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return obj;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#createInteraction()
-     */
-    public Object createInteraction() {
+
+    public Interaction createInteraction() {
         Interaction myInteraction =
             collabPkg.getInteraction().createInteraction();
         super.initialize(myInteraction);
         return myInteraction;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#createInteractionInstanceSet()
-     */
-    public Object createInteractionInstanceSet() {
+
+    public InteractionInstanceSet createInteractionInstanceSet() {
         InteractionInstanceSet obj =
             collabPkg.getInteractionInstanceSet()
                 .createInteractionInstanceSet();
         super.initialize(obj);
         return obj;
     }
-    /*
-     * @see org.argouml.model.CollaborationsFactory#createMessage()
-     */
-    public Object createMessage() {
+
+    
+    public Message createMessage() {
         Message myMessage =
             collabPkg.getMessage().createMessage();
         super.initialize(myMessage);
         return myMessage;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildClassifierRole(java.lang.Object)
-     */
-    public Object buildClassifierRole(Object collaboration) {
+
+    public ClassifierRole buildClassifierRole(Object collaboration) {
         Collaboration myCollaboration = (Collaboration) collaboration;
-        ClassifierRole classifierRole = (ClassifierRole) createClassifierRole();
+        ClassifierRole classifierRole = createClassifierRole();
         classifierRole.setNamespace(myCollaboration);
         classifierRole.setMultiplicity((Multiplicity) Model
                 .getDataTypesFactory().createMultiplicity("1..1"));
         return classifierRole;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildCollaboration(java.lang.Object)
-     */
+
     public Object buildCollaboration(Object handle) {
         Namespace namespace = (Namespace) handle;
-        Collaboration modelelement = (Collaboration) createCollaboration();
+        Collaboration modelelement = createCollaboration();
         modelelement.setNamespace(namespace);
         modelelement.setName("newCollaboration");
         modelelement.setAbstract(false);
         return modelelement;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildCollaboration(java.lang.Object,
-     *      java.lang.Object)
-     */
+
     public Object buildCollaboration(Object namespace,
             Object representedElement) {
         if (!(namespace instanceof Namespace)) {
@@ -224,7 +201,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     public Interaction buildInteraction(Object handle) {
         Collaboration collab = (Collaboration) handle;
-        Interaction inter = (Interaction) createInteraction();
+        Interaction inter = createInteraction();
         inter.setContext(collab);
         inter.setName("newInteraction");
         return inter;
@@ -233,8 +210,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     public AssociationEndRole buildAssociationEndRole(Object atype) {
         ClassifierRole type = (ClassifierRole) atype;
-        AssociationEndRole end =
-            (AssociationEndRole) createAssociationEndRole();
+        AssociationEndRole end = createAssociationEndRole();
         end.setParticipant(type);
         return end;
     }
@@ -256,7 +232,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException("ClassifierRoles must be in"
                     + " same non-null namespace");
         }
-        AssociationRole role = (AssociationRole) createAssociationRole();
+        AssociationRole role = createAssociationRole();
         role.setNamespace(collaboration);
         // The 4-arg version of this method depends on this ordering.
         // Don't change it!
@@ -301,10 +277,8 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         return (AggregationKind) aggregationKind;
     }
 
-    /*
-     * @see org.argouml.model.CollaborationsFactory#buildAssociationRole(java.lang.Object)
-     */
-    public Object buildAssociationRole(Object link) {
+
+    public AssociationRole buildAssociationRole(Object link) {
         if (!(link instanceof Link)) {
             throw new IllegalArgumentException("Argument is not a link");
         }
@@ -326,7 +300,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalStateException("Collaboration may not be "
                     + "null");
         }
-        Object associationRole = createAssociationRole();
+        AssociationRole associationRole = createAssociationRole();
         modelImpl.getCoreHelper().setNamespace(associationRole, collaboration);
         modelImpl.getCoreHelper().addLink(associationRole, link);
         return associationRole;
@@ -350,7 +324,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         assert inter != null : "An interaction must be provided";
         assert role != null : "An association role must be provided";
 
-        Message message = (Message) createMessage();
+        Message message = createMessage();
 
         inter.getMessage().add(message);
 
@@ -467,7 +441,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException();
         }
 
-        Message activator = (Message) createMessage();
+        Message activator = createMessage();
         activator.setInteraction(theInteraction);
         theOwner.setActivator(activator);
         return activator;
@@ -490,9 +464,8 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     void deleteAssociationRole(Object elem) {
         AssociationRole role = (AssociationRole) elem;
-        Iterator it = role.getMessage().iterator();
-        while (it.hasNext()) {
-            modelImpl.getUmlFactory().delete(it.next());
+        for (Message message : role.getMessage()) {
+            modelImpl.getUmlFactory().delete(message);
         }
     }
 

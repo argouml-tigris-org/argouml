@@ -27,8 +27,6 @@ package org.argouml.model.mdr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
 
 import javax.jmi.reflect.InvalidObjectException;
 
@@ -52,6 +50,7 @@ import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.datatypes.BooleanExpression;
 import org.omg.uml.foundation.datatypes.Expression;
 import org.omg.uml.foundation.datatypes.TimeExpression;
@@ -163,11 +162,11 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     }
 
 
-    public Collection getAllPossibleStatemachines(Object model,
+    public Collection<StateMachine> getAllPossibleStatemachines(Object model,
             Object oSubmachineState) {
         try {
             if (oSubmachineState instanceof SubmachineState) {
-                Collection statemachines =
+                Collection<StateMachine> statemachines =
                     Model.getModelManagementHelper()
                         .getAllModelElementsOfKind(model, StateMachine.class);
                 statemachines.remove(getStateMachine(oSubmachineState));
@@ -181,22 +180,21 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     }
 
 
-    public Collection getAllPossibleSubvertices(Object oState) {
-        ArrayList v = new ArrayList();
-        List v2 = new ArrayList();
+    // TODO: getAllPossibleSubvertices and getAllSubStates are duplicates - tfm
+    public Collection<StateVertex> getAllPossibleSubvertices(Object oState) {
+        Collection<StateVertex> result = new ArrayList<StateVertex>();
         try {
             if (oState instanceof CompositeState) {
-                v.addAll(((CompositeState) oState).getSubvertex());
-                v2 = (ArrayList) v.clone();
-                Iterator it = v2.iterator();
-                while (it.hasNext()) {
-                    v.addAll(getAllPossibleSubvertices(it.next()));
+                for (StateVertex vertex 
+                        : ((CompositeState) oState).getSubvertex()) {
+                    result.add(vertex);
+                    result.addAll(getAllPossibleSubvertices(vertex));
                 }
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return v;
+        return result;
     }
 
 
@@ -226,16 +224,15 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     }
 
 
-    public Collection getOutgoingStates(Object ostatevertex) {
+    public Collection<StateVertex> getOutgoingStates(Object ostatevertex) {
         try {
             if (ostatevertex instanceof StateVertex) {
                 StateVertex statevertex = (StateVertex) ostatevertex;
-                Collection col = new ArrayList();
-                Iterator it = statevertex.getOutgoing().iterator();
-                while (it.hasNext()) {
-                    col.add(((Transition) it.next()).getTarget());
+                Collection<StateVertex> result = new ArrayList<StateVertex>();
+                for (Transition transition : statevertex.getOutgoing()) {
+                    result.add(transition.getTarget());
                 }
-                return col;
+                return result;
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -253,10 +250,9 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
             Object sm = getStateMachine(trans);
             Object ns = Model.getFacade().getNamespace(sm);
             if (ns instanceof Classifier) {
-                Collection c = Model.getFacade().getOperations(ns);
-                Iterator i = c.iterator();
-                while (i.hasNext()) {
-                    Object op = i.next();
+                Collection<Operation> operations = 
+                    Model.getFacade().getOperations(ns);
+                for (Operation op : operations) {
                     String on = ((ModelElement) op).getName();
                     if (on.equals(opname)) {
                         return op;
@@ -270,20 +266,19 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     }
 
 
-    public Collection getAllSubStates(Object compState) {
+    // TODO: getAllPossibleSubvertices and getAllSubStates are duplicates - tfm
+    public Collection<StateVertex> getAllSubStates(Object compState) {
         try {
             if (compState instanceof CompositeState) {
-                List retList = new ArrayList();
-                Iterator it =
-                    Model.getFacade().getSubvertices(compState).iterator();
-                while (it.hasNext()) {
-                    Object subState = it.next();
+                Collection<StateVertex> result = new ArrayList<StateVertex>();
+                for (Object subState : Model.getFacade().getSubvertices(
+                        compState)) {
                     if (subState instanceof CompositeState) {
-                        retList.addAll(getAllSubStates(subState));
+                        result.addAll(getAllSubStates(subState));
                     }
-                    retList.add(subState);
+                    result.add((StateVertex) subState);
                 }
-                return retList;
+                return result;
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -436,18 +431,13 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
             Collection internalTransitions =
                 Model.getFacade().getInternalTransitions(handle);
             if (!internalTransitions.isEmpty()) {
-                Vector verts = new Vector();
-                verts.addAll(internalTransitions);
-                Iterator toRemove = verts.iterator();
-                while (toRemove.hasNext()) {
-                    removeTransition(handle, toRemove.next());
+                Collection trans = new ArrayList(internalTransitions);
+                for (Object transition : trans) {
+                    removeTransition(handle, transition);
                 }
             }
-            if (!intTrans.isEmpty()) {
-                Iterator toAdd = intTrans.iterator();
-                while (toAdd.hasNext()) {
-                    addTransition(handle, toAdd.next());
-                }
+            for (Object transition : intTrans) {
+                addTransition(handle, transition);
             }
             return;
         }
@@ -528,18 +518,13 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         if (handle instanceof CompositeState) {
             Collection vertices = Model.getFacade().getSubvertices(handle);
             if (!vertices.isEmpty()) {
-                Vector verts = new Vector();
-                verts.addAll(vertices);
-                Iterator toRemove = verts.iterator();
-                while (toRemove.hasNext()) {
-                    removeSubvertex(handle, toRemove.next());
+                Collection verts = new ArrayList(vertices);
+                for (Object vertex : verts) {
+                    removeSubvertex(handle, vertex);
                 }
             }
-            if (!subvertices.isEmpty()) {
-                Iterator toAdd = subvertices.iterator();
-                while (toAdd.hasNext()) {
-                    addSubvertex(handle, toAdd.next());
-                }
+            for (Object vertex : subvertices) {
+                addSubvertex(handle, vertex);
             }
             return;
         }

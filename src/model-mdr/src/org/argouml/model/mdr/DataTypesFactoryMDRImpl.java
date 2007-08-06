@@ -71,7 +71,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createActionExpression(String language, String body) {
+    public ActionExpression createActionExpression(String language, String body) {
         ActionExpression myActionExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getActionExpression()
                 .createActionExpression(language, body);
@@ -80,7 +80,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createArgListsExpression(String language, String body) {
+    public ArgListsExpression createArgListsExpression(String language, String body) {
         ArgListsExpression myArgListsExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getArgListsExpression()
                 .createArgListsExpression(language, body);
@@ -89,7 +89,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createBooleanExpression(String language, String body) {
+    public BooleanExpression createBooleanExpression(String language, String body) {
         BooleanExpression myBooleanExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getBooleanExpression()
                 .createBooleanExpression(language, body);
@@ -98,7 +98,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createExpression(String language, String body) {
+    public Expression createExpression(String language, String body) {
         Expression myExpression = modelImpl.getUmlPackage().getDataTypes()
                 .getExpression().createExpression(language, body);
         super.initialize(myExpression);
@@ -106,7 +106,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createIterationExpression(String language, String body) {
+    public IterationExpression createIterationExpression(String language, String body) {
         IterationExpression myIterationExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getIterationExpression()
                 .createIterationExpression(language, body);
@@ -115,7 +115,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createMappingExpression(String language, String body) {
+    public MappingExpression createMappingExpression(String language, String body) {
         MappingExpression myMappingExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getMappingExpression().createMappingExpression(
                         language, body);
@@ -124,7 +124,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createObjectSetExpression(String language, String body) {
+    public ObjectSetExpression createObjectSetExpression(String language, String body) {
         ObjectSetExpression myObjectSetExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getObjectSetExpression()
                 .createObjectSetExpression(language, body);
@@ -133,7 +133,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createProcedureExpression(String language, String body) {
+    public ProcedureExpression createProcedureExpression(String language, String body) {
         ProcedureExpression myProcedureExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getProcedureExpression()
                 .createProcedureExpression(language, body);
@@ -142,7 +142,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createTimeExpression(String language, String body) {
+    public TimeExpression createTimeExpression(String language, String body) {
         TimeExpression myTimeExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getTimeExpression()
                 .createTimeExpression(language, body);
@@ -151,7 +151,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createTypeExpression(String language, String body) {
+    public TypeExpression createTypeExpression(String language, String body) {
         TypeExpression myTypeExpression = modelImpl.getUmlPackage()
                 .getDataTypes().getTypeExpression()
                 .createTypeExpression(language, body);
@@ -185,12 +185,13 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public Multiplicity createMultiplicity(String str) {
-        List ranges = Collections.unmodifiableList(parseRanges(str));
+        List<MultiplicityRange> ranges = 
+            Collections.unmodifiableList(parseRanges(str));
         return createMultiplicity(ranges);
     }
 
-    private List parseRanges(String str) {
-        List rc = new ArrayList();
+    private List<MultiplicityRange> parseRanges(String str) {
+        List<MultiplicityRange> rc = new ArrayList<MultiplicityRange>();
         // Return 1..1 multiplicity for empty string
         if ("".equals(str)) {
             rc.add(createMultiplicityRange("1..1"));

@@ -75,7 +75,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
     /*
      * @see org.argouml.model.ExtensionMechanismsFactory#createTaggedValue()
      */
-    public Object createTaggedValue() {
+    public TaggedValue createTaggedValue() {
         TaggedValue tv = modelImpl.getUmlPackage().getCore().getTaggedValue().
                 createTaggedValue();
         super.initialize(tv);
@@ -88,7 +88,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      * @param tagName The name of the TagDefinition to create/retrieve
      * @return an initialized UML TaggedValue instance.
      */
-    Object getTagDefinition(String tagName) {
+    TagDefinition getTagDefinition(String tagName) {
         if (tagName == null) {
             throw new IllegalArgumentException("Argument may not be null");
         }
@@ -120,7 +120,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      * 
      * @see org.argouml.model.ExtensionMechanismsFactory#buildStereotype(java.lang.Object, java.lang.Object, java.lang.Object)
      */
-    public Object buildStereotype(
+    public Stereotype buildStereotype(
             Object theModelElementObject,
             Object theName,
             Object theNamespaceObject) {
@@ -154,7 +154,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
     }
 
 
-    public Object buildStereotype(
+    public Stereotype buildStereotype(
             Object theModelElementObject,
             String theName,
             Object model,
@@ -197,7 +197,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
     }
 
 
-    public Object buildStereotype(String text, Object ns) {
+    public Stereotype buildStereotype(String text, Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "Namespace is wrong type - text:" + text + ",ns:"
@@ -209,9 +209,9 @@ class ExtensionMechanismsFactoryMDRImpl extends
     }
 
 
-    public Object buildTaggedValue(String tag, String value) {
-        TaggedValue tv = (TaggedValue) createTaggedValue();
-        TagDefinition td = (TagDefinition) getTagDefinition(tag);
+    public TaggedValue buildTaggedValue(String tag, String value) {
+        TaggedValue tv = createTaggedValue();
+        TagDefinition td = getTagDefinition(tag);
         td = 
             (TagDefinition) 
             modelImpl.getModelManagementHelper().getCorrespondingElement(
@@ -248,7 +248,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
      * @return the newly cloned copy
      */
     private Object copyTaggedValue(TaggedValue source) {
-        TaggedValue tv = (TaggedValue) createTaggedValue();
+        TaggedValue tv = createTaggedValue();
         tv.setType(source.getType());
         tv.getDataValue().addAll(source.getDataValue());
         tv.getReferenceValue().addAll(source.getReferenceValue());
@@ -328,7 +328,8 @@ class ExtensionMechanismsFactoryMDRImpl extends
     }
 
 
-    public Object buildTagDefinition(String text, Object owner, Object ns) {
+    public TagDefinition buildTagDefinition(String text, Object owner, 
+            Object ns) {
         if (owner != null) {
             if (!(owner instanceof Stereotype)) {
                 throw new IllegalArgumentException("owner: " + owner);

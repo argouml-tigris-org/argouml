@@ -24,9 +24,6 @@
 
 package org.argouml.model.mdr;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
@@ -98,14 +95,14 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createCallEvent() {
+    public CallEvent createCallEvent() {
         CallEvent myCallEvent = smPackage.getCallEvent().createCallEvent();
         super.initialize(myCallEvent);
         return myCallEvent;
     }
 
 
-    public Object createChangeEvent() {
+    public ChangeEvent createChangeEvent() {
         ChangeEvent myChangeEvent = smPackage.getChangeEvent()
                 .createChangeEvent();
         super.initialize(myChangeEvent);
@@ -113,7 +110,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createCompositeState() {
+    public CompositeState createCompositeState() {
         CompositeState myCompositeState = smPackage.getCompositeState()
                 .createCompositeState();
         super.initialize(myCompositeState);
@@ -121,21 +118,21 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createFinalState() {
+    public FinalState createFinalState() {
         FinalState myFinalState = smPackage.getFinalState().createFinalState();
         super.initialize(myFinalState);
         return myFinalState;
     }
 
 
-    public Object createGuard() {
+    public Guard createGuard() {
         Guard myGuard = smPackage.getGuard().createGuard();
         super.initialize(myGuard);
         return myGuard;
     }
 
 
-    public Object createPseudostate() {
+    public Pseudostate createPseudostate() {
         Pseudostate myPseudostate = smPackage.getPseudostate()
                 .createPseudostate();
         super.initialize(myPseudostate);
@@ -143,7 +140,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createSignalEvent() {
+    public SignalEvent createSignalEvent() {
         SignalEvent mySignalEvent = smPackage.getSignalEvent()
                 .createSignalEvent();
         super.initialize(mySignalEvent);
@@ -151,7 +148,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createSimpleState() {
+    public SimpleState createSimpleState() {
         SimpleState mySimpleState = smPackage.getSimpleState()
                 .createSimpleState();
         super.initialize(mySimpleState);
@@ -159,7 +156,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createStateMachine() {
+    public StateMachine createStateMachine() {
         StateMachine myStateMachine = smPackage.getStateMachine()
                 .createStateMachine();
         super.initialize(myStateMachine);
@@ -167,14 +164,14 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createStubState() {
+    public StubState createStubState() {
         StubState myStubState = smPackage.getStubState().createStubState();
         super.initialize(myStubState);
         return myStubState;
     }
 
 
-    public Object createSubmachineState() {
+    public SubmachineState createSubmachineState() {
         SubmachineState mySubmachineState = smPackage.getSubmachineState()
                 .createSubmachineState();
         super.initialize(mySubmachineState);
@@ -182,30 +179,31 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object createSynchState() {
+    public SynchState createSynchState() {
         SynchState mySynchState = smPackage.getSynchState().createSynchState();
         super.initialize(mySynchState);
         return mySynchState;
     }
 
 
-    public Object createTimeEvent() {
+    public TimeEvent createTimeEvent() {
         TimeEvent myTimeEvent = smPackage.getTimeEvent().createTimeEvent();
         super.initialize(myTimeEvent);
         return myTimeEvent;
     }
 
 
-    public Object createTransition() {
+    public Transition createTransition() {
         Transition myTransition = smPackage.getTransition().createTransition();
         super.initialize(myTransition);
         return myTransition;
     }
 
 
-    public Object buildCompositeStateOnStateMachine(Object statemachine) {
+    public CompositeState buildCompositeStateOnStateMachine(
+            Object statemachine) {
         if (statemachine instanceof StateMachine) {
-            CompositeState state = (CompositeState) createCompositeState();
+            CompositeState state = createCompositeState();
             state.setStateMachine((StateMachine) statemachine);
             state.setName("top");
             return state;
@@ -214,12 +212,12 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildStateMachine(Object oContext) {
+    public StateMachine buildStateMachine(Object oContext) {
         if (oContext != null
                 && (modelImpl.getStateMachinesHelper().
                         isAddingStatemachineAllowed(oContext))) {
             
-            StateMachine machine = (StateMachine) createStateMachine();
+            StateMachine machine = createStateMachine();
             ModelElement context = (ModelElement) oContext;
             machine.setContext(context);
             if (context instanceof Classifier) {
@@ -237,7 +235,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildTransition(Object owningState, Object source, 
+    public Transition buildTransition(Object owningState, Object source, 
             Object dest) {
         if (!(owningState instanceof CompositeState)) {
             throw new IllegalArgumentException("owningState");
@@ -252,7 +250,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         CompositeState compositeState = (CompositeState) owningState;
         if (compositeState.getSubvertex().contains(source)
                 && compositeState.getSubvertex().contains(dest)) {
-    	    Transition trans = (Transition) createTransition();
+    	    Transition trans = createTransition();
     	    compositeState.getInternalTransition().add(trans);
     	    trans.setSource((StateVertex) source);
     	    trans.setTarget((StateVertex) dest);
@@ -264,9 +262,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildPseudoState(Object compositeState) {
+    public Pseudostate buildPseudoState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
-            Pseudostate state = (Pseudostate) createPseudostate();
+            Pseudostate state = createPseudostate();
             state.setKind(PseudostateKindEnum.PK_CHOICE);
             state.setContainer((CompositeState) compositeState);
             ((CompositeState) compositeState).getSubvertex().add(state);
@@ -277,9 +275,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildSynchState(Object compositeState) {
+    public SynchState buildSynchState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
-            SynchState state = (SynchState) createSynchState();
+            SynchState state = createSynchState();
             state.setBound(0);
             state.setContainer((CompositeState) compositeState);
             return state;
@@ -289,9 +287,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildStubState(Object compositeState) {
+    public StubState buildStubState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
-            StubState state = (StubState) createStubState();
+            StubState state = createStubState();
             state.setReferenceState("");
             state.setContainer((CompositeState) compositeState);
             return state;
@@ -301,9 +299,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildCompositeState(Object compositeState) {
+    public CompositeState buildCompositeState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
-            CompositeState state = (CompositeState) createCompositeState();
+            CompositeState state = createCompositeState();
             state.setConcurrent(false);
             state.setContainer((CompositeState) compositeState);
             return state;
@@ -313,9 +311,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildSimpleState(Object compositeState) {
+    public SimpleState buildSimpleState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
-            SimpleState state = (SimpleState) createSimpleState();
+            SimpleState state = createSimpleState();
             state.setContainer((CompositeState) compositeState);
             return state;
         }
@@ -324,9 +322,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildFinalState(Object compositeState) {
+    public FinalState buildFinalState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
-            FinalState state = (FinalState) createFinalState();
+            FinalState state = createFinalState();
             state.setContainer((CompositeState) compositeState);
             return state;
         }
@@ -335,9 +333,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildSubmachineState(Object compositeState) {
+    public SubmachineState buildSubmachineState(Object compositeState) {
         if (compositeState instanceof CompositeState) {
-            SubmachineState state = (SubmachineState) createSubmachineState();
+            SubmachineState state = createSubmachineState();
             state.setContainer((CompositeState) compositeState);
             return state;
         }
@@ -346,9 +344,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildInternalTransition(Object state) {
+    public Transition buildInternalTransition(Object state) {
         if (state instanceof State) {
-            Transition trans = (Transition) createTransition();
+            Transition trans = createTransition();
             ((State) state).getInternalTransition().add(trans);
             trans.setSource((State) state);
             trans.setTarget((State) state);
@@ -358,9 +356,9 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildTransition(Object source, Object target) {
+    public Transition buildTransition(Object source, Object target) {
         if (source instanceof StateVertex && target instanceof StateVertex) {
-            Transition trans = (Transition) createTransition();
+            Transition trans = createTransition();
             trans.setSource((StateVertex) source);
             trans.setTarget((StateVertex) target);
             trans.setStateMachine((StateMachine) modelImpl.
@@ -371,19 +369,19 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildCallEvent(Object ns) {
-        CallEvent event = (CallEvent) createCallEvent();
+    public CallEvent buildCallEvent(Object ns) {
+        CallEvent event = createCallEvent();
         event.setNamespace((Namespace) ns);
         event.setName("");
         return event;
     }
 
 
-    public Object buildCallEvent(Object trans, String name, Object ns) {
+    public CallEvent buildCallEvent(Object trans, String name, Object ns) {
         if (!(trans instanceof Transition)) {
             throw new IllegalArgumentException();
         }
-        CallEvent evt = (CallEvent) createCallEvent();
+        CallEvent evt = createCallEvent();
         evt.setNamespace((Namespace) ns);
 
         String operationName = (name.indexOf("(") > 0) ? name.substring(0,
@@ -398,32 +396,32 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildSignalEvent(Object ns) {
-        SignalEvent event = (SignalEvent) createSignalEvent();
+    public SignalEvent buildSignalEvent(Object ns) {
+        SignalEvent event = createSignalEvent();
         event.setNamespace((Namespace) ns);
         event.setName("");
         return event;
     }
 
 
-    public Object buildSignalEvent(String name, Object ns) {
-        SignalEvent event = (SignalEvent) createSignalEvent();
+    public SignalEvent buildSignalEvent(String name, Object ns) {
+        SignalEvent event = createSignalEvent();
         event.setNamespace((Namespace) ns);
         event.setName(name);
         return event;
     }
 
 
-    public Object buildTimeEvent(Object ns) {
-        TimeEvent event = (TimeEvent) createTimeEvent();
+    public TimeEvent buildTimeEvent(Object ns) {
+        TimeEvent event = createTimeEvent();
         event.setNamespace((Namespace) ns);
         event.setName("");
         return event;
     }
 
 
-    public Object buildTimeEvent(String s, Object ns) {
-        TimeEvent event = (TimeEvent) createTimeEvent();
+    public TimeEvent buildTimeEvent(String s, Object ns) {
+        TimeEvent event = createTimeEvent();
         event.setNamespace((Namespace) ns);
         event.setName("");
         Object te = modelImpl.getDataTypesFactory().createTimeExpression("", s);
@@ -432,33 +430,31 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    public Object buildChangeEvent(Object ns) {
-        ChangeEvent event = (ChangeEvent) createChangeEvent();
+    public ChangeEvent buildChangeEvent(Object ns) {
+        ChangeEvent event =  createChangeEvent();
         event.setNamespace((Namespace) ns);
         event.setName("");
         return event;
     }
 
 
-    public Object buildChangeEvent(String s, Object ns) {
-        ChangeEvent event = (ChangeEvent) createChangeEvent();
-        event.setNamespace((Namespace) ns);
-        event.setName("");
+    public ChangeEvent buildChangeEvent(String expression, Object ns) {
+        ChangeEvent event = buildChangeEvent(ns);
         Object ce = modelImpl.getDataTypesFactory()
-                .createBooleanExpression("", s);
+                .createBooleanExpression("", expression);
         event.setChangeExpression((BooleanExpression) ce);
         return event;
     }
 
 
-    public Object buildGuard(Object transition) {
+    public Guard buildGuard(Object transition) {
         if (transition instanceof Transition) {
             Transition t = (Transition) transition;
             if (t.getGuard() != null) {
                 LOG.warn("Replacing Guard " + t.getGuard().getName() 
                         + " on Transition " + t.getName());
             }
-            Guard guard = (Guard) createGuard();
+            Guard guard = createGuard();
             guard.setTransition((Transition) transition);
             return guard;
         }
@@ -496,10 +492,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException();
         }
 
-        Collection vertices = ((CompositeState) elem).getSubvertex();
-        Iterator it = vertices.iterator();
-        while (it.hasNext()) {
-            StateVertex vertex = (StateVertex) it.next();
+        for (StateVertex vertex : ((CompositeState) elem).getSubvertex()) {
             modelImpl.getUmlFactory().delete(vertex);
         }
     }

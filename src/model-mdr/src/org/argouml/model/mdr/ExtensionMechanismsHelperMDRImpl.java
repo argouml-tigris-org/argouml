@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.jmi.model.MofClass;
 import javax.jmi.reflect.InvalidObjectException;
@@ -72,7 +71,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      */
     private MDRModelImplementation modelImpl;
 
-    private static Map packageMap = new HashMap(16);
+    private static Map<String, String> packageMap = 
+        new HashMap<String, String>(16);
 
     /**
      * Don't allow instantiation.
@@ -93,19 +93,17 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
     
-    public Collection getStereotypes(Object ns) {
+    public Collection<Stereotype> getStereotypes(Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
         
-        List l = new ArrayList();
+        List<Stereotype> l = new ArrayList<Stereotype>();
         // TODO: this could be a huge collection - find a more efficient way
         try {
-            Iterator it = ((Namespace) ns).getOwnedElement().iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
+            for (Object o : ((Namespace) ns).getOwnedElement()) {
                 if (o instanceof Stereotype) {
-                    l.add(o);
+                    l.add((Stereotype) o);
                 } else if (o instanceof UmlPackage) {
                     l.addAll(getStereotypes(o));
                 }
@@ -128,19 +126,16 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
         try {
             String name = ((ModelElement) stereo).getName();
-            Collection baseClasses = ((Stereotype) stereo).getBaseClass();
+            Collection<String> baseClasses = 
+                ((Stereotype) stereo).getBaseClass();
             if (name == null || baseClasses.size() != 1) {
                 return null;
             }
-            String baseClass = (String) baseClasses.iterator().next();
+            String baseClass = baseClasses.iterator().next();
             
-            Iterator it = getStereotypes(ns).iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
-                if (o instanceof Stereotype
-                        && name.equals(((Stereotype) o).getName())
-                        && ((Stereotype) o).getBaseClass()
-                            .contains(baseClass)) {
+            for (Stereotype o : getStereotypes(ns)) {
+                if (name.equals(o.getName())
+                        && o.getBaseClass().contains(baseClass)) {
                     return o;
                 }
             }
@@ -151,7 +146,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    public Object getStereotype(Collection models, Object stereo) {
+    public Stereotype getStereotype(Collection models, Object stereo) {
         if (stereo == null) {
             throw new IllegalArgumentException("null argument");
         }
@@ -161,24 +156,19 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
         try {
             String name = ((Stereotype) stereo).getName();
-            Collection baseClasses = ((Stereotype) stereo).getBaseClass();
+            Collection<String> baseClasses = 
+                ((Stereotype) stereo).getBaseClass();
             if (name == null || baseClasses.size() != 1) {
                 return null;
             }
-            String baseClass = (String) baseClasses.iterator().next();
+            String baseClass = baseClasses.iterator().next();
             
-            Iterator it2 = models.iterator();
-            while (it2.hasNext()) {
+            for (Model model : ((Collection<Model>) models)) {
                 // TODO: this should call the single namespace form
                 // getStereotype(it2.next(); stereo);
-                Model model = (Model) it2.next();
-                Iterator it = getStereotypes(model).iterator();
-                while (it.hasNext()) {
-                    Object o = it.next();
-                    if (o instanceof Stereotype
-                            && name.equals(((Stereotype) o).getName())
-                            && ((Stereotype) o).getBaseClass().contains(
-                                    baseClass)) {
+                for (Stereotype o : getStereotypes(model)) {
+                    if (name.equals(o.getName())
+                            && o.getBaseClass().contains(baseClass)) {
                         return o;
                     }
                 }
@@ -546,22 +536,16 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
             Collection tv =
                 modelImpl.getFacade().getTaggedValuesCollection(handle);
             if (!tv.isEmpty()) {
-                Vector tvs = new Vector(tv);
-                Iterator toRemove = tvs.iterator();
-                while (toRemove.hasNext()) {
-                    Object value = toRemove.next();
+                Collection tvs = new ArrayList(tv);
+                for (Object value : tvs) {
                     if (!taggedValues.contains(value)) {
                         tv.remove(value);
                     }
                 }
             }
-            if (!taggedValues.isEmpty()) {
-                Iterator toAdd = taggedValues.iterator();
-                while (toAdd.hasNext()) {
-                    Object value = toAdd.next();
-                    if (!tv.contains(value)) {
-                        tv.add(value);
-                    }
+            for (Object value : taggedValues) {
+                if (!tv.contains(value)) {
+                    tv.add(value);
                 }
             }
             return;
