@@ -51,13 +51,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
      * The extension used in serialization and returned by {@link #getType()}
      */
     public static final String EXTENSION = "profile";
-    
-    /**
-     * Logger.
-     */
-//    private static final Logger LOG = 
-//    		Logger.getLogger(ProfileConfiguration.class);
-    
+        
     /**
      * The default constructor for this class. Sets the Java profile as the 
      * default one and its formating strategy as the default one.
@@ -88,7 +82,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
      * @param profile the profile providing the current formating strategy
      */
     public void activateFormatingStrategy(Profile profile) {
-	if (profile.getFormatingStrategy() != null
+	if (profile != null && profile.getFormatingStrategy() != null
 		&& getProfiles().contains(profile)) {
 	    this.formatingStrategy = profile.getFormatingStrategy();
 	}
@@ -160,6 +154,10 @@ public class ProfileConfiguration extends AbstractProjectMember {
 		figNodeStrategies.remove(fns);
 	    }
 
+	    if (formatingStrategy == p.getFormatingStrategy()) {
+	        formatingStrategy = null;
+	    }
+	    
             ExplorerEventAdaptor.getInstance().structureChanged();
 	}
     }
