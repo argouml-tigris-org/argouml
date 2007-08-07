@@ -26,6 +26,7 @@
 
 package org.argouml.model.euml;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,6 +36,7 @@ import java.util.List;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -43,7 +45,9 @@ import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
+import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Constraint;
+import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
@@ -52,8 +56,10 @@ import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.Feature;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Include;
+import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
+import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Property;
@@ -62,6 +68,7 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.StructuralFeature;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.TypedElement;
+import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.VisibilityKind;
 
 /**
@@ -116,12 +123,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
         ChangeCommand cmd;
         if (stereos.size() == 1) {
             cmd = new ChangeCommand(
-                    editingDomain, run,
-                    "Apply the stereotype # to the element #",
+                    modelImpl, run, "Apply the stereotype # to the element #",
                     stereos.iterator().next(), modelElement);
         } else {
             cmd = new ChangeCommand(
-                    editingDomain, run, "Apply stereotypes to the element #",
+                    modelImpl, run, "Apply stereotypes to the element #",
                     modelElement);
         }
         editingDomain.getCommandStack().execute(cmd);
@@ -145,9 +151,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run,
-                        "Add the comment # to the element #", comment,
-                        annotatedElement));
+                        modelImpl, run, "Add the comment # to the element #",
+                        comment, annotatedElement));
     }
 
     public void addClient(final Object dependency, final Object element) {
@@ -167,9 +172,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run,
-                        "Add the client # to the dependency #", element,
-                        dependency));
+                        modelImpl, run, "Add the client # to the dependency #",
+                        element, dependency));
     }
 
     public void addClientDependency(Object handle, Object dependency) {
@@ -193,11 +197,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "The connection must be instance of Property"); //$NON-NLS-1$
         }
-        RunnableClass run = getRunnableAddCommand(
+        RunnableClass run = getRunnableClassForAddCommand(
                 (Association) handle, position, (Property) connection);
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain,
+                        modelImpl,
                         run,
                         "Add the AssociationEnd (Property) # to the Association #",
                         connection, handle));
@@ -219,7 +223,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run,
+                        modelImpl, run,
                         "Add the constraint # to the element #", mc, handle));
     }
 
@@ -232,13 +236,15 @@ class CoreHelperEUMLImpl implements CoreHelper {
         // TODO Is it removed from UML2 ?
         throw new NotYetImplementedException();
     }
-    
-    private RunnableClass getRunnableAddCommand(Element owner, Element element) {
-        return getRunnableAddCommand(owner, CommandParameter.NO_INDEX, element);
+
+    private RunnableClass getRunnableClassForAddCommand(Element owner,
+            Element element) {
+        return getRunnableClassForAddCommand(
+                owner, CommandParameter.NO_INDEX, element);
     }
 
-    private RunnableClass getRunnableAddCommand(Element owner, int index,
-            Element element) {
+    private RunnableClass getRunnableClassForAddCommand(Element owner,
+            int index, Element element) {
         final Command cmd = AddCommand.create(
                 editingDomain, owner, null, element, index);
         if (cmd == null || !cmd.canExecute()) {
@@ -252,7 +258,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         return run;
     }
-    
+
     public void addFeature(Object handle, int index, Object f) {
         if (!(handle instanceof Classifier)) {
             throw new IllegalArgumentException(
@@ -263,7 +269,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, getRunnableAddCommand(
+                        modelImpl, getRunnableClassForAddCommand(
                                 (Classifier) handle, index, (Feature) f),
                         "Add the feature # to the classifier #", f, handle));
     }
@@ -288,7 +294,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, getRunnableAddCommand(
+                        modelImpl, getRunnableClassForAddCommand(
                                 (Enumeration) handle, index,
                                 (EnumerationLiteral) literal),
                         "Add the EnumerationLiteral # to the Enumeration #",
@@ -314,7 +320,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain,
+                        modelImpl,
                         run,
                         "Add the Behavior (method) # to the BehavioralFeature (operation) #",
                         method, handle));
@@ -331,7 +337,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, getRunnableAddCommand(
+                        modelImpl, getRunnableClassForAddCommand(
                                 (Namespace) handle, (Element) me),
                         "Add the owned element # to the owner #", me, handle));
     }
@@ -348,7 +354,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, getRunnableAddCommand(
+                        modelImpl, getRunnableClassForAddCommand(
                                 (BehavioralFeature) handle, index,
                                 (Parameter) parameter),
                         "Add the owned element # to the owner #", parameter,
@@ -366,7 +372,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, getRunnableAddCommand(
+                        modelImpl, getRunnableClassForAddCommand(
                                 (Property) handle, position,
                                 (Property) qualifier),
                         "Add the qualifier # to the property #", qualifier,
@@ -404,7 +410,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        editingDomain, run,
+                        modelImpl, run,
                         "Add the supplier # to the dependency #", element,
                         dependency));
     }
@@ -449,91 +455,164 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public boolean equalsAggregationKind(Object associationEnd, String kindType) {
-        throw new NotYetImplementedException();
-
+        if (!(associationEnd instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "associationEnd must be instance of Property"); //$NON-NLS-1$
+        }
+        return ((Property) associationEnd).getAggregation().getLiteral().equals(
+                kindType);
     }
 
-    public Collection getAllAttributes(Object classifier) {
-        throw new NotYetImplementedException();
+    public Collection<Property> getAllAttributes(Object classifier) {
+        if (!(classifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "classifier must be instance of Classifier"); //$NON-NLS-1$
+        }
+        return ((Classifier) classifier).getAllAttributes();
+    }
 
+    private Collection getAllOwnedElementsOfKind(Object owner, Class kind) {
+        if (!(owner instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "owner must be instance of Element"); //$NON-NLS-1$
+        }
+        Collection<Element> result = new ArrayList<Element>();
+        for (Element e : ((Element) owner).allOwnedElements()) {
+            if (kind.isInstance(e)) {
+                result.add(e);
+            }
+        }
+        return result;
     }
 
     public Collection getAllBehavioralFeatures(Object element) {
-        throw new NotYetImplementedException();
-
+        return getAllOwnedElementsOfKind(element, BehavioralFeature.class);
     }
 
     public Collection getAllClasses(Object ns) {
-        throw new NotYetImplementedException();
-
+        return getAllOwnedElementsOfKind(ns, org.eclipse.uml2.uml.Class.class);
     }
 
     public Collection getAllClassifiers(Object namespace) {
-        throw new NotYetImplementedException();
-
+        return getAllOwnedElementsOfKind(namespace, Classifier.class);
     }
 
     public Collection getAllComponents(Object ns) {
-        throw new NotYetImplementedException();
-
+        return getAllOwnedElementsOfKind(ns, Component.class);
     }
 
     public Collection getAllContents(Object namespace) {
-        throw new NotYetImplementedException();
-
+        return modelImpl.getModelManagementHelper().getAllContents(namespace);
     }
 
     public Collection getAllDataTypes(Object ns) {
-        throw new NotYetImplementedException();
-
+        return getAllOwnedElementsOfKind(ns, DataType.class);
     }
 
     public Collection getAllInterfaces(Object ns) {
-        throw new NotYetImplementedException();
-
+        return getAllOwnedElementsOfKind(ns, Interface.class);
     }
 
     public Collection getAllMetatypeNames() {
-        throw new NotYetImplementedException();
-
+        Collection result = new ArrayList();
+        for (Field f : UMLPackage.Literals.class.getDeclaredFields()) {
+            Object o;
+            try {
+                o = f.get(null);
+            } catch (IllegalArgumentException e) {
+                throw e;
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+            if (o instanceof EClass) {
+                result.add(((EClass) o).getName());
+            }
+        }
+        return result;
     }
 
     public Collection getAllNodes(Object ns) {
-        throw new NotYetImplementedException();
-
+        return getAllOwnedElementsOfKind(ns, Node.class);
     }
 
     public Collection getAllPossibleNamespaces(Object modelElement, Object model) {
-        // TODO: Dummy implementation that just returns the current namespace
-        // hierarchy
-        Collection<Namespace> result = new ArrayList<Namespace>();
-        result.addAll(((NamedElement) modelElement).allNamespaces());
+        if (!(model instanceof Element) || !(modelElement instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "modelElement and model must be instances of Element"); //$NON-NLS-1$
+        }
+        Collection result = new ArrayList();
+        if (isValidNamespace(modelElement, model)) {
+            result.add((Namespace) model);
+        }
+        for (Object o : getAllOwnedElementsOfKind(model, Namespace.class)) {
+            if (isValidNamespace(modelElement, o)) {
+                result.add((Namespace) o);
+            }
+        }
         return result;
     }
 
     public Collection getAllRealizedInterfaces(Object element) {
-        return ((Classifier) element).getAllUsedInterfaces();
+        if (!(element instanceof org.eclipse.uml2.uml.Class)) {
+            throw new IllegalArgumentException(
+                    "element must be instance of UML2 Class"); //$NON-NLS-1$
+        }
+        return ((org.eclipse.uml2.uml.Class) element).getAllImplementedInterfaces();
     }
 
     public Collection getAllSupertypes(Object classifier) {
+        if (!(classifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "classifier must be instance of Classifier"); //$NON-NLS-1$
+        }
         return ((Classifier) classifier).allParents();
     }
 
     public Collection getAllVisibleElements(Object ns) {
-        throw new NotYetImplementedException();
+        if (!(ns instanceof Namespace)) {
+            throw new IllegalArgumentException(
+                    "ns must be instance of Namespace"); //$NON-NLS-1$
+        }
+        Collection result = new ArrayList();
+        for (NamedElement e : ((Namespace) ns).getOwnedMembers()) {
+            if (e.getVisibility() == VisibilityKind.PUBLIC_LITERAL) {
+                result.add(e);
+            }
+        }
+        return result;
     }
 
     public Collection getAssociateEnds(Object classifier) {
-        throw new NotYetImplementedException();
+        return modelImpl.getFacade().getAssociationEnds(classifier);
     }
 
     public Collection getAssociateEndsInh(Object classifier) {
-        throw new NotYetImplementedException();
+        if (!(classifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "classifier must be instance of Classifier"); //$NON-NLS-1$
+        }
+        Collection result = new ArrayList();
+        result.addAll(getAssociateEnds(classifier));
+        for (Classifier o : ((Classifier) classifier).allParents()) {
+            result.addAll(getAssociateEnds(o));
+        }
+        return result;
     }
 
     public Collection getAssociatedClassifiers(Object aclassifier) {
-        throw new NotYetImplementedException();
-
+        if (!(aclassifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "aclassifier must be instance of Classifier"); //$NON-NLS-1$
+        }
+        Collection result = new ArrayList();
+        for (Association a : ((Classifier) aclassifier).getAssociations()) {
+            for (Type t : a.getEndTypes()) {
+                if (t != aclassifier && t instanceof Classifier) {
+                    result.add((Classifier) t);
+                }
+            }
+        }
+        return result;
     }
 
     public Object getAssociationEnd(Object type, Object assoc) {
@@ -774,16 +853,19 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public boolean isValidNamespace(Object element, Object namespace) {
-
-        if (!(element instanceof Element) || !(namespace instanceof Namespace)) {
+        if (!(element instanceof NamedElement)
+                || !(namespace instanceof Namespace)) {
             return false;
         }
-
-        Element e = (Element) element;
-        Namespace ns = (Namespace) namespace;
-
-        // TODO: Needs implementation - for now anything is valid
-
+        if (((NamedElement) element).getNamespace() == namespace) {
+            return true;
+        }
+        try {
+            RunnableClass run = getRunnableClassForAddCommand(
+                    (Namespace) namespace, (NamedElement) element);
+        } catch (UnsupportedOperationException e) {
+            return false;
+        }
         return true;
     }
 
