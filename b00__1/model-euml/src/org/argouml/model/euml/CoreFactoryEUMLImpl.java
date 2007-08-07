@@ -118,12 +118,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(abstraction);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain,
-                        run,
-                        "Create the abstraction # between the client # and the supplier #",
-                        run.getParams().get(0), client, supplier));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the abstraction # between the client # and the supplier #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), client, supplier);
 
         return (Abstraction) run.getParams().get(0);
     }
@@ -184,11 +183,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(association);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the association # between # and #",
-                        run.getParams().get(0), type1, type2));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the association # between # and #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), type1, type2);
 
         return (Association) run.getParams().get(0);
     }
@@ -251,11 +249,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(associationClass);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the association class # between # and #",
-                        run.getParams().get(0), end1, end2));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the association class # between # and #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), end1, end2);
 
         return (AssociationClass) run.getParams().get(0);
     }
@@ -341,19 +339,20 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             }
         };
         modelImpl.getModelEventPump().getRootContainer().setHoldEvents(true);
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the association end # of the association #",
-                        run.getParams().get(0), assoc));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the association end # of the association #");
+        editingDomain.getCommandStack().execute(cmd);
         if (run.getParams().isEmpty()) {
             editingDomain.getCommandStack().undo();
+            editingDomain.getCommandStack().flush();
             modelImpl.getModelEventPump().getRootContainer().clearHeldEvents();
             modelImpl.getModelEventPump().getRootContainer().setHoldEvents(
                     false);
             throw new UnsupportedOperationException(
                     "This stereotype cannot be applied to the association end."); //$NON-NLS-1$
         }
+        cmd.setObjects(run.getParams().get(0), assoc);
         modelImpl.getModelEventPump().getRootContainer().setHoldEvents(false);
 
         return (Property) run.getParams().get(0);
@@ -410,11 +409,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(property);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the attribute # of the type #",
-                        run.getParams().get(0), handle));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the attribute # of the type #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), handle);
 
         return (Property) run.getParams().get(0);
     }
@@ -461,12 +459,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(templateBinding);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain,
-                        run,
-                        "Create the template binding # between the client # and the supplier #",
-                        run.getParams().get(0), client, supplier));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the template binding # between the client # and the supplier #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), client, supplier);
 
         return (TemplateBinding) run.getParams().get(0);
     }
@@ -512,11 +509,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(class_);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the class # of the owner #",
-                        run.getParams().get(0), owner));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the class # of the owner #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), owner);
 
         return (org.eclipse.uml2.uml.Class) run.getParams().get(0);
     }
@@ -541,16 +537,18 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         };
         ChangeCommand cmd;
         if (element == null) {
-            cmd = new ChangeCommand(
-                    editingDomain, run, "Create the comment #",
-                    run.getParams().get(0));
+            cmd = new ChangeCommand(modelImpl, run, "Create the comment #");
         } else {
             cmd = new ChangeCommand(
-                    editingDomain, run,
-                    "Create the comment # attached to the element #",
-                    run.getParams().get(0), element);
+                    modelImpl, run,
+                    "Create the comment # attached to the element #");
         }
         editingDomain.getCommandStack().execute(cmd);
+        if (element == null) {
+            cmd.setObjects(run.getParams().get(0));
+        } else {
+            cmd.setObjects(run.getParams().get(0), element);
+        }
 
         return (Comment) run.getParams().get(0);
     }
@@ -573,12 +571,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(constraint);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain,
-                        run,
-                        "Create the constraint # that constrains the element #",
-                        run.getParams().get(0), constrElement));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the constraint # that constrains the element #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), constrElement);
 
         return (Constraint) run.getParams().get(0);
     }
@@ -622,11 +619,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(dataType);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the data type # owned by #",
-                        run.getParams().get(0), owner));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the data type # owned by #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), owner);
 
         return (DataType) run.getParams().get(0);
     }
@@ -652,12 +648,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(dependency);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain,
-                        run,
-                        "Create the dependency # between the client # and the supplier #",
-                        run.getParams().get(0), clientObj, supplierObj));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the dependency # between the client # and the supplier #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), clientObj, supplierObj);
 
         return (Dependency) run.getParams().get(0);
     }
@@ -691,11 +686,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(enumeration);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the enumeration # owned by #",
-                        run.getParams().get(0), owner));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the enumeration # owned by #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), owner);
 
         return (Enumeration) run.getParams().get(0);
     }
@@ -716,11 +710,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(enumerationLiteral);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the enumeration literal # owned by #",
-                        run.getParams().get(0), enumeration));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the enumeration literal # owned by #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), enumeration);
 
         return (EnumerationLiteral) run.getParams().get(0);
     }
@@ -746,12 +739,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(generalization);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain,
-                        run,
-                        "Create the generalization # between # (general) and # (specific)",
-                        run.getParams().get(0), parent, child));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the generalization # between # (general) and # (specific)");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), parent, child);
 
         return (Generalization) run.getParams().get(0);
     }
@@ -796,11 +788,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(interface_);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the interface # owned by #",
-                        run.getParams().get(0), owner));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the interface # owned by #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), owner);
 
         return (Interface) run.getParams().get(0);
     }
@@ -848,11 +839,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(operation);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the operation # owned by #",
-                        run.getParams().get(0), cls));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the operation # owned by #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), cls);
 
         return (Operation) run.getParams().get(0);
     }
@@ -882,11 +872,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(param);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain, run,
-                        "Create the parameter # owned by #",
-                        run.getParams().get(0), o));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the parameter # owned by #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), o);
 
         return (Parameter) run.getParams().get(0);
     }
@@ -907,7 +896,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     public PackageImport buildPackageImport(Object client, Object supplier) {
         return buildPackageImport(client, supplier, null);
     }
-    
+
     private PackageImport buildPackageImport(final Object client,
             final Object supplier, final VisibilityKind visibility) {
         if (!(client instanceof Namespace)) {
@@ -929,12 +918,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(packageImport);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain,
-                        run,
-                        "Create the package import # between the client # and the supplier #",
-                        run.getParams().get(0), client, supplier));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the package import # between the client # and the supplier #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), client, supplier);
 
         return (PackageImport) run.getParams().get(0);
     }
@@ -975,12 +963,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(realization);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain,
-                        run,
-                        "Create the realization # between the client # and the supplier #",
-                        run.getParams().get(0), client, supplier));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the realization # between the client # and the supplier #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), client, supplier);
 
         return (Realization) run.getParams().get(0);
     }
@@ -1010,12 +997,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 getParams().add(usage);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        editingDomain,
-                        run,
-                        "Create the usage # between the client # and the supplier #",
-                        run.getParams().get(0), client, supplier));
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the usage # between the client # and the supplier #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), client, supplier);
 
         return (Usage) run.getParams().get(0);
     }

@@ -26,7 +26,7 @@
 
 package org.argouml.model.euml;
 
-import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.emf.common.notify.impl.NotificationImpl;
 
 /**
  * A ChangeCommand that updates its label.
@@ -41,32 +41,42 @@ public class ChangeCommand extends
 
     private Object objects[];
 
-    public ChangeCommand(EditingDomain editingDomain, Runnable runnable,
-            String label) {
-        super(editingDomain, runnable, label);
+    private EUMLModelImplementation modelImpl;
+
+    public ChangeCommand(EUMLModelImplementation modelImplementation,
+            Runnable runnable, String label) {
+        super(modelImplementation.getEditingDomain(), runnable, label);
+        modelImpl = modelImplementation;
     }
 
-    public ChangeCommand(EditingDomain editingDomain, Runnable runnable,
-            String label, Object... objects) {
-        super(editingDomain, runnable, label);
+    public ChangeCommand(EUMLModelImplementation modelImplementation,
+            Runnable runnable, String label, Object... objects) {
+        super(modelImplementation.getEditingDomain(), runnable, label);
         if (!isValid(label, objects)) {
             throw new IllegalArgumentException(
                     "The label is not compatible with the objects"); //$NON-NLS-1$
         }
         this.objects = objects;
+        modelImpl = modelImplementation;
     }
 
-    @Override
-    public void setLabel(String label) {
+    public void setObjects(Object... objects) {
         if (!isValid(label, objects)) {
             throw new IllegalArgumentException(
                     "The label is not compatible with the objects"); //$NON-NLS-1$
         }
-        super.setLabel(label);
+        this.objects = objects;
+        modelImpl.getModelEventPump().notifyChanged(
+                new NotificationImpl(
+                        ModelEventPumpEUMLImpl.COMMAND_STACK_UPDATE, false,
+                        false));
     }
 
     @Override
     public String getLabel() {
+        if (objects == null) {
+            return super.getLabel();
+        }
         StringBuilder sb = new StringBuilder();
         int j = 0;
         for (int i = 0; i < label.length(); i++) {
