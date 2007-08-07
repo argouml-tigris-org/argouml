@@ -199,19 +199,17 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new IllegalArgumentException();
         }
 
-        Classifier cls = (Classifier) cls1;
+        GeneralizableElement ge = (GeneralizableElement) cls1;
 
         Collection<GeneralizableElement> result = 
             new HashSet<GeneralizableElement>();
         try {
-            Collection<GeneralizableElement> toBeAdded = getSupertypes(cls);
+            Collection<GeneralizableElement> toBeAdded = getSupertypes(ge);
             do {
                 Collection<GeneralizableElement> newlyAdded = 
                     new HashSet<GeneralizableElement>();
                 for (GeneralizableElement element : toBeAdded) {
-                    if (element instanceof Classifier) {
-                        newlyAdded.addAll(getSupertypes(element));
-                    }
+                    newlyAdded.addAll(getSupertypes(element));
                 }
                 result.addAll(toBeAdded);
                 toBeAdded = newlyAdded;
@@ -240,10 +238,9 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Collection<AssociationEnd> getAssociateEnds(Object classifier) {
-        if (!(classifier instanceof Classifier)) {
-            throw new IllegalArgumentException();
-        }
         return Model.getFacade().getAssociationEnds(classifier);
     }
 
