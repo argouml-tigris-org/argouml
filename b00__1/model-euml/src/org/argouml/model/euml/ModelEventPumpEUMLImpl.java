@@ -26,8 +26,10 @@
 
 package org.argouml.model.euml;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -35,15 +37,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.model.UmlChangeEvent;
+import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
+import org.eclipse.emf.common.notify.impl.NotificationImpl;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -103,40 +107,52 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      */
     private EUMLModelImplementation modelImpl;
 
-    private RootContainerAdapter rootContainerAdapter = 
-        new RootContainerAdapter(this);
+    private RootContainerAdapter rootContainerAdapter = new RootContainerAdapter(
+            this);
 
     // Access should be fast
-    private Map<Object, List<Listener>> registerForElements = 
-        new HashMap<Object, List<Listener>>();
+    private Map<Object, List<Listener>> registerForElements = new HashMap<Object, List<Listener>>();
 
     // Iteration should be fast
-    private Map<Object, List<Listener>> registerForClasses = 
-        new LinkedHashMap<Object, List<Listener>>();
+    private Map<Object, List<Listener>> registerForClasses = new LinkedHashMap<Object, List<Listener>>();
 
     private Object mutex;
-    
+
     private Logger LOG = Logger.getLogger(ModelEventPumpEUMLImpl.class);
-    
+
+    public static final int COMMAND_STACK_UPDATE = Notification.EVENT_TYPE_COUNT + 1;
+
+    public static final String COMMAND_STACK_UPDATE_STRING = "COMMAND_STACK_UPDATE"; //$NON-NLS-1$
+
     /**
      * Constructor.
      * 
      * @param implementation
-     *            The ModelImplementation.
+     *                The ModelImplementation.
      */
     public ModelEventPumpEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
         mutex = this;
+        implementation.getEditingDomain().getCommandStack().addCommandStackListener(
+                new CommandStackListener() {
+
+                    public void commandStackChanged(EventObject event) {
+                        notifyChanged(new NotificationImpl(
+                                COMMAND_STACK_UPDATE, false, false));
+                    }
+
+                });
     }
 
     /**
      * Setter for the root container
+     * 
      * @param container
      */
     public void setRootContainer(Notifier container) {
         rootContainerAdapter.setRootContainer(container);
     }
-    
+
     public RootContainerAdapter getRootContainer() {
         return rootContainerAdapter;
     }
@@ -153,7 +169,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-        if (!(modelelement instanceof EObject)) {
+        if (!(modelelement instanceof EObject)
+                && !(modelelement instanceof String && modelelement.equals(COMMAND_STACK_UPDATE_STRING))) {
             throw new IllegalArgumentException(
                     "The modelelement must be instance of EObject."); //$NON-NLS-1$
         }
@@ -163,7 +180,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-        addModelEventListener(listener, modelelement, (String []) null);
+        addModelEventListener(listener, modelelement, (String[]) null);
     }
 
     private void registerListener(Object notifier,
@@ -205,8 +222,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-        if (!(modelClass instanceof Class && EObject.class
-                .isAssignableFrom((Class) modelClass))) {
+        if (!(modelClass instanceof Class && EObject.class.isAssignableFrom((Class) modelClass))) {
             throw new IllegalArgumentException();
         }
         unregisterListener(
@@ -215,7 +231,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-        if (!(modelelement instanceof EObject)) {
+        if (!(modelelement instanceof EObject)
+                && !(modelelement instanceof String && modelelement.equals(COMMAND_STACK_UPDATE_STRING))) {
             throw new IllegalArgumentException();
         }
         unregisterListener(
@@ -224,7 +241,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-        removeModelEventListener(listener, modelelement, (String []) null);
+        removeModelEventListener(listener, modelelement, (String[]) null);
     }
 
     private void unregisterListener(Object notifier,
@@ -265,13 +282,13 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
 
         class EventAndListeners {
-            public EventAndListeners(UmlChangeEvent e,
+            public EventAndListeners(PropertyChangeEvent e,
                     List<PropertyChangeListener> l) {
                 event = e;
                 listeners = l;
             }
 
-            UmlChangeEvent event;
+            PropertyChangeEvent event;
 
             List<PropertyChangeListener> listeners;
         }
@@ -362,6 +379,11 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                     }
                 }
             }
+        } else if (notification.getEventType() == COMMAND_STACK_UPDATE) {
+            events.add(new EventAndListeners(
+                    new PropertyChangeEvent(
+                            this, COMMAND_STACK_UPDATE_STRING, false, false),
+                    getListeners(COMMAND_STACK_UPDATE_STRING)));
         }
 
         for (EventAndListeners e : events) {
@@ -372,11 +394,11 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             }
         }
     }
-    
+
     private List<PropertyChangeListener> getListeners(Object element) {
         return getListeners(element, null);
     }
-    
+
     @SuppressWarnings("unchecked")
     private List<PropertyChangeListener> getListeners(Object element,
             String propName) {
@@ -396,7 +418,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
         return returnedList.isEmpty() ? null : returnedList;
     }
-    
+
     private void addListeners(List<PropertyChangeListener> listeners,
             Object element, String propName,
             Map<Object, List<Listener>> register) {
@@ -410,7 +432,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             }
         }
     }
-    
+
     public void startPumpingEvents() {
         rootContainerAdapter.setDeliverEvents(true);
     }
