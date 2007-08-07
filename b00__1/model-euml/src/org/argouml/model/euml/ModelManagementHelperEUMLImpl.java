@@ -33,10 +33,11 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.model.ModelManagementHelper;
+import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
-
 
 /**
  * The implementation of the ModelManagementHelper for EUML2.
@@ -52,10 +53,9 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
      * Constructor.
      * 
      * @param implementation
-     *            The ModelImplementation.
+     *                The ModelImplementation.
      */
-    public ModelManagementHelperEUMLImpl(
-            EUMLModelImplementation implementation) {
+    public ModelManagementHelperEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
     }
 
@@ -71,9 +71,20 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
 
     public Collection getAllContents(Object element) {
         if (!(element instanceof Element)) {
-            throw new IllegalArgumentException("The argument must be instance of Element"); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    "The argument must be instance of Element"); //$NON-NLS-1$
         }
-        return ((Element) element).allOwnedElements();
+        Collection result = new HashSet();
+        if (element instanceof Collaboration) {
+            // TODO: implement
+        }
+        if (element instanceof Classifier) {
+            result.addAll(((Classifier) element).allFeatures());
+        }
+        if (element instanceof Namespace) {
+            result.addAll(((Namespace) element).getOwnedMembers());
+        }
+        return result;
     }
 
     public Collection getAllImportedElements(Object pack) {
@@ -121,13 +132,12 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     private boolean contained(Object container, Object candidate) {
         Object current = candidate;
         while (current != null) {
-            if (container.equals(current))
-                return true;
+            if (container.equals(current)) return true;
             current = modelImpl.getFacade().getModelElementContainer(current);
         }
         return false;
     }
-    
+
     public Collection getAllModelElementsOfKind(Object nsa, String kind) {
         return getAllModelElementsOfKind(nsa, kind);
     }
