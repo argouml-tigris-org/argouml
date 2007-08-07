@@ -40,18 +40,22 @@ public interface CoreHelper {
     boolean isSubType(Object type, Object subType);
 
     /**
-     * Return all Classifiers of which this Classifier is a direct or indirect
-     * subtype.
+     * Return all elements of which this GeneralizableElement is a direct or
+     * indirect subtype.
+     * <p>
+     * Note: This follows the Generalizations in UML, so the results do
+     * <em>not</em> include Interfaces which are connected to Classes by
+     * Realizations.
      * 
-     * @param classifier
-     *            the Classifier you want to have the parents for
+     * @param element
+     *                the GeneralizableElement you want to have the parents for
      * @return a collection of the parents, each of which is a
      *         GeneralizableElement.
      */
-    Collection getAllSupertypes(Object classifier);
+    Collection getAllSupertypes(Object element);
 
     /**
-     * Return direct supertypes of a GeneralizableElement.
+     * Return the immediate supertypes of a GeneralizableElement.
      * 
      * @param generalizableElement
      *            the element you want to have the parents for
@@ -61,29 +65,36 @@ public interface CoreHelper {
     Collection getSupertypes(Object generalizableElement);
 
     /**
-     * Return all opposite AssociationEnds of a given Classifier. Same as
+     * Return all AssociationEnds of a given Classifier. Same as
      * {@link Facade#getAssociationEnds(Object)}.
      * 
      * @param classifier
-     *            the classifier for which to get the opposite association ends
+     *            the classifier for which to get the association ends
      * 
-     * @return a collection of the opposite associationends
+     * @return a collection of the associationends
      * @see Facade#getAssociationEnds(Object)
+     * @deprecated for 0.25.4 by tfmorris.  Use 
+     * {@link Facade#getAssociationEnds(Object)}.
      */
+    @Deprecated
     Collection getAssociateEnds(Object classifier);
 
     /**
-     * Return all opposite AssociationEnds of a given Classifier and its
-     * supertypes.
+     * Return all AssociationEnds of a given Classifier plus all 
+     * AssociationEnds of all of the Classifier's supertypes.
+     * <p>
+     * Note: Until 0.24 this was documented as returning the <em>opposite</em>
+     * ends, but the implementation has returned the near ends since at least
+     * beginning of the MDR implementation (0.18).
      * 
      * @param classifier
-     *            the classifier for which to get the opposite association ends
-     * @return a collection of the opposite associationends
+     *                the classifier for which to get the association ends
+     * @return a collection of the AssociationEnds
      */
     Collection getAssociateEndsInh(Object classifier);
 
     /**
-     * Remove a Feature from a Flassifier.
+     * Remove a Feature from a Classifier.
      *
      * @param cls the classifier
      * @param feature the feature to be removed
@@ -243,7 +254,7 @@ public interface CoreHelper {
      *
      * @param achild is the child GeneralizableElement.
      * @param aparent is the parent GeneralizableElement.
-     * @return MGeneralization
+     * @return Generalization
      */
     Object getGeneralization(Object achild, Object aparent);
 
@@ -390,7 +401,7 @@ public interface CoreHelper {
      * there is no source, null is returned. Examples of sources
      * include classifiers that are types to associationends, usecases
      * that are bases to extend and include relations and so on. A
-     * source is allways the start from the arrow in the fig, the
+     * source is always the start from the arrow in the fig, the
      * destination the end.<p>
      * 
      * TODO: move this method to a generic ModelHelper
