@@ -215,15 +215,21 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getAssociationEnds(Object handle) {
-        // TODO: Do we want near end, far end, or both here? - tfm
-        // We'll just return them all for now
-        Collection<Association> associations =
-                ((Classifier) handle).getAssociations();
-        Collection<Property> ends = new ArrayList<Property>();
-        for (Association assoc : associations) {
-            ends.addAll(assoc.getMemberEnds());
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Classifier"); //$NON-NLS-1$
         }
-        return ends;
+        // CoreHelper#getAssociateEnds specifies that the opposite association
+        // ends should be returned
+        Collection result = new ArrayList();
+        for (Association a : ((Classifier) handle).getAssociations()) {
+            for (Property p : a.getMemberEnds()) {
+                if (p.getType() == handle) {
+                    result.add(p);
+                }
+            }
+        }
+        return result;
     }
 
     public Collection getAssociationRoles(Object handle) {
