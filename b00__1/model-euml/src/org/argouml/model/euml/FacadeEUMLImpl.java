@@ -219,8 +219,6 @@ class FacadeEUMLImpl implements Facade {
             throw new IllegalArgumentException(
                     "handle must be instance of Classifier"); //$NON-NLS-1$
         }
-        // CoreHelper#getAssociateEnds specifies that the opposite association
-        // ends should be returned
         Collection result = new ArrayList();
         for (Association a : ((Classifier) handle).getAssociations()) {
             for (Property p : a.getMemberEnds()) {
