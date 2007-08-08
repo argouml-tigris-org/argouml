@@ -220,11 +220,9 @@ class FacadeEUMLImpl implements Facade {
                     "handle must be instance of Classifier"); //$NON-NLS-1$
         }
         Collection result = new ArrayList();
-        for (Association a : ((Classifier) handle).getAssociations()) {
-            for (Property p : a.getMemberEnds()) {
-                if (p.getType() == handle) {
-                    result.add(p);
-                }
+        for (Property p : ((Classifier) handle).getAttributes()) {
+            if (p.getAssociation() != null) {
+                result.add(p);
             }
         }
         return result;
