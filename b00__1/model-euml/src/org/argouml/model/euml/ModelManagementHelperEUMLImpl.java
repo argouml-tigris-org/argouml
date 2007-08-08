@@ -132,7 +132,9 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     private boolean contained(Object container, Object candidate) {
         Object current = candidate;
         while (current != null) {
-            if (container.equals(current)) return true;
+            if (container.equals(current)) {
+                return true;
+            }
             current = modelImpl.getFacade().getModelElementContainer(current);
         }
         return false;
