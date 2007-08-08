@@ -327,8 +327,8 @@ public interface CoreHelper {
     Collection getAssociatedClassifiers(Object aclassifier);
 
     /**
-     * Gets the associations between the classifiers from and to. Returns null
-     * if from or to is null or if there is no association between them.
+     * Gets the associations between the classifiers from and to. Returns an
+     * empty collection if no Associations are found.
      *
      * @param from a classifier
      * @param to a classifier
