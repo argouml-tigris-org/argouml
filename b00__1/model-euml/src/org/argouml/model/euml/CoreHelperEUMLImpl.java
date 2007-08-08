@@ -31,15 +31,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.argouml.model.CoreHelper;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.BehavioralFeature;
@@ -49,21 +52,21 @@ import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
+import org.eclipse.uml2.uml.DirectedRelationship;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
-import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.Feature;
-import org.eclipse.uml2.uml.Generalization;
-import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
+import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.RedefinableElement;
+import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.StructuralFeature;
 import org.eclipse.uml2.uml.Type;
@@ -463,12 +466,17 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 kindType);
     }
 
-    public Collection<Property> getAllAttributes(Object classifier) {
+    public Collection getAllAttributes(Object classifier) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "classifier must be instance of Classifier"); //$NON-NLS-1$
         }
-        return ((Classifier) classifier).getAllAttributes();
+        Collection result = new HashSet();
+        result.addAll(((Classifier) classifier).getAttributes());
+        for (Classifier c : ((Classifier) classifier).allParents()) {
+            result.addAll(c.getAttributes());
+        }
+        return result;
     }
 
     private Collection getAllOwnedElementsOfKind(Object owner, Class kind) {
@@ -616,25 +624,58 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Object getAssociationEnd(Object type, Object assoc) {
-        throw new NotYetImplementedException();
+        if (!(type instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "type must be instance of Classifier"); //$NON-NLS-1$
+        }
+        if (!(assoc instanceof Association)) {
+            throw new IllegalArgumentException(
+                    "assoc must be instance of Association"); //$NON-NLS-1$
+        }
+        return ((Association) assoc).getMemberEnd(null, (Classifier) type);
     }
 
     public Collection getAssociations(Object from, Object to) {
-        throw new NotYetImplementedException();
-
+        // TODO: The javadoc specifies that null should be returned if 'from' or
+        // 'to' are null or if there are no associations between them. We should
+        // return an empty collection instead and the javadoc should be changed.
+        if (from == null || to == null) {
+            return Collections.EMPTY_LIST;
+        }
+        if (!(from instanceof Classifier) || !(to instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'from' and 'to' must be instances of Classifier"); //$NON-NLS-1$
+        }
+        Collection result = new ArrayList();
+        for (Association a : ((Classifier) from).getAssociations()) {
+            if (((Classifier) to).getAssociations().contains(a)) {
+                result.add(a);
+            }
+        }
+        return result;
     }
 
-    public Collection getAssociations(Object oclassifier) {
-        throw new NotYetImplementedException();
-
+    public Collection getAssociations(Object classifier) {
+        if (!(classifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+        }
+        return ((Classifier) classifier).getAssociations();
     }
 
     public Collection getAttributesInh(Object classifier) {
-        throw new NotYetImplementedException();
-
+        if (!(classifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+        }
+        return ((Classifier) classifier).getAllAttributes();
     }
 
     public List<BehavioralFeature> getBehavioralFeatures(Object classifier) {
+        if (!(classifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+        }
         List<BehavioralFeature> result = new ArrayList<BehavioralFeature>();
         for (Feature feature : ((Classifier) classifier).getFeatures()) {
             if (feature instanceof BehavioralFeature) {
@@ -645,211 +686,314 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public String getBody(Object comment) {
-        throw new NotYetImplementedException();
-
+        if (!(comment instanceof Comment)) {
+            throw new IllegalArgumentException(
+                    "'comment' must be instance of Comment"); //$NON-NLS-1$
+        }
+        return ((Comment) comment).getBody();
     }
 
     public Collection<Classifier> getChildren(Object element) {
+        if (!(element instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'element' must be instance of Classifier"); //$NON-NLS-1$
+        }
         Collection<Classifier> results = new HashSet<Classifier>();
-        for (Generalization g : ((Classifier) element).getGeneralizations()) {
-            results.addAll(getChildren(g.getSpecific()));
+        LinkedList<Classifier> classifiers = new LinkedList<Classifier>();
+        classifiers.add((Classifier) element);
+        while (!classifiers.isEmpty()) {
+            Classifier c = classifiers.pop();
+            if (results.contains(c)) {
+                break;
+            }
+            results.add(c);
+            for (DirectedRelationship d : c.getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
+                for (Element e : d.getSources()) {
+                    if (e instanceof Classifier && !results.contains(e)) {
+                        classifiers.add((Classifier) e);
+                    }
+                }
+            }
         }
         results.remove(element);
         return results;
     }
 
     public Collection getDependencies(Object supplierObj, Object clientObj) {
-        throw new NotYetImplementedException();
-
+        if (!(supplierObj instanceof NamedElement) || !(clientObj instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "supplierObj and clientObj must be instances of NamedElement"); //$NON-NLS-1$
+        }
+        Collection result = new ArrayList();
+        for (Dependency d : ((NamedElement) clientObj).getClientDependencies()) {
+            if (d.getSuppliers().contains(supplierObj)) {
+                result.add(d);
+            }
+        }
+        return result;
     }
 
     public Collection getExtendedClassifiers(Object element) {
-        throw new NotYetImplementedException();
-
+        // TODO: Does CoreHelper#getExtendedClassifiers(Object element) means
+        // all parents (direct and indirect) or only the direct parents?
+        if (!(element instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'element' must be instance of Classifier"); //$NON-NLS-1$
+        }
+        return ((Classifier) element).getGenerals();
     }
 
     public Collection getExtendingClassifiers(Object classifier) {
-        throw new NotYetImplementedException();
-
+        // TODO: Does CoreHelper#getExtendingClassifiers(Object element) means
+        // all direct and indirect extending classifiers or only the direct
+        // extending classifiers?
+        if (!(classifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+        }
+        Collection result = new HashSet();
+        for (Element e : getExtendingElements(classifier)) {
+            if (e instanceof Classifier) {
+                result.add(e);
+            }
+        }
+        return result;
     }
 
-    public Collection getExtendingElements(Object element) {
-        throw new NotYetImplementedException();
-
+    public Collection<Element> getExtendingElements(Object element) {
+        if (!(element instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'element' must be instance of Classifier"); //$NON-NLS-1$
+        }
+        Collection result = new HashSet();
+        for (DirectedRelationship d : ((Classifier) element).getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
+            for (Element e : d.getSources()) {
+                result.add(e);
+            }
+        }
+        return result;
     }
 
     public Object getFirstSharedNamespace(Object ns1, Object ns2) {
-        throw new NotYetImplementedException();
-
+        if (!(ns1 instanceof Namespace) || !(ns2 instanceof Namespace)) {
+            throw new IllegalArgumentException(
+                    "ns1 and ns2 must be instances of Namespace"); //$NON-NLS-1$
+        }
+        Namespace result = null;
+        List<Namespace> l1 = new ArrayList<Namespace>();
+        l1.add((Namespace) ns1);
+        l1.addAll(((Namespace) ns1).allNamespaces());
+        List<Namespace> l2 = new ArrayList<Namespace>();
+        l2.add((Namespace) ns2);
+        l2.addAll(((Namespace) ns2).allNamespaces());
+        int i = l1.size() - 1;
+        int j = l2.size() - 1;
+        while (i >= 0 && j >= 0) {
+            if (l1.get(i) == l2.get(j)) {
+                result = l1.get(i);
+                i--;
+                j--;
+            } else {
+                break;
+            }
+        }
+        return result;
     }
 
     public Collection getFlows(Object source, Object target) {
+        // TODO: implement
         throw new NotYetImplementedException();
-
     }
 
     public Object getGeneralization(Object achild, Object aparent) {
-        throw new NotYetImplementedException();
-
+        if (!(achild instanceof Classifier) || !(aparent instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'achild' and 'aparent' must be instances of Classifier"); //$NON-NLS-1$
+        }
+        return ((Classifier) achild).getGeneralization((Classifier) aparent);
     }
 
     public Collection getOperationsInh(Object classifier) {
-        throw new NotYetImplementedException();
-
+        if (!(classifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+        }
+        return ((Classifier) classifier).getAllOperations();
     }
 
     public Collection getRealizedInterfaces(Object cls) {
-        throw new NotYetImplementedException();
-
+        if (!(cls instanceof org.eclipse.uml2.uml.Class)) {
+            throw new IllegalArgumentException(
+                    "'cls' must be instance of UML2 Class"); //$NON-NLS-1$
+        }
+        return ((org.eclipse.uml2.uml.Class) cls).getImplementedInterfaces();
     }
 
     public Collection getRelationships(Object source, Object dest) {
-        throw new NotYetImplementedException();
-
+        if (!(source instanceof Element) || !(dest instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "'source' and 'dest' must be instances of Element"); //$NON-NLS-1$
+        }
+        Collection result = new ArrayList();
+        for (DirectedRelationship d : ((Element) source).getSourceDirectedRelationships()) {
+            if (d.getTargets().contains(dest)) {
+                result.add(d);
+            }
+        }
+        for (DirectedRelationship d : ((Element) source).getTargetDirectedRelationships()) {
+            if (d.getSources().contains(dest)) {
+                result.add(d);
+            }
+        }
+        return result;
     }
 
     public List getReturnParameters(Object operation) {
-        throw new NotYetImplementedException();
-
+        if (!(operation instanceof Operation)) {
+            throw new IllegalArgumentException(
+                    "'operation' must be instance of Operation"); //$NON-NLS-1$
+        }
+        List result = new ArrayList();
+        for (Parameter p : ((Operation) operation).getOwnedParameters()) {
+            if (p.getDirection() == ParameterDirectionKind.RETURN_LITERAL) {
+                result.add(p);
+            }
+        }
+        return result;
     }
 
     public Object getSource(Object relationship) {
+        // Link does not exist in UML2, a link is represented just as an
+        // association
+
+        // TODO: treat Message
 
         // TODO: not implemented for UML 2 - tfm
-        // if (relationship instanceof Link) {
-        // Iterator it =
-        // modelImpl.getFacade()
-        // .getConnections(relationship).iterator();
-        // if (it.hasNext()) {
-        // return modelImpl.getFacade().getInstance(it.next());
-        // } else {
+        // } else if (relationship instanceof Flow) {
+        // Flow flow = (Flow) relationship;
+        // Collection col = flow.getSource();
+        // if (col.isEmpty()) {
         // return null;
         // }
-        // }
+        // return (col.toArray())[0];
+
+        if (!(relationship instanceof Relationship)
+                && !(relationship instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "'relationship' must be instance of Relationship or Property"); //$NON-NLS-1$
+        }
+
         if (relationship instanceof Association) {
-            Association assoc = (Association) relationship;
-            List conns = assoc.getMemberEnds();
-            if (conns == null || conns.isEmpty()) {
+            List<Property> conns = ((Association) relationship).getMemberEnds();
+            if (conns.size() < 2) {
                 return null;
             }
-            // TODO: double check this - tfm
-            return ((Property) conns.get(0)).getType();
-        } else if (relationship instanceof Generalization) {
-            Generalization gen = (Generalization) relationship;
-            return gen.getSpecific();
-        } else if (relationship instanceof Dependency) {
-            Dependency dep = (Dependency) relationship;
-            List col = dep.getClients();
-            if (col.isEmpty()) {
+            return conns.get(1).getType();
+        }
+        if (relationship instanceof DirectedRelationship) {
+            List<Element> sources = ((DirectedRelationship) relationship).getSources();
+            if (sources.isEmpty()) {
                 return null;
             }
-            return col.get(0);
-            // TODO: not implemented for UML 2 - tfm
-            // } else if (relationship instanceof Flow) {
-            // Flow flow = (Flow) relationship;
-            // Collection col = flow.getSource();
-            // if (col.isEmpty()) {
-            // return null;
-            // }
-            // return (col.toArray())[0];
-        } else if (relationship instanceof Extend) {
-            Extend extend = (Extend) relationship;
-            return extend.getExtension(); // we have to follow the
-            // arrows..
-        } else if (relationship instanceof Include) {
-            Include include = (Include) relationship;
-            return modelImpl.getFacade().getBase(include);
-        } else if (relationship instanceof Property) {
+            return sources.get(0);
+        }
+        if (relationship instanceof Property) {
             return ((Property) relationship).getAssociation();
-        } else {
-            throw new IllegalArgumentException();
         }
-
+        return null;
     }
-
+    
     public Object getDestination(Object relationship) {
+        // Link does not exist in UML2, a link is represented just as an
+        // association
 
-        // if (relationship instanceof Link) {
-        // Iterator it = modelImpl.getFacade()
-        // .getConnections(relationship).iterator();
-        // if (it.hasNext()) {
-        // it.next();
-        // if (it.hasNext()) {
-        // return modelImpl.getFacade().getInstance(it.next());
-        // } else {
+        // TODO: treat Message
+
+        // TODO: not implemented for UML 2 - tfm
+        // } else if (relationship instanceof Flow) {
+        // Flow flow = (Flow) relationship;
+        // Collection col = flow.getTarget();
+        // if (col.isEmpty()) {
         // return null;
         // }
-        // } else {
-        // return null;
-        // }
-        // }
+        // return getFirstItemOrNull(col);
+
+        if (!(relationship instanceof Relationship)
+                && !(relationship instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "'relationship' must be instance of Relationship or Property"); //$NON-NLS-1$
+        }
 
         if (relationship instanceof Association) {
-            Association assoc = (Association) relationship;
-            List conns = assoc.getMemberEnds();
-            if (conns.size() <= 1) {
+            List<Property> conns = ((Association) relationship).getMemberEnds();
+            if (conns.isEmpty()) {
                 return null;
             }
-            return ((Property) conns.get(1)).getType();
-        } else if (relationship instanceof Generalization) {
-            Generalization gen = (Generalization) relationship;
-            return gen.getGeneral();
-        } else if (relationship instanceof Dependency) {
-            Dependency dep = (Dependency) relationship;
-            List col = dep.getSuppliers();
-            if (col.isEmpty()) {
-                return null;
-            }
-            return col.get(0);
-            // } else if (relationship instanceof Flow) {
-            // Flow flow = (Flow) relationship;
-            // Collection col = flow.getTarget();
-            // if (col.isEmpty()) {
-            // return null;
-            // }
-            // return getFirstItemOrNull(col);
-        } else if (relationship instanceof Extend) {
-            Extend extend = (Extend) relationship;
-            return extend.getExtendedCase();
-        } else if (relationship instanceof Include) {
-            Include include = (Include) relationship;
-            return modelImpl.getFacade().getAddition(include);
-        } else if (relationship instanceof Property) {
-            return ((Property) relationship).getType();
-        } else {
-            throw new IllegalArgumentException();
+            return conns.get(0).getType();
         }
-
+        if (relationship instanceof DirectedRelationship) {
+            List<Element> targets = ((DirectedRelationship) relationship).getTargets();
+            if (targets.isEmpty()) {
+                return null;
+            }
+            return targets.get(0);
+        }
+        if (relationship instanceof Property) {
+            return ((Property) relationship).getAssociation();
+        }
+        return null;
     }
 
     public Object getSpecification(Object object) {
+        // In UML2 the metaclass Method does not exists
         throw new NotYetImplementedException();
-
     }
 
     public Collection getSpecifications(Object classifier) {
-        throw new NotYetImplementedException();
-
+        return getRealizedInterfaces(classifier);
     }
 
     public Collection getSubtypes(Object cls) {
-        throw new NotYetImplementedException();
-
+        if (!(cls instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'cls' must be instance of Classifier"); //$NON-NLS-1$
+        }
+        Collection results = new HashSet();
+        for (DirectedRelationship d : ((Classifier) cls).getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
+            results.addAll(d.getSources());
+        }
+        return results;
     }
 
     public Collection getSupertypes(Object generalizableElement) {
-        throw new NotYetImplementedException();
-
+        if (!(generalizableElement instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "'generalizableElement' must be instance of Classifier"); //$NON-NLS-1$
+        }
+        return ((Classifier) generalizableElement).getGenerals();
     }
 
     public boolean hasCompositeEnd(Object association) {
-        throw new NotYetImplementedException();
-
+        if (!(association instanceof Association)) {
+            throw new IllegalArgumentException(
+                    "'association' must be instance of Association"); //$NON-NLS-1$
+        }
+        for (Property p : ((Association) association).getMemberEnds()) {
+            if (p.getAggregation() == AggregationKind.COMPOSITE_LITERAL) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isSubType(Object type, Object subType) {
-        throw new NotYetImplementedException();
-
+        if (!(type instanceof Class) || !(subType instanceof Class)
+                || !EObject.class.isAssignableFrom((Class) type)
+                || !EObject.class.isAssignableFrom((Class) subType)) {
+            throw new IllegalArgumentException(
+                    "type and subType must be instances of java.lang.Class<EObject>"); //$NON-NLS-1$
+        }
+        return ((Class) type).isAssignableFrom((Class) subType);
     }
 
     public boolean isValidNamespace(Object element, Object namespace) {
@@ -869,9 +1013,28 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return true;
     }
 
-    public void removeAnnotatedElement(Object handle, Object me) {
-        throw new NotYetImplementedException();
-
+    public void removeAnnotatedElement(final Object comment,
+            final Object annotatedElement) {
+        if (!(annotatedElement instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "annotatedElement must be instance of Element"); //$NON-NLS-1$
+        }
+        if (!(comment instanceof Comment)) {
+            throw new IllegalArgumentException(
+                    "comment must be instance of Comment"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Comment) comment).getAnnotatedElements().remove(
+                        (Element) annotatedElement);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl,
+                        run,
+                        "Remove the link between the comment # and the element #",
+                        comment, annotatedElement));
     }
 
     public void removeClientDependency(Object handle, Object dep) {
