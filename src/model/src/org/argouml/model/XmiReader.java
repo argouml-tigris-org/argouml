@@ -24,23 +24,26 @@
 
 package org.argouml.model;
 
+import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.xml.sax.InputSource;
 
 /**
- * A wrapper around the genuine XmiReader that provides public
- * access with no knowledge of actual UML implementation.
- * Unlike many of the interfaces to the model there is no control to force
- * a single instance of an XmiReader. This is to allow work objects generated
- * by the imlementation to be garbage collected when an XmiReader instance
- * falls out of scope.
- *
+ * XMI file reader to deserialize a model into the model repository.
+ * <p>
  * @author Bob Tarling
  */
 public interface XmiReader {
-
+    /* Implementation Note:
+    * Unlike many of the interfaces to the model there is no control to force
+    * a single instance of an XmiReader. This is to allow work objects generated
+    * by the implementation to be garbage collected when an XmiReader instance
+    * falls out of scope.
+    */
+    
     /**
      * Parse a given inputsource to a collection of top level model elements.
      *
@@ -69,6 +72,7 @@ public interface XmiReader {
      */
     Collection parse(InputSource pIs, boolean profile) throws UmlException;
 
+    
     /**
      * @return the map
      */
@@ -109,4 +113,35 @@ public interface XmiReader {
      * @return the tag name
      */
     public String getTagName();
+    
+    /**
+     * Get the list of paths to be searched when looking for XMI files to
+     * resolve external references with. The list is maintained in a static 
+     * structure shared by all instances.
+     * 
+     * @param paths an array of directory paths
+     */
+    public List<String> getSearchPath();
+
+    /**
+     * Add a path to the list of paths to be searched when looking for XMI files to
+     * resolve external references with.  The list is maintained in a static 
+     * structure shared by all instances.
+     * <p>
+     * TODO: It's desirable to have separate search paths for separate files,
+     * but more work is required in ArgoUML so that it knows how to maintain
+     * separate contexts for the profiles and user models.
+     * 
+     * @param paths an array of directory paths
+     */
+    public void addSearchPath(String path);
+
+    /**
+     * Remove a path from the list of paths to be searched when looking for XMI files to
+     * resolve external references with. The list is maintained in a static 
+     * structure shared by all instances.
+     * 
+     * @param paths an array of directory paths
+     */
+    public void removeSearchPath(String path);
 }
