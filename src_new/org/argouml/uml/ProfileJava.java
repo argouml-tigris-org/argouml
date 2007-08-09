@@ -25,18 +25,12 @@
 package org.argouml.uml;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -73,8 +67,8 @@ public class ProfileJava extends Profile {
     
     private Collection profileElements;
     
-    static final String DEFAULT_PROFILE = 
-                            "/org/argouml/model/mdr/profiles/default-uml14.xmi";
+    static final String PROFILE_DIR = "/org/argouml/model/mdr/profiles/";
+    static final String DEFAULT_PROFILE = PROFILE_DIR + "default-uml14.xmi";
     
     private String profileFilename;
 
@@ -370,90 +364,46 @@ public class ProfileJava extends Profile {
     
     private Collection loadProfile(String modelFilename) {
         LOG.info("Loading profile '" + modelFilename + "'");
-        InputStream is = null;
-        //
-        //  try to find a file with that name
-        //
-        try {
-            File modelFile = new File(modelFilename);
-            // TODO: This is in the wrong place.  It's not profile specific.
-            // It needs to be moved to main XMI reading code. - tfm 20060326
-            if (modelFilename.endsWith("zip")) {
-                String filename = modelFile.getName();
-                String extension =
-                    filename.substring(
-                            filename.indexOf('.'), filename.lastIndexOf('.'));
-                String path = modelFile.getParent();
-                // Add the path of the model to the search path, so we can
-                // read dependent models
-                if (path != null) {
-                    System.setProperty("org.argouml.model.modules_search_path",
-                            path);
-                }
-                try {
-                    is = openZipStreamAt(modelFile.toURL(), extension);
-                } catch (MalformedURLException e) {
-                    LOG.error("Exception while loading profile '"
-                            + modelFilename + "'", e);
-                    return Collections.EMPTY_LIST;
-                } catch (IOException e) {
-                    LOG.error("Exception while loading profile '"
-                            + modelFilename + "'", e);
-                    return Collections.EMPTY_LIST;
-                }
-            } else {
-                is = new FileInputStream(modelFile);
+        String systemId = null;
+        
+        File modelFile = new File(modelFilename);
+        if (modelFile.exists()) {
+            try {
+                systemId = modelFile.toURL().toExternalForm();
+            } catch (MalformedURLException e1) {
+                systemId = null;
             }
-        } catch (FileNotFoundException ex) {
-            // No file found, try looking in the resources
-            
-            LOG.warn("Failed to load profile from file '" + modelFilename
-                    + "', attempting to load as resource");
+            if (systemId.endsWith(".zip")) {
+                systemId = systemId + "!/"
+                + systemId.substring(0, systemId.length() - 4);
+            } 
+        } else {
 
             // Note that the class that we run getClass() in needs to be
             // in the same ClassLoader as the profile XMI file.
             // If we run using Java Web Start then we have every ArgoUML
             // file in the same jar (i.e. the same ClassLoader).
-            is = this.getClass().getResourceAsStream(modelFilename);
+            systemId = this.getClass().getResource(modelFilename).toExternalForm();
         }
-        if (is != null) {
 
+        if (systemId != null) {
             try {
                 XmiReader xmiReader = Model.getXmiReader();
-                InputSource inputSource = new InputSource(is);
+                InputSource inputSource = new InputSource(systemId);
                 LOG.info("Loaded profile '" + modelFilename + "'");
+                if (!xmiReader.getSearchPath().contains(PROFILE_DIR)) {
+                    xmiReader.addSearchPath(PROFILE_DIR);
+                }
                 return xmiReader.parse(inputSource, true);
             } catch (UmlException e) {
-                LOG.error("Exception while loading profile '" 
-                        + modelFilename + "'", e);
+                LOG.error("Exception while loading profile '" + modelFilename
+                        + "'", e);
                 return Collections.EMPTY_LIST;
             }
+        } else {
+            LOG.error("Profile '" + modelFilename + "' not found");
+            return Collections.EMPTY_LIST;
         }
-        LOG.error("Profile '" + modelFilename + "' not found");
-        return Collections.EMPTY_LIST;
     }
 
-    /**
-     * Open a ZipInputStream to the first file found with a given extension.
-     *
-     * TODO: Remove since this is a duplicate of ZipFilePersister method
-     * when we have refactored the Persister subsystem.
-     *
-     * @param url
-     *            The URL of the zip file.
-     * @param ext
-     *            The required extension.
-     * @return the zip stream positioned at the required location.
-     * @throws IOException
-     *             if there is a problem opening the file.
-     */
-    private ZipInputStream openZipStreamAt(URL url, String ext)
-        throws IOException {
-        ZipInputStream zis = new ZipInputStream(url.openStream());
-        ZipEntry entry = zis.getNextEntry();
-        while (entry != null && !entry.getName().endsWith(ext)) {
-            entry = zis.getNextEntry();
-        }
-        return zis;
-    }
 }
