@@ -377,91 +377,15 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return getCorrespondingElement(elem, model, true);
     }
 
-    /*
-     * TODO: This should be supplement/replaced with methods to manage
-     * references to external profiles using HREFs rather than using 
-     * copy-on-reference semantics
-     */
+
     public Object getCorrespondingElement(Object elem, Object model,
             boolean canCreate) {
-        if (elem == null || model == null || !(elem instanceof ModelElement)) {
-            throw new NullPointerException("elem: " + elem 
-                    + ",model: " + model);
-        }
-
-        // Trivial case
-        if (modelImpl.getFacade().getModel(elem) == model) {
-            return elem;
-        }
-
-        // Base case
-        if (elem instanceof Model) {
-            return model;
-        }
-
-        Namespace ns = ((ModelElement) elem).getNamespace();
-        if (ns == null) {
-            return null;
-        }
-        ns = (Namespace) getCorrespondingElement(ns, model, canCreate);
-        if (ns == null) {
-            return null;
-        }
-
-        Iterator it = ns.getOwnedElement().iterator();
-        while (it.hasNext()) {
-            ModelElement e = (ModelElement) it.next();
-            if (correspondsInternal(e, (ModelElement) elem)) {
-                return e;
-            }
-        }
-
-        if (!canCreate) {
-            return null;
-        }
-
-        return modelImpl.getCopyHelper().copy(elem, ns);
+        return elem;
     }
 
-    /**
-     * Check whether two ModelElements match in type and name.
-     * 
-     * @param me1 first element
-     * @param me2 second element
-     * @return true if they match
-     */
-    private boolean correspondsInternal(ModelElement me1, ModelElement me2) {
-        if (me1.getClass() != me2.getClass()) {
-            return false;
-        }
-        if ((me1.getName() == null && me2.getName() != null)
-                || (me1.getName() != null 
-                        && !me1.getName().equals(me2.getName()))) {
-
-            return false;
-
-        }
-        return true;
-    }
-    
 
     public boolean corresponds(Object obj1, Object obj2) {
-        if (!(obj1 instanceof ModelElement)) {
-            throw new IllegalArgumentException("obj1");
-        }
-        if (!(obj2 instanceof ModelElement)) {
-            throw new IllegalArgumentException("obj2");
-        }
-
-        if (obj1 instanceof Model && obj2 instanceof Model) {
-            return true;
-        }
-
-        if (!correspondsInternal((ModelElement) obj1, (ModelElement) obj2)) {
-            return false;
-        }
-        return corresponds(((ModelElement) obj1).getNamespace(), 
-                ((ModelElement) obj1).getNamespace());
+        return obj1.equals(obj2);
     }
 
 
@@ -640,7 +564,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 Object dep = i.next();
                 if (dep instanceof Permission) {
                     if (modelImpl.getExtensionMechanismsHelper()
-                            .hasStereoType(dep, FRIEND_STEREOTYPE)) {
+                            .hasStereotype(dep, FRIEND_STEREOTYPE)) {
                         Collection mes = modelImpl.getFacade()
                                 .getSuppliers(dep);
                         Iterator mei = mes.iterator();
@@ -653,9 +577,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                             }
                         }
                     } else if (modelImpl.getExtensionMechanismsHelper()
-                            .hasStereoType(dep, IMPORT_STEREOTYPE)
+                            .hasStereotype(dep, IMPORT_STEREOTYPE)
                             || modelImpl.getExtensionMechanismsHelper()
-                                    .hasStereoType(dep, ACCESS_STEREOTYPE)) {
+                                    .hasStereotype(dep, ACCESS_STEREOTYPE)) {
                         Collection mes = modelImpl.getFacade()
                                 .getSuppliers(dep);
                         Iterator mei = mes.iterator();
