@@ -31,12 +31,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -46,9 +50,12 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.util.FileConstants;
 import org.argouml.util.ThreadUtils;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * To persist to and from zargo (zipped file) storage.
@@ -203,8 +210,91 @@ class ZargoFilePersister extends UmlFilePersister {
         progressMgr.setNumberOfPhases(3 + UML_PHASES_LOAD);
         ThreadUtils.checkIfInterrupted();
 
+        int fileVersion;
+        String releaseVersion;
         try {
-            File combinedFile = File.createTempFile("combinedzargo_", ".uml");
+            String argoEntry = getEntryNames(file, ".argo").iterator().next();
+            URL argoUrl = makeZipEntryUrl(file.toURL(),
+                    argoEntry);
+            fileVersion = getPersistenceVersion(argoUrl.openStream());
+            releaseVersion = getReleaseVersion(argoUrl.openStream());
+        } catch (MalformedURLException e) {
+            throw new OpenException(e);
+        } catch (IOException e) {
+            throw new OpenException(e);
+        }
+
+        Project p;
+        if (!checkVersion(fileVersion, releaseVersion)) {
+            File combinedFile = zargoToUml(file, progressMgr);
+            p = super.doLoad(file, combinedFile, progressMgr);
+        } else {
+            LOG.info("Loading uml file of version " + fileVersion);
+            p = loadFromZargo(file, progressMgr);
+        }
+
+        progressMgr.nextPhase();
+
+        p.setURI(file.toURI());
+        return p;
+
+    }
+
+    private Project loadFromZargo(File file, ProgressMgr progressMgr)
+            throws OpenException {
+
+        Project p = ProjectFactory.getInstance().createProject(file.toURI());
+        try {
+            progressMgr.nextPhase();
+
+            // Load .argo project descriptor
+            ArgoParser parser = new ArgoParser();
+            String argoEntry = getEntryNames(file, ".argo").iterator().next();
+            parser.readProject(p, new InputSource(makeZipEntryUrl(file.toURL(),
+                    argoEntry).toExternalForm()));
+
+            List memberList = parser.getMemberList();
+
+            LOG.info(memberList.size() + " members");
+
+            // Load .xmi file before any PGML files
+            String xmiEntry = getEntryNames(file, ".xmi").iterator().next();
+            MemberFilePersister persister = getMemberFilePersister("xmi");
+            persister.load(p, makeZipEntryUrl(file.toURL(), xmiEntry));
+            
+            // Load the rest
+            List<String> entries = getEntryNames(file, null);
+            for (String name : entries) {
+                String ext = name.substring(name.lastIndexOf('.') + 1);
+                if (!"argo".equals(ext) && !"xmi".equals(ext)) {
+                    persister = getMemberFilePersister(ext);
+                    LOG.info("Loading member with "
+                            + persister.getClass().getName());
+                    persister.load(p, openZipEntry(file.toURL(), name));
+                }
+            }
+
+            progressMgr.nextPhase();
+            ThreadUtils.checkIfInterrupted();
+            p.postLoad();
+            return p;
+        } catch (InterruptedException e) {
+            return null;
+        } catch (MalformedURLException e) {
+            throw new OpenException(e);
+        } catch (IOException e) {
+            throw new OpenException(e);
+        } catch (SAXException e) {
+            throw new OpenException(e);
+        }
+    }
+
+
+    private File zargoToUml(File file, ProgressMgr progressMgr)
+            throws OpenException, InterruptedException {
+        File combinedFile = null;
+        try {
+            combinedFile = File.createTempFile("combinedzargo_", ".uml");
             LOG.info(
                 "Combining old style zargo sub files into new style uml file "
                     + combinedFile.getAbsolutePath());
@@ -227,9 +317,8 @@ class ZargoFilePersister extends UmlFilePersister {
                 openZipStreamAt(file.toURL(), FileConstants.PROJECT_FILE_EXT);
             
             if (zis == null) {
-                LOG.info("There is no argo file so use ZipFilePersister");
-                ZipFilePersister zfp = new ZipFilePersister();
-                return zfp.doLoad(file);
+                throw new OpenException(
+                        "There is no .argo file in the .zargo");
             }
             
             String line;
@@ -287,7 +376,7 @@ class ZargoFilePersister extends UmlFilePersister {
             zis.close();
             reader.close();
 
-            loadDiagrams(file, writer);
+            copyDiagrams(file, writer);
 
             // Alway load the todo items last so that any model
             // elements or figs that the todo items refer to
@@ -321,18 +410,13 @@ class ZargoFilePersister extends UmlFilePersister {
             writer.println("</uml>");
             writer.close();
             LOG.info("Completed combining files");
-            Project p =  super.doLoad(file, combinedFile, progressMgr);
-            
-            progressMgr.nextPhase();
-            
-            p.setURI(file.toURI());
-            return p;
         } catch (IOException e) {
             throw new OpenException(e);
         }
+        return combinedFile;
     }
     
-    private void loadDiagrams(
+    private void copyDiagrams(
 	    File file, 
 	    PrintWriter writer) throws IOException {
 	
@@ -407,6 +491,17 @@ class ZargoFilePersister extends UmlFilePersister {
         return zis;
     }
 
+    private InputStream openZipEntry(URL url, String entryName)
+            throws MalformedURLException, IOException {
+        return makeZipEntryUrl(url, entryName).openStream();
+    }
+
+    private URL makeZipEntryUrl(URL url, String entryName)
+            throws MalformedURLException {
+        String entryURL = "jar:" + url + "!/" + entryName;
+        return new URL(entryURL);
+    }
+    
     /**
      * A stream of input streams for reading the Zipped file.
      */
@@ -445,28 +540,32 @@ class ZargoFilePersister extends UmlFilePersister {
     }
     
     private int getPgmlCount(File file) throws IOException {
-        int pgmlCount = 0;
+        return getEntryNames(file, ".pgml").size();
+    }
+
+    private boolean containsTodo(File file) throws IOException {
+        return !getEntryNames(file, ".todo").isEmpty();
+    }
+    
+    /**
+     * Get a list of zip file entries which end with the given extension.
+     * If the extension is null, all entries are returned.
+     */
+    private List<String> getEntryNames(File file, String extension)
+            throws IOException, MalformedURLException {
         ZipInputStream zis = new ZipInputStream(file.toURL().openStream());
+        List<String> result = new ArrayList<String>();
         ZipEntry entry = zis.getNextEntry();
         while (entry != null) {
-            if (entry.getName().endsWith(".pgml")) {
-                ++pgmlCount;
+            String name = entry.getName();
+            if (extension == null || name.endsWith(extension)) {
+                result.add(name);
             }
             entry = zis.getNextEntry();
         }
         zis.close();
-        return pgmlCount;
+        return result;
     }
     
-    private boolean containsTodo(File file) throws IOException {
-        ZipInputStream zis = new ZipInputStream(file.toURL().openStream());
-        ZipEntry entry = zis.getNextEntry();
-        while (entry != null) {
-            if (entry.getName().endsWith(".todo")) {
-                return true;
-            }
-            entry = zis.getNextEntry();
-        }
-        return false;
-    }
+
 }
