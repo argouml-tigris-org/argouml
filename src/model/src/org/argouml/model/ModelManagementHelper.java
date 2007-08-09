@@ -141,23 +141,28 @@ public interface ModelManagementHelper {
     Vector getPath(Object element);
 
     /**
-     * Utility function for managing several overlayed models, eg a user
-     * model to which elements from some profile models is imported when
-     * needed. This version of the function assumes it is permissible to
-     * create missing elements.
-     *
-     * This function may fail and return null eg if some required object
-     * doesn't exist in the target model and cannot be copied.
-     *
-     * @param elem is some element.
-     * @param model is the model the returned object shall belong to.
-     * @return An element of the same type and at the same position in the
-     *  model as elem, or if that would turn out impossible then null.
+     * Get local equivalent to a profile ModelElement. Equivalent to calling
+     * {@link #getCorrespondingElement(Object, Object, boolean)} with a value of
+     * <code>true</code> for the third parameter.
+     * <p>
+     * This function may fail and return null eg if some required object doesn't
+     * exist in the target model and cannot be copied.
+     * 
+     * @param elem
+     *                is some element.
+     * @param model
+     *                is the model the returned object shall belong to.
+     * @return An element of the same type and at the same position in the model
+     *         as elem, or if that would turn out impossible then null.
+     * @see {@link #getCorrespondingElement(Object, Object, boolean)}
+     * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model implementation
+     * maintains cross XMI file references now.
      */
+    @Deprecated
     Object getCorrespondingElement(Object elem, Object model);
 
     /**
-     * Utility function for managing several overlayed models, eg a user
+     * Utility function for managing several overlaid models, eg a user
      * model to which elements from some profile models is imported when
      * needed. This version of the function will only copy objects if
      * canCreate is true, but may then also copy other missing elements.
@@ -172,7 +177,10 @@ public interface ModelManagementHelper {
      * @param canCreate determines if objects can be copied into model.
      * @return An element of the same type and at the same position in the
      *  model as elem, or if that would turn out impossible then null.
+     * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model implementation
+     * maintains cross XMI file references now.
      */
+    @Deprecated
     Object getCorrespondingElement(Object elem, Object model,
             			   boolean canCreate);
 
@@ -181,24 +189,26 @@ public interface ModelManagementHelper {
      * same relative position in the model.
      *
      * Same relative position implies either:<ul>
-     * <li>their owners correspond to eachother.
+     * <li>their owners correspond to each other.
      * <li>they are both owned by model objects.
      * </ul>
      *
      * @param obj1 is an object.
      * @param obj2 is another object.
      * @return true if obj1 corresponds to obj2, false otherwise.
+     * @deprecated for 0.25.4 by tfmorris.  Equivalent to obj1.equals(obj2).
      */
+    @Deprecated
     boolean corresponds(Object obj1, Object obj2);
 
     /**
-     * Checks if a child for some ownershiprelationship (as in a
+     * Checks if a child for some ownership relationship (as in a
      * namespace A is owned by a namespace B) is allready in the
      * ownerhship relation.
      *
      * @param parent The current leaf for the ownership relation
      * @param child The child that should be owned by the parent
-     * @return true if the child is allready in the ownership relationship
+     * @return true if the child is already in the ownership relationship
      */
     boolean isCyclicOwnership(Object parent, Object child);
 
