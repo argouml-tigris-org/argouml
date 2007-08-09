@@ -34,6 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import javax.jmi.reflect.InvalidObjectException;
@@ -109,7 +110,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      */
     private int ignoredElementCount;
 
-
+    private static List<String> searchDirs = new ArrayList();
 
     /**
      * Constructor for XMIReader.
@@ -124,35 +125,29 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     }
 
     
-    public Collection parse(InputSource pIs) throws UmlException {
-        return parse(pIs, false);
+    public Collection parse(InputSource inputSource) throws UmlException {
+        return parse(inputSource, false);
     }
 
-    
-    public Collection parse(InputSource pIs, boolean profile)
+    public Collection parse(InputSource inputSource, boolean profile)
         throws UmlException {
 
         Collection<RefObject> newElements = Collections.EMPTY_LIST;
         RefPackage extent = modelPackage;
 
         try {
-            LOG.info("Loading '" + pIs.getSystemId() + "'");
+            LOG.info("Loading '" + inputSource.getSystemId() + "'");
 
             InputConfig config = new InputConfig();
             config.setUnknownElementsListener(this);
             config.setUnknownElementsIgnored(true);
 
             resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
-                    config, modelImpl.getObjectToId());
+                    config, modelImpl.getObjectToId(), searchDirs, profile);
             config.setReferenceResolver(resolver);
             
             XMIReader xmiReader =
                     XMIReaderFactory.getDefault().createXMIReader(config);
-
-            // Copy stream to a file to be sure it can be repositioned.
-            // TODO: find a way to remove this, since this *always* alterate the
-            // performances for reading an XMI file, even if it's not UML 1.4.
-            File tmpFile = copySource(pIs);
 
             /*
              * MDR has a hardcoded printStackTrace on all exceptions,
@@ -189,9 +184,14 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     + numElements);
 
             try {
+                String systemId = inputSource.getSystemId();
+//                if (systemId == null) {
+//                    File file = copySource(inputSource);
+//                    systemId = file.toURL().toExternalForm();
+//                }
                 newElements =
-                    xmiReader.read(tmpFile.toURI().toString(), extent);
-
+                    xmiReader.read(inputSource.getByteStream(), systemId, extent);
+                
                 // If a UML 1.3 file, attempt to upgrade it to UML 1.4
                 if (uml13) {
                     // First delete model data from our first attempt
@@ -201,8 +201,10 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     resolver.clearIdMaps();
                     startTopElements = modelImpl.getFacade().getRootElements();
 
-                    newElements = convertAndLoadUml13(pIs.getSystemId(),
+                    File tmpFile = copySource(inputSource);
+                    newElements = convertAndLoadUml13(inputSource.getSystemId(),
                             extent, xmiReader, tmpFile);
+                    tmpFile.delete();
                 }
 
                 numElements = modelImpl.getFacade().getRootElements().size()
@@ -421,7 +423,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         tmpOutFile.deleteOnExit();
         FileOutputStream out = new FileOutputStream(tmpOutFile);
         InputStream in = input.getByteStream();
-
+        
         while ((len = in.read(buf)) > 0) {
             out.write(buf, 0, len);
         }
@@ -493,9 +495,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
     };
     
-    /*
-     * @see org.netbeans.lib.jmi.xmi.UnknownElementsListener#elementFound(java.lang.String)
-     */
+
     public void elementFound(String name) {
         // Silently ignore anything specified by caller attempt to continue
         if (ignoredElements != null) {
@@ -528,9 +528,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     }
 
 
-    /*
-     * @see org.argouml.model.XmiReader#setIgnoredElements(java.lang.String[])
-     */
     public boolean setIgnoredElements(String[] elementNames) {
         if (elementNames == null) {
             elementNames = new String[] {};
@@ -540,17 +537,12 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         return true;
     }
 
-    /*
-     * @see org.argouml.model.XmiReader#getIgnoredElements()
-     */
+
     public String[] getIgnoredElements() {
         return ignoredElements;
     }
 
 
-    /*
-     * @see org.argouml.model.XmiReader#getIgnoredElementCount()
-     */
     public int getIgnoredElementCount() {
         return ignoredElementCount;
     }
@@ -559,4 +551,18 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     public String getTagName() {
         return "XMI";
     }
+
+
+    public void addSearchPath(String path) {
+        searchDirs.add(path);
+    }
+
+    public void removeSearchPath(String path) {
+        searchDirs.remove(path);
+    }
+
+    public List<String> getSearchPath() {
+        return searchDirs;
+    }
+
 }

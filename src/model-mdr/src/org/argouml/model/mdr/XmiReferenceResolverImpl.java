@@ -75,6 +75,10 @@ class XmiReferenceResolverImpl extends XmiContext {
     private static final Logger LOG =
         Logger.getLogger(XmiReferenceResolverImpl.class);
     
+    private static final String PROFILE_RESOURCE_PATH = "/org/argouml/model/mdr/profiles/";
+    private static final String PROFILE_BASE_URL = "http://argouml.org/profiles/uml14";
+    private static final String PROFILE_FILE = PROFILE_BASE_URL + "/" + "default-uml14.xmi";
+    
     private Map<String, Object> idToObjects = 
         Collections.synchronizedMap(new HashMap<String, Object>());
 
@@ -116,16 +120,19 @@ class XmiReferenceResolverImpl extends XmiContext {
      */
     private Map<String, String> reverseUrlMap = new HashMap<String, String>();
     
+    private boolean profile;
+    
     /**
      * Constructor.
      * @see org.netbeans.lib.jmi.xmi.XmiContext#XmiContext(javax.jmi.reflect.RefPackage[], org.netbeans.api.xmi.XMIInputConfig)
      * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
      */
-    XmiReferenceResolverImpl(RefPackage[] extents, 
-            XMIInputConfig config, Map<String, XmiReference> objectToIdMap) {
+    XmiReferenceResolverImpl(RefPackage[] extents, XMIInputConfig config,
+            Map<String, XmiReference> objectToIdMap, List<String> searchDirs, boolean isProfile) {
         super(extents, config);
-        registerSearchPath();
         objectsToId = objectToIdMap;
+        modulesPath = searchDirs;
+        profile = isProfile;
     }
 
     /**
@@ -141,25 +148,34 @@ class XmiReferenceResolverImpl extends XmiContext {
     public void register(String systemId, String xmiId, RefObject object) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Registering XMI ID '" + xmiId 
-                    + "' in system ID '" + systemId + "'");
+                    + "' in system ID '" + systemId 
+                    + "' to object with MOF ID '" + object.refMofId() + "'");
         }
-        super.register(systemId, xmiId, object);
+
         if (topSystemId == null) {
             topSystemId = systemId;
             try {
                 baseUri = new URI(
                         systemId.substring(0, systemId.lastIndexOf('/') + 1));
             } catch (URISyntaxException e) {
-                LOG.error("Bad URI syntax for base URI from XMI document", e);
+                LOG.warn("Bad URI syntax for base URI from XMI document " + systemId, e);
+                baseUri = null;
             }
             LOG.debug("Top system ID set to " + topSystemId);
         }
 
-        if (systemId == topSystemId) {
+        if (profile) {
+            // TODO: Support multiple named profiles here
+            //systemId = PROFILE_DIR + "/" + <profilename>;
+            systemId = PROFILE_FILE;
+        } else if (systemId == topSystemId) {
             systemId = null;
-        } else {
+        } else if (reverseUrlMap.get(systemId) != null) {
             systemId = reverseUrlMap.get(systemId);
+        } else {
+            LOG.debug("Unable to map systemId - " + systemId);
         }
+        
         String key;
         if (systemId == null) {
             // No # here because PGML parser needs bare UUID/xmi.id
@@ -168,14 +184,26 @@ class XmiReferenceResolverImpl extends XmiContext {
             key = systemId + "#" + xmiId;                
         }
 
-        if (!idToObjects.containsKey(key)) {
+        if (!idToObjects.containsKey(key) 
+                && !objectsToId.containsKey(object.refMofId())) {
+            super.register(systemId, xmiId, object);
             idToObjects.put(key, object);
             objectsToId.put(object.refMofId(),
                     new XmiReference(systemId, xmiId));
         } else {
-            if (idToObjects.get(key) != object) {
+            if (idToObjects.containsKey(key) && idToObjects.get(key) != object) {
                 LOG.error("Collision - multiple elements with same xmi.id : "
                         + xmiId);
+            }
+            if (objectsToId.containsKey(object.refMofId())) {
+                // For now just skip registering this and ignore the request, 
+                // but the real issue is that MagicDraw serializes the same 
+                // object in two different composition associations, first in
+                // the referencing file and second in the referenced file
+                LOG.debug("register called twice for the same object - ignoring second");
+                XmiReference ref = objectsToId.get(object.refMofId());
+                LOG.debug(" - first reference = " + ref.getSystemId() + "#" + ref.getXmiId());
+                LOG.debug(" - 2nd reference   = " + systemId + "#" + xmiId);
             }
         }
     }
@@ -197,25 +225,6 @@ class XmiReferenceResolverImpl extends XmiContext {
         objectsToId.clear();
     }
     
-    /**
-     * Set up module search path to be used by AndroMDA URL resolver.
-     * The path is retrieved from shared state (a system property) which
-     * is set up externally (currently by 
-     * org.argouml.uml.ProfileJava#loadProfile() which is probably
-     * the wrong place for it)
-     */
-    private void registerSearchPath() {
-        //TODO: Replace by something elegant (i.e in the Model, or anything 
-        //accessible by the components of ArgoUML base and this class).
-        String pathList = 
-            System.getProperty("org.argouml.model.modules_search_path");
-        if (pathList != null) {
-            String[] paths = pathList.split(",");
-            for (String path : paths) {
-                addModuleSearchPath(path);
-            }
-        }
-    }
     
     /////////////////////////////////////////////////////
     ////////// Begin AndroMDA Code //////////////////////
@@ -298,16 +307,21 @@ class XmiReferenceResolverImpl extends XmiContext {
                 urlMap.put(suffixWithExt, modelUrl);
                 String relativeUri = systemId;
                 try {
+                    if (baseUri != null) {
                     relativeUri = baseUri.relativize(new URI(systemId))
                             .toString();
                     LOG.debug("       system ID " + systemId 
                             + "\n  relativized as " + relativeUri);
+                    } else {
+                        relativeUri = systemId;
+                    }
                 } catch (URISyntaxException e) {
                     LOG.error("Error relativizing system ID " + systemId, e);
+                    relativeUri = systemId;
                 }
-                // MDR will register the first form in the actual file that it
-                // reads in and the second form when it resolves 
-                // an external reference
+                // TODO: Check whether this is really needed.  I think it's 
+                // left over from an incomplete understanding of the MagicDraw
+                // composition error problem - tfm
                 reverseUrlMap.put(modelUrl.toString(), relativeUri);
                 reverseUrlMap.put(systemId, relativeUri);
             }
@@ -399,19 +413,37 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @return the suffix as a String.
      */
     private URL findModelUrlOnClasspath(String systemId) {
-        String modelName = systemId.substring(systemId.lastIndexOf("/") + 1,
-                systemId.length());
+        final String dot = ".";
+        String modelName = systemId;
+        if (systemId.startsWith(PROFILE_BASE_URL)) {
+            modelName = PROFILE_RESOURCE_PATH
+                    + systemId.substring(PROFILE_BASE_URL.length() + 1);
+            // TODO: Look for profiles in user specified directory as well
+        } else {
+            int filenameIndex = systemId.lastIndexOf("/");
+            if (filenameIndex > 0) {
+                modelName = systemId.substring(filenameIndex + 1, systemId
+                        .length());
+            } else {
+                LOG.warn("Received systemId with no '/'" + systemId);
+            }
 
-        // TODO: The following will fail to find files with embedded dots such
-        // as andromda-profile-datatype-3.1.xml - tfm
-        
-        String dot = ".";
-        // remove the first prefix because it may be an archive
-        // (like magicdraw)
-        modelName = modelName.substring(0, modelName.lastIndexOf(dot));
+
+            // remove the first prefix because it may be an archive
+            // (like magicdraw)
+            if (modelName.lastIndexOf(dot) > 0) {
+                modelName = modelName.substring(0, modelName.lastIndexOf(dot));
+            }
+        }
 
         URL modelUrl = Thread.currentThread().getContextClassLoader()
                 .getResource(modelName);
+        // TODO: Not sure whether the above is better in some cases, but
+        // the code below is better for both Java Web Start and Eclipse.
+        if (modelUrl == null) {
+            modelUrl = this.getClass().getResource(modelName);
+        }
+        // TODO: Is this adequate for finding profiles in Java WebStart jars? - tfm
         if (modelUrl == null) {
             if (CLASSPATH_MODEL_SUFFIXES != null
                     && CLASSPATH_MODEL_SUFFIXES.length > 0) {
@@ -421,6 +453,10 @@ class XmiReferenceResolverImpl extends XmiContext {
                                 + modelUrl + "'");
                     modelUrl = Thread.currentThread().getContextClassLoader()
                             .getResource(modelName + dot + suffix);
+                    if (modelUrl != null) {
+                        break;
+                    }
+                    modelUrl = this.getClass().getResource(modelName);
                     if (modelUrl != null) {
                         break;
                     }
