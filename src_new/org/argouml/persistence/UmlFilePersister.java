@@ -31,6 +31,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilterOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -38,6 +39,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -345,38 +347,31 @@ class UmlFilePersister extends AbstractFilePersister {
             // Run through any stylesheet upgrades
             int fileVersion = getPersistenceVersionFromFile(file);
 
-            // If we're trying to load a file from a future version
-            // complain and refuse.
-            if (fileVersion > PERSISTENCE_VERSION) {
-                String release = getReleaseVersionFromFile(file);
-                throw new VersionException(
-                    "The file selected is from a more up to date version of "
-                    + "ArgoUML. It has been saved with ArgoUML version "
-                    + release
-                    + ". Please load with that or a more up to date"
-                    + "release of ArgoUML");
-            }
-
-            // If we're about to upgrade the file lets take an archive
-            // of it first.
-            if (fileVersion < PERSISTENCE_VERSION) {
+            LOG.info("Loading uml file of version " + fileVersion);
+            if (!checkVersion(fileVersion,  getReleaseVersionFromFile(file))) {
+                // If we're about to upgrade the file lets take an archive
+                // of it first.
                 String release = getReleaseVersionFromFile(file);
                 copyFile(
                     originalFile,
                     new File(originalFile.getAbsolutePath() + '~' + release));
+                
+                progressMgr.setNumberOfPhases(progressMgr.getNumberOfPhases() 
+                        + (PERSISTENCE_VERSION - fileVersion));
+                
+                while (fileVersion < PERSISTENCE_VERSION) {
+                    ++fileVersion;
+                    LOG.info("Upgrading to version " + fileVersion);
+                    long startTime = System.currentTimeMillis();
+                    file = transform(file, fileVersion);
+                    long endTime = System.currentTimeMillis();
+                    LOG.info("Upgrading took "
+                            + ((endTime - startTime) / 1000)
+                            + " seconds");
+                    progressMgr.nextPhase();
+                }
             }
-           
-            LOG.info("Loading uml file of version " + fileVersion);
-            while (fileVersion < PERSISTENCE_VERSION) {
-                ++fileVersion;
-                LOG.info("Upgrading to version " + fileVersion);
-                long startTime = System.currentTimeMillis();
-                file = transform(file, fileVersion);
-                long endTime = System.currentTimeMillis();
-                LOG.info("Upgrading took "
-                        + ((endTime - startTime) / 1000)
-                        + " seconds");
-            }
+
             progressMgr.nextPhase();
 
             inputStream = new XmlInputStream(
@@ -432,6 +427,21 @@ class UmlFilePersister extends AbstractFilePersister {
         } catch (SAXException e) {
             throw new OpenException(e);
         }
+    }
+
+    protected boolean checkVersion(int fileVersion, String releaseVersion)
+            throws OpenException, VersionException {
+        // If we're trying to load a file from a future version
+        // complain and refuse.
+        if (fileVersion > PERSISTENCE_VERSION) {
+            throw new VersionException(
+                "The file selected is from a more up to date version of "
+                + "ArgoUML. It has been saved with ArgoUML version "
+                + releaseVersion
+                + ". Please load with that or a more up to date"
+                + "release of ArgoUML");
+        }
+        return fileVersion >= PERSISTENCE_VERSION;
     }
 
 
@@ -491,7 +501,7 @@ class UmlFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * Reads an XML file of uml format and extracts the
+     * Read stream in .argo format and extracts the
      * persistence version number from the root tag.
      *
      * @param file the XML file
@@ -499,19 +509,31 @@ class UmlFilePersister extends AbstractFilePersister {
      * @throws OpenException on any error
      */
     private int getPersistenceVersionFromFile(File file) throws OpenException {
-        BufferedInputStream inputStream = null;
+        try {
+            return getPersistenceVersion(new BufferedInputStream(file.toURL()
+                    .openStream()));
+        } catch (MalformedURLException e) {
+            throw new OpenException(e);
+        } catch (IOException e) {
+            throw new OpenException(e);
+        }
+    }
+        
+    /**
+     * Reads an XML file of uml format and extracts the
+     * persistence version number from the root tag.
+     *
+     * @param file the XML file
+     * @return The version number
+     * @throws OpenException on any error
+     */
+    protected int getPersistenceVersion(InputStream inputStream) throws OpenException {
         BufferedReader reader = null;
         try {
-            inputStream = new BufferedInputStream(file.toURL().openStream());
             reader = new BufferedReader(new InputStreamReader(inputStream, 
                     Argo.getEncoding()));
             String rootLine = reader.readLine();
-            while (!rootLine.startsWith("<uml ")) {
-                rootLine = reader.readLine();
-                if (rootLine == null) {
-                    throw new OpenException(
-                            "Failed to find the root <uml> tag");
-                }
+            while (!rootLine.trim().startsWith("<argo ")) {
             }
             return Integer.parseInt(getVersion(rootLine));
         } catch (IOException e) {
@@ -520,9 +542,6 @@ class UmlFilePersister extends AbstractFilePersister {
             throw new OpenException(e);
         } finally {
             try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
                 if (reader != null) {
                     reader.close();
                 }
@@ -531,7 +550,6 @@ class UmlFilePersister extends AbstractFilePersister {
             }
         }
     }
-
 
     /**
      * Reads an XML file of uml format and extracts the
@@ -542,10 +560,27 @@ class UmlFilePersister extends AbstractFilePersister {
      * @throws OpenException on any error
      */
     private String getReleaseVersionFromFile(File file) throws OpenException {
-        BufferedInputStream inputStream = null;
+        try {
+            return getReleaseVersion(new BufferedInputStream(file.toURL()
+                    .openStream()));
+        } catch (MalformedURLException e) {
+            throw new OpenException(e);
+        } catch (IOException e) {
+            throw new OpenException(e);
+        }
+    }
+
+    /**
+     * Reads an XML file of uml format and extracts the
+     * persistence version number from the root tag.
+     *
+     * @param file the XML file
+     * @return The ArgoUML release number
+     * @throws OpenException on any error
+     */
+    protected String getReleaseVersion(InputStream inputStream) throws OpenException {
         BufferedReader reader = null;
         try {
-            inputStream = new BufferedInputStream(file.toURL().openStream());
             reader = new BufferedReader(new InputStreamReader(inputStream, 
                     Argo.getEncoding()));
             String versionLine = reader.readLine();
@@ -621,7 +656,7 @@ class UmlFilePersister extends AbstractFilePersister {
      * @param tag The tag.
      * @return the persister
      */
-    private MemberFilePersister getMemberFilePersister(String tag) {
+    protected MemberFilePersister getMemberFilePersister(String tag) {
         MemberFilePersister persister = null;
         if (tag.equals("pgml")) {
             persister =
