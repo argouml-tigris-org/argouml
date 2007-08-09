@@ -33,9 +33,11 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -73,7 +75,23 @@ class ModelMemberFilePersister extends MemberFilePersister
         Logger.getLogger(ModelMemberFilePersister.class);
 
     /**
-     * Loads a model (XMI only) from an input source. BE ADVISED this
+     * Loads a model (XMI only) from a URL. BE ADVISED this
+     * method has a side effect. It sets _UUIDREFS to the model.<p>
+     *
+     * If there is a problem with the xmi file, an error is set in the
+     * getLastLoadStatus() field. This needs to be examined by the
+     * calling function.<p>
+     *
+     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
+     * java.io.InputStream)
+     */
+    public void load(Project project, URL url)
+            throws OpenException {
+        load(project, new InputSource(url.toExternalForm()));
+    }
+    
+    /**
+     * Loads a model (XMI only) from an input stream. BE ADVISED this
      * method has a side effect. It sets _UUIDREFS to the model.<p>
      *
      * If there is a problem with the xmi file, an error is set in the
@@ -84,9 +102,14 @@ class ModelMemberFilePersister extends MemberFilePersister
      * java.io.InputStream)
      */
     public void load(Project project, InputStream inputStream)
+            throws OpenException {
+        load(project, new InputSource(inputStream));
+    }
+
+
+    private void load(Project project, InputSource source)
         throws OpenException {
 
-        InputSource source = new InputSource(inputStream);
         Object mmodel = null;
 
         // 2002-07-18
@@ -283,8 +306,10 @@ class ModelMemberFilePersister extends MemberFilePersister
 
     /**
      * Read a XMI file from the given inputsource.
+     * 
      * @param p Project to which load the inputsource.
-     * @param source The InputSource
+     * @param source The InputSource. The systemId of the input source should be
+     *                set so that it can be used to resolve external references.
      * @throws OpenException If an error occur while reading the source
      */
     public synchronized void readModels(InputSource source)
@@ -299,6 +324,19 @@ class ModelMemberFilePersister extends MemberFilePersister
             } else {
                 reader.setIgnoredElements(null);
             }
+
+            List<String> searchPath = reader.getSearchPath();
+            String pathList = 
+                System.getProperty("org.argouml.model.modules_search_path");
+            if (pathList != null) {
+                String[] paths = pathList.split(",");
+                for (String path : paths) {
+                    if (!searchPath.contains(path)) {
+                        reader.addSearchPath(path);
+                    }
+                }
+            }
+            reader.addSearchPath(source.getSystemId());
             
             curModel = null;
             elementsRead = reader.parse(source, false);

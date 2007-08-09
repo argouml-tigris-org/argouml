@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.URL;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
@@ -45,8 +46,7 @@ import org.argouml.kernel.ProjectMember;
  */
 abstract class MemberFilePersister {
     /**
-     * Load the member based on instance variables
-     * which should have been setup in the constructor.
+     * Load a project member from an InputStream.
      *
      * @param project the project to persist
      * @param inputStream the inputStream to parse to load the member.
@@ -55,6 +55,16 @@ abstract class MemberFilePersister {
     public abstract void load(Project project, InputStream inputStream)
         throws OpenException;
 
+    /**
+     * Load a project member from an InputStream.
+     *
+     * @param project the project to persist
+     * @param inputStream the inputStream to parse to load the member.
+     * @throws OpenException on any parsing errors.
+     */
+    public abstract void load(Project project, URL url)
+        throws OpenException;
+    
     /**
      * Gets the tag name which is the root tag for this member.
      * @return tag name.

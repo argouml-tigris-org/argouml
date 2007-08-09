@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.URL;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
@@ -72,7 +73,15 @@ class DiagramMemberFilePersister extends MemberFilePersister {
             throw new OpenException(e);
         }
     }
-
+    
+    @Override
+    public void load(Project project, URL url) throws OpenException {   
+        try {
+            load(project, url.openStream());
+        } catch (IOException e) {
+            throw new OpenException(e);
+        }
+    }
 
     @Override
     public String getMainTag() {
@@ -140,4 +149,6 @@ class DiagramMemberFilePersister extends MemberFilePersister {
         }
         
     }
+
+
 }
