@@ -702,7 +702,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         LinkedList<Classifier> classifiers = new LinkedList<Classifier>();
         classifiers.add((Classifier) element);
         while (!classifiers.isEmpty()) {
-            Classifier c = classifiers.pop();
+            Classifier c = classifiers.removeFirst();
             if (results.contains(c)) {
                 break;
             }
