@@ -166,16 +166,13 @@ class XmiWriterMDRImpl implements XmiWriter {
                 elements.add(model);
                 LOG.info("Saving model '" + ((Model) model).getName() + "'");
             } else {
-                Collection<RefObject> profileElements = modelImpl.getProfileElements();
                 UmlPackage pkg = modelImpl.getUmlPackage();
                 for (Iterator it = pkg.getCore().getElement().refAllOfType()
                         .iterator(); it.hasNext();) {
                     RefObject obj = (RefObject) it.next();
                     // Find top level objects which aren't part of profile
                     if (obj.refImmediateComposite() == null ) {
-                        if (!profileElements.contains(obj)) {
                             elements.add(obj);
-                        }
                     }
                 }
                 LOG.info("Saving " + elements.size() 
