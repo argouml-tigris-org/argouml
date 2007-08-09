@@ -108,16 +108,24 @@ abstract class SAXParserBase extends DefaultHandler {
     /**
      * @return the parsing time
      */
-    public long    getParseTime()          { return parseTime; }
+    public long getParseTime() {
+        return parseTime;
+    }
 
-    ////////////////////////////////////////////////////////////////
-    // main parsing method
 
     /**
-     * @param is the inputstream of the project to read
+     * @param reader the reader to read
      * @throws SAXException when parsing xml
      */
-    public void parse(Reader is) throws SAXException {
+    public void parse(Reader reader) throws SAXException {
+        parse(new InputSource(reader));
+    }
+    
+    /**
+     * @param is the InputSource to read
+     * @throws SAXException when parsing xml
+     */
+    public void parse(InputSource input) throws SAXException {
 
         long start, end;
 
@@ -127,8 +135,12 @@ abstract class SAXParserBase extends DefaultHandler {
 
         try {
             SAXParser parser = factory.newSAXParser();
-            InputSource input = new InputSource(is);
-            input.setSystemId(getJarResource("org.argouml.kernel.Project"));
+
+            // If we weren't given a system ID, attempt to use the URL for the
+            // JAR that we were loaded from.  (Why? - tfm)
+            if (input.getSystemId() == null) {
+                input.setSystemId(getJarResource("org.argouml.kernel.Project"));
+            }
 
             start = System.currentTimeMillis();
             parser.parse(input, this);
