@@ -227,14 +227,6 @@ class ZipFilePersister extends XmiFilePersister {
                     new XmiInputStream(stream, this, 100000, null));
             is.setSystemId(file.toURL().toExternalForm());
 
-            // Add the path of the current model to the search path, so we can
-            // find linked models relative it
-            String path = file.getParent();
-            if (path != null) {
-                System.setProperty("org.argouml.model.modules_search_path",
-                        path);
-            }
-            
             ModelMemberFilePersister modelPersister =
                 new ModelMemberFilePersister();
             
