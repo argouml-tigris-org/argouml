@@ -29,9 +29,9 @@ package org.argouml.model.euml;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -106,6 +106,24 @@ class XmiReaderEUMLImpl implements XmiReader {
         // This is not quite right
         // TODO: Solve this
         return "uml:Model"; //$NON-NLS-1$
+    }
+
+    public void addSearchPath(String path) {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+        
+    }
+
+    public List<String> getSearchPath() {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+        
+    }
+
+    public void removeSearchPath(String path) {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+        
     }
     
 }
