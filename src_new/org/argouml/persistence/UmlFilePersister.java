@@ -533,7 +533,11 @@ class UmlFilePersister extends AbstractFilePersister {
             reader = new BufferedReader(new InputStreamReader(inputStream, 
                     Argo.getEncoding()));
             String rootLine = reader.readLine();
-            while (!rootLine.trim().startsWith("<argo ")) {
+            while (rootLine != null && !rootLine.trim().startsWith("<argo ")) {
+                rootLine = reader.readLine();
+            }
+            if (rootLine == null) {
+                return 0;
             }
             return Integer.parseInt(getVersion(rootLine));
         } catch (IOException e) {
