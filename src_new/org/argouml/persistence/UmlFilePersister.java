@@ -509,13 +509,25 @@ class UmlFilePersister extends AbstractFilePersister {
      * @throws OpenException on any error
      */
     private int getPersistenceVersionFromFile(File file) throws OpenException {
+        InputStream stream = null;
         try {
-            return getPersistenceVersion(new BufferedInputStream(file.toURL()
-                    .openStream()));
+            stream = new BufferedInputStream(file.toURL()
+                    .openStream());
+            int version = getPersistenceVersion(stream);
+            stream.close();
+            return version;
         } catch (MalformedURLException e) {
             throw new OpenException(e);
         } catch (IOException e) {
             throw new OpenException(e);
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
         }
     }
         
@@ -537,7 +549,7 @@ class UmlFilePersister extends AbstractFilePersister {
                 rootLine = reader.readLine();
             }
             if (rootLine == null) {
-                return 0;
+                return 1;
             }
             return Integer.parseInt(getVersion(rootLine));
         } catch (IOException e) {
@@ -564,13 +576,24 @@ class UmlFilePersister extends AbstractFilePersister {
      * @throws OpenException on any error
      */
     private String getReleaseVersionFromFile(File file) throws OpenException {
+        InputStream stream = null;
         try {
-            return getReleaseVersion(new BufferedInputStream(file.toURL()
-                    .openStream()));
+            stream = new BufferedInputStream(file.toURL().openStream());
+            String version = getReleaseVersion(stream);
+            stream.close();
+            return version;
         } catch (MalformedURLException e) {
             throw new OpenException(e);
         } catch (IOException e) {
             throw new OpenException(e);
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
         }
     }
 
