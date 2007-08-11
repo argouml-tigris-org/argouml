@@ -41,6 +41,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
+import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
@@ -57,6 +58,7 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Feature;
+import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
@@ -261,6 +263,24 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         return run;
     }
+    
+    private RunnableClass getRunnableClassForRemoveCommand(Element element) {
+        final Command cmd = RemoveCommand.create(editingDomain, element);
+        if (cmd == null || !cmd.canExecute()) {
+            String s = "The element " + element; //$NON-NLS-1$
+            if (element.getOwner() != null) {
+                s += ", owned by " + element.getOwner() + ", "; //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            s += " cannot be removed"; //$NON-NLS-1$
+            throw new UnsupportedOperationException(s);
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                cmd.execute();
+            }
+        };
+        return run;
+    }
 
     public void addFeature(Object handle, int index, Object f) {
         if (!(handle instanceof Classifier)) {
@@ -347,6 +367,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void addParameter(Object handle, int index, Object parameter) {
         // TODO: In UML2.x Event has no parameters.
+        // TODO: Treat ObjectFlowState (this doesn't exist anymore in UML2) and Classifier
         if (!(handle instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
                     "handle must be instance of BehavioralFeature"); //$NON-NLS-1$
@@ -987,11 +1008,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public boolean isSubType(Object type, Object subType) {
-        if (!(type instanceof Class) || !(subType instanceof Class)
-                || !EObject.class.isAssignableFrom((Class) type)
-                || !EObject.class.isAssignableFrom((Class) subType)) {
+        if (!(type instanceof Class) || !(subType instanceof Class)) {
             throw new IllegalArgumentException(
-                    "type and subType must be instances of java.lang.Class<EObject>"); //$NON-NLS-1$
+                    "type and subType must be instances of java.lang.Class"); //$NON-NLS-1$
         }
         return ((Class) type).isAssignableFrom((Class) subType);
     }
@@ -1073,8 +1092,19 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void removeOwnedElement(Object handle, Object value) {
-        throw new NotYetImplementedException();
-
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Element"); //$NON-NLS-1$
+        }
+        if (!(value instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "value must be instance of Element"); //$NON-NLS-1$
+        }
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl,
+                        getRunnableClassForRemoveCommand((Element) value),
+                        "Remove the element # from the owner #", value, handle));
     }
 
     public void removeParameter(Object handle, Object parameter) {
@@ -1170,9 +1200,26 @@ class CoreHelperEUMLImpl implements CoreHelper {
         setReadOnly(handle, !changeable);
     }
 
-    public void setChild(Object handle, Object child) {
-        throw new NotYetImplementedException();
-
+    public void setChild(final Object handle, final Object child) {
+        if (!(handle instanceof Generalization)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Generalization"); //$NON-NLS-1$
+        }
+        if (!(child instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "child must be instance of Classifier"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Generalization) handle).setSpecific((Classifier) child);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl,
+                        run,
+                        "Set the # as the specific classifier of the generalization #",
+                        child, handle));
     }
 
     public void setConcurrency(Object handle, Object concurrencyKind) {
@@ -1286,9 +1333,26 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     }
 
-    public void setParent(Object handle, Object parent) {
-        throw new NotYetImplementedException();
-
+    public void setParent(final Object handle, final Object parent) {
+        if (!(handle instanceof Generalization)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Generalization"); //$NON-NLS-1$
+        }
+        if (!(parent instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "parent must be instance of Classifier"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Generalization) handle).setGeneral((Classifier) parent);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl,
+                        run,
+                        "Set the # as the general classifier of the generalization #",
+                        parent, handle));
     }
 
     public void setPowertype(Object handle, Object powerType) {
