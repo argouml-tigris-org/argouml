@@ -498,7 +498,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 if (name != null) {
                     class_.setName(name);
                 }
-                if (owner instanceof Package) {
+                if (owner instanceof org.eclipse.uml2.uml.Package) {
                     class_.setPackage((org.eclipse.uml2.uml.Package) owner);
                 } else if (owner instanceof org.eclipse.uml2.uml.Class) {
                     ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers().add(
@@ -608,7 +608,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 if (name != null) {
                     dataType.setName(name);
                 }
-                if (owner instanceof Package) {
+                if (owner instanceof org.eclipse.uml2.uml.Package) {
                     dataType.setPackage((org.eclipse.uml2.uml.Package) owner);
                 } else if (owner instanceof org.eclipse.uml2.uml.Class) {
                     ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers().add(
@@ -675,7 +675,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 if (name != null) {
                     enumeration.setName(name);
                 }
-                if (owner instanceof Package) {
+                if (owner instanceof org.eclipse.uml2.uml.Package) {
                     enumeration.setPackage((org.eclipse.uml2.uml.Package) owner);
                 } else if (owner instanceof org.eclipse.uml2.uml.Class) {
                     ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers().add(
@@ -774,7 +774,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         RunnableClass run = new RunnableClass() {
             public void run() {
                 Interface interface_ = createInterface();
-                if (owner instanceof Package) {
+                if (owner instanceof org.eclipse.uml2.uml.Package) {
                     interface_.setPackage((org.eclipse.uml2.uml.Package) owner);
                 } else if (owner instanceof org.eclipse.uml2.uml.Class) {
                     ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers().add(
