@@ -36,6 +36,7 @@ import java.util.Set;
 
 import org.argouml.model.Facade;
 import org.argouml.model.NotImplementedException;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.ActivityPartition;
@@ -182,6 +183,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getAggregation(Object handle) {
+        if (!(handle instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Property"); //$NON-NLS-1$
+        }
         return ((Property) handle).getAggregation();
     }
 
@@ -191,6 +196,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getAnnotatedElements(Object handle) {
+        if (!(handle instanceof Comment)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Comment"); //$NON-NLS-1$
+        }
         return ((Comment) handle).getAnnotatedElements();
     }
 
@@ -205,8 +214,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getAssociation(Object handle) {
-        // TODO: Link not implemented
-        return ((Property) handle).getOwningAssociation();
+        if (!(handle instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Property"); //$NON-NLS-1$
+        }
+        return ((Property) handle).getAssociation();
     }
 
     public Object getAssociationEnd(Object classifier, Object association) {
@@ -236,8 +248,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public List getAttributes(Object handle) {
-        // TODO: Just a shortcut for now.  Add real implementation - tfm
-        return getStructuralFeatures(handle);
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Classifier"); //$NON-NLS-1$
+        }
+        return UMLUtil.getOwnedAttributes((Classifier) handle);
     }
 
     public Object getBase(Object handle) {
@@ -259,14 +274,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getBehavioralFeature(Object handle) {
-        List<Feature> features = ((Classifier) handle).getFeatures();
-        List<Feature> result = new ArrayList<Feature>();
-        for (Feature f : features) {
-            if (f instanceof BehavioralFeature) {
-                result.add(f);
-            }
+        if (!(handle instanceof Parameter)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Parameter"); //$NON-NLS-1$
         }
-        return result;
+        return ((Parameter) handle).getOperation();
     }
 
     public Collection getBehaviors(Object handle) {
@@ -296,23 +308,24 @@ class FacadeEUMLImpl implements Facade {
 
     @SuppressWarnings("deprecation")
     public Object getChangeability(Object handle) {
-        if (handle instanceof Property) {
-            if (((Property) handle).isReadOnly()) {
-                return modelImpl.getChangeableKind().getFrozen();
-            } else {
-                return modelImpl.getChangeableKind().getChangeable();
-            }
+        if (!(handle instanceof StructuralFeature)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of StructuralFeature"); //$NON-NLS-1$
         }
-        throw new NotYetImplementedException();
-
+        return ((StructuralFeature) handle).isReadOnly() ? modelImpl.getChangeableKind().getFrozen()
+                : modelImpl.getChangeableKind().getChangeable();
     }
 
     @SuppressWarnings("deprecation")
     public Object getChild(Object handle) {
-        return ((Generalization) handle).getSpecific();
+        return getSpecific(handle);
     }
 
     public Object getSpecific(Object handle) {
+        if (!(handle instanceof Generalization)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Generalization"); //$NON-NLS-1$
+        }
         return ((Generalization) handle).getSpecific();
     }
     
@@ -340,10 +353,18 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<Dependency> getClientDependencies(Object handle) {
+        if (!(handle instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of NamedElement"); //$NON-NLS-1$
+        }
         return ((NamedElement) handle).getClientDependencies();
     }
 
     public Collection<NamedElement> getClients(Object handle) {
+        if (!(handle instanceof Dependency)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Dependency"); //$NON-NLS-1$
+        }
         return ((Dependency) handle).getClients();
     }
 
@@ -359,7 +380,17 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<Comment> getComments(Object handle) {
-        return ((Element) handle).getOwnedComments();
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Element"); //$NON-NLS-1$
+        }
+        Collection result = new HashSet();
+        for (EStructuralFeature.Setting reference : UMLUtil.getInverseReferences((Element) handle)) {
+            if (reference.getEObject() instanceof Comment) {
+                result.add(reference.getEObject());
+            }
+        }
+        return result;
     }
 
     public Object getCommunicationConnection(Object handle) {
@@ -384,12 +415,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getConnections(Object handle) {
-        // TODO: Link not implemented - tfm
-        if (handle instanceof Association) {
-            return ((Association) handle).getMemberEnds();
-        } else {
-            throw new IllegalArgumentException();
+        // Link does not exist in UML2
+        if (!(handle instanceof Association)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Association"); //$NON-NLS-1$
         }
+        return ((Association) handle).getMemberEnds();
     }
 
     public List getConstrainedElements(Object handle) {
@@ -1253,8 +1284,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAAssociationEnd(Object handle) {
-        return handle instanceof Property
-                && ((Property) handle).getAssociation() != null;
+        return handle instanceof Property;
     }
 
     public boolean isAAssociationEndRole(Object handle) {
