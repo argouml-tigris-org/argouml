@@ -566,8 +566,6 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             public void run() {
                 Constraint constraint = createConstraint();
                 constraint.getConstrainedElements().add((Element) constrElement);
-                ((Element) constrElement).getNearestPackage().getPackagedElements().add(
-                        constraint);
                 getParams().add(constraint);
             }
         };
