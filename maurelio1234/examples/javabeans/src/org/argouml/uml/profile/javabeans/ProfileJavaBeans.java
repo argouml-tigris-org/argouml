@@ -28,6 +28,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.profile.FigNodeStrategy;
 import org.argouml.uml.profile.FormatingStrategy;
 import org.argouml.uml.profile.Profile;
+import org.argouml.uml.profile.ProfileJava;
 import org.argouml.uml.profile.ProfileModelLoader;
 import org.argouml.uml.profile.ResourceModelLoader;
 
@@ -44,8 +45,9 @@ public class ProfileJavaBeans extends Profile {
 	    model = profileModelLoader.loadModel("JavaBeans.xmi");	
 	    
 	    if (model == null) {
-		model = Model.getModelManagementFactory().createModel();
+	    	model = Model.getModelManagementFactory().createModel();
 	    }
+		addProfileDependency(ProfileJava.getInstance());
     }
 
     public static ProfileJavaBeans getInstance() {
