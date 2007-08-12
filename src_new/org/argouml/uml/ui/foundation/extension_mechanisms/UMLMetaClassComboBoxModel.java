@@ -26,9 +26,7 @@
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -52,7 +50,8 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLMetaClassComboBoxModel() {
         super("baseClass", true);
-        Collections.sort((List) metaClasses);
+        //TODO: You can not sort a HashSet !!!
+//        Collections.sort((List) metaClasses);
     }
 
     /*
