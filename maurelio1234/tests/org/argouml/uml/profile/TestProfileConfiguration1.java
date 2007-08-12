@@ -64,13 +64,13 @@ public class TestProfileConfiguration1 extends TestCase {
 		ProfileConfiguration pc = new ProfileConfiguration(p);
 
 		assertTrue("UML profile has not been set as the default one!", pc
-				.getDefaultProfile() instanceof ProfileUML);
+				.getProfiles().contains(ProfileUML.getInstance()));
 		assertTrue("Java formating strategy has not been "
 				+ "set as the default one!",
 				pc.getFormatingStrategy() instanceof JavaFormatingStrategy);
-		assertTrue("Java's defaulf profile formating strategy is not being "
+		assertTrue("Java's default profile formating strategy is not being "
 				+ "used as the default formating strategy!", pc
-				.getFormatingStrategy() == pc.getDefaultProfile()
+				.getFormatingStrategy() == ProfileUML.getInstance()
 				.getFormatingStrategy());
 	}
     
@@ -117,22 +117,5 @@ public class TestProfileConfiguration1 extends TestCase {
 		if (!pc.getProfiles().contains(pr)) {
 			pc.removeProfile(pr);
 		}
-    }    
-    /**
-	 * Tests whether the default profile cannot be removed
-	 */
-    public void testRemovingDefaultProfile() {
-    	Project p = new ProjectImpl();
-		ProfileConfiguration pc = new ProfileConfiguration(p);
-
-		Profile dp = pc.getDefaultProfile();
-		assertTrue("Default profile is not in the configuration!", pc
-				.getProfiles().contains(dp));
-		
-		pc.removeProfile(dp);
-		assertTrue("Default profile was removed from the configuration!", pc
-				.getProfiles().contains(dp));
-		assertTrue("Default profile changed!", pc.getDefaultProfile() == dp);
-    }
-    
+    }        
 }
