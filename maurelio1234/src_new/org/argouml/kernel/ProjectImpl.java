@@ -163,11 +163,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     public ProjectImpl() {
         setProfileConfiguration(new ProfileConfiguration(this));
-        Iterator it = ProfileManagerImpl.getInstance().getDefaultProfiles().iterator();
-        
-        while (it.hasNext()) {
-            getProfileConfiguration().addProfile((Profile) it.next());
-        }
         
         projectSettings = new ProjectSettings();
 
@@ -523,7 +518,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public Collection getModels() {
         Set ret = new HashSet();
         ret.addAll(models);
-        ret.addAll(profileConfiguration.getProfileModels());
+        // TODO are the profiles part of the getModels()???
+//        ret.addAll(profileConfiguration.getProfileModels());
         return ret;
     }
 
@@ -942,11 +938,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             return defaultModelTypeCache.get(name);
         }
 
-        Object result = null;
-        Iterator it = profileConfiguration.getProfileModels().iterator();
-        while (result == null && it.hasNext()) {
-            result = findTypeInModel(name, it.next());
-        }
+        Object result = profileConfiguration.findType(name);
         
         defaultModelTypeCache.put(name, result);
         return result;
@@ -1093,7 +1085,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public Profile getProfile() {
-        return profileConfiguration.getDefaultProfile();
+        throw new UnsupportedOperationException();
     }
 
 

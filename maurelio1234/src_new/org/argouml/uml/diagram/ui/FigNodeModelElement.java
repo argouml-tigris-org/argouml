@@ -2034,7 +2034,6 @@ public abstract class FigNodeModelElement
         try {
             renderingChanged();
         } catch (Exception e) {
-            e.printStackTrace();
         }
     }
     

@@ -478,12 +478,12 @@ public class SettingsTabProfile extends JPanel implements
 		public boolean accept(File file) {
 		    return file.isDirectory()
 			    || (file.isFile() 
-				    && (file.getName().endsWith(".xml") 
-					  || file.getName().endsWith(".xmi")));
+				    && (file.getName().toLowerCase().endsWith(".xml") 
+					  || file.getName().toLowerCase().endsWith(".xmi")));
 		}
 
 		public String getDescription() {
-		    return "XMI Files";
+		    return "*.XMI";
 		}
 
 	    });
@@ -492,7 +492,7 @@ public class SettingsTabProfile extends JPanel implements
 	    if (ret == JFileChooser.APPROVE_OPTION) {
 		File file = fileChooser.getSelectedFile();
 
-		Profile profile = new UserDefinedProfile(file);
+		UserDefinedProfile profile = new UserDefinedProfile(file);
 
 		if (profile.getModel() != null) {
 		    ProfileManagerImpl.getInstance().registerProfile(profile);

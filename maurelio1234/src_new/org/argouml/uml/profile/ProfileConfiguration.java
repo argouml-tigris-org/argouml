@@ -26,11 +26,15 @@
 package org.argouml.uml.profile;
 
 import java.awt.Image;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.kernel.AbstractProjectMember;
 import org.argouml.kernel.Project;
+import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 /**
  *   This class captures represents the unique access point for the 
@@ -43,9 +47,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
     private FormatingStrategy formatingStrategy;
     private Vector	      figNodeStrategies = new Vector();
     
-    private Profile defaultProfile; 
-    private Vector profiles = new Vector();
-    private Vector profileModels = new Vector();
+    private Vector<Profile> profiles = new Vector<Profile>();
+    private Vector<Object> profileModels = new Vector<Object>();
     
     /**
      * The extension used in serialization and returned by {@link #getType()}
@@ -61,11 +64,14 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public ProfileConfiguration(Project project) {
 	super(EXTENSION, project);
 	
-	defaultProfile = ProfileUML.getInstance();
+        Iterator it = ProfileManagerImpl.getInstance().getDefaultProfiles().iterator();
+        
+        while (it.hasNext()) {
+            Profile p = (Profile) it.next();
+            addProfile(p);
+            activateFormatingStrategy(p);                
+        }
 	
-        addProfile(defaultProfile);
-
-	activateFormatingStrategy(defaultProfile);
     }
     
     /**
@@ -94,13 +100,6 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public Vector getProfiles() {
         return profiles;
     }
-
-    /**
-     * @return the default profile
-     */
-    public Profile getDefaultProfile() {
-        return defaultProfile;
-    }
     
     /**
      * Applies a new profile to this configuration
@@ -111,26 +110,20 @@ public class ProfileConfiguration extends AbstractProjectMember {
         if (!profiles.contains(p)) {
             profiles.add(p);
             profileModels.add(p.getModel());
-
+            
             FigNodeStrategy fns = p.getFigureStrategy();
             if (fns != null) {
                 figNodeStrategies.add(fns);
+            }
+
+            for (Profile dependency : p.getDependencies()) {
+                addProfile(dependency);
             }
             
             ExplorerEventAdaptor.getInstance().structureChanged();
         }
     }
-    
-    /**
-     * Sets the default profile.
-     * 
-     * @param profile the default profile to be set
-     */
-    public void setDefaultProfile(Profile profile) {
-        this.defaultProfile = profile;
-        ExplorerEventAdaptor.getInstance().structureChanged();
-    }
-    
+        
     /**
      * @return the list of models of the currently applied profile.
      */
@@ -139,27 +132,35 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
 
     /**
-     * Removes the passed profile from the configuration. The default cannot be 
-     * removed. Use {@link #setDefaultProfile(Profile)} instead.
+     * Removes the passed profile from the configuration. 
      * 
      * @param p the profile to be removed
      */
     public void removeProfile(Profile p) {
-	if (p != defaultProfile) {
-	    profiles.remove(p);
-	    profileModels.remove(p.getModel());
+        profiles.remove(p);
+        profileModels.remove(p.getModel());
 
-	    FigNodeStrategy fns = p.getFigureStrategy();
-	    if (fns != null) {
-		figNodeStrategies.remove(fns);
-	    }
+        FigNodeStrategy fns = p.getFigureStrategy();
+        if (fns != null) {
+            figNodeStrategies.remove(fns);
+        }
 
-	    if (formatingStrategy == p.getFormatingStrategy()) {
-	        formatingStrategy = null;
-	    }
-	    
-            ExplorerEventAdaptor.getInstance().structureChanged();
-	}
+        if (formatingStrategy == p.getFormatingStrategy()) {
+            formatingStrategy = null;
+        }
+
+        Vector<Profile> markForRemoval = new Vector<Profile>();
+        for (Profile profile : profiles) {
+            if (profile.getDependencies().contains(p)) {
+                markForRemoval.add(profile);
+            }
+        }
+
+        for (Profile profile : markForRemoval) {
+            removeProfile(profile);
+        }
+
+        ExplorerEventAdaptor.getInstance().structureChanged();
     }
     
     private FigNodeStrategy compositeFigNodeStrategy = new FigNodeStrategy() {
@@ -212,5 +213,105 @@ public class ProfileConfiguration extends AbstractProjectMember {
      */
     public String toString() {
         return "Profile Configuration";
+    }
+
+    /**
+     * @param string
+     * @param obj 
+     * @return
+     */
+    @SuppressWarnings("deprecation")
+    public Object findStereotypeForObject(String string, Object obj) {
+        Iterator iter = null;
+        
+        for (Object model : profileModels) {
+            iter = Model.getFacade().getOwnedElements(model).iterator();
+
+            while (iter.hasNext()) {
+                Object stereo = iter.next();
+                if (!Model.getFacade().isAStereotype(stereo)
+                        || !string.equals(Model.getFacade().getName(stereo))) {
+                    continue;
+                }
+
+                if (Model.getExtensionMechanismsHelper().isValidStereoType(obj,
+                        stereo)) {
+                    return Model.getModelManagementHelper()
+                            .getCorrespondingElement(stereo,
+                                    Model.getFacade().getModel(obj));
+                }
+            }            
+        }
+
+        return null;
+    }
+
+    /**
+     * @param name
+     * @return
+     */
+    public Object findType(String name) {
+        Object result = null;
+        Iterator it = getProfileModels().iterator();
+        while (result == null && it.hasNext()) {
+            result = findTypeInModel(name, it.next());
+        }
+        
+        return result;
+    }
+
+    private Object findTypeInModel(String s, Object model) {
+
+        if (!Model.getFacade().isANamespace(model)) {
+            throw new IllegalArgumentException(
+                    "Looking for the classifier " + s
+                    + " in a non-namespace object of " + model
+                    + ". A namespace was expected.");
+        }
+
+        Collection allClassifiers =
+            Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(model,
+                        Model.getMetaTypes().getClassifier());
+
+        Object[] classifiers = allClassifiers.toArray();
+        Object classifier = null;
+
+        for (int i = 0; i < classifiers.length; i++) {
+
+            classifier = classifiers[i];
+            if (Model.getFacade().getName(classifier) != null
+                        && Model.getFacade().getName(classifier).equals(s)) {
+                return classifier;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param metaType
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Collection findByMetaType(Object metaType) {
+        Set elements = new HashSet();
+
+        Iterator it = getProfileModels().iterator();
+        while (it.hasNext()) {
+            Object model = it.next();
+            elements.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(model, metaType));
+        }
+        return elements;
+    }
+
+    /**
+     * @param modelElement
+     * @return
+     */
+    public Collection findAllStereotypesForModelElement(Object modelElement) {
+        return Model.getExtensionMechanismsHelper().getAllPossibleStereotypes(
+                getProfileModels(), modelElement);
     }
 }

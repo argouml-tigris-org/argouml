@@ -1676,6 +1676,11 @@ public class Modeller {
         Collection stereos =
                 Model.getExtensionMechanismsHelper().getAllPossibleStereotypes(
                         models, me);
+        
+        stereos.addAll(ProjectManager.getManager().getCurrentProject()
+                .getProfileConfiguration()
+                .findAllStereotypesForModelElement(me));
+
         Object stereotype =  null;
         if (stereos != null && stereos.size() > 0) {
             Iterator iter = stereos.iterator();

@@ -59,6 +59,8 @@ public class ProfileJava extends Profile {
 	if (model == null) {
 	    model = Model.getModelManagementFactory().createModel();
 	}
+	
+	addProfileDependency(ProfileUML.getInstance());
     }    
 
     

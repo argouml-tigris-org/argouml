@@ -24,6 +24,9 @@
 
 package org.argouml.uml.profile;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 
 /**
@@ -32,6 +35,40 @@ package org.argouml.uml.profile;
  * @author Marcos Aurélio
  */
 public abstract class Profile {
+    
+    private Set<Profile> importedProfiles  = new HashSet<Profile>();
+    private Set<Profile> importingProfiles = new HashSet<Profile>();
+        
+    /**
+     * A profile should call this method to state that it depends of <code>p</code>
+     * 
+     * @param p the profile
+     * @throws IllegalArgumentException if there is some cycle on the dependency graph
+     */
+    protected final void addProfileDependency(Profile p) throws IllegalArgumentException {
+        System.out.println(this + " ## ADDING PROFILE DEPENDENCY TO " + p);
+        
+        if (importingProfiles.contains(p)) {
+            throw new IllegalArgumentException();
+        } else {
+            importedProfiles.add(p);
+            importedProfiles.addAll(p.importedProfiles);
+
+            for (Profile importedProfile : importedProfiles) {
+                importedProfile.importingProfiles.add(this);
+            }
+        }
+
+        System.out.println("IMPORTED PROFILES: " + importedProfiles);
+        System.out.println("IMPORTING PROFILES: " + importingProfiles);
+    }    
+
+    /**
+     * @return the dependencies
+     */
+    public final Set<Profile> getDependencies() {
+        return importedProfiles;
+    }
     
     /**
      * @return the name for this profile 

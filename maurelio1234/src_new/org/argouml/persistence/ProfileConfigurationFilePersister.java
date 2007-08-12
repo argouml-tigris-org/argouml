@@ -188,25 +188,26 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 
 		Iterator it = pc.getProfiles().iterator();
 		while (it.hasNext()) {
-		    Profile profile = (Profile) it.next();
+                    Profile profile = (Profile) it.next();
 
-		    if (!pc.getDefaultProfile().equals(profile)) {
-			if (profile instanceof UserDefinedProfile) {
-			    w.println("\t\t<userDefined>");
-                            w.println("\t\t\t<filename>"+((UserDefinedProfile)profile).getModelFile().getName()+"</filename>");
-                            w.println("\t\t\t<model>");
-                            
-                            printModelXMI(w, profile.getModel());
-                            
-                            w.println("\t\t\t</model>");                            
-			    w.println("\t\t</userDefined>");
-			} else {
-			    w.println("\t\t<plugin>");
-			    w.println("\t\t\t" + profile.getClass().getName());
-			    w.println("\t\t</plugin>");
-			}
-		    }
-		}
+                    if (profile instanceof UserDefinedProfile) {
+                        UserDefinedProfile uprofile = (UserDefinedProfile) profile;
+                        w.println("\t\t<userDefined>");
+                        w.println("\t\t\t<filename>"
+                                + uprofile.getModelFile().getName()
+                                + "</filename>");
+                        w.println("\t\t\t<model>");
+
+                        printModelXMI(w, uprofile.getModel());
+
+                        w.println("\t\t\t</model>");
+                        w.println("\t\t</userDefined>");
+                    } else {
+                        w.println("\t\t<plugin>");
+                        w.println("\t\t\t" + profile.getClass().getName());
+                        w.println("\t\t</plugin>");
+                    }
+                }
 
 		w.println("</profile>");
 	    }

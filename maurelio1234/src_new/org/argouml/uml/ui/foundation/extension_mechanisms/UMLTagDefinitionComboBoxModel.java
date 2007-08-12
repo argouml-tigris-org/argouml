@@ -116,14 +116,10 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
                             Model.getMetaTypes().getTagDefinition()));
         }
 
-        it = project.getProfileConfiguration().getProfileModels().iterator();
-        while (it.hasNext()) {
-	    Object model = it.next();
-	    addAllUniqueModelElementsFrom(availableTagDefs, paths, Model
-		    .getModelManagementHelper().getAllModelElementsOfKind(
-			    model, Model.getMetaTypes().getTagDefinition()));
-	}
-
+        addAllUniqueModelElementsFrom(availableTagDefs, paths, project
+                .getProfileConfiguration().findByMetaType(
+                        Model.getMetaTypes().getTagDefinition()));
+                
         ArrayList notValids = new ArrayList();
         it = availableTagDefs.iterator();
         while (it.hasNext()) {

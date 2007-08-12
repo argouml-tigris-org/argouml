@@ -31,6 +31,7 @@ import java.io.IOException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ApplicationVersion;
@@ -90,6 +91,7 @@ public class ActionExportProfileXMI extends AbstractAction {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void saveModel(File destiny, Object model) throws IOException,
             UmlException {
         FileWriter w = new FileWriter(destiny);
@@ -101,7 +103,6 @@ public class ActionExportProfileXMI extends AbstractAction {
     }
 
     private File getTargetFile() {
-        PersistenceManager pm = PersistenceManager.getInstance();
         // show a chooser dialog for the file name, only xmi is allowed
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(Translator.localize(
@@ -110,6 +111,20 @@ public class ActionExportProfileXMI extends AbstractAction {
         chooser.setApproveButtonText(Translator.localize(
                                              "filechooser.export"));
         chooser.setAcceptAllFileFilterUsed(true);
+        chooser.setFileFilter(new FileFilter() {
+
+            public boolean accept(File file) {
+                return file.isDirectory()
+                        || (file.isFile() 
+                                && (file.getName().toLowerCase().endsWith(".xml") 
+                                      || file.getName().toLowerCase().endsWith(".xmi")));
+            }
+
+            public String getDescription() {
+                return "*.XMI";
+            }
+
+        });
 
         String fn =
             Configuration.getString(
@@ -123,6 +138,9 @@ public class ActionExportProfileXMI extends AbstractAction {
         if (result == JFileChooser.APPROVE_OPTION) {
             File theFile = chooser.getSelectedFile();
             if (theFile != null) {
+                if (!theFile.getName().toUpperCase().endsWith(".XMI")) {
+                    theFile = new File(theFile.getAbsolutePath() + ".XMI");
+                }
                 return theFile;
             }
         }

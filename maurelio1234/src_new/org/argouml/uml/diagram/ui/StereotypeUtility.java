@@ -89,15 +89,18 @@ public class StereotypeUtility {
                 }
             }
         });            
+
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
-
-        models.addAll(ProjectManager.getManager().getCurrentProject()
-		.getProfileConfiguration().getProfileModels());
         
         addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
                 .getExtensionMechanismsHelper().getAllPossibleStereotypes(
                         models, modelElement));
+        addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration()
+                        .findAllStereotypesForModelElement(modelElement));
+        
         return availableStereotypes;
     }
     

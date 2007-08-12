@@ -342,28 +342,28 @@ public class ProfileSelectionTab extends JPanel implements
                             "Only user defined profiles can be removed");
                 }
             }
-	} else if (arg0.getSource() == loadFromFile) {
-	    JFileChooser fileChooser = new JFileChooser();
-	    fileChooser.setFileFilter(new FileFilter() {
+        } else if (arg0.getSource() == loadFromFile) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileFilter() {
 
-		public boolean accept(File file) {
-		    return file.isDirectory()
-			    || (file.isFile() 
-				    && (file.getName().endsWith(".xml") 
-					  || file.getName().endsWith(".xmi")));
-		}
+                public boolean accept(File file) {
+                    return file.isDirectory()
+                            || (file.isFile() 
+                                    && (file.getName().toLowerCase().endsWith(".xml") 
+                                          || file.getName().toLowerCase().endsWith(".xmi")));
+                }
 
-		public String getDescription() {
-		    return "XMI Files";
-		}
+                public String getDescription() {
+                    return "*.XMI";
+                }
 
-	    });
+            });
 
 	    int ret = fileChooser.showOpenDialog(this);
 	    if (ret == JFileChooser.APPROVE_OPTION) {
 		File file = fileChooser.getSelectedFile();
 
-		Profile profile = new UserDefinedProfile(file);
+		UserDefinedProfile profile = new UserDefinedProfile(file);
 
 		if (profile.getModel() != null) {
 		    ProfileManagerImpl.getInstance().registerProfile(profile);

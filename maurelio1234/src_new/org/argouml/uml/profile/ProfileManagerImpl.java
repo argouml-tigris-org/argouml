@@ -65,6 +65,9 @@ public class ProfileManagerImpl implements ProfileManager {
     private Vector searchDirectories = new Vector();
 
     private ProfileManagerImpl() {
+        defaultProfiles.add(ProfileUML.getInstance());
+        
+        registerProfile(ProfileUML.getInstance());
         registerProfile(ProfileJava.getInstance());
         registerProfile(ProfileCpp.getInstance());
 

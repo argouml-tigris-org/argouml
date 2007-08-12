@@ -60,6 +60,8 @@ public class ProfileCpp extends Profile {
 	if (model == null) {
 	    model = Model.getModelManagementFactory().createModel();
 	}
+	
+        addProfileDependency(ProfileUML.getInstance());	
     }    
 
     

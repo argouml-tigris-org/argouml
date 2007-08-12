@@ -389,7 +389,9 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 
                 boolean remove = true;
                 if (!ProfileManagerImpl.getInstance().getRegisteredProfiles()
-                        .contains(selected)) {
+                        .contains(selected)
+                        && !ProfileManagerImpl.getInstance()
+                                .getDefaultProfiles().contains(selected)) {
                     remove = (JOptionPane
                             .showConfirmDialog(
                                     this,
@@ -442,7 +444,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
 	    if (ret == JFileChooser.APPROVE_OPTION) {
 		File file = fileChooser.getSelectedFile();
 
-		Profile profile = new UserDefinedProfile(file);
+		UserDefinedProfile profile = new UserDefinedProfile(file);
 
 		if (profile.getModel() != null) {
 		    ProfileManagerImpl.getInstance().registerProfile(profile);

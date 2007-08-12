@@ -28,7 +28,7 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -50,9 +50,10 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
     /**
      * Constructor.
      */
+    @SuppressWarnings("unchecked")
     public UMLMetaClassComboBoxModel() {
         super("baseClass", true);
-        Collections.sort((List) metaClasses);
+        Collections.sort(new Vector(metaClasses));
     }
 
     /*

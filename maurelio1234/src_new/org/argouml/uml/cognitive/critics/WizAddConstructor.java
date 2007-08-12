@@ -91,35 +91,14 @@ public class WizAddConstructor extends UMLWizard {
     }
 
     /**
-     * Finds the create stereotype for an object. It is assumed to be
-     * available from the default profile.
+     * Finds the create stereotype for an object.
      *
      * @param obj is the object the stereotype should be applicable to.
      * @return a suitable stereotype, or null.
      */
     private Object getCreateStereotype(Object obj) {
-        Iterator iter = null;
-	Project project = ProjectManager.getManager().getCurrentProject();
-	Object profileModel = project.getProfileConfiguration()
-		.getDefaultProfile().getModel();
-	iter = Model.getFacade().getOwnedElements(profileModel).iterator();
-            
-        while (iter.hasNext()) {
-            Object stereo = iter.next();
-            if (!Model.getFacade().isAStereotype(stereo)
-        	|| !"create".equals(Model.getFacade().getName(stereo))) {
-                continue;
-            }
-
-            if (Model.getExtensionMechanismsHelper()
-        	    .isValidStereoType(obj, stereo)) {
-        	return Model.getModelManagementHelper()
-        	    .getCorrespondingElement(stereo,
-        				     Model.getFacade().getModel(obj));
-            }
-        }
-
-        return null;
+        return ProjectManager.getManager().getCurrentProject()
+                .getProfileConfiguration().findStereotypeForObject("create", obj);
     }
 
     /**
