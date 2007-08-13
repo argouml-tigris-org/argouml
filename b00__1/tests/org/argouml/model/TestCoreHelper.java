@@ -292,8 +292,11 @@ public class TestCoreHelper extends TestCase {
     }
     
     public void testGetAllAttributes() {
+	Object p = Model.getModelManagementFactory().createPackage();
 	Object c1 = Model.getCoreFactory().createClass();
 	Object c2 = Model.getCoreFactory().createClass();
+	Model.getCoreHelper().addOwnedElement(p, c1);
+	Model.getCoreHelper().addOwnedElement(p, c2);
 	Model.getCoreFactory().buildGeneralization(c2, c1);
 	Object attribute1 = Model.getCoreFactory().createAttribute();
 	Object attribute2 = Model.getCoreFactory().createAttribute();
@@ -366,12 +369,18 @@ public class TestCoreHelper extends TestCase {
     }
     
     public void testGetAllRealizedInterfaces() {
+	Object p = Model.getModelManagementFactory().createPackage();
 	Object c1 = Model.getCoreFactory().createClass();
 	Object c2 = Model.getCoreFactory().createClass();
+	Model.getCoreHelper().addOwnedElement(p, c1);
+	Model.getCoreHelper().addOwnedElement(p, c2);
 	Model.getCoreFactory().buildGeneralization(c2, c1);
 	Object i1 = Model.getCoreFactory().createInterface();
 	Object i2 = Model.getCoreFactory().createInterface();
 	Object i3 = Model.getCoreFactory().createInterface();
+	Model.getCoreHelper().addOwnedElement(p, i1);
+	Model.getCoreHelper().addOwnedElement(p, i2);
+	Model.getCoreHelper().addOwnedElement(p, i3);
 	Model.getCoreFactory().buildGeneralization(i2, i1);
 	Model.getCoreFactory().buildRealization(c1, i2, null);
 	Model.getCoreFactory().buildRealization(c2, i3, null);
@@ -386,8 +395,11 @@ public class TestCoreHelper extends TestCase {
     }
     
     public void testGetAllSupertypes() {
+	Object p = Model.getModelManagementFactory().createPackage();
 	Object c1 = Model.getCoreFactory().createClass();
 	Object c2 = Model.getCoreFactory().createClass();
+	Model.getCoreHelper().addOwnedElement(p, c1);
+	Model.getCoreHelper().addOwnedElement(p, c2);
 	Model.getCoreFactory().buildGeneralization(c2, c1);
 	Object i1 = Model.getCoreFactory().createInterface();
 	Model.getCoreFactory().buildRealization(c1, i1, null);
@@ -401,8 +413,10 @@ public class TestCoreHelper extends TestCase {
 	Object c1 = Model.getCoreFactory().createClass();
 	Object c2 = Model.getCoreFactory().createClass();
 	Object c3 = Model.getCoreFactory().createClass();
-	Model.getCoreFactory().buildGeneralization(c3, c1);
 	Model.getCoreHelper().addOwnedElement(p, c1);
+	Model.getCoreHelper().addOwnedElement(p, c2);
+	Model.getCoreHelper().addOwnedElement(p, c3);
+	Model.getCoreFactory().buildGeneralization(c3, c1);
 	Object association = Model.getCoreFactory().buildAssociation(c1, c2);
 	Object end1 = Model.getFacade().getAssociationEnd(c1, association);
 	Object end2 = Model.getFacade().getAssociationEnd(c2, association);
