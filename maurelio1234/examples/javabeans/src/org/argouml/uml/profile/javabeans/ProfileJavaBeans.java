@@ -24,10 +24,14 @@
 
 package org.argouml.uml.profile.javabeans;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.argouml.model.Model;
 import org.argouml.uml.profile.FigNodeStrategy;
 import org.argouml.uml.profile.FormatingStrategy;
 import org.argouml.uml.profile.Profile;
+import org.argouml.uml.profile.ProfileException;
 import org.argouml.uml.profile.ProfileJava;
 import org.argouml.uml.profile.ProfileModelLoader;
 import org.argouml.uml.profile.ResourceModelLoader;
@@ -37,16 +41,17 @@ public class ProfileJavaBeans extends Profile {
     private static ProfileJavaBeans instance = null;
     
     private ProfileModelLoader profileModelLoader;
-    private Object model;
+    private Collection model;
     private FigNodeStrategy figStrategy = new JavaBeansFigNodeStrategy();
 
     private ProfileJavaBeans() {
 	    profileModelLoader = new ResourceModelLoader(this.getClass());
 	    model = profileModelLoader.loadModel("JavaBeans.xmi");	
 	    
-	    if (model == null) {
-	    	model = Model.getModelManagementFactory().createModel();
-	    }
+        if (model == null) {
+            model = new ArrayList();
+            model.add(Model.getModelManagementFactory().createModel());
+        }
 		addProfileDependency(ProfileJava.getInstance());
     }
 
@@ -62,7 +67,7 @@ public class ProfileJavaBeans extends Profile {
     }
 
     public Object getModel() {
-	return model;
+    	return model;
     }
 
     public String getDisplayName() {
@@ -72,5 +77,10 @@ public class ProfileJavaBeans extends Profile {
     public FigNodeStrategy getFigureStrategy() {	
 	return figStrategy;
     }
+
+	@Override
+	public Collection getProfilePackages() throws ProfileException {
+		return model;
+	}
 
 }
