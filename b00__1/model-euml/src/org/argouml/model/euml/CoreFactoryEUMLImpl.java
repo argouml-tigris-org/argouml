@@ -38,6 +38,7 @@ import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.BehavioralFeature;
+import org.eclipse.uml2.uml.BehavioredClassifier;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
@@ -49,6 +50,7 @@ import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.InterfaceRealization;
 import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
@@ -58,7 +60,6 @@ import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Realization;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
@@ -925,49 +926,35 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return (PackageImport) run.getParams().get(0);
     }
 
-    public Realization buildRealization(final Object client,
-            final Object supplier, final Object namespace) {
-        if (!(client instanceof NamedElement)
-                || !(supplier instanceof NamedElement)) {
+    public InterfaceRealization buildRealization(final Object client,
+            final Object supplier, Object namespace) {
+        // The interface realization will be created in the client namespace
+        // (client is a namespace)
+        if (!(client instanceof BehavioredClassifier)) {
             throw new IllegalArgumentException(
-                    "The client and the supplier must be NamedElements."); //$NON-NLS-1$
+                    "The client must be instance of BehavioredClassifier"); //$NON-NLS-1$
         }
-        if ((namespace != null && !(namespace instanceof Namespace))
-                || (((NamedElement) client).getNearestPackage() != ((NamedElement) supplier).getNearestPackage() && namespace == null)
-                || (((NamedElement) client).getNearestPackage() == ((NamedElement) supplier).getNearestPackage()
-                        && ((NamedElement) supplier).getNearestPackage() == null && namespace == null)) {
+        if (!(supplier instanceof Interface)) {
             throw new IllegalArgumentException(
-                    "The namespace must be instance of Namespace."); //$NON-NLS-1$
-        } else {
-            if (((NamedElement) client).getNearestPackage() != ((NamedElement) supplier).getNearestPackage()
-                    && ((Namespace) namespace).getNearestPackage() == null) {
-                throw new NullPointerException(
-                        "The namespace must be contained in a package or be a package"); //$NON-NLS-1$
-            }
+                    "The supplier must be an Interface"); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                Realization realization = UMLFactory.eINSTANCE.createRealization();
-                realization.getClients().add((NamedElement) client);
-                realization.getSuppliers().add((NamedElement) supplier);
-                if (((NamedElement) client).getNearestPackage() == ((NamedElement) supplier).getNearestPackage()
-                        && ((NamedElement) client).getNearestPackage() != null) {
-                    ((NamedElement) client).getNearestPackage().getPackagedElements().add(
-                            realization);
-                } else {
-                    ((Namespace) namespace).getNearestPackage().getPackagedElements().add(
-                            realization);
-                }
+                InterfaceRealization realization = UMLFactory.eINSTANCE.createInterfaceRealization();
+                realization.setImplementingClassifier((BehavioredClassifier) client);
+                realization.setContract((Interface) supplier);
+                ((BehavioredClassifier) client).getInterfaceRealizations().add(
+                        realization);
                 getParams().add(realization);
             }
         };
         ChangeCommand cmd = new ChangeCommand(
                 modelImpl, run,
-                "Create the realization # between the client # and the supplier #");
+                "Create the interface realization # between the client # and the supplier #");
         editingDomain.getCommandStack().execute(cmd);
         cmd.setObjects(run.getParams().get(0), client, supplier);
 
-        return (Realization) run.getParams().get(0);
+        return (InterfaceRealization) run.getParams().get(0);
     }
 
     public Object buildTemplateArgument(Object element) {
