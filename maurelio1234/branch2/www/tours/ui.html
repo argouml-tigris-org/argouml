@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ -->
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<TITLE>ArgoUML Tours - Overview of Major Features</TITLE>
+</HEAD>
+
+<BODY>
+<h1>ArgoUML Overview of Major Features</h1>
+
+
+<P>This tour consists of 18 screens, each of which is described in a section of this
+page:<BR>
+(The first 10 screenshots in this tour were made with ArgoUML v0.15.2)</P>
+
+
+<ol>
+	<LI><A HREF="#01">Splash Screen</A></LI>
+	<LI><A HREF="#02">Blank Design</A></LI>
+	<LI><A HREF="#03">Adding Classes</A></LI>
+	<LI><A HREF="#04">Naming Classes</A></LI>
+	<LI><A HREF="#05">Direct Text Editing</A></LI>
+	<LI><A HREF="#06">Class Properties</A></LI>
+	<LI><A HREF="#07">Association Properties</A></LI>
+	<LI><A HREF="#08">First &quot;To Do&quot; Item</A></LI>
+	<LI><A HREF="#09">Adding An Operation</A></LI>
+	<LI><A HREF="#10">Operation Properties</A></LI>
+	<LI><A HREF="#11">Operation Checklist</A></LI>
+	<LI><A HREF="#12">A Java-specific &quot;To Do&quot; Item</A></LI>
+	<LI><A HREF="#13">Class Source Code</A></LI>
+	<LI><A HREF="#14">Inheritance-centric Perspective</A></LI>
+	<LI><A HREF="#15">Dismissing a &quot;To Do&quot; Item</A></LI>
+	<LI><A HREF="#16">Customizing a Perspective</A></LI>
+	<LI><A HREF="#17">Modified Perspective</A></LI>
+</ol> 
+
+
+<HR>
+<P style="font-size: 80%; margin-top:0px; margin-bottom:0px;">
+Back to <A HREF="index.html">ArgoUML Tours</A><BR>
+Back to <A HREF="../index.html">ArgoUML Home</A>
+</P>
+<HR>
+
+<h3><A NAME="01"></A>01. Splash Screen</h3>
+<P><IMG SRC="splashscreen.gif"></P>
+<P>This is what users see while ArgoUML loads.</P>
+<HR>
+
+<h3><A NAME="02"></A>02. Blank Design</h3>
+<P><IMG SRC="blank.gif"></P>
+<P>The tool starts with an empty design document.</P>
+<HR>
+
+<h3><A NAME="03"></A>03. Adding Classes</h3>
+<P><IMG SRC="threeclasses.gif"></P>
+<P>Classes can be added to the untitled diagram by clicking on the class icon in 
+the toolbar. <BR>
+Double clicking on a toolbar button &quot;locks&quot; that tool untill the arrow
+tool is selected.<BR> 
+The yellow sticky notes and wavy, red underlines indicate
+incomplete or problematic parts of the design.<BR> 
+Placing the mouse over a
+sticky note or wavy line will display a blue tool-tip that briefly describes the
+problem.
+<!-- TODO: This does not work - See issue ... -->
+</P>
+<HR>
+
+<h3><A NAME="04"></A>04. Naming Classes</h3>
+<P><IMG SRC="namedclasses.gif"></P>
+<P>The user can set the name of a class or association by simply selecting it and
+typing.
+<!-- TODO: This does not work - See issue ... -->
+</P>
+<HR>
+
+<h3><A NAME="05"></A>05. Direct Text Editing</h3>
+<P><IMG SRC="directedit.gif"></P>
+<P>Double clicking on a name allows the name to be edited. You can double click on
+the other compartments of the class to edit them.</P>
+<hr>
+
+<h3><A NAME="06"></A>06. Class Properties</h3>
+<P><IMG SRC="classprops.gif"></P>
+<P>The &quot;Properties&quot; tab in the details pane shows details of the selected
+model element.</P>
+<hr>
+
+<h3><A NAME="07"></A>07. Association Properties</h3>
+<P><IMG SRC="assocprops.gif"></P>
+<P>Asssociations also have properties.</P>
+<hr>
+
+<h3><A NAME="08"></A>08. First &quot;To Do&quot; Item</h3>
+<P><IMG SRC="firstcritic.gif"></P>
+<P>ArgoUML contains design critics that continuously analyze the design and produce
+&quot;to do&quot; items that point out problems and incompleteness.<BR>
+When a &quot;to do&quot; item is selected, the &quot;offending&quot; 
+element of the design is highlighted in red
+<!-- TODO: This will only work from V0.15.3 -->
+and a brief description is shown in the details pane.
+</P>
+<hr>
+
+<h3><A NAME="09"></A>09. Adding an Operation</h3>
+<P><IMG SRC="addoper.gif"></P>
+<P>The user decides to follow this critic's advice and add an operation via a toolbar
+button. ArgoUML gives it by default the name "newOperation()".</P>
+<hr>
+
+<h3><A NAME="10"></A>10. Operation Properties</h3>
+<P><IMG SRC="newoper.gif"></P>
+<P>When a model element is selected 
+in the explorer, its details are shown
+in the &quot;Properties&quot; tab.<BR>
+Note that the criticism that class Shape has no operations has been automatically removed.</P>
+<hr>
+
+<h3><A NAME="11"></A>11. Operation Checklist</h3>
+<P><IMG SRC="opercheck.gif"></P>
+<P>Design checklists are commonly used in review meetings to help catch design errors
+and prompt thinking. <BR>
+Argo provides checklists that are specific to the selected model element.</P>
+<hr>
+
+<h3><A NAME="12"></A>12. A Java-specific &quot;To Do&quot; Item</h3>
+<P><IMG SRC="fullshapes.gif"></P>
+<P>This is an example of a critic with knowledge of limitations of the target language.</P>
+<hr>
+
+<h3><A NAME="13"></A>13. Class Source Code</h3>
+<P><IMG SRC="annotated.gif"></P>
+<P>Source code for the selected model element is shown in the &quot;Source&quot; tab
+if appropriate. In the future, ArgoUML will parse what the
+designer types here and update the model. <!--This screenshot also shows Argo's 
+ability to place unstructured graphics in diagrams.-->
+Not shown: the designer can enter comments in JavaDoc format by using 
+the &quot;Javadocs&quot; tab.</P>
+<hr>
+
+<h3><A NAME="14"></A>14. Inheritance-centric Perspective</h3>
+<P><IMG SRC="inheritperspective.gif"></P>
+<P>The explorer can show any one of 
+several task-specific hierarchical views
+on the model. Each view is called a &quot;exploring
+perspective&quot; and clarifies a certain kind of structure in the model. 
+Here, inheritance is emphasized. Other
+explorer perspectives 
+emphasize associations, states, or transitions.</P>
+<hr>
+
+<h3><A NAME="15"></A>15. Dismissing a &quot;To Do&quot; Item</h3>
+<P><IMG SRC="newresolvedialog.gif"></P>
+<P>This critic reminds the designer to add instance variables to class Shape. The
+designer considers the advice but decides against following
+the critic's advice, and clicks the &quot;Resolve Item&quot; 
+icon to dismiss the item.</P>
+<P>The &quot;Dismiss Feedback Item&quot; dialog prompts the designer to record an
+explanation for his or her decision. This explanation will be added
+to the design history for later reference.</P>
+<hr>
+
+<h3><A NAME="16"></A>16. Customizing a Perspective</h3>
+<P><IMG SRC="configurepers.gif"></P>
+<P>This dialog allows designers to customize 
+or define new explorer perspectives.
+Each perspective is composed of a set of rules
+that generate the children of each node in the tree. 
+Here we see that the Inheritance-centric perspective will
+start at the project, packages
+in a project will be shown, base classes in a package will be shown, 
+and each class will show its subclasses. As
+an example, we have 
+added in a new rule that makes each class show its operations.</P>
+<hr>
+
+<h3><A NAME="17"></A>17. Modified Perspective</h3>
+<P><IMG SRC="modifiedpersjavadocs.gif"></P>
+<P>This is the result of modifying the Inheritance-centric perspective to also show
+operations by selecting rule &quot;Class -&gt; Operations&quot;.<BR>
+Compare this to <A HREF="#14">screenshot 14</A>.</P>
+
+<HR>
+<P style="font-size: 80%; margin-top:0px;">
+Back to <A HREF="index.html">ArgoUML Tours</A><BR>
+Back to <A HREF="../index.html">ArgoUML Home</A>
+</P>
+
+</BODY>
+</HTML>

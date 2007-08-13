@@ -1,0 +1,13 @@
+Manifest-Version: 2.0
+Class-Path: jscheme.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: org/argouml/tools/ui/ActionExecSilk.class
+Extension-name: module.tools.scripting.jscheme
+Specification-Title: ArgoUML Dynamic Load Module
+Specification-Version: 0.9.4
+Specification-Vendor: University of California
+Implementation-Vendor: University of California
+Implementation-Version: 0.9.4
+Implementation-Title: ArgoUML JScheme Scripting Plugin
+

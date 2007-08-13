@@ -1,0 +1,908 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML EXPERIMENTAL 970324//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" CONTENT="Adobe FrameMaker 5.5/HTML Export Filter">
+<LINK REL="STYLESHEET" HREF="diss2.css">
+<TITLE> CHAPTER 1: Theories of Designers' Cognitive Needs		</TITLE></HEAD>
+<BODY BGCOLOR="#ffffff">
+<DIV>
+<H1 CLASS="ChapterHeading">
+<A NAME="pgfId=1094583">
+ </A>
+Theories of Designers' Cognitive Needs		</H1>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094585">
+ </A>
+This chapter presents the cognitive theories that informed the design of cognitive support features in Argo/UML. As mentioned in Chapter 1, the majority of these theories are drawn from cognitive science journals and books. However, some are drawn from software engineering or human-computer interaction literature.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094586">
+ </A>
+Many of the theories described in this chapter propose a model of human thought, memory, or activity during problem solving and design. These models are based on lower level cognitive models, observations, and controlled experiments. However, they are simply models: they are consistent with observations but they do not claim to identify the root or sole cause of observed behavior. Although many of these theories are widely accepted, none of them are irrefutable. As in any active research field, new cognitive models and theories will periodically be introduced. In fact, several of the subsections in this chapter include references to articles questioning the theories presented. Furthermore, since I am primarily a software engineer rather than a cognitive psychologist, my mastery of these cognitive theories has its limits. My research method reduces the risk of depending on an incorrect, inappropriate, or misunderstood theory by drawing from multiple cognitive theories, multiple user interface guidelines, and the experience of others and myself in using similar tools.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094587">
+ </A>
+In the following subsections, each cognitive theory is described in terms accessible to software engineering tool builders, and the implications of the theory on tool building are outlined. The implications can be classified into two broad levels: first, design tools should avoid interfering with the natural thought processes of designers; and, second, design tools should actively support these processes when possible.</P>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1094588">
+ </A>
+Theories of Design Decision-Making</H3>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094589">
+ </A>
+Reflection-In-Action</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1106999">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1107000">
+ </A>
+The cognitive theory of reflection-in-action (Schoen 1983, 1992) observes that designers of complex systems do not conceive a design fully-formed. Instead, they must construct a partial design, evaluate, reflect on, and revise it, until they are ready to extend it further. For example, a software architect usually cannot decide in advance that a certain component will use particular machine resources. That decision is usually made in the context of other decisions about inter-component communication and machine resource allocation. Guindon, Krasner, and Curtis note the same effect as part of a study of software developers (Guindon, Krasner, and Curtis, 1987). Calling it &quot;serendipitous design,&quot; they noted that as the developers worked hands-on with the design, their mental model of the problem situation improved, hence improving their design.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094592">
+ </A>
+One interesting related effect is &quot;the tyranny of the blank page&quot; (Boucher, 1995). Authors (who are a type of designer) often find it hard to start from nothing. Starting from a partially specified design (e.g., a rough outline) is much easier, even if much of this initial template is changed in the course of design. This may be because it is easier to make design decisions in some context of decisions that have already been made, rather than making a first decision in a context consisting only of future decisions. This is partly due to the fact that many design problems are underconstrained and the designer must add constraints or assumptions to properly frame the problem. Here, however, I am more concerned with the way that a design document plays the role of an external memory that augments the designer's short and long-term memory. </P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094593">
+ </A>
+The need to make decisions in the context of design may be partly explained in terms of more basic theories of human associative memory structure and access (e.g., Cofer, 1975). People store their memories in mental structures and use the structures to retrieve memories. Some parts of the structure are more active at a given time, based on recent accesses. Designers may possess specific design knowledge, but they will not be able to recall and apply it unless they can activate the proper section of their memory structure. When engaged in the design process, designers can use aspects of the partially specified design as prompts to activate needed memories. For example, when adding a new class to an object-oriented design a designer may visually scan the other classes already in the design to decide what new relationships are needed; each existing class icon serves as a prompt to activate the designer's memory of relevant domain semantics. More generally, when designers look at their design and ask questions such as &quot;What is missing &nbsp;here?&quot; or &quot;What is wrong with this part?&quot; they are using information in the external design document as cues to activate needed parts of their associative memory. Section 2.2 discusses human memory structures in more detail.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094594">
+ </A>
+The &quot;reflection&quot; in reflection-in-action can include any type of analysis that raises design issues. While visual inspection of the design is one of the most frequent types of analysis, domain-specific analyses can provide more specific cues. Knowing which questions to ask about a design is part of a designer's expertise. Making use of that expertise depends on being able to recall them from the designer's associative memory at the time when they are needed. This leads to a cycle of synthesis and analysis: each design decision prompts the designer to apply the appropriate analyses, and each analysis produces new prompts for the designer to consider new design decisions.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094595">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094596">
+ </A>
+The theory of reflection-in-action implies several requirements for design tools. First, the designer should be allowed to easily alternate between synthesis and analysis activities. The designer should not be forced to complete a synthesis activity without analysis; likewise, the designer should not be locked into an analysis mode. Furthermore, the tool should support the natural integration of synthesis and analysis by providing the designer with prompts to recall relevant design knowledge. Many of the cognitive support features in Argo/UML are inspired by this theory, including design critics, checklists, non-modal wizards, the dynamic &quot;to do&quot; list, clarifiers, and the create multiple feature.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094597">
+ </A>
+</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094598">
+ </A>
+Opportunistic Design</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094599">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094600">
+ </A>
+It is customary to think of solutions to design problems in terms of a hierarchical plan. Hierarchical decomposition is a common strategy to cope with complex design situations. However, in practice, designers have been observed to perform tasks in an opportunistic order (Hayes-Roth and Hayes-Roth, 1979; Guindon, Krasner, and Curtis, 1987; Visser, 1990). The cognitive theory of opportunistic design explains that although designers plan and describe their work in an ordered, hierarchical fashion, in actuality, they choose successive tasks based on the criteria of cognitive cost. Simply stated, designers do not follow even their own plans in order, but choose steps that are mentally least expensive among alternatives.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094601">
+ </A>
+The cognitive cost of a task depends on the background knowledge of designers, accessibility of pertinent information, and complexity of the task. Designers' background knowledge includes their design strategies or schemas (Soloway et al., 1988). If they lack knowledge about how to structure a solution or proceed with a particular task, they are likely to delay this task. Accessibility of information may also cause a deviation in planned order. If designers must search for information needed to complete a task, that task might be deferred. Here, searching for information can occur at two levels: physically searching for books, web pages, or knowledgeable colleagues, or mentally searching for elements of the designer's knowledge that are not immediately accessible. Complexity of a task roughly corresponds to the number of smaller tasks that comprise it.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094602">
+ </A>
+On the other hand, opportunistic switching can occur when one task brings to mind the information needed for another task. In these situations, the designer may defer completion of the original task and embark on a design excursion to address the second task before the needed information slips out of mind (looses activation). The designer should eventually return from each excursion to complete the original task, but the need to remember to return imposes a short-term memory load.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1111021">
+ </A>
+Priority or importance of a step is the primary factor that supersedes the least cost criteria. Priority or importance may be set by external forces, e.g., an organizational goal or a contract. Designers may also set their own priorities. In some observations, designers placed a high priority on overlooked steps or errors (Visser, 1990).</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094604">
+ </A>
+Thus, the theory of opportunistic design outlines a &quot;natural&quot; design process in which designers choose their next steps to minimize cognitive cost. However, there are inherent dangers in this &quot;natural&quot; design process. Mental context switches occur when designers change from one task to another. When starting a new step or revisiting a former one, designers must recall schemas and information needed for the task that were not kept in mind during the immediately preceding task.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094605">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094606">
+ </A>
+One implication is that designers would benefit from the use of process modeling. Common process models support stakeholders in carrying out prescribed activities, e.g., resolving a bug report. Software process research has focused on developing process notations and enactment tools that help ensure repeatable execution of prescribed processes. However, in their focus on repeatable processes, process tools have tended to be restrictive in their enforcement of process steps.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094607">
+ </A>
+Design tools can allow the benefits of both an opportunistic and a prescribed design process. They should allow, and where possible augment, human designers' abilities to choose the next design task to be performed. Furthermore, design tools should aid designers in returning to the prescribed design process after they complete each opportunistic excursion. Process support should exhibit the following characteristics to accommodate the opportunistic design process.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094608">
+ </A>
+Visibility helps designers orient themselves in the process, thus supporting the designer in following a prescribed process while indicating opportunities for choice. The design process model should be able to represent what has been done so far and what is possible to do next. Visibility enables designers to take a series of excursions into the design space and re-orient themselves afterwards to continue the design process.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1099570">
+ </A>
+Flexibility allows designers to deviate from a prescribed sequence and to choose which goal or problem is most effective for them to work on. Designers must be able to add new goals or otherwise alter the design process as their understanding of the design situation improves. The process model should serve primarily as a resource to designers' cognitive design processes and only secondarily as a constraint on them. Allowing flexibility increases the need for guidance and reminding.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1099571">
+ </A>
+Guidance suggests which of the many possible tasks the designer should perform next. Opportunistic design indicates that cognitive costs are lower when tasks are ordered so as to minimize mental context switching. Guidance sensitive to priorities (e.g., schedule constraints) must also be considered. Guidance can include simple suggestions and criticisms. It may also include elaborate help, such as explanations of potential design strategies or arguments about design alternatives.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094614">
+ </A>
+Reminding helps designers revisit incomplete tasks or overlooked alternatives. Reminding is most needed when design alternatives are many and when design processes are complex or driven by exceptions. As discussed below, high loads on short-term memory can induce procedural errors by reallocating short-term memory slots that were used to keep track of pending steps or goals; reminding provides designers with an external and reliable memory for pending steps and goals.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094616">
+ </A>
+Timeliness applies to the delivery of information to designers. If information and design strategies can be provided to designers in a timely fashion, some plan deviations and context switches may be avoided. Achieving timeliness depends on anticipating designers' needs. Even an approximate representation of designers' planned steps can aid in achieving timeliness.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094618">
+ </A>
+The theory of opportunistic design has influenced many of Argo/UML's features. The dynamic &quot;to do&quot; list, checklists, opportunistic table views, and opportunistic search utility are the features most heavily influenced by this theory.</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094619">
+ </A>
+Geneplore</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094620">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094621">
+ </A>
+Finke, Ward, and Smith (1992) present a model of creative design activity called Geneplore. Geneplore consists of two cyclically recurring phases: generation and exploration. During the generation phase new ideas are generated but not evaluated. During the exploration phase the ideas are explored and their implications are evaluated.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094622">
+ </A>
+This theory is akin to reflection-in-action, in that it identifies synthesis activities as distinct from analysis activities. However, reflection-in-action emphasizes the complementary nature of these two activities, whereas Geneplore warns of possible interference.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094623">
+ </A>
+Many practical creative techniques are based on separating synthesis from analysis to reduce interference. For example, Osborn (1953) developed a popular brainstorming technique that involves listing and free association of ideas in a group setting where participants must withhold criticism until later. Also, Austin (1994) offers four exercises to break out of writers' block: write sentences using words selected randomly from a dictionary, build a dialog around one line taken out of some other context, write an informal letter to a friend about the task, or write vignette about family pictures. These exercises help break writers' block by encouraging the writer to focus on the generation phase of a task that has no inherent evaluation and then return to the original writing task to generate new ideas.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094624">
+ </A>
+Finke, Ward, and Smith (1992) review several proposed techniques for generation of new ideas during the generation phase, including attribute listing, defining a space of possible attribute values, and visual combination.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094625">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094626">
+ </A>
+The theory of reflection-in-action implies that design tools should simultaneously support both synthesis and analysis. Geneplore, on the other hand, implies that design support tools can encourage creativity by helping designers separate synthesis and analysis. Furthermore, brainstorming and other idea generation techniques have been found to be useful in many fields, but they are usually manual and rarely directly supported by design tools.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094627">
+ </A>
+Argo/UML's visual blender feature is directly inspired by this cognitive theory.</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1094628">
+ </A>
+Theories of Human Memory</H3>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094629">
+ </A>
+Associative Recall</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094630">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094631">
+ </A>
+Cognitive scientists use many alternative models of human semantic memory. One aspect found in virtually all of these models is that of associative recall (e.g., Cofer, 1975; Ellis and Hunt, 1993). Basically, associative recall allows people to recall related concepts when they are presented with cues that activate one part of their memory. For example, people can more easily recall a list of meaningfully related words than a list of random ones. Collins and Loftus (1975) proposed the Spreading-Activation Model of human memory. In this model, concepts are connected to others in a network with links of various strengths. Activation of one memory node can spread to linked nodes, causing them to become somewhat activated as well. Several studies have indicated that spreading activation can help explain performance on free recall of word lists (e.g., Ross and Bower, 1981).</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094632">
+ </A>
+However, others have cast doubt on the applicability of free recall performance to decision-making and design processes. Anderson (1996) suggests that subjects often combine concepts into exemplars and then make decisions based on the exemplars, even if they cannot recall the original concepts. This is just one example of the type of mental construction that may take place when accessing human memory. Theories of cognitive fixation also apply to design and are discussed below.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094633">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094634">
+ </A>
+This theory implies that design tools can present cues that cause designers to retrieve their own related memories. For example, effective cuing could allow a knowledge-poor tool to aid knowledge-rich users in applying their knowledge when needed. On the other hand, off-topic cues can also distract users, causing them to think of things not related to the task at hand.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094635">
+ </A>
+These cues can be overtly generated by the design tool as help files, examples, error messages, or design critiques. However, the visible state of the design is itself a strong cue that is always present and frequently used.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094636">
+ </A>
+Nearly every cognitive support feature in Argo/UML makes use of this theory of associative recall. The clarifier, opportunistic search, create multiple, and visual blender features relate most directly to this theory. Many user interface guidelines are also derived from this underlying aspect of human memory.</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094637">
+ </A>
+Limited Short-Term Memory</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094638">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094639">
+ </A>
+Another aspect found in virtually all models of human memory is short-term memory (STM). Miller (1965) first proposed that STM has a capacity of seven plus or minus two items. Using a simple number ignores the effects of chunking, primacy, and recency. Chunking occurs when people group related items based on knowledge from their long-term memory, so short-term and long-term memory are obviously linked. Primacy and recency effects cause people to remember the first and last words in a given list more easily than those in the middle.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094640">
+ </A>
+The general idea is that designers need to focus on a subset of the design and a subset of design issues. Minor distractions, such as working through a complex user interface, can take up slots in a designer's short-term memory and knock out application specific facts. Byrne and Bovair (1997) conducted an experiment that showed that increased short-term memory loads caused procedural errors in carrying out complex user interface tasks. Specifically, subjects with high STM loads committed super-goal kill-off errors, i.e., they thought that they had finished the task when they had really only finished a major step. Furthermore, in discussing comprehension and problem solving of word arithmetic problems, Kintsch and Greeno (1985) cite an earlier study (Kintsch and Polson, 1979) that showed that &quot;there may be trade-offs between the capacity of the short-term [memory] and the other resource demands on the [person], so that if the task to be performed is a difficult one, fewer resources are available for actively maintaining information in the [memory].&quot;</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094641">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094642">
+ </A>
+One implication of this theory is that limited short-term memory resources are used in both making design decisions and in forming plans for tool usage. This suggests that a design tool user interface should reduce short-term memory load where possible. In fact, this is a general user interface design guideline that has also been widely applied to other types of user interfaces (e.g., Shneiderman, 1998). Another way that design tools can support designers is by augmenting their short-term memory with external memory provided by the tool. This might be as explicit as prompting the designer to enter textual notes on what he or she wants to remember, or it may be as implicit as placing the cursor in the proper field to prompt the designer to continue an interrupted task at the point where it was left off.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094643">
+ </A>
+Limited short-term memory resources are also used to mentally combine views offered by the tool into task-specific mental models. Tools might help reduce these short-term memory demands by providing views that better match the designer's task-specific mental models or by aiding the designer in visualizing combinations of views.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094644">
+ </A>
+As with associative recall, many user interface guidelines take into account the limited short-term memory of tool users. Some of Argo/UML's cognitive support features aim to reduce short-term memory loads by simplifying interactions with the tool or providing reminders. Specifically, Argo/UML's selection-action buttons, create multiple feature, and broom alignment tool each help simplify the interactions needed for common design tasks. Also, Argo/UML's clarifiers, dynamic &quot;to do&quot; list, checklists, and design history help remind the designer of information that they might otherwise forget.</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094645">
+ </A>
+Cognitive Fixation</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094646">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094647">
+ </A>
+Cognitive fixation occurs when memory cues block retrieval of related concepts rather than aiding their retrieval. For example, in one experiment, when subjects were asked to memorize a list of random words and then cued with some of the same words, retrieval of the other words was actually lower than when no cues were provided. This effect is explained by Smith, Ward, and Schumacher (1993) as memory retrieval interference between activation of the cue and of the other words. Several experiments have shown that providing subjects with examples can reduce novelty in creative tasks, even when subjects explicitly try not to follow the example. For instance, Jansson and Smith (1991) asked engineering students and professional designers to design a measuring cup for blind users. They found that subjects tended to fixate on provided examples, even if those examples lacked needed features. Smith, Ward, and Schumacher (1993) found that subjects fixated on examples just as much when they were explicitly instructed to make their solution different from the example as when they were given no such instructions. Furthermore, Ward (1994) found that students and professional writers can often become fixated on self-generated cues and initial assumptions.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094648">
+ </A>
+Feeling-of-knowing and tip-of-tongue mental states can also be caused by fixation when an incorrect word prevents retrieval of the correct word. Smith has conducted several cognitive studies that have induced tip-of-tongue states and investigated the impact of incubation on these states (Smith, 1994). Here, the term &quot;incubation&quot; refers to a period of idle time between the initial retrieval failure and subsequent successful retrieval. During this time delay, subjects are occupied with unrelated tasks. In one study, a twenty-three minute incubation had no significant reduction of fixation (Smith and Vela, 1991); in contrast, another study found that one minute of incubation substantially reduced fixation (Meyer and Bock, 1992).</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094649">
+ </A>
+Design novelty and productivity can be reduced when designers fixate on one alternative to such an extent that it interferes with the generation of other alternatives. This can occur when attempts to think of an alternative to a design fragment results in reactivation of the same parts of the designer's memory that lead to the current fragment.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094650">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094651">
+ </A>
+Design support tools might address fixation on initial assumptions by prompting designers to consider alternatives suggested by the tool. However, these prompts may distract the designer, possibly inducing fixation themselves. On the other hand, short distractions can be useful if they break a fixation activation cycle by providing an incubation period.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094652">
+ </A>
+Fixation has not inspired a cognitive support feature directly, but it has been used to explain why some of the proposed features are expected to succeed or fail. Specifically, design critics, checklists, create multiple, and the visual blender feature all take fixation into account. The theory of fixation, much like the theory of opportunistic design, has helped me avoid proposing features that are inconsistent with the theory.</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094653">
+ </A>
+Limited Knowledge</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094654">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094655">
+ </A>
+In 1987, Guindon, Krasner, and Curtis (1987) identified several difficulties faced by software designers:</P>
+<P CLASS="Quote">
+<A NAME="pgfId=1094656">
+ </A>
+The main breakdowns observed are: (1) lack of specialized design schemas; (2) lack of a meta-schema about the design process leading to poor allocation of resources to the various design activities; (3) poor prioritization of issues leading to poor selection of alternative solutions; (4) difficulty in considering all the stated or inferred constraints in defining a solution; (5) difficulty in performing mental simulations with many steps or test cases; (6) difficulty in keeping track and returning to subproblems whose solution has been postponed; and (7) difficulty in expanding or merging solutions from individual subproblems to form a complete solution. (Guindon, Krasner, and Curtis, 1987)</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094657">
+ </A>
+Several of these difficulties are addressed by other cognitive theories described in this chapter. For example, difficulty in keeping track of postponed subproblems is discussed along with the theory of opportunistic design, and difficulty in considering constraints is addressed in the discussion of reflection-in-action. This subsection focuses on the first two difficulties: lack of domain knowledge and lack of process knowledge.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094658">
+ </A>
+The next year, Curtis, Krasner, and Iscoe (1988) elaborated on the &quot;thin spread of application domain knowledge&quot; as one of the main difficulties of developing large software systems. This thin spread is another way of saying that no single designer knows everything that he or she will need to know to complete a complex design. Even an expert in a narrow domain will have to step outside that domain to achieve a complete design. Also, leading-edge or even market-competitive designs usually push the boundaries of what is well known. Because of the thin spread of knowledge, designers need to interact with other stakeholders on any non-trivial design project to access the knowledge that those people hold.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094659">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094660">
+ </A>
+The simple fact that no one knows everything implies that design support tools can help by providing knowledge that designers lack. This knowledge may take the form of explanations, rules, examples, templates, or suggestions. If the tool does not have built-in knowledge in a given area, it may offer a suggestion as to where that knowledge may be found or who has it. Critics and checklists are two tool features that can deliver this knowledge.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094661">
+ </A>
+In addition to the complexity of the application domain, design tools are themselves complex and designers require substantial tool-specific knowledge to use them. Even if a given tool is used frequently, it will likely contain features that are rarely used by any given designer. This suggests that user interface guidelines intended to support occasional and incremental learning should be applied to high functionality design tools (Fischer 1989).</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094663">
+ </A>
+Mental Biases</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094664">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094665">
+ </A>
+Stacy and MacMillian (1995) argue that people are frequently biased irrationally by their experience, particularly in regard to the weight that they give to one experience over another. Representativeness biases cause people to generalize too quickly from a particular experience to the class of experiences, or assign aggregate properties of the class to individual instances. Availability biases favor ideas that are easily brought to mind or visible over those that are harder to recall or invisible. Confirmatory biases favor experiences that confirm one's hypotheses over experiences that disprove it. Mental models that are easier to think about tend to be used more often than ones that are harder to think about, even if the more difficult models are more appropriate to the decision at hand.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094666">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094667">
+ </A>
+Design support tools can help by counter-acting some of these biases. For example, if designers are biased in favor of analyses that confirm the quality of their design, the design tool should use features such as critics or checklists to prompt them to consider analyses that question that quality. Likewise, easily invoked computer simulations could help reduce designers' reliance on mental simulation of simplified mental models.</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1094668">
+ </A>
+Design Visualization Theories</H3>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094669">
+ </A>
+Comprehension and Problem Solving</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094670">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094671">
+ </A>
+The theory of comprehension and problem solving observes that designers must bridge a gap between their mental model of the problem or situation and the formal model of a solution or system (Kintsch and Greeno, 1985; Fischer, 1987). The situation model consists of designers' background knowledge and problem-solving strategies related to the current problem or design situation. The system model consists of designers' knowledge of an appropriate formal description. Problem solving or design proceeds through successive refinements of the mapping between elements in the design situation and elements in the formal description. Successive refinements are equated with increased comprehension, hence the name of the theory.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094672">
+ </A>
+In the domain of software development, designers must map a problem design situation onto a formal specification or programming language (Pennington, 1987; Soloway and Ehrlich, 1984). In this domain, the situation model consists of knowledge of the application domain and programming plans or design strategies for mapping appropriate elements of the domain into a formal description. The system model consists of knowledge of the specification or programming language's syntax and semantics. Programming plans or design strategies enable designers to successively decompose the design situation, identify essential elements and relationships, and compose these elements and relationships into elements of a solution. At successive steps, designers can acquire new information about the situation model or about the system model.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094673">
+ </A>
+Pennington observed that programmers benefited from multiple representations of their problem and iterative solutions (Pennington, 1987). Specifically, multiple representations such as program syntactic decomposition, state transitions, control flow, and data flow enabled programmers to better identify elements and relationships in the problem and solution and thus more readily create a mapping between their situation models and working system models. Kintsch and Greeno's research indicated that familiar aspects of a situation model improved designers' abilities to formulate solutions (Kintsch and Greeno, 1985). These two results were applied and extended in Redmiles' research on programmers' behavior, where again multiple representations supported programmers' comprehension and problem solving when working from examples (Redmiles, 1993).</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094674">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094675">
+ </A>
+Dividing the complexity of the design into multiple perspectives allows each perspective to be simpler than the overall design. Moreover, separating concerns into perspectives allows information relevant to certain related issues to be presented together in an appropriate notation (Robbins et al., 1996). Design perspectives may overlap: individual design elements may appear in multiple perspectives. Coordination among design perspectives ensures that elements and relationships presented in multiple perspectives may be consistently viewed and manipulated in any of those perspectives. Overlapping, coordinated perspectives aid understanding of new perspectives because new design materials are shown in relationship to familiar ones (Redmiles, 1993).</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094676">
+ </A>
+Good designs usually have organizing structures that allow designers to locate design details. However, in complex designs, the expectation of a single unifying structure is a naive one. In fact, complex software system development is driven by a multitude of forces: human stakeholders in the process, product functional and non-functional requirements, and low-level implementation constraints. Alternative decompositions of the same complex design can support the organizing structures that arise from these forces and the different mental models of stakeholders with differing backgrounds and interests. Using diverse organizing structures can help support communication among stakeholders with diverse backgrounds and mental models. Such communication is key to developing complex systems that are robust and useful.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094677">
+ </A>
+It is my contention that no fixed set of perspectives is appropriate for every possible design; instead perspective views should emphasize what is currently important to the designer. When new issues arise in the design, it may be appropriate to use a new perspective on the design to address them. While I emphasize the evolutionary character of design perspectives, an initial set of useful, domain-oriented perspectives can often be identified ahead of time (Fischer et al., 1994).</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094678">
+ </A>
+Secondary Notation</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094679">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094680">
+ </A>
+Design diagrams in any given field follow a formal syntax that assigns meaning to specific graphical shapes, connections, and labels. Beyond formal syntax, a set of diagramming conventions exists within each design community. However, there are other visual aspects of diagrams that are left to the designer's discretion. These may include the color, size, location, spacing, and alignment of diagram elements. Designers use these unassigned visual aspects in a &quot;secondary notation&quot; that expresses relationships that are of concern, but that are not covered by the formal notation (Green and Petre, 1996).</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094681">
+ </A>
+Programmers using conventional programming languages express their program to the compiler through formal syntax, but they also use naming conventions, indentation, and blank lines to aid communication with other programmers. These informal structures form a &quot;secondary notation&quot; that can aid the reader in identifying commonalities between different program elements and in breaking down large structures into understandable chunks. Likewise, in a design diagram, objects can be aligned to show logical structure, grouping, correspondence, or emphasis.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094682">
+ </A>
+Green and Petre (1996) point out that visual similarity between two design fragments can define a visual &quot;rhyme&quot; that cues the reader to expect deeper semantic correspondence. For example, in <A HREF="diss2.html#23812" CLASS="XRef">
+See State diagram with alignment as secondary notation</A>
+, alignment implies grouping and correspondence of steps. Formally, the diagram consists of a single set of undifferentiated states. But designers experienced in using this type of diagram should perceive two sets of states with corresponding parts.</P>
+<DIV>
+<MAP NAME="diss2-1">
+</MAP>
+<IMG SRC="diss2-1.gif" USEMAP="#diss2-1">
+</DIV>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094684">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094685">
+ </A>
+The observation that designers use secondary notation identifies an important usability requirement for design diagram editors. Specifically, design editors should actively help designers in maintaining elements of secondary notation. However, the interfaces of most of these tools are inspired by generic drawing tools and do not provide specific support for secondary notation. In contrast, programmers' text editors such as emacs (Stallman, 1979) do actively support indentation and alignment as secondary notation. Argo/UML's broom alignment tool and selection-action buttons help achieve secondary notation in UML diagrams.</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094686">
+ </A>
+Viewing as an Acquired Skill</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094687">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094688">
+ </A>
+Diagrammatic design representations are not necessarily understandable to anyone at first glance. Diagrams have a certain immediacy of communication, but only to those who have experience in reading that type of diagram. Due to the thin spread of application knowledge, not all stakeholders can be assumed to have the skills needed to read all diagrams produced in a given project or to produce diagrams that fit the norms of the design community (Petre, 1995).</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094689">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1122018">
+ </A>
+One implication of Petre's observation is that design diagramming tools should take the norms of the design community into account. For example, an object-oriented design tool should follow the norm of laying out subclasses below their superclasses. In Argo/UML, selection-action buttons encourage the designer to follow conventions during diagram construction. Another implication is that some designers may need support in understanding diagramming conventions. For example, a legend or link to on-line help might aid designers who are new to the domain.</P>
+</DIV>
+</DIV>
+</DIV>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1122019">
+ </A>
+User Interface Guidelines</H3>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1122020">
+ </A>
+Style Guidelines and Usability Heuristics</H4>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094693">
+ </A>
+Many different types of user interface guidelines have been proposed. Some of these are specific rules that define a given window system look and feel, others are more general-purpose heuristics. Tables 2-1 through 2-5 present excerpts from some well-known sets of guidelines and heuristics.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1097737">
+ </A>
+Usability guidelines from Mac Look and Feel (Apple 1993)</H6>
+</CAPTION>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097741">
+ </A>
+Metaphors: Use metaphors involving concrete, familiar ideas.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097743">
+ </A>
+Direct Manipulation: Allow people to feel that they are directly controlling the objects represented by the computer.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097745">
+ </A>
+See-and-Point: Users interact directly with the screen, selecting objects and performing activities by using a pointing device.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097747">
+ </A>
+Consistency: Use the standard elements of the Macintosh interface to ensure consistency within your application and to benefit from consistency across applications.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097749">
+ </A>
+WYSIWYG (What You See Is What You Get): Make sure that there is no significant difference between what the user sees on the screen and what the user receives after printing.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097751">
+ </A>
+User Control: Allow the user, not the computer, to initiate and control actions.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097753">
+ </A>
+Feedback and Dialog: When a user initiates an action, provide some indicator that your application has received the user's input and is operating on it.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097755">
+ </A>
+Forgiveness: People need to feel that they can try things without damaging the system.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097757">
+ </A>
+Perceived Stability: Provide a clear, finite set of objects and a clear, finite set of actions to perform on those objects. When actions are unavailable, they are not eliminated but are merely dimmed.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097759">
+ </A>
+Aesthetic Integrity: Design your products to be pleasant to look at on the screen for a long time.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1097761">
+ </A>
+Modelessness: Allow people to do whatever they want when they want to in your application.</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1105433">
+ </A>
+Usability guidelines from Java Look and Feel (Sun, 1999)</H6>
+</CAPTION>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105437">
+ </A>
+The most effective method of laying out user interface elements is to use a design grid with blank space to set apart logically related sets of components. </P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105439">
+ </A>
+Use headline capitalization for most names, titles, labels, and short text. Use sentence capitalization for lengthy text messages.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105441">
+ </A>
+Specify keyboard shortcuts for frequently used menu items to provide an alternative to mouse operation. Be aware of and use common shortcuts across platforms.</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105443">
+ </A>
+Avoid the use of a second level of sub-menus. If you want to present a large or complex set of choices, display them in a dialog box.</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1105456">
+ </A>
+Usability guidelines from Nielsen (1995)</H6>
+</CAPTION>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105460">
+ </A>
+Visibility of system status</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105462">
+ </A>
+Match between system and the real world</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105464">
+ </A>
+User control and freedom</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105466">
+ </A>
+Consistency and standards</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105468">
+ </A>
+Error prevention</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105470">
+ </A>
+Recognition rather than recall</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105472">
+ </A>
+Flexibility and efficiency of use</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105474">
+ </A>
+Aesthetic and nominalist design</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105476">
+ </A>
+Help users recognize, diagnose, and recover from errors</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105478">
+ </A>
+Help and documentation</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1105484">
+ </A>
+Usability guidelines from Constantine and Lockwood (1999)</H6>
+</CAPTION>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105488">
+ </A>
+Structure: put related things together and separate unrelated things</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105490">
+ </A>
+Simplicity: make common tasks simple</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105492">
+ </A>
+Visibility: keep all options and materials for a given task visible</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105494">
+ </A>
+Feedback: keep users informed of actions, state, and errors</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105496">
+ </A>
+Tolerance: accept reasonable inputs, reduce the cost of errors</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105498">
+ </A>
+Reuse: do similar things in similar ways</P>
+</TD>
+</TR>
+</TABLE>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1105942">
+ </A>
+Usability guidelines from Shneiderman (1998)</H6>
+</CAPTION>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105946">
+ </A>
+Recognize human diversity</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105948">
+ </A>
+Strive for consistency</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105950">
+ </A>
+Enable frequent users to use shortcuts</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105952">
+ </A>
+Offer informative feedback</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105954">
+ </A>
+Design dialogs to yield closure</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105956">
+ </A>
+Offer error prevention and simple error handling</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105958">
+ </A>
+Permit easy reversal of actions</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105960">
+ </A>
+Support internal locus of control</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1105962">
+ </A>
+Reduce short-term memory load</P>
+</TD>
+</TR>
+</TABLE>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094740">
+ </A>
+Several of these heuristic guidelines coincide with the cognitive theories of design. For example, Nielsen's heuristic that recognition is better than recall can be explained by the cognitive theory of associative memory: specifically, users will find it easier to recall an abstract concept when they are presented with a visual cue that they associate with that concept.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094741">
+ </A>
+Style guidelines and usability heuristics may have a basis in experience and underlying cognitive theories, but they are stated with an emphasis on ease of technology transfer and application. Nielsen motivates his set of ten usability heuristics with the comment that &quot;even the best method will have zero impact on the product if it does not get used&quot; (Nielsen, 1993). Non-expert interface designers are likely to achieve better results more easily when following established guidelines than when inventing new interactions without guidance. However, general-purpose guidelines and heuristics have not by themselves resulted in very satisfactory CASE tool user interfaces. For example, Rational Rose adheres to the MS Windows user interface guidelines fairly closely and it imitates some of the dialog boxes found in other popular development tools, yet the overall usability of Rose is low due to its modality and lack of specific support for common design tasks.</P>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094743">
+ </A>
+Fitts' Law</H4>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094744">
+ </A>
+Description</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094745">
+ </A>
+Fitts' Law addresses the low-level physical and cognitive task of indicating a position in a two-dimensional space. Briefly stated, the time required for one to move one's hand (or mouse) from a starting region to a target region depends on the distance moved and the size of the target region (Fitts, 1954). Moving to a distant target takes longer because of the distance traveled, and moving to a small region takes more time because of the need for precise positioning.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094746">
+ </A>
+Implications for design support</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094747">
+ </A>
+This theory calls into question any user interfaces that requires the user to move the mouse to small and distant target areas. Yet, many examples of such interfaces are found in daily use. For example, a standard scrollbar has very small and distant target areas to scroll up and scroll down. The difficulty of using such an interface goes unnoticed by most users until they are exposed to an easier alternative. For example, the &quot;wheel mouse&quot; sold by Microsoft and other companies allows users to scroll without changing the mouse position.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094748">
+ </A>
+Software design tools typically focus on design diagrams that contain both graphical elements and structured text. Editing of these diagrams entails substantial switching between mouse and keyboard input devices. Furthermore, many current CASE tools use complex, modal dialogs that force designers to interact with small widgets. All this can add up to substantial arm and wrist stress and a perception of difficulty in using the tool.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094749">
+ </A>
+Since design tools are used daily by designers, the cumulative effects of physical stress and perceived difficulty can be substantial. Design tools should reduce the effort needed for common operations. Knowing which operations are most common and in which contexts they will be performed requires design tool builders to use their knowledge of domain-specific design tasks. For example, selection-action buttons in Argo/UML aid designers in constructing common types of nodes and edges in design diagrams.</P>
+</DIV>
+</DIV>
+</DIV>
+</DIV>
+</BODY>
+</HTML>

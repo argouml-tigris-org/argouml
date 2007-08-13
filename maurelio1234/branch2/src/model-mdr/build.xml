@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$
+
+Build file for the MDR implementation of the Model subsystem.
+
+This is designed to work in two different environments:
+  - in a subdirectory of argouml, as stored in CVS
+    (ie argouml/src/model-mdr)
+  - in a peer directory of argouml, as checked out for Eclipse
+    (ie argouml-core-model-mdr)
+    
+-->
+
+<project default="compile" name="ArgoUML MDR Model subsystem">
+  <!-- =================================================================== -->
+  <!-- Initialization target                                               -->
+  <!-- =================================================================== -->
+  <target name="init">
+    <tstamp/>
+
+    <!-- argo.root.dir should be passed in to make sure it is correct -->
+    <property name="argo.root.dir" value="../.."/>
+    <property name="argo.build.dir" value="${argo.root.dir}/build"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="build.classes" value="${build.dir}/classes"/>
+    <property name="build.javas" value="${build.dir}/java"/>
+
+    <property name="tests.classes" value="${build.dir}/tests/classes"/>
+    <property name="tests.reports" value="${build.dir}/tests/reports"/>
+
+    <property name="lib.dir" value="lib" /> 
+
+    <property name="debug" value="yes"/>
+    <property name="deprecation" value="yes"/>
+    <property name="optimize" value="yes"/>
+
+    <property name="result.jar" value="argouml-mdr.jar"/>
+    <property name="javainterfaces.jar" value="java-interfaces.jar"/>
+
+    <property name="mdrant.jar" value="tools/lib/mdrant-patched.jar" /> 
+    <property name="mof.jar" value="${lib.dir}/mof.jar" /> 
+    <property name="jmi.jar" value="${lib.dir}/jmi.jar" /> 
+    <property name="mdrapi.jar" value="${lib.dir}/mdrapi.jar" /> 
+    <property name="nbmdr.jar" value="${lib.dir}/nbmdr.jar" /> 
+    <property name="jmiutils.jar" value="${lib.dir}/jmiutils.jar" /> 
+    <property name="openide-lookup.jar" value="${lib.dir}/openide-util.jar" /> 
+        
+    <path id="mdr.generate.classpath">
+      <pathelement location="${mdrant.jar}" /> 
+      <pathelement location="${nbmdr.jar}" /> 
+      <pathelement location="${mdrapi.jar}" /> 
+      <pathelement location="${jmiutils.jar}" /> 
+      <pathelement location="${mof.jar}" /> 
+      <pathelement location="${jmi.jar}" /> 
+      <pathelement location="${openide-lookup.jar}" /> 
+    </path>
+        
+    <path id="mdr.compile.classpath">
+      <path refid="mdr.generate.classpath"/>
+      <pathelement location="${build.dir}/${javainterfaces.jar}"/>
+    </path>
+
+    <path id="mdr.run.classpath">
+      <path refid="mdr.compile.classpath"/>
+    </path>
+                
+    <path id="compile.classpath">
+      <pathelement location="${argo.build.dir}/log4j.jar"/>
+        <pathelement location="${argo.build.dir}/argouml-model.jar"/>
+      <path refid="mdr.compile.classpath"/>
+    </path>
+
+
+    <!-- Define a few places we can find Junit -->
+    <path id="junit.classpath">
+      <pathelement location="${junit.jar.path}"/>
+      <pathelement location="${argo.tools.dir}/junit-3.8.1/junit.jar"/>
+      <pathelement location="${argo.root.dir}/tools/junit-3.8.1/junit.jar"/>
+    </path>
+
+    <path id="run.classpath">
+      <fileset dir="${argo.build.dir}" includes="*.jar"/>
+      <path refid="mdr.run.classpath"/>
+    </path>
+
+    <property name="profile.file.dir" value="org/argouml/model/mdr/profiles"/>
+    
+    <!-- Implementation classes for UML 1.4 are generated from this file -->
+    <!-- When changing to a different UML metamodel, be sure to use the 
+         _Diff file which adds the Java specific tags for JMI, not the
+         base OMG file
+      -->
+    <property name="mof.file.dir" value="org/argouml/model/mdr/mof"/>
+    <property name="xmi.file" value="src/${mof.file.dir}/01-02-15_Diff" /> 
+
+    <taskdef name="mdr" classname="org.netbeans.mdrant.MdrTask">
+      <classpath>
+        <path refid="mdr.generate.classpath" />
+      </classpath>
+    </taskdef>
+    
+    <path id="ant.optional.classpath">
+      <pathelement location="${ant.home}/ant-junit.jar"/>
+      <path refid="junit.classpath"/>
+    </path>
+        
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
+      <classpath refid="ant.optional.classpath"/>
+    </taskdef>
+
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator" name="junitreport">
+      <classpath>
+         <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Generate, compile, & package the JMI interfaces                     -->
+  <!-- =================================================================== -->
+  <target name="generate" depends="generate-internal" 
+      description="Generate the JMI interfaces for a UML metamodel."
+      unless="generate.notRequired">
+
+    <javac srcdir="${build.javas}"
+           source="1.5"
+           target="1.5">
+      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+      <classpath>
+        <pathelement location="${jmi.jar}" /> 
+      </classpath>
+    </javac>
+
+    <jar basedir="${build.javas}"
+         includes="**/*.class"
+         jarfile="${build.dir}/${javainterfaces.jar}"/>
+  </target>
+
+  <target name="generate-needed" depends="init">
+    <uptodate property="generate.notRequired" 
+      srcfile="${xmi.file}.xml"
+    	
+      targetfile="${build.dir}/${javainterfaces.jar}" >
+    	
+    </uptodate>
+
+  </target>
+
+  <target name="generate-skipped" if="generate.notRequired">
+    <echo message="${build.dir}/${javainterfaces.jar} is up to date"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Generate Java files for JMI interface from UML model in XMI         -->
+  <!-- =================================================================== -->
+  <target name="generate-internal" depends="init,generate-needed,generate-skipped" 
+      unless="generate.notRequired">
+    <!-- create directories -->
+    <mkdir dir="${build.dir}"/>
+    <delete>
+      <fileset dir="${build.javas}">
+    	<exclude name="**/.cvsignore"/>
+      	<exclude name="**/readme-build-java.txt"/>
+      	<exclude name="**/CVS/*"/>
+      </fileset>
+    </delete>
+    <mkdir dir="${build.javas}"/>
+
+    <!-- NOTE: The MDR task needs an absolute path for storageFile or it will
+               put it in the caller's directory when called from argouml build
+    -->
+    <echo message="Generating JMI interfaces from ${xmi.file}"/>
+    <echo message="Storage file is in ${basedir}/${build.javas}"/>
+    <echo message="Sources written to ${build.javas}"/>
+    <mdr storageFile="${basedir}/${build.javas}/mymdr">
+      <instantiate name="mof4models" /> 
+      <readXMI file="${xmi.file}.xml" extent="mof4models" /> 
+      <mapJava dir="${build.javas}" extent="mof4models" /> 
+      
+      <!-- not sure this is correct, but try to generate a DTD -->
+      <instantiate name="uml" extent="mof4models" package="UML"/> 
+      <writeDTD file="${build.dir}/UML14.dtd" extent="uml"/>
+	
+      <!-- Other functions available
+      <writeXMI file="${storageDir}/${model}/xmi/${xmi.file}.xml" 
+          extent="mof4models" xmiVersion="1.2"/>
+      <writeDTD file="${storageDir}/${model}/xmi/${xmi.file}.dtd" 
+          extent="mof4models"/>
+      <mapClass dir="${build.javas}" extent="mof4models" /> 
+      <printExtentNames/>
+      -->
+    </mdr>
+
+    <!-- Macro to enable Java 5 generics in MDR generated sources -->
+    <macrodef name="uncommentMdrGenerics">
+      <attribute name="javadir" default="/unspecified/path"/>
+       <sequential>
+         <replace dir="@{javadir}">
+           <replacefilter token="/*&lt;" value="&lt;" />
+           <replacefilter token="&gt;*/" value="&gt;" />
+         </replace>
+       </sequential>
+     </macrodef>
+     
+     <uncommentMdrGenerics javadir="${build.javas}"/>
+  	       	
+  </target>
+  
+  <!-- =================================================================== -->
+  <!-- Run from classes                                                    -->
+  <!-- =================================================================== -->
+  <target name="run" depends="compile"
+          description="Run ArgoUML with MDR model implementation.">
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          taskname="argouml"
+          maxmemory="500M">
+      <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/warn_console.lcf"/>
+      <!-- the following is redundant since it's the default, but leave for now -->
+      <sysproperty key="argouml.model.implementation"
+                   value="org.argouml.model.mdr.MDRModelImplementation"/>
+      <sysproperty key="org.netbeans.lib.jmi.Logger"
+                   value="0"/>
+      <classpath>
+        <pathelement location="${build.classes}"/>
+        <path refid="run.classpath"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+  <target name="compile"
+          depends="init,generate"
+          description="Compile the sources.">
+    <!-- create directories -->
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.classes}"/>
+
+    <javac srcdir="src"
+           destdir="${build.classes}"
+           includes="org/argouml/**/*.java"
+           debug="${debug}"
+           deprecation="${deprecation}"
+           optimize="${optimize}"
+           source="1.5"
+           target="1.5"
+       >
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+       <classpath>
+         <path refid="compile.classpath"/>
+       </classpath>
+    </javac>
+    <copy todir="${build.classes}">
+      <fileset dir="src">
+        <include name="**/*.xsl"/>
+        <include name="${mof.file.dir}/**"/>
+        <include name="${profile.file.dir}/**"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the jar file                                                -->
+  <!-- =================================================================== -->
+  <target name="jar" depends="compile"
+          description="Build the ${result.jar} file.">
+    <jar basedir="${build.classes}"
+         includes="org/argouml/**"
+         manifest="src/manifest.mf"
+         jarfile="${build.dir}/${result.jar}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Install the jar file                                                -->
+  <!-- =================================================================== -->
+  <target name="install" depends="jar"
+          description="Copy the ${result.jar} file to the ArgoUML directory.">
+    <copy todir="${argo.build.dir}">
+      <fileset dir="${build.dir}" includes="*.jar"/>
+      <fileset dir="${lib.dir}" includes="*.jar"/>
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the tests directory                                        -->
+  <!-- =================================================================== -->
+  <target name="compile-tests"
+          depends="init,compile">
+    <!-- create directories -->
+    <mkdir dir="${tests.classes}"/>
+
+    <javac srcdir="tests"
+           destdir="${tests.classes}"
+           includes="org/argouml/**/*.java"
+           debug="${debug}"
+           deprecation="${deprecation}"
+           optimize="${optimize}"
+           source="1.5"
+           target="1.5"
+       >
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+       <classpath>
+         <path refid="junit.classpath"/>
+         <path>
+           <fileset dir="${argo.build.dir}">
+             <include name="*.jar"/>
+           </fileset>
+         </path>
+       </classpath>
+    </javac>
+        
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean out the tests                                                 -->
+  <!-- =================================================================== -->
+  <target name="junit-report-clean">
+    <mkdir dir="${tests.reports}/junit/output"/>
+    <mkdir dir="${tests.reports}/junit/output/html"/>
+    <delete>
+      <fileset dir="${tests.reports}/junit/output">
+        <include name="TEST-*.xml"/>
+        <include name="TEST-*.txt"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Create the report                                                   -->
+  <!-- =================================================================== -->
+  <target name="junit-report-create">
+    <junitreport todir="${tests.reports}/junit/output">
+      <fileset dir="${tests.reports}/junit/output">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${tests.reports}/junit/output/html"/>
+    </junitreport>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Runs the tests                                                      -->
+  <!-- =================================================================== -->
+  <target name="tests"
+          depends="init,compile,compile-tests,junit-report-clean">
+    <!-- create directories -->
+    <mkdir dir="${tests.classes}"/>
+
+    <junit errorproperty="junit.failure" fork="yes" haltonfailure="false"
+           maxmemory="256M" printsummary="true">
+        <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/info_console.lcf"/>
+        <sysproperty key="argouml.model.implementation"
+                   value="org.argouml.model.mdr.MDRModelImplementation"/>
+        <classpath>
+        <pathelement location="${tests.classes}"/>
+        <path refid="junit.classpath"/>
+        <path refid="run.classpath"/>
+      </classpath>
+      <formatter type="xml"/>
+      <batchtest todir="${tests.reports}/junit/output">
+        <fileset dir="tests">
+          <include name="org/argouml/**/Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+    <antcall target="junit-report-create"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean" depends="init"
+          description="Clean out all built files.">
+    <delete includeemptydirs="true">
+      <fileset dir="${build.dir}">
+    	<exclude name="**/.cvsignore"/>
+      	<exclude name="**/readme-build-java.txt"/>
+      	<exclude name="**/CVS/*"/>
+      </fileset>
+    </delete>
+  </target>
+        
+</project>

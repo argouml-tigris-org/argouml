@@ -1,0 +1,40 @@
+<?xml version = '1.0' encoding = 'UTF-8' ?>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Sat May 12 07:14:43 BRT 2007'>
+  <XMI.header>    <XMI.documentation>
+      <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
+      <XMI.exporterVersion>PRE-0.25.3(5) revised on $Date: 2007-05-09 11:19:32 -0300 (qua, 09 mai 2007) $ </XMI.exporterVersion>
+    </XMI.documentation>
+    <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
+  <XMI.content>
+    <UML:Model xmi.id = '10-1-1-3-3f072b2c:1127f99c2cc:-8000:000000000000071E'
+      name = 'untitledModel' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+      isAbstract = 'false'>
+      <UML:Namespace.ownedElement>
+        <UML:Stereotype xmi.id = '10-1-1-3-3f072b2c:1127f99c2cc:-8000:000000000000071F'
+          name = 'activeThread' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'>
+          <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+        </UML:Stereotype>
+        <UML:Stereotype xmi.id = '10-1-1-3-3f072b2c:1127f99c2cc:-8000:0000000000000720'
+          name = 'communicationChannel' isSpecification = 'false' isRoot = 'false'
+          isLeaf = 'false' isAbstract = 'false'>
+          <UML:Stereotype.baseClass>Association</UML:Stereotype.baseClass>
+        </UML:Stereotype>
+        <UML:DataType xmi.id = '10-1-1-3-436ae6b8:1127fadbc8e:-8000:00000000000007E6'
+          name = 'mutex' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'/>
+        <UML:TagDefinition xmi.id = '10-1-1-3--57ae569c:1127fc65309:-8000:0000000000000801'
+          name = 'priority' isSpecification = 'false' tagType = 'String'>
+          <UML:TagDefinition.multiplicity>
+            <UML:Multiplicity xmi.id = '10-1-1-3--57ae569c:1127fc65309:-8000:0000000000000805'>
+              <UML:Multiplicity.range>
+                <UML:MultiplicityRange xmi.id = '10-1-1-3--57ae569c:1127fc65309:-8000:0000000000000804'
+                  lower = '0' upper = '1'/>
+              </UML:Multiplicity.range>
+            </UML:Multiplicity>
+          </UML:TagDefinition.multiplicity>
+        </UML:TagDefinition>
+      </UML:Namespace.ownedElement>
+    </UML:Model>
+  </XMI.content>
+</XMI>

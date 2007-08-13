@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
+	<TITLE>argo/UML v0.3 QuickStart</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<H2><FONT COLOR="#008080" FACE="Tahoma">Argo/UML v0.5.2 QuickStart</FONT></H2>
+<P><FONT COLOR="#000066" FACE="Tahoma"><B>Before starting you need to:</B></FONT>
+
+<UL>
+	<LI><FONT SIZE="2" FACE="Tahoma">Get a Java 1.1 Virtual Machine, such as Sun's </FONT><A HREF="http://java.sun.com/products/jdk/"><FONT
+	SIZE="2" FACE="Tahoma">JDK 1.1.7</FONT></A><FONT SIZE="2" FACE="Tahoma"> or </FONT><A HREF="http://java.sun.com/products/jdk/1.1/jre/"><FONT
+	SIZE="2" FACE="Tahoma">JRE 1.1.7</FONT></A><FONT SIZE="2" FACE="Tahoma">. (<B>Do not use JDK 1.2 beta 4.</B>)</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Download Sun's </FONT><A HREF="http://java.sun.com/products/jfc/#download-1.0.3"><FONT
+	SIZE="2" FACE="Tahoma">Swing version 1.0.3</FONT></A><FONT SIZE="2" FACE="Tahoma">. (<B>Do not use Swing 1.1 beta</B>.)</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Remove any previous versions of Argo/UML that you may have downloaded, or keep
+	them in a different directory. Do not install one version of Argo/UML in the same directory as a previous version.</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Download the </FONT><A HREF="../download_code.html"><FONT SIZE="2" FACE="Tahoma">compiled
+	version</FONT></A><FONT SIZE="2" FACE="Tahoma"> of Argo/UML, or download the </FONT><A HREF="../download_src.html"><FONT
+	SIZE="2" FACE="Tahoma">source code version</FONT></A><FONT SIZE="2" FACE="Tahoma"> and compile it.</FONT>
+</UL>
+
+<P><FONT COLOR="#000066" FACE="Tahoma"><B>To run Argo/UML with JDK:</B></FONT>
+
+<UL>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 1. Unzip argouml.zip to get argouml.jar. DO NOT UNZIP OR UNJAR argouml.jar.</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 2. If you downloaded swing103.zip then you will have to unzip it to get swing-1.0.3/swing.jar</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 3. Start a new command line window.</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 4. Set your CLASSPATH to include the following in the given order:</FONT>
+	<UL>
+		<LI><FONT SIZE="2" FACE="Tahoma">any optional jar files that you downloaded</FONT>
+		<LI><FONT SIZE="2" FACE="Tahoma">argouml.jar <B>or</B> the directory above the &quot;uci&quot; source code directory.</FONT>
+		<LI><FONT SIZE="2" FACE="Tahoma">swing.jar</FONT>
+	</UL>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 5. Set PATH to include jdk-1.1.7/bin.</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 6. Type the command &quot;java uci.uml.Main&quot;</FONT>
+</UL>
+
+<P><FONT SIZE="2" FACE="Tahoma">If you find the fonts too small to read, you can get bigger fonts by using the
+following command lines for Step 6:<BR>
+java uci.uml.Main -big<BR>
+or<BR>
+java uci.uml.Main -huge</FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma"><BR>
+</FONT><FONT COLOR="#000066" FACE="Tahoma"><B>To run Argo/UML with JRE:</B></FONT>
+
+<UL>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 1. Unzip argouml.zip to get argouml.jar. DO NOT UNZIP OR UNJAR argouml.jar.</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 2. If you downloaded swing103.zip then you will have to unzip it to get swing-1.0.3/swing.jar</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 3. Start a new command line window.</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 5. Set PATH to include the jre executable.</FONT>
+	<LI><FONT SIZE="2" FACE="Tahoma">Step 6. Type the command &quot;jre -cp <I>ARGO;SWING </I>uci.uml.Main&quot;<BR>
+	Where <I>ARGO</I> is the full path to argouml.jar, and <I>SWING </I>is the full path to swing.jar.</FONT>
+</UL>
+
+<P><FONT SIZE="2" FACE="Tahoma">If you find the fonts too small to read, you can get bigger fonts by using the
+following command lines for Step 6:<BR>
+jre -cp ARGO;SWING uci.uml.Main -big<BR>
+or<BR>
+jre -cp ARGO;SWING uci.uml.Main -huge</FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma"><BR>
+</FONT><FONT COLOR="#000066" FACE="Tahoma"><B>To quit Argo/UML:</B></FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma">Use the Exit menu item under the File menu, or press Alt-F4.</FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma">For more information on using Argo/UML, see the </FONT><A HREF="../../tours/index.html"><FONT
+SIZE="2" FACE="Tahoma">tours</FONT></A><FONT SIZE="2" FACE="Tahoma"> web page.</FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma"><BR>
+</FONT><FONT COLOR="#000066" FACE="Tahoma"><B>Keep in Mind:</B></FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma">Argo/UML is a research prototype for exploring the impact of cognitive support
+features in CASE tools. It will evolve into a full featured CASE tool in the future, but it is not comparable to
+commercial CASE tools yet. If you believe in the importance of a free CASE tool, please </FONT><A HREF="../../project.html"><FONT
+SIZE="2" FACE="Tahoma">help in the development of Argo/UML</FONT></A><FONT SIZE="2" FACE="Tahoma">.</FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma"><BR>
+</FONT>
+<HR ALIGN="CENTER">
+<FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="../../index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML Home</FONT></A></P>
+<P><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+
+<P>&nbsp;
+
+</BODY>
+
+</HTML>

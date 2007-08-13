@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ -->
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<TITLE>ArgoUML Tours - Building a Class Diagram - Step #10</TITLE>
+</HEAD>
+
+<BODY>
+
+<p align="right" style="margin-bottom:0px;">
+  <a href="bdClassDiagram9.html">Previous step</a> &nbsp;|&nbsp; 
+  <A HREF="index.html">Back to ArgoUML Tours</A> &nbsp;|&nbsp; 
+  <a href="bdClassDiagram11.html">Next step</a>
+</p>
+
+<h1 style="margin-top:0px;">Building a Class Diagram</h1>
+
+<h3>Step #10: Creating an Interface, setting Navigability</h3>
+
+<p>Now, if you want the Course class to use an interface, 
+  use the Interface icon in the toolbar, 
+  and then click anywhere in the Editor pane (top-right).<br>
+  Name the interface "Teacher", and create the operation "giveTest" 
+  on this interface. 
+  Set the result and parameter of this operation 
+  as indicated in the figure below.</p>
+<p>Then add an association between the Course
+  class and the new interface by using the 
+  <IMG SRC="captures/associationIcon.gif" ALIGN="BOTTOM" BORDER="0"> 
+  tool on the toolbar. Name it "taught_by".<br>
+  Note that the association is made unidirectional by ArgoUML, according the UML
+  principles.
+  <!--You could also have done this manually by 
+  right-clicking near the right hand side
+  end of the association, which will cause a pop-up menu to appear. In this
+  menu, the item "Navigability" allows setting the
+  Navigability.
+  It can also be set in the properties tab of the "AssociationEnd".--><br>
+  Now, you should have the situation as shown in the figure below.
+</P>
+<P><IMG SRC="captures/bdStep10.gif" BORDER="0"></P>
+
+<p align="right" style="margin-bottom:0px;">
+  <a href="bdClassDiagram9.html">Previous step</a> &nbsp;|&nbsp; 
+  <a href="bdClassDiagram11.html">Next step</a>
+</p>
+<HR>
+<P style="font-size: 80%; margin-top:0px; margin-bottom:0px;">
+Back to <A HREF="index.html">ArgoUML Tours</A><BR>
+Back to <A HREF="../index.html">ArgoUML Home</A>
+</P>
+</BODY>
+</HTML>

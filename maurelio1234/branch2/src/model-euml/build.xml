@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: build.xml 12413 2007-04-21 15:44:59Z linus $
+
+Build file for the eUML implementation of the Model subsystem.
+
+This is designed to work in two different environments:
+  - in a subdirectory of argouml, as stored in CVS
+    (ie argouml/src/model-euml)
+  - in a peer directory of argouml, as checked out for Eclipse
+    (ie argouml-core-model-euml)
+    
+-->
+
+<project default="compile" name="ArgoUML eUML Model subsystem">
+  <!-- =================================================================== -->
+  <!-- Initialization target                                               -->
+  <!-- =================================================================== -->
+  <target name="init">
+    <tstamp/>
+
+    <!-- argo.root.dir should be passed in to make sure it is correct -->
+    <property name="argo.root.dir" value="../.."/>
+    <property name="argo.build.dir" value="${argo.root.dir}/build"/>
+
+    <property name="build.dir" value="build"/>
+    <property name="build.classes" value="${build.dir}/classes"/>
+    <property name="build.javas" value="${build.dir}/java"/>
+
+    <property name="tests.classes" value="${build.dir}/tests/classes"/>
+    <property name="tests.reports" value="${build.dir}/tests/reports"/>
+
+    <property name="lib.dir" value="lib" /> 
+
+    <property name="debug" value="yes"/>
+    <property name="deprecation" value="yes"/>
+    <property name="optimize" value="yes"/>
+
+    <property name="result.jar" value="argouml-euml.jar"/>
+
+    <path id="euml.run.classpath">
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.common_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.xmi_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common_1.3.0.v200703011358.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml_2.1.0.v200703011358.jar"/>
+    </path>
+
+    <path id="euml.compile.classpath">
+      <path refid="euml.run.classpath"/>
+    </path>
+
+    <path id="compile.classpath">
+      <pathelement location="${argo.build.dir}/log4j.jar"/>
+        <pathelement location="${argo.build.dir}/argouml-model.jar"/>
+      <path refid="euml.compile.classpath"/>
+    </path>
+
+
+    <!-- Define a few places we can find Junit -->
+    <path id="junit.classpath">
+      <pathelement location="${junit.jar.path}"/>
+      <pathelement location="${argo.tools.dir}/junit-3.8.1/junit.jar"/>
+      <pathelement location="${argo.root.dir}/tools/junit-3.8.1/junit.jar"/>
+    </path>
+
+    <path id="run.classpath">
+      <fileset dir="${argo.build.dir}" includes="*.jar"/>
+      <path refid="euml.run.classpath"/>
+    </path>
+
+    <path id="ant.optional.classpath">
+      <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
+      <path refid="junit.classpath"/>
+    </path>
+        
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
+      <classpath refid="ant.optional.classpath"/>
+    </taskdef>
+
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator" name="junitreport">
+      <classpath>
+         <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+  </target>
+
+  
+  <!-- =================================================================== -->
+  <!-- Run from classes                                                    -->
+  <!-- =================================================================== -->
+  <target name="run" depends="compile"
+          description="Run ArgoUML with eUML model implementation.">
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          taskname="argouml"
+          maxmemory="500M">
+      <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/warn_console.lcf"/>
+      <!-- the following is redundant since it's the default, but leave for now -->
+      <sysproperty key="argouml.model.implementation"
+                   value="org.argouml.model.euml.EUMLModelImplementation"/>
+      <sysproperty key="org.netbeans.lib.jmi.Logger"
+                   value="0"/>
+      <classpath>
+        <pathelement location="${build.classes}"/>
+        <path refid="run.classpath"/>
+      </classpath>
+    </java>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+  <target name="compile"
+          depends="init"
+          description="Compile the sources.">
+    <!-- create directories -->
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.classes}"/>
+
+    <javac srcdir="src"
+           destdir="${build.classes}"
+           includes="org/argouml/**/*.java"
+           debug="${debug}"
+           deprecation="${deprecation}"
+           optimize="${optimize}"
+           source="1.5"
+           target="1.5"
+       >
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+       <classpath>
+         <path refid="compile.classpath"/>
+       </classpath>
+    </javac>
+    <copy todir="${build.classes}">
+      <fileset dir="src">
+        <include name="**/*.xsl"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the jar file                                                -->
+  <!-- =================================================================== -->
+  <target name="jar" depends="compile"
+          description="Build the ${result.jar} file.">
+    <jar basedir="${build.classes}"
+         includes="org/argouml/**"
+         manifest="src/manifest.mf"
+         jarfile="${build.dir}/${result.jar}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Install the jar file                                                -->
+  <!-- =================================================================== -->
+  <target name="install" depends="jar"
+          description="Copy the ${result.jar} file to the ArgoUML directory.">
+    <copy todir="${argo.build.dir}">
+      <fileset dir="${build.dir}" includes="*.jar"/>
+      <fileset dir="${lib.dir}" includes="*.jar"/>
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the tests directory                                        -->
+  <!-- =================================================================== -->
+  <target name="compile-tests"
+          depends="init,compile">
+    <!-- create directories -->
+    <mkdir dir="${tests.classes}"/>
+
+    <javac srcdir="tests"
+           destdir="${tests.classes}"
+           includes="org/argouml/**/*.java"
+           debug="${debug}"
+           deprecation="${deprecation}"
+           optimize="${optimize}"
+           source="1.5"
+           target="1.5"
+       >
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+       <classpath>
+         <path refid="junit.classpath"/>
+         <path>
+           <fileset dir="${argo.build.dir}">
+             <include name="*.jar"/>
+           </fileset>
+         </path>
+       </classpath>
+    </javac>
+        
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean out the tests                                                 -->
+  <!-- =================================================================== -->
+  <target name="junit-report-clean">
+    <mkdir dir="${tests.reports}/junit/output"/>
+    <mkdir dir="${tests.reports}/junit/output/html"/>
+    <delete>
+      <fileset dir="${tests.reports}/junit/output">
+        <include name="TEST-*.xml"/>
+        <include name="TEST-*.txt"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Create the report                                                   -->
+  <!-- =================================================================== -->
+  <target name="junit-report-create">
+    <junitreport todir="${tests.reports}/junit/output">
+      <fileset dir="${tests.reports}/junit/output">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${tests.reports}/junit/output/html"/>
+    </junitreport>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Runs the tests                                                      -->
+  <!-- =================================================================== -->
+  <target name="tests"
+          depends="init,compile,compile-tests,junit-report-clean">
+    <!-- create directories -->
+    <mkdir dir="${tests.classes}"/>
+
+    <junit errorproperty="junit.failure" fork="yes" haltonfailure="false"
+           maxmemory="256M" printsummary="true">
+        <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/info_console.lcf"/>
+        <sysproperty key="argouml.model.implementation"
+                   value="org.argouml.model.euml.EUMLModelImplementation"/>
+        <classpath>
+        <pathelement location="${tests.classes}"/>
+        <path refid="junit.classpath"/>
+        <path refid="run.classpath"/>
+      </classpath>
+      <formatter type="xml"/>
+      <batchtest todir="${tests.reports}/junit/output">
+        <fileset dir="tests">
+          <include name="org/argouml/**/Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+    <antcall target="junit-report-create"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean" depends="init"
+          description="Clean out all built files.">
+    <mkdir dir="${build.dir}"/>
+    <delete includeemptydirs="true">
+      <fileset dir="${build.dir}">
+    	<exclude name="**/.cvsignore"/>
+      	<exclude name="**/readme-build-java.txt"/>
+      	<exclude name="**/CVS/*"/>
+      </fileset>
+    </delete>
+  </target>
+        
+</project>

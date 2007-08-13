@@ -1,0 +1,131 @@
+<!-- $Id: index.html 12437 2007-04-28 07:11:45Z linus $ -->
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+      content="text/html; charset=iso-8859-1">
+<meta name="keywords"
+      content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gentleware, Poseidon, MDA, model-driven, software architecture, software methods, software engineering, CASE, Java, XML, OCL, object, technology">
+
+<title>First Proposal for Profiles
+Implementation</title>
+</head>
+
+<body>
+
+<br/>
+<span style="FONT-WEIGHT:bold">First Proposal for Profiles
+Implementation</span><br/>
+<br/>
+After having studied the current ArgoUML code, I have coded a minimal prototype
+of what I think profiles should be in ArgoUML. At this page I'm going to discuss
+the main modifications I propose. I have generated a patch containing all the
+code modifications I have done. This patch can be found
+<a href="argouml-profiles.txt" title="here">here</a>.<br/>
+<br/>
+The following class diagram illustrates how profiles could be implemented in
+ArgoUML:<br/>
+<br/>
+<div style="PADDING:1em 0pt; TEXT-ALIGN:center">
+  <img src="ClassDiagram.png"/>
+</div>
+<div style="TEXT-ALIGN:center">
+  (you can find the zargo file for this class diagram
+  <a href="Proposal0.zargo" title="here">here</a> )<br/>
+</div>
+<br/>
+<span style="FONT-WEIGHT:bold">The Profile's concept</span><br/>
+<br/>
+A profile is mainly an object of the
+<span style="FONT-STYLE:italic">Profile</span> class. This object is in charge
+for providing a model where ArgoUML can look for the defined stereotypes, tag
+definitions and etc, a formating strategy (used to format the element names
+according to the namespace). In future, it can provide wizards, critiques,
+figures and so on.<br/>
+<br/>
+There are two ways to deliver a new profile: as a plug-in or as an XMI file. A
+profile defined as a plug-in can offer more specialized services, as special
+critics and automatic registration. I have put an exemple of plug-in profile
+<a href="profile-javabeans.jar" title="here">here</a> (source code
+<a href="profile-javabeans.src.zip" title="here">here</a>).<br/>
+<br/>
+This plug-in defines a micro-java beans profile. It defines a
+&lt;&lt;Bean&gt;&gt; and a &lt;&lt;Property&gt;&gt; stereotype, and a critics to
+enforce the constraint "A &lt;&lt;Property&gt;&gt; can only be applied to a
+&lt;&lt;Bean&gt;&gt;'s attribute".<br/>
+<br/>
+A plug-in delivered as an XMI file is a
+<span style="FONT-STYLE:italic">UserDefinedProfile </span>object that just
+provides a model from where ArgoUML gets the definition for the stereotypes, tag
+definitions and primitive types. There's an example of XMI profile
+<a href="threading.xmi" title="here">here</a>. It defines a reduced
+<span style="FONT-STYLE:italic">threading profile</span> (don't try to figure
+out what it is ;)). It defined two stereotypes, &lt;&lt;activeThread&gt;&gt; for
+classes and &lt;&lt;communicationChannel&gt;&gt; for associations, a datatype
+called <span style="FONT-STYLE:italic">mutex</span> and a tag definition called
+<span style="FONT-STYLE:italic">priority</span>.<br/>
+<br/>
+The support for both strategies is very important, because supporting XMI files
+allows the creation of new profiles by the user with almos no effort (just
+define the profile using ArgoUML and export the XMI file). The support for
+profiles defined as plug-ins is also important, because the information
+contained at the XMI model is not enough for a rich user experience. UML allows
+the user to define the new stereotypes as subclasses of the metamodel
+metaclasses and to define OCL constraints 'constraining' the application of
+these stereotypes.<br/>
+<br/>
+The main problem here is that the most ArgoUML can do with the information
+provided by the XMI file is to check if the profile is being correcly applied.
+But it would be very difficult to try to provide more useful information like:
+<span style="FONT-WEIGHT:bold">why</span> is the profile not being correctly
+applied? <span style="FONT-WEIGHT:bold">how </span>can I change it to make it
+correct? and so on.<br/>
+<br/>
+<span style="FONT-WEIGHT:bold">The Model loader</span><br/>
+<br/>
+The model loader interface intends to isolate the profile code from the code
+used to load the XMI model. This is just part of the effort to remove everything
+that's not related directly to profiles from the
+<span style="FONT-STYLE:italic">Profile</span> class.<br/>
+<br/>
+The class hierarchy under the <span style="FONT-STYLE:italic">ModelLoader</span>
+interface tries to avoid unecessary checks and repeated code.<br/>
+<br/>
+<span style="FONT-WEIGHT:bold">The ProfileConfiguration<br/>
+<br/>
+</span>This class should contain all the information related to profiles and
+that should be kept as part of the object. It contains the links to all the
+applied profiles and the notion of <span style="FONT-STYLE:italic">default
+profile</span> (the profile that is going to be used as default model -- I don't
+know yet exactly what is it). The
+<span style="FONT-STYLE:italic">ProfileConfiguration </span>has also a method to
+gather the models of all Profiles.<br/>
+<br/>
+<span style="FONT-WEIGHT:bold">The ProfileManager<br/>
+<br/>
+</span>This class is responsible for keeping the list of profiles available to
+be applied to current project. To illustrate its functionalities I have
+implemented a new settings tab for projects that can be used to view the
+profiles currently applied and allows the instalation of new XMI profiles.<br/>
+<br/>
+<div style="PADDING:1em 0pt; TEXT-ALIGN:center">
+  <img src="ProfilesTab.PNG"/>
+</div>
+<div style="TEXT-ALIGN:center">
+  (yes... I know I'm not good at desiging interfaces ;-) )<br/>
+  <br/>
+  <br/>
+  <div style="TEXT-ALIGN:left">
+    <span style="FONT-WEIGHT:bold">Summary of implemented features<br/>
+    <br/>
+    </span>+ Support for Plug-in profiles<br/>
+    + Support for XMI profiles<br/>
+    + Making stereotypes, tag definitions and primitive types defined in all
+    installed profiles available for application<br/>
+    + Profile management<br/>
+    <span style="FONT-WEIGHT:bold"></span>
+  </div>
+</div>
+
+</body>
+</html>

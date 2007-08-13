@@ -1,0 +1,188 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>ArgoUML Directory Structure</title>
+  </head>
+  
+  <body>
+    <table cellpadding=0 cellspacing=0>
+      <tr bgcolor="#CCCCCC">
+        <td>
+    
+        <h2>Directory Structure</h2>
+
+        <h3>Installation Directory</h3>
+
+        <h4>Current Configuration</h4>
+
+        <p>
+          Currently Argo contains definitions of certain directories.
+          These are calculated at execution time and may be viewed on the
+          <strong>Environment</strong>
+          tab under the menu selection
+          <strong>Edit -&gt; Settings</strong>.
+        <p/>
+        <p>
+          <img src="settings.jpg">
+        </p>
+      
+        <p>
+          The first three values shown in the list
+          (<i>argo.root</i>, <i>argo.home</i>, and <i>argo.ext.dir</i>)
+          are calculated.
+        </p>
+        
+        <p>
+          These are <u>currently</u> defined as follows:
+          <ul>
+            <li>
+                <dfn>argo.root</dfn>
+              is the location that the Argo code is loaded from.
+                This could be either a jar file or a directory.
+            </li>
+            <li>
+              <dfn>argo.home</dfn>
+                is the directory which contains <i>argo.root</i>.
+            </li>
+            <li>
+                <dfn>argo.ext.dir</dfn>
+                is a directory named <b>ext</b> in <i>argo.home</i>.
+            </li>
+          </ul>
+        </p>
+        
+        <p>
+          The following java fragment
+          from <b>org.argouml.application.modules.ModuleLoader</b>
+          calculates <i>argo.root</i>:
+        
+          <code>
+            <pre>
+    String extForm = org.argouml.application.Main.class.getResource(Argo.ARGOINI).toExternalForm();
+    argoRoot = extForm.substring(0, extForm.length()-Argo.ARGOINI.length());
+            </pre>
+          </code>
+        </p>
+
+        <h4>Proposed Configuration</h4>
+        <p>
+          Rather than computing the value for <i>argo.home</i>,
+          ArgoUML should determine that location
+          from a system argument
+          passed on the command line,
+          or from a property file located in a "well-known" location.
+        </p>
+        <p>
+          These "well-known" locations would be selected from
+          the directories provided by the Java run-time through the
+          <a href="http://java.sun.com/j2se/1.2/docs/api/java/lang/System.html#getProperty(java.lang.String)"><code>java.lang.System.getProperty(key)</code></a> function.
+          These are:
+          <ul>
+              <li><dfn>java.home</dfn> (Java installation directory)</li>
+              <li><dfn>user.dir</dfn> (User's current working directory)</li>
+              <li><dfn>user.home</dfn> (User's home directory)</li>
+          </ul>
+          (Definitions of these properties are found under
+          <a href="http://java.sun.com/j2se/1.2/docs/api/java/lang/System.html#getProperties()"><code>java.lang.System.getProperties()</code></a>.)
+        </p>
+        
+        <p>
+          <i>argo.root</i> would become obsolete,
+          and its value would only be used internally
+          if <i>argo.home</i> needed to be calculated
+          because it was not otherwise provided.
+        </p>
+        
+        <p>
+          The initialization process would then become:
+          <ol>
+              <li>
+                Check if <i>argo.home</i> was provided on the command line.
+              </li>
+              <li>
+                If <i>argo.home</i> has not been set yet,
+                attempt to retrieve its value from the property file
+                <b>${java.home}/lib/argouml.initialization.properties</b>.
+              </li>
+              <li>
+                If <i>argo.home</i> has not been set yet,
+                attempt to retrieve its value from the property file
+                <b>${user.home}/lib/argouml.initialization.properties</b>.
+              </li>
+              <li>
+                If <i>argo.home</i> has not been set yet,
+                calculate its value as currently being done,
+              but without exposing <i>argo.root</i>.
+              </li> 
+          </ol>
+          <br/>
+          Note: We do not attempt to look in <i>user.dir</i>
+          since this could cause more issues than it solves.
+        </p>
+        
+        <p>
+          This approach seems to provide sufficient flexibility
+          and operating system independence.
+          Additionally, the property file search approach
+          should allow continued support
+          for running ArgoUML under Java Web Start,
+          which does not currently allow users to add command line arguments.
+        </p>
+        
+        <p>
+          Developers <s>(and other fools)</s>
+          could easily maintain multiple executable versions of Argo
+          on their systems
+          by using multiple startup scripts
+          each pointing to a different <i>argo.home</i>.
+        </p>
+        
+        <p>
+          The tag "developer_snapshot" contained in <b>build.xml</b>
+          should be changed to "install",
+          and determine the location of <i>argo.home</i>
+          in a similar manner,
+          but also checking the directory
+          named by the ant built-in property <i>basedir</i>
+          for the file <b>argouml.initialization.properties</b>.
+        </p>
+        
+        <p>
+        </p>
+
+        <h5>Example of proposed installed directory structure</h5>
+	<a name="example"/>
+        Thus a typical installation on a *nix system
+        might have the following directory structure.
+	The software would be installed
+	in the <code>/usr/share/argouml</code> directory.
+	
+        <p/>
+	<pre>
+         <code>/usr/share/argouml/bin</code>
+	 <code>/usr/share/argouml/lib</code>
+         <code>/usr/share/argouml/lib/ext</code>
+	 </pre>
+	 </p>
+	 <i>argo.home</i> would be <code>/usr/share/argouml</code>.
+	 <br/>
+	 <i>argo.ext.dir</i> would be <code>/usr/share/argouml/lib/ext</code>.
+	 <p/>
+	 The files contained in <i>argo.home</i>/bin would be scripts
+	 specialized for the installation
+	 (with -Dargo.home=/usr/share/argouml on the java command, for example),
+	 and could be copied to any directory
+	 (such as <code>/usr/local/bin</code>) and executed directly.
+       </td>
+     </tr>
+   </table>
+   <hr align="CENTER">
+   <p>
+     <a href="../index.html">Proposals</a>
+     |
+     <a href="/index.html">ArgoUML Home</a>
+     |
+     <a href="/dev.html">Developer Zone</a>
+   </p>
+  </body>
+</html>

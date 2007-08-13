@@ -1,0 +1,745 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+"../docbook-setup/docbookx/docbookx.dtd">
+<book
+><title
+>Frequently asked questions for ArgoUML.</title
+><chapter
+><title
+>About this FAQ...</title
+><para
+>This FAQ is provided with the hopes to be helpful for users using ArgoUML or Poseidon for their projects.</para
+><para
+>It is a collection of tips and tricks from the mailing lists and from other persons that have made experiences using ArgoUML that they want to share for the benefit of the community. It is by no means a complete overview ubut does rather reflect the interest and problems that the users have.</para
+><para
+>The information is updated as the questions and answers becomes appearant to the FAQ moderator. A certain version of the FAQ is only loosely connected to a specific version of ArgoUML or Poseidon but can rather elaborate on how a problem is solved differently in the different versions.</para
+><sect1
+><title
+>In this FAQ, you will find...</title
+><para
+>The information is layed out as Question and Answers and sorted on subject.</para
+></sect1
+><sect1
+><title
+>In this FAQ, you will not find...</title
+><para
+>Any information that is exactly the same as in the last frosen version of the Users&#39; manual. If it is in the manual, the answer does not need to be in the FAQ also. The FAQ might still contain the question but the answer is merely a reference.</para
+></sect1
+></chapter
+><chapter
+><title
+>Introduction</title
+><qandaset
+defaultlabel="none"
+><qandadiv
+><title
+>Introduction</title
+><qandaentry
+><question
+><para
+>What is Argo?</para
+></question
+><answer
+><para
+>Argo UML is Java based Universal Modeling Language tool. It is able to create and save most of the nine UML diagrams without problem. It has the ability to reverse engineer compiling java .class code and generate UML diagrams for it. Output features are available but the save component of Argo has known problems.</para
+><para
+>But that&#39;s not to say that it is also one of the most powerful UML tool under BSD Open Source License. It&#39;s also one of the better supported OS projects!</para
+><para
+>Argo UML is in full sail! That is to say Argo has not locked up on me once!</para
+><para
+>The waters are choppy in places (nasty currents in the Save waters), unpredictable winds (Will it open old documents? Will I be able to reuse the software maps I&#39;ve already created?</para
+><para
+>The navigation charts are set with DocBook XML. I&#39;m using xmledit from xmlmind.com. Together we&#39;ll get Argo from the development port to the production port!</para
+><para
+>Understandably when you get into a boat you plan on going somewhere. But don&#39;t plan on a cross Atlantic trip with Argo, it&#39;s more appropriate for a lake cruise in calm weather.</para
+><para
+>Argo is NOT production ready! Meaning you will get distracted by the things you can&#39;t do and you&#39;ll feel like your drowning sometimes if you&#39;ve used commercial UML tools. But, hey, Argo started as an academic project, not a commercial project. And, it&#39;s free, the potential is there, that&#39;s clear, because you are here...</para
+><para
+>All open source projects are as useful and helpful as the users and developers identify and implement use cases, code, correct misunderstandings, identify bugs, and help with the documentation!</para
+><para
+>We need your help and here&#39;s how.</para
+><para
+>Use it!</para
+><para
+>We&#39;ve made it easy to get and to use! Use the Java Web Start (JWS)Version ! This will give you the latest &#34;stable&#34; build. Version .8.1 is officially supported by the developers, but give the JWS version a try!</para
+><para
+>Technically, the latest version of Argo can Reverse Engineer compiling Java code...which means we will soon have all of the classes of Argo in UML form! That&#39;ll help everyone to better understand and advance the code and, most importantly...usability!</para
+><para
+>We&#39;ll help you along the way too! Please specify your Argo version and your OS when making your requests for help.</para
+><para
+>Try to get into the habit of modeling your questions using UML! It&#39;ll help you learn the &#39;ins and outs&#39; of UML and it&#39;ll give the developers and the users a better idea of how to use Argo, what does and does not work AND for budding developers a chance to model real code!</para
+><para
+>If you&#39;re comfortable coding, jump into the developer&#39;s galley and build Argo from the inside out with the CVS. The CVS has functionality&#39;s that have not been deemed ready for JWS release yet. Give it a try! You&#39;ll find some tips on using the CVS in this user document.</para
+><para
+>Want more?</para
+><para
+>Reverse engineer the use case and activity diagrams of the usage of Argo. Do this using Argo!</para
+><para
+>Then, model the Use cases you would like to see implemented in Argo! Model the activities, the classes, the states, the activities. Then re-engineer Argo itself and see how your model of a UML tool compares to Argo!</para
+><para
+>We&#39;re sure that at no matter your UML skills working through the reverse engineering process will be satisfying.</para
+><para
+>At this point you will have mastered the very sophisticated mapping of programming and problem solving. And you will have learned a number of highly valued skills in program analysis, business case analysis, and communication analysis. In fact you will have learned how to communicate some of the most sophisticated ideas in a way that anyone with a little training can understand.</para
+><para
+>Save your diagrams as .zArgo! And mail them to the user group as attachments! This will help all of us by building a library of UML diagrams for reference and for development purposes!</para
+></answer
+></qandaentry
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>General questions</title
+><qandaset
+defaultlabel="qanda"
+><qandadiv
+><title
+>General Questions</title
+><qandaentry
+><question
+><para
+>Is there a manual?</para
+></question
+><answer
+><para
+>Yes, check out: Argo\Argouml\documentation\manual</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>What is Java Web Start?</para
+></question
+><answer
+><para
+>JWS = Java Web Start, some Sun technology which allows you start Java Applications via the web. You can start ArgoUML as well as Poseidon for UML Community Edition from www.Argouml.org and www.gentleware, respectively. Just click on the provided link (after installing JWS).</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>Where do I get the code for ArgoUML?</para
+></question
+><answer
+><para
+>You can download the latest release of Argo in source from www.Argouml.org. The server is the same as for ArgoUML. I personally prefer NetBeans 3.3 (with the XML module) it has a very easy to use CVS connection wizard that makes life easy.</para
+><para
+>Be aware that if you have something to contribute in terms of code but you can&#39;t be bothered to figure out the CVS send your contribution directly to one of the lead developers and they can load it into the CVS for you!</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>Is there commercial support for Argo?</para
+></question
+><answer
+><para
+>Yes there is, Gentleware.com provides enhanced versions of Argo as well as support. </para
+><para
+>It was founded by some to the core developers of ArgoUML.</para
+><para
+>See http://www.gentleware.com.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>When I click on help I get sent to a server for example: http://ics.uci.edu/pub/arch/uml/critics/CrMultipleAgg.html But there isn&#39;t an ics.uci.edu server...Where can I get the help files? </para
+></question
+><answer
+><para
+>We&#39;re working on it...hopefully we&#39;ll be able to get the help files onto the Argo site...or at least under the Help window in Argo itself! Check the documentation links at www.argouml.org. You&#39;ll find a lot of very good docs on how to get working in Argo.</para
+><para
+>Feel free to contribute by modeling the help interface and the related classes!</para
+><para
+>A really cool thing would allow the users to enter their own help text and so that it can be uploaded to CVS and used by others!</para
+></answer
+></qandaentry
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>Operating System related features</title
+><qandaset
+defaultlabel="none"
+><qandadiv
+><title
+>OS X</title
+><qandaentry
+><question
+><para
+>How can I access the context sensitive menus?</para
+></question
+><answer
+><para
+>Press the Apple Key together with the mouse button</para
+></answer
+></qandaentry
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>User Interface:navigation panes</title
+><qandaset
+><qandadiv
+><title
+>Diagrams: Contribute.</title
+><qandadiv
+><title
+>User Interface:Navigation Panes</title
+><qandaentry
+><question
+><para
+>How do I know what diagram I&#39;m working on?</para
+></question
+><answer
+><para
+>Sometimes, if your screen is large enough, you will see the name of the diagram in the top right corner.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>What are the names of the various work screens?</para
+></question
+><answer
+><para
+>The different screens are called panes. They all have an individual name, Navigation Pane, Diagram Pane, ToDo Pane and Details Pane, as shown in the following table. <table
+frame="all"
+><title
+>Table title</title
+><tgroup
+colsep="1"
+cols="2"
+align="left"
+rowsep="1"
+><tbody
+><row
+><entry
+>Navigation Pane: it&#39;s the tree like view</entry
+><entry
+>Diagram Pane: this is the big pane in the middle</entry
+></row
+><row
+><entry
+>ToDo Pane: buggy</entry
+><entry
+>Details Pane: most of the developers prefer using this pane over directly typing in the diagram pane</entry
+></row
+></tbody
+></tgroup
+></table
+></para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>How can I look at different diagrams at the same time?</para
+></question
+><answer
+><para
+>You can &#39;spawn&#39; a panel by double-clicking on the tab. It will then show as individual window and you can put it next to another. But beware, this function does not work in the diagram window for the moment. This is believed to be an issue with GEF.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>How do I reduce the number of panes open in the window?</para
+></question
+><answer
+><para
+>Unimplemented feature :( You can, however, &#34;spawn&#34; a window by double-clicking on the tab, and maximize that. Note that Bob Tarling has added code that will make this easier after .9.5</para
+><para
+>See to do list.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>How can I sort the artifacts in the Navigation Pane, for example sort all of my Actors?</para
+></question
+><answer
+><para
+>It&#39;s an unimplemented feature? It would be nice though wouldn&#39;t it?</para
+><para
+>See to do list.</para
+></answer
+></qandaentry
+></qandadiv
+></qandadiv
+></qandaset
+><qandaset
+><qandadiv
+><title
+>Navigation Pane: Contribute.</title
+><qandadiv
+><title
+>User Interface:Navigation Panes</title
+><qandaentry
+><question
+><para
+>How do I arrange my diagram elements?</para
+></question
+><answer
+><para
+>There are several ways to easily and elegantly move diagram elements.</para
+><para
+>Select the elements you want to move. By holding down the control key you can select several.</para
+><para
+>Now hit your arrow keys. Your elements move a little with every key stroke.</para
+><para
+>If you also hold down the shift key, they move a bit faster.</para
+><para
+>Or click on the broom button, move your mouse to the diagram pane, right click and hold. Now moving your mouse side ways (or up and down) will align elements.</para
+><para
+>There also is the menu item arrange where you can align or group elements.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>I&#39;ve reviewed the list of to-dos as determined by &#34;poster&#34; but every time I try to click in the properties pane, it closes on me. What can I do?</para
+></question
+><answer
+><para
+>Review the bug list first to see if it has already been posted.</para
+><para
+>If not, post the bug.</para
+><para
+>If you know how to fix it, then submit a patch.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>What works under the details pane?</para
+></question
+><answer
+><para
+>The details pane is &#39;more stable&#39; than typing in the diagram pane.</para
+></answer
+></qandaentry
+></qandadiv
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>Sequence Diagrams</title
+><qandaset
+><qandadiv
+><title
+></title
+><qandadiv
+><title
+>Sequence Diagrams</title
+><qandaentry
+><question
+><para
+>I&#39;m trying to change the ordering of the links in the sequence diagram. How do I do that?</para
+></question
+><answer
+><para
+>Unimplemented feature.</para
+><para
+>If you can help out there please let us know.</para
+><para
+>see to do list</para
+></answer
+></qandaentry
+></qandadiv
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>Statechart Diagrams</title
+><qandaset
+><qandadiv
+><title
+>Statechart Diagrams: Contribute.</title
+><qandadiv
+><title
+>Statechart Diagrams</title
+><qandaentry
+><question
+><para
+>How do I create a statechart diagram?</para
+></question
+><answer
+><para
+>Select a class, then you can create a statechart diagram. The same applies for activity diagrams.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>I am trying to use Argo to edit a state machine diagram for a model. But when I edit a composite state, I don&#39;t know how to provide an event for a composite state. Can you help me?</para
+></question
+><answer
+><para
+>Select a class, then you can create a statechart diagram.</para
+></answer
+></qandaentry
+></qandadiv
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>Activity Diagrams</title
+><qandaset
+><qandadiv
+><title
+>Activity Diagrams: Contribute!</title
+><qandadiv
+><title
+>Activity Diagrams</title
+><qandaentry
+><question
+><para
+>How do I create an activity diagram?</para
+></question
+><answer
+><para
+>Select a use case or class, then you can create an activity diagram. Same as for a statechart diagram.</para
+><para
+>Enabling an activity diagram that is connected to an actor has been requested as a feature. As well swim lanes have been requested.</para
+></answer
+></qandaentry
+></qandadiv
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>Class Diagrams</title
+><qandaset
+><qandadiv
+><title
+>Class Diagrams: Contribute!</title
+><qandadiv
+><title
+>Class Diagrams</title
+><qandaentry
+><question
+><para
+>Is it possible to switch to &#39;real&#39; UML Syntax, like &#39;Name : String&#39; in class diagrams?</para
+></question
+><answer
+><para
+>No, but it is planned to make that the default.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>I see there is a note icon in the tool bar. How do I use it?</para
+></question
+><answer
+><para
+>Click on your target class. Then click on the note icon. Argo will generate the link automatically. The notes will be implemented for many UML artifacts in the next release .9.6</para
+><para
+>You can also right click to add a note as well! Be aware that you can add an undefined number of notes to any one class!</para
+><para
+>Be aware that your note will not appear in the source code documentation tab. But it will appear in the diagram view of the navigation pane (the left pane tree view).</para
+><para
+>Please see to do list.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>What is the easiet way to enter data into attributes and methods window for classes?</para
+></question
+><answer
+><para
+>Click direct class properties pane and start typing. </para
+><para
+>In fact, it would be interesting to see if you can type &#39;stereotypes&#39; write in the class attribute box for generating XML diagrams.</para
+></answer
+></qandaentry
+></qandadiv
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>Output</title
+><qandaset
+><qandadiv
+><title
+>Loading and Saving</title
+><qandaentry
+><question
+><para
+>Do Argo and Poseidon save .xmi files?</para
+></question
+><answer
+><para
+>Yes. They save the model information in an .xmi-file, the diagram information in a .pgml-file and information about the project in a .Argo file. All of these are then zipped to a .zArgo-file. You can easily extract the .xmi from the .zArgo file using any old generic ZIP application. Give it a try and look into the magic of Argo. Be aware that double clicking will launch a ZIP utility, if one is installed, and NOT Argo.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>How do I import an .xmi into Argo and what formats are known to be supported?</para
+></question
+><answer
+><para
+>Because of the variety of .xmi formats being generated you will encounter problems using other .xmis generated from other applications. ArgoUML&#39;s native storage format is another implementation of XMI (Curt Arnold believes that it has been hacked so it can also read the Unisys variant). He recommends that if you are comfortable with XSLT, you can typically transform one variant of UML + XMI to another, plus MetaIntegrations (http://www.metaintegrations.net) makes a version of their Bridge product available to transform between XMI flavors.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>How can I print my diagrams?</para
+></question
+><answer
+><para
+>Select a diagram, then go to File-&#62;Export Diagrams. You can generate gif, postscript, eps or .svg format.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>What does SVG stand for?</para
+></question
+><answer
+><para
+>A super cool vector graphics format (like MM Flash) that is totally open and is gaining enormous ground in the graphics world. Find out more at the www.W3C.org.</para
+><para
+>As well visit Adobe.com for the plugin for NN and IE</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>How do I save my diagrams as .SVG?</para
+></question
+><answer
+><para
+>First: select .svg as the file type. Second: type the name of the file as you like with the .svg tag at the end. Example myumldiagram.svg</para
+><para
+>Argo does not do it automatically. See the to-do list.</para
+><para
+>Et viola! SVG! Give it a try and zoom around a little...They are not pretty though, so if you know anything about rendering beautiful SVG let us know!</para
+><para
+>Oh, and by the way, you&#39;ll need a browser that can read SVG, the plugin for NN and IE are available at Adobe.com</para
+><para
+>There are a few browsers that read SVG natively: Amaya, X-Smiles, and a rudimentary version of Mozilla.</para
+><para
+></para
+><para
+>See to do list</para
+><para
+>Be aware: You will not have scroll bars for your SVG unless it is embedded into an HTML! Good luck and let us know what you find!</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>Can I output my entire ZArgo project as an HTML?</para
+></question
+><answer
+><para
+>No not yet.</para
+></answer
+></qandaentry
+></qandadiv
+><qandadiv
+><title
+>.XMI</title
+><qandaentry
+><question
+><para
+>I have a model generated by Rational Rose in xmi format and I want input it into Argo UML case tool. Could anyone tell me how I can do that?</para
+></question
+><answer
+><para
+>Probably not possible but if you want to take on the task of writing an XSLT that transposes the ROSE .xmi to Argo .xmi you&#39;d make a lot of friends in a hurry!</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>How do I import an .xmi into Argo and what formats are known to be supported?</para
+></question
+><answer
+><para
+>Because of the variety of .xmi formats being generated you will encounter problems using other .xmis generated from other applications.</para
+><para
+>ArgoUML&#39;s native storage format is another implementation of XMI (Curt Arnold believes that it has been hacked so it can also read the Unisys variant). He recommends that if you are comfortable with XSLT, you can typically transform one variant of UML + XMI to another, plus MetaIntegrations (http://www.metaintegrations.net) makes a version of their Bridge product available to transform between XMI flavors.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>Does Argo UML generate an XMI document?</para
+></question
+><answer
+><para
+>Yes! Check out the .zArgo file. Open it and Viola! It&#39;s tucked inside...</para
+><para
+>Argo saves all .xmi and .pgml and .Argo files in one zipped .ZArgo file. You can easily extract the .xmi from the .zArgo file using any old generic ZIP application. (PowerArchiver is a cool freeware app for the Win folks). Give it a try and look into the magic of Argo!</para
+><para
+></para
+></answer
+></qandaentry
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>Contributing to the ArgoUML project</title
+><qandaset
+defaultlabel="none"
+><qandadiv
+><title
+>To Do</title
+><qandaentry
+><question
+><para
+>How can I help?</para
+></question
+><answer
+><para
+>You can help by joining the ArgoUML project.</para
+><para
+>On the <ulink
+url="http://www.argouml.org/"
+>ArgoUML web site</ulink
+> there is a list of things to do in Issues.</para
+><para
+>The project needs persons skilled in several different fields such as:</para
+><itemizedlist
+><listitem
+><para
+>Programming Java, C++...</para
+></listitem
+><listitem
+><para
+>Testing</para
+></listitem
+><listitem
+><para
+>Writing documentation</para
+></listitem
+><listitem
+><para
+>Proofreading documentation</para
+></listitem
+><listitem
+><para
+>UML</para
+></listitem
+></itemizedlist
+><para
+>A good place to start is to take a look at the To Do list.</para
+><para
+>Download the CVS take a look at the code.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>I don&#39;t have CVS access but I have an update or patch I&#39;d like to submit. How do I do that?</para
+></question
+><answer
+><para
+>Contact any of the active developers on the list and send them your updates for review and inclusion.</para
+></answer
+></qandaentry
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>Bugs</title
+><qandaset
+defaultlabel="none"
+><qandadiv
+><title
+>Report Bugs</title
+><qandaentry
+><question
+><para
+>Where do I report bugs?</para
+></question
+><answer
+><para
+>The known bugs to the ArgoUML project are registered in the issuezilla at Tigris.</para
+><para
+>If you find a bug you should register it according to <ulink
+url="http://argouml.tigris.org/project_bugs.html"
+>the instruction on the web site</ulink
+></para
+><para
+>Be aware that you&#39;re bug may have already been registered i.e. it is already known. If so, please just add the additional observations you have made.</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>What information is interesting when reporting a Bug</para
+></question
+><answer
+><para
+>Get a screen grab of it and a .txt copy of the stack output for analysis.</para
+><para
+>Also include what version of ArgoUML you are running and on what platform (Hardware, OS, Java-version).</para
+></answer
+></qandaentry
+></qandadiv
+></qandaset
+></chapter
+><chapter
+><title
+>CVS</title
+><qandaset
+defaultlabel="none"
+><qandadiv
+><title
+>CVS</title
+><qandaentry
+><question
+><para
+>I&#39;m having problems with WinCVS, can you help?</para
+></question
+><answer
+><para
+>Hi all,</para
+><para
+>after realizing that others who are authorized also have problems to commit to CVS, I will write how I solved this (thanks to Toby).</para
+><para
+>CVS stores in each directory the user id of the last access, and this is in most cases &#39;guest&#39;. If one gets a user id with commit rights (in my case &#39;thn&#39;), then a &#39;cvs commit&#39; without explicitely saying for which user (I think it&#39;s the &#39;-d&#39; option) will look for that stored id and use this. Since &#39;guest&#39; has no commit rights, this will of course fail.</para
+><para
+>Deleting the whole source tree will solve the problem, sure, but this is like we germans say: shooting blackbirds with cannons... You would need to download all sources again, and that&#39;s not necessary.</para
+><para
+>The most effective way is to change all CVS stored &#39;guest@cvs.tigris.org&#39; in the source tree. Just substitute all &#39;guest@&#39; by e.g. &#39;thn@&#39; (be sure to use your own user id!), which can surely be done in one command on Unix systems, and the problem is solved.</para
+><para
+>I am using WinXX, so I did this by performing a recursive find in Win Explorer (searching for files containing &#39;guest@&#39;, marking all with ctrl+a, loading them into a multifile text editor like Textpad and do the substitution on all opened files.</para
+><para
+>And then I had the overwhelming experience of my first commit with WinCVS... :-)</para
+><para
+>Good luck, Thomas</para
+></answer
+></qandaentry
+><qandaentry
+><question
+><para
+>I&#39;ve got a bunch of people working on the same diagrams. How do I track who is doing what on the diagram? How do I use Argo for CVS?</para
+></question
+><answer
+><para
+>Unimplemented feature. It would be nice though wouldn&#39;t it? The folks at Gentleware have mentioned something about that though the status is unknown.</para
+></answer
+></qandaentry
+></qandadiv
+></qandaset
+></chapter
+></book
+>

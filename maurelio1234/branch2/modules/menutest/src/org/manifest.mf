@@ -1,0 +1,21 @@
+Manifest-Version: 2.0
+Class-Path: argouml.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: org/argouml/ui/test/ActionTestMenuPlugins.class
+Extension-name: module.test.menu.plugins
+Specification-Title: ArgoUML Dynamic Load Module
+Specification-Version: 0.9.4
+Specification-Vendor: University of California
+Implementation-Vendor: University of California
+Implementation-Version: 0.9.4
+Implementation-Title: ArgoUML Plugin Menu Tester
+
+Name: org/argouml/ui/test/ActionTestLoadableModule.class
+Extension-name: module.test.menu.module
+Specification-Title: ArgoUML Loadable Module
+Specification-Version: 0.9.4
+Specification-Vendor: University of California
+Implementation-Vendor: University of California
+Implementation-Version: 0.9.4
+Implementation-Title: ArgoUML Loadable Module Tester

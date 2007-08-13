@@ -1,0 +1,803 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML EXPERIMENTAL 970324//EN">
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" CONTENT="Adobe FrameMaker 5.5/HTML Export Filter">
+<LINK REL="STYLESHEET" HREF="diss3.css">
+<TITLE> CHAPTER 1: Previous Work in Cognitive Features for Design Tools		</TITLE></HEAD>
+<BODY BGCOLOR="#ffffff">
+<DIV>
+<H1 CLASS="ChapterHeading">
+<A NAME="pgfId=1094752">
+ </A>
+Previous Work in Cognitive Features for Design Tools		</H1>
+<DIV>
+<H3 CLASS="Heading2">
+<A NAME="pgfId=1094753">
+ </A>
+Previous Work on Design Critiquing Systems</H3>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094754">
+ </A>
+Definitions of Design Critiquing Systems</H4>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094755">
+ </A>
+A design critic is an intelligent user interface mechanism embedded in a design tool that analyzes a design in the context of decision-making and provides feedback to help the designer improve the design. Feedback from critics may report design errors, point out incompleteness, suggest alternatives, or offer heuristic advice. One important distinction between critics and traditional analysis tools is the tight integration of design critics into the designer's task: critics interact with designers while they are engaged in making design decisions.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1110071">
+ </A>
+<A NAME="41732">
+ </A>
+Selected sefinitions of critiquing systems</H6>
+</CAPTION>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1110073">
+ </A>
+Langlotz and Shortliffe (1983) describing ONCOCIN: &quot;A critique is an explanation of the significant differences between the plan that would have been proposed by the expert system and the plan proposed by the user.&quot;</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1110075">
+ </A>
+Miller (1983) on ATTENDING: &quot;A critiquing system is a computer program that critiques human generated solutions.&quot;</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1110077">
+ </A>
+Fischer et al. (1991) on Janus: &quot;Critics operationalize Schoen's concept of a situation that talks back. They use knowledge of design principles to detect and critique suboptimal solutions constructed by the designer.&quot;</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1110079">
+ </A>
+Sumner, Bonnardel, and Kallak (1997) describing VDDE: &quot;Critiquing systems embedded in [design] environments augment designers' cognitive processes by analyzing design solutions for compliance with criteria and constraints encoded in the system's knowledge-base.&quot;</P>
+</TD>
+</TR>
+</TABLE>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094761">
+ </A>
+<A HREF="diss3.html#41732" CLASS="XRef">
+See Selected sefinitions of critiquing systems</A>
+ shows some of the definitions of critiquing systems found in the literature. I have added italics to each definition to highlight key phrases that differentiate it from the others.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094762">
+ </A>
+The definition in <A HREF="diss3.html#41732" CLASS="XRef">
+See Selected sefinitions of critiquing systems</A>
+ given by Langlotz and Shortliffe defines critiques as explanations of differences. Their system, ONCOCIN, arose from an effort to increase the explanation producing power of an existing expert system. The emphasis was on the system's solution; the doctor's solution was used only to choose which parts of the system's solution needed to be explained. The hope was that better explanation capabilities would make the system more acceptable to its users.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094763">
+ </A>
+Miller's definition of critiquing system places more emphasis on the user's solution. Miller's system, ATTENDING, was developed in an effort to make medical consulting expert systems more acceptable to their intended users, much like ONCOCIN.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094764">
+ </A>
+The first two definitions in <A HREF="diss3.html#41732" CLASS="XRef">
+See Selected sefinitions of critiquing systems</A>
+ are early ones that do not imply much interaction between the designer and the system. In contrast, the definition given by Fischer and colleagues introduces a cognitive aspect that shifts the primary focus away from simple observations of user acceptance and to the cognitive needs of human designers. Support for Schoen's theory of reflection-in-action implies a tight integration of critics into design tools and a significant level of interaction between designers and critics during design tasks. It is this definition of critiquing that is closest to my own.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094765">
+ </A>
+The last definition is representative of much of the more recent work in critiquing that consists of the application of the critiquing approach to new domains. It speaks of applying arbitrary criteria and constraints, and critiquing is viewed as a user interface approach that is distinct from the underlying knowledge-base.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094766">
+ </A>
+My definition of critiquing differs from those in <A HREF="diss3.html#41732" CLASS="XRef">
+See Selected sefinitions of critiquing systems</A>
+ in several ways. I position critiquing as an intelligent user interface mechanism that can add value to standard direct-manipulation or forms-based design tools, rather than as a more acceptable repackaging of expert system technology. Like Fischer's definition, I require that critics provide cognitive support for human decision-making, but I do not limit that support to a single theory of design. All of the definitions in <A HREF="diss3.html#41732" CLASS="XRef">
+See Selected sefinitions of critiquing systems</A>
+ stop at informing the designer of the existence of problems; I go a step farther by defining the goal of critiquing as helping to carry out design improvements. I use the term &quot;constructive&quot; to emphasize that a critic provides this additional level of support.</P>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094767">
+ </A>
+Definition</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094768">
+ </A>
+A design critic is an intelligent user interface mechanism embedded in a design tool that analyzes a design in the context of decision-making and provides feedback to help the designer improve the design.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094769">
+ </A>
+A critiquing system includes more than merely critics. A critiquing system must support the application of critics during design. However, most also include support for critic authoring, management of the feedback from critics, or a strategy for scheduling the application of critics.</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094770">
+ </A>
+Previous Work on Critiquing Processes</H4>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094771">
+ </A>
+The definitions of critiquing systems given in <A HREF="diss3.html#41732" CLASS="XRef">
+See Selected sefinitions of critiquing systems</A>
+ imply a simple detect-advise process: (1) critics detect potential problems in a design, and (2) these critics advise the designer of the problems. Critiquing systems can be evaluated based on their support for these two phases, but they must also be evaluated with respect to the relevance of their design feedback to the designer's current task, and support for guiding or making design improvements.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094772">
+ </A>
+Some previous research efforts have extended the detect-advise critiquing process. The Janus family of critiquing systems adds a new phase to the beginning of the detect-advise critiquing process: appropriate critics are activated based on a specification of design goals. The TraumaTIQ system, like Janus, activates critics based on design goals; however, in TraumaTIQ goals are inferred from the user's actions rather than stated directly. Sumner, Bonnardel, and Kallak (1997) define a critiquing process with three major steps: analyzing the design, signaling design errors, and delivering rationale that explains the problem and possible solutions. In addition to the phases of the detect-advise process, this process outlines the improvement activities of the designer. As described below, I have attempted to merge and extend these process models to clarify the role of critics and document the functionality of the Argo critiquing system. The resulting process model is described below.</P>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094773">
+ </A>
+Phases of the ADAIR Process</H4>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094774">
+ </A>
+The ADAIR critiquing process is named after the five phases that make up the process: Activate, Detect, Advise, Improve, and Record. Design support systems and designers repeatedly work through these phases over the course of a design. The phases are shown in <A HREF="diss3.html#19690" CLASS="XRef">
+See Phases of the ADAIR critiquing process</A>
+ as a linear sequence, however, some phases may be skipped in certain situations, and multiple instances of the process may be concurrently active at any given time. The ADAIR phases are not necessarily contiguous: other work often intervenes.</P>
+<DIV>
+<MAP NAME="diss3-1">
+</MAP>
+<IMG SRC="diss3-1.gif" USEMAP="#diss3-1">
+</DIV>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094775">
+ </A>
+The ADAIR process is useful in evaluating the completeness of design support provided by a given approach or system. In fact, the majority of this chapter uses the ADAIR process to structure its evaluations and comparisons. Not all of the reviewed approaches and systems support all phases, but in cases where a given approach or tool does not support a given phase, it can usually be improved by adding support for that phase.</P>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094776">
+ </A>
+Activate</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094777">
+ </A>
+In the first phase, an appropriate subset of all available critics is selected for activation. Critics that are relevant and timely to the designer's current decisions should be activated so as to support those decisions. Increasing support for activation tends to make the advice provided by the system more useful to designers and reduces the amount of feedback presented that is not useful.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094778">
+ </A>
+Detect</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094779">
+ </A>
+Second, active critics detect assistance opportunities and generate advice. The most common type of assistance opportunity is the identification of a syntactic or simple semantic error. Other opportunities for assistance include identifying incompleteness in the design, identifying violations of style guidelines, delivery of expert advice relevant to design decisions, or &quot;advertisements&quot; for applicable automation.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094780">
+ </A>
+Advise</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094781">
+ </A>
+Third, design feedback items are presented to advise the designer of the problem and possible improvements. This phase is central to the concept of supporting the designer's decision-making. Feedback may take the form of message displayed in a dialog box or feedback pane, or it may take the form of a visual indication in the design document itself (e.g., a wavy, red underline). Much of the potential benefit of critiquing is associated with this phase: the feedback item improves the designer's understanding of the status of the design, the explanation provided improves the designer's knowledge of the domain, and the designer is directed to fix problems. This ultimately results in more knowledgeable designers and better designs. Realizing these benefits requires effective means for designers to manage feedback and careful phrasing of problem descriptions and suggestions.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094782">
+ </A>
+Improve</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094783">
+ </A>
+Fourth, if the designer agrees that a change is prudent, he or she makes changes to improve the design and resolve identified problems. Fixing the identified error is likely to be one of the most frequent forms of improvement. Other types of improvement clarify the fact that the feedback is irrelevant rather than directly change the offending design elements. For example, the designer might change the goals of the design in reaction to an improved understanding of the problem or solution domain. Design support systems can aid designers in making improvements by providing suggestions for improvements or corrective automations that fix the identified problem semi-automatically.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094784">
+ </A>
+Record</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094785">
+ </A>
+In the final phase, the resolution of each feedback item is recorded so that it may inform future decision-making. Having a record of problem resolutions is important later in design because each design decision interacts with others. Critics help elicit design rationale as part of the normal design process by acting as foils<A HREF="#pgfId=1111904" CLASS="footnote">
+1</A>
+ that give designers a reason to explain their decisions. A recent evaluation of a critiquing system found that experienced designers often explained their decisions in response to criticism with which they disagreed (Sumner, Bonnardel, and Kallak, 1997).</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1122296">
+ </A>
+Comparison of Critiquing Systems</H4>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1122297">
+ </A>
+This subsection briefly reviews nine different critiquing systems. <A HREF="diss3.html#28477" CLASS="XRef">
+See Summary comparison of critiquing systems</A>
+ characterizes these critiquing systems according to their support for the phases of the ADAIR process. Each system is given a score from zero to three points for four of the five ADAIR process phases. For the detection phase, each system is described as using comparative, analytic critiquing, or both.</P>
+<TABLE BORDER="1">
+<CAPTION>
+<H6 CLASS="TableTitle">
+<A NAME="pgfId=1122789">
+ </A>
+<A NAME="28477">
+ </A>
+Summary comparison of critiquing systems</H6>
+</CAPTION>
+<TR>
+<TH ROWSPAN="2" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1122801">
+ </A>
+System</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="5">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1122803">
+ </A>
+ADAIR Critiquing Process Phase</P>
+</TH>
+</TR>
+<TR>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1122815">
+ </A>
+Activate</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1122817">
+ </A>
+Detect</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1122819">
+ </A>
+Advise</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1122821">
+ </A>
+Improve</P>
+</TH>
+<TH ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellHeading">
+<A NAME="pgfId=1122823">
+ </A>
+Record</P>
+</TH>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122825">
+ </A>
+ONCOCIN</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122827">
+ </A>
+</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122829">
+ </A>
+Comparative</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122831">
+ </A>
+H</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122833">
+ </A>
+</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122835">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122837">
+ </A>
+ATTENDING family</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122839">
+ </A>
+</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122841">
+ </A>
+Both</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122843">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122845">
+ </A>
+H</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122847">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122849">
+ </A>
+Janus family</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122851">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122853">
+ </A>
+Analytic</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122855">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122857">
+ </A>
+H</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122859">
+ </A>
+H</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122861">
+ </A>
+Framer</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122863">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122865">
+ </A>
+Analytic</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122867">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122869">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122871">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122885">
+ </A>
+CLEER</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122887">
+ </A>
+</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122889">
+ </A>
+Analytic</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122891">
+ </A>
+H</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122893">
+ </A>
+</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122895">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122897">
+ </A>
+VDDE</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122899">
+ </A>
+H</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122901">
+ </A>
+Analytic</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122903">
+ </A>
+H</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122905">
+ </A>
+</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122907">
+ </A>
+H</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122909">
+ </A>
+TraumaTIQ</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122911">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122913">
+ </A>
+Comparative</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122915">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122917">
+ </A>
+</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122919">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122921">
+ </A>
+AIDA</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122923">
+ </A>
+H</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122925">
+ </A>
+Both</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122927">
+ </A>
+H</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122929">
+ </A>
+</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122931">
+ </A>
+</P>
+</TD>
+</TR>
+<TR>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122945">
+ </A>
+SEDAR</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122947">
+ </A>
+HHH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122949">
+ </A>
+Analytic</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122951">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122953">
+ </A>
+HH</P>
+</TD>
+<TD ROWSPAN="1" COLSPAN="1">
+<P CLASS="CellBodyLeft">
+<A NAME="pgfId=1122955">
+ </A>
+</P>
+</TD>
+</TR>
+</TABLE>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094788">
+ </A>
+Comparative critiquing supports designers by pointing out differences between the proposed design and a design generated by alternative means, for example, a planning system with extensive domain knowledge. In contrast, analytic critiquing uses rules to detect assistance opportunities, such as problems in the design.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094789">
+ </A>
+Fischer offers the following critic classification dimensions: active vs. passive, reactive vs. proactive, positive vs. negative, global vs. local (Fischer, 1989). Active critics continuously critique the design, whereas passive critics do nothing until the designer requests a critique. Reactive critics critique the work that the designer has done, whereas proactive critics try to limit or guide the designer before he or she makes a specific design decision. Positive and negative critics supply praise and criticism, respectively. Critics that analyze individual design elements are termed local critics, while critics that consider interactions between most or all of the elements in a design are termed global critics. The systems reviewed are split roughly evenly between use of active and passive critics. Only SEDAR provides proactive critics, all other reviewed critiquing systems are reactive. ATTENDING, Framer, Janus, and CLEER offer praise, although it plays a minor role in these systems. On the scale from local to global, a vast majority of the critics in the systems reviewed are near the local end and consider one or a few design elements at a time.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094790">
+ </A>
+Below, each of these critiquing systems is discussed in roughly chronological order.</P>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094791">
+ </A>
+ONCOCIN</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094792">
+ </A>
+In 1980, Teach and Shortliffe conducted a survey of doctors' attitudes regarding computer based clinical consultation systems (Teach and Shortliffe, 1981). Some of their conclusions at that time were that (1) doctors are accepting of systems that enhance their patient management capabilities, (2) they tend to oppose applications that they feel infringe on their management roles, (3) such systems need human-like interactive capabilities, and (4) 100% accuracy in the system's advice is neither achievable nor expected.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094793">
+ </A>
+These findings suggested a new direction for computing systems that support clinical practice (Fagen, Shortliffe, and Buchanan, 1980). These systems follow the traditional expert system user interface paradigm and were evaluated primarily in terms of their knowledge content, rather than their impact on practice. The critiquing concept arose from the realizations that the system should support doctors without infringing on their decision-making authority and that systems that were not 100% accurate could play a useful supporting role.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094794">
+ </A>
+The next year, Langlotz and Shortliffe reported on the conversion of ONCOCIN, an expert system for the management of cancer patients, to the critiquing approach. Initial versions of the system functioned as an expert system that produced plans that essentially consisted of a set of drugs and dosages. The intended users felt &quot;annoyed&quot; at having to override the system's advice when they did not agree with the generated treatment plan (Langlotz and Shortliffe, 1983). ONCOCIN was converted into an embedded critic: rather than use the system primarily to generate treatment plans, doctors were intended to routinely enter their own plans into ONCOCIN and the system offered criticism as a side benefit.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094795">
+ </A>
+The ATTENDING family</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094796">
+ </A>
+At about the same time that ONCOCIN was being developed at Stanford, Miller was developing the ATTENDING system at Yale. Like ONCOCIN, much of the emphasis of ATTENDING was on prevention of the negative effects of the traditional expert system user interface. &quot;ATTENDING avoids the social, medical, and medicolegal problems implicit in systems which simulate a physician's thought processes, and thereby attempt to tell him how to practice medicine&quot; (Miller, 1983).</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094797">
+ </A>
+ATTENDING advises an anesthetist in the proper design of an anesthetic plan to be executed during surgery. ATTENDING prompts the designer (in this case, an anesthetist) to enter a description of the problem (a patient's conditions) and a proposed solution. ATTENDING then produces two or three paragraphs of natural language criticism and praise of the plan. Any part of the proposed treatment plan that does not trigger criticism is praised; this is done on the assumption that a more positive tone will enhance acceptance of the tool.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094798">
+ </A>
+The Janus family</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094799">
+ </A>
+The Janus family consists of several versions of a household kitchen design environment, named successively Crack (Fischer and Morch, 1988), Janus (Fischer et al., 1992), Hydra (Fischer et al., 1993), and KID (Fischer, Nakakoji, and Ostwald, 1995). Designers use these systems by choosing a floor plan layout and placing cabinets, counters, and appliances in that floor plan. One panel of the Janus user interface window shows the current state of the kitchen, while other panels show a palette of available design materials, example floor plans, and feedback from critics. Additional windows are used for argumentation and specification of design goals. A library of IBIS-like arguments about alternative design decisions is available (Fischer et al., 1991). Goal specification sheets prompt the designer to provide information through a structured set of choices, for example, &quot;How large is the family using this kitchen?&quot;, and &quot;Is the cook right- or left-handed?&quot; Furthermore, designers using Hydra can select a critiquing perspective (i.e., critiquing mode) to activate critics relevant to a given set of design issues and deactivate others.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094800">
+ </A>
+Framer</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094801">
+ </A>
+The Framer design environment (Lemke and Fischer, 1990) supports user interface window layout created with CLIM (the Common Lisp Interface Manager). One panel of the Framer window is used to edit the current state of the design. A checklist panel shows a static list of tasks to be performed in the design process, with one checklist item marked as the current task. A panel titled &quot;Things to take care of&quot; presents the system's advice for improving the design. Beside each piece of advice are buttons to explain the problem, dismiss the criticism, and, in some cases, automatically fix the problem. The two main contributions of Framer are its use of a process model to activate critics and the fact that it offers corrective automations.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094802">
+ </A>
+CLEER</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094803">
+ </A>
+Configuration assessment Logics for Electromagnetic Effects Reduction (CLEER) is loosely integrated with a computer aided design (CAD) system for placement of antennas on military ships (Silverman and Mezher, 1992). The placement of antennas on ships affects the performance of the antennas, the radar profile of the ship, and the function of other shipboard equipment. Designers using CLEER position antennas in a CAD model of a ship. When the designer presses an &quot;Evaluate&quot; button, feedback from critics is displayed in a scrolling log window.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094804">
+ </A>
+CLEER does not automatically activate critics and has no user or design task model. Analytic critics in CLEER detect problems with mechanical and electromagnetic features of the design. Silverman and Mezher propose an enhanced version of CLEER that would use decision networks to add support for activation, advisement, and improvement (Silverman and Mezher, 1992).</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094805">
+ </A>
+VDDE</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094806">
+ </A>
+The Voice Dialog Design Environment (VDDE) (Bonnardel and Sumner, 1996) is a design environment for voice dialog systems, for example, the menu structure of a voice mail system. VDDE applies stylistic guidelines to help the designer comply with standards, and it can compare two voice dialog designs for consistency with each other.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094807">
+ </A>
+Critics in VDDE display their feedback as one-line messages in a scrolling log window. A separate control panel window is used to configure the critiquing system. VDDE does not automatically activate critics based on a user or goal model. Instead, designers directly specify which sets of critics should be active, their priorities, and how actively they should be applied. Unlike Hydra, multiple sets of critics can be active simultaneously.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094808">
+ </A>
+Sumner, Bonnardel, and Kallak (1997) did an exploratory study of four professional voice dialog designers using VDDE. One unexpected observation was that designers anticipate critics and change their behavior to avoid them. This is positive if designers are avoiding decisions that are known to be poor. However, the designer's understanding of the rule may be inaccurate and lead to &quot;superstitious&quot; avoidance of some decisions. The fact that designers rapidly internalize criticism emphasizes the need for each criticism to provide a clear explanation. Another observation was that experienced designers tended not to change their designs in response to criticism. Instead, they stated why they thought that their decisions were correct. This can be interpreted as a negative result in that suggested changes were not carried out. However, if critics act as foils that prompt designers to externalize their design rationale and expertise, the effect could be exploited to support the recording of design decisions.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094809">
+ </A>
+TraumaTIQ</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094810">
+ </A>
+TraumaTIQ is a stand-alone system that critiques plans for treatment of medical trauma cases, such as gunshot wounds (Gertner and Webber, 1998). One emphasis of TraumaTIQ is the time-critical nature of its domain.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094811">
+ </A>
+A doctor or scribe nurse enters treatment orders into the system as they are performed. TraumaTIQ infers the doctor's treatment goals from these orders and generates its own treatment plan. If substantial differences are detected between the generated plan and the entered orders, TraumaTIQ presents a dialog box with a few concise, natural language critiques. Each piece of advice contains a brief explanation and is sorted by urgency in the output window.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094812">
+ </A>
+AIDA</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094813">
+ </A>
+The Antibody IDentification Assistant (AIDA) is a tool intended for use by medical laboratory technicians to categorize blood samples (Guerlain et al., 1995). The antibody identification task is primarily a problem solving task: the technician must interpret a panel of tests carried out on a batch of blood samples and classify each clinically significant antibody as ruled out, unlikely, likely, or confirmed. In forming a complete solution, technicians must first make a partial solution, use their limited knowledge to evaluate it in terms of how well it explains the data, and then revise their solution.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094814">
+ </A>
+Traditionally, the identification task is done by filling in a grid on a paper form; AIDA's user interface is centered on an electronic version of this form. A separate critiquing feedback dialog box is presented when the practitioner reaches certain steps in the design process and the proposed solution differs from one generated automatically by the system.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094815">
+ </A>
+Since AIDA is capable of generating its own solution to most antibody identification problems, one might wonder why a human user is involved in problem solving at all. The reason stems from the fact that the system is not completely competent in solving all problems. If the system were to be totally automated, the human user would still have to solve the problem independently to decide whether to accept the machine generated solution. Humans do a very poor job at this task, and frequently err by assuming that an incorrect solution is correct, or by following the system's explanation &quot;down the garden path&quot; to the same incorrect solution. Furthermore, users of automated expert systems can be expected to reduce their skill level over time due to the lack of practice. However, verifying the correctness of an automatically generated solution to the antibody identification task can require more skill than designing a new solution. Roth, Malin, and Schreckenghost refer to this as the &quot;irony of automation&quot; (Roth, Malin, and Schreckenghost, 1997).</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094816">
+ </A>
+Guerlain et al. evaluated AIDA by asking thirty-two professional laboratory technicians from seven different hospitals to solve four difficult problems (Guerlain et al., 1995). Half of the subjects were assigned to use AIDA with the critics turned on and half worked with the critics turned off. In total, the group that did not use critics had twenty-nine errors in their solutions, while the group using critics had only three errors. These three errors arose in one of the problems where the system's knowledge was incomplete and it could not generate a correct solution. Despite this incompleteness, the critic-using group still did better on that problem than did the control group, which produced eight errors.</P>
+</DIV>
+<DIV>
+<H6 CLASS="HeadingRunIn">
+<A NAME="pgfId=1094817">
+ </A>
+SEDAR</H6>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094818">
+ </A>
+The Support Environment for Design and Review (SEDAR) is a critiquing system for civil engineering (Fu, Hayes, and East, 1997). Specifically, it supports the design of flat and low-slope roofs. Many guidelines for roof design are available to practitioners, yet approximately 5% of roofs constructed in the U.S. fail prematurely, in part because of design errors.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094819">
+ </A>
+SEDAR is tightly integrated into a CAD program. While designers work with the CAD program to enter their design decisions, critics check the design for problems. The presence of problems is indicated by a status message, and a dialog box that lists outstanding problems can be accessed through a menu. SEDAR can visually suggest a design improvement by drawing a new design element in one corner of the screen with an arrow to the general area where the new element should be placed. However, the designer must still use the normal CAD tool commands to make a new instance of the suggested design element and place it into the design.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094820">
+ </A>
+SEDAR provides three activation strategies: error prevention, error detection, and design review. The error prevention strategy works before designers commit to certain design decisions, for example, as soon as the designer begins placing a mechanical unit in the design, illegal areas are visually marked-off on the design diagram. The error detection strategy implicitly applies active critics to the design as changes are made. The design review strategy provides a batch of criticism for use by reviewers after the design is considered complete.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094821">
+ </A>
+SEDAR is unique among the critiquing systems reviewed here in that it identifies two classes of project stakeholders: designers and reviewers. SEDAR's authors outline a broader design process in which the design document is repeatedly passed between designers and reviewers, causing many project delays. Unfortunately, SEDAR supports each group of stakeholders independently: there are no critics that advise designers how to make designs that are easier to review. For example, there is no critic that warns the designer to avoid using mechanical equipment that is not familiar to the reviewers.</P>
+</DIV>
+</DIV>
+<DIV>
+<H4 CLASS="Heading3">
+<A NAME="pgfId=1094822">
+ </A>
+State of the Art of Critiquing Systems</H4>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094823">
+ </A>
+Research on critiquing systems has been motivated by three main observations: (1) in certain domains it is impractical to build expert systems that are acceptable to users, (2) human designers sometimes make costly errors that could be avoided with better tool support, and (3) design is a cognitively challenging task that could be eased with tool support to help designers overcome specific difficulties. The earliest system reviewed, ONCOCIN, was built as a reaction to user rejection of expert systems in the medical treatment planning domain. Most of the reviewed critiquing systems, including CLEER and SEDAR, focus on identifying specific types of errors and trying to warn designers about these errors. The Janus family and the Argo family of design environments address the much broader scope of cognitive support.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094824">
+ </A>
+The critiquing systems reviewed have primarily been research systems that have seen little practical use. Each system explores some aspects of design support while ignoring others. Also, the critiquing systems reviewed have all been fairly limited in the number of critics and the scope of their domain. To date, no &quot;industrial strength&quot; critiquing system has been implemented and deployed. In part, this is because little work has been done on the software engineering issues of developing reusable infrastructures, development methodologies, or authoring tools for creating critiquing systems. Argo/UML is the first design critiquing system to successfully scale up in terms of complexity and in the size of its user base.</P>
+<P CLASS="BodyDraft">
+<A NAME="pgfId=1094825">
+ </A>
+Overall, existing critiquing systems provide incomplete support for designers' cognitive needs. In most of the systems reviewed, design critics detect and highlight errors, but they require designers to do much of the work of activation, feedback management, design improvement, and recording.</P>
+</DIV>
+</DIV>
+</DIV>
+<HR>
+<DIV CLASS="footnotes">
+<DIV CLASS="footnote">
+<P CLASS="Footnote">
+<SPAN CLASS="footnoteNumber">
+1.</SPAN>
+<A NAME="pgfId=1111904">
+ </A>
+In acting terminology, a foil is a minor character that allows a major character to be expressed through dialog.</P>
+</DIV>
+</DIV>
+</BODY>
+</HTML>

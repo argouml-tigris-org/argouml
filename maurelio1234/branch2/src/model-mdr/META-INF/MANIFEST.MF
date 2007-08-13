@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.argouml.core.model.mdr
+Bundle-Version: 0.25.3.qualifier
+Bundle-Localization: plugin
+Export-Package: org.argouml.model.mdr;uses:="junit.framework",
+ org.argouml.model.mdr.profiles
+Bundle-Vendor: %pluginProvider
+Require-Bundle: org.argouml.core.model;visibility:=reexport,
+ org.eclipse.core.runtime
+Bundle-ClassPath: org.argouml.core.model.mdr.jar,
+ lib/jmi.jar,
+ lib/jmiutils.jar,
+ lib/mdrapi.jar,
+ lib/mof.jar,
+ lib/nbmdr.jar,
+ lib/openide-util.jar
+Eclipse-RegisterBuddy: org.argouml.core.lib, org.argouml.core.model
+Eclipse-BuddyPolicy: registered

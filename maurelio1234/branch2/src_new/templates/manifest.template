@@ -1,0 +1,12 @@
+Manifest-Version: 2.0
+Main-Class: org.argouml.application.Main
+Class-Path: argouml-model.jar ocl-argo.jar gef.jar antlrall.jar log4j.jar toolbar.jar swidgets.jar commons-logging.jar ext/argouml-i18n-de.jar ext/argouml-i18n-en_GB.jar ext/argouml-i18n-es.jar ext/argouml-i18n-fr.jar ext/argouml-i18n-it.jar ext/argouml-i18n-nb.jar ext/argouml-i18n-pt.jar ext/argouml-i18n-ru.jar ext/argouml-i18n-sv.jar ext/argouml-i18n-zh.jar argouml-mdr.jar java-interfaces.jar jmi.jar jmiutils.jar mdrapi.jar mof.jar nbmdr.jar openide-util.jar ext/dev.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: org/argouml/application/
+Specification-Title: ArgoUML
+Specification-Version: @version@
+Specification-Vendor: University of California
+Implementation-Vendor: University of California
+Implementation-Version: @version@
+Implementation-Title: ArgoUML

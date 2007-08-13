@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="apache-ant-1.6.5/lib/ant.jar"/>
+	<classpathentry exported="true" kind="lib" path="junit-3.8.1/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/easymock12.jar"/>
+	<classpathentry kind="output" path="build-eclipse"/>
+</classpath>

@@ -1,0 +1,654 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+<title>ArgoUML</title>
+<style>
+
+          A.header:link {color: white; text-decoration: none}
+          A.header:active {color: red; text-decoration: none}
+          A.header:visited {color: gray100; text-decoration: none}
+
+        </style>
+</head>
+<body alink="#0000ee" vlink="#551a8b" link="#0000ee" bgcolor="#FF0000" text="#000000" style="font-family: verdana, tahoma, helvetica, sans-serif; font-size: x-small">
+<H2>Old, no longer used ArgoUML Developer's FAQ</H2>
+The information you are looking for is in
+<a href="http://argouml-stats.tigris.org/documentation/defaulthtml/cookbook/">the Cookbook</a>.
+<div align="Right">
+<br>
+<table background="background.gif" width="100%" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr valign="Top">
+<td valign="Top"><img src="/argouml/newsite/images/argologo_small_lines.gif" alt="Logo"><br>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tbody>
+<tr valign="Top">
+<td bgcolor="#000099" valign="Top"><font color="#ffffff" size="+3"><b><font face="Helvetica, Arial, sans-serif">ArgoUML</font></b></font></td>
+</tr>
+<tr valign="Top">
+<td bgcolor="#3366ff" valign="Top"><b><font color="#ffffff" face="Helvetica, Arial, sans-serif"><a href="index.html" class="header">home</a> | <a href="resources/index.html" class="header">resources</a></font></b></td>
+</tr>
+<tr valign="Top">
+<td valign="Top">
+<br>
+</td>
+</tr>
+</tbody>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<tbody>
+<tr valign="Top">
+<td valign="Top">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr valign="Top">
+<td valign="Top"><a name="N14"></a>
+<h1>1 Developer FAQ</h1>
+
+
+<p>
+  ArgoUML is an open source project, so it depends on
+  people that volunteer to work on it. Especially in the
+  area of development there is still so much to do!
+  Everyone who wants to contribute needs to know the
+  what, where and how to write good quality code, but
+  getting into it is a big challenge since there are
+  hundreds of Java files. This developer FAQ is dedicated
+  to all interested programmers and should help to transfer
+  the knowledge from the old experts to them. Please
+  feel free to send more questions and/or answers to the
+  <a href="mailto:dev@argouml.tigris.org">dev mailing list</a>!
+  </p>
+
+
+<a name="N1E"></a>
+<h2>1.1 Prerequisite stuff</h2>
+
+
+<a name="N21"></a>
+<h3>1.1.1 Which tools do I need to build ArgoUML?</h3>
+
+<ul>
+
+<li>CVS for obtaining the latest files via internet</li>
+
+<li>ANT, the Java make tool to manage compiling and packaging</li>
+
+<li>JDK, at least version 1.3 (includes the java compiler)</li>
+
+<li>libs: nsuml.jar, ocl-argo.jar, gef.jar, antlrall.jar</li>
+
+</ul>
+
+<p>
+   The four libs can be found on this site. If not directly,
+   then in the latest (unstable) distribution. In the future, they
+   might be available through CVS, too, which would make your life
+   much easier. For compiling/building, a simple 'build package'
+   should be sufficient.
+   </p>
+
+
+<a name="N37"></a>
+<h3>1.1.2 Compiling failed. Any suggestions?</h3>
+
+<p>
+   Most compiling problems arise from wrong versions: maybe ANT
+   or JDK, but most often one of the four libs. A look on the error
+   messages can help. Get the appropriate version (or, e.g. in the
+   case of gef.jar, get the sources through CVS and build it on
+   your own). Another reason for problems is an unclean local
+   source tree: if yours is in doubt, remove it completely and
+   get it all again through CVS. If nothing helps, ask the
+   <a href="mailto:dev@argouml.tigris.org">experts</a>!
+   </p>
+
+
+
+
+
+<a name="N43"></a>
+<h2>1.2 Argo Initialization</h2>
+
+
+<a name="N46"></a>
+<h3>1.2.1 Which sources are involved?</h3>
+
+<p>
+  Relative to the directory org/argouml, they are mainly:
+  </p>
+
+<ul>
+
+<li>application/Main.java,</li>
+
+<li>kernel/Project.java + xml/argo/ArgoParser.java,</li>
+
+<li>ui/{ProjectBrowser.java,*Pane.java},</li>
+
+<li>cognitive/{Designer.java,ui/ToDoPane.java}.</li>
+
+</ul>
+
+
+<a name="N5C"></a>
+<h3>1.2.2 What is loaded/initialized?</h3>
+
+<p>
+  It all begins in org.argouml.application.Main: set up
+  main application frame (org.argouml.ui.ProjectBrowser), the
+  project (org.argouml.kernel.Project), numerous classes, and
+  finally as a background thread: cognitive support
+  (org.argouml.cognitive.Designer) and some more classes.
+  </p>
+
+<p>
+  The ProjectBrowser initializes the menu, toolbar, status bar
+  and the four main areas:
+  navigation pane (org.argouml.ui.NavigatorPane),
+  editor pane (org.argouml.ui.MultiEditorPane),
+  to do pane (org.argouml.cognitive.ui.ToDoPane), and
+  details pane (org.argouml.ui.DetailsPane). Then, the actual
+  project is set to either a read from file project
+  (see ArgoParser.SINGLETON.readProject(URL) and
+  ArgoParser.SINGLETON.getProject() in org.argouml.xml.argo.ArgoParser)
+  or a newly generated project (see Project.makeEmptyProject()).
+  </p>
+
+
+
+
+
+<a name="N67"></a>
+<h2>1.3 Runtime Issues</h2>
+
+
+<a name="N6A"></a>
+<h3>1.3.1 Which Objects live during a typical session?</h3>
+
+<p>
+  (Project, Designer, Globals, NavPane, ToDoPane, ...)
+  </p>
+
+
+<a name="N71"></a>
+<h3>1.3.2 What is their task?</h3>
+
+<p>
+  (visual component, model, controller, ...)
+  </p>
+
+
+<a name="N78"></a>
+<h3>1.3.3 How about memory organization, e.g. cleanup?</h3>
+
+<p>
+
+</p>
+
+
+
+
+
+<a name="N80"></a>
+<h2>1.4 Working with Projects</h2>
+
+
+<a name="N83"></a>
+<h3>1.4.1 How is a project represented/stored/loaded?</h3>
+
+<p>
+
+</p>
+
+
+<a name="N8A"></a>
+<h3>1.4.2 Which sources are involved?</h3>
+
+<p>
+
+</p>
+
+
+<a name="N91"></a>
+<h3>1.4.3 What happens when something is added/removed/modified?</h3>
+
+<p>
+  (in the model and/or the diagram)
+  </p>
+
+
+
+
+
+<a name="N99"></a>
+<h2>1.5 Cognitive Support</h2>
+
+
+<a name="N9C"></a>
+<h3>1.5.1 Which sources are involved?</h3>
+
+<p>
+
+</p>
+
+
+<a name="NA3"></a>
+<h3>1.5.2 How do Critics/Checklists work?</h3>
+
+<p>
+
+</p>
+
+
+<a name="NAA"></a>
+<h3>1.5.3 How are changes recognized?</h3>
+
+<p>
+
+</p>
+
+
+<a name="NB1"></a>
+<h3>1.5.4 How is the connection to the model/diagrams?</h3>
+
+<p>
+
+</p>
+
+
+
+
+
+<a name="NB9"></a>
+<h2>1.6 Code Generation</h2>
+
+
+<a name="NBC"></a>
+<h3>1.6.1 Which sources are involved?</h3>
+
+<p>
+
+</p>
+
+
+<a name="NC3"></a>
+<h3>1.6.2 How does it work?</h3>
+
+<p>
+
+</p>
+
+
+<a name="NCA"></a>
+<h3>1.6.3 What in the model is (not) considered?</h3>
+
+<p>
+
+</p>
+
+
+<a name="ND1"></a>
+<h3>1.6.4 How is Java/C++ specific stuff handled?</h3>
+
+<p>
+
+</p>
+
+
+
+
+
+<a name="ND9"></a>
+<h2>1.7 Reverse Engineering</h2>
+
+
+<a name="NDC"></a>
+<h3>1.7.1 Which sources are involved?</h3>
+
+<p>
+  The package org.argouml.uml.reveng is supposed to hold those classes
+  that are common to all RE packages. At the moment this is the Import
+  class which is mainly responsible to recognize directories, get their
+  content and parse every known source file in them. These are only java
+  files at them moment, but there might be other languages like C++ in
+  the future. With this concept you could mix several languages within
+  a project. The DiagramInterface is used to visualize generated NSUML
+  metamodel objects then.
+  </p>
+
+<p>
+  The package org.argouml.uml.reveng.java holds the Java specific parts
+  of the current RE code. C++ RE might go to org.argouml.uml.reveng.cc,
+  or so...
+  </p>
+
+
+<a name="NE6"></a>
+<h3>1.7.2 How is the grammar of the target language implemented?</h3>
+
+<p>
+  It's a Antlr (<a href="http://www.antlr.org" target="_blank">
+  http://www.antlr.org</a>) grammar, based on the Antlr Java parser
+  example. The main difference is the missing AST (Abstract Syntax Tree)
+  generation and treeparser. So the original example generates a AST
+  (a treelike data structure) and then traverses this tree, while the
+  ArgoUML code parses the source file and generates NSUML objects
+  directly from the sources. This was done to avoid the memory usage
+  of an AST and the frequent GC while parsing many source files.
+  </p>
+
+
+<a name="NF2"></a>
+<h3>1.7.3 Which model/diagramm elements are generated?</h3>
+
+<p>
+  The *context classes hold the current context for a package, class
+  etc. When the required information for a object is available, the
+  corresponding NSUML object is created and passed to the DiagramInterface
+  to visualize it.
+  </p>
+
+
+<a name="NF9"></a>
+<h3>1.7.4 Which layout algorithm is used?</h3>
+
+<p>
+  The classes in org.argouml.uml.diagram.static_structure.layout.* hold
+  the Classdiagram layout code. No layout for other diagram types yet.
+  It's based on a ranking scheme for classes and interfaces. The rank of
+  a class/interface depends on the total number of (direct or indirect)
+  superclasses. So if class B extends A (with rank(A)=0), then rank(B)=1.
+  If C extends B, then rank(C)=2 since it has 2 superclasses A,B. An
+  implemented interface is treated similar to a extended class. The
+  objects are placed in rows then, that depend on their rank.
+  rank(0)=1st row. rank(1) =2nd row (below the 1st one) etc. Example:
+  </p>
+
+<ul>
+
+<img src="./images/example1.gif">
+  </ul>
+
+<p>
+  In the next diagramm, a link goes to a object that is not in the row
+  above:
+  </p>
+
+<ul>
+
+<img src="./images/example2.gif">
+  </ul>
+
+<p>
+  In this case, insert virtual objects which are linked to the actual
+  target and link to them:
+  </p>
+
+<ul>
+
+<img src="./images/example3.gif">
+  </ul>
+
+<p>
+  The object are sorted within their row then to minimize crossing links
+  then. Compute the average value of the vertical positions of all linked
+  object in the row above. Example: we have 2 ranks 0 and 1 with 3
+  classes each:
+  </p>
+
+<ul>
+
+<p>A B C : rank 0</p>
+
+<p>D E F : rank 1</p>
+
+</ul>
+
+<p>
+  We give the superclasses an index in their rank (assuming that they are
+  already sorted):
+  </p>
+
+<ul>
+  A:0, B:1, C:2
+  </ul>
+
+<p>
+  D, E, F have the following links (A, B, C could be interfaces, so I allow
+  links to multiple superclasses here):
+  </p>
+
+<ul>
+
+<p>D -&gt; C</p>
+
+<p>E -&gt; A and C</p>
+
+<p>F -&gt; A and B</p>
+
+</ul>
+
+<p>
+  Compute the average value of the indexes:
+  </p>
+
+<ul>
+
+<p>D = 2 (C has index 2 / 1 link)</p>
+
+<p>E = 0 + 2 / 2 = 1 (A=0, C=2 divide by 2 links)</p>
+
+<p>F = 0 + 1 / 2 = 0.5 (A=0, B=1, 2 links)</p>
+
+</ul>
+
+<p>
+  Then sort the subclasses by that value:
+  </p>
+
+<ul>
+  F(is 0.5), E(is 1), D(is 2)
+  </ul>
+
+<p>
+  So the placement is:
+  </p>
+
+<ul>
+
+<p>A B C</p>
+
+<p>(here are the links, but I can't hardly paint them as ASCIIs)</p>
+
+<p>F E D</p>
+
+</ul>
+
+
+
+
+
+<a name="N15E"></a>
+<h2>1.8 Graphics Environment (GEF)</h2>
+
+
+<a name="N161"></a>
+<h3>1.8.1 What are the basics of GEF (short intro)?</h3>
+
+<p>
+  The basic element in GEF is a figure. There are five different kinds
+  of figures: lines, rectangles, edges, texts and nodes (with groups as
+  a special case of nodes). Edges and nodes are used as base classes
+  for UML specific elements like associations, states, classes etc.
+  </p>
+
+<p>
+  There is old documentation, where you can find a
+  <a href="http://argouml.tigris.org/nonav/v07/docs/organization/gef.html">
+  class diagram</a> about GEF.
+  </p>
+
+
+<a name="N16F"></a>
+<h3>1.8.2 How and where is the GEF API used for UML?</h3>
+  At the moment there only exists old documentation: about
+  <a href="http://argouml.tigris.org/nonav/v07/docs/cookbook/figure/">
+  UML figures</a> and their associated
+  <a href="http://argouml.tigris.org/nonav/v07/docs/cookbook/propertyPanel/">
+  property panels</a>. Though package names changed a lot, you will
+  find the mentioned classes in org.argouml.uml.diagram.*(.*)
+  and org.argouml.uml.ui.foundation.core.* instead.
+  <p href="http://argouml.tigris.org/nonav/v07/docs/cookbook/propertyPanel/">
+
+
+</p>
+
+
+
+
+
+<a name="N17F"></a>
+<h2>1.9 UML Meta Model (NSUML)</h2>
+
+
+<a name="N182"></a>
+<h3>1.9.1 What are the basics of the used meta model (short intro)?</h3>
+
+<p>
+
+</p>
+
+
+<a name="N189"></a>
+<h3>1.9.2 How and where is the Novosoft API used?</h3>
+
+<p>
+
+</p>
+
+
+<a name="N190"></a>
+<h3>1.9.3 How is the model and its representation (e.g. in diagrams) synchronized?</h3>
+
+<p>
+  All changes immediately modify the model that the prop panels, diagrams
+  and other panels share. (Since one might change one thing in PropPanel,
+  then tweak something else in the diagram and then possible remove
+  something from the tree view, keeping the prop panel changes uncommitted
+  until an apply button is pressed would be undesireable and complicated
+  to implement.)
+  </p>
+
+
+
+
+
+</td><td width="10" valign="Top">
+<br>
+</td><td width="30%" valign="Top">
+
+<table width="100%" border="1" cellspacing="0" cellpadding="3">
+<tbody>
+<tr valign="Top">
+<td bgcolor="#3366ff" valign="Top"><font color="#ffffff" face="Helvetica, Arial, sans-serif"><b>Content</b></font></td>
+</tr>
+<tr valign="Top">
+<td bgcolor="#ffffff" valign="Top"><font face="Helvetica, Arial, sans-serif"><font size="-1">
+   <font size="-2"><a href="#N14">Developer FAQ</a>
+<br>
+<a href="#N1E">Prerequisite stuff</a>
+<br>
+<a href="#N21">Which tools do I need to build ArgoUML?</a>
+<br>
+<a href="#N37">Compiling failed. Any suggestions?</a>
+<br>
+<a href="#N43">Argo Initialization</a>
+<br>
+<a href="#N46">Which sources are involved?</a>
+<br>
+<a href="#N5C">What is loaded/initialized?</a>
+<br>
+<a href="#N67">Runtime Issues</a>
+<br>
+<a href="#N6A">Which Objects live during a typical session?</a>
+<br>
+<a href="#N71">What is their task?</a>
+<br>
+<a href="#N78">How about memory organization, e.g. cleanup?</a>
+<br>
+<a href="#N80">Working with Projects</a>
+<br>
+<a href="#N83">How is a project represented/stored/loaded?</a>
+<br>
+<a href="#N8A">Which sources are involved?</a>
+<br>
+<a href="#N91">What happens when something is added/removed/modified?</a>
+<br>
+<a href="#N99">Cognitive Support</a>
+<br>
+<a href="#N9C">Which sources are involved?</a>
+<br>
+<a href="#NA3">How do Critics/Checklists work?</a>
+<br>
+<a href="#NAA">How are changes recognized?</a>
+<br>
+<a href="#NB1">How is the connection to the model/diagrams?</a>
+<br>
+<a href="#NB9">Code Generation</a>
+<br>
+<a href="#NBC">Which sources are involved?</a>
+<br>
+<a href="#NC3">How does it work?</a>
+<br>
+<a href="#NCA">What in the model is (not) considered?</a>
+<br>
+<a href="#ND1">How is Java/C++ specific stuff handled?</a>
+<br>
+<a href="#ND9">Reverse Engineering</a>
+<br>
+<a href="#NDC">Which sources are involved?</a>
+<br>
+<a href="#NE6">How is the grammar of the target language implemented?</a>
+<br>
+<a href="#NF2">Which model/diagramm elements are generated?</a>
+<br>
+<a href="#NF9">Which layout algorithm is used?</a>
+<br>
+<a href="#N15E">Graphics Environment (GEF)</a>
+<br>
+<a href="#N161">What are the basics of GEF (short intro)?</a>
+<br>
+<a href="#N16F">How and where is the GEF API used for UML?</a>
+<br>
+<a href="#N17F">UML Meta Model (NSUML)</a>
+<br>
+<a href="#N182">What are the basics of the used meta model (short intro)?</a>
+<br>
+<a href="#N189">How and where is the Novosoft API used?</a>
+<br>
+<a href="#N190">How is the model and its representation (e.g. in diagrams) synchronized?</a>
+<br>
+</font>
+   </font></font></td>
+</tr>
+</tbody>
+</table>
+<br>
+
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

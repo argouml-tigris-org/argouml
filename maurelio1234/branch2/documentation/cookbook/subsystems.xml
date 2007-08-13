@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+<!--
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+
+<chapter id="subsystems">
+  <title>ArgoUML Design, The Big Picture</title>
+  <indexterm>
+    <primary>ArgoUML Design</primary> </indexterm>
+  <para> Currently this is more of a base for discussion and ambition but hopefully
+    this will mature and prove useful. </para>
+  <indexterm>
+    <primary>subsystem</primary> </indexterm> <indexterm>
+    <primary>component</primary> </indexterm>
+  <para> The code within ArgoUML is separated in subsystems that each have a few
+    responsibilities. </para>
+  <para> In Issuezilla each subsystem has its issues sorted in a subcomponent with
+    the same name as the subsystem. Furthermore the Diagrams subsystem has a set of
+    subcomponents for issues connected to the specific diagrams. </para>
+  <para> This chapter gives an overall picture with a list of subsystems, their
+    dependencies, and their main responsibility. <xref
+      linkend="inside_subsystems"></xref> explains each subsystem in
+    detail. </para>
+  
+  <para> The subsystems are organized in layers. The purpose of the layers is to
+    make it easy to see in what direction the dependencies are and thus allow us to
+    know what dependencies are to be removed in the cases where we have circular
+    dependencies. This will also allow us to know which other subsystems that are
+    involved when testing a subsystem. </para>
+  
+  <sect1 id="subsystems_definition">
+    <title>Definition of subsystem</title>
+    <para> All ArgoUML code is organized in subsystems. </para>
+    <para> Each subsystem has:
+      <itemizedlist>
+        <listitem>
+          <para>A name</para>
+        </listitem>
+        <listitem>
+          <para>A single directory/Java package where it resides</para>
+          <para> Subparts of the subsystem can reside in subdirectories of this
+            directory. Auxiliary parts, implemented in other products, of the
+            subsystems can reside somewhere else. Notice that each other
+            product used by ArgoUML is, in the design, located within one of the
+            existing subsystems. This means that a change of version or indeed a
+            change of choice of such a dependency is an internal matter for the
+            subsystem and should ideally not affect any other subsystem.
+          </para>
+          <para> All public and protected methods of all public and protected
+            classes in this directory constitute the API of that subsystem.
+          </para>
+        </listitem>
+        <listitem>
+          <para> A section in the chapter <xref linkend="inside_subsystems"/>
+            . </para>
+          <para> The section shall for each subsystem contain the
+            responsibilities, the package name, the API, the Facade (if any),
+all the plug-in interfaces (if any).
+This shall be in the first part of the section i.e. not in a subsection.
+It should also document the design of the subsystem.
+This is in subsections.
+</para>
+        </listitem>
+      </itemizedlist> </para>
+    <para> Each subsystem can have:
+      <itemizedlist>
+        <listitem>
+          <para> a Facade class </para>
+          <para> The facade can be used by all other subsystems when using the
+            subsystem. </para>
+          <para> The Facade class is called
+            <classname><replaceable>SubsystemName</replaceable>
+            Facade</classname> and is located in the subsystem package. How it
+            is used is primarily documented in the class file itself (as javadoc)
+            but the more complex picture is documented in the Cookbook (in <xref
+              linkend="inside_subsystems"></xref>). </para>
+        </listitem>
+        
+        <listitem>
+          <para> Plug-in interfaces. </para>
+          <para> These are Facade objects where modules or plug-ins can connect
+            themselves to modify or augment the behavior of that subsystem.
+          </para>
+        </listitem>
+        
+        <listitem>
+          <para> The plug-in interfaces are also all located in the subsystem
+            package and called
+            <classname><replaceable>SubsystemName</replaceable>
+            Plugin<replaceable>PluginType</replaceable></classname>.
+            Example: <classname>ModelPluginDiagram</classname>,
+            <classname>ModelPluginType</classname>.
+            
+            <!-- This latter example is very confusing! TODO: replace it. -->
+          </para>
+        </listitem>
+        
+        <listitem>
+          <para> If the subsystem uses a callback-technique the callback is
+            always made to an interface defined by the subsystem. The interface
+            is also in the subsystem package and it is called
+            <classname><replaceable>SubsystemName</replaceable>
+            <replaceable>PluginType</replaceable>Interface</classname>
+            . Example: <classname>ModelDiagramInterface</classname>,
+            <classname>ModelTypeInterface</classname>. </para>
+          <para>
+            <mediaobject>
+              <imageobject>
+                <imagedata
+                  fileref="images/cookbook/ComponentDiagram.gif"
+                  format="GIF"/>
+              </imageobject>
+            </mediaobject> </para>
+        </listitem>
+      </itemizedlist> </para>
+  </sect1>
+  
+  <sect1 id="subsystems_relationships">
+    <title>Relationship of the subsystems</title>
+    
+    <para> Each subsystem that is used by other subsystems provide two ways for
+      other subsystems to use them:
+      <itemizedlist>
+        <listitem>
+          <para> The Facade class </para>
+          <para> The use of Facade class is not wide spread in ArgoUML. This is
+            because ArgoUML is traditionally built as a whole and no subsystems
+            were clearly defined. </para>
+          <para> A Facade class provides the most common functions other
+            subsystems want to do when using that subsystems to reduce the need of
+            having to use anything else but the Facade class. The Facade class
+            should be very much more stable than the subsystem itself. Methods in
+            the Facade should change really slowly and only be removed after
+            several months (and one stable release) of deprecation. </para>
+          <para> The Facade class is documented in the class file itself (as
+            javadoc) and the more complex picture (if needed) is documented in
+            the Cookbook (in <xref linkend="inside_subsystems"></xref>).
+          </para>
+        </listitem>
+        <listitem>
+          <para> An API with calls to public or protected methods. </para>
+          <para> Traditionally, the subsystems in ArgoUML communicate through
+            public methods and public variables and the subsystems, as defined
+            by the responsibilities, are spread over several packages setting
+            aside the Java visibility rules. For this reason it is not well-known
+            or documented what public methods form part of a subsystem's API and
+            what public methods are internal to a subsystem. For this reason,
+            always exercise extreme caution when changing the signature of a
+            public method. (See <xref linkend="groundrules"></xref>.)
+          </para>
+          <para> In order to improve things, make it very clear when encountering
+            and understanding the purpose of a public method or class, if it is
+            part of the subsystem's API or not (by improving the javadoc for that
+            method or class). </para>
+          <para> Try to help in moving the public API methods and classes from
+            wherever, to the subsystem's directory/package using the proper
+            deprecation procedure. </para>
+          <para> In order not to worsen things, always add new API classes and
+            methods in the subsystem's directory/package. </para>
+          <para> This way of communicating is still to be used when it is not
+            convenient to use the Facade for a specific use of that subsystem.
+          </para>
+        </listitem>
+      </itemizedlist> Notice that the Facade is normally a part of the API or a
+      simplified version of the API. </para>
+    <para> For each subsystem X in ArgoUML that uses the subsystem Y, the designer
+      of the subsystem X must decide if he wants to use the API of Y when using the
+      subsystem Y (putting a set of import org.argouml.Y.internals.blabla.*;
+      statements in each file of subsystem X that uses subsystem Y) or use the
+      Facade class of subsystem Y (putting only one import
+      org.argouml.Y.YFacade; in each file in the subsystem X that uses subsystem
+      Y). </para>
+    <para> The API solution makes the subsystem X depending on the subsystem Y
+      meaning that when we change the API of the subsystem Y we must also change
+      subsystem X. The facade calls solution doesn't make the subsystem X
+      depending on the API of subsystem Y but just the Facade of subsystem Y.
+    </para>
+    <para> The choice between the usage of the API or the Facade shall be stated in
+      the Cookbook's description of subsystem X in the list of used subsystems.
+    </para>
+  </sect1>
+
+  <sect1 id="external_subsystems">
+    <title>External subsystems</title>
+    <para> These subsystems are in fact imported libraries 
+      and are not developed as part of ArgoUML.
+    </para>
+    <para>There is a very simple dependency structure: 
+      All ArgoUML packages may depend on them.
+    </para>
+    <para>
+      All these subsystems are started and initiated (if needed)
+      from the Application subsystem,
+      see <xref linkend="application"></xref>.
+    </para>
+
+    <itemizedlist>
+      
+      <listitem>
+        <para>Logging - see <xref linkend="logging"></xref>. 
+          Location: <classname>org.apache.log4j</classname>
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>Antlr. ANother Tool for Language Recognition, 
+        is a framework 
+        for constructing recognizers, compilers, 
+        and translators from grammatical descriptions.
+        ArgoUML uses ANTLR to process Java source code.
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>JRE with utils. 
+          This includes all libraries that are part of the standard JRE.
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>OCL - see
+          <xref linkend="ocl"></xref>. 
+          Location: <classname>tudresden.ocl</classname>
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>swidgets. 
+          Location: <classname>org.tigris.swidgets</classname>
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>gef. 
+          Location: <classname>org.tigris.gef</classname>
+        </para>
+        <para>GEF stands for <emphasis>Graph Editing Framework</emphasis>. 
+          It is the package which controls 
+          most of the graphical aspects of ArgoUML.</para>
+      </listitem>
+
+      <listitem>
+        <para>toolbar. 
+          Location: <classname>org.tigris.toolbar</classname>
+        </para>
+      </listitem>
+
+    </itemizedlist>
+
+    <para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/cookbook/external.png" format="PNG"/>
+        </imageobject>
+      </mediaobject> </para>
+    
+  </sect1>
+
+  <sect1 id="infrastructure_subsystems">
+    <title>Low-level subsystems</title>
+    <para> These subsystems of ArgoUML 
+      are infrastructure subsystems that just are there
+      for every other subsystem to use
+      - but they are not using any other part of ArgoUML.
+    </para>
+    <para> Low-level subsystems have a simple dependency structure: 
+      All other ArgoUML packages may depend on them, 
+      but there are no dependencies "upwards", 
+      nor between them.
+    </para>
+    <para>This latter statement is the way to recognize 
+      a low level subsystem: 
+      it does not depend on any other argouml package.
+    </para>
+    <para>
+      All these subsystems are started and initiated (if needed) from the
+      Application subsystem, 
+      see <xref linkend="application"></xref>.
+    </para>
+    <itemizedlist>
+      
+      <listitem>
+        <para>Internationalization -
+see <xref linkend="internationalization"></xref>.
+</para>
+      </listitem>
+      
+      <listitem>
+        <para>TaskManagement -
+          see <xref linkend="taskmgmt"></xref>.
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>Configuration -
+          see <xref linkend="configuration"></xref>.
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>Swing extensions
+          <!-- - see <xref linkend="swingext"></xref> -->.
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>
+          The Model - See <xref linkend="model" />.
+        </para>
+      </listitem>
+
+    </itemizedlist>
+    <para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/cookbook/Layer0.gif" format="GIF"/>
+        </imageobject>
+      </mediaobject> </para>
+    
+  </sect1>
+
+  <sect1 id="view_control_subsystems">
+    <title>View and Control subsystems</title>
+    <para>
+These subsystems rely on the information in the model subsystems
+in order to do their work.
+</para>
+    
+    <para>
+      All these subsystems are all started and initiated 
+      from the Application subsystem,
+      see <xref linkend="application"></xref>.
+    </para>
+    <para>
+      <itemizedlist>
+
+        <listitem>
+          <para>Diagrams -
+see <xref linkend="diagrams"></xref>.
+</para>
+        </listitem>
+
+      <listitem>
+        <para>GUI -
+          see <xref linkend="guiframework"></xref>.
+        </para>
+      </listitem>
+
+        <listitem>
+          <para>Property panels -
+see <xref linkend="propertypanels"></xref>.
+</para>
+        </listitem>
+        
+        <listitem>
+          <para>Explorer -
+see <xref linkend="explorer"></xref>.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>Notation -
+see <xref linkend="notation"></xref>.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>Code Generation -
+see <xref linkend="codegeneration"></xref>.
+</para>
+        </listitem>
+        
+        <listitem>
+          <para>Reverse Engineering - 
+see <xref linkend="reverseengineering"></xref>.
+</para>
+        </listitem>
+        
+        <listitem>
+          <para>Module loader -
+see <xref linkend="moduleloader"></xref>.
+</para>
+        </listitem>
+      </itemizedlist>
+</para>
+    <para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/cookbook/Layer2.gif" format="GIF"/>
+        </imageobject>
+      </mediaobject> </para>
+
+  </sect1>
+  
+    <sect1 id="top_level_subsystem">
+    <title>Top Level subsystem</title>
+    <para>
+      A top level subsystem is the subsystem that contains the Main.main(), 
+      i.e. the starting point of the ArgoUML application.
+      It initialises other subsystems, 
+      and hence depends on other ArgoUML subsystems, 
+      but no other ArgoUML subsystem depends on the top level.
+    </para>
+
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>
+            Application - see <xref linkend="application"></xref>.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    
+    <para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/cookbook/Application.gif"
+            format="GIF"/>
+        </imageobject>
+      </mediaobject>
+    </para>
+  </sect1>
+  
+  <sect1 id="loadable_subsystems">
+    <title>Loadable subsystems</title>
+    <para>
+These subsystems should be connected only through the interfaces
+provided by other subsystems.
+This means that they can be individually enabled and disabled using
+the module loader.
+</para>
+    
+    <para>
+      <itemizedlist>
+        
+        <listitem>
+          <para>Java Code generation, Reverse engineering -
+see <xref linkend="java"></xref>.
+</para>
+        </listitem>
+        
+        <listitem>
+          <para>Other languages - Code generation, Reverse engineering -
+see <xref linkend="otherlanguages"></xref>.
+</para>
+        </listitem>
+        
+        <listitem>
+          <para>Critics and checklists -
+see <xref linkend="critics"></xref>.
+</para>
+        </listitem>
+        
+        <listitem>
+          <para>OCL -
+see <xref linkend="ocl"></xref>.
+</para>
+        </listitem>
+        
+      </itemizedlist>
+</para>
+    <para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/cookbook/Layer3.gif" format="GIF"/>
+        </imageobject>
+      </mediaobject> </para>
+  </sect1>
+
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+cookbook.xml"
+indent-tabs-mode: nil
+End:
+
+-->

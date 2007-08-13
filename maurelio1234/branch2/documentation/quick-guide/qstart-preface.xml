@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!--
+// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+<preface>
+	<title>Preface</title>
+	<para>
+		1 April 2001
+	</para>
+	<para>
+		In the last decade of the last millenium, object-oriented (OO) technology finally completed it's 
+		transformation from a laboratory curiousity in the 1960s to become <emphasis>the</emphasis> mainstream 
+		software development paradigm. It has been a long, tough journey - that nearly ended in obscurity - 
+		primarily because OO technology required a major shift in the thought processes of systems designers, 
+		developers and others involved in the software development lifecycle.
+	</para>
+	<para>
+		It wasn't until the introduction of OO-hybrid languages such as C++, Classic Ada and Object Pascal in  
+		the eighties that the mainstream was introduced to and, given the opportunity to experiment with OO technology. 
+		These languages combined support for OO programming with support for traditional procedural programming. 
+		The lack of support of procedural programming in pure OO languages had hindered the adoption of OO technology 
+		for many years. The journey that had begun with the introduction of <emphasis>objects</emphasis> in Simula in 
+		the 1960s was now complete. OO technology was now accessible to the mainstream...well, OO programming was at least.
+	</para>
+	<para>
+		Simulation is the basic premise that underpins OO technology. An OO system is designed and implemented 
+		essentially as a simulation of the real world using software artifacts. This premise is as powerful 
+		as it is simple. By designing and building software 
+		systems in this manner, the same language and ideas 
+		can be used in the analysis, design and implementation of OO systems. This allowed a system to be designed 
+		and tested (or more correctly allowed a system to be simulated) without having to actually build the system first. 
+		This feature coupled with the ability to design systems at a very high level empowered experienced OO 
+		practitioners to design and successfully implement more complex systems than had previously been possible.
+	</para>
+	<para>
+		The availabilty of various OO methodologies and the eventual adoption of the Unified Modelling Language 
+		(UML) as the standard language for communicating OO concepts continued the advance of OO technology into 
+		the mainstream. The popularity of the object-based Visual Basic language and the parallel development and 
+		meteoric adoption of the fully object-oriented 
+		Java programming language was the final catalyst that fuelled 
+		the final stages of the rapid adoption of OO technologies by the mainstream.
+	</para>
+	<para>
+		ArgoUML was conceived as a tool and environment for use in the analysis and design of object-oriented software 
+		systems. In this sense it is similar to many of the commercial CASE tools that are sold as tools for modelling 
+		software systems. ArgoUML has a number of very important distictions from many of these tools:
+		<itemizedlist>
+			<listitem>
+				<para>
+					ArgoUML includes a number of features that support the cognitive needs object-oriented software 
+					designers and architects.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					ArgoUML supports open standards extensively - UML, XMI, SVG, OCL and others. In this respect, 
+					ArgoUML is still ahead (even almost five years after it's initial introduction) of many commercial 
+					tools.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					ArgoUML is a 100% Pure Java application. This allows ArgoUML to run on all platforms for which 
+					a reliable port of the Java2 platform is available.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					ArgoUML is an open source product. The availability of the source permits ensures that a new 
+					generation of software designers and researchers now have a proven framework from which they 
+					can drive the development and evolution of CASE tools technologies.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>
+		In creating the ArgoUML development tool and environment, Jason Robbins and the rest of his research team at 
+		UCL leveraged the benefits of UML as the most prevalent OO modelling language and Java as one of the most 
+		productive OO development platforms to produce a solid tool for OO systems design and, further a testbed for
+		the evolution of OO CASE tools development and research.
+	</para>
+	<para>
+		Kunle Odutola
+	</para>
+</preface>

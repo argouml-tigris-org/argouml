@@ -1,0 +1,1452 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Author" CONTENT="DANIELS">
+   <META NAME="Generator" CONTENT="MyAlbum 1.5"><title>  - </title>
+</HEAD>
+<BODY TEXT=#000000 BGCOLOR=#ffffff>
+<p></p>
+<p></p>
+<p><font face="Arial, Helvetica, sans-serif">This document though long and somewhat 
+  unruly will give you some idea of the status of the various components of argouml. 
+  Note that there are known errors in this document and it is intended for review 
+  purposes only. </font></p>
+<p></p>
+<p><font face="Arial, Helvetica, sans-serif">As well you will find some diagrams 
+  of the Argo architecture here as well. </font></p>
+<p><font face="Arial, Helvetica, sans-serif">Please feel to free correct and comment.</font></p>
+<p></p>
+<p><font face="Arial, Helvetica, sans-serif">And, if you know a way to populate 
+  each one of the row entries with an html script like this</font></p>
+<p></p>
+<p><font face="Arial, Helvetica, sans-serif">mailto:users@argoumul?subject= note 
+  text/ image name/ issue name</font></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p> </p>
+<p><font face="Arial, Helvetica, sans-serif"><a href="mailto:ddaniels@magic.fr?subject= screen grabs">like 
+  this one</a></font></p>
+<dd> 
+  <TABLE CELLSPACING=3>
+    <TR> 
+      <TD VALIGN=center width="82"><font face="Arial, Helvetica, sans-serif">Argo 
+        Component</font></TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif">Image 
+        Name</font></TD>
+      <TD VALIGN=center width="124"><font face="Arial, Helvetica, sans-serif">bug 
+        #</font></TD>
+      <TD VALIGN=center width="124"><font face="Arial, Helvetica, sans-serif">status</font></TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Note</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="after%20import%20of%20mainargojava.png" TARGET=_top>after 
+        import of mainargojava.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">code 
+        is not the same</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="anon_link_but_they_have_values.png" TARGET=_top>anon_link_but_they_have_values.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">bug? 
+        naming links in sequenece not redrawn in diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argoapi.png" TARGET=_top>argoapi.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Argo 
+        Api UML screen shot</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argocogchklist.png" TARGET=_top>argocogchklist.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argo 
+        checklist class diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argocogcritics.png" TARGET=_top>argocogcritics.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argo 
+        critics UML diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argoconfig.png" TARGET=_top>argoconfig.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argo 
+        config UML diagram> note there is no visual component for this </font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argocritics.png" TARGET=_top>argocritics.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argocritics 
+        UML class diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argogeneralizationbug.png" TARGET=_top>argogeneralizationbug.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">cannot 
+        change the default settings of language...my keyboard is french but my 
+        preferred display is English...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argogeneralizationbug.png" TARGET=_top>argogeneralizationbug.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Use 
+        Case error: Can't name generalization arrow.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argokernel.png" TARGET=_top>argokernel.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argo 
+        kernel class diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argomain.png" TARGET=_top>argomain.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argo 
+        main class diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argoocl.png" TARGET=_top>argoocl.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argoocl 
+        class diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argopatterncritics.png" TARGET=_top>argopatterncritics.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argo 
+        pattern critics class diagram note at this time singleton is the only 
+        pattern supported. </font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argoreveng.png" TARGET=_top>argoreveng.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argo 
+        reveng class diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argoui.png" TARGET=_top>argoui.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argoui 
+        class diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argoumlumls.png" TARGET=_top>argoumlumls.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Argouml 
+        uml package class diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="argoutil.png" TARGET=_top>argoutil.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">argoutil 
+        package class diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="artifacts_created_erroneously.png" TARGET=_top>artifacts_created_erroneously.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Use 
+        case: sometimes artifacts are created erroneously.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="assc_not_easy_to_work_zith.png" TARGET=_top>assc_not_easy_to_work_zith.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">enhancement: 
+        drawing connections in GUI</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="assciaton%20links%20poorly%20matched.png" TARGET=_top>assciaton 
+        links poorly matched.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">this 
+        affects the final graph output as well</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="assciaton links poorly matched.png" TARGET=_top>assciaton 
+        links poorly matched.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Use 
+        case diagram: the association line in an Argo use case diagram</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="bad_class_diagram.png" TARGET=_top>bad_class_diagram.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">after 
+        saving you may experience problems like this one</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="bad_class_diagram.png" TARGET=_top>bad_class_diagram.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">bug: 
+        saved> closed> reopened work is gone</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="badredraw.png" TARGET=_top>badredraw.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">bad 
+        redraw on warnings</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="badredraw1.png" TARGET=_top>badredraw1.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">bad 
+        redraw in general</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="badredrawinnavpane.png" TARGET=_top>badredrawinnavpane.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">redraw 
+        in navigator window</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="badredrawinnavpane.png" TARGET=_top>badredrawinnavpane.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">more 
+        bad redraw</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="badredrawinnavpane1.png" TARGET=_top>badredrawinnavpane1.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">the 
+        tree does not load</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="badredrawinnavpane1.png" TARGET=_top>badredrawinnavpane1.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">sometimes 
+        argo will slow down in the navigation window. Note redraw on tree.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="build error.jpg" TARGET=_top>build 
+        error.jpg</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">error 
+        messages on ant build</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="cannot access end data.png" TARGET=_top>cannot 
+        access end data.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">diagrams 
+        draw off into the void...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="cannot save graphics.png" TARGET=_top>cannot 
+        save graphics.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">save 
+        graphics button sometimes 'sticks'</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="cannotremovediagram.png" TARGET=_top>cannotremovediagram.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">cannot 
+        delete from Model</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="cant select arrows on object in seq.png" TARGET=_top>cant 
+        select arrows on object in seq.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">sequence 
+        diagram :getting new object rollover arrows to pop up is difficult</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="cant select arrows on object in seq.png" TARGET=_top>cant 
+        select arrows on object in seq.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="cant_turn_off_multiple_email.png" TARGET=_top>cant_turn_off_multiple_email.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="chooseargomain.png" TARGET=_top>chooseargomain.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">loading 
+        Argo in Netbeans</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="class_diagram_name does not appear in top right corner.png" TARGET=_top>class_diagram_name 
+        does not appear in top right corner.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">class 
+        diagram name does not appear in top right side as normal</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="collaborationerror.png" TARGET=_top>collaborationerror.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">collaborator: 
+        unpredictable behaviors...note the arrows and the lack of a 1 :new Action.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="collaborationerror.png" TARGET=_top>collaborationerror.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="collaborationerrorbadredraw.png" TARGET=_top>collaborationerrorbadredraw.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">note 
+        the funny shaped object artifacts</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="collaborationerrorbadredrawaftersave.png" TARGET=_top>collaborationerrorbadredrawaftersave.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">collaboration: 
+        funny redraw</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="collaborationerrorbadredrawaftersave.png" TARGET=_top>collaborationerrorbadredrawaftersave.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="collaborationerrormult.png" TARGET=_top>collaborationerrormult.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">collaboration 
+        behaviors...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="collaborationerrormult.png" TARGET=_top>collaborationerrormult.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="compileprojectnetbeans.png" TARGET=_top>compileprojectnetbeans.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Netbeans 
+        >compile project</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="configsysforenvironmental space.png" TARGET=_top>configsysforenvironmental 
+        space.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">out 
+        of memory errors? try config.sys and add the above lines</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="confusing link names.png" TARGET=_top>confusing 
+        link names.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Navigation 
+        panel: confusing tree structure. I can't give the link a name but I can 
+        give it a message.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="constraint name does not appear.png" TARGET=_top>constraint 
+        name does not appear.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">entering 
+        new constraints are not updated correctly</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="constraint name does not appear.png" TARGET=_top>constraint 
+        name does not appear.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">constraint 
+        names not matching</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="dbl_clicking_works_here.png" TARGET=_top>dbl_clicking_works_here.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">the 
+        critic jump to code is tied to the tree node file above</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="dead_help.png" TARGET=_top>dead_help.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">clicking 
+        on help goes nowhere..</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="delete does not work.png" TARGET=_top>delete 
+        does not work.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="delete does not work.png" TARGET=_top>delete 
+        does not work.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">sequence 
+        diagram: strange behavoi</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="deleted package but it is still there.bmp" TARGET=_top>deleted 
+        package but it is still there.bmp</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="deleted package but it is still there.bmp" TARGET=_top>deleted 
+        package but it is still there.bmp</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">deleted 
+        package but it's still in tree</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="DetailsPaneScreen.gif" TARGET=_top>DetailsPaneScreen.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="dev_argo_email.png" TARGET=_top>dev_argo_email.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">tried 
+        to change the email to...but no joy</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="dev_argo_email.png" TARGET=_top>dev_argo_email.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="diagramconnections.png" TARGET=_top>diagramconnections.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="diagramconnections.png" TARGET=_top>diagramconnections.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Creating 
+        layers under use cases...node icon shows presence of multiple diagrams 
+        but this is not reflected in the original use case diagram to indicate 
+        the dependancies</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="DiagramEditorScreen.gif" TARGET=_top>DiagramEditorScreen.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">view 
+        as table does not work</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="different_object_name.png" TARGET=_top>different_object_name.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">created 
+        one after the other using auto create arrows...note the text starts on 
+        diff. sides of colon ':'</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="different_object_name.png" TARGET=_top>different_object_name.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="does not show diagram name dependably.png" TARGET=_top>does 
+        not show diagram name dependably.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="does not show diagram name dependably.png" TARGET=_top>does 
+        not show diagram name dependably.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">diagram 
+        name somtimes appears...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="does_not_show_atts.png" TARGET=_top>does_not_show_atts.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Attributes 
+        do not work</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="does_not_show_atts.png" TARGET=_top>does_not_show_atts.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="doesnt_show_attributes.png" TARGET=_top>doesnt_show_attributes.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="doesnt_show_attributes.png" TARGET=_top>doesnt_show_attributes.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">doesn't 
+        show attributes...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="FileChooseDialog.gif" TARGET=_top>FileChooseDialog.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="FolderDropdown.gif" TARGET=_top>FolderDropdown.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="FoldersPresentationIcon.gif" TARGET=_top>FoldersPresentationIcon.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="FolderUpIcon.gif" TARGET=_top>FolderUpIcon.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="funnybehaviorwithnewobjects.png" TARGET=_top>funnybehaviorwithnewobjects.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="funnybehaviorwithnewobjects.png" TARGET=_top>funnybehaviorwithnewobjects.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">does 
+        not verify that this artifact already exists...it would be very nice if 
+        Argo could create a DTD of the diagram elements so that the user could 
+        control changes in speciifications and base...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="General.png" TARGET=_top>General.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">WinCVS 
+        enter CVS root</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="General.png" TARGET=_top>General.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">general> 
+        enter cvs root> authentication =psswd file on server</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="Globals.png" TARGET=_top>Globals.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Wincvs 
+        globals> supply control> use tcpip> dirty file support> prune empty directories 
+        selected</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="Globals.png" TARGET=_top>Globals.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">wincvs 
+        use tcp/ip</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="go_goes_nowhere.png" TARGET=_top>go_goes_nowhere.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="go_goes_nowhere.png" TARGET=_top>go_goes_nowhere.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">go 
+        goes nowhere</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="helpconnect.gif" TARGET=_top>helpconnect.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">wiki 
+        connection to help systems</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="helpconnect.gif" TARGET=_top>helpconnect.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Help 
+        proposal: Connect the (non exisant) help buttons to an online wiki editor. 
+        The users would then be able to read existing documentation and contribute 
+        ideas, answers, tasks, wishlists etc. For offline browsing, the WIKI pages 
+        would be converted to 'pure' html and shipped as html as an additional 
+        download or built into the distribution itself. Note: this diagram is 
+        not UML compliant, it was the best I could do freehanding UML.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="HomePage.png" TARGET=_top>HomePage.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">wincvs 
+        password authentication wait...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="HomePage.png" TARGET=_top>HomePage.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">WinCVS 
+        start up</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="importsourcescannotchoosemorethanone.png" TARGET=_top>importsourcescannotchoosemorethanone.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="importsourcescannotchoosemorethanone.png" TARGET=_top>importsourcescannotchoosemorethanone.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">You 
+        can import whole folders with the import feature...but be careful! The 
+        code will be drastically changed in the input process!</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="intercreative.gif" TARGET=_top>intercreative.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">a 
+        cool screen grab of a GIF output> 800*600 on thousands of colors...cool 
+        huh?</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="intercreative.gif" TARGET=_top>intercreative.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="ioexception.png" TARGET=_top>ioexception.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="javeerrorafterclickingdebug.png" TARGET=_top>javeerrorafterclickingdebug.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="javeerrorafterclickingdebug1.png" TARGET=_top>javeerrorafterclickingdebug1.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="javeerrorafterclickingdebug11.png" TARGET=_top>javeerrorafterclickingdebug11.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="javeerrorafterclickingdebug111.png" TARGET=_top>javeerrorafterclickingdebug111.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="jcvs111.png" TARGET=_top>jcvs111.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="jcvs2.png" TARGET=_top>jcvs2.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="little_number_in_corner.png" TARGET=_top>little_number_in_corner.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="little_number_in_corner.png" TARGET=_top>little_number_in_corner.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">This 
+        field could be used for something more than [O]...maybe we could tie it 
+        in to the internal log output? Something.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="LookatCriticsAdvice.gif" TARGET=_top>LookatCriticsAdvice.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">the 
+        critics are cool, but right now the critics and the responses are hardcoded 
+        and java specific...this would be a great place for plugin development 
+        for specific problem domains i.e. xml, php etc</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="misnamed operation creates new class.png" TARGET=_top>misnamed 
+        operation creates new class.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">creates 
+        void?? statements even though there is 'something' there</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="misnamed operation creates new class.png" TARGET=_top>misnamed 
+        operation creates new class.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="mountexistingnetbeans.png" TARGET=_top>mountexistingnetbeans.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="mountexistingnetbeans.png" TARGET=_top>mountexistingnetbeans.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">needed 
+        jars in path to get Argo under netbeans</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="named link does not show connections.png" TARGET=_top>named 
+        link does not show connections.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">sequence: 
+        note connection window is empty</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="named link does not show connections.png" TARGET=_top>named 
+        link does not show connections.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="navigat_where.png" TARGET=_top>navigat_where.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="navigat_where.png" TARGET=_top>navigat_where.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">navigate 
+        back button...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="NavigatorPaneScreen.gif" TARGET=_top>NavigatorPaneScreen.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="netbeanargo.png" TARGET=_top>netbeanargo.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="netbeanfileexplorer.png" TARGET=_top>netbeanfileexplorer.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">filesystem 
+        | project comparison</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="netbeanfileexplorer.png" TARGET=_top>netbeanfileexplorer.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="netbeanscvs1.png" TARGET=_top>netbeanscvs1.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">search 
+        engine does not work dependably, note the element name in search field 
+        and directly above the target object....</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="netbeanscvs1.png" TARGET=_top>netbeanscvs1.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="netbeanscvs2.png" TARGET=_top>netbeanscvs2.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="netbeanscvs3.png" TARGET=_top>netbeanscvs3.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">cvs 
+        netbeans</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="netbeanscvs7.png" TARGET=_top>netbeanscvs7.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">NB>mount 
+        CVS</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="NewFolderIcon.gif" TARGET=_top>NewFolderIcon.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="nice_to have a go to option here.png" TARGET=_top>nice_to 
+        have a go to option here.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="nice_to have a go to option here.png" TARGET=_top>nice_to 
+        have a go to option here.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">clicking 
+        on properties activates details pane but you need to click into the panel 
+        to jump to the object name</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="no way to attacn notes to the classess.png" TARGET=_top>no 
+        way to attacn notes to the classess.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="no way to attacn notes to the classess.png" TARGET=_top>no 
+        way to attacn notes to the classess.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">notes 
+        for classes works sometimes</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="no_right_click_functions.png" TARGET=_top>no_right_click_functions.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">sequence> 
+        few options under sequence...shouldn't the objects be able to share all 
+        of the basic features? remove? rename?</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="no_right_click_functions.png" TARGET=_top>no_right_click_functions.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="objectcannotbemodified.png" TARGET=_top>objectcannotbemodified.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">new 
+        MUse Case ojbect cannot be modified or deleted</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="objectcannotbemodified.png" TARGET=_top>objectcannotbemodified.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="Ports.png" TARGET=_top>Ports.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">wincvs 
+        ports> empty</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="Ports.png" TARGET=_top>Ports.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">wincvs</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="possible to add .or. message.png" TARGET=_top>possible 
+        to add .or. message.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="possible to add .or. message.png" TARGET=_top>possible 
+        to add .or. message.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">rollover 
+        displays artifact content</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="ProjectSavedScreen.gif" TARGET=_top>ProjectSavedScreen.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="Proxy.png" TARGET=_top>Proxy.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">wincvs</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="Proxy.png" TARGET=_top>Proxy.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">wincvs 
+        proxy is empty</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="removeerroronusecase.png" TARGET=_top>removeerroronusecase.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">new 
+        MUse Case = legal this is strange. Note the Oui et Non</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="removeerroronusecase.png" TARGET=_top>removeerroronusecase.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="RenamingTopPackage.gif" TARGET=_top>RenamingTopPackage.gif</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="roll_over_description.png" TARGET=_top>roll_over_description.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">class 
+        diagram: no roll over description</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="roll_over_description.png" TARGET=_top>roll_over_description.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">There 
+        is no rollover information telling user what will happen or if options 
+        are available what are the users options?</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="rt_click_not_dependable.png" TARGET=_top>rt_click_not_dependable.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Cannot 
+        add Actors to class diagrams. </font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="rt_click_not_dependable.png" TARGET=_top>rt_click_not_dependable.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">can't 
+        get out of rule set for UML...users should be able to free hand the problem 
+        solving process.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="save space in work area.png" TARGET=_top>save 
+        space in work area.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">to 
+        do items do not work dependably</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="save space in work area.png" TARGET=_top>save 
+        space in work area.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="SaveAsCommand.gif" TARGET=_top>SaveAsCommand.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">File 
+        save as> note that the view as table tab has been #inied out until the 
+        code can be stabilized.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="searchwindow_errors.png" TARGET=_top>searchwindow_errors.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">search 
+        does not find target element</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="send_email.png" TARGET=_top>send_email.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="send_email.png" TARGET=_top>send_email.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">fix: 
+        auto email ...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="sequence doesn't allow to change on the fly.png" TARGET=_top>sequence 
+        doesn't allow to change on the fly.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">sequence 
+        diagram: does not allow change on fly</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="sequence_destruction.png" TARGET=_top>sequence_destruction.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">sequence 
+        diagram: reload after saving/closing/reopening</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="sequence_destruction.png" TARGET=_top>sequence_destruction.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="Sequencediagram1.gif" TARGET=_top>Sequencediagram1.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">proposed 
+        error parser rendering error logs into sequence diagrams. The class names 
+        would be links to the source code ideally connected to an IDE.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="Sequencediagram1.gif" TARGET=_top>Sequencediagram1.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">error 
+        output log generates sequence diagram proposal</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="slots_vs_links.png" TARGET=_top>slots_vs_links.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">what 
+        the heck are slots?</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="StartupScreen.gif" TARGET=_top>StartupScreen.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">start 
+        up screen</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="svg3test.png" TARGET=_top>svg3test.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">svg 
+        looks okay with simple class diagrams but other diagrams are not as nice 
+        looking</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="svg3test.png" TARGET=_top>svg3test.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="svgbaddraw.png" TARGET=_top>svgbaddraw.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">for 
+        example...Bad draw svg</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="svgokdraw.png" TARGET=_top>svgokdraw.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">more 
+        bad svg</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="ToDoPaneScreen.gif" TARGET=_top>ToDoPaneScreen.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">by 
+        priority in to do list note you cannot save or modify existing to dos 
+        without problems</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="turn_off_link.jpg" TARGET=_top>turn_off_link.jpg</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">sequence 
+        diagram: how do I link this object</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317">&nbsp;</TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="twopackagenodisplay.png" TARGET=_top>twopackagenodisplay.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">package 
+        display erratic</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317">&nbsp;</TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="use case object behavior.jpg" TARGET=_top>use 
+        case object behavior.jpg</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">use 
+        case runner...</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317">&nbsp;</TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="use case still in nav pane after deletion.png" TARGET=_top>use 
+        case still in nav pane after deletion.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="very_difficult_to_select_asscitions.png" TARGET=_top>very_difficult_to_select_asscitions.png</a></font></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="124"></TD>
+      <TD VALIGN=center width="362"></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="what_are_those_red%20_lines.png" TARGET=_top>what_are_those_red 
+        _lines.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">those 
+        red lines tell you that the critic is not happy</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="wheres%20the%20loop%20for%20the%20sequence.png" TARGET=_top>wheres 
+        the loop for the sequence.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">sequence 
+        : drawing loopbacks</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="why is there a void class from a misnamed.png" TARGET=_top>why 
+        is there a void class from a misnamed.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">Sometimes 
+        you'll get void statements invoking methods in the class diagram.</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="wincvs.gif" TARGET=_top>wincvs.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">cool 
+        gif...see earlier</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="WinCVS.png" TARGET=_top>WinCVS.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">verify 
+        wincvs properties</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="WinCVS.png" TARGET=_top>WinCVS.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">wincvs</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="wincvs1.gif" TARGET=_top>wincvs1.gif</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">gif</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="wincvs12preftab.png" TARGET=_top>wincvs12preftab.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">wincvs</font></TD>
+    </TR>
+    <TR> 
+      <TD VALIGN=center width="82">&nbsp;</TD>
+      <TD VALIGN=center width="317"><font face="Arial, Helvetica, sans-serif"><a href="wrap_text_to_make_it_easier_to_read.png" TARGET=_top>wrap_text_to_make_it_easier_to_read.png</a></font></TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="124">&nbsp;</TD>
+      <TD VALIGN=center width="362"><font face="Arial, Helvetica, sans-serif">enhancement: 
+        wrap text in messages and objects</font></TD>
+    </TR>
+  </TABLE>
+<dd> 
+  <center>
+    <p><font face="Arial, Helvetica, sans-serif">Built with MyAlbum</font></p>
+    <p><font face="Arial, Helvetica, sans-serif">by Dennis Daniels</font></p>
+  </center>
+</html>

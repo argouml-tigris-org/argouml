@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER" kind="con"/>
+	<classpathentry path="antlrall-2.7.2.jar" exported="true" kind="lib"/>
+	<classpathentry path="commons-logging-1.0.2.jar" exported="true" kind="lib"/>
+	<classpathentry path="log4j-1.2.6.jar" exported="true" kind="lib"/>
+	<classpathentry path="ocl-argo-1.1.jar" exported="true" kind="lib"/>
+	<classpathentry path="swidgets-0.1.4.jar" exported="true" kind="lib"/>
+	<classpathentry path="toolbar-1.4.jar" exported="true" kind="lib"/>
+	<classpathentry path="org.eclipse.pde.core.requiredPlugins" kind="con"/>
+	<classpathentry path="gef-0.12.4M4.jar" exported="true" kind="lib"/>
+	<classpathentry path="build-eclipse" kind="output"/>
+</classpath>
