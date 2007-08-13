@@ -65,7 +65,7 @@ public class TestModelManagementHelper extends TestCase {
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 Model.getModelManagementFactory(),
-			 TestModelManagementFactory.getAllModelElements());
+			 TestModelManagementFactory.getAllModelElementsForUML2());
     }
 
     /**

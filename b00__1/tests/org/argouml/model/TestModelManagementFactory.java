@@ -24,6 +24,7 @@
 
 package org.argouml.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,6 +57,15 @@ public class TestModelManagementFactory extends TestCase {
      */
     protected static String[] getAllModelElements() {
         return allModelElements;
+    }
+    
+    /**
+     * @return Returns the allModelElements for UML2.
+     */
+    protected static String[] getAllModelElementsForUML2() {
+	List<String> l = new ArrayList<String>(Arrays.asList(allModelElements));
+	l.remove("Subsystem");
+        return l.toArray(new String[0]);
     }
 
     /**
