@@ -279,4 +279,139 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().flushModelEvents();
         assertTrue(!eventcalled);
     }
+    
+    /**
+     * Tests if a listener that registred for a PropertySet event on
+     * the class level really receive the event.
+     * <p>
+     * Use a property available in UML2
+     */
+    public void testPropertySetClassForUML2() {
+	Model.getPump().addClassModelEventListener(listener, elem.getClass(),
+		new String[] { "isAbstract", });
+	Model.getCoreHelper().setAbstract(elem, true);
+	Model.getPump().flushModelEvents();
+	assertTrue(eventcalled);
+    }
+
+    /**
+     * Tests if a listener that registred for a RoleAdded event on the class
+     * level really receive the event.
+     * <p>
+     * Use a property available in UML2
+     */
+    public void testRoleAddedSetClassForUML2() {
+	Model.getPump().addClassModelEventListener(listener, elem.getClass(),
+		new String[] { "ownedAttribute", });
+	Model.getCoreHelper().addOwnedElement(elem,
+		Model.getCoreFactory().createAttribute());
+	Model.getPump().flushModelEvents();
+	assertTrue(eventcalled);
+    }
+
+    /**
+     * Tests if a listener that registred for a RoleRemoved event on the class
+     * level really receive the event.
+     * <p>
+     * Use a property available in UML2
+     */
+    public void testRoleRemovedSetClassForUML2() {
+	Object attribute = Model.getCoreFactory().createAttribute();
+	Model.getCoreHelper().addOwnedElement(elem, attribute);
+	Model.getPump().addClassModelEventListener(listener, elem.getClass(),
+		new String[] { "ownedAttribute", });
+	Model.getCoreHelper().removeOwnedElement(elem, attribute);
+	Model.getPump().flushModelEvents();
+	assertTrue(eventcalled);
+    }
+
+    /**
+     * Tests if a non registred listener does not receive any events.
+     * <p>
+     * Use a property available in UML2
+     */
+    public void testFireNonRegistredListenerForUML2() {
+	Model.getCoreFactory().createClass();
+	Model.getCoreHelper().addOwnedElement(elem,
+		Model.getCoreFactory().createAttribute());
+	Model.getPump().flushModelEvents();
+	assertTrue(!eventcalled);
+    }
+
+    /**
+     * Tests if a listener that registred for a PropertySet event really receive
+     * the event.
+     * <p>
+     * Use a property available in UML2
+     */
+    public void testPropertySetForUML2() {
+	Model.getPump().addModelEventListener(listener, elem,
+		new String[] { "isAbstract", });
+	Model.getCoreHelper().setAbstract(elem, true);
+	Model.getPump().flushModelEvents();
+	assertTrue(eventcalled);
+    }
+    
+    /**
+     * Tests if a listener that registred for a RoleAddedSet event really
+     * receive the event.
+     * <p>
+     * Use a property available in UML2
+     */
+    public void testRoleAddedSetForUML2() {
+	Model.getPump().addModelEventListener(listener, elem,
+		new String[] { "ownedAttribute", });
+	Model.getCoreHelper().addOwnedElement(elem,
+		Model.getCoreFactory().createAttribute());
+	Model.getPump().flushModelEvents();
+	assertTrue(eventcalled);
+    }
+    
+    /**
+     * Tests if a listener that registred for a RoleRemovedSet event really
+     * receive the event.
+     * <p>
+     * Use a property available in UML2
+     */
+    public void testRoleRemovedSetForUML2() {
+	Object attribute = Model.getCoreFactory().createAttribute();
+	Model.getCoreHelper().addOwnedElement(elem, attribute);
+	Model.getPump().addModelEventListener(listener, elem,
+		new String[] { "ownedAttribute", });
+	Model.getCoreHelper().removeOwnedElement(elem, attribute);
+	Model.getPump().flushModelEvents();
+	assertTrue(eventcalled);
+    }
+    
+    /**
+     * Tests if a listener to a class that is legally added and then
+     * removed, really is removed.
+     * <p>
+     * Use a property available in UML2
+     */
+    public void testRemoveLegalClassListenerForUML2() {
+	Model.getPump().addClassModelEventListener(listener, elem.getClass(),
+		new String[] { "isAbstract", });
+	Model.getPump().removeClassModelEventListener(listener,
+		elem.getClass(), new String[] { "isAbstract", });
+	Model.getCoreHelper().setAbstract(elem, true);
+	Model.getPump().flushModelEvents();
+	assertTrue(!eventcalled);
+    }
+    
+    /**
+     * Tests if a listener that is legally added and then removed,
+     * really is removed.
+     * <p>
+     * Use a property available in UML2
+     */
+    public void testRemoveLegalListenerForUML2() {
+	String[] map = new String[] { "isAbstract", };
+	Model.getPump().addModelEventListener(listener, elem, map);
+	Model.getPump().removeModelEventListener(listener, elem, map);
+	Model.getCoreHelper().setAbstract(elem, true);
+	Model.getPump().flushModelEvents();
+	assertTrue(!eventcalled);
+    }
+
 }
