@@ -252,5 +252,163 @@ public class TestCoreHelper extends TestCase {
         }
         return children;
     }
+    
+    public void testAddAnnotatedElement() {
+	Object comment = Model.getCoreFactory().createComment();
+	Object element = Model.getCoreFactory().createClass();
+	Model.getCoreHelper().addAnnotatedElement(comment, element);
+	Collection collection = Model.getFacade().getAnnotatedElements(comment);
+	assertTrue(collection.size() == 1);
+	assertTrue(element == collection.iterator().next());
+    }
+    
+    public void testAddFeature() {
+	Object class_ = Model.getCoreFactory().createClass();
+	Object attribute = Model.getCoreFactory().createAttribute();
+	Model.getCoreHelper().addFeature(class_, attribute);
+	Collection collection = Model.getFacade().getFeatures(class_);
+	assertTrue(collection.size() == 1);
+	assertTrue(attribute == collection.iterator().next());
+    }
+    
+    public void testAddLiteral() {
+	Object enumeration = Model.getCoreFactory().createEnumeration();
+	Object enumerationLiteral = Model.getCoreFactory()
+		.createEnumerationLiteral();
+	Model.getCoreHelper().addLiteral(enumeration, 0, enumerationLiteral);
+	Collection collection = Model.getFacade().getEnumerationLiterals(
+		enumeration);
+	assertTrue(collection.size() == 1);
+	assertTrue(enumerationLiteral == collection.iterator().next());
+    }
+    
+    public void testAddParameter() {
+	Object operation = Model.getCoreFactory().createOperation();
+	Object parameter = Model.getCoreFactory().createParameter();
+	Model.getCoreHelper().addParameter(operation, parameter);
+	Collection collection = Model.getFacade().getParameters(operation);
+	assertTrue(collection.size() == 1);
+	assertTrue(parameter == collection.iterator().next());
+    }
+    
+    public void testGetAllAttributes() {
+	Object c1 = Model.getCoreFactory().createClass();
+	Object c2 = Model.getCoreFactory().createClass();
+	Model.getCoreFactory().buildGeneralization(c2, c1);
+	Object attribute1 = Model.getCoreFactory().createAttribute();
+	Object attribute2 = Model.getCoreFactory().createAttribute();
+	Model.getCoreHelper().addOwnedElement(c1, attribute1);
+	Model.getCoreHelper().addOwnedElement(c2, attribute2);
+	Collection collection = Model.getCoreHelper().getAllAttributes(c2);
+	assertTrue(collection.size() == 2);
+	Iterator it = collection.iterator();
+	Object attr1 = it.next();
+	Object attr2 = it.next();
+	assertTrue(attribute1 == attr1 || attribute1 == attr2);
+	assertTrue(attribute2 == attr1 || attribute2 == attr2);
+    }
+    
+    public void testGetAllBehavioralFeatures() {
+	Object c1 = Model.getCoreFactory().createClass();
+	Object c2 = Model.getCoreFactory().createClass();
+	Object attribute1 = Model.getCoreFactory().createAttribute();
+	Object attribute2 = Model.getCoreFactory().createAttribute();
+	Model.getCoreHelper().addOwnedElement(c1, attribute1);
+	Model.getCoreHelper().addOwnedElement(c2, attribute2);
+	Model.getCoreHelper().addOwnedElement(c1, c2);
+	Object operation = Model.getCoreFactory().buildOperation2(c2, null,
+		null);
+	Collection collection = Model.getCoreHelper().getAllBehavioralFeatures(
+		c1);
+	assertTrue(collection.size() == 1);
+	assertTrue(operation == collection.iterator().next());
+    }
+    
+    public void testGetAllClasses() {
+	Object c1 = Model.getCoreFactory().createClass();
+	Object c2 = Model.getCoreFactory().createClass();
+	Object c3 = Model.getCoreFactory().createClass();
+	Object attribute1 = Model.getCoreFactory().createAttribute();
+	Object attribute2 = Model.getCoreFactory().createAttribute();
+	Model.getCoreHelper().addOwnedElement(c1, attribute1);
+	Model.getCoreHelper().addOwnedElement(c2, attribute2);
+	Model.getCoreHelper().addOwnedElement(c1, c2);
+	Model.getCoreHelper().addOwnedElement(c2, c3);
+	Object operation = Model.getCoreFactory().buildOperation2(c2, null,
+		null);
+	Collection collection = Model.getCoreHelper().getAllClasses(c1);
+	assertTrue(collection.size() == 2);
+	Iterator it = collection.iterator();
+	Object cls1 = it.next();
+	Object cls2 = it.next();
+	assertTrue(c2 == cls1 || c2 == cls2);
+	assertTrue(c3 == cls1 || c3 == cls2);
+    }
+    
+    public void testGetAllPossibleNamespaces() {
+	Object m = Model.getModelManagementFactory().createModel();
+	Object p = Model.getModelManagementFactory().createPackage();
+	Object c = Model.getCoreFactory().createClass();
+	Object attr = Model.getCoreFactory().createAttribute();
+	Model.getCoreHelper().addOwnedElement(c, attr);
+	Model.getCoreHelper().addOwnedElement(p, c);
+	Model.getCoreHelper().addOwnedElement(m, p);
+	Collection collection = Model.getCoreHelper().getAllPossibleNamespaces(
+		Model.getCoreFactory().createClass(), m);
+	assertTrue(collection.size() == 3);
+	Iterator it = collection.iterator();
+	Object n1 = it.next();
+	Object n2 = it.next();
+	Object n3 = it.next();
+	assertTrue(m == n1 || m == n2 || m == n3);
+	assertTrue(p == n1 || p == n2 || p == n3);
+	assertTrue(c == n1 || c == n2 || c == n3);
+    }
+    
+    public void testGetAllRealizedInterfaces() {
+	Object c1 = Model.getCoreFactory().createClass();
+	Object c2 = Model.getCoreFactory().createClass();
+	Model.getCoreFactory().buildGeneralization(c2, c1);
+	Object i1 = Model.getCoreFactory().createInterface();
+	Object i2 = Model.getCoreFactory().createInterface();
+	Object i3 = Model.getCoreFactory().createInterface();
+	Model.getCoreFactory().buildGeneralization(i2, i1);
+	Model.getCoreFactory().buildRealization(c1, i2, null);
+	Model.getCoreFactory().buildRealization(c2, i3, null);
+	Collection collection = Model.getCoreHelper().getAllRealizedInterfaces(
+		c2);
+	assertTrue(collection.size() == 2);
+	Iterator it = collection.iterator();
+	Object interface1 = it.next();
+	Object interface2 = it.next();
+	assertTrue(i2 == interface1 || i2 == interface2);
+	assertTrue(i3 == interface1 || i3 == interface2);
+    }
+    
+    public void testGetAllSupertypes() {
+	Object c1 = Model.getCoreFactory().createClass();
+	Object c2 = Model.getCoreFactory().createClass();
+	Model.getCoreFactory().buildGeneralization(c2, c1);
+	Object i1 = Model.getCoreFactory().createInterface();
+	Model.getCoreFactory().buildRealization(c1, i1, null);
+	Collection collection = Model.getCoreHelper().getAllSupertypes(c2);
+	assertTrue(collection.size() == 1);
+	assertTrue(c1 == collection.iterator().next());
+    }
+    
+    public void testGetAssociateEndsInh() {
+	Object p = Model.getModelManagementFactory().createPackage();
+	Object c1 = Model.getCoreFactory().createClass();
+	Object c2 = Model.getCoreFactory().createClass();
+	Object c3 = Model.getCoreFactory().createClass();
+	Model.getCoreFactory().buildGeneralization(c3, c1);
+	Model.getCoreHelper().addOwnedElement(p, c1);
+	Object association = Model.getCoreFactory().buildAssociation(c1, c2);
+	Object end1 = Model.getFacade().getAssociationEnd(c1, association);
+	Object end2 = Model.getFacade().getAssociationEnd(c2, association);
+	Collection collection = Model.getCoreHelper().getAssociateEndsInh(c3);
+	assertTrue(collection.size() == 1);
+	assertTrue(end2 == collection.iterator().next());
+    }
 
 }
