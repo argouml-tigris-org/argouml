@@ -422,7 +422,7 @@ public class TestCoreHelper extends TestCase {
 	Object end2 = Model.getFacade().getAssociationEnd(c2, association);
 	Collection collection = Model.getCoreHelper().getAssociateEndsInh(c3);
 	assertTrue(collection.size() == 1);
-	assertTrue(end2 == collection.iterator().next());
+	assertTrue(end1 == collection.iterator().next());
     }
 
 }
