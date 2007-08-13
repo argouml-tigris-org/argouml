@@ -221,9 +221,21 @@ class FacadeEUMLImpl implements Facade {
         return ((Property) handle).getAssociation();
     }
 
-    public Object getAssociationEnd(Object classifier, Object association) {
-        throw new NotYetImplementedException();
-
+    public Property getAssociationEnd(Object classifier, Object association) {
+        if (!(classifier instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "classifier must be instance of Classifier"); //$NON-NLS-1$
+        }
+        if (!(association instanceof Association)) {
+            throw new IllegalArgumentException(
+                    "association must be instance of Association"); //$NON-NLS-1$
+        }
+        for (Property p : UMLUtil.getOwnedAttributes((Classifier) classifier)) {
+            if (p.getAssociation() == association) {
+                return p;
+            }
+        }
+        return null;
     }
 
     public Collection getAssociationEnds(Object handle) {
