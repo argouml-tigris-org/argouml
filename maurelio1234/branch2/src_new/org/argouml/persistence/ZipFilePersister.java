@@ -46,6 +46,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -195,6 +196,8 @@ class ZipFilePersister extends XmiFilePersister {
             persister =
                 PersistenceManager.getInstance()
                     .getDiagramMemberFilePersister();
+        } else if (pm instanceof ProfileConfiguration) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         } else if (pm instanceof ProjectMemberModel) {

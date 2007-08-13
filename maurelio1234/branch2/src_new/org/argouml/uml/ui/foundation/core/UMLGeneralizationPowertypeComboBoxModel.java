@@ -70,9 +70,9 @@ public class UMLGeneralizationPowertypeComboBoxModel
                 .getAllModelElementsOfKind(model,
                         Model.getMetaTypes().getClassifier()));
         }
-        elements.addAll(Model.getModelManagementHelper()
-                .getAllModelElementsOfKind(p.getDefaultModel(),
-                        Model.getMetaTypes().getClassifier()));
+
+        elements.addAll(p.getProfileConfiguration().findByMetaType(
+                Model.getMetaTypes().getClassifier()));
         setElements(elements);
     }
 

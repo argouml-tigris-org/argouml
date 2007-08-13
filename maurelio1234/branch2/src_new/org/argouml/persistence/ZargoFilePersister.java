@@ -52,6 +52,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.argouml.util.FileConstants;
 import org.argouml.util.ThreadUtils;
 import org.xml.sax.InputSource;
@@ -311,6 +312,7 @@ class ZargoFilePersister extends UmlFilePersister {
             
             int pgmlCount = getPgmlCount(file);
             boolean containsToDo = containsTodo(file);
+            boolean containsProfile = containsProfile(file);
 
             // first read the .argo file from Zip
             ZipInputStream zis =
@@ -354,6 +356,10 @@ class ZargoFilePersister extends UmlFilePersister {
                     }
                     if (containsToDo) {
                         writer.println("<member type='todo' name='.todo' />");
+                    }
+                    if (containsProfile) {
+                	String type = ProfileConfiguration.EXTENSION;
+                        writer.println("<member type='"+type+"' name='."+type+"' />");
                     }
                 }
                 writer.println(line);
@@ -545,6 +551,10 @@ class ZargoFilePersister extends UmlFilePersister {
 
     private boolean containsTodo(File file) throws IOException {
         return !getEntryNames(file, ".todo").isEmpty();
+    }
+    
+    private boolean containsProfile(File file) throws IOException {
+        return !getEntryNames(file, "." + ProfileConfiguration.EXTENSION).isEmpty();
     }
     
     /**

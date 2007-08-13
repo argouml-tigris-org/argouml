@@ -3,5 +3,10 @@
 	<classpathentry excluding=".settings/|bin/|build-eclipse/|build/|templates/|tests/" kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model-euml"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model-mdr"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>

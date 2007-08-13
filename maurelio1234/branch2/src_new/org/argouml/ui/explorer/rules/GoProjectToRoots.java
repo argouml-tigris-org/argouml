@@ -29,7 +29,6 @@ import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.model.Model;
 
 /**
  * Rule for Project->Root (Top level) Elements.
@@ -40,6 +39,10 @@ import org.argouml.model.Model;
  * but this will need to be enhanced with additional bookkeeping in 
  * Project when we support multiple open projects - tfm.
  *
+ * TODO: I changed it to get the roots from the project. It was showing
+ * the profiles that were loaded but were not applied to the current project
+ * - maurelio1234.
+ * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
 public class GoProjectToRoots extends AbstractPerspectiveRule {
@@ -52,7 +55,7 @@ public class GoProjectToRoots extends AbstractPerspectiveRule {
 
     public Collection getChildren(Object parent) {
 	if (parent instanceof Project) {
-	    return Model.getFacade().getRootElements();
+	    return ((Project)parent).getRoots();
 	}
 	return null;
     }

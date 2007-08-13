@@ -1,8 +1,7 @@
-#Fri Jun 15 13:13:14 EDT 2007
+#Mon Aug 13 14:40:12 BRT 2007
 eclipse.preferences.version=1
 formatter_profile=_ArgoUML
 formatter_settings_version=10
-internal.default.compliance=default
 org.eclipse.jdt.ui.exception.name=e
 org.eclipse.jdt.ui.gettersetter.use.is=true
 org.eclipse.jdt.ui.ignorelowercasenames=true

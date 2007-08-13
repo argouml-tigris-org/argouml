@@ -28,7 +28,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.Profile;
+import org.argouml.uml.profile.Profile;
 
 /**
  * A combobox entry. <p>

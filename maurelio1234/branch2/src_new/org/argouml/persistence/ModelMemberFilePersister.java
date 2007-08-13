@@ -33,7 +33,6 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -59,6 +58,7 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -241,6 +241,8 @@ class ModelMemberFilePersister extends MemberFilePersister
             persister =
                 PersistenceManager.getInstance()
                     .getDiagramMemberFilePersister();
+        } else if (pm instanceof ProfileConfiguration) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         }

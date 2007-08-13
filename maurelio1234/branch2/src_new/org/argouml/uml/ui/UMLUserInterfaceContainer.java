@@ -26,7 +26,7 @@
 package org.argouml.uml.ui;
 import java.util.Iterator;
 
-import org.argouml.uml.Profile;
+import org.argouml.uml.profile.ProfileConfiguration;
 
 /**
  * Interface supported by any container of UML user interface components.
@@ -53,7 +53,7 @@ public interface UMLUserInterfaceContainer {
     /**
      * @return the current profile, may not be null
      */
-    public Profile getProfile();
+    public ProfileConfiguration getProfile();
 
     /**
      * Formats the specified model element.  Typically, deferred to the

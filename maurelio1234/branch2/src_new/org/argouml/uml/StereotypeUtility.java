@@ -98,6 +98,10 @@ public class StereotypeUtility {
         addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
                 .getExtensionMechanismsHelper().getAllPossibleStereotypes(
                         models, modelElement));
+        addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration()
+                        .findAllStereotypesForModelElement(modelElement));
         return availableStereotypes;
     }
     
@@ -203,15 +207,9 @@ public class StereotypeUtility {
             return stereo;
         }
 
-        try {
-            Project project = ProjectManager.getManager().getCurrentProject();
-            Profile profile = project.getProfile();
-            stereo = recFindStereotype(obj, profile.getProfileModel(), name);
-        } catch (ProfileException e) {
-            // TODO: How are we going to handle exceptions here?
-            // I suspect the profile should be part of the project
-            // and not a singleton.
-        }
+        Project project = ProjectManager.getManager().getCurrentProject();
+        stereo = project.getProfileConfiguration().findStereotypeForObject(
+                name, obj); 
 
         if (stereo != null) {
             return Model.getModelManagementHelper().getCorrespondingElement(

@@ -61,7 +61,7 @@ import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
-import org.argouml.uml.Profile;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.LabelledLayout;
@@ -446,8 +446,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
      */
-    public Profile getProfile() {
-        return ProjectManager.getManager().getCurrentProject().getProfile();
+    public ProfileConfiguration getProfile() {
+        return ProjectManager.getManager().getCurrentProject().getProfileConfiguration();
     }
 
     /*
@@ -461,14 +461,14 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(java.lang.Object)
      */
     public String formatElement(/* MModelElement */Object element) {
-        return getProfile().formatElement(element, getDisplayNamespace());
+        return getProfile().getFormatingStrategy().formatElement(element, getDisplayNamespace());
     }
 
     /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(java.lang.Object)
      */
     public String formatNamespace(/* MNamespace */Object namespace) {
-        return getProfile().formatElement(namespace, null);
+        return getProfile().getFormatingStrategy().formatElement(namespace, null);
     }
 
     /*
@@ -476,7 +476,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public String formatCollection(Iterator iter) {
         Object namespace = getDisplayNamespace();
-        return getProfile().formatCollection(iter, namespace);
+        return getProfile().getFormatingStrategy().formatCollection(iter, namespace);
     }
 
 

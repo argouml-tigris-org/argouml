@@ -36,8 +36,8 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.Profile;
-import org.argouml.uml.ProfileException;
+import org.argouml.uml.profile.Profile;
+import org.argouml.uml.profile.ProfileException;
 
 /**
  * A wizard to add a constructor to a classifier.
@@ -92,44 +92,14 @@ public class WizAddConstructor extends UMLWizard {
     }
 
     /**
-     * Finds the create stereotype for an object. It is assumed to be
-     * available from the java profile.
-     * <p>
-     * TODO: This needs to be recoded to handle multiple profile packages.
-     * It also seems Java specific (at least the above comment does) - tfm
-     * 
+     * Finds the create stereotype for an object.
+     *
      * @param obj is the object the stereotype should be applicable to.
      * @return a suitable stereotype, or null.
      */
     private Object getCreateStereotype(Object obj) {
-        Iterator iter = null;
-        try {
-            Project project = ProjectManager.getManager().getCurrentProject();
-            Profile profile = project.getProfile();
-            Object profileModel = profile.getProfileModel();
-            iter = Model.getFacade().getOwnedElements(profileModel).iterator();
-        } catch (ProfileException e) {
-            // TODO: How are we going to handle exceptions here?
-            // I suspect the profile should be part of the project
-            // and not a singleton.
-            LOG.error("Failed to get profile", e);
-        }
-        while (iter.hasNext()) {
-            Object stereo = iter.next();
-            if (!Model.getFacade().isAStereotype(stereo)
-        	|| !"create".equals(Model.getFacade().getName(stereo))) {
-                continue;
-            }
-
-            if (Model.getExtensionMechanismsHelper()
-        	    .isValidStereotype(obj, stereo)) {
-        	return Model.getModelManagementHelper()
-        	    .getCorrespondingElement(stereo,
-        				     Model.getFacade().getModel(obj));
-            }
-        }
-
-        return null;
+        return ProjectManager.getManager().getCurrentProject()
+                .getProfileConfiguration().findStereotypeForObject("create", obj);
     }
 
     /**

@@ -128,7 +128,7 @@ public class FigInstance extends FigNodeModelElement {
      *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setStandardBounds(int x, int y, int w, int h) {
 	if (getNameFig() == null) return;
 	Rectangle oldBounds = getBounds();
 

@@ -265,7 +265,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    public void setBoundsImpl(int x, int y, int w, int h) {
+    public void setStandardBounds(int x, int y, int w, int h) {
         y = 50;
         Rectangle oldBounds = getBounds();
         w = headFig.getMinimumSize().width;

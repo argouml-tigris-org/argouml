@@ -24,12 +24,15 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
@@ -65,7 +68,7 @@ public class FigStereotypesCompartment extends FigCompartment {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(FigStereotypesCompartment.class);
+        Logger.getLogger(ActionAddStereotype.class);
 
     /**
      * One UML keyword is allowed. These are not strictly stereotypes but are
@@ -74,6 +77,8 @@ public class FigStereotypesCompartment extends FigCompartment {
     private String keyword;
 
     private int stereotypeCount = 0;
+    
+    private boolean hidingStereotypesWithIcon = false;
     
     /**
      * The constructor.
@@ -130,6 +135,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                             Model.getFacade().getName(stereotype));
                     stereotypeTextFig.setOwner(stereotype);
                     addFig(stereotypeTextFig);
+                    reorderStereotypeFigs();
                     damage();
                 }
             } else {
@@ -149,6 +155,40 @@ public class FigStereotypesCompartment extends FigCompartment {
                 LOG.warn("Unexpected property " + event.getPropertyName());
             }
         }
+    }
+
+    /**
+     * Keep the probaly invisible figs at the end of the list 
+     */
+    private void reorderStereotypeFigs() {
+	List allFigs = getFigs();
+	List figsWithIcon = new Vector();
+	List figsWithOutIcon = new Vector();
+	List others = new Vector();
+
+	Iterator it = allFigs.iterator();
+	
+	while(it.hasNext()) {
+	    Fig f = (Fig) it.next();
+	    if (f instanceof FigStereotype) {
+		FigStereotype s = (FigStereotype) f;
+		if (getIconForStereotype(s) != null) {
+		    figsWithIcon.add(s);
+		} else {
+		    figsWithOutIcon.add(s);
+		}
+	    } else {
+		others.add(f);
+	    }
+	}
+
+	Vector n = new Vector();
+	
+	n.addAll(others);
+	n.addAll(figsWithOutIcon);
+	n.addAll(figsWithIcon);	
+	
+	setFigs(n);
     }
 
     private Fig findFig(Object stereotype) {
@@ -214,7 +254,7 @@ public class FigStereotypesCompartment extends FigCompartment {
             stereotypeTextFig.setText(keyword);
             acounter++;
         }
-
+        
         Collection stereos = Model.getFacade().getStereotypes(modelElement);
         if (stereos != null) {
             Iterator iter = stereos.iterator();
@@ -250,12 +290,37 @@ public class FigStereotypesCompartment extends FigCompartment {
                     removeFig((Fig) figs.get(i));
                 }
             }
+
+            reorderStereotypeFigs();
+            
+            // remove all stereotypes that have a graphical icon
+            updateHiddenStereotypes();
         }
     }
 
+    private void updateHiddenStereotypes() {
+	List figs = getFigs();
+
+	for (int i = 0; i < figs.size(); ++i) {
+	    Fig f = (Fig) figs.get(i);
+	    if (f instanceof FigStereotype) {		
+		FigStereotype fs = (FigStereotype) f;		
+		fs.setVisible(getIconForStereotype(fs) == null
+			|| !isHidingStereotypesWithIcon());
+	    }
+	}
+    }
+
+    private Image getIconForStereotype(FigStereotype fs) {
+	return ProjectManager.getManager().getCurrentProject()
+		.getProfileConfiguration().getFigNodeStrategy()
+		.getIconForStereotype(fs.getOwner());
+    }
+
     /*
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
+         * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int,
+         *      int)
+         */
     protected void setBoundsImpl(int x, int y, int w, int h) {
         Fig fig;
         int yy = y;
@@ -284,5 +349,14 @@ public class FigStereotypesCompartment extends FigCompartment {
     }
 
     protected void createModelElement() {
+    }
+
+    public boolean isHidingStereotypesWithIcon() {
+        return hidingStereotypesWithIcon;
+    }
+
+    public void setHidingStereotypesWithIcon(boolean hidingStereotypesWithIcon) {
+        this.hidingStereotypesWithIcon = hidingStereotypesWithIcon;
+        updateHiddenStereotypes();
     }
 }
