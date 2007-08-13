@@ -25,10 +25,9 @@
 package org.argouml.uml.profile;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-
-import javax.swing.ImageIcon;
 
 import junit.framework.TestCase;
 
@@ -108,6 +107,11 @@ public class TestProfileConfiguration2 extends TestCase {
 
 	public void setFormatStrategy(FormatingStrategy formatStrategy) {
 	    this.formatStrategy = formatStrategy;
+	}
+
+	@Override
+	public Collection getProfilePackages() throws ProfileException {
+		return new ArrayList();
 	}
 	
     }
