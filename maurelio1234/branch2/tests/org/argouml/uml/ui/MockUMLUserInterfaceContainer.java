@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 
 import java.util.Iterator;
 
-import org.argouml.uml.Profile;
+import org.argouml.uml.profile.ProfileConfiguration;
 
 /**
  * @since Oct 12, 2002
@@ -61,7 +61,7 @@ public class MockUMLUserInterfaceContainer
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
      */
-    public Profile getProfile() {
+    public ProfileConfiguration getProfile() {
         return null;
     }
 
