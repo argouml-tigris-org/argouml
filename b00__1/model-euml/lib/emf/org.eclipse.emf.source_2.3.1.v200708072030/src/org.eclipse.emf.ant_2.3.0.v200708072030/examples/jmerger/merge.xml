@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<merge:options xmlns:merge="http://www.eclipse.org/org/eclipse/emf/codegen/jmerge/Options">
+
+    <merge:dictionaryPattern
+      name="generatedMember" 
+      select="Member/getComment" 
+      match="\s*@\s*(gen)erated\s*\n"/>
+
+    <merge:dictionaryPattern
+      name="generatedUnmodifiableMembers" 
+      select="Member/getComment" 
+      match="\s*@\s*(unmod)ifiable\s*\n"/>
+
+    <!-- if target is generated, transfer -->
+    <!-- change to sourceMarkup if the source is the standard -->
+    <merge:pull 
+      targetMarkup="^gen$"
+      sourceTransfer="(\s*//\s*begin-user-code.*?//\s*end-user-code\s*)\n"
+      sourceGet="Method/getBody"
+      targetPut="Method/setBody"/>
+
+    <!-- field manipulation -->
+    <merge:pull 
+      targetMarkup="^gen$"
+      sourceGet="Field/getType"
+      targetPut="Field/setType"/>
+    <merge:pull 
+      targetMarkup="^gen$"
+      sourceGet="Field/getInitializer"
+      targetPut="Field/setInitializer"/>
+      
+    <merge:pull 
+      targetMarkup="^gen$"
+      sourceGet="Member/getFlags"
+      targetPut="Member/setFlags"/>
+
+    <!-- copy comments except between the begin-user-doc
+         and end-user-doc tags -->
+    <merge:pull 
+      sourceMarkup="^gen$"
+      targetMarkup="^gen$"
+      sourceTransfer="(\s*&lt;!--\s*begin-user-doc.*?end-user-doc\s*-->\s*)\n"
+      sourceGet="Member/getComment"
+      targetPut="Member/setComment"/>
+
+    <merge:pull 
+      sourceMarkup="^gen$"
+      targetMarkup="^modifiable$"
+      sourceTransfer="(\s*&lt;!--\s*begin-user-doc.*?end-user-doc\s*-->\s*)\n"
+      sourceGet="Type/getComment"
+      targetPut="Type/setComment"/>
+
+    <!-- force transfer of all unmodifiable elements -->
+    <merge:pull 
+      sourceMarkup="^unmod$"
+      sourceGet="Member/getFlags"
+      targetPut="Member/setFlags"/>
+    <merge:pull 
+      sourceMarkup="^unmod$"
+      sourceGet="Method/getBody"
+      targetPut="Method/setBody"/>
+
+</merge:options>

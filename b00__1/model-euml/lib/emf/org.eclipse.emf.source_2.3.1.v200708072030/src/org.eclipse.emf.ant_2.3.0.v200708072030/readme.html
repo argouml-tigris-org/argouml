@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>org.eclipse.emf.ant Read Me</title>
+</head>
+<body lang="EN-US">
+<h3>Introduction</h3>
+<p>The &quot;examples&quot; directory contains scripts that show how to use the EMF Ant tasks
+available in this plugin.  If you have any questions after reading and experimenting with them, look 
+at the task's javadoc for more details.</p>
+<p>The EMF java tasks are:</p>
+<table border="1" cellpadding="2" cellspacing="0" 
+summary="Enumerates the EMF tasks providing a &quot;one sentence&quot; description and the path to the java file that implement them">
+  <tr>
+    <td valign="top"><tt>emf.JETCompiler</tt></td>
+    <td>Invokes the JETCompiler class to create the generator class of templates.</td>
+    <td>org.eclipse.emf.ant/tasks/org/eclipse/emf/ant/taskdefs/codegen/JETCompilerTask.java</td>
+  </tr>
+  <tr>
+    <td valign="top"><tt>emf.JETEmitter</tt></td>
+    <td>Invokes the JETEmitter class to generate code from templates.</td>
+    <td>org.eclipse.emf.ant/tasks/org/eclipse/emf/ant/taskdefs/codegen/JETEmitterTask.java</td>
+  </tr>
+  <tr>
+    <td valign="top"><tt>emf.JMerger</tt></td>
+    <td>Invokes the JMerger class to merge files.</td>
+    <td>org.eclipse.emf.ant/tasks/org/eclipse/emf/ant/taskdefs/codegen/JMergerTask.java</td>
+  </tr>
+</table>
+<h3>Overall Comments</h3>
+<ul> 
+<li>If you didn't extract this plugin from CVS, the &quot;examples&quot; directory mentioned 
+above is available in the EMF source plugin 
+(org.eclipse.emf.source_<i>&lt;version&gt;</i>/src/org.eclipse.emf.ant_<i>&lt;version&gt;</i>).
+<br/><br/></li>
+<li>Before running your build scripts or the examples provided here, make sure you have the 2 
+jar files required by this plugin: &quot;runtime/emf.ant.jar&quot; and 
+&quot;runtime/emf.ant.tasks.jar&quot;.  If necessary, Eclipse can generate them for you.  All 
+you need to do is to run the Ant script created by PDE when you right click on the manifest file 
+and select &quot;PDE Tools&gt;Create Ant Build File&quot;.
+<br/><br/></li>
+<li>Although all the EMF tasks must be executed by Eclipse (usually in headless mode), they can work 
+on files located in any directory.  In other words, your models, templates and other files don't need 
+to be in the &quot;plugins&quot; directory nor in the workspace.<br/><br/></li>
+<li>This is the usual command line to run an Ant script using a headless Eclipse instance 
+(you will need to remove the line breaks):
+<br/> 
+java 
+<br/>&nbsp;&nbsp;-classpath <i>&lt;eclipseDir&gt;</i>/startup.jar org.eclipse.core.launcher.Main 
+<br/>&nbsp;&nbsp;-data <i>&lt;full path to a workspace - ideally an empty directory&gt;</i>
+<br/>&nbsp;&nbsp;-application org.eclipse.ant.core.antRunner
+<br/>&nbsp;&nbsp;-buildfile <i>&lt;full path to your script&gt;</i>
+<br/><br/></li>
+<li>Starting a new JVM process and invoking Eclipse are expensive operations.  Your build will 
+perform better if you are able to group the tasks that require Eclipse in a few scripts 
+(one script would be ideal).
+<br/><br/></li>
+<li>In order to preserve the original state of this plugin's &quot;examples&quot; directory, you
+should copy it to a different location and run the Ant scripts from there.</li>
+</ul>
+<h3>org.eclipse.emf.ant/examples/jet*</h3>
+<p>
+Running JET from an Ant script sounds really convenient. And it is, especially when the templates you
+want to generate code from don't require complicated inputs - which are passed as the template's
+argument.
+</p>
+
+<h4>examples/jetemitter</h4>
+<p>The Ant script available in this directory exercises 3 templates: &quot;simple.javajet&quot;, 
+&quot;medium.javajet&quot; and &quot;complex.javajet&quot;.  The first template is totally 
+self-contained and doesn't use the <tt>argument</tt> variable.  The second uses the <tt>argument</tt> 
+variable but doesn't care about its state, so all we need to do is to specify its class and leave
+to the JETEmitter task the work of calling the <tt><i>Class</i>.newInstance()</tt> method.</p>
+
+<p>The last template, as stated by its name, is more complex.  It will only produce a meaningful
+result if the specified argument is a list with at least one element - which is a good example of
+an object with state.  The solution we've chosen to address this problem is to use the 
+<a href="http://ant.apache.org/manual/OptionalTasks/script.html">Script</a> task.  Please feel
+free to send us an email if you have a better solution ;-).</p>
+
+<p>Since <a href="http://ant.apache.org/manual/OptionalTasks/script.html">Script</a> is an
+optional task, you will need to add the &quot;bsd.jar&quot; and the &quot;js.jar&quot; files to 
+your classpath as mentioned in the 
+<a href="http://ant.apache.org/manual/install.html#librarydependencies">Library Dependencies</a> 
+section of the Ant Manual.  Because we are using Eclipse to run the script, the appropriate way of 
+doing this is by adding these jar files as &quot;extra classpath entries&quot; using the 
+<tt>org.eclipse.ant.core.extraClasspathEntries</tt> extension point - look at this plugin's 
+manifest file to see how this extension is used.</p>
+
+<h4>examples/jetcompiler</h4>
+<p>The Ant script in this directory invokes the JETCompiler on the templates available in the <b>examples/jetemiter</b>
+directory.  Since this step only creates the generator class, it is not necessary to use ANT's optional tasks.</p>
+
+
+<h3>org.eclipse.emf.ant/examples/jmerge</h3>
+<p>
+The Ant build script in this directory shows how to invoke the JMerger task.
+</p>
+</body>
+</html>

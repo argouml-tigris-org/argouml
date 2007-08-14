@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="MyProject" default="noTarget" basedir=".">
+    <target name="noTarget">
+        <fail message="You have to specify which target should be executed."/>
+    </target>
+
+    <target name="genClasses">
+        <emf.JETEmitter templateFile="simple.javajet" newFile="Simple.java"/>
+
+        <emf.JETEmitter templateFile="medium.javajet" newFile="Medium.java"
+            argumentClass="org.eclipse.emf.codegen.merge.java.JMerger"/>
+    </target>
+
+    <target name="genComplexClass">
+        <script language="javascript"> <![CDATA[
+            importClass(java.lang.Integer);
+            importClass(java.util.ArrayList);
+            importClass(java.util.List);
+            importClass(Packages.org.eclipse.emf.ant.EMFAntPlugin);
+
+            //Adding the element to the list
+            aList = new ArrayList();
+            aList.add("Element 0");
+            aList.add(new Integer(1));
+            aList.add(EMFAntPlugin.getDefault());
+            
+            //Creating a JETEmitter task
+            jetEmitter = MyProject.createTask("emf.JETEmitter");
+
+            //Setting the attributes
+            jetEmitter.setTemplateFile(MyProject.resolveFile("complex.javajet"));
+            jetEmitter.setNewFile(MyProject.resolveFile("Complex.java"));
+            jetEmitter.setArgument(aList);
+
+            //Running the task
+            jetEmitter.perform();
+            ]]></script>
+    </target>
+
+</project>

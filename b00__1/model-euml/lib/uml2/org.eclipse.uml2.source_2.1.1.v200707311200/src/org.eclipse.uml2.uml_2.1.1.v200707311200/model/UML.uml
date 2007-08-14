@@ -1,0 +1,1947 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Ecore="http://www.eclipse.org/uml2/schemas/Ecore/4" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xsi:schemaLocation="http://www.eclipse.org/uml2/schemas/Ecore/4 pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA">
+  <uml:Model xmi:id="_o8I_sGvaEdq4DLWZOhbdEA" name="UML">
+    <packageImport xmi:id="__as3cGvaEdq4DLWZOhbdEA">
+      <importedPackage xmi:type="uml:Model" href="Ecore.uml#_SeWiQMX_EduPJbEsMYXjUQ"/>
+    </packageImport>
+    <packageMerge xmi:id="_H2HkkGvbEdq4DLWZOhbdEA">
+      <mergedPackage xmi:type="uml:Model" href="L3.uml#_EBtHcBmMEdqvcs97umGEYQ"/>
+    </packageMerge>
+    <packageMerge xmi:id="_NTdxgPnjEdunWsS3se92JQ">
+      <mergedPackage xmi:type="uml:Model" href="10536.uml#_y16xIPnhEdunWsS3se92JQ"/>
+    </packageMerge>
+    <packageMerge xmi:id="_zhBU4PnnEdunWsS3se92JQ">
+      <mergedPackage xmi:type="uml:Model" href="10537.uml#_udv6MPnlEdunWsS3se92JQ"/>
+    </packageMerge>
+    <packagedElement xmi:type="uml:Class" xmi:id="_kl90MGvbEdq4DLWZOhbdEA" name="Element" isAbstract="true">
+      <generalization xmi:id="_rcp_MGvbEdq4DLWZOhbdEA">
+        <general xmi:type="uml:Class" href="Ecore.uml#_SeWihMX_EduPJbEsMYXjUQ"/>
+      </generalization>
+      <ownedOperation xmi:id="_XebbkGvuEdqG6fBIPwe-mw" name="destroy">
+        <ownedComment xmi:id="_skdy8ewbEdqYHf-imTcTdw" annotatedElement="_XebbkGvuEdqG6fBIPwe-mw">
+          <body>Destroys this element by removing all cross references to/from it and removing it from its containing resource or object.</body>
+        </ownedComment>
+      </ownedOperation>
+      <ownedOperation xmi:id="_7f8qYGvgEdq4DLWZOhbdEA" name="hasKeyword" isQuery="true">
+        <ownedComment xmi:id="_vBX6QOwbEdqYHf-imTcTdw" annotatedElement="_7f8qYGvgEdq4DLWZOhbdEA">
+          <body>Determines whether this element has the specified keyword.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_9mECUGvgEdq4DLWZOhbdEA" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="__FRyUGvgEdq4DLWZOhbdEA" name="keyword" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_Oe9r0PICEdulR8T2OJRyFQ" annotatedElement="__FRyUGvgEdq4DLWZOhbdEA">
+            <body>The keyword in question.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_bx0EsGvgEdq4DLWZOhbdEA" name="getKeywords" isQuery="true">
+        <ownedComment xmi:id="_0r7CQOwbEdqYHf-imTcTdw" annotatedElement="_bx0EsGvgEdq4DLWZOhbdEA">
+          <body>Retrieves the keywords for this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_fZ0tMGvgEdq4DLWZOhbdEA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_hyHaQWvgEdq4DLWZOhbdEA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_hyHaQGvgEdq4DLWZOhbdEA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_jlv7EGvgEdq4DLWZOhbdEA" name="addKeyword">
+        <ownedComment xmi:id="_2oMhsOwbEdqYHf-imTcTdw" annotatedElement="_jlv7EGvgEdq4DLWZOhbdEA">
+          <body>Adds the specified keyword to this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_y6GO4GvgEdq4DLWZOhbdEA" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_mQqpMGvgEdq4DLWZOhbdEA" name="keyword" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_3Z64UPIAEdulR8T2OJRyFQ" annotatedElement="_mQqpMGvgEdq4DLWZOhbdEA">
+            <body>The keyword to add.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_qB6tQGvgEdq4DLWZOhbdEA" name="removeKeyword">
+        <ownedComment xmi:id="_4b-zgOwbEdqYHf-imTcTdw" annotatedElement="_qB6tQGvgEdq4DLWZOhbdEA">
+          <body>Removes the specified keyword from this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_1_Pa4GvgEdq4DLWZOhbdEA" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_3u_hQGvgEdq4DLWZOhbdEA" name="keyword" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_79s6oPICEdulR8T2OJRyFQ" annotatedElement="_3u_hQGvgEdq4DLWZOhbdEA">
+            <body>The keyword to remove.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_674ZYGvzEdq7X4sGURiZYA" name="getNearestPackage" isQuery="true">
+        <ownedComment xmi:id="_8qbw8OwbEdqYHf-imTcTdw" annotatedElement="_674ZYGvzEdq7X4sGURiZYA">
+          <body>Retrieves the nearest package that owns (either directly or indirectly) this element, or the element itself (if it is a package).</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_DyktQGv0Edq7X4sGURiZYA" type="_-cvRAGvzEdq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_1aQnEWv3Edq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_1aQnEGv3Edq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_Gv0hgGv0Edq7X4sGURiZYA" name="getModel" isQuery="true">
+        <ownedComment xmi:id="__lAEoOwbEdqYHf-imTcTdw" annotatedElement="_Gv0hgGv0Edq7X4sGURiZYA">
+          <body>Retrieves the model that owns (either directly or indirectly) this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_Pj1U0Gv0Edq7X4sGURiZYA" type="_NVhqMGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zCjv4Wv3Edq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zCjv4Gv3Edq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_aAC2wHFfEdqziYxiZo0YtA" name="isStereotypeApplicable" isQuery="true">
+        <ownedComment xmi:id="_ErVFQOwcEdqYHf-imTcTdw" annotatedElement="_aAC2wHFfEdqziYxiZo0YtA">
+          <body>Determines whether the specified stereotype is applicable to this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_dR_vsHFfEdqziYxiZo0YtA" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_d5o-gHFfEdqziYxiZo0YtA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_bLzx4PICEdulR8T2OJRyFQ" annotatedElement="_d5o-gHFfEdqziYxiZo0YtA">
+            <body>The stereotype in question.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_nd4TIGv0Edq7X4sGURiZYA" name="isStereotypeRequired" isQuery="true">
+        <ownedComment xmi:id="_GPxTgOwcEdqYHf-imTcTdw" annotatedElement="_nd4TIGv0Edq7X4sGURiZYA">
+          <body>Determines whether the specified stereotype is required for this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_A-TZYGv1Edq7X4sGURiZYA" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_0weVIGv1Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_gsqLUPICEdulR8T2OJRyFQ" annotatedElement="_0weVIGv1Edq7X4sGURiZYA">
+            <body>The stereotype in question.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_hDDkwGv0Edq7X4sGURiZYA" name="isStereotypeApplied" isQuery="true">
+        <ownedComment xmi:id="_HClQgOwcEdqYHf-imTcTdw" annotatedElement="_hDDkwGv0Edq7X4sGURiZYA">
+          <body>Determines whether the specified stereotype is applied to this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_izQ-IGv0Edq7X4sGURiZYA" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_jenoQGv0Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_c-11wPICEdulR8T2OJRyFQ" annotatedElement="_jenoQGv0Edq7X4sGURiZYA">
+            <body>The stereotype in question.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_DkmGMGv1Edq7X4sGURiZYA" name="applyStereotype">
+        <ownedComment xmi:id="_KtkUgOwcEdqYHf-imTcTdw" annotatedElement="_DkmGMGv1Edq7X4sGURiZYA">
+          <body>Applies the specified stereotype to this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_GGbJwGv1Edq7X4sGURiZYA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWijsX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_GmnFsGv1Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_4-WfgPIAEdulR8T2OJRyFQ" annotatedElement="_GmnFsGv1Edq7X4sGURiZYA">
+            <body>The stereotype to apply.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_LUETUGv1Edq7X4sGURiZYA" name="unapplyStereotype">
+        <ownedComment xmi:id="_MSdOsOwcEdqYHf-imTcTdw" annotatedElement="_LUETUGv1Edq7X4sGURiZYA">
+          <body>Unapplies the specified stereotype from this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_NqRVsGv1Edq7X4sGURiZYA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWijsX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_OI9c0Gv1Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_FrjgAPIDEdulR8T2OJRyFQ" annotatedElement="_OI9c0Gv1Edq7X4sGURiZYA">
+            <body>The stereotype to unapply.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_7oNB8Gv1Edq7X4sGURiZYA" name="getApplicableStereotypes" isQuery="true">
+        <ownedComment xmi:id="_RO894OwcEdqYHf-imTcTdw" annotatedElement="_7oNB8Gv1Edq7X4sGURiZYA">
+          <body>Retrieves the stereotypes that are applicable to this element, including those that are required and/or may already be applied.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_-J4UgGv1Edq7X4sGURiZYA" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Ah4GoWv2Edq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Ah4GoGv2Edq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_CQI_QGv2Edq7X4sGURiZYA" name="getApplicableStereotype" isQuery="true">
+        <ownedComment xmi:id="_UmbQAOwcEdqYHf-imTcTdw" annotatedElement="_CQI_QGv2Edq7X4sGURiZYA">
+          <body>Retrieves the stereotype with the specified qualified name that is applicable to this element, or null if no such stereotype is applicable.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_FC9FIGv2Edq7X4sGURiZYA" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_i-hrkWv3Edq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_i-hrkGv3Edq7X4sGURiZYA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_FX9r0Gv2Edq7X4sGURiZYA" name="qualifiedName" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="__AGmkPIAEdulR8T2OJRyFQ" annotatedElement="_FX9r0Gv2Edq7X4sGURiZYA">
+            <body>The qualified name of the applicable stereotype to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_IFUr8GvgEdq4DLWZOhbdEA" name="getStereotypeApplications" isQuery="true">
+        <ownedComment xmi:id="_hu_owOwcEdqYHf-imTcTdw" annotatedElement="_IFUr8GvgEdq4DLWZOhbdEA">
+          <body>Retrieves the stereotype applications for this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_PAVWQGvgEdq4DLWZOhbdEA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWijsX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_oJqQgWvzEdq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_oJqQgGvzEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_Rw07YGv1Edq7X4sGURiZYA" name="getStereotypeApplication" isQuery="true">
+        <ownedComment xmi:id="_uNjbMOwcEdqYHf-imTcTdw" annotatedElement="_Rw07YGv1Edq7X4sGURiZYA">
+          <body>Retrieves the application of the specified stereotype for this element, or null if no such stereotype application exists.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_Uw5aIGv1Edq7X4sGURiZYA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWijsX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4QyvUWv3Edq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4QyvUGv3Edq7X4sGURiZYA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_VtGjsGv1Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_7ovzwPIBEdulR8T2OJRyFQ" annotatedElement="_VtGjsGv1Edq7X4sGURiZYA">
+            <body>The stereotype for which to retrieve an application.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ko32oHFfEdqziYxiZo0YtA" name="getRequiredStereotypes" isQuery="true">
+        <ownedComment xmi:id="_57OjQOwcEdqYHf-imTcTdw" annotatedElement="_ko32oHFfEdqziYxiZo0YtA">
+          <body>Retrieves the stereotypes that are required for this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_qX5O8HFfEdqziYxiZo0YtA" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KSF6sXFgEdqziYxiZo0YtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KSF6sHFgEdqziYxiZo0YtA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_yk3QYHFfEdqziYxiZo0YtA" name="getRequiredStereotype" isQuery="true">
+        <ownedComment xmi:id="_-7KA8OwcEdqYHf-imTcTdw" annotatedElement="_yk3QYHFfEdqziYxiZo0YtA">
+          <body>Retrieves the stereotype with the specified qualified name that is required for this element, or null if no such stereotype is required.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_8ovJEHFfEdqziYxiZo0YtA" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Cpo7kXFgEdqziYxiZo0YtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Cpo7kHFgEdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_9NGaYHFfEdqziYxiZo0YtA" name="qualifiedName" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_r0tTQPIBEdulR8T2OJRyFQ" annotatedElement="_9NGaYHFfEdqziYxiZo0YtA">
+            <body>The qualified name of the required stereotype to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ZR1OsGv1Edq7X4sGURiZYA" name="getAppliedStereotypes" isQuery="true">
+        <ownedComment xmi:id="_Dj1cQOwdEdqYHf-imTcTdw" annotatedElement="_ZR1OsGv1Edq7X4sGURiZYA">
+          <body>Retrieves the stereotypes that are applied to this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_cNu_IGv1Edq7X4sGURiZYA" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eHU-AWv1Edq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eHU-AGv1Edq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_pCV6EGv1Edq7X4sGURiZYA" name="getAppliedStereotype" isQuery="true">
+        <ownedComment xmi:id="_IBy1UOwdEdqYHf-imTcTdw" annotatedElement="_pCV6EGv1Edq7X4sGURiZYA">
+          <body>Retrieves the stereotype with the specified qualified name that is applied to this element, or null if no such stereotype is  applied.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_rLbtgGv1Edq7X4sGURiZYA" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mO2M0Wv3Edq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mO2M0Gv3Edq7X4sGURiZYA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_r4SMcGv1Edq7X4sGURiZYA" name="qualifiedName" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_A1hQEPIBEdulR8T2OJRyFQ" annotatedElement="_r4SMcGv1Edq7X4sGURiZYA">
+            <body>The qualified name of the applied stereotype to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="__s2tsGv2Edq7X4sGURiZYA" name="getAppliedSubstereotypes" isQuery="true">
+        <ownedComment xmi:id="_NAYPMOwdEdqYHf-imTcTdw" annotatedElement="__s2tsGv2Edq7X4sGURiZYA">
+          <body>Retrieves the substereotypes of the specified stereotype that are applied to this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="__s2tsWv2Edq7X4sGURiZYA" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__s2tsmv2Edq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__s2ts2v2Edq7X4sGURiZYA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_DJsA8Gv3Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_cF4C4PIBEdulR8T2OJRyFQ" annotatedElement="_DJsA8Gv3Edq7X4sGURiZYA">
+            <body>The superstereotype of the applied substereotypes to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_KpgogGv3Edq7X4sGURiZYA" name="getAppliedSubstereotype" isQuery="true">
+        <ownedComment xmi:id="_P0Fs8OwdEdqYHf-imTcTdw" annotatedElement="_KpgogGv3Edq7X4sGURiZYA">
+          <body>Retrieves the substereotype of the specified stereotype with the specified qualified name that is applied to this element, or null if no such stereotype is applied.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_KpgogWv3Edq7X4sGURiZYA" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_qg4pwWv3Edq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_qg4pwGv3Edq7X4sGURiZYA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_NcK9YGv3Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_ZJ1IgPIBEdulR8T2OJRyFQ" annotatedElement="_NcK9YGv3Edq7X4sGURiZYA">
+            <body>The superstereotype of the applied substereotype to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_Kpgogmv3Edq7X4sGURiZYA" name="qualifiedName" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_UNpiYPIBEdulR8T2OJRyFQ" annotatedElement="_Kpgogmv3Edq7X4sGURiZYA">
+            <body>The qualified name of the applied substereotype to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_JbZFAGv2Edq7X4sGURiZYA" name="hasValue" isQuery="true">
+        <ownedComment xmi:id="_b4HfgOwdEdqYHf-imTcTdw" annotatedElement="_JbZFAGv2Edq7X4sGURiZYA">
+          <body>Determines whether this element has a (non-default) value for the property with the specified name in the specified stereotype.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_L6F8EGv2Edq7X4sGURiZYA" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_MqEngGv2Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_Zk10EPICEdulR8T2OJRyFQ" annotatedElement="_MqEngGv2Edq7X4sGURiZYA">
+            <body>The stereotype for which to test the property.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_RaWfoGv2Edq7X4sGURiZYA" name="propertyName" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_XhkUwPICEdulR8T2OJRyFQ" annotatedElement="_RaWfoGv2Edq7X4sGURiZYA">
+            <body>The name of the property in question.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_WGA9gGv2Edq7X4sGURiZYA" name="getValue" isQuery="true">
+        <ownedComment xmi:id="_jrANAOwdEdqYHf-imTcTdw" annotatedElement="_WGA9gGv2Edq7X4sGURiZYA">
+          <body>Retrieves the value of the property with the specified name in the specified stereotype for this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_dYH5MGv2Edq7X4sGURiZYA" direction="return">
+          <type xmi:type="uml:PrimitiveType" href="Ecore.uml#_SeWkccX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8gS1oWv3Edq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8gS1oGv3Edq7X4sGURiZYA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_g41m4Gv2Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_DgsncPICEdulR8T2OJRyFQ" annotatedElement="_g41m4Gv2Edq7X4sGURiZYA">
+            <body>The stereotype for which to retrieve the value.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_eZGOAGv2Edq7X4sGURiZYA" name="propertyName" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_DAp1cPICEdulR8T2OJRyFQ" annotatedElement="_eZGOAGv2Edq7X4sGURiZYA">
+            <body>The name of the property whose value to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_nMWzYGv2Edq7X4sGURiZYA" name="setValue">
+        <ownedComment xmi:id="_qqfHoOwdEdqYHf-imTcTdw" annotatedElement="_nMWzYGv2Edq7X4sGURiZYA">
+          <body>Sets the value of the property with the specified name in the specified stereotype for this element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_resLQGv2Edq7X4sGURiZYA" name="stereotype" type="_A7vDAGv0Edq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_DkshMPIDEdulR8T2OJRyFQ" annotatedElement="_resLQGv2Edq7X4sGURiZYA">
+            <body>The stereotype for which to set the value.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_o6B2IGv2Edq7X4sGURiZYA" name="propertyName" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_BIFU0PIDEdulR8T2OJRyFQ" annotatedElement="_o6B2IGv2Edq7X4sGURiZYA">
+            <body>The name of the property whose value to set.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_m5bH4GzIEdqNr-AKm4G4QQ" name="newValue" effect="read">
+          <ownedComment xmi:id="_9wvlkPICEdulR8T2OJRyFQ" annotatedElement="_m5bH4GzIEdqNr-AKm4G4QQ">
+            <body>The new value for the property.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="Ecore.uml#_SeWkccX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_Tj6BkYbbEdq0WtDJCT4EaQ" name="createEAnnotation">
+        <ownedComment xmi:id="_u8XzkOwdEdqYHf-imTcTdw" annotatedElement="_Tj6BkYbbEdq0WtDJCT4EaQ">
+          <body>Creates an annotation with the specified source and this element as its model element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_YE_AEIbbEdq0WtDJCT4EaQ" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWj6cX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_aXUPEIbbEdq0WtDJCT4EaQ" name="source" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_6bxfwPIAEdulR8T2OJRyFQ" annotatedElement="_aXUPEIbbEdq0WtDJCT4EaQ">
+            <body>The source for the new annotation.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_4IIuwKO_Edqi_5gqUMOQtA" name="getRelationships">
+        <ownedComment xmi:id="_znllgOwdEdqYHf-imTcTdw" annotatedElement="_4IIuwKO_Edqi_5gqUMOQtA">
+          <body>Retrieves the relationships in which this element is involved.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_OGNIkKPAEdqi_5gqUMOQtA" type="_DH62EKPAEdqi_5gqUMOQtA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_R5soUaPAEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_R5soUKPAEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_UJyboKPAEdqi_5gqUMOQtA" name="getRelationships">
+        <ownedComment xmi:id="_1gb9gOwdEdqYHf-imTcTdw" annotatedElement="_UJyboKPAEdqi_5gqUMOQtA">
+          <body>Retrieves the relationships of the specified type in which this element is involved.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_UJyboaPAEdqi_5gqUMOQtA" type="_DH62EKPAEdqi_5gqUMOQtA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UJyboqPAEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UJybo6PAEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_XBN7wKPAEdqi_5gqUMOQtA" name="eClass" effect="read">
+          <ownedComment xmi:id="_mhklsPIBEdulR8T2OJRyFQ" annotatedElement="_XBN7wKPAEdqi_5gqUMOQtA">
+            <body>The (meta)type of the relationships to retrieve.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWizcX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_fBOfQKPAEdqi_5gqUMOQtA" name="getSourceDirectedRelationships">
+        <ownedComment xmi:id="_5RsBkOwdEdqYHf-imTcTdw" annotatedElement="_fBOfQKPAEdqi_5gqUMOQtA">
+          <body>Retrieves the directed relationships for which this element is a source.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_fBOfQaPAEdqi_5gqUMOQtA" type="_JBgfoKPAEdqi_5gqUMOQtA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fBOfQqPAEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fBOfQ6PAEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_fBOfRKPAEdqi_5gqUMOQtA" name="getSourceDirectedRelationships">
+        <ownedComment xmi:id="_63dskOwdEdqYHf-imTcTdw" annotatedElement="_fBOfRKPAEdqi_5gqUMOQtA">
+          <body>Retrieves the directed relationships of the specified type for which this element is a source.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_fBOfRaPAEdqi_5gqUMOQtA" type="_JBgfoKPAEdqi_5gqUMOQtA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fBOfRqPAEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fBOfR6PAEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_fBOfSKPAEdqi_5gqUMOQtA" name="eClass" effect="read">
+          <ownedComment xmi:id="_3TviYPIBEdulR8T2OJRyFQ" annotatedElement="_fBOfSKPAEdqi_5gqUMOQtA">
+            <body>The (meta)type of the directed relationships to retrieve.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWizcX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_t5G5gKPAEdqi_5gqUMOQtA" name="getTargetDirectedRelationships">
+        <ownedComment xmi:id="_9qIBcOwdEdqYHf-imTcTdw" annotatedElement="_t5G5gKPAEdqi_5gqUMOQtA">
+          <body>Retrieves the directed relationships for which this element is a target.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_t5G5gaPAEdqi_5gqUMOQtA" type="_JBgfoKPAEdqi_5gqUMOQtA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_t5G5gqPAEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_t5G5g6PAEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_t5G5hKPAEdqi_5gqUMOQtA" name="getTargetDirectedRelationships">
+        <ownedComment xmi:id="__rxJEOwdEdqYHf-imTcTdw" annotatedElement="_t5G5hKPAEdqi_5gqUMOQtA">
+          <body>Retrieves the directed relationships of the specified type for which this element is a target.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_t5G5haPAEdqi_5gqUMOQtA" type="_JBgfoKPAEdqi_5gqUMOQtA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_t5G5hqPAEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_t5G5h6PAEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_t5G5iKPAEdqi_5gqUMOQtA" name="eClass" effect="read">
+          <ownedComment xmi:id="_-J0pYPIBEdulR8T2OJRyFQ" annotatedElement="_t5G5iKPAEdqi_5gqUMOQtA">
+            <body>The (meta)type of the directed relationships to retrieve.</body>
+          </ownedComment>
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWizcX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_00owUGvdEdq4DLWZOhbdEA" name="Class">
+      <ownedOperation xmi:id="_4xcu4FYKEdqrn7iZ0eqieg" name="getExtensions" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_8-RUoFYKEdqrn7iZ0eqieg" type="_skHGwGvsEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_-3Q2kVYKEdqrn7iZ0eqieg" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_-3Q2kFYKEdqrn7iZ0eqieg"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_EpigwGwQEdq14q0ETb1t3g" name="createOwnedOperation">
+        <ownedComment xmi:id="_ZFCecOweEdqYHf-imTcTdw" annotatedElement="_EpigwGwQEdq14q0ETb1t3g">
+          <body>Creates an operation with the specified name, parameter names, parameter types, and return type (or null) as an owned operation of this class.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_IMMIIGwQEdq14q0ETb1t3g" type="_M4X2IGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_bWQJQGwQEdq14q0ETb1t3g" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_Fa5AEPH-EdulR8T2OJRyFQ" annotatedElement="_bWQJQGwQEdq14q0ETb1t3g">
+            <body>The name for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_qFIE0aOwEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_qFIE0KOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_LLEUEGwQEdq14q0ETb1t3g" name="parameterNames" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_HOXv4PH-EdulR8T2OJRyFQ" annotatedElement="_LLEUEGwQEdq14q0ETb1t3g">
+            <body>The parameter names for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_mIoGsWwQEdq14q0ETb1t3g" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_mIoGsGwQEdq14q0ETb1t3g"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_RCurAGwQEdq14q0ETb1t3g" name="parameterTypes" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_JQnUcPH-EdulR8T2OJRyFQ" annotatedElement="_RCurAGwQEdq14q0ETb1t3g">
+            <body>The parameter types for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_jYfhYWwQEdq14q0ETb1t3g" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_jYfhYGwQEdq14q0ETb1t3g"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_WoD70GwQEdq14q0ETb1t3g" name="returnType" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_LYzwAPH-EdulR8T2OJRyFQ" annotatedElement="_WoD70GwQEdq14q0ETb1t3g">
+            <body>The return type for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_r-30saOwEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_r-30sKOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_shXKYGwQEdq14q0ETb1t3g" name="isMetaclass" isQuery="true">
+        <ownedComment xmi:id="_hb-7QOweEdqYHf-imTcTdw" annotatedElement="_shXKYGwQEdq14q0ETb1t3g">
+          <body>Determines whether this class is a metaclass.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_urWVsGwQEdq14q0ETb1t3g" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_2QuT0GvdEdq4DLWZOhbdEA" name="ExtensionEnd">
+      <ownedOperation xmi:id="_WLw30FYLEdqrn7iZ0eqieg" name="getLower" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_ZNVLYFYLEdqrn7iZ0eqieg" type="_XqvEIGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_3FVzkFYkEdqB6vblk3tuMA" name="setLower" visibility="protected">
+        <ownedParameter xmi:id="_4dG3wFYkEdqB6vblk3tuMA" name="newLower" visibility="protected" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_9keOQGvdEdq4DLWZOhbdEA" name="RedefinableTemplateSignature">
+      <ownedOperation xmi:id="_FvJUYFYLEdqrn7iZ0eqieg" name="getInheritedParameters" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_Jbx-MFYLEdqrn7iZ0eqieg" type="_KxRzgGvuEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_LQdA0VYLEdqrn7iZ0eqieg" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LQdA0FYLEdqrn7iZ0eqieg"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ChRfcGveEdq4DLWZOhbdEA" name="OpaqueExpression">
+      <ownedAttribute xmi:id="_EOZfkC4xEduBJv9HKGdiyg" name="body" type="_aAyVgGvsEdqG6fBIPwe-mw" isUnique="false">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_KIvXES4xEduBJv9HKGdiyg" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_KIvXEC4xEduBJv9HKGdiyg"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_mv9LcFYiEdqB6vblk3tuMA" name="getResult" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_vXTbwFYiEdqB6vblk3tuMA" type="_KyaPMGveEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0JhNkVYiEdqB6vblk3tuMA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0JhNkFYiEdqB6vblk3tuMA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_qQchgGWKEdq-f4093SZhVA" name="stringValue" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_sRo9MGWKEdq-f4093SZhVA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Dy77oGveEdq4DLWZOhbdEA" name="LiteralInteger">
+      <ownedOperation xmi:id="_e2SLUGWKEdq-f4093SZhVA" name="stringValue" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_hAkRkGWKEdq-f4093SZhVA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_FFMNsGveEdq4DLWZOhbdEA" name="LiteralBoolean">
+      <ownedOperation xmi:id="_aXS3gGWKEdq-f4093SZhVA" name="stringValue" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_cFthIGWKEdq-f4093SZhVA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Gjgl0GveEdq4DLWZOhbdEA" name="MultiplicityElement" isAbstract="true">
+      <ownedOperation xmi:id="_qtCaIFYkEdqB6vblk3tuMA" name="setLower" visibility="protected">
+        <ownedParameter xmi:id="_scWboFYkEdqB6vblk3tuMA" name="newLower" visibility="protected" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_vlEgEFYkEdqB6vblk3tuMA" name="setUpper" visibility="protected">
+        <ownedParameter xmi:id="_xJp4QFYkEdqB6vblk3tuMA" name="newUpper" visibility="protected" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Jp_1oGveEdq4DLWZOhbdEA" name="Property">
+      <ownedOperation xmi:id="_oLamMFYJEdqrn7iZ0eqieg" name="getDefault" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_vkrSwFYJEdqrn7iZ0eqieg" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_uJsjsVYjEdqB6vblk3tuMA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_uJsjsFYjEdqB6vblk3tuMA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_f-9wMGXCEdqEJs8umHJc9g" name="isSetDefault" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_iAwBwGXCEdqEJs8umHJc9g" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_vbp60FYjEdqB6vblk3tuMA" name="setDefault" visibility="protected">
+        <ownedParameter xmi:id="_xXxpQFYjEdqB6vblk3tuMA" name="newDefault" visibility="protected" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_d8dDkFYkEdqB6vblk3tuMA" name="setIsComposite" visibility="protected">
+        <ownedParameter xmi:id="_gOfXoFYkEdqB6vblk3tuMA" name="newIsComposite" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_sJdfYFYlEdqB6vblk3tuMA" name="setOpposite" visibility="protected">
+        <ownedParameter xmi:id="_tesM8FYlEdqB6vblk3tuMA" name="newOpposite" visibility="protected" type="_Jp_1oGveEdq4DLWZOhbdEA" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_kGtosGXCEdqEJs8umHJc9g" name="unsetDefault" visibility="protected"/>
+      <ownedOperation xmi:id="_SzqSgK6-EdqjppZik4kD8A" name="setIsNavigable">
+        <ownedComment xmi:id="_7VJRoOweEdqYHf-imTcTdw" annotatedElement="_SzqSgK6-EdqjppZik4kD8A">
+          <body>Sets the navigability of this property as indicated.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_VzI7YK6-EdqjppZik4kD8A" name="isNavigable" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_r9T40PIFEdulR8T2OJRyFQ" annotatedElement="_VzI7YK6-EdqjppZik4kD8A">
+            <body>The new navigability.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_bAUx8K6-EdqjppZik4kD8A" name="getOtherEnd">
+        <ownedComment xmi:id="__u7VUOweEdqYHf-imTcTdw" annotatedElement="_bAUx8K6-EdqjppZik4kD8A">
+          <body>Retrieves the other end of the (binary) association in which this property is a member end.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_eTnusK6-EdqjppZik4kD8A" type="_Jp_1oGveEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_f6Sxka6-EdqjppZik4kD8A" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_f6SxkK6-EdqjppZik4kD8A"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_lYUggK6-EdqjppZik4kD8A" name="setBooleanDefaultValue">
+        <ownedComment xmi:id="_GdHroOwfEdqYHf-imTcTdw" annotatedElement="_lYUggK6-EdqjppZik4kD8A">
+          <body>Sets the default value for this property to the specified Boolean value.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_4BKD4K6-EdqjppZik4kD8A" name="value" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_pKCf8PIFEdulR8T2OJRyFQ" annotatedElement="_4BKD4K6-EdqjppZik4kD8A">
+            <body>The new default value.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_94N94K6-EdqjppZik4kD8A" name="setIntegerDefaultValue">
+        <ownedComment xmi:id="_Js2XAOwfEdqYHf-imTcTdw" annotatedElement="_94N94K6-EdqjppZik4kD8A">
+          <body>Sets the default value for this property to the specified integer value.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_94N94a6-EdqjppZik4kD8A" name="value" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_pv4_APIFEdulR8T2OJRyFQ" annotatedElement="_94N94a6-EdqjppZik4kD8A">
+            <body>The new default value.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_GW7PkK6_EdqjppZik4kD8A" name="setStringDefaultValue">
+        <ownedComment xmi:id="_LLBlMOwfEdqYHf-imTcTdw" annotatedElement="_GW7PkK6_EdqjppZik4kD8A">
+          <body>Sets the default value for this property to the specified string value.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_GW7Pka6_EdqjppZik4kD8A" name="value" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_syWqcPIFEdulR8T2OJRyFQ" annotatedElement="_GW7Pka6_EdqjppZik4kD8A">
+            <body>The new default value.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_NXJxEK6_EdqjppZik4kD8A" name="setUnlimitedNaturalDefaultValue">
+        <ownedComment xmi:id="_NTqssOwfEdqYHf-imTcTdw" annotatedElement="_NXJxEK6_EdqjppZik4kD8A">
+          <body>Sets the default value for this property to the specified unlimited natural value.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_NXJxEa6_EdqjppZik4kD8A" name="value" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_tZjNUPIFEdulR8T2OJRyFQ" annotatedElement="_NXJxEa6_EdqjppZik4kD8A">
+            <body>The new default value.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_WU_10K6_EdqjppZik4kD8A" name="setNullDefaultValue">
+        <ownedComment xmi:id="_O5cXsOwfEdqYHf-imTcTdw" annotatedElement="_WU_10K6_EdqjppZik4kD8A">
+          <body>Sets the default value for this property to the null value.</body>
+        </ownedComment>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_KyaPMGveEdq4DLWZOhbdEA" name="Parameter">
+      <ownedOperation xmi:id="_7UJKkFYJEdqrn7iZ0eqieg" name="getDefault" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_-PwAEFYJEdqrn7iZ0eqieg" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4VLgQVYjEdqB6vblk3tuMA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4VLgQFYjEdqB6vblk3tuMA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_QKbgcWXCEdqEJs8umHJc9g" name="isSetDefault" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_TKzhMGXCEdqEJs8umHJc9g" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_5FAasFYjEdqB6vblk3tuMA" name="setDefault" visibility="protected">
+        <ownedParameter xmi:id="_7D0QwFYjEdqB6vblk3tuMA" name="newDefault" visibility="protected" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_VQnXIGXCEdqEJs8umHJc9g" name="unsetDefault" visibility="protected"/>
+      <ownedOperation xmi:id="_kKuPgK6_EdqjppZik4kD8A" name="setBooleanDefaultValue">
+        <ownedComment xmi:id="_TCrd8OwfEdqYHf-imTcTdw" annotatedElement="_kKuPgK6_EdqjppZik4kD8A">
+          <body>Sets the default value for this parameter to the specified Boolean value.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_kKuPga6_EdqjppZik4kD8A" name="value" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_wjzYQPIEEdulR8T2OJRyFQ" annotatedElement="_kKuPga6_EdqjppZik4kD8A">
+            <body>The new default value.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_kKuPgq6_EdqjppZik4kD8A" name="setIntegerDefaultValue">
+        <ownedComment xmi:id="_UB3DAOwfEdqYHf-imTcTdw" annotatedElement="_kKuPgq6_EdqjppZik4kD8A">
+          <body>Sets the default value for this parameter to the specified integer value.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_kKuPg66_EdqjppZik4kD8A" name="value" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_zyVJwPIEEdulR8T2OJRyFQ" annotatedElement="_kKuPg66_EdqjppZik4kD8A">
+            <body>The new default value.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_kK3ZcK6_EdqjppZik4kD8A" name="setStringDefaultValue">
+        <ownedComment xmi:id="_Z2PccOwfEdqYHf-imTcTdw" annotatedElement="_kK3ZcK6_EdqjppZik4kD8A">
+          <body>Sets the default value for this parameter to the specified string value.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_kK3Zca6_EdqjppZik4kD8A" name="value" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_0mWAoPIEEdulR8T2OJRyFQ" annotatedElement="_kK3Zca6_EdqjppZik4kD8A">
+            <body>The new default value.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_kK3Zcq6_EdqjppZik4kD8A" name="setUnlimitedNaturalDefaultValue">
+        <ownedComment xmi:id="_asyC4OwfEdqYHf-imTcTdw" annotatedElement="_kK3Zcq6_EdqjppZik4kD8A">
+          <body>Sets the default value for this parameter to the specified unlimited natural value.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_kK3Zc66_EdqjppZik4kD8A" name="value" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_1RG04PIEEdulR8T2OJRyFQ" annotatedElement="_kK3Zc66_EdqjppZik4kD8A">
+            <body>The new default value.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_kK3ZdK6_EdqjppZik4kD8A" name="setNullDefaultValue">
+        <ownedComment xmi:id="_c7hyYOwfEdqYHf-imTcTdw" annotatedElement="_kK3ZdK6_EdqjppZik4kD8A">
+          <body>Sets the default value for this parameter to the null value.</body>
+        </ownedComment>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_M4X2IGveEdq4DLWZOhbdEA" name="Operation">
+      <ownedOperation xmi:id="_ho5pgFYLEdqrn7iZ0eqieg" name="getLower" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_jukVgFYLEdqrn7iZ0eqieg" type="_XqvEIGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ljsEEFYLEdqrn7iZ0eqieg" name="getUpper" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_pAh-YFYLEdqrn7iZ0eqieg" type="_dRZxsGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_LgBIAFYlEdqB6vblk3tuMA" name="setIsOrdered" visibility="protected">
+        <ownedParameter xmi:id="_NIoEkFYlEdqB6vblk3tuMA" name="newIsOrdered" visibility="protected" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_QTIRsFYlEdqB6vblk3tuMA" name="setIsUnique" visibility="protected">
+        <ownedParameter xmi:id="_SFRkwFYlEdqB6vblk3tuMA" name="newIsUnique" visibility="protected" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_VrpOgFYlEdqB6vblk3tuMA" name="setLower" visibility="protected">
+        <ownedParameter xmi:id="_XdMrsFYlEdqB6vblk3tuMA" name="newLower" visibility="protected" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_kqFjwFYlEdqB6vblk3tuMA" name="setType" visibility="protected">
+        <ownedParameter xmi:id="_l2PN0FYlEdqB6vblk3tuMA" name="newType" visibility="protected" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_arIAQFYlEdqB6vblk3tuMA" name="setUpper" visibility="protected">
+        <ownedParameter xmi:id="_b-4HIFYlEdqB6vblk3tuMA" name="newUpper" visibility="protected" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_HxDswKOyEdqi_5gqUMOQtA" name="getReturnResult">
+        <ownedComment xmi:id="_tVUrUOwfEdqYHf-imTcTdw" annotatedElement="_HxDswKOyEdqi_5gqUMOQtA">
+          <body>Retrieves the (only) return result parameter for this operation.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_MiYGsKOyEdqi_5gqUMOQtA" type="_KyaPMGveEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_OvfegaOyEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_OvfegKOyEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_PyCx8GveEdq4DLWZOhbdEA" name="InstanceValue">
+      <ownedOperation xmi:id="_QUJ-oWWKEdq-f4093SZhVA" name="stringValue" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_T0RPYGWKEdq-f4093SZhVA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Q-yR4GveEdq4DLWZOhbdEA" name="LiteralUnlimitedNatural">
+      <ownedOperation xmi:id="_lSARkGWKEdq-f4093SZhVA" name="stringValue" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_nyfRUGWKEdq-f4093SZhVA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_TUPtYGveEdq4DLWZOhbdEA" name="Behavior" isAbstract="true">
+      <ownedOperation xmi:id="_Zp2iwFYgEdqB6vblk3tuMA" name="getContext" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_flYtEFYgEdqB6vblk3tuMA" type="_iY7sMGvsEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FIHcsVYjEdqB6vblk3tuMA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FIHcsFYjEdqB6vblk3tuMA"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ZAuvEGveEdq4DLWZOhbdEA" name="Port">
+      <ownedOperation xmi:id="_gtr8cFYhEdqB6vblk3tuMA" name="getProvideds" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_jIqKEFYhEdqB6vblk3tuMA" type="_8Ugn8GvtEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_k2x4wVYhEdqB6vblk3tuMA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_k2x4wFYhEdqB6vblk3tuMA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_mxt7cFYhEdqB6vblk3tuMA" name="getRequireds" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_osMrIFYhEdqB6vblk3tuMA" type="_8Ugn8GvtEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_pyY3IVYhEdqB6vblk3tuMA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_pyY3IFYhEdqB6vblk3tuMA"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_aOgw0GveEdq4DLWZOhbdEA" name="ConnectorEnd">
+      <ownedOperation xmi:id="_QT7XMFYKEdqrn7iZ0eqieg" name="getDefiningEnd" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_VkstQFYKEdqrn7iZ0eqieg" type="_Jp_1oGveEdq4DLWZOhbdEA" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_gfgNwGveEdq4DLWZOhbdEA" name="Message">
+      <ownedOperation xmi:id="_8U6CAFYfEdqB6vblk3tuMA" name="getMessageKind" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_-_OTMFYfEdqB6vblk3tuMA" type="_Y_jskGvtEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_R__uEFYjEdqB6vblk3tuMA" name="getSignature" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_WEKuIFYjEdqB6vblk3tuMA" type="_csVgUGvtEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YR4i4VYjEdqB6vblk3tuMA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YR4i4FYjEdqB6vblk3tuMA"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_iY7sMGvsEdqG6fBIPwe-mw" name="BehavioredClassifier" isAbstract="true">
+      <ownedOperation xmi:id="_dx6lQK69EdqjppZik4kD8A" name="getImplementedInterfaces">
+        <ownedComment xmi:id="_5-ADEOwfEdqYHf-imTcTdw" annotatedElement="_dx6lQK69EdqjppZik4kD8A">
+          <body>Retrieves the interfaces on which this behaviored classifier has an interface realization dependency.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_gSQbEK69EdqjppZik4kD8A" type="_8Ugn8GvtEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iwNEMa69EdqjppZik4kD8A" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iwNEMK69EdqjppZik4kD8A"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_lbuPQK69EdqjppZik4kD8A" name="getAllImplementedInterfaces">
+        <ownedComment xmi:id="_-G81cOwfEdqYHf-imTcTdw" annotatedElement="_lbuPQK69EdqjppZik4kD8A">
+          <body>Retrieves all the interfaces on which this behaviored classifier or any of its parents has an interface realization dependency.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_lbuPQa69EdqjppZik4kD8A" type="_8Ugn8GvtEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lbuPQq69EdqjppZik4kD8A" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lbuPQ669EdqjppZik4kD8A"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_skHGwGvsEdqG6fBIPwe-mw" name="Extension">
+      <ownedOperation xmi:id="_k1UVkJPtEdqpjIDDFZ2Hgw" name="getStereotypeEnd" isQuery="true">
+        <ownedComment xmi:id="_VLzRIOwgEdqYHf-imTcTdw" annotatedElement="_k1UVkJPtEdqpjIDDFZ2Hgw">
+          <body>Retrieves the extension end that is typed by a stereotype (as opposed to a metaclass).</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_BPaXoJPuEdqpjIDDFZ2Hgw" type="_Jp_1oGveEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_X2BEMZQGEdqpjIDDFZ2Hgw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_X2BEMJQGEdqpjIDDFZ2Hgw"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_6cTFEJPtEdqpjIDDFZ2Hgw" name="getStereotype" isQuery="true">
+        <ownedComment xmi:id="_fNTLQOwgEdqYHf-imTcTdw" annotatedElement="_6cTFEJPtEdqpjIDDFZ2Hgw">
+          <body>Retrieves the stereotype that extends a metaclass through this extension.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_C7cboJPuEdqpjIDDFZ2Hgw" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aF9tkZQGEdqpjIDDFZ2Hgw" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aF9tkJQGEdqpjIDDFZ2Hgw"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_csVgUGvtEdqG6fBIPwe-mw" name="NamedElement" isAbstract="true">
+      <ownedOperation xmi:id="_o2CW4GwKEdq7X4sGURiZYA" name="createDependency">
+        <ownedComment xmi:id="_kZ5L8OwgEdqYHf-imTcTdw" annotatedElement="_o2CW4GwKEdq7X4sGURiZYA">
+          <body>Creates a dependency between this named element and the specified supplier, owned by this named element's nearest package.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_us8f4GwKEdq7X4sGURiZYA" type="_rEDGkGwKEdq7X4sGURiZYA" direction="return"/>
+        <ownedParameter xmi:id="_vYdiEGwKEdq7X4sGURiZYA" name="supplier" type="_csVgUGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_z0MAYPIDEdulR8T2OJRyFQ" annotatedElement="_vYdiEGwKEdq7X4sGURiZYA">
+            <body>The supplier for the new dependency.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_z4f-wGwKEdq7X4sGURiZYA" name="getLabel" isQuery="true">
+        <ownedComment xmi:id="_pnOzgOwgEdqYHf-imTcTdw" annotatedElement="_z4f-wGwKEdq7X4sGURiZYA">
+          <body>Retrieves a localized label for this named element.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_1p5q8GwKEdq7X4sGURiZYA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_34WfgWwKEdq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_34WfgGwKEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_5KmxkGwKEdq7X4sGURiZYA" name="getLabel" isQuery="true">
+        <ownedComment xmi:id="_rCa_IOwgEdqYHf-imTcTdw" annotatedElement="_5KmxkGwKEdq7X4sGURiZYA">
+          <body>Retrieves a label for this named element, localized if indicated.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_5KmxkWwKEdq7X4sGURiZYA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5KmxkmwKEdq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5Kmxk2wKEdq7X4sGURiZYA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_6FwyQGwKEdq7X4sGURiZYA" name="localize" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_3OVzEPIDEdulR8T2OJRyFQ" annotatedElement="_6FwyQGwKEdq7X4sGURiZYA">
+            <body>Whether to localize the label.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_Dww9MNlrEduDKPkA-0jJZg" name="createUsage">
+        <ownedComment xmi:id="_wQPHYNlrEduDKPkA-0jJZg" annotatedElement="_Dww9MNlrEduDKPkA-0jJZg">
+          <body>Creates a usage between this named element and the specified supplier, owned by this named element's nearest package.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_phglkNlrEduDKPkA-0jJZg" type="_h18oENlrEduDKPkA-0jJZg" direction="return"/>
+        <ownedParameter xmi:id="_xcQ1oNlrEduDKPkA-0jJZg" name="supplier" type="_csVgUGvtEdqG6fBIPwe-mw">
+          <ownedComment xmi:id="_05e0gPIDEdulR8T2OJRyFQ" annotatedElement="_xcQ1oNlrEduDKPkA-0jJZg">
+            <body>The supplier for the new usage.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ynRtoGvtEdqG6fBIPwe-mw" name="Type" isAbstract="true">
+      <ownedOperation xmi:id="_RNEaIGwNEdq7X4sGURiZYA" name="createAssociation">
+        <ownedComment xmi:id="_w29JkOwgEdqYHf-imTcTdw" annotatedElement="_RNEaIGwNEdq7X4sGURiZYA">
+          <body>Creates a(n) (binary) association between this type and the specified other type, with the specified navigabilities, aggregations, names, lower bounds, and upper bounds, and owned by this type's nearest package.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_URUOQGwNEdq7X4sGURiZYA" type="_AwvxoGwNEdq7X4sGURiZYA" direction="return"/>
+        <ownedParameter xmi:id="_AEONYGwOEdq7X4sGURiZYA" name="end1IsNavigable" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_QiftAPIGEdulR8T2OJRyFQ" annotatedElement="_AEONYGwOEdq7X4sGURiZYA">
+            <body>The navigability for the first end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_7HueMGwNEdq7X4sGURiZYA" name="end1Aggregation" type="_B3q9cGwNEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_OnjqUPIGEdulR8T2OJRyFQ" annotatedElement="_7HueMGwNEdq7X4sGURiZYA">
+            <body>The aggregation for the first end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_2TaaoGwNEdq7X4sGURiZYA" name="end1Name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_Se69cPIGEdulR8T2OJRyFQ" annotatedElement="_2TaaoGwNEdq7X4sGURiZYA">
+            <body>The name for the first end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_x-QYQGwNEdq7X4sGURiZYA" name="end1Lower" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_RpH94PIGEdulR8T2OJRyFQ" annotatedElement="_x-QYQGwNEdq7X4sGURiZYA">
+            <body>The lower bound for the first end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_uL9yYGwNEdq7X4sGURiZYA" name="end1Upper" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_UmXyIPIGEdulR8T2OJRyFQ" annotatedElement="_uL9yYGwNEdq7X4sGURiZYA">
+            <body>The upper bound for the first end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_qFQbsGwNEdq7X4sGURiZYA" name="end1Type" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_TTX5MPIGEdulR8T2OJRyFQ" annotatedElement="_qFQbsGwNEdq7X4sGURiZYA">
+            <body>The type for the first end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_mB-McGwNEdq7X4sGURiZYA" name="end2IsNavigable" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_YRNsMPIGEdulR8T2OJRyFQ" annotatedElement="_mB-McGwNEdq7X4sGURiZYA">
+            <body>The navigability for the second end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_hm2sAGwNEdq7X4sGURiZYA" name="end2Aggregation" type="_B3q9cGwNEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_VjBAkPIGEdulR8T2OJRyFQ" annotatedElement="_hm2sAGwNEdq7X4sGURiZYA">
+            <body>The aggregation for the second end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_eK6JkGwNEdq7X4sGURiZYA" name="end2Name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_cTJ3oPIGEdulR8T2OJRyFQ" annotatedElement="_eK6JkGwNEdq7X4sGURiZYA">
+            <body>The name for the second end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_auE2UGwNEdq7X4sGURiZYA" name="end2Lower" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_aGo8wPIGEdulR8T2OJRyFQ" annotatedElement="_auE2UGwNEdq7X4sGURiZYA">
+            <body>The lower bound for the second end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_VprIUGwNEdq7X4sGURiZYA" name="end2Upper" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_eBbXUPIGEdulR8T2OJRyFQ" annotatedElement="_VprIUGwNEdq7X4sGURiZYA">
+            <body>The upper bound for the second end of the new association.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_10fbsKPAEdqi_5gqUMOQtA" name="getAssociations">
+        <ownedComment xmi:id="_2pskQOwgEdqYHf-imTcTdw" annotatedElement="_10fbsKPAEdqi_5gqUMOQtA">
+          <body>Retrieves the associations in which this type is involved.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_5F3F0KPAEdqi_5gqUMOQtA" type="_AwvxoGwNEdq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7CRvMaPAEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7CRvMKPAEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_8Ugn8GvtEdqG6fBIPwe-mw" name="Interface">
+      <ownedOperation xmi:id="_FzLo0HL0EdqziYxiZo0YtA" name="createOwnedOperation">
+        <ownedComment xmi:id="_59cM8OwgEdqYHf-imTcTdw" annotatedElement="_FzLo0HL0EdqziYxiZo0YtA">
+          <body>Creates an operation with the specified name, parameter names, parameter types, and return type (or null) as an owned operation of this interface.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_FzLo0XL0EdqziYxiZo0YtA" type="_M4X2IGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_FzLo0nL0EdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_mB3gAPIDEdulR8T2OJRyFQ" annotatedElement="_FzLo0nL0EdqziYxiZo0YtA">
+            <body>The name for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7NjlYaOwEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7NjlYKOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_FzLo1HL0EdqziYxiZo0YtA" name="parameterNames" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_oBbkAPIDEdulR8T2OJRyFQ" annotatedElement="_FzLo1HL0EdqziYxiZo0YtA">
+            <body>The parameter names for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FzLo1XL0EdqziYxiZo0YtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FzLo1nL0EdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_FzLo13L0EdqziYxiZo0YtA" name="parameterTypes" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_pvZhsPIDEdulR8T2OJRyFQ" annotatedElement="_FzLo13L0EdqziYxiZo0YtA">
+            <body>The parameter types for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FzLo2HL0EdqziYxiZo0YtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FzLo2XL0EdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_FzLo03L0EdqziYxiZo0YtA" name="returnType" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_sWcccPIDEdulR8T2OJRyFQ" annotatedElement="_FzLo03L0EdqziYxiZo0YtA">
+            <body>The return type for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__G_8IaOwEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__G_8IKOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_XUC3gHL0EdqziYxiZo0YtA" name="createOwnedAttribute">
+        <ownedComment xmi:id="_-2N5wOwgEdqYHf-imTcTdw" annotatedElement="_XUC3gHL0EdqziYxiZo0YtA">
+          <body>Creates a property with the specified name, type, lower bound, and upper bound as an owned attribute of this interface.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_XUC3gXL0EdqziYxiZo0YtA" type="_Jp_1oGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_XUC3gnL0EdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_NDNDAPIDEdulR8T2OJRyFQ" annotatedElement="_XUC3gnL0EdqziYxiZo0YtA">
+            <body>The name for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EKqDQaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EKqDQKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_XUC3g3L0EdqziYxiZo0YtA" name="type" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_OoiCEPIDEdulR8T2OJRyFQ" annotatedElement="_XUC3g3L0EdqziYxiZo0YtA">
+            <body>The type for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_IuRYYaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_IuRYYKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_XUC3hHL0EdqziYxiZo0YtA" name="lower" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_LlK-wPIDEdulR8T2OJRyFQ" annotatedElement="_XUC3hHL0EdqziYxiZo0YtA">
+            <body>The lower bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_XUC3hXL0EdqziYxiZo0YtA" name="upper" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_Qy-gYPIDEdulR8T2OJRyFQ" annotatedElement="_XUC3hXL0EdqziYxiZo0YtA">
+            <body>The upper bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_KxRzgGvuEdqG6fBIPwe-mw" name="TemplateParameter"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_-cvRAGvzEdq7X4sGURiZYA" name="Package">
+      <ownedOperation xmi:id="_4JyAAGwFEdq7X4sGURiZYA" name="createOwnedClass">
+        <ownedComment xmi:id="_RcX8kOwhEdqYHf-imTcTdw" annotatedElement="_4JyAAGwFEdq7X4sGURiZYA">
+          <body>Creates a(n) (abstract) class with the specified name as an owned type of this package.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_94M7YGwFEdq7X4sGURiZYA" type="_00owUGvdEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_BGSA8GwGEdq7X4sGURiZYA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_OgV58PIEEdulR8T2OJRyFQ" annotatedElement="_BGSA8GwGEdq7X4sGURiZYA">
+            <body>The name for the new class, or null.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_-i0lsGwFEdq7X4sGURiZYA" name="isAbstract" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_MPDMwPIEEdulR8T2OJRyFQ" annotatedElement="_-i0lsGwFEdq7X4sGURiZYA">
+            <body>Whether the new class should be abstract.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_Fqo88GwGEdq7X4sGURiZYA" name="createOwnedEnumeration">
+        <ownedComment xmi:id="_aE54oOwhEdqYHf-imTcTdw" annotatedElement="_Fqo88GwGEdq7X4sGURiZYA">
+          <body>Creates a enumeration with the specified name as an owned type of this package.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_MMBmUGwGEdq7X4sGURiZYA" type="_I6N3UGwGEdq7X4sGURiZYA" direction="return"/>
+        <ownedParameter xmi:id="_Mz9wEGwGEdq7X4sGURiZYA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_UWEXMPIEEdulR8T2OJRyFQ" annotatedElement="_Mz9wEGwGEdq7X4sGURiZYA">
+            <body>The name for the new enumeration, or null.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_SSSZ8GwGEdq7X4sGURiZYA" name="createOwnedPrimitiveType">
+        <ownedComment xmi:id="_bT4NMOwhEdqYHf-imTcTdw" annotatedElement="_SSSZ8GwGEdq7X4sGURiZYA">
+          <body>Creates a primitive type with the specified name as an owned type of this package.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_Y8BHAGwGEdq7X4sGURiZYA" type="_V6vuYGwGEdq7X4sGURiZYA" direction="return"/>
+        <ownedParameter xmi:id="_ZY7FcGwGEdq7X4sGURiZYA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_ZtP3QPIEEdulR8T2OJRyFQ" annotatedElement="_ZY7FcGwGEdq7X4sGURiZYA">
+            <body>The name for the new primitive type, or null.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_SwrbIHFhEdqziYxiZo0YtA" name="createOwnedInterface">
+        <ownedComment xmi:id="_ecTWsOwhEdqYHf-imTcTdw" annotatedElement="_SwrbIHFhEdqziYxiZo0YtA">
+          <body>Creates an interface with the specified name as an owned type of this package.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_SwrbIXFhEdqziYxiZo0YtA" type="_8Ugn8GvtEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_SwrbInFhEdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_YHUbQPIEEdulR8T2OJRyFQ" annotatedElement="_SwrbInFhEdqziYxiZo0YtA">
+            <body>The name for the new interface, or null.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_z4Q98Gv5Edq7X4sGURiZYA" name="isProfileApplied" isQuery="true">
+        <ownedComment xmi:id="_h951MOwhEdqYHf-imTcTdw" annotatedElement="_z4Q98Gv5Edq7X4sGURiZYA">
+          <body>Determines whether the specified profile is applied to this package.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_19CSEGv5Edq7X4sGURiZYA" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_2TitkGv5Edq7X4sGURiZYA" name="profile" type="__pew8GvzEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_sf7TIPIEEdulR8T2OJRyFQ" annotatedElement="_2TitkGv5Edq7X4sGURiZYA">
+            <body>The profile in question.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_r--GcGv5Edq7X4sGURiZYA" name="applyProfile">
+        <ownedComment xmi:id="_pfXbgOwhEdqYHf-imTcTdw" annotatedElement="_r--GcGv5Edq7X4sGURiZYA">
+          <body>Applies the current definition of the specified profile to this package and automatically applies required stereotypes in the profile to elements within this package's namespace hieararchy. If a different definition is already applied, automatically migrates any associated stereotype values on a &quot;best effort&quot; basis (matching classifiers and structural features by name).</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_w2ZvcGv5Edq7X4sGURiZYA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWijsX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ObBOMXF8EdqziYxiZo0YtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ObBOMHF8EdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_xMwZ8Gv5Edq7X4sGURiZYA" name="profile" type="__pew8GvzEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_KbQ68PIEEdulR8T2OJRyFQ" annotatedElement="_xMwZ8Gv5Edq7X4sGURiZYA">
+            <body>The profile to apply.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_448CgGv5Edq7X4sGURiZYA" name="unapplyProfile">
+        <ownedComment xmi:id="_4cT78OwhEdqYHf-imTcTdw" annotatedElement="_448CgGv5Edq7X4sGURiZYA">
+          <body>Unapplies the specified profile from this package and automatically unapplies stereotypes in the profile from elements within this package's namespace hieararchy.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_6yryYGv5Edq7X4sGURiZYA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWijsX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZvqLMXF8EdqziYxiZo0YtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ZvqLMHF8EdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_7KhqoGv5Edq7X4sGURiZYA" name="profile" type="__pew8GvzEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_ubdLsPIEEdulR8T2OJRyFQ" annotatedElement="_7KhqoGv5Edq7X4sGURiZYA">
+            <body>The profile to unapply.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_ZCKeMGv5Edq7X4sGURiZYA" name="getAppliedProfiles" isQuery="true">
+        <ownedComment xmi:id="_G2jX8OwiEdqYHf-imTcTdw" annotatedElement="_ZCKeMGv5Edq7X4sGURiZYA">
+          <body>Retrieves the profiles that are applied to this package.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_cExTkGv5Edq7X4sGURiZYA" type="__pew8GvzEdq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_eExccWv5Edq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_eExccGv5Edq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_kCeTgGwFEdq7X4sGURiZYA" name="getAllAppliedProfiles" isQuery="true">
+        <ownedComment xmi:id="_KHdvEOwiEdqYHf-imTcTdw" annotatedElement="_kCeTgGwFEdq7X4sGURiZYA">
+          <body>Retrieves all the profiles that are applied to this package, including profiles applied to its nesting package(s).</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_kCeTgWwFEdq7X4sGURiZYA" type="__pew8GvzEdq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kCeTgmwFEdq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kCeTg2wFEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_tasT4G11EdqniMBnIUw7ig" name="getAppliedProfile" isQuery="true">
+        <ownedComment xmi:id="_SSMU0OwiEdqYHf-imTcTdw" annotatedElement="_tasT4G11EdqniMBnIUw7ig">
+          <body>Retrieves the profile with the specified qualified name that is applied to this package, or null if no such profile is applied.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_wSH0AG11EdqniMBnIUw7ig" type="__pew8GvzEdq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yo7TUW11EdqniMBnIUw7ig" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yo7TUG11EdqniMBnIUw7ig"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_2bXqMG11EdqniMBnIUw7ig" name="qualifiedName" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_c7n3wPIEEdulR8T2OJRyFQ" annotatedElement="_2bXqMG11EdqniMBnIUw7ig">
+            <body>The qualified name of the applied profile to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_7MPYMG11EdqniMBnIUw7ig" name="getAppliedProfile" isQuery="true">
+        <ownedComment xmi:id="_fm_LsOwiEdqYHf-imTcTdw" annotatedElement="_7MPYMG11EdqniMBnIUw7ig">
+          <body>Retrieves the profile with the specified qualified name that is applied to this package or any of its nesting packages (if indicated), or null if no such profile is applied.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_7MPYMW11EdqniMBnIUw7ig" type="__pew8GvzEdq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7MPYMm11EdqniMBnIUw7ig" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7MPYM211EdqniMBnIUw7ig"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_7MPYNG11EdqniMBnIUw7ig" name="qualifiedName" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_fzp00PIEEdulR8T2OJRyFQ" annotatedElement="_7MPYNG11EdqniMBnIUw7ig">
+            <body>The qualified name of the applied profile to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_8HGd8G11EdqniMBnIUw7ig" name="recurse" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_j8mnMPIEEdulR8T2OJRyFQ" annotatedElement="_8HGd8G11EdqniMBnIUw7ig">
+            <body>Whether to look in nesting packages.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_kxh7IG10EdqniMBnIUw7ig" name="getAllProfileApplications" isQuery="true">
+        <ownedComment xmi:id="_pMBMQOwiEdqYHf-imTcTdw" annotatedElement="_kxh7IG10EdqniMBnIUw7ig">
+          <body>Retrieves all the profile applications for this package, including profile applications for its nesting package(s).</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_pW8AAG10EdqniMBnIUw7ig" type="_uY5yQGv5Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rvqx8W10EdqniMBnIUw7ig" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rvqx8G10EdqniMBnIUw7ig"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_FOcTIKO_Edqi_5gqUMOQtA" name="getProfileApplication" isQuery="true">
+        <ownedComment xmi:id="_vvVvUOwiEdqYHf-imTcTdw" annotatedElement="_FOcTIKO_Edqi_5gqUMOQtA">
+          <body>Retrieves the application of the specified profile to this package, or null if no such profile is applied.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_FOcTIaO_Edqi_5gqUMOQtA" type="_uY5yQGv5Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FOcTIqO_Edqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FOcTI6O_Edqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_FOcTJKO_Edqi_5gqUMOQtA" name="profile" type="__pew8GvzEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_nAG0cPIEEdulR8T2OJRyFQ" annotatedElement="_FOcTJKO_Edqi_5gqUMOQtA">
+            <body>The profile whose application to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_QaTt4G11EdqniMBnIUw7ig" name="getProfileApplication" isQuery="true">
+        <ownedComment xmi:id="_wmn8oOwiEdqYHf-imTcTdw" annotatedElement="_QaTt4G11EdqniMBnIUw7ig">
+          <body>Retrieves the application of the specified profile to this package or any of its nesting packages (if indicated), or null if no such profile is applied.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_QaTt4W11EdqniMBnIUw7ig" type="_uY5yQGv5Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_QaTt4m11EdqniMBnIUw7ig" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_QaTt4211EdqniMBnIUw7ig"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_rYVqgG2JEdq0sOo3CGeQEg" name="profile" type="__pew8GvzEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_pERroPIEEdulR8T2OJRyFQ" annotatedElement="_rYVqgG2JEdq0sOo3CGeQEg">
+            <body>The profile whose application to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_RiuHcG11EdqniMBnIUw7ig" name="recurse" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_q8YcwPIEEdulR8T2OJRyFQ" annotatedElement="_RiuHcG11EdqniMBnIUw7ig">
+            <body>Whether to look in nesting packages.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_NrOGAIbSEdqhgMOAOWpjfQ" name="isModelLibrary" isQuery="true">
+        <ownedComment xmi:id="_4KKmkOwiEdqYHf-imTcTdw" annotatedElement="_NrOGAIbSEdqhgMOAOWpjfQ">
+          <body>Determines whether this package is a model library.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_NrOGAYbSEdqhgMOAOWpjfQ" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="__pew8GvzEdq7X4sGURiZYA" name="Profile">
+      <nestedClassifier xmi:type="uml:PrimitiveType" xmi:id="_HmwyMtrxEduW-vlXzvw90A" name="EMap_EJavaObject_EJavaObject">
+        <templateBinding xmi:id="_0mVaQNryEduJovxV1TmzsQ">
+          <signature xmi:type="uml:RedefinableTemplateSignature" href="Ecore.uml#_SeWke8X_EduPJbEsMYXjUQ"/>
+          <parameterSubstitution xmi:id="_x9HDUNr0EduJovxV1TmzsQ">
+            <formal xmi:type="uml:ClassifierTemplateParameter" href="Ecore.uml#_SeWkfMX_EduPJbEsMYXjUQ"/>
+            <actual xmi:type="uml:PrimitiveType" href="Ecore.uml#_SeWkccX_EduPJbEsMYXjUQ"/>
+          </parameterSubstitution>
+          <parameterSubstitution xmi:id="_zYmw8Nr0EduJovxV1TmzsQ">
+            <formal xmi:type="uml:ClassifierTemplateParameter" href="Ecore.uml#_SeWkfsX_EduPJbEsMYXjUQ"/>
+            <actual xmi:type="uml:PrimitiveType" href="Ecore.uml#_SeWkccX_EduPJbEsMYXjUQ"/>
+          </parameterSubstitution>
+        </templateBinding>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:PrimitiveType" xmi:id="_HmwyNtrxEduW-vlXzvw90A" name="EMap_EString_EString">
+        <templateBinding xmi:id="_2w0U0NryEduJovxV1TmzsQ">
+          <signature xmi:type="uml:RedefinableTemplateSignature" href="Ecore.uml#_SeWke8X_EduPJbEsMYXjUQ"/>
+          <parameterSubstitution xmi:id="_HmwyONrxEduW-vlXzvw90A" actual="_aAyVgGvsEdqG6fBIPwe-mw">
+            <formal xmi:type="uml:ClassifierTemplateParameter" href="Ecore.uml#_SeWkfMX_EduPJbEsMYXjUQ"/>
+          </parameterSubstitution>
+          <parameterSubstitution xmi:id="_HmwyOdrxEduW-vlXzvw90A" actual="_aAyVgGvsEdqG6fBIPwe-mw">
+            <formal xmi:type="uml:ClassifierTemplateParameter" href="Ecore.uml#_SeWkfsX_EduPJbEsMYXjUQ"/>
+          </parameterSubstitution>
+        </templateBinding>
+      </nestedClassifier>
+      <ownedOperation xmi:id="_2QKPIGwJEdq7X4sGURiZYA" name="create">
+        <ownedComment xmi:id="_QbUdUOwjEdqYHf-imTcTdw" annotatedElement="_2QKPIGwJEdq7X4sGURiZYA">
+          <body>Creates and returns an instance of (the Ecore representation of) the specified classifier defined in this profile.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_9o-PwGwJEdq7X4sGURiZYA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWijsX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_-se7MGwJEdq7X4sGURiZYA" name="classifier" type="_6UV2QGwJEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_6Ay3IPIEEdulR8T2OJRyFQ" annotatedElement="_-se7MGwJEdq7X4sGURiZYA">
+            <body>The classifier of which to create an instance.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_senckGwJEdq7X4sGURiZYA" name="createOwnedStereotype">
+        <ownedComment xmi:id="_VxTDgOwjEdqYHf-imTcTdw" annotatedElement="_senckGwJEdq7X4sGURiZYA">
+          <body>Creates a(n) (abstract) stereotype with the specified name as an owned stereotype of this profile.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_upCswGwJEdq7X4sGURiZYA" type="_A7vDAGv0Edq7X4sGURiZYA" direction="return"/>
+        <ownedParameter xmi:id="_xOvjsGwJEdq7X4sGURiZYA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_9ZmmAPIEEdulR8T2OJRyFQ" annotatedElement="_xOvjsGwJEdq7X4sGURiZYA">
+            <body>The name for the new stereotype, or null.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_vJOosGwJEdq7X4sGURiZYA" name="isAbstract" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_73tVcPIEEdulR8T2OJRyFQ" annotatedElement="_vJOosGwJEdq7X4sGURiZYA">
+            <body>Whether the new stereotype should be abstract.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_8ACYgGwIEdq7X4sGURiZYA" name="isDefined" isQuery="true">
+        <ownedComment xmi:id="_iDLr4OwjEdqYHf-imTcTdw" annotatedElement="_8ACYgGwIEdq7X4sGURiZYA">
+          <body>Determines whether this profile is defined.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_E3LYUGwJEdq7X4sGURiZYA" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_GdjgQGwJEdq7X4sGURiZYA" name="define">
+        <ownedComment xmi:id="_gx0xsOwjEdqYHf-imTcTdw" annotatedElement="_GdjgQGwJEdq7X4sGURiZYA">
+          <body>Defines this profile by (re)creating Ecore representations of its current contents.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_JO2EsGwgEdqHKKVoxc0dlA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWjPsX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bctjUWwgEdqHKKVoxc0dlA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bctjUGwgEdqHKKVoxc0dlA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_M-uloNrsEduJovxV1TmzsQ" name="define">
+        <ownedComment xmi:id="_-vR1oNrxEduJovxV1TmzsQ" annotatedElement="_M-uloNrsEduJovxV1TmzsQ">
+          <body>Defines this profile by (re)creating Ecore representations of its current contents, using the specified options, diagnostics, and context.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_Rn2F0NrsEduJovxV1TmzsQ" name="" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWjPsX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_cg7vQNrsEduJovxV1TmzsQ" name="options" type="_HmwyNtrxEduW-vlXzvw90A">
+          <ownedComment xmi:id="_OYzSEPIFEdulR8T2OJRyFQ" annotatedElement="_cg7vQNrsEduJovxV1TmzsQ">
+            <body>The options to use.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_aE-DINrsEduJovxV1TmzsQ" name="diagnostics">
+          <ownedComment xmi:id="_RGiqsPIFEdulR8T2OJRyFQ" annotatedElement="_aE-DINrsEduJovxV1TmzsQ">
+            <body>The chain of diagnostics to which problems are to be appended.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="Ecore.uml#_SeWkTcX_EduPJbEsMYXjUQ"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_dHhOINrsEduJovxV1TmzsQ" name="context" type="_HmwyMtrxEduW-vlXzvw90A">
+          <ownedComment xmi:id="_TxUO4PIFEdulR8T2OJRyFQ" annotatedElement="_dHhOINrsEduJovxV1TmzsQ">
+            <body>The cache of context-specific information.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_LLkQEGwgEdqHKKVoxc0dlA" name="getDefinition" isQuery="true">
+        <ownedComment xmi:id="_nSm-IOwjEdqYHf-imTcTdw" annotatedElement="_LLkQEGwgEdqHKKVoxc0dlA">
+          <body>Retrieves the current definition (Ecore representation) of this profile.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_P0QScGwgEdqHKKVoxc0dlA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWjPsX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dKYmEWwgEdqHKKVoxc0dlA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dKYmEGwgEdqHKKVoxc0dlA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_nFBqQGwgEdqHKKVoxc0dlA" name="getDefinition" isQuery="true">
+        <ownedComment xmi:id="_qItBgOwjEdqYHf-imTcTdw" annotatedElement="_nFBqQGwgEdqHKKVoxc0dlA">
+          <body>Retrieves the current definition (Ecore representation) of the specified named element in this profile.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_nFBqQWwgEdqHKKVoxc0dlA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWifsX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_nFBqQmwgEdqHKKVoxc0dlA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_nFBqQ2wgEdqHKKVoxc0dlA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_pPTwgGwgEdqHKKVoxc0dlA" name="namedElement" type="_csVgUGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_Wo6HEPIFEdulR8T2OJRyFQ" annotatedElement="_pPTwgGwgEdqHKKVoxc0dlA">
+            <body>The named element whose definition to retrieve.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_LBK1YGwJEdq7X4sGURiZYA" name="getReferencedMetaclasses" isQuery="true">
+        <ownedComment xmi:id="_rWMIUOwjEdqYHf-imTcTdw" annotatedElement="_LBK1YGwJEdq7X4sGURiZYA">
+          <body>Retrieves the metaclasses referenced by this profile.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_Ns-UUGwJEdq7X4sGURiZYA" type="_00owUGvdEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_PU_bAWwJEdq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_PU_bAGwJEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_Y9mUAGwJEdq7X4sGURiZYA" name="getReferencedMetamodels" isQuery="true">
+        <ownedComment xmi:id="_wXAW0OwjEdqYHf-imTcTdw" annotatedElement="_Y9mUAGwJEdq7X4sGURiZYA">
+          <body>Retrieves the metamodels referenced by this profile.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_berJoGwJEdq7X4sGURiZYA" type="_NVhqMGv0Edq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_dSdbcWwJEdq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_dSdbcGwJEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_HL150JPuEdqpjIDDFZ2Hgw" name="getOwnedExtensions" isQuery="true">
+        <ownedComment xmi:id="_27ORwOwjEdqYHf-imTcTdw" annotatedElement="_HL150JPuEdqpjIDDFZ2Hgw">
+          <body>Retrieves the extensions owned by this profile, excluding non-required extensions if indicated.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_KG2SYJPuEdqpjIDDFZ2Hgw" type="_skHGwGvsEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Bi6zYZP3EdqpjIDDFZ2Hgw" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Bi6zYJP3EdqpjIDDFZ2Hgw"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_OTEbMJPuEdqpjIDDFZ2Hgw" name="requiredOnly" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_aM5yQPIFEdulR8T2OJRyFQ" annotatedElement="_OTEbMJPuEdqpjIDDFZ2Hgw">
+            <body>Whether to retrieve only required extensions.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_A7vDAGv0Edq7X4sGURiZYA" name="Stereotype">
+      <ownedOperation xmi:id="_FJce8GwHEdq7X4sGURiZYA" name="createExtension">
+        <ownedComment xmi:id="_7qwjAOwjEdqYHf-imTcTdw" annotatedElement="_FJce8GwHEdq7X4sGURiZYA">
+          <body>Creates a(n) (required) extension of the specified metaclass with this stereotype.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_IziyIGwHEdq7X4sGURiZYA" type="_skHGwGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_cQPbYGwHEdq7X4sGURiZYA" name="metaclass" type="_00owUGvdEdq4DLWZOhbdEA" effect="read">
+          <ownedComment xmi:id="_5QyhEPIFEdulR8T2OJRyFQ" annotatedElement="_cQPbYGwHEdq7X4sGURiZYA">
+            <body>The metaclass for the new extension.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_Jc0YoGwHEdq7X4sGURiZYA" name="isRequired" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_37aCgPIFEdulR8T2OJRyFQ" annotatedElement="_Jc0YoGwHEdq7X4sGURiZYA">
+            <body>Whether the new extension should be required.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_X7-EcGv0Edq7X4sGURiZYA" name="getProfile" isQuery="true">
+        <ownedComment xmi:id="_9LxCwOwjEdqYHf-imTcTdw" annotatedElement="_X7-EcGv0Edq7X4sGURiZYA">
+          <body>Retrieves the profile that owns this stereotype.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_Z7OmcGv0Edq7X4sGURiZYA" type="__pew8GvzEdq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_D7gsMWwHEdq7X4sGURiZYA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_D7gsMGwHEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_im40YGwHEdq7X4sGURiZYA" name="getKeyword" isQuery="true">
+        <ownedComment xmi:id="_-0EdUOwjEdqYHf-imTcTdw" annotatedElement="_im40YGwHEdq7X4sGURiZYA">
+          <body>Retrieves the localized keyword for this stereotype.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_lZHEYGwHEdq7X4sGURiZYA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_n7YM0GwHEdq7X4sGURiZYA" name="getKeyword" isQuery="true">
+        <ownedComment xmi:id="_AJA3AOwkEdqYHf-imTcTdw" annotatedElement="_n7YM0GwHEdq7X4sGURiZYA">
+          <body>Retrieves the keyword for this stereotype, localized if indicated.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_n7YM0WwHEdq7X4sGURiZYA" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_rn3FoGwHEdq7X4sGURiZYA" name="localize" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_AMa2cPIGEdulR8T2OJRyFQ" annotatedElement="_rn3FoGwHEdq7X4sGURiZYA">
+            <body>Whether to localize the keyword.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_02jCwGwHEdq7X4sGURiZYA" name="getExtendedMetaclasses" isQuery="true">
+        <ownedComment xmi:id="_BxLHoOwkEdqYHf-imTcTdw" annotatedElement="_02jCwGwHEdq7X4sGURiZYA">
+          <body>Retrieves the metaclasses extended by this stereotype.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_25hnIGwHEdq7X4sGURiZYA" type="_00owUGvdEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5lVtIWwHEdq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5lVtIGwHEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_7T5gsGwHEdq7X4sGURiZYA" name="getAllExtendedMetaclasses" isQuery="true">
+        <ownedComment xmi:id="_FnVg4OwkEdqYHf-imTcTdw" annotatedElement="_7T5gsGwHEdq7X4sGURiZYA">
+          <body>Retrieves all the metaclasses extended by this stereotype, including the metaclasses extended by its superstereotypes.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_7T5gsWwHEdq7X4sGURiZYA" type="_00owUGvdEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7T5gsmwHEdq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7T5gs2wHEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_wdNtsI0GEdqipMtlOpTiHA" name="getDefinition" isQuery="true">
+        <ownedComment xmi:id="_MOYGUOwkEdqYHf-imTcTdw" annotatedElement="_wdNtsI0GEdqipMtlOpTiHA">
+          <body>Retrieves the current definition (Ecore representation) of this stereotype.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_wdNtsY0GEdqipMtlOpTiHA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWizcX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wdNtso0GEdqipMtlOpTiHA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wdNts40GEdqipMtlOpTiHA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_h2eXIJPzEdqpjIDDFZ2Hgw" name="createIcon">
+        <ownedComment xmi:id="_Oq2IwOwkEdqYHf-imTcTdw" annotatedElement="_h2eXIJPzEdqpjIDDFZ2Hgw">
+          <body>Creates an icon with the specified location for this stereotype.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_tND04JPzEdqpjIDDFZ2Hgw" type="_nDq0wJPzEdqpjIDDFZ2Hgw" direction="return"/>
+        <ownedParameter xmi:id="_vrdJ8JPzEdqpjIDDFZ2Hgw" name="location" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_6oabUPIFEdulR8T2OJRyFQ" annotatedElement="_vrdJ8JPzEdqpjIDDFZ2Hgw">
+            <body>The location for the new icon.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_pK-tQJP4EdqpjIDDFZ2Hgw" name="createIcon">
+        <ownedComment xmi:id="_UNpC8OwkEdqYHf-imTcTdw" annotatedElement="_pK-tQJP4EdqpjIDDFZ2Hgw">
+          <body>Creates an icon with the specified format and content for this stereotype.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_ud-Q4JP4EdqpjIDDFZ2Hgw" type="_nDq0wJPzEdqpjIDDFZ2Hgw" direction="return"/>
+        <ownedParameter xmi:id="_T7RY0JP5EdqpjIDDFZ2Hgw" name="format" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_9G0XcPIFEdulR8T2OJRyFQ" annotatedElement="_T7RY0JP5EdqpjIDDFZ2Hgw">
+            <body>The format for the new icon.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_RPUI4JP5EdqpjIDDFZ2Hgw" name="content" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_79W1APIFEdulR8T2OJRyFQ" annotatedElement="_RPUI4JP5EdqpjIDDFZ2Hgw">
+            <body>The content for the new icon.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_NVhqMGv0Edq7X4sGURiZYA" name="Model">
+      <ownedOperation xmi:id="_9nl2EGwREdq14q0ETb1t3g" name="isMetamodel" isQuery="true">
+        <ownedComment xmi:id="_9s0W0OwiEdqYHf-imTcTdw" annotatedElement="_9nl2EGwREdq14q0ETb1t3g">
+          <body>Determines whether this model is a metamodel.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="__8c0oGwREdq14q0ETb1t3g" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_uY5yQGv5Edq7X4sGURiZYA" name="ProfileApplication">
+      <ownedOperation xmi:id="_GXI1QW10EdqniMBnIUw7ig" name="getAppliedDefinition" isQuery="true">
+        <ownedComment xmi:id="_ifO5QOwkEdqYHf-imTcTdw" annotatedElement="_GXI1QW10EdqniMBnIUw7ig">
+          <body>Retrieves the definition (Ecore representation) of the profile associated with this profile application.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_LJ9EAG10EdqniMBnIUw7ig" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWjPsX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_OTQ-UW10EdqniMBnIUw7ig" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_OTQ-UG10EdqniMBnIUw7ig"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_G3YEAI2_EdqipMtlOpTiHA" name="getAppliedDefinition" isQuery="true">
+        <ownedComment xmi:id="_lZV58OwkEdqYHf-imTcTdw" annotatedElement="_G3YEAI2_EdqipMtlOpTiHA">
+          <body>Retrieves the definition (Ecore representation) of the specified named element in the profile associated with this profile application.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_G3YEAY2_EdqipMtlOpTiHA" direction="return">
+          <type xmi:type="uml:Class" href="Ecore.uml#_SeWifsX_EduPJbEsMYXjUQ"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_G3YEAo2_EdqipMtlOpTiHA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_G3YEA42_EdqipMtlOpTiHA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_G3YEBI2_EdqipMtlOpTiHA" name="namedElement" type="_csVgUGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_myyUsPIFEdulR8T2OJRyFQ" annotatedElement="_G3YEBI2_EdqipMtlOpTiHA">
+            <body>The named element for which to retrieve the applied definition.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_I6N3UGwGEdq7X4sGURiZYA" name="Enumeration"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_V6vuYGwGEdq7X4sGURiZYA" name="PrimitiveType"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_RPl78GwIEdq7X4sGURiZYA" name="ElementImport"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_SnNPIGwIEdq7X4sGURiZYA" name="PackageImport"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_6UV2QGwJEdq7X4sGURiZYA" name="Classifier" isAbstract="true">
+      <ownedOperation xmi:id="_KjT7EGwREdq14q0ETb1t3g" name="getAllAttributes" isQuery="true">
+        <ownedComment xmi:id="_osV7wOwkEdqYHf-imTcTdw" annotatedElement="_KjT7EGwREdq14q0ETb1t3g">
+          <body>Retrieves all the attributes of this classifier, including those inherited from its parents.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_OXZQsGwREdq14q0ETb1t3g" type="_Jp_1oGveEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Q1zM0WwREdq14q0ETb1t3g" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Q1zM0GwREdq14q0ETb1t3g"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_XVsBYGwREdq14q0ETb1t3g" name="getOperations" isQuery="true">
+        <ownedComment xmi:id="_wywpQOwkEdqYHf-imTcTdw" annotatedElement="_XVsBYGwREdq14q0ETb1t3g">
+          <body>Retrieves the operations of this classifier.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_ZvULMGwREdq14q0ETb1t3g" type="_M4X2IGveEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_cOT9MWwREdq14q0ETb1t3g" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_cOT9MGwREdq14q0ETb1t3g"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_d5JuYGwREdq14q0ETb1t3g" name="getAllOperations" isQuery="true">
+        <ownedComment xmi:id="_yDq3gOwkEdqYHf-imTcTdw" annotatedElement="_d5JuYGwREdq14q0ETb1t3g">
+          <body>Retrieves all the operations of this classifier, including those inherited from its parents.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_d5JuYWwREdq14q0ETb1t3g" type="_M4X2IGveEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_d5JuYmwREdq14q0ETb1t3g" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_d5JuY2wREdq14q0ETb1t3g"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_hw6gIHFhEdqziYxiZo0YtA" name="getOperation" isQuery="true">
+        <ownedComment xmi:id="_-qt3kOwkEdqYHf-imTcTdw" annotatedElement="_hw6gIHFhEdqziYxiZo0YtA">
+          <body>Retrieves the first operation with the specified name, parameter names, and parameter types from this classifier.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_ls4mcHFhEdqziYxiZo0YtA" type="_M4X2IGveEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_skn6UXFhEdqziYxiZo0YtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_skn6UHFhEdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_usha8HFhEdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_R1RdIPH-EdulR8T2OJRyFQ" annotatedElement="_usha8HFhEdqziYxiZo0YtA">
+            <body>The name of the operation to retrieve, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_UQSfgaOwEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_UQSfgKOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_LgAVoKOwEdqi_5gqUMOQtA" name="parameterNames" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_VK9mkPH-EdulR8T2OJRyFQ" annotatedElement="_LgAVoKOwEdqi_5gqUMOQtA">
+            <body>The parameter names of the operation to retrieve, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Vz1V4aOwEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Vz1V4KOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_s8hlMKOvEdqi_5gqUMOQtA" name="parameterTypes" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_XUDaAPH-EdulR8T2OJRyFQ" annotatedElement="_s8hlMKOvEdqi_5gqUMOQtA">
+            <body>The parameter types of the operation to retrieve, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XhDssaOwEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XhDssKOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_aGT3sKOwEdqi_5gqUMOQtA" name="getOperation" isQuery="true">
+        <ownedComment xmi:id="_-8cgwOwkEdqYHf-imTcTdw" annotatedElement="_aGT3sKOwEdqi_5gqUMOQtA">
+          <body>Retrieves the first operation with the specified name, parameter names, and parameter types from this classifier, ignoring case if indicated.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_aGT3saOwEdqi_5gqUMOQtA" type="_M4X2IGveEdq4DLWZOhbdEA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aGT3sqOwEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aGT3s6OwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_aGT3tKOwEdqi_5gqUMOQtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_3HC1EPH_EdulR8T2OJRyFQ" annotatedElement="_aGT3tKOwEdqi_5gqUMOQtA">
+            <body>The name of the operation to retrieve, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aGT3taOwEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aGT3tqOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_aGT3t6OwEdqi_5gqUMOQtA" name="parameterNames" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_6FotIPH_EdulR8T2OJRyFQ" annotatedElement="_aGT3t6OwEdqi_5gqUMOQtA">
+            <body>The parameter names of the operation to retrieve, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aGT3uKOwEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aGT3uaOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_aGT3uqOwEdqi_5gqUMOQtA" name="parameterTypes" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_-UGRoPH_EdulR8T2OJRyFQ" annotatedElement="_aGT3uqOwEdqi_5gqUMOQtA">
+            <body>The parameter types of the operation to retrieve, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aGT3u6OwEdqi_5gqUMOQtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aGT3vKOwEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_c2vX8KOwEdqi_5gqUMOQtA" name="ignoreCase" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_0yxsYPH_EdulR8T2OJRyFQ" annotatedElement="_c2vX8KOwEdqi_5gqUMOQtA">
+            <body>Whether to ignore case in String comparisons.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_8OsQwK69EdqjppZik4kD8A" name="getUsedInterfaces">
+        <ownedComment xmi:id="_IHZ0cOwlEdqYHf-imTcTdw" annotatedElement="_8OsQwK69EdqjppZik4kD8A">
+          <body>Retrieves the interfaces on which this classifier has a usage dependency.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_GDE78K6-EdqjppZik4kD8A" type="_8Ugn8GvtEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_J92vca6-EdqjppZik4kD8A" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_J92vcK6-EdqjppZik4kD8A"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_MH_rwK6-EdqjppZik4kD8A" name="getAllUsedInterfaces">
+        <ownedComment xmi:id="_LQH44OwlEdqYHf-imTcTdw" annotatedElement="_MH_rwK6-EdqjppZik4kD8A">
+          <body>Retrieves all the interfaces on which this classifier or any of its parents has a usage dependency.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_MH_rwa6-EdqjppZik4kD8A" type="_8Ugn8GvtEdqG6fBIPwe-mw" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_MH_rwq6-EdqjppZik4kD8A" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_MH_rw66-EdqjppZik4kD8A"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_rEDGkGwKEdq7X4sGURiZYA" name="Dependency"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ZiwkoGwLEdq7X4sGURiZYA" name="Namespace" isAbstract="true">
+      <ownedOperation xmi:id="_vI18QGwLEdq7X4sGURiZYA" name="createElementImport">
+        <ownedComment xmi:id="_sdLToOwlEdqYHf-imTcTdw" annotatedElement="_vI18QGwLEdq7X4sGURiZYA">
+          <body>Creates an import of the specified element into this namespace with the specified visibility.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_xwes4GwLEdq7X4sGURiZYA" type="_RPl78GwIEdq7X4sGURiZYA" direction="return"/>
+        <ownedParameter xmi:id="_yOllMGwLEdq7X4sGURiZYA" name="element" type="_jKxnwGwLEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_5dZroPIDEdulR8T2OJRyFQ" annotatedElement="_yOllMGwLEdq7X4sGURiZYA">
+            <body>The element to import.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_9mppoGwLEdq7X4sGURiZYA" name="visibility" type="_AyM_oGwMEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_8P62kPIDEdulR8T2OJRyFQ" annotatedElement="_9mppoGwLEdq7X4sGURiZYA">
+            <body>The visibility for the new element import.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_FRpmcGwMEdq7X4sGURiZYA" name="createPackageImport">
+        <ownedComment xmi:id="_t-ofUOwlEdqYHf-imTcTdw" annotatedElement="_FRpmcGwMEdq7X4sGURiZYA">
+          <body>Creates an import of the specified package into this namespace with the specified visibility.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_IdWGYGwMEdq7X4sGURiZYA" type="_SnNPIGwIEdq7X4sGURiZYA" direction="return"/>
+        <ownedParameter xmi:id="_RsevcGwMEdq7X4sGURiZYA" name="package_" type="_-cvRAGvzEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_-NYo0PIDEdulR8T2OJRyFQ" annotatedElement="_RsevcGwMEdq7X4sGURiZYA">
+            <body>The package to import.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_OxwqwGwMEdq7X4sGURiZYA" name="visibility" type="_AyM_oGwMEdq7X4sGURiZYA" effect="read">
+          <ownedComment xmi:id="_CiGmUPIEEdulR8T2OJRyFQ" annotatedElement="_OxwqwGwMEdq7X4sGURiZYA">
+            <body>The visibility for the new package import.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_aoDYwGwLEdq7X4sGURiZYA" name="getImportedElements" isQuery="true">
+        <ownedComment xmi:id="_zNDPgOwmEdqYHf-imTcTdw" annotatedElement="_aoDYwGwLEdq7X4sGURiZYA">
+          <body>Retrieves the elements imported by this namespace.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_mL5PYGwLEdq7X4sGURiZYA" type="_jKxnwGwLEdq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_n-CicWwLEdq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_n-CicGwLEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_2OvA4GwLEdq7X4sGURiZYA" name="getImportedPackages" isQuery="true">
+        <ownedComment xmi:id="_0UuCMOwmEdqYHf-imTcTdw" annotatedElement="_2OvA4GwLEdq7X4sGURiZYA">
+          <body>Retrieves the packages imported by this namespace.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_40lo0GwLEdq7X4sGURiZYA" type="_-cvRAGvzEdq7X4sGURiZYA" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6sF9AWwLEdq7X4sGURiZYA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6sF9AGwLEdq7X4sGURiZYA"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_jKxnwGwLEdq7X4sGURiZYA" name="PackageableElement" isAbstract="true"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_AwvxoGwNEdq7X4sGURiZYA" name="Association">
+      <ownedOperation xmi:id="_WSPusK69EdqjppZik4kD8A" name="isBinary">
+        <ownedComment xmi:id="_4TWQYOwlEdqYHf-imTcTdw" annotatedElement="_WSPusK69EdqjppZik4kD8A">
+          <body>Determines whether this association is a binary association, i.e. whether it has exactly two member ends.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_YmN8cK69EdqjppZik4kD8A" type="_UdivYGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_OQcbgGwOEdq7X4sGURiZYA" name="EnumerationLiteral"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_C7AF4GwREdq14q0ETb1t3g" name="Generalization"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_FQiVsGwYEdqHKKVoxc0dlA" name="StructuredClassifier" isAbstract="true">
+      <ownedOperation xmi:id="_YorvMHL0EdqziYxiZo0YtA" name="createOwnedAttribute">
+        <ownedComment xmi:id="_9BZT4OwlEdqYHf-imTcTdw" annotatedElement="_YorvMHL0EdqziYxiZo0YtA">
+          <body>Creates a property with the specified name, type, lower bound, and upper bound as an owned attribute of this structured classifier.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_YorvMXL0EdqziYxiZo0YtA" type="_Jp_1oGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_YorvMnL0EdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_GYWNMPIGEdulR8T2OJRyFQ" annotatedElement="_YorvMnL0EdqziYxiZo0YtA">
+            <body>The name for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_gKEUcaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_gKEUcKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_YorvM3L0EdqziYxiZo0YtA" name="type" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_Ic0mYPIGEdulR8T2OJRyFQ" annotatedElement="_YorvM3L0EdqziYxiZo0YtA">
+            <body>The type for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_iJ7TYaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_iJ7TYKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_YorvNHL0EdqziYxiZo0YtA" name="lower" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_EwVGgPIGEdulR8T2OJRyFQ" annotatedElement="_YorvNHL0EdqziYxiZo0YtA">
+            <body>The lower bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_YorvNXL0EdqziYxiZo0YtA" name="upper" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_JWfZUPIGEdulR8T2OJRyFQ" annotatedElement="_YorvNXL0EdqziYxiZo0YtA">
+            <body>The upper bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_l2mXcHLzEdqziYxiZo0YtA" name="InterfaceRealization"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_-lGRgHLzEdqziYxiZo0YtA" name="Artifact">
+      <ownedOperation xmi:id="_C-IuUHL0EdqziYxiZo0YtA" name="createOwnedOperation">
+        <ownedComment xmi:id="_DUnlcOwmEdqYHf-imTcTdw" annotatedElement="_C-IuUHL0EdqziYxiZo0YtA">
+          <body>Creates an operation with the specified name, parameter names, parameter types, and return type (or null) as an owned operation of this artifact.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_C-IuUXL0EdqziYxiZo0YtA" type="_M4X2IGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_C-IuUnL0EdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_VYNN0PH9EdulR8T2OJRyFQ" annotatedElement="_C-IuUnL0EdqziYxiZo0YtA">
+            <body>The name for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_m8S2MaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_m8S2MKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_C-IuVHL0EdqziYxiZo0YtA" name="parameterNames" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_X6VMUPH9EdulR8T2OJRyFQ" annotatedElement="_C-IuVHL0EdqziYxiZo0YtA">
+            <body>The parameter names for  the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_C-IuVXL0EdqziYxiZo0YtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_C-IuVnL0EdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_C-IuV3L0EdqziYxiZo0YtA" name="parameterTypes" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_f7aG0PH9EdulR8T2OJRyFQ" annotatedElement="_C-IuV3L0EdqziYxiZo0YtA">
+            <body>The parameter types for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_C-IuWHL0EdqziYxiZo0YtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_C-IuWXL0EdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_C-IuU3L0EdqziYxiZo0YtA" name="returnType" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_njmAMPH9EdulR8T2OJRyFQ" annotatedElement="_C-IuU3L0EdqziYxiZo0YtA">
+            <body>The return type for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_o7P2MaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_o7P2MKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_U7wxgHL0EdqziYxiZo0YtA" name="createOwnedAttribute">
+        <ownedComment xmi:id="__9c1UOwlEdqYHf-imTcTdw" annotatedElement="_U7wxgHL0EdqziYxiZo0YtA">
+          <body>Creates a property with the specified name, type, lower bound, and upper bound as an owned attribute of this artifact.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_U7wxgXL0EdqziYxiZo0YtA" type="_Jp_1oGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_U7wxgnL0EdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_QGYH0PH9EdulR8T2OJRyFQ" annotatedElement="_U7wxgnL0EdqziYxiZo0YtA">
+            <body>The name for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_rUSKIaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_rUSKIKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_U7wxg3L0EdqziYxiZo0YtA" name="type" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_Rw7lIPH9EdulR8T2OJRyFQ" annotatedElement="_U7wxg3L0EdqziYxiZo0YtA">
+            <body>The type for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_tO6q0aOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_tO6q0KOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_U7wxhHL0EdqziYxiZo0YtA" name="lower" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_OtHO0fH9EdulR8T2OJRyFQ" annotatedElement="_U7wxhHL0EdqziYxiZo0YtA">
+            <body>The lower bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_U7wxhXL0EdqziYxiZo0YtA" name="upper" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_TYfY0PH9EdulR8T2OJRyFQ" annotatedElement="_U7wxhXL0EdqziYxiZo0YtA">
+            <body>The upper bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="__1ap4HLzEdqziYxiZo0YtA" name="DataType">
+      <ownedOperation xmi:id="_FDM9YHL0EdqziYxiZo0YtA" name="createOwnedOperation">
+        <ownedComment xmi:id="_GrDVwOwmEdqYHf-imTcTdw" annotatedElement="_FDM9YHL0EdqziYxiZo0YtA">
+          <body>Creates an operation with the specified name, parameter names, parameter types, and return type (or null) as an owned operation of this data type.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_FDM9YXL0EdqziYxiZo0YtA" type="_M4X2IGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_FDM9YnL0EdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_qJiAUPIAEdulR8T2OJRyFQ" annotatedElement="_FDM9YnL0EdqziYxiZo0YtA">
+            <body>The name for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wfr4AaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wfr4AKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_FDM9ZHL0EdqziYxiZo0YtA" name="parameterNames" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_sw2n4PIAEdulR8T2OJRyFQ" annotatedElement="_FDM9ZHL0EdqziYxiZo0YtA">
+            <body>The parameter names for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FDM9ZXL0EdqziYxiZo0YtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FDM9ZnL0EdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_FDM9Z3L0EdqziYxiZo0YtA" name="parameterTypes" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_uKsvsPIAEdulR8T2OJRyFQ" annotatedElement="_FDM9Z3L0EdqziYxiZo0YtA">
+            <body>The parameter types for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_FDM9aHL0EdqziYxiZo0YtA" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_FDM9aXL0EdqziYxiZo0YtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_FDM9Y3L0EdqziYxiZo0YtA" name="returnType" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_wCpIwPIAEdulR8T2OJRyFQ" annotatedElement="_FDM9Y3L0EdqziYxiZo0YtA">
+            <body>The return type for the new operation, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_yc2vUaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_yc2vUKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_WJZCQHL0EdqziYxiZo0YtA" name="createOwnedAttribute">
+        <ownedComment xmi:id="_I4T3gOwmEdqYHf-imTcTdw" annotatedElement="_WJZCQHL0EdqziYxiZo0YtA">
+          <body>Creates a property with the specified name, type, lower bound, and upper bound as an owned attribute of this data type.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_WJZCQXL0EdqziYxiZo0YtA" type="_Jp_1oGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_WJZCQnL0EdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_kDvt0PIAEdulR8T2OJRyFQ" annotatedElement="_WJZCQnL0EdqziYxiZo0YtA">
+            <body>The name for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0pOgQaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0pOgQKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_WJZCQ3L0EdqziYxiZo0YtA" name="type" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_lgIMQPIAEdulR8T2OJRyFQ" annotatedElement="_WJZCQ3L0EdqziYxiZo0YtA">
+            <body>The type for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2bXMQaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2bXMQKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_WJZCRHL0EdqziYxiZo0YtA" name="lower" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_iw5l4PIAEdulR8T2OJRyFQ" annotatedElement="_WJZCRHL0EdqziYxiZo0YtA">
+            <body>The lower bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_WJZCRXL0EdqziYxiZo0YtA" name="upper" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_nuRe0PIAEdulR8T2OJRyFQ" annotatedElement="_WJZCRXL0EdqziYxiZo0YtA">
+            <body>The upper bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Pu3O0HL0EdqziYxiZo0YtA" name="Signal">
+      <ownedOperation xmi:id="_YIM4UHL0EdqziYxiZo0YtA" name="createOwnedAttribute">
+        <ownedComment xmi:id="_MBen4OwmEdqYHf-imTcTdw" annotatedElement="_YIM4UHL0EdqziYxiZo0YtA">
+          <body>Creates a property with the specified name, type, lower bound, and upper bound as an owned attribute of this signal.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_YIM4UXL0EdqziYxiZo0YtA" type="_Jp_1oGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_YIM4UnL0EdqziYxiZo0YtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_zWJHkPIFEdulR8T2OJRyFQ" annotatedElement="_YIM4UnL0EdqziYxiZo0YtA">
+            <body>The name for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5RAjsaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5RAjsKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_YIM4U3L0EdqziYxiZo0YtA" name="type" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_1J7ZYPIFEdulR8T2OJRyFQ" annotatedElement="_YIM4U3L0EdqziYxiZo0YtA">
+            <body>The type for the new attribute, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7g9NEaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7g9NEKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_YIM4VHL0EdqziYxiZo0YtA" name="lower" type="_XqvEIGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_whrb4PIFEdulR8T2OJRyFQ" annotatedElement="_YIM4VHL0EdqziYxiZo0YtA">
+            <body>The lower bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_YIM4VXL0EdqziYxiZo0YtA" name="upper" type="_dRZxsGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_xbf_0PIFEdulR8T2OJRyFQ" annotatedElement="_YIM4VXL0EdqziYxiZo0YtA">
+            <body>The upper bound for the new attribute.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_UdivYGvsEdqG6fBIPwe-mw" name="Boolean"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_XqvEIGvsEdqG6fBIPwe-mw" name="Integer"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_aAyVgGvsEdqG6fBIPwe-mw" name="String"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_dRZxsGvsEdqG6fBIPwe-mw" name="UnlimitedNatural"/>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_B3q9cGwNEdq7X4sGURiZYA" name="AggregationKind"/>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_Y_jskGvtEdqG6fBIPwe-mw" name="MessageKind"/>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_AyM_oGwMEdq7X4sGURiZYA" name="VisibilityKind"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_-Ixo8H4XEdq7cMP_l1l5Gg" name="Duration">
+      <ownedOperation xmi:id="_I3a88H4YEdq7cMP_l1l5Gg" name="stringValue" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_I3a88X4YEdq7cMP_l1l5Gg" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_DylKEH4YEdq7cMP_l1l5Gg" name="TimeExpression">
+      <ownedOperation xmi:id="_JdkW8H4YEdq7cMP_l1l5Gg" name="stringValue" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_JdkW8X4YEdq7cMP_l1l5Gg" type="_aAyVgGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_nDq0wJPzEdqpjIDDFZ2Hgw" name="Image"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_rHT3YKOsEdqi_5gqUMOQtA" name="BehavioralFeature" isAbstract="true">
+      <ownedOperation xmi:id="_3Y0aYKOuEdqi_5gqUMOQtA" name="createReturnResult">
+        <ownedComment xmi:id="_WdHFYPZPEdqYHf-imTcTdw" annotatedElement="_3Y0aYKOuEdqi_5gqUMOQtA">
+          <body>Creates a return result parameter with the specified name and type.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_8N3dwKOuEdqi_5gqUMOQtA" type="_KyaPMGveEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_ESyWcKOvEdqi_5gqUMOQtA" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_t9Pp4PH9EdulR8T2OJRyFQ" annotatedElement="_ESyWcKOvEdqi_5gqUMOQtA">
+            <body>The name for the new return result, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="__VyJkaOxEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="__VyJkKOxEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="__sC00KOuEdqi_5gqUMOQtA" name="type" type="_ynRtoGvtEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_xWgrwPH9EdulR8T2OJRyFQ" annotatedElement="__sC00KOuEdqi_5gqUMOQtA">
+            <body>The type for the new return result, or null.</body>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_BJHvcaOyEdqi_5gqUMOQtA" value="1"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_BJHvcKOyEdqi_5gqUMOQtA"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_DH62EKPAEdqi_5gqUMOQtA" name="Relationship" isAbstract="true"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_JBgfoKPAEdqi_5gqUMOQtA" name="DirectedRelationship" isAbstract="true"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_DAbfwa69EdqjppZik4kD8A" name="Component">
+      <ownedOperation xmi:id="_IJwKAK69EdqjppZik4kD8A" name="createOwnedClass">
+        <ownedComment xmi:id="_gykdUPZPEdqYHf-imTcTdw" annotatedElement="_IJwKAK69EdqjppZik4kD8A">
+          <body>Creates a(n) (abstract) class with the specified name as a packaged element of this component.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_IJwKAa69EdqjppZik4kD8A" type="_00owUGvdEdq4DLWZOhbdEA" direction="return"/>
+        <ownedParameter xmi:id="_IJwKAq69EdqjppZik4kD8A" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_C_nlkPIAEdulR8T2OJRyFQ" annotatedElement="_IJwKAq69EdqjppZik4kD8A">
+            <body>The name for the new class, or null.</body>
+          </ownedComment>
+        </ownedParameter>
+        <ownedParameter xmi:id="_IJwKA669EdqjppZik4kD8A" name="isAbstract" type="_UdivYGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_HLGHgPIAEdulR8T2OJRyFQ" annotatedElement="_IJwKA669EdqjppZik4kD8A">
+            <body>Whether the new class should be abstract.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_IJwKBK69EdqjppZik4kD8A" name="createOwnedEnumeration">
+        <ownedComment xmi:id="_lEKOUPZPEdqYHf-imTcTdw" annotatedElement="_IJwKBK69EdqjppZik4kD8A">
+          <body>Creates a enumeration with the specified name as a packaged element of this component.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_IJwKBa69EdqjppZik4kD8A" type="_I6N3UGwGEdq7X4sGURiZYA" direction="return"/>
+        <ownedParameter xmi:id="_IJwKBq69EdqjppZik4kD8A" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_Jrb9UPIAEdulR8T2OJRyFQ" annotatedElement="_IJwKBq69EdqjppZik4kD8A">
+            <body>The name for the new enumeration, or null.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_IJwKB669EdqjppZik4kD8A" name="createOwnedPrimitiveType">
+        <ownedComment xmi:id="_o0qrgPZPEdqYHf-imTcTdw" annotatedElement="_IJwKB669EdqjppZik4kD8A">
+          <body>Creates a primitive type with the specified name as a packaged element of this component.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_IJwKCK69EdqjppZik4kD8A" type="_V6vuYGwGEdq7X4sGURiZYA" direction="return"/>
+        <ownedParameter xmi:id="_IJwKCa69EdqjppZik4kD8A" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_Q2ZvMPIAEdulR8T2OJRyFQ" annotatedElement="_IJwKCa69EdqjppZik4kD8A">
+            <body>The name for the new primitive type, or null.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_IJwKCq69EdqjppZik4kD8A" name="createOwnedInterface">
+        <ownedComment xmi:id="_s-DiwPZPEdqYHf-imTcTdw" annotatedElement="_IJwKCq69EdqjppZik4kD8A">
+          <body>Creates an interface with the specified name as a packaged element of this component.</body>
+        </ownedComment>
+        <ownedParameter xmi:id="_IJwKC669EdqjppZik4kD8A" type="_8Ugn8GvtEdqG6fBIPwe-mw" direction="return"/>
+        <ownedParameter xmi:id="_IJwKDK69EdqjppZik4kD8A" name="name" type="_aAyVgGvsEdqG6fBIPwe-mw" effect="read">
+          <ownedComment xmi:id="_O886QPIAEdulR8T2OJRyFQ" annotatedElement="_IJwKDK69EdqjppZik4kD8A">
+            <body>The name for the new interface, or null.</body>
+          </ownedComment>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_OUnikC7qEdutFcse1QllAQ" name="OpaqueAction">
+      <ownedAttribute xmi:id="_c_GaAC7qEdutFcse1QllAQ" name="body" type="_aAyVgGvsEdqG6fBIPwe-mw" isUnique="false">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_e2muMS7qEdutFcse1QllAQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_e2muMC7qEdutFcse1QllAQ"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ldWYsC7qEdutFcse1QllAQ" name="OpaqueBehavior">
+      <ownedAttribute xmi:id="_ldWYsS7qEdutFcse1QllAQ" name="body" type="_aAyVgGvsEdqG6fBIPwe-mw" isUnique="false">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ldWYtC7qEdutFcse1QllAQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ldWYtS7qEdutFcse1QllAQ"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_5jXJsTEkEdu9VoNTbEBQkQ" name="LiteralString">
+      <ownedOperation xmi:id="_-SmgADEkEdu9VoNTbEBQkQ" name="integerValue" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_-SmgATEkEdu9VoNTbEBQkQ" type="_XqvEIGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+      <ownedOperation xmi:id="_FbLFMDElEdu9VoNTbEBQkQ" name="unlimitedValue" visibility="protected" isQuery="true">
+        <ownedParameter xmi:id="_FbLFMTElEdu9VoNTbEBQkQ" type="_dRZxsGvsEdqG6fBIPwe-mw" direction="return"/>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_h18oENlrEduDKPkA-0jJZg" name="Usage"/>
+    <profileApplication xmi:id="_0TBYYGvaEdq4DLWZOhbdEA">
+      <eAnnotations xmi:id="_0TBYYWvaEdq4DLWZOhbdEA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Ecore.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <Ecore:EPackage xmi:id="_LWVYQN7NEduglsXU_NKRsA" base_Package="_o8I_sGvaEdq4DLWZOhbdEA" packageName="uml" nsPrefix="uml" nsURI="http://www.eclipse.org/uml2/2.1.0/UML" basePackage="org.eclipse.uml2" prefix="UML"/>
+  <Ecore:EAttribute xmi:id="_LWVYQd7NEduglsXU_NKRsA" isUnsettable="true" xmlFeatureKind="Element" base_Property="_EOZfkC4xEduBJv9HKGdiyg"/>
+  <Ecore:EDataType xmi:id="_LWfJQN7NEduglsXU_NKRsA" instanceClassName="boolean" base_PrimitiveType="_UdivYGvsEdqG6fBIPwe-mw"/>
+  <Ecore:EDataType xmi:id="_LWfJQd7NEduglsXU_NKRsA" instanceClassName="int" base_PrimitiveType="_XqvEIGvsEdqG6fBIPwe-mw"/>
+  <Ecore:EDataType xmi:id="_LWfJQt7NEduglsXU_NKRsA" instanceClassName="java.lang.String" base_PrimitiveType="_aAyVgGvsEdqG6fBIPwe-mw"/>
+  <Ecore:EDataType xmi:id="_LWfJQ97NEduglsXU_NKRsA" instanceClassName="int" base_PrimitiveType="_dRZxsGvsEdqG6fBIPwe-mw"/>
+  <Ecore:EAttribute xmi:id="_LWfJRN7NEduglsXU_NKRsA" isUnsettable="true" xmlFeatureKind="Element" base_Property="_c_GaAC7qEdutFcse1QllAQ"/>
+  <Ecore:EAttribute xmi:id="_LWfJRd7NEduglsXU_NKRsA" isUnsettable="true" xmlFeatureKind="Element" base_Property="_ldWYsS7qEdutFcse1QllAQ"/>
+  <Ecore:EGenericType xmi:id="_PUkIYN7NEduglsXU_NKRsA" base_DataType="_HmwyMtrxEduW-vlXzvw90A"/>
+  <Ecore:EGenericType xmi:id="_QfhfoN7NEduglsXU_NKRsA" base_DataType="_HmwyNtrxEduW-vlXzvw90A"/>
+</xmi:XMI>

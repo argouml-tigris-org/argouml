@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Ecore="http://www.eclipse.org/uml2/schemas/Ecore/4" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xsi:schemaLocation="http://www.eclipse.org/uml2/schemas/Ecore/4 pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA">
+  <uml:Model xmi:id="_FA4sgBmMEdqvcs97umGEYQ" name="LM">
+    <packageMerge xmi:id="_HW4dbBTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Infrastructure.uml#_3ADC7B74022D3DE692AD00C7"/>
+    </packageMerge>
+    <packageMerge xmi:id="_1pzpoGf_EdqfYrlcy8iLFA">
+      <mergedPackage href="Infrastructure.uml#_3ADC7B74022D3C9FFCC70354"/>
+    </packageMerge>
+    <profileApplication xmi:id="_FETz8BmMEdqvcs97umGEYQ">
+      <eAnnotations xmi:id="_FETz8RmMEdqvcs97umGEYQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Ecore.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <Ecore:EPackage xmi:id="_Ka_NIMYdEduPJbEsMYXjUQ" base_Package="_FA4sgBmMEdqvcs97umGEYQ" nsPrefix="uml" nsURI="http://schema.omg.org/spec/UML/2.1.1/umlLM.xml"/>
+</xmi:XMI>

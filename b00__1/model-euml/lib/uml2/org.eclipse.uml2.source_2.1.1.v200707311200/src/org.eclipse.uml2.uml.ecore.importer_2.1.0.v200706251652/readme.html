@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>org.eclipse.uml2.uml.ecore.importer Read Me</title>
+</head>
+<body lang="EN-US">
+<h3>Introduction</h3>
+<p>This document describes how you can use scripts to generate code from a UML model.  The 
+script can be either a regular shell script that invokes <a href="#headlessApplication">Eclipse headless 
+applications</a> or an Ant script that invokes the <a href="#antTasks">task</a> provided by this plug-in.</p>
+
+<h3><a name="overallComments">Overall Comments</a></h3>
+<ul>
+<li>If you didn't extract this plug-in from CVS, the &quot;examples&quot; directory mentioned 
+in this document is available in the UML2 source plug-in 
+(org.eclipse.uml2.source_<i>&lt;version&gt;</i>/src/org.eclipse.uml2.uml.ecore.importer_<i>&lt;version&gt;</i>).
+<br/><br/></li>
+<li>Before running your build scripts or the examples provided here, make sure you have the two 
+JAR files required by this plug-in (&quot;uml2.uml.ecore.importer.jar&quot; and 
+&quot;uml2.uml.ecore.importer.tasks.jar&quot;) and also the two JAR files required by the <tt>org.eclipse.emf.ant</tt> 
+plug-in (&quot;emf.ant.jar&quot; and &quot;emf.ant.tasks.jar&quot;).  If necessary, Eclipse 
+can generate them for you.  All you need to do is to run the Ant script created by PDE when you right click on the manifest file 
+and select &quot;PDE Tools &gt; Create Ant Build File&quot;.
+<br/><br/></li>
+<li>Although the applications and task mentioned here must be executed by Eclipse (usually in headless mode), they can 
+work on files located in any directory.  In other words, your models, templates and other files don't need 
+to be in the &quot;plugins&quot; directory nor in the workspace.
+<br/><br/></li>
+<li>In order to preserve the original state of this plug-in's &quot;examples&quot; directory, you
+should copy it to a different location and run the Ant scripts from there.
+<br/><br/></li>
+<li>Starting a new JVM process and invoking Eclipse are expensive operations.  Your build will 
+perform better if you are able to group the steps that require Eclipse in a few scripts 
+(one script would be ideal).  This is probably a reason to use Ant instead of invoking the 
+applications - you can generate code for multiple models using one single Ant script.
+<br/><br/></li>
+<li>The &quot;examples/library&quot; directory contains a UML model, and shell and Ant scripts 
+to generate its code.
+</li>
+</ul>
+
+<h3><a name="headlessApplication">UML Importer and Generator Applications</a></h3>
+<p>The application provided by this plug-in generates the ecore and genmodel files from models defined
+using UML.</p>
+<table border="1" cellpadding="2" cellspacing="0" 
+summary="Lists the details about the UML Importer application.">
+  <tr><td colspan="2">UML Importer application details</td></tr>
+	<tr><td>ID</td><td><tt>org.eclipse.uml2.uml.ecore.importer.UML2GenModel</tt></td></tr>
+	<tr><td>Class</td><td><tt>org.eclipse.uml2.uml.ecore.importer.UMLImporterApplication</tt></td></tr>
+</table>
+<p>To generate the actual Java code you will need to use a second application, provided by 
+the &quot;org.eclipse.emf.codegen.ecore&quot; plug-in.</p>
+<table border="1" cellpadding="2" cellspacing="0" 
+summary="Lists the details about the Generator application.">
+  <tr><td colspan="2">Generator application details</td></tr>
+	<tr><td>ID</td><td><tt>org.eclipse.emf.codegen.ecore.Generator</tt></td></tr>
+	<tr><td>Class</td><td><tt>org.eclipse.emf.codegen.ecore.Generator</tt></td></tr>
+</table>
+<p>In order to run these or any other Eclipse application, you need to execute the following 
+command (without the line breaks):</p>
+<p>
+java
+<br/>&nbsp;&nbsp;-classpath <i>&lt;eclipseDir&gt;</i>/startup.jar org.eclipse.core.launcher.Main
+<br/>&nbsp;&nbsp;-data <i>&lt;full path to a workspace - ideally an empty directory&gt;</i>
+<br/>&nbsp;&nbsp;-application <i>&lt;application ID&gt;</i>
+<br/>&nbsp;&nbsp;<i>&lt;application arguments&gt;</i>
+</p>
+<p>The directory &quot;examples/library/build&quot; has shell scripts that generate the code for
+the model provided.  If you have any questions after reading and experimenting with it, look at the 
+applications's javadoc for more details.  Also, check the application's class  
+&quot;getUsage()&quot; method for the list of possible arguments.</p>
+
+
+<h3><a name="antTasks">UML Generator Ant Task</a></h3>
+<p>The UML Generator task details are:</p>
+<table border="1" cellpadding="2" cellspacing="0" 
+summary="Lists the details about the UML Generator task.">
+	<tr><td>Name</td><td><tt>uml2.UML2Java</tt></td></tr>
+	<tr><td>Class</td><td><tt>org.eclipse.uml2.uml.ecore.importer.taskdefs.UMLGeneratorTask</tt></td></tr>
+</table>
+<p>This is the usual command line to run an Ant script using a headless Eclipse instance (remove the line breaks):</p>
+<p>
+java 
+<br/>&nbsp;&nbsp;-classpath <i>&lt;eclipseDir&gt;</i>/startup.jar org.eclipse.core.launcher.Main 
+<br/>&nbsp;&nbsp;-data <i>&lt;full path to a workspace - ideally an empty directory&gt;</i>
+<br/>&nbsp;&nbsp;-application org.eclipse.ant.core.antRunner
+<br/>&nbsp;&nbsp;-buildfile <i>&lt;full path to your script&gt;</i>
+</p>
+<p>The directory &quot;examples/library/build&quot; has an Ant script that generates the code for
+the model provided.  The task's javadoc also has information you may find useful.</p>
+
+</body>
+</html>

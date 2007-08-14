@@ -1,0 +1,2011 @@
+
+(object Petal
+    version    	50
+    _written   	"Rose 8.2.0401.2700"
+    charSet    	0)
+
+(object Class_Category "GenModel"
+    is_unit    	TRUE
+    is_loaded  	TRUE
+    attributes 	(list Attribute_Set
+	(object Attribute
+	    tool       	"Ecore"
+	    name       	"basePackage"
+	    value      	(value Text "org.eclipse.uml2.codegen.ecore"))
+	(object Attribute
+	    tool       	"Ecore"
+	    name       	"nsPrefix"
+	    value      	(value Text "genmodel"))
+	(object Attribute
+	    tool       	"Ecore"
+	    name       	"nsURI"
+	    value      	(value Text "http://www.eclipse.org/uml2/1.1.0/GenModel"))
+	(object Attribute
+	    tool       	"Ecore"
+	    name       	"prefix"
+	    value      	(value Text "GenModel")))
+    quid       	"418BE97801CA"
+    exportControl 	"Public"
+    logical_models 	(list unit_reference_list
+	(object Class "GenBase"
+	    quid       	"418FC4F201D2"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC53003E4"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenBase"
+		    quidu      	"3C176A0701D7"))
+	    abstract   	TRUE)
+	(object Class "GenClass"
+	    quid       	"418FC5750194"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC5930274"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenClass"
+		    quidu      	"3C1759410016")
+		(object Inheritance_Relationship
+		    quid       	"418FC5C901E5"
+		    supplier   	"Logical View::GenModel::GenClassifier"
+		    quidu      	"418FC59E002B")))
+	(object Class "GenClassifier"
+	    quid       	"418FC59E002B"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC5D20094"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenClassifier"
+		    quidu      	"3C20092602FC")
+		(object Inheritance_Relationship
+		    quid       	"418FC5E40067"
+		    supplier   	"Logical View::GenModel::GenBase"
+		    quidu      	"418FC4F201D2"))
+	    abstract   	TRUE)
+	(object Class "GenDataType"
+	    quid       	"418FC65A0071"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC69402FF"
+		    supplier   	"Logical View::GenModel::GenClassifier"
+		    quidu      	"418FC59E002B")
+		(object Inheritance_Relationship
+		    quid       	"418FC699004A"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenDataType"
+		    quidu      	"3C5995D50214")))
+	(object Class "GenEnum"
+	    quid       	"418FC6D0003F"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC6D70298"
+		    supplier   	"Logical View::GenModel::GenDataType"
+		    quidu      	"418FC65A0071")
+		(object Inheritance_Relationship
+		    quid       	"418FC6DA016F"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenEnum"
+		    quidu      	"3C1FAE9102F6")))
+	(object Class "GenEnumLiteral"
+	    quid       	"418FC7060082"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC7210208"
+		    supplier   	"Logical View::GenModel::GenBase"
+		    quidu      	"418FC4F201D2")
+		(object Inheritance_Relationship
+		    quid       	"418FC727026B"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenEnumLiteral"
+		    quidu      	"3C1FAF0902E4")))
+	(object Class "GenFeature"
+	    quid       	"418FC73801B1"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC75A01F6"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenFeature"
+		    quidu      	"3C1759CD00A1")
+		(object Inheritance_Relationship
+		    quid       	"4294DF8C0030"
+		    supplier   	"Logical View::GenModel::GenTypedElement"
+		    quidu      	"4294DE71020D"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "key"
+		    quid       	"426D25250043"
+		    type       	"EBoolean"
+		    quidu      	"3D0672EC0024"
+		    exportControl 	"Public")))
+	(object Class "GenModel"
+	    quid       	"418FC78200E5"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC7A30381"
+		    supplier   	"Logical View::GenModel::GenBase"
+		    quidu      	"418FC4F201D2")
+		(object Inheritance_Relationship
+		    quid       	"418FC7A9038A"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenModel"
+		    quidu      	"3C175881028E"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "factoryMethods"
+		    quid       	"41F666A30366"
+		    type       	"EBoolean"
+		    quidu      	"3D0672EC0024"
+		    exportControl 	"Public")
+		(object ClassAttribute "pluralizedGetters"
+		    quid       	"41F6680202A5"
+		    type       	"EBoolean"
+		    quidu      	"3D0672EC0024"
+		    exportControl 	"Public")
+		(object ClassAttribute "cacheAdapterSupport"
+		    quid       	"426D35CF00E2"
+		    type       	"EBoolean"
+		    quidu      	"3D0672EC0024"
+		    exportControl 	"Public")
+		(object ClassAttribute "safeStrings"
+		    quid       	"426F833202C9"
+		    type       	"EBoolean"
+		    quidu      	"3D0672EC0024"
+		    exportControl 	"Public")
+		(object ClassAttribute "invariantPrefix"
+		    quid       	"426F83490210"
+		    type       	"EString"
+		    quidu      	"39EB7E000186"
+		    exportControl 	"Public")))
+	(object Class "GenOperation"
+	    quid       	"418FC7B70394"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC7D4016F"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenOperation"
+		    quidu      	"3C7C036D00DE")
+		(object Inheritance_Relationship
+		    quid       	"4294DFBD03A5"
+		    supplier   	"Logical View::GenModel::GenTypedElement"
+		    quidu      	"4294DE71020D"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "cacheAdapterScope"
+		    quid       	"426FA04D03E0"
+		    type       	"GenCacheAdapterScope"
+		    quidu      	"426F9FB20225"
+		    exportControl 	"Public")))
+	(object Class "GenPackage"
+	    quid       	"418FC80F0106"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC866031D"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenPackage"
+		    quidu      	"3C17589A01D3")
+		(object Inheritance_Relationship
+		    quid       	"418FC8790180"
+		    supplier   	"Logical View::GenModel::GenBase"
+		    quidu      	"418FC4F201D2"))
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "resourceInterfaces"
+		    quid       	"41F667D20304"
+		    type       	"EBoolean"
+		    quidu      	"3D0672EC0024"
+		    exportControl 	"Public")
+		(object ClassAttribute "operationsPackage"
+		    quid       	"426F824E02D7"
+		    type       	"EString"
+		    quidu      	"39EB7E000186"
+		    exportControl 	"Public")))
+	(object Class "GenParameter"
+	    quid       	"418FC8FC026F"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"418FC908037B"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenParameter"
+		    quidu      	"3CAB0C7D02A7")
+		(object Inheritance_Relationship
+		    quid       	"4294DFED00FE"
+		    supplier   	"Logical View::GenModel::GenTypedElement"
+		    quidu      	"4294DE71020D")))
+	(object Class "GenCacheAdapterScope"
+	    quid       	"426F9FB20225"
+	    stereotype 	"enumeration"
+	    class_attributes 	(list class_attribute_list
+		(object ClassAttribute "None"
+		    quid       	"426F9FFA0267"
+		    exportControl 	"Public")
+		(object ClassAttribute "Global"
+		    quid       	"426FA008032C"
+		    exportControl 	"Public")
+		(object ClassAttribute "Resource"
+		    quid       	"426FA021036F"
+		    exportControl 	"Public")))
+	(object Class "GenTypedElement"
+	    quid       	"4294DE71020D"
+	    superclasses 	(list inheritance_relationship_list
+		(object Inheritance_Relationship
+		    quid       	"4294DEB9023D"
+		    stereotype 	"extend"
+		    supplier   	"Logical View::genmodel::GenTypedElement"
+		    quidu      	"4291FBE20180")
+		(object Inheritance_Relationship
+		    quid       	"4294DF09007A"
+		    supplier   	"Logical View::GenModel::GenBase"
+		    quidu      	"418FC4F201D2"))
+	    abstract   	TRUE))
+    logical_presentations 	(list unit_reference_list
+	(object ClassDiagram "GenModel"
+	    quid       	"418FC4E00104"
+	    title      	"GenModel"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenBase" @1
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(160, 1216)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@1
+			location   	(62, 1164)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	196
+			justify    	0
+			label      	"GenBase")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC4F201D2"
+		    width      	214
+		    height     	128
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::GenModel::GenModel" @2
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(688, 2640)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@2
+			location   	(360, 2459)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	656
+			justify    	0
+			label      	"GenModel")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC78200E5"
+		    compartment 	(object Compartment
+			Parent_View 	@2
+			location   	(360, 2520)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			icon_style 	"Icon"
+			fill_color 	16777215
+			anchor     	2
+			nlines     	6
+			max_width  	653)
+		    width      	674
+		    height     	386
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @3
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"418FC7A30381"
+		    client     	@2
+		    supplier   	@1
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::genmodel::GenModel" @4
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1216, 1216)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@4
+			location   	(578, 137)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	1276
+			justify    	0
+			label      	"GenModel")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C175881028E"
+		    compartment 	(object Compartment
+			Parent_View 	@4
+			location   	(578, 242)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			icon_style 	"Icon"
+			fill_color 	16777215
+			anchor     	2
+			nlines     	41
+			max_width  	1278)
+		    width      	1294
+		    height     	2182
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @5
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    stereotype 	(object SegLabel @6
+			Parent_View 	@5
+			location   	(982, 2389)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.878575
+			height     	190
+			orientation 	1)
+		    line_color 	3342489
+		    quidu      	"418FC7A9038A"
+		    client     	@2
+		    supplier   	@4
+		    line_style 	0)))
+	(object ClassDiagram "GenPackage"
+	    quid       	"418FC84200CD"
+	    title      	"GenPackage"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenPackage" @7
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1008, 1216)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@7
+			location   	(710, 1110)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	596
+			justify    	0
+			label      	"GenPackage")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC80F0106"
+		    width      	614
+		    height     	236
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::genmodel::GenPackage" @8
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(560, 544)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@8
+			location   	(69, 140)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	982
+			justify    	0
+			label      	"GenPackage")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C17589A01D3"
+		    width      	1000
+		    height     	832
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @9
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@9
+			location   	(883, 1029)
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"")
+		    stereotype 	(object SegLabel @10
+			Parent_View 	@9
+			location   	(730, 1032)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.999266
+			height     	129
+			orientation 	0)
+		    line_color 	3342489
+		    quidu      	"418FC866031D"
+		    client     	@7
+		    supplier   	@8
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::GenModel::GenBase" @11
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1456, 544)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@11
+			location   	(1358, 492)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	196
+			justify    	0
+			label      	"GenBase")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC4F201D2"
+		    width      	214
+		    height     	128
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @12
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"418FC8790180"
+		    client     	@7
+		    supplier   	@11
+		    line_style 	0)))
+	(object ClassDiagram "GenParameter"
+	    quid       	"418FC8E501D6"
+	    title      	"GenParameter"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::genmodel::GenParameter" @13
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(224, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@13
+			location   	(75, 134)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	298
+			justify    	0
+			label      	"GenParameter")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3CAB0C7D02A7"
+		    width      	316
+		    height     	172
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::GenModel::GenParameter" @14
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(512, 512)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@14
+			location   	(363, 461)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	298
+			justify    	0
+			label      	"GenParameter")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC8FC026F"
+		    width      	316
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @15
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@15
+			location   	(379, 371)
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"")
+		    stereotype 	(object SegLabel @16
+			Parent_View 	@15
+			location   	(226, 392)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.924232
+			height     	125
+			orientation 	0)
+		    line_color 	3342489
+		    quidu      	"418FC908037B"
+		    client     	@14
+		    supplier   	@13
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::GenModel::GenTypedElement" @17
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(816, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@17
+			location   	(632, 157)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	368
+			justify    	0
+			label      	"GenTypedElement")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"4294DE71020D"
+		    width      	386
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @18
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"4294DFED00FE"
+		    client     	@14
+		    supplier   	@17
+		    line_style 	0)))
+	(object ClassDiagram "GenBase"
+	    quid       	"418FC92F02CC"
+	    title      	"GenBase"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenBase" @19
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(192, 512)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@19
+			location   	(94, 460)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	196
+			justify    	0
+			label      	"GenBase")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC4F201D2"
+		    width      	214
+		    height     	128
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::genmodel::GenBase" @20
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(192, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@20
+			location   	(75, 133)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	234
+			justify    	0
+			label      	"GenBase")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C176A0701D7"
+		    width      	252
+		    height     	174
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @21
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    stereotype 	(object SegLabel @22
+			Parent_View 	@21
+			location   	(361, 386)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.401316
+			height     	169
+			orientation 	1)
+		    line_color 	3342489
+		    quidu      	"418FC53003E4"
+		    client     	@19
+		    supplier   	@20
+		    line_style 	0)))
+	(object ClassDiagram "GenClass"
+	    quid       	"418FCC5F00B3"
+	    title      	"GenClass"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenClass" @23
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(512, 608)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@23
+			location   	(409, 557)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	206
+			justify    	0
+			label      	"GenClass")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC5750194"
+		    width      	224
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::GenModel::GenClassifier" @24
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(208, 256)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@24
+			location   	(70, 205)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	276
+			justify    	0
+			label      	"GenClassifier")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC59E002B"
+		    width      	294
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @25
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"418FC5C901E5"
+		    client     	@23
+		    supplier   	@24
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::genmodel::GenClass" @26
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(800, 256)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@26
+			location   	(536, 127)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	528
+			justify    	0
+			label      	"GenClass")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C1759410016"
+		    compartment 	(object Compartment
+			Parent_View 	@26
+			location   	(536, 232)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			icon_style 	"Icon"
+			fill_color 	16777215
+			anchor     	2
+			nlines     	3
+			max_width  	534)
+		    width      	546
+		    height     	282
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @27
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    stereotype 	(object SegLabel @28
+			Parent_View 	@27
+			location   	(811, 498)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	1.014345
+			height     	162
+			orientation 	1)
+		    line_color 	3342489
+		    quidu      	"418FC5930274"
+		    client     	@23
+		    supplier   	@26
+		    line_style 	0)))
+	(object ClassDiagram "GenClassifier"
+	    quid       	"418FCC86038A"
+	    title      	"GenClassifier"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenClassifier" @29
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(400, 512)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@29
+			location   	(262, 461)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	276
+			justify    	0
+			label      	"GenClassifier")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC59E002B"
+		    width      	294
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::GenModel::GenBase" @30
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(160, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@30
+			location   	(62, 156)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	196
+			justify    	0
+			label      	"GenBase")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC4F201D2"
+		    width      	214
+		    height     	128
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @31
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"418FC5E40067"
+		    client     	@29
+		    supplier   	@30
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::genmodel::GenClassifier" @32
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(624, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@32
+			location   	(486, 134)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	276
+			justify    	0
+			label      	"GenClassifier")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C20092602FC"
+		    width      	294
+		    height     	172
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @33
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    stereotype 	(object SegLabel @34
+			Parent_View 	@33
+			location   	(658, 398)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.868054
+			height     	141
+			orientation 	1)
+		    line_color 	3342489
+		    quidu      	"418FC5D20094"
+		    client     	@29
+		    supplier   	@32
+		    line_style 	0)))
+	(object ClassDiagram "GenDataType"
+	    quid       	"418FCCA80357"
+	    title      	"GenDataType"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenDataType" @35
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(432, 512)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@35
+			location   	(293, 461)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	278
+			justify    	0
+			label      	"GenDataType")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC65A0071"
+		    width      	296
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::GenModel::GenClassifier" @36
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(208, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@36
+			location   	(70, 157)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	276
+			justify    	0
+			label      	"GenClassifier")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC59E002B"
+		    width      	294
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @37
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"418FC69402FF"
+		    client     	@35
+		    supplier   	@36
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::genmodel::GenDataType" @38
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(656, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@38
+			location   	(517, 134)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	278
+			justify    	0
+			label      	"GenDataType")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C5995D50214"
+		    width      	296
+		    height     	172
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @39
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    stereotype 	(object SegLabel @40
+			Parent_View 	@39
+			location   	(708, 397)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.928143
+			height     	154
+			orientation 	1)
+		    line_color 	3342489
+		    quidu      	"418FC699004A"
+		    client     	@35
+		    supplier   	@38
+		    line_style 	0)))
+	(object ClassDiagram "GenEnum"
+	    quid       	"418FCCCE0289"
+	    title      	"GenEnum"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenEnum" @41
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(416, 512)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@41
+			location   	(301, 461)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	230
+			justify    	0
+			label      	"GenEnum")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC6D0003F"
+		    width      	248
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::genmodel::GenEnum" @42
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(192, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@42
+			location   	(69, 134)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	246
+			justify    	0
+			label      	"GenEnum")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C1FAE9102F6"
+		    width      	264
+		    height     	172
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @43
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    stereotype 	(object SegLabel @44
+			Parent_View 	@43
+			location   	(173, 409)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.772227
+			height     	134
+			orientation 	0)
+		    line_color 	3342489
+		    quidu      	"418FC6DA016F"
+		    client     	@41
+		    supplier   	@42
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::GenModel::GenDataType" @45
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(640, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@45
+			location   	(501, 157)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	278
+			justify    	0
+			label      	"GenDataType")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC65A0071"
+		    width      	296
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @46
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"418FC6D70298"
+		    client     	@41
+		    supplier   	@45
+		    line_style 	0)))
+	(object ClassDiagram "GenEnumLiteral"
+	    quid       	"418FCD0F020B"
+	    title      	"GenEnumLiteral"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenEnumLiteral" @47
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(400, 512)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@47
+			location   	(238, 461)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	324
+			justify    	0
+			label      	"GenEnumLiteral")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC7060082"
+		    width      	342
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::GenModel::GenBase" @48
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(160, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@48
+			location   	(62, 156)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	196
+			justify    	0
+			label      	"GenBase")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC4F201D2"
+		    width      	214
+		    height     	128
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @49
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"418FC7210208"
+		    client     	@47
+		    supplier   	@48
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::genmodel::GenEnumLiteral" @50
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(624, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@50
+			location   	(462, 134)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	324
+			justify    	0
+			label      	"GenEnumLiteral")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C1FAF0902E4"
+		    width      	342
+		    height     	172
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @51
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    stereotype 	(object SegLabel @52
+			Parent_View 	@51
+			location   	(680, 375)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	1.032850
+			height     	144
+			orientation 	1)
+		    line_color 	3342489
+		    quidu      	"418FC727026B"
+		    client     	@47
+		    supplier   	@50
+		    line_style 	0)))
+	(object ClassDiagram "GenFeature"
+	    quid       	"418FCD3801B9"
+	    title      	"GenFeature"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenFeature" @53
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(800, 896)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@53
+			location   	(635, 815)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	330
+			justify    	0
+			label      	"GenFeature")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC73801B1"
+		    compartment 	(object Compartment
+			Parent_View 	@53
+			location   	(635, 876)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			icon_style 	"Icon"
+			fill_color 	16777215
+			anchor     	2
+			nlines     	2
+			max_width  	337)
+		    width      	348
+		    height     	186
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::genmodel::GenFeature" @54
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(432, 384)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@54
+			location   	(77, 130)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	710
+			justify    	0
+			label      	"GenFeature")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C1759CD00A1"
+		    compartment 	(object Compartment
+			Parent_View 	@54
+			location   	(77, 235)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			icon_style 	"Icon"
+			fill_color 	16777215
+			anchor     	2
+			nlines     	8
+			max_width  	715)
+		    width      	728
+		    height     	532
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @55
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    stereotype 	(object SegLabel @56
+			Parent_View 	@55
+			location   	(483, 753)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.989603
+			height     	173
+			orientation 	0)
+		    line_color 	3342489
+		    quidu      	"418FC75A01F6"
+		    client     	@53
+		    supplier   	@54
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::GenModel::GenTypedElement" @57
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(1168, 384)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@57
+			location   	(984, 333)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	368
+			justify    	0
+			label      	"GenTypedElement")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"4294DE71020D"
+		    width      	386
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @58
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"4294DF8C0030"
+		    client     	@53
+		    supplier   	@57
+		    line_style 	0)))
+	(object ClassDiagram "GenOperation"
+	    quid       	"418FCD670352"
+	    title      	"GenOperation"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenOperation" @59
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(528, 528)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@59
+			location   	(77, 447)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	902
+			justify    	0
+			label      	"GenOperation")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC7B70394"
+		    width      	920
+		    height     	186
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::genmodel::GenOperation" @60
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(224, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@60
+			location   	(83, 134)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	282
+			justify    	0
+			label      	"GenOperation")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"3C7C036D00DE"
+		    width      	300
+		    height     	172
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @61
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    stereotype 	(object SegLabel @62
+			Parent_View 	@61
+			location   	(217, 392)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.945936
+			height     	131
+			orientation 	0)
+		    line_color 	3342489
+		    quidu      	"418FC7D4016F"
+		    client     	@59
+		    supplier   	@60
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::GenModel::GenTypedElement" @63
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(816, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@63
+			location   	(632, 157)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	368
+			justify    	0
+			label      	"GenTypedElement")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"4294DE71020D"
+		    width      	386
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @64
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"4294DFBD03A5"
+		    client     	@59
+		    supplier   	@63
+		    line_style 	0)))
+	(object ClassDiagram "GenTypedElement"
+	    quid       	"4294DEA50161"
+	    title      	"GenTypedElement"
+	    zoom       	100
+	    max_height 	28350
+	    max_width  	21600
+	    origin_x   	0
+	    origin_y   	0
+	    items      	(list diagram_item_list
+		(object ClassView "Class" "Logical View::GenModel::GenTypedElement" @65
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(480, 512)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@65
+			location   	(296, 461)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	368
+			justify    	0
+			label      	"GenTypedElement")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"4294DE71020D"
+		    width      	386
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object ClassView "Class" "Logical View::genmodel::GenTypedElement" @66
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(256, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@66
+			location   	(73, 134)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	366
+			justify    	0
+			label      	"GenTypedElement")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"4291FBE20180"
+		    width      	384
+		    height     	172
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @67
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	FALSE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@67
+			location   	(376, 371)
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"")
+		    stereotype 	(object SegLabel @68
+			Parent_View 	@67
+			location   	(239, 392)
+			font       	(object Font
+			    size       	10
+			    face       	"Arial"
+			    bold       	FALSE
+			    italics    	FALSE
+			    underline  	FALSE
+			    strike     	FALSE
+			    color      	0
+			    default_color 	TRUE)
+			anchor     	10
+			anchor_loc 	1
+			nlines     	1
+			max_width  	450
+			justify    	0
+			label      	"<<extend>>"
+			pctDist    	0.837328
+			height     	123
+			orientation 	0)
+		    line_color 	3342489
+		    quidu      	"4294DEB9023D"
+		    client     	@65
+		    supplier   	@66
+		    line_style 	0)
+		(object ClassView "Class" "Logical View::GenModel::GenBase" @69
+		    ShowCompartmentStereotypes 	TRUE
+		    IncludeAttribute 	TRUE
+		    IncludeOperation 	TRUE
+		    location   	(704, 208)
+		    font       	(object Font
+			size       	10
+			face       	"Arial"
+			bold       	FALSE
+			italics    	TRUE
+			underline  	FALSE
+			strike     	FALSE
+			color      	0
+			default_color 	TRUE)
+		    label      	(object ItemLabel
+			Parent_View 	@69
+			location   	(606, 157)
+			fill_color 	13434879
+			nlines     	1
+			max_width  	196
+			justify    	0
+			label      	"GenBase")
+		    icon_style 	"Icon"
+		    line_color 	3342489
+		    fill_color 	13434879
+		    quidu      	"418FC4F201D2"
+		    width      	214
+		    height     	126
+		    annotation 	8
+		    autoResize 	TRUE)
+		(object InheritView "" @70
+		    stereotype 	TRUE
+		    line_color 	3342489
+		    quidu      	"4294DF09007A"
+		    client     	@65
+		    supplier   	@69
+		    line_style 	0)))))

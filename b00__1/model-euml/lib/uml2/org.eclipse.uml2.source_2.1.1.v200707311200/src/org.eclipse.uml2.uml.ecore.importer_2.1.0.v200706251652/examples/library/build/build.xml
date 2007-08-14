@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="codegen" basedir="..">
+  <dirname property="antfile.dir" file="${ant.file}"/>
+    
+  <!-- Global properties -->
+	<property name="main.directory" location="${antfile.dir}/.."/>
+	<property name="source.directory" value="src"/>
+	<property name="genJDKLevel" value="5.0"/>
+	
+	<target name="codegen">
+
+	  <!-- A macrodef makes it easier to generate code for multiple models in one script. -->
+		<macrodef name="uml2Java">
+			<attribute name="modelName"/>
+			<element name="settings"/>
+			<sequential>
+				<uml2.UML2Java
+					model="${main.directory}/model/@{modelName}.uml"
+					genModel="${main.directory}/emf/@{modelName}.genmodel"
+					modelProject="${main.directory}"
+					modelProjectFragmentPath="${source.directory}"
+					modelPluginID="@{modelName}.model"
+					jdkLevel="${genJDKLevel}">
+					<settings/>
+				</uml2.UML2Java>
+			</sequential>
+		</macrodef>
+
+		<!-- Generating the code for the library model -->
+		<uml2Java modelName="library">
+			<settings>
+				<arg line="-ECORE_TAGGED_VALUES PROCESS"/>
+				<arg line="-DUPLICATE_FEATURES PROCESS"/>
+				<arg line="-pluralizeGetters"/>
+				<arg line="-invariantPrefix validate"/>
+				<arg line="-package library library http://www.examples.org/2007/Library org.examples Library org.examples.library.operations resourceInterfaces"/>
+			</settings>
+		</uml2Java>
+		
+	</target>
+</project>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Ecore="http://www.eclipse.org/uml2/schemas/Ecore/4" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xsi:schemaLocation="http://www.eclipse.org/uml2/schemas/Ecore/4 pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA">
+  <uml:Model xmi:id="_CTvJwBmMEdqvcs97umGEYQ" name="L2">
+    <packageMerge xmi:id="_HW4dQRTbEdqZu-3Jy1-uYg">
+      <mergedPackage xmi:type="uml:Model" href="L1.uml#_BWooUBmMEdqvcs97umGEYQ"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dRxTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3DF124FB03B9"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dSBTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3E0251EF01F0"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dShTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3E0235B10207"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dSxTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3DC8ED110289"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dTBTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3D381B1F00F7"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dTRTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3E0C9C9E02E6"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dThTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D334A99B00208"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dUBTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3DF1252E035B"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dURTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3DF1253C0119"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dUhTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3D0259DF00A8"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dUxTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3D5EC5B702B8"/>
+    </packageMerge>
+    <packageMerge xmi:id="_HW4dVBTbEdqZu-3Jy1-uYg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D3E0235D10308"/>
+    </packageMerge>
+    <packageMerge xmi:id="_hP_vwEoiEdq2-6lg1JCB1A">
+      <mergedPackage href="Superstructure.uml#_euHIYEfeEdq0rbStTpEubg"/>
+    </packageMerge>
+    <packageMerge xmi:id="_frzRQFK2EdqxB6Bl62AbBg">
+      <mergedPackage href="Superstructure.uml#_3ADC7B74022D410C265D0152"/>
+    </packageMerge>
+    <profileApplication xmi:id="_CZsAwBmMEdqvcs97umGEYQ">
+      <eAnnotations xmi:id="_CZsAwRmMEdqvcs97umGEYQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Ecore.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <Ecore:EPackage xmi:id="_4o7gwMYcEduPJbEsMYXjUQ" base_Package="_CTvJwBmMEdqvcs97umGEYQ" nsPrefix="uml" nsURI="http://schema.omg.org/spec/UML/2.1.1/uml.xml"/>
+</xmi:XMI>
