@@ -36,7 +36,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.AbstractProjectMember;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
-import org.argouml.ui.explorer.ActionExportProfileXMI;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 /**
  *   This class captures represents the unique access point for the 
@@ -104,7 +103,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     /**
      * @return the list of applied profiles
      */
-    public Vector getProfiles() {
+    public Vector<Profile> getProfiles() {
         return profiles;
     }
     
@@ -137,11 +136,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
         
     /**
      * @return the list of models of the currently applied profile.
-     * @deprecated by maurelio1234
      */
-    @SuppressWarnings("dep-ann")
-    @Deprecated
-    public Vector getProfileModels() {
+    private Vector getProfileModels() {
         return profileModels;
     }
 

@@ -63,12 +63,12 @@ public class ResourceModelLoader extends StreamModelLoader {
     /**
      * @param path the model path
      * @return the model
+     * @throws ProfileException if the profile could not be loaded 
      * @see org.argouml.uml.profile.StreamModelLoader#loadModel(java.lang.String)
      */
-    public Collection loadModel(String path) {
+    public Collection loadModel(String path) throws ProfileException {
         LOG.info("Loading profile from resource'" + path + "'");
-	return super.loadModel(this.classloader
-		.getResourceAsStream(path));
+        return super.loadModel(this.classloader.getResourceAsStream(path));
     }
 
 }

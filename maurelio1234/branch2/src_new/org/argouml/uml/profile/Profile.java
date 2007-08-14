@@ -50,7 +50,8 @@ public abstract class Profile {
      */
     protected final void addProfileDependency(Profile p) throws IllegalArgumentException {
         if (importingProfiles.contains(p)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "This profile causes a cycle in the profile dependency graph!");
         } else {
             importedProfiles.add(p);
             importedProfiles.addAll(p.importedProfiles);
@@ -77,6 +78,7 @@ public abstract class Profile {
      * @return the UML Model that contains the profile model
      * @deprecated by maurelio1234. Use {@link #getProfilePackages()} instead.
      */
+    @Deprecated
     public Object getModel() {
         Collection c = null;
         try {
@@ -109,7 +111,10 @@ public abstract class Profile {
      *    @param element element to represent.
      *    @param namespace context namespace (may be null).
      *    @return a string representing the model element
+     *   
+     *   @deprecated by maurelio1234. Use {@link #getFormatingStrategy()} instead.
      */
+    @Deprecated
     public String formatElement(Object element,
                                          Object namespace) {
         FormatingStrategy fs = getFormatingStrategy(); 
@@ -119,13 +124,17 @@ public abstract class Profile {
             return null;
         }
     }
+    
     /**
      *   This method produces a string the represents the collection
      *   of model elements in the context of the specified namespace.
      *   @param iter iterator over collection
      *   @param namespace context namespace (may be null).
      *   @return a string representing the collection
+     *   
+     *   @deprecated by maurelio1234. Use {@link #getFormatingStrategy()} instead.
      */
+    @Deprecated
     public String formatCollection(Iterator iter,
                                             Object namespace) {
         FormatingStrategy fs = getFormatingStrategy(); 
@@ -172,6 +181,7 @@ public abstract class Profile {
      * @throws ProfileException if the given file isn't a valid profile
      * @deprecated by maurelio1234
      */
+    @SuppressWarnings("unused")
     @Deprecated
     public void setProfileModelFilename(String filename)
         throws ProfileException {

@@ -27,6 +27,7 @@ package org.argouml.uml.profile;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 /**
@@ -36,6 +37,11 @@ import org.argouml.model.Model;
  */
 public class ProfileUML extends Profile {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(ProfileUML.class);
+    
     private FormatingStrategy formatingStrategy;
     private ProfileModelLoader profileModelLoader;
     private Collection model;
@@ -45,17 +51,23 @@ public class ProfileUML extends Profile {
      * @return the unique instance for this profile
      */
     public static ProfileUML getInstance() {
-        if (instance == null) {
-            instance = new ProfileUML();
+        if (instance == null) {           
+            try {
+                instance = new ProfileUML();
+            } catch (ProfileException e) {
+                LOG.error("Exception", e);
+                instance = null;
+            }
         }
         return instance;
     }
     
     /**
      * The default constructor for this class 
+     * @throws ProfileException 
      */
     @SuppressWarnings("unchecked")
-    private ProfileUML() {
+    private ProfileUML() throws ProfileException {
         formatingStrategy = new JavaFormatingStrategy();
 	profileModelLoader = new ResourceModelLoader();
 	model = profileModelLoader

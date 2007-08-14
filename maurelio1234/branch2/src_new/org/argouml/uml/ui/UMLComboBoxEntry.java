@@ -28,6 +28,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.profile.FormatingStrategy;
 import org.argouml.uml.profile.Profile;
 
 /**
@@ -52,7 +53,7 @@ public class UMLComboBoxEntry implements Comparable {
 
     /** longName is composed of an identifier and a name as in Class: String */
     private String longName;
-    private Profile profile;
+    private FormatingStrategy formater;
 
     /** display name will be the same as shortName unless there
      *  is a name collision */
@@ -75,7 +76,12 @@ public class UMLComboBoxEntry implements Comparable {
         element = modelElement;
         if (modelElement != null) {
             Object ns = Model.getFacade().getNamespace(modelElement);
-            shortName = theProfile.formatElement(modelElement, ns);
+            if (theProfile.getFormatingStrategy() != null) {
+                shortName = theProfile.getFormatingStrategy().formatElement(
+                        modelElement, ns);
+            } else {
+                // TODO What should we do here?
+            }
         } else {
             shortName = "";
         }
@@ -83,7 +89,7 @@ public class UMLComboBoxEntry implements Comparable {
         //
         //   format the element in its own namespace
         //       should result in an name without packages
-        profile = theProfile;
+        formater = theProfile.getFormatingStrategy();
         longName = null;
         displayName = shortName;
         thisIsAPhantom = isPhantom;
@@ -103,7 +109,11 @@ public class UMLComboBoxEntry implements Comparable {
     public void updateName() {
         if (element != null) {
             Object ns = Model.getFacade().getNamespace(element);
-            shortName = profile.formatElement(element, ns);
+            if (formater != null) {
+                shortName = formater.formatElement(element, ns);                
+            } else {
+                // TODO what should we do here?                
+            }
         }
     }
 
@@ -138,7 +148,11 @@ public class UMLComboBoxEntry implements Comparable {
     public String getLongName() {
         if (longName == null) {
             if (element != null) {
-                longName = profile.formatElement(element, null);
+                if (formater != null) {
+                    longName = formater.formatElement(element, null);
+                } else {
+                    // TODO what should we do here?
+                }
             }
             else {
                 longName = "(unspecified)"; // TODO: I18N
@@ -294,7 +308,11 @@ public class UMLComboBoxEntry implements Comparable {
     public void nameChanged(Object modelElement) {
         if (modelElement == element && element != null) {
             Object ns = Model.getFacade().getNamespace(element);
-            shortName = profile.formatElement(element, ns);
+            if (formater != null) {
+                shortName = formater.formatElement(element, ns);                
+            } else {
+                // TODO what should we do here?                
+            }
             displayName = shortName;
             longName = null;
         }

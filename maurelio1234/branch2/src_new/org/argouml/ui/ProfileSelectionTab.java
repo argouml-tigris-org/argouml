@@ -49,6 +49,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.profile.Profile;
 import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.uml.profile.ProfileException;
 import org.argouml.uml.profile.ProfileManager;
 import org.argouml.uml.profile.ProfileManagerImpl;
 import org.argouml.uml.profile.UserDefinedProfile;
@@ -86,7 +87,7 @@ public class ProfileSelectionTab extends JPanel implements
 	private ProfileManager profileManager = ProfileManagerImpl
 		.getInstance();
 
-	private Vector listeners = new Vector();
+	private Vector<ListDataListener> listeners = new Vector<ListDataListener>();
 
 	/**
          * @param arg0
@@ -103,8 +104,7 @@ public class ProfileSelectionTab extends JPanel implements
 	    ListDataEvent evt = new ListDataEvent(this,
 		    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
 	    for (int i = 0; i < listeners.size(); ++i) {
-		((ListDataListener) listeners.elementAt(i))
-			.contentsChanged(evt);
+		listeners.elementAt(i).contentsChanged(evt);
 	    }
 	}
 
@@ -178,7 +178,7 @@ public class ProfileSelectionTab extends JPanel implements
      * @author maurelio1234
      */
     private class UsedProfilesListModel implements ListModel {
-	private Vector listeners = new Vector();
+	private Vector<ListDataListener> listeners = new Vector<ListDataListener>();
 
 	/**
 	 * @param arg0
@@ -195,8 +195,7 @@ public class ProfileSelectionTab extends JPanel implements
 	    ListDataEvent evt = new ListDataEvent(this,
 		    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
 	    for (int i = 0; i < listeners.size(); ++i) {
-		((ListDataListener) listeners.elementAt(i))
-			.contentsChanged(evt);
+		listeners.elementAt(i).contentsChanged(evt);
 	    }
 	}
 
@@ -361,24 +360,23 @@ public class ProfileSelectionTab extends JPanel implements
 
 	    int ret = fileChooser.showOpenDialog(this);
 	    if (ret == JFileChooser.APPROVE_OPTION) {
-		File file = fileChooser.getSelectedFile();
+                File file = fileChooser.getSelectedFile();
 
-		UserDefinedProfile profile = new UserDefinedProfile(file);
+                try {
+                    UserDefinedProfile profile = new UserDefinedProfile(file);
+                    ProfileManagerImpl.getInstance().registerProfile(profile);
 
-		if (profile.getModel() != null) {
-		    ProfileManagerImpl.getInstance().registerProfile(profile);
+                    ProjectManager.getManager().getCurrentProject()
+                            .getProfileConfiguration().addProfile(profile);
 
-		    ProjectManager.getManager().getCurrentProject()
-			    .getProfileConfiguration().addProfile(profile);
-
-		    UsedProfilesListModel model = 
-			((UsedProfilesListModel) usedList.getModel());
-		    model.fireListeners();
-		} else {
-		    JOptionPane.showMessageDialog(this,
-			    Translator.localize("tab.profiles.userdefined.errorloading"));
-		}
-	    }
+                    UsedProfilesListModel model = ((UsedProfilesListModel) usedList
+                            .getModel());
+                    model.fireListeners();
+                } catch (ProfileException e) {
+                    JOptionPane.showMessageDialog(this, Translator
+                            .localize("tab.profiles.userdefined.errorloading"));
+                }
+            }
 	}
 
 	availableList.validate();

@@ -42,21 +42,22 @@ public abstract class StreamModelLoader implements ProfileModelLoader {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-	    .getLogger(StreamModelLoader.class);
+    private static final Logger LOG = Logger.getLogger(StreamModelLoader.class);
 
     /**
      * @param path the path of the model
      * @return the loaded model
+     * @throws ProfileException
      * @see org.argouml.uml.profile.ProfileModelLoader#loadModel(java.lang.String)
      */
-    public abstract Collection loadModel(String path);
+    public abstract Collection loadModel(String path) throws ProfileException;
 
     /**
      * @param is the stream from where the model should be loaded
      * @return the model
+     * @throws ProfileException if the XMIReader couldn't read the input stream
      */
-    protected Collection loadModel(InputStream is) {
+    protected Collection loadModel(InputStream is) throws ProfileException {
         if (is != null) {
             try {
                 XmiReader xmiReader = Model.getXmiReader();
@@ -65,10 +66,10 @@ public abstract class StreamModelLoader implements ProfileModelLoader {
                 return elements;
             } catch (UmlException e) {
                 LOG.error("Exception while loading profile ", e);
-                return null;
+                throw new ProfileException("Invalid XMI data!");
             }
         }
         LOG.error("Profile not found");
-        return null;	
+        throw new ProfileException("Profile not found!");	
     }
 }

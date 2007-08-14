@@ -50,9 +50,10 @@ public class ZipModelLoader extends StreamModelLoader {
     /**
      * @param modelFilename the zip file
      * @return the loaded model
+     * @throws ProfileException if the profile could not be loaded
      * @see org.argouml.uml.profile.StreamModelLoader#loadModel(java.lang.String)
      */
-    public Collection loadModel(String modelFilename) {
+    public Collection loadModel(String modelFilename) throws ProfileException {
 	LOG.info("Loading profile from ZIP '" + modelFilename + "'");
 
 	InputStream is = null;
@@ -75,18 +76,19 @@ public class ZipModelLoader extends StreamModelLoader {
 	    } catch (MalformedURLException e) {
 		LOG.error("Exception while loading profile '" + modelFilename
 			+ "'", e);
-		return null;
+		throw new ProfileException(e);
 	    } catch (IOException e) {
 		LOG.error("Exception while loading profile '" + modelFilename
 			+ "'", e);
-		return null;
+                throw new ProfileException(e);
 	    }
 
 	    if (is != null) {
 		return super.loadModel(is);
 	    }
 	}
-	return null;
+	
+        throw new ProfileException("Profile could not be loaded!");
     }
 
     /**

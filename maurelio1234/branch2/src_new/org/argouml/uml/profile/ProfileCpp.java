@@ -27,6 +27,7 @@ package org.argouml.uml.profile;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 /**
@@ -35,6 +36,10 @@ import org.argouml.model.Model;
  * @author Marcos Aurélio
  */
 public class ProfileCpp extends Profile {
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(ProfileCpp.class);
 
     private FormatingStrategy formatingStrategy;
     private ProfileModelLoader profileModelLoader;
@@ -46,7 +51,12 @@ public class ProfileCpp extends Profile {
      */
     public static ProfileCpp getInstance() {
         if (instance == null) {
-            instance = new ProfileCpp();
+            try {
+                instance = new ProfileCpp();
+            } catch (ProfileException e) {
+                LOG.error("Exception", e);
+                instance = null;
+            }
         }
         return instance;
     }
@@ -54,9 +64,10 @@ public class ProfileCpp extends Profile {
     
     /**
      * The default constructor for this class 
+     * @throws ProfileException 
      */
     @SuppressWarnings("unchecked")
-    private ProfileCpp() {
+    private ProfileCpp() throws ProfileException {
 	profileModelLoader = new ResourceModelLoader();
 	model = profileModelLoader
 		.loadModel("/org/argouml/default-cpp.xmi");

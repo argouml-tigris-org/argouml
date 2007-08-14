@@ -91,20 +91,57 @@ public class StereotypeUtility {
                     throw new ClassCastException(e.getMessage());
                 }
             }
-        });            
-        Collection models =
-            ProjectManager.getManager().getCurrentProject().getModels();
+        });
+        
+//        Collection models =
+//            ProjectManager.getManager().getCurrentProject().getModels();
             
-        addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
-                .getExtensionMechanismsHelper().getAllPossibleStereotypes(
-                        models, modelElement));
+//        addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
+//                .getExtensionMechanismsHelper().getAllPossibleStereotypes(
+//                        models, modelElement));
+
+        // ir subindo na hierarquia!!!        
+        Object namespace = Model.getFacade().getNamespace(modelElement);
+        getApplicableStereotypesInNamespace(modelElement, paths,
+                availableStereotypes, namespace);
+        
         addAllUniqueModelElementsFrom(availableStereotypes, paths,
                 ProjectManager.getManager().getCurrentProject()
                         .getProfileConfiguration()
                         .findAllStereotypesForModelElement(modelElement));
+        
         return availableStereotypes;
     }
+
+    private static void getApplicableStereotypesInNamespace(
+            Object modelElement, Set paths, Set availableStereotypes,
+            Object namespace) {
+        Collection allProfiles = getAllProfilePackages(Model.getFacade()
+                .getModel(modelElement));
+        
+        for (Object profilePackage : allProfiles) {
+            Collection allDependencies = Model.getCoreHelper().getDependencies(
+                    profilePackage, namespace);
+
+            for (Object dependency : allDependencies) {
+                if (Model.getExtensionMechanismsHelper().hasStereotype(
+                        dependency, "appliedProfile")) {
+                    addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                            getAllStereotypesFromPackage(profilePackage));
+                    break;
+                }
+            }
+        }
+    }
     
+    private static Collection getAllStereotypesFromPackage(Object profilePackage) {
+        return new ArrayList();
+    }
+
+    private static Collection getAllProfilePackages(Object model) {
+        return new ArrayList();
+    }
+
     /**
      * Helper method for buildModelList.
      * <p>

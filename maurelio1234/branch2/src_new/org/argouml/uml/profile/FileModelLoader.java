@@ -48,9 +48,10 @@ public class FileModelLoader extends StreamModelLoader {
     /**
      * @param modelFilename the model to be loaded
      * @return the profile model
+     * @throws ProfileException 
      * @see org.argouml.uml.profile.StreamModelLoader#loadModel(java.lang.String)
      */
-    public Collection loadModel(String modelFilename) {
+    public Collection loadModel(String modelFilename) throws ProfileException {
         LOG.info("Loading profile from file'" + modelFilename + "'");
         InputStream is = null;
         //
@@ -62,8 +63,8 @@ public class FileModelLoader extends StreamModelLoader {
             
             return super.loadModel(is);
         } catch (FileNotFoundException ex) {
+            throw new ProfileException("Model file not found!");
         }
-        return null;
     }
 
 }

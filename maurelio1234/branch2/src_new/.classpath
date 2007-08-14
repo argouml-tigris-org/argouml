@@ -8,5 +8,12 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model-euml"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model-mdr"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
+	<classpathentry kind="lib" path="/argouml-core-lib/antlrall-2.7.2.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-lib/commons-logging-1.0.2.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-lib/gef-0.12.4M4.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-lib/log4j-1.2.6.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-lib/ocl-argo-1.1.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-lib/swidgets-0.1.4.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-lib/toolbar-1.4.jar"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>

@@ -58,6 +58,7 @@ import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 import org.argouml.uml.profile.Profile;
 import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.uml.profile.ProfileException;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionClassDiagram;
@@ -693,14 +694,18 @@ public class ExplorerPopup extends JPopupMenu {
         boolean found = selectedItem instanceof ProfileConfiguration ||
                             selectedItem instanceof Profile;
         
-        Iterator it = currentProject.getProfileConfiguration().getProfileModels().iterator();
-        while(!found && it.hasNext()) {
-            Object model = it.next();
-            
-            if ((Model.getFacade().getModel(selectedItem).equals(model))) {
-                found = true;
-                break;
-            }
+        for (Profile profile : currentProject.getProfileConfiguration().getProfiles()) {
+            Collection models;
+            try {
+                models = profile.getProfilePackages();
+                for (Object model : models) {
+                    if ((Model.getFacade().getModel(selectedItem).equals(model))) {
+                        found = true;
+                        break;
+                    }                
+                }
+            } catch (ProfileException e) {
+            }            
         }
         
         return found;

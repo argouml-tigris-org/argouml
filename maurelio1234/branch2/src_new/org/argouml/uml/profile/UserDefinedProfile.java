@@ -43,8 +43,9 @@ public class UserDefinedProfile extends Profile {
      * The default constructor for this class
      * 
      * @param file the file from where the model should be read  
+     * @throws ProfileException if the profile could not be loaded
      */
-    public UserDefinedProfile(File file) {
+    public UserDefinedProfile(File file) throws ProfileException {
 	this.displayName = file.getName();
 	this.modelFile = file;
         this.model = new FileModelLoader().loadModel(modelFile.getPath());

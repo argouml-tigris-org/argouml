@@ -38,6 +38,7 @@ public interface ProfileModelLoader {
      * @param path the path where the profile can be found. <b>
      *             The expected string format is implementation specific! 
      * @return the set of defined packages
+     * @throws ProfileException if the profile could not be loaded for some reason
      */
-    Collection loadModel(String path);  
+    Collection loadModel(String path) throws ProfileException;  
 }

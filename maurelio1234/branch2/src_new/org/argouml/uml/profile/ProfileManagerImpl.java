@@ -58,11 +58,11 @@ public class ProfileManagerImpl implements ProfileManager {
      */
     private boolean disableConfigurationUpdate = false;
     
-    private Vector profiles = new Vector();
+    private Vector<Profile> profiles = new Vector<Profile>();
 
-    private Vector defaultProfiles = new Vector();
+    private Vector<Profile> defaultProfiles = new Vector<Profile>();
 
-    private Vector searchDirectories = new Vector();
+    private Vector<String> searchDirectories = new Vector<String>();
 
     private ProfileManagerImpl() {
         defaultProfiles.add(ProfileUML.getInstance());
@@ -293,9 +293,13 @@ public class ProfileManagerImpl implements ProfileManager {
                         boolean found = findUserDefinedProfile(files[i]) != null;
 
                         if (!found) {
-                            UserDefinedProfile udp = new UserDefinedProfile(
-                                    files[i]);
-                            registerProfile(udp);
+                            UserDefinedProfile udp = null;
+                            try {
+                                udp = new UserDefinedProfile(files[i]);
+                                registerProfile(udp);
+                            } catch (ProfileException e) {
+                                // if an exception is raised this file is not useful
+                            }
                         }
                     }
                 }

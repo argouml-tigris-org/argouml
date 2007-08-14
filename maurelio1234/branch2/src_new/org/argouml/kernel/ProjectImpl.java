@@ -882,26 +882,24 @@ public class ProjectImpl implements java.io.Serializable, Project {
         }
     }
 
-
     public boolean isInTrash(Object obj) {
         return trashcan.contains(obj);
     }
 
-
     @SuppressWarnings("deprecation")
     public void setDefaultModel(Object theDefaultModel) {
-        defaultModelTypeCache = new HashMap<String, Object>();
+        throw new UnsupportedOperationException();
     }
 
     @SuppressWarnings("deprecation")
     public Object getDefaultModel() {
-		throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
-    
+
     @SuppressWarnings("deprecation")
     @Deprecated
     public Collection getProfiles() {
-		throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     public Object findTypeInDefaultModel(String name) {
@@ -982,11 +980,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return new Vector(searchpath);
     }
 
-
     public Map<String, Object> getUUIDRefs() {
         return uuidRefs;
     }
-
 
     @SuppressWarnings("deprecation")
     public void setSearchpath(Vector<String> theSearchpath) {
@@ -1002,11 +998,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
         uuidRefs = uUIDRefs;
     }
 
-
     public void setVetoSupport(VetoableChangeSupport theVetoSupport) {
         vetoSupport = theVetoSupport;
     }
-
 
     public ArgoDiagram getActiveDiagram() {
         return activeDiagram;
@@ -1016,7 +1010,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public void setActiveDiagram(ArgoDiagram theDiagram) {
         activeDiagram = theDiagram;
     }
-
 
     public void remove() {
         for (ArgoDiagram diagram : diagrams) {
@@ -1074,7 +1067,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     @SuppressWarnings("deprecation")
     @Deprecated
     public Profile getProfile() {
-		throw new UnsupportedOperationException();
+	throw new UnsupportedOperationException();
     }
 
 
