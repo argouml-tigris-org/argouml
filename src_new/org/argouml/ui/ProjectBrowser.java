@@ -1663,6 +1663,7 @@ public final class ProjectBrowser
                                     project);
                             ProjectManager.getManager().removeProject(
                                     oldProject);
+                            project.getProjectSettings().init();
                         }
                     }
 

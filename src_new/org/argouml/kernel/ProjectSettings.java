@@ -127,6 +127,22 @@ public class ProjectSettings {
                 Argo.KEY_MOST_RECENT_EXPORT_DIRECTORY, generationOutputDir);
     }
 
+    /**
+     * Send all events...
+     */
+    public void init() {
+        setNotationLanguage(getNotationLanguage());
+        setShowBoldNames(getShowBoldNamesValue());
+        setUseGuillemots(getUseGuillemotsValue());
+        setShowVisibility(getShowVisibilityValue());
+        setShowMultiplicity(getShowMultiplicityValue());
+        setShowInitialValue(getShowInitialValueValue());
+        setShowProperties(getShowPropertiesValue());
+        setShowTypes(getShowTypesValue());
+        setShowStereotypes(getShowStereotypesValue());
+        setShowSingularMultiplicities(getShowSingularMultiplicitiesValue());
+        setDefaultShadowWidth(getDefaultShadowWidthValue());
+    }
 
     /**
      * Used by "argo.tee".
