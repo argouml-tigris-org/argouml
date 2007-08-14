@@ -30,9 +30,9 @@ import java.io.Writer;
 
 /**
  * This is the root class of the Model subsystem. All other subsystems
- * can retreive the correct version of the API from this class.<p>
+ * can retrieve the correct version of the API from this class.<p>
  *
- * Notice that all API's returned from this class are to be independant
+ * Notice that all API's returned from this class are to be independent
  * of and specific UML model implementation.<p>
  *
  * For this to work the Model subsystem needs to be initialized with a
