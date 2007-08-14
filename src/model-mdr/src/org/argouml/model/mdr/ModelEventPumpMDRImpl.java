@@ -30,18 +30,19 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.jmi.model.Association;
 import javax.jmi.model.AssociationEnd;
+import javax.jmi.model.Attribute;
 import javax.jmi.model.GeneralizableElement;
 import javax.jmi.model.ModelElement;
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofClass;
 import javax.jmi.model.NameNotFoundException;
+import javax.jmi.model.Reference;
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefAssociation;
 import javax.jmi.reflect.RefObject;
@@ -106,8 +107,14 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     /**
      * Map of subtypes for all types in our metamodel.
      */
-    private Map subtypeMap;
+    private Map<String, Collection<String>> subtypeMap;
 
+    /**
+     * Map of all valid property names (association end names & attribute names)
+     * for each class.
+     */
+    private Map<String, Collection<String>> propertyNameMap;
+    
     /**
      * Constructor.
      *
@@ -129,6 +136,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         modelImpl = implementation;
         repository = repo;
         subtypeMap = buildTypeMap(modelImpl.getModelPackage());
+        propertyNameMap = buildPropertyNameMap(modelImpl.getModelPackage());
     }
     
     /*
@@ -234,7 +242,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             return;
         }
 
-        List events = new ArrayList();
+        List<UmlChangeEvent> events = new ArrayList<UmlChangeEvent>();
 
         if (mdrEvent instanceof AttributeEvent) {
             AttributeEvent ae = (AttributeEvent) mdrEvent;
@@ -323,9 +331,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
         }
 
-        for (int i = 0; i < events.size(); i++) {
-            UmlChangeEvent event = (UmlChangeEvent) events.get(i);
-
+        for (UmlChangeEvent event : events) {
             fire(event);
             // Unregister deleted instances after all events have been delivered
             if (event instanceof DeleteInstanceEvent) {
@@ -385,7 +391,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
         // Any given listener is only called once even if it is
         // registered for multiple relevant matches
-        Set listeners = new HashSet();
+        Set<PropertyChangeListener> listeners = new HashSet<PropertyChangeListener>();
         synchronized (lock) {
             listeners.addAll(getMatches(elements, mofId, event
                     .getPropertyName()));
@@ -408,10 +414,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         }
 
         if (!listeners.isEmpty()) {
-            Iterator it = listeners.iterator();
-            PropertyChangeListener pcl = null;
-            while (it.hasNext()) {
-                pcl = (PropertyChangeListener) it.next();
+            for (PropertyChangeListener pcl : listeners) {
                 if (false /*(LOG.isDebugEnabled()*/) {
                     LOG.debug("Firing event on " + pcl.getClass().getName()
                             + "[" + pcl + "]");
@@ -512,13 +515,12 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                         + "properties:" + formatArray(propertyNames)
                         + ", listener:" + listener + "]");
             }
-            Collection subtypes = (Collection) subtypeMap.get(className);
+            Collection<String> subtypes = subtypeMap.get(className);
             verifyAttributeNames(className, propertyNames);
             synchronized (lock) {
                 register(listenedClasses, listener, className, propertyNames);
-                for (Iterator i = subtypes.iterator(); i.hasNext();) {
-                    register(listenedClasses, listener, (String) i.next(),
-                            propertyNames);
+                for (String subtype : subtypes) {
+                    register(listenedClasses, listener, subtype, propertyNames);
                 }
             }
             return;
@@ -541,11 +543,11 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                         + ", properties:" + formatArray(propertyNames)
                         + ", listener:" + listener + "]");
             }
-            Collection subtypes = (Collection) subtypeMap.get(className);
+            Collection<String> subtypes = subtypeMap.get(className);
             synchronized (lock) {
                 unregister(listenedClasses, listener, className, propertyNames);
-                for (Iterator i = subtypes.iterator(); i.hasNext();) {
-                    unregister(listenedClasses, listener, (String) i.next(),
+                for (String subtype : subtypes) {
+                    unregister(listenedClasses, listener, subtype,
                             propertyNames);
                 }
             }
@@ -790,11 +792,10 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     /**
      * Traverse metamodel and build list of subtypes for every metatype.
      */
-    private HashMap buildTypeMap(ModelPackage extent) {
-        HashMap names = new HashMap();
-        for (Iterator iter = extent.getMofClass().refAllOfClass().iterator();
-                iter.hasNext();) {
-            ModelElement element = (ModelElement) iter.next();
+    private Map<String, Collection<String>> buildTypeMap(ModelPackage extent) {
+        Map<String, Collection<String>> names = new HashMap<String, Collection<String>>();
+        for (Object metaclass : extent.getMofClass().refAllOfClass()) {
+            ModelElement element = (ModelElement) metaclass;
             String name = element.getName();
             if (names.containsKey(name)) {
                 LOG.error("Found duplicate class '" + name + "' in metamodel");
@@ -812,13 +813,12 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * 
      * TODO: Does this have a scalability problem?
      */
-    private Collection getSubtypes(ModelPackage extent, ModelElement me) {
-        Collection allSubtypes = new HashSet();
+    private Collection<String> getSubtypes(ModelPackage extent, ModelElement me) {
+        Collection<String> allSubtypes = new HashSet<String>();
         if (me instanceof GeneralizableElement) {
             GeneralizableElement ge = (GeneralizableElement) me;
-            Collection subtypes = extent.getGeneralizes().getSubtype(ge);
-            for (Iterator i = subtypes.iterator(); i.hasNext();) {
-                ModelElement st = (ModelElement) i.next();
+            Collection<ModelElement> subtypes = extent.getGeneralizes().getSubtype(ge);
+            for (ModelElement st : subtypes) {
                 allSubtypes.add(st.getName());
                 allSubtypes.addAll(getSubtypes(extent, st));
             }
@@ -826,6 +826,61 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         return allSubtypes;
     }
 
+    /**
+     * Traverse metamodel and build list of names for all attributes and reference ends.
+     */
+    private Map<String, Collection<String>> buildPropertyNameMap(
+            ModelPackage extent) {
+        Map<String, Collection<String>> names = new HashMap<String, Collection<String>>();
+        for (Reference reference : (Collection<Reference>) extent
+                .getReference().refAllOfClass()) {
+            mapAssociationEnd(names, reference.getExposedEnd());
+            mapAssociationEnd(names, reference.getReferencedEnd());
+        }
+        for (Attribute attribute : (Collection<Attribute>) extent
+                .getAttribute().refAllOfClass()) {
+            mapPropertyName(names, attribute.getContainer(),
+                    attribute.getName());
+        }
+        return names;
+    }
+
+    private void mapAssociationEnd(Map<String, Collection<String>> names,
+            AssociationEnd end) {
+        ModelElement type = end.otherEnd().getType();
+        mapPropertyName(names, type, end.getName());
+    }
+
+    private boolean mapPropertyName(Map<String, Collection<String>> names,
+            ModelElement type, String propertyName) {
+        String typeName = type.getName();
+        boolean added = mapPropertyName(names, typeName, propertyName);
+
+        Collection<String> subtypes = subtypeMap.get(typeName);
+        if (subtypes != null) {
+            for (String subtype : subtypes) {
+                added &= mapPropertyName(names, subtype, propertyName);
+            }
+        }
+        
+        return added;
+    }
+
+    private boolean mapPropertyName(Map<String, Collection<String>> names,
+            String typeName, String propertyName) {
+        if (!names.containsKey(typeName)) {
+            names.put(typeName, new HashSet<String>());
+        }
+        boolean added = names.get(typeName).add(propertyName);
+        if (!added) {
+            LOG.debug("Duplicate property name found - " + typeName + ":"
+                    + propertyName);
+        } else {
+            LOG.debug("Added property name - " + typeName + ":" + propertyName);
+        }
+        return added;
+    }
+    
     /**
      * Check whether given attribute names exist for this
      * metatype in the metamodel.  Throw exception if not found.
@@ -848,8 +903,6 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             if (metaobject == null || attributes == null) {
                 return;
             }
-
-            HashSet<String> names = new HashSet<String>();
             // If we don't have a MofClass, see if we can get one from the
             // instance
             if (!(metaobject instanceof MofClass)) {
@@ -863,30 +916,21 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
 
             MofClass metaclass = (MofClass) metaobject;
-            addAttributeAndReferenceNames(names, metaclass);
-            for (MofClass superclass : (List<MofClass>)metaclass.allSupertypes()) {
-                addAttributeAndReferenceNames(names, superclass);
+            Collection<String> names = propertyNameMap.get(metaclass.getName());
+            if (names == null) {
+                names = Collections.EMPTY_SET;
             }
 
             for (String attribute : attributes) {
                 if (!names.contains(attribute) 
                         && !"remove".equals(attribute)) {
-                    /*
-                     * TODO: For any names not found in the class definition,
-                     * see if we can find an association with an end of the
-                     * right name where the opposite end has the correct type .
-                     *
-                     * Perhaps instead of working from the class we should get
-                     * all associations, check the types of their association
-                     * ends for one which matches our class, then get the name
-                     */
+
                     // TODO: We also have code registering for the names of
                     // a tagged value like "derived"
                     LOG.error("Property '" + attribute
                              + "' for class '"
                              + metaclass.getName()
-                             + "' doesn't exist in metamodel"
-                             + " (possible false warning)");
+                             + "' doesn't exist in metamodel");
 //                  throw new IllegalArgumentException("Property '"
 //                            + attributes[i] + "' doesn't exist in metamodel");
                 }
@@ -894,18 +938,6 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         }
     }
 
-    private void addAttributeAndReferenceNames(HashSet<String> names,
-            MofClass superclass) {
-        // TODO: This won't find associations which aren't navigable in
-        // this direction
-        for (Object o : superclass.getContents()) {
-            if (o instanceof javax.jmi.model.Reference
-                    || o instanceof javax.jmi.model.Attribute) {
-                names.add(((javax.jmi.model.ModelElement) o).getName());
-            }
-        }
-    }
-    
     /**
      * Getter provided for the dev module to allow it to discover the
      * listeners contained by the event pump.
