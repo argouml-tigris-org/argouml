@@ -863,15 +863,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
 
             MofClass metaclass = (MofClass) metaobject;
+            addAttributeAndReferenceNames(names, metaclass);
             for (MofClass superclass : (List<MofClass>)metaclass.allSupertypes()) {
-                // TODO: This won't find associations which aren't navigable in
-                // this direction
-                for (Object o : superclass.getContents()) {
-                    if (o instanceof javax.jmi.model.Reference
-                            || o instanceof javax.jmi.model.Attribute) {
-                        names.add(((javax.jmi.model.ModelElement) o).getName());
-                    }
-                }
+                addAttributeAndReferenceNames(names, superclass);
             }
 
             for (String attribute : attributes) {
@@ -886,6 +880,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                      * all associations, check the types of their association
                      * ends for one which matches our class, then get the name
                      */
+                    // TODO: We also have code registering for the names of
+                    // a tagged value like "derived"
                     LOG.error("Property '" + attribute
                              + "' for class '"
                              + metaclass.getName()
@@ -894,6 +890,18 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 //                  throw new IllegalArgumentException("Property '"
 //                            + attributes[i] + "' doesn't exist in metamodel");
                 }
+            }
+        }
+    }
+
+    private void addAttributeAndReferenceNames(HashSet<String> names,
+            MofClass superclass) {
+        // TODO: This won't find associations which aren't navigable in
+        // this direction
+        for (Object o : superclass.getContents()) {
+            if (o instanceof javax.jmi.model.Reference
+                    || o instanceof javax.jmi.model.Attribute) {
+                names.add(((javax.jmi.model.ModelElement) o).getName());
             }
         }
     }
