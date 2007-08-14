@@ -26,6 +26,7 @@ package org.argouml.uml;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -369,9 +370,9 @@ public class ProfileJava extends Profile {
         File modelFile = new File(modelFilename);
         if (modelFile.exists()) {
             try {
-                URL url = modelFile.toURL();
-                if (url != null) {
-                    systemId = url.toExternalForm();
+                URI uri = modelFile.toURI();
+                if (uri != null) {
+                    systemId = uri.toURL().toExternalForm();
                 } else {
                     systemId = null;
                 }
@@ -388,7 +389,10 @@ public class ProfileJava extends Profile {
             // in the same ClassLoader as the profile XMI file.
             // If we run using Java Web Start then we have every ArgoUML
             // file in the same jar (i.e. the same ClassLoader).
-            systemId = this.getClass().getResource(modelFilename).toExternalForm();
+            URL url = this.getClass().getResource(modelFilename);
+            if (url != null) {
+                systemId = url.toExternalForm();
+            }
         }
 
         if (systemId != null) {
