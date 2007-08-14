@@ -42,6 +42,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.CommandStack;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.RemoveAssociationEvent;
 import org.eclipse.emf.common.command.CommandStackListener;
@@ -122,8 +123,6 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public static final int COMMAND_STACK_UPDATE = Notification.EVENT_TYPE_COUNT + 1;
 
-    public static final String COMMAND_STACK_UPDATE_STRING = "COMMAND_STACK_UPDATE"; //$NON-NLS-1$
-
     /**
      * Constructor.
      * 
@@ -170,7 +169,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
         if (!(modelelement instanceof EObject)
-                && !(modelelement instanceof String && modelelement.equals(COMMAND_STACK_UPDATE_STRING))) {
+                && !(modelelement instanceof String && modelelement.equals(CommandStack.COMMAND_STACK_UPDATE_EVENT))) {
             throw new IllegalArgumentException(
                     "The modelelement must be instance of EObject."); //$NON-NLS-1$
         }
@@ -232,7 +231,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
         if (!(modelelement instanceof EObject)
-                && !(modelelement instanceof String && modelelement.equals(COMMAND_STACK_UPDATE_STRING))) {
+                && !(modelelement instanceof String && modelelement.equals(CommandStack.COMMAND_STACK_UPDATE_EVENT))) {
             throw new IllegalArgumentException();
         }
         unregisterListener(
@@ -382,8 +381,9 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         } else if (notification.getEventType() == COMMAND_STACK_UPDATE) {
             events.add(new EventAndListeners(
                     new PropertyChangeEvent(
-                            this, COMMAND_STACK_UPDATE_STRING, false, false),
-                    getListeners(COMMAND_STACK_UPDATE_STRING)));
+                            this, CommandStack.COMMAND_STACK_UPDATE_EVENT,
+                            false, false),
+                    getListeners(CommandStack.COMMAND_STACK_UPDATE_EVENT)));
         }
 
         for (EventAndListeners e : events) {

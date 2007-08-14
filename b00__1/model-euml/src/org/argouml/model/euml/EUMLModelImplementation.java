@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.CommandStack;
 import org.argouml.model.DiagramInterchangeModel;
 import org.argouml.model.ModelImplementation;
 import org.argouml.model.UmlException;
@@ -156,6 +157,8 @@ public class EUMLModelImplementation implements ModelImplementation {
     private UseCasesHelperEUMLImpl theUseCasesHelper;
 
     private VisibilityKindEUMLImpl theVisibilityKind;
+    
+    private CommandStackImpl theCommandStack;
 
     /**
      * This keeps track of the editing domain that is used to track all changes
@@ -169,50 +172,6 @@ public class EUMLModelImplementation implements ModelImplementation {
     public EUMLModelImplementation() {
         initializeEditingDomain();
         LOG.debug("EUML Init - editing domain initialized"); //$NON-NLS-1$
-    }
-
-    /**
-     * Verifies if the editing domain can undo the last changes in the UML
-     * model.
-     * 
-     * @return true if undo is possible, false otherwise
-     */
-    public boolean canUndo() {
-        return editingDomain.getCommandStack().canUndo();
-    }
-
-    /**
-     * Verifies if the editing domain can redo the last undone command.
-     * @return true if redo is possible, false otherwise
-     */
-    public boolean canRedo() {
-        return editingDomain.getCommandStack().canRedo();
-    }
-
-    /**
-     * Undo the last command
-     * <p>
-     * If {@link #canUndo()} returns false, nothing will happen
-     */
-    public void undo() {
-        if (!canUndo()) {
-            LOG.debug("!!! canUndo() == false !!!"); //$NON-NLS-1$
-            return;
-        }
-        editingDomain.getCommandStack().undo();
-    }
-
-    /**
-     * Redo the last command
-     * <p>
-     * If {@link #canRedo()} returns false, nothing will happen
-     */
-    public void redo() {
-        if (!canRedo()) {
-            LOG.debug("!!! canRedo() == false !!!"); //$NON-NLS-1$
-            return;
-        }
-        editingDomain.getCommandStack().redo();
     }
 
     /**
@@ -549,6 +508,13 @@ public class EUMLModelImplementation implements ModelImplementation {
 
     public DiagramInterchangeModel getDiagramInterchangeModel() {
         return null;
+    }
+
+    public CommandStack getCommandStack() {
+        if (theCommandStack == null) {
+            theCommandStack = new CommandStackImpl(this);
+        }
+        return theCommandStack;
     }
 
 }
