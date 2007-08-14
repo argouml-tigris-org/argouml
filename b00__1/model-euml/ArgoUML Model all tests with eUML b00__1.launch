@@ -44,5 +44,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.argouml.model.AllTests"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="argouml-core-tests"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx100M -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation -Dlog4j.configuration=org/argouml/resource/default.lcf -Djava.awt.headless=&quot;true&quot; -Dargouml.tests.dir=${resource_loc:/argouml-core-model-euml__b00__1/src/} -DeUML.resources=${workspace_loc}/argouml-core-model-euml__b00__1/lib/uml2/org.eclipse.uml2.uml.resources_2.1.0.v200706251652.jar"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx100M -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation -Dlog4j.configuration=org/argouml/resource/default.lcf -Djava.awt.headless=&quot;true&quot; -Dargouml.tests.dir=${resource_loc:/argouml-core-model-euml__b00__1/src/} -DeUML.resources=${workspace_loc}/argouml-core-model-euml__b00__1/lib/uml2/org.eclipse.uml2.uml.resources_2.1.0.v200706251652.jar -Dtest.model.uml=${workspace_loc}/argouml-core-model-euml__b00__1/src/org/argouml/model/metamodels/uml211/Superstructure.cmof"/>
 </launchConfiguration>
