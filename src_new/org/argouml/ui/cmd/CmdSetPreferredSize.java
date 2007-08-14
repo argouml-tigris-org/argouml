@@ -141,7 +141,8 @@ public class CmdSetPreferredSize extends Cmd {
                     /* But exclude elements that enclose others, 
                      * since their algorithms to calculate the minimum size 
                      * does not take enclosed objects into account: */
-                    && (fi.getEnclosedFigs().size() == 0)) {
+                    && (fi.getEnclosedFigs() == null 
+                            || fi.getEnclosedFigs().size() == 0)) {
                 if (mode == PREFERRED_SIZE) {
                     fi.setSize(fi.getPreferredSize());
                 } else {
