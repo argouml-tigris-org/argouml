@@ -137,6 +137,11 @@ class FacadeEUMLImpl implements Facade {
         modelImpl = implementation;
     }
 
+    public String getUmlVersion() {
+        // TODO: Can we get this from the metamodel?
+        return "2.1.1";
+    }
+    
     public boolean equalsPseudostateKind(Object ps1, Object ps2) {
         throw new NotYetImplementedException();
 
