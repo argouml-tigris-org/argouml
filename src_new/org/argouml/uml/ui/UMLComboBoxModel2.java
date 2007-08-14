@@ -48,9 +48,7 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * ComboBoxmodel for UML modelelements. This implementation does not use
- * reflection and seperates Model, View and Controller better then does
- * the former UMLComboBoxModel. <p>
+ * ComboBox Model for UML modelelements. <p>
  *
  * This combobox allows selecting no value, if so indicated
  * at construction time of this class. I.e. it is "clearable".
@@ -115,8 +113,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param clearable Flag to indicate if the user may select ""
      * as value in the combobox. If true the attribute that is shown
      * by this combobox may be set to null.
-     * Makes sure that there is allways a "" in the list with objects so the
-     * user has the oportunity to select this to clear the attribute.
+     * Makes sure that there is always a "" in the list with objects so the
+     * user has the opportunity to select this to clear the attribute.
      * @throws IllegalArgumentException if one of the arguments is null
      */
     public UMLComboBoxModel2(String name, boolean clearable) {
@@ -565,6 +563,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see javax.swing.AbstractListModel#fireContentsChanged(
      *          Object, int, int)
      */
+    @Override
     protected void fireContentsChanged(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel) {
             super.fireContentsChanged(source, index0, index1);
@@ -575,6 +574,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see javax.swing.AbstractListModel#fireIntervalAdded(
      *          Object, int, int)
      */
+    @Override
     protected void fireIntervalAdded(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel) {
             super.fireIntervalAdded(source, index0, index1);
@@ -585,6 +585,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see javax.swing.AbstractListModel#fireIntervalRemoved(
      *          Object, int, int)
      */
+    @Override
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel) {
             super.fireIntervalRemoved(source, index0, index1);
