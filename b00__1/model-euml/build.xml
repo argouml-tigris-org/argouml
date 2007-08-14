@@ -38,13 +38,20 @@ This is designed to work in two different environments:
     <property name="result.jar" value="argouml-euml.jar"/>
 
     <path id="euml.run.classpath">
-      <!--
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.common_2.3.0.v200703080200.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.xmi_2.3.0.v200703080200.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore_2.3.0.v200703080200.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common_1.3.0.v200703011358.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml_2.1.0.v200703011358.jar"/>
-      -->
+      <pathelement location="${argo.euml.dir}/lib/emf/org.eclipse.emf.common_2.3.0.v200708072030.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/emf/org.eclipse.emf.ecore.change.edit_2.3.0.v200708072030.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/emf/org.eclipse.emf.ecore.change_2.3.0.v200708072030.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/emf/org.eclipse.emf.ecore.edit_2.3.0.v200708072030.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/emf/org.eclipse.emf.ecore.xmi_2.3.1.v200708072030.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/emf/org.eclipse.emf.ecore_2.3.1.v200708072030.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/emf/org.eclipse.emf.edit_2.3.1.v200708072030.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/emf/org.eclipse.emf.mapping.ecore2xml_2.3.0.v200708072030.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/emf/org.eclipse.emf.mapping_2.3.0.v200708072030.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/uml2/org.eclipse.uml2.common.edit_1.3.0.v200706251652.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/uml2/org.eclipse.uml2.common_1.3.1.v200707311200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/uml2/org.eclipse.uml2.uml.edit_2.1.0.v200706251652.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/uml2/org.eclipse.uml2.uml.resources_2.1.0.v200706251652.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/uml2/org.eclipse.uml2.uml_2.1.1.v200707311200.jar"/>
     </path>
 
     <path id="euml.compile.classpath">
