@@ -26,7 +26,10 @@
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -42,16 +45,27 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  */
 public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
 
-    private Collection metaClasses = 
-            Model.getCoreHelper().getAllMetatypeNames();
+    private List<String> metaClasses;
 
     /**
      * Constructor.
      */
     public UMLMetaClassComboBoxModel() {
         super("baseClass", true);
-        //TODO: You can not sort a HashSet !!!
-//        Collections.sort((List) metaClasses);
+        Collection<String> tmpMetaClasses = Model.getCoreHelper().getAllMetatypeNames();
+        
+        if (tmpMetaClasses instanceof List) {
+            metaClasses = (List<String>) tmpMetaClasses;
+        } else {
+            metaClasses = new LinkedList<String>(tmpMetaClasses);
+        }
+        try {
+            Collections.sort(metaClasses);
+        } catch (UnsupportedOperationException e) {
+            // We got passed an unmodifiable List.  Copy it and sort the result
+            metaClasses = new LinkedList<String>(tmpMetaClasses);
+            Collections.sort(metaClasses);
+        }
     }
 
     /*
