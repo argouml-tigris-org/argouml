@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/argouml"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
 	<classpathentry kind="lib" path="/argouml-core-lib/gef-0.12.4M4.jar"/>
 	<classpathentry kind="lib" path="/argouml-core-lib/log4j-1.2.6.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml_branch"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

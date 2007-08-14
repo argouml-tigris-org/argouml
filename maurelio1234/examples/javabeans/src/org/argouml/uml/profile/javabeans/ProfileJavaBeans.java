@@ -29,33 +29,33 @@ import java.util.Collection;
 
 import org.argouml.model.Model;
 import org.argouml.uml.profile.FigNodeStrategy;
-import org.argouml.uml.profile.FormatingStrategy;
 import org.argouml.uml.profile.Profile;
 import org.argouml.uml.profile.ProfileException;
 import org.argouml.uml.profile.ProfileJava;
 import org.argouml.uml.profile.ProfileModelLoader;
 import org.argouml.uml.profile.ResourceModelLoader;
 
+@SuppressWarnings("unchecked")
 public class ProfileJavaBeans extends Profile {
 
-    private static ProfileJavaBeans instance = null;
-    
-    private ProfileModelLoader profileModelLoader;
-    private Collection model;
-    private FigNodeStrategy figStrategy = new JavaBeansFigNodeStrategy();
+	private static ProfileJavaBeans instance = null;
 
-    private ProfileJavaBeans() throws ProfileException {
-	    profileModelLoader = new ResourceModelLoader(this.getClass());
-	    model = profileModelLoader.loadModel("JavaBeans.xmi");	
-	    
-        if (model == null) {
-            model = new ArrayList();
-            model.add(Model.getModelManagementFactory().createModel());
-        }
+	private ProfileModelLoader profileModelLoader;
+	private Collection model;
+	private FigNodeStrategy figStrategy = new JavaBeansFigNodeStrategy();
+
+	private ProfileJavaBeans() throws ProfileException {
+		profileModelLoader = new ResourceModelLoader(this.getClass());
+		model = profileModelLoader.loadModel("JavaBeans.xmi");
+
+		if (model == null) {
+			model = new ArrayList();
+			model.add(Model.getModelManagementFactory().createModel());
+		}
 		addProfileDependency(ProfileJava.getInstance());
-    }
+	}
 
-    public static ProfileJavaBeans getInstance() {
+	public static ProfileJavaBeans getInstance() {
 		if (instance == null) {
 			try {
 				instance = new ProfileJavaBeans();
@@ -66,22 +66,18 @@ public class ProfileJavaBeans extends Profile {
 		}
 		return instance;
 	}
-    
-    public FormatingStrategy getFormatingStrategy() {
-	return null;
-    }
 
-    public Object getModel() {
-    	return model;
-    }
+	public Object getModel() {
+		return model;
+	}
 
-    public String getDisplayName() {
-	return "JavaBeans";
-    }
+	public String getDisplayName() {
+		return "JavaBeans";
+	}
 
-    public FigNodeStrategy getFigureStrategy() {	
-	return figStrategy;
-    }
+	public FigNodeStrategy getFigureStrategy() {
+		return figStrategy;
+	}
 
 	@Override
 	public Collection getProfilePackages() throws ProfileException {
