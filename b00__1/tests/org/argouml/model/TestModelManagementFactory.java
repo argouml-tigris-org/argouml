@@ -1,4 +1,4 @@
-// $Id:TestModelManagementFactory.java 12576 2007-05-09 14:19:16Z tfmorris $
+// $Id$
 // Copyright (c) 2002-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,7 +24,6 @@
 
 package org.argouml.model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,15 +56,6 @@ public class TestModelManagementFactory extends TestCase {
      */
     protected static String[] getAllModelElements() {
         return allModelElements;
-    }
-    
-    /**
-     * @return Returns the allModelElements for UML2.
-     */
-    protected static String[] getAllModelElementsForUML2() {
-	List<String> l = new ArrayList<String>(Arrays.asList(allModelElements));
-	l.remove("Subsystem");
-        return l.toArray(new String[0]);
     }
 
     /**

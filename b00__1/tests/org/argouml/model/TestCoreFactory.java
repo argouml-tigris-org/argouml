@@ -118,16 +118,6 @@ public class TestCoreFactory extends TestCase {
         c.remove("BehavioralFeature");
         c.remove("Relationship");
         c.remove("PresentationElement");
-        
-        c.remove("AssociationEnd");
-        c.remove("Attribute");
-        c.remove("Binding");
-        c.remove("ElementResidence");
-        c.remove("Flow");
-        c.remove("Method");
-        c.remove("ModelElement");
-        c.remove("Permission");
-        c.remove("TemplateArgument");
         return c;
     }
     

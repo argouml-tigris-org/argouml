@@ -1,4 +1,4 @@
-// $Id:TestModelManagementHelper.java 12485 2007-05-03 05:59:35Z linus $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -65,7 +65,7 @@ public class TestModelManagementHelper extends TestCase {
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 Model.getModelManagementFactory(),
-			 TestModelManagementFactory.getAllModelElementsForUML2());
+			 TestModelManagementFactory.getAllModelElements());
     }
 
     /**
