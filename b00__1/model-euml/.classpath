@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="lib/uml2/org.eclipse.uml2.common_1.3.1.v200707311200.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/uml2/org.eclipse.uml2.common.edit_1.3.0.v200706251652.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/uml2/org.eclipse.uml2.uml_2.1.1.v200707311200.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/uml2/org.eclipse.uml2.uml.edit_2.1.0.v200706251652.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/uml2/org.eclipse.uml2.common_1.3.1.v200707311200.jar" sourcepath="lib/uml2/org.eclipse.uml2.source_2.1.1.v200707311200/src/org.eclipse.uml2.common_1.3.1.v200707311200/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/uml2/org.eclipse.uml2.common.edit_1.3.0.v200706251652.jar" sourcepath="lib/uml2/org.eclipse.uml2.source_2.1.1.v200707311200/src/org.eclipse.uml2.common.edit_1.3.0.v200706251652/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/uml2/org.eclipse.uml2.uml_2.1.1.v200707311200.jar" sourcepath="lib/uml2/org.eclipse.uml2.source_2.1.1.v200707311200/src/org.eclipse.uml2.uml_2.1.1.v200707311200/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/uml2/org.eclipse.uml2.uml.edit_2.1.0.v200706251652.jar" sourcepath="lib/uml2/org.eclipse.uml2.source_2.1.1.v200707311200/src/org.eclipse.uml2.uml.edit_2.1.0.v200706251652/src.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/uml2/org.eclipse.uml2.uml.resources_2.1.0.v200706251652.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.common_2.3.0.v200708072030.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore_2.3.1.v200708072030.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.change_2.3.0.v200708072030.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.change.edit_2.3.0.v200708072030.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.edit_2.3.0.v200708072030.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.xmi_2.3.1.v200708072030.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.edit_2.3.1.v200708072030.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.mapping_2.3.0.v200708072030.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.mapping.ecore2xml_2.3.0.v200708072030.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.common_2.3.0.v200708072030.jar" sourcepath="lib/emf/org.eclipse.emf.source_2.3.1.v200708072030/src/org.eclipse.emf.common_2.3.0.v200708072030/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore_2.3.1.v200708072030.jar" sourcepath="lib/emf/org.eclipse.emf.source_2.3.1.v200708072030/src/org.eclipse.emf.ecore_2.3.1.v200708072030/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.change_2.3.0.v200708072030.jar" sourcepath="lib/emf/org.eclipse.emf.source_2.3.1.v200708072030/src/org.eclipse.emf.ecore.change_2.3.0.v200708072030/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.change.edit_2.3.0.v200708072030.jar" sourcepath="lib/emf/org.eclipse.emf.source_2.3.1.v200708072030/src/org.eclipse.emf.ecore.change.edit_2.3.0.v200708072030/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.edit_2.3.0.v200708072030.jar" sourcepath="lib/emf/org.eclipse.emf.source_2.3.1.v200708072030/src/org.eclipse.emf.ecore.edit_2.3.0.v200708072030/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.xmi_2.3.1.v200708072030.jar" sourcepath="lib/emf/org.eclipse.emf.source_2.3.1.v200708072030/src/org.eclipse.emf.ecore.xmi_2.3.1.v200708072030/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.edit_2.3.1.v200708072030.jar" sourcepath="lib/emf/org.eclipse.emf.source_2.3.1.v200708072030/src/org.eclipse.emf.edit_2.3.1.v200708072030/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.mapping_2.3.0.v200708072030.jar" sourcepath="lib/emf/org.eclipse.emf.source_2.3.1.v200708072030/src/org.eclipse.emf.mapping_2.3.0.v200708072030/src.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.mapping.ecore2xml_2.3.0.v200708072030.jar" sourcepath="lib/emf/org.eclipse.emf.source_2.3.1.v200708072030/src/org.eclipse.emf.mapping.ecore2xml_2.3.0.v200708072030/src.zip"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="build-eclipse"/>
