@@ -26,16 +26,22 @@ package org.argouml.persistence;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collection;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.argouml.kernel.Project;
+import org.argouml.model.Facade;
 import org.argouml.model.InitializeModel;
+import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.uml.Profile;
+import org.argouml.uml.ProfileException;
+import org.argouml.uml.ProfileJava;
 
 /**
  * Testcase to load projects without exception.
@@ -100,7 +106,7 @@ public class TestZargoFilePersister extends TestCase {
      *
      * @throws Exception when e.g. the file is not found
      */
-    public void testDoLoad1() throws Exception {
+    public void testDoLoadEmptyUml13() throws Exception {
         doLoad("/testmodels/uml13/Empty.zargo");
     }
 
@@ -109,7 +115,7 @@ public class TestZargoFilePersister extends TestCase {
      *
      * @throws Exception when e.g. the file is not found
      */
-    public void testDoLoad1a() throws Exception {
+    public void testDoLoadEmptyUml14() throws Exception {
         doLoad("/testmodels/uml14/EmptyProject024.zargo");
     }
 
@@ -118,7 +124,7 @@ public class TestZargoFilePersister extends TestCase {
      *
      * @throws Exception when e.g. the file is not found
      */
-    public void testDoLoad2() throws Exception {
+    public void testDoLoadUml13() throws Exception {
         doLoad("/testmodels/uml13/Alittlebitofeverything.zargo");
     }
 
@@ -127,7 +133,7 @@ public class TestZargoFilePersister extends TestCase {
      *
      * @throws Exception when e.g. the file is not found
      */
-    public void testDoLoad2a() throws Exception {
+    public void testDoLoadUml14() throws Exception {
         doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
     }
 
@@ -138,7 +144,7 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testSave() throws Exception {
-        Project p = doLoad("/testmodels/uml13/Alittlebitofeverything.zargo");
+        Project p = doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
         ZargoFilePersister persister = new ZargoFilePersister();
         persister.save(p, new File("Alittlebitofeverything2.zargo"));
     }
@@ -163,6 +169,39 @@ public class TestZargoFilePersister extends TestCase {
             loaded = false;
         }
         assertTrue("No exception was thrown.", !loaded);
+    }
+    
+    /**
+     * Test loading a project which contains external links to a profile.
+     * 
+     * @throws OpenException
+     * @throws InterruptedException
+     * @throws ProfileException 
+     */
+    public void testLoadLinkedProfile() throws OpenException,
+            InterruptedException, ProfileException {
+        // Make sure our profile is loaded
+        Profile profile = new ProfileJava();
+        Collection profileModel = profile.getProfilePackages();
+        
+        // Load a project which contains links to it
+        Project p = doLoad("/testmodels/uml14/LinkedProfile.zargo");
+        
+        // Make sure the contents match what we expect
+        final Facade f = Model.getFacade();
+        Collection topElements = f.getRootElements();
+        assertFalse("No top level elements", topElements.isEmpty());
+        for (Object element : topElements) {
+            if (f.isAClass(element)) {
+                assertEquals("Bad Name", 
+                        "HugeDecimal", 
+                        f.getNamespace(element));
+                Collection generalizations = f.getGeneralizations(element);
+                Object generalization = generalizations.iterator().next();
+                Object parent = f.getGeneral(generalization);
+                assertEquals("superclass has wrong name", "BigDecimal", f.getName(parent));
+                }
+        }
     }
 }
 
