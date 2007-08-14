@@ -581,6 +581,10 @@ public final class TargetManager {
      * @param target the target to be added.
      */
     public synchronized void addTarget(Object target) {
+        if (target instanceof TargetListener) {
+            LOG.warn("addTarget method received a TargetListener, "
+                    + "perhaps addTargetListener was intended! - " + target);
+        }
 	if (isInTargetTransaction()) {
             return;
         }
