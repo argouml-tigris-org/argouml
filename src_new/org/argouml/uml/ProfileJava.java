@@ -26,11 +26,11 @@ package org.argouml.uml;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -369,11 +369,16 @@ public class ProfileJava extends Profile {
         File modelFile = new File(modelFilename);
         if (modelFile.exists()) {
             try {
-                systemId = modelFile.toURL().toExternalForm();
+                URL url = modelFile.toURL();
+                if (url != null) {
+                    systemId = url.toExternalForm();
+                } else {
+                    systemId = null;
+                }
             } catch (MalformedURLException e1) {
                 systemId = null;
             }
-            if (systemId.endsWith(".zip")) {
+            if (systemId != null && systemId.endsWith(".zip")) {
                 systemId = systemId + "!/"
                 + systemId.substring(0, systemId.length() - 4);
             } 
