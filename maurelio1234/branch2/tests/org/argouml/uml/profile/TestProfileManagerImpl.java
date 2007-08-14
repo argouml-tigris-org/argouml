@@ -24,8 +24,6 @@
 
 package org.argouml.uml.profile;
 
-import java.io.File;
-
 import junit.framework.TestCase;
 
 /**
@@ -47,7 +45,7 @@ public class TestProfileManagerImpl extends TestCase {
      * Test whether the ProfileManager can register a new profile
      */
     public void testRegisterProfile() {
-        Profile profile = new UserDefinedProfile(new File("someprofile"));
+        Profile profile = new FakeProfile();
         ProfileManager manager = ProfileManagerImpl.getInstance();
         manager.registerProfile(profile);        
         assertTrue("Profile was not correctly registered", manager
@@ -59,7 +57,7 @@ public class TestProfileManagerImpl extends TestCase {
      * profile
      */
     public void testUnregisterRegisteredProfile() {
-        Profile profile = new UserDefinedProfile(new File("someprofile"));
+        Profile profile = new FakeProfile();
         ProfileManager manager = ProfileManagerImpl.getInstance();
         
         if (!manager.getRegisteredProfiles().contains(profile)) {
@@ -75,7 +73,7 @@ public class TestProfileManagerImpl extends TestCase {
      * profile being removed. In this case it should not raise any exception.
      */
     public void testUnregisterUnknownProfile() {
-        Profile profile = new UserDefinedProfile(new File("someprofile"));
+        Profile profile = new FakeProfile();
         ProfileManager manager = ProfileManagerImpl.getInstance();
         
         if (!manager.getRegisteredProfiles().contains(profile)) {

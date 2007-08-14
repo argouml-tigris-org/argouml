@@ -24,20 +24,11 @@
 
 package org.argouml.uml.profile;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
-import javax.swing.ImageIcon;
-
 import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectImpl;
 import org.argouml.model.InitializeModel;
-import org.argouml.model.Model;
 
 /**
  * Tests the handling of the strategies and models provided by the installed
@@ -63,91 +54,6 @@ public class TestProfileConfiguration2 extends TestCase {
         InitializeModel.initializeDefault();
     }
     
-    /**
-     * This class simulates a real profile, containing a model and 
-     * some strategies
-     * 
-     * @author Marcos Aurélio
-     */
-    private class FakeProfile extends Profile {
-	private Object model = null;
-	private FigNodeStrategy figNodeStrategy = null;
-	private FormatingStrategy formatStrategy = null;
-	
-	public FakeProfile() {
-	    model = Model.getModelManagementFactory().createModel();
-	    figNodeStrategy = new FakeFigNodeStrategy();
-	    formatStrategy = new FakeFormatingStrategy();
-	}
-	
-	public String getDisplayName() {
-	    return toString();
-	}
-
-	public FigNodeStrategy getFigureStrategy() {
-	    return figNodeStrategy;
-	}
-
-	public FormatingStrategy getFormatingStrategy() {
-	    return formatStrategy;
-	}
-
-	public Object getModel() {
-	    return model;
-	}
-
-	public FigNodeStrategy getFigNodeStrategy() {
-	    return figNodeStrategy;
-	}
-
-	public void setFigNodeStrategy(FigNodeStrategy figNodeStrategy) {
-	    this.figNodeStrategy = figNodeStrategy;
-	}
-
-	public FormatingStrategy getFormatStrategy() {
-	    return formatStrategy;
-	}
-
-	public void setFormatStrategy(FormatingStrategy formatStrategy) {
-	    this.formatStrategy = formatStrategy;
-	}
-
-	@Override
-	public Collection getProfilePackages() throws ProfileException {
-		return new ArrayList();
-	}
-	
-    }
-    
-    /**
-     * This class simulates a FigNodeStrategy
-     * 
-     * @author Marcos Aurélio
-     */
-    private class FakeFigNodeStrategy implements FigNodeStrategy {
-	
-	public Image getIconForStereotype(Object stereotype) {
-	    return null;
-	}
-	
-    }
-
-    /**
-     * This class simulates a FormatingStrategy
-     * 
-     * @author Marcos Aurélio
-     */
-    private class FakeFormatingStrategy implements FormatingStrategy {
-
-	public String formatCollection(Iterator iter, Object namespace) {
-	    return "";
-	}
-
-	public String formatElement(Object element, Object namespace) {
-	    return "";
-	}
-	
-    }
     
     /**
      * Whether a formating strategy can be property activated

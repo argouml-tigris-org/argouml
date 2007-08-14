@@ -24,8 +24,6 @@
 
 package org.argouml.uml.profile;
 
-import java.io.File;
-
 import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
@@ -80,7 +78,7 @@ public class TestProfileConfiguration1 extends TestCase {
     public void testAddingNewProfile() {
     	Project p = new ProjectImpl();
     	ProfileConfiguration pc = new ProfileConfiguration(p);
-        Profile pr = new UserDefinedProfile(new File("someprofile"));
+		Profile pr = new FakeProfile();
 
         pc.addProfile(pr);
         assertTrue("Profile was not correctly added to the configuration!", pc
@@ -94,7 +92,7 @@ public class TestProfileConfiguration1 extends TestCase {
     public void testRemovingProfile() {
     	Project p = new ProjectImpl();
     	ProfileConfiguration pc = new ProfileConfiguration(p);
-        Profile pr = new UserDefinedProfile(new File("someprofile"));
+		Profile pr = new FakeProfile();
 
         if (!pc.getProfiles().contains(pr)) {
             pc.addProfile(pr);
@@ -112,7 +110,7 @@ public class TestProfileConfiguration1 extends TestCase {
     public void testRemovingUnknownProfile() {
     	Project p = new ProjectImpl();
 		ProfileConfiguration pc = new ProfileConfiguration(p);
-		Profile pr = new UserDefinedProfile(new File("someprofile"));
+		Profile pr = new FakeProfile();
 
 		if (!pc.getProfiles().contains(pr)) {
 			pc.removeProfile(pr);

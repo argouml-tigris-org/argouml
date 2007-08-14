@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry excluding=".settings/|bin/|build-eclipse/|src/" kind="src" path=""/>
-	<classpathentry combineaccessrules="false" kind="src" path="/argouml"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
 	<classpathentry kind="lib" path="/argouml-core-tools/jdepend-2.9/lib/jdepend-2.9.jar" sourcepath="/argouml-core-tools/jdepend-2.9/src/"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml_branch"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
