@@ -1029,11 +1029,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
         }
 
-        // TODO: What well-formedness rule is this?
-        if (parent.getNamespace() == null) {
-            throw new IllegalArgumentException("parent has no namespace");
-        }
-        
         // TODO: This is well-formedness rule from UML1.4.2
         // 4.5.3.20 [2] No GeneralizableElement can have a parent
         // Generalization to an element that is a leaf.
@@ -1052,7 +1047,11 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Generalization gen = createGeneralization();
         gen.setParent(parent);
         gen.setChild(child);
-        gen.setNamespace(parent.getNamespace());
+        if (child.getNamespace() != null) {
+            gen.setNamespace(child.getNamespace());
+        } else if (child instanceof Namespace) {
+            gen.setNamespace((Namespace) child);
+        }
         return gen;
     }
 
