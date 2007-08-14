@@ -530,15 +530,27 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
     public Object getDefaultAttributeType() {
-        return profileConfiguration.getDefaultAttributeType();
+        if (profileConfiguration.getDefaultTypeStrategy() != null) {
+            return profileConfiguration.getDefaultTypeStrategy()
+                    .getDefaultAttributeType();
+        }
+        return null;
     }
 
     public Object getDefaultParameterType() {
-        return profileConfiguration.getDefaultParameterType();
+        if (profileConfiguration.getDefaultTypeStrategy() != null) {
+            return profileConfiguration.getDefaultTypeStrategy()
+                    .getDefaultParameterType();
+        }
+        return null;
     }
-    
+
     public Object getDefaultReturnType() {
-        return profileConfiguration.getDefaultReturnType();
+        if (profileConfiguration.getDefaultTypeStrategy() != null) {
+            return profileConfiguration.getDefaultTypeStrategy()
+                    .getDefaultReturnType();
+        }
+        return null;
     }
 
     @SuppressWarnings("deprecation")

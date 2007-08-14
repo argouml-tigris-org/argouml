@@ -97,16 +97,30 @@ public class ProfileUML extends Profile {
     }
 
     /**
-     * @return null
-     * @see org.argouml.uml.profile.Profile#getFigureStrategy()
+     * @see org.argouml.uml.profile.Profile#getProfilePackages()
      */
-    public FigNodeStrategy getFigureStrategy() {
-	return null;
-    }
-
     @Override
     public Collection getProfilePackages() throws ProfileException {
         return model;
     }
     
+    /**
+     * @see org.argouml.uml.profile.Profile#getDefaultTypeStrategy()
+     */
+    public DefaultTypeStrategy getDefaultTypeStrategy() {
+        return new DefaultTypeStrategy() {
+            public Object getDefaultAttributeType() {
+                return ModelUtils.findTypeInModel("Integer", model.iterator().next());
+            }
+
+            public Object getDefaultParameterType() {
+                return ModelUtils.findTypeInModel("Integer", model.iterator().next());
+            }
+
+            public Object getDefaultReturnType() {
+                return null;
+            }
+            
+        };
+    }    
 }

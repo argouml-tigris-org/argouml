@@ -692,22 +692,26 @@ public class ExplorerPopup extends JPopupMenu {
     
     private boolean isRelatedToProfiles(Project currentProject, Object selectedItem) {                
         boolean found = selectedItem instanceof ProfileConfiguration ||
-                            selectedItem instanceof Profile;
-        
-        for (Profile profile : currentProject.getProfileConfiguration().getProfiles()) {
-            Collection models;
-            try {
-                models = profile.getProfilePackages();
-                for (Object model : models) {
-                    if ((Model.getFacade().getModel(selectedItem).equals(model))) {
-                        found = true;
-                        break;
-                    }                
+                            selectedItem instanceof Profile ||
+                            selectedItem instanceof ArgoDiagram;
+                
+        if (!found) {
+            for (Profile profile : currentProject.getProfileConfiguration()
+                    .getProfiles()) {
+                Collection models;
+                try {
+                    models = profile.getProfilePackages();
+                    for (Object model : models) {
+                        if ((Model.getFacade().getModel(selectedItem)
+                                .equals(model))) {
+                            found = true;
+                            break;
+                        }
+                    }
+                } catch (ProfileException e) {
                 }
-            } catch (ProfileException e) {
-            }            
+            }
         }
-        
         return found;
     }    
 }

@@ -97,14 +97,26 @@ public abstract class Profile {
      * @return the formating strategy offered by this profile, if any. <br>
      * 	       <b>null</b> if this profile has no formating strategy.
      */
-    public abstract FormatingStrategy getFormatingStrategy();
+    public FormatingStrategy getFormatingStrategy() {
+        return null;
+    }
     
     /**
      * @return the FigNodeStrategy offered by this profile, if any. <br>
      * 	       <b>null</b> if this profile has no FigNodeStrategy.
      */
-    public abstract FigNodeStrategy   getFigureStrategy();
+    public FigNodeStrategy   getFigureStrategy() {
+        return null;
+    }
 
+    /**
+     * @return the DefaultTypeStrategy offered by this profile, if any. <br>
+     *         <b>null</b> if this profile has no DefaultTypeStrategy.
+     */
+    public DefaultTypeStrategy getDefaultTypeStrategy() {
+        return null;
+    }
+    
     /**
      *    This method produces a string that represents the specific
      *    model element in the context of the specified namespace.

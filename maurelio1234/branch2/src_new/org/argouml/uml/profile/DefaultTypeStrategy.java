@@ -1,4 +1,4 @@
-// $Id: FigNodeStrategy.java 13040 2007-07-10 20:00:25Z linus $
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,23 +24,25 @@
 
 package org.argouml.uml.profile;
 
-import java.awt.Image;
-
 /**
- * Using this strategy profiles can provide icons to replace the default 
- * visualization of stereotyped node according to UML 2.0 specification.
+ * Using this strategy profiles can provide the default used when creating new 
+ * parameters, operations and attributes.
  *
  * @author maurelio1234
  */
-public interface FigNodeStrategy {
-    
+public interface DefaultTypeStrategy {
     /**
-     * Returns the image of the icon that should replace the model elements 
-     * having this stereotype  
-     * 
-     * @param stereotype the stereotype model element
-     * @return the icon
+     * @return the default type used in new attributes
      */
-    Image getIconForStereotype(Object stereotype);
-    
+    public Object getDefaultAttributeType();
+
+    /**
+     * @return the default type used in new parameters
+     */
+    public Object getDefaultParameterType();
+
+    /**
+     * @return the default type used in new operations
+     */
+    public Object getDefaultReturnType();
 }

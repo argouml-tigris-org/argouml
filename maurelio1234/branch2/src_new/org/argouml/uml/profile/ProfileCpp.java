@@ -41,7 +41,6 @@ public class ProfileCpp extends Profile {
      */
     private static final Logger LOG = Logger.getLogger(ProfileCpp.class);
 
-    private FormatingStrategy formatingStrategy;
     private ProfileModelLoader profileModelLoader;
     private Collection model;
     private static ProfileCpp instance;
@@ -80,15 +79,6 @@ public class ProfileCpp extends Profile {
         addProfileDependency(ProfileUML.getInstance());	
     }    
 
-    
-    /**
-     * @return the Java formating strategy
-     * @see org.argouml.uml.profile.Profile#getFormatingStrategy()
-     */
-    public FormatingStrategy getFormatingStrategy() {
-	return formatingStrategy;
-    }
-
     /**
      * @return "C++"
      * @see org.argouml.uml.profile.Profile#getDisplayName()
@@ -98,17 +88,30 @@ public class ProfileCpp extends Profile {
     }
 
     /**
-     * @return null
-     * @see org.argouml.uml.profile.Profile#getFigureStrategy()
+     * @see org.argouml.uml.profile.Profile#getProfilePackages()
      */
-    public FigNodeStrategy getFigureStrategy() {
-	return null;
-    }
-
-
     @Override
     public Collection getProfilePackages() throws ProfileException {
         return model;
     }
-    
+   
+    /**
+     * @see org.argouml.uml.profile.Profile#getDefaultTypeStrategy()
+     */
+    public DefaultTypeStrategy getDefaultTypeStrategy() {
+        return new DefaultTypeStrategy() {
+            public Object getDefaultAttributeType() {
+                return ModelUtils.findTypeInModel("int", model.iterator().next());
+            }
+
+            public Object getDefaultParameterType() {
+                return ModelUtils.findTypeInModel("int", model.iterator().next());
+            }
+
+            public Object getDefaultReturnType() {
+                return ModelUtils.findTypeInModel("void", model.iterator().next());
+            }
+            
+        };
+    }    
 }

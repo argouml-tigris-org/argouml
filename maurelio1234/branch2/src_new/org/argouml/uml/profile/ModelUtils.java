@@ -1,4 +1,4 @@
-// $Id: FigNodeStrategy.java 13040 2007-07-10 20:00:25Z linus $
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,23 +24,38 @@
 
 package org.argouml.uml.profile;
 
-import java.awt.Image;
+import java.util.Collection;
 
-/**
- * Using this strategy profiles can provide icons to replace the default 
- * visualization of stereotyped node according to UML 2.0 specification.
- *
- * @author maurelio1234
- */
-public interface FigNodeStrategy {
-    
-    /**
-     * Returns the image of the icon that should replace the model elements 
-     * having this stereotype  
-     * 
-     * @param stereotype the stereotype model element
-     * @return the icon
-     */
-    Image getIconForStereotype(Object stereotype);
-    
+import org.argouml.model.Model;
+
+public class ModelUtils {
+    public static Object findTypeInModel(String s, Object model) {
+
+        if (!Model.getFacade().isANamespace(model)) {
+            throw new IllegalArgumentException(
+                    "Looking for the classifier " + s
+                    + " in a non-namespace object of " + model
+                    + ". A namespace was expected.");
+        }
+
+        Collection allClassifiers =
+            Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(model,
+                        Model.getMetaTypes().getClassifier());
+
+        Object[] classifiers = allClassifiers.toArray();
+        Object classifier = null;
+
+        for (int i = 0; i < classifiers.length; i++) {
+
+            classifier = classifiers[i];
+            if (Model.getFacade().getName(classifier) != null
+                        && Model.getFacade().getName(classifier).equals(s)) {
+                return classifier;
+            }
+        }
+
+        return null;
+    }
+
 }

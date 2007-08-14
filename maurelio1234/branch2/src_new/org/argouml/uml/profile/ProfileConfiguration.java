@@ -51,6 +51,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
             .getLogger(ProfileConfiguration.class);
 
     private FormatingStrategy formatingStrategy;
+    private DefaultTypeStrategy defaultTypeStrategy;
     private Vector	      figNodeStrategies = new Vector();
     
     private Vector<Profile> profiles = new Vector<Profile>();
@@ -75,16 +76,43 @@ public class ProfileConfiguration extends AbstractProjectMember {
         while (it.hasNext()) {
             Profile p = (Profile) it.next();
             addProfile(p);
-            activateFormatingStrategy(p);                
         }
-	
+
+        updateStrategies();
     }
     
+    private void updateStrategies() {
+        for (Profile profile : profiles) {
+            activateFormatingStrategy(profile);                
+            activateDefaultTypeStrategy(profile);                
+        }
+    }
+
     /**
      * @return the current formating strategy
      */
     public FormatingStrategy getFormatingStrategy() {
         return formatingStrategy;
+    }
+
+    /**
+     * @return the current default type strategy
+     */
+    public DefaultTypeStrategy getDefaultTypeStrategy() {
+        return defaultTypeStrategy;
+    }
+    
+    /**
+     * Updates the current strategy to the strategy provided by the 
+     * passed profile. The profile should have been previously registered.
+     * 
+     * @param profile the profile providing the current default type strategy
+     */
+    public void activateDefaultTypeStrategy(Profile p) {
+        if (p != null && p.getDefaultTypeStrategy() != null
+                && getProfiles().contains(p)) {
+            this.defaultTypeStrategy = p.getDefaultTypeStrategy();
+        }
     }
     
     /**
@@ -129,7 +157,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
             for (Profile dependency : p.getDependencies()) {
                 addProfile(dependency);
             }
-            
+
+            updateStrategies();
             ExplorerEventAdaptor.getInstance().structureChanged();
         }
     }
@@ -174,6 +203,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
             removeProfile(profile);
         }
 
+        updateStrategies();        
         ExplorerEventAdaptor.getInstance().structureChanged();
     }
     
@@ -268,39 +298,10 @@ public class ProfileConfiguration extends AbstractProjectMember {
         Object result = null;
         Iterator it = getProfileModels().iterator();
         while (result == null && it.hasNext()) {
-            result = findTypeInModel(name, it.next());
+            result = ModelUtils.findTypeInModel(name, it.next());
         }
         
         return result;
-    }
-
-    private Object findTypeInModel(String s, Object model) {
-
-        if (!Model.getFacade().isANamespace(model)) {
-            throw new IllegalArgumentException(
-                    "Looking for the classifier " + s
-                    + " in a non-namespace object of " + model
-                    + ". A namespace was expected.");
-        }
-
-        Collection allClassifiers =
-            Model.getModelManagementHelper()
-                .getAllModelElementsOfKind(model,
-                        Model.getMetaTypes().getClassifier());
-
-        Object[] classifiers = allClassifiers.toArray();
-        Object classifier = null;
-
-        for (int i = 0; i < classifiers.length; i++) {
-
-            classifier = classifiers[i];
-            if (Model.getFacade().getName(classifier) != null
-                        && Model.getFacade().getName(classifier).equals(s)) {
-                return classifier;
-            }
-        }
-
-        return null;
     }
 
     /**
@@ -327,17 +328,5 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public Collection findAllStereotypesForModelElement(Object modelElement) {
         return Model.getExtensionMechanismsHelper().getAllPossibleStereotypes(
                 getProfileModels(), modelElement);
-    }
-
-    public Object getDefaultAttributeType() {
-        return findType("int");
-    }
-
-    public Object getDefaultParameterType() {
-        return findType("int");
-    }
-
-    public Object getDefaultReturnType() {
-        return findType("void");
     }
 }

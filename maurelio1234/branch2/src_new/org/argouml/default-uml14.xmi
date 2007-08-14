@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8' ?>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Aug 14 09:04:21 BRT 2007'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Aug 14 18:51:04 BRT 2007'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>PRE-0.25.4(5) revised on $Date: 2007-05-12 03:08:08 -0300 $ </XMI.exporterVersion>
@@ -245,6 +245,25 @@
             </UML:Multiplicity>
           </UML:TagDefinition.multiplicity>
         </UML:TagDefinition>
+        <UML:DataType xmi.id = '-84-17--56-5-43645a83:11466542d86:-8000:000000000000087C'
+          name = 'Integer' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'/>
+        <UML:DataType xmi.id = '-84-17--56-5-43645a83:11466542d86:-8000:000000000000087D'
+          name = 'UnlimitedInteger' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'/>
+        <UML:DataType xmi.id = '-84-17--56-5-43645a83:11466542d86:-8000:000000000000087E'
+          name = 'String' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'/>
+        <UML:Enumeration xmi.id = '-84-17--56-5-43645a83:11466542d86:-8000:0000000000000880'
+          name = 'Boolean' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'>
+          <UML:Enumeration.literal>
+            <UML:EnumerationLiteral xmi.id = '-84-17--56-5-43645a83:11466542d86:-8000:0000000000000881'
+              name = 'TRUE' isSpecification = 'false'/>
+            <UML:EnumerationLiteral xmi.id = '-84-17--56-5-43645a83:11466542d86:-8000:0000000000000882'
+              name = 'FALSE' isSpecification = 'false'/>
+          </UML:Enumeration.literal>
+        </UML:Enumeration>
       </UML:Namespace.ownedElement>
     </UML:Model>
   </XMI.content>
