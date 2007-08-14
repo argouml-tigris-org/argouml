@@ -44,7 +44,7 @@ public class ProfileJavaBeans extends Profile {
     private Collection model;
     private FigNodeStrategy figStrategy = new JavaBeansFigNodeStrategy();
 
-    private ProfileJavaBeans() {
+    private ProfileJavaBeans() throws ProfileException {
 	    profileModelLoader = new ResourceModelLoader(this.getClass());
 	    model = profileModelLoader.loadModel("JavaBeans.xmi");	
 	    
@@ -56,11 +56,16 @@ public class ProfileJavaBeans extends Profile {
     }
 
     public static ProfileJavaBeans getInstance() {
-	if (instance == null) {
-	    instance = new ProfileJavaBeans();
+		if (instance == null) {
+			try {
+				instance = new ProfileJavaBeans();
+			} catch (ProfileException e) {
+				e.printStackTrace();
+				instance = null;
+			}
+		}
+		return instance;
 	}
-	return instance;
-    }
     
     public FormatingStrategy getFormatingStrategy() {
 	return null;
