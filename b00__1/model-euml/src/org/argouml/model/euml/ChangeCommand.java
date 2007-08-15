@@ -75,7 +75,7 @@ public class ChangeCommand extends
     @Override
     public String getLabel() {
         if (objects == null) {
-            return super.getLabel();
+            return label;
         }
         StringBuilder sb = new StringBuilder();
         int j = 0;
