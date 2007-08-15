@@ -13,5 +13,8 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.common.edit_1.3.0.v200706251652.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml_2.1.0.v200703011358.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.uml2.uml.resources_2.1.0.v200706251652.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
