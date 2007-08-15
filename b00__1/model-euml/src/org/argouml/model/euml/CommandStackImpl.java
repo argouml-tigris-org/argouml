@@ -34,6 +34,7 @@ public class CommandStackImpl implements CommandStack {
 
     public CommandStackImpl(EUMLModelImplementation modelImplementation) {
         this.modelImplementation = modelImplementation;
+        modelImplementation.getEditingDomain().getCommandStack().flush();
     }
 
     public boolean canRedo() {
