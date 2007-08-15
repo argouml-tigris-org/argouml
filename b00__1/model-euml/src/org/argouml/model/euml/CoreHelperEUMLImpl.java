@@ -347,8 +347,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         "Add the Behavior (method) # to the BehavioralFeature (operation) #",
                         method, handle));
     }
-
-    public void addOwnedElement(Object handle, Object me) {
+    
+    public void addOwnedElement(Object handle, Object me, String msg,
+            Object... objects) {
         if (!(handle instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "The handle must be instance of Namespace"); //$NON-NLS-1$
@@ -358,10 +359,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     "'me' must be instance of Element"); //$NON-NLS-1$
         }
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, getRunnableClassForAddCommand(
-                                (Namespace) handle, (Element) me),
-                        "Add the owned element # to the owner #", me, handle));
+                new ChangeCommand(modelImpl, getRunnableClassForAddCommand(
+                        (Namespace) handle, (Element) me), msg, objects));
+    }
+
+    public void addOwnedElement(Object handle, Object me) {
+        addOwnedElement(handle, me, "Add the owned element # to the owner #", me, handle);
     }
 
     public void addParameter(Object handle, int index, Object parameter) {
