@@ -42,7 +42,7 @@ public abstract class AbstractUseCasesHelperDecorator
     /**
      * @param component The component to decorate.
      */
-    AbstractUseCasesHelperDecorator(UseCasesHelper component) {
+    protected AbstractUseCasesHelperDecorator(UseCasesHelper component) {
         impl = component;
     }
 

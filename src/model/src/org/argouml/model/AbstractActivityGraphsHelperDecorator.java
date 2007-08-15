@@ -43,7 +43,7 @@ public abstract class AbstractActivityGraphsHelperDecorator
     /**
      * @param component The component to decorate.
      */
-    AbstractActivityGraphsHelperDecorator(ActivityGraphsHelper component) {
+    protected AbstractActivityGraphsHelperDecorator(ActivityGraphsHelper component) {
         impl = component;
     }
 

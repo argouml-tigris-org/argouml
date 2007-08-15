@@ -40,7 +40,7 @@ public abstract class AbstractDataTypesHelperDecorator
     /**
      * @param component The component to decorate.
      */
-    AbstractDataTypesHelperDecorator(DataTypesHelper component) {
+    protected AbstractDataTypesHelperDecorator(DataTypesHelper component) {
         impl = component;
     }
 

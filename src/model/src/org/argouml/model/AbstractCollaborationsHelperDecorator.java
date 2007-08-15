@@ -43,7 +43,8 @@ public abstract class AbstractCollaborationsHelperDecorator
     /**
      * @param component The component to decorate.
      */
-    AbstractCollaborationsHelperDecorator(CollaborationsHelper component) {
+    protected AbstractCollaborationsHelperDecorator(
+            CollaborationsHelper component) {
         impl = component;
     }
 

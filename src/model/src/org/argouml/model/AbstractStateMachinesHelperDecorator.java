@@ -42,7 +42,7 @@ public abstract class AbstractStateMachinesHelperDecorator
     /**
      * @param component The component to decorate.
      */
-    AbstractStateMachinesHelperDecorator(StateMachinesHelper component) {
+    protected AbstractStateMachinesHelperDecorator(StateMachinesHelper component) {
         impl = component;
     }
 

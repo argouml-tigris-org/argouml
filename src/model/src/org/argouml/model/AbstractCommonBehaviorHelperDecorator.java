@@ -44,7 +44,7 @@ public abstract class AbstractCommonBehaviorHelperDecorator
     /**
      * @param component The component to decorate.
      */
-    AbstractCommonBehaviorHelperDecorator(CommonBehaviorHelper component) {
+    protected AbstractCommonBehaviorHelperDecorator(CommonBehaviorHelper component) {
         impl = component;
     }
 

@@ -45,7 +45,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
      *
      * @param component The component to decorate.
      */
-    AbstractCoreHelperDecorator(CoreHelper component) {
+    protected AbstractCoreHelperDecorator(CoreHelper component) {
         impl = component;
     }
 

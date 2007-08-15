@@ -42,7 +42,7 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
     /**
      * @param component The component to decorate.
      */
-    AbstractExtensionMechanismsHelperDecorator(
+    protected AbstractExtensionMechanismsHelperDecorator(
             ExtensionMechanismsHelper component) {
         impl = component;
     }
