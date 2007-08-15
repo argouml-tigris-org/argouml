@@ -39,9 +39,9 @@ import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
-import org.argouml.uml.Profile;
-import org.argouml.uml.ProfileException;
-import org.argouml.uml.ProfileJava;
+import org.argouml.uml.profile.Profile;
+import org.argouml.uml.profile.ProfileException;
+import org.argouml.uml.profile.ProfileJava;
 
 /**
  * Testcase to load projects without exception.
@@ -181,7 +181,7 @@ public class TestZargoFilePersister extends TestCase {
     public void testLoadLinkedProfile() throws OpenException,
             InterruptedException, ProfileException {
         // Make sure our profile is loaded
-        Profile profile = new ProfileJava();
+        Profile profile = ProfileJava.getInstance();
         Collection profileModel = profile.getProfilePackages();
         
         // Load a project which contains links to it
