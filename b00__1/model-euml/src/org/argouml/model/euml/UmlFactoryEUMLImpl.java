@@ -36,9 +36,7 @@ import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
-import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.impl.EcoreFactoryImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.AggregationKind;
@@ -65,11 +63,6 @@ import org.eclipse.uml2.uml.UseCase;
  */
 class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
 
-    private static final String IS_REMOVED_NAME = 
-        "http://argouml.tigris.org/argouml-core-model-euml/isRemoved";
-    
-    private EAnnotation removedAnnotation;
-    
     /**
      * The model implementation.
      */
@@ -124,6 +117,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         {Abstraction.class, org.eclipse.uml2.uml.Class.class, Interface.class, null, },
         // The next 3 restrictions for Abstraction seem to be Argo specific
         // not something the UML spec requires - tfm - 20070215
+        // There is no need for these because they arn't used by buildConnection() - b00__1
 //        {Abstraction.class, org.eclipse.uml2.uml.Class.class, org.eclipse.uml2.uml.Class.class, null, },
 //        {Abstraction.class, org.eclipse.uml2.uml.Package.class,org.eclipse.uml2.uml.Package.class, null, },
 //        {Abstraction.class, Component.class, Interface.class, null, },
@@ -149,21 +143,18 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         modelImpl = implementation;
         metaTypes = modelImpl.getMetaTypes();
         buildValidConnectionMap();
-
-        removedAnnotation = EcoreFactoryImpl.eINSTANCE.createEAnnotation();
-        removedAnnotation.setSource(IS_REMOVED_NAME);
     }
 
     public Object buildConnection(Object elementType, Object fromElement,
             Object fromStyle, Object toElement, Object toStyle,
             Object unidirectional, Object namespace)
-        throws IllegalModelElementConnectionException {
-        
-        IllegalModelElementConnectionException exception = new IllegalModelElementConnectionException("Cannot make a "
-                + elementType.getClass().getName() + " between a "
-                + fromElement.getClass().getName() + " and a "
-                + toElement.getClass().getName()); 
-        
+            throws IllegalModelElementConnectionException {
+
+        IllegalModelElementConnectionException exception = new IllegalModelElementConnectionException(
+                "Cannot make a " + elementType.getClass().getName() //$NON-NLS-1$
+                        + " between a " + fromElement.getClass().getName() //$NON-NLS-1$
+                        + " and a " + toElement.getClass().getName()); //$NON-NLS-1$
+
         if (!isConnectionValid(elementType, fromElement, toElement, true)) {
             throw exception;
         }
@@ -171,48 +162,54 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         Object connection = null;
 
         if (elementType == metaTypes.getAssociation()) {
-            connection =
-                modelImpl.getCoreFactory().buildAssociation((Classifier) fromElement,
-                    (AggregationKind) fromStyle, (Classifier) toElement,
-                    (AggregationKind) toStyle, (Boolean) unidirectional);
+            connection = modelImpl.getCoreFactory().buildAssociation(
+                    (Classifier) fromElement, (AggregationKind) fromStyle,
+                    (Classifier) toElement, (AggregationKind) toStyle,
+                    (Boolean) unidirectional);
         } else if (elementType == metaTypes.getAssociationEnd()) {
             if (fromElement instanceof Association) {
-                connection =
-                    modelImpl.getCoreFactory().buildAssociationEnd(toElement, fromElement);
+                connection = modelImpl.getCoreFactory().buildAssociationEnd(
+                        toElement, fromElement);
             } else if (fromElement instanceof Classifier) {
-                connection =
-                    modelImpl.getCoreFactory().buildAssociationEnd(fromElement, toElement);
+                connection = modelImpl.getCoreFactory().buildAssociationEnd(
+                        fromElement, toElement);
             }
-        } else if (elementType
-                == metaTypes.getAssociationClass()) {
-            connection =
-                modelImpl.getCoreFactory().buildAssociationClass(fromElement, toElement);
+        } else if (elementType == metaTypes.getAssociationClass()) {
+            connection = modelImpl.getCoreFactory().buildAssociationClass(
+                    fromElement, toElement);
         } else if (elementType == metaTypes.getAssociationRole()) {
-            connection =
-                modelImpl.getCollaborationsFactory().buildAssociationRole(fromElement,
-                    fromStyle, toElement, toStyle, (Boolean) unidirectional);
+            connection = modelImpl.getCollaborationsFactory().buildAssociationRole(
+                    fromElement, fromStyle, toElement, toStyle,
+                    (Boolean) unidirectional);
         } else if (elementType == metaTypes.getGeneralization()) {
-            connection = modelImpl.getCoreFactory().buildGeneralization(fromElement, toElement);
+            connection = modelImpl.getCoreFactory().buildGeneralization(
+                    fromElement, toElement);
         } else if (elementType == metaTypes.getPackageImport()) {
-            connection = modelImpl.getCoreFactory().buildPackageImport(fromElement, toElement);
+            connection = modelImpl.getCoreFactory().buildPackageImport(
+                    fromElement, toElement);
         } else if (elementType == metaTypes.getUsage()) {
-            connection = modelImpl.getCoreFactory().buildUsage(fromElement, toElement);
+            connection = modelImpl.getCoreFactory().buildUsage(
+                    fromElement, toElement);
         } else if (elementType == metaTypes.getDependency()) {
-            connection = modelImpl.getCoreFactory().buildDependency(fromElement, toElement);
+            connection = modelImpl.getCoreFactory().buildDependency(
+                    fromElement, toElement);
         } else if (elementType == metaTypes.getAbstraction()) {
-            connection =
-                modelImpl.getCoreFactory().buildRealization(fromElement, toElement, namespace);
+            connection = modelImpl.getCoreFactory().buildRealization(
+                    fromElement, toElement, namespace);
         } else if (elementType == metaTypes.getLink()) {
-            connection = modelImpl.getCommonBehaviorFactory().buildLink(fromElement, toElement);
+            connection = modelImpl.getCommonBehaviorFactory().buildLink(
+                    fromElement, toElement);
         } else if (elementType == metaTypes.getExtend()) {
             // Extend, but only between two use cases. Remember we draw from the
             // extension port to the base port.
-            connection = modelImpl.getUseCasesFactory().buildExtend(toElement, fromElement);
+            connection = modelImpl.getUseCasesFactory().buildExtend(
+                    toElement, fromElement);
         } else if (elementType == metaTypes.getInclude()) {
-            connection = modelImpl.getUseCasesFactory().buildInclude(fromElement, toElement);
+            connection = modelImpl.getUseCasesFactory().buildInclude(
+                    fromElement, toElement);
         } else if (elementType == metaTypes.getTransition()) {
-            connection =
-                modelImpl.getStateMachinesFactory().buildTransition(fromElement, toElement);
+            connection = modelImpl.getStateMachinesFactory().buildTransition(
+                    fromElement, toElement);
         }
 
         if (connection == null) {
@@ -239,7 +236,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             return modelImpl.getModelManagementFactory().createModel();
         } else if (elementType == metaTypes.getInstance()) {
             throw new IllegalArgumentException(
-                    "Attempt to instantiate abstract type");
+                    "Attempt to instantiate abstract type"); //$NON-NLS-1$
         } else if (elementType == metaTypes.getSubsystem()) {
             return modelImpl.getModelManagementFactory().createSubsystem();
         } else if (elementType == metaTypes.getCallState()) {
@@ -268,7 +265,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             return modelImpl.getStateMachinesFactory().createSynchState();
         } else if (elementType == metaTypes.getState()) {
             throw new IllegalArgumentException(
-                    "Attempt to instantiate abstract type");
+                    "Attempt to instantiate abstract type"); //$NON-NLS-1$
         } else if (elementType == modelImpl.getMetaTypes().getSimpleState()) {
             return modelImpl.getStateMachinesFactory().createSimpleState();
         } else if (elementType == metaTypes.getClassifierRole()) {
@@ -287,7 +284,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             return modelImpl.getCoreFactory().createComment();
         } else if (elementType == metaTypes.getNamespace()) {
             throw new IllegalArgumentException(
-                    "Attempt to instantiate abstract type");
+                    "Attempt to instantiate abstract type"); //$NON-NLS-1$
         } else if (elementType == metaTypes.getOperation()) {
             return modelImpl.getCoreFactory().createOperation();
         } else if (elementType == metaTypes.getEnumeration()) {
@@ -303,29 +300,28 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         } else if (elementType == metaTypes.getTransition()) {
             return modelImpl.getStateMachinesFactory().createTransition();
         }
-            
+
         throw new IllegalArgumentException(
-                "Attempted to create unsupported model element type: " 
-                + elementType);
+                "Attempted to create unsupported model element type: " //$NON-NLS-1$
+                        + elementType);
     }
 
     public void delete(Object elem) {
-        // TODO: We probably need a better way of doing this - tfm
-        // Add an annotation saying that we've deleted the element
         if (!(elem instanceof EObject)) {
             throw new IllegalArgumentException("elem must be instance of EObject"); //$NON-NLS-1$
         }
         EcoreUtil.delete((EObject) elem);
-//        ((EModelElement) elem).getEAnnotations().add(removedAnnotation);
-//        ((Element) elem).destroy();
     }
     
     public boolean isRemoved(Object o) {
+        // TODO: this triggers some warnings (in logs) because some elements are
+        // created without an owner (and eResource is null) we can be solve this
+        // by adding the newly created element (not owned yet) to a dummy
+        // resource
         if (o instanceof Element) {
             return ((Element) o).eResource() != null;
-//            return ((EModelElement) o).getEAnnotation(IS_REMOVED_NAME) != null;
         }
-        throw new IllegalArgumentException("Not an Element : " + o);
+        throw new IllegalArgumentException("Not an Element : " + o); //$NON-NLS-1$
     }
 
     public boolean isConnectionType(Object connectionType) {
