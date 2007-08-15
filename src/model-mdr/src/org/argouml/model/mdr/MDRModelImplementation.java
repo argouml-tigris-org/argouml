@@ -334,7 +334,7 @@ public class MDRModelImplementation implements ModelImplementation {
         // (but defer heavyweight ones until needed)
         theCopyHelper = new CopyHelper(this);
         theActivityGraphsHelper = new ActivityGraphsHelperMDRImpl();
-        theCoreHelper = new CoreHelperMDRImpl(this);
+        theCoreHelper = new UndoCoreHelperDecorator(new CoreHelperMDRImpl(this));
         LOG.debug("MDR Init - initialized package Core helper");
         theModelManagementHelper = new ModelManagementHelperMDRImpl(this);
         theStateMachinesHelper = new StateMachinesHelperMDRImpl(this);
