@@ -106,32 +106,6 @@ public final class Model {
     private static ModelImplementation impl;
 
     /**
-     * Install undo decorators 
-     */
-    private static void installDecorators() {
-        activityGraphsHelper =
-            new UndoActivityGraphsHelperDecorator(
-                    impl.getActivityGraphsHelper());
-        collaborationsHelper =
-            new UndoCollaborationsHelperDecorator(
-                    impl.getCollaborationsHelper());
-        commonBehaviorHelper =
-            new UndoCommonBehaviorHelperDecorator(
-                    impl.getCommonBehaviorHelper());
-        coreHelper = new UndoCoreHelperDecorator(impl.getCoreHelper());
-        dataTypesHelper =
-            new UndoDataTypesHelperDecorator(impl.getDataTypesHelper());
-        extensionMechanismsHelper =
-            new UndoExtensionMechanismsHelperDecorator(
-                    impl.getExtensionMechanismsHelper());
-        stateMachinesHelper =
-            new UndoStateMachinesHelperDecorator(impl.getStateMachinesHelper());
-        umlHelper = new UndoUmlHelperDecorator(impl.getUmlHelper());
-        useCasesHelper =
-            new UndoUseCasesHelperDecorator(impl.getUseCasesHelper());
-    }
-
-    /**
      * Selects the implementation.<p>
      *
      * This must be called with a working {@link ModelImplementation}
@@ -142,7 +116,15 @@ public final class Model {
      */
     public static void setImplementation(ModelImplementation newImpl) {
         impl = newImpl;
-        installDecorators();
+        activityGraphsHelper = impl.getActivityGraphsHelper();
+        collaborationsHelper = impl.getCollaborationsHelper();
+        commonBehaviorHelper = impl.getCommonBehaviorHelper();
+        coreHelper = impl.getCoreHelper();
+        dataTypesHelper = impl.getDataTypesHelper();
+        extensionMechanismsHelper = impl.getExtensionMechanismsHelper();
+        stateMachinesHelper = impl.getStateMachinesHelper();
+        umlHelper = impl.getUmlHelper();
+        useCasesHelper = impl.getUseCasesHelper();
     }
 
     /**
