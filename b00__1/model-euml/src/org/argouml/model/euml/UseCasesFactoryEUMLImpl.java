@@ -60,45 +60,106 @@ class UseCasesFactoryEUMLImpl implements UseCasesFactory, AbstractModelFactory {
     }
 
     public Actor buildActor(Object actor, Object model) {
+        if (!(actor instanceof Actor)) {
+            throw new IllegalArgumentException();
+        }
+        if (((Actor) actor).getNamespace() == null
+                && !(model instanceof Namespace)) {
+            throw new IllegalArgumentException();
+        }
         Namespace ns = ((Actor) actor).getNamespace();
         if (ns == null) {
             ns = (Namespace) model;
         }
-        Actor actor2 = (Actor) createActor();
-        modelImpl.getCoreHelper().addOwnedElement(ns, actor2);
-        actor2.setIsLeaf(false);
-//        actor2.setIsRoot(false);
-        return actor2;
+        Actor ret = createActor();
+        modelImpl.getCoreHelper().addOwnedElement(
+                ns, ret, "Create the actor # in the namespace #", ret, ns);
+//        ret.setIsLeaf(false);
+//        ret.setIsRoot(false);
+        return ret;
     }
 
     public Extend buildExtend(Object abase, Object anextension) {
         return buildExtend(abase, anextension, null);
     }
 
-    public Extend buildExtend(Object abase, Object anextension, Object apoint) {
-        ExtensionPoint ep;
-        if (apoint == null) {
-            ep = buildExtensionPoint((UseCase) abase);
-        } else {
-            ep = (ExtensionPoint) apoint;
-            if (!ep.getUseCase().equals(abase)) {
-                throw new IllegalArgumentException(
-                        "extension point must belong to " + //$NON-NLS-1$
-                        "extended use case"); //$NON-NLS-1$
-            }
+    public Extend buildExtend(final Object extendedCase,
+            final Object extension, final Object extensionLocation) {
+        if (!(extendedCase instanceof UseCase)
+                || !(extension instanceof UseCase)) {
+            throw new IllegalArgumentException();
         }
-        Extend extend =
-                ((UseCase) anextension).createExtend(null, (UseCase) abase);
-        extend.getExtensionLocations().add(ep);
-        return extend;
+        if (extensionLocation != null
+                && !(extensionLocation instanceof ExtensionPoint)) {
+            throw new IllegalArgumentException();
+        }
+        if (extensionLocation != null
+                && !((ExtensionPoint) extensionLocation).getUseCase().equals(
+                        extendedCase)) {
+            throw new IllegalArgumentException(
+                    "extensionLocation must belong to " + extendedCase); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ExtensionPoint ep;
+                if (extensionLocation == null) {
+                    ep = createExtensionPoint();
+                    ((UseCase) extendedCase).getExtensionPoints().add(ep);
+                } else {
+                    ep = (ExtensionPoint) extensionLocation;
+                }
+                Extend extend = createExtend();
+                extend.setExtendedCase((UseCase) extendedCase);
+                extend.setExtension((UseCase) extension);
+                extend.getExtensionLocations().add(ep);
+                getParams().add(extend);
+                getParams().add(ep);
+            }
+        };
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the extend # for the case # that extends the case # through #");
+        modelImpl.getEditingDomain().getCommandStack().execute(cmd);
+        cmd.setObjects(
+                run.getParams().get(0), extension, extendedCase,
+                run.getParams().get(1));
+
+        return (Extend) run.getParams().get(0);
     }
 
     public ExtensionPoint buildExtensionPoint(Object modelElement) {
-        return ((UseCase) modelElement).createExtensionPoint(null);
+        if (!(modelElement instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
+        ExtensionPoint ep = createExtensionPoint();
+        modelImpl.getCoreHelper().addOwnedElement(
+                modelElement, ep,
+                "Create the extension point # for the case #", ep,
+                modelElement);
+        return ep;
     }
 
-    public Include buildInclude(Object abase, Object anaddition) {
-        return ((UseCase) anaddition).createInclude(null, (UseCase) abase);
+    public Include buildInclude(final Object addition,
+            final Object includingCase) {
+        if (!(addition instanceof UseCase)
+                || !(includingCase instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Include include = createInclude();
+                include.setAddition((UseCase) addition);
+                include.setIncludingCase((UseCase) includingCase);
+                getParams().add(include);
+            }
+        };
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the include # of the including case # that include the case #");
+        modelImpl.getEditingDomain().getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), includingCase, addition);
+
+        return (Include) run.getParams().get(0);
     }
 
     public Actor createActor() {
