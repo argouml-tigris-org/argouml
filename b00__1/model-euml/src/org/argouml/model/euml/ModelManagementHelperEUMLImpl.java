@@ -29,15 +29,17 @@ package org.argouml.model.euml;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.model.ModelManagementHelper;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
+import org.eclipse.uml2.uml.PackageableElement;
+import org.eclipse.uml2.uml.VisibilityKind;
 
 /**
  * The implementation of the ModelManagementHelper for EUML2.
@@ -59,16 +61,17 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         modelImpl = implementation;
     }
 
+    @SuppressWarnings("deprecation")
     public boolean corresponds(Object obj1, Object obj2) {
         // TODO Auto-generated method stub
         return false;
     }
 
     public Collection getAllBehavioralFeatures(Object ns) {
-        // TODO Auto-generated method stub
-        return null;
+        return modelImpl.getCoreHelper().getAllBehavioralFeatures(ns);
     }
 
+    @SuppressWarnings("unchecked")
     public Collection getAllContents(Object element) {
         if (!(element instanceof Element)) {
             throw new IllegalArgumentException(
@@ -82,7 +85,19 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
             result.addAll(((Classifier) element).allFeatures());
         }
         if (element instanceof Namespace) {
-            result.addAll(((Namespace) element).getOwnedMembers());
+            result.addAll(((Namespace) element).getMembers());
+        }
+        if (element instanceof org.eclipse.uml2.uml.Package) {
+            result.addAll(((org.eclipse.uml2.uml.Package) element).getPackagedElements());
+            org.eclipse.uml2.uml.Package p = ((org.eclipse.uml2.uml.Package) element).getNestingPackage();
+            while (p != null) {
+                for (PackageableElement e : p.getPackagedElements()) {
+                    if (e.getVisibility() == VisibilityKind.PUBLIC_LITERAL) {
+                        result.add(e);
+                    }
+                }
+                p = p.getNestingPackage();
+            }
         }
         return result;
     }
@@ -93,9 +108,9 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllModelElementsOfKind(Object nsa, Object type) {
-        if (!(nsa instanceof Namespace)) {
+        if (!(nsa instanceof Element)) {
             throw new IllegalArgumentException(
-                    "nsa must be instance of Namespace"); //$NON-NLS-1$
+                    "nsa must be instance of Element"); //$NON-NLS-1$
         }
         Class theType = null;
         if (type instanceof String) {
@@ -121,23 +136,8 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
                 result.add(element);
             }
         }
-
+        
         return result;
-    }
-
-    /*
-     * Check whether model element is contained in given namespace/container.
-     * TODO: Investigate a faster way to do this
-     */
-    private boolean contained(Object container, Object candidate) {
-        Object current = candidate;
-        while (current != null) {
-            if (container.equals(current)) {
-                return true;
-            }
-            current = modelImpl.getFacade().getModelElementContainer(current);
-        }
-        return false;
     }
 
     public Collection getAllModelElementsOfKind(Object nsa, String kind) {
@@ -146,8 +146,13 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
 
     public Collection getAllModelElementsOfKindWithModel(Object model,
             Object type) {
-        if (model == null) {
-            throw new IllegalArgumentException("A model must be supplied");
+        if (!(model instanceof Model)) {
+            throw new IllegalArgumentException(
+                    "model must be instance of Model"); //$NON-NLS-1$
+        }
+        if (!(type instanceof Class)) {
+            throw new IllegalArgumentException(
+                    "type must be instance of java.lang.Class"); //$NON-NLS-1$
         }
         Class kind = (Class) type;
         Collection ret = getAllModelElementsOfKind(model, kind);
@@ -161,13 +166,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllNamespaces(Object ns) {
-        Set<Element> results = new HashSet<Element>();
-        for (Element element : ((Namespace) ns).allOwnedElements()) {
-            if (element instanceof Namespace) {
-                results.add(element);
-            }
-        }
-        return results;
+        return getAllModelElementsOfKind(ns, Namespace.class);
     }
 
     public Collection getAllPossibleImports(Object pack) {
@@ -180,13 +179,29 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         return null;
     }
 
-    public Collection getAllSurroundingNamespaces(Object ns) {
-        return ((NamedElement) ns).allNamespaces();
+    public Collection getAllSurroundingNamespaces(Object element) {
+        if (!(element instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "element must be instance of NamedElement"); //$NON-NLS-1$
+        }
+        return ((NamedElement) element).allNamespaces();
     }
 
-    public Collection getContents(Object namespace) {
-        // TODO Auto-generated method stub
-        return null;
+    @SuppressWarnings("unchecked")
+    public Collection getContents(Object element) {
+        if (!(element instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "element must be instance of Element"); //$NON-NLS-1$
+        }
+        Collection result = new HashSet();
+        if (element instanceof Namespace) {
+            result.addAll(((Namespace) element).getOwnedMembers());
+            result.addAll(((Namespace) element).getImportedMembers());
+        }
+        if (element instanceof org.eclipse.uml2.uml.Package) {
+            result.addAll(((org.eclipse.uml2.uml.Package) element).getPackagedElements());
+        }
+        return result;
     }
 
     public Object getCorrespondingElement(Object elem, Object model) {
@@ -219,22 +234,18 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
 
     public void removeImportedElement(Object handle, Object me) {
         // TODO Auto-generated method stub
-
     }
 
     public void setAlias(Object handle, String alias) {
         // TODO Auto-generated method stub
-
     }
 
     public void setImportedElements(Object pack, Collection imports) {
         // TODO Auto-generated method stub
-
     }
 
     public void setSpecification(Object handle, boolean isSpecification) {
         // TODO Auto-generated method stub
-
     }
 
 }

@@ -499,34 +499,20 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
-    private Collection getAllOwnedElementsOfKind(Object owner, Class kind) {
-        if (!(owner instanceof Element)) {
-            throw new IllegalArgumentException(
-                    "owner must be instance of Element"); //$NON-NLS-1$
-        }
-        Collection<Element> result = new ArrayList<Element>();
-        for (Element e : ((Element) owner).allOwnedElements()) {
-            if (kind.isInstance(e)) {
-                result.add(e);
-            }
-        }
-        return result;
-    }
-
     public Collection getAllBehavioralFeatures(Object element) {
-        return getAllOwnedElementsOfKind(element, BehavioralFeature.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(element, BehavioralFeature.class);
     }
 
     public Collection getAllClasses(Object ns) {
-        return getAllOwnedElementsOfKind(ns, org.eclipse.uml2.uml.Class.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, org.eclipse.uml2.uml.Class.class);
     }
 
     public Collection getAllClassifiers(Object namespace) {
-        return getAllOwnedElementsOfKind(namespace, Classifier.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(namespace, Classifier.class);
     }
 
     public Collection getAllComponents(Object ns) {
-        return getAllOwnedElementsOfKind(ns, Component.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, org.eclipse.uml2.uml.Component.class);
     }
 
     public Collection getAllContents(Object namespace) {
@@ -534,11 +520,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Collection getAllDataTypes(Object ns) {
-        return getAllOwnedElementsOfKind(ns, DataType.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, DataType.class);
     }
 
     public Collection getAllInterfaces(Object ns) {
-        return getAllOwnedElementsOfKind(ns, Interface.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, Interface.class);
     }
 
     public Collection getAllMetatypeNames() {
@@ -560,7 +546,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Collection getAllNodes(Object ns) {
-        return getAllOwnedElementsOfKind(ns, Node.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, Node.class);
     }
 
     public Collection getAllPossibleNamespaces(Object modelElement, Object model) {
@@ -572,7 +558,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         if (isValidNamespace(modelElement, model)) {
             result.add((Namespace) model);
         }
-        for (Object o : getAllOwnedElementsOfKind(model, Namespace.class)) {
+        for (Object o : modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
+                model, Namespace.class)) {
             if (isValidNamespace(modelElement, o)) {
                 result.add((Namespace) o);
             }
