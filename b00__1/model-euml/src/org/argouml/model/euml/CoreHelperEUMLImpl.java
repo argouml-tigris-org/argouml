@@ -38,7 +38,6 @@ import org.argouml.model.CoreHelper;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.command.RemoveCommand;
@@ -132,8 +131,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     stereos.iterator().next(), modelElement);
         } else {
             cmd = new ChangeCommand(
-                    modelImpl, run, "Apply stereotypes to the element #",
-                    modelElement);
+                    modelImpl, run, "Apply # stereotypes to the element #",
+                    stereos.size(), modelElement);
         }
         editingDomain.getCommandStack().execute(cmd);
     }
@@ -1056,39 +1055,71 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         comment, annotatedElement));
     }
 
-    public void removeClientDependency(Object handle, Object dep) {
-        throw new NotYetImplementedException();
-
+    public void removeClientDependency(final Object handle, final Object dep) {
+        if (!(handle instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of NamedElement"); //$NON-NLS-1$
+        }
+        if (!(dep instanceof Dependency)) {
+            throw new IllegalArgumentException(
+                    "dep must be instance of Dependency"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((NamedElement) handle).getClientDependencies().remove(dep);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Remove the client dependency # from the element #",
+                        handle, dep));
     }
 
-    public void removeConnection(Object handle, Object connection) {
-        throw new NotYetImplementedException();
-
+    public void removeConnection(final Object handle, final Object connection) {
+        if (!(handle instanceof Association)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Association"); //$NON-NLS-1$
+        }
+        if (!(connection instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "connection must be instance of Property"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                if (((Association) handle).getOwnedEnds().contains(connection)) {
+                    ((Association) handle).getOwnedEnds().remove(connection);
+                }
+                if (((Property) connection).getAssociation() == handle) {
+                    ((Property) connection).setAssociation(null);
+                }
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Remove the association end # from the association #",
+                        connection, handle));
     }
 
     public void removeConstraint(Object handle, Object cons) {
         throw new NotYetImplementedException();
-
     }
 
     public void removeDeploymentLocation(Object handle, Object node) {
         throw new NotYetImplementedException();
-
     }
 
     public void removeElementResidence(Object handle, Object residence) {
         throw new NotYetImplementedException();
-
     }
 
     public void removeFeature(Object cls, Object feature) {
-        throw new NotYetImplementedException();
-
+        removeOwnedElement(cls, feature);
     }
 
     public void removeLiteral(Object enumeration, Object literal) {
-        throw new NotYetImplementedException();
-
+        removeOwnedElement(enumeration, literal);
     }
 
     public void removeOwnedElement(Object handle, Object value) {
@@ -1108,86 +1139,157 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void removeParameter(Object handle, Object parameter) {
-        throw new NotYetImplementedException();
-
+        removeOwnedElement(handle, parameter);
     }
 
     public void removeQualifier(Object handle, Object qualifier) {
-        throw new NotYetImplementedException();
-
+        removeOwnedElement(handle, qualifier);
     }
 
     public void removeSourceFlow(Object handle, Object flow) {
         throw new NotYetImplementedException();
-
     }
 
     public void removeStereotype(Object handle, Object stereo) {
         throw new NotYetImplementedException();
-
     }
 
-    public void removeSupplierDependency(Object supplier, Object dependency) {
-        throw new NotYetImplementedException();
-
+    public void removeSupplierDependency(final Object supplier,
+            final Object dependency) {
+        if (!(supplier instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "supplier must be instance of NamedElement"); //$NON-NLS-1$
+        }
+        if (!(dependency instanceof Dependency)) {
+            throw new IllegalArgumentException(
+                    "dependency must be instance of Dependency"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Dependency) dependency).getSuppliers().remove(supplier);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Remove the supplier # from the dependency #",
+                        supplier, dependency));
     }
 
     public void removeTargetFlow(Object handle, Object flow) {
         throw new NotYetImplementedException();
-
     }
 
     public void removeTemplateArgument(Object binding, Object argument) {
         throw new NotYetImplementedException();
-
     }
 
     public void removeTemplateParameter(Object handle, Object parameter) {
         throw new NotYetImplementedException();
-
     }
 
-    public void setAbstract(Object handle, boolean isAbstract) {
-        if (handle instanceof Classifier) {
-            ((Classifier) handle).setIsAbstract(isAbstract);
-        } else if (handle instanceof BehavioralFeature) {
-            ((BehavioralFeature) handle).setIsAbstract(isAbstract);
-        } else {
-            throw new IllegalArgumentException();
+    public void setAbstract(final Object handle, final boolean isAbstract) {
+        if (!(handle instanceof Classifier)
+                && !(handle instanceof BehavioralFeature)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Classifier or BehavioralFeature"); //$NON-NLS-1$
         }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                if (handle instanceof Classifier) {
+                    ((Classifier) handle).setIsAbstract(isAbstract);
+                } else if (handle instanceof BehavioralFeature) {
+                    ((BehavioralFeature) handle).setIsAbstract(isAbstract);
+                }
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Set isAbstract to # for #",
+                        isAbstract, handle));
     }
 
-    public void setActive(Object handle, boolean isActive) {
-        ((org.eclipse.uml2.uml.Class) handle).setIsActive(isActive);
+    public void setActive(final Object handle, final boolean isActive) {
+        if (!(handle instanceof org.eclipse.uml2.uml.Class)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of UML2 Class"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((org.eclipse.uml2.uml.Class) handle).setIsActive(isActive);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Set isActive to # for #", isActive,
+                        handle));
     }
 
-    public void setAggregation(Object handle, Object aggregationKind) {
-        throw new NotYetImplementedException();
+    public void setAggregation(final Object handle, final Object aggregationKind) {
+        if (!(handle instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Property"); //$NON-NLS-1$
+        }
+        if (!(aggregationKind instanceof AggregationKind)) {
+            throw new IllegalArgumentException(
+                    "aggregationKind must be instance of AggregationKind"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Property) handle).setAggregation((AggregationKind) aggregationKind);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Set the aggregation # to the association end #",
+                        aggregationKind, handle));
     }
 
-    public void setAnnotatedElements(Object handle, Collection elems) {
-        throw new NotYetImplementedException();
-
+    public void setAnnotatedElements(final Object handle, final Collection elems) {
+        if (!(handle instanceof Comment)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Comment"); //$NON-NLS-1$
+        }
+        if (!(elems == null)) {
+            throw new NullPointerException("elems must be non-null"); //$NON-NLS-1$
+        }
+        for (Object o : elems) {
+            if (!(o instanceof Element)) {
+                throw new IllegalArgumentException(
+                        "the collection must contain only instances of Element"); //$NON-NLS-1$
+            }
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Comment) handle).getAnnotatedElements().removeAll(
+                        ((Comment) handle).getAnnotatedElements());
+                for (Object o : elems) {
+                    ((Comment) handle).getAnnotatedElements().add((Element) o);
+                }
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Set # annotated alements for the comment #",
+                        elems.size(), handle));
     }
 
     public void setAssociation(Object handle, Object association) {
         throw new NotYetImplementedException();
-
     }
 
     public void setAttributes(Object classifier, List attributes) {
         throw new NotYetImplementedException();
-
     }
 
     public void setBody(Object handle, Object expr) {
         throw new NotYetImplementedException();
-
     }
 
     public void setBody(Object handle, String body) {
         throw new NotYetImplementedException();
-
     }
 
     @SuppressWarnings("deprecation")
@@ -1224,27 +1326,22 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setConcurrency(Object handle, Object concurrencyKind) {
         throw new NotYetImplementedException();
-
     }
 
     public void setConnections(Object handle, Collection ends) {
         throw new NotYetImplementedException();
-
     }
 
     public void setContainer(Object handle, Object component) {
         throw new NotYetImplementedException();
-
     }
 
     public void setDefaultElement(Object handle, Object element) {
         throw new NotYetImplementedException();
-
     }
 
     public void setDefaultValue(Object handle, Object expression) {
         throw new NotYetImplementedException();
-
     }
 
     public void setDiscriminator(Object handle, String discriminator) {
@@ -1254,31 +1351,37 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setEnumerationLiterals(Object enumeration, List literals) {
         throw new NotYetImplementedException();
-
     }
 
     public void setFeature(Object classifier, int index, Object feature) {
         throw new NotYetImplementedException();
-
     }
 
     public void setFeatures(Object classifier, Collection features) {
         throw new NotYetImplementedException();
-
     }
 
     public void setInitialValue(Object attribute, Object expression) {
         throw new NotYetImplementedException();
-
     }
 
     public void setKind(Object handle, Object kind) {
         throw new NotYetImplementedException();
-
     }
 
-    public void setLeaf(Object handle, boolean isLeaf) {
-        ((RedefinableElement) handle).setIsLeaf(isLeaf);
+    public void setLeaf(final Object handle, final boolean isLeaf) {
+        if (!(handle instanceof RedefinableElement)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of RedefinableElement"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((RedefinableElement) handle).setIsLeaf(isLeaf);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Set isLeaf to # for #", isLeaf, handle));
     }
 
     public void setModelElementContainer(Object handle, Object container) {
@@ -1288,24 +1391,51 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setMultiplicity(Object handle, Object arg) {
         throw new NotYetImplementedException();
-
     }
 
-    public void setName(Object handle, String name) {
-        ((NamedElement) handle).setName(name);
+    public void setName(final Object handle, final String name) {
+        if (!(handle instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of NamedElement"); //$NON-NLS-1$
+        }
+        if (name == null) {
+            throw new NullPointerException("name must be non-null"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((NamedElement) handle).setName(name);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Set the name \"#\" to the named element #",
+                        name, handle));
     }
 
     public void setNamespace(Object handle, Object ns) {
         addOwnedElement(ns, handle);
     }
 
-    public void setNavigable(Object handle, boolean flag) {
-        ((Property) handle).setIsNavigable(flag);
+    public void setNavigable(final Object handle, final boolean flag) {
+        if (!(handle instanceof Property)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Property"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Property) handle).setIsNavigable(flag);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Set isNavigable to # for the association end #", flag,
+                        handle));
     }
 
     public void setOperations(Object classifier, List operations) {
         throw new NotYetImplementedException();
-
     }
 
     public void setOrdering(Object handle, Object ordering) {
@@ -1325,12 +1455,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setParameter(Object handle, Object parameter) {
         throw new NotYetImplementedException();
-
     }
 
     public void setParameters(Object handle, Collection parameters) {
         throw new NotYetImplementedException();
-
     }
 
     public void setParent(final Object handle, final Object parent) {
@@ -1357,35 +1485,55 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setPowertype(Object handle, Object powerType) {
         throw new NotYetImplementedException();
-
     }
 
     public void setQualifiers(Object handle, List qualifiers) {
         throw new NotYetImplementedException();
-
     }
 
-    public void setQuery(Object handle, boolean isQuery) {
-        ((Operation) handle).setIsQuery(isQuery);
+    public void setQuery(final Object handle, final boolean isQuery) {
+        if (!(handle instanceof Operation)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Operation"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Operation) handle).setIsQuery(isQuery);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Set isQuery to # for the operation #",
+                        isQuery, handle));
     }
 
     public void setRaisedSignals(Object handle, Collection raisedSignals) {
         throw new NotYetImplementedException();
-
     }
 
-    public void setReadOnly(Object handle, boolean isReadOnly) {
-        ((StructuralFeature) handle).setIsReadOnly(isReadOnly);
+    public void setReadOnly(final Object handle, final boolean isReadOnly) {
+        if (!(handle instanceof StructuralFeature)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of StructuralFeature"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((StructuralFeature) handle).setIsReadOnly(isReadOnly);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Set isReadOnly to # for the structural feature #",
+                        isReadOnly, handle));
     }
 
     public void setResident(Object handle, Object resident) {
         throw new NotYetImplementedException();
-
     }
 
     public void setResidents(Object handle, Collection residents) {
         throw new NotYetImplementedException();
-
     }
 
     public void setRoot(Object handle, boolean isRoot) {
@@ -1395,12 +1543,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setSources(Object handle, Collection specifications) {
         throw new NotYetImplementedException();
-
     }
 
     public void setSpecification(Object handle, boolean isSpecification) {
         throw new NotYetImplementedException();
-
     }
 
     public void setSpecification(Object method, Object specification) {
@@ -1413,21 +1559,30 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setSpecifications(Object handle, Collection specifications) {
         throw new NotYetImplementedException();
-
     }
 
-    public void setStatic(Object feature, boolean isStatic) {
-        ((Feature) feature).setIsStatic(isStatic);
+    public void setStatic(final Object feature, final boolean isStatic) {
+        if (!(feature instanceof Feature)) {
+            throw new IllegalArgumentException(
+                    "feature must be instance of Feature"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Feature) feature).setIsStatic(isStatic);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Set isStatic to # for the feature #",
+                        isStatic, feature));
     }
 
     public void setTaggedValue(Object handle, String tag, String value) {
         throw new NotYetImplementedException();
-
     }
 
     public void setTaggedValues(Object handle, Collection taggedValues) {
         throw new NotYetImplementedException();
-
     }
 
     @SuppressWarnings("deprecation")
@@ -1436,12 +1591,44 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotImplementedException();
     }
 
-    public void setType(Object handle, Object type) {
-        ((TypedElement) handle).setType((Type) type);
+    public void setType(final Object handle, final Object type) {
+        if (!(handle instanceof TypedElement)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of TypedElement"); //$NON-NLS-1$
+        }
+        if (!(type instanceof Type)) {
+            throw new IllegalArgumentException("type must be instance of Type"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((TypedElement) handle).setType((Type) type);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Set the type # for the typed element #", type, handle));
     }
 
-    public void setVisibility(Object handle, Object visibility) {
-        ((NamedElement) handle).setVisibility((VisibilityKind) visibility);
+    public void setVisibility(final Object handle, final Object visibility) {
+        if (!(handle instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of NamedElement"); //$NON-NLS-1$
+        }
+        if (!(visibility instanceof VisibilityKind)) {
+            throw new IllegalArgumentException(
+                    "visibility must be instance of VisibilityKind"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((NamedElement) handle).setVisibility((VisibilityKind) visibility);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Set the visibility # to the named element #",
+                        visibility, handle));
     }
 
     public Collection getParents(Object generalizableElement) {
