@@ -50,8 +50,7 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
     }
 
     public void copyTaggedValues(Object from, Object to) {
-        // TODO Auto-generated method stub
-        
+        throw new NotYetImplementedException();
     }
 
     public boolean equalsCHOICEKind(Object kind) {
@@ -100,6 +99,9 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
     }
 
     public String multiplicityToString(Object multiplicity) {
+        if (!(multiplicity instanceof MultiplicityElement)) {
+            throw new IllegalArgumentException("multiplicity must be instance of MultiplicityElement"); //$NON-NLS-1$
+        }
         MultiplicityElement mult = (MultiplicityElement) multiplicity;
         if (mult.getLower() == mult.getUpper()) {
             return DataTypesFactoryEUMLImpl.boundToString(mult.getLower());
@@ -110,7 +112,6 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
                     + DataTypesFactoryEUMLImpl.boundToString(mult.getUpper());
         }
     }
-
     
     public Object setBody(Object handle, String body) {
         // TODO Auto-generated method stub
@@ -121,6 +122,5 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
         // TODO Auto-generated method stub
         return null;
     }
-
 
 }

@@ -31,7 +31,6 @@ import java.util.List;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.DataTypesFactory;
 import org.argouml.model.NotImplementedException;
-import org.eclipse.uml2.uml.Expression;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.UMLFactory;
 
@@ -137,7 +136,7 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory,
         if (i == -1) {
             return "*";
         } else {
-            return "" + i;
+            return Integer.toString(i);
         }
     }
 
@@ -155,8 +154,7 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory,
                 return Integer.parseInt(b);
             }
         } catch (Exception ex) {
-            throw new IllegalArgumentException("illegal range bound : "
-                    + (b == null ? "null" : b));
+            throw new IllegalArgumentException("illegal range bound : " + b);
         }
     }
 
