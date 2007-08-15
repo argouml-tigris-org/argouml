@@ -211,6 +211,10 @@ class FacadeMDRImpl implements Facade {
     public FacadeMDRImpl(MDRModelImplementation impl) {
         modelImpl = impl;
     }
+    
+    public String getUmlVersion() {
+        return "1.4";
+    }
 
     public boolean isAAbstraction(Object handle) {
         return handle instanceof Abstraction;

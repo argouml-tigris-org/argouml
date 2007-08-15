@@ -94,10 +94,11 @@ public class FigAssociationClass extends FigAssociation implements
     }
 
     /**
-     * Discover the attached FigEdgeAssociationClass and the
-     * FigClassAssociationClass attached to that. Remove them from the diagram
-     * before removing this.
+     * Remove entire composite Fig from Diagram. Discover the attached
+     * FigEdgeAssociationClass and the FigClassAssociationClass attached to
+     * that. Remove them from the diagram before removing this.
      */
+    @Override
     protected void removeFromDiagramImpl() {
         FigEdgeAssociationClass figEdgeLink = null;
         List edges = null;
@@ -130,10 +131,12 @@ public class FigAssociationClass extends FigAssociation implements
     }
 
     /*
+     * TODO: Is this required? Why would the fig already be dashed?
+     * 
      * @see org.tigris.gef.presentation.FigEdge#setFig(
-     *      org.tigris.gef.presentation.Fig) TODO: Is this required? Why would
-     *      the fig already be dashed?
+     *      org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setFig(Fig f) {
         super.setFig(f);
         getFig().setDashed(false);
@@ -142,12 +145,15 @@ public class FigAssociationClass extends FigAssociation implements
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNameFig()
      */
+    @Override
     protected FigText getNameFig() {
         return null;
     }
 
     /**
-     * Overrided in order to implement AttributesCompartmentContainer.
+     * @return the bounds of the operations compartment for the associated
+     *         FigClassAssociationClass.
+     * @see org.argouml.uml.diagram.AttributesCompartmentContainer#getAttributesBounds()
      */
     public Rectangle getAttributesBounds() {
         if (getAssociationClass() != null)
@@ -170,8 +176,9 @@ public class FigAssociationClass extends FigAssociation implements
      * Overrided in order to implement AttributesCompartmentContainer.
      */
     public void setAttributesVisible(boolean visible) {
-        getAssociationClass().setAttributesVisible(visible);
-
+        if (getAssociationClass() != null) {
+            getAssociationClass().setAttributesVisible(visible);
+        }
     }
 
     /**
@@ -188,34 +195,40 @@ public class FigAssociationClass extends FigAssociation implements
      * Overrided in order to implement PathCompartmentContainer.
      */
     public void setPathVisible(boolean visible) {
-        getAssociationClass().setPathVisible(visible);
+        if (getAssociationClass() != null) {
+            getAssociationClass().setPathVisible(visible);
+        }
     }
 
     /**
      * Overrided in order to implement OperationsCompartmentContainer.
      */
     public Rectangle getOperationsBounds() {
-        if (getAssociationClass() != null)
+        if (getAssociationClass() != null) {
             return getAssociationClass().getOperationsBounds();
-        else
+        } else {
             return new Rectangle(0, 0, 0, 0);
+        }
     }
 
     /**
      * Overrided in order to implement OperationsCompartmentContainer.
      */
     public boolean isOperationsVisible() {
-        if (getAssociationClass() != null)
+        if (getAssociationClass() != null) {
             return getAssociationClass().isOperationsVisible();
-        else
+        } else {
             return true;
+        }
     }
 
     /**
      * Overrided in order to implement OperationsCompartmentContainer.
      */
     public void setOperationsVisible(boolean visible) {
-        getAssociationClass().setOperationsVisible(visible);
+        if (getAssociationClass() != null) {
+            getAssociationClass().setOperationsVisible(visible);
+        }
     }
 
     /**
@@ -224,7 +237,9 @@ public class FigAssociationClass extends FigAssociation implements
      */
     @Override
     public void setFillColor(Color color) {
-        getAssociationClass().setFillColor(color);
+        if (getAssociationClass() != null) {
+            getAssociationClass().setFillColor(color);
+        }
     }
 
     /**
@@ -233,10 +248,11 @@ public class FigAssociationClass extends FigAssociation implements
      */
     @Override
     public Color getFillColor() {
-        if (getAssociationClass() != null)
+        if (getAssociationClass() != null) {
             return getAssociationClass().getFillColor();
-        else
+        } else {
             return Color.white;
+        }
     }
 
     /**
@@ -318,4 +334,4 @@ public class FigAssociationClass extends FigAssociation implements
 
         return figEdgeLink;
     }
-} /* end class FigAssociationClass */
+}

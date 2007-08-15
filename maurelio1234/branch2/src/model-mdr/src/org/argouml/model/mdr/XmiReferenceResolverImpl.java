@@ -177,7 +177,7 @@ class XmiReferenceResolverImpl extends XmiContext {
         }
         
         String key;
-        if (systemId == null) {
+        if (systemId == null || "".equals(systemId)) {
             // No # here because PGML parser needs bare UUID/xmi.id
             key = xmiId;            
         } else {

@@ -37,13 +37,13 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * The checkbox to be used to show boolean attributes in the GUI's. Mostly used
- * on proppanels. The other new GUI elements (like UMLLinkedList) divide the
+ * The checkbox to be used to show boolean UML attributes in the GUI's. Mostly
+ * used on proppanels. Other GUI elements (like UMLLinkedList) divide the
  * responsibility of showing an attribute and maintaining the state of the
  * attribute between a GUI element and a model. This is not the case for the
- * UMLCheckBox2. Reason for this is that the model is just to simple to allow
+ * UMLCheckBox2. Reason for this is that the model is just too simple to need
  * extra classes for the model.
- *
+ * 
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -77,18 +77,16 @@ public abstract class UMLCheckBox2 extends JCheckBox
     }
 
     /**
-     * Returns the target. The target is directly asked from the
-     * _target attribute and not from the _container attribute to make
-     * the move to a new targeting system as easy as possible.
+     * Return the target. 
      *
-     * @return Object
+     * @return the target
      */
     public Object getTarget() {
         return checkBoxTarget;
     }
 
     /**
-     * Sets the target. This method will not be used untill the target does
+     * Sets the target. This method will not be used until the target does
      * not come via the container.
      * @param target The target to set
      */
@@ -109,7 +107,7 @@ public abstract class UMLCheckBox2 extends JCheckBox
 
     /**
      * Builds the model. That is: it sets the checkbox to true or
-     * false. The name of this method is choosen to be compliant with
+     * false. The name of this method is chosen to be compliant with
      * for example UMLModelElementListModel2.
      */
     public abstract void buildModel();

@@ -76,6 +76,23 @@ public interface Facade {
     String DERIVED_TAG = "derived"; //$NON-NLS-1$
 
     ////////////////////////////////////////////////////////////////
+    
+    /**
+     * Return the version of the UML metamodel supported by the underlying
+     * implementation. The version string is made up of numerical components
+     * separated by the '.' character with the most significant digits on the
+     * left.
+     * <p>
+     * The MDR implementation supports UML 1.4 and the initial eUML
+     * implementation supports UML 2.1.1. The earlier NSUML implementation
+     * supported UML 1.3.
+     * 
+     * @return a period ('.') separated string of version numbers. e.g. "1.4" or
+     *         "2.1.1"
+     */
+    String getUmlVersion();
+    
+    ////////////////////////////////////////////////////////////////
     /**
      * Recognizer for Abstraction.
      *

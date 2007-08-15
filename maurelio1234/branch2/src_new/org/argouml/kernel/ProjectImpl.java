@@ -368,14 +368,16 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
         if (activeDiagram == d) {
-            ArgoDiagram defaultDiagram;
+            ArgoDiagram defaultDiagram = null;
             if (diagrams.size() == 1) {
                 // We're deleting the last diagram so lets create a new one
                 // TODO: Once we go MDI we won't need this.
-                defaultDiagram =
-                    DiagramFactory.getInstance().createDefaultDiagram(
-                            getRoot());
-                addMember(defaultDiagram);
+                Object projectRoot = getRoot();
+                if (!Model.getUmlFactory().isRemoved(projectRoot)) {
+                    defaultDiagram = DiagramFactory.getInstance()
+                            .createDefaultDiagram(projectRoot);
+                    addMember(defaultDiagram);
+                }
             } else {
                 // Make the topmost diagram (that is not the one being deleted)
                 // current.

@@ -185,10 +185,11 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
             try {
                 String systemId = inputSource.getSystemId();
-//                if (systemId == null) {
-//                    File file = copySource(inputSource);
-//                    systemId = file.toURL().toExternalForm();
-//                }
+                if (systemId == null) {
+                    File file = copySource(inputSource);
+                    systemId = file.toURL().toExternalForm();
+                    inputSource = new InputSource(systemId);
+                }
                 newElements =
                     xmiReader.read(inputSource.getByteStream(), systemId, extent);
                 
@@ -201,10 +202,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     resolver.clearIdMaps();
                     startTopElements = modelImpl.getFacade().getRootElements();
 
-                    File tmpFile = copySource(inputSource);
                     newElements = convertAndLoadUml13(inputSource.getSystemId(),
-                            extent, xmiReader, tmpFile);
-                    tmpFile.delete();
+                            extent, xmiReader, inputSource);
                 }
 
                 numElements = modelImpl.getFacade().getRootElements().size()
@@ -261,7 +260,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
     }
 
     private Collection<RefObject> convertAndLoadUml13(String systemId,
-            RefPackage extent, XMIReader xmiReader, File file)
+            RefPackage extent, XMIReader xmiReader, InputSource input)
         throws FileNotFoundException, UmlException, IOException,
             MalformedXMIException {
         
@@ -273,13 +272,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
         unknownElement = false;
         // InputSource xformedInput = chainedTransform(transformFiles, pIs);
-        InputSource originalInput = new InputSource(
-                new FileInputStream(file));
-        // Use the original file for the system ID
-        // so any references resolve correctly
-        originalInput.setSystemId(systemId);
         InputSource xformedInput = serialTransform(transformFiles,
-                originalInput);
+                input);
         return xmiReader.read(xformedInput.getByteStream(), xformedInput
                 .getSystemId(), extent);
     }

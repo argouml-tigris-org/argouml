@@ -191,7 +191,7 @@ public class TabProps
      */
     public TabProps(String tabName, String panelClassBase) {
         super(tabName);
-        TargetManager.getInstance().addTarget(this);
+        TargetManager.getInstance().addTargetListener(this);
         setOrientation(ConfigLoader.getTabPropsOrientation());
         panelClassBaseName = panelClassBase;
         setLayout(new BorderLayout());
