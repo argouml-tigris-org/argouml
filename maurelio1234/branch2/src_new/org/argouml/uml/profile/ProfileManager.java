@@ -91,7 +91,7 @@ public interface ProfileManager {
     /**
      * @return the current directory list
      */
-    Vector getSearchPathDirectories();
+    Vector<String> getSearchPathDirectories();
     
     /**
      * Looks for XMI files at the current directory list and registers

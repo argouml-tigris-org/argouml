@@ -45,7 +45,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListModel;
+import javax.swing.MutableComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.filechooser.FileFilter;
@@ -54,8 +56,11 @@ import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.profile.Profile;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.argouml.uml.profile.ProfileException;
 import org.argouml.uml.profile.ProfileManager;
 import org.argouml.uml.profile.ProfileManagerImpl;
@@ -79,9 +84,9 @@ public class SettingsTabProfile extends JPanel implements
 
     private JButton removeButton = new JButton("<<");
 
-    private JList availableList = new JList(new AvailableProfilesListModel());
+    private JList availableList = new JList();
 
-    private JList defaultList = new JList(new DefaultProfilesListModel());
+    private JList defaultList = new JList();
 
     ////////
     
@@ -110,167 +115,6 @@ public class SettingsTabProfile extends JPanel implements
     private JComboBox stereoField = new JComboBox();
     
     /**
-     * This List contains the registered profiles that have not been applied
-     * to the current project  
-     * 
-     * @author maurelio1234
-     */
-    private class AvailableProfilesListModel implements ListModel {
-	private ProfileManager profileManager = ProfileManagerImpl
-		.getInstance();
-
-	private Vector<ListDataListener> listeners = new Vector<ListDataListener>();
-
-	/**
-         * @param arg0
-         * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
-         */
-	public void addListDataListener(ListDataListener arg0) {
-	    listeners.add(arg0);
-	}
-
-	/**
-	 * Fire listeners 
-	 */
-	public void fireListeners() {
-	    ListDataEvent evt = new ListDataEvent(this,
-		    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
-	    for (int i = 0; i < listeners.size(); ++i) {
-		listeners.elementAt(i).contentsChanged(evt);
-	    }
-	}
-
-	/**
-	 * @param n the profile to be returned
-	 * @return the n-th profile at the registered profiles list
-	 */
-	public Profile getProfileAt(int n) {
-            Vector list = ProfileManagerImpl.getInstance().getDefaultProfiles();
-
-            Vector registeredProfiles = profileManager.getRegisteredProfiles();
-	    int count = 0;
-	    for (int i = 0; i < registeredProfiles.size(); ++i) {
-		if (!list.contains(
-			registeredProfiles.elementAt(i))) {
-
-		    if (count == n) {
-			return ((Profile) registeredProfiles.elementAt(i));
-		    }
-		    ++count;
-		}
-	    }
-	    return null;
-	}
-
-	/**
-	 * @param arg0
-	 * @return the arg0-th element of this list
-	 * @see javax.swing.ListModel#getElementAt(int)
-	 */
-	public Object getElementAt(int arg0) {
-	    Profile p = getProfileAt(arg0);
-	    if (p != null) {
-		return p.getDisplayName();
-	    } else {
-		return null;
-	    }
-	}
-
-	/**
-	 * @return the amount of registered profiles not applied to current 
-	 * 		project
-	 * @see javax.swing.ListModel#getSize()
-	 */
-	public int getSize() {
-            Vector list = ProfileManagerImpl.getInstance().getDefaultProfiles();
-	    Vector registeredProfiles = profileManager.getRegisteredProfiles();
-	    int count = 0;
-	    for (int i = 0; i < registeredProfiles.size(); ++i) {
-		if (!list.contains(
-			registeredProfiles.elementAt(i))) {
-		    ++count;
-		}
-	    }
-	    return count;
-	}
-
-	/**
-	 * @param arg0
-	 * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
-	 */
-	public void removeListDataListener(ListDataListener arg0) {
-	    listeners.remove(arg0);
-	}
-    }
-
-    /**
-     * This list contains the profiles that are applied by default
-     * 
-     * @author maurelio1234
-     */
-    private class DefaultProfilesListModel implements ListModel {
-	private Vector<ListDataListener> listeners = new Vector<ListDataListener>();
-
-	/**
-	 * @param arg0
-	 * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
-	 */
-	public void addListDataListener(ListDataListener arg0) {
-	    listeners.add(arg0);
-	}
-
-	/**
-	 * Fires listeners 
-	 */
-	public void fireListeners() {
-	    ListDataEvent evt = new ListDataEvent(this,
-		    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
-	    for (int i = 0; i < listeners.size(); ++i) {
-		listeners.elementAt(i).contentsChanged(evt);
-	    }
-	}
-
-	/**
-	 * @param n
-	 * @return the n-th profile on this list
-	 */
-	public Profile getProfileAt(int n) {
-	    return ((Profile) ProfileManagerImpl.getInstance().getDefaultProfiles().elementAt(n));
-	}
-
-	/**
-	 * @param n
-	 * @return the n-th profile on this list
-	 * @see javax.swing.ListModel#getElementAt(int)
-	 */
-	public Object getElementAt(int n) {
-            Vector list = ProfileManagerImpl.getInstance().getDefaultProfiles();
-            if (n >= 0 && n < list.size()) {
-                return ((Profile) list.elementAt(n))
-                        .getDisplayName();
-            } else {
-                return null;
-            }
-	}
-
-	/**
-	 * @return the amount of elements in the list
-	 * @see javax.swing.ListModel#getSize()
-	 */
-	public int getSize() {
-	    return ProfileManagerImpl.getInstance().getDefaultProfiles().size();
-	}
-
-	/**
-	 * @param arg0
-	 * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
-	 */
-	public void removeListDataListener(ListDataListener arg0) {
-	    listeners.remove(arg0);
-	}
-    }
-
-    /**
      * The default constructor for this class
      */
     public SettingsTabProfile() {
@@ -292,19 +136,6 @@ public class SettingsTabProfile extends JPanel implements
         cmodel.addElement(Translator.localize("menu.popup.stereotype-view.big-icon"));
         cmodel.addElement(Translator.localize("menu.popup.stereotype-view.small-icon"));
         
-        switch (Configuration.getInteger(KEY_DEFAULT_STEREOTYPE_VIEW,
-                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL)) {
-        case FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL:
-            stereoField.setSelectedIndex(0);                
-            break;
-        case FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON:
-            stereoField.setSelectedIndex(1);                
-            break;
-        case FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON:
-            stereoField.setSelectedIndex(2);                
-            break;
-        }
-
         stereoField.addItemListener(new ItemListener() {
 
             public void itemStateChanged(ItemEvent e) {
@@ -339,15 +170,6 @@ public class SettingsTabProfile extends JPanel implements
                 
         ////////////
         
-        DefaultListModel model = new DefaultListModel(); 
-        directoryList.setModel(model);        
-        Iterator it = ProfileManagerImpl.getInstance().getSearchPathDirectories().iterator();
-        
-        while(it.hasNext()) {
-            String dir = (String) it.next();            
-            model.addElement(dir);
-        }
-
         directoryList.setPrototypeCellValue("123456789012345678901234567890123456789012345678901234567890");
         directoryList.setMinimumSize(new Dimension(50, 50));
         
@@ -366,7 +188,7 @@ public class SettingsTabProfile extends JPanel implements
         addDirectory.addActionListener(this);
         removeDirectory.addActionListener(this);        
         
-        dlist.add(directoryList, BorderLayout.CENTER);
+        dlist.add(new JScrollPane(directoryList), BorderLayout.CENTER);
         dlist.add(lcb, BorderLayout.EAST);
         
         sdirPanel.add(new JLabel(Translator
@@ -386,12 +208,14 @@ public class SettingsTabProfile extends JPanel implements
 	availableList.setMinimumSize(new Dimension(50, 50));
 	defaultList.setMinimumSize(new Dimension(50, 50));
 
+        refreshLists();
+        	
 	JPanel leftList = new JPanel();
 	leftList.setLayout(new BorderLayout());
 	leftList.add(new JLabel(Translator
 		.localize("tab.profiles.userdefined.available")),
 		BorderLayout.NORTH);
-	leftList.add(availableList, BorderLayout.CENTER);
+	leftList.add(new JScrollPane(availableList), BorderLayout.CENTER);
 	configPanel.add(leftList);
 
 	JPanel centerButtons = new JPanel();
@@ -406,7 +230,7 @@ public class SettingsTabProfile extends JPanel implements
 		.localize("tab.profiles.userdefined.default")),
 		BorderLayout.NORTH);       
         
-	rightList.add(defaultList, BorderLayout.CENTER);
+	rightList.add(new JScrollPane(defaultList), BorderLayout.CENTER);
 	configPanel.add(rightList);
 
 	addButton.addActionListener(this);
@@ -427,44 +251,61 @@ public class SettingsTabProfile extends JPanel implements
 	add(lffPanel);                       
     }
 
+    private void refreshLists() {
+        availableList.setModel(new DefaultComboBoxModel(getAvailableProfiles()));
+        defaultList.setModel(new DefaultComboBoxModel(getUsedProfiles()));
+        directoryList.setModel(new DefaultComboBoxModel(new Vector<String>(
+                ProfileManagerImpl.getInstance().getSearchPathDirectories())));        
+    }
+
+    private Vector<Profile> getUsedProfiles() {
+        return new Vector<Profile>(ProfileManagerImpl.getInstance().getDefaultProfiles());
+    }
+
+    private Vector<Profile> getAvailableProfiles() {
+        Vector<Profile> used = getUsedProfiles();
+        Vector<Profile> ret = new Vector<Profile>();
+        
+        for (Profile profile : ProfileManagerImpl.getInstance().getRegisteredProfiles()) {
+            if (!used.contains(profile)) {
+                ret.add(profile);
+            }
+        }
+        
+        return ret;
+    }
+    
     /**
      * @param arg0
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent arg0) {
-        AvailableProfilesListModel modelAvl = ((AvailableProfilesListModel) availableList
+        MutableComboBoxModel modelAvl = ((MutableComboBoxModel) availableList
                 .getModel());
-        DefaultProfilesListModel modelUsd = ((DefaultProfilesListModel) defaultList
+        MutableComboBoxModel modelUsd = ((MutableComboBoxModel) defaultList
                 .getModel());
 
         if (arg0.getSource() == addButton) {
             if (availableList.getSelectedIndex() != -1) {
-                Profile selected = modelAvl.getProfileAt(availableList
+                Profile selected = (Profile) modelAvl.getElementAt(availableList
                         .getSelectedIndex());
-                ProfileManagerImpl.getInstance().addToDefaultProfiles(selected);
-                
-                modelAvl.fireListeners();
-                modelUsd.fireListeners();
+                modelUsd.addElement(selected);
+                modelAvl.removeElement(selected);
             }
 	} else if (arg0.getSource() == removeButton) {
             if (defaultList.getSelectedIndex() != -1) {
-                Profile selected = modelUsd.getProfileAt(defaultList
+                Profile selected = (Profile) modelUsd.getElementAt(defaultList
                         .getSelectedIndex());
-                ProfileManagerImpl.getInstance().removeFromDefaultProfiles(
-                        selected);
-                
-                modelAvl.fireListeners();
-                modelUsd.fireListeners();
+                modelUsd.removeElement(selected);
+                modelAvl.addElement(selected);                        
             }
 	} else if (arg0.getSource() == unregisterProfile) {
 	    if (availableList.getSelectedIndex() != -1) {
-                Profile selected = modelAvl.getProfileAt(availableList
+                Profile selected = (Profile) modelAvl.getElementAt(availableList
                         .getSelectedIndex());
                 if (selected instanceof UserDefinedProfile) {
                     ProfileManagerImpl.getInstance().removeProfile(selected);
-
-                    modelAvl.fireListeners();
-                    modelUsd.fireListeners();
+                    modelAvl.removeElement(selected);
                 } else {
                     JOptionPane.showMessageDialog(this, Translator
                             .localize("tab.profiles.cannotdelete"));
@@ -496,10 +337,7 @@ public class SettingsTabProfile extends JPanel implements
 
                     ProfileManagerImpl.getInstance().registerProfile(profile);
 
-                    DefaultProfilesListModel model = ((DefaultProfilesListModel) defaultList
-                            .getModel());
-                    model.fireListeners();
-
+                    modelAvl.addElement(profile);
                 } catch (ProfileException e) {
                     JOptionPane.showMessageDialog(this, Translator
                             .localize("tab.profiles.userdefined.errorloading"));
@@ -509,14 +347,23 @@ public class SettingsTabProfile extends JPanel implements
         } else if (arg0.getSource() == removeDirectory) { 
             if (directoryList.getSelectedIndex() != -1) {
                 int idx = directoryList.getSelectedIndex();
-                String item = (String) directoryList.getSelectedValue();
-                ProfileManagerImpl.getInstance().removeSearchPathDirectory(item);
-                
-                ((DefaultListModel)directoryList.getModel()).remove(idx);
+                ((MutableComboBoxModel)directoryList.getModel()).removeElementAt(idx);
             }
         } else if (arg0.getSource() == refreshProfiles) { 
-            ProfileManagerImpl.getInstance().refreshRegisteredProfiles();            
-            modelAvl.fireListeners();
+            boolean refresh = (JOptionPane
+                    .showConfirmDialog(
+                            this,
+                            Translator
+                                    .localize("tab.profiles.confirmrefresh"),
+                            Translator
+                                    .localize("tab.profiles.confirmrefresh.title"),
+                            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+
+            if (refresh) {
+                handleSettingsTabSave();
+                ProfileManagerImpl.getInstance().refreshRegisteredProfiles();
+                refreshLists();
+            }            
         } else if (arg0.getSource() == addDirectory) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileFilter() {
@@ -538,11 +385,8 @@ public class SettingsTabProfile extends JPanel implements
                 File file = fileChooser.getSelectedFile();
 
                 String path = file.getAbsolutePath();
-                
-                ProfileManagerImpl.getInstance().addSearchPathDirectory(path);
-                ((DefaultListModel)directoryList.getModel()).addElement(path);
-                
-                ProfileManagerImpl.getInstance().refreshRegisteredProfiles();
+
+                ((MutableComboBoxModel)directoryList.getModel()).addElement(path);
             }
             
         }
@@ -568,23 +412,84 @@ public class SettingsTabProfile extends JPanel implements
     }
 
     public void handleResetToDefault() {
-	// TODO: Auto-generated method stub
-
+        refreshLists();
     }
 
     public void handleSettingsTabCancel() {
-	// TODO: Auto-generated method stub
 
     }
 
     public void handleSettingsTabRefresh() {
-	// TODO: Auto-generated method stub
-
+        refreshLists();
+ 
+        switch (Configuration.getInteger(KEY_DEFAULT_STEREOTYPE_VIEW,
+                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL)) {
+        case FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL:
+            stereoField.setSelectedIndex(0);                
+            break;
+        case FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON:
+            stereoField.setSelectedIndex(1);                
+            break;
+        case FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON:
+            stereoField.setSelectedIndex(2);                
+            break;
+        }        
     }
 
     public void handleSettingsTabSave() {
-	// TODO: Auto-generated method stub
+        Vector<Profile> toRemove = new Vector<Profile>();        
+        Vector<Profile> usedItens = new Vector<Profile>();
 
+        MutableComboBoxModel modelUsd = ((MutableComboBoxModel) defaultList
+                .getModel());
+        MutableComboBoxModel modelDir = ((MutableComboBoxModel) directoryList
+                .getModel());
+        
+        for(int i=0;i<modelUsd.getSize();++i) {
+            usedItens.add((Profile) modelUsd.getElementAt(i));
+        }
+        
+        for (Profile profile : ProfileManagerImpl.getInstance().getDefaultProfiles()) {
+            if (!usedItens.contains(profile)) {
+                toRemove.remove(profile);
+            }
+        }
+
+        for (Profile profile : toRemove) {
+            ProfileManagerImpl.getInstance().removeFromDefaultProfiles(profile);
+        }
+                
+        for (Profile profile : usedItens) {
+            if (!ProfileManagerImpl.getInstance().getDefaultProfiles().contains(profile)) {
+                ProfileManagerImpl.getInstance().addToDefaultProfiles(profile);
+            }
+        }
+
+        ///////////
+        
+        Vector<String> toRemoveDir = new Vector<String>();        
+        Vector<String> usedItensDir = new Vector<String>();
+        
+        for(int i=0;i<modelDir.getSize();++i) {
+            usedItensDir.add((String) modelDir.getElementAt(i));
+        }
+
+        for (String dirEntry : ProfileManagerImpl.getInstance().getSearchPathDirectories()) {
+            if (!usedItensDir.contains(dirEntry)) {
+                toRemoveDir.remove(dirEntry);
+            }
+        }
+
+        for (String dirEntry : toRemoveDir) {
+            ProfileManagerImpl.getInstance().removeSearchPathDirectory(dirEntry);
+        }
+                
+        for (String dirEntry : usedItensDir) {
+            if (!ProfileManagerImpl.getInstance().getSearchPathDirectories().contains(dirEntry)) {
+                ProfileManagerImpl.getInstance().addSearchPathDirectory(dirEntry);
+            }
+        }
+        
     }
 
 }

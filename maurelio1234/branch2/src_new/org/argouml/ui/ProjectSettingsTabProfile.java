@@ -43,6 +43,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.filechooser.FileFilter;
 
@@ -159,7 +160,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
 	leftList.add(new JLabel(Translator
 		.localize("tab.profiles.userdefined.available")),
 		BorderLayout.NORTH);
-	leftList.add(availableList, BorderLayout.CENTER);
+	leftList.add(new JScrollPane(availableList), BorderLayout.CENTER);
 	configPanel.add(leftList);
 
 	JPanel centerButtons = new JPanel();
@@ -173,7 +174,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
 	rightList.add(new JLabel(Translator
 		.localize("tab.profiles.userdefined.active")),
 		BorderLayout.NORTH);
-	rightList.add(usedList, BorderLayout.CENTER);
+	rightList.add(new JScrollPane(usedList), BorderLayout.CENTER);
 	configPanel.add(rightList);
 
 	addButton.addActionListener(this);
@@ -198,8 +199,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     private Vector<Profile> getUsedProfiles() {
-        return ProjectManager.getManager().getCurrentProject()
-                .getProfileConfiguration().getProfiles();
+        return new Vector<Profile>(ProjectManager.getManager()
+                .getCurrentProject().getProfileConfiguration().getProfiles());
     }
 
     private Vector<Profile> getAvailableProfiles() {
@@ -292,6 +293,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 Profile selected = (Profile) modelAvl.getElementAt(availableList
                         .getSelectedIndex());
                 if (selected instanceof UserDefinedProfile) {
+                    ProfileManagerImpl.getInstance().removeProfile(selected);                    
                     modelAvl.removeElement(selected);
                 } else {
                     JOptionPane.showMessageDialog(this,Translator.localize("tab.profiles.cannotdelete"));
@@ -322,7 +324,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
                     UserDefinedProfile profile = new UserDefinedProfile(file);
                     ProfileManagerImpl.getInstance().registerProfile(profile);
 
-                    modelUsd.addElement(profile);
+                    modelAvl.addElement(profile);
                 } catch (ProfileException e) {
                     JOptionPane.showMessageDialog(this, Translator
                             .localize("tab.profiles.userdefined.errorloading"));

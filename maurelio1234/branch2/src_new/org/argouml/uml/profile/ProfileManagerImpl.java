@@ -86,21 +86,18 @@ public class ProfileManagerImpl implements ProfileManager {
 
         while (tokenizer.hasMoreTokens()) {
             String desc = tokenizer.nextToken();
-
+            Profile p = null;
+            
             if (desc.charAt(0) == 'U') {
                 String fileName = desc.substring(1);
-                Profile p = findUserDefinedProfile(new File(fileName));
-                
-                if (p != null) {
-                    addToDefaultProfiles(p);
-                }
+                p = findUserDefinedProfile(new File(fileName));                
             } else if (desc.charAt(0) == 'C') {
                 String className = desc.substring(1);
-                Profile p = getProfileForClass(className);
-                
-                if (p != null) {
-                    addToDefaultProfiles(p);
-                }
+               p = getProfileForClass(className);
+            }
+
+            if (p != null) {
+                addToDefaultProfiles(p);
             }
         }
 
@@ -224,7 +221,7 @@ public class ProfileManagerImpl implements ProfileManager {
      * @see org.argouml.uml.profile.ProfileManager#addToDefaultProfiles(org.argouml.uml.profile.Profile)
      */
     public void addToDefaultProfiles(Profile p) {
-        if (p != null && profiles.contains(p)) {
+        if (p != null && profiles.contains(p) && !defaultProfiles.contains(p)) {
             defaultProfiles.add(p);
             updateDefaultProfilesConfiguration();
         }
