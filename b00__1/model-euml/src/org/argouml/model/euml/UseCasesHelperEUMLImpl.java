@@ -31,11 +31,11 @@ import java.util.HashSet;
 
 import org.argouml.model.NotImplementedException;
 import org.argouml.model.UseCasesHelper;
+import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.ExtensionPoint;
 import org.eclipse.uml2.uml.Include;
-import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UseCase;
 
 /**
@@ -58,54 +58,91 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
         modelImpl = implementation;
     }
 
-    public void addExtend(Object handle, Object extend) {
-        if (handle instanceof UseCase) {
-            ((UseCase) handle).getExtends().add(
-                    (Extend) extend);
-        } else if (handle instanceof ExtensionPoint) {
-            ((Extend) extend).getExtensionLocations().add(
-                    (ExtensionPoint) handle);
+    public void addExtend(final Object handle, final Object extend) {
+        if (!(handle instanceof UseCase) && !(handle instanceof ExtensionPoint)) {
+            throw new IllegalArgumentException();
         }
-    }
-
-    public void addExtensionPoint(Object handle, Object extensionPoint) {
-        if (handle instanceof UseCase) {
-            ((UseCase) handle).getExtensionPoints().add(
-                    (ExtensionPoint) extensionPoint);
-        } else if (handle instanceof Extend) {
-            ((Extend) handle).getExtensionLocations().add(
-                    (ExtensionPoint) extensionPoint);
+        if (!(extend instanceof Extend)) {
+            throw new IllegalArgumentException();
         }
-        throw new IllegalArgumentException(
-                "Must be UseCase or Extend : " //$NON-NLS-1$
-                + handle);
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                if (handle instanceof UseCase) {
+                    ((UseCase) handle).getExtends().add((Extend) extend);
+                } else if (handle instanceof ExtensionPoint) {
+                    ((Extend) extend).getExtensionLocations().add(
+                            (ExtensionPoint) handle);
+                }
+            }
+        };
+        modelImpl.getEditingDomain().getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Add the extend # to the #", extend,
+                        handle));
+    }
+    
+    public void addExtensionPoint(final Object handle,
+            final Object extensionPoint) {
+        addExtensionPoint(handle, CommandParameter.NO_INDEX, extensionPoint);
     }
 
-    public void addExtensionPoint(Object handle, int position,
-            Object extensionPoint) {
-        ((Extend) handle).getExtensionLocations().add(position,
-                (ExtensionPoint) extensionPoint);
+    public void addExtensionPoint(final Object handle, final int position,
+            final Object extensionPoint) {
+        if (!(handle instanceof UseCase) && !(handle instanceof Extend)) {
+            throw new IllegalArgumentException();
+        }
+        if (!(extensionPoint instanceof ExtensionPoint)) {
+            throw new IllegalArgumentException();
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                if (handle instanceof UseCase) {
+                    ((UseCase) handle).getExtensionPoints().add(
+                            position, (ExtensionPoint) extensionPoint);
+                } else if (handle instanceof Extend) {
+                    ((Extend) handle).getExtensionLocations().add(
+                            position, (ExtensionPoint) extensionPoint);
+                }
+            }
+        };
+        modelImpl.getEditingDomain().getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Add the extension point # to the #",
+                        extensionPoint, handle));
     }
 
-    public void addInclude(Object usecase, Object include) {
-        ((UseCase) usecase).getIncludes().add((Include) include);
+    public void addInclude(final Object usecase, final Object include) {
+        if (!(usecase instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
+        if (!(include instanceof Include)) {
+            throw new IllegalArgumentException();
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((UseCase) usecase).getIncludes().add((Include) include);
+            }
+        };
+        modelImpl.getEditingDomain().getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Add the include # to the case #",
+                        include, usecase));
     }
 
     public Collection getAllActors(Object ns) {
-        return getAllOfType((org.eclipse.uml2.uml.Package) ns, Actor.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
+                ns, Actor.class);
     }
 
     public Collection getAllUseCases(Object ns) {
-        return getAllOfType((org.eclipse.uml2.uml.Package) ns, UseCase.class);
-    }
-    
-    private Collection<Type> getAllOfType(org.eclipse.uml2.uml.Package pkg,
-            Class type) {
         return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
-                pkg, type);
+                ns, UseCase.class);
     }
 
     public Collection getExtendedUseCases(Object ausecase) {
+        if (!(ausecase instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
         Collection<UseCase> result = new HashSet<UseCase>();
         for (Extend extend : ((UseCase) ausecase).getExtends()) {
             result.add(extend.getExtension());
@@ -120,10 +157,16 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
     }
 
     public Extend getExtends(Object abase, Object anextension) {
+        if (!(abase instanceof UseCase) || !(anextension instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
         return ((UseCase) anextension).getExtend(null, (UseCase) abase);
     }
 
     public Collection<UseCase> getIncludedUseCases(Object ausecase) {
+        if (!(ausecase instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
         Collection<UseCase> result = new HashSet<UseCase>();
         for (Include include : ((UseCase) ausecase).getIncludes() ) {
             result.add(include.getAddition());
@@ -132,6 +175,9 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
     }
 
     public Include getIncludes(Object abase, Object aninclusion) {
+        if (!(abase instanceof UseCase) || !(aninclusion instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
         return ((UseCase) abase).getInclude(null, (UseCase) aninclusion);
     }
 
@@ -146,59 +192,103 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
 
     public void removeExtensionPoint(Object elem, Object ep) {
         // TODO Auto-generated method stub
-
     }
 
-    public void removeInclude(Object usecase, Object include) {
-        ((UseCase) usecase).getIncludes().remove((Include) include);
+    public void removeInclude(final Object usecase, final Object include) {
+        if (!(usecase instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
+        if (!(include instanceof Include)) {
+            throw new IllegalArgumentException();
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((UseCase) usecase).getIncludes().remove((Include) include);
+            }
+        };
+        modelImpl.getEditingDomain().getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Remove the include # from the case #",
+                        include, usecase));
     }
 
-    public void setAddition(Object handle, Object useCase) {
-        ((Include) handle).setAddition((UseCase) useCase);
+    public void setAddition(final Object handle, final Object useCase) {
+        if (!(handle instanceof Include)) {
+            throw new IllegalArgumentException();
+        }
+        if (!(useCase instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Include) handle).setAddition((UseCase) useCase);
+            }
+        };
+        modelImpl.getEditingDomain().getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Set the addition # to the include #",
+                        useCase, handle));
     }
 
     public void setBase(Object extend, Object base) {
         // TODO Auto-generated method stub
-
     }
 
     public void setCondition(Object handle, Object booleanExpression) {
         // TODO Auto-generated method stub
-
     }
 
     public void setExtension(Object handle, Object ext) {
     }
 
-    public void setExtensionPoints(Object handle, Collection extensionPoints) {
-        if (handle instanceof Extend) {
-            ((Extend) handle).getExtensionLocations().clear();
-            ((Extend) handle).getExtensionLocations().addAll(
-                    (Collection<ExtensionPoint>) extensionPoints);
-        } else if (handle instanceof UseCase) {
-            ((UseCase) handle).getExtensionPoints().clear();
-            ((UseCase) handle).getExtensionPoints().addAll(
-                    (Collection<ExtensionPoint>) extensionPoints);
-        } else {
-            throw new IllegalArgumentException(
-                    "Expected Extend or UseCase : "  //$NON-NLS-1$
-                    + handle);
+    public void setExtensionPoints(final Object handle,
+            final Collection extensionPoints) {
+        if (!(handle instanceof UseCase) && !(handle instanceof Extend)) {
+            throw new IllegalArgumentException();
         }
+        if (extensionPoints == null) {
+            throw new IllegalArgumentException();
+        }
+        for (Object o : extensionPoints) {
+            if (!(o instanceof ExtensionPoint)) {
+                throw new IllegalArgumentException(o.toString());
+            }
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                if (handle instanceof Extend) {
+                    ((Extend) handle).getExtensionLocations().clear();
+                    for (Object o : extensionPoints) {
+                        ((Extend) handle).getExtensionLocations().add(
+                                (ExtensionPoint) o);
+                    }
+                } else if (handle instanceof UseCase) {
+                    ((UseCase) handle).getExtensionPoints().clear();
+                    for (Object o : extensionPoints) {
+                        ((UseCase) handle).getExtensionPoints().add(
+                                (ExtensionPoint) o);
+                    }
+                }
+
+            }
+        };
+        modelImpl.getEditingDomain().getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Set # extension points for the case #",
+                        extensionPoints.size(), handle));
     }
 
     public void setIncludes(Object handle, Collection includes) {
         // TODO Auto-generated method stub
-
     }
 
     public void setLocation(Object handle, String loc) {
         // TODO Auto-generated method stub
-
     }
 
     public void setUseCase(Object elem, Object usecase) {
         // TODO Auto-generated method stub
-
     }
 
 }
