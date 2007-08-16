@@ -425,7 +425,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
         
         for (Profile profile : pc.getProfiles()) {
             if (!usedItens.contains(profile)) {
-                toRemove.remove(profile);
+                toRemove.add(profile);
             }
         }
 

@@ -451,7 +451,7 @@ public class SettingsTabProfile extends JPanel implements
         
         for (Profile profile : ProfileManagerImpl.getInstance().getDefaultProfiles()) {
             if (!usedItens.contains(profile)) {
-                toRemove.remove(profile);
+                toRemove.add(profile);
             }
         }
 
@@ -476,7 +476,7 @@ public class SettingsTabProfile extends JPanel implements
 
         for (String dirEntry : ProfileManagerImpl.getInstance().getSearchPathDirectories()) {
             if (!usedItensDir.contains(dirEntry)) {
-                toRemoveDir.remove(dirEntry);
+                toRemoveDir.add(dirEntry);
             }
         }
 
