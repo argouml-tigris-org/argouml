@@ -48,7 +48,7 @@ public interface ProfileManager {
     /**
      * @return the list of registered profiles
      */
-    Vector getRegisteredProfiles();
+    Vector<Profile> getRegisteredProfiles();
     
     /**
      * @return the profile instance for the class
@@ -58,7 +58,7 @@ public interface ProfileManager {
     /**
      * @return the default set of profiles
      */
-    Vector getDefaultProfiles();
+    Vector<Profile> getDefaultProfiles();
     
     /**
      * Adds a profile to the default list.

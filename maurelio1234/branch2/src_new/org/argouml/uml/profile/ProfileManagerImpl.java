@@ -173,7 +173,7 @@ public class ProfileManagerImpl implements ProfileManager {
      * @return the list of profiles
      * @see org.argouml.uml.profile.ProfileManager#getRegisteredProfiles()
      */
-    public Vector getRegisteredProfiles() {
+    public Vector<Profile> getRegisteredProfiles() {
         return profiles;
     }
 
@@ -234,7 +234,7 @@ public class ProfileManagerImpl implements ProfileManager {
      * @return the list
      * @see org.argouml.uml.profile.ProfileManager#getDefaultProfiles()
      */
-    public Vector getDefaultProfiles() {
+    public Vector<Profile> getDefaultProfiles() {
         return defaultProfiles;
     }
 
@@ -260,7 +260,7 @@ public class ProfileManagerImpl implements ProfileManager {
      * @return the directory list
      * @see org.argouml.uml.profile.ProfileManager#getSearchPathDirectories()
      */
-    public Vector getSearchPathDirectories() {
+    public Vector<String> getSearchPathDirectories() {
         return searchDirectories;
     }
 
