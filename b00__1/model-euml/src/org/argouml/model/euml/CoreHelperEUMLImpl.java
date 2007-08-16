@@ -1252,8 +1252,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((Comment) handle).getAnnotatedElements().removeAll(
-                        ((Comment) handle).getAnnotatedElements());
+                ((Comment) handle).getAnnotatedElements().clear();
                 for (Object o : elems) {
                     ((Comment) handle).getAnnotatedElements().add((Element) o);
                 }
