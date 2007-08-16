@@ -1,7 +1,0 @@
-#Mon Nov 27 04:51:18 EST 2006
-filenames.properties=/argouml-core-tools/checkstyle/checkstyle.properties
-enabled=true
-file_filter=in\:\\.java$\nin\:\\.properties$\nex\:argouml/org/argouml/language/java/generator/JavaLexer.java\nex\:JavaRecognizer.java\nex\:JavaLexer.java\nex\:argouml/org/argouml/language/java/generator/JavaRecognizer.java\nex\:argouml/org/argouml/uml/reveng/java/JavaLexer.java\nex\:argouml/org/argouml/uml/reveng/java/JavaTokenTypes.java\nex\:build-eclipse/\nex\:argouml/org/argouml/uml/reveng/java/JavaRecognizer.java\nex\:JavaTokenTypes.java\n
-projectclassloader=true
-filenames.config=/argouml-core-tools/checkstyle/checkstyle_argouml.xml
-filenames.filter=/argouml-core-tools/checkstyle/checkclipse.filefilters
