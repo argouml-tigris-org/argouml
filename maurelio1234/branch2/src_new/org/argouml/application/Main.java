@@ -262,9 +262,21 @@ public class Main {
         
         updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
 
+        // Initialize the module loader.
+        // At least the plug-ins that provide profiles need to be initialized before 
+        // the project is loaded, because some of these profile may have been
+        // set as default profiles and need to be applied to the project as soon 
+        // as it has been created or loaded.
+        //
+        // the first instance of a Project is needed during the gui initialization
+        //
+        st.mark("modules");
+
+        initSubsystem(new InitModuleLoader());
+        
         // Initialize the Java code generator.
         GeneratorJava.getInstance();
-        
+
 	// The reason the gui is initialized before the commands are run
 	// is that some of the commands will use the projectbrowser.
 	st.mark("initialize gui");
@@ -364,11 +376,6 @@ public class Main {
         if (splash != null) {
             splash.getStatusBar().showProgress(75);
         }
-
-        // Initialize the module loader.
-        st.mark("modules");
-
-        initSubsystem(new InitModuleLoader());
 
         st.mark("open window");
 
