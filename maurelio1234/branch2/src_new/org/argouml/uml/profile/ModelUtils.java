@@ -28,7 +28,19 @@ import java.util.Collection;
 
 import org.argouml.model.Model;
 
+/**
+ * Contains helper methods
+ *
+ * @author maurelio1234
+ */
 public class ModelUtils {
+    /**
+     * Finds a type in a model by name
+     * 
+     * @param s the type name
+     * @param model the model
+     * @return the type or <code>null</code> if the type has not been found.
+     */
     public static Object findTypeInModel(String s, Object model) {
 
         if (!Model.getFacade().isANamespace(model)) {

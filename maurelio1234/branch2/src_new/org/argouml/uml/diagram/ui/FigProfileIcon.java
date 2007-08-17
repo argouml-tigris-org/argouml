@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Image;
+import java.beans.PropertyChangeEvent;
 
 import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
@@ -41,7 +42,7 @@ public class FigProfileIcon extends FigNode {
     private FigImage image = null;
     
     private FigText  label = null;
-
+    
     private static final int GAP = 2;
 
     /**
@@ -55,7 +56,7 @@ public class FigProfileIcon extends FigNode {
 	label = new FigSingleLineText(0, image.getHeight() + GAP, 0, 0, true);
 	label.setText(str);
 	label.calcBounds();
-
+	
 	addFig(image);
 	addFig(label);
 
@@ -103,7 +104,5 @@ public class FigProfileIcon extends FigNode {
         this.label.setText(txt);
 	this.label.calcBounds();
 	this.calcBounds();
-    }
-    
-    
+    }       
 }

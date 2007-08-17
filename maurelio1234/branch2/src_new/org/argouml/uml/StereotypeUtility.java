@@ -115,16 +115,18 @@ public class StereotypeUtility {
         // adds all stereotypes defined at the profiles applied to the
         // current namespace
         Object namespace = Model.getFacade().getNamespace(modelElement);
-        while(true) {
-            getApplicableStereotypesInNamespace(modelElement, paths,
-                    availableStereotypes, namespace);
-            Object newNamespace = Model.getFacade().getNamespace(namespace);
-            
-            if (newNamespace == null) {
-                break;
+        if (namespace != null) {
+            while (true) {
+                getApplicableStereotypesInNamespace(modelElement, paths,
+                        availableStereotypes, namespace);
+                Object newNamespace = Model.getFacade().getNamespace(namespace);
+
+                if (newNamespace == null) {
+                    break;
+                }
+
+                namespace = newNamespace;
             }
-            
-            namespace = newNamespace;
         }
         
         // adds all stereotypes defined at the profiles applied 

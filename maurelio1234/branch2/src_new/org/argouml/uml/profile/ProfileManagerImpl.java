@@ -178,11 +178,15 @@ public class ProfileManagerImpl implements ProfileManager {
      * @param p the profile
      * @see org.argouml.uml.profile.ProfileManager#registerProfile(org.argouml.uml.profile.Profile)
      */
-    public void registerProfile(Profile p) {
-        if (!profiles.contains(p)) {
+    public void registerProfile(Profile p) {        
+        if (p != null && !profiles.contains(p)) {
             if (p instanceof UserDefinedProfile
                     || getProfileForClass(p.getClass().getName()) == null) {
                 profiles.add(p);
+                
+                // this profile could have not been loaded when the default profile configuration 
+                // was loaded at first, so we need to do it again
+                loadDefaultProfilesfromConfiguration();
             }
         }
     }
@@ -192,8 +196,10 @@ public class ProfileManagerImpl implements ProfileManager {
      * @see org.argouml.uml.profile.ProfileManager#removeProfile(org.argouml.uml.profile.Profile)
      */
     public void removeProfile(Profile p) {
-        profiles.remove(p);
-        defaultProfiles.remove(p);
+        if (p != null) {
+            profiles.remove(p);
+            defaultProfiles.remove(p);
+        }
     }
 
     /**
@@ -247,7 +253,7 @@ public class ProfileManagerImpl implements ProfileManager {
     }
 
     public void addSearchPathDirectory(String path) {
-        if (!searchDirectories.contains(path)) {
+        if (path != null && !searchDirectories.contains(path)) {
             searchDirectories.add(path);
             updateSearchDirectoriesConfiguration();
         }

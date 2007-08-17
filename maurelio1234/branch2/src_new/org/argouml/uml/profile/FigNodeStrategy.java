@@ -39,7 +39,7 @@ public interface FigNodeStrategy {
      * having this stereotype  
      * 
      * @param stereotype the stereotype model element
-     * @return the icon
+     * @return the icon or <code>null</code> if the stereotype has no icon 
      */
     Image getIconForStereotype(Object stereotype);
     

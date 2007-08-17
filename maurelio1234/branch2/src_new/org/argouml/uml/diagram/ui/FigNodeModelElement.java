@@ -1649,6 +1649,8 @@ public abstract class FigNodeModelElement
 		    originalNameFig = this.getNameFig();
 		    this.setNameFig(stereotypeFigProfileIcon.getLabelFig());
 
+		    stereotypeFigProfileIcon.getLabelFig().addPropertyChangeListener(this);
+		    
 		    getBigPort().
 		    	setBounds(stereotypeFigProfileIcon.getBounds());
 		 
@@ -2097,7 +2099,11 @@ public abstract class FigNodeModelElement
             Collection stereos = Model.getFacade().getStereotypes(modelElement);
 
             if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON
-                    && (stereos == null || stereos.size() != 1)) {
+                    && (stereos == null || stereos.size() != 1 ||
+                            (stereos
+                            .size() == 1 && getProject()
+                            .getProfileConfiguration().getFigNodeStrategy()
+                            .getIconForStereotype(stereos.iterator().next()) == null))) {
                 practicalView = STEREOTYPE_VIEW_TEXTUAL;
             }
             return practicalView;
