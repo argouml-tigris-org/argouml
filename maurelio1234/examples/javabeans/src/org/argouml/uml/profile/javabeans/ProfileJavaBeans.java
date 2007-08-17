@@ -67,10 +67,6 @@ public class ProfileJavaBeans extends Profile {
 		return instance;
 	}
 
-	public Object getModel() {
-		return model;
-	}
-
 	public String getDisplayName() {
 		return "JavaBeans";
 	}
