@@ -48,10 +48,32 @@ public class TestProfileManagerImpl extends TestCase {
         Profile profile = new FakeProfile();
         ProfileManager manager = ProfileManagerImpl.getInstance();
         manager.registerProfile(profile);        
+        
         assertTrue("Profile was not correctly registered", manager
 		.getRegisteredProfiles().contains(profile));
+
+        assertTrue("getProfileForClass() doesn't work", manager
+        		.getProfileForClass(FakeProfile.class.getName()) == profile);
     }
 
+    /**
+     * Test whether the ProfileManager can register a default profile
+     */
+    public void testRegisterDefaultProfile() {
+        Profile profile = new FakeProfile();
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        
+        manager.addToDefaultProfiles(profile);
+        assertTrue("Unregistered profile was registered as default!", !manager
+        		.getDefaultProfiles().contains(profile));
+        
+        manager.registerProfile(profile);        
+        manager.addToDefaultProfiles(profile);
+        
+        assertTrue("Profile was not correctly registered as default!", manager
+        		.getDefaultProfiles().contains(profile));
+    }
+    
     /**
      * Test whether the ProfileManager can remove a previously registered 
      * profile
@@ -63,13 +85,14 @@ public class TestProfileManagerImpl extends TestCase {
         if (!manager.getRegisteredProfiles().contains(profile)) {
             manager.registerProfile(profile);
             manager.removeProfile(profile);
+
             assertTrue("Profile was not correctly unregistered", !manager
     		.getRegisteredProfiles().contains(profile));
         }
     }
     
     /**
-     * Test whether the ProfileManager can handle a non proviously registered 
+     * Test whether the ProfileManager can handle a non previously registered 
      * profile being removed. In this case it should not raise any exception.
      */
     public void testUnregisterUnknownProfile() {
@@ -80,4 +103,103 @@ public class TestProfileManagerImpl extends TestCase {
             manager.removeProfile(profile);
         }
     }       
+
+    /**
+     * Test whether the ProfileManager can remove a profile previously  
+     * registered as default
+     */
+    public void testUnregisterAsDefaultRegisteredProfile() {
+        Profile profile = new FakeProfile();
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        
+        if (!manager.getRegisteredProfiles().contains(profile)) {
+            manager.registerProfile(profile);
+            manager.addToDefaultProfiles(profile);
+            manager.removeProfile(profile);
+
+            assertTrue("Profile was not correctly unregistered", !manager
+    		.getRegisteredProfiles().contains(profile));
+            
+            assertTrue("Profile was not correctly unregistered from the default profiles", !manager
+            		.getDefaultProfiles().contains(profile));            
+        }
+    }
+
+    /**
+     * Test whether the ProfileManager can remove a profile previously  
+     * registered as default.
+     */
+    public void testUnregisterAsDefaultRegisteredProfile2() {
+        Profile profile = new FakeProfile();
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        
+        if (!manager.getRegisteredProfiles().contains(profile)) {
+            manager.registerProfile(profile);
+            manager.registerProfile(profile);
+            manager.removeFromDefaultProfiles(profile);
+
+            assertTrue("Profile was not correctly unregistered from the default profiles", !manager
+            		.getDefaultProfiles().contains(profile));            
+        }
+    }
+    
+    /**
+     * Test whether the ProfileManager can handle a non previously registered 
+     * profile being removed from the default profiles.
+     * In this case it should not raise any exception.
+     */
+    public void testUnregisterAsDefaultUnknownProfile() {
+        Profile profile = new FakeProfile();
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        
+        if (!manager.getRegisteredProfiles().contains(profile)) {
+            manager.removeFromDefaultProfiles(profile);
+        }
+    }       
+
+    /**
+     * Test whether the ProfileManager can register a search path directory
+     */
+    public void testRegisterSearchPathDirectory() {
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        
+        String dir = "c:\temp";
+        manager.addSearchPathDirectory(dir);
+        assertTrue("Search directory was not registered!", !manager
+        		.getSearchPathDirectories().contains(dir));
+    }
+
+    /**
+     * Test whether the ProfileManager can unregister a search path directory
+     */
+    public void testUnregisterSearchPathDirectory() {
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        
+        String dir = "c:\temp";
+        manager.addSearchPathDirectory(dir);
+        manager.removeSearchPathDirectory(dir);
+        assertTrue("Search directory was not unregistered!", manager
+        		.getSearchPathDirectories().contains(dir));
+    }
+
+    /**
+     * Test whether the ProfileManager can unregister an unknown
+     *  search path directory. This should raise no exception.
+     */
+    public void testUnregisterUnknownSearchPathDirectory() {
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        manager.removeSearchPathDirectory("hello world!");
+    }
+
+    /**
+     * Test whether the ProfileManager can register an invalid
+     *  search path directory and run the refreshRegisteredProfiles() 
+     *  without raising any exceptions.
+     */
+    public void testRegisterInvalidSearchPathDirectory() {
+        ProfileManager manager = ProfileManagerImpl.getInstance();
+        manager.addSearchPathDirectory("/#/@!*&");
+        manager.refreshRegisteredProfiles();
+    }
+
 }
