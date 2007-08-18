@@ -659,9 +659,4 @@ class MockModelImplementation implements ModelImplementation {
             String version) throws UmlException {
         throw new NotImplementedException();
     }
-
-    public CommandStack getCommandStack() {
-	return CommandStack.DEFAULT_INSTANCE;
-    }
-
 }
