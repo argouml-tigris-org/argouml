@@ -47,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.CommandStack;
 import org.argouml.model.DiagramInterchangeModel;
 import org.argouml.model.ModelImplementation;
 import org.argouml.model.UmlException;
@@ -508,13 +507,6 @@ public class EUMLModelImplementation implements ModelImplementation {
 
     public DiagramInterchangeModel getDiagramInterchangeModel() {
         return null;
-    }
-
-    public CommandStack getCommandStack() {
-        if (theCommandStack == null) {
-            theCommandStack = new CommandStackImpl(this);
-        }
-        return theCommandStack;
     }
 
 }
