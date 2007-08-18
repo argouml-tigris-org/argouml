@@ -494,7 +494,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getDefaultValue(Object handle) {
-        throw new NotYetImplementedException();
+        return ((Parameter) handle).getDefault();
     }
 
     public Collection getDeferrableEvents(Object handle) {
