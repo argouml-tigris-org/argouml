@@ -115,9 +115,12 @@ class XmiWriterEUMLImpl implements XmiWriter {
         // TODO: Is there an option we can use to save our ArgoUML version?
 
         try {
+            modelImpl.getModelEventPump().stopPumpingEvents();
             model.eResource().save(oStream, options);
         } catch (IOException ioe) {
             throw new UmlException(ioe);
+        } finally {
+            modelImpl.getModelEventPump().startPumpingEvents();
         }
 
     }
