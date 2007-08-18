@@ -88,6 +88,9 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
 
         void removeProperties(String[] properties) {
+            if (props == null) {
+                return;
+            }
             for (String s : properties) {
                 props.remove(s);
             }
