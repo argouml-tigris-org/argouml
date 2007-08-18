@@ -36,7 +36,9 @@ import java.util.Set;
 
 import org.argouml.model.Facade;
 import org.argouml.model.NotImplementedException;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.ActivityPartition;
@@ -75,7 +77,6 @@ import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.InputPin;
 import org.eclipse.uml2.uml.InstanceSpecification;
 import org.eclipse.uml2.uml.Interface;
-import org.eclipse.uml2.uml.LinkEndData;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.MultiplicityElement;
@@ -275,9 +276,10 @@ class FacadeEUMLImpl implements Facade {
     public Object getBase(Object handle) {
         if (handle instanceof Extend) {
             return ((Extend) handle).getExtendedCase();
+        } else if (handle instanceof Include) {
+            return ((Include) handle).getAddition();
         }
         throw new NotYetImplementedException();
-
     }
 
     public Collection getBaseClasses(Object handle) {
@@ -569,7 +571,13 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<Extend> getExtends(Object handle) {
-        return ((UseCase) handle).getExtends();
+        if (handle instanceof UseCase) {
+            return ((UseCase) handle).getExtends();
+        } else if (handle instanceof ExtensionPoint) {
+            // TODO:
+            throw new NotYetImplementedException();
+        }
+        throw new IllegalArgumentException();
     }
 
     public UseCase getExtension(Object handle) {
@@ -577,7 +585,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public ExtensionPoint getExtensionPoint(Object handle, int index) {
-        return ((UseCase) handle).getExtensionPoints().get(index);
+        return ((Extend) handle).getExtensionLocations().get(index);
     }
 
     public List<ExtensionPoint> getExtensionPoints(Object handle) {
@@ -602,9 +610,7 @@ class FacadeEUMLImpl implements Facade {
     public Collection<Generalization> getGeneralizations(Object handle) {
         Set<Generalization> result = new HashSet<Generalization>();
         for (Generalization g : ((Classifier) handle).getGeneralizations()) {
-            if (handle.equals(g.getSpecific())) {
-                result.add(g);
-            }
+            result.add(g);
         }
         return result;
     }
@@ -624,7 +630,6 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<PackageableElement> getImportedElements(Object pack) {
-        // TODO: double check - tfm
         return ((Namespace) pack).getImportedElements();
     }
 
@@ -746,7 +751,11 @@ class FacadeEUMLImpl implements Facade {
         if (handle instanceof String) {
             return (String) handle;
         } else if (handle instanceof NamedElement) {
-            return ((NamedElement) handle).getName();
+            if (((NamedElement) handle).getName() != null) {
+                return ((NamedElement) handle).getName();
+            } else {
+                return ""; //$NON-NLS-1$
+            }
         } else {
             // TODO: Some elements such as Generalization are
             // no longer named.  For a transitional period we'll
@@ -808,13 +817,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getOrdering(Object handle) {
-        if (handle instanceof Property) {
-            if (((Property) handle).isOrdered()) {
-                return modelImpl.getOrderingKind().getOrdered();
-            } else {
-                return modelImpl.getOrderingKind().getUnordered();
-            }
-        } else if (handle instanceof MultiplicityElement) {
+        if (handle instanceof MultiplicityElement) {
             if (((MultiplicityElement) handle).isOrdered()) {
                 return modelImpl.getOrderingKind().getOrdered();
             } else {
@@ -822,7 +825,6 @@ class FacadeEUMLImpl implements Facade {
             }
         }
         throw new NotYetImplementedException();
-
     }
 
     public Collection getOtherAssociationEnds(Object handle) {
@@ -1011,13 +1013,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getSpecializations(Object handle) {
-        Set<Generalization> result = new HashSet<Generalization>();
-        for (Generalization g : ((Classifier) handle).getGeneralizations()) {
-            if (handle.equals(g.getGeneral())) {
-                result.add(g);
-            }
-        }
-        return result;
+        return modelImpl.getCoreHelper().getSubtypes(handle);
     }
 
     public String getSpecification(Object handle) {
@@ -1030,8 +1026,8 @@ class FacadeEUMLImpl implements Facade {
             // TODO: unimplemented
 //          return ((Property) handle).gets
             return Collections.EMPTY_SET;
-        } else if (handle instanceof Classifier) {
-            ((Classifier) handle).getAllUsedInterfaces();
+        } else if (handle instanceof org.eclipse.uml2.uml.Class) {
+            ((org.eclipse.uml2.uml.Class) handle).getInterfaceRealizations();
         }
         throw new NotYetImplementedException();
 
@@ -1165,8 +1161,12 @@ class FacadeEUMLImpl implements Facade {
 
     public String getTipString(Object modelElement) {
         // TODO: Not Model implementation dependent
-        return getUMLClassName(modelElement) + ": " //$NON-NLS-1$
-                + getName(modelElement);
+        String name = getName(modelElement);
+        if (name.equals("")) { //$NON-NLS-1$
+            return getUMLClassName(modelElement);
+        } else {
+            return getUMLClassName(modelElement) + ": " + name; //$NON-NLS-1$
+        }
     }
 
     public Object getTop(Object handle) {
@@ -1203,10 +1203,14 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getUUID(Object element) {
-        // TODO: Hack placeholder implementation
-        // I think we need to use XMIResourceFactoryImpl to provide a way
-        // to generate xmi.id's, but I don't know the details yet
-        return element.toString();
+        if (!(element instanceof EObject)) {
+            throw new IllegalArgumentException();
+        }
+        Resource r = ((EObject) element).eResource();
+        if (r == null) {
+            throw new UnsupportedOperationException();
+        }
+        return r.getURIFragment((EObject) element);
     }
 
     public int getUpper(Object handle) {
@@ -1513,7 +1517,6 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAInstance(Object handle) {
-        // TODO: Double check this - tfm
         return  handle instanceof InstanceSpecification;
     }
 
@@ -1548,7 +1551,8 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isALinkEnd(Object handle) {
         // TODO: just a guess, probably not right - tfm
-        return handle instanceof LinkEndData;
+//        return handle instanceof LinkEndData;
+        return false;
     }
 
     public boolean isALinkObject(Object handle) {
@@ -1576,7 +1580,7 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAModelElement(Object handle) {
         // TODO: What do we want to use as an equivalent here?
-        return handle instanceof NamedElement;
+        return handle instanceof Element;
     }
 
     public boolean isAMultiplicity(Object handle) {
