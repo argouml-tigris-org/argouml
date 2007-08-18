@@ -29,6 +29,8 @@ package org.argouml.model.euml;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.command.StrictCompoundCommand;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.command.CopyToClipboardCommand;
 import org.eclipse.emf.edit.command.PasteFromClipboardCommand;
 import org.eclipse.uml2.uml.Association;
@@ -47,6 +49,16 @@ import org.eclipse.uml2.uml.Type;
  */
 public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
 
+    /**
+     * The default URI used for eUML
+     */
+    public static final URI DEFAULT_URI = URI.createURI("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
+    
+    /**
+     * A temporary URI used when the DEFAULT_URI is not used yet
+     */
+    public static final URI TEMPORARY_URI = URI.createURI("http://argouml.tigris.org/euml/resource/temporary_uri.xmi"); //$NON-NLS-1$
+    
     /**
      * Getter for the attributes of a Type
      * 
@@ -155,6 +167,27 @@ public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
         sb.append("'"); //$NON-NLS-1$
         
         return sb.toString();
+    }
+    
+    /**
+     * Returns the Resource associated with an URI or creates the resource if it
+     * does not exist
+     * 
+     * @param modelImplementation
+     *                the eUML implementation
+     * @param uri
+     *                the URI which identifies the resource
+     * @return the retrieved or created resource
+     */
+    public static Resource getResource(
+            EUMLModelImplementation modelImplementation, URI uri) {
+        Resource r = modelImplementation.getEditingDomain().getResourceSet().getResource(
+                uri, false);
+        if (r == null) {
+            r = modelImplementation.getEditingDomain().getResourceSet().createResource(
+                    uri);
+        }
+        return r;
     }
 
 }

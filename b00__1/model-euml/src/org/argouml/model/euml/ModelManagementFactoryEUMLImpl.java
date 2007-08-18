@@ -137,8 +137,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
 	}
         theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
 	if (rootModel != null) {
-            Resource r = editingDomain.createResource(
-                    "http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
+            Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI);
             r.getContents().add(theRootModel);
 	}
         modelImpl.getModelEventPump().setRootContainer(theRootModel);

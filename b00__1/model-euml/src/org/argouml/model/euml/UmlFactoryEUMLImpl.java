@@ -36,8 +36,8 @@ import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.AggregationKind;
@@ -307,9 +307,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     "Attempted to create unsupported model element type: " //$NON-NLS-1$
                             + elementType);
         }
-        modelImpl.getEditingDomain().getResourceSet().getResource(
-                URI.createURI("http://argouml.tigris.org/euml/resource/default_uri.xmi"),
-                false).getContents().add((EObject) o);
+        Resource r = UMLUtil.getResource(modelImpl, UMLUtil.TEMPORARY_URI);
+        r.getContents().add((EObject) o);
         return o;
     }
 
