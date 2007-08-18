@@ -34,11 +34,10 @@ public class CommandStackImpl extends ModelMemento {
     
     private static CommandStackImpl instance;
     
-    public static final String COMMAND_STACK_UPDATE_EVENT = "COMMAND_STACK_CHANGED"; //$NON-NLS-1$
+    public static final String COMMAND_STACK_UPDATE_EVENT = "MEMENTO_CHANGED"; //$NON-NLS-1$
 
     private CommandStackImpl(EUMLModelImplementation modelImplementation) {
         this.modelImplementation = modelImplementation;
-        modelImplementation.getEditingDomain().getCommandStack().flush();
     }
     
     public static ModelMemento getInstance(EUMLModelImplementation modelImplementation) {
