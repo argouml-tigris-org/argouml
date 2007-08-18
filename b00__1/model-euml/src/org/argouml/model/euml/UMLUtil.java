@@ -53,12 +53,7 @@ public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
      * The default URI used for eUML
      */
     public static final URI DEFAULT_URI = URI.createURI("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
-    
-    /**
-     * A temporary URI used when the DEFAULT_URI is not used yet
-     */
-    public static final URI TEMPORARY_URI = URI.createURI("http://argouml.tigris.org/euml/resource/temporary_uri.xmi"); //$NON-NLS-1$
-    
+        
     /**
      * Getter for the attributes of a Type
      * 

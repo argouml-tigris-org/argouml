@@ -307,8 +307,6 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     "Attempted to create unsupported model element type: " //$NON-NLS-1$
                             + elementType);
         }
-        Resource r = UMLUtil.getResource(modelImpl, UMLUtil.TEMPORARY_URI);
-        r.getContents().add((EObject) o);
         return o;
     }
 
@@ -321,9 +319,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     
     public boolean isRemoved(Object o) {
         // This triggers some warnings (in logs) because some elements are
-        // created without an owner (and eResource is null) we solve this
-        // by adding the newly created element (not owned yet) to a dummy
-        // resource.
+        // created without an owner (and eResource is null)
+        // TODO: fix this
         // The warning log (if we would not add the EObject to a resource) would
         // looks like this: "...WARN [AWT-EventQueue-0] Encountered deleted
         // object during delete of..."
