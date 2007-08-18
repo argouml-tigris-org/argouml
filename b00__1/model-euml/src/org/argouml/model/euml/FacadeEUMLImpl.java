@@ -439,7 +439,9 @@ class FacadeEUMLImpl implements Facade {
             throw new IllegalArgumentException(
                     "handle must be instance of Association"); //$NON-NLS-1$
         }
-        return ((Association) handle).getMemberEnds();
+        List c = new ArrayList(((Association) handle).getMemberEnds());
+        Collections.reverse(c);
+        return c;
     }
 
     public List getConstrainedElements(Object handle) {
