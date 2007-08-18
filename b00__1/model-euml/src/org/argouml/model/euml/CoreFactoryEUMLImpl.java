@@ -533,7 +533,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                     comment.getAnnotatedElements().add((Element) element);
                 }
                 ((Namespace) model).getOwnedComments().add(comment);
-                getParams().add(element);
+                getParams().add(comment);
             }
         };
         ChangeCommand cmd;
