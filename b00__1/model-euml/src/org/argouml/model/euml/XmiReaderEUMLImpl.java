@@ -26,7 +26,12 @@
 
 package org.argouml.model.euml;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +52,8 @@ class XmiReaderEUMLImpl implements XmiReader {
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
+    
+    private static List<String> searchDirs = new ArrayList();
 
     /**
      * Constructor.
@@ -82,6 +89,31 @@ class XmiReaderEUMLImpl implements XmiReader {
         if (inputSource == null) {
             throw new NullPointerException("The input source must be non-null."); //$NON-NLS-1$
         }
+        InputStream is = null;
+        boolean needsClosing = false;
+        if (inputSource.getByteStream() != null) {
+            is = inputSource.getByteStream();
+        } else if (inputSource.getSystemId() != null) {
+            try {
+                URL url = new URL(inputSource.getSystemId());
+                if (url != null) {
+                    is = url.openStream();
+                    if (is != null) {
+                        is = new BufferedInputStream(is);
+                        needsClosing = true;
+                    }
+                }
+            } catch (MalformedURLException e) {
+                // do nothing
+            } catch (IOException e) {
+                // do nothing
+            }
+
+        }
+        if (is == null) {
+            throw new UnsupportedOperationException();
+        }
+
         EditingDomain editingDomain = modelImpl.getEditingDomain();
         for (Resource resource : editingDomain.getResourceSet().getResources()) {
             resource.unload();
@@ -89,9 +121,17 @@ class XmiReaderEUMLImpl implements XmiReader {
 
         Resource r = editingDomain.createResource("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
         try {
-            r.load(inputSource.getByteStream(), null);
+            r.load(is, null);
         } catch (IOException e) {
             throw new UmlException(e);
+        } finally {
+            if (needsClosing) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
 
         return r.getContents();
@@ -109,21 +149,15 @@ class XmiReaderEUMLImpl implements XmiReader {
     }
 
     public void addSearchPath(String path) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-        
+        searchDirs.add(path);
     }
 
     public List<String> getSearchPath() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-        
+        return searchDirs;
     }
 
     public void removeSearchPath(String path) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-        
+        searchDirs.remove(path);
     }
     
 }
