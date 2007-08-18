@@ -652,7 +652,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getInitialValue(Object handle) {
-        throw new NotYetImplementedException();
+        if (!(handle instanceof Property)) {
+            throw new IllegalArgumentException();
+        }
+        return ((Property) handle).getDefault();
     }
 
     public Object getInstance(Object handle) {
@@ -851,7 +854,8 @@ class FacadeEUMLImpl implements Facade {
     public Object getOwnerScope(Object handle) {
         // Removed from UML 2.x and deprecated in Model API
         // so we won't implement it
-        throw new NotImplementedException();
+//        throw new NotImplementedException();
+        return null;
     }
 
     public Namespace getPackage(Object handle) {
