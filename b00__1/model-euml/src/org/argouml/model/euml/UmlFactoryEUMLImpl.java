@@ -319,7 +319,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         // by adding the newly created element (not owned yet) to a dummy
         // resource
         if (o instanceof Element) {
-            return ((Element) o).eResource() != null;
+            return ((Element) o).eResource() == null;
         }
         throw new IllegalArgumentException("Not an Element : " + o); //$NON-NLS-1$
     }
