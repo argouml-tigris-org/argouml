@@ -1277,7 +1277,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setBody(Object handle, String body) {
-        throw new NotYetImplementedException();
+        if (!(handle instanceof Comment)) {
+            throw new IllegalArgumentException();
+        }
+        ((Comment) handle).setBody(body);
     }
 
     @SuppressWarnings("deprecation")

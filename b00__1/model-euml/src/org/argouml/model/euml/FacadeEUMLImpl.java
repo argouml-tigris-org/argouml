@@ -311,6 +311,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getBody(Object handle) {
+        if (handle instanceof Comment) {
+            return ((Comment) handle).getBody();
+        }
         throw new NotYetImplementedException();
 
     }
@@ -707,7 +710,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getLocation(Object handle) {
-        throw new NotYetImplementedException();
+        // Removed from UML2
+        return "";
     }
 
     public int getLower(Object handle) {
