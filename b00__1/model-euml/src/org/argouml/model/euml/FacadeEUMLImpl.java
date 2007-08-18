@@ -771,8 +771,12 @@ class FacadeEUMLImpl implements Facade {
 //        throw new IllegalArgumentException();
     }
 
-    public Namespace getNamespace(Object handle) {
-        return ((NamedElement) handle).getNamespace();
+    public Object getNamespace(Object handle) {
+        Object o = ((Element) handle).getOwner();
+        if (o instanceof Namespace) {
+            return o;
+        }
+        return null;
     }
 
     public Object getNextEnd(Object handle) {
