@@ -36,6 +36,7 @@ import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
@@ -220,90 +221,96 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     }
 
     public Object buildNode(Object elementType) {
+        Object o = null;
         if (elementType == metaTypes.getActor()) {
-            return modelImpl.getUseCasesFactory().createActor();
+            o = modelImpl.getUseCasesFactory().createActor();
         } else if (elementType == metaTypes.getUseCase()) {
-            return modelImpl.getUseCasesFactory().createUseCase();
+            o = modelImpl.getUseCasesFactory().createUseCase();
         } else if (elementType == metaTypes.getUMLClass()) {
-            return modelImpl.getCoreFactory().buildClass();
+            o = modelImpl.getCoreFactory().buildClass();
         } else if (elementType == metaTypes.getInterface()) {
-            return modelImpl.getCoreFactory().buildInterface();
+            o = modelImpl.getCoreFactory().buildInterface();
         } else if (elementType == metaTypes.getDataType()) {
-            return modelImpl.getCoreFactory().createDataType();
+            o = modelImpl.getCoreFactory().createDataType();
         } else if (elementType == metaTypes.getPackage()) {
-            return modelImpl.getModelManagementFactory().createPackage();
+            o = modelImpl.getModelManagementFactory().createPackage();
         } else if (elementType == metaTypes.getModel()) {
-            return modelImpl.getModelManagementFactory().createModel();
+            o = modelImpl.getModelManagementFactory().createModel();
         } else if (elementType == metaTypes.getInstance()) {
             throw new IllegalArgumentException(
                     "Attempt to instantiate abstract type"); //$NON-NLS-1$
         } else if (elementType == metaTypes.getSubsystem()) {
-            return modelImpl.getModelManagementFactory().createSubsystem();
+            o = modelImpl.getModelManagementFactory().createSubsystem();
         } else if (elementType == metaTypes.getCallState()) {
-            return modelImpl.getActivityGraphsFactory().createCallState();
+            o = modelImpl.getActivityGraphsFactory().createCallState();
         } else if (elementType == metaTypes.getSimpleState()) {
-            return modelImpl.getStateMachinesFactory().createSimpleState();
+            o = modelImpl.getStateMachinesFactory().createSimpleState();
         } else if (elementType == metaTypes.getFinalState()) {
-            return modelImpl.getStateMachinesFactory().createFinalState();
+            o = modelImpl.getStateMachinesFactory().createFinalState();
         } else if (elementType == metaTypes.getPseudostate()) {
-            return modelImpl.getStateMachinesFactory().createPseudostate();
+            o = modelImpl.getStateMachinesFactory().createPseudostate();
         } else if (elementType == metaTypes.getObjectFlowState()) {
-            return modelImpl.getActivityGraphsFactory().createObjectFlowState();
+            o = modelImpl.getActivityGraphsFactory().createObjectFlowState();
         } else if (elementType == metaTypes.getActionState()) {
-            return modelImpl.getActivityGraphsFactory().createActionState();
+            o = modelImpl.getActivityGraphsFactory().createActionState();
         } else if (elementType == metaTypes.getSubactivityState()) {
-            return modelImpl.getActivityGraphsFactory().createSubactivityState();
+            o = modelImpl.getActivityGraphsFactory().createSubactivityState();
         } else if (elementType == metaTypes.getPartition()) {
-            return modelImpl.getActivityGraphsFactory().createPartition();
+            o = modelImpl.getActivityGraphsFactory().createPartition();
         } else if (elementType == metaTypes.getStubState()) {
-            return modelImpl.getStateMachinesFactory().createStubState();
+            o = modelImpl.getStateMachinesFactory().createStubState();
         } else if (elementType == metaTypes.getSubmachineState()) {
-            return modelImpl.getStateMachinesFactory().createSubmachineState();
+            o = modelImpl.getStateMachinesFactory().createSubmachineState();
         } else if (elementType == metaTypes.getCompositeState()) {
-            return modelImpl.getStateMachinesFactory().createCompositeState();
+            o = modelImpl.getStateMachinesFactory().createCompositeState();
         } else if (elementType == metaTypes.getSynchState()) {
-            return modelImpl.getStateMachinesFactory().createSynchState();
+            o = modelImpl.getStateMachinesFactory().createSynchState();
         } else if (elementType == metaTypes.getState()) {
             throw new IllegalArgumentException(
                     "Attempt to instantiate abstract type"); //$NON-NLS-1$
         } else if (elementType == modelImpl.getMetaTypes().getSimpleState()) {
-            return modelImpl.getStateMachinesFactory().createSimpleState();
+            o = modelImpl.getStateMachinesFactory().createSimpleState();
         } else if (elementType == metaTypes.getClassifierRole()) {
-            return modelImpl.getCollaborationsFactory().createClassifierRole();
+            o = modelImpl.getCollaborationsFactory().createClassifierRole();
         } else if (elementType == metaTypes.getComponent()) {
-            return modelImpl.getCoreFactory().createComponent();
+            o = modelImpl.getCoreFactory().createComponent();
         } else if (elementType == metaTypes.getComponentInstance()) {
-            return modelImpl.getCommonBehaviorFactory().createComponentInstance();
+            o = modelImpl.getCommonBehaviorFactory().createComponentInstance();
         } else if (elementType == metaTypes.getNode()) {
-            return modelImpl.getCoreFactory().createNode();
+            o = modelImpl.getCoreFactory().createNode();
         } else if (elementType == metaTypes.getNodeInstance()) {
-            return modelImpl.getCommonBehaviorFactory().createNodeInstance();
+            o = modelImpl.getCommonBehaviorFactory().createNodeInstance();
         } else if (elementType == metaTypes.getObject()) {
-            return modelImpl.getCommonBehaviorFactory().createObject();
+            o = modelImpl.getCommonBehaviorFactory().createObject();
         } else if (elementType == metaTypes.getComment()) {
-            return modelImpl.getCoreFactory().createComment();
+            o = modelImpl.getCoreFactory().createComment();
         } else if (elementType == metaTypes.getNamespace()) {
             throw new IllegalArgumentException(
                     "Attempt to instantiate abstract type"); //$NON-NLS-1$
         } else if (elementType == metaTypes.getOperation()) {
-            return modelImpl.getCoreFactory().createOperation();
+            o = modelImpl.getCoreFactory().createOperation();
         } else if (elementType == metaTypes.getEnumeration()) {
-            return modelImpl.getCoreFactory().createEnumeration();
+            o = modelImpl.getCoreFactory().createEnumeration();
         } else if (elementType == metaTypes.getStereotype()) {
-            return modelImpl.getExtensionMechanismsFactory().createStereotype();
+            o = modelImpl.getExtensionMechanismsFactory().createStereotype();
         } else if (elementType == metaTypes.getAttribute()) {
-            return modelImpl.getCoreFactory().createAttribute();
+            o = modelImpl.getCoreFactory().createAttribute();
         } else if (elementType == metaTypes.getSignal()) {
-            return modelImpl.getCommonBehaviorFactory().createSignal();
+            o = modelImpl.getCommonBehaviorFactory().createSignal();
         } else if (elementType == metaTypes.getException()) {
-            return modelImpl.getCommonBehaviorFactory().createException();
+            o = modelImpl.getCommonBehaviorFactory().createException();
         } else if (elementType == metaTypes.getTransition()) {
-            return modelImpl.getStateMachinesFactory().createTransition();
+            o = modelImpl.getStateMachinesFactory().createTransition();
         }
-
-        throw new IllegalArgumentException(
-                "Attempted to create unsupported model element type: " //$NON-NLS-1$
-                        + elementType);
+        if (!(o instanceof EObject)) {
+            throw new IllegalArgumentException(
+                    "Attempted to create unsupported model element type: " //$NON-NLS-1$
+                            + elementType);
+        }
+        modelImpl.getEditingDomain().getResourceSet().getResource(
+                URI.createURI("http://argouml.tigris.org/euml/resource/default_uri.xmi"),
+                false).getContents().add((EObject) o);
+        return o;
     }
 
     public void delete(Object elem) {
@@ -314,10 +321,13 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     }
     
     public boolean isRemoved(Object o) {
-        // TODO: this triggers some warnings (in logs) because some elements are
-        // created without an owner (and eResource is null) we can be solve this
+        // This triggers some warnings (in logs) because some elements are
+        // created without an owner (and eResource is null) we solve this
         // by adding the newly created element (not owned yet) to a dummy
-        // resource
+        // resource.
+        // The warning log (if we would not add the EObject to a resource) would
+        // looks like this: "...WARN [AWT-EventQueue-0] Encountered deleted
+        // object during delete of..."
         if (o instanceof Element) {
             return ((Element) o).eResource() == null;
         }
