@@ -442,9 +442,7 @@ class FacadeEUMLImpl implements Facade {
             throw new IllegalArgumentException(
                     "handle must be instance of Association"); //$NON-NLS-1$
         }
-        List c = new ArrayList(((Association) handle).getMemberEnds());
-        Collections.reverse(c);
-        return c;
+        return ((Association) handle).getMemberEnds();
     }
 
     public List getConstrainedElements(Object handle) {
@@ -1934,7 +1932,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isNavigable(Object handle) {
-        return ((Property) handle).isNavigable();
+        return !((Property) handle).isNavigable();
     }
 
     public boolean isPackage(Object handle) {

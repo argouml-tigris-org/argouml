@@ -37,7 +37,6 @@ import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.AggregationKind;
