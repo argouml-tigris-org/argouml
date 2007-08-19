@@ -1409,8 +1409,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
                             modelImpl, run,
                             "Set the multiplicity # to the element #", arg,
                             handle));
+        } else {
+            throw new NotYetImplementedException();
         }
-        throw new NotYetImplementedException();
     }
 
     public void setName(final Object handle, final String name) {
