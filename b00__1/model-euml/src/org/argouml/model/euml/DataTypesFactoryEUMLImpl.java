@@ -99,7 +99,9 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory,
     }
 
     public Object createMultiplicity(String str) {
-        throw new NotImplementedException();
+        // This does not exist as a specific element in UML2
+        // As a workaround we return the string as the multiplicity
+        return str;
     }
 
     public Object createMultiplicityRange(String str) {

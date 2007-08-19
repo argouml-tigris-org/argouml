@@ -58,6 +58,7 @@ import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Feature;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
@@ -1380,7 +1381,35 @@ class CoreHelperEUMLImpl implements CoreHelper {
         addOwnedElement(container, handle);
     }
 
-    public void setMultiplicity(Object handle, Object arg) {
+    public void setMultiplicity(final Object handle, Object arg) {
+        if (arg == null) {
+            return;
+        }
+        if (!(handle instanceof MultiplicityElement)) {
+            throw new IllegalArgumentException();
+        }
+        if (arg instanceof String) {
+            int lower = 1, upper = 1;
+            try {
+                int i = Integer.parseInt((String) arg);
+                lower = upper = i;
+            } catch (NumberFormatException e) {
+                // TODO: lower..upper
+                throw new NotYetImplementedException();
+            }
+            final int lower_ = lower, upper_ = upper;
+            RunnableClass run = new RunnableClass() {
+                public void run() {
+                    ((MultiplicityElement) handle).setLower(lower_);
+                    ((MultiplicityElement) handle).setUpper(upper_);
+                }
+            };
+            editingDomain.getCommandStack().execute(
+                    new ChangeCommand(
+                            modelImpl, run,
+                            "Set the multiplicity # to the element #", arg,
+                            handle));
+        }
         throw new NotYetImplementedException();
     }
 

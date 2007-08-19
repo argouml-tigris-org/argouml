@@ -438,6 +438,11 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getConnections(Object handle) {
         // Link does not exist in UML2
+        if (handle == null) {
+            // this is wrongly called with a null handle,
+            // as a workaround we return an empty collection
+            return Collections.EMPTY_LIST;
+        }
         if (!(handle instanceof Association)) {
             throw new IllegalArgumentException(
                     "handle must be instance of Association"); //$NON-NLS-1$
@@ -1160,7 +1165,9 @@ class FacadeEUMLImpl implements Facade {
     public Object getTargetScope(Object handle) {
         // Removed from UML 2.x and deprecated in Model API
         // so we won't implement it
-        throw new NotImplementedException();
+//        throw new NotImplementedException();
+	// we do not throw an exception because ArgoUML still uses this
+        return null;
     }
 
     public Object getTemplate(Object handle) {
@@ -1317,7 +1324,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAAssociationEnd(Object handle) {
-        return handle instanceof Property;
+        return handle instanceof Property
+                && ((Property) handle).getAssociation() != null;
     }
 
     public boolean isAAssociationEndRole(Object handle) {
