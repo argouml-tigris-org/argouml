@@ -50,15 +50,23 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
         super(arg0);
     }
 
-    /**
+    /*
      * This optional method is not implemented.  It will throw an
      * {@link UnsupportedOperationException} if used.  Figs are 
-     * added to a GraphModel which is, in turn, owned by a project.
+     * added to a GraphModel which is, in turn, owned by a project.<p>
+     * 
+     * This method is identical to the one in FigNodeModelElement.
      */
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
     }
     
+    /**
+     * This method is identical to the one in FigNodeModelElement.
+     * 
+     * @return the project 
+     * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
+     */
     public Project getProject() {
         LayerPerspective layer = (LayerPerspective) getLayer();
         if (layer == null) {
