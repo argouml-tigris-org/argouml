@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="codegen" basedir="..">
+	<dirname property="antfile.dir" file="${ant.file}"/>
+    
+  <!-- Global properties -->
+	<property name="main.directory" location="${antfile.dir}/.."/>
+	<basename property="projectName" file="${main.directory}"/>
+	<property name="genJDKLevel" value="5.0"/>
+	
+	<target name="codegen">
+
+	  <!-- A macrodef makes it easier to generate code for multiple models in one script. -->
+		<macrodef name="java2Java">
+			<attribute name="modelName"/>
+			<element name="settings" optional="true"/>
+			<sequential>
+				<emf.Java2Java
+					genModelPath="/${projectName}/emf/@{modelName}.genmodel"
+					modelProject="${main.directory}"
+					modelPluginID="@{modelName}.model"
+					copyright="This is my code."
+					jdkLevel="${genJDKLevel}">
+					<settings/>
+				</emf.Java2Java>
+			</sequential>
+		</macrodef>
+
+		<!-- Generating the code for the library model --> 
+		<java2Java modelName="library"/>
+	</target>
+</project>

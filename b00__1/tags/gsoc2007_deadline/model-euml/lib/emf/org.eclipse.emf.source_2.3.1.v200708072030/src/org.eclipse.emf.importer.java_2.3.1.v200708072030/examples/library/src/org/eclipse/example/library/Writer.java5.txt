@@ -1,0 +1,17 @@
+package org.eclipse.example.library;
+
+/**
+ * @model
+ */
+public interface Writer
+{
+  /**
+   * @model
+   */
+  String getName();
+
+  /**
+   * @model opposite="author"
+   */
+  java.util.List<Book> getBooks();
+}

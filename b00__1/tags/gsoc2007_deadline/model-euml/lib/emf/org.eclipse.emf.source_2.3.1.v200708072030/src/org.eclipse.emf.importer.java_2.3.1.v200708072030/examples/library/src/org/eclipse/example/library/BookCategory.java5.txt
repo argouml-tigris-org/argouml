@@ -1,0 +1,22 @@
+package org.eclipse.example.library;
+
+/**
+ * @model
+ */
+public enum BookCategory
+{
+  /**
+   * @model
+   */
+  MYSTERY,
+
+  /**
+   * @model value="300" name="ScienceFiction" literal="Science Fiction"
+   */
+  SCIENCE_FICTION,
+
+  /**
+   * @model value="100" name="Biography"
+   */
+  BIOGRAPHY;
+}

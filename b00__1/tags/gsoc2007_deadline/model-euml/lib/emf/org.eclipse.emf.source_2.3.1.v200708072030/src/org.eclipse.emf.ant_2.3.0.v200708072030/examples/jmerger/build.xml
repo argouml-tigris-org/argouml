@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="noTarget" basedir=".">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+
+    <target name="noTarget">
+        <fail message="You have to specify which target should be executed."/>
+    </target>
+
+    <target name="createNewFile">
+        <emf.JMerger 
+            mergeXMLFile="merge.xml" 
+            sourceURI="${antfile.dir}/Source.java" 
+            targetFile="Target.java"
+            newFile="NewFile.java"/>
+    </target>
+    
+    <target name="overwriteTarget">
+        <emf.JMerger 
+            mergeXMLURI="${antfile.dir}/merge.xml" 
+            sourceFile="Source.java" 
+            targetURI="${antfile.dir}/Target.java"/>
+    </target>
+</project>

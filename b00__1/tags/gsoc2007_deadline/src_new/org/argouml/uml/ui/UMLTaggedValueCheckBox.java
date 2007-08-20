@@ -1,0 +1,65 @@
+// $Id:UMLTaggedValueCheckBox.java 12518 2007-05-04 07:11:31Z tfmorris $
+// Copyright (c) 2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+
+/**
+ * Checkbox who's state is tied to a boolean tagged value of a specific
+ * name on the current target ModelElement.  Currently the value is constrained
+ * to be a string with the value "true" or "false".
+ * 
+ * @author tfmorris
+ */
+public class UMLTaggedValueCheckBox extends UMLCheckBox2 {
+
+    private String tagName;
+    
+    public UMLTaggedValueCheckBox(String name) {
+        super(Translator.localize("checkbox." + name + "-lc"), 
+                new ActionBooleanTaggedValue(name), 
+                name);
+        tagName = name;
+    }
+
+    /**
+     * Set the checkbox according to the tagged values of the target.
+     * 
+     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+     */
+    public void buildModel() {
+        Object tv = Model.getFacade().getTaggedValue(getTarget(), tagName);
+        if (tv != null) {
+            String tag = Model.getFacade().getValueOfTag(tv);
+            if ("true".equals(tag)) {
+                setSelected(true);
+                return;
+            }
+        }
+        setSelected(false);
+    }
+
+}

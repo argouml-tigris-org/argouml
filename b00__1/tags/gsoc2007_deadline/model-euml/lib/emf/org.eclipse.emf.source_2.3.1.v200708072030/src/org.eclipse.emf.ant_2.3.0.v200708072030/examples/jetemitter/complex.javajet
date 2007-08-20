@@ -1,0 +1,12 @@
+<%@ jet package="org.jetTest" imports="java.util.List" class="ComplexGen" version="$Id: complex.javajet,v 1.1 2007/01/12 20:55:23 marcelop Exp $"%>
+<%List<?> objectsToPrint = (List<?>)argument;%>
+public class Complex
+{
+	public void main(String[] args)
+	{
+<%for (Object objectToPrint : objectsToPrint) {%>
+		System.out.println("<%=objectToPrint.toString()%>");
+<%}%>
+	}
+}
+

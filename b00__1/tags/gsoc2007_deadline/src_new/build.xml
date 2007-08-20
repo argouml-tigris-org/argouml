@@ -1,0 +1,1148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id:build.xml 13150 2007-07-26 07:03:52Z tfmorris $
+This requires Apache Ant 1.6.2 and has been tested through Ant 1.7.
+
+Introduction
+============
+ArgoUML is a free UML tool. It is written entirely in Java.
+The homepage of ArgoUML is http://argouml.tigris.org
+
+Building instructions
+=====================
+First, make sure your current working directory is where this very
+file is located. Then just type
+	build -p
+if on a MS Windows system, or
+	./build.sh -p
+if on a *nix system, to get a list of available build targets
+and the name of the default target which will be used if none
+is specified (currently 'compile').
+
+Executing build.bat/build.sh will use the version of Ant from
+the ArgoUML CVS repository.  You can use 
+        build -version
+to find out what the current version is.
+
+If your directories are organized as set up by the Eclipse project set
+file, use the file build2.sh/build2.bat to build from the command line.
+This uses an alternate properties file, eclipse-ant-build.properties,
+which accommodates the different directory layout.
+
+Property Settings
+=================
+The default property settings are in "default.properties".  To override
+them, create a file called "build.properties" here or 
+"argouml.build.properties" in your home directory.  Order of precedence
+is the reverse of the order they are mentioned in above.
+
+For example, to override the model subystem implementation used for
+tests, put the following line your file:
+
+test.model.implementation=org.argouml.model.euml.EUMLModelImplementation
+
+Refer to the Ant documentation and this file for other settings.
+
+Compilation instructions for ArgoUML
+====================================
+If you want to compile ArgoUML, you need to have following:
+- JAVA_HOME correctly set to where Java2 jdk is installed
+- the additional libraries (ocl-argo.jar, log4j.jar,
+  gef.jar, antlrall.jar, toolbar.jar, swidgets.jar) in argouml/lib
+  when these are right the command
+     build compile
+  will do the job.
+  -->
+
+<project basedir="." default="compile" name="argouml">
+
+  <!-- =================================================================== -->
+  <!-- Global initialization                                               -->
+  <!-- =================================================================== -->
+
+
+  <!-- =================================================================== -->
+  <!-- Convenience target for locating property files.                     -->
+  <!-- =================================================================== -->
+
+ <target name="list-property-files" depends="init"
+         description="List the property files read by the build.">
+
+    <!-- ====================================================== -->
+    <!-- System property path.separator is a simple way to tell -->
+    <!-- what operating system we are running on                -->
+    <!-- ====================================================== -->
+    <pathconvert pathsep="${path.separator}" property="lbp.path">
+        <path>
+            <pathelement location="${local.build.properties}"/>
+	</path>
+    </pathconvert>
+
+    <pathconvert pathsep="${path.separator}" property="ubp.path">
+        <path>
+            <pathelement location="${user.build.properties}"/>
+	</path>
+    </pathconvert>
+
+    <pathconvert pathsep="${path.separator}" property="dp.path">
+        <path>
+            <pathelement location="default.properties"/>
+	</path>
+    </pathconvert>
+
+    <!-- ====================================================== -->
+    <!-- Ant does not replace property values once they are     -->
+    <!-- set.  So only those which do not exist will get the    -->
+    <!-- property values set to "not present".                  -->
+    <!-- ====================================================== -->
+    <available file="${lbp.path}" property="lbp.exists" value="present"/>
+    <available file="${ubp.path}" property="ubp.exists" value="present"/>
+    <available file="${dp.path}" property="dp.exists" value="present"/>
+
+    <property name="lbp.exists" value="not present"/>
+    <property name="ubp.exists" value="not present"/>
+    <property name="dp.exists" value="not present"/>
+
+    <echo>
+
+Property files to be searched:
+
+1.  ${lbp.path}
+            File is ${lbp.exists}.
+
+2.  ${ubp.path}
+            File is ${ubp.exists}.
+
+3.  ${dp.path}
+            File is ${dp.exists}.
+
+    </echo>
+
+ </target>
+
+  <!-- =================================================================== -->
+  <!-- Initialization target                                               -->
+  <!-- =================================================================== -->
+
+  <target name="init">
+
+    <tstamp>
+        <format pattern="yyyy" property="year"/>
+    </tstamp>
+
+    <property name="argo.dist.dir" value="../DIST"/>
+
+    <property name="local.build.properties" value="build.properties"/>
+    <property name="user.build.properties" 
+              value="${user.home}/argouml.build.properties"/>
+    <property file="${local.build.properties}"/>
+    <property file="${user.build.properties}"/>
+       
+    <!-- we really need an absolute path for argo.root.dir -->
+    <!-- if it is set in a property file before now, it must be absolute -->
+    <property name="argo.root.dir" value="${basedir}/.." />
+    <property file="${override.build.properties}"/>
+    <property file="default.properties"/>
+
+    <path id="java.tools.classpath">
+      <pathelement path="${JAVA_HOME}/lib/tools.jar"/>
+    </path>
+
+    <path id="antlr.runtime.classpath">
+      <pathelement location="${antlrall.jar.path}"/>
+    </path>
+
+    <path id="argo.compile.classpath">
+      <pathelement location="${ocl-argo.jar.path}"/>
+      <pathelement location="${gef.jar.path}"/>
+      <pathelement location="${log4j.jar.path}"/>
+      <pathelement location="${swidgets.jar.path}"/>
+      <pathelement location="${toolbar.jar.path}"/>
+      <pathelement location="${commons-logging.jar.path}"/>
+      <path refid="antlr.runtime.classpath"/>
+      <pathelement location="${argo.build.dir}/argouml-model.jar"/>
+    </path>
+
+    <path id="argo.mdr.runtime.classpath">
+      <pathelement location="${argo.mdr.dir}/build/java-interfaces.jar"/>
+      <pathelement location="${argo.mdr.dir}/build/argouml-mdr.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/mof.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/jmi.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/mdrapi.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/nbmdr.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/jmiutils.jar"/>
+      <pathelement location="${argo.mdr.dir}/lib/openide-util.jar"/>
+    </path>
+
+    <path id="argo.euml.runtime.classpath">
+      <pathelement location="${argo.euml.dir}/build/argouml-euml.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.common_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.change_2.3.0.v200706262000.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.xmi_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore_2.3.0.v200703080200.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.edit_2.3.0.v200706262000.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.mapping.ecore2xml_2.3.0.v200706262000.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common_1.3.0.v200703011358.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common.edit_1.3.0.v200706251652.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml.resources_2.1.0.v200706251652.jar"/>
+      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml_2.1.0.v200703011358.jar"/>
+    </path>
+
+    <!-- This runtime classpath is used for tests and other things started
+         from this file.
+      -->
+    <path id="argo.runtime.classpath">
+      <path refid="argo.compile.classpath"/>
+      <!-- only one of the following will be used at a time -->
+      <!-- we put them together because there's little risk of crosstalk -->
+      <path refid="argo.mdr.runtime.classpath"/>
+      <path refid="argo.euml.runtime.classpath"/>
+    </path>
+
+    <!-- In order to use ant optional tasks which use jars that are not -->
+    <!-- copied into ANT_HOME/lib, we must declare the tasks ourselves. -->
+
+    <property name="Name" value="ArgoUML"/>
+    <property name="name" value="argouml"/>
+
+    <property name="argo.build.version" value="${argo.core.version}"/>
+
+    <property name="argo.timestamp.version" 
+              value="${argo.build.version}-${DSTAMP}-${TSTAMP}"/>
+ 
+    <property name="version.package" value="org/argouml/application"/>
+
+    <available classname="org.tigris.gef.base.Globals"
+               classpathref="argo.compile.classpath" 
+               property="has.gef"/>
+    <available classname="org.tigris.gef.util.Localizer"
+               classpathref="argo.compile.classpath"
+               property="has.gef.localizer"/>
+    <available classname="org.apache.log4j.Category"
+               classpathref="argo.compile.classpath"
+               property="has.log4j"/>
+    <available classname="org.apache.commons.logging.LogFactory"
+               classpathref="argo.compile.classpath"
+               property="has.commons-logging"/>
+    <available classname="org.tigris.toolbar.ToolBar"
+               classpathref="argo.compile.classpath"
+               property="has.toolbar"/>
+    <available classname="org.tigris.swidgets.FlexiGridLayout"
+               classpathref="argo.compile.classpath"
+               property="has.swidgets"/>
+    <available classname="antlr.ANTLRException"
+               classpathref="argo.compile.classpath"
+               property="has.antlr"/>
+
+    <!-- developer.lib.dir is the developer snapshot directory.           -->
+    <!-- If it is not set, it defaults to build.dir, and "build install"  -->
+    <!-- will not do anything.                                            -->
+    <property name="developer.lib.dir" value="${argo.build.dir}"/>
+
+    <!-- developer.bin.dir is the developer snapshot directory.           -->
+    <!-- If it is not set, it defaults to argo.bin.dir, and               -->
+    <!-- "build install"  will not do anything.                           -->
+    <property name="developer.bin.dir" value="${argo.bin.dir}"/>
+    
+    <!-- Set of properties with fixed paths that we pass to subtasks -->
+    <propertyset id="absolute-properties" dynamic="false">
+      <propertyref name="argo.root.dir" />
+      <propertyref name="argo.lib.dir" />
+      <propertyref name="argo.tools.dir" />
+      <propertyref name="argo.model.dir" />
+      <propertyref name="argo.mdr.dir" />
+      <propertyref name="argo.euml.dir" />
+    </propertyset>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Initialization target for optional ant tasks                        -->
+  <!-- =================================================================== -->
+  <target name="ant.optional.init" depends="init">
+    <path id="ant.optional.classpath">
+      <pathelement location="${ant.home}/libopt/ant-junit.jar"/>
+      <pathelement location="${junit.jar.path}"/>
+      <pathelement location="${easymock.jar.path}"/>
+      <pathelement location="${jdepend.jar.path}"/>
+      <pathelement location="${bsf.jar.path}"/>
+      <pathelement location="${javasrc.jar.path}"/>
+    </path>
+
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator" name="junitreport">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+    
+  </target>
+  
+
+  <!-- Note this file can only make Ant display values set in the
+       file correctly, but external values in the environment or
+       properties file will be operational.
+   -->
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+
+  <target name="prepare" depends="init,check-version">
+    <!-- create directories -->
+    <echo message="Preparing the build directories"/>
+    <mkdir dir="${argo.build.dir}"/>
+    <mkdir dir="${argo.build.dir}/ext"/>
+    <mkdir dir="${argo.build.classes}"/>
+ 
+    <copy todir="${argo.build.classes}/org/argouml/Images">
+      <fileset dir="${argo.src.dir}/org/argouml/Images" excludes="CVS/**" includes="**/**"/>
+    </copy>
+  	
+    <copy todir="${argo.build.classes}/org/argouml/i18n">
+      <fileset dir="${argo.src.dir}/org/argouml/i18n" includes="*.properties"/>
+    </copy>
+
+    <copy todir="${argo.build.classes}/org/argouml/resource">
+      <fileset dir="${argo.src.dir}/org/argouml/resource" 
+        excludes="CVS/**" 
+        includes="**/**"/>
+    </copy>
+  	<!-- this should copy across all .tee files, dtds and xslt  for persistence mechanism -->
+    <copy todir="${argo.build.classes}/org/argouml/persistence">
+      <fileset dir="${argo.src.dir}/org/argouml/persistence" 
+        excludes="CVS/**" 
+        includes="**/**"/>
+    </copy>
+  	
+    <copy file="${argo.src.dir}/org/argouml/argo.ini" 
+      tofile="${argo.build.classes}/org/argouml/argo.ini"/>
+    <copy file="${argo.src.dir}/org/argouml/default.xmi" 
+      tofile="${argo.build.classes}/org/argouml/default.xmi"/>
+    <copy file="${argo.src.dir}/org/argouml/registry.xml" 
+      tofile="${argo.build.classes}/org/argouml/registry.xml"/>
+ 	
+  	<!-- copy test files -->
+    <copy todir="${argo.tests.classes}/testmodels">
+      <fileset dir="${argo.tests.src}/testmodels" excludes="CVS/**" includes="**/**"/>
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Generates the parsers from the grammars by using Antlr              -->
+  <!-- =================================================================== -->
+
+  <target name="generateparser" depends="init"
+          description="Generate the antlr parsers.">
+    <echo message="Generate parsers"/>
+
+    <uptodate property="parser1.is.current"
+              targetfile="${argo.src.dir}/org/argouml/uml/reveng/java/JavaTokenTypes.txt">
+      <srcfiles dir="${argo.src.dir}/org/argouml/uml/reveng/java">
+        <include name="java.g"/>
+      </srcfiles>
+    </uptodate>
+    <antcall target="generateparser1"/>
+
+    <uptodate property="parser2.is.current"
+              targetfile="${argo.src.dir}/org/argouml/language/java/generator/JavaTokenTypes.txt">
+      <srcfiles dir="${argo.src.dir}/org/argouml/language/java/generator">
+        <include name="java.g"/>
+      </srcfiles>
+    </uptodate>
+    <antcall target="generateparser2"/>
+
+  </target>
+
+  <target name="generateparser1" unless="parser1.is.current" depends="init">
+    <delete>
+      <fileset dir="org/argouml/uml/reveng/java">
+        <include name="JavaTokenTypes.txt"/>
+      </fileset>
+    </delete>
+    <echo message="Antlr classpath is ${antlrall.jar.path}"/>
+    <java classname="antlr.Tool" classpath="${antlrall.jar.path}" fork="yes"
+        maxmemory="32M">
+      <arg value="-o"/>
+      <arg file="${argo.src.dir}/org/argouml/uml/reveng/java"/>
+      <arg file="${argo.src.dir}/org/argouml/uml/reveng/java/java.g"/>
+    </java>
+  </target>
+
+  <target name="generateparser2" unless="parser2.is.current" depends="init">
+    <delete>
+      <fileset dir="org/argouml/language/java/generator">
+        <include name="JavaTokenTypes.txt"/>
+      </fileset>
+    </delete>
+    <java classname="antlr.Tool" classpath="${antlrall.jar.path}" fork="yes"
+        maxmemory="32M">
+      <arg value="-o"/>
+      <arg file="${argo.src.dir}/org/argouml/language/java/generator"/>
+      <arg file="${argo.src.dir}/org/argouml/language/java/generator/java.g"/>
+    </java>
+  </target>
+
+  <target name="cleanparser"
+          description="Clean up the antlr parsers.">
+    <delete>
+      <fileset dir="org/argouml/uml/reveng/java">
+        <include name="JavaLexer.java"/>
+        <include name="JavaRecognizer.java"/>
+        <include name="JavaTokenTypes.java"/>
+        <include name="JavaTokenTypes.txt"/>
+      </fileset>
+      <fileset dir="org/argouml/language/java/generator">
+        <include name="JavaLexer.java"/>
+        <include name="JavaRecognizer.java"/>
+        <include name="JavaTokenTypes.java"/>
+        <include name="JavaTokenTypes.txt"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Checks for necessary libraries and correct versions of libraries    -->
+  <!-- =================================================================== -->
+
+  <target name="prerequisites"
+          depends="prepare,check.swidgets,check.gef.localizer,check.gef,check.toolbar,check.log4j,check.antlr" >
+  </target>
+
+  <target depends="prepare" name="check.toolbar" unless="has.toolbar">
+    <fail message="toolbar library does not appear to be in the classpath."/>
+  </target>
+
+  <target depends="prepare" name="check.swidgets" unless="has.swidgets">
+    <fail message="swidgets library does not appear to be in the classpath."/>
+  </target>
+
+  <target depends="prepare" name="check.gef" unless="has.gef">
+    <fail message="gef library does not appear to be in the classpath."/>
+  </target>
+
+  <target depends="prepare, check.commons-logging" name="check.log4j" unless="has.log4j">
+    <fail message="log4j library does not appear to be in the classpath."/>
+  </target>
+
+  <target depends="prepare" name="check.commons-logging" unless="has.commons-logging">
+    <fail message="commons-logging library does not appear to be in the classpath."/>
+  </target>
+
+  <target depends="prepare, check.gef" name="check.gef.localizer" unless="has.gef.localizer">
+    <fail message="Please install a more recent version of the gef library (minimum 0.9.5)"/>
+  </target>
+
+  <target depends="prepare" name="check.antlr" unless="has.antlr">
+    <fail message="antlrall library does not appear to be in the classpath."/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Updates the version source file if necessary                        -->
+  <!-- =================================================================== -->
+  <target name="check-version" depends="init">
+    <uptodate property="version.is.current"
+                targetfile="${argo.src.dir}/${version.package}/ArgoVersion.java">
+      <srcfiles dir="${argo.src.dir}/templates">
+          <include name="ArgoVersion.template"/>
+      </srcfiles>
+      <srcfiles dir="${argo.src.dir}">
+          <include name="default.properties"/>
+          <include name="build.properties"/>
+      </srcfiles>
+    </uptodate>
+  </target>
+
+  <target depends="check-version" name="update-version" unless="version.is.current">
+    <echo message="Creating ArgoVersion.java for version ${argo.build.version}"/>
+    <filter token="ARGO_RELEASE_VERSION" value="${argo.build.version}"/>
+    <copy file="${argo.src.dir}/templates/ArgoVersion.template" filtering="on" 
+      overwrite="on" tofile="${argo.src.dir}/${version.package}/ArgoVersion.java"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+  <target name="build-model" depends="prepare">
+    <echo message="Building Model API"/>
+    <ant dir="${argo.model.dir}" inheritAll="false" target="install">
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
+  </target>
+  
+  <target name="compile"
+      depends="prepare,prerequisites,update-version,generateparser,build-model,build-mdr"
+      description="Compile the sources.">
+
+    <echo message="Compiling the sources"/>
+
+    <javac debug="${debug}" 
+    	   deprecation="${deprecation}"
+    	   destdir="${argo.build.classes}"
+    	   includes="org/argouml/**/*.java"
+           excludes="org/argouml/model/uml/**"
+    	   optimize="${optimize}"
+    	   srcdir="${argo.src.dir}"
+    	   source="1.5"
+    	   target="1.5">
+        <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+    	<classpath>
+	  <path refid="argo.compile.classpath"/>
+       </classpath>
+    </javac>
+
+    <available file="${argo.tests.src}" type="dir" property="has.tests"/>
+    <antcall target="compile-tests-if-there"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the jar file                                                -->
+  <!-- =================================================================== -->
+  <target name="jar" depends="compile"
+          description="Build the main jar file.">
+    <filter token="version" value="${argo.build.version}"/>
+    <copy file="${argo.src.dir}/templates/manifest.template" filtering="on" 
+      overwrite="on" tofile="${argo.build.manifest}"/>
+    <jar basedir="${argo.build.classes}" excludes="*.txt,*.bat,*.xml,*.sh" 
+      includes="org/argouml/**" jarfile="${argo.build.dir}/${name}.jar" 
+      manifest="${argo.build.manifest}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Copies the complete set of jar files to the build directory.        -->
+  <!-- The purpose of this is to keep names here in synch with copied-to   -->
+  <!-- names in build and manifest.mf!                                     -->
+  <!-- =================================================================== -->
+  <target name="package" depends="jar"
+          description="Prepare all jar files, both built and just delivered.">
+
+    <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
+    <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
+    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
+    <copy file="${commons-logging.jar.path}" tofile="${argo.build.dir}/commons-logging.jar"/>
+    <copy file="${swidgets.jar.path}" tofile="${argo.build.dir}/swidgets.jar"/>
+    <copy file="${toolbar.jar.path}" tofile="${argo.build.dir}/toolbar.jar"/>
+    <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar"/>
+    <!-- End of name synch area in this file. -->
+
+    <copy file="${argo.src.dir}/README.txt" tofile="${argo.build.dir}/README.txt"/>
+    <copy file="${argo.src.dir}/bin/argouml.sh" todir="${argo.build.dir}"/>
+    <copy file="${argo.src.dir}/bin/argouml.bat" todir="${argo.build.dir}"/>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Prepares the Javadoc                                                -->
+  <!-- =================================================================== -->
+  <target name="prepare-docs" depends="init, javadocs, javadocs-api"
+          description="Build javadocs.">
+  </target>
+
+  <target name="javadocs" depends="init">
+    <mkdir dir="${argo.javadocs.dir}"/>
+
+    <javadoc author="${javadoc.author}" 
+             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;25%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2006&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/dev.html&apos; target=&apos;_blank&apos;&gt;ArgoUML Developers' page&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+             destdir="${argo.javadocs.dir}"
+             maxmemory="128M"
+             overview="org/argouml/overview-argo.html"
+             packagenames="org.argouml.*"
+             source="1.5"
+             splitindex="${javadoc.splitindex}"
+             use="${javadoc.use}"
+             windowtitle="ArgoUML Javadoc for internal use">
+      <sourcepath>
+        <pathelement location="${argo.src.dir}"/>
+        <pathelement location="${argo.src.dir}/../src/model/src"/>
+        <pathelement location="${argo.src.dir}/../src/model-mdr/src"/>
+      </sourcepath>
+
+      <classpath>
+	  <path refid="argo.compile.classpath"/>
+      </classpath>
+
+      <!-- Links allow reference to external classes from within
+           Argo javadocs
+        -->
+
+      <link href="${gef.javadoc.link}" offline="true"
+            packagelistLoc="${gef.javadoc.packagelist}"/>
+
+      <link href="${jdk.javadoc.link}" offline="true"
+            packagelistLoc="${jdk.javadoc.packagelist}"/>
+
+      <link href="${log4j.javadoc.link}" offline="true"
+            packagelistLoc="${log4j.javadoc.packagelist}"/>
+
+      <link href="${jmi.javadoc.link}" offline="true"
+            packagelistLoc="${jmi.javadoc.packagelist}"/>
+
+      <!-- Rest of the packages -->
+
+    </javadoc>
+
+    <copy todir="${argo.javadocs.dir}/org/argouml/doc-files">
+      <fileset dir="${argo.src.dir}/org/argouml/doc-files" excludes="CVS/**" includes="**/**"/>
+    </copy>
+
+  </target>
+
+
+  <target name="javadocs-api" depends="init">
+    <mkdir dir="${argo.api.dir}"/>
+
+    <!-- The package name list shall be the list of all the main packages for
+         all subsystems that are available for modules.
+      -->
+    <javadoc author="${javadoc.author}"
+             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;33%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2006&lt;/td&gt;&lt;td width=&apos;34%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;33%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+             destdir="${argo.api.dir}"
+             maxmemory="128M"
+             overview="org/argouml/overview-api.html"
+             packagenames="org.argouml.model,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui,org.argouml.ui.explorer,org.argouml.ocl,org.argouml.moduleloader"
+             source="1.5"
+             private="false"
+             splitindex="${javadoc.splitindex}"
+             use="${javadoc.use}"
+             windowtitle="ArgoUML Javadoc for ArgoUML Module Developers">
+      <sourcepath>
+        <pathelement location="${argo.src.dir}"/>
+        <pathelement location="${argo.src.dir}/../src/model/src"/>
+      </sourcepath>
+
+      <classpath>
+	  <path refid="argo.compile.classpath"/>
+      </classpath>
+
+      <!-- Links allow reference to external classes from within
+           Argo javadocs
+        -->
+
+      <link href="${gef.javadoc.link}" offline="true"
+            packagelistLoc="${gef.javadoc.packagelist}"/>
+
+      <link href="${jdk.javadoc.link}" offline="true"
+            packagelistLoc="${jdk.javadoc.packagelist}"/>
+
+      <link href="${log4j.javadoc.link}" offline="true"
+            packagelistLoc="${log4j.javadoc.packagelist}"/>
+
+      <link href="${jmi.javadoc.link}" offline="true"
+            packagelistLoc="${jmi.javadoc.packagelist}"/>
+
+      <!-- Rest of the packages -->
+
+    </javadoc>
+
+    <copy todir="${argo.api.dir}/org/argouml/doc-files">
+      <fileset dir="${argo.src.dir}/org/argouml/doc-files"
+               excludes="CVS/**"
+	       includes="**/**"/>
+    </copy>
+
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean" depends="init"
+          description="Clean out all built files.">
+
+    <ant dir="${argo.model.dir}" inheritAll="false" target="clean">
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
+    <ant dir="${argo.mdr.dir}" inheritAll="false" target="clean">
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
+    <ant dir="${argo.euml.dir}" inheritAll="false" target="clean">
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
+    <delete dir="${argo.build.dir}/tests"/>
+    <delete dir="${argo.build.dir}/src_new"/>
+    <delete dir="${argo.build.dir}/classes"/>
+    <delete dir="${argo.build.dir}/bin"/>
+    <delete file="${argo.src.dir}/${version.package}/ArgoVersion.java"/>
+
+    <!-- TODO: Some of these are obsolete -->
+    <delete>
+        <fileset dir="${argo.build.dir}">
+            <include name="*.jar"/>
+            <include name="Fop.java"/>
+            <include name="Fop.class"/>
+            <include name="README.txt"/>
+            <include name="argouml.sh"/>
+            <include name="argouml.bat"/>
+        </fileset>
+    </delete>
+
+    <antcall target="cleanparser"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run ArgoUML from compiled sources                                   -->
+  <!-- =================================================================== -->
+  <target name="run" depends="compile"
+          description="Run the newly compiled ArgoUML.">
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          taskname="argouml"
+    	  maxmemory="500M">
+        <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/error_console.lcf"/>
+        <assertions>
+          <enable/>
+        </assertions>
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+    </java>
+  </target>
+
+  <target name="debug" depends="compile"
+          description="Run ArgoUML with debug level logging.">
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          taskname="argouml"
+    	  maxmemory="500M">
+        <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/full_console.lcf"/>
+        <assertions>
+          <enable/>
+        </assertions>
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+    </java>
+  </target>
+
+  <target name="info" depends="compile"
+          description="Run ArgoUML with info level logging.">
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          taskname="argouml"
+    	  maxmemory="500M">
+        <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/info_console.lcf"/>
+        <assertions>
+          <enable/>
+        </assertions>
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+    </java>
+  </target>
+
+  <!-- ################################################################### -->
+  <!-- Section with tests.                                                 -->
+  <!-- ################################################################### -->
+
+
+  <!-- =================================================================== -->
+  <!-- Compiles the tests                                                  -->
+  <!-- =================================================================== -->
+
+  <target name="compile-tests" depends="prepare">
+
+    <!-- create directories -->
+    <mkdir dir="${argo.tests.classes}"/>
+
+    <!-- There are classes/test that actually test deprecated methods. -->
+    <!-- They are listed here. -->
+    <!-- We want debug, optimize, deprecation to be non-modifiable here -->
+    <javac debug="true" 
+           deprecation="false"
+           optimize="false"
+           destdir="${argo.tests.classes}" 
+           includes="**/GUITestProjectBrowser.java,**/MockUMLUserInterfaceContainer,**/*Deprecated.java"
+           excludes="org/argouml/model/uml/**"
+           srcdir="${argo.tests.src}"
+    	   source="1.5"
+           target="1.5">
+      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <pathelement location="${junit.jar.path}"/>
+        <pathelement location="${easymock.jar.path}"/>
+        <pathelement location="${jdepend.jar.path}"/>
+	<path refid="argo.compile.classpath"/>
+      </classpath>
+     </javac>
+
+    <!-- We want debug, optimize, deprecation to be non-modifiable here -->
+    <javac debug="true" 
+           deprecation="${deprecation}"
+           optimize="false" 
+           destdir="${argo.tests.classes}"
+           srcdir="${argo.tests.src}"
+	   includes="org/argouml/uml/reveng/TestJavaImportUnicode.java"
+           excludes="org/argouml/model/uml/**"
+	   encoding="iso8859-1"
+    	   source="1.5"
+           target="1.5">
+      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <pathelement location="${junit.jar.path}"/>
+        <pathelement location="${easymock.jar.path}"/>
+        <pathelement location="${jdepend.jar.path}"/>
+	<path refid="argo.compile.classpath"/>
+      </classpath>
+    </javac>
+
+    <!-- We want debug, optimize, deprecation to be non-modifiable here -->
+    <javac debug="true" 
+           deprecation="${deprecation}"
+           optimize="false" 
+           destdir="${argo.tests.classes}"
+           srcdir="${argo.tests.src}"
+           excludes="org/argouml/model/uml/**"
+    	   source="1.5"
+           target="1.5">
+      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <pathelement location="${junit.jar.path}"/>
+        <pathelement location="${easymock.jar.path}"/>
+        <pathelement location="${jdepend.jar.path}"/>
+	<path refid="argo.compile.classpath"/>
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="compile-tests-if-there" if="has.tests">
+    <antcall target="compile-tests"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepare for the junit tests.                                        -->
+  <!-- =================================================================== -->
+  <target depends="compile-tests" name="junit-setup"/>
+
+  <target name="junit-report-clean">
+    <mkdir dir="${argo.tests.reports}/junit/output"/>
+    <mkdir dir="${argo.tests.reports}/junit/output/html"/>
+    <delete>
+        <fileset dir="${argo.tests.reports}/junit/output">
+           <include name="TEST-*.xml"/>
+           <include name="TEST-*.txt"/>
+        </fileset>
+    </delete>
+  </target>
+
+  <target name="junit-report-create">
+    <junitreport todir="${argo.tests.reports}/junit/output">
+      <fileset dir="${argo.tests.reports}/junit/output">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${argo.tests.reports}/junit/output/html"/>
+    </junitreport>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Build MDR library - internal target which calls argouml-mdr build.  -->
+  <!-- =================================================================== -->
+  <target name="build-mdr" depends="init,build-model">
+    <!-- We build unconditionally because only the MDR build itself knows if
+         everything is up to date -->
+    <echo message="=== Calling MDR build ==="/>
+    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
+    <ant dir="${argo.mdr.dir}" target="install" inheritAll="false" >
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Build Eclipse UML2 library - internal target which calls argouml-euml build.  -->
+  <!-- =================================================================== -->
+  <target name="build-euml" depends="init,build-model" 
+        description="Build eUML model subsystem - not built by default">
+    <!-- We build unconditionally because only the eUML build itself knows if
+         everything is up to date -->
+    <echo message="=== Calling eUML build ==="/>
+    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
+    <ant dir="${argo.euml.dir}" target="install" inheritAll="false" >
+      <propertyset dynamic="false"> 
+        <propertyset refid="absolute-properties"/>
+      </propertyset> 
+    </ant>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run the junit tests.                                                -->
+  <!-- =================================================================== -->
+  <target name="tests-dont-fail"
+          depends="compile,junit-setup,junit-report-clean,
+                   ant.optional.init">
+
+    <junit errorproperty="junit.failure" failureproperty="junit.failure" 
+           fork="yes" dir="${basedir}" forkmode="perTest"
+           haltonfailure="false"
+           maxmemory="48M" printsummary="${junit.printsummary}">
+        <sysproperty key="test.model.uml" 
+            value="${argo.mdr.dir}/src/org/argouml/model/mdr/mof/01-02-15.xml"/>
+        <sysproperty key="argouml.model.implementation" 
+            value="${test.model.implementation}"/>
+	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
+	<sysproperty key="java.awt.headless" value="true"/>
+	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
+        <assertions>
+          <enable/>
+        </assertions>
+        <classpath>
+            <path refid="ant.optional.classpath"/>
+            <pathelement location="${argo.build.classes}"/>
+            <pathelement location="${argo.tests.classes}"/>
+            <path refid="argo.runtime.classpath"/>
+            <pathelement location="${easymock.jar.path}"/>
+            <pathelement location="${jdepend.jar.path}"/>
+        </classpath>
+        <formatter type="xml"/>
+      <batchtest todir="${argo.tests.reports}/junit/output">
+        <fileset dir="${argo.tests.src}">
+          <include name="org/argouml/**/Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+
+    <antcall target="junit-report-create"/>
+  </target>
+
+  <target name="tests" depends="tests-dont-fail"
+          description="Run all tests that don't require any GUI components in headleass mode.">
+    <fail message="JUnit tests failed." if="junit.failure"/>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Run the junit tests, the ones that include GUI stuff.               -->
+  <!-- =================================================================== -->
+  <target name="guitests"
+          depends="compile,junit-setup,junit-report-clean,
+                   ant.optional.init"
+          description="Run all tests that require the GUI components.">
+
+    <junit errorproperty="junit.failure" failureproperty="junit.failure" 
+           fork="yes" dir="${basedir}" forkmode="perTest"
+           haltonfailure="false"
+           maxmemory="128M" printsummary="${junit.printsummary}">
+	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
+	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
+        <assertions>
+          <enable/>
+        </assertions>
+        <classpath>
+            <path refid="ant.optional.classpath"/>
+            <pathelement location="${argo.build.classes}"/>
+            <pathelement location="${argo.tests.classes}"/>
+            <path refid="argo.runtime.classpath"/>
+            <pathelement location="${easymock.jar.path}"/>
+        </classpath>
+        <formatter type="xml"/>
+      <batchtest todir="${argo.tests.reports}/junit/output">
+        <fileset dir="${argo.tests.src}">
+          <include name="org/argouml/**/GUITest*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+    <antcall target="junit-report-create"/>
+    <fail message="JUnit tests failed." if="junit.failure"/>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Run the tests that test the command line stuff.                     -->
+  <!-- These tests does not have error conditions to test against like the -->
+  <!-- JUnit test cases. Instead, if they hang or exit with error they     -->
+  <!-- have failed.                                                        -->
+  <!-- =================================================================== -->
+  <target name="clitests" depends="compile" 
+          description="Run tests that test the command line stuff.">
+
+    <!-- Don't do anything. -->
+    <java classname="org.argouml.application.Main" 
+          fork="yes">
+        <assertions>
+          <enable/>
+        </assertions>
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <arg value="-batch"/>
+    </java>
+
+    <!-- Exit. -->
+    <java classname="org.argouml.application.Main" 
+          fork="yes">
+        <assertions>
+          <enable/>
+        </assertions>
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <arg value="-nosplash"/>
+        <arg value="-batch"/>
+        <arg value="-command"/>
+        <arg value="org.argouml.uml.ui.ActionExit"/>
+    </java>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run the both kind of tests.                                         -->
+  <!-- =================================================================== -->
+  <target name="alltests" depends="compile,junit-setup,tests,guitests"
+          description="Run all tests, both with and without GUI."/>
+
+  <!-- =================================================================== -->
+  <!-- Start ArgoUML with JUnit test cases from ../tests.                  -->
+  <!-- =================================================================== -->
+  <target name="run-with-test-panel" 
+          depends="compile,junit-setup"
+          description="Start the TestRunner with all test cases from ../tests loaded.">
+    <java classname="junit.swingui.TestRunner" fork="yes" taskname="argouml">
+        <assertions>
+          <enable/>
+        </assertions>
+        <classpath>
+	  <pathelement location="${argo.build.dir}/argo_junit_tests.jar"/>
+          <pathelement location="${argo.tests.classes}"/>
+	  <pathelement location="${argo.build.classes}"/>
+          <pathelement location="${junit.jar.path}"/>
+          <pathelement location="${easymock.jar.path}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+    </java>
+  </target>
+
+
+
+  <!-- ################################################################### -->
+  <!-- Section with static analysis things.                                -->
+  <!-- ################################################################### -->
+
+  <!-- =================================================================== -->
+  <!-- Perform JDepend to find about the structure in ArgoUML.             -->
+  <!-- =================================================================== -->
+  <target name="jdepend" depends="init, ant.optional.init"
+          description="Run jdepend to report static metrics.">
+    <echo>
+CC - Concrete Class Count 
+AC - Abstract Class (and Interface) Count 
+Ca - Afferent Couplings (Ca) 
+Ce - Efferent Couplings (Ce) 
+A - Abstractness (0-1) 
+I - Instability (0-1) 
+D - Distance from the Main Sequence (0-1) 
+Cyclic - If the package contains a dependency cycle 
+
+For details see http://www.clarkware.com/software/JDepend.html.
+    </echo>
+    <java classname="jdepend.swingui.JDepend" failonerror="true" fork="true">
+      <arg value="."/> 
+      <classpath>
+	<path refid="ant.optional.classpath"/>
+      </classpath>
+    </java>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Perform javasrc to find about the structure in ArgoUML.             -->
+  <!-- =================================================================== -->
+  <target name="javasrc" depends="init"
+          description="Run javasrc on the source.">
+    <java classname="javasrc.app.Pass1" failonerror="true" fork="true">
+      <sysproperty key="recursive" value="yes"/>
+      <sysproperty key="title" value="JavaSrc for ArgoUML"/>
+      <sysproperty key="outdir" value="../build/javasrc"/>
+      <sysproperty key="verbose" value="yes"/>
+      <classpath>
+	<pathelement location="${javasrc.jar.path}"/>
+        <pathelement location="${antlrall.jar.path}"/>
+      </classpath>
+      <arg value="."/>
+    </java>
+    <java classname="javasrc.app.Pass2" failonerror="true" fork="true">
+      <sysproperty key="recursive" value="yes"/>
+      <sysproperty key="title" value="JavaSrc for ArgoUML"/>
+      <sysproperty key="outdir" value="../build/javasrc"/>
+      <sysproperty key="verbose" value="yes"/>
+      <classpath>
+	<pathelement location="${javasrc.jar.path}"/>
+	<pathelement location="${antlrall.jar.path}"/>
+      </classpath>
+      <arg value="../build/javasrc"/>
+    </java>
+  </target>
+
+
+  <!-- ################################################################### -->
+  <!-- Section with temporary targets and experiments.                     -->
+  <!-- ################################################################### -->
+
+  <!-- =================================================================== -->
+  <!-- Finds undeclared tags in the code.                                  -->
+  <!-- Unluckily Linus doesn't know how to write this in a                 -->
+  <!-- platform-independant way (i.e. with just ant-calls) so it will only -->
+  <!-- be working for unix/shell enabled platforms. If you know how to     -->
+  <!-- solve this within ant, please go ahead.                             -->
+  <!-- =================================================================== -->
+
+  <target name="find-undeclared-tags"
+          description="Scans through all source files and find all tags that are not in the corresponding properties files.">
+    <exec executable="sh">
+      <arg value="-c"/>
+      <arg value="../tools/bin/i18n-find-undeclared-tags.sh"/>
+    </exec>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Runs Classycle to find cyclic dependencies in ArgoUML.              -->
+  <!-- =================================================================== -->
+    <target name="classycle" depends="compile" 
+        description="Analyze sources for cyclic dependencies using Classcycle">
+      <echo>
+  Running classcyle on ${source.dir}.
+  </echo>
+      <property name="classycle.output" value="${argo.build.dir}/classycle"/>
+      <property name="classycle.dir" value="${argo.tools.dir}/Classycle"/>
+      <mkdir dir="${classycle.output}"/>
+      <java jar="${classycle.dir}/classycle.jar" failonerror="false" 
+          fork="true" maxmemory="32M">
+        <arg value="-mergeInnerClasses"/>
+        <arg value="-includingClasses=org.argouml.*"/>
+        <arg value="-excludingClasses=java.*,javax.*"/>
+        <arg value="-xmlFile=${classycle.output}/argouml-classcycles.xml"/>
+        <arg value="-title=ArgoUML-${argo.build.version}"/>
+        <arg value="${argo.build.classes}"/>
+      </java>
+      <copy todir="${classycle.output}">
+        <fileset dir="${classycle.dir}">
+          <include name="*.xsl"/>
+          <include name="images/**"/>
+        </fileset>
+      </copy>
+    </target>
+
+</project><!-- End of file -->

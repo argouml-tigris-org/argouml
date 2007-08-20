@@ -1,0 +1,9 @@
+<%@ jet package="org.jetTest" class="MediumGen" version="$Id: medium.javajet,v 1.1 2007/01/12 20:55:23 marcelop Exp $"%>
+public class Medium
+{
+	public void main(String[] args)
+	{
+		System.out.println("The class of the argument is '<%=argument.getClass().getName()%>'.");
+	}
+}
+

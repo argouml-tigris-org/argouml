@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore2ecore:Ecore2EcoreMappingRoot xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore2ecore="http://www.eclipse.org/emf/2004/Ecore2Ecore" topToBottom="true">
+  <nested>
+    <outputs href="UML.ecore#//MultiplicityElement/lowerValue"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//Namespace/packageImport"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Package/ownedMember"/>
+    <outputs href="UML.ecore#//Package/packagedElement"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Package/appliedProfile"/>
+    <outputs href="UML.ecore#//Package/profileApplication"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Implementation"/>
+    <outputs href="UML.ecore#//InterfaceRealization"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//Namespace/ownedMember"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ProfileApplication/importedProfile"/>
+    <outputs href="UML.ecore#//ProfileApplication/appliedProfile"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Behavior/parameter"/>
+    <outputs href="UML.ecore#//Behavior/ownedParameter"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Operation/class_"/>
+    <outputs href="UML.ecore#//Operation/class"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Property/class_"/>
+    <outputs href="UML.ecore#//Property/class"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Classifier/occurrence"/>
+    <outputs href="UML.ecore#//Classifier/collaborationUse"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//PackageMerge/mergingPackage"/>
+    <outputs href="UML.ecore#//PackageMerge/receivingPackage"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//BehavioredClassifier/implementation"/>
+    <outputs href="UML.ecore#//BehavioredClassifier/interfaceRealization"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Activity/body"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Activity/language"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Activity/action"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Permission"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Component/ownedMember"/>
+    <outputs href="UML.ecore#//Component/packagedElement"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ActivityEdge/redefinedElement"/>
+    <outputs href="UML.ecore#//ActivityEdge/redefinedEdge"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ActivityGroup/activityGroup_activity"/>
+    <outputs href="UML.ecore#//ActivityGroup/inActivity"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ActivityNode/redefinedElement"/>
+    <outputs href="UML.ecore#//ActivityNode/redefinedNode"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//CollaborationOccurrence"/>
+    <outputs href="UML.ecore#//CollaborationUse"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//CallTrigger"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//MessageTrigger"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ChangeTrigger"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//SignalTrigger"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//TimeTrigger"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//AnyTrigger"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//StructuredActivityNode/containedNode"/>
+    <outputs href="UML.ecore#//StructuredActivityNode/node"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//StructuredActivityNode/containedEdge"/>
+    <outputs href="UML.ecore#//StructuredActivityNode/edge"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//InteractionOperator"/>
+    <outputs href="UML.ecore#//InteractionOperatorKind"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//StartOwnedBehaviorAction"/>
+    <outputs href="UML.ecore#//StartClassifierBehaviorAction"/>
+  </nested>
+  <nested>
+    <nested>
+      <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Action/effect"/>
+    </nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Action"/>
+    <outputs href="UML.ecore#//OpaqueAction"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//Action"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//Message/messageSort"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ActivityPartition/containedEdge"/>
+    <outputs href="UML.ecore#//ActivityPartition/edge"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ActivityPartition/containedNode"/>
+    <outputs href="UML.ecore#//ActivityPartition/node"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ActivityPartition/subgroup"/>
+    <outputs href="UML.ecore#//ActivityPartition/subpartition"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//InterruptibleActivityRegion/containedNode"/>
+    <outputs href="UML.ecore#//InterruptibleActivityRegion/node"/>
+  </nested>
+  <nested>
+    <nested>
+      <outputs href="UML.ecore#//InteractionUse/argument"/>
+    </nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//InteractionOccurrence"/>
+    <outputs href="UML.ecore#//InteractionUse"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ExecutionOccurrence"/>
+    <outputs href="UML.ecore#//BehaviorExecutionSpecification"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//ActivityGroup/containedEdge"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//ActivityGroup/containedNode"/>
+  </nested>
+  <nested>
+    <nested>
+      <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//EventOccurrence/startExec"/>
+    </nested>
+    <nested>
+      <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//EventOccurrence/finishExec"/>
+    </nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//EventOccurrence"/>
+    <outputs href="UML.ecore#//MessageOccurrenceSpecification"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//PrimitiveFunction"/>
+    <outputs href="UML.ecore#//FunctionBehavior"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//ApplyFunctionAction"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//DurationObservationAction"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//TimeObservationAction"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//TemplateSignature/nestedSignature"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//TemplateSignature/nestingSignature"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Stop"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//ParameterableElement/templateParameter"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//TemplateParameter/parameteredElement"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//TemplateParameter/ownedParameteredElement"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//Message/signature"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//Comment/bodyExpression"/>
+  </nested>
+  <nested>
+    <inputs href="../../org.eclipse.uml2/model/UML2.ecore#//StateMachine/stateMachine_redefinitionContext"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//AcceptEventAction/trigger"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//State/deferrableTrigger"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//Transition/trigger"/>
+  </nested>
+  <nested>
+    <outputs href="UML.ecore#//ActivityGroup/subgroup"/>
+  </nested>
+  <inputs href="../../org.eclipse.uml2/model/UML2.ecore#/"/>
+  <outputs href="UML.ecore#/"/>
+</ecore2ecore:Ecore2EcoreMappingRoot>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Ecore="http://www.eclipse.org/uml2/schemas/Ecore/4" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xsi:schemaLocation="http://www.eclipse.org/uml2/schemas/Ecore/4 pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA">
+  <uml:Model xmi:id="_y16xIPnhEdunWsS3se92JQ" name="10536">
+    <packagedElement xmi:type="uml:Class" xmi:id="_0dB44PnhEdunWsS3se92JQ" name="ConnectableElement" isAbstract="true">
+      <ownedAttribute xmi:id="_5fDBQPnhEdunWsS3se92JQ" name="end" visibility="public" type="_2UPSIPnhEdunWsS3se92JQ" isDerived="true" association="_5e5QQPnhEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5fDBQvnhEdunWsS3se92JQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5fDBQfnhEdunWsS3se92JQ"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_tL_ewPniEdunWsS3se92JQ" name="getEnds" visibility="protected">
+        <ownedParameter xmi:id="_uvsGIPniEdunWsS3se92JQ" name="" type="_2UPSIPnhEdunWsS3se92JQ" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_xsLscfniEdunWsS3se92JQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_xsLscPniEdunWsS3se92JQ"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_2UPSIPnhEdunWsS3se92JQ" name="ConnectorEnd">
+      <ownedAttribute xmi:id="_81UZgfnhEdunWsS3se92JQ" name="role" visibility="public" type="_0dB44PnhEdunWsS3se92JQ" association="_81UZgPnhEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_81UZg_nhEdunWsS3se92JQ" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_81UZgvnhEdunWsS3se92JQ" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_5e5QQPnhEdunWsS3se92JQ" name="A_connectableElement_end" memberEnd="_5fDBQPnhEdunWsS3se92JQ _5fDBQ_nhEdunWsS3se92JQ">
+      <ownedEnd xmi:id="_5fDBQ_nhEdunWsS3se92JQ" name="" visibility="private" type="_0dB44PnhEdunWsS3se92JQ" association="_5e5QQPnhEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5fDBRfnhEdunWsS3se92JQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5fDBRPnhEdunWsS3se92JQ"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_81UZgPnhEdunWsS3se92JQ" name="A_end_role" memberEnd="_81UZgfnhEdunWsS3se92JQ _81UZhPnhEdunWsS3se92JQ">
+      <ownedEnd xmi:id="_81UZhPnhEdunWsS3se92JQ" name="end" visibility="private" type="_2UPSIPnhEdunWsS3se92JQ" association="_81UZgPnhEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_81UZhvnhEdunWsS3se92JQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_81UZhfnhEdunWsS3se92JQ"/>
+      </ownedEnd>
+    </packagedElement>
+    <profileApplication xmi:id="_vz32QPn-EduCCoNWMwSrOA">
+      <eAnnotations xmi:id="_v2Qb4Pn-EduCCoNWMwSrOA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Ecore.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <Ecore:EReference xmi:id="_yzfpEPn-EduCCoNWMwSrOA" isTransient="true" isVolatile="true" base_Property="_5fDBQPnhEdunWsS3se92JQ"/>
+</xmi:XMI>

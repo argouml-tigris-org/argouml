@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Ecore="http://www.eclipse.org/uml2/schemas/Ecore/4" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xsi:schemaLocation="http://www.eclipse.org/uml2/schemas/Ecore/4 pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA">
+  <uml:Model xmi:id="_udv6MPnlEdunWsS3se92JQ" name="10537">
+    <packagedElement xmi:type="uml:Class" xmi:id="_xM1WoPnlEdunWsS3se92JQ" name="Vertex" isAbstract="true">
+      <ownedAttribute xmi:id="_R1FbMfnmEdunWsS3se92JQ" name="incoming" visibility="public" type="_ykKV8PnlEdunWsS3se92JQ" isDerived="true" association="_R1FbMPnmEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_R1FbM_nmEdunWsS3se92JQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_R1FbMvnmEdunWsS3se92JQ"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_X_OCMPnmEdunWsS3se92JQ" name="outgoing" visibility="public" type="_ykKV8PnlEdunWsS3se92JQ" isDerived="true" association="_X_E4QPnmEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_X_OCMvnmEdunWsS3se92JQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_X_OCMfnmEdunWsS3se92JQ"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_RqYxoPnnEdunWsS3se92JQ" name="getIncomings" visibility="protected">
+        <ownedParameter xmi:id="_UvruoPnnEdunWsS3se92JQ" name="" type="_ykKV8PnlEdunWsS3se92JQ" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YahosfnnEdunWsS3se92JQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YahosPnnEdunWsS3se92JQ"/>
+        </ownedParameter>
+      </ownedOperation>
+      <ownedOperation xmi:id="_aHv_gPnnEdunWsS3se92JQ" name="getOutgoings" visibility="protected">
+        <ownedParameter xmi:id="_aHv_gfnnEdunWsS3se92JQ" name="" type="_ykKV8PnlEdunWsS3se92JQ" direction="return">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_aHv_gvnnEdunWsS3se92JQ" value="*"/>
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_aHv_g_nnEdunWsS3se92JQ"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ykKV8PnlEdunWsS3se92JQ" name="Transition">
+      <ownedAttribute xmi:id="_EhVtMPnmEdunWsS3se92JQ" name="target" visibility="public" type="_xM1WoPnlEdunWsS3se92JQ" association="_EhL8MPnmEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EhVtMvnmEdunWsS3se92JQ" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EhVtMfnmEdunWsS3se92JQ" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_JPYJofnmEdunWsS3se92JQ" name="source" visibility="public" type="_xM1WoPnlEdunWsS3se92JQ" association="_JPYJoPnmEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_JPYJo_nmEdunWsS3se92JQ" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_JPYJovnmEdunWsS3se92JQ" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_EhL8MPnmEdunWsS3se92JQ" name="A_incoming_target" memberEnd="_EhVtMPnmEdunWsS3se92JQ _EhVtM_nmEdunWsS3se92JQ">
+      <ownedEnd xmi:id="_EhVtM_nmEdunWsS3se92JQ" name="incoming" visibility="private" type="_ykKV8PnlEdunWsS3se92JQ" association="_EhL8MPnmEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_EhVtNfnmEdunWsS3se92JQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_EhVtNPnmEdunWsS3se92JQ"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_JPYJoPnmEdunWsS3se92JQ" name="A_outgoing_source" memberEnd="_JPYJofnmEdunWsS3se92JQ _JPh6oPnmEdunWsS3se92JQ">
+      <ownedEnd xmi:id="_JPh6oPnmEdunWsS3se92JQ" name="outgoing" visibility="private" type="_ykKV8PnlEdunWsS3se92JQ" association="_JPYJoPnmEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_JPh6ovnmEdunWsS3se92JQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_JPh6ofnmEdunWsS3se92JQ"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_R1FbMPnmEdunWsS3se92JQ" name="A_vertex_incoming" memberEnd="_R1FbMfnmEdunWsS3se92JQ _R1FbNPnmEdunWsS3se92JQ">
+      <ownedEnd xmi:id="_R1FbNPnmEdunWsS3se92JQ" name="" visibility="private" type="_xM1WoPnlEdunWsS3se92JQ" association="_R1FbMPnmEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_R1FbNvnmEdunWsS3se92JQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_R1FbNfnmEdunWsS3se92JQ"/>
+      </ownedEnd>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_X_E4QPnmEdunWsS3se92JQ" name="A_vertex_outgoing" memberEnd="_X_OCMPnmEdunWsS3se92JQ _X_OCM_nmEdunWsS3se92JQ">
+      <ownedEnd xmi:id="_X_OCM_nmEdunWsS3se92JQ" name="" visibility="private" type="_xM1WoPnlEdunWsS3se92JQ" association="_X_E4QPnmEdunWsS3se92JQ">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_X_OCNfnmEdunWsS3se92JQ" value="*"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_X_OCNPnmEdunWsS3se92JQ"/>
+      </ownedEnd>
+    </packagedElement>
+    <profileApplication xmi:id="_3zuBsPn-EduCCoNWMwSrOA">
+      <eAnnotations xmi:id="_3zuBsfn-EduCCoNWMwSrOA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Ecore.profile.uml#_B7dOIMEREduRdatXodjBjA"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Ecore.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <Ecore:EReference xmi:id="_5aiOgPn-EduCCoNWMwSrOA" isTransient="true" isVolatile="true" base_Property="_R1FbMfnmEdunWsS3se92JQ"/>
+  <Ecore:EReference xmi:id="_8M5BYPn-EduCCoNWMwSrOA" isTransient="true" isVolatile="true" base_Property="_X_OCMPnmEdunWsS3se92JQ"/>
+</xmi:XMI>

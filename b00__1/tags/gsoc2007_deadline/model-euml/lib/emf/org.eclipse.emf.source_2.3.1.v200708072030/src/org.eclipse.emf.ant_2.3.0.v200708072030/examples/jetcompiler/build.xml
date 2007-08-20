@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="MyProject" default="compileTemplates" basedir=".">
+    <target name="compileTemplates">
+        <emf.JETCompiler templateFile="../jetemitter/simple.javajet" sourceDirectory="."/>
+        <emf.JETCompiler templateFile="../jetemitter/medium.javajet" sourceDirectory="."/>
+        <emf.JETCompiler templateFile="../jetemitter/complex.javajet" newFile="Complex.java"/>
+    </target>
+</project>
