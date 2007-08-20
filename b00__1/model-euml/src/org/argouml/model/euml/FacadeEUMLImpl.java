@@ -1449,7 +1449,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isADataValue(Object handle) {
-        throw new NotYetImplementedException();
+        return false;
     }
 
     public boolean isADependency(Object handle) {

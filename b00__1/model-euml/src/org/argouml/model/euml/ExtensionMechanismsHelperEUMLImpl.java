@@ -27,6 +27,7 @@
 package org.argouml.model.euml;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.argouml.model.ExtensionMechanismsHelper;
 import org.eclipse.uml2.uml.Element;
@@ -72,7 +73,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     public Collection getAllPossibleStereotypes(Collection models, Object modelElement) {
         // TODO Auto-generated method stub
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     public String getMetaModelName(Object m) {
