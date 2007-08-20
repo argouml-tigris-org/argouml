@@ -407,6 +407,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 Property property = createAttribute();
                 UMLUtil.getOwnedAttributes((Type) handle).add(property);
                 property.setType((Type) type);
+                property.setName("newAttr");
                 getParams().add(property);
             }
         };
