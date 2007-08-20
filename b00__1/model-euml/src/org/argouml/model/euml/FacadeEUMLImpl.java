@@ -62,6 +62,7 @@ import org.eclipse.uml2.uml.CreateObjectAction;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.DestroyObjectAction;
+import org.eclipse.uml2.uml.DirectedRelationship;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
@@ -111,6 +112,7 @@ import org.eclipse.uml2.uml.TimeEvent;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Trigger;
 import org.eclipse.uml2.uml.TypedElement;
+import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
 import org.eclipse.uml2.uml.ValueSpecification;
@@ -352,7 +354,7 @@ class FacadeEUMLImpl implements Facade {
     }
     
     public Collection getChildren(Object handle) {
-        throw new NotYetImplementedException();
+        return modelImpl.getCoreHelper().getSubtypes(handle);
     }
 
     public Object getClassifier(Object handle) {
@@ -391,10 +393,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<Collaboration> getCollaborations(Object handle) {
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException();
+        }
         Set<Collaboration> result = new HashSet<Collaboration>();
         if (handle instanceof Classifier) {
-            for (CollaborationUse cu 
-                    : ((Classifier) handle).getCollaborationUses()) {
+            for (CollaborationUse cu : ((Classifier) handle).getCollaborationUses()) {
                 result.add(cu.getType());
             }
         }
@@ -534,11 +538,17 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getElementImports(Object handle) {
+        if (!(handle instanceof org.eclipse.uml2.uml.Package)) {
+            throw new IllegalArgumentException();
+        }
         return Collections.EMPTY_LIST;
 //      throw new NotYetImplementedException();
     }
 
     public Collection getElementImports2(Object handle) {
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
         throw new NotYetImplementedException();
     }
 
@@ -589,10 +599,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public UseCase getExtension(Object handle) {
+        if (!(handle instanceof Extend)) {
+            throw new IllegalArgumentException();
+        }
         return ((Extend) handle).getExtension();
     }
 
     public ExtensionPoint getExtensionPoint(Object handle, int index) {
+        if (!(handle instanceof Extend)) {
+            throw new IllegalArgumentException();
+        }
         return ((Extend) handle).getExtensionLocations().get(index);
     }
 
@@ -607,12 +623,14 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public List<Feature> getFeatures(Object handle) {
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException();
+        }
         return ((Classifier) handle).getFeatures();
     }
 
     public Object getGeneralization(Object handle, Object parent) {
-        throw new NotYetImplementedException();
-
+        return modelImpl.getCoreHelper().getGeneralization(handle, parent);
     }
 
     public Collection<Generalization> getGeneralizations(Object handle) {
@@ -634,10 +652,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getImportedElement(Object elementImport) {
+        if (!(elementImport instanceof ElementImport)) {
+            throw new IllegalArgumentException();
+        }
         return ((ElementImport) elementImport).getImportedElement();
     }
 
     public Collection<PackageableElement> getImportedElements(Object pack) {
+        if (!(pack instanceof Namespace)) {
+            throw new IllegalArgumentException();
+        }
         return ((Namespace) pack).getImportedElements();
     }
 
@@ -652,6 +676,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<Include> getIncludes(Object handle) {
+        if (!(handle instanceof UseCase)) {
+            throw new IllegalArgumentException();
+        }
         return ((UseCase) handle).getIncludes();
     }
 
@@ -718,6 +745,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public int getLower(Object handle) {
+        if (!(handle instanceof MultiplicityElement)) {
+            throw new IllegalArgumentException();
+        }
         return ((MultiplicityElement) handle).getLower();
     }
 
@@ -730,6 +760,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getModel(Object handle) {
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
         return ((Element) handle).getModel();
     }
 
@@ -742,10 +775,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Element getModelElementContainer(Object handle) {
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
         return ((Element) handle).getOwner();
     }
 
     public List<Element> getModelElementContents(Object handle) {
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
         return ((Element) handle).getOwnedElements();
     }
 
@@ -760,6 +799,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getName(Object handle) {
+        if (!(handle instanceof Element) && !(handle instanceof String)) {
+            throw new IllegalArgumentException();
+        }
         if (handle instanceof String) {
             return (String) handle;
         } else if (handle instanceof NamedElement) {
@@ -787,7 +829,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getNextEnd(Object handle) {
-        throw new NotYetImplementedException();
+        if (!isAAssociationEnd(handle)) {
+            throw new IllegalArgumentException();
+        }
+        List l = ((Property) handle).getAssociation().getMemberEnds();
+        int i = l.indexOf(handle);
+        if (i + 1 < l.size()) {
+            return l.get(i + 1);
+        } else {
+            return l.get(0);
+        }
     }
 
     public Object getNodeInstance(Object handle) {
@@ -807,6 +858,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public List<Operation> getOperations(Object handle) {
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException();
+        }
         List<Feature> features = ((Classifier) handle).getFeatures();
         List<Operation> result = new ArrayList<Operation>();
         for (Feature f : features) {
@@ -818,6 +872,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public List<Feature> getOperationsAndReceptions(Object handle) {
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException();
+        }
         List<Feature> features = ((Classifier) handle).getFeatures();
         List<Feature> result = new ArrayList<Feature>();
         for (Feature f : features) {
@@ -829,7 +886,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getOppositeEnd(Object handle) {
-        throw new NotYetImplementedException();
+        return getNextEnd(handle);
     }
 
     public Object getOrdering(Object handle) {
@@ -844,7 +901,13 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getOtherAssociationEnds(Object handle) {
-        throw new NotYetImplementedException();
+        if (!isAAssociationEnd(handle)) {
+            throw new IllegalArgumentException();
+        }
+        List l = new ArrayList(
+                ((Property) handle).getAssociation().getMemberEnds());
+        l.remove(handle);
+        return l;
     }
 
     public Collection getOtherLinkEnds(Object handle) {
@@ -856,10 +919,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<Element> getOwnedElements(Object handle) {
+        if (!(handle instanceof Namespace)) {
+            throw new IllegalArgumentException();
+        }
         return ((Namespace) handle).getOwnedElements();
     }
 
     public Element getOwner(Object handle) {
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
         return ((Element) handle).getOwner();
     }
 
@@ -872,6 +941,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Namespace getPackage(Object handle) {
+        if (!(handle instanceof ElementImport)) {
+            throw new IllegalArgumentException();
+        }
         return ((ElementImport) handle).getImportingNamespace();
     }
 
@@ -901,10 +973,16 @@ class FacadeEUMLImpl implements Facade {
 
     @SuppressWarnings("deprecation")
     public Classifier getParent(Object handle) {
+        if (!(handle instanceof Generalization)) {
+            throw new IllegalArgumentException();
+        }
         return ((Generalization) handle).getGeneral();
     }
 
     public Classifier getGeneral(Object handle) {
+        if (!(handle instanceof Generalization)) {
+            throw new IllegalArgumentException();
+        }
         return ((Generalization) handle).getGeneral();
     }
     
@@ -930,6 +1008,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public List<Property> getQualifiers(Object handle) {
+        if (!(handle instanceof Property)) {
+            throw new IllegalArgumentException();
+        }
         return ((Property) handle).getQualifiers();
     }
 
@@ -1016,6 +1097,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Vertex getSource(Object handle) {
+        if (!(handle instanceof Transition)) {
+            throw new IllegalArgumentException();
+        }
         return ((Transition) handle).getSource();
     }
 
@@ -1030,7 +1114,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getSpecializations(Object handle) {
-        return modelImpl.getCoreHelper().getSubtypes(handle);
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException();
+        }
+        return ((Classifier) handle).getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION);
     }
 
     public String getSpecification(Object handle) {
@@ -1077,6 +1164,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public List<StructuralFeature> getStructuralFeatures(Object handle) {
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException();
+        }
         List<Feature> features = ((Classifier) handle).getFeatures();
         List<StructuralFeature> result = new ArrayList<StructuralFeature>();
         for (Feature f : features) {
@@ -1113,6 +1203,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<NamedElement> getSuppliers(Object handle) {
+        if (!(handle instanceof Dependency)) {
+            throw new IllegalArgumentException();
+        }
         return ((Dependency) handle).getSuppliers();
     }
 
@@ -1154,6 +1247,9 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Vertex getTarget(Object handle) {
+        if (!(handle instanceof Transition)) {
+            throw new IllegalArgumentException();
+        }
         return ((Transition) handle).getTarget();
     }
 
@@ -1201,16 +1297,19 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Trigger getTrigger(Object handle) {
+        if (!(handle instanceof Transition)) {
+            throw new IllegalArgumentException();
+        }
         // TODO: Transitions can have multiple Triggers now?
         // Need API change to handle - tfm
         return ((Transition) handle).getTriggers().get(0);
     }
 
     public Object getType(Object handle) {
-        if (handle instanceof TypedElement) {
-            return ((TypedElement) handle).getType();
+        if (!(handle instanceof TypedElement)) {
+            throw new IllegalArgumentException();
         }
-        throw new NotYetImplementedException();
+        return ((TypedElement) handle).getType();
     }
 
     public Collection getTypedValues(Object handle) {
@@ -1233,10 +1332,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public int getUpper(Object handle) {
+        if (!(handle instanceof MultiplicityElement)) {
+            throw new IllegalArgumentException();
+        }
         return ((MultiplicityElement) handle).getUpper();
     }
 
     public UseCase getUseCase(Object handle) {
+        if (!(handle instanceof ExtensionPoint)) {
+            throw new IllegalArgumentException();
+        }
         return ((ExtensionPoint) handle).getUseCase();
     }
 
@@ -1249,10 +1354,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public VisibilityKind getVisibility(Object handle) {
+        if (!(handle instanceof NamedElement)) {
+            throw new IllegalArgumentException();
+        }
         return ((NamedElement) handle).getVisibility();
     }
 
     public ValueSpecification getWhen(Object target) {
+        if (!(target instanceof TimeEvent)) {
+            throw new IllegalArgumentException();
+        }
         return ((TimeEvent) target).getWhen();
     }
 
@@ -1537,7 +1648,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAInstance(Object handle) {
-        return  handle instanceof InstanceSpecification;
+        return handle instanceof InstanceSpecification;
     }
 
     public boolean isAInteraction(Object handle) {
@@ -2018,9 +2129,45 @@ class FacadeEUMLImpl implements Facade {
         return false;
     }
 
-    public Object lookupIn(Object handle, String name) {
-        throw new NotYetImplementedException();
+    private NamedElement getElementByName(Namespace ns, String name) {
+        if (name == null) {
+            return null;
+        }
+        for (NamedElement e : ns.getOwnedMembers()) {
+            if (e.getName() != null && e.getName().equals(name)) {
+                return e;
+            }
+        }
+        return null;
+    }
+    
+    public Element lookupIn(Object handle, String name) {
+        if (!(handle instanceof Namespace)) {
+            throw new IllegalArgumentException();
+        }
 
+        StringBuffer sb = new StringBuffer(name);
+        Namespace ns = (Namespace) handle;
+
+        for (;;) {
+            int idx = sb.indexOf("::");
+
+            if (idx != -1) {
+                NamedElement subspace = getElementByName(ns, sb.substring(
+                        0, idx));
+                if (subspace instanceof Namespace) {
+                    ns = (Namespace) subspace;
+                    sb.delete(0, idx + 2);
+                    continue;
+                } else {
+                    break;
+                }
+            }
+
+            NamedElement e = getElementByName(ns, sb.toString());
+            return e;
+        }
+        return null;
     }
 
     public String toString(Object modelElement) {
@@ -2038,10 +2185,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isReadOnly(Object handle) {
+        if (!(handle instanceof StructuralFeature)) {
+            throw new IllegalArgumentException();
+        }
         return ((StructuralFeature) handle).isReadOnly();
     }
 
     public boolean isStatic(Object handle) {
+        if (!(handle instanceof Feature)) {
+            throw new IllegalArgumentException();
+        }
         return ((Feature) handle).isStatic();
     }
 
