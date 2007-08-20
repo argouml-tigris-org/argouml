@@ -119,11 +119,12 @@ public class ExplorerTree
         }
 
         /**
-         * @see java.awt.event.MouseListener#mousePressed(
-         *         java.awt.event.MouseEvent)
-         *
          * Brings up the pop-up menu.
+         * 
+         * @see java.awt.event.MouseListener#mousePressed(
+         *      java.awt.event.MouseEvent)
          */
+        @Override
         public void mousePressed(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
@@ -132,16 +133,16 @@ public class ExplorerTree
         }
 
         /**
-         * @see java.awt.event.MouseListener#mouseReleased(
-         *         java.awt.event.MouseEvent)
-         *
          * Brings up the pop-up menu.
-         *
-         * On Windows and Motif platforms, the user brings up a popup menu
-         * by releasing the right mouse button while the cursor is over a
-         * component that is popup-enabled.
          * 
+         * On Windows and Motif platforms, the user brings up a popup menu by
+         * releasing the right mouse button while the cursor is over a component
+         * that is popup-enabled.
+         * 
+         * @see java.awt.event.MouseListener#mouseReleased(
+         *      java.awt.event.MouseEvent)
          */
+        @Override
         public void mouseReleased(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
@@ -150,11 +151,12 @@ public class ExplorerTree
         }
 
         /**
-         * @see java.awt.event.MouseListener#mouseClicked(
-         *         java.awt.event.MouseEvent)
-         *
          * Brings up the pop-up menu.
+         * 
+         * @see java.awt.event.MouseListener#mouseClicked(
+         *      java.awt.event.MouseEvent)
          */
+        @Override
         public void mouseClicked(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
