@@ -309,11 +309,20 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         return o;
     }
 
-    public void delete(Object elem) {
+    public void delete(final Object elem) {
         if (!(elem instanceof EObject)) {
-            throw new IllegalArgumentException("elem must be instance of EObject"); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    "elem must be instance of EObject"); //$NON-NLS-1$
         }
-        EcoreUtil.delete((EObject) elem);
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                EcoreUtil.delete((EObject) elem);
+            }
+        };
+        modelImpl.getEditingDomain().getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run, "Remove from the model the element #",
+                        elem));
     }
     
     public boolean isRemoved(Object o) {
