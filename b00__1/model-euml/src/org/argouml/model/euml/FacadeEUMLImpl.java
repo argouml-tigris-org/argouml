@@ -1432,7 +1432,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAConcurrentRegion(Object handle) {
-        throw new NotYetImplementedException();
+        return false;
     }
 
     public boolean isAConstraint(Object handle) {
