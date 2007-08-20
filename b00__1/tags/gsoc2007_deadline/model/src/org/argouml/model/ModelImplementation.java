@@ -319,5 +319,12 @@ public interface ModelImplementation {
      * @return the CopyHelper
      */
     CopyHelper getCopyHelper();
+    
+    /**
+     * Get the command stack.
+     * 
+     * @return the command stack
+     */
+    CommandStack getCommandStack();
 
 }

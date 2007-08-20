@@ -553,4 +553,13 @@ public final class Model {
     public static CopyHelper getCopyHelper() {
 	return impl.getCopyHelper();
     }
+    
+    /**
+     * Get the command stack.
+     * 
+     * @return the command stack
+     */
+    public static CommandStack getCommandStack() {
+        return impl.getCommandStack();
+    }
 }
