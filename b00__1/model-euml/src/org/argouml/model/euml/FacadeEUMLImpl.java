@@ -730,7 +730,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getModel(Object handle) {
-        throw new NotYetImplementedException();
+        return ((Element) handle).getModel();
     }
 
     public Object getModelElement(Object handle) {

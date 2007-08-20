@@ -70,20 +70,20 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         Listener(PropertyChangeListener listener, String[] properties) {
             this.listener = listener;
             if (properties != null) {
-                props = null;
-                addProperties(properties);
+                setProperties(properties);
             }
         }
 
-        void addProperties(String[] properties) {
+        void setProperties(String[] properties) {
             if (properties == null) {
-                return;
-            }
-            if (props == null) {
-                props = new HashSet<String>();
-            }
-            for (String s : properties) {
-                props.add(s);
+                props = null;
+            } else {
+                if (props == null) {
+                    props = new HashSet<String>();
+                }
+                for (String s : properties) {
+                    props.add(s);
+                }
             }
         }
 
@@ -202,10 +202,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             } else {
                 for (Listener l : list) {
                     if (l.getListener() == listener) {
-                        // TODO: Do we really want to add new properties to the
-                        // already registered listener or we want to replace the
-                        // old properties
-                        l.addProperties(propertyNames);
+                        l.setProperties(propertyNames);
                         found = true;
                         break;
                     }
@@ -449,6 +446,9 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     
     private String mapPropertyName(String name) {
         // TODO: map UML2 names to UML1.x names
+        if (name.equals("ownedAttribute")) {
+            return "feature";
+        }
         return name;
     }
 
