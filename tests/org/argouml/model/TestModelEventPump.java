@@ -33,8 +33,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 
 /**
- * This test case is initially very much a copy of the applicable parts
- * of the TestUmlModelEventPump test case.
+ * Test delivery of Model events.
  *
  * TODO: We have not documented exactly what events arrive and when.
  *
@@ -56,11 +55,11 @@ public class TestModelEventPump extends TestCase {
             // TODO: This log entry tells us what events actually arrive
             // to the listener. I (Linus) suggest we let it in there until
             // all event types and contents are fully documented.
-            System.out.println("Received event " + e.getSource()
-                    	       + "[" + e.getSource().getClass() + "], "
-                    	       + e.getPropertyName() + ", "
-                    	       + e.getOldValue() + ", "
-                    	       + e.getNewValue());
+//            System.out.println("Received event " + e.getSource()
+//                    	       + "[" + e.getSource().getClass() + "], "
+//                    	       + e.getPropertyName() + ", "
+//                    	       + e.getOldValue() + ", "
+//                    	       + e.getNewValue());
             eventcalled = true;
         }
     }
@@ -93,6 +92,7 @@ public class TestModelEventPump extends TestCase {
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         if (elem != null) {
@@ -102,23 +102,23 @@ public class TestModelEventPump extends TestCase {
     }
 
     /**
-     * Tests if a listener that registred for a PropertySet event on
+     * Tests if a listener that registered for a PropertySet event on
      * the class level really receive the event.
      */
     public void testPropertySetClass() {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-						       "isRoot",
+						       "isAbstract",
         					   });
-        Model.getCoreHelper().setRoot(elem, true);
+        Model.getCoreHelper().setAbstract(elem, true);
         Model.getPump().flushModelEvents();
         assertTrue(eventcalled);
     }
 
     /**
-     * Tests if a listener that registred for a Removed event on the
-     * class level really receive the event.
+     * Tests whether a listener that is registered for a remove event on the
+     * class level receives the event.
      */
     public void testRemovedClass() {
         Model.getPump().addClassModelEventListener(listener,
@@ -132,68 +132,70 @@ public class TestModelEventPump extends TestCase {
     }
 
     /**
-     * Tests if a listener that registred for a RoleAdded event on the
-     * class level really receive the event.
+     * Tests whether a listener that is registered for a generalization event on the
+     * class level receives the event when a new generalization is created.
      */
     public void testRoleAddedSetClass() {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-						       "parameter",
+						       "generalization",
         					   });
-        Model.getCoreHelper().addParameter(
+        Model.getCoreFactory().buildGeneralization(
                 elem,
-                Model.getCoreFactory().createParameter());
+                Model.getCoreFactory().createClass());
+
         Model.getPump().flushModelEvents();
         assertTrue(eventcalled);
     }
 
     /**
-     * Tests if a listener that registred for a RoleRemoved event on
+     * Tests if a listener that registered for a RoleRemoved event on
      * the class level really receive the event.
      */
     public void testRoleRemovedSetClass() {
-        Object param = Model.getCoreFactory().createParameter();
-        Model.getCoreHelper().addParameter(elem, param);
-        Model.getPump().addClassModelEventListener(listener,
-                				   elem.getClass(),
-                				   new String[] {
-						       "parameter",
-        					   });
-        Model.getCoreHelper().removeParameter(elem, param);
+        Object gen = Model.getCoreFactory().buildGeneralization(
+                elem, Model.getCoreFactory().createClass());
+        Model.getPump().addClassModelEventListener(
+                listener, elem.getClass(), new String[] { "generalization", });
+        Model.getUmlFactory().delete(gen);
+        
         Model.getPump().flushModelEvents();
         assertTrue(eventcalled);
     }
+    
 
     /**
-     * Tests if a non registred listener does not receive any events.
+     * Tests if a non registered listener does not receive any events.
      */
-    public void testFireNonRegistredListener() {
+    public void testFireNonregisteredListener() {
         Model.getCoreFactory().createClass();
-        Model.getCoreHelper().addParameter(
+        Model.getCoreFactory().buildGeneralization(
                 elem,
-                Model.getCoreFactory().createParameter());
+                Model.getCoreFactory().createClass());
+
         Model.getPump().flushModelEvents();
         assertTrue(!eventcalled);
     }
+    
 
     /**
-     * Tests if a listener that registred for a PropertySet event really
+     * Tests if a listener that registered for a PropertySet event really
      * receive the event.
      */
     public void testPropertySet() {
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
-                				  "isRoot",
+                				  "isAbstract",
         				      });
-        Model.getCoreHelper().setRoot(elem, true);
+        Model.getCoreHelper().setAbstract(elem, true);
         Model.getPump().flushModelEvents();
         assertTrue(eventcalled);
     }
 
     /**
-     * Tests if a listener that registred for a Removed event really
+     * Tests if a listener that registered for a Removed event really
      * receive the event.
      */
     public void testRemoved() {
@@ -208,39 +210,42 @@ public class TestModelEventPump extends TestCase {
     }
 
     /**
-     * Tests if a listener that registred for a RoleAddedSet event really
+     * Tests if a listener that registered for a RoleAddedSet event really
      * receive the event.
      */
     public void testRoleAddedSet() {
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
-                				  "parameter",
+                				  "generalization",
         				      });
-        Model.getCoreHelper().addParameter(
+        Model.getCoreFactory().buildGeneralization(
                 elem,
-                Model.getCoreFactory().createParameter());
+                Model.getCoreFactory().createClass());
+        
         Model.getPump().flushModelEvents();
         assertTrue(eventcalled);
     }
-
+    
     /**
-     * Tests if a listener that registred for a RoleRemovedSet event really
+     * Tests if a listener that registered for a RoleRemovedSet event really
      * receive the event.
      */
     public void testRoleRemovedSet() {
-        Object param = Model.getCoreFactory().createParameter();
-        Model.getCoreHelper().addParameter(elem, param);
+        Object gen = Model.getCoreFactory().buildGeneralization(
+                elem, Model.getCoreFactory().createClass());
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
-                				  "parameter",
+                				  "generalization",
         				      });
-        Model.getCoreHelper().removeParameter(elem, param);
+        Model.getUmlFactory().delete(gen);
+
         Model.getPump().flushModelEvents();
         assertTrue(eventcalled);
     }
 
+    
     /**
      * Tests if a listener to a class that is legally added and then
      * removed, really is removed.
@@ -249,18 +254,21 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-						       "isRoot",
+						       "isAbstract",
         					   });
+        Model.getCoreHelper().setAbstract(elem, true);
+        Model.getPump().flushModelEvents();
+        assertTrue(eventcalled);
+        
+        eventcalled = false;
         Model.getPump().removeClassModelEventListener(listener,
                 				      elem.getClass(),
                 				      new String[] {
-					       		  "isRoot",
+					       		  "isAbstract",
         					      });
-        Model.getCoreHelper().addParameter(
-                elem,
-                Model.getCoreFactory().createParameter());
+        Model.getCoreHelper().setAbstract(elem, false);
         Model.getPump().flushModelEvents();
-        assertTrue(!eventcalled);
+        assertFalse(eventcalled);
     }
 
     /**
@@ -269,14 +277,20 @@ public class TestModelEventPump extends TestCase {
      */
     public void testRemoveLegalListener() {
         String[] map = new String[] {
-            "isRoot",
+            "isAbstract",
         };
         Model.getPump().addModelEventListener(listener, elem, map);
-        Model.getPump().removeModelEventListener(listener, elem, map);
-        Model.getCoreHelper().addParameter(
-                elem,
-                Model.getCoreFactory().createParameter());
+        Model.getCoreHelper().setAbstract(elem, true);
         Model.getPump().flushModelEvents();
-        assertTrue(!eventcalled);
+        assertTrue(eventcalled);
+        
+        eventcalled = false;
+        Model.getPump().removeModelEventListener(listener, elem, map);
+        Model.getCoreHelper().setAbstract(elem, false);
+        Model.getPump().flushModelEvents();
+        assertFalse(eventcalled);
     }
+
+
+
 }
