@@ -27,7 +27,6 @@ package org.argouml.model;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.easymock.MockControl;
@@ -48,7 +47,7 @@ class MockModelImplementation implements ModelImplementation {
     /**
      * A list of all the control objects.
      */
-    private List controls;
+    private List<MockControl> controls;
 
     /**
      * The instance that was just created.
@@ -224,7 +223,7 @@ class MockModelImplementation implements ModelImplementation {
      * Constructor.
      */
     public MockModelImplementation() {
-        controls = new ArrayList();
+        controls = new ArrayList<MockControl>();
         lastCreatedInstance = this;
 
         controlFacade = MockControl.createControl(Facade.class);
@@ -360,9 +359,7 @@ class MockModelImplementation implements ModelImplementation {
      * Reset all mock objects.
      */
     public void reset() {
-        Iterator iter = controls.iterator();
-        while (iter.hasNext()) {
-            MockControl control = (MockControl) iter.next();
+        for (MockControl control : controls) {
             control.reset();
         }
     }
@@ -371,9 +368,7 @@ class MockModelImplementation implements ModelImplementation {
      * Replay all mock objects.
      */
     public void replay() {
-        Iterator iter = controls.iterator();
-        while (iter.hasNext()) {
-            MockControl control = (MockControl) iter.next();
+        for (MockControl control : controls) {
             control.replay();
         }
     }
@@ -381,14 +376,12 @@ class MockModelImplementation implements ModelImplementation {
      * Verify all mock objects.
      */
     public void verify() {
-        Iterator iter = controls.iterator();
-        while (iter.hasNext()) {
-            MockControl control = (MockControl) iter.next();
+        for (MockControl control : controls) {
             control.verify();
         }
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getFacade()
      */
     public Facade getFacade() {
@@ -402,28 +395,28 @@ class MockModelImplementation implements ModelImplementation {
         return controlFacade;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getDiagramInterchangeModel()
      */
     public DiagramInterchangeModel getDiagramInterchangeModel() {
         return (DiagramInterchangeModel) controlDIM.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getModelEventPump()
      */
     public ModelEventPump getModelEventPump() {
         return (ModelEventPump) controlMEP.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getActivityGraphsFactory()
      */
     public ActivityGraphsFactory getActivityGraphsFactory() {
         return (ActivityGraphsFactory) controlAGF.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getActivityGraphsHelper()
      */
     public ActivityGraphsHelper getActivityGraphsHelper() {
@@ -437,42 +430,42 @@ class MockModelImplementation implements ModelImplementation {
         return controlAGH;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCollaborationsFactory()
      */
     public CollaborationsFactory getCollaborationsFactory() {
         return (CollaborationsFactory) controlCF.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCollaborationsHelper()
      */
     public CollaborationsHelper getCollaborationsHelper() {
         return (CollaborationsHelper) controlCH.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCommonBehaviorFactory()
      */
     public CommonBehaviorFactory getCommonBehaviorFactory() {
         return (CommonBehaviorFactory) controlCBF.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCommonBehaviorHelper()
      */
     public CommonBehaviorHelper getCommonBehaviorHelper() {
         return (CommonBehaviorHelper) controlCBH.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCoreFactory()
      */
     public CoreFactory getCoreFactory() {
         return (CoreFactory) controlCoreFactory.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCoreHelper()
      */
     public CoreHelper getCoreHelper() {
@@ -486,169 +479,172 @@ class MockModelImplementation implements ModelImplementation {
         return controlCoreHelper;
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getDataTypesFactory()
      */
     public DataTypesFactory getDataTypesFactory() {
         return (DataTypesFactory) controlDTF.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getDataTypesHelper()
      */
     public DataTypesHelper getDataTypesHelper() {
         return (DataTypesHelper) controlDTH.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getExtensionMechanismsFactory()
      */
     public ExtensionMechanismsFactory getExtensionMechanismsFactory() {
         return (ExtensionMechanismsFactory) controlEMF.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getExtensionMechanismsHelper()
      */
     public ExtensionMechanismsHelper getExtensionMechanismsHelper() {
         return (ExtensionMechanismsHelper) controlEMH.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getModelManagementFactory()
      */
     public ModelManagementFactory getModelManagementFactory() {
         return (ModelManagementFactory) controlMMF.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getModelManagementHelper()
      */
     public ModelManagementHelper getModelManagementHelper() {
         return (ModelManagementHelper) controlMMH.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getStateMachinesFactory()
      */
     public StateMachinesFactory getStateMachinesFactory() {
         return (StateMachinesFactory) controlSMF.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getStateMachinesHelper()
      */
     public StateMachinesHelper getStateMachinesHelper() {
         return (StateMachinesHelper) controlSMH.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getUmlFactory()
      */
     public UmlFactory getUmlFactory() {
         return (UmlFactory) controlUmlFactory.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getUmlHelper()
      */
     public UmlHelper getUmlHelper() {
         return (UmlHelper) controlUmlHelper.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getUseCasesFactory()
      */
     public UseCasesFactory getUseCasesFactory() {
         return (UseCasesFactory) controlUCF.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getUseCasesHelper()
      */
     public UseCasesHelper getUseCasesHelper() {
         return (UseCasesHelper) controlUCH.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getMetaTypes()
      */
     public MetaTypes getMetaTypes() {
         return (MetaTypes) controlMT.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getChangeableKind()
      */
+    @SuppressWarnings("deprecation")
     public ChangeableKind getChangeableKind() {
         return (ChangeableKind) controlCK.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getAggregationKind()
      */
     public AggregationKind getAggregationKind() {
         return (AggregationKind) controlAK.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getPseudostateKind()
      */
     public PseudostateKind getPseudostateKind() {
         return (PseudostateKind) controlPK.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getScopeKind()
      */
+    @SuppressWarnings("deprecation")
     public ScopeKind getScopeKind() {
         return (ScopeKind) controlSK.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getConcurrencyKind()
      */
     public ConcurrencyKind getConcurrencyKind() {
         return (ConcurrencyKind) controlConK.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getDirectionKind()
      */
     public DirectionKind getDirectionKind() {
         return (DirectionKind) controlDK.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getOrderingKind()
      */
     public OrderingKind getOrderingKind() {
         return (OrderingKind) controlOK.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getVisibilityKind()
      */
     public VisibilityKind getVisibilityKind() {
         return (VisibilityKind) controlVK.getMock();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getXmiReader()
      */
     public XmiReader getXmiReader() throws UmlException {
         throw new NotImplementedException();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getXmiWriter(java.lang.Object, java.io.Writer, java.lang.String)
      */
+    @SuppressWarnings("deprecation")
     public XmiWriter getXmiWriter(Object model, Writer writer, String version)
         throws UmlException {
         throw new NotImplementedException();
     }
 
-    /**
+    /*
      * @see org.argouml.model.ModelImplementation#getCopyHelper()
      */
     public CopyHelper getCopyHelper() {
