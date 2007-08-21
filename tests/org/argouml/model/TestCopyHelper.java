@@ -72,6 +72,92 @@ public class TestCopyHelper extends TestCase {
 	h.copy(Model.getCoreFactory().createComment(),
 			Model.getModelManagementFactory().createPackage());
     }
+    
+    /**
+     * Tests CopyHelper without using stereotypes.
+     * <p>
+     * The test is using the tree of objects:
+     * 
+     * <pre>
+     *              model
+     *              /   \
+     *            p1     p2
+     *           /  \
+     *      class_  nestedPackage
+     *                \
+     *                interface_
+     *                  \
+     *                  attribute
+     * </pre>
+     * 
+     * TODO: This test doesn't match the MDR implementation because it expects
+     * the contents of a namespace to be copied.  It is disabled until it can
+     * be fixed to run with both MDR and eUML. - tfm 20070820
+     * 
+     * @author Bogdan
+     */
+    public void xtestCopyHelperBasic() {
+	// create the tree of objects
+	Object model = Model.getModelManagementFactory().createModel();
+	Object p1 = Model.getModelManagementFactory().createPackage();
+	Object p2 = Model.getModelManagementFactory().createPackage();
+	Model.getCoreHelper().addOwnedElement(model, p1);
+	Model.getCoreHelper().addOwnedElement(model, p2);
+	Object nestedPackage = Model.getModelManagementFactory()
+		.createPackage();
+	Model.getCoreHelper().addOwnedElement(p1, nestedPackage);
+	Object class_ = Model.getCoreFactory().createClass();
+	Model.getCoreHelper().addOwnedElement(p1, class_);
+	Object interface_ = Model.getCoreFactory().createInterface();
+	Model.getCoreHelper().addOwnedElement(nestedPackage, interface_);
+	Object attribute = Model.getCoreFactory().createAttribute();
+	Model.getCoreHelper().addOwnedElement(interface_, attribute);
+
+	// copy package p1 into p2 package
+	Object copiedPackage = Model.getCopyHelper().copy(p1, p2);
+
+	// change the structure in p1 package
+	Model.getCoreHelper().addOwnedElement(p1, interface_);
+	Model.getCoreHelper().addOwnedElement(nestedPackage, class_);
+
+	// verify the copied package
+	assertNotNull(copiedPackage);
+	assertTrue(p1.getClass() == copiedPackage.getClass());
+	assertTrue(p1 != copiedPackage);
+	assertTrue(Model.getFacade().getNamespace(copiedPackage) == p2);
+
+	// verify the copied class
+	Collection collection = Model.getCoreHelper().getAllClasses(
+		copiedPackage);
+	assertNotNull(collection);
+	assertTrue(collection.size() == 1);
+	Object copiedClass = collection.iterator().next();
+	assertTrue(Model.getFacade().getNamespace(copiedClass) == copiedPackage);
+	assertTrue(class_ != copiedClass);
+	assertTrue(class_.getClass() == copiedClass.getClass());
+
+	// verify the copied nested package and the copied interface
+	collection = Model.getCoreHelper().getAllInterfaces(copiedPackage);
+	assertNotNull(collection);
+	assertTrue(collection.size() == 1);
+	Object copiedInterface = collection.iterator().next();
+	Object copiedNestedPackage = Model.getFacade().getNamespace(
+		copiedInterface);
+	assertNotNull(copiedNestedPackage);
+	assertTrue(Model.getFacade().getNamespace(copiedNestedPackage) == copiedPackage);
+	assertTrue(nestedPackage != copiedNestedPackage);
+	assertTrue(nestedPackage.getClass() == copiedNestedPackage.getClass());
+	assertTrue(interface_ != copiedInterface);
+	assertTrue(interface_.getClass() == copiedInterface.getClass());
+
+	// verify the copied attribute
+	collection = Model.getFacade().getAttributes(copiedInterface);
+	assertNotNull(collection);
+	assertTrue(collection.size() == 1);
+	Object copiedAttribute = collection.iterator().next();
+	assertTrue(attribute != copiedAttribute);
+	assertTrue(attribute.getClass() == copiedAttribute.getClass());
+    }
 
     /**
      * Testing the copying of a class.
@@ -407,7 +493,7 @@ public class TestCopyHelper extends TestCase {
 	c = helper.copy(s, m2);
 	checkStereotypeCopy(s, c);
 
-	// See if two copies look like copies of eachother
+	// See if two copies look like copies of each other
 	c2 = helper.copy(s, m2);
 	checkStereotypeCopy(c, c2);
     }
