@@ -80,7 +80,6 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.IItemUID;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionDeleteModelElements;
@@ -284,6 +283,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         
@@ -482,12 +482,13 @@ public abstract class FigEdgeModelElement
         return null;
     }
 
-    /*
-     * Returns a {@link SelectionRerouteEdge} object that manages selection
+    /**
+     * Return a {@link SelectionRerouteEdge} object that manages selection
      * and rerouting of the edge.
      *
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionRerouteEdge(this);
     }
@@ -551,6 +552,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
@@ -844,20 +846,24 @@ public abstract class FigEdgeModelElement
 
     /**
      * This method should only be called once for any one Fig instance that
-     * represents a model element (ie not for a FigEdgeNote).
-     * It is called either by the constructor that takes an model element as an
-     * argument or it is called by PGMLStackParser after it has created the Fig
-     * by use of the empty constructor.
-     * The assigned model element (owner) must not change during the lifetime
-     * of the Fig.
-     * TODO: It is planned to refactor so that there is only one Fig
-     * constructor. When this is achieved this method can refactored out.
+     * represents a model element (ie not for a FigEdgeNote). It is called
+     * either by the constructor that takes an model element as an argument or
+     * it is called by PGMLStackParser after it has created the Fig by use of
+     * the empty constructor.
+     * <p>
+     * The assigned model element (owner) must not change during the lifetime of
+     * the Fig.
      * 
      * @param owner the model element that this Fig represents.
      * @throws IllegalArgumentException if the owner given is not a model
-     * element
+     *                 element
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    /*
+     * TODO: It is planned to refactor so that there is only one Fig
+     * constructor. When this is achieved this method can refactored out.
+     */
+    @Override
     public void setOwner(Object owner) {
         if (owner == null) {
             throw new IllegalArgumentException("An owner must be supplied");
@@ -956,6 +962,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
+    @Override
     public void setLayer(Layer lay) {
         super.setLayer(lay);
         getFig().setLayer(lay);
@@ -964,6 +971,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
+    @Override
     public void deleteFromModel() {
         Object own = getOwner();
         if (own != null) {
@@ -1018,6 +1026,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
      */
+    @Override
     public boolean hit(Rectangle r) {
 	// Check if labels etc have been hit
 	// Apparently GEF does require PathItems to be "annotations"
@@ -1073,19 +1082,8 @@ public abstract class FigEdgeModelElement
             fig.removeFromDiagram();
         }
 
-        /* TODO: MVW: Why the next action?
-         * Deleting a fig from 1 diagram should not influence others!
-         * */
-        // GEF does not take into account the multiple diagrams we have
-        // therefore we loop through our diagrams and delete each and every
-        // occurence on our own
-        for (ArgoDiagram diagram : getProject().getDiagramList()) {
-            diagram.damage();
-        }
-
-        /* TODO: MVW: Should we not call damage()
-         * for diagrams AFTER the next step? */
         super.removeFromDiagram();
+        damage();
     }
     
     protected void superRemoveFromDiagram() {
@@ -1095,6 +1093,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#damage()
      */
+    @Override
     public void damage() {
         super.damage();
         getFig().damage();
@@ -1246,20 +1245,21 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
+    @Override
     public void postLoad() {
         ArgoEventPump.removeListener(this);
         ArgoEventPump.addListener(this);
     }
 
     /**
-     * @return Returns the lABEL_FONT.
+     * @return Returns the LABEL_FONT.
      */
     public static Font getLabelFont() {
         return LABEL_FONT;
     }
 
     /**
-     * @return Returns the iTALIC_LABEL_FONT.
+     * @return Returns the ITALIC_LABEL_FONT.
      */
     public static Font getItalicLabelFont() {
         return ITALIC_LABEL_FONT;
