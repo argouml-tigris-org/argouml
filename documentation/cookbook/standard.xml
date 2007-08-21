@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -118,7 +118,7 @@ breaking it out into its own private commented method.
         <para>
 If you are overriding or implementing a method and
 you want to describe specifics of the implementation,
-use the javadoc and reference the overridden or implemented method.
+use the Javadoc and reference the overridden or implemented method.
 </para>
         <para>
 This is not required by the Sun Code Conventions but
@@ -199,7 +199,7 @@ attributes.
 Whenever you have a public or protected method or attribute in a class or
 a public class 
 that you want to 
-remove, rename, move to a different pacakge,
+remove, rename, move to a different package,
 change the signature in an incompatible way, or 
 reduce the visibility for
 you shall always deprecate it first.
@@ -675,7 +675,7 @@ as many people as possible.
 Java is still under development and there are nice features available in
 future releases.
 In ArgoUML we have a plan for how to handle this. It is to always support
-two major releases of Java (currently JDK 1.4 and 1.5).
+two major releases of Java (currently Java5 and Java6).
 We cannot have a dependency that restricts us in this aspect.
 </para>
       </listitem>

@@ -28,7 +28,8 @@
 <chapter id="buildingandtools">
   <title>Building from source</title>
   <para>
-Building ArgoUML from source requires a SVN client, a current JDK (1.4 or later),
+Building ArgoUML from source requires a SVN client,
+a current JDK (Java5 or later),
 and 350MB of free disk space.
 All other tools, including the Ant build tool upon which
 the build is based, are included in the project source tree.
@@ -60,7 +61,7 @@ C:\Work\argouml\src_new&gt;build run
 A newly compiled ArgoUML will open in a new window.
 </para>
     <note>
-      <para>JDK 1.4 or later is required</para>
+      <para>JDK Java5 or later is required</para>
     </note>
     <para>
 That was the compact version for Windows + JDK.
@@ -132,7 +133,7 @@ You can also use an IDE with a built-in subversion client.
         </listitem>
         <listitem>
           <para>
-JDK, at least version 1.4.2 (includes the Java compiler)
+JDK (including the Java compiler)
 </para>
         </listitem>
       </itemizedlist>
@@ -1325,7 +1326,7 @@ When running the tests using
 <command>build tests</command>
 the 
 <constant>java.awt.headless</constant> is set to true.
-This means that awk is started in a mode that disallows actual presentation
+This means that awt is started in a mode that disallows actual presentation
 so no windows will be opened.
 On any attempt to realize a window a JavaHeadlessException is thrown making
 the test case fail.
@@ -1517,7 +1518,7 @@ public class TestUMLAction extends TestCase {
       <sect2>
         <title>Improving a test case</title>
         <para>
-Testcases are better if they are simpler.
+Test cases are better if they are simpler.
 Strive to involve as little part of the ArgoUML code as possible.
 Ideally you are just testing a single class at the time.
 </para>
@@ -1549,13 +1550,13 @@ when creating a JUnit test configuration are based on the
 compile-time dependency settings and we don't have MDR in the
 compile-time dependencies because we want to enforce that there
 is no such dependency.
-Hopefully an upcoming code reorganisation will address this problem.
+Hopefully an upcoming code reorganization will address this problem.
 </para>
             <para>
 The simplest way is to create/run the JUnit test configuration
 and if it fails with a ExceptionInInitializer error open it with
 the Configuration editor, add the argouml-core-model-mdr project
-to the classpath and then run again.
+to the class path and then run again.
 </para>
           </footnote>
 </para>
@@ -2093,22 +2094,17 @@ Compiler compliance level.
       Then select
       Java => Compiler.
 At the right hand side set
-Compiler compliance level: 1.4.
+Compiler compliance level: 5.0.
 </para>
           <para>
-Uncheck Use default complicance settings and set
-Generated .class file compatibility: 1.4,
-Source compatibility: 1.4,
-and Disallow identifiers called enum to Error.
+Check Use default compliance settings.
 </para>
           <para>
-In the ArgoUML project we have decided to keep source compliance to JDK 1.4.
+In the ArgoUML project we have decided to keep source compliance to Java5
 (See <xref linkend="REQ7"/>).
 This setting enables Eclipse to tell you where some
-JDK 1.5
+Java6
 features have crept in.
-At the same time we don't want to introduce identifiers that are in conflict
-with Java5.
 </para>
         </listitem>
 
@@ -2371,7 +2367,7 @@ It has remembered the test case and it is selected.
 
           <listitem>
             <para>
-Add the argouml-core-model-mdr to the classpath.
+Add the argouml-core-model-mdr to the class path.
 </para>
 
             <para>
@@ -2425,7 +2421,7 @@ Maintaining the Configuration.
 </para>
               <para>
 Since we have an Eclipse setup with a mismatch between the 
-compile time dependenies and the run time dependencies
+compile time dependencies and the run time dependencies
 this Configuration contains references to specific jar-files.
 This means a maintenance problem whenever changing version of
 a dependency.
@@ -2468,7 +2464,7 @@ Right-click on the project argouml-core-tests.
 
           <listitem>
             <para>
-On the multilevel popup that opens, select
+On the multilevel pop-up that opens, select
 Run As... JUnit Test or
 Debug As... JUnit Test.
 </para>
@@ -2502,7 +2498,7 @@ The newly created Configuration argouml-core-test is selected.
           </listitem>
           <listitem>
             <para>
-Add the argouml-core-model-mdr project to the classpath.
+Add the argouml-core-model-mdr project to the class path.
 </para>
             <para>
 This is done by:
@@ -2671,7 +2667,7 @@ an argouml developer.
 The machine needs
 Internet access (it is not a small download and upload so at least
 128KB Internet connection to keep the time reasonable &lt; 2 hours),
-the correct version of Java installed (should be a JDK 1.4.2),
+the correct version of Java installed (should be a JDK for Java5),
 SVN installed,
 Unix or Cygwin to be able to run the scripts.
 </para>
@@ -2680,7 +2676,7 @@ Unix or Cygwin to be able to run the scripts.
         <listitem>
           <para>
 The argoumlinstaller and argouml-downloads projects checked out
-alongside eachother.
+alongside each other.
 </para>
 
           <para>
@@ -2799,7 +2795,7 @@ and then, commit the file.
  
       <listitem>
         <para>
-Build ArgoUML and the subprojects,
+Build ArgoUML and the sub-projects,
 and sign the jar files.
 </para>
         <para>

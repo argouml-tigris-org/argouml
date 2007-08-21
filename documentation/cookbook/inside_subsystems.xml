@@ -184,9 +184,9 @@
       <classname>org.argouml.language</classname>. 
       In the case of languages
       other than Java, these classes will come from independent projects and
-      be package separately even though they share this package namespace.
+      be package separately even though they share this package name space.
       <warning>NOTE: There is a potential conflict here if two separately 
-      language implementations use this namespace in an uncoordinated fashion
+      language implementations use this name space in an uncoordinated fashion
       (e.g. two Ruby implementations using org.argouml.language.ruby).
       </warning>
       </para>
@@ -428,7 +428,7 @@
       </para>
       <para>Via an event mechanism this manager makes sure 
         that all objects interested
-        in knowing wether the selection changed are acknowledged.
+        in knowing whether the selection changed are acknowledged.
       </para>
       <para>The TargetManager does not depend on the 
         <classname>org.argouml.ui</classname> package, 
@@ -658,7 +658,7 @@ south: 	TabXXX
           
           <listitem>
             <para> R7: copy diagram to clipboard functionality for
-              windows/java 1.4 users. </para>
+              windows/java5 users. </para>
           </listitem>
           
           <listitem>
