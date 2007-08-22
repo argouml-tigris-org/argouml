@@ -72,12 +72,6 @@ public final class Argo {
 	Configuration.makeKey("init", "splash");
 
     /**
-     * Key to preload classes.
-     */
-    public static final ConfigurationKey KEY_PRELOAD =
-	Configuration.makeKey("init", "preload");
-
-    /**
      * Key to report usage statistics.
      */
     public static final ConfigurationKey KEY_EDEM =

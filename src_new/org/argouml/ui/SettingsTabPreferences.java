@@ -52,7 +52,6 @@ class SettingsTabPreferences extends JPanel
     implements GUISettingsTabInterface {
 
     private JCheckBox chkSplash;
-    private JCheckBox chkPreload;
     private JCheckBox chkReloadRecent;
     private JCheckBox chkStripDiagrams;
     private JTextField defaultProfile;
@@ -78,11 +77,6 @@ class SettingsTabPreferences extends JPanel
 	JCheckBox j = new JCheckBox(Translator.localize("label.splash"));
         chkSplash = j;
 	top.add(chkSplash, checkConstraints);
-
-	checkConstraints.gridy++;
-        JCheckBox j1 = new JCheckBox(Translator.localize("label.preload"));
-        chkPreload = j1;
- 	top.add(chkPreload, checkConstraints);
 
 	checkConstraints.gridy++;
         JCheckBox j2 =
@@ -114,8 +108,6 @@ class SettingsTabPreferences extends JPanel
      */
     public void handleSettingsTabRefresh() {
         chkSplash.setSelected(Configuration.getBoolean(Argo.KEY_SPLASH, true));
-        chkPreload.setSelected(Configuration.getBoolean(Argo.KEY_PRELOAD,
-                true));
         chkReloadRecent.setSelected(
 		Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT,
 					 false));
@@ -131,7 +123,6 @@ class SettingsTabPreferences extends JPanel
      */
     public void handleSettingsTabSave() {
         Configuration.setBoolean(Argo.KEY_SPLASH, chkSplash.isSelected());
-        Configuration.setBoolean(Argo.KEY_PRELOAD, chkPreload.isSelected());
         Configuration.setBoolean(Argo.KEY_RELOAD_RECENT_PROJECT,
 				 chkReloadRecent.isSelected());
         Configuration.setBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS,
