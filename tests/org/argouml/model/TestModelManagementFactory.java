@@ -55,7 +55,16 @@ public class TestModelManagementFactory extends TestCase {
      * @return Returns the allModelElements.
      */
     protected static String[] getAllModelElements() {
-        return allModelElements;
+        if ("1.4".equals(Model.getFacade().getUmlVersion())) {
+            return allModelElements;
+        } else {
+            // Subsystem has been removed from UML 2.x
+            String[] array = new String[allModelElements.length - 1];
+            for (int i = 0; i < array.length; i++) {
+                array[i] = allModelElements[i];
+            }
+            return array;
+        }
     }
 
     /**
@@ -68,6 +77,7 @@ public class TestModelManagementFactory extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() {
         InitializeModel.initializeDefault();
     }

@@ -38,7 +38,9 @@ import junit.framework.TestCase;
 public class TestCoreFactory extends TestCase {
 
     /**
-     * The model elements to test.
+     * The UML 1.4 model elements to test.
+     * 
+     * TODO: This needs to be updated with a version for UML 2.x.
      */
     private static String[] allModelElements =
     {
@@ -118,6 +120,19 @@ public class TestCoreFactory extends TestCase {
         c.remove("BehavioralFeature");
         c.remove("Relationship");
         c.remove("PresentationElement");
+        
+        // TODO: This is temporary.  We need a new list for UML 2.x
+        // The following UML 1.4 elements are not in UML 2.x
+        if (!"1.4".equals(Model.getFacade().getUmlVersion())) {
+            c.remove("AssociationEnd");
+            c.remove("Attribute");
+            c.remove("Binding");
+            c.remove("ElementResidence");
+            c.remove("Flow");
+            c.remove("Method");
+            c.remove("Permission");
+            c.remove("TemplateArgument");
+        }
         return c;
     }
     
