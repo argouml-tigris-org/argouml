@@ -75,8 +75,8 @@ This is designed to work in two different environments:
     <!-- Define a few places we can find Junit -->
     <path id="junit.classpath">
       <pathelement location="${junit.jar.path}"/>
-      <pathelement location="${argo.tools.dir}/junit-3.8.1/junit.jar"/>
-      <pathelement location="${argo.root.dir}/tools/junit-3.8.1/junit.jar"/>
+      <pathelement location="${argo.tools.dir}/junit-3.8.2/junit.jar"/>
+      <pathelement location="${argo.root.dir}/tools/junit-3.8.2/junit.jar"/>
     </path>
 
     <path id="run.classpath">
