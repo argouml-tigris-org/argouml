@@ -226,6 +226,12 @@ class ArgoParser extends SAXParserBase {
         case ArgoTokenTable.TOKEN_DEFAULTSHADOWWIDTH:
             handleDefaultShadowWidth(e);
             break;
+        case ArgoTokenTable.TOKEN_FONTNAME:
+            handleFontName(e);
+            break;
+        case ArgoTokenTable.TOKEN_FONTSIZE:
+            handleFontSize(e);
+            break;
         case ArgoTokenTable.TOKEN_GENERATION_OUTPUT_DIR:
             handleGenerationOutputDir(e);
             break;
@@ -413,6 +419,26 @@ class ArgoParser extends SAXParserBase {
     protected void handleDefaultShadowWidth(XMLElement e) {
         String dsw = e.getText().trim();
         ps.setDefaultShadowWidth(dsw);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleFontName(XMLElement e) {
+        String dsw = e.getText().trim();
+        ps.setFontName(dsw);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleFontSize(XMLElement e) {
+        String dsw = e.getText().trim();
+        try {
+            ps.setFontSize(Integer.parseInt(dsw));
+        } catch (NumberFormatException e1) {
+            LOG.error("NumberFormatException while parsing Font Size", e1);
+        }
     }
 
     /**

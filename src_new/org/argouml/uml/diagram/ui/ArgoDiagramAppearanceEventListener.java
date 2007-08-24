@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -23,39 +23,21 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.diagram.ui;
+import org.argouml.application.api.ArgoEventListener;
 
-import java.awt.Color;
-
-import org.tigris.gef.presentation.FigText;
-
-/**
- * A MultiLine FigText to provide consistency across Figs displaying multiple
- * lines of text.
- * By default -
- * <ul>
- * <li>Text is black
- * <li>The display area is transparent
- * <li>Text is left justified
- * <li>There is no line border
- * </ul>
+/** 
+ * An interface that objects interested in ArgoDiagramAppearanceEvent
+ *  notifications must extend.
  *
- * @author Bob Tarling
+ *  @author Aleksandar
  */
-public class FigMultiLineText extends ArgoFigText {
 
-    /*
-     * @see org.tigris.gef.presentation.FigText#FigText(
-     *         int, int, int, int, boolean)
+public interface ArgoDiagramAppearanceEventListener extends ArgoEventListener {
+
+    /**
+     * Invoked when any aspect of the notation has been changed.
+     * @param e <code>ArgoNotationEvent</code> describing the change.
      */
-    public FigMultiLineText(int x, int y, int w, int h, boolean expandOnly) {
-        super(x, y, w, h, expandOnly);
-        setFont(getProject().getProjectSettings().getFontPlain());
-        setTextColor(Color.black);
-        setReturnAction(FigText.INSERT);
-        setLineSeparator("\n");
-        setTabAction(FigText.END_EDITING);
-        setJustification(FigText.JUSTIFY_LEFT);
-        setFilled(false);
-        setLineWidth(0);
-    }
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e);
 }
+

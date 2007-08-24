@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 
@@ -83,7 +84,6 @@ public abstract class FigState extends FigStateVertex {
                     getInitialY() + 2 + 21 + 4,
                     getInitialWidth() - 4,
                     getInitialHeight() - (getInitialY() + 2 + 21 + 4));
-        internal.setFont(getLabelFont());
         internal.setTextColor(Color.black);
         internal.setLineWidth(0);
         internal.setFilled(false);
@@ -226,6 +226,17 @@ public abstract class FigState extends FigStateVertex {
             notationProviderBody.parse(getOwner(), ft.getText());
             ft.setText(notationProviderBody.toString(getOwner(), null));
         }
+    }
+
+    /**
+     * 
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateFont()
+     */
+    @Override
+    protected void updateFont() {
+        super.updateFont();
+        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        internal.setFont(f);
     }
 
 }

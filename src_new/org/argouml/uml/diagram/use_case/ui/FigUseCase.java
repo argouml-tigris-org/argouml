@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -1260,14 +1261,8 @@ public class FigUseCase extends FigNodeModelElement
         // Now things to do with the use case itself. Put the use case in
         // italics if it is abstract, otherwise ordinary font.
 
-        if (Model.getFacade().isAbstract(useCase)) {
-            getNameFig().setFont(getItalicLabelFont());
-        } else {
-            getNameFig().setFont(getLabelFont());
-        }
         super.updateNameText();
         setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
-
     }
 
     /*

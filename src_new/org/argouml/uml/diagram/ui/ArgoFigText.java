@@ -24,6 +24,9 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Font;
+import java.beans.PropertyChangeEvent;
+
 import javax.management.ListenerNotFoundException;
 import javax.management.MBeanNotificationInfo;
 import javax.management.Notification;
@@ -34,6 +37,7 @@ import javax.management.NotificationListener;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -135,9 +139,76 @@ public class ArgoFigText extends FigText
                 layer = (LayerPerspective) lay;
             }
         }
+        if (layer == null) {
+            return null;
+        }
         UMLMutableGraphSupport gm = 
             (UMLMutableGraphSupport) layer.getGraphModel();
         return gm.getProject();
+    }
+
+    /**
+     * Handles diagram font changing.
+     * @param e the event
+     * @see org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent)
+     */
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+        updateFont();
+        setBounds(getBounds());
+        damage();
+    }
+
+    /**
+     * This function should, for all FigTexts, 
+     * recalculate the font-style (plain, bold, italic, bold/italic),
+     * and apply it by calling FigText.setFont().
+     */
+    protected void updateFont() {
+        int style = getFigFontStyle();
+        Project p = getProject();
+        if (p != null) {
+            Font f = getProject().getProjectSettings().getFont(style);
+            setFont(f);
+        }
+    }
+
+    /**
+     * Determines the font style based on the UML model. 
+     * Overrule this in Figs that have to show bold or italic based on the 
+     * UML model they represent. 
+     * E.g. abstract classes show their name in italic.
+     * 
+     * @return the font style for the nameFig.
+     */
+    protected int getFigFontStyle() {
+        return Font.PLAIN;
+    }
+
+    @Override
+    public void setOwner(Object own) {
+        super.setOwner(own);
+        updateListeners(null, own);
+    }
+    
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+        if (oldOwner == newOwner) {
+            return;
+        }
+        if (oldOwner != null) {
+            Model.getPump().removeModelEventListener(this, oldOwner);
+        }
+        if (newOwner != null) {
+            Model.getPump().addModelEventListener(this, newOwner, "remove");
+        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+        super.propertyChange(pce);
+        if ("remove".equals(pce.getPropertyName()) 
+                && (pce.getSource() == getOwner())) {
+            deleteFromModel();
+        }
     }
 
 }

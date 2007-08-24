@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -138,33 +139,11 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         damage();
     }
     
-    /**
-     * Updates the name if modelchanged receives an "isAbstract" event.
-     * 
-     * TODO:  This really belongs in (the non-existent) FigGeneralizableElement.
-     */
-    protected void updateAbstract() {
-        Rectangle rect = getBounds();
-        if (getOwner() == null) {
-            return;
-        }
-        Object cls = getOwner();
-        if (Model.getFacade().isAbstract(cls)) {
-            getNameFig().setFont(getItalicLabelFont());
-        } else {
-            getNameFig().setFont(getLabelFont());
-        }
-        super.updateNameText();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-    }
-
-
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
         updateOperations();
-        updateAbstract();
         super.renderingChanged();
     }
 
@@ -180,9 +159,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
                 // of text which represents the element here, but I'm not sure
                 // how to do that, so redraw the whole compartment. - tfm
                 updateOperations();
-            } else if (source.equals(getOwner()) 
-                    && "isAbstract".equals(mee.getPropertyName())) {
-                updateAbstract();
             }
         } else if (mee instanceof AssociationChangeEvent 
                 && getOwner().equals(mee.getSource())) {

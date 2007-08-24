@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
@@ -76,15 +77,11 @@ public class FigNodeAssociation extends FigNodeModelElement {
         setEditable(false);
         setBigPort(new FigDiamond(0, 0, 70, 70, Color.cyan, Color.cyan));
         head = new FigDiamond(0, 0, 70, 70, Color.black, Color.white);
-        // Add the following to allow name editing on the diagram
-        setNameFig(new FigText(X + 10, Y + 22, 0, 21, true));
+
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
-        getNameFig().setFont(getLabelFont());
-        getNameFig().setTextColor(Color.black);
-        getNameFig().setReturnAction(FigText.END_EDITING);
-        getNameFig().setTabAction(FigText.END_EDITING);
-        getNameFig().setJustificationByName("center");
+//      The following does not seem to work - centered the Fig instead.
+//        getNameFig().setJustificationByName("center");
 
         getStereotypeFig().setBounds(X + 10, Y + 22, 0, 21);
         getStereotypeFig().setFilled(false);
@@ -133,10 +130,6 @@ public class FigNodeAssociation extends FigNodeModelElement {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee == null || "isAbstract".equals(mee.getPropertyName())) {
-            updateAbstract();
-            damage();
-        }
         if ("connection".equals(mee.getPropertyName())) {
             if (mee instanceof RemoveAssociationEvent) {
                 Object association =
@@ -182,24 +175,6 @@ public class FigNodeAssociation extends FigNodeModelElement {
         });
     }
     
-    /**
-     * Updates the name if modelchanged receives an "isAbstract" event.
-     */
-    protected void updateAbstract() {
-        Rectangle rect = getBounds();
-        if (getOwner() == null) {
-            return;
-        }
-        Object assoc =  getOwner();
-        if (Model.getFacade().isAbstract(assoc)) {
-            getNameFig().setFont(getItalicLabelFont());
-        } else {
-            getNameFig().setFont(getLabelFont());
-        }
-        super.updateNameText();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-    }
-
     /*
      * Makes sure that the edges stick to the outline of the fig.
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
@@ -266,16 +241,52 @@ public class FigNodeAssociation extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setBoundsImpl(final int x, final int y, 
+            final int w, final int h) {
         Rectangle oldBounds = getBounds();
-        getBigPort().setBounds(x, y, w, h);
+
+        Rectangle nm = getNameFig().getBounds();
+        /* Center the NameFig, since center justification 
+         * does not seem to work. */
+        getNameFig().setBounds(x + (w - nm.width) / 2, 
+                y + h / 2 - nm.height / 2, 
+                nm.width, nm.height);
+        
+        if (getStereotypeFig().isVisible()) {
+            /* TODO: Test this. */
+            getStereotypeFig().setBounds(x, y + h / 2 - 20, w, 15);
+            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
+            getStereotypeFig().setBounds(
+                    x,
+                    y,
+                    w,
+                    stereotypeHeight);
+        }
+        
         head.setBounds(x, y, w, h);
-        getNameFig().setBounds(x, y + h / 2 - 8, w, 15);
-        getStereotypeFig().setBounds(x, y + h / 2 - 20, w, 15);
+        getBigPort().setBounds(x, y, w, h);
+
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         firePropChange("bounds", oldBounds, getBounds());
         updateEdges();
     }
+
+    @Override
+    public Dimension getMinimumSize() {
+        Dimension aSize = getNameFig().getMinimumSize();
+        if (getStereotypeFig().isVisible()) {
+            Dimension stereoMin = getStereotypeFig().getMinimumSize();
+            aSize.width = Math.max(aSize.width, stereoMin.width);
+            aSize.height += stereoMin.height;
+        }
+        aSize.width = Math.max(70, aSize.width);
+        int size = Math.max(aSize.width, aSize.height);
+        aSize.width = size;
+        aSize.height = size;
+        
+        return aSize;
+    }
+
 } /* end class FigNodeAssociation */
 
 

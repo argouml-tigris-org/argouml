@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -24,38 +24,31 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
+import java.awt.Font;
 
-import org.tigris.gef.presentation.FigText;
+import org.argouml.model.Model;
 
 /**
- * A MultiLine FigText to provide consistency across Figs displaying multiple
- * lines of text.
- * By default -
- * <ul>
- * <li>Text is black
- * <li>The display area is transparent
- * <li>Text is left justified
- * <li>There is no line border
- * </ul>
+ * A FigSingleLineText that represents the name of a modelelement,
+ * which handles italic font if the element is abstract. <p>
+ * 
+ * For this to work, the owner of this FigText needs to be set!
  *
- * @author Bob Tarling
+ * @author Michiel
  */
-public class FigMultiLineText extends ArgoFigText {
+class FigNameWithAbstract extends FigSingleLineText {
 
-    /*
-     * @see org.tigris.gef.presentation.FigText#FigText(
-     *         int, int, int, int, boolean)
-     */
-    public FigMultiLineText(int x, int y, int w, int h, boolean expandOnly) {
+    public FigNameWithAbstract(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
-        setFont(getProject().getProjectSettings().getFontPlain());
-        setTextColor(Color.black);
-        setReturnAction(FigText.INSERT);
-        setLineSeparator("\n");
-        setTabAction(FigText.END_EDITING);
-        setJustification(FigText.JUSTIFY_LEFT);
-        setFilled(false);
-        setLineWidth(0);
+    }
+
+    @Override
+    protected int getFigFontStyle() {
+        int style = 0;
+        if (getOwner() != null) {
+            style = Model.getFacade().isAbstract(getOwner()) 
+                ? Font.ITALIC : Font.PLAIN;
+        }
+        return super.getFigFontStyle() | style;
     }
 }

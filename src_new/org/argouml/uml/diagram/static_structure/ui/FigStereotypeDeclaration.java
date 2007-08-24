@@ -251,17 +251,6 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         return fc;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
-     */
-    public void renderingChanged() {
-        if (getOwner() != null) {
-            // TODO: Update Tags and Constraints
-            updateAbstract();
-        }
-        super.renderingChanged();
-    }
-
     /**
      * Handles changes to the model. Takes into account the event that
      * occurred. If you need to update the whole fig, consider using
@@ -298,25 +287,5 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
             }
             /* TODO: constraints, ... */
         }
-    }
-    
-    /**
-     * Updates the name if modelchanged receives an "isAbstract" event.
-     * TODO: method has been copied from FigClass. We need something common to
-     * FigGeneralizableElement or a decorator. (mk)
-     */
-    protected void updateAbstract() {
-        Rectangle rect = getBounds();
-        if (getOwner() == null) {
-            return;
-        }
-        Object cls =  getOwner();
-        if (Model.getFacade().isAbstract(cls)) {
-            getNameFig().setFont(getItalicLabelFont());
-        } else {
-            getNameFig().setFont(getLabelFont());
-        }
-        super.updateNameText();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 } /* end class FigClass */

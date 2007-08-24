@@ -24,6 +24,7 @@
 
 package org.argouml.kernel;
 
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.application.api.Argo;
@@ -35,6 +36,8 @@ import org.argouml.configuration.ConfigurationKey;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.ui.DiagramAppearance;
+import org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
@@ -65,6 +68,15 @@ public class ProjectSettings {
     private boolean showStereotypes;
     private boolean showSingularMultiplicities;
     private int defaultShadowWidth;
+    
+    /* Diagram appearance settings with project scope: */
+    private String fontName;
+    private int fontSize;
+    /* Keep some fonts around depending on the above settings: */
+    private Font fontPlain;
+    private Font fontItalic;
+    private Font fontBold;
+    private Font fontBoldItalic;
     
     /* Generation preferences: */
     private String headerComment =
@@ -115,6 +127,14 @@ public class ProjectSettings {
         defaultShadowWidth = Configuration.getInteger(
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
 
+        /*
+         * Diagram appearance settings:
+         */
+        fontName = DiagramAppearance.getInstance().getConfiguredFontName();
+        fontSize = Configuration.getInteger(DiagramAppearance.KEY_FONT_SIZE);
+        /* And initialise some fonts: */
+        initFonts();
+
         /* Generation preferences: */
         if (System.getProperty("file.separator").equals("/")) {
             generationOutputDir = "/tmp";
@@ -142,6 +162,8 @@ public class ProjectSettings {
         setShowStereotypes(getShowStereotypesValue());
         setShowSingularMultiplicities(getShowSingularMultiplicitiesValue());
         setDefaultShadowWidth(getDefaultShadowWidthValue());
+        setFontName(getFontName());
+        setFontSize(getFontSize());
     }
 
     /**
@@ -174,13 +196,13 @@ public class ProjectSettings {
             public void redo() {
                 notationLanguage = newLanguage;
                 NotationProviderFactory2.setCurrentLanguage(newLanguage);
-                fireEvent(key, oldLanguage, newLanguage);
+                fireNotationEvent(key, oldLanguage, newLanguage);
             }
 
             public void undo() {
                 notationLanguage = oldLanguage;
                 NotationProviderFactory2.setCurrentLanguage(oldLanguage);
-                fireEvent(key, newLanguage, oldLanguage);
+                fireNotationEvent(key, newLanguage, oldLanguage);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -231,12 +253,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showBoldNames = showem;
-                fireEvent(key, !showem, showem);
+                fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showBoldNames = !showem;
-                fireEvent(key, showem, !showem);
+                fireNotationEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -281,12 +303,12 @@ public class ProjectSettings {
 
             public void redo() {
                 useGuillemots = showem;
-                fireEvent(key, !showem, showem);
+                fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
                 useGuillemots = !showem;
-                fireEvent(key, showem, !showem);
+                fireNotationEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -344,12 +366,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showVisibility = showem;
-                fireEvent(key, !showem, showem);
+                fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showVisibility = !showem;
-                fireEvent(key, showem, !showem);
+                fireNotationEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -393,12 +415,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showMultiplicity = showem;
-                fireEvent(key, !showem, showem);
+                fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showMultiplicity = !showem;
-                fireEvent(key, showem, !showem);
+                fireNotationEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -438,17 +460,17 @@ public class ProjectSettings {
         if (showInitialValue == showem) return;
 
         Memento memento = new Memento() {
-            private final ConfigurationKey key = 
+            private final ConfigurationKey key =
                 Notation.KEY_SHOW_INITIAL_VALUE;
 
             public void redo() {
                 showInitialValue = showem;
-                fireEvent(key, !showem, showem);
+                fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showInitialValue = !showem;
-                fireEvent(key, showem, !showem);
+                fireNotationEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -488,17 +510,17 @@ public class ProjectSettings {
         if (showProperties == showem) return;
 
         Memento memento = new Memento() {
-            private final ConfigurationKey key = 
+            private final ConfigurationKey key =
                 Notation.KEY_SHOW_PROPERTIES;
 
             public void redo() {
                 showProperties = showem;
-                fireEvent(key, !showem, showem);
+                fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showProperties = !showem;
-                fireEvent(key, showem, !showem);
+                fireNotationEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -542,12 +564,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showTypes = showem;
-                fireEvent(key, !showem, showem);
+                fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showTypes = !showem;
-                fireEvent(key, showem, !showem);
+                fireNotationEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -592,12 +614,12 @@ public class ProjectSettings {
 
             public void redo() {
                 showStereotypes = showem;
-                fireEvent(key, !showem, showem);
+                fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showStereotypes = !showem;
-                fireEvent(key, showem, !showem);
+                fireNotationEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -637,17 +659,17 @@ public class ProjectSettings {
         if (showSingularMultiplicities == showem) return;
 
         Memento memento = new Memento() {
-            private final ConfigurationKey key = 
+            private final ConfigurationKey key =
                 Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES;
 
             public void redo() {
                 showSingularMultiplicities = showem;
-                fireEvent(key, !showem, showem);
+                fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
                 showSingularMultiplicities = !showem;
-                fireEvent(key, showem, !showem);
+                fireNotationEvent(key, showem, !showem);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -682,17 +704,17 @@ public class ProjectSettings {
         final int oldValue = defaultShadowWidth;
 
         Memento memento = new Memento() {
-            private final ConfigurationKey key = 
+            private final ConfigurationKey key =
                 Notation.KEY_DEFAULT_SHADOW_WIDTH;
 
             public void redo() {
                 defaultShadowWidth = newWidth;
-                fireEvent(key, oldValue, newWidth);
+                fireNotationEvent(key, oldValue, newWidth);
             }
 
             public void undo() {
                 defaultShadowWidth = oldValue;
-                fireEvent(key, newWidth, oldValue);
+                fireNotationEvent(key, newWidth, oldValue);
             }
         };
         if (UndoManager.getInstance().isGenerateMementos()) {
@@ -744,8 +766,10 @@ public class ProjectSettings {
      * @param oldValue the old value
      * @param newValue the new value
      */
-    private void fireEvent(ConfigurationKey key, int oldValue, int newValue) {
-        fireEvent(key, Integer.toString(oldValue), Integer.toString(newValue));
+    private void fireNotationEvent(
+            ConfigurationKey key, int oldValue, int newValue) {
+        fireNotationEvent(key, Integer.toString(oldValue), 
+                Integer.toString(newValue));
     }
 
     /**
@@ -755,11 +779,12 @@ public class ProjectSettings {
      * @param oldValue the old value
      * @param newValue the new value
      */
-    private void fireEvent(ConfigurationKey key, boolean oldValue,
+    private void fireNotationEvent(ConfigurationKey key, boolean oldValue,
             boolean newValue) {
-        fireEvent(key, Boolean.toString(oldValue), Boolean.toString(newValue));
+        fireNotationEvent(key, Boolean.toString(oldValue), 
+                Boolean.toString(newValue));
     }
-    
+
     /**
      * Convenience methods to fire notation configuration change events.
      *
@@ -767,10 +792,171 @@ public class ProjectSettings {
      * @param oldValue the old value
      * @param newValue the new value
      */
-    private void fireEvent(ConfigurationKey key, String oldValue,
+    private void fireNotationEvent(ConfigurationKey key, String oldValue,
             String newValue) {
         ArgoEventPump.fireEvent(new ArgoNotationEvent(
                 ArgoEventTypes.NOTATION_CHANGED, new PropertyChangeEvent(this,
                         key.getKey(), oldValue, newValue)));
+    }
+
+    /**
+     * Convenience methods to fire diagram appearance 
+     * configuration change events.
+     *
+     * @param key the ConfigurationKey that is related to the change
+     * @param oldValue the old value
+     * @param newValue the new value
+     */
+    private void fireDiagramAppearanceEvent(ConfigurationKey key, int oldValue,
+            int newValue) {
+        fireDiagramAppearanceEvent(key, Integer.toString(oldValue), Integer
+                .toString(newValue));
+    }
+
+    /**
+     * Convenience methods to fire diagram appearance 
+     * configuration change events.
+     *
+     * @param key the ConfigurationKey that is related to the change
+     * @param oldValue the old value
+     * @param newValue the new value
+     */
+    private void fireDiagramAppearanceEvent(ConfigurationKey key,
+            boolean oldValue, boolean newValue) {
+        fireDiagramAppearanceEvent(key, Boolean.toString(oldValue), Boolean
+                .toString(newValue));
+    }
+
+    /**
+     * Convenience methods to fire diagram appearance 
+     * configuration change events.
+     *
+     * @param key the ConfigurationKey that is related to the change
+     * @param oldValue the old value
+     * @param newValue the new value
+     */
+    private void fireDiagramAppearanceEvent(ConfigurationKey key,
+            String oldValue, String newValue) {
+        ArgoEventPump.fireEvent(new ArgoDiagramAppearanceEvent(
+                ArgoEventTypes.DIAGRAM_FONT_CHANGED, new PropertyChangeEvent(
+                        this, key.getKey(), oldValue, newValue)));
+    }
+
+    /**
+     * Diagram font name. <p>
+     * 
+     * Used by "argo.tee".
+     * 
+     * @return diagram font name.
+     */
+    public String getFontName() {
+        return fontName;
+    }
+
+    /**
+     * Diagram font name.
+     * @param newFontName diagram font name.
+     */
+    public void setFontName(String newFontName) {
+        String old = fontName;
+        fontName = newFontName;
+        initFonts();
+
+        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_NAME, old,
+                this.fontName);
+    }
+
+    /**
+     * Diagram font size. <p>
+     * 
+     * Used by "argo.tee".
+     * 
+     * @return diagram font size.
+     */
+    public int getFontSize() {
+        return fontSize;
+    }
+
+    /**
+     * Diagram font size.
+     * @param newFontSize diagram font size.
+     */
+    public void setFontSize(int newFontSize) {
+        int old = fontSize;
+        fontSize = newFontSize;
+        initFonts();
+
+        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_SIZE, old,
+                this.fontSize);
+    }
+
+    private void initFonts() {
+        fontPlain = new Font(fontName, Font.PLAIN, fontSize);
+        fontItalic = new Font(fontName, Font.ITALIC, fontSize + 2);
+        fontBold = new Font(fontName, Font.BOLD, fontSize + 2);
+        fontBoldItalic = new Font(fontName, 
+                Font.BOLD | Font.ITALIC, fontSize + 2);
+    }
+
+    /**
+     * Returns the Plain diagram font which corresponds 
+     * to selected parameters.
+     * 
+     * @return plain diagram font
+     */
+    public Font getFontPlain() {
+        return fontPlain;
+    }
+
+    /**
+     * Returns the Italic diagram font which corresponds 
+     * to selected parameters.
+     * 
+     * @return italic diagram font
+     */
+    public Font getFontItalic() {
+        return fontItalic;
+    }
+
+    /**
+     * Returns the Bold diagram font which corresponds 
+     * to selected parameters.
+     * 
+     * @return bold diagram font
+     */
+    public Font getFontBold() {
+        return fontBold;
+    }
+
+    /**
+     * Returns the Bold-Italic diagram font which corresponds 
+     * to selected parameters.
+     * 
+     * @return bold-italic diagram font
+     */
+    public Font getFontBoldItalic() {
+        return fontBoldItalic;
+    }
+    
+    /**
+     * Utility function to convert a font style integer into a Font.
+     * 
+     * @param fontStyle the style; see the predefined constants in Font
+     * @return the Font that corresponds to the style
+     */
+    public Font getFont(int fontStyle) {
+        if ((fontStyle & Font.ITALIC) != 0) {
+            if ((fontStyle & Font.BOLD) != 0) {
+                return fontBoldItalic;
+            } else {
+                return fontItalic;
+            }
+        } else {
+            if ((fontStyle & Font.BOLD) != 0) {
+                return fontBold;
+            } else {
+                return fontPlain;
+            }
+        }
     }
 }

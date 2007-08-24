@@ -25,9 +25,11 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
@@ -62,7 +64,6 @@ public class FigGeneralization extends FigEdgeModelElement {
     public FigGeneralization() {
         // UML spec for Generalizations doesn't call for name or stereotype
 
-	discriminator.setFont(getLabelFont());
 	discriminator.setFilled(false);
 	discriminator.setLineWidth(0);
 	discriminator.setReturnAction(FigText.END_EDITING);
@@ -140,6 +141,11 @@ public class FigGeneralization extends FigEdgeModelElement {
   	if (disc == null) {
 	    disc = "";
   	}
+        Project p = getProject();
+        if (p != null) {
+            Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+            discriminator.setFont(f);
+        }
   	discriminator.setText(disc);
     }
 

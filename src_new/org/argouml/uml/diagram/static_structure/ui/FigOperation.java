@@ -24,11 +24,11 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -52,7 +52,7 @@ public class FigOperation extends FigFeature {
         super.setOwner(owner);
 
         if (owner != null) {
-            updateAbstract(Model.getFacade().isAbstract(getOwner()));
+            diagramFontChanged(null);
             Model.getPump().addModelEventListener(this, owner, "isAbstract");
         }
     }
@@ -72,22 +72,17 @@ public class FigOperation extends FigFeature {
     public void propertyChange(PropertyChangeEvent pce) {
         super.propertyChange(pce);
         if ("isAbstract".equals(pce.getPropertyName())) {
-            if (pce.getNewValue() instanceof Boolean)
-                updateAbstract(
-                        ((Boolean) pce.getNewValue()).booleanValue());    
+            diagramFontChanged(null);    
         }
     }
 
     /**
      * If the Operation is abstract, then the text will be set to italics.
-     * 
-     * @param isAbstract true will cause italic text
      */
-    protected void updateAbstract(boolean isAbstract) {
-        if (isAbstract) {
-            setFont(FigNodeModelElement.getItalicLabelFont());
-        } else {
-            setFont(FigNodeModelElement.getLabelFont());
-        }
+    @Override
+    protected int getFigFontStyle() {
+        return Model.getFacade().isAbstract(getOwner()) 
+            ? Font.ITALIC : Font.PLAIN;
     }
+
 }

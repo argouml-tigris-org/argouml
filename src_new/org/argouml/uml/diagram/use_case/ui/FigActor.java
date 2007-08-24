@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -69,23 +71,19 @@ public class FigActor extends FigNodeModelElement {
     private static final int LEFT_LEG_POSN = 5;
     private static final int RIGHT_LEG_POSN = 6;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * Main Constructor for the creation of a new Actor.
      */
     public FigActor() {
         // Put this rectangle behind the rest, so it goes first
-        FigRect bigPort = new ActorPortFigRect(10, 10, 15, 60, this);
-        bigPort.setVisible(false);
+        FigRect bigPort = new ActorPortFigRect(10, 10, 0, 0, this);
         FigCircle head =
-            new FigCircle(10, 10, 15, 15, Color.black, Color.white);
+            new FigCircle(12, 10, 16, 15, Color.black, Color.white);
         FigLine body = new FigLine(20, 25, 20, 40, Color.black);
         FigLine arms = new FigLine(10, 30, 30, 30, Color.black);
         FigLine leftLeg = new FigLine(20, 40, 15, 55, Color.black);
         FigLine rightLeg = new FigLine(20, 40, 25, 55, Color.black);
-        getNameFig().setBounds(5, 55, 35, 20);
+        getNameFig().setBounds(10, 55, 20, 20);
 
         getNameFig().setTextFilled(false);
         getNameFig().setFilled(false);
@@ -94,7 +92,7 @@ public class FigActor extends FigNodeModelElement {
         getStereotypeFig().setBounds(getBigPort().getCenter().x,
                                      getBigPort().getCenter().y,
                                      0, 0);
-
+        setSuppressCalcBounds(true);
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
         addFig(getNameFig());
@@ -105,6 +103,7 @@ public class FigActor extends FigNodeModelElement {
         addFig(rightLeg);
         addFig(getStereotypeFig());
         setBigPort(bigPort);
+        setSuppressCalcBounds(false);
     }
 
     /**
@@ -181,41 +180,67 @@ public class FigActor extends FigNodeModelElement {
      */
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
-        int w = nameDim.width;
-        int h = nameDim.height + 65;
+        int w = Math.max(nameDim.width, 40);
+        int h = nameDim.height + 55;
+        if (getStereotypeFig().isVisible()) {
+            Dimension stereoDim = getStereotypeFig().getMinimumSize();
+            w = Math.max(stereoDim.width, w);
+            h = h + stereoDim.height;
+        }
         return new Dimension(w, h);
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
-        int middle = w / 2;
-        h = _h;
+    protected void setBoundsImpl(final int x, final int y, 
+            final int w, final int h) {
+        int middle = x + w / 2;
+
         Rectangle oldBounds = getBounds();
-        getBigPort().setLocation(
-                x + middle - getBigPort().getWidth() / 2, y + h - 65);
+        getBigPort().setBounds(x, y, w, h);
+
         getFigAt(HEAD_POSN).setLocation(
-                x + middle - getFigAt(HEAD_POSN).getWidth() / 2, y + h - 65);
-        getFigAt(BODY_POSN).setLocation(x + middle, y + h - 50);
+                middle - getFigAt(HEAD_POSN).getWidth() / 2, y + 10);
+        getFigAt(BODY_POSN).setLocation(middle, y + 25);
         getFigAt(ARMS_POSN).setLocation(
-                x + middle - getFigAt(ARMS_POSN).getWidth() / 2, y + h - 45);
+                middle - getFigAt(ARMS_POSN).getWidth() / 2, y + 30);
         getFigAt(LEFT_LEG_POSN).setLocation(
-                x + middle - getFigAt(LEFT_LEG_POSN).getWidth(), y + h - 35);
-        getFigAt(RIGHT_LEG_POSN).setLocation(x + middle, y + h - 35);
+                middle - getFigAt(LEFT_LEG_POSN).getWidth(), y + 40);
+        getFigAt(RIGHT_LEG_POSN).setLocation(middle, y +  40);
 
         Dimension minTextSize = getNameFig().getMinimumSize();
-        getNameFig().setBounds(x + middle - minTextSize.width / 2,
-			       y + h - minTextSize.height,
-			       minTextSize.width,
-			       minTextSize.height);
-//        updateStereotypeText();
-        updateEdges();
-        _x = x;
-        _y = y;
-        _w = w;
-        // do not set height
+        getNameFig().setBounds(middle - minTextSize.width / 2,
+	        y +  55,
+	        minTextSize.width,
+	        minTextSize.height);
+
+        if (getStereotypeFig().isVisible()) {
+            Dimension minStereoSize = getStereotypeFig().getMinimumSize();
+            assert minStereoSize.width <= w;
+            getStereotypeFig().setBounds(middle - minStereoSize.width / 2,
+                    y + 55 + getNameFig().getHeight(),
+                    minStereoSize.width, 
+                    minStereoSize.height);
+        }
+        calcBounds(); //Accumulate a bounding box for all the Figs in the group.
         firePropChange("bounds", oldBounds, getBounds());
+        updateEdges();
+    }
+
+    /**
+     * Overruled the parent implementation, to always use the minimum size.
+     * 
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
+     */
+    @Override
+    protected void updateBounds() {
+        if (!isCheckSize()) {
+            return;
+        }
+        Rectangle bbox = getBounds();
+        Dimension minSize = getMinimumSize();
+        setBounds(bbox.x, bbox.y, minSize.width, minSize.height);
     }
 
     /*
@@ -274,10 +299,6 @@ public class FigActor extends FigNodeModelElement {
             return;
         }
 
-        if (mee == null || mee.getPropertyName().equals("isAbstract")) {
-            updateAbstract();
-            damage = true;
-        }
         if (mee == null 
                 || mee.getPropertyName().equals("stereotype") 
                 || Model.getFacade().getStereotypes(getOwner())
@@ -291,59 +312,9 @@ public class FigActor extends FigNodeModelElement {
         }
     }
 
-    /**
-     * Rerenders the fig if needed. This functionality was originally
-     * the functionality of modelChanged but modelChanged takes the
-     * event now into account.
-     */
-    public void renderingChanged() {
-        if (getOwner() != null) {
-            updateAbstract();
-        }
-        super.renderingChanged();
-        damage();
-    }
-
-
-    /**
-     * Updates the name if modelchanged receives an "isAbstract" event.
-     */
-    protected void updateAbstract() {
-        Rectangle rect = getBounds();
-        if (getOwner() == null) {
-            return;
-        }
+    protected int getNameFigFontStyle() {
         Object cls = getOwner();
-        if (Model.getFacade().isAbstract(cls)) {
-            getNameFig().setFont(getItalicLabelFont());
-	} else {
-            getNameFig().setFont(getLabelFont());
-	}
-        super.updateNameText();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
-     */
-    protected void updateStereotypeText() {
-        super.updateStereotypeText();
-        if (!Model.getFacade().getStereotypes(getOwner()).isEmpty()) {
-            Dimension stereoMin = getStereotypeFig().getMinimumSize();
-            getStereotypeFig().setBounds(
-                (getBigPort().getCenter().x
-                                     - getStereotypeFig().getWidth() / 2),
-                (getBigPort().getY() + getBigPort().getHeight()
-                                     + MIN_VERT_PADDING),
-                stereoMin.width,
-                stereoMin.height);
-        } else {
-            getStereotypeFig().setBounds(getBigPort().getCenter().x,
-                                         getBigPort().getCenter().y,
-                                         0,
-                                         0);
-        }
-        damage();
+        return Model.getFacade().isAbstract(cls) ? Font.ITALIC : Font.PLAIN;
     }
 
     /**

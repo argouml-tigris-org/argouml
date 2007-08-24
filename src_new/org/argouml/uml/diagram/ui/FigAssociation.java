@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -242,38 +243,6 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    @Override
-    protected void modelChanged(PropertyChangeEvent e) {
-        if (getOwner() == null || getLayer() == null) {
-            return;
-        }
-        super.modelChanged(e);
-        if (e instanceof AttributeChangeEvent) {
-            if (e.getPropertyName().equals("isAbstract")/*
-                    || e.getPropertyName().equals("name")*/) {
-                updateAbstract();
-            }
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
-     */
-    @Override
-    protected void renderingChanged() {
-        // We don't want to redraw everything everytime 
-        // one things changes - Bob.
-        // So, do not call this unless really needed! We need 
-        // this for e.g. when the Notation Language changes,
-        // and this is called by setOwner() - Michiel.
-        updateAbstract();
-        updateMultiplicity();
-        super.renderingChanged();
-    }
-
     /**
      * Choose the arrowhead style for each end. <p>
      * 
@@ -422,27 +391,6 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
 
-    /**
-     * Updates the name if modelchanged receives an "isAbstract" event.
-     */
-    protected void updateAbstract() {
-        if (getNameFig() == null) {
-            return;
-        }
-        Rectangle rect = getBounds();
-        if (getOwner() == null) {
-            return;
-        }
-        Object assoc =  getOwner();
-        if (Model.getFacade().isAbstract(assoc)) {
-            getNameFig().setFont(getItalicLabelFont());
-        } else {
-            getNameFig().setFont(getLabelFont());
-        }
-        super.updateNameText();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-    }
-
     /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
@@ -575,7 +523,12 @@ class FigMultiplicity extends FigSingleLineText
 /**
  * A textual Fig representing the ordering of some model element,
  * i.e. "{ordered}" or "{sorted}".
- * This has potential reuse for other edges showing ordering.
+ * This has potential reuse for other edges showing ordering. <p>
+ * 
+ * This Fig is not editable by the user. <p>
+ * 
+ * TODO: How can the user make it "sorted"?
+ * 
  * @author Bob Tarling
  */
 class FigOrdering extends FigSingleLineText {
@@ -586,6 +539,7 @@ class FigOrdering extends FigSingleLineText {
         super(10, 10, 90, 20, false, "ordering");
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
+        setEditable(false);
     }
 
     @Override
@@ -689,8 +643,10 @@ class FigRole extends FigSingleLineText
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         notationProviderRole.updateListener(this, getOwner(), pce);
-        setText();
-        damage();
+        if (!"remove".equals(pce.getPropertyName())) {
+            setText();
+            damage();
+        }
         super.propertyChange(pce);  // do we need this?
     }
 

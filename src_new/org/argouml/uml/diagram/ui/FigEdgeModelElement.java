@@ -80,6 +80,7 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.IItemUID;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionDeleteModelElements;
@@ -90,7 +91,9 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigEdgePoly;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
@@ -110,6 +113,7 @@ public abstract class FigEdgeModelElement
         KeyListener,
         PropertyChangeListener,
         ArgoNotationEventListener,
+        ArgoDiagramAppearanceEventListener,
         Highlightable,
         IItemUID,
         ArgoFig {
@@ -124,24 +128,6 @@ public abstract class FigEdgeModelElement
      * be removed from the diagram.
      */
     private boolean removeFromDiagram = true;
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-
-    private static final Font LABEL_FONT;
-    private static final Font ITALIC_LABEL_FONT;
-
-    static {
-        LABEL_FONT =
-        /* TODO: Why is this different from the FigNodeModelElement?
-         * Should we not use one of the following? 
-         * LookAndFeelMgr.getInstance().getStandardFont();
-         * new javax.swing.plaf.metal.DefaultMetalTheme().getSubTextFont();
-         * new javax.swing.plaf.metal.DefaultMetalTheme().getUserTextFont(); */
-            new Font("Dialog", Font.PLAIN, 10);
-        ITALIC_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
-    }
 
     /**
      * Offset from the end of the set of popup actions at which new items
@@ -185,7 +171,7 @@ public abstract class FigEdgeModelElement
      */
     public FigEdgeModelElement() {
 
-        nameFig = new FigSingleLineText(10, 30, 90, 20, false);
+        nameFig = new FigNameWithAbstract(10, 30, 90, 20, false);
         nameFig.setTextFilled(false);
 
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
@@ -193,6 +179,8 @@ public abstract class FigEdgeModelElement
         setBetweenNearestPoints(true);
 
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.addListener(
+                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
     }
 
     /**
@@ -828,6 +816,10 @@ public abstract class FigEdgeModelElement
             String nameStr = notationProviderName.toString(
                     getOwner(), npArguments);
             nameFig.setText(nameStr);
+            Project p = getProject();
+            if (p != null) {
+                updateFont();
+            }
             calcBounds();
             setBounds(getBounds());
         }
@@ -878,6 +870,7 @@ public abstract class FigEdgeModelElement
                     + owner.getClass().getName());
         }
         super.setOwner(owner);
+        nameFig.setOwner(owner); // for setting abstract
         if (edgePort != null) {
             edgePort.setOwner(getOwner());
         }
@@ -1252,17 +1245,19 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * @return Returns the LABEL_FONT.
+     * @deprecated
+     * @return Returns the plain font.
      */
-    public static Font getLabelFont() {
-        return LABEL_FONT;
+    public Font getLabelFont() {
+        return getProject().getProjectSettings().getFontPlain();
     }
 
     /**
-     * @return Returns the ITALIC_LABEL_FONT.
+     * @deprecated
+     * @return Returns the italic font.
      */
-    public static Font getItalicLabelFont() {
-        return ITALIC_LABEL_FONT;
+    public Font getItalicLabelFont() {
+        return getProject().getProjectSettings().getFontItalic();
     }
 
     /**
@@ -1405,4 +1400,73 @@ public abstract class FigEdgeModelElement
         return gm.getProject();
     }
     
+    /**
+     * Handles diagram font changing.
+     * @param e the event
+     * @see org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent)
+     */
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+        updateFont();
+        calcBounds(); //TODO: Does this help?
+        redraw();
+    }
+    
+    /**
+     * This function should, for all FigTexts, 
+     * recalculate the font-style (plain, bold, italic, bold/italic),
+     * and apply it by calling FigText.setFont().
+     */
+    protected void updateFont() {
+        Project p = getProject();
+        if (p == null) {
+            return;
+        }
+        int style = getNameFigFontStyle();
+        Font f = p.getProjectSettings().getFont(style);
+        nameFig.setFont(f);
+        deepUpdateFont(this);
+    }
+
+    /**
+     * Determines the font style based on the UML model. 
+     * Overrule this in Figs that have to show bold or italic based on the 
+     * UML model they represent. 
+     * E.g. abstract classes show their name in italic.
+     * 
+     * @return the font style for the nameFig.
+     */
+    protected int getNameFigFontStyle() {
+        return Font.PLAIN;
+    }
+
+    private void deepUpdateFont(FigEdge fe) {
+        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        for (Object pathFig : fe.getPathItemFigs()) {
+            deepUpdateFontRecursive(f, pathFig);
+        }
+        fe.calcBounds();
+    }
+
+    /**
+     * Changes the font for all Figs contained in the given FigGroup. <p>
+     * 
+     *  TODO: In fact, there is a design error in this method:
+     *  E.g. for a class, if the name is Italic since the class is abstract,
+     *  then the classes features should be in Plain font.
+     *  This problem can be fixed by implementing 
+     *  the updateFont() method in all subclasses.
+     *  
+     * @param fg the FigGroup to change the font of.
+     */
+    private void deepUpdateFontRecursive(Font f, Object pathFig) {
+        if (pathFig instanceof ArgoFigText) {
+            ((ArgoFigText) pathFig).updateFont();
+        } else if (pathFig instanceof FigText) {
+            ((FigText) pathFig).setFont(f);
+        } else if (pathFig instanceof FigGroup) {
+            for (Object fge : ((FigGroup) pathFig).getFigs()) {
+                deepUpdateFontRecursive(f, fge);
+            }
+        }
+    }
 }

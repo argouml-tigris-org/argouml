@@ -82,6 +82,7 @@ import org.argouml.ui.cmd.PrintManager;
 import org.argouml.uml.reveng.java.JavaImport;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
+import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 
 /**
  * This is the main class for two of the types 
@@ -271,6 +272,7 @@ public class Main {
         initSubsystem(new InitNotation());
         initSubsystem(new InitNotationUml());
         initSubsystem(new InitNotationJava());
+        initSubsystem(new InitDiagramAppearanceUI());
 
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,

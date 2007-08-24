@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -117,6 +118,7 @@ public abstract class FigNodeModelElement
         KeyListener,
         PropertyChangeListener,
         PathContainer,
+        ArgoDiagramAppearanceEventListener,
         ArgoNotationEventListener,
         Highlightable,
         IItemUID,
@@ -130,14 +132,6 @@ public abstract class FigNodeModelElement
         Logger.getLogger(FigNodeModelElement.class);
 
     private DiElement diElement;
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-
-    private static final Font LABEL_FONT;
-    private static final Font ITALIC_LABEL_FONT;
-    private static final Font BOLD_LABEL_FONT;
-    private static final Font BOLD_ITALIC_LABEL_FONT;
 
     private NotationProvider notationProviderName;
     private HashMap<String, Object> npArguments = new HashMap<String, Object>();
@@ -172,24 +166,6 @@ public abstract class FigNodeModelElement
      * See #getPopUpActions()
      */
     private static int popupAddOffset;
-
-    static {
-        LABEL_FONT =
-        /* TODO: Why is this different from the FigEdgeModelElement?
-         * Should we not use one of the following? 
-         * LookAndFeelMgr.getInstance().getStandardFont();
-         * new javax.swing.plaf.metal.DefaultMetalTheme().getUserTextFont(); */
-            new javax.swing.plaf.metal.DefaultMetalTheme().getSubTextFont();
-        ITALIC_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
-        BOLD_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.BOLD, 
-                    LABEL_FONT.getSize() + 2);
-        BOLD_ITALIC_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.BOLD | Font.ITALIC, 
-                    LABEL_FONT.getSize() + 2);
-
-    }
 
     /**
      * Used for #buildModifierPopUp().
@@ -281,7 +257,7 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
-        nameFig = new FigSingleLineText(10, 10, 90, 21, true);
+        nameFig = new FigNameWithAbstract(10, 10, 90, 21, true);
         nameFig.setLineWidth(1);
         nameFig.setFilled(true);
         nameFig.setText(placeString());
@@ -293,18 +269,13 @@ public abstract class FigNodeModelElement
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.addListener(
+                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
         
 
         Project project = getProject();
         ProjectSettings ps = project.getProjectSettings();
 
-        showBoldName = ps.getShowBoldNamesValue();
-        if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-            nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
-                    : ITALIC_LABEL_FONT);
-        } else {
-            nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
-        }
         setShadowSize(ps.getDefaultShadowWidthValue());
         /* TODO: how to handle changes in shadowsize 
          * from the project properties? */
@@ -346,6 +317,8 @@ public abstract class FigNodeModelElement
      */
     protected void finalize() throws Throwable {
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.removeListener(
+                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
         super.finalize();
     }
 
@@ -443,12 +416,7 @@ public abstract class FigNodeModelElement
     protected void setNameFig(FigText fig) {
         nameFig = fig;
         if (nameFig != null) {
-            if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-                nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
-                        : ITALIC_LABEL_FONT);
-            } else {
-                nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
-            }
+            updateFont();
         }
     }
 
@@ -888,7 +856,12 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * set some new bounds.
+     * Determine new bounds. <p>
+     * 
+     * This algorithm makes the box grow 
+     * (if the calculated minimum size grows), 
+     * but then it can never shrink again 
+     * (not even if the calculated minimum size is smaller).
      */
     protected void updateBounds() {
         if (!checkSize) {
@@ -1253,8 +1226,12 @@ public abstract class FigNodeModelElement
         initNotationProviders(owner);
         readyToEdit = true;
         renderingChanged();
-        updateBounds();
+//        updateBounds(); // included in the previous line.
+        /* This next line presumes that the 1st fig with this owner 
+         * is the previous port - and consequently nullifies the owner 
+         * of this 1st fig. */
         bindPort(owner, bigPort);
+        nameFig.setOwner(owner); // for setting abstract
         updateListeners(null, owner);
     }
 
@@ -1293,7 +1270,6 @@ public abstract class FigNodeModelElement
         if (getOwner() == null) {
             LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
                     + "] is null.");
-            LOG.warn("I return...");
             return;
         }
 
@@ -1314,16 +1290,7 @@ public abstract class FigNodeModelElement
                         getOwner(), npArguments));
                 Project p = getProject();
                 if (p != null) {
-                    ProjectSettings ps = p.getProjectSettings();
-                    showBoldName = ps.getShowBoldNamesValue();
-                    if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-                        nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
-                                : ITALIC_LABEL_FONT);
-                    } else {
-                        nameFig
-                        .setFont(showBoldName ? BOLD_LABEL_FONT
-                                : LABEL_FONT);
-                    }
+                    updateFont();
                 }
                 updateBounds();
             }
@@ -1601,21 +1568,23 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @return Returns the lABEL_FONT.
+     * @deprecated by MVW in V0.25.4. Use ProjectSettings instead.
+     * @return the diagram font
      */
-    public static Font getLabelFont() {
-        return LABEL_FONT;
+    public Font getLabelFont() {
+        return getProject().getProjectSettings().getFontPlain();
     }
 
     /**
-     * @return Returns the iTALIC_LABEL_FONT.
+     * @deprecated by MVW in V0.25.4. Use ProjectSettings instead.
+     * @return the italic diagram font
      */
-    public static Font getItalicLabelFont() {
-        return ITALIC_LABEL_FONT;
+    public Font getItalicLabelFont() {
+        return getProject().getProjectSettings().getFontItalic();
     }
 
     /**
-     * @param bp The _bigPort to set.
+     * @param bp the bigPort, which is the port where edges connect to this node
      */
     protected void setBigPort(Fig bp) {
         this.bigPort = bp;
@@ -1670,6 +1639,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * TODO: Move this in FigGroup (in GEF).
+     * 
      * @param scb The suppressCalcBounds to set.
      */
     protected void setSuppressCalcBounds(boolean scb) {
@@ -1841,15 +1812,23 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * This optional method is not implemented.  It will throw an
      * {@link UnsupportedOperationException} if used.  Figs are 
-     * added to a GraphModel which is, in turn, owned by a project.
+     * added to a GraphModel which is, in turn, owned by a project.<p>
+     * 
+     * This method is identical to the one in ArgoFigGroup.
      */
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
     }
     
+    /**
+     * This method is identical to the one in ArgoFigGroup.
+     * 
+     * @return the project
+     * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
+     */
     public Project getProject() {
 	LayerPerspective layer = (LayerPerspective) getLayer();
         if (layer == null) {
@@ -1882,7 +1861,73 @@ public abstract class FigNodeModelElement
 	return TargetManager.getInstance().getSingleModelTarget()
 		== getOwner();
     }
-    
+
+    /**
+     * Handles diagram font changing.
+     * @param e the event or null
+     * @see org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent)
+     */
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+        updateFont();
+//      calcBounds(); // Don't do this! Causes e.g. FigActor to not center properly.
+        updateBounds();
+        damage();
+    }
+
+    /**
+     * This function should, for all FigTexts, 
+     * recalculate the font-style (plain, bold, italic, bold/italic),
+     * and apply it by calling FigText.setFont(). <p>
+     * 
+     * If the "deepUpdateFont" function does not 
+     * work for a subclass, then override this method.
+     */
+    protected void updateFont() {
+        int style = getNameFigFontStyle();
+        Font f = getProject().getProjectSettings().getFont(style);
+        nameFig.setFont(f);
+        deepUpdateFont(this);
+    }
+
+    /**
+     * Determines the font style based on the UML model. 
+     * Overrule this in Figs that have to show bold or italic based on the 
+     * UML model they represent. 
+     * E.g. abstract classes show their name in italic.
+     * 
+     * @return the font style for the nameFig.
+     */
+    protected int getNameFigFontStyle() {
+        ProjectSettings ps = getProject().getProjectSettings();
+        showBoldName = ps.getShowBoldNamesValue();
+        
+        return showBoldName ? Font.BOLD : Font.PLAIN;
+    }
+
+    /**
+     * Changes the font for all Figs contained in the given FigGroup. <p>
+     * 
+     *  TODO: In fact, there is a design error in this method:
+     *  E.g. for a class, if the name is Italic since the class is abstract,
+     *  then the classes features should be in Plain font.
+     *  This problem can be fixed by implementing 
+     *  the updateFont() method in all subclasses.
+     *  
+     * @param fg the FigGroup to change the font of.
+     */
+    private void deepUpdateFont(FigGroup fg) {
+        List<Fig> figs = fg.getFigs();
+        for (Fig f : figs) {
+            if (f instanceof ArgoFigText) {
+                ((ArgoFigText) f).diagramFontChanged(null);
+                fg.calcBounds();
+            }
+            if (f instanceof FigGroup) {
+                deepUpdateFont((FigGroup) f);
+                f.calcBounds();
+            }
+        }
+    }
 }
 
 /**

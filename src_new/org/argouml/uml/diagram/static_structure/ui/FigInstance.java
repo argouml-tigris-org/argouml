@@ -50,12 +50,6 @@ public class FigInstance extends FigNodeModelElement {
 
     private FigText attr;
 
-    // add other Figs here aes needed
-
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * Constructor
      */
@@ -66,7 +60,6 @@ public class FigInstance extends FigNodeModelElement {
 
 	// initialize any other Figs here
 	attr = new FigText(10, 30, 90, 40, Color.black, "Times", 10);
-	attr.setFont(getLabelFont());
 	attr.setExpandOnly(true);
 	attr.setTextColor(Color.black);
 	attr.setTabAction(FigText.END_EDITING);

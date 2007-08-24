@@ -30,6 +30,8 @@ import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
+import org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent;
+import org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEventListener;
 
 /**
  * ArgoEventPump is an eventhandler which handles events regarding
@@ -176,6 +178,25 @@ public final class ArgoEventPump {
     }
 
     /**
+     * Handle firing a diagram appearance event.
+     *
+     * @param event The event to be fired.
+     * @param listener The listener.
+     */
+    private void handleFireDiagramAppearanceEvent(
+        ArgoDiagramAppearanceEvent event,
+        ArgoDiagramAppearanceEventListener listener) {
+        switch (event.getEventType()) {
+        case ArgoEventTypes.DIAGRAM_FONT_CHANGED :
+            listener.diagramFontChanged(event);
+            break;
+        default :
+            LOG.error("Invalid event:" + event.getEventType());
+            break;
+        }
+    }
+
+    /**
      * Handle firing a help text event.
      *
      * @param event The event to be fired.
@@ -283,6 +304,13 @@ public final class ArgoEventPump {
                 if (listener instanceof ArgoNotationEventListener) {
                     handleFireNotationEvent((ArgoNotationEvent) event,
 					(ArgoNotationEventListener) listener);
+                }
+            }
+            if(event.getEventType() >= ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT
+                    && event.getEventType() < ArgoEventTypes.LAST_DIAGRAM_APPEARANCE_EVENT) {
+                if(listener instanceof ArgoDiagramAppearanceEventListener) {
+                    handleFireDiagramAppearanceEvent((ArgoDiagramAppearanceEvent) event,
+                            (ArgoDiagramAppearanceEventListener) listener);
                 }
             }
             if (event.getEventType() >= ArgoEventTypes.ANY_HELP_EVENT

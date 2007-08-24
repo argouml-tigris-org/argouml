@@ -72,7 +72,6 @@ public class FigSingleLineText extends ArgoFigText {
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
 
-        setFont(FigNodeModelElement.getLabelFont());
         setTextColor(Color.black);
         setFilled(false);
         setTabAction(FigText.END_EDITING);
@@ -109,13 +108,13 @@ public class FigSingleLineText extends ArgoFigText {
         if (font == null) {
             return d;
         }
-        int maxW = getFontMetrics().stringWidth(getText());
+        int maxW = 0;
         int maxH = 0;
-        //int maxDescent = _fm.getMaxDescent();
         if (getFontMetrics() == null) {
             maxH = font.getSize();
         } else {
             maxH = getFontMetrics().getHeight();
+            maxW = getFontMetrics().stringWidth(getText());
         }
         int overallH = (maxH + getTopMargin() + getBotMargin());
         int overallW = maxW + getLeftMargin() + getRightMargin();
@@ -154,8 +153,9 @@ public class FigSingleLineText extends ArgoFigText {
     }
     
     public void propertyChange(PropertyChangeEvent pce) {
-        if (getOwner() != null
+        if (getOwner() == pce.getSource()
                 && properties != null
+                && Arrays.asList(properties).contains(pce.getPropertyName())
                 && pce instanceof AttributeChangeEvent) {
             /* TODO: Why does it fail for changing 
              * the name of an associationend?
@@ -164,6 +164,11 @@ public class FigSingleLineText extends ArgoFigText {
             //  : pce.getPropertyName(); 
             setText();
         }
+        if ("remove".equals(pce.getPropertyName()) 
+                && (pce.getSource() == getOwner())) {
+            deleteFromModel();
+        }
+//        super.propertyChange(pce); // Adding this gives loads of problems!!!
     }
 
     /**

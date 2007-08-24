@@ -29,6 +29,7 @@ import java.awt.Color;
 import org.apache.log4j.Logger;
 import org.argouml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -179,6 +180,19 @@ public class CompartmentFigText extends FigSingleLineText {
         // Set the enclosing compartment fig. Warn if its null (which will
         // break).
         refFig = aFig;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
+     */
+    @Override
+    public void removeFromDiagram() {
+        super.removeFromDiagram();
+        Fig fg = getGroup();
+        if (fg instanceof FigGroup) {
+            ((FigGroup) fg).removeFig(this);
+            setGroup(null);
+        }
     }
 
     /**

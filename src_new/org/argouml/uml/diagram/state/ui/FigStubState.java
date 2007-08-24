@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
@@ -88,7 +89,6 @@ public class FigStubState extends FigStateVertex {
                 Color.black);
 
         referenceFig = new FigText(0, 0, width, height, true);
-        referenceFig.setFont(getLabelFont());
         referenceFig.setTextColor(Color.black);
         referenceFig.setReturnAction(FigText.END_EDITING);
         referenceFig.setTabAction(FigText.END_EDITING);
@@ -432,4 +432,15 @@ public class FigStubState extends FigStateVertex {
         }
         updateListeners(getOwner(), newOwner);
     }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateFont()
+     */
+    @Override
+    protected void updateFont() {
+        super.updateFont();
+        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        referenceFig.setFont(f);
+    }
+
 } /* end class FigStubState */

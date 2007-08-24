@@ -64,6 +64,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     private static final String STRING_SHOWSTEREOTYPES = "showstereotypes";
     private static final String STRING_DEFAULTSHADOWWIDTH 
         = "defaultshadowwidth";
+    private static final String STRING_FONTNAME = "fontname";
+    private static final String STRING_FONTSIZE = "fontsize";
     private static final String STRING_GENERATION_OUTPUT_DIR 
         = "generationoutputdir";
 
@@ -108,8 +110,12 @@ class ArgoTokenTable extends XMLTokenTableBase {
     public static final int    TOKEN_DEFAULTSHADOWWIDTH           = 19;
     /** A token for Notation Settings. */
     public static final int    TOKEN_SHOWBOLDNAMES           = 20;
+    /** A token for Font Settings. */
+    public static final int    TOKEN_FONTNAME           = 21;
+    /** A token for Font Settings. */
+    public static final int    TOKEN_FONTSIZE           = 22;
     /** A token for Generation Settings. */
-    public static final int    TOKEN_GENERATION_OUTPUT_DIR     = 21;
+    public static final int    TOKEN_GENERATION_OUTPUT_DIR     = 23;
 
     /** The token for undefined. */
     public static final int    TOKEN_UNDEFINED               = 99;
@@ -142,6 +148,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
         addToken(STRING_SHOWSTEREOTYPES, new Integer(TOKEN_SHOWSTEREOTYPES));
         addToken(STRING_DEFAULTSHADOWWIDTH, 
                 new Integer(TOKEN_DEFAULTSHADOWWIDTH));
+        addToken(STRING_FONTNAME, new Integer(TOKEN_FONTNAME));
+        addToken(STRING_FONTSIZE, new Integer(TOKEN_FONTSIZE));
         addToken(STRING_GENERATION_OUTPUT_DIR, 
                 new Integer(TOKEN_GENERATION_OUTPUT_DIR));
     }

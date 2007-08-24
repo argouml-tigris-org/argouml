@@ -187,6 +187,21 @@ public interface ArgoEventTypes {
     int LAST_STATUS_EVENT       =  1599;
 
     /**
+     * Indicating any diagram appearance event.
+     */
+    int ANY_DIAGRAM_APPEARANCE_EVENT = 1600;
+
+    /**
+     * Indicating that appearance is changed.
+     */
+    int DIAGRAM_FONT_CHANGED = 1601;
+
+    /**
+     * Last diagram appearance event.
+     */
+    int LAST_DIAGRAM_APPEARANCE_EVENT = 1699;
+
+    /**
      * Id marker for the last Argo event.
      */
     int ARGO_EVENT_END            = 99999;
