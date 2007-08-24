@@ -406,7 +406,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(select, "Select");
         edit.add(select);
 
-        JMenuItem selectAllItem = select.add(new SelectAllAction());
+        JMenuItem selectAllItem = select.add(
+                new SelectAllAction(menuItemLocalize("Select All")));
         setMnemonic(selectAllItem, "Select All");
         ShortcutMgr.assignAccelerator(selectAllItem,
                 ShortcutMgr.ACTION_SELECT_ALL);
@@ -421,7 +422,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
                 ShortcutMgr.ACTION_NAVIGATE_FORWARD);
         select.addSeparator();
 
-        JMenuItem selectInvert = select.add(new SelectInvertAction());
+        JMenuItem selectInvert = select.add(
+                new SelectInvertAction(menuItemLocalize("Invert Selection")));
         setMnemonic(selectInvert, "Invert Selection");
         ShortcutMgr.assignAccelerator(selectInvert,
                 ShortcutMgr.ACTION_SELECT_INVERT);
