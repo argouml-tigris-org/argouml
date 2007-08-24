@@ -1216,7 +1216,7 @@ public class FigUseCase extends FigNodeModelElement
                     
                     epFig.setFilled(false);
                     epFig.setLineWidth(0);
-                    epFig.setFont(getLabelFont());
+                    epFig.setFont(getProject().getProjectSettings().getFontPlain());
                     epFig.setTextColor(Color.black);
                     epFig.setJustification(FigText.JUSTIFY_LEFT);
                     epFig.setReturnAction(FigText.END_EDITING);
