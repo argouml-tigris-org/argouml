@@ -873,11 +873,10 @@ class LoadModules implements Runnable {
                 ModuleLoader2.addClass(OPTIONAL_INTERNAL_MODULES[i]);
             } catch (ClassNotFoundException e) {
                 /* We don't care if optional modules aren't found. */
+                LOG.error(e.getMessage());
             }            
         }
-        // TODO: This already was done in Main.main().  If it can be deferred,
-        // remove it from there and reenable this. - tfm - 20070511
-//        ModuleLoader2.doLoad(false);
+        ModuleLoader2.doLoad(false);
     }
 
     /*
