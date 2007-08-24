@@ -2269,8 +2269,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   Look at the panel in the "splash" tab.
                   This is known as the Splash Panel.
                   Go to Edit=&gt;Settings=&gt;Preferences.
-                  Turn off the "Show Splash Panel" and the "Preload Common Classes"
-                  check buttons.
+                  Turn off the "Show Splash Panel"
+                  check button.
                   Exit from ArgoUML and restart it.
                   Note that the splash panel does not show during the load.
                 </para>
@@ -9805,15 +9805,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   ).</para>
 
                 </tip>
-
-              </listitem>
-
-              <listitem>
-
-                <para><literal>Preload Common Classes</literal> (set by 
-                default). If enabled ArgoUML creates class objects of a 
-                number of classes internally during start up so that 
-                instantiation is quicker when they are needed.</para>
 
               </listitem>
 
