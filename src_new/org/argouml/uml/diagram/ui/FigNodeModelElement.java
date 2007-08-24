@@ -1929,34 +1929,3 @@ public abstract class FigNodeModelElement
         }
     }
 }
-
-/**
- * This action shows or hides the path in the name.
- *
- * @author Michiel
- */
-class ActionSetPath extends UndoableAction {
-
-    private boolean isPathVisible;
-    private PathContainer myFig;
-
-    public ActionSetPath(boolean isVisible, PathContainer fig) {
-        super();
-        isPathVisible = isVisible;
-        String name = Translator.localize(isVisible ? "menu.popup.hide.path" 
-                : "menu.popup.show.path"); 
-        putValue(Action.NAME, name);
-        this.myFig = fig;
-    }
-
-    /**
-     * @param e
-     * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        myFig.setPathVisible(!isPathVisible);
-    }
-    
-}
