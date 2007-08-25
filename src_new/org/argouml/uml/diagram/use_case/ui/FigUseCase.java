@@ -542,8 +542,9 @@ public class FigUseCase extends FigNodeModelElement
                 minSize.width = Math.max(minSize.width, elemWidth);
             }
 
-            // Height allows one row for each extension point 
-            minSize.height += ROWHEIGHT * Math.max(1, figs.size());
+            // Height allows one row for each extension point
+            int rowHeight = Math.max(ROWHEIGHT, minSize.height);
+            minSize.height += rowHeight * Math.max(1, figs.size());
         }
 
         return minSize;
@@ -653,16 +654,14 @@ public class FigUseCase extends FigNodeModelElement
             // the separator
             currY += 1 + SPACER;
 
-            // Use the utility routine getUpdatedSize to move the extension
-            // point figures. We can discard the result of this routine. For
+            // Move the extension point figures. For
             // now we assume that extension points are the width of the overall
             // text rectangle (true unless the name is wider than any EP).
-            updateFigGroupSize(epVec,
-                    	   x + ((newW - textSize.width) / 2),
-                    	   currY,
-                    	   textSize.width,
-                    	   (textSize.height - nameSize.height
-                    	    - SPACER * 2 - 1));
+            updateFigGroupSize(
+               	   x + ((newW - textSize.width) / 2),
+               	   currY,
+               	   textSize.width,
+               	   (textSize.height - nameSize.height - SPACER * 2 - 1));
         }
 
         // Set the bounds of the bigPort and cover
@@ -683,16 +682,14 @@ public class FigUseCase extends FigNodeModelElement
     }
 
     /**
-     * Returns the new size of the FigGroup (either attributes or operations)
+     * Calculates the new size of the FigGroup (based on its extensionpoints)
      * after calculation new bounds for all sub-figs, considering their minimal
      * sizes; FigGroup need not be displayed; no update event is fired.
-     * TODO: This is a duplicate method from FigEditableCompartment
-     * it should just be in one place.<p>
+     * This used to be a duplicate method from FigEditableCompartment. <p>
+     * 
+     * TODO: Follow the improvements done to 
+     * the similar code in FigEditableCompartment. 
      *
-     * This method has side effects that are sometimes used.
-     *
-     * @param fg
-     *            the FigGroup to be updated
      * @param x
      *            x
      * @param y
@@ -701,41 +698,37 @@ public class FigUseCase extends FigNodeModelElement
      *            w
      * @param h
      *            h
-     * @return the new dimension
      */
-    protected Dimension updateFigGroupSize(FigGroup fg, int x, int y, int w,
+    protected void updateFigGroupSize(int x, int y, int w,
             int h) {
         int newW = w;
-        int n = fg.getFigs().size() - 1;
+        int n = epVec.getFigs().size() - 1;
         int newH =
             isCheckSize() ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2)
                 : h;
-        int step = (n > 0) ? (newH - 1) / n : 0;
-        // width step between FigText objects int maxA =
-        // Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT)
-        // .getMaxAscent();
 
         // set new bounds for all included figs
-        Iterator figs = fg.iterator();
-        Fig myBigPort = (Fig) figs.next();
+        Iterator figs = epVec.iterator();
+        figs.next(); // skip epBigPort
         Fig fi;
-        int fw, yy = y;
+        int fw, fh;
+        int yy = y;
         while (figs.hasNext()) {
             fi = (Fig) figs.next();
             fw = fi.getMinimumSize().width;
+            fh = fi.getMinimumSize().height;
             if (!isCheckSize() && fw > newW - 2) {
                 fw = newW - 2;
             }
-            fi.setBounds(x + 1, yy + 1, fw, Math.min(ROWHEIGHT, step) - 2);
+            fi.setBounds(x + 1, yy + 1, fw, fh/* - 2*/);
             if (isCheckSize() && newW < fw + 2) {
                 newW = fw + 2;
             }
-            yy += step;
+            yy += fh;
         }
-        myBigPort.setBounds(x, y, newW, newH);
-        // rectangle containing all following FigText objects
-        fg.calcBounds();
-        return new Dimension(newW, newH);
+        epBigPort.setBounds(x, y, newW, newH);
+        // calculate the rectangle containing all FigText objects:
+        epVec.calcBounds();
     }
 
     /**
@@ -1215,7 +1208,8 @@ public class FigUseCase extends FigNodeModelElement
                     
                     epFig.setFilled(false);
                     epFig.setLineWidth(0);
-                    epFig.setFont(getProject().getProjectSettings().getFontPlain());
+                    epFig.setFont(
+                            getProject().getProjectSettings().getFontPlain());
                     epFig.setTextColor(Color.black);
                     epFig.setJustification(FigText.JUSTIFY_LEFT);
                     epFig.setReturnAction(FigText.END_EDITING);
