@@ -304,9 +304,11 @@ public class TabProps
     private TabModelTarget findPanelFor(Object trgt) {
         /* 1st attempt: get a panel that we created before: */
         TabModelTarget p = (TabModelTarget) panels.get(trgt.getClass());
-        if (p != null && LOG.isDebugEnabled()) {
-            LOG.debug("Getting prop panel for: " + trgt.getClass().getName()
-                    + ", " + "found (in cache?) " + p);
+        if (p != null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Getting prop panel for: " + trgt.getClass().getName()
+                        + ", " + "found (in cache?) " + p);
+            }
             return p;
         }
 
