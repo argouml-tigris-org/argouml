@@ -38,6 +38,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UndoEnabler;
 import org.argouml.ui.ActionExportXMI;
@@ -654,44 +655,64 @@ public class GenericArgoMenuBar extends JMenuBar implements
      *            the Align menu
      */
     private static void initAlignMenu(JMenu align) {
-        JMenuItem alignTops = align
-                .add(new AlignAction(AlignAction.ALIGN_TOPS));
+        AlignAction a = new AlignAction(AlignAction.ALIGN_TOPS);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("AlignTops"));
+        JMenuItem alignTops = align.add(a);
         setMnemonic(alignTops, "align tops");
         ShortcutMgr.assignAccelerator(alignTops, ShortcutMgr.ACTION_ALIGN_TOPS);
 
-        JMenuItem alignBottoms = align.add(new AlignAction(
-                AlignAction.ALIGN_BOTTOMS));
+        a = new AlignAction(
+                AlignAction.ALIGN_BOTTOMS);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("AlignBottoms"));
+        JMenuItem alignBottoms = align.add(a);
         setMnemonic(alignBottoms, "align bottoms");
         ShortcutMgr.assignAccelerator(alignBottoms,
                 ShortcutMgr.ACTION_ALIGN_BOTTOMS);
 
-        JMenuItem alignRights = align.add(new AlignAction(
-                AlignAction.ALIGN_RIGHTS));
+        a = new AlignAction(
+                AlignAction.ALIGN_RIGHTS);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("AlignRights"));
+        JMenuItem alignRights = align.add(a);
         setMnemonic(alignRights, "align rights");
         ShortcutMgr.assignAccelerator(alignRights,
                 ShortcutMgr.ACTION_ALIGN_RIGHTS);
 
-        JMenuItem alignLefts = align.add(new AlignAction(
-                AlignAction.ALIGN_LEFTS));
+        a = new AlignAction(
+                AlignAction.ALIGN_LEFTS);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("AlignLefts"));
+        JMenuItem alignLefts = align.add(a);
         setMnemonic(alignLefts, "align lefts");
         ShortcutMgr.assignAccelerator(alignLefts,
                 ShortcutMgr.ACTION_ALIGN_LEFTS);
 
-        JMenuItem alignHCenters = align.add(new AlignAction(
-                AlignAction.ALIGN_H_CENTERS));
+        a = new AlignAction(
+                AlignAction.ALIGN_H_CENTERS);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("AlignHorizontalCenters"));
+        JMenuItem alignHCenters = align.add(a);
         setMnemonic(alignHCenters,
                 "align horizontal centers");
         ShortcutMgr.assignAccelerator(alignHCenters,
                 ShortcutMgr.ACTION_ALIGN_H_CENTERS);
 
-        JMenuItem alignVCenters = align.add(new AlignAction(
-                AlignAction.ALIGN_V_CENTERS));
+        a = new AlignAction(
+                AlignAction.ALIGN_V_CENTERS);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("AlignVerticalCenters"));
+        JMenuItem alignVCenters = align.add(a);
         setMnemonic(alignVCenters, "align vertical centers");
         ShortcutMgr.assignAccelerator(alignVCenters,
                 ShortcutMgr.ACTION_ALIGN_V_CENTERS);
 
-        JMenuItem alignToGrid = align.add(new AlignAction(
-                AlignAction.ALIGN_TO_GRID));
+        a = new AlignAction(
+                AlignAction.ALIGN_TO_GRID);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("AlignToGrid"));
+        JMenuItem alignToGrid = align.add(a);
         setMnemonic(alignToGrid, "align to grid");
         ShortcutMgr.assignAccelerator(alignToGrid,
                 ShortcutMgr.ACTION_ALIGN_TO_GRID);
@@ -704,29 +725,43 @@ public class GenericArgoMenuBar extends JMenuBar implements
      *            the Distribute menu
      */
     private static void initDistributeMenu(JMenu distribute) {
-        JMenuItem distributeHSpacing = distribute.add(new DistributeAction(
-                DistributeAction.H_SPACING));
+        DistributeAction a = new DistributeAction(
+                DistributeAction.H_SPACING);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon(
+                        "DistributeHorizontalSpacing"));
+        JMenuItem distributeHSpacing = distribute.add(a);
         setMnemonic(distributeHSpacing,
                 "distribute horizontal spacing");
         ShortcutMgr.assignAccelerator(distributeHSpacing,
                 ShortcutMgr.ACTION_DISTRIBUTE_H_SPACING);
 
-        JMenuItem distributeHCenters = distribute.add(new DistributeAction(
-                DistributeAction.H_CENTERS));
+        a = new DistributeAction(
+                DistributeAction.H_CENTERS);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon(
+                        "DistributeHorizontalCenters"));
+        JMenuItem distributeHCenters = distribute.add(a);
         setMnemonic(distributeHCenters,
                 "distribute horizontal centers");
         ShortcutMgr.assignAccelerator(distributeHCenters,
                 ShortcutMgr.ACTION_DISTRIBUTE_H_CENTERS);
 
-        JMenuItem distributeVSpacing = distribute.add(new DistributeAction(
-                DistributeAction.V_SPACING));
+        a = new DistributeAction(
+                DistributeAction.V_SPACING);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("DistributeVerticalSpacing"));
+        JMenuItem distributeVSpacing = distribute.add(a);
         setMnemonic(distributeVSpacing,
                 "distribute vertical spacing");
         ShortcutMgr.assignAccelerator(distributeVSpacing,
                 ShortcutMgr.ACTION_DISTRIBUTE_V_SPACING);
 
-        JMenuItem distributeVCenters = distribute.add(new DistributeAction(
-                DistributeAction.V_CENTERS));
+        a = new DistributeAction(
+                DistributeAction.V_CENTERS);
+        a.putValue(Action.SMALL_ICON, 
+                ResourceLoaderWrapper.lookupIcon("DistributeVerticalCenters"));
+        JMenuItem distributeVCenters = distribute.add(a);
         setMnemonic(distributeVCenters,
                 "distribute vertical centers");
         ShortcutMgr.assignAccelerator(distributeVCenters,
@@ -742,6 +777,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
     private static void initReorderMenu(JMenu reorder) {
         JMenuItem reorderBringForward = reorder.add(new ReorderAction(
                 Translator.localize("action.bring-forward"),
+                ResourceLoaderWrapper.lookupIcon("Forward"),
                 ReorderAction.BRING_FORWARD));
         setMnemonic(reorderBringForward,
                 "reorder bring forward");
@@ -750,6 +786,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         JMenuItem reorderSendBackward = reorder.add(new ReorderAction(
                 Translator.localize("action.send-backward"),
+                ResourceLoaderWrapper.lookupIcon("Backward"),
                 ReorderAction.SEND_BACKWARD));
         setMnemonic(reorderSendBackward,
                 "reorder send backward");
@@ -758,6 +795,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         JMenuItem reorderBringToFront = reorder.add(new ReorderAction(
                 Translator.localize("action.bring-to-front"),
+                ResourceLoaderWrapper.lookupIcon("ToFront"),
                 ReorderAction.BRING_TO_FRONT));
         setMnemonic(reorderBringToFront,
                 "reorder bring to front");
@@ -766,6 +804,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         JMenuItem reorderSendToBack = reorder.add(new ReorderAction(
                 Translator.localize("action.send-to-back"),
+                ResourceLoaderWrapper.lookupIcon("ToBack"),
                 ReorderAction.SEND_TO_BACK));
         setMnemonic(reorderSendToBack,
                 "reorder send to back");
