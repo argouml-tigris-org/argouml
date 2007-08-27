@@ -436,8 +436,9 @@ public abstract class FigNodeModelElement
         nameFig.setText(n);
     }
 
-    /*
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+    /**
+     * This method shall return a Vector of one of these 4 types:
+     * AbstractAction, JMenu, JMenuItem, JSeparator.
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);

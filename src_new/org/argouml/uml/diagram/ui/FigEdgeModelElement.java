@@ -267,8 +267,9 @@ public abstract class FigEdgeModelElement
         return tip;
     }
 
-    /*
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+    /**
+     * This method shall return a Vector of one of these 4 types:
+     * AbstractAction, JMenu, JMenuItem, JSeparator.
      */
     @Override
     public Vector getPopUpActions(MouseEvent me) {
