@@ -93,7 +93,6 @@ public class FigExtend extends FigEdgeModelElement {
         y = y + 30;
         label = new FigText(10, y, 90, h);
         y = y + h;
-        label.setFont(getLabelFont());
         label.setTextColor(Color.black);
         label.setTextFilled(false);
         label.setFilled(false);
@@ -109,7 +108,6 @@ public class FigExtend extends FigEdgeModelElement {
         // Set up FigText to hold the condition.
         condition = new FigText(10, y, 90, h);
         y = y + h;
-        condition.setFont(getLabelFont());
         condition.setTextColor(Color.black);
         condition.setTextFilled(false);
         condition.setFilled(false);

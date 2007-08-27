@@ -68,7 +68,6 @@ public class FigInclude extends FigEdgeModelElement {
         // The <<include>> label.
         // It's not a true stereotype, so don't use the stereotype support
         label = new FigSingleLineText(10, 30, 90, 20, false);
-        label.setFont(getLabelFont());
         label.setTextColor(Color.black);
         label.setTextFilled(false);
         label.setFilled(false);
