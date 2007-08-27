@@ -85,9 +85,9 @@ public class PropPanelStereotype extends PropPanelModelElement {
         addField(Translator.localize("label.name"), getNameTextField());
 
 
-        JComboBox baseClass = new UMLComboBox2(new UMLMetaClassComboBoxModel(),
-                ActionSetMetaClass.SINGLETON, false);
-        addField(Translator.localize("label.base-class"), baseClass);
+//        JComboBox baseClass = new UMLComboBox2(new UMLMetaClassComboBoxModel(),
+//                ActionSetMetaClass.SINGLETON, false);
+//        addField(Translator.localize("label.base-class"), baseClass);
 
         addField(Translator.localize("label.namespace"),
                  getNamespaceSelector());
@@ -114,6 +114,9 @@ public class PropPanelStereotype extends PropPanelModelElement {
                 getTagDefinitionScroll());
 
         addSeparator();
+
+        addField(Translator.localize("label.base-class"), 
+                new StereotypeBCSelectionPanel());
 
         addField(Translator.localize("label.extended-elements"),
                 getExtendedElementsScroll());
