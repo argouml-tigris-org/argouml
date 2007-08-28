@@ -514,8 +514,9 @@ public final class Model {
     }
 
     /**
-     * Allows an external system to register itself to recieve mementos created
-     * by the model subsystem.
+     * Allows an external system to register itself to recieve mementos
+     * created by the model implementation.
+     * @see {@link ModelMemento}
      *
      * @param observer the interested party
      */
