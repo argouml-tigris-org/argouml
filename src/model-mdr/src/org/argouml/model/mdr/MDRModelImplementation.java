@@ -46,6 +46,7 @@ import org.argouml.model.AggregationKind;
 import org.argouml.model.ChangeableKind;
 import org.argouml.model.CollaborationsFactory;
 import org.argouml.model.CollaborationsHelper;
+import org.argouml.model.CommandStack;
 import org.argouml.model.CommonBehaviorFactory;
 import org.argouml.model.CommonBehaviorHelper;
 import org.argouml.model.ConcurrencyKind;
@@ -53,6 +54,7 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.DataTypesFactory;
 import org.argouml.model.DataTypesHelper;
+import org.argouml.model.DefaultCommandStack;
 import org.argouml.model.DiagramInterchangeModel;
 import org.argouml.model.DirectionKind;
 import org.argouml.model.ExtensionMechanismsFactory;
@@ -334,7 +336,8 @@ public class MDRModelImplementation implements ModelImplementation {
         // (but defer heavyweight ones until needed)
         theCopyHelper = new CopyHelper(this);
         theActivityGraphsHelper = new ActivityGraphsHelperMDRImpl();
-        theCoreHelper = new UndoCoreHelperDecorator(new CoreHelperMDRImpl(this));
+        theCoreHelper = 
+            new UndoCoreHelperDecorator(new CoreHelperMDRImpl(this));
         LOG.debug("MDR Init - initialized package Core helper");
         theModelManagementHelper = new ModelManagementHelperMDRImpl(this);
         theStateMachinesHelper = new StateMachinesHelperMDRImpl(this);
@@ -649,6 +652,10 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     protected Map<String, XmiReference> getObjectToId() {
         return objectToId;
+    }
+
+    public CommandStack getCommandStack() {
+        return new DefaultCommandStack();
     }
 
 }
