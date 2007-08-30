@@ -36,7 +36,6 @@ import org.argouml.model.NotImplementedException;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiExtensionWriter;
 import org.argouml.model.XmiWriter;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 
 /**
@@ -81,14 +80,15 @@ class XmiWriterEUMLImpl implements XmiWriter {
     public XmiWriterEUMLImpl(EUMLModelImplementation implementation,
             Object theModel, OutputStream stream, String version) {
         if (stream == null) {
-            throw new IllegalArgumentException("An OutputStream must be provided");
+            throw new IllegalArgumentException(
+                    "An OutputStream must be provided"); //$NON-NLS-1$
         }
         if (!(theModel instanceof org.eclipse.uml2.uml.Package)) {
-            throw new IllegalArgumentException("A model must be provided"
-                    + " and it must be a UML 2 Package");
+            throw new IllegalArgumentException("A container must be provided" //$NON-NLS-1$
+                    + " and it must be a UML 2 Package"); //$NON-NLS-1$
         }
         if (implementation == null) {
-            throw new IllegalArgumentException("A parent must be provided");
+            throw new IllegalArgumentException("A parent must be provided"); //$NON-NLS-1$
         }
         modelImpl = implementation;
         model = (org.eclipse.uml2.uml.Package) theModel;
@@ -96,9 +96,10 @@ class XmiWriterEUMLImpl implements XmiWriter {
     }
 
     public void write() throws UmlException {
-	if (model.eResource() == null) {
-	    throw new UmlException("Root container is not affiliated with any resource!"); //$NON-NLS-1$
-	}
+        if (model.eResource() == null) {
+            throw new UmlException(
+                    "Root container is not affiliated with any resource!"); //$NON-NLS-1$
+        }
 
         // Do we need to get stereotype applications for each element? - tfm
 //        for (Iterator allContents = UMLUtil.getAllContents(model, true,
@@ -108,15 +109,18 @@ class XmiWriterEUMLImpl implements XmiWriter {
 //                contents.addAll(((Element) eObject).getStereotypeApplications());
 //            }
 //        }
-        Map options = new HashMap();
+        Map<String, Integer> options = new HashMap<String, Integer>();
         options.put(XMLResource.OPTION_LINE_WIDTH, 100);
-        
+
         // TODO: Is there an option we can use to save our ArgoUML version?
-        
+
         try {
+            modelImpl.getModelEventPump().stopPumpingEvents();
             model.eResource().save(oStream, options);
         } catch (IOException ioe) {
             throw new UmlException(ioe);
+        } finally {
+            modelImpl.getModelEventPump().startPumpingEvents();
         }
 
     }

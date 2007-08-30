@@ -27,6 +27,7 @@
 package org.argouml.model.euml;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a utility class useful in conjunction with 
@@ -40,9 +41,10 @@ public abstract class RunnableClass implements Runnable {
      * A list of parameters useful for extraction/insertion of parameters
      * into a Runnable instance.
      */
-    private ArrayList<Object> params = new ArrayList<Object>();
+    private List<Object> params = new ArrayList<Object>();
 
-    public ArrayList<Object> getParams() {
+    public List<Object> getParams() {
         return params;
     }
+
 }

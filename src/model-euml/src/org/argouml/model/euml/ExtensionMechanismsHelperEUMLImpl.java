@@ -27,6 +27,7 @@
 package org.argouml.model.euml;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.argouml.model.ExtensionMechanismsHelper;
 import org.eclipse.uml2.uml.Element;
@@ -46,7 +47,8 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
      *
      * @param implementation The ModelImplementation.
      */
-    public ExtensionMechanismsHelperEUMLImpl(EUMLModelImplementation implementation) {
+    public ExtensionMechanismsHelperEUMLImpl(
+            EUMLModelImplementation implementation) {
         modelImpl = implementation;
     }
 
@@ -70,9 +72,10 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         
     }
 
-    public Collection getAllPossibleStereotypes(Collection models, Object modelElement) {
+    public Collection getAllPossibleStereotypes(Collection models,
+            Object modelElement) {
         // TODO Auto-generated method stub
-        return null;
+        return Collections.EMPTY_LIST;
     }
 
     public String getMetaModelName(Object m) {
@@ -80,7 +83,6 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
             return getMetaModelName(m.getClass());
         }
         throw new IllegalArgumentException("Not an Element");
-
     }
 
     /**
@@ -138,48 +140,44 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     /**
      * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
      */
-    public boolean isValidStereoType(Object theModelElement, Object theStereotype) {
+    @Deprecated
+    public boolean isValidStereoType(Object theModelElement,
+            Object theStereotype) {
         return isValidStereotype(theModelElement, theStereotype);
     }
 
-    public boolean isValidStereotype(Object theModelElement, Object theStereotype) {
+    public boolean isValidStereotype(Object theModelElement,
+            Object theStereotype) {
         // TODO Auto-generated method stub
         return false;
     }
 
     public void removeBaseClass(Object handle, Object baseClass) {
         // TODO Auto-generated method stub
-        
     }
 
     public void removeTaggedValue(Object handle, Object taggedValue) {
         // TODO Auto-generated method stub
-        
     }
 
     public void setIcon(Object handle, Object icon) {
         // TODO Auto-generated method stub
-        
     }
 
     public void setTag(Object handle, Object tag) {
         // TODO Auto-generated method stub
-        
     }
 
     public void setTaggedValue(Object handle, Collection taggedValues) {
         // TODO Auto-generated method stub
-        
     }
 
     public void setType(Object handle, Object type) {
-        // TODO Auto-generated method stub
-        
+        // TODO Auto-generated method stub        
     }
 
     public void setValueOfTag(Object handle, String value) {
         // TODO Auto-generated method stub
-        
     }
 
 

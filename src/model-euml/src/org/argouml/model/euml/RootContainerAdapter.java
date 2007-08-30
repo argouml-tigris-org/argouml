@@ -43,11 +43,15 @@ public class RootContainerAdapter extends EContentAdapter {
 
     private List<Notifier> notifiers = new ArrayList<Notifier>();
     
+    private List<Notification> events = new ArrayList<Notification>();
+
     private Notifier rootContainer;
     
     private ModelEventPumpEUMLImpl pump;
     
     private boolean deliverEvents = true;
+    
+    private boolean holdEvents = false;
     
     /**
      * Constructor
@@ -112,8 +116,35 @@ public class RootContainerAdapter extends EContentAdapter {
     public void notifyChanged(Notification notification) {
         super.notifyChanged(notification);
         if (deliverEvents) {
-            pump.notifyChanged(notification);
+            if (holdEvents) {
+                events.add(notification);                
+            } else {
+                pump.notifyChanged(notification);
+            }
         }
+    }
+    
+    /**
+     * Clears all the events held until now
+     */
+    public void clearHeldEvents() {
+        events.clear();
+    }
+    
+    /**
+     * Determine if the events should be delivered when they arrive or to wait until holdEvents is false
+     * @param value the holdEvents value
+     */
+    public void setHoldEvents(boolean value) {
+        if (value == false) {
+            if (deliverEvents) {
+                for (Notification n : events) {
+                    pump.notifyChanged(n);
+                }
+            }
+            events.clear();
+        }
+        holdEvents = value;
     }
 
 }

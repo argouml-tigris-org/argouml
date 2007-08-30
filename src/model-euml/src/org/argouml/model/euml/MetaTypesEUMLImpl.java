@@ -44,6 +44,7 @@ import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
+import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Extend;
@@ -55,7 +56,6 @@ import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.MultiplicityElement;
-import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.ObjectNode;
@@ -133,7 +133,6 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getAssociationEnd() {
-        // TODO: Needs checking -tfm
         // an AssociationEnd is now a Property owned by an Association
         return Property.class;
     }
@@ -149,11 +148,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
         // AssociationEndRole have been replaced by the internal 
         // structure of the Collaboration
-        return null;
+        return Classifier.class;
     }
 
     public Object getAttribute() {
-        // TODO: changed in UML 2.x - needs review - tfm
         return Property.class;
     }
 
@@ -260,7 +258,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getGeneralizableElement() {
-        // TODO: Gone in UML 2.x - just Classifier now? - tfm
+        // Gone in UML 2.x - just Classifier now
         return Classifier.class;
     }
 
@@ -307,7 +305,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getModelElement() {
-        return NamedElement.class;
+        return Element.class;
     }
 
     public Object getMultiplicity() {
@@ -333,9 +331,6 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         if (name.endsWith(suffix)) {
             endName -= suffix.length();
         }
-        if (endName < 0) {
-            endName = name.length();
-        }
 
         return name.substring(startName, endName);
     }
@@ -355,8 +350,9 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getObject() {
-        // TODO: just a guess - double check
-        return org.eclipse.uml2.uml.ObjectNode.class;
+        throw new NotImplementedException();
+        // TODO: what to use: InstanceSpecification, ObjectNode, etc?
+//        return org.eclipse.uml2.uml.ObjectNode.class;
     }
 
     public Object getObjectFlowState() {
@@ -468,8 +464,9 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getSubsystem() {
-        // TODO: Changed in UML 2.1 - Package with <<subsystem>> stereotype?
-        return org.eclipse.uml2.uml.Package.class;
+        // Changed in UML 2.1 - Component with <<subsystem>> stereotype
+        // TODO: We should deprecate this?
+        return Component.class;
     }
 
     public Object getSynchState() {

@@ -31,7 +31,6 @@ import java.util.List;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.DataTypesFactory;
 import org.argouml.model.NotImplementedException;
-import org.eclipse.uml2.uml.Expression;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.UMLFactory;
 
@@ -92,23 +91,25 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory,
     // change in the way multiplicities work - tfm
     
     public Object createMultiplicity(int lower, int upper) {
-        return new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Object createMultiplicity(List range) {
-        return new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Object createMultiplicity(String str) {
-        return new NotImplementedException();
+        // TODO: This does not exist as a specific element in UML2
+        // As a workaround we return the string as the multiplicity
+        return str;
     }
 
     public Object createMultiplicityRange(String str) {
-        return new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Object createMultiplicityRange(int lower, int upper) {
-        return new NotImplementedException();
+        throw new NotImplementedException();
     }
 
     public Object createObjectSetExpression(String language, String body) {
@@ -137,7 +138,7 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory,
         if (i == -1) {
             return "*";
         } else {
-            return "" + i;
+            return Integer.toString(i);
         }
     }
 
@@ -155,8 +156,8 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory,
                 return Integer.parseInt(b);
             }
         } catch (Exception ex) {
-            throw new IllegalArgumentException("illegal range bound : "
-                    + (b == null ? "null" : b));
+            throw new IllegalArgumentException(
+                    "illegal range bound : " + b); //$NON-NLS-1$
         }
     }
 

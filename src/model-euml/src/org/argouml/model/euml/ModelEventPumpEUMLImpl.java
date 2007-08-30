@@ -29,6 +29,7 @@ package org.argouml.model.euml;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -42,20 +43,25 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
+import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
-import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.common.notify.impl.NotificationImpl;
+import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 
 /**
- * The implementation of the ModelEventPump for EUML2.
+ * The implementation of the ModelEventPump for eUML.
  */
 class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     /**
      * A listener attached to a UML element
      */
-    class Listener {
+    private class Listener {
 
         private PropertyChangeListener listener;
 
@@ -64,24 +70,27 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         Listener(PropertyChangeListener listener, String[] properties) {
             this.listener = listener;
             if (properties != null) {
-                props = null;
-                addProperties(properties);
+                setProperties(properties);
             }
         }
 
-        void addProperties(String[] properties) {
+        void setProperties(String[] properties) {
             if (properties == null) {
-                return;
-            }
-            if (props == null) {
-                props = new HashSet<String>();
-            }
-            for (String s : properties) {
-                props.add(s);
+                props = null;
+            } else {
+                if (props == null) {
+                    props = new HashSet<String>();
+                }
+                for (String s : properties) {
+                    props.add(s);
+                }
             }
         }
 
         void removeProperties(String[] properties) {
+            if (props == null) {
+                return;
+            }
             for (String s : properties) {
                 props.remove(s);
             }
@@ -102,45 +111,59 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      */
     private EUMLModelImplementation modelImpl;
 
-    private RootContainerAdapter rootContainerAdapter = 
-        new RootContainerAdapter(this);
+    private RootContainerAdapter rootContainerAdapter = new RootContainerAdapter(
+            this);
 
     // Access should be fast
-    private Map<Object, List<Listener>> registerForElements = 
-        new HashMap<Object, List<Listener>>();
+    private Map<Object, List<Listener>> registerForElements = new HashMap<Object, List<Listener>>();
 
     // Iteration should be fast
-    private Map<Object, List<Listener>> registerForClasses = 
-        new LinkedHashMap<Object, List<Listener>>();
+    private Map<Object, List<Listener>> registerForClasses = new LinkedHashMap<Object, List<Listener>>();
 
     private Object mutex;
-    
+
     private Logger LOG = Logger.getLogger(ModelEventPumpEUMLImpl.class);
-    
+
+    public static final int COMMAND_STACK_UPDATE = Notification.EVENT_TYPE_COUNT + 1;
+
     /**
      * Constructor.
      * 
      * @param implementation
-     *            The ModelImplementation.
+     *                The ModelImplementation.
      */
     public ModelEventPumpEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
         mutex = this;
+        implementation.getEditingDomain().getCommandStack().addCommandStackListener(
+                new CommandStackListener() {
+
+                    public void commandStackChanged(EventObject event) {
+                        notifyChanged(new NotificationImpl(
+                                COMMAND_STACK_UPDATE, false, false));
+                    }
+
+                });
     }
 
     /**
      * Setter for the root container
+     * 
      * @param container
      */
     public void setRootContainer(Notifier container) {
         rootContainerAdapter.setRootContainer(container);
     }
 
+    public RootContainerAdapter getRootContainer() {
+        return rootContainerAdapter;
+    }
+
     public void addClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-        if (!(modelClass instanceof Class && EObject.class
-                .isAssignableFrom((Class) modelClass))) {
-            throw new IllegalArgumentException();
+        if (!(modelClass instanceof Class && EObject.class.isAssignableFrom((Class) modelClass))) {
+            throw new IllegalArgumentException(
+                    "The model class must be instance of java.lang.Class<EObject>"); //$NON-NLS-1$
         }
         registerListener(
                 modelClass, listener, propertyNames, registerForClasses);
@@ -148,24 +171,26 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-        if (!(modelelement instanceof EObject)) {
-            throw new IllegalArgumentException();
+        if (!(modelelement instanceof EObject)
+                && !(modelelement instanceof String && modelelement.equals(CommandStackImpl.COMMAND_STACK_UPDATE_EVENT))) {
+            throw new IllegalArgumentException(
+                    "The modelelement must be instance of EObject."); //$NON-NLS-1$
         }
         registerListener(
-                (EObject) modelelement, listener, propertyNames,
-                registerForElements);
+                modelelement, listener, propertyNames, registerForElements);
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-        addModelEventListener(listener, modelelement, (String []) null);
+        addModelEventListener(listener, modelelement, (String[]) null);
     }
 
     private void registerListener(Object notifier,
             PropertyChangeListener listener, String[] propertyNames,
             Map<Object, List<Listener>> register) {
         if (notifier == null || listener == null) {
-            throw new NullPointerException();
+            throw new NullPointerException(
+                    "The model element/class and the listener must be non-null."); //$NON-NLS-1$
         }
         synchronized (mutex) {
             List<Listener> list = register.get(notifier);
@@ -177,10 +202,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             } else {
                 for (Listener l : list) {
                     if (l.getListener() == listener) {
-                        // TODO: Do we really want to add new properties to the
-                        // already registered listener or we want to replace the
-                        // old properties
-                        l.addProperties(propertyNames);
+                        l.setProperties(propertyNames);
                         found = true;
                         break;
                     }
@@ -199,8 +221,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeClassModelEventListener(PropertyChangeListener listener,
             Object modelClass, String[] propertyNames) {
-        if (!(modelClass instanceof Class && EObject.class
-                .isAssignableFrom((Class) modelClass))) {
+        if (!(modelClass instanceof Class && EObject.class.isAssignableFrom((Class) modelClass))) {
             throw new IllegalArgumentException();
         }
         unregisterListener(
@@ -209,7 +230,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-        if (!(modelelement instanceof EObject)) {
+        if (!(modelelement instanceof EObject)
+                && !(modelelement instanceof String && modelelement.equals(CommandStackImpl.COMMAND_STACK_UPDATE_EVENT))) {
             throw new IllegalArgumentException();
         }
         unregisterListener(
@@ -218,14 +240,15 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
-        removeModelEventListener(listener, modelelement, (String []) null);
+        removeModelEventListener(listener, modelelement, (String[]) null);
     }
 
     private void unregisterListener(Object notifier,
             PropertyChangeListener listener, String[] propertyNames,
             Map<Object, List<Listener>> register) {
         if (notifier == null || listener == null) {
-            throw new NullPointerException();
+            throw new NullPointerException(
+                    "The model element/class and the listener must be non-null."); //$NON-NLS-1$
         }
         synchronized (mutex) {
             List<Listener> list = register.get(notifier);
@@ -249,83 +272,168 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     /**
      * @see org.eclipse.emf.common.notify.Adapter#notifyChanged(Notification)
-     * @param notification The notification event
+     * @param notification
+     *                The notification event
      */
-    @SuppressWarnings("unchecked")
     public void notifyChanged(Notification notification) {
         if (notification.getEventType() == Notification.REMOVING_ADAPTER) {
             return;
         }
-        Object source = null;
-        switch (notification.getEventType()) {
-        case Notification.REMOVE:
-            source = notification.getOldValue();
-            break;
-        default:
-            source = notification.getNotifier();
-        }
 
-        List<Listener> listeners = new ArrayList<Listener>();
-        synchronized (mutex) {
-            List<Listener> list = registerForElements.get(source);
-            if (list != null) {
-                for (Listener l : list) {
-                    listeners.add(l);
-                }
+        class EventAndListeners {
+            public EventAndListeners(PropertyChangeEvent e,
+                    List<PropertyChangeListener> l) {
+                event = e;
+                listeners = l;
             }
 
-            boolean logged = false;
+            PropertyChangeEvent event;
+
+            List<PropertyChangeListener> listeners;
+        }
+
+        List<EventAndListeners> events = new ArrayList<EventAndListeners>();
+
+        if (notification.getEventType() == Notification.SET) {
+            if (notification.getFeature() instanceof ENamedElement) {
+                String propName = mapPropertyName(((ENamedElement) notification.getFeature()).getName());
+                events.add(new EventAndListeners(new AttributeChangeEvent(
+                        notification.getNotifier(), propName,
+                        notification.getOldValue(), notification.getNewValue(),
+                        null), getListeners(
+                        notification.getNotifier(), propName)));
+            }
+        } else if (notification.getEventType() == Notification.ADD
+                || notification.getEventType() == Notification.REMOVE) {
+            if (notification.getFeature() instanceof EReference) {
+                EReference ref = (EReference) notification.getFeature();
+                String propName = mapPropertyName(ref.getName());
+                if (notification.getEventType() == Notification.ADD) {
+                    events.add(new EventAndListeners(new AddAssociationEvent(
+                            notification.getNotifier(), propName, null,
+                            notification.getNewValue(),
+                            notification.getNewValue(), null), getListeners(
+                            notification.getNotifier(), propName)));
+                    events.add(new EventAndListeners(new AttributeChangeEvent(
+                            notification.getNotifier(), propName, null,
+                            notification.getNewValue(), null), getListeners(
+                            notification.getNotifier(), propName)));
+                } else {
+                    events.add(new EventAndListeners(
+                            new DeleteInstanceEvent(
+                                    notification.getOldValue(),
+                                    "remove", null, null, null), getListeners(notification.getOldValue()))); //$NON-NLS-1$
+                    events.add(new EventAndListeners(
+                            new RemoveAssociationEvent(
+                                    notification.getNotifier(), propName,
+                                    notification.getOldValue(), null,
+                                    notification.getOldValue(), null),
+                            getListeners(
+                                    notification.getNotifier(), propName)));
+                    events.add(new EventAndListeners(
+                            new AttributeChangeEvent(
+                                    notification.getNotifier(), propName,
+                                    notification.getOldValue(), null, null),
+                            getListeners(
+                                    notification.getNotifier(), propName)));
+                }
+
+                EReference oppositeRef = ref.getEOpposite();
+                if (oppositeRef != null) {
+                    propName = mapPropertyName(oppositeRef.getName());
+                    if (notification.getEventType() == Notification.ADD) {
+                        events.add(new EventAndListeners(
+                                new AddAssociationEvent(
+                                        notification.getNewValue(),
+                                        propName, null,
+                                        notification.getNotifier(),
+                                        notification.getNotifier(), null),
+                                getListeners(
+                                        notification.getNewValue(),
+                                        propName)));
+                        events.add(new EventAndListeners(
+                                new AttributeChangeEvent(
+                                        notification.getNewValue(),
+                                        propName, null,
+                                        notification.getNotifier(), null),
+                                getListeners(
+                                        notification.getNewValue(),
+                                        propName)));
+                    } else {
+                        events.add(new EventAndListeners(
+                                new AddAssociationEvent(
+                                        notification.getOldValue(),
+                                        propName,
+                                        notification.getNotifier(), null,
+                                        notification.getNotifier(), null),
+                                getListeners(
+                                        notification.getOldValue(),
+                                        propName)));
+                        events.add(new EventAndListeners(
+                                new AttributeChangeEvent(
+                                        notification.getOldValue(),
+                                        propName,
+                                        notification.getNotifier(), null, null),
+                                getListeners(
+                                        notification.getOldValue(),
+                                        propName)));
+                    }
+                }
+            }
+        } else if (notification.getEventType() == COMMAND_STACK_UPDATE) {
+            events.add(new EventAndListeners(
+                    new PropertyChangeEvent(
+                            this, CommandStackImpl.COMMAND_STACK_UPDATE_EVENT,
+                            false, false),
+                    getListeners(CommandStackImpl.COMMAND_STACK_UPDATE_EVENT)));
+// TODO: Why is this commented out? - tfm
+//            Model.notifyMementoCreationObserver(CommandStackImpl.getInstance(modelImpl));
+        }
+
+        for (EventAndListeners e : events) {
+            if (e.listeners != null) {
+                for (PropertyChangeListener l : e.listeners) {
+                    l.propertyChange(e.event);
+                }
+            }
+        }
+    }
+
+    private List<PropertyChangeListener> getListeners(Object element) {
+        return getListeners(element, null);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<PropertyChangeListener> getListeners(Object element,
+            String propName) {
+        List<PropertyChangeListener> returnedList = new ArrayList<PropertyChangeListener>();
+
+        synchronized (mutex) {
+            addListeners(returnedList, element, propName, registerForElements);
             for (Object o : registerForClasses.keySet()) {
                 if (o instanceof Class) {
                     Class type = (Class) o;
-                    if (type.isAssignableFrom(source.getClass())) {
-                        if (!logged) {
-                            LOG.debug("eUML is firing " + notification); //$NON-NLS-1$
-                            logged = true;
-                        }
-                        for (Listener l : registerForClasses.get(o)) {
-                            listeners.add(l);
-                        }
+                    if (type.isAssignableFrom(element.getClass())) {
+                        addListeners(
+                                returnedList, o, propName, registerForClasses);
                     }
                 }
             }
         }
-
-        for (Listener l : listeners) {
-            fireNotification(notification, l);
-        }
+        return returnedList.isEmpty() ? null : returnedList;
     }
 
-    private void fireNotification(Notification n, Listener l) {
-        PropertyChangeEvent event = null;
-        switch (n.getEventType()) {
-        case Notification.REMOVE:
-            event = new DeleteInstanceEvent(
-                    n.getOldValue(), "remove", null, null, null); //$NON-NLS-1$
-            l.getListener().propertyChange(event);
-            removeModelEventListener(l.getListener(), n.getOldValue());
-            break;
-        case Notification.SET:
-            if (n.getFeature() instanceof EAttribute) {
-                event = new AttributeChangeEvent(
-                        n.getNotifier(),
-                        ((EAttribute) n.getFeature()).getName(),
-                        n.getOldValue(), n.getNewValue(), null);
-                l.getListener().propertyChange(event);
+    private void addListeners(List<PropertyChangeListener> listeners,
+            Object element, String propName,
+            Map<Object, List<Listener>> register) {
+        List<Listener> list = register.get(element);
+        if (list != null) {
+            for (Listener l : list) {
+                if (propName == null || l.getProperties() == null
+                        || l.getProperties().contains(propName)) {
+                    listeners.add(l.getListener());
+                }
             }
-            break;
-        case Notification.ADD:
-//            event = new AddAssociationEvent(
-//                    n.getNewValue(), "end", null, n.getNotifier(),
-//                    n.getNotifier(), null);
-//            l.getListener().propertyChange(event);
-//            event = new AddAssociationEvent(
-//                    n.getNotifier(), "reverse-end", null, n.getNewValue(),
-//                    n.getNewValue(), null);
-//            l.getListener().propertyChange(event);
-            break;
-        default:
-            LOG.debug("Uncought notification: " + n); //$NON-NLS-1$
         }
     }
 
@@ -335,6 +443,14 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void stopPumpingEvents() {
         rootContainerAdapter.setDeliverEvents(false);
+    }
+    
+    private String mapPropertyName(String name) {
+        // TODO: map UML2 names to UML1.x names
+        if (name.equals("ownedAttribute")) {
+            return "feature";
+        }
+        return name;
     }
 
 }

@@ -32,6 +32,7 @@ import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Namespace;
@@ -53,8 +54,6 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     private EditingDomain editingDomain;
     
     private org.eclipse.uml2.uml.Package theRootModel;
-    
-    private UMLFactory uml = UMLFactory.eINSTANCE;
 
     /**
      * Constructor.
@@ -68,17 +67,35 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
         editingDomain = implementation.getEditingDomain();
     }
 
-    public ElementImport buildElementImport(Object pack, Object me) {
-        ElementImport imp = (ElementImport) createElementImport();
-        imp.setImportingNamespace((Namespace) pack);
-        imp.setImportedElement((PackageableElement) me);
-        return imp;
+    public ElementImport buildElementImport(final Object pack, final Object me) {
+        if (!(pack instanceof Namespace)) {
+            throw new IllegalArgumentException(
+                    "pack must be instance of Namespace"); //$NON-NLS-1$
+        }
+        if (!(me instanceof PackageableElement)) {
+            throw new IllegalArgumentException(
+                    "me must be instance of PackageableElement"); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ElementImport elementImport = createElementImport();
+                elementImport.setImportingNamespace((Namespace) pack);
+                elementImport.setImportedElement((PackageableElement) me);
+                getParams().add(elementImport);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(editingDomain, run));
+
+        return (ElementImport) run.getParams().get(0);
     }
 
     public org.eclipse.uml2.uml.Package buildPackage(String name, String uuid) {
         org.eclipse.uml2.uml.Package pkg =
                 (org.eclipse.uml2.uml.Package) createPackage();
-        pkg.setName(name);
+        if (name != null) {
+            pkg.setName(name);
+        }
         // TODO: What about UUID?  This has been gone since UML 1.4 transition - tfm
         return pkg;
     }
@@ -89,15 +106,15 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     }
 
     public ElementImport createElementImport() {
-        return uml.createElementImport();
+        return UMLFactory.eINSTANCE.createElementImport();
     }
 
     public Model createModel() {
-        return uml.createModel();
+        return UMLFactory.eINSTANCE.createModel();
     }
 
     public org.eclipse.uml2.uml.Package createPackage() {
-        return uml.createPackage();
+        return UMLFactory.eINSTANCE.createPackage();
     }
 
     @Deprecated
@@ -112,7 +129,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
         if (rootModel != null 
                 && !(rootModel instanceof org.eclipse.uml2.uml.Package)) {
             throw new IllegalArgumentException(
-                    "The rootModel supplied must be a Package. Got a "
+                    "The rootModel supplied must be a Package. Got a " //$NON-NLS-1$
                     + rootModel.getClass().getName());
         }
 	if (theRootModel != null && theRootModel.eResource() != null) {
@@ -120,8 +137,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
 	}
         theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
 	if (rootModel != null) {
-            Resource r = editingDomain.createResource(
-                    "http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
+            Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI);
             r.getContents().add(theRootModel);
 	}
         modelImpl.getModelEventPump().setRootContainer(theRootModel);

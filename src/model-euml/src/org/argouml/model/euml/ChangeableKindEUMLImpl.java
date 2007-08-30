@@ -40,7 +40,9 @@ class ChangeableKindEUMLImpl implements ChangeableKind {
 
 
     public Object getAddOnly() {
-        throw new NotImplementedException();
+    // TODO: Change to throw exception when uses are fixed
+//        throw new NotImplementedException();
+        return "";
     }
 
     public Object getChangeable() {

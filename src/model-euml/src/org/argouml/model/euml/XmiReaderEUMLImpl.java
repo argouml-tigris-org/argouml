@@ -26,16 +26,23 @@
 
 package org.argouml.model.euml;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.xml.sax.InputSource;
@@ -45,13 +52,14 @@ import org.xml.sax.InputSource;
  */
 class XmiReaderEUMLImpl implements XmiReader {
 
-    private static final Logger LOG = 
-        Logger.getLogger(XmiReaderEUMLImpl.class);
-        
     /**
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
+    
+    private static Set<String> searchDirs = new HashSet();
+    
+    private Resource resource;
 
     /**
      * Constructor.
@@ -73,9 +81,18 @@ class XmiReaderEUMLImpl implements XmiReader {
         return new String[0];
     }
 
+    @SuppressWarnings("unchecked")
     public Map getXMIUUIDToObjectMap() {
-        // TODO Auto-generated method stub
-        return new HashMap();
+        if (resource == null) {
+            throw new IllegalStateException();
+        }
+        HashMap map = new HashMap();
+        Iterator<EObject> it = resource.getAllContents();
+        while (it.hasNext()) {
+            EObject o  = it.next();
+            map.put(resource.getURIFragment(o), o);
+        }
+        return map;
     }
 
     public Collection parse(InputSource inputSource) throws UmlException {
@@ -84,20 +101,56 @@ class XmiReaderEUMLImpl implements XmiReader {
 
     public Collection parse(InputSource inputSource, boolean profile)
             throws UmlException {
+        if (inputSource == null) {
+            throw new NullPointerException("The input source must be non-null."); //$NON-NLS-1$
+        }
+        InputStream is = null;
+        boolean needsClosing = false;
+        if (inputSource.getByteStream() != null) {
+            is = inputSource.getByteStream();
+        } else if (inputSource.getSystemId() != null) {
+            try {
+                URL url = new URL(inputSource.getSystemId());
+                if (url != null) {
+                    is = url.openStream();
+                    if (is != null) {
+                        is = new BufferedInputStream(is);
+                        needsClosing = true;
+                    }
+                }
+            } catch (MalformedURLException e) {
+                // do nothing
+            } catch (IOException e) {
+                // do nothing
+            }
+
+        }
+        if (is == null) {
+            throw new UnsupportedOperationException();
+        }
+
         EditingDomain editingDomain = modelImpl.getEditingDomain();
-        for (Resource resource 
-                : (EList<Resource>) editingDomain.getResourceSet().getResources()) {
+        for (Resource resource : editingDomain.getResourceSet().getResources()) {
             resource.unload();
         }
-
-	Resource r = editingDomain.createResource(
-	        "http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
+        
+        Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI);
         try {
-            r.load(inputSource.getByteStream(), null);
+            modelImpl.getModelEventPump().stopPumpingEvents();
+            r.load(is, null);
         } catch (IOException e) {
             throw new UmlException(e);
+        } finally {
+            modelImpl.getModelEventPump().startPumpingEvents();
+            if (needsClosing) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
-
+        resource = r;
         return r.getContents();
     }
 
@@ -107,27 +160,27 @@ class XmiReaderEUMLImpl implements XmiReader {
     }
 
     public String getTagName() {
-        // This is not quite right
-        // TODO: Solve this
-        return "uml:Model"; //$NON-NLS-1$
+        if (resource == null) {
+            throw new IllegalStateException();
+        }
+        List l = resource.getContents();
+        if (!l.isEmpty()) {
+            return "uml:" + modelImpl.getMetaTypes().getName(l.get(0)); //$NON-NLS-1$
+        } else {
+            return null;
+        }
     }
 
     public void addSearchPath(String path) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-        
+        searchDirs.add(path);
     }
 
     public List<String> getSearchPath() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-        
+        return new ArrayList<String>(searchDirs);
     }
 
     public void removeSearchPath(String path) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-        
+        searchDirs.remove(path);
     }
     
 }
