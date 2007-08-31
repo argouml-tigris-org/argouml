@@ -1,4 +1,4 @@
-// $Id$
+// $Id:GenericArgoMenuBar.java 13104 2007-07-21 18:29:31Z mvw $
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,8 +24,12 @@
 
 package org.argouml.ui.cmd;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.List;
 
@@ -41,6 +45,8 @@ import javax.swing.KeyStroke;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UndoEnabler;
+import org.argouml.model.CommandStack;
+import org.argouml.model.Model;
 import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
@@ -386,6 +392,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
+        
+        initCommandStackItems(edit);
 
         JMenuItem undoItem = edit.add(ProjectActions.getInstance()
                 .getUndoAction());
@@ -468,6 +476,68 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(settingsItem, "Settings");
         ShortcutMgr
                 .assignAccelerator(settingsItem, ShortcutMgr.ACTION_SETTINGS);
+    }
+
+    private void initCommandStackItems(JMenu menu) {
+        if (!Model.getCommandStack().isCommandStackCapabilityAvailable()) {
+            return;
+        }
+
+        final JMenuItem undo = new JMenuItem("Undo");
+        undo.setEnabled(false);
+        menu.add(undo);
+
+        undo.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                Model.getCommandStack().undo();
+            }
+
+        });
+
+        final JMenuItem redo = new JMenuItem("Redo");
+        redo.setEnabled(false);
+        menu.add(redo);
+
+        redo.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                Model.getCommandStack().redo();
+            }
+
+        });
+
+        PropertyChangeListener listener = new PropertyChangeListener() {
+
+            public void propertyChange(PropertyChangeEvent evt) {
+                updateUndoRedo(undo, redo);
+            }
+
+        };
+
+        Model.getPump().addClassModelEventListener(listener,
+                Model.getMetaTypes().getModelElement(), (String[]) null);
+        Model.getPump().addModelEventListener(listener,
+                CommandStack.COMMAND_STACK_UPDATE_EVENT, (String[]) null);
+
+        menu.addSeparator();
+    }
+
+    private void updateUndoRedo(JMenuItem undo, JMenuItem redo) {
+        if (!Model.getCommandStack().canUndo()) {
+            undo.setText("Undo");
+            undo.setEnabled(false);
+        } else {
+            undo.setText("Undo: " + Model.getCommandStack().getUndoLabel());
+            undo.setEnabled(true);
+        }
+        if (!Model.getCommandStack().canRedo()) {
+            redo.setText("Redo");
+            redo.setEnabled(false);
+        } else {
+            redo.setText("Redo: " + Model.getCommandStack().getRedoLabel());
+            redo.setEnabled(true);
+        }
     }
 
     /**
