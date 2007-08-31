@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,15 +24,28 @@
 
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
-import javax.swing.JComboBox;
+import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
+
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel;
@@ -40,6 +53,7 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * The properties panel for a Stereotype.
@@ -51,6 +65,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
      */
     private static final long serialVersionUID = 8038077991746618130L;
 
+    private List<String> metaClasses;
+    
     private static UMLGeneralizableElementSpecializationListModel
     specializationListModel =
             new UMLGeneralizableElementSpecializationListModel();
@@ -84,11 +100,6 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"), getNameTextField());
 
-
-//        JComboBox baseClass = new UMLComboBox2(new UMLMetaClassComboBoxModel(),
-//                ActionSetMetaClass.SINGLETON, false);
-//        addField(Translator.localize("label.base-class"), baseClass);
-
         addField(Translator.localize("label.namespace"),
                  getNamespaceSelector());
 
@@ -115,8 +126,15 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         addSeparator();
 
-        addField(Translator.localize("label.base-class"), 
-                new StereotypeBCSelectionPanel());
+        initMetaClasses();
+        UMLMutableLinkedList umll = new UMLMutableLinkedList(
+                new UMLStereotypeBaseClassListModel(), 
+                new ActionAddStereotypeBaseClass(), 
+                null);
+        umll.setDeleteAction(new ActionDeleteStereotypeBaseClass());
+        umll.setCellRenderer(new DefaultListCellRenderer());
+        addField(Translator.localize("label.base-class"),
+            new JScrollPane(umll));
 
         addField(Translator.localize("label.extended-elements"),
                 getExtendedElementsScroll());
@@ -172,5 +190,139 @@ public class PropPanelStereotype extends PropPanelModelElement {
             extendedElementsScroll = new JScrollPane(list);
         }
         return extendedElementsScroll;
+    }
+    
+    /**
+     * Initialise the meta-classes list. <p>
+     * 
+     * All this code is necessary to be independent of 
+     * model repository implementation, 
+     * i.e. to ensure that we have a 
+     * sorted list of strings.
+     */
+    void initMetaClasses() {
+        Collection<String> tmpMetaClasses = 
+            Model.getCoreHelper().getAllMetatypeNames();
+        if (tmpMetaClasses instanceof List) {
+            metaClasses = (List<String>) tmpMetaClasses;
+        } else {
+            metaClasses = new LinkedList<String>(tmpMetaClasses);
+        }
+        try {
+            Collections.sort(metaClasses);
+        } catch (UnsupportedOperationException e) {
+            // We got passed an unmodifiable List.  Copy it and sort the result
+            metaClasses = new LinkedList<String>(tmpMetaClasses);
+            Collections.sort(metaClasses);
+        }
+    }
+
+    /**
+     * The list model for the BaseClasses of the stereotype.
+     *
+     * @author Michiel
+     */
+    class UMLStereotypeBaseClassListModel extends UMLModelElementListModel2 {
+
+        /**
+         * Construct the model, listen to changes of "baseClass".
+         */
+        UMLStereotypeBaseClassListModel() {
+            super("baseClass");
+        }
+
+        @Override
+        protected void buildModelList() {
+            removeAllElements();
+            if (Model.getFacade().isAStereotype(getTarget())) {
+                // keep them sorted
+                LinkedList<String> lst = new LinkedList<String>(
+                        Model.getFacade().getBaseClasses(getTarget()));
+                Collections.sort(lst);
+                addAll(lst);
+            }
+        }
+
+        @Override
+        protected boolean isValidElement(Object element) {
+            if (Model.getFacade().isAStereotype(element)) {
+                return true;
+            }
+            return false;
+        }
+    }
+    
+    /**
+     * The Action to add a baseclass to the stereotype.
+     *
+     * @author Michiel
+     */
+    class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement {
+
+        @Override
+        protected Vector getChoices() {
+            return new Vector<String>(metaClasses);
+        }
+
+        @Override
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-baseclasses");
+        }
+
+        @Override
+        protected Vector getSelected() {
+            Vector vec = new Vector();
+            if (Model.getFacade().isAStereotype(getTarget())) {
+                Collection bases = 
+                    Model.getFacade().getBaseClasses(getTarget());
+                vec.addAll(bases);
+            }
+            return vec;
+        }
+
+        @Override
+        protected void doIt(Vector selected) {
+            Object stereo = getTarget();
+            Set<Object> oldSet = new HashSet<Object>(getSelected());
+            Set toBeRemoved = new HashSet<Object>(oldSet);
+
+            for (Object o : selected) {
+                if (oldSet.contains(o)) {
+                    toBeRemoved.remove(o);
+                } else {
+                    Model.getExtensionMechanismsHelper()
+                        .addBaseClass(stereo, o);
+                }
+            }
+            for (Object o : toBeRemoved) {
+                Model.getExtensionMechanismsHelper().removeBaseClass(stereo, o);
+            }
+        }
+        
+    }
+    
+    /**
+     * The Action to remove a baseclass from a stereotype.
+     *
+     * @author Michiel
+     */
+    class ActionDeleteStereotypeBaseClass extends AbstractActionRemoveElement {
+
+        public ActionDeleteStereotypeBaseClass() {
+            super(Translator.localize("menu.popup.remove"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            UndoManager.getInstance().startChain();
+            Object baseclass = getObjectToRemove();
+            if (baseclass != null) {
+                Object st = getTarget();
+                if (Model.getFacade().isAStereotype(st)) {
+                    Model.getExtensionMechanismsHelper()
+                        .removeBaseClass(st, baseclass);
+                }
+            }
+        }
     }
 } /* end class PropPanelStereotype */

@@ -132,8 +132,8 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             }
 
         } else if (value instanceof String) {
-            JLabel label = new JLabel(value.toString());
-            return label;
+            return super.getListCellRendererComponent(list, value, index,
+                    isSelected, cellHasFocus);
         } else if (value == null || value.equals("")) {
             JLabel label = new JLabel(" ");
             label.setIcon(null);

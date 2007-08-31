@@ -306,14 +306,13 @@ public class UMLMutableLinkedList extends UMLLinkedList
     }
 
     /**
-     * Returns the popupMenu.
+     * Returns a new popupMenu, initialised
+     * with the current target and selected item.
      *
      * @return JPopupMenu
      */
     public JPopupMenu getPopupMenu() {
-        if (popupMenu == null) {
-            popupMenu =  new PopupMenu();
-        }
+        popupMenu =  new PopupMenu();
         return popupMenu;
     }
 
