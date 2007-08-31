@@ -386,7 +386,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                             this, CommandStackImpl.COMMAND_STACK_UPDATE_EVENT,
                             false, false),
                     getListeners(CommandStackImpl.COMMAND_STACK_UPDATE_EVENT)));
-            Model.notifyMementoCreationObserver(CommandStackImpl.getInstance(modelImpl));
+//            Model.notifyMementoCreationObserver(CommandStackImpl.getInstance(modelImpl));
         }
 
         for (EventAndListeners e : events) {

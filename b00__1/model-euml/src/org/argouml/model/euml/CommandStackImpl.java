@@ -26,25 +26,15 @@
 
 package org.argouml.model.euml;
 
-import org.argouml.model.ModelMemento;
+import org.argouml.model.CommandStack;
 
-public class CommandStackImpl extends ModelMemento {
+public class CommandStackImpl implements CommandStack {
 
     private EUMLModelImplementation modelImplementation;
-    
-    private static CommandStackImpl instance;
-    
-    public static final String COMMAND_STACK_UPDATE_EVENT = "MEMENTO_CHANGED"; //$NON-NLS-1$
 
-    private CommandStackImpl(EUMLModelImplementation modelImplementation) {
+    public CommandStackImpl(EUMLModelImplementation modelImplementation) {
         this.modelImplementation = modelImplementation;
-    }
-    
-    public static ModelMemento getInstance(EUMLModelImplementation modelImplementation) {
-        if (instance == null) {
-            instance = new CommandStackImpl(modelImplementation);
-        }
-        return instance;
+        modelImplementation.getEditingDomain().getCommandStack().flush();
     }
 
     public boolean canRedo() {
@@ -63,6 +53,10 @@ public class CommandStackImpl extends ModelMemento {
     public String getUndoLabel() {
         return canUndo() ? modelImplementation.getEditingDomain().getCommandStack().getUndoCommand().getLabel()
                 : null;
+    }
+
+    public boolean isCommandStackCapabilityAvailable() {
+        return true;
     }
 
     public void redo() {
