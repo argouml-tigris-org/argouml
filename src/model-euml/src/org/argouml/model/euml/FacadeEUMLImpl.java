@@ -1984,7 +1984,8 @@ class FacadeEUMLImpl implements Facade {
         } else if (handle instanceof BehavioralFeature) {
             return ((BehavioralFeature) handle).isAbstract();
         } else {
-            throw new IllegalArgumentException();
+            return false;
+//            throw new IllegalArgumentException();
         }
     }
 
