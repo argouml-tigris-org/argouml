@@ -270,6 +270,22 @@ public class UMLMutableLinkedList extends UMLLinkedList
         newAction = action;
     }
 
+    /**
+     * Tell the actions what objects they should work on.
+     */
+    protected void initActions() {
+        if (isAdd()) {
+            addAction.setTarget(getTarget());
+        }
+        if (isNew()) {
+            newAction.setTarget(getTarget());
+        }
+        if (isDelete()) {
+            deleteAction.setObjectToRemove(getSelectedValue());
+            deleteAction.setTarget(getTarget());
+        }
+    }
+
     /*
      * @see java.awt.event.MouseListener#mouseReleased(
      *      java.awt.event.MouseEvent)
@@ -285,6 +301,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
                 ((UMLModelElementListModel2) model).buildPopup(popup, index);
             }
             if (popup.getComponentCount() > 0) {
+                initActions();
                 popup.show(this, e.getX(), e.getY());
             }
             e.consume();
@@ -299,6 +316,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
         if (e.isPopupTrigger()) {
             JPopupMenu popup = getPopupMenu();
             if (popup.getComponentCount() > 0) {
+                initActions();
                 getPopupMenu().show(this, e.getX(), e.getY());
             }
             e.consume();
@@ -306,18 +324,23 @@ public class UMLMutableLinkedList extends UMLLinkedList
     }
 
     /**
-     * Returns a new popupMenu, initialised
-     * with the current target and selected item.
+     * Returns the popupMenu.
      *
      * @return JPopupMenu
      */
     public JPopupMenu getPopupMenu() {
-        popupMenu =  new PopupMenu();
+        if (popupMenu == null) {
+            popupMenu =  new PopupMenu();
+        }
         return popupMenu;
     }
 
     /**
-     * Sets the popupMenu.
+     * Sets the popupMenu. <p>
+     * 
+     * This allows to replace the complete default menu with a custom menu.
+     * If nobody is using this, then we better remove this functionality, and 
+     * just return a new menu all the time - that would simplify initialising it.
      *
      * @param menu
      *            The popupMenu to set
@@ -353,6 +376,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
         if (e.isPopupTrigger()) {
             JPopupMenu popup = getPopupMenu();
             if (popup.getComponentCount() > 0) {
+                initActions();
                 getPopupMenu().show(this, e.getX(), e.getY());
             }
             e.consume();

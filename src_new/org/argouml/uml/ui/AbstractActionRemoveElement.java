@@ -83,6 +83,7 @@ public class AbstractActionRemoveElement extends UndoableAction {
      */
     public void setTarget(Object theTarget) {
         target = theTarget;
+        setEnabled(isEnabled());
     }
 
     /**
@@ -101,15 +102,14 @@ public class AbstractActionRemoveElement extends UndoableAction {
      */
     public void setObjectToRemove(Object theObjectToRemove) {
         objectToRemove = theObjectToRemove;
+        setEnabled(isEnabled());
     }
-
-
 
     /*
      * @see javax.swing.Action#isEnabled()
      */
     public boolean isEnabled() {
-        return getObjectToRemove() != null;
+        return getObjectToRemove() != null && getTarget() != null;
     }
 
 }
