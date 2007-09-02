@@ -44,7 +44,6 @@ import javax.swing.KeyStroke;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.UndoEnabler;
 import org.argouml.model.CommandStack;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionExportXMI;
@@ -399,17 +398,15 @@ public class GenericArgoMenuBar extends JMenuBar implements
                 .getUndoAction());
         setMnemonic(undoItem, "Undo");
         ShortcutMgr.assignAccelerator(undoItem, ShortcutMgr.ACTION_UNDO);
-        undoItem.setVisible(UndoEnabler.isEnabled());
+        undoItem.setEnabled(true);
 
         JMenuItem redoItem = edit.add(ProjectActions.getInstance()
                 .getRedoAction());
         setMnemonic(redoItem, "Redo");
         ShortcutMgr.assignAccelerator(redoItem, ShortcutMgr.ACTION_REDO);
-        redoItem.setVisible(UndoEnabler.isEnabled());
+        redoItem.setEnabled(true);
 
-        if (UndoEnabler.isEnabled()) {
-            edit.addSeparator();
-        }
+        edit.addSeparator();
 
         select = new JMenu(menuLocalize("Select"));
         setMnemonic(select, "Select");

@@ -34,17 +34,15 @@ import javax.swing.event.EventListenerList;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
-import org.argouml.model.MementoCreationObserver;
+import org.argouml.model.ModelCommandCreationObserver;
 import org.argouml.model.Model;
-import org.argouml.model.ModelMemento;
+import org.argouml.model.ModelCommand;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.tigris.gef.graph.MutableGraphSupport;
-import org.tigris.gef.undo.Memento;
-import org.tigris.gef.undo.UndoManager;
 
 /**
  * This class manages the projects loaded in argouml,
@@ -64,7 +62,7 @@ import org.tigris.gef.undo.UndoManager;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public final class ProjectManager implements MementoCreationObserver {
+public final class ProjectManager implements ModelCommandCreationObserver {
 
     /**
      * The name of the property that defines the current project.
@@ -134,7 +132,7 @@ public final class ProjectManager implements MementoCreationObserver {
      */
     private ProjectManager() {
         super();
-        Model.setMementoCreationObserver(this);
+        Model.setModelCommandCreationObserver(this);
     }
 
     /**
@@ -262,10 +260,6 @@ public final class ProjectManager implements MementoCreationObserver {
                             oldProject, currentProject);
         creatingCurrentProject = false;
 
-        UndoManager.getInstance().empty();
-        if (!UndoEnabler.isEnabled()) {
-            UndoManager.getInstance().setUndoMax(0);
-        }
         Model.getPump().startPumpingEvents();
         
         if (saveAction != null) {
@@ -345,19 +339,19 @@ public final class ProjectManager implements MementoCreationObserver {
      * We must add this to the UndoManager.
      *
      * @param memento the memento.
-     * @see org.argouml.model.MementoCreationObserver#mementoCreated(org.argouml.model.ModelMemento)
+     * @see org.argouml.model.ModelCommandCreationObserver#modelCommandCreated(org.argouml.model.ModelCommand)
      */
-    public void mementoCreated(final ModelMemento memento) {
+    public void modelCommandCreated(final ModelCommand memento) {
         if (saveAction != null) {
             saveAction.setEnabled(true);
         }
-        Memento wrappedMemento = new Memento() {
-            private ModelMemento modelMemento = memento;
+        AbstractCommand wrappedMemento = new AbstractUndoableCommand() {
+            private ModelCommand modelMemento = memento;
             public void undo() {
                 modelMemento.undo();
             }
-            public void redo() {
-                modelMemento.redo();
+            public void execute() {
+                modelMemento.execute();
             }
             public void dispose() {
                 modelMemento.dispose();
@@ -369,6 +363,6 @@ public final class ProjectManager implements MementoCreationObserver {
             }
 
         };
-        UndoManager.getInstance().addMemento(wrappedMemento);
+        getCurrentProject().getUndoManager().addMemento(wrappedMemento);
     }
 }

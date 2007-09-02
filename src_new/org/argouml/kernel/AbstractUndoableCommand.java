@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,31 +25,11 @@
 package org.argouml.kernel;
 
 /**
- * Control for enabling undo functionality. Remove once undo has acceptable
- * support through all of GEF and ArgoUML.
- *
+ * The base class for any actions that can be undone by ActionUndo.
  * @author Bob Tarling
  */
-public final class UndoEnabler {
-
-    /**
-     * Change this value to true to enable undo.
-     * Do not commit in this state.
-     * TODO: Implement!
-     */
-    private static boolean enabled = false;
-
-    /**
-     * The constructor.
-     */
-    private UndoEnabler() {
-        super();
-    }
-
-    /**
-     * @return <code>true</code> if undo is enabled.
-     */
-    public static boolean isEnabled() {
-        return enabled;
-    }
+public abstract class AbstractUndoableCommand
+        extends AbstractCommand implements UndoableCommand {
+    
+    public abstract void undo();
 }

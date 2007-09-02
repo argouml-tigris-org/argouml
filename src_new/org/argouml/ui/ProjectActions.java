@@ -43,8 +43,6 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.undo.RedoAction;
-import org.tigris.gef.undo.UndoAction;
 
 /**
  * Class to manage Project related actions which need to be (or historically
@@ -67,13 +65,13 @@ public final class ProjectActions implements TargetListener {
     /**
      * The action to undo the last user interaction.
      */
-    private final UndoAction undoAction = 
-        new UndoAction(Translator.localize("action.undo"));
+    private final ActionUndo undoAction = 
+        new ActionUndo(Translator.localize("action.undo"));
     /**
      * The action to redo the last undone action.
      */
     private final AbstractAction redoAction = 
-        new RedoAction(Translator.localize("action.redo"));
+        new ActionRedo(Translator.localize("action.redo"));
 
     /**
      * Singleton retrieval method for the projectbrowser. Lazely instantiates

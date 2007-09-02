@@ -61,8 +61,6 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.undo.Memento;
-import org.tigris.gef.undo.UndoManager;
 
 /**
  * The ProjectImpl is a data structure that represents the designer's
@@ -150,6 +148,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     private Collection trashcan = new ArrayList();
 
+    private UndoManager undoManager = UndoManager.getInstance();
+    
     /**
      * Constructor.
      *
@@ -426,8 +426,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setAuthorname(final String s) {
         final String oldAuthorName = authorname;
-        Memento memento = new Memento() {
-            public void redo() {
+        AbstractCommand memento = new AbstractCommand() {
+            public void execute() {
                 authorname = s;
             }
 
@@ -435,10 +435,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 authorname = oldAuthorName;
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
+        undoManager.addMemento(memento);
+        memento.execute();
         setSaveEnabled(true);
     }
 
@@ -450,8 +448,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setAuthoremail(final String s) {
         final String oldAuthorEmail = authoremail;
-        Memento memento = new Memento() {
-            public void redo() {
+        AbstractCommand memento = new AbstractCommand() {
+            public void execute() {
                 authoremail = s;
             }
 
@@ -459,10 +457,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 authoremail = oldAuthorEmail;
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
+        undoManager.addMemento(memento);
+        memento.execute();
         setSaveEnabled(true);
     }
 
@@ -484,8 +480,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setDescription(final String s) {
         final String oldDescription = description;
-        Memento memento = new Memento() {
-            public void redo() {
+        AbstractCommand memento = new AbstractCommand() {
+            public void execute() {
                 description = s;
             }
 
@@ -493,10 +489,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 description = oldDescription;
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
+        undoManager.addMemento(memento);
+        memento.execute();
         setSaveEnabled(true);
     }
 
@@ -1161,4 +1155,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return projectSettings;
     }
 
+    public UndoManager getUndoManager() {
+        return undoManager;
+    }
 }

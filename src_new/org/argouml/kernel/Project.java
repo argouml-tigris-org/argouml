@@ -613,4 +613,5 @@ public interface Project {
      */
     public ProjectSettings getProjectSettings();
 
+    public UndoManager getUndoManager();
 }

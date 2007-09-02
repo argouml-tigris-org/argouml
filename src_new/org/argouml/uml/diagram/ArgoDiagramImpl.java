@@ -50,6 +50,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * This class represents all Diagrams within ArgoUML.
@@ -89,6 +90,12 @@ public abstract class ArgoDiagramImpl extends Diagram
      */
     public ArgoDiagramImpl() {
         super();
+        if (!(UndoManager.getInstance() instanceof DiagramUndoManager)) {
+            UndoManager.setInstance(new DiagramUndoManager());
+            LOG.info("Setting Diagram undo manager");
+        } else {
+            LOG.info("Diagram undo manager already set");
+        }
         // really dirty hack to remove unwanted listeners
         getLayer().getGraphModel().removeGraphEventListener(getLayer());
     }
@@ -108,6 +115,12 @@ public abstract class ArgoDiagramImpl extends Diagram
     public ArgoDiagramImpl(String diagramName) {
         // next line patch to issue 596 (hopefully)
         super(diagramName);
+        if (!(UndoManager.getInstance() instanceof DiagramUndoManager)) {
+            UndoManager.setInstance(new DiagramUndoManager());
+            LOG.info("Setting Diagram undo manager");
+        } else {
+            LOG.info("Diagram undo manager already set");
+        }
         try {
             setName(diagramName);
         } catch (PropertyVetoException pve) { }
