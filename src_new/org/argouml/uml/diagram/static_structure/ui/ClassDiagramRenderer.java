@@ -34,7 +34,9 @@ import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
+import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
+import org.argouml.uml.diagram.deployment.ui.FigMNode;
 import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.ui.FigAssociation;
@@ -116,8 +118,6 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             figNode = new FigClass(gm, node);
         } else if (Model.getFacade().isAInterface(node)) {
             figNode = new FigInterface(gm, node);
-        } else if (Model.getFacade().isAInstance(node)) {
-            figNode = new FigInstance(gm, node);
         } else if (Model.getFacade().isAModel(node)) {
             figNode = new FigModel(gm, node);
         } else if (Model.getFacade().isASubsystem(node)) {
@@ -148,6 +148,10 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             figNode = new FigNodeInstance(gm, node);
         } else if (Model.getFacade().isAComponentInstance(node)) {
             figNode = new FigComponentInstance(gm, node);
+        } else if (Model.getFacade().isANode(node)) {
+            figNode = new FigMNode(gm, node);
+        } else if (Model.getFacade().isAComponent(node)) {
+            figNode = new FigComponent(gm, node);
         } else {
             LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
             throw new IllegalArgumentException(

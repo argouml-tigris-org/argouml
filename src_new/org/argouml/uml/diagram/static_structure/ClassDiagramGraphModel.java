@@ -226,6 +226,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (Model.getFacade().isAModel(node)) {
             return false; // issue 3774
         }
+        if (Model.getFacade().isAClassifierRole(node)) {
+            return false;
+        }
         return Model.getFacade().isAClassifier(node)
             || Model.getFacade().isAPackage(node)
             || Model.getFacade().isAStereotype(node)

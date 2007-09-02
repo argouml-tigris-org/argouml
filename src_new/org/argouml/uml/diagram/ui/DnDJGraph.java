@@ -34,18 +34,15 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.Model;
 import org.argouml.ui.TransferableModelElements;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
 
 /**
@@ -180,44 +177,16 @@ class DnDJGraph
         dropTargetDropEvent.acceptDrop(dropTargetDropEvent.getDropAction());
         //get the model elements that are being transfered.
         Collection modelElements;
-        MutableGraphModel gm =
-            (MutableGraphModel) ProjectManager.getManager().
-                getCurrentProject().getActiveDiagram().getGraphModel();
         try {
-            Collection oldTargets = TargetManager.getInstance().getTargets();
+            ArgoDiagram diagram = ProjectManager.getManager()
+                .getCurrentProject().getActiveDiagram();
             modelElements =
                 (Collection) tr.getTransferData(
                     TransferableModelElements.UML_COLLECTION_FLAVOR);
-            int count = 0;
-            Iterator i = modelElements.iterator();
-            while (i.hasNext()) {
-                Object me = i.next();
-                if (Model.getFacade().isANaryAssociation(me)) {
-                    AddExistingNodeCommand cmd =
-                        new AddExistingNodeCommand(me, dropTargetDropEvent,
-                                count++);
-                    cmd.execute();
-                } else if (Model.getFacade().isAUMLElement(me)) {
-                    if (gm.canAddEdge(me)) {
-                        gm.addEdge(me);
-                        // TODO: An AssociationClass should be possible to add
-                        // as a side effect of adding a node and its related
-                        // edges, but that doesn't work as things are currently
-                        // structured. - tfm 20061208
-                        if (Model.getFacade().isAAssociationClass(me)) {
-                            ModeCreateAssociationClass.buildInActiveLayer(
-                                    getEditor(), 
-                                    me);
-                        }
-                    } else if (gm.canAddNode(me)) {
-                        AddExistingNodeCommand cmd =
-                            new AddExistingNodeCommand(me, dropTargetDropEvent,
-                                    count++);
-                        cmd.execute();
-                    }
-                }
-            }
-            TargetManager.getInstance().setTargets(oldTargets);
+
+            ActionAddExistingNodes.addNodes(modelElements, 
+                    dropTargetDropEvent.getLocation(), diagram);
+
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {
             LOG.debug(e);

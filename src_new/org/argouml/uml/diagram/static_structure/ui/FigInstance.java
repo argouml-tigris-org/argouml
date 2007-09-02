@@ -35,15 +35,15 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Class to display graphics for a UML MInstance in a diagram.
+ * Class to display graphics for a UML MInstance in a diagram.<p>
  * 
- * TODO: The UML element 'Instance' is abstract.  Shouldn't this
- * figure be too?  If not, it should only be used as a last resort
- * fallback if no more specialized type can be found. - tfm - 20070508
+ * The UML element 'Instance' is abstract.  <p>
+ * 
+ * TODO: This Fig is not used - can we remove it?
  *
  * @author agauthie
  */
-public class FigInstance extends FigNodeModelElement {
+public abstract class FigInstance extends FigNodeModelElement {
 
     /** UML does not really use ports, so just define one big one so
      *  that users can drag edges to or from any point in the icon. */

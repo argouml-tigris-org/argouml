@@ -63,7 +63,6 @@ import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigDataType;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.static_structure.ui.FigEnumeration;
-import org.argouml.uml.diagram.static_structure.ui.FigInstance;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.static_structure.ui.FigModel;
@@ -166,8 +165,6 @@ public abstract class UmlDiagramRenderer
             figNode = new FigComponent();
         } else if (Model.getFacade().isAComponentInstance(node)) {
             figNode = new FigComponentInstance();
-        } else if (Model.getFacade().isAInstance(node)) {
-            figNode = new FigInstance();
         } else if (Model.getFacade().isAObject(node)) {
             figNode = new FigObject();
         } else if (Model.getFacade().isAComment(node)) {
