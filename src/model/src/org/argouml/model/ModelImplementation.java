@@ -324,7 +324,10 @@ public interface ModelImplementation {
      * Get the command stack.
      * 
      * @return the command stack
+     * @deprecated - do not use. This will be replaced by a command stack
+     *             managed by ArgoUML, not the Model subsystem.
      */
+    @Deprecated
     CommandStack getCommandStack();
 
 }

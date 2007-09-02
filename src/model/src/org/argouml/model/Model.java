@@ -559,7 +559,10 @@ public final class Model {
      * Get the command stack.
      * 
      * @return the command stack
+     * @deprecated - do not use. This will be replaced by a command stack
+     *             managed by ArgoUML, not the Model subsystem.
      */
+    @Deprecated
     public static CommandStack getCommandStack() {
         return impl.getCommandStack();
     }
