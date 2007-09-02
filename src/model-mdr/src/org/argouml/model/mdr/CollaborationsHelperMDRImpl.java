@@ -584,9 +584,9 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             returnList.removeAll(listToRemove);
         }
 
-        /* TODO: We need to verify that ns is a Package!
-         * If not - find its parent package! 
-         * Currently this causes an exception when creating 
+        /* We need to verify that ns is a Package,
+         * if not - find its parent package! 
+         * Otherwise this causes an exception when creating 
          * a sequence diagram for a ClassifierRole.*/
         if (!modelImpl.getFacade().isAPackage(ns)) {
             while (modelImpl.getFacade().isANamespace(ns)) {
