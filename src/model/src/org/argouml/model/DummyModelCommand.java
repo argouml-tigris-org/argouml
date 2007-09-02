@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -25,16 +25,23 @@
 package org.argouml.model;
 
 /**
- * An interface to be implemented by the class responsible for managing
- * or delegating mementos.
- * 
+ * Dummy commands are created where we haven't yet designed the correct
+ * memento for undoing an operation. It acts as a marker of work to be done
+ * to complete the Undo implementation.
+ * It also allows the save action to enable at the correct time. If there
+ * is no memento generated and fired back to the main application then
+ * the save action will not enable.
  * @author Bob Tarling
- * @deprecated in 0.25.4 by Bob Tarling use ModelCommandCreationObserver
  */
-public interface MementoCreationObserver {
-    /**
-     * Called whenever a memento is created by the model subsystem.
-     * @param memento the memento.
-     */
-    void mementoCreated(ModelMemento memento);
+public class DummyModelCommand extends ModelCommand {
+
+    @Override
+    public void undo() {
+        // Do nothing.
+    }
+
+    @Override
+    public void execute() {
+        // Do nothing.
+    }
 }

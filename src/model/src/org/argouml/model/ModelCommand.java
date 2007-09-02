@@ -25,16 +25,31 @@
 package org.argouml.model;
 
 /**
- * An interface to be implemented by the class responsible for managing
- * or delegating mementos.
+ * A command to record the state of an object before an undoable change.<p>
+ * The model implementation should create a ModelCommand for any
+ * undoable operation performed. Any mutator method should normally be
+ * undoable except loading a model from file.
  * 
  * @author Bob Tarling
- * @deprecated in 0.25.4 by Bob Tarling use ModelCommandCreationObserver
  */
-public interface MementoCreationObserver {
+public abstract class ModelCommand {
+
     /**
-     * Called whenever a memento is created by the model subsystem.
-     * @param memento the memento.
+     * The method to undo this memento.
      */
-    void mementoCreated(ModelMemento memento);
+    public abstract void undo();
+
+    /**
+     * The method to execute this memento.
+     */
+    public abstract void execute();
+    
+    /**
+     * Dispose of any resources used by this memento before it is
+     * destroyed. A memento is destroyed when it is forced off the
+     * end of the undo or redo stack when that stack has reached
+     * its maximum size or when the stack is emptied.
+     */
+    public void dispose() {
+    }
 }
