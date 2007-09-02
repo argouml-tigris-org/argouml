@@ -43,7 +43,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author agauthie
  */
-public abstract class FigInstance extends FigNodeModelElement {
+public class FigInstance extends FigNodeModelElement {
 
     /** UML does not really use ports, so just define one big one so
      *  that users can drag edges to or from any point in the icon. */
