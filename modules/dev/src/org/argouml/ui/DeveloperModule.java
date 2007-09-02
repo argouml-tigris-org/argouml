@@ -32,12 +32,12 @@ import javax.swing.JTabbedPane;
 
 import org.apache.log4j.Logger;
 import org.argouml.dev.figinspector.FigInspectorPanel;
+import org.argouml.kernel.UndoLogPanel;
+import org.argouml.kernel.UndoManagerWrapper;
 import org.argouml.model.mdr.EventPumpInspectorPanel;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.ui.targetmanager.TargetManagerPanel;
-import org.tigris.gef.undo.UndoLogPanel;
 import org.tigris.gef.undo.UndoManager;
-import org.tigris.gef.undo.UndoManagerWrapper;
 
 /**
  * A module to provide debug windows for developers of ArgoUML.
@@ -51,7 +51,7 @@ public final class DeveloperModule implements ModuleInterface {
     /**
      * Wrapper.
      */
-    private UndoManagerWrapper um = new UndoManagerWrapper();
+//    private UndoManagerWrapper um = new UndoManagerWrapper();
 
     /**
      * This is creatable from the module loader.
@@ -68,7 +68,6 @@ public final class DeveloperModule implements ModuleInterface {
     public boolean enable() {
         // TODO: Add a checkbox menu item to hide/show undo panel
 	LOG.info("Enabling developer module");
-        UndoManager.setInstance(um);
         JMenu editMenu = ProjectBrowser.getInstance().getJMenuBar().getMenu(1);
         editMenu.getMenuComponent(0).setVisible(true);
         editMenu.getMenuComponent(1).setVisible(true);

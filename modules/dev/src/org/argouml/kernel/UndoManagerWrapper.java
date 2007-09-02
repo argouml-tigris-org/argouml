@@ -22,59 +22,58 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.tigris.gef.undo;
+package org.argouml.kernel;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-public final class UndoLogPanel extends JScrollPane {
+/**
+ * By using this wrapper we are able to show the contents of the Undo stack.
+ */
+//public class UndoManagerWrapper extends UndoManager {
+public class UndoManagerWrapper {
 
     /**
-     * The UID.
+     * The Constructor.
      */
-    private static final long serialVersionUID = -3483889053389473380L;
-
-    private JPanel list;
-
-    /**
-     * The instance.
-     */
-    private static final UndoLogPanel INSTANCE = new UndoLogPanel();
-
-    /**
-     * @return The instance.
-     */
-    public static UndoLogPanel getInstance() {
-        return INSTANCE;
+    public UndoManagerWrapper() {
     }
 
-    /**
-     * Constructor.
-     */
-    private UndoLogPanel() {
-        list = new JPanel(new GridLayout(0, 1));
-        JPanel listContainer = new JPanel(new BorderLayout());
-        listContainer.add(BorderLayout.NORTH, list);
-        this.setViewportView(listContainer);
-    }
+//    /*
+//     * @see org.tigris.gef.undo.UndoManager#addMemento(org.tigris.gef.undo.Memento)
+//     */
+//    public void addMemento(Memento memento) {
+//        super.addMemento(memento);
+//        UndoLogPanel.getInstance().addMemento(memento);
+//    }
+//
+//    /**
+//     * @see org.tigris.gef.undo.UndoManager#empty()
+//     */
+//    public void empty() {
+//        super.empty();
+//        UndoLogPanel.getInstance().removeAll();
+//    }
+//
+//    /**
+//     * @see org.tigris.gef.undo.UndoManager#emptyUndo()
+//     */
+//    public void emptyUndo() {
+//        super.emptyUndo();
+//    }
+//
+//    /*
+//     * @see org.tigris.gef.undo.UndoManager#redo(org.tigris.gef.undo.Memento)
+//     */
+//    protected void redo(Memento memento) {
+//        UndoLogPanel.getInstance().addMemento(memento);
+//        super.redo(memento);
+//    }
+//
+//    /*
+//     * @see org.tigris.gef.undo.UndoManager#undo(org.tigris.gef.undo.Memento)
+//     */
+//    protected void undo(Memento memento) {
+//        UndoLogPanel.getInstance().removeMemento(memento);
+//        super.undo(memento);
+//    }
+//
 
-    void addMemento(Memento memento) {
-        list.add(new JLabel(memento.toString()));
-        doLayout();
-        validate();
-        if (getVerticalScrollBar() != null) {
-            int maxScroll = getVerticalScrollBar().getMaximum();
-            getVerticalScrollBar().setValue(maxScroll + 1);
-        }
-    }
-
-    void removeMemento(Memento memento) {
-        list.remove(list.getComponentCount() - 1);
-        doLayout();
-        validate();
-    }
 }
