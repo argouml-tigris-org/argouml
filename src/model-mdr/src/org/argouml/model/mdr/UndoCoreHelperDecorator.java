@@ -31,7 +31,7 @@ import org.argouml.model.AbstractCoreHelperDecorator;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.DummyModelMemento;
 import org.argouml.model.Model;
-import org.argouml.model.ModelMemento;
+import org.argouml.model.ModelCommand;
 
 
 /**
@@ -98,22 +98,22 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * @param newValue The new value.
      * @param oldValue The old value.
      */
-    private void createMemento(
+    private void createCommand(
             final BooleanSetter accesser,
             final boolean newValue, final boolean oldValue) {
         if (newValue == oldValue) {
             return;
         }
-        ModelMemento memento = new ModelMemento() {
+        ModelCommand command = new ModelCommand() {
             public void undo() {
                 accesser.set(oldValue);
             }
-            public void redo() {
+            public void execute() {
                 accesser.set(newValue);
             }
         };
-        Model.notifyMementoCreationObserver(memento);
-        memento.redo();
+        Model.notifyModelCommandCreationObserver(command);
+        command.execute();
     }
 
     /**
@@ -123,7 +123,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * @param newValue The new value.
      * @param oldValue The old value.
      */
-    private void createMemento(
+    private void createCommand(
             final ObjectSetter accesser,
             final Object newValue, final Object oldValue) {
         if (newValue == oldValue) {
@@ -133,16 +133,16 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
                 && newValue.equals(oldValue)) {
             return;
         }
-        ModelMemento memento = new ModelMemento() {
+        ModelCommand memento = new ModelCommand() {
             public void undo() {
                 accesser.set(oldValue);
             }
-            public void redo() {
+            public void execute() {
                 accesser.set(newValue);
             }
         };
-        Model.notifyMementoCreationObserver(memento);
-        memento.redo();
+        Model.notifyModelCommandCreationObserver(memento);
+        memento.execute();
     }
 
     /**
@@ -152,7 +152,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      * @param newValue The new value.
      * @param oldValue The old value.
      */
-    private void createMemento(
+    private void createCommand(
             final StringSetter accesser,
             final String newValue, final String oldValue) {
         if (newValue == oldValue) {
@@ -162,21 +162,21 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
                 && newValue.equals(oldValue)) {
             return;
         }
-        ModelMemento memento = new ModelMemento() {
+        ModelCommand command = new ModelCommand() {
             public void undo() {
                 accesser.set(oldValue);
             }
-            public void redo() {
+            public void execute() {
                 accesser.set(newValue);
             }
         };
-        Model.notifyMementoCreationObserver(memento);
-        memento.redo();
+        Model.notifyModelCommandCreationObserver(command);
+        command.execute();
     }
 
 
     public void setAbstract(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
+        createCommand(new BooleanSetter() {
             public void set(boolean value) {
                 getComponent().setAbstract(handle, value);
             }
@@ -185,7 +185,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setActive(final Object handle, boolean active) {
-        createMemento(new BooleanSetter() {
+        createCommand(new BooleanSetter() {
             public void set(boolean value) {
                 getComponent().setActive(handle, value);
             }
@@ -194,7 +194,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setAggregation(final Object handle, Object aggregationKind) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setAggregation(handle, value);
             }
@@ -203,7 +203,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setLeaf(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
+        createCommand(new BooleanSetter() {
             public void set(boolean value) {
                 getComponent().setLeaf(handle, value);
             }
@@ -212,7 +212,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     @Override
     public void setChangeability(final Object handle, Object ck) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setChangeability(handle, value);
             }
@@ -221,7 +221,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     @Override
     public void setChangeable(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
+        createCommand(new BooleanSetter() {
             public void set(boolean value) {
                 getComponent().setChangeable(handle, value);
             }
@@ -230,7 +230,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     @Override
     public void setReadOnly(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
+        createCommand(new BooleanSetter() {
             public void set(boolean value) {
                 getComponent().setReadOnly(handle, value);
             }
@@ -238,7 +238,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     public void setConcurrency(final Object handle, Object concurrencyKind) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setConcurrency(handle, value);
             }
@@ -247,7 +247,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setKind(final Object handle, Object kind) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setKind(handle, value);
             }
@@ -256,7 +256,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setMultiplicity(final Object handle, Object arg) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setMultiplicity(handle, value);
             }
@@ -265,7 +265,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setName(final Object handle, String name) {
-        createMemento(new StringSetter() {
+        createCommand(new StringSetter() {
             public void set(String value) {
                 getComponent().setName(handle, value);
             }
@@ -274,7 +274,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setBody(final Object handle, String body) {
-        createMemento(new StringSetter() {
+        createCommand(new StringSetter() {
             public void set(String value) {
                 getComponent().setBody(handle, value);
             }
@@ -283,7 +283,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setNavigable(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
+        createCommand(new BooleanSetter() {
             public void set(boolean value) {
                 getComponent().setNavigable(handle, value);
             }
@@ -292,7 +292,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setOrdering(final Object handle, Object ok) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setOrdering(handle, value);
             }
@@ -301,7 +301,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setPowertype(final Object handle, Object pt) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setPowertype(handle, value);
             }
@@ -310,7 +310,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setQuery(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
+        createCommand(new BooleanSetter() {
             public void set(boolean value) {
                 getComponent().setQuery(handle, value);
             }
@@ -319,7 +319,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setRoot(final Object handle, boolean flag) {
-        createMemento(new BooleanSetter() {
+        createCommand(new BooleanSetter() {
             public void set(boolean value) {
                 getComponent().setRoot(handle, value);
             }
@@ -328,7 +328,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     public void setSpecification(final Object handle, boolean specification) {
-        createMemento(new BooleanSetter() {
+        createCommand(new BooleanSetter() {
             public void set(boolean value) {
                 getComponent().setSpecification(handle, value);
             }
@@ -337,7 +337,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     
     public void setSpecification(final Object handle, String specification) {
-        createMemento(new StringSetter() {
+        createCommand(new StringSetter() {
             public void set(String value) {
                 getComponent().setSpecification(handle, value);
             }
@@ -346,7 +346,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     
     public void setSpecification(final Object handle, Object specification) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setSpecification(handle, value);
             }
@@ -356,7 +356,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     
     @Override
     public void setTargetScope(final Object handle, Object scopeKind) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setTargetScope(handle, value);
             }
@@ -366,7 +366,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     
     @Override
     public void setVisibility(final Object handle, Object visibility) {
-        createMemento(new ObjectSetter() {
+        createCommand(new ObjectSetter() {
             public void set(Object value) {
                 getComponent().setVisibility(handle, value);
             }
