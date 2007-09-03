@@ -345,7 +345,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         if (saveAction != null) {
             saveAction.setEnabled(true);
         }
-        AbstractCommand wrappedMemento = new AbstractUndoableCommand() {
+        AbstractUndoableCommand wrappedMemento = new AbstractUndoableCommand() {
             private ModelCommand modelMemento = memento;
             public void undo() {
                 modelMemento.undo();
@@ -358,11 +358,10 @@ public final class ProjectManager implements ModelCommandCreationObserver {
             }
             
             public String toString() {
-                return (isStartChain() ? "*" : " ") + "ModelMemento "
-                        + modelMemento;
+                return modelMemento.toString();
             }
 
         };
-        getCurrentProject().getUndoManager().addMemento(wrappedMemento);
+        getCurrentProject().getUndoManager().addCommand(wrappedMemento);
     }
 }

@@ -28,8 +28,13 @@ package org.argouml.kernel;
  * The base class for any actions that can be undone by ActionUndo.
  * @author Bob Tarling
  */
-public abstract class AbstractUndoableCommand
-        extends AbstractCommand implements UndoableCommand {
+public abstract class AbstractUndoableCommand implements UndoableCommand {
+    
+    public abstract void execute();
     
     public abstract void undo();
+    
+    public boolean isUndoable() {
+        return true;
+    }
 }

@@ -66,10 +66,10 @@ public class DiagramUndoManager extends UndoManager {
         org.argouml.kernel.UndoManager undo = p.getUndoManager();
 
         if (startChain) {
-            undo.startChain();
+            undo.startInteraction();
         }
         
-        undo.addMemento(new DiagramCommand(memento));
+        undo.addCommand(new DiagramCommand(memento));
         
         startChain = false;
     }

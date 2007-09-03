@@ -426,7 +426,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setAuthorname(final String s) {
         final String oldAuthorName = authorname;
-        AbstractCommand memento = new AbstractCommand() {
+        AbstractUndoableCommand memento = new AbstractUndoableCommand() {
             public void execute() {
                 authorname = s;
             }
@@ -435,7 +435,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 authorname = oldAuthorName;
             }
         };
-        undoManager.addMemento(memento);
+        undoManager.addCommand(memento);
         memento.execute();
         setSaveEnabled(true);
     }
@@ -448,7 +448,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setAuthoremail(final String s) {
         final String oldAuthorEmail = authoremail;
-        AbstractCommand memento = new AbstractCommand() {
+        AbstractUndoableCommand memento = new AbstractUndoableCommand() {
             public void execute() {
                 authoremail = s;
             }
@@ -457,7 +457,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 authoremail = oldAuthorEmail;
             }
         };
-        undoManager.addMemento(memento);
+        undoManager.addCommand(memento);
         memento.execute();
         setSaveEnabled(true);
     }
@@ -480,7 +480,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setDescription(final String s) {
         final String oldDescription = description;
-        AbstractCommand memento = new AbstractCommand() {
+        AbstractUndoableCommand memento = new AbstractUndoableCommand() {
             public void execute() {
                 description = s;
             }
@@ -489,7 +489,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 description = oldDescription;
             }
         };
-        undoManager.addMemento(memento);
+        undoManager.addCommand(memento);
         memento.execute();
         setSaveEnabled(true);
     }

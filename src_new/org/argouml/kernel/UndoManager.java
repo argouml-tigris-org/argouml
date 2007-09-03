@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Manages a stacks of Commands to undo and redo.
@@ -49,8 +50,8 @@ public class UndoManager {
     
     // TODO: A UndoChainStack may produce some reasuable code for
     // the undoStack and the redoStack/
-    private List<Command> undoStack = new ArrayList<Command>();
-    private List<Command> redoStack = new ArrayList<Command>();
+    private List<MacroCommand> undoStack = new ArrayList<MacroCommand>();
+    private List<MacroCommand> redoStack = new ArrayList<MacroCommand>();
     
     private static final UndoManager INSTANCE = new UndoManager();
 
@@ -71,16 +72,13 @@ public class UndoManager {
      * Adds a new command to the undo stack.
      * @param command the command.
      */
-    public void addMemento(Command command) {
+    public void addCommand(Command command) {
         if (undoMax == 0) {
             return;
         }
         // Flag the command as to whether it is first in a chain
-        if (newChain) {
-            ((AbstractCommand) command).startChain();
-            // If the command is the first then consider that
-            // there is a new chain being received and clear
-            // the redos
+        final MacroCommand macroCommand;
+        if (newChain || undoStack.isEmpty()) {
             emptyRedo();
             incrementUndoChainCount();
             newChain = false;
@@ -88,8 +86,12 @@ public class UndoManager {
                 // TODO The undo stack is full, dispose
                 // of the oldest chain.
             }
+            macroCommand = new MacroCommand();
+            undoStack.add(macroCommand);
+        } else {
+            macroCommand = undoStack.get(undoChainCount - 1);
         }
-        undoStack.add(command);
+        macroCommand.addCommand(command);
     }
     
     /**
@@ -104,47 +106,23 @@ public class UndoManager {
      * Undo the most recent chain of mementos received by the undo stack
      */
     public void undo() {
-        AbstractUndoableCommand command;
-        boolean startChain = false;
-        do {
-            command = (AbstractUndoableCommand) pop(undoStack);
-            startChain = command.isStartChain();
-            undo(command);
-        } while (!startChain);
+        MacroCommand command;
+        command = pop(undoStack);
+        command.undo();
+        redoStack.add(command);
         decrementUndoChainCount();
         incrementRedoChainCount();
     }
     
     /**
-     * Undo a single command
-     * @param command the command to undo
-     */
-    protected void undo(UndoableCommand command) {
-        command.undo();
-        redoStack.add(command);
-    }
-    
-    /**
-     * Redo the most recent chain of mementos received by the undo stack
+     * Redo the most recent MacroCommand received by the redo stack
      */
     public void redo() {
-        do {
-            Command command = pop(redoStack);
-            redo(command);
-        } while(redoStack.size() > 0
-                && !((AbstractCommand)
-                        (redoStack.get(redoStack.size() - 1))).isStartChain());
-        incrementUndoChainCount();
-        decrementRedoChainCount();
-    }
-    
-    /**
-     * Undo a single command
-     * @param command the command to redo
-     */
-    protected void redo(Command command) {
+        MacroCommand command = pop(redoStack);
         command.execute();
         undoStack.add(command);
+        incrementUndoChainCount();
+        decrementRedoChainCount();
     }
     
     /**
@@ -178,11 +156,11 @@ public class UndoManager {
     }
     
     /**
-     * Instructs the UndoManager that the sequence of mementos recieved up
-     * until the next call to newChain all represent one chain of mementos
-     * (ie one undoable user interaction).
+     * Instructs the UndoManager that a new user interaction is about to take
+     * place. All commands received until this is called once more will make
+     * a single undoable unit.
      */
-    public void startChain() {
+    public void startInteraction() {
         newChain = true;
     }
  
@@ -190,7 +168,7 @@ public class UndoManager {
      * Empty a list stack disposing of all mementos.
      * @param list the list of mementos
      */
-    private void emptyStack(List<Command> list) {
+    private void emptyStack(List<MacroCommand> list) {
         // Lets only introduce dispose if we find it's required
         //        for (int i = 0; i < list.size(); ++i) {
         //            list.get(i).dispose();
@@ -198,7 +176,7 @@ public class UndoManager {
         list.clear();
     }
     
-    private Command pop(List<Command> stack) {
+    private MacroCommand pop(List<MacroCommand> stack) {
         return stack.remove(stack.size() - 1);
     }
     
@@ -253,6 +231,59 @@ public class UndoManager {
     private void decrementRedoChainCount() {
         if (--redoChainCount == 0) {
             fireCanRedo();
+        }
+    }
+    
+    /**
+     * A MacroCommand is a Command the executes a list of sub-commands.
+     * It represents a single user interaction and contains all the commands
+     * executed as part of that interaction.
+     *
+     * @author Bob
+     */
+    private class MacroCommand extends AbstractUndoableCommand {
+        
+        private List<Command> commands = new ArrayList<Command>();
+        
+        public void undo() {
+            final ListIterator<Command> it =
+                commands.listIterator(commands.size());
+            while (it.hasPrevious()) {
+                ((UndoableCommand) it.previous()).undo();
+            }
+        }
+        
+        public void execute() {
+            final Iterator<Command> it = commands.iterator();
+            while (it.hasNext()) {
+                it.next().execute();
+            }
+        }
+        
+        public boolean isUndoable() {
+            final Iterator<Command> it = commands.iterator();
+            while (it.hasNext()) {
+                final Command command = it.next();
+                if (!(command instanceof UndoableCommand)) {
+                    return false;
+                }
+                if (!((UndoableCommand) command).isUndoable()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
+        private void addCommand(Command command) {
+            commands.add(command);
+        }
+        
+        private String getUndoLabel() {
+            return "Undo";
+        }
+        
+        private String getRedoLabel() {
+            return "Redo";
         }
     }
 }

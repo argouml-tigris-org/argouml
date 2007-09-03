@@ -32,7 +32,13 @@ package org.argouml.kernel;
 public interface UndoableCommand extends Command {
 
     /**
-     * To be implemented on the concrete memento to redo an instruction
+     * Perform undo an an undoable command that is in an undoable state
      */
     abstract void undo();
+    
+    /**
+     * To be implemented on the concrete memento to redo an instruction
+     * @return true if the command is undoable
+     */
+    abstract boolean isUndoable();
 }
