@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Stack;
 
 /**
  * Manages a stacks of Commands to undo and redo.
@@ -40,8 +41,6 @@ import java.util.ListIterator;
 public class UndoManager {
 
     private int undoMax = 100;
-    private int undoChainCount = 0;
-    private int redoChainCount = 0;
     
     private Collection<PropertyChangeListener> listeners =
         new ArrayList<PropertyChangeListener>();
@@ -50,8 +49,8 @@ public class UndoManager {
     
     // TODO: A UndoChainStack may produce some reasuable code for
     // the undoStack and the redoStack/
-    private List<MacroCommand> undoStack = new ArrayList<MacroCommand>();
-    private List<MacroCommand> redoStack = new ArrayList<MacroCommand>();
+    private Stack<MacroCommand> undoStack = new Stack<MacroCommand>();
+    private Stack<MacroCommand> redoStack = new Stack<MacroCommand>();
     
     private static final UndoManager INSTANCE = new UndoManager();
 
@@ -79,17 +78,16 @@ public class UndoManager {
         // Flag the command as to whether it is first in a chain
         final MacroCommand macroCommand;
         if (newChain || undoStack.isEmpty()) {
-            emptyRedo();
-            incrementUndoChainCount();
+            redoStack.clear();
             newChain = false;
-            if (undoChainCount > undoMax) {
+            if (undoStack.size() > undoMax) {
                 // TODO The undo stack is full, dispose
-                // of the oldest chain.
+                // of the oldest item.
             }
             macroCommand = new MacroCommand();
-            undoStack.add(macroCommand);
+            undoStack.push(macroCommand);
         } else {
-            macroCommand = undoStack.get(undoChainCount - 1);
+            macroCommand = undoStack.peek();
         }
         macroCommand.addCommand(command);
     }
@@ -106,53 +104,26 @@ public class UndoManager {
      * Undo the most recent chain of mementos received by the undo stack
      */
     public void undo() {
-        MacroCommand command;
-        command = pop(undoStack);
+        final MacroCommand command = undoStack.pop();
         command.undo();
-        redoStack.add(command);
-        decrementUndoChainCount();
-        incrementRedoChainCount();
+        redoStack.push(command);
     }
     
     /**
      * Redo the most recent MacroCommand received by the redo stack
      */
     public void redo() {
-        MacroCommand command = pop(redoStack);
+        final MacroCommand command = redoStack.pop();
         command.execute();
-        undoStack.add(command);
-        incrementUndoChainCount();
-        decrementRedoChainCount();
-    }
-    
-    /**
-     * Empty all undoable items from the UndoManager
-     */
-    public void emptyUndo() {
-        if (undoChainCount > 0) {
-            emptyStack(undoStack);
-            undoChainCount = 0;
-            fireCanUndo();
-        }
-    }
-    
-    /**
-     * Empty all redoable items from the UndoManager
-     */
-    private void emptyRedo() {
-        if (redoChainCount > 0) {
-            emptyStack(redoStack);
-            redoChainCount = 0;
-            fireCanRedo();
-        }
+        undoStack.push(command);
     }
     
     /**
      * Empty all undoable and redoable items from the UndoManager
      */
     public void empty() {
-        emptyUndo();
-        emptyRedo();
+        undoStack.clear();
+        redoStack.clear();
     }
     
     /**
@@ -176,10 +147,6 @@ public class UndoManager {
         list.clear();
     }
     
-    private MacroCommand pop(List<MacroCommand> stack) {
-        return stack.remove(stack.size() - 1);
-    }
-    
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.add(listener);
     }
@@ -193,7 +160,7 @@ public class UndoManager {
                             this,
                             "canUndo",
                             "",
-                            Boolean.toString(undoChainCount > 0)));
+                            Boolean.toString(undoStack.size() > 0)));
         }
     }
     
@@ -206,31 +173,7 @@ public class UndoManager {
                             this,
                             "canRedo",
                             "",
-                            Boolean.toString(redoChainCount > 0)));
-        }
-    }
-    
-    private void incrementUndoChainCount() {
-        if (++undoChainCount == 1) {
-            fireCanUndo();
-        }
-    }
-    
-    private void decrementUndoChainCount() {
-        if (--undoChainCount == 0) {
-            fireCanUndo();
-        }
-    }
-    
-    private void incrementRedoChainCount() {
-        if (++redoChainCount == 1) {
-            fireCanRedo();
-        }
-    }
-    
-    private void decrementRedoChainCount() {
-        if (--redoChainCount == 0) {
-            fireCanRedo();
+                            Boolean.toString(redoStack.size() > 0)));
         }
     }
     
