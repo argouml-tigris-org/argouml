@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
+import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -56,7 +57,7 @@ public class TabToDo extends AbstractArgoJPanel
     // static variables
     private static int numHushes;
 
-    private static UndoableAction actionNewToDoItem = new ActionNewToDoItem();
+    private static Action actionNewToDoItem = new ActionNewToDoItem();
     private static ToDoItemAction actionResolve = new ActionResolve();
     private static ToDoItemAction actionSnooze = new ActionSnooze();
 

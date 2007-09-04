@@ -30,10 +30,8 @@ import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.ui.UndoableAction;
 import org.argouml.uml.ui.UMLListCellRenderer2;
-import org.tigris.gef.undo.UndoableAction;
-
-
 
 /**
  * The action to create a new todo item.

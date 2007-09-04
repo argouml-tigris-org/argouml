@@ -29,9 +29,7 @@ import javax.swing.Action;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.i18n.Translator;
-import org.tigris.gef.undo.UndoableAction;
-
-
+import org.argouml.ui.UndoableAction;
 
 /**
  * A base class for Actions related to ToDoItems.

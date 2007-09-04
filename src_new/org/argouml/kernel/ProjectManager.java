@@ -353,14 +353,9 @@ public final class ProjectManager implements ModelCommandCreationObserver {
             public void execute() {
                 modelMemento.execute();
             }
-            public void dispose() {
-                modelMemento.dispose();
-            }
-            
             public String toString() {
                 return modelMemento.toString();
             }
-
         };
         getCurrentProject().getUndoManager().addCommand(wrappedMemento);
     }

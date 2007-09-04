@@ -81,8 +81,7 @@ public class UndoManager {
             redoStack.clear();
             newChain = false;
             if (undoStack.size() > undoMax) {
-                // TODO The undo stack is full, dispose
-                // of the oldest item.
+                undoStack.remove(0);
             }
             macroCommand = new MacroCommand();
             undoStack.push(macroCommand);
@@ -101,7 +100,8 @@ public class UndoManager {
     }
 
     /**
-     * Undo the most recent chain of mementos received by the undo stack
+     * Undo the top MacroCommand on the undo stack and move
+     * it to the redo stack
      */
     public void undo() {
         final MacroCommand command = undoStack.pop();
@@ -110,7 +110,8 @@ public class UndoManager {
     }
     
     /**
-     * Redo the most recent MacroCommand received by the redo stack
+     * Redo the top MacroCommand on the undo stack and move
+     * it to the undo stack
      */
     public void redo() {
         final MacroCommand command = redoStack.pop();
@@ -135,18 +136,6 @@ public class UndoManager {
         newChain = true;
     }
  
-    /**
-     * Empty a list stack disposing of all mementos.
-     * @param list the list of mementos
-     */
-    private void emptyStack(List<MacroCommand> list) {
-        // Lets only introduce dispose if we find it's required
-        //        for (int i = 0; i < list.size(); ++i) {
-        //            list.get(i).dispose();
-        //        }
-        list.clear();
-    }
-    
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.add(listener);
     }
