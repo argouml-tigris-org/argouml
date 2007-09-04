@@ -56,7 +56,7 @@ public interface UndoManager {
     public abstract void undo();
 
     /**
-     * Redo the top user interaction on the undo stack and move
+     * Redo the top user interaction on the redo stack and move
      * it to the undo stack
      */
     public abstract void redo();
