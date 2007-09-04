@@ -60,8 +60,6 @@ public class DiagramUndoManager extends UndoManager {
      */
     @Override
     public void addMemento(final Memento memento) {
-        LOG.info("Diagram memento added " + memento);
-
         Project p = ProjectManager.getManager().getCurrentProject();
         org.argouml.kernel.UndoManager undo = p.getUndoManager();
 
@@ -80,7 +78,8 @@ public class DiagramUndoManager extends UndoManager {
     }
     
     
-    private class DiagramCommand extends org.argouml.kernel.AbstractUndoableCommand {
+    private class DiagramCommand
+            extends org.argouml.kernel.AbstractUndoableCommand {
         
         private final Memento memento;
         
