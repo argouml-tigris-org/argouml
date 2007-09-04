@@ -44,4 +44,9 @@ public class DummyModelCommand extends ModelCommand {
     public void execute() {
         // Do nothing.
     }
+
+    @Override
+    public boolean isUndoable() {
+        return false;
+    }
 }

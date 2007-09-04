@@ -35,21 +35,18 @@ package org.argouml.model;
 public abstract class ModelCommand {
 
     /**
-     * The method to undo this memento.
-     */
-    public abstract void undo();
-
-    /**
      * The method to execute this memento.
      */
     public abstract void execute();
-    
+
     /**
-     * Dispose of any resources used by this memento before it is
-     * destroyed. A memento is destroyed when it is forced off the
-     * end of the undo or redo stack when that stack has reached
-     * its maximum size or when the stack is emptied.
+     * Determine of the command can be undone
+     * @return true if the command can be undone
      */
-    public void dispose() {
-    }
+    public abstract boolean isUndoable();
+
+    /**
+     * The method to undo this memento.
+     */
+    public abstract void undo();
 }
