@@ -111,6 +111,9 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
             public void execute() {
                 accesser.set(newValue);
             }
+            public boolean isUndoable() {
+                return true;
+            }
         };
         Model.notifyModelCommandCreationObserver(command);
         command.execute();
@@ -140,6 +143,9 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
             public void execute() {
                 accesser.set(newValue);
             }
+            public boolean isUndoable() {
+                return true;
+            }
         };
         Model.notifyModelCommandCreationObserver(memento);
         memento.execute();
@@ -168,6 +174,9 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
             }
             public void execute() {
                 accesser.set(newValue);
+            }
+            public boolean isUndoable() {
+                return true;
             }
         };
         Model.notifyModelCommandCreationObserver(command);
