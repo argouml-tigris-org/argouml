@@ -25,7 +25,7 @@
 package org.argouml.kernel;
 
 /**
- * An executable Commnd
+ * An executable Command
  *
  * @author Bob
  */
@@ -35,4 +35,15 @@ public interface Command {
      * To be implemented on the concrete memento to redo an instruction
      */
     public abstract void execute();
+    
+    /**
+     * Perform undo an an undoable command that is in an undoable state
+     */
+    abstract void undo();
+    
+    /**
+     * To be implemented on the concrete memento to redo an instruction
+     * @return true if the command is undoable
+     */
+    abstract boolean isUndoable();
 }

@@ -79,7 +79,7 @@ public class DiagramUndoManager extends UndoManager {
     
     
     private class DiagramCommand
-            extends org.argouml.kernel.AbstractUndoableCommand {
+            extends org.argouml.kernel.AbstractCommand {
         
         private final Memento memento;
         

@@ -148,7 +148,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     private Collection trashcan = new ArrayList();
 
-    private UndoManager undoManager = UndoManager.getInstance();
+    private UndoManager undoManager = DefaultUndoManager.getInstance();
     
     /**
      * Constructor.
@@ -426,7 +426,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setAuthorname(final String s) {
         final String oldAuthorName = authorname;
-        AbstractUndoableCommand memento = new AbstractUndoableCommand() {
+        AbstractCommand command = new AbstractCommand() {
             public void execute() {
                 authorname = s;
             }
@@ -435,8 +435,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 authorname = oldAuthorName;
             }
         };
-        undoManager.addCommand(memento);
-        memento.execute();
+        undoManager.addCommand(command);
+        command.execute();
         setSaveEnabled(true);
     }
 
@@ -448,7 +448,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setAuthoremail(final String s) {
         final String oldAuthorEmail = authoremail;
-        AbstractUndoableCommand memento = new AbstractUndoableCommand() {
+        AbstractCommand memento = new AbstractCommand() {
             public void execute() {
                 authoremail = s;
             }
@@ -480,7 +480,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setDescription(final String s) {
         final String oldDescription = description;
-        AbstractUndoableCommand memento = new AbstractUndoableCommand() {
+        AbstractCommand memento = new AbstractCommand() {
             public void execute() {
                 description = s;
             }

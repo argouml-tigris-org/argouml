@@ -345,7 +345,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         if (saveAction != null) {
             saveAction.setEnabled(true);
         }
-        AbstractUndoableCommand wrappedMemento = new AbstractUndoableCommand() {
+        AbstractCommand wrappedMemento = new AbstractCommand() {
             private ModelCommand modelMemento = memento;
             public void undo() {
                 modelMemento.undo();
