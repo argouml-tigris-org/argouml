@@ -546,7 +546,7 @@ public final class Model {
     /**
      * Gets the external class responsible for handling mementos.
      * @return the MementoCreationObserver
-     * @deprectated use getModelCommandCreationObserver
+     * @deprecated use getModelCommandCreationObserver
      */
     public static MementoCreationObserver getMementoCreationObserver() {
         return mementoCreationObserver;
