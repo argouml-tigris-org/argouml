@@ -33,6 +33,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
 
+import org.argouml.i18n.Translator;
+
 /**
  * Manages a stacks of Commands to undo and redo.
  * UndoManager is only temporarily singleton until changes are made to GEF.
@@ -45,12 +47,19 @@ public class DefaultUndoManager implements UndoManager {
     private Collection<PropertyChangeListener> listeners =
         new ArrayList<PropertyChangeListener>();
     
-    private boolean newChain = true;
+    /**
+     * Set when a new user interaction begins
+     */
+    private boolean newInteraction = true;
     
-    // TODO: A UndoChainStack may produce some reasuable code for
-    // the undoStack and the redoStack/
-    private Stack<Interaction> undoStack = new Stack<Interaction>();
-    private Stack<Interaction> redoStack = new Stack<Interaction>();
+    /**
+     * A description of the user interaction taking place.
+     * Often this is the label of an Action.
+     */
+    private String newInteractionLabel;
+    
+    private UndoStack undoStack = new UndoStack();
+    private RedoStack redoStack = new RedoStack();
     
     private static final UndoManager INSTANCE = new DefaultUndoManager();
 
@@ -73,13 +82,13 @@ public class DefaultUndoManager implements UndoManager {
         }
         // Flag the command as to whether it is first in a chain
         final Interaction macroCommand;
-        if (newChain || undoStack.isEmpty()) {
+        if (newInteraction || undoStack.isEmpty()) {
             redoStack.clear();
-            newChain = false;
+            newInteraction = false;
             if (undoStack.size() > undoMax) {
                 undoStack.remove(0);
             }
-            macroCommand = new Interaction();
+            macroCommand = new Interaction(newInteractionLabel);
             undoStack.push(macroCommand);
         } else {
             macroCommand = undoStack.peek();
@@ -111,54 +120,27 @@ public class DefaultUndoManager implements UndoManager {
         undoStack.push(command);
     }
     
-    /**
-     * 
-     * @see org.argouml.kernel.UndoManager#empty()
-     */
-    public void empty() {
-        undoStack.clear();
-        redoStack.clear();
-    }
-    
-    /**
-     * 
-     * @see org.argouml.kernel.UndoManager#startInteraction()
-     */
-    public void startInteraction() {
-        newChain = true;
+    public void startInteraction(String label) {
+        if (!newInteraction) {
+            this.newInteractionLabel = label;
+            newInteraction = true;
+        }
     }
  
-    /**
-     * @param listener
-     * @see org.argouml.kernel.UndoManager#addPropertyChangeListener(java.beans.PropertyChangeListener)
-     */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         listeners.add(listener);
     }
     
-    private void fireCanUndo() {
-        Iterator i = listeners.iterator();
-        while (i.hasNext()) {
-            PropertyChangeListener listener = (PropertyChangeListener) i.next();
-            listener.propertyChange(
-                    new PropertyChangeEvent(
-                            this,
-                            "canUndo",
-                            "",
-                            Boolean.toString(undoStack.size() > 0)));
-        }
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        listeners.remove(listener);
     }
     
-    private void fireCanRedo() {
+    private void fire(String property, Object value) {
         Iterator i = listeners.iterator();
         while (i.hasNext()) {
             PropertyChangeListener listener = (PropertyChangeListener) i.next();
             listener.propertyChange(
-                    new PropertyChangeEvent(
-                            this,
-                            "canRedo",
-                            "",
-                            Boolean.toString(redoStack.size() > 0)));
+                    new PropertyChangeEvent(this, property, "", value));
         }
     }
     
@@ -172,6 +154,12 @@ public class DefaultUndoManager implements UndoManager {
     private class Interaction extends AbstractCommand {
         
         private List<Command> commands = new ArrayList<Command>();
+        
+        private String label;
+        
+        Interaction(String label) {
+            this.label = label;
+        }
         
         public void undo() {
             final ListIterator<Command> it =
@@ -203,12 +191,85 @@ public class DefaultUndoManager implements UndoManager {
             commands.add(command);
         }
         
+        // TODO: i18n
         private String getUndoLabel() {
-            return "Undo";
+            if (isUndoable()) {
+                return "Undo " + label;
+            } else {
+                return "Can't Undo " + label;
+            }
         }
         
+        // TODO: i18n
         private String getRedoLabel() {
-            return "Redo";
+            return "Redo " + label;
+        }
+    }
+    
+    private abstract class InteractionStack extends Stack<Interaction> {
+        
+        private String enabledProperty;
+        private String labelProperty;
+        
+        public InteractionStack(
+                String enabledProperty,
+                String labelProperty) {
+            this.enabledProperty = enabledProperty;
+            this.labelProperty = labelProperty;
+        }
+        
+        public Interaction push(Interaction item) {
+            super.push(item);
+            fireLabel();
+            if (size() == 1) {
+                fire(enabledProperty, true);
+            }
+            return item;
+        }
+        
+        public Interaction pop() {
+            Interaction item = super.pop();
+            fireLabel();
+            if (size() == 0) {
+                fire(enabledProperty, false);
+            }
+            return item;
+        }
+        
+        private void fireLabel() {
+            fire(labelProperty, getLabel());
+        }
+        
+        protected abstract String getLabel();
+    }
+    
+    private class UndoStack extends InteractionStack {
+        
+        public UndoStack() {
+            super("undoable", "undoLabel");
+        }
+        
+        protected String getLabel() {
+            if (empty()) {
+                return Translator.localize("action.undo");
+            } else {
+                return peek().getUndoLabel();
+            }
+        }
+    }
+    
+    private class RedoStack extends InteractionStack {
+        
+        public RedoStack() {
+            super("redoable", "redoLabel");
+        }
+        
+        protected String getLabel() {
+            if (empty()) {
+                return Translator.localize("action.redo");
+            } else {
+                return peek().getRedoLabel();
+            }
         }
     }
 }

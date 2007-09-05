@@ -24,14 +24,18 @@
 
 package org.argouml.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.List;
 
 import javax.swing.AbstractAction;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.DefaultUndoManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.UndoManager;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -53,25 +57,31 @@ import org.tigris.gef.presentation.Fig;
  * 
  * @author Tom Morris
  */
-public final class ProjectActions implements TargetListener {
+public final class ProjectActions
+        implements TargetListener, PropertyChangeListener {
 
     private static ProjectActions theInstance;
     
     private ProjectActions() {
         super();
+        undoAction = 
+            new ActionUndo(Translator.localize("action.undo"));
+        undoAction.setEnabled(false);
+        redoAction = 
+            new ActionRedo(Translator.localize("action.redo"));
+        redoAction.setEnabled(false);
         TargetManager.getInstance().addTargetListener(this);
+        DefaultUndoManager.getInstance().addPropertyChangeListener(this);
     }
 
     /**
      * The action to undo the last user interaction.
      */
-    private final ActionUndo undoAction = 
-        new ActionUndo(Translator.localize("action.undo"));
+    private final ActionUndo undoAction;
     /**
      * The action to redo the last undone action.
      */
-    private final AbstractAction redoAction = 
-        new ActionRedo(Translator.localize("action.redo"));
+    private final AbstractAction redoAction;
 
     /**
      * Singleton retrieval method for the projectbrowser. Lazely instantiates
@@ -222,5 +232,22 @@ public final class ProjectActions implements TargetListener {
 
     private static void setTarget(Object o) {
         TargetManager.getInstance().setTarget(o);
+    }
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getSource() instanceof UndoManager) {
+            if ("undoLabel".equals(evt.getPropertyName())) {
+                undoAction.putValue(AbstractAction.NAME, evt.getNewValue());
+            }
+            if ("redoLabel".equals(evt.getPropertyName())) {
+                redoAction.putValue(AbstractAction.NAME, evt.getNewValue());
+            }
+            if ("undoable".equals(evt.getPropertyName())) {
+                undoAction.setEnabled((Boolean) evt.getNewValue());
+            }
+            if ("redoable".equals(evt.getPropertyName())) {
+                redoAction.setEnabled((Boolean) evt.getNewValue());
+            }
+        }
     }
 }

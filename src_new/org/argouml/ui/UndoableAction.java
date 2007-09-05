@@ -38,7 +38,6 @@ import org.argouml.kernel.ProjectManager;
  */
 public abstract class UndoableAction extends AbstractAction {
 
-
     /*
      * @see javax.swing.AbstractAction.AbstractAction()
      */
@@ -63,6 +62,6 @@ public abstract class UndoableAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         final Project p = ProjectManager.getManager().getCurrentProject();
-        p.getUndoManager().startInteraction();
+        p.getUndoManager().startInteraction((String) getValue(AbstractAction.NAME));
     }
 }
