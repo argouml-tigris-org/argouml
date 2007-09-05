@@ -159,9 +159,8 @@ public final class ProjectActions implements TargetListener {
      * and scrolls to make it visible.
      *
      * @param targets Collection of targets to show
-     * 
-     * TODO: Move to different class?
-     */
+     */ 
+     // TODO: Move to different class?
     public static void jumpToDiagramShowing(List targets) {
 
         if (targets == null || targets.size() == 0) {
