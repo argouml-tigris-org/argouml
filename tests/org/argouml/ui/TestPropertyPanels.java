@@ -44,6 +44,7 @@ import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.swidgets.Horizontal;
 
@@ -100,6 +101,7 @@ public class TestPropertyPanels extends TestCase {
         (new InitNotation()).init();
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();
+        (new InitDiagramAppearanceUI()).init();
 
         if (theDetailsPane == null) {
             theDetailsPane =
