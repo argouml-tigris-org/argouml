@@ -53,8 +53,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
-import org.argouml.application.api.GUISettingsTabInterface;
-import org.argouml.application.api.InitSubsystem;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
@@ -72,7 +70,6 @@ import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.notation.ui.InitNotationUI;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.GUI;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
@@ -267,12 +264,12 @@ public class Main {
 	st.mark("initialize gui");
         initializeGUI(splash);
         
-        initSubsystem(new InitUiCmdSubsystem());
-        initSubsystem(new InitNotationUI());
-        initSubsystem(new InitNotation());
-        initSubsystem(new InitNotationUml());
-        initSubsystem(new InitNotationJava());
-        initSubsystem(new InitDiagramAppearanceUI());
+        SubsystemUtility.initSubsystem(new InitUiCmdSubsystem());
+        SubsystemUtility.initSubsystem(new InitNotationUI());
+        SubsystemUtility.initSubsystem(new InitNotation());
+        SubsystemUtility.initSubsystem(new InitNotationUml());
+        SubsystemUtility.initSubsystem(new InitNotationJava());
+        SubsystemUtility.initSubsystem(new InitDiagramAppearanceUI());
 
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,
@@ -366,7 +363,7 @@ public class Main {
         // Initialize the module loader.
         st.mark("modules");
 
-        initSubsystem(new InitModuleLoader());
+        SubsystemUtility.initSubsystem(new InitModuleLoader());
 
         st.mark("open window");
 
@@ -762,22 +759,6 @@ public class Main {
                     "released SPACE", "released"
                 })
         );         
-    }
-
-    /**
-     * The use of this method in the top-level package 
-     * prevents that the subsystem would depend on the GUI.
-     * 
-     * @param subsystem the subsystem to be initialised
-     */
-    static void initSubsystem(InitSubsystem subsystem) {
-        subsystem.init();
-        for (GUISettingsTabInterface tab : subsystem.getSettingsTabs()) {
-            GUI.getInstance().addSettingsTab(tab);
-        }
-        for (GUISettingsTabInterface tab : subsystem.getProjectSettingsTabs()) {
-            GUI.getInstance().addProjectSettingsTab(tab);
-        }
     }
 
     /**
