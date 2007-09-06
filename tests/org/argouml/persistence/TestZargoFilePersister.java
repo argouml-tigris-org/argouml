@@ -42,6 +42,7 @@ import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
 import org.argouml.uml.ProfileJava;
+import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 
 /**
  * Testcase to load projects without exception.
@@ -54,6 +55,7 @@ public class TestZargoFilePersister extends TestCase {
         (new InitNotation()).init();
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();
+        (new InitDiagramAppearanceUI()).init();
     }
 
     /**
