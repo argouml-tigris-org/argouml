@@ -22,9 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.application.events;
 
-import org.argouml.application.events.ArgoEvent;
 
 /**
  * ArgoDiagramAppearanceEvent is used to notify interested parties that the

@@ -35,8 +35,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;

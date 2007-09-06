@@ -28,6 +28,7 @@ import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
@@ -37,7 +38,6 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.DiagramAppearance;
-import org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 

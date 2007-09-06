@@ -52,6 +52,8 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoDiagramAppearanceEventListener;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
@@ -1864,7 +1866,7 @@ public abstract class FigNodeModelElement
     /**
      * Handles diagram font changing.
      * @param e the event or null
-     * @see org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent)
+     * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
      */
     public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
         updateFont();

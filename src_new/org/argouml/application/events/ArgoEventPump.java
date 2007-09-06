@@ -30,8 +30,6 @@ import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
-import org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent;
-import org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEventListener;
 
 /**
  * ArgoEventPump is an eventhandler which handles events regarding

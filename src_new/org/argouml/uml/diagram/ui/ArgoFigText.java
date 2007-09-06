@@ -35,6 +35,7 @@ import javax.management.NotificationEmitter;
 import javax.management.NotificationFilter;
 import javax.management.NotificationListener;
 
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -150,7 +151,7 @@ public class ArgoFigText extends FigText
     /**
      * Handles diagram font changing.
      * @param e the event
-     * @see org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.uml.diagram.ui.ArgoDiagramAppearanceEvent)
+     * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
      */
     public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
         updateFont();
