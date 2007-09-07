@@ -60,6 +60,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -70,6 +71,8 @@ import org.argouml.cognitive.Designer;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Command;
+import org.argouml.kernel.NonUndoableCommand;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -100,9 +103,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
-import org.tigris.gef.undo.RedoAction;
-import org.tigris.gef.undo.UndoAction;
-import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.util.Util;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
@@ -212,18 +212,6 @@ public final class ProjectBrowser
     private AbstractAction saveAction;
 
     /**
-     * The action to redo the last undone action.
-     */
-    private final AbstractAction redoAction =
-        new RedoAction(Translator.localize("action.redo"));
-
-    /**
-     * The action to undo the last user interaction.
-     */
-    private final UndoAction undoAction =
-        new UndoAction(Translator.localize("action.undo"));
-
-    /**
      * The action to remove the current selected Figs from the diagram.
      */
     private final ActionRemoveFromDiagram removeFromDiagram =
@@ -304,7 +292,17 @@ public final class ProjectBrowser
                         /* We get many many events (why?), so let's filter: */
                             && (obj != evt.getNewValue())) {
                         obj = evt.getNewValue();
-                        UndoManager.getInstance().startChain();
+                        // TODO: Bob says -
+                        // We're looking at focus change to
+                        // flag the start of an interaction. This
+                        // is to detect when focus is gained in a prop
+                        // panel field on the assumption edting of that
+                        // field is about to start.
+                        // Not a good assumption. We Need to see if we can get
+                        // rid of this.
+                        Project p = 
+                            ProjectManager.getManager().getCurrentProject();
+                        p.getUndoManager().startInteraction("Focus");
                         /* This next line is ideal for debugging the taborder
                          * (focus traversal), see e.g. issue 1849.
                          */
@@ -1487,9 +1485,6 @@ public final class ProjectBrowser
         // active, so I remove the current project, before
         // loading the new one.
 
-        boolean wasGeneratingMementos = 
-            UndoManager.getInstance().isGenerateMementos();
-        UndoManager.getInstance().addMementoLock(this);
         Designer.disableCritiquing();
         Designer.clearCritiquing();
         clearDialogs();
@@ -1664,6 +1659,11 @@ public final class ProjectBrowser
                             ProjectManager.getManager().removeProject(
                                     oldProject);
                             project.getProjectSettings().init();
+                            Command cmd = new NonUndoableCommand() {
+                                public void execute() {
+                                }
+                            };
+                            project.getUndoManager().addCommand(cmd);
                         }
                     }
 
@@ -1673,8 +1673,7 @@ public final class ProjectBrowser
                         LOG.info("There are " + project.getDiagramList().size()
                                 + " diagrams in the current project");
                     }
-                    UndoManager.getInstance().empty();
-                    UndoManager.getInstance().removeMementoLock(this);
+                    
                     Designer.enableCritiquing();
         	} finally {
                     // Make sure save action is always reinstated
@@ -1783,22 +1782,6 @@ public final class ProjectBrowser
         }
         FindDialog.getInstance().doClearTabs();
         FindDialog.getInstance().doResetFields();
-    }
-
-    /**
-     * Get the action that can undo the last user interaction on this project.
-     * @return the undo action.
-     */
-    public AbstractAction getUndoAction() {
-        return undoAction;
-    }
-
-    /**
-     * Get the action that can redo the last undone action.
-     * @return the redo action.
-     */
-    public AbstractAction getRedoAction() {
-        return redoAction;
     }
 
     /**
