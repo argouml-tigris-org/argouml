@@ -27,7 +27,6 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -42,6 +41,7 @@ import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.UndoableAction;
 
 /**
  * Action that loads the project.
@@ -50,7 +50,7 @@ import org.argouml.ui.ProjectBrowser;
  *
  * @see ActionSaveProject
  */
-public class ActionOpenProject extends AbstractAction
+public class ActionOpenProject extends UndoableAction
     implements CommandLineInterface {
 
     ////////////////////////////////////////////////////////////////
@@ -77,6 +77,7 @@ public class ActionOpenProject extends AbstractAction
      * @param e an event
      */
     public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
         Project p = ProjectManager.getManager().getCurrentProject();
         PersistenceManager pm = PersistenceManager.getInstance();
 
