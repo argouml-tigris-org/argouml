@@ -63,7 +63,8 @@ public class TestCallStateNotationUml extends TestCase {
         Object model =
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();
-        p.setRoot(model);
+        p.getRoots().clear();
+        p.addModel(model);
         aClass = Model.getCoreFactory().buildClass(model);
         aClass2 = Model.getCoreFactory().buildClass(model);
         Object returnType = p.getDefaultReturnType();

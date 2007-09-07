@@ -26,8 +26,6 @@ package org.argouml.notation;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
@@ -116,10 +114,9 @@ public class TestNotationProvider extends TestCase
     public void testListener() {
         Object model =
             Model.getModelManagementFactory().createModel();
-        Collection<Object> c = new ArrayList<Object>();
-        c.add(model);
         Project p = ProjectManager.getManager().getCurrentProject();
-        p.setRoots(c);
+        p.getRoots().clear();
+        p.addModel(model);
         aClass = Model.getCoreFactory().buildClass(model);
         
         NotationProvider np = new NPImpl();
