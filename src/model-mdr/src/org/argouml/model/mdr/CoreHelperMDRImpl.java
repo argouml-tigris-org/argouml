@@ -40,8 +40,10 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.model.ModelCommand;
 import org.argouml.model.ModelManagementHelper;
 import org.argouml.model.NotImplementedException;
+import org.argouml.model.mdr.UndoCoreHelperDecorator.StringSetter;
 import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
 import org.omg.uml.behavioralelements.activitygraphs.ClassifierInState;
 import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
@@ -2696,9 +2698,18 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
-    public void setName(Object handle, String name) {
+    public void setName(final Object handle, final String name) {
         if ((handle instanceof ModelElement) && (name != null)) {
-            ((ModelElement) handle).setName(name);
+            createCommand(
+                new StringSetter() {
+                    public void set(String value) {
+                        ((ModelElement) handle).setName(value);
+                    }
+                },
+                name,
+                Model.getFacade().getName(handle),
+                "name = " + name);
+            
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or name: "
@@ -3146,5 +3157,42 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
         return names;
     }
-
+    
+    
+    /**
+     * Create a memento for a setter of a String value.
+     *
+     * @param accesser The accesser.
+     * @param newValue The new value.
+     * @param oldValue The old value.
+     */
+    private void createCommand(
+            final StringSetter accesser,
+            final String newValue,
+            final String oldValue,
+            final String descr) {
+        if (newValue == oldValue) {
+            return;
+        }
+        if (newValue != null
+                && newValue.equals(oldValue)) {
+            return;
+        }
+        ModelCommand command = new ModelCommand() {
+            public void undo() {
+                accesser.set(oldValue);
+            }
+            public void execute() {
+                accesser.set(newValue);
+            }
+            public boolean isUndoable() {
+                return true;
+            }
+            public String toString() {
+                return descr;
+            }
+        };
+        Model.notifyModelCommandCreationObserver(command);
+        command.execute();
+    }
 }

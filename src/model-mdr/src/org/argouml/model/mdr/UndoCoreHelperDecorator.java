@@ -272,16 +272,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         }, arg, Model.getFacade().getMultiplicity(handle));
     }
 
-
-    public void setName(final Object handle, String name) {
-        createCommand(new StringSetter() {
-            public void set(String value) {
-                getComponent().setName(handle, value);
-            }
-        }, name, Model.getFacade().getName(handle));
-    }
-
-
     public void setBody(final Object handle, String body) {
         createCommand(new StringSetter() {
             public void set(String value) {
