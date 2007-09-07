@@ -52,7 +52,6 @@ import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.diagram.static_structure.ui.FigInstance;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -161,7 +160,6 @@ public class TestItemUID extends TestCase {
 
 //        FigClass figclass = new FigClass();
         FigEdgeNote figedgenote = new FigEdgeNote();
-        FigInstance figinstance = new FigInstance();
         FigInterface figinterface = new FigInterface();
         FigLink figlink = new FigLink();
 //        FigPackage figpackage = new FigPackage();
@@ -206,7 +204,6 @@ public class TestItemUID extends TestCase {
 
 //        checkAssignIDToObject(figclass, true, true);
         checkAssignIDToObject(figedgenote, true, true);
-        checkAssignIDToObject(figinstance, true, true);
         checkAssignIDToObject(figinterface, true, true);
         checkAssignIDToObject(figlink, true, true);
         //checkAssignIDToObject(figpackage, true, true);

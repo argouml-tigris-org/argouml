@@ -31,7 +31,6 @@ import org.argouml.ui.StylePanelFigNodeModelElement;
 import org.argouml.uml.diagram.state.ui.FigSimpleState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
-import org.argouml.uml.diagram.static_structure.ui.FigInstance;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass;
@@ -92,9 +91,6 @@ public class TestTabStyle extends TestCase {
         assertTrue(panel instanceof SPFigEdgeModelElement);
 
         panel = tabStyle.findPanelFor(FigActor.class);
-        assertTrue(panel instanceof StylePanelFigNodeModelElement);
-
-        panel = tabStyle.findPanelFor(FigInstance.class);
         assertTrue(panel instanceof StylePanelFigNodeModelElement);
 
         panel = tabStyle.findPanelFor(FigLink.class);
