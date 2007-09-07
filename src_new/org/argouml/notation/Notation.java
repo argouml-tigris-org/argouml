@@ -239,7 +239,7 @@ public final class Notation implements PropertyChangeListener {
      *
      * @return list of available notations
      */
-    public static List getAvailableNotations() {
+    public static List<NotationName> getAvailableNotations() {
         return NotationNameImpl.getAvailableNotations();
     }
     

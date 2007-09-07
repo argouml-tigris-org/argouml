@@ -25,7 +25,6 @@
 package org.argouml.notation.providers;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -69,10 +68,9 @@ public class TestNotation extends TestCase {
     }
     
     public void testNoDefaultNotation() {
-        List nots = new ArrayList(Notation.getAvailableNotations());
-        Iterator i = nots.iterator();
-        while (i.hasNext()) {
-            NotationName nn = (NotationName) i.next();
+        List<NotationName> nots = 
+            new ArrayList<NotationName>(Notation.getAvailableNotations());
+        for (NotationName nn : nots) {
             assertTrue("Not able to remove notation", 
                     Notation.removeNotation(nn));
         }
