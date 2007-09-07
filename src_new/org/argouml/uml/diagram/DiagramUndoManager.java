@@ -64,7 +64,9 @@ public class DiagramUndoManager extends UndoManager {
         org.argouml.kernel.UndoManager undo = p.getUndoManager();
 
         if (startChain) {
-            undo.startInteraction();
+            //TODO i18n: GEF needs to pass us back the description of what is
+            // being done.
+            undo.startInteraction("Diagram Interaction");
         }
         
         undo.addCommand(new DiagramCommand(memento));

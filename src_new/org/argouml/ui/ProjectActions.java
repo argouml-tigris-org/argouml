@@ -31,8 +31,8 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.DefaultUndoManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.UndoManager;
@@ -64,14 +64,20 @@ public final class ProjectActions
     
     private ProjectActions() {
         super();
-        undoAction = 
-            new ActionUndo(Translator.localize("action.undo"));
+        
+        undoAction = new ActionUndo(
+                Translator.localize("action.undo"),
+                ResourceLoaderWrapper.lookupIcon("Undo"));
         undoAction.setEnabled(false);
-        redoAction = 
-            new ActionRedo(Translator.localize("action.redo"));
+        
+        redoAction = new ActionRedo(
+                Translator.localize("action.redo"),
+                ResourceLoaderWrapper.lookupIcon("Redo"));
         redoAction.setEnabled(false);
+        
         TargetManager.getInstance().addTargetListener(this);
-        DefaultUndoManager.getInstance().addPropertyChangeListener(this);
+        ProjectManager.getManager().getCurrentProject().getUndoManager()
+            .addPropertyChangeListener(this);
     }
 
     /**

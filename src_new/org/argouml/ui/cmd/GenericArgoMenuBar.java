@@ -71,7 +71,6 @@ import org.argouml.uml.ui.ActionGenerationSettings;
 import org.argouml.uml.ui.ActionImportFromSources;
 import org.argouml.uml.ui.ActionLayout;
 import org.argouml.uml.ui.ActionOpenProject;
-import org.argouml.uml.ui.ActionPaste;
 import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
@@ -87,6 +86,7 @@ import org.tigris.gef.base.SelectAllAction;
 import org.tigris.gef.base.SelectInvertAction;
 import org.tigris.gef.base.ZoomAction;
 import org.tigris.toolbar.ToolBar;
+import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * GenericArgoMenuBar defines the menubar for all operating systems which do not
@@ -394,17 +394,15 @@ public class GenericArgoMenuBar extends JMenuBar implements
         
         initCommandStackItems(edit);
 
-        JMenuItem undoItem = edit.add(ProjectActions.getInstance()
-                .getUndoAction());
+        JMenuItem undoItem = edit.add(
+                ProjectActions.getInstance().getUndoAction());
         setMnemonic(undoItem, "Undo");
         ShortcutMgr.assignAccelerator(undoItem, ShortcutMgr.ACTION_UNDO);
-        undoItem.setEnabled(true);
 
-        JMenuItem redoItem = edit.add(ProjectActions.getInstance()
-                .getRedoAction());
+        JMenuItem redoItem = edit.add(
+                ProjectActions.getInstance().getRedoAction());
         setMnemonic(redoItem, "Redo");
         ShortcutMgr.assignAccelerator(redoItem, ShortcutMgr.ACTION_REDO);
-        redoItem.setEnabled(true);
 
         edit.addSeparator();
 
@@ -998,15 +996,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
      */
     public JToolBar getEditToolbar() {
         if (editToolbar == null) {
-            editToolbar = new ToolBar("misc.toolbar.edit");
-            // editToolbar.add(ActionCut.getInstance());
-            // editToolbar.add(ActionCopy.getInstance());
-            // editToolbar.add(ActionPaste.getInstance());
-            editToolbar.addFocusListener(ActionPaste.getInstance());
-            editToolbar.add(ProjectActions.getInstance()
-                    .getRemoveFromDiagramAction());
-            editToolbar.add(navigateTargetBackAction);
-            editToolbar.add(navigateTargetForwardAction);
+            editToolbar = ToolBarFactory.createToolBar(edit);
+            editToolbar.setName(Translator.localize("misc.toolbar.edit"));
         }
         return editToolbar;
     }

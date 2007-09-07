@@ -25,8 +25,6 @@
 package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.Icon;
@@ -39,8 +37,7 @@ import org.argouml.kernel.ProjectManager;
  * 
  * @author mvw@tigris.org
  */
-public class ActionRedo extends AbstractAction
-        implements PropertyChangeListener {
+public class ActionRedo extends AbstractAction {
     
     private static final long serialVersionUID = 3921952827170089931L;
 
@@ -50,9 +47,6 @@ public class ActionRedo extends AbstractAction
      */
     public ActionRedo(String name) {
         super(name);
-        final Project p = ProjectManager.getManager().getCurrentProject();
-        p.getUndoManager().addPropertyChangeListener(this);
-        setEnabled(false);
     }
     
     /**
@@ -62,25 +56,10 @@ public class ActionRedo extends AbstractAction
      */
     public ActionRedo(String name, Icon icon) {
         super(name, icon);
-        final Project p = ProjectManager.getManager().getCurrentProject();
-        p.getUndoManager().addPropertyChangeListener(this);
-        setEnabled(false);
     }
 
     public void actionPerformed(ActionEvent e) {
         final Project p = ProjectManager.getManager().getCurrentProject();
         p.getUndoManager().redo();
-    }
-    
-    /**
-     * Listens for property change events to determine when redo changes
-     * availability
-     * @param event the event
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-     */
-    public void propertyChange(PropertyChangeEvent event) {
-        if ("canRedo".equals(event.getPropertyName())) {
-            setEnabled ("true".equals(event.getNewValue()));
-        }
     }
 }

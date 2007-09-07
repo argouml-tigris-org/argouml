@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 
 /**
@@ -40,7 +41,10 @@ import org.argouml.i18n.Translator;
  * UndoManager is only temporarily singleton until changes are made to GEF.
  * @author Bob Tarling
  */
-public class DefaultUndoManager implements UndoManager {
+class DefaultUndoManager implements UndoManager {
+    
+    private static final Logger LOG =
+        Logger.getLogger(DefaultUndoManager.class);
 
     private int undoMax = 100;
     
@@ -79,6 +83,11 @@ public class DefaultUndoManager implements UndoManager {
     public void addCommand(Command command) {
         if (undoMax == 0) {
             return;
+        }
+        
+        if (!command.isUndoable()) {
+            undoStack.clear();
+            newInteraction = true;
         }
         // Flag the command as to whether it is first in a chain
         final Interaction macroCommand;
@@ -151,7 +160,7 @@ public class DefaultUndoManager implements UndoManager {
      *
      * @author Bob
      */
-    private class Interaction extends AbstractCommand {
+    class Interaction extends AbstractCommand {
         
         private List<Command> commands = new ArrayList<Command>();
         
@@ -204,24 +213,39 @@ public class DefaultUndoManager implements UndoManager {
         private String getRedoLabel() {
             return "Redo " + label;
         }
+        
+        List<Command> getCommands() {
+            return new ArrayList<Command> (commands);
+        }
     }
     
     private abstract class InteractionStack extends Stack<Interaction> {
         
         private String enabledProperty;
         private String labelProperty;
+        private String addedProperty;
+        private String removedProperty;
+        private String sizeProperty;
         
         public InteractionStack(
                 String enabledProperty,
-                String labelProperty) {
+                String labelProperty,
+                String addedProperty,
+                String removedProperty,
+                String sizeProperty) {
             this.enabledProperty = enabledProperty;
             this.labelProperty = labelProperty;
+            this.addedProperty = addedProperty;
+            this.removedProperty = removedProperty;
+            this.sizeProperty = sizeProperty;
         }
         
         public Interaction push(Interaction item) {
             super.push(item);
             fireLabel();
-            if (size() == 1) {
+            fire(addedProperty, item);
+            fire(sizeProperty, size());
+            if (item.isUndoable()) {
                 fire(enabledProperty, true);
             }
             return item;
@@ -230,10 +254,17 @@ public class DefaultUndoManager implements UndoManager {
         public Interaction pop() {
             Interaction item = super.pop();
             fireLabel();
-            if (size() == 0) {
+            fire(removedProperty, item);
+            fire(sizeProperty, size());
+            if (size() == 0 || !peek().isUndoable()) {
                 fire(enabledProperty, false);
             }
             return item;
+        }
+        
+        public void clear() {
+            super.clear();
+            fire(sizeProperty, size());
         }
         
         private void fireLabel() {
@@ -246,7 +277,12 @@ public class DefaultUndoManager implements UndoManager {
     private class UndoStack extends InteractionStack {
         
         public UndoStack() {
-            super("undoable", "undoLabel");
+            super(
+                    "undoable",
+                    "undoLabel",
+                    "undoAdded",
+                    "undoRemoved",
+                    "undoSize");
         }
         
         protected String getLabel() {
@@ -261,7 +297,12 @@ public class DefaultUndoManager implements UndoManager {
     private class RedoStack extends InteractionStack {
         
         public RedoStack() {
-            super("redoable", "redoLabel");
+            super(
+                    "redoable", 
+                    "redoLabel", 
+                    "redoAdded", 
+                    "redoRemoved", 
+                    "redoSize");
         }
         
         protected String getLabel() {

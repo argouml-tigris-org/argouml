@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,44 +22,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
-
-import java.awt.event.ActionEvent;
-
-import javax.swing.AbstractAction;
-import javax.swing.Icon;
-
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
+package org.argouml.kernel;
 
 /**
- * An action to undo from the undo stack.
- * 
+ * The base class for any commands that can be undone by ActionUndo.
  * @author Bob Tarling
  */
-public class ActionUndo extends AbstractAction {
+public abstract class NonUndoableCommand implements Command {
     
-    private static final long serialVersionUID = 6544646406482242086L;
-
-    /**
-     * Construct the undo action with a display name
-     * @param name the name for this action
-     */
-    public ActionUndo(String name) {
-        super(name);
+    public abstract void execute();
+    
+    public void undo() {
     }
     
-    /**
-     * Construct the undo action with a display name and icon.
-     * @param name the name for this action
-     * @param icon the icon to diaply for this action
-     */
-    public ActionUndo(String name, Icon icon) {
-        super(name, icon);
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        p.getUndoManager().undo();
+    public boolean isUndoable() {
+        return false;
     }
 }

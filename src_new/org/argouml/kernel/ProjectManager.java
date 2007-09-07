@@ -72,12 +72,14 @@ public final class ProjectManager implements ModelCommandCreationObserver {
 
     /**
      * The name of the property that there is no project.
+     * @deprecated in 0.25.4 By Bob Tarling This is unused.
      */
     public static final String NO_PROJECT =
         "noProject";
 
     /**
      * The name of the property that defines the save state.
+     * @deprecated in 0.25.4 By Bob Tarling This is unused.
      */
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
@@ -246,25 +248,33 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      *            default diagrams (Class and Use Case)
      * @return Project the newly created project
      */
-    public Project makeEmptyProject(boolean addDefaultDiagrams) {    
-        Model.getPump().stopPumpingEvents();
-        
-        creatingCurrentProject = true;
-        LOG.info("making empty project");
-        Project oldProject = currentProject;
-        currentProject = new ProjectImpl();
-        if (addDefaultDiagrams) {
-            createDefaultDiagrams();
-        }
-        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
-                            oldProject, currentProject);
-        creatingCurrentProject = false;
+    public Project makeEmptyProject(final boolean addDefaultDiagrams) {    
+        final Command cmd = new NonUndoableCommand() {
 
-        Model.getPump().startPumpingEvents();
-        
-        if (saveAction != null) {
-            saveAction.setEnabled(false);
-        }
+            @Override
+            public void execute() {
+                Model.getPump().stopPumpingEvents();
+                
+                creatingCurrentProject = true;
+                LOG.info("making empty project");
+                final Project oldProject = currentProject;
+                currentProject = new ProjectImpl();
+                if (addDefaultDiagrams) {
+                    createDefaultDiagrams();
+                }
+                firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
+                                    oldProject, currentProject);
+                creatingCurrentProject = false;
+
+                Model.getPump().startPumpingEvents();
+                
+                if (saveAction != null) {
+                    saveAction.setEnabled(false);
+                }
+            }
+        };
+        cmd.execute();
+        currentProject.getUndoManager().addCommand(cmd);
         return currentProject;
     }
 
