@@ -98,5 +98,10 @@ public class DiagramUndoManager extends UndoManager {
         public void undo() {
             memento.undo();
         }
+        
+        @Override
+        public String toString() {
+            return memento.toString();
+        }
     }
 }
