@@ -130,10 +130,9 @@ class DefaultUndoManager implements UndoManager {
     }
     
     public void startInteraction(String label) {
-        if (!newInteraction) {
-            this.newInteractionLabel = label;
-            newInteraction = true;
-        }
+        LOG.info("Starting interaction " + label);
+        this.newInteractionLabel = label;
+        newInteraction = true;
     }
  
     public void addPropertyChangeListener(PropertyChangeListener listener) {
