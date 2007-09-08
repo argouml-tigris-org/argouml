@@ -33,10 +33,11 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.AbstractCommand;
+import org.argouml.kernel.Command;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
-import org.tigris.gef.undo.Memento;
-import org.tigris.gef.undo.UndoManager;
 
 /**
  * Action that saves the project.
@@ -51,8 +52,6 @@ public class ActionSaveProject extends AbstractAction {
      */
     private static final Logger LOG = Logger.getLogger(ActionSaveProject.class);
 
-    private static int count;
-    
     /**
      * The constructor.
      */
@@ -96,19 +95,20 @@ public class ActionSaveProject extends AbstractAction {
         if (isEnabled == this.enabled) {
             return;
         }
-        if (isEnabled && ++count == 2) {
-//            throw new IllegalArgumentException();
-        }
-        Memento memento = new Memento() {
+        Command command = new AbstractCommand() {
+            public void execute() {
+                internalSetEnabled(isEnabled);
+            }
             public void undo() {
                 internalSetEnabled(!isEnabled);
             }
-            public void redo() {
-                internalSetEnabled(isEnabled);
+            public String toString() {
+                return "save enabled = " + isEnabled;
             }
         };
-    	UndoManager.getInstance().addMemento(memento);
-        internalSetEnabled(isEnabled);
+        command.execute();
+        Project p = ProjectManager.getManager().getCurrentProject();
+    	p.getUndoManager().addCommand(command);
     }
     
     /**
