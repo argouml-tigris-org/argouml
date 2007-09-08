@@ -81,6 +81,8 @@ class DefaultUndoManager implements UndoManager {
     }
     
     public void addCommand(Command command) {
+        ProjectManager.getManager().setSaveEnabled(true);
+        
         if (undoMax == 0) {
             return;
         }
