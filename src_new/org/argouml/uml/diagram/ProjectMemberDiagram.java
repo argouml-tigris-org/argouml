@@ -53,6 +53,8 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
     }
 
     /**
+     * Used by "argo.tee".
+     * 
      * @return the diagram
      */
     public ArgoDiagram getDiagram() {

@@ -100,7 +100,7 @@ public interface Project {
     public void setFile(File file);
 
     /**
-     * Used by "argo.tee".
+     * Not used by "argo.tee" any more.
      * 
      * @return the search path
      * @deprecated by tfmorris for 0.25.4.  Use {@link #getSearchPathList()}.
@@ -109,7 +109,7 @@ public interface Project {
     public Vector<String> getSearchPath();
     
     /**
-     * NOT used by "argo.tee" yet.
+     * Used by "argo.tee".
      * 
      * @return the search path
      */
@@ -128,7 +128,7 @@ public interface Project {
     
     /**
      * Get all members of the project.
-     * Used by "argo2.tee".
+     * Used by "argo.tee".
      *
      * @return all members.
      */

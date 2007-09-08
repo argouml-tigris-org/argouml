@@ -46,7 +46,7 @@
     <generationoutputdir><ocl>self.projectSettings.generationOutputDir</ocl></generationoutputdir>
   </settings>
   
-  <searchpath href="<ocl>self.searchPath</ocl>" />
+  <searchpath href="<ocl>self.searchPathList</ocl>" />
 
   <ocl>self.members</ocl>
 
@@ -83,12 +83,6 @@
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.argouml.ui.UsageStatistic">
-<![CDATA[
-<stat name="<ocl>self.name</ocl>"
-     value="<ocl>self.value</ocl>" />
-]]>
-</template>
 
 </TemplateSet>
 
