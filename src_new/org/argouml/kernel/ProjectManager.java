@@ -306,7 +306,6 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         // any changes in those subsystems will enable the
         // save button/menu item etc.
         Designer.setSaveAction(save);
-        MutableGraphSupport.setSaveAction(save);
     }
     
     /**
