@@ -273,7 +273,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                 }
             }
         };
-        currentProject.getUndoManager().execute(cmd);
+        cmd.execute();
+        currentProject.getUndoManager().addCommand(cmd);
         return currentProject;
     }
 
