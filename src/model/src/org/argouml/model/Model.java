@@ -575,16 +575,17 @@ public final class Model {
     }
 
     /**
-     * Notify any observer that a memento has been created.
-     *
+     * Notify any observer that a memento has been created and execute
+     * that command.
      * @param command The newly created command.
      */
-    public static void notifyModelCommandCreationObserver(
+    public static Object execute(
             ModelCommand command) {
         ModelCommandCreationObserver mco = getModelCommandCreationObserver();
         if (mco != null) {
             mco.modelCommandCreated(command);
         }
+        return command.execute();
     }
 
     /**

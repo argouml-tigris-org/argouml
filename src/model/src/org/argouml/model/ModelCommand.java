@@ -37,13 +37,19 @@ public abstract class ModelCommand {
     /**
      * The method to execute this memento.
      */
-    public abstract void execute();
+    public abstract Object execute();
 
     /**
      * Determine of the command can be undone
      * @return true if the command can be undone
      */
     public abstract boolean isUndoable();
+
+    /**
+     * Determine of the command can be redone once undone
+     * @return true if the command can be redone
+     */
+    public abstract boolean isRedoable();
 
     /**
      * The method to undo this memento.
