@@ -38,4 +38,8 @@ public abstract class NonUndoableCommand implements Command {
     public boolean isUndoable() {
         return false;
     }
+    
+    public boolean isRedoable() {
+        return false;
+    }
 }

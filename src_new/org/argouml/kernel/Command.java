@@ -1,4 +1,4 @@
-// $Id$
+// $Id: UndoableCommand.java 13484 2007-09-03 20:53:50Z bobtarling $
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,8 +42,14 @@ public interface Command {
     abstract void undo();
     
     /**
-     * To be implemented on the concrete memento to redo an instruction
+     * Returns true if the command can be undone
      * @return true if the command is undoable
      */
     abstract boolean isUndoable();
+    
+    /**
+     * Returns true if the command can be redone once undone
+     * @return true if the command is redoable
+     */
+    abstract boolean isRedoable();
 }

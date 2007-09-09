@@ -37,4 +37,8 @@ public abstract class AbstractCommand implements Command {
     public boolean isUndoable() {
         return true;
     }
+    
+    public boolean isRedoable() {
+        return true;
+    }
 }

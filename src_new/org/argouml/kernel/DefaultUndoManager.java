@@ -202,6 +202,17 @@ class DefaultUndoManager implements UndoManager {
             return true;
         }
         
+        public boolean isRedoable() {
+            final Iterator<Command> it = commands.iterator();
+            while (it.hasNext()) {
+                final Command command = it.next();
+                if (!command.isRedoable()) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        
         private void addCommand(Command command) {
             commands.add(command);
         }
