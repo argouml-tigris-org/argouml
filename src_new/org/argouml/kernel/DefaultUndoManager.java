@@ -87,11 +87,6 @@ class DefaultUndoManager implements UndoManager {
     
     public void addCommand(Command command) {
 
-        System.out.println("command " + command);
-        if (!command.isRedoable()) {
-            System.out.println("It's not redoable");
-        }
-        
         ProjectManager.getManager().setSaveEnabled(true);
         
         if (undoMax == 0) {
