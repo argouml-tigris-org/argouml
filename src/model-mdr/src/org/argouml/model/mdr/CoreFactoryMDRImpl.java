@@ -29,8 +29,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.jmi.reflect.InvalidObjectException;
+import javax.jmi.reflect.RefObject;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
+import org.argouml.model.ModelCommand;
+import org.argouml.model.ModelCommandCreationObserver;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.commonbehavior.Reception;
 import org.omg.uml.behavioralelements.commonbehavior.Signal;
@@ -801,15 +806,37 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     
 
     public UmlClass buildClass() {
-        UmlClass cl = createClass();
-        cl.setName("");
-        cl.setAbstract(false);
-        cl.setActive(false);
-        cl.setRoot(false);
-        cl.setLeaf(false);
-        cl.setSpecification(false);
-        cl.setVisibility(VisibilityKindEnum.VK_PUBLIC);
-        return cl;
+        ModelCommand command = new ModelCommand() {
+            UmlClass cl;
+            public UmlClass execute() {
+                cl = createClass();
+                cl.setName("");
+                cl.setAbstract(false);
+                cl.setActive(false);
+                cl.setRoot(false);
+                cl.setLeaf(false);
+                cl.setSpecification(false);
+                cl.setVisibility(VisibilityKindEnum.VK_PUBLIC);
+                return cl;
+            }
+            
+            public void undo() {
+                try {
+                    cl.refDelete();
+                } catch (InvalidObjectException e) {
+                    LOG.warn("Object already deleted " + cl);
+                }
+            }
+            
+            public boolean isUndoable() {
+                return true;
+            }
+            
+            public boolean isRedoable() {
+                return false;
+            }
+        };
+        return (UmlClass) org.argouml.model.Model.execute(command);
     }
 
 

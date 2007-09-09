@@ -3182,17 +3182,20 @@ class CoreHelperMDRImpl implements CoreHelper {
             public void undo() {
                 accesser.set(oldValue);
             }
-            public void execute() {
+            public Object execute() {
                 accesser.set(newValue);
+                return null;
             }
             public boolean isUndoable() {
+                return true;
+            }
+            public boolean isRedoable() {
                 return true;
             }
             public String toString() {
                 return descr;
             }
         };
-        Model.notifyModelCommandCreationObserver(command);
-        command.execute();
+        Model.execute(command);
     }
 }

@@ -108,15 +108,18 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
             public void undo() {
                 accesser.set(oldValue);
             }
-            public void execute() {
+            public Object execute() {
                 accesser.set(newValue);
+                return null;
             }
             public boolean isUndoable() {
                 return true;
             }
+            public boolean isRedoable() {
+                return true;
+            }
         };
-        Model.notifyModelCommandCreationObserver(command);
-        command.execute();
+        Model.execute(command);
     }
 
     /**
@@ -140,15 +143,18 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
             public void undo() {
                 accesser.set(oldValue);
             }
-            public void execute() {
+            public Object execute() {
                 accesser.set(newValue);
+                return null;
             }
             public boolean isUndoable() {
                 return true;
             }
+            public boolean isRedoable() {
+                return true;
+            }
         };
-        Model.notifyModelCommandCreationObserver(memento);
-        memento.execute();
+        Model.execute(memento);
     }
 
     /**
@@ -172,15 +178,18 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
             public void undo() {
                 accesser.set(oldValue);
             }
-            public void execute() {
+            public Object execute() {
                 accesser.set(newValue);
+                return null;
             }
             public boolean isUndoable() {
                 return true;
             }
+            public boolean isRedoable() {
+                return true;
+            }
         };
-        Model.notifyModelCommandCreationObserver(command);
-        command.execute();
+        Model.execute(command);
     }
 
 

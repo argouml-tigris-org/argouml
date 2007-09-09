@@ -667,7 +667,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             elementsToBeDeleted.add(elem);
         }
 
-        if (LOG.isInfoEnabled()) {
+        if (LOG.isDebugEnabled()) {
             if (top == elem) {
                 LOG.debug("Set top for cascade delete to " + elem);
             }
