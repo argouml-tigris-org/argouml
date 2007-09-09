@@ -351,20 +351,26 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * @param memento the memento.
      * @see org.argouml.model.ModelCommandCreationObserver#modelCommandCreated(org.argouml.model.ModelCommand)
      */
-    public Object execute(final ModelCommand memento) {
+    public Object execute(final ModelCommand command) {
         if (saveAction != null) {
             saveAction.setEnabled(true);
         }
         AbstractCommand wrappedMemento = new AbstractCommand() {
-            private ModelCommand modelMemento = memento;
+            private ModelCommand modelCommand = command;
             public void undo() {
-                modelMemento.undo();
+                modelCommand.undo();
+            }
+            public boolean isUndoable() {
+                return modelCommand.isUndoable();
+            }
+            public boolean isRedoable() {
+                return modelCommand.isRedoable();
             }
             public Object execute() {
-                return modelMemento.execute();
+                return modelCommand.execute();
             }
             public String toString() {
-                return modelMemento.toString();
+                return modelCommand.toString();
             }
         };
         return getCurrentProject().getUndoManager().execute(wrappedMemento);

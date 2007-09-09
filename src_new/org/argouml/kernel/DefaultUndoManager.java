@@ -86,6 +86,12 @@ class DefaultUndoManager implements UndoManager {
     }
     
     public void addCommand(Command command) {
+
+        System.out.println("command " + command);
+        if (!command.isRedoable()) {
+            System.out.println("It's not redoable");
+        }
+        
         ProjectManager.getManager().setSaveEnabled(true);
         
         if (undoMax == 0) {
@@ -123,9 +129,10 @@ class DefaultUndoManager implements UndoManager {
     public void undo() {
         final Interaction command = undoStack.pop();
         command.undo();
-        if (command.isRedoable()) {
-            redoStack.push(command);
+        if (!command.isRedoable()) {
+            redoStack.clear();
         }
+        redoStack.push(command);
     }
     
     /**
@@ -231,7 +238,11 @@ class DefaultUndoManager implements UndoManager {
         
         // TODO: i18n
         private String getRedoLabel() {
-            return "Redo " + label;
+            if (isRedoable()) {
+                return "Redo " + label;
+            } else {
+                return "Can't Redo " + label;
+            }
         }
         
         List<Command> getCommands() {
@@ -241,19 +252,16 @@ class DefaultUndoManager implements UndoManager {
     
     private abstract class InteractionStack extends Stack<Interaction> {
         
-        private String enabledProperty;
         private String labelProperty;
         private String addedProperty;
         private String removedProperty;
         private String sizeProperty;
         
         public InteractionStack(
-                String enabledProperty,
                 String labelProperty,
                 String addedProperty,
                 String removedProperty,
                 String sizeProperty) {
-            this.enabledProperty = enabledProperty;
             this.labelProperty = labelProperty;
             this.addedProperty = addedProperty;
             this.removedProperty = removedProperty;
@@ -265,9 +273,6 @@ class DefaultUndoManager implements UndoManager {
             fireLabel();
             fire(addedProperty, item);
             fire(sizeProperty, size());
-            if (item.isUndoable()) {
-                fire(enabledProperty, true);
-            }
             return item;
         }
         
@@ -276,15 +281,7 @@ class DefaultUndoManager implements UndoManager {
             fireLabel();
             fire(removedProperty, item);
             fire(sizeProperty, size());
-            if (size() == 0 || !peek().isUndoable()) {
-                fire(enabledProperty, false);
-            }
             return item;
-        }
-        
-        public void clear() {
-            super.clear();
-            fire(sizeProperty, size());
         }
         
         private void fireLabel() {
@@ -298,11 +295,32 @@ class DefaultUndoManager implements UndoManager {
         
         public UndoStack() {
             super(
-                    "undoable",
                     "undoLabel",
                     "undoAdded",
                     "undoRemoved",
                     "undoSize");
+        }
+        
+        public Interaction push(Interaction item) {
+            super.push(item);
+            if (item.isUndoable()) {
+                fire("undoable", true);
+            }
+            return item;
+        }
+        
+        public Interaction pop() {
+            Interaction item = super.pop();
+            if (size() == 0 || !peek().isUndoable()) {
+                fire("undoable", false);
+            }
+            return item;
+        }
+        
+        public void clear() {
+            super.clear();
+            fire("undoSize", size());
+            fire("undoable", false);
         }
         
         protected String getLabel() {
@@ -318,11 +336,33 @@ class DefaultUndoManager implements UndoManager {
         
         public RedoStack() {
             super(
-                    "redoable", 
                     "redoLabel", 
                     "redoAdded", 
                     "redoRemoved", 
                     "redoSize");
+        }
+        
+        
+        public Interaction push(Interaction item) {
+            super.push(item);
+            if (item.isRedoable()) {
+                fire("redoable", true);
+            }
+            return item;
+        }
+        
+        public Interaction pop() {
+            Interaction item = super.pop();
+            if (size() == 0 || !peek().isRedoable()) {
+                fire("redoable", false);
+            }
+            return item;
+        }
+        
+        public void clear() {
+            super.clear();
+            fire("redoSize", size());
+            fire("redoable", false);
         }
         
         protected String getLabel() {
