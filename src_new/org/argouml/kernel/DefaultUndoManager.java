@@ -123,7 +123,9 @@ class DefaultUndoManager implements UndoManager {
     public void undo() {
         final Interaction command = undoStack.pop();
         command.undo();
-        redoStack.push(command);
+        if (command.isRedoable()) {
+            redoStack.push(command);
+        }
     }
     
     /**
