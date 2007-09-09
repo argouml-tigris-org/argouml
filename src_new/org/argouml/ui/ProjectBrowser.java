@@ -1661,6 +1661,10 @@ public final class ProjectBrowser
                             project.getProjectSettings().init();
                             Command cmd = new NonUndoableCommand() {
                                 public void execute() {
+                                    // This is temporary. Load project
+                                    // should create a new project
+                                    // with its own UndoManager and so
+                                    // there should be no Command
                                 }
                             };
                             project.getUndoManager().addCommand(cmd);

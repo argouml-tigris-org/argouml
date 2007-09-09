@@ -80,6 +80,11 @@ class DefaultUndoManager implements UndoManager {
         return INSTANCE;
     }
     
+    public void execute(Command command) {
+        command.execute();
+        addCommand(command);
+    }
+    
     public void addCommand(Command command) {
         ProjectManager.getManager().setSaveEnabled(true);
         

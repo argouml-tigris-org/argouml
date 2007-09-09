@@ -435,9 +435,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 authorname = oldAuthorName;
             }
         };
-        undoManager.addCommand(command);
-        command.execute();
-        setSaveEnabled(true);
+        undoManager.execute(command);
     }
 
 
@@ -448,7 +446,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setAuthoremail(final String s) {
         final String oldAuthorEmail = authoremail;
-        AbstractCommand memento = new AbstractCommand() {
+        AbstractCommand command = new AbstractCommand() {
             public void execute() {
                 authoremail = s;
             }
@@ -457,9 +455,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 authoremail = oldAuthorEmail;
             }
         };
-        undoManager.addCommand(memento);
-        memento.execute();
-        setSaveEnabled(true);
+        undoManager.execute(command);
     }
 
 
@@ -480,7 +476,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setDescription(final String s) {
         final String oldDescription = description;
-        AbstractCommand memento = new AbstractCommand() {
+        AbstractCommand command = new AbstractCommand() {
             public void execute() {
                 description = s;
             }
@@ -489,9 +485,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 description = oldDescription;
             }
         };
-        undoManager.addCommand(memento);
-        memento.execute();
-        setSaveEnabled(true);
+        undoManager.execute(command);
     }
 
 

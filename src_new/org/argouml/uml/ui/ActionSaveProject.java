@@ -106,9 +106,8 @@ public class ActionSaveProject extends AbstractAction {
                 return "save enabled = " + isEnabled;
             }
         };
-        command.execute();
         Project p = ProjectManager.getManager().getCurrentProject();
-    	p.getUndoManager().addCommand(command);
+    	p.getUndoManager().execute(command);
     }
     
     /**
