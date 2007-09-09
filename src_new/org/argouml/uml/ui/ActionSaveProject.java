@@ -95,20 +95,7 @@ public class ActionSaveProject extends AbstractAction {
         if (isEnabled == this.enabled) {
             return;
         }
-        Command command = new AbstractCommand() {
-            public Object execute() {
-                internalSetEnabled(isEnabled);
-                return null;
-            }
-            public void undo() {
-                internalSetEnabled(!isEnabled);
-            }
-            public String toString() {
-                return "save enabled = " + isEnabled;
-            }
-        };
-        Project p = ProjectManager.getManager().getCurrentProject();
-    	p.getUndoManager().execute(command);
+        internalSetEnabled(isEnabled);
     }
     
     /**
