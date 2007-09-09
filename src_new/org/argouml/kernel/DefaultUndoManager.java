@@ -80,9 +80,9 @@ class DefaultUndoManager implements UndoManager {
         return INSTANCE;
     }
     
-    public void execute(Command command) {
-        command.execute();
+    public Object execute(Command command) {
         addCommand(command);
+        return command.execute();
     }
     
     public void addCommand(Command command) {
@@ -184,11 +184,12 @@ class DefaultUndoManager implements UndoManager {
             }
         }
         
-        public void execute() {
+        public Object execute() {
             final Iterator<Command> it = commands.iterator();
             while (it.hasNext()) {
                 it.next().execute();
             }
+            return null;
         }
         
         public boolean isUndoable() {

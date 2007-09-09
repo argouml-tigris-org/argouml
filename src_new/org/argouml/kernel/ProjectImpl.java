@@ -427,8 +427,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public void setAuthorname(final String s) {
         final String oldAuthorName = authorname;
         AbstractCommand command = new AbstractCommand() {
-            public void execute() {
+            public Object execute() {
                 authorname = s;
+                return null;
             }
 
             public void undo() {
@@ -447,8 +448,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public void setAuthoremail(final String s) {
         final String oldAuthorEmail = authoremail;
         AbstractCommand command = new AbstractCommand() {
-            public void execute() {
+            public Object execute() {
                 authoremail = s;
+                return null;
             }
 
             public void undo() {
@@ -477,8 +479,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public void setDescription(final String s) {
         final String oldDescription = description;
         AbstractCommand command = new AbstractCommand() {
-            public void execute() {
+            public Object execute() {
                 description = s;
+                return null;
             }
 
             public void undo() {

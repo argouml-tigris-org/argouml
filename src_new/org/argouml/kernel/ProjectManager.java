@@ -252,7 +252,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         final Command cmd = new NonUndoableCommand() {
 
             @Override
-            public void execute() {
+            public Object execute() {
                 Model.getPump().stopPumpingEvents();
                 
                 creatingCurrentProject = true;
@@ -271,6 +271,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                 if (saveAction != null) {
                     saveAction.setEnabled(false);
                 }
+                return null;
             }
         };
         cmd.execute();
@@ -350,7 +351,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * @param memento the memento.
      * @see org.argouml.model.ModelCommandCreationObserver#modelCommandCreated(org.argouml.model.ModelCommand)
      */
-    public void modelCommandCreated(final ModelCommand memento) {
+    public Object execute(final ModelCommand memento) {
         if (saveAction != null) {
             saveAction.setEnabled(true);
         }
@@ -359,13 +360,13 @@ public final class ProjectManager implements ModelCommandCreationObserver {
             public void undo() {
                 modelMemento.undo();
             }
-            public void execute() {
-                modelMemento.execute();
+            public Object execute() {
+                return modelMemento.execute();
             }
             public String toString() {
                 return modelMemento.toString();
             }
         };
-        getCurrentProject().getUndoManager().addCommand(wrappedMemento);
+        return getCurrentProject().getUndoManager().execute(wrappedMemento);
     }
 }

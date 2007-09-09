@@ -30,7 +30,7 @@ package org.argouml.kernel;
  */
 public abstract class NonUndoableCommand implements Command {
     
-    public abstract void execute();
+    public abstract Object execute();
     
     public void undo() {
     }

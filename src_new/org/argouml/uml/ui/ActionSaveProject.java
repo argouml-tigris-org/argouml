@@ -96,8 +96,9 @@ public class ActionSaveProject extends AbstractAction {
             return;
         }
         Command command = new AbstractCommand() {
-            public void execute() {
+            public Object execute() {
                 internalSetEnabled(isEnabled);
+                return null;
             }
             public void undo() {
                 internalSetEnabled(!isEnabled);

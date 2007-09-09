@@ -90,8 +90,9 @@ public class DiagramUndoManager extends UndoManager {
         }
 
         @Override
-        public void execute() {
+        public Object execute() {
             memento.redo();
+            return null;
         }
 
         @Override

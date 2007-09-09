@@ -30,7 +30,7 @@ package org.argouml.kernel;
  */
 public abstract class AbstractCommand implements Command {
     
-    public abstract void execute();
+    public abstract Object execute();
     
     public abstract void undo();
     

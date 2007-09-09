@@ -33,8 +33,9 @@ public interface Command {
 
     /**
      * To be implemented on the concrete memento to redo an instruction
+     * @return any resulting object created by the command
      */
-    public abstract void execute();
+    public abstract Object execute();
     
     /**
      * Perform undo an an undoable command that is in an undoable state

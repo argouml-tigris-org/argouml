@@ -46,8 +46,9 @@ public interface UndoManager {
     /**
      * Executes a command and add it to the undo stack.
      * @param command the command.
+     * @return any resulting object the command creates
      */
-    public abstract void execute(Command command);
+    public abstract Object execute(Command command);
 
     /**
      * Set the maximum number of interactions the stack can hold.
