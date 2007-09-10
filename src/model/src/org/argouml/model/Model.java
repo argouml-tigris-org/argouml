@@ -556,7 +556,8 @@ public final class Model {
      * Gets the external class responsible for handling mementos.
      * @return the MementoCreationObserver
      */
-    public static ModelCommandCreationObserver getModelCommandCreationObserver() {
+    public static ModelCommandCreationObserver
+    getModelCommandCreationObserver() {
         return modelCommandCreationObserver;
     }
 
@@ -578,14 +579,16 @@ public final class Model {
      * Notify any observer that a memento has been created and execute
      * that command.
      * @param command The newly created command.
+     * @return the reulting object from the command
      */
     public static Object execute(
             ModelCommand command) {
         ModelCommandCreationObserver mco = getModelCommandCreationObserver();
         if (mco != null) {
-            mco.modelCommandCreated(command);
+            return mco.execute(command);
+        } else {
+            return command.execute();
         }
-        return command.execute();
     }
 
     /**
