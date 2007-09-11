@@ -50,6 +50,9 @@ public final class InitializeModel {
      * Initialize the Model subsystem with the default ModelImplementation.
      */
     public static void initializeDefault() {
+    	if (Model.isInitiated()) {
+    	    return;
+    	}
         String className =
             System.getProperty(
                     "argouml.model.implementation",
