@@ -532,9 +532,9 @@ public final class Model {
     }
 
     /**
-     * Allows an external system to register itself to recieve commands
+     * Allows an external system to register itself to receive commands
      * created by the model implementation.
-     * @see {@link ModelMemento}
+     * @see {@link ModelCommand}
      *
      * @param observer the interested party
      */
@@ -553,8 +553,8 @@ public final class Model {
     }
 
     /**
-     * Gets the external class responsible for handling mementos.
-     * @return the MementoCreationObserver
+     * Gets the external class responsible for handling commands.
+     * @return the observer
      */
     public static ModelCommandCreationObserver
     getModelCommandCreationObserver() {
@@ -576,8 +576,8 @@ public final class Model {
     }
 
     /**
-     * Notify any observer that a memento has been created and execute
-     * that command.
+     * Notify any observer that a command has been created and execute
+     * that it.
      * @param command The newly created command.
      * @return the reulting object from the command
      */

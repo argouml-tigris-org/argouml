@@ -33,9 +33,9 @@ package org.argouml.model;
 public interface ModelCommandCreationObserver {
     
     /**
-     * Called whenever a memento is created by the model subsystem
+     * Called whenever a command is created by the model subsystem
      * to execute it and store it for undo
-     * @param command the memento.
+     * @param command the command.
      */
     Object execute(ModelCommand command);
 }
