@@ -148,6 +148,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     private Collection trashcan = new ArrayList();
 
+    // TODO: Change this to use an UndoManager instance per project when
+    // GEF has been enhanced.
     private UndoManager undoManager = DefaultUndoManager.getInstance();
     
     /**

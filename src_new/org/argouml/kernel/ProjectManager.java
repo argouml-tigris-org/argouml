@@ -26,7 +26,7 @@ package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.event.EventListenerList;
@@ -34,15 +34,14 @@ import javax.swing.event.EventListenerList;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelCommandCreationObserver;
 import org.argouml.model.Model;
 import org.argouml.model.ModelCommand;
+import org.argouml.model.ModelCommandCreationObserver;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.tigris.gef.graph.MutableGraphSupport;
 
 /**
  * This class manages the projects loaded in argouml,
@@ -74,6 +73,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * The name of the property that there is no project.
      * @deprecated in 0.25.4 By Bob Tarling This is unused.
      */
+    @Deprecated
     public static final String NO_PROJECT =
         "noProject";
 
@@ -81,6 +81,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * The name of the property that defines the save state.
      * @deprecated in 0.25.4 By Bob Tarling This is unused.
      */
+    @Deprecated
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
     /**
@@ -202,10 +203,9 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         currentProject = newProject;
         if (currentProject != null
             && currentProject.getActiveDiagram() == null) {
-            Vector diagrams = currentProject.getDiagrams();
+            List<ArgoDiagram> diagrams = currentProject.getDiagramList();
             if (diagrams != null && !diagrams.isEmpty()) {
-                ArgoDiagram activeDiagram =
-                    (ArgoDiagram) currentProject.getDiagrams().get(0);
+                ArgoDiagram activeDiagram = diagrams.get(0);
                 currentProject.setActiveDiagram(activeDiagram);
             }
         }
@@ -345,17 +345,17 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     }
 
     /**
-     * Called when the model subsystem creates a memento.
+     * Called when the model subsystem creates a command.
      * We must add this to the UndoManager.
      *
-     * @param memento the memento.
+     * @param command the command.
      * @see org.argouml.model.ModelCommandCreationObserver#modelCommandCreated(org.argouml.model.ModelCommand)
      */
     public Object execute(final ModelCommand command) {
         if (saveAction != null) {
             saveAction.setEnabled(true);
         }
-        AbstractCommand wrappedMemento = new AbstractCommand() {
+        AbstractCommand wrappedCommand = new AbstractCommand() {
             private ModelCommand modelCommand = command;
             public void undo() {
                 modelCommand.undo();
@@ -373,6 +373,6 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                 return modelCommand.toString();
             }
         };
-        return getCurrentProject().getUndoManager().execute(wrappedMemento);
+        return getCurrentProject().getUndoManager().execute(wrappedCommand);
     }
 }

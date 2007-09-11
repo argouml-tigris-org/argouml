@@ -613,5 +613,11 @@ public interface Project {
      */
     public ProjectSettings getProjectSettings();
 
+    /**
+     * Return the UndoManager for this project.  Undo is managed on a 
+     * per-project basis.
+     * 
+     * @return the UndoManager for this project
+     */
     public UndoManager getUndoManager();
 }

@@ -34,7 +34,7 @@ import org.tigris.gef.undo.UndoManager;
 
 /**
  * This class is a temporary wrapper around the GEF UndoManager.
- * This will be changed when GEF is modified to fire mementos and
+ * This will be changed when GEF is modified to create commands and
  * provide an observer interface for ArgoUML to receive them.
  *
  * @author Bob Tarling

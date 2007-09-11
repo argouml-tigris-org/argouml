@@ -37,8 +37,9 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 
 /**
- * Manages a stacks of Commands to undo and redo.
- * UndoManager is only temporarily singleton until changes are made to GEF.
+ * Manages a stacks of Commands to undo and redo. This DefaultUndoManager is
+ * only temporarily a singleton until changes are made to GEF.
+ * 
  * @author Bob Tarling
  */
 class DefaultUndoManager implements UndoManager {
@@ -73,9 +74,13 @@ class DefaultUndoManager implements UndoManager {
     
     /**
      * Get the UndoManager singleton instance.
-     * UndoManager is only temporarily singleton until changes are made to GEF.
+     * 
+     * @deprecated The DefaultUndoManager is only temporarily a singleton until
+     *             changes are made to GEF at which point there will be one undo
+     *             manager per ArgoUML project and this method will disappear.
      * @return the singleton undo manager
      */
+    @Deprecated
     public static UndoManager getInstance() {
         return INSTANCE;
     }
@@ -117,10 +122,7 @@ class DefaultUndoManager implements UndoManager {
         undoMax = max;
     }
 
-    /**
-     * 
-     * @see org.argouml.kernel.UndoManager#undo()
-     */
+
     public void undo() {
         final Interaction command = undoStack.pop();
         command.undo();
@@ -130,10 +132,7 @@ class DefaultUndoManager implements UndoManager {
         redoStack.push(command);
     }
     
-    /**
-     * 
-     * @see org.argouml.kernel.UndoManager#redo()
-     */
+
     public void redo() {
         final Interaction command = redoStack.pop();
         command.execute();

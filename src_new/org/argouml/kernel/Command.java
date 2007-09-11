@@ -1,4 +1,4 @@
-// $Id: UndoableCommand.java 13484 2007-09-03 20:53:50Z bobtarling $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,8 +32,8 @@ package org.argouml.kernel;
 public interface Command {
 
     /**
-     * To be implemented on the concrete memento to redo an instruction
-     * @return any resulting object created by the command
+     * Execute the command to redo an instruction.
+     * @return any result object created by the command
      */
     public abstract Object execute();
     
@@ -43,7 +43,7 @@ public interface Command {
     abstract void undo();
     
     /**
-     * Returns true if the command can be undone
+     * Returns true if the command can be undone.
      * @return true if the command is undoable
      */
     abstract boolean isUndoable();
