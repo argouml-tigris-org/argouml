@@ -30,12 +30,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.jmi.reflect.InvalidObjectException;
-import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.ModelCommand;
-import org.argouml.model.ModelCommandCreationObserver;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.commonbehavior.Reception;
 import org.omg.uml.behavioralelements.commonbehavior.Signal;

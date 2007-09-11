@@ -36,7 +36,7 @@ import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.DummyModelMemento;
+import org.argouml.model.DummyModelCommand;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
@@ -831,7 +831,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
         }
         
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
 

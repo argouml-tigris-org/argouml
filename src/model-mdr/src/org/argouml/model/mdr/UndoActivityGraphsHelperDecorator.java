@@ -28,7 +28,7 @@ import org.argouml.model.AbstractActivityGraphsHelperDecorator;
 import org.argouml.model.ActivityGraphsHelper;
 
 /**
- * This Decorator is responsible for generating mementos for any
+ * This Decorator is responsible for generating commands for any
  * mutable methods.
  *
  * @author Linus Tolke

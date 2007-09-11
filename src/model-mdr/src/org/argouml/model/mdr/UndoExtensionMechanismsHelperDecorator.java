@@ -28,7 +28,7 @@ import org.argouml.model.AbstractExtensionMechanismsHelperDecorator;
 import org.argouml.model.ExtensionMechanismsHelper;
 
 /**
- * This Decorator is responsible for generating mementos for any
+ * This Decorator is responsible for generating commands for any
  * mutable methods.
  *
  * @author Linus Tolke

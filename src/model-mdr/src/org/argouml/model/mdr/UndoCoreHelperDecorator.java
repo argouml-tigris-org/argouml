@@ -29,13 +29,13 @@ import java.util.List;
 
 import org.argouml.model.AbstractCoreHelperDecorator;
 import org.argouml.model.CoreHelper;
-import org.argouml.model.DummyModelMemento;
+import org.argouml.model.DummyModelCommand;
 import org.argouml.model.Model;
 import org.argouml.model.ModelCommand;
 
 
 /**
- * This Decorator is responsible for generating mementos for any
+ * This Decorator is responsible for generating commands for any
  * mutable methods.
  *
  * @author Bob Tarling
@@ -92,7 +92,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
 
     /**
-     * Create a memento for a setter of a boolean value.
+     * Create a command for a setter of a boolean value.
      *
      * @param accesser The accesser.
      * @param newValue The new value.
@@ -123,7 +123,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     /**
-     * Create a memento for a setter of a Object value.
+     * Create a command for a setter of a Object value.
      *
      * @param accesser The accesser.
      * @param newValue The new value.
@@ -139,7 +139,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
                 && newValue.equals(oldValue)) {
             return;
         }
-        ModelCommand memento = new ModelCommand() {
+        ModelCommand command = new ModelCommand() {
             public void undo() {
                 accesser.set(oldValue);
             }
@@ -154,11 +154,11 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
                 return true;
             }
         };
-        Model.execute(memento);
+        Model.execute(command);
     }
 
     /**
-     * Create a memento for a setter of a String value.
+     * Create a command for a setter of a String value.
      *
      * @param accesser The accesser.
      * @param newValue The new value.
@@ -383,203 +383,203 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     public void addAllStereotypes(Object modelElement, Collection stereotypes) {
         super.addAllStereotypes(modelElement, stereotypes);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addAnnotatedElement(Object comment, Object annotatedElement) {
         super.addAnnotatedElement(comment, annotatedElement);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addClient(Object handle, Object element) {
         super.addClient(handle, element);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addClientDependency(Object handle, Object dependency) {
         super.addClientDependency(handle, dependency);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addComment(Object element, Object comment) {
         super.addComment(element, comment);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addConnection(Object handle, Object connection) {
         super.addConnection(handle, connection);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addConnection(Object handle, int position, Object connection) {
         super.addConnection(handle, position, connection);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addConstraint(Object handle, Object mc) {
         super.addConstraint(handle, mc);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addDeploymentLocation(Object handle, Object node) {
         super.addDeploymentLocation(handle, node);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addElementResidence(Object handle, Object residence) {
         super.addElementResidence(handle, residence);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addFeature(Object handle, int index, Object f) {
         super.addFeature(handle, index, f);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addLiteral(Object handle, int index, Object literal) {
         super.addLiteral(handle, index, literal);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addFeature(Object handle, Object f) {
         super.addFeature(handle, f);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addLink(Object handle, Object link) {
         super.addLink(handle, link);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addMethod(Object handle, Object m) {
         super.addMethod(handle, m);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addOwnedElement(Object handle, Object me) {
         super.addOwnedElement(handle, me);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addParameter(Object handle, int index, Object parameter) {
         super.addParameter(handle, index, parameter);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addParameter(Object handle, Object parameter) {
         super.addParameter(handle, parameter);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addQualifier(Object handle, int index, Object qualifier) {
         super.addQualifier(handle, index, qualifier);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addRaisedSignal(Object handle, Object sig) {
         super.addRaisedSignal(handle, sig);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addSourceFlow(Object handle, Object flow) {
         super.addSourceFlow(handle, flow);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addStereotype(Object modelElement, Object stereotype) {
         super.addStereotype(modelElement, stereotype);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addSupplier(Object handle, Object element) {
         super.addSupplier(handle, element);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addSupplierDependency(Object supplier, Object dependency) {
         super.addSupplierDependency(supplier, dependency);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addTaggedValue(Object handle, Object taggedValue) {
         super.addTaggedValue(handle, taggedValue);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addTargetFlow(Object handle, Object flow) {
         super.addTargetFlow(handle, flow);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addTemplateParameter(Object handle, int index, 
             Object parameter) {
         super.addTemplateParameter(handle, index, parameter);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void addTemplateParameter(Object handle, Object parameter) {
         super.addTemplateParameter(handle, parameter);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void clearStereotypes(Object modelElement) {
         super.clearStereotypes(modelElement);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeAnnotatedElement(Object handle, Object me) {
         super.removeAnnotatedElement(handle, me);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeClientDependency(Object handle, Object dep) {
         super.removeClientDependency(handle, dep);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeConnection(Object handle, Object connection) {
         super.removeConnection(handle, connection);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeConstraint(Object handle, Object cons) {
         super.removeConstraint(handle, cons);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeDeploymentLocation(Object handle, Object node) {
         super.removeDeploymentLocation(handle, node);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeElementResidence(Object handle, Object residence) {
         super.removeElementResidence(handle, residence);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeFeature(Object cls, Object feature) {
         super.removeFeature(cls, feature);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeLiteral(Object enu, Object literal) {
         super.removeLiteral(enu, literal);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeOwnedElement(Object handle, Object value) {
         super.removeOwnedElement(handle, value);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeParameter(Object handle, Object parameter) {
         super.removeParameter(handle, parameter);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeQualifier(Object handle, Object qualifier) {
         super.removeQualifier(handle, qualifier);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     /**
@@ -588,7 +588,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      */
     public void removeSourceFlow(Object handle, Object flow) {
         super.removeSourceFlow(handle, flow);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     /**
@@ -597,7 +597,7 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      */
     public void removeStereotype(Object modelElement, Object stereotype) {
         super.removeStereotype(modelElement, stereotype);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     /**
@@ -606,177 +606,177 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
      */
     public void removeSupplierDependency(Object supplier, Object dependency) {
         super.removeSupplierDependency(supplier, dependency);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void removeTargetFlow(Object handle, Object flow) {
         super.removeTargetFlow(handle, flow);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
 
     public void removeTemplateArgument(Object handle, Object argument) {
         super.removeTemplateArgument(handle, argument);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
     
     public void removeTemplateParameter(Object handle, Object parameter) {
         super.removeTemplateParameter(handle, parameter);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
     
     public void setAnnotatedElements(Object handle, Collection elems) {
         super.setAnnotatedElements(handle, elems);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setAssociation(Object handle, Object association) {
         super.setAssociation(handle, association);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setAttributes(Object classifier, List attributes) {
         super.setAttributes(classifier, attributes);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
     
     public void setBody(Object handle, Object expr) {
         super.setBody(handle, expr);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setChild(Object handle, Object child) {
         super.setChild(handle, child);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setConnections(Object handle, Collection elems) {
         super.setConnections(handle, elems);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setContainer(Object handle, Object component) {
         super.setContainer(handle, component);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setDefaultElement(Object handle, Object element) {
         super.setDefaultElement(handle, element);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setDefaultValue(Object handle, Object expr) {
         super.setDefaultValue(handle, expr);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setDiscriminator(Object handle, String discriminator) {
         super.setDiscriminator(handle, discriminator);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setEnumerationLiterals(Object enumeration, List literals) {
         super.setEnumerationLiterals(enumeration, literals);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setFeature(Object elem, int i, Object feature) {
         super.setFeature(elem, i, feature);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setFeatures(Object handle, Collection features) {
         super.setFeatures(handle, features);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setInitialValue(Object at, Object expr) {
         super.setInitialValue(at, expr);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setModelElementContainer(Object handle, Object container) {
         super.setModelElementContainer(handle, container);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setNamespace(Object handle, Object ns) {
         super.setNamespace(handle, ns);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setOperations(Object classifier, List operations) {
         super.setOperations(classifier, operations);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setOwner(Object handle, Object owner) {
         super.setOwner(handle, owner);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setOwnerScope(Object handle, Object os) {
         super.setOwnerScope(handle, os);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
     
     public void setStatic(Object handle, boolean isStatic) {
         super.setStatic(handle, isStatic);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
     public void setParameters(Object handle, Collection parameters) {
         super.setParameters(handle, parameters);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setParent(Object handle, Object parent) {
         super.setParent(handle, parent);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setQualifiers(Object handle, List elems) {
         super.setQualifiers(handle, elems);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setRaisedSignals(Object handle, Collection raisedSignals) {
         super.setRaisedSignals(handle, raisedSignals);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setResident(Object handle, Object resident) {
         super.setResident(handle, resident);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setResidents(Object handle, Collection residents) {
         super.setResidents(handle, residents);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setSources(Object handle, Collection specifications) {
         super.setSources(handle, specifications);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setSpecifications(Object handle, Collection specifications) {
         super.setSpecifications(handle, specifications);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setTaggedValue(Object handle, String tag, String value) {
         super.setTaggedValue(handle, tag, value);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setTaggedValues(Object handle, Collection taggedValues) {
         super.setTaggedValues(handle, taggedValues);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
     public void setType(Object handle, Object type) {
         super.setType(handle, type);
-        Model.notifyMementoCreationObserver(new DummyModelMemento());
+        Model.execute(new DummyModelCommand());
     }
 
 }

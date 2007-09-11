@@ -28,7 +28,7 @@ import org.argouml.model.AbstractUmlHelperDecorator;
 import org.argouml.model.UmlHelper;
 
 /**
- * This Decorator is responsible for generating mementos for any
+ * This Decorator is responsible for generating commands for any
  * mutable methods.
  *
  * @author Linus Tolke

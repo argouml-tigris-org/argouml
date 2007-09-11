@@ -3160,7 +3160,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     
     
     /**
-     * Create a memento for a setter of a String value.
+     * Create a command for a setter of a String value.
      *
      * @param accesser The accesser.
      * @param newValue The new value.
