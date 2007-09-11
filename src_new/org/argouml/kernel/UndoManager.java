@@ -44,7 +44,8 @@ public interface UndoManager {
     public abstract void addCommand(Command command);
 
     /**
-     * Executes a command and add it to the undo stack.
+     * Execute a command and add it to the undo stack.
+     * 
      * @param command the command.
      * @return any resulting object the command creates
      */
@@ -58,34 +59,36 @@ public interface UndoManager {
 
     /**
      * Undo the top user interaction on the undo stack and move
-     * it to the redo stack
+     * it to the redo stack.
      */
     public abstract void undo();
 
     /**
      * Redo the top user interaction on the redo stack and move
-     * it to the undo stack
+     * it to the undo stack.
      */
     public abstract void redo();
 
     /**
      * Instructs the UndoManager that a new user interaction is about to take
-     * place. All commands received until the next call to startInteraction
-     * will form a single undoable unit.
+     * place. All commands received until the next call to startInteraction will
+     * form a single undoable unit.
+     * 
      * @param label the label for this interaction to build the undo/redo label
      */
     public abstract void startInteraction(String label);
     
     /**
-     * Allow a listener to detect when the undo or redo stack
-     * changes availability
+     * Add a new PropertyChangeListener for undo/redo events. Allow a listener
+     * to detect when the undo or redo stack changes availability.
+     * 
      * @param listener a PropertyChangeListener
      */
     public abstract void addPropertyChangeListener(
             PropertyChangeListener listener);
     
     /**
-     * Remove the listener
+     * Remove the given listener.
      * @param listener a PropertyChangeListener
      */
     public abstract void removePropertyChangeListener(
