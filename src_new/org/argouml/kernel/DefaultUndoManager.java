@@ -85,12 +85,12 @@ class DefaultUndoManager implements UndoManager {
         return INSTANCE;
     }
     
-    public Object execute(Command command) {
+    public synchronized Object execute(Command command) {
         addCommand(command);
         return command.execute();
     }
     
-    public void addCommand(Command command) {
+    public synchronized void addCommand(Command command) {
 
         ProjectManager.getManager().setSaveEnabled(true);
         
@@ -123,7 +123,7 @@ class DefaultUndoManager implements UndoManager {
     }
 
 
-    public void undo() {
+    public synchronized void undo() {
         final Interaction command = undoStack.pop();
         command.undo();
         if (!command.isRedoable()) {
@@ -133,13 +133,13 @@ class DefaultUndoManager implements UndoManager {
     }
     
 
-    public void redo() {
+    public synchronized void redo() {
         final Interaction command = redoStack.pop();
         command.execute();
         undoStack.push(command);
     }
     
-    public void startInteraction(String label) {
+    public synchronized void startInteraction(String label) {
         LOG.info("Starting interaction " + label);
         this.newInteractionLabel = label;
         newInteraction = true;
