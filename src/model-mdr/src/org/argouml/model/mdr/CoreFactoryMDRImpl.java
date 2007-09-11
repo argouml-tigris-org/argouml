@@ -946,14 +946,14 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public Permission buildPermission(Object client, Object supplier) {
         if (!(client instanceof ModelElement) 
                 || !(supplier instanceof ModelElement)) {
-            throw new IllegalArgumentException("client is not a Namespace" +
-                        " or supplier is not a Package");
+            throw new IllegalArgumentException("client is not a Namespace"
+                    + " or supplier is not a Package");
         }
         // Warn about historical usage which is not compliant with UML spec.
         if (!(client instanceof Namespace) 
                 || !(supplier instanceof UmlPackage)) {
-            LOG.warn("buildPermission called with client that is not a Namespace" +
-                        " or supplier that is not a Package");
+            LOG.warn("buildPermission called with client that is not a "
+                    + "Namespace or supplier that is not a Package");
         }
         Permission per = buildPermissionInternal((ModelElement) client, 
                 (ModelElement) supplier);
@@ -969,8 +969,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public Permission buildPackageImport(Object client, Object supplier) {
         if (!(client instanceof Namespace) 
                 || !(supplier instanceof UmlPackage)) {
-            throw new IllegalArgumentException("client is not a Namespace" +
-            		" or supplier is not a Package");
+            throw new IllegalArgumentException("client is not a Namespace"
+                    + " or supplier is not a Package");
         }
         Permission per = buildPermissionInternal((ModelElement) client, 
                 (UmlPackage) supplier);
@@ -1000,8 +1000,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public Permission buildPackageAccess(Object client, Object supplier) {
         if (!(client instanceof Namespace) 
                 || !(supplier instanceof UmlPackage)) {
-            throw new IllegalArgumentException("client or " +
-                        "supplier is not a Namespace");
+            throw new IllegalArgumentException("client or "
+                    + "supplier is not a Namespace");
         }
         Permission per = buildPermissionInternal((ModelElement) client, 
                 (UmlPackage) supplier);
