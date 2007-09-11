@@ -116,6 +116,11 @@ public class TestModel extends TestCase {
             return;
         }
 
+        // Handle methods which return opaque objects
+        if (factoryIF.getName().equals("java.lang.Object")) {
+            return;
+        }
+        
         assertTrue("The return type from " + savedMethod
                 + " must be an interface.",
                 factoryIF.isInterface());
