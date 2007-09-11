@@ -575,9 +575,12 @@ public class TestCoreFactory extends TestCase {
      */
     public void testBuildAssociation() {
         Object model = Model.getModelManagementFactory().createModel();
-        Object packA = Model.getModelManagementFactory().buildPackage("package-a", "111");
-        Object packB = Model.getModelManagementFactory().buildPackage("package-b", "222");
-        Object packC = Model.getModelManagementFactory().buildPackage("package-c", "222");
+        Object packA = Model.getModelManagementFactory().buildPackage(
+                "package-a", "111");
+        Object packB = Model.getModelManagementFactory().buildPackage(
+                "package-b", "222");
+        Object packC = Model.getModelManagementFactory().buildPackage(
+                "package-c", "222");
 
         Model.getCoreHelper().setNamespace(packA, model);
         Model.getCoreHelper().setNamespace(packB, packA);
@@ -587,8 +590,8 @@ public class TestCoreFactory extends TestCase {
         Model.getModelManagementFactory().buildElementImport(packB, class2);
 
         Object assoc = Model.getCoreFactory().buildAssociation(class1, class2);
-        assertTrue("buildAssociation() and isValidNamespace() don't agree on " +
-        		"namespace for an Association", 
+        assertTrue("buildAssociation() and isValidNamespace() don't agree on "
+                + "namespace for an Association", 
         		Model.getCoreHelper().isValidNamespace(assoc, 
         		        Model.getFacade().getNamespace(assoc)));
         

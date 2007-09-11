@@ -132,8 +132,8 @@ public class TestModelEventPump extends TestCase {
     }
 
     /**
-     * Tests whether a listener that is registered for a generalization event on the
-     * class level receives the event when a new generalization is created.
+     * Tests whether a listener that is registered for a generalization event on
+     * the class level receives the event when a new generalization is created.
      */
     public void testRoleAddedSetClass() {
         Model.getPump().addClassModelEventListener(listener,
@@ -157,7 +157,7 @@ public class TestModelEventPump extends TestCase {
         Object gen = Model.getCoreFactory().buildGeneralization(
                 elem, Model.getCoreFactory().createClass());
         Model.getPump().addClassModelEventListener(
-                listener, elem.getClass(), new String[] { "generalization", });
+                listener, elem.getClass(), new String[] {"generalization", });
         Model.getUmlFactory().delete(gen);
         
         Model.getPump().flushModelEvents();
