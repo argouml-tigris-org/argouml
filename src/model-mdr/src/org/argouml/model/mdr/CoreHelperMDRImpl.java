@@ -2699,7 +2699,7 @@ class CoreHelperMDRImpl implements CoreHelper {
 
 
     public void setName(final Object handle, final String name) {
-        if ((handle instanceof ModelElement) && (name != null)) {
+        if (handle instanceof ModelElement) {
             createCommand(
                 new StringSetter() {
                     public void set(String value) {
