@@ -64,12 +64,10 @@ public class TabSrc
     private JComboBox cbFiles = new JComboBox();
     
     /**
-     * This predicate determines if this tab is enabled.
+     * These predicates determine if this tab is enabled.
      */
     private static List<Predicate> predicates;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
 
     /**
      * Create a tab that contains a toolbar.
@@ -95,16 +93,13 @@ public class TabSrc
         cbFiles.addItemListener(this);
     }
 
-    /*
-     * @see java.lang.Object#finalize()
-     */
+
+    @Override
     protected void finalize() {
         cbLang.removeItemListener(this);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
+    
     /**
      * Populate files[] and cbFiles, using the specified element.
      */
@@ -127,9 +122,8 @@ public class TabSrc
 	}
     }
 
-    /*
-     * @see org.argouml.ui.TabText#genText(java.lang.Object)
-     */
+
+    @Override
     protected String genText(Object modelObject) {
         if (files == null) {
 	    generateSource(modelObject);
@@ -139,9 +133,7 @@ public class TabSrc
         return null;
     }
 
-    /*
-     * @see org.argouml.ui.TabText#parseText(java.lang.String)
-     */
+    @Override
     protected void parseText(String s) {
         LOG.debug("TabSrc   setting src for " 
                 + Model.getFacade().getName(getTarget()));
@@ -156,9 +148,8 @@ public class TabSrc
         //Parser.ParseAndUpdate(modelObject, s);
     }
 
-    /*
-     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
-     */
+
+    @Override
     public void setTarget(Object t) {
         Object modelTarget = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
         setShouldBeEnabled(Model.getFacade().isAClassifier(modelTarget));
@@ -173,6 +164,7 @@ public class TabSrc
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
 
@@ -209,9 +201,7 @@ public class TabSrc
         }
     }
 
-    /*
-     * @see org.argouml.ui.TabTarget#refresh()
-     */
+    @Override
     public void refresh() {
         setTarget(getTarget());
     }
@@ -224,15 +214,15 @@ public class TabSrc
      * which ArgoUML itself does not generate code, then
      * this function will allow the module to show the tab.
      *  
-     * @param predicate
+     * @param predicate the predicate to be added
      */
     public static void addPredicate(Predicate predicate) {
         predicates.add(predicate);
     }
 
-    class DefaultPredicate implements Predicate{
+    class DefaultPredicate implements Predicate {
         public boolean evaluate(Object object) {
             return (Model.getFacade().isAClassifier(object));
         }
     }
-} /* end class TabSrc */
+}

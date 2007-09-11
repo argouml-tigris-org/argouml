@@ -304,10 +304,11 @@ public final class ArgoEventPump {
 					(ArgoNotationEventListener) listener);
                 }
             }
-            if(event.getEventType() >= ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT
+            if (event.getEventType() >= ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT
                     && event.getEventType() < ArgoEventTypes.LAST_DIAGRAM_APPEARANCE_EVENT) {
-                if(listener instanceof ArgoDiagramAppearanceEventListener) {
-                    handleFireDiagramAppearanceEvent((ArgoDiagramAppearanceEvent) event,
+                if (listener instanceof ArgoDiagramAppearanceEventListener) {
+                    handleFireDiagramAppearanceEvent(
+                            (ArgoDiagramAppearanceEvent) event,
                             (ArgoDiagramAppearanceEventListener) listener);
                 }
             }
