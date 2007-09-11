@@ -86,9 +86,8 @@ public class TestModelFacade3 extends TestCase {
                 || methodToTest.getName().equals("toString");
     }
 
-    /*
-     * @see junit.framework.TestCase#runTest()
-     */
+
+    @Override
     protected void runTest() throws Throwable {
         if (!methodForbidden()) {
             if (methodToTest.getParameterTypes() != null
@@ -134,7 +133,7 @@ public class TestModelFacade3 extends TestCase {
                     /*
                      * this call could easily fall if there is e.g. no public
                      * default constructor. If it fails tweak the if/else tree
-                     * above to accomodate the parameter or check if we need to
+                     * above to accommodate the parameter or check if we need to
                      * test the particular method at all.
                      */
                     foo[i] = params[i].newInstance();
@@ -170,14 +169,13 @@ public class TestModelFacade3 extends TestCase {
         }
     }
     
-    /*
-     * @see junit.framework.TestCase#setUp()
-     */
+
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
 
         facade = Model.getFacade();
-        assertNotNull("Cound not get Facade", facade);
+        assertNotNull("Could not get Facade", facade);
     }
 }
