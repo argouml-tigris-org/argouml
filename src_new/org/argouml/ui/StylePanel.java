@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,6 +36,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -63,23 +64,23 @@ public class StylePanel
     /**
      * The constructor.
      *
-     * @param title the panel title
+     * @param tag The localization tag for the panel title.
      */
-    public StylePanel(String title) {
-	super(title);
+    public StylePanel(String tag) {
+	super(Translator.localize(tag));
         setLayout(new LabelledLayout());
     }
 
     /**
-     * Add a seperator.
+     * Add a separator.
      */
     protected final void addSeperator() {
         add(LabelledLayout.getSeperator());
     }
 
     /**
-     * This method must be overriden by implementors if they don't want to
-     * refresh the whole stylepanel every time a property change events is
+     * This method must be overridden by implementors if they don't want to
+     * refresh the whole style panel every time a property change events is
      * fired.  The default behavior is to always call {@link #refresh()}.
      * @see #refresh()
      */

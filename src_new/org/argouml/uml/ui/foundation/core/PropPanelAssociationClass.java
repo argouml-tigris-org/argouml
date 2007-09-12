@@ -64,7 +64,8 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
      * Construct a property panel for AssociationClass elements.
      */
     public PropPanelAssociationClass() {
-        super("AssociationClass", lookupIcon("AssociationClass"),
+        super("label.association-class", 
+                lookupIcon("AssociationClass"),
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"),

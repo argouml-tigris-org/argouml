@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
@@ -70,35 +69,35 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      *
      */
     public PropPanelCompositeState() {
-        super("Composite State", lookupIcon("CompositeState"),
+        super("label.composite-state", lookupIcon("CompositeState"),
                 ConfigLoader.getTabPropsOrientation());
         initialize();
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.container"),
+        addField("label.container",
                 getContainerScroll());
-        /*addField(Translator.localize("label.modifiers"),
+        /*addField("label.modifiers",
                 new UMLCompositeStateConcurrentCheckBox());*/
-        addField(Translator.localize("label.entry"),
+        addField("label.entry",
                 getEntryScroll());
-        addField(Translator.localize("label.exit"),
+        addField("label.exit",
                 getExitScroll());
-        addField(Translator.localize("label.do-activity"),
+        addField("label.do-activity",
                 getDoScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
+        addField("label.incoming",
                 getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
+        addField("label.outgoing",
                 getOutgoingScroll());
-        addField(Translator.localize("label.internal-transitions"),
+        addField("label.internal-transitions",
                 getInternalTransitionsScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.subvertex"),
+        addField("label.subvertex",
                 new JScrollPane(subverticesList));
     }
 
@@ -136,11 +135,11 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         updateExtraButtons();
         Object target = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isAConcurrentRegion(target)) {
-            getTitleLabel().setText("Concurrent Region");
+            getTitleLabel().setText("label.concurrent.region");
         } else if (Model.getFacade().isConcurrent(target)) {
-            getTitleLabel().setText("Concurrent Composite State");
+            getTitleLabel().setText("label.concurrent.composite.state");
         } else {
-            getTitleLabel().setText("Composite State");
+            getTitleLabel().setText("label.composite-state");
         }
     }
 

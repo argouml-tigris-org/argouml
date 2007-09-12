@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,30 +46,30 @@ public class PropPanelStubState extends PropPanelStateVertex {
      * Constructor for PropPanelStubState.
      */
     public PropPanelStubState() {
-        super("Stub State", lookupIcon("StubState"),
+        super("label.stub.state", lookupIcon("StubState"),
                 ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
 
-        addField(Translator.localize("label.container"),
+        addField("label.container",
                 getContainerScroll());
 
         JComboBox referencestateBox =
                 new UMLComboBox2(
                         new UMLStubStateComboBoxModel(),
                         ActionSetStubStateReferenceState.getInstance());
-        addField(Translator.localize("label.referencestate"),
+        addField("label.referencestate",
                 new UMLComboBoxNavigator(
                         Translator.localize("tooltip.nav-stubstate"),
                         referencestateBox));
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
+        addField("label.incoming",
                 getIncomingScroll());
 
-        addField(Translator.localize("label.outgoing"),
+        addField("label.outgoing",
                 getOutgoingScroll());
     }
 }

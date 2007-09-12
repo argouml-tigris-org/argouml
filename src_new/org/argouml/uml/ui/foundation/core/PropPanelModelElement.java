@@ -127,29 +127,29 @@ public abstract class PropPanelModelElement extends PropPanel {
      */
     public PropPanelModelElement() {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.namespace"),
+        addField("label.namespace",
                 getNamespaceSelector());
 
         addSeparator();
 
-        addField(Translator.localize("label.supplier-dependencies"),
+        addField("label.supplier-dependencies",
                 getSupplierDependencyScroll());
-        addField(Translator.localize("label.client-dependencies"),
+        addField("label.client-dependencies",
                 getClientDependencyScroll());
-        addField(Translator.localize("label.source-flows"),
+        addField("label.source-flows",
                 getSourceFlowScroll());
-        addField(Translator.localize("label.target-flows"),
+        addField("label.target-flows",
                 getTargetFlowScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.constraints"),
+        addField("label.constraints",
                 getConstraintScroll());
         add(getNamespaceVisibilityPanel());
         
-        addField(Translator.localize("label.derived"),
+        addField("label.derived",
                 new UMLDerivedCheckBox());
 
     }
@@ -169,6 +169,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     /**
      * @return a scrollpane for the namespace
      * @deprecated use {@link #getNamespaceSelector()}
+     *         When was this deprecated? Can it be removed?
      */
     protected JComponent getNamespaceScroll() {
         if (namespaceScroll == null) {

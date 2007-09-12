@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,6 @@ import java.util.List;
 import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -53,12 +52,13 @@ public class PropPanelLinkEnd extends PropPanelModelElement {
     private static final long serialVersionUID = 666929091194719951L;
 
     /**
-     * Contruct a property panel for a Link End.
+     * Construct a property panel for a Link End.
      */
     public PropPanelLinkEnd() {
-        super("Link End", lookupIcon("AssociationEnd"),
+        super("label.association-link-end", 
+                lookupIcon("AssociationEnd"),
                 ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
 
         addSeparator();

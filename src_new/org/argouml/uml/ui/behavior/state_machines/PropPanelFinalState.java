@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.i18n.Translator;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -43,23 +42,23 @@ public class PropPanelFinalState extends AbstractPropPanelState {
      * Construct a new property panel for a Final State.
      */
     public PropPanelFinalState() {
-        super("Final State", lookupIcon("FinalState"),
+        super("label.final.state", lookupIcon("FinalState"),
                 ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.container"),
+        addField("label.container",
                 getContainerScroll());
-        addField(Translator.localize("label.entry"),
+        addField("label.entry",
                 getEntryScroll());
-        addField(Translator.localize("label.do-activity"),
+        addField("label.do-activity",
                 getDoScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
+        addField("label.incoming",
                 getIncomingScroll());
-        addField(Translator.localize("label.internal-transitions"),
+        addField("label.internal-transitions",
                 getInternalTransitionsScroll());
 
     }

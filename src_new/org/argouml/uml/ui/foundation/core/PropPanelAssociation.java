@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,23 +71,24 @@ public class PropPanelAssociation extends PropPanelRelationship {
      * Construct a property panel for UML Association elements.
      */
     public PropPanelAssociation() {
-        this("Association", ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("label.name"),
+        this("label.association", 
+                ConfigLoader.getTabPropsOrientation());
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.namespace"),
+        addField("label.namespace",
                 getNamespaceSelector());
         add(modifiersPanel);
 
         addSeparator();
 
-        addField(Translator.localize("label.connections"),
+        addField("label.connections",
                 assocEndScroll);
 
         addSeparator();
 
-        addField(Translator.localize("label.association-roles"),
+        addField("label.association-roles",
                 associationRoleScroll);
-        addField(Translator.localize("label.association-links"),
+        addField("label.association-links",
                 linksScroll);
 
         addAction(new ActionNavigateContainerElement());

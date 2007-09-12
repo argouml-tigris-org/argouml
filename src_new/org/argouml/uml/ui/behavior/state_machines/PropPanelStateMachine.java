@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,7 +55,7 @@ public class PropPanelStateMachine extends PropPanelModelElement {
      * Constructor for PropPanelStateMachine.
      */
     public PropPanelStateMachine() {
-        this("StateMachine", ConfigLoader.getTabPropsOrientation());
+        this("label.statemachine", ConfigLoader.getTabPropsOrientation());
 
     }
 
@@ -71,12 +71,12 @@ public class PropPanelStateMachine extends PropPanelModelElement {
     }
 
     /**
-     * Initialise the panel with fields and stuff.
+     * Initialize the panel with fields and stuff.
      */
     protected void initialize() {
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.namespace"),
+        addField("label.namespace",
                 getNamespaceSelector());
 
         // the context in which the statemachine resides
@@ -84,14 +84,14 @@ public class PropPanelStateMachine extends PropPanelModelElement {
             new UMLComboBox2(
                      getContextComboBoxModel(),
                      ActionSetContextStateMachine.getInstance());
-        addField(Translator.localize("label.context"),
+        addField("label.context",
                 new UMLComboBoxNavigator(
                         Translator.localize("label.context.navigate.tooltip"),
                         contextComboBox));
         
         // the top state
         JList topList = new UMLLinkedList(new UMLStateMachineTopListModel());
-        addField(Translator.localize("label.top-state"),
+        addField("label.top-state",
                 new JScrollPane(topList));
 
         addSeparator();
@@ -99,7 +99,7 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         // the transitions the statemachine has
         JList transitionList = new UMLLinkedList(
                 new UMLStateMachineTransitionListModel());
-        addField(Translator.localize("label.transition"),
+        addField("label.transition",
                 new JScrollPane(transitionList));
 
         // the submachinestates
@@ -107,7 +107,7 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         // to decide
         JList submachineStateList = new UMLLinkedList(
                 new UMLStateMachineSubmachineStateListModel());
-        addField(Translator.localize("label.submachinestate"),
+        addField("label.submachinestate",
                 new JScrollPane(submachineStateList));
 
         addAction(new ActionNavigateNamespace());

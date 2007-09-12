@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -44,6 +43,7 @@ import org.argouml.util.ConfigLoader;
  * This is a type of Classifier, and like other Classifiers can have
  * attributes and operations (some processes use these to define
  * requirements).<p>
+ *
  * <em>Note</em>. ArgoUML does not currently support separate
  * compartments on the display for this.<p>
  */
@@ -54,55 +54,55 @@ public class PropPanelUseCase extends PropPanelClassifier {
      */
     public PropPanelUseCase() {
         // TODO: I18N
-        super("UseCase",
+        super("label.usecase",
             lookupIcon("UseCase"),
             ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-    	addField(Translator.localize("label.namespace"),
+    	addField("label.namespace",
                 getNamespaceSelector());
 
         add(getModifiersPanel());
         
-        addField(Translator.localize("label.client-dependencies"),
+        addField("label.client-dependencies",
                 getClientDependencyScroll());
-        addField(Translator.localize("label.supplier-dependencies"),
+        addField("label.supplier-dependencies",
                 getSupplierDependencyScroll());
         
 	addSeparator();
 
-	addField(Translator.localize("label.generalizations"),
+	addField("label.generalizations",
             getGeneralizationScroll());
-	addField(Translator.localize("label.specializations"),
+	addField("label.specializations",
             getSpecializationScroll());
 
 	JList extendsList = new UMLLinkedList(new UMLUseCaseExtendListModel());
-	addField(Translator.localize("label.extends"),
+	addField("label.extends",
 		 new JScrollPane(extendsList));
 
 	JList includesList =
             new UMLLinkedList(
                     new UMLUseCaseIncludeListModel());
-	addField(Translator.localize("label.includes"),
+	addField("label.includes",
 		 new JScrollPane(includesList));
 
         addSeparator();
         
-        addField(Translator.localize("label.attributes"),
+        addField("label.attributes",
                 getAttributeScroll());
 
-        addField(Translator.localize("label.association-ends"),
+        addField("label.association-ends",
                 getAssociationEndScroll());
 
-        addField(Translator.localize("label.operations"),
+        addField("label.operations",
                 getOperationScroll());
 
 	JList extensionPoints =
 	    new UMLMutableLinkedList(
 	            new UMLUseCaseExtensionPointListModel(), null,
 	            ActionNewUseCaseExtensionPoint.SINGLETON);
-        addField(Translator.localize("label.extension-points"),
+        addField("label.extension-points",
             new JScrollPane(extensionPoints));
 
 

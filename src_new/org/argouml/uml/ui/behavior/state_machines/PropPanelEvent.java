@@ -28,7 +28,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -68,18 +67,18 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
 
         paramScroll = getParameterScroll();
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.namespace"),
+        addField("label.namespace",
                 getNamespaceSelector());
 
         addSeparator();
-        addField(Translator.localize("label.parameters"),
+        addField("label.parameters",
                 getParameterScroll());
         JList transitionList = new UMLLinkedList(
                 new UMLEventTransitionListModel());
         transitionList.setVisibleRowCount(2);
-        addField(Translator.localize("label.transition"),
+        addField("label.transition",
                 new JScrollPane(transitionList));
 
         addSeparator();

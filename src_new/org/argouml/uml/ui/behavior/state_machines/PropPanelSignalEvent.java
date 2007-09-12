@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.util.ConfigLoader;
 
@@ -44,7 +43,7 @@ public class PropPanelSignalEvent extends PropPanelEvent {
      *
      */
     public PropPanelSignalEvent() {
-        super("Signal event", lookupIcon("SignalEvent"),
+        super("label.signal.event", lookupIcon("SignalEvent"),
               ConfigLoader.getTabPropsOrientation());
     }
 
@@ -57,7 +56,7 @@ public class PropPanelSignalEvent extends PropPanelEvent {
         JList signalList = new UMLSignalEventSignalList(
                 new UMLSignalEventSignalListModel());
         signalList.setVisibleRowCount(1);
-        addField(Translator.localize("label.signal"),
+        addField("label.signal",
                 new JScrollPane(signalList));
 
         addAction(new ActionNewParameter());

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,14 +60,14 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
      * Construct a new property panel for an ExtensionPoint.
      */
     public PropPanelExtensionPoint() {
-        super("ExtensionPoint", ConfigLoader.getTabPropsOrientation());
+        super("label.extension-point", ConfigLoader.getTabPropsOrientation());
 
         // First column
 
         // nameField, stereotypeBox and namespaceScroll are all set up by
         // PropPanelModelElement.
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
 
         // Our location (a String).  Allow the location label to
@@ -75,17 +75,17 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         JTextField locationField = new UMLTextField2(
                 new UMLExtensionPointLocationDocument());
-        addField(Translator.localize("label.location"),
+        addField("label.location",
                 locationField);
 
         addSeparator();
 
-        addField(Translator.localize("label.usecase-base"),
+        addField("label.usecase-base",
                 getSingleRowScroll(new UMLExtensionPointUseCaseListModel()));
 
         JList extendList = new UMLLinkedList(
                 new UMLExtensionPointExtendListModel());
-        addField(Translator.localize("label.extend"),
+        addField("label.extend",
                 new JScrollPane(extendList));
 
 

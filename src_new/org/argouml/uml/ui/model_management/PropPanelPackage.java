@@ -84,7 +84,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * Construct a default property panel for UML Package elements.
      */
     public PropPanelPackage() {
-        this("Package", lookupIcon("Package"),
+        this("label.package", lookupIcon("Package"),
                 ConfigLoader.getTabPropsOrientation());
     }
 
@@ -106,9 +106,9 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * should override to place the elements the way they want.
      */
     protected void placeElements() {
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.namespace"),
+        addField("label.namespace",
                 getNamespaceSelector());
 
         add(getNamespaceVisibilityPanel());
@@ -117,14 +117,14 @@ public class PropPanelPackage extends PropPanelNamespace  {
         
         addSeparator();
         
-        addField(Translator.localize("label.generalizations"),
+        addField("label.generalizations",
                 getGeneralizationScroll());
-        addField(Translator.localize("label.specializations"),
+        addField("label.specializations",
                 getSpecializationScroll());
         
         addSeparator();
         
-        addField(Translator.localize("label.owned-elements"),
+        addField("label.owned-elements",
                 getOwnedElementsScroll());
 
         JList importList =
@@ -133,7 +133,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
                 null,
                 new ActionRemovePackageImport(),
                 true);
-        addField(Translator.localize("label.imported-elements"),
+        addField("label.imported-elements",
                 new JScrollPane(importList));
 
         addAction(new ActionNavigateNamespace());

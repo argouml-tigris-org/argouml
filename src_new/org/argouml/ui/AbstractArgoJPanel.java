@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -97,22 +97,22 @@ public abstract class AbstractArgoJPanel extends JPanel
     /**
      * The constructor.
      *
-     * @param tag the name
+     * @param title The name as a localized string.
      */
     // TODO: Investigate in what cases is the tag a localized string
     // and in what cases is it a key to be localized?
-    public AbstractArgoJPanel(String tag) {
-        this(tag, false);
+    public AbstractArgoJPanel(String title) {
+        this(title, false);
     }
 
     /**
      * The constructor.
      *
-     * @param tag The name (to be localized).
+     * @param title The name (a localized string).
      * @param t if true, remove tab from parent JTabbedPane
      */
     // TODO: Investigate in what cases is the tag a localized string
-    // and in what cases is it a key to be localized? - Harold Braun via Linus 20070521
+    // and in what cases is it a key to be localized? - Harald Braun via Linus 20070521
     // Answer: There are three cases: 1) unlocalized string, 2) localized
     // string, and 3) property/tag name.  Of the 100+ subclasses, the
     // overwhelming majority fall into category #1.  Category #3 includes
@@ -121,8 +121,12 @@ public abstract class AbstractArgoJPanel extends JPanel
     // and TabStereotype.  The breakdown is approximately 80+/10/6.  The
     // analysis is easy.  Fixing the 90+ property panels will be more work.
     // - tfm - 20070517
-    public AbstractArgoJPanel(String tag, boolean t) {
-        setTitle(tag);
+    // The conclusion is that the title shall be a localized string fixing
+    // all classes from category #1. Harald Braun has already started the
+    // work. I will merge in his changes. Firstly I will clarify this class.
+    // Linus 2007-09-11.
+    public AbstractArgoJPanel(String title, boolean t) {
+        setTitle(title);
         tear = t;
     }
 
@@ -153,14 +157,14 @@ public abstract class AbstractArgoJPanel extends JPanel
     // accessors
 
     /**
-     * @return The key (to be localized) for the title of the panel.
+     * @return The title of the panel, a localized string.
      */
     public String getTitle() {
         return title;
     }
 
     /**
-     * @param t The key (to be localized) of the title.
+     * @param t The title, a localized string.
      */
     public void setTitle(String t) {
         title = t;
@@ -184,6 +188,8 @@ public abstract class AbstractArgoJPanel extends JPanel
 
         JDialog f = new JDialog(ArgoFrame.getInstance());
         f.getContentPane().setLayout(new BorderLayout());
+        // TODO: Once we have fixed all subclasses the title will
+        // always be localized so this localization can be removed.
         f.setTitle(Translator.localize(title));
         AbstractArgoJPanel newPanel = (AbstractArgoJPanel) clone();
         if (newPanel == null) {
@@ -204,6 +210,8 @@ public abstract class AbstractArgoJPanel extends JPanel
 //            it.setTarget(me.getTarget());
 //        }
 
+        // TODO: Once we have fixed all subclasses the title will
+        // always be localized so this localization can be removed.
         newPanel.setTitle(Translator.localize(title));
 
         f.getContentPane().add(newPanel, BorderLayout.CENTER);

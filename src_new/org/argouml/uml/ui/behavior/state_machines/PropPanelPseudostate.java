@@ -48,18 +48,18 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
      * Construct a new property panel for a PseudoState (branch, fork, etc).
      */
     public PropPanelPseudostate() {
-        super("Pseudostate", null, ConfigLoader.getTabPropsOrientation());
+        super("label.pseudostate", null, ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.container"),
+        addField("label.container",
                 getContainerScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
+        addField("label.incoming",
                 getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
+        addField("label.outgoing",
                 getOutgoingScroll());
 
         TargetManager.getInstance().addTargetListener(this);
@@ -82,33 +82,27 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getJoin())) {
-                getTitleLabel().setText(
-                    Translator.localize("label.pseudostate.join"));
+                getTitleLabel().setText("label.pseudostate.join");
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getChoice())) {
-                getTitleLabel().setText(
-                    Translator.localize("label.pseudostate.choice"));
+                getTitleLabel().setText("label.pseudostate.choice");
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getDeepHistory())) {
-                getTitleLabel().setText(
-                    Translator.localize("label.pseudostate.deephistory"));
+                getTitleLabel().setText("label.pseudostate.deephistory");
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getShallowHistory())) {
-                getTitleLabel().setText(
-                    Translator.localize("label.pseudostate.shallowhistory"));
+                getTitleLabel().setText("label.pseudostate.shallowhistory");
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getInitial())) {
-                getTitleLabel().setText(
-                    Translator.localize("label.pseudostate.initial"));
+                getTitleLabel().setText("label.pseudostate.initial");
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getJunction())) {
-                getTitleLabel().setText(
-                    Translator.localize("label.pseudostate.junction"));
+                getTitleLabel().setText("label.pseudostate.junction");
             }
             Icon icon =
                 ResourceLoaderWrapper.getInstance().lookupIcon(target);

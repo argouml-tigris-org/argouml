@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.ImageIcon;
 
-import org.argouml.i18n.Translator;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
@@ -46,7 +45,7 @@ public class PropPanelSimpleState extends AbstractPropPanelState {
      * Construct a new default property panel for a Simple State.
      */
     public PropPanelSimpleState() {
-        this("Simple State", lookupIcon("SimpleState"),
+        this("label.simple.state", lookupIcon("SimpleState"),
                 ConfigLoader.getTabPropsOrientation());
     }
 
@@ -62,26 +61,26 @@ public class PropPanelSimpleState extends AbstractPropPanelState {
             Orientation orientation) {
         super(name, icon, orientation);
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.container"),
+        addField("label.container",
                 getContainerScroll());
-        addField(Translator.localize("label.entry"),
+        addField("label.entry",
                 getEntryScroll());
-        addField(Translator.localize("label.exit"),
+        addField("label.exit",
                 getExitScroll());
-        addField(Translator.localize("label.do-activity"),
+        addField("label.do-activity",
                 getDoScroll());
-        addField(Translator.localize("label.deferrable"),
+        addField("label.deferrable",
                 getDeferrableEventsScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
+        addField("label.incoming",
                 getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
+        addField("label.outgoing",
                 getOutgoingScroll());
-        addField(Translator.localize("label.internal-transitions"),
+        addField("label.internal-transitions",
                 getInternalTransitionsScroll());
 
     }

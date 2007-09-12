@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
@@ -43,13 +42,13 @@ public class PropPanelClass extends PropPanelClassifier {
      * Construct a property panel for UML Class elements.
      */
     public PropPanelClass() {
-        super("Class",
+        super("label.class",
             lookupIcon("Class"),
             ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.namespace"),
+        addField("label.namespace",
                 getNamespaceSelector());
         getModifiersPanel().add(new UMLClassActiveCheckBox());
         add(getModifiersPanel());
@@ -57,24 +56,24 @@ public class PropPanelClass extends PropPanelClassifier {
 
         addSeparator();
 
-        addField(Translator.localize("label.client-dependencies"),
+        addField("label.client-dependencies",
                 getClientDependencyScroll());
-        addField(Translator.localize("label.supplier-dependencies"),
+        addField("label.supplier-dependencies",
                 getSupplierDependencyScroll());
-        addField(Translator.localize("label.generalizations"),
+        addField("label.generalizations",
                 getGeneralizationScroll());
-        addField(Translator.localize("label.specializations"),
+        addField("label.specializations",
                 getSpecializationScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.attributes"),
+        addField("label.attributes",
                 getAttributeScroll());
-        addField(Translator.localize("label.association-ends"),
+        addField("label.association-ends",
                 getAssociationEndScroll());
-        addField(Translator.localize("label.operations"),
+        addField("label.operations",
                 getOperationScroll());
-        addField(Translator.localize("label.owned-elements"),
+        addField("label.owned-elements",
                 getOwnedElementsScroll());
 
         addAction(new ActionNavigateNamespace());

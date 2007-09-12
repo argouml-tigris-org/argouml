@@ -49,11 +49,11 @@ import org.argouml.util.ConfigLoader;
  * Builds the property panel for an Extend relationship.<p>
  *
  * This is a type of Relationship, but, since Relationship has no semantic
- *   meaning of its own, we derive directly from PropPanelModelElement (as
- *   other children of Relationship do).<p>
+ * meaning of its own, we derive directly from PropPanelModelElement (as
+ * other children of Relationship do).<p>
  *
  * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ *       old GUI components.
  *
  * @author mail@jeremybennett.com
  */
@@ -72,23 +72,23 @@ public class PropPanelExtend extends PropPanelModelElement {
      */
 
     public PropPanelExtend() {
-        super("Extend", lookupIcon("Extend"),
+        super("label.extend", lookupIcon("Extend"),
                 ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
 		 getNameTextField());
-        addField(Translator.localize("label.namespace"),
+        addField("label.namespace",
                 getNamespaceSelector());
 
         addSeparator();
 
 
         // Link to the two ends.
-        addField(Translator.localize("label.usecase-base"),
+        addField("label.usecase-base",
                 getSingleRowScroll(new UMLLinkedList(
                         new UMLExtendBaseListModel())));
 
-        addField(Translator.localize("label.extension"),
+        addField("label.extension",
                 getSingleRowScroll(new UMLLinkedList(
                         new UMLExtendExtensionListModel())));
 
@@ -96,7 +96,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 	    new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(),
 		ActionAddExtendExtensionPoint.getInstance(),
 		ActionNewExtendExtensionPoint.SINGLETON);
-        addField(Translator.localize("label.extension-points"),
+        addField("label.extension-points",
 		new JScrollPane(extensionPointList));
 
         addSeparator();
@@ -110,7 +110,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         JScrollPane conditionScroll =
             new JScrollPane(conditionArea);
 
-        addField(Translator.localize("label.condition"), conditionScroll);
+        addField("label.condition", conditionScroll);
 
         // Add the toolbar buttons:
         addAction(new ActionNavigateNamespace());

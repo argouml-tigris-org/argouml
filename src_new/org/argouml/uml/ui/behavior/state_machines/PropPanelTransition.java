@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JList;
 
-import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewCallEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewChangeEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent;
@@ -62,34 +61,34 @@ public class PropPanelTransition extends PropPanelModelElement {
      * Construct a new property panel for a Transition.
      */
     public PropPanelTransition() {
-        super("Transition",
+        super("label.transition",
             lookupIcon("Transition"),
             ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("label.name"),
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.statemachine"),
+        addField("label.statemachine",
                 getSingleRowScroll(new UMLTransitionStatemachineListModel()));
 
-        addField(Translator.localize("label.state"),
+        addField("label.state",
                 getSingleRowScroll(new UMLTransitionStateListModel()));
 
         addSeparator();
 
-        addField(Translator.localize("label.source"),
+        addField("label.source",
                 getSingleRowScroll(new UMLTransitionSourceListModel()));
-        addField(Translator.localize("label.target"),
+        addField("label.target",
                 getSingleRowScroll(new UMLTransitionTargetListModel()));
-        addField(Translator.localize("label.trigger"),
+        addField("label.trigger",
                 getSingleRowScroll( new UMLTransitionTriggerListModel()));
         JList guardList = new UMLMutableLinkedList(
                 new UMLTransitionGuardListModel(), null,
                 ActionNewGuard.getSingleton());
-        addField(Translator.localize("label.guard"),
+        addField("label.guard",
                 getSingleRowScroll(guardList));
         JList effectList = new UMLTransitionEffectList(
                 new UMLTransitionEffectListModel());
-        addField(Translator.localize("label.effect"),
+        addField("label.effect",
                 getSingleRowScroll(effectList));
 
         addAction(new ActionNavigateContainerElement());

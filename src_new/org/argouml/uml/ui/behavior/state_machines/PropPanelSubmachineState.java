@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -70,38 +70,38 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
      * Construct a default property panel SubmachineState elements.
      */
     public PropPanelSubmachineState() {
-        super("Submachine State", lookupIcon("SubmachineState"),
+        super("label.submachinestate", lookupIcon("SubmachineState"),
                 ConfigLoader.getTabPropsOrientation());
-        getTitleLabel().setText("Submachine State");
-        addField(Translator.localize("label.name"),
+        getTitleLabel().setText("label.submachinestate");
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.container"),
+        addField("label.container",
                 getContainerScroll());
         JComboBox submachineBox = new UMLComboBox2(
                 new UMLSubmachineStateComboBoxModel(),
                 ActionSetSubmachineStateSubmachine.getInstance());
-        addField(Translator.localize("label.submachine"),
+        addField("label.submachine",
                 new UMLComboBoxNavigator(Translator.localize(
                         "tooltip.nav-submachine"), submachineBox));
-        addField(Translator.localize("label.entry"),
+        addField("label.entry",
                 getEntryScroll());
-        addField(Translator.localize("label.exit"),
+        addField("label.exit",
                 getExitScroll());
-        addField(Translator.localize("label.do-activity"),
+        addField("label.do-activity",
                 getDoScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
+        addField("label.incoming",
                 getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
+        addField("label.outgoing",
                 getOutgoingScroll());
-        addField(Translator.localize("label.internal-transitions"),
+        addField("label.internal-transitions",
                 getInternalTransitionsScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.subvertex"),
+        addField("label.subvertex",
                 new JScrollPane(new UMLMutableLinkedList(
                         new UMLCompositeStateSubvertexListModel(), null,
                         ActionNewStubState.getInstance())));
@@ -133,7 +133,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
                 Object target =
                     ((TargetManager) e.getSource()).getModelTarget();
                 if (Model.getFacade().isASubmachineState(target)) {
-                    getTitleLabel().setText("Submachine State");
+                    getTitleLabel().setText("label.submachinestate");
                 }
             }
         }

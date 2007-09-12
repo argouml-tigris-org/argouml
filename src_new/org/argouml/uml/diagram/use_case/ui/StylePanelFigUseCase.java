@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.awt.event.ItemEvent;
 import javax.swing.JCheckBox;
 
 import org.argouml.ui.StylePanelFigNodeModelElement;
+import org.argouml.i18n.Translator;
 
 /**
  * A class to provide a style panel for use cases.<p>
@@ -43,7 +44,8 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
     /**
      * The check box for toggling the visibility of extension points.
      */
-    private JCheckBox epCheckBox = new JCheckBox("Extension Points");
+    private JCheckBox epCheckBox = 
+        new JCheckBox(Translator.localize("checkbox.extension-points"));
 
     /**
      * Flag to indicate that a refresh is going on.
@@ -88,8 +90,7 @@ public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
     /**
      * Something has changed, check if its the check box.<p>
      *
-     * @param e
-     *            The event that triggeed us.
+     * @param e The event that triggered us.
      *
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */

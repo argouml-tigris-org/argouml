@@ -135,7 +135,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * @see java.lang.Object#Object()
      */
     public PropPanelAssociationEnd() {
-        super("AssociationEnd", ConfigLoader.getTabPropsOrientation());
+        super("label.association-end", 
+                ConfigLoader.getTabPropsOrientation());
         associationLabel = Translator.localize("label.association");
         createControls();
         positionStandardControls();
@@ -156,13 +157,13 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         targetScopeCheckBox = new UMLAssociationEndTargetScopeCheckbox();
         aggregationRadioButtonpanel =
             new UMLAssociationEndAggregationRadioButtonPanel(
-                Translator.localize("label.aggregation"), true);
+                "label.aggregation", true);
         changeabilityRadioButtonpanel =
             new UMLAssociationEndChangeabilityRadioButtonPanel(
-                Translator.localize("label.changeability"), true);
+                "label.changeability", true);
         visibilityRadioButtonPanel =
             new UMLModelElementVisibilityRadioButtonPanel(
-                Translator.localize("label.visibility"), true);
+                "label.visibility", true);
         specificationScroll = new JScrollPane(new UMLMutableLinkedList(
                 new UMLAssociationEndSpecificationListModel(),
                 ActionAddAssociationSpecification.getInstance(),
@@ -184,22 +185,21 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     protected void positionControls() {
         addField(associationLabel, associationScroll);
-        addField(Translator.localize("label.type"), typeCombobox);
-        addField(Translator.localize("label.multiplicity"),
+        addField("label.type", typeCombobox);
+        addField("label.multiplicity",
                 getMultiplicityComboBox());
 
         addSeparator();
 
-        JPanel panel = createBorderPanel(Translator.localize(
-                "label.modifiers"));
+        JPanel panel = createBorderPanel("label.modifiers");
         panel.add(navigabilityCheckBox);
         panel.add(orderingCheckBox);
         panel.add(targetScopeCheckBox);
         panel.setVisible(true);
         add(panel);
-        addField(Translator.localize("label.specification"),
+        addField("label.specification",
                 specificationScroll);
-        addField(Translator.localize("label.qualifiers"),
+        addField("label.qualifiers",
                 qualifiersScroll);
 
 

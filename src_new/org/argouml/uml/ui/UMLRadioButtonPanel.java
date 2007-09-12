@@ -41,6 +41,7 @@ import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.model.Model;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -93,10 +94,10 @@ public abstract class UMLRadioButtonPanel
      *            the name of the MEvent that is fired when the property that it
      *            shows changes value.
      * @param setAction
-     *            the action that should be registred with the buttons and
+     *            the action that should be registered with the buttons and
      *            that's executed when one of the buttons is pressed.
      * @param horizontal
-     *            when true the buttons should be layed out horizontaly.
+     *            when true the buttons should be laid out horizontally.
      */
     public UMLRadioButtonPanel(
                                boolean isDoubleBuffered,
@@ -108,8 +109,8 @@ public abstract class UMLRadioButtonPanel
         super(isDoubleBuffered);
         setLayout(horizontal ? new GridLayout() : new GridLayout(0, 1));
         setDoubleBuffered(true);
-        if (title != null) {
-            TitledBorder border = new TitledBorder(title);
+        if (Translator.localize(title) != null) {
+            TitledBorder border = new TitledBorder(Translator.localize(title));
             border.setTitleFont(stdFont);
             setBorder(border);
         }
@@ -128,12 +129,12 @@ public abstract class UMLRadioButtonPanel
      *            logically recognize the button.
      * @param thePropertySetName
      *            the name of the MEvent that is fired when the property that is
-     *            showns changes value.
+     *            shown changes value.
      * @param setAction
-     *            the action that should be registred with the buttons and
+     *            the action that should be registered with the buttons and
      *            that's executed when one of the buttons is pressed
      * @param horizontal
-     *            when true the buttons should be layed out horizontaly.
+     *            when true the buttons should be laid out horizontally.
      */
     public UMLRadioButtonPanel(String title,
                                List<String[]> labeltextsActioncommands,
@@ -159,10 +160,10 @@ public abstract class UMLRadioButtonPanel
      *            the name of the MEvent that is fired when the property that it
      *            shows changes value.
      * @param setAction
-     *            the action that should be registred with the buttons and
+     *            the action that should be registered with the buttons and
      *            that's executed when one of the buttons is pressed.
      * @param horizontal
-     *            when true the buttons should be layed out horizontaly.
+     *            when true the buttons should be laid out horizontally.
      * @deprecated for 0.25.4 by tfmorris. Use List<String[]> form of
      *             constructor.
      */
@@ -198,10 +199,10 @@ public abstract class UMLRadioButtonPanel
      *            the name of the MEvent that is fired when the property that is
      *            showns changes value.
      * @param setAction
-     *            the action that should be registred with the buttons and
+     *            the action that should be registered with the buttons and
      *            that's executed when one of the buttons is pressed
      * @param horizontal
-     *            when true the buttons should be layed out horizontaly.
+     *            when true the buttons should be laid out horizontally.
      * @deprecated for 0.25.4 by tfmorris. Use List<String[]> form of
      *             constructor. See
      *             {@link UMLParameterDirectionKindRadioButtonPanel} for an
@@ -227,7 +228,7 @@ public abstract class UMLRadioButtonPanel
      *            the actioncommand that permits the setAction to logically
      *            recognize the button.
      * @param setAction
-     *            the action that should be registred with the buttons and
+     *            the action that should be registered with the buttons and
      *            that's executed when one of the buttons is pressed
      */
     private void setButtons(List<String[]> labeltextsActioncommands,
@@ -309,7 +310,7 @@ public abstract class UMLRadioButtonPanel
 
     /**
      * Builds the model. That is: it selects the radiobutton showing the value
-     * of the attribute shown. The name of this method is choosen to be
+     * of the attribute shown. The name of this method is chosen to be
      * compliant with for example UMLModelElementListModel2
      */
     public abstract void buildModel();
