@@ -26,12 +26,14 @@ package org.argouml.uml.reveng.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import java.util.Vector;
+
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -48,7 +50,7 @@ import org.argouml.uml.reveng.ImportSettings;
 /**
  * Modeller maps Java source code(parsed/recognised by ANTLR) to UML model
  * elements, it applies some of the semantics in JSR-26.  Note: JSR-26 was
- * withdrawn in March, 2004, so it obviously provides no guideance for
+ * withdrawn in March, 2004, so it obviously provides no guidance for
  * more recent language features such as Java 5.
  *
  * @author Marcus Andersson
@@ -84,9 +86,9 @@ public class Modeller {
 
     /**
      * Last package name used in addPackage().
-     * It is null for classes wich are not packaged.
+     * It is null for classes which are not packaged.
      * Used in popClassifier() to create diagram for that
-     * packaget.
+     * package.
      */
     private String currentPackageName;
 
@@ -98,7 +100,7 @@ public class Modeller {
     /**
      * Stack up the state when descending inner classes.
      */
-    private Stack parseStateStack;
+    private Stack<ParseState> parseStateStack;
 
     /**
      * Only attributes will be generated.
@@ -118,23 +120,28 @@ public class Modeller {
     /**
      * Arbitrary attributes.
      */
-    private Hashtable attributes = new Hashtable();
+    private Hashtable<String, Object> attributes = 
+        new Hashtable<String, Object>();
 
     /**
-     * Vector of parsed method calls.
+     * List of the names of parsed method calls.
      */
-    private Vector methodCalls = new Vector();
+    private List<String> methodCalls = new ArrayList<String>();
 
     /**
-     * HashMap of parsed local variables.
+     * HashMap of parsed local variables. Indexed by variable name with string
+     * representation of the type stored as the value.
      */
-    private Hashtable localVariables = new Hashtable();
+    private Hashtable<String, String> localVariables = 
+        new Hashtable<String, String>();
 
     /**
      * New model elements that were created during this
      * reverse engineering session.
+     * TODO: We want a stronger type here, but ArgoUML treats all elements
+     * as just simple Objects.
      */
-    private Collection newElements;
+    private Collection<Object> newElements;
     
 
     /**
@@ -150,9 +157,9 @@ public class Modeller {
         noAssociations = settings.isAttributeSelected();
         arraysAsDatatype = settings.isDatatypeSelected();
         currentPackage = this.model;
-        newElements = new HashSet();
+        newElements = new HashSet<Object>();
         parseState = new ParseState(this.model, getPackage(JAVA_PACKAGE));
-        parseStateStack = new Stack();
+        parseStateStack = new Stack<ParseState>();
         fileName = theFileName;
     }
     
@@ -322,47 +329,18 @@ public class Modeller {
             return;
         }
 
-	String packageName = getPackageName(name);
-	String classifierName = getClassifierName(name);
-	Object mPackage = getPackage(packageName);
+        String packageName = getPackageName(name);
+        // TODO: In the case of an inner class, we probably want either the
+        // qualified name with both outer and inner class names, or just the
+        // outer class name
+        String classifierName = getClassifierName(name);
+        Object mPackage = getPackage(packageName);
 
         // import on demand
 	if (classifierName.equals("*")) {
 	    parseState.addPackageContext(mPackage);
-            Object pkgImport = null;
-
-            // TODO: This use of UML Permission is non-standard.
-            // Change it to a Dependency with a <<javaImport>> stereotype
-            // or something else - tfm - 20070802
-            
-            // try find an existing permission
-            Iterator dependenciesIt =
-                Model.getCoreHelper()
-		    .getDependencies(mPackage, parseState.getComponent())
-		        .iterator();
-            while (dependenciesIt.hasNext()) {
-
-                Object dependency = dependenciesIt.next();
-                if (Model.getFacade().isAPermission(dependency)) {
-
-                    pkgImport = dependency;
-                    break;
-                }
-            }
-
-            // if no existing permission was found.
-            if (pkgImport == null) {
-		pkgImport =
-		    Model.getCoreFactory()
-		        .buildPermission(parseState.getComponent(), mPackage);
-		String newName =
-                    makePermissionName(
-                            Model.getFacade().getName(
-                                    parseState.getComponent()),
-                                    packageName);
-		Model.getCoreHelper().setName(pkgImport, newName);
-                newElements.add(pkgImport);
-            }
+	    Object srcFile = parseState.getComponent();
+            buildImport(mPackage, srcFile);
 	}
         // single type import
 	else {
@@ -376,6 +354,8 @@ public class Modeller {
                     LOG.info("Modeller.java: " 
                             + "forced creation of unknown classifier "
                             + classifierName);
+                    // TODO: A better strategy would be to defer creating this
+                    // until we have enough information to determine what it is
                     mClassifier = Model.getCoreFactory().buildClass(
                             classifierName, mPackage);
                     newElements.add(mClassifier);
@@ -386,42 +366,36 @@ public class Modeller {
             }
             if (mClassifier != null) {
 		parseState.addClassifierContext(mClassifier);
-
-		// TODO: This use of UML Permission is non-standard.
-		// Change it to a Dependency with a <<javaImport>> stereotype
-		// or something else - tfm - 20070802
-
-                // try find an existing permission
-                Iterator dependenciesIt =
-		    Model.getCoreHelper()
-                        .getDependencies(mClassifier,
-					 parseState.getComponent())
-                            .iterator();
-                Object perm = null;
-                while (dependenciesIt.hasNext()) {
-
-                    Object dependency = dependenciesIt.next();
-                    if (Model.getFacade().isAPermission(dependency)) {
-
-                        perm = dependency;
-                        break;
-                    }
-                }
-
-                // if no existing permission was found.
-                if (perm == null) {
-                    perm =
-			Model.getCoreFactory()
-			    .buildPermission(parseState.getComponent(),
-					     mClassifier);
-		    String newName =
-                            makePermissionName(
-                                    parseState.getComponent(), mClassifier);
-                    Model.getCoreHelper().setName(perm, newName);
-                    newElements.add(perm);
-                }
+		Object srcFile = parseState.getComponent();
+		buildImport(mClassifier, srcFile);
 	    }
 	}
+    }
+
+
+    /*
+     * Build a Java import equivalent in UML. First search for an existing
+     * permission. Create a new one if not found.
+     */
+    private Object buildImport(Object element, Object srcFile) {
+        // TODO: This use of UML Permission is non-standard.
+        // Change it to a Dependency with a <<javaImport>> stereotype
+        // or something else - tfm - 20070802
+        Collection dependencies = Model.getCoreHelper().getDependencies(
+                element, srcFile);
+        for (Object dependency : dependencies) {
+            if (Model.getFacade().isAPermission(dependency)) {
+                return dependency;
+            }
+        }
+        
+        // Didn't find it.  Let's create one.
+        Object pkgImport = Model.getCoreFactory().buildPermission(srcFile,
+                element);
+        String newName = makePermissionName(srcFile, element);
+        Model.getCoreHelper().setName(pkgImport, newName);
+        newElements.add(pkgImport);
+        return pkgImport;
     }
 
     private String makeAbstractionName(Object child, Object parent) {
@@ -435,14 +409,11 @@ public class Modeller {
     private String makeGeneralizationName(Object child, Object parent) {
         return makeFromToName(child, parent);
     }    
-    
-    private String makePermissionName(String from, String to) {
-        return makeFromToName(from, to);
-    }
-    
+
     private String makePermissionName(Object from, Object to) {
         return makeFromToName(from, to);
     }
+    
     private String makeFromToName(Object from, Object to) {
         return makeFromToName(
                 Model.getFacade().getName(from), 
@@ -471,10 +442,10 @@ public class Modeller {
     public void addClass(String name,
                          short modifiers,
                          String superclassName,
-                         Vector interfaces,
+                         List<String> interfaces,
                          String javadoc) {
-        addClass(name, modifiers, new Vector(), superclassName, interfaces,
-                javadoc, false);
+        addClass(name, modifiers, Collections.EMPTY_LIST, superclassName,
+                interfaces, javadoc, false);
     }
 
     /**
@@ -493,9 +464,9 @@ public class Modeller {
      */
     void addClass(String name,
                          short modifiers,
-                         Vector typeParameters,
+                         List<String> typeParameters,
                          String superclassName,
-                         Vector interfaces,
+                         List<String> interfaces,
                          String javadoc,
                          boolean forceIt) {
         if (typeParameters != null && typeParameters.size() > 0) {
@@ -571,21 +542,21 @@ public class Modeller {
         String name = parseState.anonymousClass();
         try {
             Object mClassifier = getContext(type).get(getClassifierName(type));
-            Vector interfaces = new Vector();
+            List<String> interfaces = new ArrayList<String>();
             if (Model.getFacade().isAInterface(mClassifier)) {
                 interfaces.add(type);
             }
             addClass(name,
 		     (short) 0,
-                     new Vector(),
+                     Collections.EMPTY_LIST,
 		     Model.getFacade().isAClass(mClassifier) ? type : null,
 		     interfaces,
 		     "",
                      forceIt);
         } catch (ClassifierNotFoundException e) {
             // Must add it anyway, or the class popping will mismatch.
-            addClass(name, (short) 0, new Vector(), null, new Vector(), "",
-                    forceIt);
+            addClass(name, (short) 0, Collections.EMPTY_LIST, null,
+                    Collections.EMPTY_LIST, "", forceIt);
             LOG.info("Modeller.java: an anonymous class was created "
 		     + "although it could not be found in the classpath.");
         }
@@ -610,9 +581,10 @@ public class Modeller {
      */
     public void addInterface(String name,
                              short modifiers,
-                             Vector interfaces,
+                             List<String> interfaces,
                              String javadoc) {
-        addInterface(name, modifiers, new Vector(), interfaces, javadoc, false);
+        addInterface(name, modifiers, Collections.EMPTY_LIST, interfaces,
+                javadoc, false);
     }
     
     /**
@@ -627,8 +599,8 @@ public class Modeller {
      */
     void addInterface(String name,
                              short modifiers,
-                             Vector typeParameters,
-                             Vector interfaces,
+                             List<String> typeParameters,
+                             List<String> interfaces,
                              String javadoc,
                              boolean forceIt) {
         if (typeParameters != null && typeParameters.size() > 0) {
@@ -647,8 +619,7 @@ public class Modeller {
             return;
         }
 
-        for (Iterator i = interfaces.iterator(); i.hasNext();) {
-            String interfaceName = (String) i.next();
+        for (String interfaceName : interfaces) {
             Object parentInterface = null;
             try {
                 parentInterface =
@@ -691,13 +662,13 @@ public class Modeller {
      */
     void addEnumeration(String name,
                          short modifiers,
-                         Vector interfaces,
+                         List<String> interfaces,
                          String javadoc,
                          boolean forceIt) {
         Object mClass =
             addClassifier(Model.getCoreFactory().createClass(),
                           name, modifiers, javadoc, 
-                          new Vector()); // no type params for now
+                          Collections.EMPTY_LIST); // no type params for now
         
         Model.getCoreHelper().addStereotype(
                 mClass,
@@ -735,10 +706,9 @@ public class Modeller {
      * @param interfaces
      * @param forceIt
      */
-    private void addInterfaces(Object mClass, Vector interfaces, 
+    private void addInterfaces(Object mClass, List<String> interfaces, 
             boolean forceIt) {
-        for (Iterator i = interfaces.iterator(); i.hasNext();) {
-            String interfaceName = (String) i.next();
+        for (String interfaceName : interfaces) {
             Object mInterface = null;
             try {
                 mInterface =
@@ -815,9 +785,8 @@ public class Modeller {
         if (!Model.getFacade().isAClass(element)) {
             return false;
         }
-        Collection stereotypes = Model.getFacade().getStereotypes(element);
-        for (Iterator it = stereotypes.iterator(); it.hasNext();) {
-            if ("enumeration".equals(Model.getFacade().getName(it.next()))) {
+        for (Object stereotype : Model.getFacade().getStereotypes(element)) {
+            if ("enumeration".equals(Model.getFacade().getName(stereotype))) {
                 return true;
             }
         }
@@ -873,7 +842,7 @@ public class Modeller {
                                  String name,
                                  short modifiers,
                                  String javadoc, 
-                                 Vector typeParameters) {
+                                 List<String> typeParameters) {
         Object mClassifier;
         Object mNamespace;
 
@@ -912,7 +881,7 @@ public class Modeller {
 
         // set up the component residency (only for top level classes)
         if (parseState.getClassifier() == null) {
-            // set the clasifier to be a resident in its component:
+            // set the classifier to be a resident in its component:
             // (before we push a new parse state on the stack)
 
             // This test is carried over from a previous implementation,
@@ -990,7 +959,7 @@ public class Modeller {
         // Remove inner classes not in source
         parseState.removeObsoleteInnerClasses();
 
-        parseState = (ParseState) parseStateStack.pop();
+        parseState = parseStateStack.pop();
     }
 
     /**
@@ -1003,7 +972,7 @@ public class Modeller {
      * @param name
      *            The name of the operation as a string
      * @param parameters
-     *            A number of vectors, each representing a parameter.
+     *            A List of parameter declarations containing types and names.
      * @param javadoc
      *            The javadoc comment. null or "" if no comment available.
      * @return The operation.
@@ -1011,9 +980,9 @@ public class Modeller {
     public Object addOperation (short modifiers,
                                 String returnType,
                                 String name,
-                                Vector parameters,
+                                List<ParameterDeclaration> parameters,
                                 String javadoc) {
-        return addOperation(modifiers, new Vector(), returnType, name,
+        return addOperation(modifiers, Collections.EMPTY_LIST, returnType, name,
                 parameters, javadoc, false);
     }
     
@@ -1035,10 +1004,10 @@ public class Modeller {
      * @return The operation.
      */
     Object addOperation (short modifiers,
-                                Vector typeParameters,
+                                List<String> typeParameters,
                                 String returnType,
                                 String name,
-                                Vector parameters,
+                                List<ParameterDeclaration> parameters,
                                 String javadoc,
                                 boolean forceIt) {
         if (typeParameters != null && typeParameters.size() > 0) {
@@ -1066,8 +1035,8 @@ public class Modeller {
 
         Collection c = new ArrayList(Model.getFacade()
                 .getParameters(mOperation));
-	for (Iterator i = c.iterator(); i.hasNext();) {
-	    Model.getCoreHelper().removeParameter(mOperation, i.next());
+    for (Object parameter : c) {
+	    Model.getCoreHelper().removeParameter(mOperation, parameter);
 	}
 
 	Object mParameter;
@@ -1108,9 +1077,8 @@ public class Modeller {
 	    }
 	}
 
-	for (Iterator i = parameters.iterator(); i.hasNext();) {
-	    Vector parameter = (Vector) i.next();
-	    typeName = (String) parameter.elementAt(1);
+	for (ParameterDeclaration parameter : parameters) {
+	    typeName = parameter.getType();
             // TODO: A type name with a trailing "..." represents
             // a variable length parameter list.  It can only be
             // the last parameter and it gets converted to an array
@@ -1118,7 +1086,7 @@ public class Modeller {
             // way (ie convert "Foo..." to "Foo[]"). - tfm - 20070329
             if (typeName.endsWith("...")) {
                 logError("Unsupported variable length parameter list notation",
-                        (String) parameter.elementAt(2));
+                        parameter.getName());
             }
             mClassifier = null;
 	    try {
@@ -1143,10 +1111,8 @@ public class Modeller {
                 }
             }
             if (mClassifier != null) {
-                mParameter =
-                        buildInParameter(
-                                mOperation, mClassifier, (String) parameter
-                                        .elementAt(2));
+                mParameter = buildInParameter(mOperation, mClassifier,
+                        parameter.getName());
                 if (!Model.getFacade().isAClassifier(mClassifier)) {
                     // the type resolution failed to find a valid classifier.
                     logError("Modeller.java: a valid type for a parameter "
@@ -1500,7 +1466,7 @@ public class Modeller {
     }
 
     /**
-     * Search recursivly for nested packages in the model. So if you
+     * Search recursively for nested packages in the model. So if you
      * pass a package org.argouml.kernel , this method searches for a package
      * kernel, that is owned by a package argouml, which is owned by a
      * package org. This method is required to nest the parsed packages.
@@ -1754,11 +1720,25 @@ public class Modeller {
        @return The package name.
     */
     private String getPackageName(String name) {
-	int lastDot = name.lastIndexOf('.');
-	if (lastDot == -1) {
-	    return "";
-	}
-        return name.substring(0, lastDot);
+        int lastDot = name.lastIndexOf('.');
+        if (lastDot == -1) {
+            return "";
+        }
+        String pkgName = name.substring(0, lastDot);
+        return pkgName;
+        
+        // TODO: Fix handling of inner classes along the lines of the following...
+        
+        // If the last element begins with an uppercase character, assume
+        // that we've really got a class, not a package.  A better strategy
+        // would be to defer until we can disambiguate, but this should be
+        // better than what we have now for the more common case of inner
+        // classes.
+//        if (Character.isUpperCase(getRelativePackageName(pkgName).charAt(0))) {
+//            return getPackageName(pkgName);
+//        } else {
+//            return pkgName;
+//        }
     }
 
     /**
@@ -1927,7 +1907,7 @@ public class Modeller {
                     }
                 }
                 // now eliminate multiple entries in that comma separated list
-                HashSet stSet = new HashSet();
+                HashSet<String> stSet = new HashSet<String>();
                 StringTokenizer st = new StringTokenizer(sTagData, ", ");
                 while (st.hasMoreTokens()) {
                     stSet.add(st.nextToken().trim());
@@ -2139,7 +2119,7 @@ public class Modeller {
      * Get collection of method calls.
      * @return vector containing collected method calls
      */
-    public synchronized Vector getMethodCalls() {
+    public synchronized List<String> getMethodCalls() {
         return methodCalls;
     }
 
