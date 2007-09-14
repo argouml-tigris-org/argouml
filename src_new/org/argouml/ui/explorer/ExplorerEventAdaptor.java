@@ -190,6 +190,10 @@ public final class ExplorerEventAdaptor
             || Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {
             // notation events
             treeModel.structureChanged();
+        } else if (pce.getSource() instanceof ProjectManager) {
+            if ("remove".equals(pce.getPropertyName())) {
+                treeModel.modelElementRemoved(pce.getOldValue());
+            }
         }
 
 

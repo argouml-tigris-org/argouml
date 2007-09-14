@@ -50,7 +50,6 @@ import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
@@ -881,9 +880,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
         } else if (obj instanceof ArgoDiagram) {
             removeProjectMemberDiagram((ArgoDiagram) obj);
-            // only need to manually delete diagrams because they
-            // don't have a decent event system set up.
-            ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
+            // Need to manually delete diagrams from explorer because they
+            // don't have a decent event system set up:
+            ProjectManager.getManager().firePropertyChanged("remove", obj, null);
         } else if (obj instanceof Fig) {
             ((Fig) obj).deleteFromModel();
             // TODO: Bob says - I've never seen this appear in the log.

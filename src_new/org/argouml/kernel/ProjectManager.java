@@ -163,7 +163,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * @param oldValue The old value.
      * @param newValue The new value.
      */
-    private void firePropertyChanged(String propertyName,
+    void firePropertyChanged(String propertyName,
                                      Object oldValue, Object newValue) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
