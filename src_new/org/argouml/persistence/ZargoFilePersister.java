@@ -225,13 +225,13 @@ class ZargoFilePersister extends UmlFilePersister {
         }
 
         Project p;
-        if (!checkVersion(fileVersion, releaseVersion)) {
+//        if (!checkVersion(fileVersion, releaseVersion)) {
             File combinedFile = zargoToUml(file, progressMgr);
             p = super.doLoad(file, combinedFile, progressMgr);
-        } else {
-            LOG.info("Loading uml file of version " + fileVersion);
-            p = loadFromZargo(file, progressMgr);
-        }
+//        } else {
+//            LOG.info("Loading uml file of version " + fileVersion);
+//            p = loadFromZargo(file, progressMgr);
+//        }
 
         progressMgr.nextPhase();
 
