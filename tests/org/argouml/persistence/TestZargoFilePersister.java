@@ -139,6 +139,15 @@ public class TestZargoFilePersister extends TestCase {
         doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
     }
 
+    /**
+     * Test loading a native UML 1.4 zargo with i18n character.
+     *
+     * @throws Exception when e.g. the file is not found
+     */
+    public void testDoLoadUml14i18n() throws Exception {
+        doLoad("/testmodels/uml14/i18n.zargo");
+    }
+
     
     /**
      * Test saving a zargo.
