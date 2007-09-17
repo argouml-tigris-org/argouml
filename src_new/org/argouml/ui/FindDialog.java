@@ -26,7 +26,6 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -37,7 +36,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -72,9 +72,6 @@ import org.tigris.gef.util.PredicateType;
 public class FindDialog extends ArgoDialog
     implements ActionListener, MouseListener {
 
-    ////////////////////////////////////////////////////////////////
-    // class variables
-
     private static FindDialog instance;
     private static int nextResultNum = 1;
 
@@ -85,32 +82,37 @@ public class FindDialog extends ArgoDialog
      */
     private static final int INSET_PX = 3;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
     private JButton     search     =
 	new JButton(
             Translator.localize("dialog.find.button.find"));
     private JButton     clearTabs  =
 	new JButton(
             Translator.localize("dialog.find.button.clear-tabs"));
-    private JTabbedPane tabs       = new JTabbedPane();
-    private JPanel      nameLocTab = new JPanel();
-    private JPanel     modifiedTab = new JPanel();
-    private JPanel      tagValsTab = new JPanel();
-    private JPanel  constraintsTab = new JPanel();
+    private JTabbedPane tabs = new JTabbedPane();
 
-    private JComboBox   elementName = new JComboBox();
-    private JComboBox   diagramName = new JComboBox();
-    private JComboBox   location    = new JComboBox();
-    private JComboBox   type        = new JComboBox();
-    private JPanel      typeDetails = new JPanel();
+    private JPanel nameLocTab = new JPanel();
 
-    private JTabbedPane results     = new JTabbedPane();
-    private JPanel      help        = new JPanel();
-    private Vector      resultTabs  = new Vector();
+    private JPanel modifiedTab = new JPanel();
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    private JPanel tagValsTab = new JPanel();
+
+    private JPanel constraintsTab = new JPanel();
+
+    private JComboBox elementName = new JComboBox();
+
+    private JComboBox diagramName = new JComboBox();
+
+    private JComboBox location = new JComboBox();
+
+    private JComboBox type = new JComboBox();
+
+    private JPanel typeDetails = new JPanel();
+
+    private JTabbedPane results = new JTabbedPane();
+
+    private JPanel help = new JPanel();
+
+    private List<TabResults> resultTabs = new ArrayList<TabResults>();
 
     /**
      * @return the instance of this dialog
@@ -162,26 +164,11 @@ public class FindDialog extends ArgoDialog
         results.addTab(Translator.localize("dialog.find.tab.help"), help);
         mainPanel.add(results, BorderLayout.CENTER);
 
-        //     JPanel south = new JPanel();
-        //     south.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        //     JPanel buttonPane = new JPanel();
-        //     buttonPane.setLayout(new GridLayout(1, 4));
-        //     buttonPane.add(_clear);
-        //     buttonPane.add(_spawn);
-        //     buttonPane.add(_go);
-        //     buttonPane.add(_close);
-        //     south.add(buttonPane);
-        //     getContentPane().add(south, BorderLayout.SOUTH);
-        //     getRootPane().setDefaultButton(_search);
         search.addActionListener(this);
         results.addMouseListener(this);
 
         clearTabs.addActionListener(this);
         clearTabs.setEnabled(false);
-        //     _spawn.addActionListener(this);
-        //     _go.addActionListener(this);
-        //     _close.addActionListener(this);
-        //setSize(new Dimension(480, 550));
 
         setContent(mainPanel);
 
@@ -191,8 +178,9 @@ public class FindDialog extends ArgoDialog
     /**
      * Initialise the tab "Name and Location".
      */
-    public void initNameLocTab() {
+    private void initNameLocTab() {
         elementName.setEditable(true);
+        // TODO: Don't use hardcoded colors here - tfm
         elementName.getEditor()
 	    .getEditorComponent().setBackground(Color.white);
         diagramName.setEditable(true);
@@ -221,11 +209,6 @@ public class FindDialog extends ArgoDialog
 
         location.addItem(
                 Translator.localize("dialog.find.comboboxitem.entire-project"));
-        /*      MVW: The following panel is not used at all.
-         *      So let's not show it.
-         *      See issue 2502.
-         */
-        // _typeDetails.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
         initTypes();
 
         typeDetails.setMinimumSize(new Dimension(200, 100));
@@ -305,7 +288,7 @@ public class FindDialog extends ArgoDialog
     /**
      * Initialise the help tab.
      */
-    public void initHelpTab() {
+    private void initHelpTab() {
         help.setLayout(new BorderLayout());
         JTextArea helpText = new JTextArea();
         helpText.setText(Translator.localize("dialog.find.helptext"));
@@ -316,24 +299,22 @@ public class FindDialog extends ArgoDialog
 
     /**
      * Init the tab with the tagged values.
-     * TODO: This tab does not work currently.
      */
-    public void initTagValsTab() {
-        //  _tag         = new JTextField();
-        //  _val         = new JTextField();
+    private void initTagValsTab() {
+        //TODO: This tab does not work currently.
     }
 
     /**
      * Init the Last Modified tab.
      */
-    public void initModifiedTab() {
+    private void initModifiedTab() {
         // TODO: This tab does not work currently.
     }
 
     /**
      * Init the Constraints tab.
      */
-    public void initConstraintsTab() {
+    private void initConstraintsTab() {
         // TODO: This tab does not work currently.
     }
 
@@ -341,7 +322,7 @@ public class FindDialog extends ArgoDialog
     /**
      * Init the modelelement types that we can look for.
      */
-    public void initTypes() {
+    private void initTypes() {
         type.addItem(PredicateMType.create()); // Any type
 
         type.addItem(PredicateMType.create(
@@ -349,59 +330,131 @@ public class FindDialog extends ArgoDialog
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getInterface()));
         type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getAction()));
+        // Not in UML 2.x (or metatypes)
+//        type.addItem(PredicateMType.create(
+//                Model.getMetaTypes().getActivityGraph()));
+        type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getActor()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getAssociation()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getAssociationClass()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getAssociationEndRole()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getAssociationRole()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getArtifact()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getAttribute()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getClassifier()));
         type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getClassifierRole()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getCollaboration()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getComment()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getComponent()));
+        type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getCompositeState()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getConstraint()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getDataType()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getDependency()));
         type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getElementImport()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getEnumeration()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getEnumerationLiteral()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getException()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getExtend()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getExtensionPoint()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getGuard()));
+        type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getGeneralization()));
         type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getInclude()));
+        type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getInstance()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getInteraction()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getInterface()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getLink()));
         type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getMessage()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getModel()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getNode()));
+        type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getPackage()));
         type.addItem(PredicateMType.create(
-                Model.getMetaTypes().getOperation()));
+                Model.getMetaTypes().getParameter()));
         type.addItem(PredicateMType.create(
-                Model.getMetaTypes().getState()));
+                Model.getMetaTypes().getPartition()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getPseudostate()));
         type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getOperation()));
+        type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getSimpleState()));
         type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getSignal()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getState()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getStateMachine()));
+        type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getStateVertex()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getStereotype()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getTagDefinition()));
+        
+        // TODO: Doesn't work (perhaps because composite?), so disable for
+        // now so user isn't misled - tfm - 20070904
+//        type.addItem(PredicateMType.create(
+//                Model.getMetaTypes().getTaggedValue()));
+        
+        // Not in UML 2.x (or Metatypes)
+//        type.addItem(PredicateMType.create(
+//                Model.getMetaTypes().getTemplateArgument()));
+//        type.addItem(PredicateMType.create(
+//                Model.getMetaTypes().getTemplateParameter()));
+        
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getTransition()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getUseCase()));
-
     }
 
     /*
      * @see org.tigris.swidgets.Dialog#nameButtons()
      */
+    @Override
     protected void nameButtons() {
         super.nameButtons();
         nameButton(getOkButton(), "button.go-to-selection");
         nameButton(getCancelButton(), "button.close");
     }
 
-    ////////////////////////////////////////////////////////////////
-    // event handlers
     /*
      * @see java.awt.event.ActionListener#actionPerformed(
      * java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == search) {
             doSearch();
@@ -412,18 +465,13 @@ public class FindDialog extends ArgoDialog
         } else {
             super.actionPerformed(e);
         }
-        //     if (e.getSource() == _spawn) doSpawn();
-        //     if (e.getSource() == _go) doGo();
-        //     if (e.getSource() == _close) doClose();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // actions
 
     /**
      * Do the search.
      */
-    public void doSearch() {
+    private void doSearch() {
         numFinds++;
         String eName = "";
         if (elementName.getSelectedItem() != null) {
@@ -456,6 +504,7 @@ public class FindDialog extends ArgoDialog
                 Translator.localize("dialog.find.tabname") + (nextResultNum++);
         }
         if (name.length() > 15) {
+            // TODO: Localize
             name = name.substring(0, 12) + "...";
         }
 
@@ -476,7 +525,7 @@ public class FindDialog extends ArgoDialog
         newResults.setPredicate(pred);
         newResults.setRoot(root);
         newResults.setGenerator(gen);
-        resultTabs.addElement(newResults);
+        resultTabs.add(newResults);
         results.addTab(name, newResults);
         clearTabs.setEnabled(true);
         getOkButton().setEnabled(true);
@@ -493,14 +542,26 @@ public class FindDialog extends ArgoDialog
     }
 
     /**
-     * Clear the tabs.
+     * Reset the user interface to its initial state.  Use this if a new project
+     * has been loaded and the Find dialog is being displayed with stale results.
      */
+    public void reset() {
+        doClearTabs();
+        doResetFields(true);
+    }
+    
+    /**
+     * Clear the tabs.
+     * @deprecated for 0.25.4 by tfmorris.  The visibility of this will be reduced
+     * in the future.  Use {@link #reset()}.
+     */
+    @Deprecated
     public void doClearTabs() {
         int numTabs = resultTabs.size();
         for (int i = 0; i < numTabs; i++) {
-            results.remove((Component) resultTabs.elementAt(i));
+            results.remove(resultTabs.get(i));
 	}
-        resultTabs.removeAllElements();
+        resultTabs.clear();
         clearTabs.setEnabled(false);
         getOkButton().setEnabled(false);
         doResetFields(false);
@@ -510,10 +571,14 @@ public class FindDialog extends ArgoDialog
 
     /**
      * Reset the fields.
-     *
-     * @param complete if true, reset all 3 fields, otherwise only the latter
+     * 
+     * @param complete if true, reset all 3 fields (element name, diagram name,
+     *                and location), otherwise only the last is reset.
+     * @deprecated for 0.25.4 by tfmorris. The visibility of this will be
+     *             reduced in the future. Use {@link #reset()}.
      */
-    private void doResetFields(boolean complete) {
+    @Deprecated
+    public void doResetFields(boolean complete) {
         if (complete) {
             elementName.removeAllItems();
             diagramName.removeAllItems();
@@ -527,7 +592,11 @@ public class FindDialog extends ArgoDialog
 
     /**
      * Reset all 3 fields.
+     * 
+     * @deprecated for 0.25.4 by tfmorris. The visibility of this will be
+     *             reduced in the future. Use {@link #reset()}.
      */
+    @Deprecated
     public void doResetFields() {
         doResetFields(true);
     }
@@ -535,17 +604,12 @@ public class FindDialog extends ArgoDialog
     /**
      * Execute the GoTo selection command.
      */
-    public void doGoToSelection() {
+    private void doGoToSelection() {
         if (results.getSelectedComponent() instanceof TabResults) {
             ((TabResults) results.getSelectedComponent()).doDoubleClick();
         }
     }
 
-    //   public void doSpawn() { }
-
-    //   public void doGo() { }
-
-    //   public void doClose() { }
 
     ////////////////////////////////////////////////////////////////
     // MouseListener implementation
@@ -601,11 +665,11 @@ public class FindDialog extends ArgoDialog
      *
      * @param tab the given tab
      */
-    public void myDoubleClick(int tab) {
-        JPanel t = (JPanel) resultTabs.elementAt(tab);
+    private void myDoubleClick(int tab) {
+        JPanel t = resultTabs.get(tab);
         if (t instanceof AbstractArgoJPanel) {
             if (((AbstractArgoJPanel) t).spawn() != null) {
-                resultTabs.removeElementAt(tab);
+                resultTabs.remove(tab);
                 location.removeItem("In Tab: "
                                 + ((AbstractArgoJPanel) t).getTitle());
             }
@@ -697,9 +761,7 @@ class PredicateMType extends PredicateType {
     }
 
 
-    /*
-     * @see java.lang.Object#toString()
-     */
+    @Override
     public String toString() {
         String result = super.toString();
         // TODO: This shouldn't know the internal form of type names,
