@@ -26,6 +26,8 @@ package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.Action;
@@ -40,8 +42,6 @@ import org.argouml.model.ModelCommandCreationObserver;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
 /**
  * This class manages the projects loaded in argouml,
@@ -283,14 +283,17 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         Object model = Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(model,
                 Translator.localize("misc.untitled-model"));
-        currentProject.setRoot(model);
+        Collection roots = new ArrayList();
+        roots.add(model);
+        currentProject.setRoots(roots);
         currentProject.setCurrentNamespace(model);
         currentProject.addMember(model);
         DiagramFactory df = DiagramFactory.getInstance();
-        ArgoDiagram d = df.createDiagram(UMLClassDiagram.class, model, null);
+        ArgoDiagram d = df.createDiagram(DiagramFactory.DiagramType.Class,
+                model, null);
         currentProject.addMember(d);
-        currentProject.addMember(
-        	df.createDiagram(UMLUseCaseDiagram.class, model, null));
+        currentProject.addMember(df.createDiagram(
+                DiagramFactory.DiagramType.UseCase, model, null));
         currentProject.addMember(new ProjectMemberTodoList("",
                 currentProject));
         currentProject.setActiveDiagram(d);
