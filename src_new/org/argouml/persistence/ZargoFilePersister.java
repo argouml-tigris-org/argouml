@@ -224,14 +224,24 @@ class ZargoFilePersister extends UmlFilePersister {
             throw new OpenException(e);
         }
 
-        Project p;
-//        if (!checkVersion(fileVersion, releaseVersion)) {
+        
+        
+        // TODO: The commented code below was commented out by Bob Tarling
+        // in order to resolve bugs 4845 and 4857. Hopefully we can
+        // determine the cause and reintroduce.
+        
+        //boolean upgradeRequired = !checkVersion(fileVersion, releaseVersion)
+        boolean upgradeRequired = true;
+        
+        LOG.info("Loading zargo file of version " + fileVersion);
+        
+        final Project p;
+        if (upgradeRequired) {
             File combinedFile = zargoToUml(file, progressMgr);
             p = super.doLoad(file, combinedFile, progressMgr);
-//        } else {
-//            LOG.info("Loading uml file of version " + fileVersion);
-//            p = loadFromZargo(file, progressMgr);
-//        }
+        } else {
+            p = loadFromZargo(file, progressMgr);
+        }
 
         progressMgr.nextPhase();
 
