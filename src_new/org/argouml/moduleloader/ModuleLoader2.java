@@ -39,11 +39,10 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Map.Entry;
+import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -164,11 +163,7 @@ public final class ModuleLoader2 {
     public static Collection<String> allModules() {
 	Collection<String> coll = new HashSet<String>();
 
-	Iterator<ModuleInterface> iter =
-            getInstance().availableModules().iterator();
-	while (iter.hasNext()) {
-	    ModuleInterface mf = iter.next();
-
+	for (ModuleInterface mf : getInstance().availableModules()) {
 	    coll.add(mf.getName());
 	}
 
@@ -295,9 +290,7 @@ public final class ModuleLoader2 {
 	do {
 	    someModuleSucceeded = false;
 
-	    Iterator<ModuleInterface> iter = availableModules().iterator();
-	    while (iter.hasNext()) {
-		ModuleInterface module = iter.next();
+	    for (ModuleInterface module : getInstance().availableModules()) {
 
 		ModuleStatus status = moduleStatus.get(module);
 
@@ -328,9 +321,7 @@ public final class ModuleLoader2 {
 	    //
 	    // TODO: We could eventually pop up some warning window.
 	    //
-	    Iterator<ModuleInterface> iter = availableModules().iterator();
-	    while (iter.hasNext()) {
-		ModuleInterface module = iter.next();
+	    for (ModuleInterface module : getInstance().availableModules()) {
 
 		ModuleStatus status = moduleStatus.get(module);
 
@@ -387,16 +378,13 @@ public final class ModuleLoader2 {
      * @return A pair (Map.Entry).
      */
     private Map.Entry<ModuleInterface, ModuleStatus> findModule(String name) {
-	Iterator<Entry<ModuleInterface, ModuleStatus>> iter =
-            moduleStatus.entrySet().iterator();
-	while (iter.hasNext()) {
-	    Map.Entry<ModuleInterface, ModuleStatus> entry = iter.next();
-	    ModuleInterface module = entry.getKey();
-
-	    if (name.equalsIgnoreCase(module.getName())) {
-		return entry;
-	    }
-	}
+        for (Map.Entry<ModuleInterface, ModuleStatus> entry : moduleStatus
+                .entrySet()) {
+            ModuleInterface module = entry.getKey();
+            if (name.equalsIgnoreCase(module.getName())) {
+                return entry;
+            }
+        }
 	return null;
     }
 
@@ -509,28 +497,30 @@ public final class ModuleLoader2 {
     private void huntModulesFromNamedDirectory(String dirname) {
 	File extensionDir = new File(dirname);
 	if (extensionDir.isDirectory()) {
-	    File[] file = extensionDir.listFiles(new JarFileFilter());
-	    for (int i = 0; i < file.length; i++) {
+	    File[] files = extensionDir.listFiles(new JarFileFilter());
+	    for (File file : files) {
 		JarFile jarfile = null;
 		// Try-catch only the JarFile instantiation so we
 		// don't accidentally mask anything in ArgoJarClassLoader
 		// or processJarFile.
 		try {
-		    jarfile = new JarFile(file[i]);
+		    jarfile = new JarFile(file);
 		    if (jarfile != null) {
+		        // TODO: Should we be delegating to a different
+		        // classloader than the default here? - - tfm
 	                ClassLoader classloader =
 			    new URLClassLoader(new URL[] {
-				file[i].toURL(),
+				file.toURL(),
 			    });
 	                try {
-	                    processJarFile(classloader, file[i]);
+	                    processJarFile(classloader, file);
 	                } catch (ClassNotFoundException e) {
 	                    LOG.error("The class is not found.", e);
 	                    return;
 	                }
 		    }
 		} catch (IOException ioe) {
-		    LOG.debug("Cannot open Jar file " + file[i], ioe);
+		    LOG.debug("Cannot open Jar file " + file, ioe);
 		}
 	    }
 	}
@@ -579,14 +569,12 @@ public final class ModuleLoader2 {
                                 | processEntry(classloader, entry.getName());
             }
         } else {
-            Map entries = manifest.getEntries();
-            Iterator iMap = entries.keySet().iterator();
-
-            while (iMap.hasNext()) {
+            Map<String, Attributes> entries = manifest.getEntries();
+            for (String key : entries.keySet()) {
                 // Look for our specification
                 loadedClass =
                     loadedClass
-                            | processEntry(classloader, (String) iMap.next());
+                            | processEntry(classloader, key);
             }
         }
         
@@ -732,10 +720,7 @@ public final class ModuleLoader2 {
     private void addModule(ModuleInterface mf) {
 	// Since there is no way to compare the objects as equal,
 	// we have to search through the list at this point.
-	Iterator<ModuleInterface> iter = moduleStatus.keySet().iterator();
-	while (iter.hasNext()) {
-	    ModuleInterface foundMf = iter.next();
-
+        for (ModuleInterface foundMf : moduleStatus.keySet()) {
 	    if (foundMf.getName().equals(mf.getName())) {
 		return;
 	    }
