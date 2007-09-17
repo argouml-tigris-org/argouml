@@ -66,9 +66,11 @@ import org.omg.uml.behavioralelements.statemachines.SynchState;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.behavioralelements.usecases.Actor;
 import org.omg.uml.behavioralelements.usecases.Extend;
+import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
 import org.omg.uml.behavioralelements.usecases.Include;
 import org.omg.uml.behavioralelements.usecases.UseCase;
 import org.omg.uml.foundation.core.Abstraction;
+import org.omg.uml.foundation.core.Artifact;
 import org.omg.uml.foundation.core.AssociationClass;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Attribute;
@@ -76,6 +78,7 @@ import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Comment;
 import org.omg.uml.foundation.core.Component;
+import org.omg.uml.foundation.core.Constraint;
 import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
 import org.omg.uml.foundation.core.Enumeration;
@@ -91,6 +94,7 @@ import org.omg.uml.foundation.core.Parameter;
 import org.omg.uml.foundation.core.Permission;
 import org.omg.uml.foundation.core.Stereotype;
 import org.omg.uml.foundation.core.TagDefinition;
+import org.omg.uml.foundation.core.TaggedValue;
 import org.omg.uml.foundation.core.UmlAssociation;
 import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.foundation.core.Usage;
@@ -103,6 +107,7 @@ import org.omg.uml.foundation.datatypes.ParameterDirectionKind;
 import org.omg.uml.foundation.datatypes.PseudostateKind;
 import org.omg.uml.foundation.datatypes.ScopeKind;
 import org.omg.uml.foundation.datatypes.VisibilityKind;
+import org.omg.uml.modelmanagement.ElementImport;
 import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.Subsystem;
 import org.omg.uml.modelmanagement.UmlPackage;
@@ -176,6 +181,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getAggregationKind() {
         return AggregationKind.class;
+    }
+    
+    public Object getArtifact() {
+        return Artifact.class;
     }
 
     public Object getAssociation() {
@@ -253,6 +262,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
     public Object getCompositeState() {
         return CompositeState.class;
     }
+    
+    public Object getConstraint() {
+        return Constraint.class;
+    }
 
     public Object getCreateAction() {
         return CreateAction.class;
@@ -278,6 +291,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return EnumerationLiteral.class;
     }
 
+    public Object getElementImport() {
+        return ElementImport.class;
+    }
+    
     public Object getEvent() {
         return Event.class;
     }
@@ -288,6 +305,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getExtend() {
         return Extend.class;
+    }
+
+    public Object getExtensionPoint() {
+        return ExtensionPoint.class;
     }
 
     public Object getFinalState() {
@@ -481,6 +502,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getTagDefinition() {
         return TagDefinition.class;
+    }
+
+    public Object getTaggedValue() {
+        return TaggedValue.class;
     }
 
     public Object getInteraction() {
