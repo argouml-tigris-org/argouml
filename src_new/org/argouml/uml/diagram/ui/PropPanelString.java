@@ -33,6 +33,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.argouml.i18n.Translator;
 import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.TabModelTarget;
@@ -46,10 +47,9 @@ import org.tigris.gef.presentation.FigText;
 public class PropPanelString
     extends AbstractArgoJPanel
     implements TabModelTarget, PropertyChangeListener, DocumentListener {
-    ////////////////////////////////////////////////////////////////
-    // instance vars
+
     private FigText target;
-    private JLabel nameLabel = new JLabel("Text: ");
+    private JLabel nameLabel = new JLabel(Translator.localize("label.text"));
     private JTextField nameField = new JTextField();
 
     /**
@@ -57,7 +57,7 @@ public class PropPanelString
      *
      */
     public PropPanelString() {
-	super("String");
+	super(Translator.localize("tab.string"));
 	GridBagLayout gb = new GridBagLayout();
 	setLayout(gb);
 	GridBagConstraints c = new GridBagConstraints();
@@ -85,8 +85,6 @@ public class PropPanelString
 
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /*
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
@@ -94,7 +92,7 @@ public class PropPanelString
     public void setTarget(Object t) {
 	if (t instanceof FigText) {
 	    target = (FigText) t;
-	    // to circumvent to much registred listeners
+	    // to circumvent too many registered listeners
 	    target.removePropertyChangeListener(this);
 	    target.addPropertyChangeListener(this);
 	}
@@ -104,12 +102,16 @@ public class PropPanelString
     /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
-    public Object getTarget() { return target; }
+    public Object getTarget() {
+        return target;
+    }
 
     /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
-    public void refresh() { setTarget(target); }
+    public void refresh() {
+        setTarget(target);
+    }
 
     /*
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
@@ -139,7 +141,9 @@ public class PropPanelString
     /*
      * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
      */
-    public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
+    public void removeUpdate(DocumentEvent e) {
+        insertUpdate(e);
+    }
 
     /*
      * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
@@ -163,24 +167,21 @@ public class PropPanelString
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // TODO: Auto-generated method stub
-
+        setTarget(e.getNewTarget());
     }
 
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // TODO: Auto-generated method stub
-
+        setTarget(e.getNewTarget());
     }
 
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        // TODO: Auto-generated method stub
-
+        setTarget(e.getNewTarget());
     }
 
-} /* end class PropPanelString */
+}
