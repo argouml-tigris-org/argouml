@@ -74,12 +74,14 @@ abstract class MemberFilePersister {
 
     /**
      * Save the projectmember as XML to the given writer.
-     *
+     * 
      * @param member The project member to save.
      * @param writer The Writer to which to save the XML.
      * @throws SaveException if the save fails
-     * @deprecated for 0.25.4 by tfmorris.
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #save(ProjectMember, OutputStream)}.
      */
+    @Deprecated
     public void save(
             ProjectMember member,
             Writer writer) throws SaveException {
@@ -112,6 +114,7 @@ abstract class MemberFilePersister {
      * @deprecated for 0.25.4 by tfmorris. Use 
      * {@link #save(ProjectMember, OutputStream, boolean)}.
      */
+    @Deprecated
     public abstract void save(
             ProjectMember member,
             Writer writer,

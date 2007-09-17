@@ -33,7 +33,6 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -160,6 +159,8 @@ class ModelMemberFilePersister extends MemberFilePersister
      *         org.argouml.kernel.ProjectMember, java.io.Writer,
      *         java.lang.Integer)
      */
+    @Deprecated
+    @Override
     public void save(ProjectMember member, Writer w, boolean xmlFragment)
     	throws SaveException {
 
@@ -187,7 +188,7 @@ class ModelMemberFilePersister extends MemberFilePersister
                 xmiWriter.write();
                 addXmlFileToWriter((PrintWriter) w, tempFile);
             } else {
-                // Othewise we are writing into a zip writer or to XMI.
+                // Otherwise we are writing into a zip writer or to XMI.
                 XmiWriter xmiWriter = 
                     Model.getXmiWriter(model, w, 
                             ApplicationVersion.getVersion() + "(" 
@@ -205,7 +206,7 @@ class ModelMemberFilePersister extends MemberFilePersister
     /**
      * Save the project model to XMI.
      * 
-     * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.OutputStream, boolean)
+     * @see org.argouml.persistence.MemberFilePersister#save(ProjectMember, OutputStream)
      */
     public void save(ProjectMember member, OutputStream outStream)
         throws SaveException {
