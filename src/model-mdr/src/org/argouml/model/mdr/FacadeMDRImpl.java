@@ -3919,6 +3919,10 @@ class FacadeMDRImpl implements Facade {
             if (handle instanceof Expression) {
                 return ((Expression) handle).getBody();
             }
+            if (handle instanceof ElementResidence) {
+                return "";
+            }
+            // TODO: What other non-ModelElement types do we need to handle here?
         } catch (InvalidObjectException e) {
             String uuid = getUUID(handle);
             if (uuid != null) {
