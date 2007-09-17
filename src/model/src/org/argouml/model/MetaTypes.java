@@ -65,6 +65,12 @@ public interface MetaTypes {
      * @return Returns the ActionState.
      */
     Object getActionState();
+    
+    // Not in UML 2.x - don't implement
+//    /**
+//     * @return the ActivityGraph class.
+//     */
+//    Object getActivityGraph();
 
     /**
      * @return Returns the Actor.
@@ -75,6 +81,11 @@ public interface MetaTypes {
      * @return Returns the AggregationKind.
      */
     Object getAggregationKind();
+    
+    /**
+     * @return return Artifact type.
+     */
+    Object getArtifact();
 
     /**
      * @return Returns the Association.
@@ -175,6 +186,11 @@ public interface MetaTypes {
     Object getCompositeState();
 
     /**
+     * @return Return the Constraint type.
+     */
+    Object getConstraint();
+    
+    /**
      * @return Returns the CreateAction.
      */
     Object getCreateAction();
@@ -193,6 +209,11 @@ public interface MetaTypes {
      * @return Returns the DestroyAction.
      */
     Object getDestroyAction();
+    
+    /**
+     * @return the ElementImport class.
+     */
+    Object getElementImport();
 
     /**
      * @return Returns the Enumeration.
@@ -218,11 +239,18 @@ public interface MetaTypes {
      * @return Returns the Extend.
      */
     Object getExtend();
-
+    
+    /**
+     * @return Returns the ExtensionPoint type.
+     */
+    Object getExtensionPoint();
+    
     /**
      * @return Returns the FinalState.
      */
     Object getFinalState();
+
+    // Flow is not in UML 2.x - don't implement
 
     /**
      * @return Returns the GeneralizableElement.
@@ -441,6 +469,14 @@ public interface MetaTypes {
      */
     Object getTagDefinition();
 
+
+    /**
+     * Return the TaggedValue class.
+     * 
+     * @return Returns the TaggedValue class
+     */
+    Object getTaggedValue();
+    
     /**
      * @return Returns the TerminateAction.
      */
