@@ -1785,8 +1785,7 @@ public final class ProjectBrowser
                 windows[i].dispose();
             }
         }
-        FindDialog.getInstance().doClearTabs();
-        FindDialog.getInstance().doResetFields();
+        FindDialog.getInstance().reset();
     }
 
     /**
