@@ -91,7 +91,7 @@ public abstract class AbstractArgoJPanel extends JPanel
      *
      */
     public AbstractArgoJPanel() {
-        this("untitled", false);
+        this(Translator.localize("tab.untitled"), false);
     }
 
     /**
@@ -99,8 +99,7 @@ public abstract class AbstractArgoJPanel extends JPanel
      *
      * @param title The name as a localized string.
      */
-    // TODO: Investigate in what cases is the tag a localized string
-    // and in what cases is it a key to be localized?
+    // TODO: Review all callers to make sure that they localize the title
     public AbstractArgoJPanel(String title) {
         this(title, false);
     }
@@ -111,20 +110,8 @@ public abstract class AbstractArgoJPanel extends JPanel
      * @param title The name (a localized string).
      * @param t if true, remove tab from parent JTabbedPane
      */
-    // TODO: Investigate in what cases is the tag a localized string
-    // and in what cases is it a key to be localized? - Harald Braun via Linus 20070521
-    // Answer: There are three cases: 1) unlocalized string, 2) localized
-    // string, and 3) property/tag name.  Of the 100+ subclasses, the
-    // overwhelming majority fall into category #1.  Category #3 includes
-    // most of the Tab* panels.  Category #2 includes the PropPanels for 
-    // Generalization and all the diagrams, as well as TabDocumentation
-    // and TabStereotype.  The breakdown is approximately 80+/10/6.  The
-    // analysis is easy.  Fixing the 90+ property panels will be more work.
-    // - tfm - 20070517
-    // The conclusion is that the title shall be a localized string fixing
-    // all classes from category #1. Harald Braun has already started the
-    // work. I will merge in his changes. Firstly I will clarify this class.
-    // Linus 2007-09-11.
+    // TODO: Review all callers to make sure that they localize the title
+    // In process by Harold Braun 20070912
     public AbstractArgoJPanel(String title, boolean t) {
         setTitle(title);
         tear = t;
@@ -233,4 +220,4 @@ public abstract class AbstractArgoJPanel extends JPanel
 
     }
 
-} /* end class AbstractArgoJPanel */
+}
