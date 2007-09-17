@@ -33,7 +33,7 @@ import org.argouml.uml.cognitive.UMLDecision;
 
 
 /**
- * A critic whether a package/subsystem/model is empty.
+ * A critic to check for empty packages.
  *
  * @author Jason Robbins
  */
@@ -49,7 +49,6 @@ public class CrEmptyPackage extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrEmptyPackage() {
         setupHeadAndDesc();
@@ -57,22 +56,18 @@ public class CrEmptyPackage extends CrUML {
 	addTrigger("ownedElement");
     }
 
-    /*
-     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     *      java.lang.Object, org.argouml.cognitive.Designer)
-     */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-//	LOG.debug("predicate2 on " + dm);
 	if (!(Model.getFacade().isAPackage(dm))) {
 	    return NO_PROBLEM;
 	}
 	Collection elems = Model.getFacade().getOwnedElements(dm);
 	if (elems.size() == 0) {
-            LOG.debug("PROBLEM_FOUND on " + dm);
+            LOG.debug("Found empty package " + Model.getFacade().toString(dm));
             return PROBLEM_FOUND;
         }
 	return NO_PROBLEM;
     }
 
-} /* end class CrEmptyPackage */
+}
 
