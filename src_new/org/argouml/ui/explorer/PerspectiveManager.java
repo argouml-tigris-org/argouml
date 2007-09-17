@@ -129,11 +129,11 @@ public final class PerspectiveManager {
 
     private static PerspectiveManager instance;
 
-    private List perspectiveListeners;
+    private List<PerspectiveManagerListener> perspectiveListeners;
 
-    private List perspectives;
+    private List<ExplorerPerspective> perspectives;
 
-    private List rules;
+    private List<PerspectiveRule> rules;
 
     /**
      * @return the instance (singleton)
@@ -150,9 +150,9 @@ public final class PerspectiveManager {
      */
     private PerspectiveManager() {
 
-        perspectiveListeners = new ArrayList();
-        perspectives = new ArrayList();
-        rules = new ArrayList();
+        perspectiveListeners = new ArrayList<PerspectiveManagerListener>();
+        perspectives = new ArrayList<ExplorerPerspective>();
+        rules = new ArrayList<PerspectiveRule>();
         loadRules();
     }
 
@@ -176,7 +176,7 @@ public final class PerspectiveManager {
      * @param perspective
      *            the perspective to be added
      */
-    public void addPerspective(Object perspective) {
+    public void addPerspective(ExplorerPerspective perspective) {
         perspectives.add(perspective);
         Iterator listenerIt = perspectiveListeners.iterator();
         while (listenerIt.hasNext()) {
@@ -192,12 +192,9 @@ public final class PerspectiveManager {
      * @param newPerspectives
      *            the collection of perspectives to be added
      */
-    public void addAllPerspectives(Collection newPerspectives) {
-
-        Iterator newPerspectivesIt = newPerspectives.iterator();
-        while (newPerspectivesIt.hasNext()) {
-
-            Object newPerspective = newPerspectivesIt.next();
+    public void addAllPerspectives(
+            Collection<ExplorerPerspective> newPerspectives) {
+        for (ExplorerPerspective newPerspective : newPerspectives) {
             addPerspective(newPerspective);
         }
     }
@@ -206,15 +203,9 @@ public final class PerspectiveManager {
      * @param perspective
      *            the perspective to be removed
      */
-    public void removePerspective(Object perspective) {
-
+    public void removePerspective(ExplorerPerspective perspective) {
         perspectives.remove(perspective);
-        Iterator listenerIt = perspectiveListeners.iterator();
-        while (listenerIt.hasNext()) {
-
-            PerspectiveManagerListener listener =
-                (PerspectiveManagerListener) listenerIt.next();
-
+        for (PerspectiveManagerListener listener : perspectiveListeners) {
             listener.removePerspective(perspective);
         }
     }
@@ -224,17 +215,18 @@ public final class PerspectiveManager {
      */
     public void removeAllPerspectives() {
 
-        List pers = new ArrayList();
+        List<ExplorerPerspective> pers = new ArrayList<ExplorerPerspective>();
+
         pers.addAll(getPerspectives());
-        for (int i = 0; i < pers.size(); i++) {
-            removePerspective(pers.get(i));
+        for (ExplorerPerspective perspective : pers) {
+            removePerspective(perspective);
         }
     }
 
     /**
-     * @return the list of all persppectives
+     * @return the list of all perspectives
      */
-    public List getPerspectives() {
+    public List<ExplorerPerspective> getPerspectives() {
         return perspectives;
     }
 
@@ -327,7 +319,7 @@ public final class PerspectiveManager {
      * Loads a pre-defined default set of perspectives.
      */
     public void loadDefaultPerspectives() {
-        Collection c = getDefaultPerspectives();
+        Collection<ExplorerPerspective> c = getDefaultPerspectives();
 
         addAllPerspectives(c);
     }
@@ -335,7 +327,7 @@ public final class PerspectiveManager {
     /**
      * @return a collection of default perspectives (i.e. the predefined ones)
      */
-    public Collection getDefaultPerspectives() {
+    public Collection<ExplorerPerspective> getDefaultPerspectives() {
         ExplorerPerspective classPerspective =
             new ExplorerPerspective(
                 "combobox.item.class-centric");
@@ -459,7 +451,7 @@ public final class PerspectiveManager {
         compositionPerspective.addRule(new GoModelElementToContents());
         compositionPerspective.addRule(new GoModelElementToContainedDiagrams());
 
-        Collection c = new ArrayList();
+        Collection<ExplorerPerspective> c = new ArrayList<ExplorerPerspective>();
         c.add(packagePerspective);
         c.add(classPerspective);
         c.add(diagramPerspective);
@@ -561,7 +553,7 @@ public final class PerspectiveManager {
     /**
      * @return the collection of rules
      */
-    public Collection getRules() {
+    public Collection<PerspectiveRule> getRules() {
         return rules;
     }
 
@@ -578,6 +570,7 @@ public final class PerspectiveManager {
      *         saved in the user properties.
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 
         String p = "";

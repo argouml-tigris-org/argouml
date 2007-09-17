@@ -25,11 +25,13 @@
 package org.argouml.ui;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
+
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
+
 
 import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
@@ -64,10 +66,10 @@ public class DisplayTextTree extends JTree {
      *
      * <pre>
      *  keys are the current TreeModel of this Tree
-     *  values are Vector of currently expanded paths.
+     *  values are Lists of currently expanded paths.
      * </pre>
      */
-    private Hashtable expandedPathsInModel;
+    private Hashtable<TreeModel, List<TreePath>> expandedPathsInModel;
 
     private boolean reexpanding;
 
@@ -99,7 +101,7 @@ public class DisplayTextTree extends JTree {
         /* The default (16) puts the icons too close together: */
         setRowHeight(18);
 
-        expandedPathsInModel = new Hashtable();
+        expandedPathsInModel = new Hashtable<TreeModel, List<TreePath>>();
         reexpanding = false;
 
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -282,8 +284,12 @@ public class DisplayTextTree extends JTree {
             i = dataValues.iterator();
         }
         String theValue = "";
-        if (i.hasNext()) theValue = i.next().toString();
-        if (i.hasNext()) theValue += " , ...";
+        if (i.hasNext()) {
+            theValue = i.next().toString();
+        }
+        if (i.hasNext()) {
+            theValue += " , ...";
+        }
         name = (tagName + " = " + theValue);
         return name;
     }
@@ -359,15 +365,12 @@ public class DisplayTextTree extends JTree {
         super.fireTreeExpanded(path);
 
         LOG.debug("fireTreeExpanded");
-        if (reexpanding) {
+        if (reexpanding || path == null) {
             return;
         }
-        if (path == null || expandedPathsInModel == null) {
-            return;
-        }
-        Vector expanded = getExpandedPaths();
-        expanded.removeElement(path);
-        expanded.addElement(path);
+        List<TreePath> expanded = getExpandedPaths();
+        expanded.remove(path);
+        expanded.add(path);
     }
 
     /*
@@ -381,8 +384,8 @@ public class DisplayTextTree extends JTree {
         if (path == null || expandedPathsInModel == null) {
             return;
         }
-        Vector expanded = getExpandedPaths();
-        expanded.removeElement(path);
+        List<TreePath> expanded = getExpandedPaths();
+        expanded.remove(path);
     }
 
     /*
@@ -405,13 +408,13 @@ public class DisplayTextTree extends JTree {
      *
      * @return a Vector containing all expanded paths
      */
-    protected Vector getExpandedPaths() {
+    protected List<TreePath> getExpandedPaths() {
 
         LOG.debug("getExpandedPaths");
         TreeModel tm = getModel();
-        Vector res = (Vector) expandedPathsInModel.get(tm);
+        List<TreePath> res = expandedPathsInModel.get(tm);
         if (res == null) {
-            res = new Vector();
+            res = new ArrayList<TreePath>();
             expandedPathsInModel.put(tm, res);
         }
         return res;
@@ -432,9 +435,7 @@ public class DisplayTextTree extends JTree {
 
         reexpanding = true;
 
-        Enumeration pathsEnum = getExpandedPaths().elements();
-        while (pathsEnum.hasMoreElements()) {
-            TreePath path = (TreePath) pathsEnum.nextElement();
+        for (TreePath path : getExpandedPaths()) {
             expandPath(path);
         }
         reexpanding = false;

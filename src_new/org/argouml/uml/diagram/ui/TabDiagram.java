@@ -34,7 +34,6 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -252,13 +251,14 @@ public class TabDiagram
     public void selectionChanged(GraphSelectionEvent gse) {
         if (!updatingSelection) {
             updatingSelection = true;
-            Vector sels = gse.getSelections(); // the new selection
-            ActionCut.getInstance().setEnabled(sels != null && !sels.isEmpty());
+            List<Fig> selections = gse.getSelections();
+            ActionCut.getInstance().setEnabled(
+                    selections != null && !selections.isEmpty());
 
             // TODO: If ActionCopy is no longer a singleton, how shall
             //       this work?
             ActionCopy.getInstance()
-                    .setEnabled(sels != null && !sels.isEmpty());
+                    .setEnabled(selections != null && !selections.isEmpty());
             /*
              * ActionPaste.getInstance().setEnabled( Globals.clipBoard
              * != null && !Globals.clipBoard.isEmpty());
@@ -268,21 +268,16 @@ public class TabDiagram
                 TargetManager.getInstance().getTargets();
 
             List removedTargets = new ArrayList(currentSelection);
-            Iterator i = sels.iterator();
-            while (i.hasNext()) {
-                Object o = i.next();
-                o = TargetManager.getInstance().getOwner(o);
-                if (currentSelection.contains(o)) {
-                    removedTargets.remove(o); // remains selected
+            for (Object selection : selections) {
+                Object owner = TargetManager.getInstance().getOwner(selection);
+                if (currentSelection.contains(owner)) {
+                    removedTargets.remove(owner); // remains selected
                 } else {
                     // add to selection
-                    TargetManager.getInstance().addTarget(o);
+                    TargetManager.getInstance().addTarget(owner);
                 }
             }
-            i = removedTargets.iterator();
-            while (i.hasNext()) {
-                Object o = i.next();
-                // remove from selection
+            for (Object o : removedTargets) {
                 TargetManager.getInstance().removeTarget(o);
             }
             updatingSelection = false;
@@ -367,14 +362,14 @@ public class TabDiagram
 
     private void select(Object[] targets) {
         LayerManager manager = graph.getEditor().getLayerManager();
-        Vector figList = new Vector();
+        List<Fig> figList = new ArrayList<Fig>();
         for (int i = 0; i < targets.length; i++) {
             if (targets[i] != null) {
-                Object theTarget = null;
+                Fig theTarget = null;
                 if (targets[i] instanceof Fig
 		        && manager.getActiveLayer().getContents().contains(
 		                targets[i])) {
-		    theTarget = targets[i];
+		    theTarget = (Fig) targets[i];
                 } else {
 		    theTarget = manager.presentationFor(targets[i]);
                 }
@@ -387,7 +382,7 @@ public class TabDiagram
 
 	if (!figList.equals(graph.selectedFigs())) {
             graph.deselectAll();
-            graph.select(figList);
+            graph.select(new Vector<Fig>(figList));
 	}
     }
 

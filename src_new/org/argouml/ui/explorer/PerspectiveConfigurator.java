@@ -389,12 +389,10 @@ public class PerspectiveConfigurator extends ArgoDialog {
      * the user may pick from.
      */
     private void loadLibrary() {
-        List rulesLib = new ArrayList();
-        // get them
+        List<PerspectiveRule> rulesLib = new ArrayList<PerspectiveRule>();
         rulesLib.addAll(PerspectiveManager.getInstance().getRules());
-        // sort them
-        Collections.sort(rulesLib, new Comparator() {
-            public int compare(Object o1, Object o2) {
+        Collections.sort(rulesLib, new Comparator<PerspectiveRule>() {
+            public int compare(PerspectiveRule o1, PerspectiveRule o2) {
                 return o1.toString().compareTo(o2.toString());
             }
         });
@@ -427,21 +425,19 @@ public class PerspectiveConfigurator extends ArgoDialog {
      * Load the perspectives from the perspective manager for presentation.
      */
     private void loadPerspectives() {
-        List perspectives = new ArrayList();
-        perspectives.addAll(PerspectiveManager.getInstance().getPerspectives());
+        List<ExplorerPerspective> perspectives = 
+            PerspectiveManager.getInstance().getPerspectives();
 
         // must add an editable list of new ExplorerPerspective's
-        // to the list model so that the orginal ones are not changed
+        // to the list model so that the original ones are not changed
         // in the case of a cancel action by the user.
-        for (int i = 0; i < perspectives.size(); i++) {
-            ExplorerPerspective perspective =
-                (ExplorerPerspective) perspectives.get(i);
-            Object[] ruleArray = perspective.getRulesArray();
+        for (ExplorerPerspective perspective : perspectives) {
+            List<PerspectiveRule> rules = perspective.getList();
 
             ExplorerPerspective editablePerspective =
                 new ExplorerPerspective(perspective.toString());
-            for (int r = 0; r < ruleArray.length; r++) {
-                editablePerspective.addRule((PerspectiveRule) ruleArray[r]);
+            for (PerspectiveRule rule : rules) {
+                editablePerspective.addRule(rule);
             }
 
             perspectiveListModel.addElement(editablePerspective);
@@ -508,9 +504,10 @@ public class PerspectiveConfigurator extends ArgoDialog {
 
             PerspectiveManager.getInstance().removeAllPerspectives();
 
-            for (int i = 0; i < perspectiveListModel.getSize(); i++) {
-                Object elem = perspectiveListModel.getElementAt(i);
-                PerspectiveManager.getInstance().addPerspective(elem);
+            for (int i = 0; i < perspectiveListModel.size(); i++) {
+                ExplorerPerspective perspective = 
+                    (ExplorerPerspective) perspectiveListModel.get(i);
+                PerspectiveManager.getInstance().addPerspective(perspective);
             }
 
             PerspectiveManager.getInstance().saveUserPerspectives();
@@ -520,7 +517,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
     /**
      * Handles pressing the Reset-To-Default button. <p>
      *
-     * Resets all prerspectives to the build-in defaults.
+     * Resets all perspectives to the build-in defaults.
      */
     class ResetListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {

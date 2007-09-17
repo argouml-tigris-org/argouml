@@ -45,7 +45,7 @@ import org.argouml.i18n.Translator;
  */
 public class ExplorerPerspective {
 
-    private List rules;
+    private List<PerspectiveRule> rules;
     private String name;
 
     /**
@@ -55,7 +55,7 @@ public class ExplorerPerspective {
      */
     public ExplorerPerspective(String newName) {
         name = Translator.localize(newName);
-        rules = new ArrayList();
+        rules = new ArrayList<PerspectiveRule>();
     }
 
     /**
@@ -82,13 +82,12 @@ public class ExplorerPerspective {
     /**
      * @return the List with all the rules
      */
-    public List getList() {
+    public List<PerspectiveRule> getList() {
         return rules;
     }
 
-    /*
-     * @see java.lang.Object#toString()
-     */
+
+    @Override
     public String toString() {
         return name;
     }
@@ -103,6 +102,7 @@ public class ExplorerPerspective {
         ep.rules.addAll(rules);
         return ep;
     }
+    
     /**
      * @param theNewName the new name for the ExplorerPerspective
      */
