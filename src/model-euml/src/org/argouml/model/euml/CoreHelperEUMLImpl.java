@@ -1251,7 +1251,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "handle must be instance of Comment"); //$NON-NLS-1$
         }
-        if (!(elems == null)) {
+        if (elems == null) {
             throw new NullPointerException("elems must be non-null"); //$NON-NLS-1$
         }
         for (Object o : elems) {
