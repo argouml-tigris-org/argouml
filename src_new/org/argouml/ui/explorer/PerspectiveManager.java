@@ -27,7 +27,6 @@ package org.argouml.ui.explorer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -178,12 +177,7 @@ public final class PerspectiveManager {
      */
     public void addPerspective(ExplorerPerspective perspective) {
         perspectives.add(perspective);
-        Iterator listenerIt = perspectiveListeners.iterator();
-        while (listenerIt.hasNext()) {
-
-            PerspectiveManagerListener listener =
-                (PerspectiveManagerListener) listenerIt.next();
-
+        for (PerspectiveManagerListener listener : perspectiveListeners) {
             listener.addPerspective(perspective);
         }
     }
@@ -573,35 +567,19 @@ public final class PerspectiveManager {
     @Override
     public String toString() {
 
-        String p = "";
+        StringBuffer p = new StringBuffer();
 
-        Iterator perspectivesIt = getPerspectives().iterator();
-        while (perspectivesIt.hasNext()) {
-
-            ExplorerPerspective perspective =
-                (ExplorerPerspective) perspectivesIt.next();
-
+        for (ExplorerPerspective perspective : getPerspectives()) {
             String name = perspective.toString();
-
-            p += name + ",";
-
-            Object[] rulesArray = perspective.getRulesArray();
-
-            for (int x = 0; x < rulesArray.length; x++) {
-
-                PerspectiveRule rule = (PerspectiveRule) rulesArray[x];
-                p += rule.getClass().getName();
-
-                if (x < rulesArray.length - 1) {
-                    p += ",";
-                }
+            p.append(name).append(",");
+            for (PerspectiveRule rule : perspective.getList()) {
+                p.append(rule.getClass().getName()).append(",");
             }
-
-            if (perspectivesIt.hasNext()) {
-                p += ";";
-            }
+            p.deleteCharAt(p.length() - 1);
+            p.append(";");
         }
-
-        return p;
+        
+        p.deleteCharAt(p.length() - 1);
+        return p.toString();
     }
 }
