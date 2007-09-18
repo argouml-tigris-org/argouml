@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -400,12 +399,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
         ExplorerPerspective selPers =
             (ExplorerPerspective) perspectiveList.getSelectedValue();
         if (selPers != null) {
-            Iterator it1 = selPers.getList().iterator();
-            while (it1.hasNext()) {
-                Object persRule = it1.next();
-                Iterator it2 = rulesLib.iterator();
-                while (it2.hasNext()) {
-                    Object libRule = it2.next();
+            for (PerspectiveRule persRule : selPers.getList()) {
+                for (PerspectiveRule libRule : rulesLib) {
                     if (libRule.toString().equals(persRule.toString())) {
                         rulesLib.remove(libRule);
                         break;
@@ -415,8 +410,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
         }
         // add them
         ruleLibraryListModel.clear();
-        for (int i = 0; i < rulesLib.size(); i++) {
-            ruleLibraryListModel.addElement(rulesLib.get(i));
+        for (PerspectiveRule rule : rulesLib) {
+            ruleLibraryListModel.addElement(rule);
         }
         updateLibLabel();
     }
@@ -487,9 +482,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
                 return o1.toString().compareTo(o2.toString());
             }
         });
-        Iterator it = all.iterator();
-        while (it.hasNext()) {
-            model.addElement(it.next());
+        for (Object obj : all) {
+            model.addElement(obj);
         }
     }
 
@@ -522,13 +516,12 @@ public class PerspectiveConfigurator extends ArgoDialog {
     class ResetListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
 
-            Collection c =
+            Collection<ExplorerPerspective> c =
                 PerspectiveManager.getInstance().getDefaultPerspectives();
             if (c.size() > 0) {
                 perspectiveListModel.removeAllElements();
-                Iterator it = c.iterator();
-                while (it.hasNext()) {
-                    perspectiveListModel.addElement(it.next());
+                for (ExplorerPerspective p : c) {
+                    perspectiveListModel.addElement(p);
                 }
                 updatePersLabel();
             }
@@ -799,9 +792,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
             ExplorerPerspective pers = (ExplorerPerspective) selPers;
             perspectiveRulesListModel.clear();
 
-            for (int i = 0; i < pers.getRulesArray().length; i++) {
-                perspectiveRulesListModel.insertElementAt(
-                                pers.getRulesArray()[i], 0);
+            for (PerspectiveRule rule : pers.getList()) {
+                perspectiveRulesListModel.insertElementAt(rule, 0);
             }
             sortJListModel(perspectiveRulesList);
             addRuleButton.setEnabled(selPers != null && selRule != null);
