@@ -101,7 +101,11 @@ public class MemberList implements List {
             setTodoList(null);
             return true;
         } else {
-            return diagramMembers.remove(member);
+            final boolean removed = diagramMembers.remove(member);
+            if (!removed) {
+                LOG.warn("Failed to remove diagram member " + member);
+            }
+            return removed;
         }
     }
 
@@ -152,6 +156,7 @@ public class MemberList implements List {
                 return true;
             }
         }
+        LOG.warn("Failed to remove diagram " + d);
         return false;
     }
 
