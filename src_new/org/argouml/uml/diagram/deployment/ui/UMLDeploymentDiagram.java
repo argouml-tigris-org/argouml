@@ -117,29 +117,29 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * in <em>LayerManager</em>(GEF) to control the adding, changing and
      * deleting layers on the diagram...<p>
      *
-     * @param handle Namespace from the model
+     * @param handle package from the model
      * @author psager@tigris.org Jan. 24, 2002
      */
     public void setNamespace(Object handle) {
-        if (!Model.getFacade().isANamespace(handle)) {
+        if (!Model.getFacade().isAPackage(handle)) {
             LOG.error(
-                "Illegal argument. Object " + handle + " is not a namespace");
+                "Illegal argument. Object " + handle + " is not a package");
             throw new IllegalArgumentException(
-                "Illegal argument. Object " + handle + " is not a namespace");
+                "Illegal argument. Object " + handle + " is not a package");
         }
         Object m = handle;
+        boolean init = (null == getNamespace());
         super.setNamespace(m);
         DeploymentDiagramGraphModel gm = createGraphModel();
         gm.setHomeModel(m);
-        LayerPerspective lay =
-            new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
-        DeploymentDiagramRenderer rend = new DeploymentDiagramRenderer();
-        lay.setGraphNodeRenderer(rend);
-        lay.setGraphEdgeRenderer(rend);
-        setLayer(lay);
-
-        // singleton
-
+        if (init) {
+            LayerPerspective lay =
+                new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
+            DeploymentDiagramRenderer rend = new DeploymentDiagramRenderer();
+            lay.setGraphNodeRenderer(rend);
+            lay.setGraphEdgeRenderer(rend);
+            setLayer(lay);
+        }
     }
     
     // TODO: Needs to be tidied up after stable release. Graph model
@@ -456,18 +456,16 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
-        return false;
-        /* TODO: We may return the following when the
-         * relocate() has been implemented.
-         */
-//      base == ProjectManager.getManager().getCurrentProject().getModel();
+        return Model.getFacade().isAPackage(base);
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#relocate(java.lang.Object)
      */
     public boolean relocate(Object base) {
-        return false;
+        setNamespace(base);
+        damage();
+        return true;
     }
     
     /**
@@ -503,11 +501,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             FigNode newEncloser) {
         if (oldEncloser != null && newEncloser == null
                 && Model.getFacade().isAComponent(oldEncloser.getOwner())) {
-            Collection er1 = Model.getFacade().getElementResidences(
+            Collection<Object> er1 = Model.getFacade().getElementResidences(
                     enclosed.getOwner());
             Collection er2 = Model.getFacade().getResidentElements(
                     oldEncloser.getOwner());
-            Collection common = new ArrayList(er1);
+            Collection<Object> common = new ArrayList<Object>(er1);
             common.retainAll(er2);
             for (Object elementResidence : common) {
                 Model.getUmlFactory().delete(elementResidence);
