@@ -970,13 +970,13 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     @SuppressWarnings("deprecation")
-    public Object getRoot() {
+    public final Object getRoot() {
         return root;
     }
 
 
     @SuppressWarnings("deprecation")
-    public void setRoot(Object theRoot) {
+    public void setRoot(final Object theRoot) {
 
         if (theRoot == null) {
             throw new IllegalArgumentException(
@@ -997,15 +997,19 @@ public class ProjectImpl implements java.io.Serializable, Project {
         // what depends on it - tfm - 20070725
         Model.getModelManagementFactory().setRootModel(theRoot);
         addModel(theRoot);
+        Collection newRoots = new ArrayList();
+        roots.add(theRoot);
+        roots = newRoots;
     }
 
     
-    public Collection getRoots() {
+    public final Collection getRoots() {
         return roots;
     }
 
 
-    public void setRoots(Collection elements) {
+    public void setRoots(final Collection elements) {
+        boolean modelFound = false;
         for (Object element : elements) {
             if (!Model.getFacade().isAPackage(element)) {
                 LOG.warn("Top level element other than package found - " 
@@ -1013,6 +1017,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
             if (Model.getFacade().isAModel(element)) {
                 addModel(element);
+                if (!modelFound) {
+                    setRoot(element);
+                    modelFound = true;
+                }
             }
         }
         roots = elements;
