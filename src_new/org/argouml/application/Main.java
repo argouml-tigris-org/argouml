@@ -408,7 +408,7 @@ public class Main {
         //ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
-
+    
     /**
      * Initialise the UMl model repository.
      */
@@ -856,7 +856,9 @@ class LoadModules implements Runnable {
                 ModuleLoader2.addClass(OPTIONAL_INTERNAL_MODULES[i]);
             } catch (ClassNotFoundException e) {
                 /* We don't care if optional modules aren't found. */
-                LOG.error(e.getMessage());
+                LOG.debug("Module "
+                        + OPTIONAL_INTERNAL_MODULES[i]
+                        + " not found");
             }            
         }
         ModuleLoader2.doLoad(false);
