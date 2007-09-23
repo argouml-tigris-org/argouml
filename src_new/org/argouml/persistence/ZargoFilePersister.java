@@ -214,8 +214,7 @@ class ZargoFilePersister extends UmlFilePersister {
         String releaseVersion;
         try {
             String argoEntry = getEntryNames(file, ".argo").iterator().next();
-            URL argoUrl = makeZipEntryUrl(file.toURL(),
-                    argoEntry);
+            URL argoUrl = makeZipEntryUrl(toURL(file), argoEntry);
             fileVersion = getPersistenceVersion(argoUrl.openStream());
             releaseVersion = getReleaseVersion(argoUrl.openStream());
         } catch (MalformedURLException e) {
@@ -260,7 +259,7 @@ class ZargoFilePersister extends UmlFilePersister {
             // Load .argo project descriptor
             ArgoParser parser = new ArgoParser();
             String argoEntry = getEntryNames(file, ".argo").iterator().next();
-            parser.readProject(p, new InputSource(makeZipEntryUrl(file.toURL(),
+            parser.readProject(p, new InputSource(makeZipEntryUrl(toURL(file),
                     argoEntry).toExternalForm()));
 
             List memberList = parser.getMemberList();
@@ -270,7 +269,7 @@ class ZargoFilePersister extends UmlFilePersister {
             // Load .xmi file before any PGML files
             String xmiEntry = getEntryNames(file, ".xmi").iterator().next();
             MemberFilePersister persister = getMemberFilePersister("xmi");
-            persister.load(p, makeZipEntryUrl(file.toURL(), xmiEntry));
+            persister.load(p, makeZipEntryUrl(toURL(file), xmiEntry));
             
             // Load the rest
             List<String> entries = getEntryNames(file, null);
@@ -280,7 +279,7 @@ class ZargoFilePersister extends UmlFilePersister {
                     persister = getMemberFilePersister(ext);
                     LOG.info("Loading member with "
                             + persister.getClass().getName());
-                    persister.load(p, openZipEntry(file.toURL(), name));
+                    persister.load(p, openZipEntry(toURL(file), name));
                 }
             }
 
@@ -297,6 +296,10 @@ class ZargoFilePersister extends UmlFilePersister {
         } catch (SAXException e) {
             throw new OpenException(e);
         }
+    }
+    
+    private URL toURL(File file) throws MalformedURLException {
+        return file.toURI().toURL();        
     }
 
 
@@ -324,7 +327,7 @@ class ZargoFilePersister extends UmlFilePersister {
 
             // first read the .argo file from Zip
             ZipInputStream zis =
-                openZipStreamAt(file.toURL(), FileConstants.PROJECT_FILE_EXT);
+                openZipStreamAt(toURL(file), FileConstants.PROJECT_FILE_EXT);
             
             if (zis == null) {
                 throw new OpenException(
@@ -375,7 +378,7 @@ class ZargoFilePersister extends UmlFilePersister {
             reader.close();
 
             // then the xmi
-            zis = openZipStreamAt(file.toURL(), ".xmi");
+            zis = openZipStreamAt(toURL(file), ".xmi");
             reader = new BufferedReader(new InputStreamReader(zis, 
                     Argo.getEncoding()));
             // Skip 1 lines
@@ -391,7 +394,7 @@ class ZargoFilePersister extends UmlFilePersister {
             // Alway load the todo items last so that any model
             // elements or figs that the todo items refer to
             // will exist before creating critics.
-            zis = openZipStreamAt(file.toURL(), ".todo");
+            zis = openZipStreamAt(toURL(file), ".todo");
             
             if (zis != null) {
                 InputStreamReader isr = new InputStreamReader(zis, encoding);
@@ -431,7 +434,7 @@ class ZargoFilePersister extends UmlFilePersister {
 	    PrintWriter writer) throws IOException {
 	
         // Loop round loading the diagrams
-	ZipInputStream zis = new ZipInputStream(file.toURL().openStream());
+	ZipInputStream zis = new ZipInputStream(toURL(file).openStream());
         SubInputStream sub = new SubInputStream(zis);
 
         ZipEntry currentEntry = null;
@@ -563,7 +566,7 @@ class ZargoFilePersister extends UmlFilePersister {
      */
     private List<String> getEntryNames(File file, String extension)
             throws IOException, MalformedURLException {
-        ZipInputStream zis = new ZipInputStream(file.toURL().openStream());
+        ZipInputStream zis = new ZipInputStream(toURL(file).openStream());
         List<String> result = new ArrayList<String>();
         ZipEntry entry = zis.getNextEntry();
         while (entry != null) {
