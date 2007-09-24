@@ -26,6 +26,7 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -61,6 +62,7 @@ public class ChildGenUML implements ChildGenerator {
     /**
      * Reply a java.util.Enumeration of the children of the given Object
      * 
+     * @return an enumeration of the children of the given Object
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      * @deprecated for 0.25.4 by tfmorris. Only for use with legacy GEF
      *             interfaces. Use {@link #gen2(Object)} for new applications.
@@ -101,6 +103,8 @@ public class ChildGenUML implements ChildGenerator {
 	        return figs.iterator();
 	    }
 	}
+	
+	// argument can be an instanceof a Fig which we ignore
 
 	if (Model.getFacade().isAPackage(o)) {
 	    Collection ownedElements = 
@@ -178,7 +182,11 @@ public class ChildGenUML implements ChildGenerator {
         
         // TODO: We can probably use this instead of all of the above
         // legacy UML 1.3 code - tfm - 20070915
-        Collection result = Model.getFacade().getModelElementContents(o);
-        return result.iterator();
+        if (Model.getFacade().isAUMLElement(o)) {
+            Collection result = Model.getFacade().getModelElementContents(o);
+            return result.iterator();
+        }
+        
+        return Collections.EMPTY_SET.iterator();
     }
 }
