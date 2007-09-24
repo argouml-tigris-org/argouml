@@ -47,6 +47,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
+import org.argouml.uml.diagram.ui.FigClassAssociationClass;
 import org.argouml.uml.util.namespace.Namespace;
 import org.argouml.uml.util.namespace.StringNamespace;
 import org.argouml.uml.util.namespace.StringNamespaceElement;
@@ -106,7 +107,8 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
     private JPanel blankPanel = new JPanel();
 
-    private Hashtable panels = new Hashtable();
+    private Hashtable<Class, TabFigTarget> panels = 
+        new Hashtable<Class, TabFigTarget>();
 
     private JPanel lastPanel = null;
 
@@ -171,8 +173,13 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
             if (target instanceof FigAssociationClass) {
                 // In this case, the bounds (of the box) are determined 
                 // by the FigClassAssociationClass
-                ((FigAssociationClass) target).getAssociationClass()
-                    .removePropertyChangeListener(this);
+                FigClassAssociationClass ac = 
+                    ((FigAssociationClass) target).getAssociationClass();
+                // A newly created AssociationClass may not have all its parts
+                // created by the time we are called
+                if (ac != null) {
+                    ac.removePropertyChangeListener(this);
+                }
             }
         }
         
@@ -180,8 +187,8 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
         // the responsibility of determining if the given target is a
         // correct one for this tab has been moved from the
-        // DetailsPane to the member tabs of th detailpane. Reason for
-        // this is that the detailspane is configurable and cannot
+        // DetailsPane to the member tabs of the details pane. Reason for
+        // this is that the details pane is configurable and cannot
         // know what's the correct target for some tab.
         if (!(t instanceof Fig)) {
             if (Model.getFacade().isAModelElement(t)) {
@@ -201,6 +208,9 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         target = (Fig) t;
         if (target != null) {
             target.addPropertyChangeListener(this);
+            // TODO: This shouldn't know about the specific type of Fig that 
+            // is being displayed.  That couples it too strongly to things it
+            // shouldn't need to know about - tfm - 20070924
             if (target instanceof FigEdge) {
                 // In this case, the bounds are determined by the FigEdge
                 ((FigEdge) target).getFig().addPropertyChangeListener(this);
@@ -208,8 +218,13 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
             if (target instanceof FigAssociationClass) {
                 // In this case, the bounds (of the box) are determined 
                 // by the FigClassAssociationClass
-                ((FigAssociationClass) target).getAssociationClass()
-                    .addPropertyChangeListener(this);
+                FigClassAssociationClass ac = 
+                    ((FigAssociationClass) target).getAssociationClass();
+                // A newly created AssociationClass may not have all its parts
+                // created by the time we are called
+                if (ac != null) {
+                    ac.addPropertyChangeListener(this);
+                }
             }
         }
         if (lastPanel != null) {
@@ -268,7 +283,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
      */
     public StylePanel findPanelFor(Class targetClass) {
         Class panelClass = null;
-        TabFigTarget p = (TabFigTarget) panels.get(targetClass);
+        TabFigTarget p = panels.get(targetClass);
         if (p == null) {
             Class newClass = targetClass;
             while (newClass != null && panelClass == null) {
