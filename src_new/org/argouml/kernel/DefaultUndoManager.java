@@ -28,10 +28,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
+
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
@@ -49,7 +52,7 @@ class DefaultUndoManager implements UndoManager {
 
     private int undoMax = 100;
     
-    private Collection<PropertyChangeListener> listeners =
+    private ArrayList<PropertyChangeListener> listeners =
         new ArrayList<PropertyChangeListener>();
     
     /**
@@ -153,13 +156,25 @@ class DefaultUndoManager implements UndoManager {
         listeners.remove(listener);
     }
     
-    private void fire(String property, Object value) {
-        Iterator i = listeners.iterator();
-        while (i.hasNext()) {
-            PropertyChangeListener listener = (PropertyChangeListener) i.next();
-            listener.propertyChange(
-                    new PropertyChangeEvent(this, property, "", value));
-        }
+    private void fire(final String property, final Object value) {
+        
+        final ArrayList<PropertyChangeListener> list =
+            new ArrayList<PropertyChangeListener>(listeners);
+        
+        SwingUtilities.invokeLater(
+            new Runnable() {
+                public void run() {
+                    Iterator<PropertyChangeListener> i = list.iterator();
+                    while (i.hasNext()) {
+                        PropertyChangeListener listener = i.next();
+                        listener.propertyChange(
+                                new PropertyChangeEvent(
+                                        this, property, "", value));
+                    }
+                }
+            }
+        );
+        
     }
     
     /**
