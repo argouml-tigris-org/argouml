@@ -43,12 +43,12 @@ import org.argouml.i18n.Translator;
  * Implements a list of ToDoItem's.<p>
  *
  * It spawns a "sweeper" thread that periodically goes through the list
- * and elimiates ToDoItem's that are no longer valid.<p>
+ * and eliminates ToDoItem's that are no longer valid.<p>
  *
  * One difficulty designers face is keeping track of all
- * the myrid details of their task. It is all to
+ * the myriad details of their task. It is all too
  * easy to skip a step in the design process,
- * leave part of the design unspecified, of make
+ * leave part of the design unspecified, or make
  * a mistake that requires revision. ArgoUML provides
  * the designer with a "to do" list user interface
  * that presents action items in an organized form.
@@ -74,6 +74,11 @@ public class ToDoList extends Observable implements Runnable,
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ToDoList.class);
+    
+    /**
+     * Number of seconds thread should sleep between passes
+     */
+    private static final int SLEEP_SECONDS = 3;
 
     // TODO: Offenders need to be more strongly typed. - tfm 20070630
     private static Object recentOffender;
@@ -151,7 +156,7 @@ public class ToDoList extends Observable implements Runnable,
      */
     public synchronized void spawnValidityChecker(Designer d) {
         designer = d;
-        validityChecker = new Thread(this, "ValidityCheckingThread");
+        validityChecker = new Thread(this, "Argo-ToDoValidityCheckingThread");
         validityChecker.setDaemon(true);
         validityChecker.setPriority(Thread.MIN_PRIORITY);
         validityChecker.start();
@@ -178,7 +183,7 @@ public class ToDoList extends Observable implements Runnable,
             forceValidityCheck(removes);
             removes.clear();
             try {
-		Thread.sleep(3000);
+		Thread.sleep(SLEEP_SECONDS * 1000);
 	    } catch (InterruptedException ignore) {
                 LOG.error("InterruptedException!!!", ignore);
             }
@@ -766,9 +771,6 @@ public class ToDoList extends Observable implements Runnable,
             }
         }
     }
-
-    ////////////////////////////////////////////////////////////////
-    // internal methods
 
 
     @Override
