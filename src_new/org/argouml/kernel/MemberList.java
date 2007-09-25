@@ -59,8 +59,10 @@ public class MemberList implements List {
     private static final Logger LOG = Logger.getLogger(MemberList.class);
 
     private AbstractProjectMember model;
+
     private List<ProjectMemberDiagram> diagramMembers = 
         new ArrayList<ProjectMemberDiagram>(10);
+
     private AbstractProjectMember todoList;
 
     /**
@@ -70,7 +72,7 @@ public class MemberList implements List {
         LOG.info("Creating a member list");
     }
 
-    synchronized public boolean add(Object member) {
+    public synchronized boolean add(Object member) {
 
         if (member instanceof ProjectMemberModel) {
             // Always put the model at the top
@@ -87,7 +89,7 @@ public class MemberList implements List {
         return false;
     }
 
-    synchronized public boolean remove(Object member) {
+    public synchronized boolean remove(Object member) {
         LOG.info("Removing a member");
         if (member instanceof Diagram) {
             return removeDiagram((Diagram) member);
@@ -109,7 +111,19 @@ public class MemberList implements List {
         }
     }
 
-    synchronized public Iterator iterator() {
+    public synchronized Iterator iterator() {
+        return buildTempList().iterator();
+    }
+
+    public synchronized ListIterator listIterator() {
+        return buildTempList().listIterator();
+    }
+
+    public synchronized ListIterator listIterator(int arg0) {
+        return buildTempList().listIterator(arg0);
+    }
+
+    private List buildTempList() {
         List temp = new ArrayList(size());
         if (model != null) {
             temp.add(model);
@@ -118,38 +132,11 @@ public class MemberList implements List {
         if (todoList != null) {
             temp.add(todoList);
         }
-        return temp.iterator();
+        return temp;
     }
-
-    synchronized public ListIterator listIterator() {
-        List temp = new ArrayList(size());
-        if (model != null) {
-            temp.add(model);
-        }
-        temp.addAll(diagramMembers);
-        if (todoList != null) {
-            temp.add(todoList);
-        }
-        return temp.listIterator();
-    }
-
-    synchronized public ListIterator listIterator(int arg0) {
-        List temp = new ArrayList(size());
-        if (model != null) {
-            temp.add(model);
-        }
-        temp.addAll(diagramMembers);
-        if (todoList != null) {
-            temp.add(todoList);
-        }
-        return temp.listIterator(arg0);
-    }
-
+    
     private boolean removeDiagram(Diagram d) {
-        Iterator it = diagramMembers.iterator();
-        while (it.hasNext()) {
-            Object obj = it.next();
-            ProjectMemberDiagram pmd = (ProjectMemberDiagram) obj;
+        for (ProjectMemberDiagram pmd : diagramMembers) {
             if (pmd.getDiagram() == d) {
                 pmd.remove();
                 diagramMembers.remove(pmd);
@@ -160,7 +147,7 @@ public class MemberList implements List {
         return false;
     }
 
-    synchronized public int size() {
+    public synchronized int size() {
         int size = diagramMembers.size();
         if (model != null) {
             ++size;
@@ -171,7 +158,7 @@ public class MemberList implements List {
         return size;
     }
 
-    synchronized public boolean contains(Object member) {
+    public synchronized boolean contains(Object member) {
         if (todoList == member) {
             return true;
         }
@@ -181,7 +168,7 @@ public class MemberList implements List {
         return diagramMembers.contains(member);
     }
 
-    synchronized public void clear() {
+    public synchronized void clear() {
         LOG.info("Clearing members");
         if (model != null) {
             model.remove();
@@ -200,7 +187,7 @@ public class MemberList implements List {
      * @param type the type of the member
      * @return the member of the project
      */
-    synchronized public ProjectMember getMember(Class type) {
+    public synchronized ProjectMember getMember(Class type) {
         if (type == ProjectMemberModel.class) {
             return model;
         }
@@ -215,7 +202,7 @@ public class MemberList implements List {
      * @param type the type of the member
      * @return the member of the project
      */
-    synchronized public List getMembers(Class type) {
+    public synchronized List getMembers(Class type) {
         if (type == ProjectMemberModel.class) {
             List temp = new ArrayList(1);
             temp.add(model);
@@ -233,7 +220,7 @@ public class MemberList implements List {
             "There is no single instance of a " + type.getName() + " member");
     }
 
-    synchronized public Object get(int i) {
+    public synchronized Object get(int i) {
         if (model != null) {
             if (i == 0) {
                 return model;
@@ -248,18 +235,18 @@ public class MemberList implements List {
         return diagramMembers.get(i);
     }
 
-    synchronized public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return size() == 0;
     }
 
-    synchronized public Object[] toArray() {
+    public synchronized Object[] toArray() {
         Object[] temp = new Object[size()];
         int pos = 0;
         if (model != null) {
             temp[pos++] = model;
         }
-        for (int i = 0; i < diagramMembers.size(); ++i) {
-            temp[pos++] = diagramMembers.get(i);
+        for (ProjectMemberDiagram d : diagramMembers) {
+            temp[pos++] = d;
         }
         if (todoList != null) {
             temp[pos++] = todoList;
