@@ -75,6 +75,10 @@ import org.tigris.toolbar.ToolBarFactory;
  * It used to be possible (in past versions of ArgoUML)
  * to spawn objects of this class into a dialog via the spawn method of its
  * parent.
+ * <p>
+ * NOTE: This tab is unlike the others in that it acts as a bridge to forward
+ * received Diagram events to the TargetManager.  (Not sure if this 
+ * functionality is duplicated elsewhere - tfm 20070924)
  */
 public class TabDiagram
     extends AbstractArgoJPanel
@@ -162,7 +166,7 @@ public class TabDiagram
     }
 
     /**
-     * Sets the target of the tab. The target should allways be an instance of
+     * Sets the target of the tab. The target should always be an instance of
      * UMLDiagram.
      * 
      * @param t the target
@@ -181,10 +185,13 @@ public class TabDiagram
         if (target != null) {
             target.removePropertyChangeListener("remove", this);
         }
+        
         newTarget.addPropertyChangeListener("remove", this);
 
         setToolBar(newTarget.getJToolBar());
-        
+
+        // NOTE: This listener needs to always be active 
+        // even if this tab isn't visible
         graph.removeGraphSelectionListener(this);
         graph.setDiagram(newTarget);
         graph.addGraphSelectionListener(this);
@@ -268,17 +275,27 @@ public class TabDiagram
                 TargetManager.getInstance().getTargets();
 
             List removedTargets = new ArrayList(currentSelection);
+            List addedTargets = new ArrayList();
             for (Object selection : selections) {
                 Object owner = TargetManager.getInstance().getOwner(selection);
                 if (currentSelection.contains(owner)) {
                     removedTargets.remove(owner); // remains selected
                 } else {
                     // add to selection
-                    TargetManager.getInstance().addTarget(owner);
+                    addedTargets.add(owner);
                 }
             }
-            for (Object o : removedTargets) {
-                TargetManager.getInstance().removeTarget(o);
+            if (addedTargets.size() == 1
+                    && removedTargets.size() == currentSelection.size()) {
+                // Optimize for the normal case to minimize target changes
+                TargetManager.getInstance().setTarget(addedTargets.get(0));
+            } else {
+                for (Object o : removedTargets) {
+                    TargetManager.getInstance().removeTarget(o);
+                }
+                for (Object o : addedTargets) {
+                    TargetManager.getInstance().addTarget(o);
+                }
             }
             updatingSelection = false;
         }
