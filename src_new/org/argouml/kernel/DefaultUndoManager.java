@@ -157,31 +157,17 @@ class DefaultUndoManager implements UndoManager {
     }
     
     private void fire(final String property, final Object value) {
-        
-        final ArrayList<PropertyChangeListener> list =
-            new ArrayList<PropertyChangeListener>(listeners);
-        
-        SwingUtilities.invokeLater(
-            new Runnable() {
-                public void run() {
-                    Iterator<PropertyChangeListener> i = list.iterator();
-                    while (i.hasNext()) {
-                        PropertyChangeListener listener = i.next();
-                        listener.propertyChange(
-                                new PropertyChangeEvent(
-                                        this, property, "", value));
-                    }
-                }
-            }
-        );
-        
+        for (PropertyChangeListener listener : listeners) {
+            listener.propertyChange(
+                    new PropertyChangeEvent(this, property, "", value));
+        }
     }
     
     /**
-     * An Interact is a Command the contains a list of sub-commands.
-     * It represents a single user interaction and contains all the commands
+     * An Interact is a Command the contains a list of sub-commands. It
+     * represents a single user interaction and contains all the commands
      * executed as part of that interaction.
-     *
+     * 
      * @author Bob
      */
     class Interaction extends AbstractCommand {

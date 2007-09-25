@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.SwingUtilities;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -220,9 +221,9 @@ public final class ProjectActions
             }
             setTarget(first);
         }
-        // making it possible to jump to the modelroot
-        if (first.equals(ProjectManager.getManager().getCurrentProject()
-                         .getRoot())) {
+        // making it possible to jump to the modelroots
+        if (ProjectManager.getManager().getCurrentProject().getRoots()
+                .contains(first)) {
             setTarget(first);
         }
 
@@ -240,20 +241,26 @@ public final class ProjectActions
         TargetManager.getInstance().setTarget(o);
     }
 
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void propertyChange(final PropertyChangeEvent evt) {
         if (evt.getSource() instanceof UndoManager) {
-            if ("undoLabel".equals(evt.getPropertyName())) {
-                undoAction.putValue(AbstractAction.NAME, evt.getNewValue());
-            }
-            if ("redoLabel".equals(evt.getPropertyName())) {
-                redoAction.putValue(AbstractAction.NAME, evt.getNewValue());
-            }
-            if ("undoable".equals(evt.getPropertyName())) {
-                undoAction.setEnabled((Boolean) evt.getNewValue());
-            }
-            if ("redoable".equals(evt.getPropertyName())) {
-                redoAction.setEnabled((Boolean) evt.getNewValue());
-            }
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    if ("undoLabel".equals(evt.getPropertyName())) {
+                        undoAction.putValue(AbstractAction.NAME, evt
+                                .getNewValue());
+                    }
+                    if ("redoLabel".equals(evt.getPropertyName())) {
+                        redoAction.putValue(AbstractAction.NAME, evt
+                                .getNewValue());
+                    }
+                    if ("undoable".equals(evt.getPropertyName())) {
+                        undoAction.setEnabled((Boolean) evt.getNewValue());
+                    }
+                    if ("redoable".equals(evt.getPropertyName())) {
+                        redoAction.setEnabled((Boolean) evt.getNewValue());
+                    }
+                }
+            });
         }
     }
 }

@@ -80,7 +80,12 @@ public interface UndoManager {
     
     /**
      * Add a new PropertyChangeListener for undo/redo events. Allow a listener
-     * to detect when the undo or redo stack changes availability.
+     * to detect when the undo or redo stack changes availability. No guarantees
+     * are made about which thread the event will be delivered on, so any
+     * specific thread requirements (e.g. Swing/AWT thread requirements) must be
+     * dealt with by the
+     * {@link PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)}
+     * method.
      * 
      * @param listener a PropertyChangeListener
      */
