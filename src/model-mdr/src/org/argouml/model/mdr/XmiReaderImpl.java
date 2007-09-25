@@ -110,7 +110,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      */
     private int ignoredElementCount;
 
-    private static List<String> searchDirs = new ArrayList();
+    private static List<String> searchDirs = new ArrayList<String>();
 
     /**
      * Constructor for XMIReader.
