@@ -90,11 +90,16 @@ public class PropPanelString
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
+        if (target != null) {
+            target.removePropertyChangeListener(this);
+        }
 	if (t instanceof FigText) {
 	    target = (FigText) t;
 	    // to circumvent too many registered listeners
 	    target.removePropertyChangeListener(this);
-	    target.addPropertyChangeListener(this);
+	    if (isVisible()) {
+	        target.addPropertyChangeListener(this);
+	    }
 	}
 
     }
