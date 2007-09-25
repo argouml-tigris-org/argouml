@@ -52,7 +52,7 @@ public class ActionUndo extends AbstractAction {
     /**
      * Construct the undo action with a display name and icon.
      * @param name the name for this action
-     * @param icon the icon to diaply for this action
+     * @param icon the icon to display for this action
      */
     public ActionUndo(String name, Icon icon) {
         super(name, icon);
