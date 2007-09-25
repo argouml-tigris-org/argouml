@@ -167,12 +167,16 @@ public class TabChecklist extends AbstractArgoJPanel
     /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
-    public Object getTarget() { return target; }
+    public Object getTarget() {
+        return target;
+    }
 
     /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
-    public void refresh() { setTarget(target); }
+    public void refresh() {
+        setTarget(target);
+    }
 
     /*
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
@@ -334,7 +338,9 @@ class TableModelChecklist extends AbstractTableModel
     /*
      * @see javax.swing.table.TableModel#getColumnCount()
      */
-    public int getColumnCount() { return 2; }
+    public int getColumnCount() {
+        return 2;
+    }
 
     /*
      * @see javax.swing.table.TableModel#getColumnName(int)
@@ -356,11 +362,11 @@ class TableModelChecklist extends AbstractTableModel
     public Class getColumnClass(int c) {
 	if (c == 0) {
 	    return Boolean.class;
-	}
-	if (c == 1) {
+	} else if (c == 1) {
+	    return String.class;
+	} else {
 	    return String.class;
 	}
-	return String.class;
     }
 
     /*
