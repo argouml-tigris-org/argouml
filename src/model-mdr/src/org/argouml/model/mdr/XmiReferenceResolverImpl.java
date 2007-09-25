@@ -75,9 +75,12 @@ class XmiReferenceResolverImpl extends XmiContext {
     private static final Logger LOG =
         Logger.getLogger(XmiReferenceResolverImpl.class);
     
-    private static final String PROFILE_RESOURCE_PATH = "/org/argouml/model/mdr/profiles/";
-    private static final String PROFILE_BASE_URL = "http://argouml.org/profiles/uml14";
-    private static final String PROFILE_FILE = PROFILE_BASE_URL + "/" + "default-uml14.xmi";
+    private static final String PROFILE_RESOURCE_PATH = 
+        "/org/argouml/model/mdr/profiles/";
+    private static final String PROFILE_BASE_URL = 
+        "http://argouml.org/profiles/uml14";
+    private static final String PROFILE_FILE = 
+        PROFILE_BASE_URL + "/" + "default-uml14.xmi";
     
     private Map<String, Object> idToObjects = 
         Collections.synchronizedMap(new HashMap<String, Object>());
@@ -128,7 +131,8 @@ class XmiReferenceResolverImpl extends XmiContext {
      * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
      */
     XmiReferenceResolverImpl(RefPackage[] extents, XMIInputConfig config,
-            Map<String, XmiReference> objectToIdMap, List<String> searchDirs, boolean isProfile) {
+            Map<String, XmiReference> objectToIdMap, List<String> searchDirs,
+            boolean isProfile) {
         super(extents, config);
         objectsToId = objectToIdMap;
         modulesPath = searchDirs;
@@ -158,7 +162,8 @@ class XmiReferenceResolverImpl extends XmiContext {
                 baseUri = new URI(
                         systemId.substring(0, systemId.lastIndexOf('/') + 1));
             } catch (URISyntaxException e) {
-                LOG.warn("Bad URI syntax for base URI from XMI document " + systemId, e);
+                LOG.warn("Bad URI syntax for base URI from XMI document "
+                        + systemId, e);
                 baseUri = null;
             }
             LOG.debug("Top system ID set to " + topSystemId);
@@ -191,7 +196,8 @@ class XmiReferenceResolverImpl extends XmiContext {
             objectsToId.put(object.refMofId(),
                     new XmiReference(systemId, xmiId));
         } else {
-            if (idToObjects.containsKey(key) && idToObjects.get(key) != object) {
+            if (idToObjects.containsKey(key) 
+                    && idToObjects.get(key) != object) {
                 LOG.error("Collision - multiple elements with same xmi.id : "
                         + xmiId);
             }
@@ -200,9 +206,11 @@ class XmiReferenceResolverImpl extends XmiContext {
                 // but the real issue is that MagicDraw serializes the same 
                 // object in two different composition associations, first in
                 // the referencing file and second in the referenced file
-                LOG.debug("register called twice for the same object - ignoring second");
+                LOG.debug("register called twice for the same object "
+                        + "- ignoring second");
                 XmiReference ref = objectsToId.get(object.refMofId());
-                LOG.debug(" - first reference = " + ref.getSystemId() + "#" + ref.getXmiId());
+                LOG.debug(" - first reference = " + ref.getSystemId() + "#"
+                        + ref.getXmiId());
                 LOG.debug(" - 2nd reference   = " + systemId + "#" + xmiId);
             }
         }
@@ -308,10 +316,10 @@ class XmiReferenceResolverImpl extends XmiContext {
                 String relativeUri = systemId;
                 try {
                     if (baseUri != null) {
-                    relativeUri = baseUri.relativize(new URI(systemId))
-                            .toString();
-                    LOG.debug("       system ID " + systemId 
-                            + "\n  relativized as " + relativeUri);
+                        relativeUri = baseUri.relativize(new URI(systemId))
+                                .toString();
+                        LOG.debug("       system ID " + systemId
+                                + "\n  relativized as " + relativeUri);
                     } else {
                         relativeUri = systemId;
                     }
@@ -360,7 +368,7 @@ class XmiReferenceResolverImpl extends XmiContext {
             if (candidate.exists()) {
                 String urlString;
                 try {
-                    urlString = candidate.toURL().toExternalForm();
+                    urlString = candidate.toURI().toURL().toExternalForm();
                 } catch (MalformedURLException e) {
                     return null;
                 }
