@@ -107,6 +107,7 @@ public class TabText
         parseChanges = false;
         if (getTarget() == null) {
             textArea.setEnabled(false);
+            // TODO: Localize
             textArea.setText("Nothing selected");
             enabled = false;
         } else {
@@ -119,6 +120,7 @@ public class TabText
 		    textArea.setCaretPosition(0);
 		} else {
 		    textArea.setEnabled(false);
+		    // TODO: Localize
 		    textArea.setText("N/A");
 		    enabled = false;
 		}
@@ -132,7 +134,9 @@ public class TabText
      */
     public void setTarget(Object t) {
         target = t;
-	doGenerateText();
+        if (isVisible()) {
+            doGenerateText();
+        }
     }
 
     /*
@@ -276,6 +280,7 @@ public class TabText
      * Generates the text whenever this panel becomes visible.
      * {@inheritDoc}
      */
+    @Override
     public void setVisible(boolean visible) {
 	super.setVisible(visible);
 	if (visible) {
