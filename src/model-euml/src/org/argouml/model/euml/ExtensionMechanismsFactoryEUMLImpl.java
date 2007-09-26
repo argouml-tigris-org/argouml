@@ -75,6 +75,12 @@ class ExtensionMechanismsFactoryEUMLImpl implements
         // TODO Auto-generated method stub
         return null;
     }
+    
+    public Object buildTagDefinition(String name, Object stereotype, 
+            Object namespace, String tagType) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     public Object buildTaggedValue(String tag, String value) {
         // TODO Auto-generated method stub

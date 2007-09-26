@@ -82,7 +82,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         if (m instanceof Element) {
             return getMetaModelName(m.getClass());
         }
-        throw new IllegalArgumentException("Not an Element");
+        throw new IllegalArgumentException("Not an Element"); //$NON-NLS-1$
     }
 
     /**
@@ -164,6 +164,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         // TODO Auto-generated method stub
     }
 
+    @Deprecated
     public void setTag(Object handle, Object tag) {
         // TODO Auto-generated method stub
     }
@@ -172,6 +173,10 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         // TODO Auto-generated method stub
     }
 
+    public void setTagType(Object handle, String tagType) {
+        // TODO Auto-generated method stub        
+    }
+    
     public void setType(Object handle, Object type) {
         // TODO Auto-generated method stub        
     }
