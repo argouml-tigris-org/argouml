@@ -198,6 +198,19 @@ public interface ExtensionMechanismsHelper {
      */
     @Deprecated
     void setTag(Object handle, Object tag);
+
+    /**
+     * Set the tagType of a TaggedDefinition.  This controls the range of legal
+     * values for the associated TaggedValues.  
+     * 
+     * @param handle the taggedValue
+     * @param tagType A string containing the name of the type for values that
+     *                may be assigned to this tag. This can either be the name
+     *                of a datatype (e.g. "String", "Integer" or "Boolean") or
+     *                the name of a metaclass for more complex types of tagged
+     *                values.
+     */
+    void setTagType(Object handle, String tagType);
     
     /**
      * Set the type of a taggedvalue.

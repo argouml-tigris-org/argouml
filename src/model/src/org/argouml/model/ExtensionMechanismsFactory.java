@@ -118,14 +118,43 @@ public interface ExtensionMechanismsFactory extends Factory {
     Object copyStereotype(Object source, Object ns);
 
     /**
-     * Build an initialized instance of a TagDefinition.
-     * @param name is the name of the TagDefinition
-     * @param stereotype is the optional stereotype owning the TagDefinition
-     * @param ns is the namespace to put the TagDefinition.
+     * Build an initialized instance of a TagDefinition with the default tagType
+     * of "String". Only one of the two parameters <code>stereotype</code> and
+     * <code>namespace</code> may be specified.
+     * 
+     * @param name
+     *                is the name of the TagDefinition
+     * @param stereotype
+     *                is the optional stereotype owning the TagDefinition
+     * @param namespace
+     *                is the namespace to put the TagDefinition.
      * @return a newly created TagDefinition.
      */
-    Object buildTagDefinition(String name, Object stereotype, Object ns);
+    Object buildTagDefinition(String name, Object stereotype, 
+            Object namespace);
 
+    /**
+     * Build an initialized instance of a TagDefinition. Only one of the two
+     * parameters <code>stereotype</code> and <code>namespace</code> may be
+     * specified.
+     * 
+     * @param name
+     *                is the name of the TagDefinition
+     * @param stereotype
+     *                is the optional stereotype owning the TagDefinition
+     * @param namespace
+     *                is the namespace to put the TagDefinition.
+     * @param tagType
+     *                a string containing the name of the type for values that
+     *                may be assigned to this tag. This can either be the name
+     *                of a datatype (e.g. "String", "Integer" or "Boolean") or
+     *                the name of a metaclass for more complex types of tagged
+     *                values.
+     * @return a newly created TagDefinition.
+     */
+    Object buildTagDefinition(String name, Object stereotype, Object namespace,
+            String tagType);
+    
     /**
      * Create a TagDefinition.
      *

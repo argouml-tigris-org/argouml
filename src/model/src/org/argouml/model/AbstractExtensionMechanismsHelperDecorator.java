@@ -130,6 +130,10 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.setTag(handle, tag);
     }
 
+    public void setTagType(Object handle, String tagType) {
+        impl.setType(handle, tagType);
+    }
+    
     public void setType(Object handle, Object type) {
         impl.setType(handle, type);
     }
