@@ -121,11 +121,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * @author psager@tigris.org Jan. 24, 2002
      */
     public void setNamespace(Object handle) {
-        if (!Model.getFacade().isAPackage(handle)) {
+        if (!Model.getFacade().isANamespace(handle)) {
             LOG.error(
-                "Illegal argument. Object " + handle + " is not a package");
+                "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
-                "Illegal argument. Object " + handle + " is not a package");
+                "Illegal argument. Object " + handle + " is not a namespace");
         }
         Object m = handle;
         boolean init = (null == getNamespace());
