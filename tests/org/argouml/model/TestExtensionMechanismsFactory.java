@@ -75,6 +75,7 @@ public class TestExtensionMechanismsFactory extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() {
         InitializeModel.initializeDefault();
     }
@@ -107,6 +108,8 @@ public class TestExtensionMechanismsFactory extends TestCase {
         } catch (IllegalArgumentException e) {
             // Expected
         }
+        emFactory.buildTagDefinition("myTD", stereo, null);
+        emFactory.buildTagDefinition("myTD", stereo, null, "Boolean");
     }
 
     /**

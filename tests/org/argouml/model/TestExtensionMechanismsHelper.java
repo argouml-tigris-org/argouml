@@ -61,6 +61,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
 
@@ -167,5 +168,17 @@ public class TestExtensionMechanismsHelper extends TestCase {
         assertEquals("Wrong number of base classes",
                 1,
                 Model.getFacade().getBaseClasses(theStereotype).size());
+    }
+    
+    public void testTagDefinitions() {
+        Facade facade = Model.getFacade();
+        Object stereotype = Model.getExtensionMechanismsFactory()
+                .createStereotype();
+        Object td = Model.getExtensionMechanismsFactory().buildTagDefinition(
+                "testTD", stereotype, null, "String");
+        Model.getExtensionMechanismsHelper().setTagType(td, "Boolean");
+        Object mult = Model.getDataTypesFactory().createMultiplicity("1..3");
+        Model.getCoreHelper().setMultiplicity(td, mult);
+        assertEquals("1..3", facade.toString(facade.getMultiplicity(td)));
     }
 }
