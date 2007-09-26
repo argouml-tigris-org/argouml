@@ -554,6 +554,15 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or taggedValues: " + taggedValues);
     }
 
+    public void setTagType(Object handle, String tagType) {
+        if (handle instanceof TagDefinition) {
+            // TODO: What type of validation can we do here on tagType?
+            ((TagDefinition) handle).setTagType(tagType);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or tagType: " + tagType);
+    }
 
     public void setType(Object handle, Object type) {
         if (type == null || type instanceof TagDefinition) {

@@ -327,9 +327,13 @@ class ExtensionMechanismsFactoryMDRImpl extends
         // TODO: required tags
     }
 
+    public TagDefinition buildTagDefinition(String name, Object owner, 
+            Object namespace) {
+        return buildTagDefinition(name, owner, namespace, "String");
+    }
 
-    public TagDefinition buildTagDefinition(String text, Object owner, 
-            Object ns) {
+    public TagDefinition buildTagDefinition(String name, Object owner, 
+            Object ns, String tagType) {
         if (owner != null) {
             if (!(owner instanceof Stereotype)) {
                 throw new IllegalArgumentException("owner: " + owner);
@@ -348,10 +352,10 @@ class ExtensionMechanismsFactoryMDRImpl extends
         } else {
             coreHelper.setNamespace(td, ns);
         }
-        coreHelper.setName(td, text);
+        coreHelper.setName(td, name);
         coreHelper.setMultiplicity(td, org.argouml.model.Model
                 .getDataTypesFactory().createMultiplicity(0, 1));
-        td.setTagType("String");
+        td.setTagType(tagType);
         return td;
     }
 
