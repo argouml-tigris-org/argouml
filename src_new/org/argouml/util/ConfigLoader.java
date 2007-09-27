@@ -41,7 +41,7 @@ import org.argouml.configuration.ConfigurationKey;
 import org.tigris.swidgets.Orientation;
 
 /**
- * This class loads panel classes according a certain configuration file.
+ * This class loads panel classes specified by a configuration file.
  *
  */
 public class ConfigLoader {
@@ -49,9 +49,8 @@ public class ConfigLoader {
     private static final Logger LOG =
         Logger.getLogger(ConfigLoader.class);
 
-    ////////////////////////////////////////////////////////////////
-    // static utility functions
-
+    private static final String CONFIG_FILE_PROPERTY = "argo.config";
+    private static final String DEFAULT_CONFIG_FILE = "/org/argouml/argo.ini";
     private static String tabPath = "org.argouml";
     private static Orientation tabPropsOrientation;
 
@@ -87,7 +86,7 @@ public class ConfigLoader {
 
         InputStream is = null;
 	LineNumberReader lnr = null;
-	String configFile = System.getProperty("argo.config");
+	String configFile = System.getProperty(CONFIG_FILE_PROPERTY);
         //
         //    if property specified
         //
@@ -98,16 +97,16 @@ public class ConfigLoader {
             }
             catch (FileNotFoundException e) {
                 is = ConfigLoader.class.getResourceAsStream(configFile);
-                if (is != null) {
-                    LOG.info("Value of argo.config (" + configFile
-                        +
-                        ") could not be loaded.\nLoading default configuration."
-                    );
+                if (is == null) {
+                    LOG.info("File specified by argo.config ("
+                            + configFile
+                            + ") could not be loaded.\n" 
+                            + "Loading default configuration.");
                 }
             }
         }
         if (is == null) {
-            configFile = "/org/argouml/argo.ini";
+            configFile = DEFAULT_CONFIG_FILE;
             is = ConfigLoader.class.getResourceAsStream(configFile);
         }
         if (is != null) {
@@ -180,7 +179,9 @@ public class ConfigLoader {
 					int lineNum, String configFile) {
 	if (line.startsWith("tabpath:")) {
 	    String newPath = stripBeforeColon(line).trim();
-	    if (newPath.length() > 0) tabPath = newPath;
+	    if (newPath.length() > 0) {
+	        tabPath = newPath;
+	    }
 	    return null;
 	}
 	else if (line.startsWith(panelName + ":")) {
@@ -230,4 +231,4 @@ public class ConfigLoader {
 	return s.substring(colonPos  + 1);
     }
 
-} /* end class ConfigLoader */
+}
