@@ -76,6 +76,7 @@ public class StereotypeUtility {
      * @param modelElement the given modelelement
      * @return the set with stereotype UML objects
      */
+    @SuppressWarnings("unchecked")
     public static Set getAvailableStereotypes(Object modelElement) {
         Set paths = new HashSet();
         Set availableStereotypes = new TreeSet(new Comparator() {
@@ -94,13 +95,126 @@ public class StereotypeUtility {
         });            
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
+        
+        Collection topLevelModels =
+            ProjectManager.getManager().getCurrentProject().getModels();
+        
+        // adds all stereotypes defined at the top level namespaces        
+        Collection topLevelStereotypes = getTopLevelStereotypes(topLevelModels);
+        
+        Collection validTopLevelStereotypes = new ArrayList();
             
         addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
                 .getExtensionMechanismsHelper().getAllPossibleStereotypes(
                         models, modelElement));
+        for (Object stereotype : topLevelStereotypes) {
+            if (Model.getExtensionMechanismsHelper().isValidStereotype(
+                    modelElement, stereotype)) {
+                validTopLevelStereotypes.add(stereotype);
+            }            
+        }
+
+        addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                validTopLevelStereotypes);
+        
+        // adds all stereotypes defined at the profiles applied to the
+        // current namespace
+        Object namespace = Model.getFacade().getNamespace(modelElement);
+        if (namespace != null) {
+            while (true) {
+                getApplicableStereotypesInNamespace(modelElement, paths,
+                        availableStereotypes, namespace);
+                Object newNamespace = Model.getFacade().getNamespace(namespace);
+
+                if (newNamespace == null) {
+                    break;
+                }
+
+                namespace = newNamespace;
+            }
+        }
+        
+        // adds all stereotypes defined at the profiles applied 
+        // to the current project
+        addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration()
+                        .findAllStereotypesForModelElement(modelElement));
+        
         return availableStereotypes;
     }
+
+    @SuppressWarnings("unchecked")
+    private static Collection getTopLevelStereotypes(Collection topLevelModels) {
+        Collection ret = new ArrayList();
+        for (Object model : topLevelModels) {
+            for (Object stereotype : Model.getExtensionMechanismsHelper()
+                    .getStereotypes(model)) {
+                Object namespace = Model.getFacade().getNamespace(stereotype);
+                if (Model.getFacade().getNamespace(namespace) == null) {
+                    ret.add(stereotype);
+                }
+            }
+        }
+        return ret;
+    }
     
+    private static void getApplicableStereotypesInNamespace(
+            Object modelElement, Set paths, Set availableStereotypes,
+            Object namespace) {
+        Collection allProfiles = getAllProfilePackages(Model.getFacade()
+                .getModel(modelElement));
+        Collection<Object> allAppliedProfiles = new ArrayList<Object>();
+        
+        for (Object profilePackage : allProfiles) {
+            Collection allDependencies = Model.getCoreHelper().getDependencies(
+                    profilePackage, namespace);
+
+            for (Object dependency : allDependencies) {
+                if (Model.getExtensionMechanismsHelper().hasStereotype(
+                        dependency, "appliedProfile")) {
+                    allAppliedProfiles.add(profilePackage);
+                    break;
+                }
+            }
+        }
+        
+        addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                getAppliableStereotypes(modelElement, allAppliedProfiles));
+    }
+    
+    private static Collection getAppliableStereotypes(Object modelElement,
+            Collection<Object> allAppliedProfiles) {
+        Collection ret = new ArrayList();
+        for (Object profile : allAppliedProfiles) {
+            for (Object stereotype : Model.getExtensionMechanismsHelper()
+                    .getStereotypes(profile)) {
+                if (Model.getExtensionMechanismsHelper().isValidStereotype(
+                        modelElement, stereotype)) {
+                    ret.add(stereotype);
+                }
+            }
+        }
+        
+        return ret;
+    }
+
+    private static Collection getAllProfilePackages(Object model) {
+        Collection col = Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(model,
+                        Model.getMetaTypes().getPackage());
+        Collection<Object> ret = new ArrayList<Object>();
+        
+        for (Object element : col) {
+            if (Model.getFacade().isAPackage(element)
+                    && Model.getExtensionMechanismsHelper().hasStereotype(
+                            element, "profile")) {
+                ret.add(element);
+            }
+        }
+        return ret;
+    }
+
     /**
      * Helper method for buildModelList.
      * <p>
@@ -203,15 +317,9 @@ public class StereotypeUtility {
             return stereo;
         }
 
-        try {
-            Project project = ProjectManager.getManager().getCurrentProject();
-            Profile profile = project.getProfile();
-            stereo = recFindStereotype(obj, profile.getProfileModel(), name);
-        } catch (ProfileException e) {
-            // TODO: How are we going to handle exceptions here?
-            // I suspect the profile should be part of the project
-            // and not a singleton.
-        }
+        Project project = ProjectManager.getManager().getCurrentProject();
+        stereo = project.getProfileConfiguration().findStereotypeForObject(
+                name, obj); 
 
         if (stereo != null) {
             return Model.getModelManagementHelper().getCorrespondingElement(

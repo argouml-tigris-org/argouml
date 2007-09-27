@@ -119,7 +119,7 @@ public class FigSimpleState extends FigState {
      * {@inheritDoc}
      */
     @Override
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setStandardBounds(int x, int y, int w, int h) {
 	if (getNameFig() == null) {
 	    return;
 	}

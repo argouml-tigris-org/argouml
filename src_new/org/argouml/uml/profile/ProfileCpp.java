@@ -40,6 +40,8 @@ public class ProfileCpp extends Profile {
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ProfileCpp.class);
+        
+    private static final String PROFILE_FILE = "/org/argouml/default-cpp.xmi";
 
     private ProfileModelLoader profileModelLoader;
     private Collection model;
@@ -69,7 +71,7 @@ public class ProfileCpp extends Profile {
     private ProfileCpp() throws ProfileException {
 	profileModelLoader = new ResourceModelLoader();
 	model = profileModelLoader
-		.loadModel("/org/argouml/default-cpp.xmi");
+		.loadModel(PROFILE_FILE);
 
 	if (model == null) {
 	    model = new ArrayList();
@@ -79,7 +81,7 @@ public class ProfileCpp extends Profile {
         addProfileDependency(ProfileUML.getInstance());	
     }    
 
-    /**
+    /*
      * @return "C++"
      * @see org.argouml.uml.profile.Profile#getDisplayName()
      */
@@ -87,7 +89,7 @@ public class ProfileCpp extends Profile {
 	return "C++";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.profile.Profile#getProfilePackages()
      */
     @Override
@@ -95,23 +97,26 @@ public class ProfileCpp extends Profile {
         return model;
     }
    
-    /**
+    /*
      * @see org.argouml.uml.profile.Profile#getDefaultTypeStrategy()
      */
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return new DefaultTypeStrategy() {
             public Object getDefaultAttributeType() {
-                return ModelUtils.findTypeInModel("int", model.iterator().next());
+                return ModelUtils.findTypeInModel("int", model.iterator()
+                        .next());
             }
 
             public Object getDefaultParameterType() {
-                return ModelUtils.findTypeInModel("int", model.iterator().next());
+                return ModelUtils.findTypeInModel("int", model.iterator()
+                        .next());
             }
 
             public Object getDefaultReturnType() {
-                return ModelUtils.findTypeInModel("void", model.iterator().next());
+                return ModelUtils.findTypeInModel("void", model.iterator()
+                        .next());
             }
-            
+
         };
     }    
 }

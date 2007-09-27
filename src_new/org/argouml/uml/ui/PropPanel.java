@@ -61,7 +61,7 @@ import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
-import org.argouml.uml.Profile;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.LabelledLayout;
@@ -114,7 +114,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * <li> {@link Object}[]
      * </ul>
      */
-    private List actions = new ArrayList<Action>();
+    private List actions = new ArrayList();
 
     private static Font stdFont =
         LookAndFeelMgr.getInstance().getStandardFont();
@@ -139,7 +139,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         setLayout(layout);
 
         if (icon != null) {
-            setTitleLabel(new JLabel(Translator.localize(label), icon, SwingConstants.LEFT));
+            setTitleLabel(new JLabel(Translator.localize(label), icon,
+                    SwingConstants.LEFT));
         } else {
             setTitleLabel(new JLabel(Translator.localize(label)));
         }
@@ -456,8 +457,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
      */
-    public Profile getProfile() {
-        return ProjectManager.getManager().getCurrentProject().getProfile();
+    public ProfileConfiguration getProfile() {
+        return ProjectManager.getManager().getCurrentProject()
+                .getProfileConfiguration();
     }
 
     /*
@@ -470,15 +472,17 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(java.lang.Object)
      */
-    public String formatElement(/* MModelElement */Object element) {
-        return getProfile().formatElement(element, getDisplayNamespace());
+    public String formatElement(Object element) {
+        return getProfile().getFormatingStrategy().formatElement(element,
+                getDisplayNamespace());
     }
 
     /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(java.lang.Object)
      */
-    public String formatNamespace(/* MNamespace */Object namespace) {
-        return getProfile().formatElement(namespace, null);
+    public String formatNamespace(Object namespace) {
+        return getProfile().getFormatingStrategy().formatElement(namespace,
+                null);
     }
 
     /*
@@ -486,7 +490,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public String formatCollection(Iterator iter) {
         Object namespace = getDisplayNamespace();
-        return getProfile().formatCollection(iter, namespace);
+        return getProfile().getFormatingStrategy().formatCollection(iter,
+                namespace);
     }
 
 

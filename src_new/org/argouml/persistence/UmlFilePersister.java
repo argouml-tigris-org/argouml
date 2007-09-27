@@ -70,6 +70,7 @@ import org.argouml.model.UmlException;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.argouml.util.ThreadUtils;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
@@ -82,7 +83,7 @@ import org.xml.sax.SAXException;
  *
  * @author Bob Tarling
  */
-class UmlFilePersister extends AbstractFilePersister {
+public class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * The PERSISTENCE_VERSION is increased every time the persistence format
@@ -90,7 +91,7 @@ class UmlFilePersister extends AbstractFilePersister {
      * This controls conversion of old persistence version files to be
      * converted to the current one, keeping ArgoUML backwards compatible.
      */
-    protected static final int PERSISTENCE_VERSION = 5;
+    public static final int PERSISTENCE_VERSION = 5;
     
     /**
      * The TOTAL_PHASES_LOAD constant is the number of phases used by the load
@@ -212,8 +213,9 @@ class UmlFilePersister extends AbstractFilePersister {
     }
     
     /**
-     * The .uml save format is no longer available to save
-     * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
+     * The .uml save format is no longer available to save.
+     * 
+     * {@inheritDoc}
      */
     public boolean isSaveEnabled() {
         return true;
@@ -342,7 +344,8 @@ class UmlFilePersister extends AbstractFilePersister {
 
         XmlInputStream inputStream = null;
         try {
-            Project p = ProjectFactory.getInstance().createProject(file.toURI());
+            Project p = ProjectFactory.getInstance()
+                    .createProject(file.toURI());
             
             // Run through any stylesheet upgrades
             int fileVersion = getPersistenceVersionFromFile(file);
@@ -535,11 +538,12 @@ class UmlFilePersister extends AbstractFilePersister {
      * Reads an XML file of uml format and extracts the
      * persistence version number from the root tag.
      *
-     * @param file the XML file
+     * @param inputStream stream pointing to file to read.
      * @return The version number
      * @throws OpenException on any error
      */
-    protected int getPersistenceVersion(InputStream inputStream) throws OpenException {
+    protected int getPersistenceVersion(InputStream inputStream)
+            throws OpenException {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(inputStream, 
@@ -601,11 +605,12 @@ class UmlFilePersister extends AbstractFilePersister {
      * Reads an XML file of uml format and extracts the
      * persistence version number from the root tag.
      *
-     * @param file the XML file
+     * @param inputStream the stream point to the XML file
      * @return The ArgoUML release number
      * @throws OpenException on any error
      */
-    protected String getReleaseVersion(InputStream inputStream) throws OpenException {
+    protected String getReleaseVersion(InputStream inputStream)
+            throws OpenException {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(inputStream, 
@@ -671,6 +676,8 @@ class UmlFilePersister extends AbstractFilePersister {
 		        .getDiagramMemberFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
+        } else if (pm instanceof ProfileConfiguration) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberModel) {
             persister = new ModelMemberFilePersister();
         }
@@ -691,6 +698,8 @@ class UmlFilePersister extends AbstractFilePersister {
                         .getDiagramMemberFilePersister();
         } else if (tag.equals("todo")) {
             persister = new TodoListMemberFilePersister();
+        } else if (tag.equals("profile")) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (tag.equals("xmi")) {
             persister = new ModelMemberFilePersister();
         }
@@ -700,7 +709,7 @@ class UmlFilePersister extends AbstractFilePersister {
     /**
      * Returns true. All Argo specific files have an icon.
      * 
-     * @see org.argouml.persistence.AbstractFilePersister#hasAnIcon()
+     * {@inheritDoc}
      */
     public boolean hasAnIcon() {
         return true;

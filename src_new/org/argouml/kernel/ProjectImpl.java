@@ -51,14 +51,13 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.uml.CommentEdge;
-import org.argouml.uml.Profile;
-import org.argouml.uml.ProfileException;
-import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.profile.Profile;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -128,12 +127,11 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     private final List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
     
-    private Collection<Object> profilePackages = new HashSet<Object>();
     private Object currentNamespace;
     private Map<String, Object> uuidRefs;
     private transient VetoableChangeSupport vetoSupport;
 
-    private Profile profile;
+    private ProfileConfiguration profileConfiguration;
 
     /**
      * The active diagram, pointer to a diagram in the list with diagrams.
@@ -166,7 +164,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * Constructor.
      */
     public ProjectImpl() {
-        profile = new ProfileJava();
+        setProfileConfiguration(new ProfileConfiguration(this));
+
         projectSettings = new ProjectSettings();
 
         Model.getModelManagementFactory().setRootModel(null);
@@ -182,17 +181,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         defaultModelTypeCache = new HashMap<String, Object>();
 
         LOG.info("making empty project with empty model");
-        try {
-            // Jaap Branderhorst 2002-12-09
-            // load the default model
-            // this is NOT the way how it should be since this makes argo
-            // depend on Java even more.
-            setProfiles(profile.getProfilePackages());
-        } catch (ProfileException e) {
-            // TODO: how are we going to handle exceptions here?
-            // I think we need a ProjectException.
-            LOG.error("Exception setting the default profile", e);
-        }
         addSearchPath("PROJECT_DIR");
     }
 
@@ -503,7 +491,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "unchecked" })
     public Vector getUserDefinedModels() {
         return new Vector(models);
     }
@@ -517,7 +505,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public Collection getModels() {
         Set ret = new HashSet();
         ret.addAll(models);
-        ret.addAll(profilePackages);
+        // TODO are the profiles part of the getModels()???
+//        ret.addAll(profilePackages);
         return ret;
     }
 
@@ -536,20 +525,29 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public Object getDefaultAttributeType() {
-        // TODO: Move this to a profile - tfm - 20070307
-        return findType("int");
+        if (profileConfiguration.getDefaultTypeStrategy() != null) {
+            return profileConfiguration.getDefaultTypeStrategy()
+                    .getDefaultAttributeType();
+        }
+        return null;
     }
 
 
     public Object getDefaultParameterType() {
-        // TODO: Move this to a profile - tfm - 20070307
-        return findType("int");
+        if (profileConfiguration.getDefaultTypeStrategy() != null) {
+            return profileConfiguration.getDefaultTypeStrategy()
+                    .getDefaultParameterType();
+        }
+        return null;
     }
     
 
     public Object getDefaultReturnType() {
-        // TODO: Move this to a profile - tfm - 20070307
-        return findType("void");
+        if (profileConfiguration.getDefaultTypeStrategy() != null) {
+            return profileConfiguration.getDefaultTypeStrategy()
+                    .getDefaultReturnType();
+        }
+        return null;
     }
 
 
@@ -606,16 +604,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
         }
         return figs;
-    }
-
-    private Object findTypeInPackages(String name, Collection namespaces) {
-        for (Object namespace : namespaces) {
-            Object type = findTypeInModel(name, namespace);
-            if (type != null) {
-                return type;
-            }
-        }
-        return null;
     }
 
     public Object findTypeInModel(String typeName, Object namespace) {
@@ -882,7 +870,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
             removeProjectMemberDiagram((ArgoDiagram) obj);
             // Need to manually delete diagrams from explorer because they
             // don't have a decent event system set up:
-            ProjectManager.getManager().firePropertyChanged("remove", obj, null);
+            ProjectManager.getManager()
+                    .firePropertyChanged("remove", obj, null);
         } else if (obj instanceof Fig) {
             ((Fig) obj).deleteFromModel();
             // TODO: Bob says - I've never seen this appear in the log.
@@ -908,62 +897,81 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     @SuppressWarnings("deprecation")
     public void setDefaultModel(Object theDefaultModel) {
-
-        if (!Model.getFacade().isAModel(theDefaultModel)) {
-            throw new IllegalArgumentException(
-                    "The default model must be a Model type. Received a "
-                    + theDefaultModel.getClass().getName());
-        }
-
-        profilePackages.clear();
-        profilePackages.add(theDefaultModel);
-        defaultModelTypeCache = new HashMap<String, Object>();
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+        throw new UnsupportedOperationException();
+//        if (!Model.getFacade().isAModel(theDefaultModel)) {
+//            throw new IllegalArgumentException(
+//                    "The default model must be a Model type. Received a "
+//                    + theDefaultModel.getClass().getName());
+//        }
+//
+//        profilePackages.clear();
+//        profilePackages.add(theDefaultModel);
+//        defaultModelTypeCache = new HashMap<String, Object>();
     }
 
-
+    @Deprecated
     public void setProfiles(Collection packages) {
-
-        for (Object pkg : packages) {
-            if (!Model.getFacade().isAPackage(pkg)) {
-                throw new IllegalArgumentException(
-                        "Profiles must be of type Package. Received a "
-                                + pkg.getClass().getName());
-            }
-        }
-
-        profilePackages.clear();
-        profilePackages.addAll(packages);
-        defaultModelTypeCache = new HashMap<String, Object>();
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+        throw new UnsupportedOperationException();
+//        for (Object pkg : packages) {
+//            if (!Model.getFacade().isAPackage(pkg)) {
+//                throw new IllegalArgumentException(
+//                        "Profiles must be of type Package. Received a "
+//                                + pkg.getClass().getName());
+//            }
+//        }
+//
+//        profilePackages.clear();
+//        profilePackages.addAll(packages);
+//        defaultModelTypeCache = new HashMap<String, Object>();
     }
+
 
     @SuppressWarnings("deprecation")
     public Object getDefaultModel() {
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+        throw new UnsupportedOperationException();
         // First priority is Model for best backward compatibility
-        for (Object pkg : profilePackages) {
-            if (Model.getFacade().isAModel(pkg)) {
-                return pkg;
-            }
-        }
-        // then a Package
-        for (Object pkg : profilePackages) {
-            if (Model.getFacade().isAPackage(pkg)) {
-                return pkg;
-            }
-        }
-        // if all else fails, just the first element
-        return profilePackages.iterator().next();
+//        for (Object pkg : profilePackages) {
+//            if (Model.getFacade().isAModel(pkg)) {
+//                return pkg;
+//                            }
+//        }
+//        // then a Package
+//        for (Object pkg : profilePackages) {
+//            if (Model.getFacade().isAPackage(pkg)) {
+//                return pkg;
+//            }
+//        }
+//        // if all else fails, just the first element
+//        return profilePackages.iterator().next();
     }
+
     
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Collection getProfiles() {
-        return profilePackages;
+        throw new UnsupportedOperationException();
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+//        return profilePackages;
     }
 
     public Object findTypeInDefaultModel(String name) {
         if (defaultModelTypeCache.containsKey(name)) {
             return defaultModelTypeCache.get(name);
         }
-
-        Object result = findTypeInPackages(name, profilePackages);
+        
+        Object result = profileConfiguration.findType(name);
+        
         defaultModelTypeCache.put(name, result);
         return result;
     }
@@ -1094,15 +1102,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         roots.clear();
         models.clear();
 
-        if (profilePackages != null) {
-            for (Object pkg : profilePackages) {
-                LOG.debug("Deleting profile element "
-                        + Model.getFacade().getName(pkg));
-                Model.getUmlFactory().delete(pkg);
-            }
-            profilePackages.clear();
-        }
-
         diagrams.clear();
 
         if (uuidRefs != null) {
@@ -1141,8 +1140,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Profile getProfile() {
-        return profile;
+        throw new UnsupportedOperationException();
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+//        return profile;
     }
 
 
@@ -1160,8 +1165,24 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public ProjectSettings getProjectSettings() {
         return projectSettings;
     }
-
     public UndoManager getUndoManager() {
         return undoManager;
     }
+        
+    public ProfileConfiguration getProfileConfiguration() {
+        return profileConfiguration;
+    }
+
+    public void setProfileConfiguration(ProfileConfiguration pc) {
+        if (this.profileConfiguration != null) {
+            this.members.remove(this.profileConfiguration);         
+        }
+        
+        this.profileConfiguration = pc;
+
+        // there's just one ProfileConfiguration in a project
+        // and there's no other way to add another one
+        members.add(pc);        
+    }
+
 }

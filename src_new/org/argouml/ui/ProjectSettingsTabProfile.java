@@ -1,4 +1,4 @@
-    // $Id: ProfileSelectionTab.java 13040 2007-07-10 20:00:25Z linus $
+// $Id: ProfileSelectionTab.java 13040 2007-07-10 20:00:25Z linus $
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,7 +32,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -107,31 +108,38 @@ public class ProjectSettingsTabProfile extends JPanel implements
         DefaultComboBoxModel cmodel = new DefaultComboBoxModel();
         stereoField.setModel(cmodel);
         
-        cmodel.addElement(Translator.localize("menu.popup.stereotype-view.textual"));
-        cmodel.addElement(Translator.localize("menu.popup.stereotype-view.big-icon"));
-        cmodel.addElement(Translator.localize("menu.popup.stereotype-view.small-icon"));
+        cmodel.addElement(Translator
+                .localize("menu.popup.stereotype-view.textual"));
+        cmodel.addElement(Translator
+                .localize("menu.popup.stereotype-view.big-icon"));
+        cmodel.addElement(Translator
+                .localize("menu.popup.stereotype-view.small-icon"));
 
         stereoField.addItemListener(new ItemListener() {
 
             public void itemStateChanged(ItemEvent e) {
-                ProjectSettings ps = ProjectManager.getManager().getCurrentProject().getProjectSettings();                
+                ProjectSettings ps = ProjectManager.getManager()
+                        .getCurrentProject().getProjectSettings();
                 Object src = e.getSource();
                 
                 if (src == stereoField) {
                     Object item = e.getItem();
-                    DefaultComboBoxModel model = (DefaultComboBoxModel) stereoField
-                            .getModel();
+                    DefaultComboBoxModel model = 
+                        (DefaultComboBoxModel) stereoField.getModel();
                     int idx = model.getIndexOf(item);
 
                     switch (idx) {
                     case 0:
-                        ps.setDefaultStereotypeView(FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
+                        ps.setDefaultStereotypeView(
+                                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
                         break;
                     case 1:
-                        ps.setDefaultStereotypeView(FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON);
+                        ps.setDefaultStereotypeView(
+                                FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON);
                         break;
                     case 2:
-                        ps.setDefaultStereotypeView(FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
+                        ps.setDefaultStereotypeView(
+                                FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
                         break;
                     }
                 }
@@ -194,20 +202,23 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     private void refreshLists() {
-        availableList.setModel(new DefaultComboBoxModel(getAvailableProfiles()));
-        usedList.setModel(new DefaultComboBoxModel(getUsedProfiles()));
+        availableList.setModel(
+                new DefaultComboBoxModel(getAvailableProfiles().toArray()));
+        usedList.setModel(
+                new DefaultComboBoxModel(getUsedProfiles().toArray()));
     }
 
-    private Vector<Profile> getUsedProfiles() {
-        return new Vector<Profile>(ProjectManager.getManager()
+    private List<Profile> getUsedProfiles() {
+        return new ArrayList<Profile>(ProjectManager.getManager()
                 .getCurrentProject().getProfileConfiguration().getProfiles());
     }
 
-    private Vector<Profile> getAvailableProfiles() {
-        Vector<Profile> used = getUsedProfiles();
-        Vector<Profile> ret = new Vector<Profile>();
+    private List<Profile> getAvailableProfiles() {
+        List<Profile> used = getUsedProfiles();
+        List<Profile> ret = new ArrayList<Profile>();
         
-        for (Profile profile : ProfileManagerImpl.getInstance().getRegisteredProfiles()) {
+        for (Profile profile : ProfileManagerImpl.getInstance()
+                .getRegisteredProfiles()) {
             if (!used.contains(profile)) {
                 ret.add(profile);
             }
@@ -216,50 +227,47 @@ public class ProjectSettingsTabProfile extends JPanel implements
         return ret;
     }
 
-    /**
-     * @param arg0
+    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent arg0) {
-        MutableComboBoxModel modelAvl = ((MutableComboBoxModel) availableList
-                .getModel());
-        MutableComboBoxModel modelUsd = ((MutableComboBoxModel) usedList
-                .getModel());
+        MutableComboBoxModel modelAvailable = 
+            ((MutableComboBoxModel) availableList.getModel());
+        MutableComboBoxModel modelUsed = 
+            ((MutableComboBoxModel) usedList.getModel());
 
         if (arg0.getSource() == addButton) {
             if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvl.getElementAt(availableList
-                        .getSelectedIndex());
-                modelUsd.addElement(selected);
-                modelAvl.removeElement(selected);
+                Profile selected = (Profile) modelAvailable
+                        .getElementAt(availableList.getSelectedIndex());
+                modelUsed.addElement(selected);
+                modelAvailable.removeElement(selected);
                 
                 for (Profile profile : getAvailableDependents(selected)) {
-                    modelUsd.addElement(profile);
-                    modelAvl.removeElement(profile);                    
+                    modelUsed.addElement(profile);
+                    modelAvailable.removeElement(profile);                    
                 }
             }
 	} else if (arg0.getSource() == removeButton) {
             if (usedList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelUsd.getElementAt(usedList
+                Profile selected = (Profile) modelUsed.getElementAt(usedList
                         .getSelectedIndex());
      
-                Vector<Profile> dependents = getActiveDependents(selected); 
+                List<Profile> dependents = getActiveDependents(selected); 
                 boolean remove = true;
 
                 if (!dependents.isEmpty()) {
+                    String message = Translator.localize(
+                            "tab.profiles.confirmdeletewithdependencies",
+                            new Object[] {dependents});
+                    String title = Translator.localize(
+                            "tab.profiles.confirmdeletewithdependencies.title");
                     remove = (JOptionPane
                             .showConfirmDialog(
                                     this,
-                                    Translator
-                                            .localize("tab.profiles.confirmdeletewithdependencies")
-                                            + dependents +
-                                    Translator
-                                            .localize("tab.profiles.confirmdeletewithdependencies.question")                                            
-                                            ,
-                                    Translator
-                                            .localize("tab.profiles.confirmdeletewithdependencies.title"),
-                                                                                                                                    
-                                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);                    
+                                    message,
+                                    title,
+                                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
                 }
                 
                 if (remove) {
@@ -278,25 +286,26 @@ public class ProjectSettingsTabProfile extends JPanel implements
                     }
 
                     if (remove) {
-                        modelUsd.removeElement(selected);
-                        modelAvl.addElement(selected);                        
-
+                        modelUsed.removeElement(selected);
+                        modelAvailable.addElement(selected);
+                        
                         for (Profile profile : dependents) {
-                            modelUsd.removeElement(profile);
-                            modelAvl.addElement(profile);                                                    
+                            modelUsed.removeElement(profile);
+                            modelAvailable.addElement(profile);
                         }
                     }
                 }
             }
 	} else if (arg0.getSource() == unregisterProfile) {
 	    if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvl.getElementAt(availableList
-                        .getSelectedIndex());
+                Profile selected = (Profile) modelAvailable
+                        .getElementAt(availableList.getSelectedIndex());
                 if (selected instanceof UserDefinedProfile) {
-                    ProfileManagerImpl.getInstance().removeProfile(selected);                    
-                    modelAvl.removeElement(selected);
+                    ProfileManagerImpl.getInstance().removeProfile(selected);
+                    modelAvailable.removeElement(selected);
                 } else {
-                    JOptionPane.showMessageDialog(this,Translator.localize("tab.profiles.cannotdelete"));
+                    JOptionPane.showMessageDialog(this, Translator
+                            .localize("tab.profiles.cannotdelete"));
                 }
             }
 	} else if (arg0.getSource() == loadFromFile) {
@@ -324,7 +333,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
                     UserDefinedProfile profile = new UserDefinedProfile(file);
                     ProfileManagerImpl.getInstance().registerProfile(profile);
 
-                    modelAvl.addElement(profile);
+                    modelAvailable.addElement(profile);
                 } catch (ProfileException e) {
                     JOptionPane.showMessageDialog(this, Translator
                             .localize("tab.profiles.userdefined.errorloading"));
@@ -336,12 +345,12 @@ public class ProjectSettingsTabProfile extends JPanel implements
 	usedList.validate();
     }
 
-    private Vector<Profile> getAvailableDependents(Profile selected) {
+    private List<Profile> getAvailableDependents(Profile selected) {
         MutableComboBoxModel modelAvl = ((MutableComboBoxModel) availableList
                 .getModel());
         
-        Vector<Profile> ret = new Vector<Profile>();
-        for(int i=0;i<modelAvl.getSize();++i) {
+        List<Profile> ret = new ArrayList<Profile>();
+        for (int i = 0; i < modelAvl.getSize(); ++i) {
             Profile p = (Profile) modelAvl.getElementAt(i);
             
             if (!p.equals(selected) && selected.getDependencies().contains(p)) {
@@ -352,12 +361,12 @@ public class ProjectSettingsTabProfile extends JPanel implements
         return ret;
     }
 
-    private Vector<Profile> getActiveDependents(Profile selected) {
+    private List<Profile> getActiveDependents(Profile selected) {
         MutableComboBoxModel modelUsd = ((MutableComboBoxModel) usedList
                 .getModel());
         
-        Vector<Profile> ret = new Vector<Profile>();
-        for(int i=0;i<modelUsd.getSize();++i) {
+        List<Profile> ret = new ArrayList<Profile>();
+        for (int i = 0; i < modelUsd.getSize(); ++i) {
             Profile p = (Profile) modelUsd.getElementAt(i);
             
             if (!p.equals(selected) && p.getDependencies().contains(selected)) {
@@ -393,7 +402,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     public void handleSettingsTabRefresh() {
-        ProjectSettings ps = ProjectManager.getManager().getCurrentProject().getProjectSettings();
+        ProjectSettings ps = ProjectManager.getManager().getCurrentProject()
+                .getProjectSettings();
         
         switch (ps.getDefaultStereotypeViewValue()) {
         case FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL:
@@ -411,15 +421,16 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     public void handleSettingsTabSave() {
-        Vector<Profile> toRemove = new Vector<Profile>();
-        ProfileConfiguration pc = ProjectManager.getManager().getCurrentProject().getProfileConfiguration();
+        List<Profile> toRemove = new ArrayList<Profile>();
+        ProfileConfiguration pc = ProjectManager.getManager()
+                .getCurrentProject().getProfileConfiguration();
         
-        Vector<Profile> usedItens = new Vector<Profile>();
+        List<Profile> usedItens = new ArrayList<Profile>();
 
         MutableComboBoxModel modelUsd = ((MutableComboBoxModel) usedList
                 .getModel());
         
-        for(int i=0;i<modelUsd.getSize();++i) {
+        for (int i = 0; i < modelUsd.getSize(); ++i) {
             usedItens.add((Profile) modelUsd.getElementAt(i));
         }
         

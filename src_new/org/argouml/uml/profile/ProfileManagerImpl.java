@@ -25,9 +25,11 @@
 package org.argouml.uml.profile;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
+
 
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
@@ -58,11 +60,11 @@ public class ProfileManagerImpl implements ProfileManager {
      */
     private boolean disableConfigurationUpdate = false;
     
-    private Vector<Profile> profiles = new Vector<Profile>();
+    private List<Profile> profiles = new ArrayList<Profile>();
 
-    private Vector<Profile> defaultProfiles = new Vector<Profile>();
+    private List<Profile> defaultProfiles = new ArrayList<Profile>();
 
-    private Vector<String> searchDirectories = new Vector<String>();
+    private List<String> searchDirectories = new ArrayList<String>();
 
     private ProfileManagerImpl() {
         defaultProfiles.add(ProfileUML.getInstance());
@@ -93,7 +95,7 @@ public class ProfileManagerImpl implements ProfileManager {
                 p = findUserDefinedProfile(new File(fileName));                
             } else if (desc.charAt(0) == 'C') {
                 String className = desc.substring(1);
-               p = getProfileForClass(className);
+                p = getProfileForClass(className);
             }
 
             if (p != null) {
@@ -107,11 +109,8 @@ public class ProfileManagerImpl implements ProfileManager {
     private void updateDefaultProfilesConfiguration() {
         if (!disableConfigurationUpdate) {
             StringBuffer buf = new StringBuffer();
-
-            Iterator it = defaultProfiles.iterator();
-
-            while (it.hasNext()) {
-                Profile p = (Profile) it.next();
+            
+            for (Profile p : defaultProfiles) {
 
                 if (p instanceof UserDefinedProfile) {
                     buf.append("U"
@@ -145,10 +144,7 @@ public class ProfileManagerImpl implements ProfileManager {
         if (!disableConfigurationUpdate) {
             StringBuffer buf = new StringBuffer();
 
-            Iterator it = searchDirectories.iterator();
-
-            while (it.hasNext()) {
-                String s = (String) it.next();
+            for (String s : searchDirectories) {
                 buf.append(s + "*");
             }
 
@@ -166,35 +162,27 @@ public class ProfileManagerImpl implements ProfileManager {
         return instance;
     }
 
-    /**
-     * @return the list of profiles
-     * @see org.argouml.uml.profile.ProfileManager#getRegisteredProfiles()
-     */
-    public Vector<Profile> getRegisteredProfiles() {
+
+    public List<Profile> getRegisteredProfiles() {
         return profiles;
     }
 
-    /**
-     * @param p the profile
-     * @see org.argouml.uml.profile.ProfileManager#registerProfile(org.argouml.uml.profile.Profile)
-     */
+
     public void registerProfile(Profile p) {        
         if (p != null && !profiles.contains(p)) {
             if (p instanceof UserDefinedProfile
                     || getProfileForClass(p.getClass().getName()) == null) {
                 profiles.add(p);
                 
-                // this profile could have not been loaded when the default profile configuration 
+                // this profile could have not been loaded when 
+                // the default profile configuration 
                 // was loaded at first, so we need to do it again
                 loadDefaultProfilesfromConfiguration();
             }
         }
     }
 
-    /**
-     * @param p the profile
-     * @see org.argouml.uml.profile.ProfileManager#removeProfile(org.argouml.uml.profile.Profile)
-     */
+
     public void removeProfile(Profile p) {
         if (p != null) {
             profiles.remove(p);
@@ -202,11 +190,7 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-    /**
-     * @param profileClass the profile class
-     * @return the profile object or null if there is no one
-     * @see org.argouml.uml.profile.ProfileManager#getProfileForClass(java.lang.Class)
-     */
+
     public Profile getProfileForClass(String profileClass) {
         Iterator it = profiles.iterator();
         Profile found = null;
@@ -222,10 +206,7 @@ public class ProfileManagerImpl implements ProfileManager {
         return found;
     }
 
-    /**
-     * @param p th profile
-     * @see org.argouml.uml.profile.ProfileManager#addToDefaultProfiles(org.argouml.uml.profile.Profile)
-     */
+
     public void addToDefaultProfiles(Profile p) {
         if (p != null && profiles.contains(p) && !defaultProfiles.contains(p)) {
             defaultProfiles.add(p);
@@ -233,18 +214,12 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-    /**
-     * @return the list
-     * @see org.argouml.uml.profile.ProfileManager#getDefaultProfiles()
-     */
-    public Vector<Profile> getDefaultProfiles() {
+
+    public List<Profile> getDefaultProfiles() {
         return defaultProfiles;
     }
 
-    /**
-     * @param p the profile
-     * @see org.argouml.uml.profile.ProfileManager#removeFromDefaultProfiles(org.argouml.uml.profile.Profile)
-     */
+
     public void removeFromDefaultProfiles(Profile p) {
         if (p != null && profiles.contains(p)) {
             defaultProfiles.remove(p);
@@ -259,18 +234,12 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-    /**
-     * @return the directory list
-     * @see org.argouml.uml.profile.ProfileManager#getSearchPathDirectories()
-     */
-    public Vector<String> getSearchPathDirectories() {
+
+    public List<String> getSearchPathDirectories() {
         return searchDirectories;
     }
 
-    /**
-     * @param path the directory to remove
-     * @see org.argouml.uml.profile.ProfileManager#removeSearchPathDirectory(java.lang.String)
-     */
+
     public void removeSearchPathDirectory(String path) {
         if (path != null) {
             searchDirectories.remove(path);
@@ -278,30 +247,27 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-    /**
-     * @see org.argouml.uml.profile.ProfileManager#refreshRegisteredProfiles()
-     */
-    public void refreshRegisteredProfiles() {
-        Iterator it = searchDirectories.iterator();
 
-        while (it.hasNext()) {
-            File dir = new File((String) it.next());
+    public void refreshRegisteredProfiles() {
+
+        for (String dirName : searchDirectories) {
+            File dir = new File(dirName);
 
             if (dir.exists()) {
-                File[] files = dir.listFiles();
+                for (File file : dir.listFiles()) {
+                    // TODO: Allow .zargo as profile as well?
+                    if (file.getName().toLowerCase().endsWith(".xmi")) {
 
-                for (int i = 0; i < files.length; ++i) {
-                    if (files[i].getName().toLowerCase().endsWith(".xmi")) {
-
-                        boolean found = findUserDefinedProfile(files[i]) != null;
+                        boolean found = 
+                            findUserDefinedProfile(file) != null;
 
                         if (!found) {
                             UserDefinedProfile udp = null;
                             try {
-                                udp = new UserDefinedProfile(files[i]);
+                                udp = new UserDefinedProfile(file);
                                 registerProfile(udp);
                             } catch (ProfileException e) {
-                                // if an exception is raised this file is not useful
+                                // if an exception is raised file is unusable
                             }
                         }
                     }
@@ -311,11 +277,8 @@ public class ProfileManagerImpl implements ProfileManager {
     }
 
     private Profile findUserDefinedProfile(File file) {
-        Iterator it2 = profiles.iterator();
-
-        while (it2.hasNext()) {
-            Profile p = (Profile) it2.next();
-
+        
+        for (Profile p : profiles) {
             if (p instanceof UserDefinedProfile) {
                 UserDefinedProfile udp = (UserDefinedProfile) p;
 

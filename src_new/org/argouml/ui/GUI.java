@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,8 +59,10 @@ public final class GUI {
         addSettingsTab(new SettingsTabEnvironment());
         addSettingsTab(new SettingsTabUser());
         addSettingsTab(new SettingsTabAppearance());
+        addSettingsTab(new SettingsTabProfile());
 
         addProjectSettingsTab(new ProjectSettingsTabProperties());
+        addProjectSettingsTab(new ProjectSettingsTabProfile());
     }
 
     /**
@@ -86,7 +88,7 @@ public final class GUI {
      *
      * @param panel The GUISettingsTabInterface to add.
      */
-    public void addSettingsTab(GUISettingsTabInterface panel) {
+    public void addSettingsTab(final GUISettingsTabInterface panel) {
         settingsTabs.add(panel);
     }
 
@@ -95,7 +97,7 @@ public final class GUI {
      *
      * @return A List of {@link GUISettingsTabInterface}.
      */
-    public List getSettingsTabs() {
+    public final List<GUISettingsTabInterface> getSettingsTabs() {
         return Collections.unmodifiableList(settingsTabs);
     }
 
@@ -110,7 +112,7 @@ public final class GUI {
      *
      * @param panel The GUISettingsTabInterface to add.
      */
-    public void addProjectSettingsTab(GUISettingsTabInterface panel) {
+    public void addProjectSettingsTab(final GUISettingsTabInterface panel) {
         projectSettingsTabs.add(panel);
     }
 
@@ -119,7 +121,7 @@ public final class GUI {
      *
      * @return A List of {@link GUISettingsTabInterface}.
      */
-    public List getProjectSettingsTabs() {
+    public final List<GUISettingsTabInterface> getProjectSettingsTabs() {
         return Collections.unmodifiableList(projectSettingsTabs);
     }
 }

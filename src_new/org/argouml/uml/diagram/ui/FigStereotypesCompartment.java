@@ -24,7 +24,9 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Image;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -74,6 +76,8 @@ public class FigStereotypesCompartment extends FigCompartment {
     private String keyword;
 
     private int stereotypeCount = 0;
+    
+    private boolean hidingStereotypesWithIcon = false;
     
     /**
      * The constructor.
@@ -130,6 +134,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                             Model.getFacade().getName(stereotype));
                     stereotypeTextFig.setOwner(stereotype);
                     addFig(stereotypeTextFig);
+                    reorderStereotypeFigs();
                     damage();
                 }
             } else {
@@ -149,6 +154,37 @@ public class FigStereotypesCompartment extends FigCompartment {
                 LOG.warn("Unexpected property " + event.getPropertyName());
             }
         }
+    }
+
+    /**
+     * Keep the Figs which are likely invisible at the end of the list.
+     */
+    private void reorderStereotypeFigs() {
+	List<Fig> allFigs = getFigs();
+	List<Fig> figsWithIcon = new ArrayList<Fig>();
+	List<Fig> figsWithOutIcon = new ArrayList<Fig>();
+	List<Fig> others = new ArrayList<Fig>();
+
+	for (Fig f : allFigs) {
+            if (f instanceof FigStereotype) {
+                FigStereotype s = (FigStereotype) f;
+                if (getIconForStereotype(s) != null) {
+                    figsWithIcon.add(s);
+                } else {
+                    figsWithOutIcon.add(s);
+                }
+            } else {
+                others.add(f);
+            }
+        }
+
+	List<Fig> n = new ArrayList<Fig>();
+	
+	n.addAll(others);
+	n.addAll(figsWithOutIcon);
+	n.addAll(figsWithIcon);	
+	
+	setFigs(n);
     }
 
     private Fig findFig(Object stereotype) {
@@ -250,7 +286,28 @@ public class FigStereotypesCompartment extends FigCompartment {
                     removeFig((Fig) figs.get(i));
                 }
             }
+
+            reorderStereotypeFigs();
+            
+            // remove all stereotypes that have a graphical icon
+            updateHiddenStereotypes();
         }
+    }
+
+    private void updateHiddenStereotypes() {
+        List<Fig> figs = getFigs();
+        for (Fig f : figs) {
+            if (f instanceof FigStereotype) {
+                FigStereotype fs = (FigStereotype) f;
+                fs.setVisible(getIconForStereotype(fs) == null
+                        || !isHidingStereotypesWithIcon());
+            }
+        }
+    }
+
+    private Image getIconForStereotype(FigStereotype fs) {
+        return getProject().getProfileConfiguration().getFigNodeStrategy()
+                .getIconForStereotype(fs.getOwner());
     }
 
     /*
@@ -284,5 +341,14 @@ public class FigStereotypesCompartment extends FigCompartment {
     }
 
     protected void createModelElement() {
+    }
+
+    public boolean isHidingStereotypesWithIcon() {
+        return hidingStereotypesWithIcon;
+    }
+
+    public void setHidingStereotypesWithIcon(boolean hidingStereotypesWithIcon) {
+        this.hidingStereotypesWithIcon = hidingStereotypesWithIcon;
+        updateHiddenStereotypes();
     }
 }

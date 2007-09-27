@@ -30,17 +30,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.uml.ProfileException;
 
 /**
  * Settings tab panel for handling ArgoUML application related settings.
@@ -54,7 +49,6 @@ class SettingsTabPreferences extends JPanel
     private JCheckBox chkSplash;
     private JCheckBox chkReloadRecent;
     private JCheckBox chkStripDiagrams;
-    private JTextField defaultProfile;
 
     /**
      * The constructor.
@@ -90,15 +84,7 @@ class SettingsTabPreferences extends JPanel
         chkStripDiagrams = j3;
         top.add(chkStripDiagrams, checkConstraints);
 
-        // TODO: Profile field is currently read-only, need a selector
-        checkConstraints.gridy++;
-        top.add(new JLabel(Translator.localize("label.default-profile")),
-                checkConstraints);
-        defaultProfile = new JTextField();
-        checkConstraints.gridy++;
         checkConstraints.fill = GridBagConstraints.HORIZONTAL;
-        top.add(defaultProfile, checkConstraints);
-        //defaultProfile.setEnabled(false);
 
 	add(top, BorderLayout.NORTH);
     }
@@ -114,8 +100,6 @@ class SettingsTabPreferences extends JPanel
         chkStripDiagrams.setSelected(
                 Configuration.getBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS,
                                          false));
-        defaultProfile.setText(ProjectManager.getManager().getCurrentProject()
-                .getProfile().getProfileModelFilename());
     }
 
     /*
@@ -127,14 +111,6 @@ class SettingsTabPreferences extends JPanel
 				 chkReloadRecent.isSelected());
         Configuration.setBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS,
                  chkStripDiagrams.isSelected());
-        try {
-            ProjectManager.getManager().getCurrentProject().getProfile()
-                    .setProfileModelFilename(defaultProfile.getText());
-        } catch (ProfileException e) {
-            // shouldn't happen if profile was validated when selected
-            JOptionPane.showMessageDialog(this, "Setting UML profile failed",
-                    "Profile save error", JOptionPane.ERROR_MESSAGE);
-        }
     }
 
     /*

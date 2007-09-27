@@ -33,8 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.argouml.uml.Profile;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.profile.Profile;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -452,8 +453,12 @@ public interface Project {
     public void setDefaultModel(Object theDefaultModel);
 
     /**
-     * @param packages a Collection of packages containing profiles.
+     * @param packages
+     *                a Collection of packages containing profiles.
+     * @deprecated by maurelio1234 for 0.25.4. Use
+     *             {@link #getProfileConfiguration()} instead.
      */
+    @Deprecated
     public void setProfiles(Collection packages);
 
     /**
@@ -467,9 +472,12 @@ public interface Project {
 
     /**
      * Get the collection of profile packages.
-     *
+     * 
      * @return collection of Packages containing profiles.
+     * @deprecated by maurelio1234 for 0.25.4. Use
+     *             {@link #getProfileConfiguration()} instead.
      */
+    @Deprecated
     public Object getProfiles();
 
     /**
@@ -597,7 +605,10 @@ public interface Project {
 
     /**
      * @return Returns the profile.
+     * @deprecated for 0.25.4 by maurelio1234. Use {@link #getProfiles()}
+     *             instead.
      */
+    @Deprecated
     public Profile getProfile();
 
     /**
@@ -612,6 +623,19 @@ public interface Project {
      * @return the settings of this project
      */
     public ProjectSettings getProjectSettings();
+
+    /**
+     * @return Returns the profile configuration.
+     */
+    public ProfileConfiguration getProfileConfiguration();
+
+
+    /**
+     * Set the profile configuration.
+     * 
+     * @param pc the profile configuration
+     */
+    public void setProfileConfiguration(ProfileConfiguration pc);
 
     /**
      * Return the UndoManager for this project.  Undo is managed on a 

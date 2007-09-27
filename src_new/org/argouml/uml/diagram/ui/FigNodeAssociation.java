@@ -238,11 +238,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
         return head.getLineWidth();
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
-    protected void setBoundsImpl(final int x, final int y, 
-            final int w, final int h) {
+    protected void setStandardBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
 
         Rectangle nm = getNameFig().getBounds();

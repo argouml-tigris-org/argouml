@@ -26,7 +26,7 @@
 package org.argouml.uml.ui;
 import java.util.Iterator;
 
-import org.argouml.uml.Profile;
+import org.argouml.uml.profile.ProfileConfiguration;
 
 /**
  * Interface supported by any container of UML user interface components.
@@ -46,23 +46,28 @@ public interface UMLUserInterfaceContainer {
 
     /**
      * @return the current target for the container if the target is a
-     *      MModelElement, otherwise null
+     *      ModelElement, otherwise null
      */
     public Object getModelElement();
 
     /**
+     * Return the current profile.
+     * <p>
+     * NOTE: An incompatible change was made to this API for 0.25.4. The return
+     * type was changed from Profile to ProfileConfiguration.
+     * 
      * @return the current profile, may not be null
      */
-    public Profile getProfile();
+    public ProfileConfiguration getProfile();
 
     /**
      * Formats the specified model element.  Typically, deferred to the
      * profile.
      *
-     * @param element the given element
+     * @param element the given ModelElement
      * @return the formatted string
      */
-    public String formatElement(/*MModelElement*/Object element);
+    public String formatElement(Object element);
 
     /**
      * Formats a collection of model elements.  Typically, deferred to the
@@ -79,6 +84,6 @@ public interface UMLUserInterfaceContainer {
      * @param ns the namespace
      * @return the formatted string
      */
-    public String formatNamespace(/*MNamespace*/Object ns);
+    public String formatNamespace(Object ns);
 
 }

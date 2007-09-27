@@ -219,7 +219,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setStandardBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
         }
@@ -316,8 +316,8 @@ public class FigComponentInstance extends FigNodeModelElement {
                 }
             } else if (isVisible()
                     // If we are not visible most likely we're being deleted.
-                    // TODO: This indicates a more fundamental problem that should
-                    // be investigated - tfm - 20061230
+                    // TODO: This indicates a more fundamental problem that 
+                    // should be investigated - tfm - 20061230
                     && encloser == null && getEnclosingFig() != null) {
                 if (Model.getFacade().getNodeInstance(comp) != null) {
                     Model.getCommonBehaviorHelper()

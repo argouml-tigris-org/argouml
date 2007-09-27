@@ -79,7 +79,7 @@ public class ProfileJava extends Profile {
 	addProfileDependency(ProfileUML.getInstance());
     }    
     
-    /**
+    /*
      * @return "Java"
      * @see org.argouml.uml.profile.Profile#getDisplayName()
      */
@@ -87,7 +87,7 @@ public class ProfileJava extends Profile {
 	return "Java";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.profile.Profile#getProfilePackages()
      */
     @Override
@@ -95,21 +95,25 @@ public class ProfileJava extends Profile {
         return model;
     }
     
-    /**
+    /*
      * @see org.argouml.uml.profile.Profile#getDefaultTypeStrategy()
      */
+    @Override
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return new DefaultTypeStrategy() {
             public Object getDefaultAttributeType() {
-                return ModelUtils.findTypeInModel("int", model.iterator().next());
+                return ModelUtils.findTypeInModel("int", model.iterator()
+                        .next());
             }
 
             public Object getDefaultParameterType() {
-                return ModelUtils.findTypeInModel("int", model.iterator().next());
+                return ModelUtils.findTypeInModel("int", model.iterator()
+                        .next());
             }
 
             public Object getDefaultReturnType() {
-                return ModelUtils.findTypeInModel("void", model.iterator().next());
+                return ModelUtils.findTypeInModel("void", model.iterator()
+                        .next());
             }
             
         };

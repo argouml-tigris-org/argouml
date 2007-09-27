@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -98,6 +99,7 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -187,6 +189,32 @@ public abstract class FigNodeModelElement
      */
     protected static final int ACTIVE = 8;
 
+    /**
+     * Used for #setStereotypeView(). Represents the default view for 
+     * stereotypes applied to this node.
+     * 
+     * @see ActionStereotypeViewTextual
+     */
+    public static final int STEREOTYPE_VIEW_TEXTUAL = 0;
+
+    /**
+     * Used for #setStereotypeView(). Represents the view for 
+     * stereotypes where the default representation is replaced by a provided
+     * icon. 
+     * 
+     * @see ActionStereotypeViewBigIcon
+     */
+    public static final int STEREOTYPE_VIEW_BIG_ICON = 1;
+
+    /**
+     * Used for #setStereotypeView(). Represents the view for 
+     * stereotypes where the default view is adorned with a small version of the
+     * provided icon.
+     * 
+     * @see ActionStereotypeViewSmallIcon
+     */
+    public static final int STEREOTYPE_VIEW_SMALL_ICON = 2;
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -206,6 +234,43 @@ public abstract class FigNodeModelElement
      */
     private Fig stereotypeFig;
 
+    /**
+     * The <code>FigProfileIcon</code> being currently displayed
+     */
+    private FigProfileIcon stereotypeFigProfileIcon;
+
+    /**
+     * Contains the figs of the floating stereotypes when viewed in 
+     * <code>SmallIcon</code> mode.
+     */
+    private   Vector floatingStereotypes = new Vector();
+    
+    /**
+     * The current stereotype view
+     * 
+     * @see #STEREOTYPE_VIEW_TEXTUAL
+     * @see #STEREOTYPE_VIEW_SMALL_ICON
+     * @see #STEREOTYPE_VIEW_BIG_ICON
+     */
+    private   int stereotypeView = STEREOTYPE_VIEW_TEXTUAL;   
+    
+    /**
+     * The width of the profile icons when viewed at the small icon mode.
+     * The icon width is resized to <code>ICON_WIDTH</code> and the height is 
+     * set to a value that attempts to keep the original width/height 
+     * proportion. 
+     */
+    private static final int ICON_WIDTH = 16;
+    
+    /**
+     * When stereotypes are shown in <code>BigIcon</code> mode the 
+     * <code>nameFig</code> is replaced by the one provided by the 
+     * <code>FigProfileIcon</code> 
+     * 
+     * @see FigProfileIcon
+     */
+    private FigText originalNameFig;
+    
     /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
      * it is a Package then these are the Classes, Interfaces, Packages etc
@@ -279,6 +344,8 @@ public abstract class FigNodeModelElement
         setShadowSize(ps.getDefaultShadowWidthValue());
         /* TODO: how to handle changes in shadowsize 
          * from the project properties? */
+        
+        stereotypeView = ps.getDefaultStereotypeViewValue();
     }
 
     /**
@@ -497,6 +564,16 @@ public abstract class FigNodeModelElement
                 }
                 popUpActions.insertElementAt(stereotypes, 0);
             }
+            
+            // add stereotype view submenu
+            ArgoJMenu stereotypesView =
+                new ArgoJMenu("menu.popup.stereotype-view");
+            
+            stereotypesView.addRadioItem(new ActionStereotypeViewTextual(this));
+            stereotypesView.addRadioItem(new ActionStereotypeViewBigIcon(this));
+            stereotypesView.addRadioItem(new ActionStereotypeViewSmallIcon(this));
+            
+            popUpActions.insertElementAt(stereotypesView, 0);
         }
 
         return popUpActions;
@@ -1116,6 +1193,7 @@ public abstract class FigNodeModelElement
                 addElementListener(mee.getNewValue(), "name");
             }
             updateStereotypeText();
+            updateStereotypeIcon();
             damage();
         }
     }
@@ -1368,7 +1446,8 @@ public abstract class FigNodeModelElement
         return getClass().getName()
             + "[" + getX() + ", " + getY() + ", "
             + getWidth() + ", " + getHeight() + "]"
-            + "pathVisible=" + isPathVisible() + ";";
+            + "pathVisible=" + isPathVisible() + ";"
+            + "stereotypeView=" + getStereotypeView() + ";";
     }
 
     /**
@@ -1466,8 +1545,124 @@ public abstract class FigNodeModelElement
     public void renderingChanged() {
         updateNameText();
         updateStereotypeText();
+        updateStereotypeIcon();        
         updateBounds();
         damage();
+    }
+
+    protected void updateStereotypeIcon() {
+	if (getOwner() == null) {
+	    LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
+		    + "] is null.");
+	    LOG.warn("I return...");
+	    return;
+	}
+
+	if (stereotypeFigProfileIcon != null) {
+	    Iterator it = getFigs().iterator();
+	    while (it.hasNext()) {
+		Object fig = it.next();
+		((Fig) fig).setVisible(fig != stereotypeFigProfileIcon);
+	    }
+
+	    this.removeFig(stereotypeFigProfileIcon);
+	    stereotypeFigProfileIcon = null;
+	}
+	
+	if (originalNameFig != null) {
+	    this.setNameFig(originalNameFig);
+	    originalNameFig = null;
+	}
+	
+	if (!floatingStereotypes.isEmpty()) {
+	    Iterator it = floatingStereotypes.iterator();
+	    while (it.hasNext()) {
+		Object icon = it.next();
+		this.removeFig((Fig) icon);
+	    }
+	    floatingStereotypes.clear();
+	}
+	
+	int practicalView = getPracticalView();
+	Object modelElement = getOwner();
+	Collection stereos = Model.getFacade().getStereotypes(modelElement);
+	 
+	Fig stereoFig = getStereotypeFig();
+        if (stereoFig instanceof FigStereotypesCompartment) {
+            ((FigStereotypesCompartment) stereoFig)
+                    .setHidingStereotypesWithIcon(practicalView == STEREOTYPE_VIEW_SMALL_ICON);
+        }
+
+	if (practicalView == STEREOTYPE_VIEW_BIG_ICON) {
+	    
+	    if (stereos != null) {
+		Image replaceIcon = null;
+
+		if (stereos.size() == 1) {
+		    Object stereo = stereos.iterator().next();
+		    replaceIcon = ProjectManager.getManager()
+			    .getCurrentProject().getProfileConfiguration()
+			    .getFigNodeStrategy().getIconForStereotype(stereo);
+		}
+		
+		if (replaceIcon != null) {
+		    stereotypeFigProfileIcon = new FigProfileIcon(replaceIcon,
+			    getName());
+		    stereotypeFigProfileIcon.setOwner(getOwner());
+
+		    stereotypeFigProfileIcon.setLocation(getBigPort()
+			    .getLocation());
+		    this.addFig(stereotypeFigProfileIcon);
+
+		    originalNameFig = this.getNameFig();
+		    this.setNameFig(stereotypeFigProfileIcon.getLabelFig());
+
+		    stereotypeFigProfileIcon.getLabelFig().addPropertyChangeListener(this);
+		    
+		    getBigPort().
+		    	setBounds(stereotypeFigProfileIcon.getBounds());
+		 
+		    Iterator it = getFigs().iterator();
+		    while (it.hasNext()) {
+			Object fig = it.next();
+			((Fig) fig).setVisible(fig == stereotypeFigProfileIcon);
+		    }
+		    
+		}
+	    }
+	} else if (practicalView == STEREOTYPE_VIEW_SMALL_ICON) {
+            int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
+
+            Iterator it = stereos.iterator();
+            while (it.hasNext()) {
+                Object stereo = it.next();
+                Image icon = ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration().getFigNodeStrategy()
+                        .getIconForStereotype(stereo);
+                if (icon != null) {
+                    FigImage fimg = new FigImage(i,
+                            this.getBigPort().getY() + 2, icon);
+                    fimg.setSize(ICON_WIDTH,
+                            (icon.getHeight(null) * ICON_WIDTH)
+                                    / icon.getWidth(null));
+
+                    addFig(fimg);
+                    floatingStereotypes.add(fimg);
+
+                    i -= ICON_WIDTH - 2;
+                }
+            }
+
+            updateSmallIcons(this.getWidth());
+        }
+
+	updateStereotypeText();
+	
+        damage();
+	calcBounds();
+	updateEdges();
+	this.updateBounds();
+	this.redraw();
     }
 
     /*
@@ -1863,6 +2058,108 @@ public abstract class FigNodeModelElement
 		== getOwner();
     }
 
+    
+        /**
+     * @return current stereotype view
+     */
+    public int getStereotypeView() {
+        return stereotypeView;
+    }
+
+    /**
+     * When using <code>BigIcon</code> mode and zero or more than one stereotype
+     * the practical view should be the default one. 
+     * 
+     * @return current practical stereotype view
+     */
+    public int getPracticalView() {               
+	int practicalView = getStereotypeView();
+        Object modelElement = getOwner();
+
+        if (modelElement != null) {
+            Collection stereos = Model.getFacade().getStereotypes(modelElement);
+
+            if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON
+                    && (stereos == null || stereos.size() != 1 ||
+                            (stereos
+                            .size() == 1 && getProject()
+                            .getProfileConfiguration().getFigNodeStrategy()
+                            .getIconForStereotype(stereos.iterator().next()) == null))) {
+                practicalView = STEREOTYPE_VIEW_TEXTUAL;
+            }
+            return practicalView;
+        } else {
+            return practicalView;
+        }
+    }
+    
+    /**
+     * Sets the stereotype view
+     * @param s the stereotype view to be set
+     */
+    public void setStereotypeView(int s) {
+        this.stereotypeView = s;
+        try {
+            renderingChanged();
+        } catch (Exception e) {
+        }
+    }
+    
+    /**
+     * Sets the bounds of this classifier. Takes the stereotype view into 
+     * consideration.<br>
+     * 
+     * Do not override this method, override 
+     * {@link #setStandardBounds(int, int, int, int)} instead.
+     * 
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
+    protected void setBoundsImpl(final int x, final int y, final int w,
+	    final int h) {
+
+	if (getPracticalView() == STEREOTYPE_VIEW_BIG_ICON) {
+	    if (stereotypeFigProfileIcon != null) {
+		    stereotypeFigProfileIcon.setBounds(stereotypeFigProfileIcon
+			.getX(), stereotypeFigProfileIcon.getY(), w, h);
+		    // FigClass calls setBoundsImpl before we set 
+		    // the stereotypeFigProfileIcon
+	    }
+	} else {
+	    setStandardBounds(x, y, w, h);
+	    if (getStereotypeView() == STEREOTYPE_VIEW_SMALL_ICON) {
+	        updateSmallIcons(w);
+	    }
+	}
+    }
+
+    private void updateSmallIcons(int wid) {
+        int i = this.getX() + wid - ICON_WIDTH - 2;
+
+        Iterator it = floatingStereotypes.iterator();
+        while (it.hasNext()) {
+            FigImage ficon = (FigImage) it.next();
+            ficon.setLocation(i, this.getBigPort().getY() + 2);
+            i -= ICON_WIDTH - 2;
+        }
+
+        getNameFig().setRightMargin(
+                floatingStereotypes.size() * (ICON_WIDTH + 5));
+    }
+    
+    /**
+     * Replaces {@link #setBoundsImpl(int, int, int, int)}.
+     * 
+     * @param x Desired X coordinate of upper left corner
+     * @param y Desired Y coordinate of upper left corner
+     * @param w Desired width of the FigClass
+     * @param h Desired height of the FigClass
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
+    protected void setStandardBounds(final int x, final int y,
+            final int w, final int h) {
+
+    }
+    
     /**
      * Handles diagram font changing.
      * @param e the event or null

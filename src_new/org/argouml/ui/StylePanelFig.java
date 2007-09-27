@@ -33,21 +33,24 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
-import org.argouml.i18n.Translator;
-import org.argouml.swingext.SpacerPanel;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ColorRenderer;
 
+import org.argouml.i18n.Translator;
+import org.argouml.swingext.SpacerPanel;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+
 /**
  * The basic stylepanel which provides the boundaries box,
- * line and fill color information.
+ * line and fill color information and the stereotype view combo box.
  *
  */
 public class StylePanelFig
@@ -72,6 +75,11 @@ public class StylePanelFig
 
     private JComboBox lineField = new JComboBox();
 
+    private JLabel stereoLabel =
+        new JLabel(Translator.localize("menu.popup.stereotype-view") + ": ");
+
+    private JComboBox stereoField = new JComboBox();
+    
     private SpacerPanel spacer = new SpacerPanel();
 
     private SpacerPanel spacer2 = new SpacerPanel();
@@ -102,6 +110,7 @@ public class StylePanelFig
         bboxField.addFocusListener(this);
         fillField.addItemListener(this);
         lineField.addItemListener(this);
+        stereoField.addItemListener(this);
 
         fillField.setRenderer(new ColorRenderer());
         lineField.setRenderer(new ColorRenderer());
@@ -117,6 +126,10 @@ public class StylePanelFig
         lineLabel.setLabelFor(lineField);
         add(lineLabel);
         add(lineField);
+
+        stereoLabel.setLabelFor(stereoField);
+        add(stereoLabel);
+        add(stereoField);
     }
 
     /**
@@ -164,6 +177,16 @@ public class StylePanelFig
         lineField.addItem(Color.orange);
         lineField.addItem(Color.pink);
         lineField.addItem(CUSTOM_ITEM);
+        
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        stereoField.setModel(model);
+        
+        model.addElement(Translator
+                .localize("menu.popup.stereotype-view.textual"));
+        model.addElement(Translator
+                .localize("menu.popup.stereotype-view.big-icon"));
+        model.addElement(Translator
+                .localize("menu.popup.stereotype-view.small-icon"));
     }
 
     /**
@@ -248,6 +271,24 @@ public class StylePanelFig
             lineField.setSelectedIndex(0);
         }
 
+        stereoField.setEnabled(target instanceof FigNodeModelElement);
+        stereoLabel.setEnabled(target instanceof FigNodeModelElement);
+        
+        if (target instanceof FigNodeModelElement) {
+            FigNodeModelElement fig = (FigNodeModelElement) target;
+            
+            switch (fig.getStereotypeView()) {
+            case FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL:
+                stereoField.setSelectedIndex(0);                
+                break;
+            case FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON:
+                stereoField.setSelectedIndex(1);                
+                break;
+            case FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON:
+                stereoField.setSelectedIndex(2);                
+                break;
+            }
+        }
     }
 
     /**
@@ -441,6 +482,29 @@ public class StylePanelFig
                             target.getLineColor());
                 }
                 setTargetLine();
+            } else if (src == stereoField) {
+                if (target instanceof FigNodeModelElement) {
+                    Object item = e.getItem();
+                    DefaultComboBoxModel model = 
+                        (DefaultComboBoxModel) stereoField.getModel();
+                    int idx = model.getIndexOf(item);
+                    FigNodeModelElement fig = (FigNodeModelElement) target;
+
+                    switch (idx) {
+                    case 0:
+                        fig.setStereotypeView(
+                                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
+                        break;
+                    case 1:
+                        fig.setStereotypeView(
+                                FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON);
+                        break;
+                    case 2:
+                        fig.setStereotypeView(
+                                FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -476,7 +540,7 @@ public class StylePanelFig
         // Empty implementation - we only care about keyTyped
     }
 
-    /**
+    /*
      * Tests if enter is pressed in the _bbodField so we need to set the target
      * bounds.
      *

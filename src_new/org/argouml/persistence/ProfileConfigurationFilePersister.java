@@ -32,13 +32,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
+
+import org.xml.sax.InputSource;
 
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.kernel.Project;
@@ -50,9 +51,7 @@ import org.argouml.model.XmiWriter;
 import org.argouml.uml.profile.Profile;
 import org.argouml.uml.profile.ProfileConfiguration;
 import org.argouml.uml.profile.ProfileManagerImpl;
-import org.argouml.uml.profile.StreamModelLoader;
 import org.argouml.uml.profile.UserDefinedProfile;
-import org.xml.sax.InputSource;
 
 /**
  * Persister for Project's Profile Configuration
@@ -61,24 +60,19 @@ import org.xml.sax.InputSource;
  */
 public class ProfileConfigurationFilePersister extends MemberFilePersister {
 
-    /**
-     * @return the tag used to store this content on the uml file
-     * 
+    /*
      * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public String getMainTag() {
 	return "profile";
     }
 
-    /**
-     * @param project
-     * @param inputStream
-     * @throws OpenException
-     * 
+    /*
      * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project, java.io.InputStream)
      */
     public void load(Project project, InputStream inputStream)
-	    throws OpenException {
+	throws OpenException {
+        
 	try {
 	    ProfileConfiguration pc = new ProfileConfiguration(project);
 
@@ -101,12 +95,13 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 		}
 
 		Profile profile = null;
-		Vector profiles = ProfileManagerImpl.getInstance()
+		List<Profile> profiles = ProfileManagerImpl.getInstance()
 			.getRegisteredProfiles();
 
 		if (line.equals("<userDefined>")) {
                     line = br.readLine().trim();
-		    String fileName = line.substring(line.indexOf(">")+1, line.indexOf("</")).trim();
+		    String fileName = line.substring(line.indexOf(">") + 1,
+                            line.indexOf("</")).trim();
 
                     // consumes the <model> tag
                     br.readLine();
@@ -149,38 +144,31 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 	}
     }
 
-    /**
-     * @param member
-     * @param writer
-     * @param xmlFragment
-     * @throws SaveException
-     * @deprecated
-     * 
+    /*
      * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.Writer, boolean)
      */
     public void save(ProjectMember member, Writer writer, boolean xmlFragment)
-	    throws SaveException {
-	PrintWriter w = new PrintWriter(writer);
+	throws SaveException {
+	
+        PrintWriter w = new PrintWriter(writer);
 	saveProjectMember(member, w);
     }
 
-    /**
-     * @param member
-     * @param stream
-     * @throws SaveException
-     * 
+    /*
      * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.OutputStream)
      */
     public void save(ProjectMember member, OutputStream stream)
-	    throws SaveException {
-	PrintWriter w = new PrintWriter(stream);
+	throws SaveException {
+	
+        PrintWriter w = new PrintWriter(stream);
 	saveProjectMember(member, w);
         w.flush();
     }
 
     private void saveProjectMember(ProjectMember member, PrintWriter w)
-	    throws SaveException {
-	try {
+	throws SaveException {
+	
+        try {
 	    if (member instanceof ProfileConfiguration) {
 		ProfileConfiguration pc = (ProfileConfiguration) member;
 
@@ -193,7 +181,8 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                     Profile profile = (Profile) it.next();
 
                     if (profile instanceof UserDefinedProfile) {
-                        UserDefinedProfile uprofile = (UserDefinedProfile) profile;
+                        UserDefinedProfile uprofile = 
+                            (UserDefinedProfile) profile;
                         w.println("\t\t<userDefined>");
                         w.println("\t\t\t<filename>"
                                 + uprofile.getModelFile().getName()
@@ -232,7 +221,8 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 
     private Collection readModelXMI(String xmi) throws UmlException {
         XmiReader xmiReader = Model.getXmiReader();
-        InputSource inputSource = new InputSource(new ByteArrayInputStream(xmi.getBytes()));
+        InputSource inputSource = 
+            new InputSource(new ByteArrayInputStream(xmi.getBytes()));
         Collection elements = xmiReader.parse(inputSource, true);
         return elements;
     }

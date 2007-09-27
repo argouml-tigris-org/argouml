@@ -43,15 +43,19 @@ public abstract class Profile {
     private Set<Profile> importingProfiles = new HashSet<Profile>();
         
     /**
-     * A profile should call this method to state that it depends of <code>p</code>
+     * Add a dependency on the given profile from this profile.
      * 
-     * @param p the profile
-     * @throws IllegalArgumentException if there is some cycle on the dependency graph
+     * @param p
+     *                the profile
+     * @throws IllegalArgumentException
+     *                 if there is some cycle on the dependency graph
      */
-    protected final void addProfileDependency(Profile p) throws IllegalArgumentException {
+    protected final void addProfileDependency(Profile p)
+        throws IllegalArgumentException {
+        
         if (importingProfiles.contains(p)) {
-            throw new IllegalArgumentException(
-                    "This profile causes a cycle in the profile dependency graph!");
+            throw new IllegalArgumentException("This profile causes a cycle "
+                    + "in the profile dependency graph!");
         } else {
             importedProfiles.add(p);
             importedProfiles.addAll(p.importedProfiles);
@@ -118,13 +122,17 @@ public abstract class Profile {
     }
     
     /**
-     *    This method produces a string that represents the specific
-     *    model element in the context of the specified namespace.
-     *    @param element element to represent.
-     *    @param namespace context namespace (may be null).
-     *    @return a string representing the model element
-     *   
-     *   @deprecated by maurelio1234. Use {@link #getFormatingStrategy()} instead.
+     * This method produces a string that represents the specific model element
+     * in the context of the specified namespace.
+     * 
+     * @param element
+     *                element to represent.
+     * @param namespace
+     *                context namespace (may be null).
+     * @return a string representing the model element
+     * 
+     * @deprecated for 0.25.4 by maurelio1234. Use
+     *             {@link #getFormatingStrategy()} instead.
      */
     @Deprecated
     public String formatElement(Object element,
@@ -138,13 +146,17 @@ public abstract class Profile {
     }
     
     /**
-     *   This method produces a string the represents the collection
-     *   of model elements in the context of the specified namespace.
-     *   @param iter iterator over collection
-     *   @param namespace context namespace (may be null).
-     *   @return a string representing the collection
-     *   
-     *   @deprecated by maurelio1234. Use {@link #getFormatingStrategy()} instead.
+     * This method produces a string the represents the collection of model
+     * elements in the context of the specified namespace.
+     * 
+     * @param iter
+     *                iterator over collection
+     * @param namespace
+     *                context namespace (may be null).
+     * @return a string representing the collection
+     * 
+     * @deprecated for 0.25.4 by maurelio1234. Use
+     *             {@link #getFormatingStrategy()} instead.
      */
     @Deprecated
     public String formatCollection(Iterator iter,

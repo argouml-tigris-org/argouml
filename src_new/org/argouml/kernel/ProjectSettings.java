@@ -38,6 +38,8 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.DiagramAppearance;
+import org.argouml.ui.SettingsTabProfile;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
@@ -68,6 +70,7 @@ public class ProjectSettings {
     private boolean showStereotypes;
     private boolean showSingularMultiplicities;
     private int defaultShadowWidth;
+    private int defaultStereotypeView;
     
     /* Diagram appearance settings with project scope: */
     private String fontName;
@@ -126,6 +129,9 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true); 
         defaultShadowWidth = Configuration.getInteger(
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
+        defaultStereotypeView = Configuration.getInteger(
+                SettingsTabProfile.KEY_DEFAULT_STEREOTYPE_VIEW,
+                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
 
         /*
          * Diagram appearance settings:
@@ -139,8 +145,6 @@ public class ProjectSettings {
         if (System.getProperty("file.separator").equals("/")) {
             generationOutputDir = "/tmp";
         } else {
-            //This does not even exist on many systems:
-            //_outputDir = "c:\\temp";
             generationOutputDir = System.getProperty("java.io.tmpdir");
         }
         generationOutputDir = Configuration.getString(
@@ -734,6 +738,23 @@ public class ProjectSettings {
     /**
      * Used by "argo.tee".
      * 
+     * @return Returns the default stereotype view
+     */
+    public String getDefaultStereotypeView() {
+        return new Integer(defaultStereotypeView).toString();
+    }
+    
+    /**
+     * @return Returns the default stereotype view
+     */
+    public int getDefaultStereotypeViewValue() {
+        return defaultStereotypeView;
+    }
+    
+    
+    /**
+     * Used by "argo.tee".
+     * 
      * @return the output directory name
      */
     public String getGenerationOutputDir() { 
@@ -751,7 +772,41 @@ public class ProjectSettings {
     /**
      * @return the header comment string
      */
-    public String getHeaderComment() { return headerComment; }
+    public String getHeaderComment() {
+        return headerComment;
+    }
+
+    /**
+     * @param newView the default stereotype view
+     */
+    public void setDefaultStereotypeView(final int newView) {
+
+        if (defaultStereotypeView == newView) {
+            return;
+        }
+
+        final int oldValue = defaultStereotypeView;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = 
+                SettingsTabProfile.KEY_DEFAULT_STEREOTYPE_VIEW;
+
+            public void redo() {
+                defaultStereotypeView = newView;
+                fireNotationEvent(key, oldValue, newView);
+            }
+
+            public void undo() {
+                defaultStereotypeView = oldValue;
+                fireNotationEvent(key, newView, oldValue);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
+    }
 
     /**
      * @param c the header comment string
@@ -813,19 +868,6 @@ public class ProjectSettings {
                 .toString(newValue));
     }
 
-    /**
-     * Convenience methods to fire diagram appearance 
-     * configuration change events.
-     *
-     * @param key the ConfigurationKey that is related to the change
-     * @param oldValue the old value
-     * @param newValue the new value
-     */
-    private void fireDiagramAppearanceEvent(ConfigurationKey key,
-            boolean oldValue, boolean newValue) {
-        fireDiagramAppearanceEvent(key, Boolean.toString(oldValue), Boolean
-                .toString(newValue));
-    }
 
     /**
      * Convenience methods to fire diagram appearance 

@@ -114,10 +114,10 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
                             model,
                             Model.getMetaTypes().getTagDefinition()));
         }
-        addAllUniqueModelElementsFrom(availableTagDefs, paths,
-                Model.getModelManagementHelper().getAllModelElementsOfKind(
-                        project.getDefaultModel(),
+        addAllUniqueModelElementsFrom(availableTagDefs, paths, project
+                .getProfileConfiguration().findByMetaType(
                         Model.getMetaTypes().getTagDefinition()));
+                        
         List notValids = new ArrayList();
         for (Object tagDef : availableTagDefs) {
             Object owner = Model.getFacade().getOwner(tagDef);

@@ -22,21 +22,22 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.profile;
 
 import java.awt.Image;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.AbstractProjectMember;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
+
 /**
  *   This class captures represents the unique access point for the 
  *   configurability allowed by the use of profiles. 
@@ -51,11 +52,14 @@ public class ProfileConfiguration extends AbstractProjectMember {
             .getLogger(ProfileConfiguration.class);
 
     private FormatingStrategy formatingStrategy;
+
     private DefaultTypeStrategy defaultTypeStrategy;
-    private Vector	      figNodeStrategies = new Vector();
-    
-    private Vector<Profile> profiles = new Vector<Profile>();
-    private Vector<Object> profileModels = new Vector<Object>();
+
+    private List figNodeStrategies = new ArrayList();
+
+    private List<Profile> profiles = new ArrayList<Profile>();
+
+    private List<Object> profileModels = new ArrayList<Object>();
     
     /**
      * The extension used in serialization and returned by {@link #getType()}
@@ -71,10 +75,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public ProfileConfiguration(Project project) {
 	super(EXTENSION, project);
 	
-        Iterator it = ProfileManagerImpl.getInstance().getDefaultProfiles().iterator();
-        
-        while (it.hasNext()) {
-            Profile p = (Profile) it.next();
+        for (Profile p 
+                : ProfileManagerImpl.getInstance().getDefaultProfiles()) {
             addProfile(p);
         }
 
@@ -108,10 +110,10 @@ public class ProfileConfiguration extends AbstractProjectMember {
      * 
      * @param profile the profile providing the current default type strategy
      */
-    public void activateDefaultTypeStrategy(Profile p) {
-        if (p != null && p.getDefaultTypeStrategy() != null
-                && getProfiles().contains(p)) {
-            this.defaultTypeStrategy = p.getDefaultTypeStrategy();
+    public void activateDefaultTypeStrategy(Profile profile) {
+        if (profile != null && profile.getDefaultTypeStrategy() != null
+                && getProfiles().contains(profile)) {
+            this.defaultTypeStrategy = profile.getDefaultTypeStrategy();
         }
     }
     
@@ -131,7 +133,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     /**
      * @return the list of applied profiles
      */
-    public Vector<Profile> getProfiles() {
+    public List<Profile> getProfiles() {
         return profiles;
     }
     
@@ -166,7 +168,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     /**
      * @return the list of models of the currently applied profile.
      */
-    private Vector getProfileModels() {
+    private List getProfileModels() {
         return profileModels;
     }
 
@@ -192,7 +194,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
             formatingStrategy = null;
         }
 
-        Vector<Profile> markForRemoval = new Vector<Profile>();
+        List<Profile> markForRemoval = new ArrayList<Profile>();
         for (Profile profile : profiles) {
             if (profile.getDependencies().contains(p)) {
                 markForRemoval.add(profile);
@@ -255,17 +257,19 @@ public class ProfileConfiguration extends AbstractProjectMember {
      * @return the "Profile Configuration" string
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return "Profile Configuration";
     }
 
+
     /**
-     * @param string
-     * @param obj 
-     * @return
+     * Find a stereotype with the given name which is applicable to the given element.
+     * @param name name of stereotype to look for
+     * @param element model element to which the stereotype must be applicable
+     * @return the stereotype or null if none found
      */
-    @SuppressWarnings("deprecation")
-    public Object findStereotypeForObject(String string, Object obj) {
+    public Object findStereotypeForObject(String name, Object element) {
         Iterator iter = null;
         
         for (Object model : profileModels) {
@@ -274,15 +278,15 @@ public class ProfileConfiguration extends AbstractProjectMember {
             while (iter.hasNext()) {
                 Object stereo = iter.next();
                 if (!Model.getFacade().isAStereotype(stereo)
-                        || !string.equals(Model.getFacade().getName(stereo))) {
+                        || !name.equals(Model.getFacade().getName(stereo))) {
                     continue;
                 }
 
-                if (Model.getExtensionMechanismsHelper().isValidStereoType(obj,
+                if (Model.getExtensionMechanismsHelper().isValidStereoType(element,
                         stereo)) {
                     return Model.getModelManagementHelper()
                             .getCorrespondingElement(stereo,
-                                    Model.getFacade().getModel(obj));
+                                    Model.getFacade().getModel(element));
                 }
             }            
         }
@@ -291,23 +295,22 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
 
     /**
-     * @param name
-     * @return
+     * Search for the given type in all of the profile models.
+     * 
+     * @param name name of type to be found
+     * @return the type or null
      */
     public Object findType(String name) {
-        Object result = null;
-        Iterator it = getProfileModels().iterator();
-        while (result == null && it.hasNext()) {
-            result = ModelUtils.findTypeInModel(name, it.next());
+        for (Object model : getProfileModels()) {
+            Object result = ModelUtils.findTypeInModel(name, model);
+            if (result != null) {
+                return result;
+            }
         }
-        
-        return result;
+        return null;
     }
 
-    /**
-     * @param metaType
-     * @return
-     */
+
     @SuppressWarnings("unchecked")
     public Collection findByMetaType(Object metaType) {
         Set elements = new HashSet();
@@ -323,7 +326,9 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
     /**
      * @param modelElement
-     * @return
+     *                ModelElement for which find possible stereotypes
+     * @return collection of stereotypes which are valid for the given model
+     *         element.
      */
     public Collection findAllStereotypesForModelElement(Object modelElement) {
         return Model.getExtensionMechanismsHelper().getAllPossibleStereotypes(

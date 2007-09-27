@@ -76,9 +76,12 @@ import org.argouml.ui.explorer.rules.GoOperationToCollaborationDiagram;
 import org.argouml.ui.explorer.rules.GoOperationToSequenceDiagram;
 import org.argouml.ui.explorer.rules.GoPackageToClass;
 import org.argouml.ui.explorer.rules.GoPackageToElementImport;
+import org.argouml.ui.explorer.rules.GoProfileConfigurationToProfile;
+import org.argouml.ui.explorer.rules.GoProfileToModel;
 import org.argouml.ui.explorer.rules.GoProjectToCollaboration;
 import org.argouml.ui.explorer.rules.GoProjectToDiagram;
 import org.argouml.ui.explorer.rules.GoProjectToModel;
+import org.argouml.ui.explorer.rules.GoProjectToProfileConfiguration;
 import org.argouml.ui.explorer.rules.GoProjectToRoots;
 import org.argouml.ui.explorer.rules.GoProjectToStateMachine;
 import org.argouml.ui.explorer.rules.GoSignalToReception;
@@ -325,6 +328,10 @@ public final class PerspectiveManager {
         ExplorerPerspective classPerspective =
             new ExplorerPerspective(
                 "combobox.item.class-centric");
+        classPerspective.addRule(new GoProjectToModel());
+        classPerspective.addRule(new GoProjectToProfileConfiguration());
+        classPerspective.addRule(new GoProfileConfigurationToProfile());
+        classPerspective.addRule(new GoProfileToModel());
         classPerspective.addRule(new GoProjectToRoots());
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
         classPerspective.addRule(new GoNamespaceToDiagram());
@@ -339,6 +346,10 @@ public final class PerspectiveManager {
         ExplorerPerspective packagePerspective =
             new ExplorerPerspective(
                 "combobox.item.package-centric");
+        packagePerspective.addRule(new GoProjectToModel());
+        packagePerspective.addRule(new GoProjectToProfileConfiguration());
+        packagePerspective.addRule(new GoProfileConfigurationToProfile());
+        packagePerspective.addRule(new GoProfileToModel());
         packagePerspective.addRule(new GoProjectToRoots());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
         packagePerspective.addRule(new GoPackageToElementImport());
@@ -384,6 +395,9 @@ public final class PerspectiveManager {
             new ExplorerPerspective(
                 "combobox.item.diagram-centric");
         diagramPerspective.addRule(new GoProjectToModel());
+        diagramPerspective.addRule(new GoProjectToProfileConfiguration());
+        diagramPerspective.addRule(new GoProfileConfigurationToProfile());
+        diagramPerspective.addRule(new GoProfileToModel());
         diagramPerspective.addRule(new GoModelToDiagrams());
         diagramPerspective.addRule(new GoDiagramToNode());
         diagramPerspective.addRule(new GoDiagramToEdge());
@@ -395,6 +409,9 @@ public final class PerspectiveManager {
             new ExplorerPerspective(
                 "combobox.item.inheritance-centric");
         inheritancePerspective.addRule(new GoProjectToModel());
+        inheritancePerspective.addRule(new GoProjectToProfileConfiguration());
+        classPerspective.addRule(new GoProfileConfigurationToProfile());
+        classPerspective.addRule(new GoProfileToModel());
         inheritancePerspective.addRule(new GoModelToBaseElements());
         inheritancePerspective
                 .addRule(new GoGeneralizableElementToSpecialized());
@@ -403,6 +420,9 @@ public final class PerspectiveManager {
             new ExplorerPerspective(
                 "combobox.item.class-associations");
         associationsPerspective.addRule(new GoProjectToModel());
+        associationsPerspective.addRule(new GoProjectToProfileConfiguration());
+        associationsPerspective.addRule(new GoProfileConfigurationToProfile());
+        associationsPerspective.addRule(new GoProfileToModel());
         associationsPerspective.addRule(new GoNamespaceToDiagram());
         associationsPerspective.addRule(new GoPackageToClass());
         associationsPerspective.addRule(new GoClassToAssociatedClass());
@@ -411,6 +431,9 @@ public final class PerspectiveManager {
             new ExplorerPerspective(
                 "combobox.item.residence-centric");
         residencePerspective.addRule(new GoProjectToModel());
+        residencePerspective.addRule(new GoProjectToProfileConfiguration());
+        residencePerspective.addRule(new GoProfileConfigurationToProfile());
+        residencePerspective.addRule(new GoProfileToModel());
         residencePerspective.addRule(new GoModelToNode());
         residencePerspective.addRule(new GoNodeToResidentComponent());
         residencePerspective.addRule(new GoComponentToResidentModelElement());
@@ -441,11 +464,16 @@ public final class PerspectiveManager {
         ExplorerPerspective compositionPerspective =
             new ExplorerPerspective(
                 "combobox.item.composite-centric");
+        compositionPerspective.addRule(new GoProjectToModel());
+        compositionPerspective.addRule(new GoProjectToProfileConfiguration());
+        compositionPerspective.addRule(new GoProfileConfigurationToProfile());
+        compositionPerspective.addRule(new GoProfileToModel());
         compositionPerspective.addRule(new GoProjectToRoots());
         compositionPerspective.addRule(new GoModelElementToContents());
         compositionPerspective.addRule(new GoModelElementToContainedDiagrams());
 
-        Collection<ExplorerPerspective> c = new ArrayList<ExplorerPerspective>();
+        Collection<ExplorerPerspective> c = 
+            new ArrayList<ExplorerPerspective>();
         c.add(packagePerspective);
         c.add(classPerspective);
         c.add(diagramPerspective);
@@ -501,7 +529,10 @@ public final class PerspectiveManager {
             new GoOperationToSequenceDiagram(), new GoPackageToClass(),
             new GoPackageToElementImport(),
             new GoProjectToCollaboration(), new GoProjectToDiagram(),
-            new GoProjectToModel(), new GoProjectToStateMachine(),
+            new GoProjectToModel(), new GoProjectToStateMachine(), 
+            new GoProjectToProfileConfiguration(), 
+            new GoProfileConfigurationToProfile(),
+            new GoProfileToModel(),
             new GoProjectToRoots(),
             new GoSignalToReception(), new GoStateMachineToTop(),
             new GoStatemachineToDiagram(), new GoStateMachineToState(),

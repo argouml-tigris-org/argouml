@@ -99,9 +99,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
                             model, Model.getMetaTypes().getDataType()));
         }
 
-        elements.addAll(Model.getModelManagementHelper()
-                .getAllModelElementsOfKind(
-                        p.getDefaultModel(),
+        elements.addAll(p.getProfileConfiguration().findByMetaType(
                         Model.getMetaTypes().getClassifier()));
 
 	// Our comparator will throw an InvalidElementException if the old

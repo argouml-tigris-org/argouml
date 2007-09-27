@@ -42,6 +42,8 @@ public class ProfileUML extends Profile {
      */
     private static final Logger LOG = Logger.getLogger(ProfileUML.class);
     
+    private static final String PROFILE_FILE = "/org/argouml/default-uml14.xmi";
+    
     private FormatingStrategy formatingStrategy;
     private ProfileModelLoader profileModelLoader;
     private Collection model;
@@ -71,7 +73,7 @@ public class ProfileUML extends Profile {
         formatingStrategy = new JavaFormatingStrategy();
 	profileModelLoader = new ResourceModelLoader();
 	model = profileModelLoader
-		.loadModel("/org/argouml/default-uml14.xmi");
+		.loadModel(PROFILE_FILE);
 
         if (model == null) {
             model = new ArrayList();
@@ -88,7 +90,7 @@ public class ProfileUML extends Profile {
 	return formatingStrategy;
     }
 
-    /**
+    /*
      * @return "UML 1.4"
      * @see org.argouml.uml.profile.Profile#getDisplayName()
      */
@@ -96,7 +98,7 @@ public class ProfileUML extends Profile {
 	return "UML 1.4";
     }
 
-    /**
+    /*
      * @see org.argouml.uml.profile.Profile#getProfilePackages()
      */
     @Override
@@ -104,23 +106,26 @@ public class ProfileUML extends Profile {
         return model;
     }
     
-    /**
+    /*
      * @see org.argouml.uml.profile.Profile#getDefaultTypeStrategy()
      */
+    @Override
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return new DefaultTypeStrategy() {
             public Object getDefaultAttributeType() {
-                return ModelUtils.findTypeInModel("Integer", model.iterator().next());
+                return ModelUtils.findTypeInModel("Integer", model.iterator()
+                        .next());
             }
 
             public Object getDefaultParameterType() {
-                return ModelUtils.findTypeInModel("Integer", model.iterator().next());
+                return ModelUtils.findTypeInModel("Integer", model.iterator()
+                        .next());
             }
 
             public Object getDefaultReturnType() {
                 return null;
             }
-            
+
         };
-    }    
+    }
 }

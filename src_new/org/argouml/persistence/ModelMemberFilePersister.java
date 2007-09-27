@@ -58,6 +58,7 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.profile.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -85,7 +86,8 @@ class ModelMemberFilePersister extends MemberFilePersister
      * java.io.InputStream)
      */
     public void load(Project project, URL url)
-            throws OpenException {
+        throws OpenException {
+        
         load(project, new InputSource(url.toExternalForm()));
     }
     
@@ -101,7 +103,8 @@ class ModelMemberFilePersister extends MemberFilePersister
      * java.io.InputStream)
      */
     public void load(Project project, InputStream inputStream)
-            throws OpenException {
+        throws OpenException {
+        
         load(project, new InputSource(inputStream));
     }
 
@@ -137,7 +140,7 @@ class ModelMemberFilePersister extends MemberFilePersister
 
         project.addMember(mmodel);
 
-        project.setUUIDRefs(new HashMap(getUUIDRefs()));
+        project.setUUIDRefs(new HashMap<String, Object>(getUUIDRefs()));
     }
 
     /*
@@ -242,6 +245,8 @@ class ModelMemberFilePersister extends MemberFilePersister
             persister =
                 PersistenceManager.getInstance()
                     .getDiagramMemberFilePersister();
+        } else if (pm instanceof ProfileConfiguration) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         }
@@ -253,7 +258,7 @@ class ModelMemberFilePersister extends MemberFilePersister
     }
     
     private Object curModel;
-    private HashMap uUIDRefs;
+    private HashMap<String, Object> uUIDRefs;
 
     private Collection elementsRead;
 
@@ -272,7 +277,7 @@ class ModelMemberFilePersister extends MemberFilePersister
      * 
      * @return the UUID
      */
-    public HashMap getUUIDRefs() {
+    public HashMap<String, Object> getUUIDRefs() {
         return uUIDRefs;
     }
 
@@ -356,7 +361,8 @@ class ModelMemberFilePersister extends MemberFilePersister
                     }
                 }
             }
-            uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
+            uUIDRefs = 
+                new HashMap<String, Object>(reader.getXMIUUIDToObjectMap());
         } catch (XmiException ex) {
             throw new XmiFormatException(ex);
         } catch (UmlException ex) {

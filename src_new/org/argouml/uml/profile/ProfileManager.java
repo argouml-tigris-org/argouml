@@ -24,7 +24,7 @@
 
 package org.argouml.uml.profile;
 
-import java.util.Vector;
+import java.util.List;
 
 /**
  * Manages the global set of registered profiles.
@@ -32,14 +32,16 @@ import java.util.Vector;
  * @author maurelio1234
  */
 public interface ProfileManager {
+
     /**
-     * Register a new profile
+     * Register a new profile.
      * 
      * @param p the profile
      */
     void registerProfile(Profile p);
+
     /**
-     * Remove a profile from the list
+     * Remove a profile from the list.
      * 
      * @param p the profile
      */
@@ -48,53 +50,56 @@ public interface ProfileManager {
     /**
      * @return the list of registered profiles
      */
-    Vector<Profile> getRegisteredProfiles();
+    List<Profile> getRegisteredProfiles();
     
     /**
-     * @return the profile instance for the class
+     * TODO: Add better Javadoc here.
+     * 
+     * @return the profile instance for the class or null if there is none.
+     * @param className the name of the class for which to get the profile
      */
     Profile getProfileForClass(String className);
     
     /**
      * @return the default set of profiles
      */
-    Vector<Profile> getDefaultProfiles();
+    List<Profile> getDefaultProfiles();
     
     /**
-     * Adds a profile to the default list.
+     * Add a profile to the default list.
      * 
      * @param p profile to add
      */
     void addToDefaultProfiles(Profile p);
     
     /**
-     * Remove a profile from the default list
+     * Remove a profile from the default list.
      * 
      * @param p the profile to be removed
      */
     void removeFromDefaultProfiles(Profile p);
     
     /**
-     * Adds a new directory to the directory list
+     * Add a new directory to the directory list.
      * 
      * @param path user defined directory
      */
     void addSearchPathDirectory(String path);
     
     /**
-     * Removes a directory from the directory list
+     * Remove a directory from the directory list.
      * 
-     * @param path
+     * @param path the directory path to be removed.
      */
     void removeSearchPathDirectory(String path);
     
     /**
      * @return the current directory list
      */
-    Vector<String> getSearchPathDirectories();
+    List<String> getSearchPathDirectories();
     
     /**
-     * Looks for XMI files at the current directory list and registers
+     * Look for XMI files at the current directory list and registers
      * them as user defined profiles.
      */
     void refreshRegisteredProfiles();
