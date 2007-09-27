@@ -52,7 +52,7 @@ import org.tigris.gef.base.Diagram;
  * 
  * @author Bob Tarling
  */
-public class MemberList implements List {
+public class MemberList implements List<ProjectMember> {
 
     /**
      * Logger.
@@ -74,7 +74,7 @@ public class MemberList implements List {
         LOG.info("Creating a member list");
     }
 
-    public synchronized boolean add(Object member) {
+    public synchronized boolean add(ProjectMember member) {
 
         if (member instanceof ProjectMemberModel) {
             // Always put the model at the top
@@ -120,15 +120,15 @@ public class MemberList implements List {
         }
     }
 
-    public synchronized Iterator iterator() {
+    public synchronized Iterator<ProjectMember> iterator() {
         return buildTempList().iterator();
     }
 
-    public synchronized ListIterator listIterator() {
+    public synchronized ListIterator<ProjectMember> listIterator() {
         return buildTempList().listIterator();
     }
 
-    public synchronized ListIterator listIterator(int arg0) {
+    public synchronized ListIterator<ProjectMember> listIterator(int arg0) {
         return buildTempList().listIterator(arg0);
     }
 
@@ -250,7 +250,7 @@ public class MemberList implements List {
             "There is no single instance of a " + type.getName() + " member");
     }
 
-    public synchronized Object get(int i) {
+    public synchronized ProjectMember get(int i) {
         if (model != null) {
             if (i == 0) {
                 return model;
@@ -259,8 +259,13 @@ public class MemberList implements List {
         }
 
         if (i == diagramMembers.size()) {
-            return todoList;
+            if (todoList != null) {
+                return todoList;
+            } else {
+                return profileConfiguration;
+            }
         }
+        
         if (i == (diagramMembers.size() + 1)) {
             return profileConfiguration;
         }
@@ -272,8 +277,8 @@ public class MemberList implements List {
         return size() == 0;
     }
 
-    public synchronized Object[] toArray() {
-        Object[] temp = new Object[size()];
+    public synchronized ProjectMember[] toArray() {
+        ProjectMember[] temp = new ProjectMember[size()];
         int pos = 0;
         if (model != null) {
             temp[pos++] = model;
@@ -295,39 +300,39 @@ public class MemberList implements List {
         todoList = member;
     }
 
-    public Object[] toArray(Object[] arg0) {
+    public <T> T[] toArray(T[] a) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean containsAll(Collection arg0) {
+    public boolean containsAll(Collection<?> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean addAll(Collection arg0) {
+    public boolean addAll(Collection<? extends ProjectMember> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean addAll(int arg0, Collection arg1) {
+    public boolean addAll(int arg0, Collection<? extends ProjectMember> arg1) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean removeAll(Collection arg0) {
+    public boolean removeAll(Collection<?> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean retainAll(Collection arg0) {
+    public boolean retainAll(Collection<?> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public Object set(int arg0, Object arg1) {
+    public ProjectMember set(int arg0, ProjectMember arg1) {
         throw new UnsupportedOperationException();
     }
 
-    public void add(int arg0, Object arg1) {
+    public void add(int arg0, ProjectMember arg1) {
         throw new UnsupportedOperationException();
     }
 
-    public Object remove(int arg0) {
+    public ProjectMember remove(int arg0) {
         throw new UnsupportedOperationException();
     }
 
@@ -339,7 +344,7 @@ public class MemberList implements List {
         throw new UnsupportedOperationException();
     }
 
-    public List subList(int arg0, int arg1) {
+    public List<ProjectMember> subList(int arg0, int arg1) {
         throw new UnsupportedOperationException();
     }
 
@@ -350,4 +355,5 @@ public class MemberList implements List {
     public void setProfileConfiguration(AbstractProjectMember profileConfig) {
         profileConfiguration = profileConfig;
     }
+
 }
