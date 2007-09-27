@@ -33,6 +33,7 @@ import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.ActivityPartition;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.AggregationKind;
+import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.BehavioralFeature;
@@ -42,12 +43,15 @@ import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
+import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Extend;
+import org.eclipse.uml2.uml.ExtensionPoint;
 import org.eclipse.uml2.uml.FinalState;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Include;
@@ -115,6 +119,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         // replaced in UML 2.0 by explicitly modeled Actions
         return State.class;
     }
+    
+//    public Object getActivityGraph() {
+//        return ActivityGraph.class;
+//    }
 
     public Object getActor() {
         return Actor.class;
@@ -122,6 +130,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getAggregationKind() {
         return AggregationKind.class;
+    }
+    
+    public Object getArtifact() {
+        return Artifact.class;
     }
 
     public Object getAssociation() {
@@ -211,6 +223,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         // TODO: no separate CompositeState in UML 2.1 - tfm
         return State.class;
     }
+    
+    public Object getConstraint() {
+        return Constraint.class;
+    }
 
     public Object getCreateAction() {
         // TODO Auto-generated method stub
@@ -228,6 +244,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     public Object getDestroyAction() {
         // TODO Auto-generated method stub
         throw new NotYetImplementedException();
+    }
+    
+    public Object getElementImport() {
+        return ElementImport.class;
     }
 
     public Object getEnumeration() {
@@ -253,6 +273,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return Extend.class;
     }
 
+    public Object getExtensionPoint() {
+        return ExtensionPoint.class;
+    }
+    
     public Object getFinalState() {
         return FinalState.class;
     }
@@ -477,10 +501,14 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     public Object getTagDefinition() {
         // TODO: In UML 2.x a TagDefinition has become a Property on a Stereotype
         // Anything that uses this will probably need to be reviewed/changed.
-        // Just return Propety for now.
+        // Just return Property for now.
         return Property.class;
     }
 
+    public Object getTaggedValue() {
+        throw new NotYetImplementedException();
+    }
+    
     public Object getTerminateAction() {
         // TODO Auto-generated method stub
         throw new NotYetImplementedException();

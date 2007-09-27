@@ -753,7 +753,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return ((Classifier) element).getGenerals();
     }
 
-    public Collection getExtendingClassifiers(Object classifier) {
+    public Collection<Element> getExtendingClassifiers(Object classifier) {
         // TODO: Does CoreHelper#getExtendingClassifiers(Object element) means
         // all direct and indirect extending classifiers or only the direct
         // extending classifiers?
@@ -761,7 +761,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "'classifier' must be instance of Classifier"); //$NON-NLS-1$
         }
-        Collection result = new HashSet();
+        Collection<Element> result = new HashSet<Element>();
         for (Element e : getExtendingElements(classifier)) {
             if (e instanceof Classifier) {
                 result.add(e);
@@ -775,8 +775,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "'element' must be instance of Classifier"); //$NON-NLS-1$
         }
-        Collection result = new HashSet();
-        for (DirectedRelationship d : ((Classifier) element).getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
+        Collection<Element> result = new HashSet<Element>();
+        for (DirectedRelationship d : ((Classifier) element)
+                .getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
             for (Element e : d.getSources()) {
                 result.add(e);
             }
@@ -839,18 +840,20 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return ((org.eclipse.uml2.uml.Class) cls).getImplementedInterfaces();
     }
 
-    public Collection getRelationships(Object source, Object dest) {
+    public Collection<DirectedRelationship> getRelationships(Object source, Object dest) {
         if (!(source instanceof Element) || !(dest instanceof Element)) {
             throw new IllegalArgumentException(
                     "'source' and 'dest' must be instances of Element"); //$NON-NLS-1$
         }
-        Collection result = new ArrayList();
-        for (DirectedRelationship d : ((Element) source).getSourceDirectedRelationships()) {
+        Collection<DirectedRelationship> result = new ArrayList<DirectedRelationship>();
+        for (DirectedRelationship d : ((Element) source)
+                .getSourceDirectedRelationships()) {
             if (d.getTargets().contains(dest)) {
                 result.add(d);
             }
         }
-        for (DirectedRelationship d : ((Element) source).getTargetDirectedRelationships()) {
+        for (DirectedRelationship d : ((Element) source)
+                .getTargetDirectedRelationships()) {
             if (d.getSources().contains(dest)) {
                 result.add(d);
             }
@@ -858,12 +861,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
-    public List getReturnParameters(Object operation) {
+    public List<Parameter> getReturnParameters(Object operation) {
         if (!(operation instanceof Operation)) {
             throw new IllegalArgumentException(
                     "'operation' must be instance of Operation"); //$NON-NLS-1$
         }
-        List result = new ArrayList();
+        List<Parameter> result = new ArrayList<Parameter>();
         for (Parameter p : ((Operation) operation).getOwnedParameters()) {
             if (p.getDirection() == ParameterDirectionKind.RETURN_LITERAL) {
                 result.add(p);
@@ -963,13 +966,14 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return getRealizedInterfaces(classifier);
     }
 
-    public Collection getSubtypes(Object cls) {
+    public Collection<Element> getSubtypes(Object cls) {
         if (!(cls instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "'cls' must be instance of Classifier"); //$NON-NLS-1$
         }
-        Collection results = new HashSet();
-        for (DirectedRelationship d : ((Classifier) cls).getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
+        Collection<Element> results = new HashSet<Element>();
+        for (DirectedRelationship d : ((Classifier) cls)
+                .getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
             results.addAll(d.getSources());
         }
         return results;
@@ -1241,7 +1245,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "handle must be instance of Comment"); //$NON-NLS-1$
         }
-        if (!(elems == null)) {
+        if (elems == null) {
             throw new NullPointerException("elems must be non-null"); //$NON-NLS-1$
         }
         for (Object o : elems) {

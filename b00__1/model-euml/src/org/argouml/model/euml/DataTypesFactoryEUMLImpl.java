@@ -99,7 +99,7 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory,
     }
 
     public Object createMultiplicity(String str) {
-        // This does not exist as a specific element in UML2
+        // TODO: This does not exist as a specific element in UML2
         // As a workaround we return the string as the multiplicity
         return str;
     }
@@ -156,7 +156,8 @@ class DataTypesFactoryEUMLImpl implements DataTypesFactory,
                 return Integer.parseInt(b);
             }
         } catch (Exception ex) {
-            throw new IllegalArgumentException("illegal range bound : " + b);
+            throw new IllegalArgumentException(
+                    "illegal range bound : " + b); //$NON-NLS-1$
         }
     }
 

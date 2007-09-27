@@ -39,6 +39,8 @@ import org.argouml.model.NotImplementedException;
 class ChangeableKindEUMLImpl implements ChangeableKind {
 
     public Object getAddOnly() {
+    // TODO: Change to throw exception when uses are fixed
+//        throw new NotImplementedException();
         return "";
     }
 

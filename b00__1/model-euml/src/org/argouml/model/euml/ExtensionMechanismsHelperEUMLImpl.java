@@ -80,8 +80,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         if (m instanceof Element) {
             return getMetaModelName(m.getClass());
         }
-        throw new IllegalArgumentException("Not an Element");
-
+        throw new IllegalArgumentException("Not an Element"); //$NON-NLS-1$
     }
 
     /**
@@ -139,7 +138,9 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     /**
      * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
      */
-    public boolean isValidStereoType(Object theModelElement, Object theStereotype) {
+    @Deprecated
+    public boolean isValidStereoType(Object theModelElement,
+            Object theStereotype) {
         return isValidStereotype(theModelElement, theStereotype);
     }
 
@@ -163,6 +164,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         
     }
 
+    @Deprecated
     public void setTag(Object handle, Object tag) {
         // TODO Auto-generated method stub
         
@@ -173,6 +175,10 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         
     }
 
+    public void setTagType(Object handle, String tagType) {
+        // TODO Auto-generated method stub        
+    }
+    
     public void setType(Object handle, Object type) {
         // TODO Auto-generated method stub
         
@@ -180,7 +186,6 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     public void setValueOfTag(Object handle, String value) {
         // TODO Auto-generated method stub
-        
     }
 
 

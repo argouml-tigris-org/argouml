@@ -142,7 +142,7 @@ class FacadeEUMLImpl implements Facade {
 
     public String getUmlVersion() {
         // TODO: Can we get this from the metamodel?
-        return "2.1.1";
+        return "2.1.1"; //$NON-NLS-1$
     }
     
     public boolean equalsPseudostateKind(Object ps1, Object ps2) {
@@ -236,7 +236,7 @@ class FacadeEUMLImpl implements Facade {
         }
         if (!(association instanceof Association)) {
             throw new IllegalArgumentException(
-                    "association must be instance of Association"); //$NON-NLS-1$
+                    "association must be Association"); //$NON-NLS-1$
         }
         for (Property p : UMLUtil.getOwnedAttributes((Classifier) classifier)) {
             if (p.getAssociation() == association) {
@@ -334,10 +334,11 @@ class FacadeEUMLImpl implements Facade {
     public Object getChangeability(Object handle) {
         if (!(handle instanceof StructuralFeature)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of StructuralFeature"); //$NON-NLS-1$
+                    "handle must be StructuralFeature"); //$NON-NLS-1$
         }
-        return ((StructuralFeature) handle).isReadOnly() ? modelImpl.getChangeableKind().getFrozen()
-                : modelImpl.getChangeableKind().getChangeable();
+        return ((StructuralFeature) handle).isReadOnly() ? modelImpl
+                .getChangeableKind().getFrozen() : modelImpl
+                .getChangeableKind().getChangeable();
     }
 
     @SuppressWarnings("deprecation")
@@ -410,10 +411,11 @@ class FacadeEUMLImpl implements Facade {
             throw new IllegalArgumentException(
                     "handle must be instance of Element"); //$NON-NLS-1$
         }
-        Collection result = new HashSet();
-        for (EStructuralFeature.Setting reference : UMLUtil.getInverseReferences((Element) handle)) {
+        Collection<Comment> result = new HashSet<Comment>();
+        for (EStructuralFeature.Setting reference : UMLUtil
+                .getInverseReferences((Element) handle)) {
             if (reference.getEObject() instanceof Comment) {
-                result.add(reference.getEObject());
+                result.add((Comment) reference.getEObject());
             }
         }
         return result;
@@ -740,7 +742,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getLocation(Object handle) {
-        // Removed from UML2
+        // TODO: Removed from UML2
         return "";
     }
 
@@ -1982,7 +1984,8 @@ class FacadeEUMLImpl implements Facade {
         } else if (handle instanceof BehavioralFeature) {
             return ((BehavioralFeature) handle).isAbstract();
         } else {
-            throw new IllegalArgumentException();
+            return false;
+//            throw new IllegalArgumentException();
         }
     }
 

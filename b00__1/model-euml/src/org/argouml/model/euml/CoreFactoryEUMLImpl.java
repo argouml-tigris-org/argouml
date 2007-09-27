@@ -479,11 +479,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public org.eclipse.uml2.uml.Class buildClass(String name) {
-        org.eclipse.uml2.uml.Class class_ = createClass();
+        org.eclipse.uml2.uml.Class clazz = createClass();
         if (name != null) {
-            class_.setName(name);
+            clazz.setName(name);
         }
-        return class_;
+        return clazz;
     }
 
     public org.eclipse.uml2.uml.Class buildClass(final String name,
@@ -496,19 +496,19 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                org.eclipse.uml2.uml.Class class_ = createClass();
+                org.eclipse.uml2.uml.Class clazz = createClass();
                 if (name != null) {
-                    class_.setName(name);
+                    clazz.setName(name);
                 }
                 if (owner instanceof org.eclipse.uml2.uml.Package) {
-                    class_.setPackage((org.eclipse.uml2.uml.Package) owner);
+                    clazz.setPackage((org.eclipse.uml2.uml.Package) owner);
                 } else if (owner instanceof org.eclipse.uml2.uml.Class) {
-                    ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers().add(
-                            class_);
+                    ((org.eclipse.uml2.uml.Class) owner).getNestedClassifiers()
+                            .add(clazz);
                 } else if (owner instanceof Interface) {
-                    ((Interface) owner).getNestedClassifiers().add(class_);
+                    ((Interface) owner).getNestedClassifiers().add(clazz);
                 }
-                getParams().add(class_);
+                getParams().add(clazz);
             }
         };
         ChangeCommand cmd = new ChangeCommand(
@@ -658,7 +658,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Object buildElementResidence(Object me, Object component) {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is this removed from UML2 ?
         throw new NotImplementedException();
     }
 
@@ -797,7 +797,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Object buildMethod(String name) {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is this removed from UML2 ?
         throw new NotImplementedException();
     }
 
@@ -959,7 +959,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Object buildTemplateArgument(Object element) {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is this removed from UML2 ?
         throw new NotImplementedException();
     }
 
@@ -1069,7 +1069,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Object createElementResidence() {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is this removed from UML2 ?
         throw new NotImplementedException();
     }
 
@@ -1082,7 +1082,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Object createFlow() {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is this removed from UML2 ?
         throw new NotImplementedException();
     }
 
@@ -1095,7 +1095,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Object createMethod() {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is this removed from UML2 ?
         throw new NotImplementedException();
     }
 
@@ -1139,7 +1139,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Object createTemplateArgument() {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is this removed from UML2 ?
         throw new NotImplementedException();
     }
 
