@@ -26,10 +26,12 @@ package org.argouml.uml;
 
 import java.util.Collection;
 
-import org.argouml.model.Model;
-
 import junit.framework.TestCase;
+
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
+import org.argouml.model.Model;
+import org.argouml.uml.profile.ProfileConfiguration;
 
 /**
  * 
@@ -51,27 +53,21 @@ public class TestProfileJava extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
     }
 
     /**
-     * Test whether we can load default model (profile). ProfileJava will throw
-     * an exception for an invalid profile model, but just create and return an
-     * empty model if the file for the profile doesn't exist. Check
-     * for both failure modes.
-     * 
-     * @throws ProfileException
-     *             exception thrown by ProfileJava for invalid profile file.
+     * Test whether we can load default model (profile).
      */
-    public void testLoadProfileModel() throws ProfileException {
-        ProfileJava profile = new ProfileJava();
-        Object model = profile.getProfileModel();
-        assertNotNull("Can't load profile model", model);
-        Collection stereos = Model.getModelManagementHelper()
-                .getAllModelElementsOfKind(model,
-                        Model.getMetaTypes().getStereotype());
-        assertTrue("No stereotypes found in profile model", stereos.size() > 0);
+    public void testLoadProfileModel() {
+        ProfileConfiguration config = ProjectManager.getManager()
+                .getCurrentProject().getProfileConfiguration();
+        assertNotNull("Can't load profile configuration", config);
+        Collection stereos = config.findAllStereotypesForModelElement(Model
+                .getCoreFactory().createClass());
+        assertTrue("No stereotypes found in default profiles", stereos.size() > 0);
     }
 }

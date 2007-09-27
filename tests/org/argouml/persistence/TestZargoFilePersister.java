@@ -39,9 +39,6 @@ import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
-import org.argouml.uml.Profile;
-import org.argouml.uml.ProfileException;
-import org.argouml.uml.ProfileJava;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 
 /**
@@ -187,14 +184,10 @@ public class TestZargoFilePersister extends TestCase {
      * 
      * @throws OpenException
      * @throws InterruptedException
-     * @throws ProfileException 
      */
     public void testLoadLinkedProfile() throws OpenException,
-            InterruptedException, ProfileException {
-        // Make sure our profile is loaded
-        Profile profile = new ProfileJava();
-        Collection profileModel = profile.getProfilePackages();
-        
+            InterruptedException {
+     
         // Load a project which contains links to it
         Project p = doLoad("/testmodels/uml14/LinkedProfile.zargo");
         
