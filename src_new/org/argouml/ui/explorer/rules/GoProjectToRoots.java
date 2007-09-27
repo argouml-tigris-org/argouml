@@ -54,9 +54,9 @@ public class GoProjectToRoots extends AbstractPerspectiveRule {
 
 
     public Collection getChildren(Object parent) {
-	if (parent instanceof Project) {
-	    return ((Project)parent).getRoots();
-	}
+        if (parent instanceof Project) {
+            return ((Project) parent).getRoots();
+        }
 	return null;
     }
 

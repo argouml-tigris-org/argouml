@@ -110,13 +110,13 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 
 		    StringBuffer xmi = new StringBuffer();
                     
-                    while(true) {
+                    while (true) {
                         line = br.readLine();
                         if (line == null || line.contains("</model>")) {
                             break;
                         }
-                        
-                        xmi.append(line+"\n");
+
+                        xmi.append(line + "\n");
                     }
                     
                     Collection model = readModelXMI(xmi.toString());

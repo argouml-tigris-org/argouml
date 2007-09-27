@@ -67,26 +67,23 @@ public class UserDefinedProfile extends Profile {
     }
     
     /**
-     * @return the string that should represent this profile in the GUI. An start (*) is placed on it if it comes from the currently opened zargo file.
+     * @return the string that should represent this profile in the GUI. An
+     *         start (*) is placed on it if it comes from the currently opened
+     *         zargo file.
      * 
      * @see org.argouml.uml.profile.Profile#getDisplayName()
      */
     public String getDisplayName() {
-	return displayName + (fromZargo? "*" : "");
+        return displayName + (fromZargo ? "*" : "");
     }
 
-    /**
-     * @return null
-     * @see org.argouml.uml.profile.Profile#getFormatingStrategy()
-     */
+
+    @Override
     public FormatingStrategy getFormatingStrategy() {
 	return null;
     }
 
-    /**
-     * @return null
-     * @see org.argouml.uml.profile.Profile#getFigureStrategy()
-     */
+    @Override
     public FigNodeStrategy getFigureStrategy() {
 	return null;
     }
@@ -98,6 +95,7 @@ public class UserDefinedProfile extends Profile {
         return modelFile;
     }
     
+    @Override
     public String toString() {
         return super.toString() + " [" + getModelFile() + "]";
     }
