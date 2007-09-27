@@ -29,6 +29,7 @@ package org.argouml.model.euml;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.NotImplementedException;
 import org.argouml.model.UseCasesFactory;
+import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.ExtensionPoint;
@@ -72,8 +73,7 @@ class UseCasesFactoryEUMLImpl implements UseCasesFactory, AbstractModelFactory {
             ns = (Namespace) model;
         }
         Actor ret = createActor();
-        modelImpl.getCoreHelper().addOwnedElement(
-                ns, ret, "Create the actor # in the namespace #", ret, ns);
+        modelImpl.getCoreHelper().addOwnedElement(ns, ret);
 //        ret.setIsLeaf(false);
 //        ret.setIsRoot(false);
         return ret;
@@ -116,13 +116,8 @@ class UseCasesFactoryEUMLImpl implements UseCasesFactory, AbstractModelFactory {
                 getParams().add(ep);
             }
         };
-        ChangeCommand cmd = new ChangeCommand(
-                modelImpl, run,
-                "Create the extend # for the case # that extends the case # through #");
-        modelImpl.getEditingDomain().getCommandStack().execute(cmd);
-        cmd.setObjects(
-                run.getParams().get(0), extension, extendedCase,
-                run.getParams().get(1));
+        modelImpl.getEditingDomain().getCommandStack().execute(
+                new ChangeCommand(modelImpl.getEditingDomain(), run));
 
         return (Extend) run.getParams().get(0);
     }
@@ -132,10 +127,7 @@ class UseCasesFactoryEUMLImpl implements UseCasesFactory, AbstractModelFactory {
             throw new IllegalArgumentException();
         }
         ExtensionPoint ep = createExtensionPoint();
-        modelImpl.getCoreHelper().addOwnedElement(
-                modelElement, ep,
-                "Create the extension point # for the case #", ep,
-                modelElement);
+        modelImpl.getCoreHelper().addOwnedElement(modelElement, ep);
         return ep;
     }
 
@@ -153,11 +145,8 @@ class UseCasesFactoryEUMLImpl implements UseCasesFactory, AbstractModelFactory {
                 getParams().add(include);
             }
         };
-        ChangeCommand cmd = new ChangeCommand(
-                modelImpl, run,
-                "Create the include # of the including case # that include the case #");
-        modelImpl.getEditingDomain().getCommandStack().execute(cmd);
-        cmd.setObjects(run.getParams().get(0), includingCase, addition);
+        modelImpl.getEditingDomain().getCommandStack().execute(
+                new ChangeCommand(modelImpl.getEditingDomain(), run));
 
         return (Include) run.getParams().get(0);
     }

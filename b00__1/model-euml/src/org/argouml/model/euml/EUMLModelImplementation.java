@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.CommandStack;
 import org.argouml.model.DiagramInterchangeModel;
 import org.argouml.model.ModelImplementation;
 import org.argouml.model.UmlException;
@@ -156,8 +157,6 @@ public class EUMLModelImplementation implements ModelImplementation {
     private UseCasesHelperEUMLImpl theUseCasesHelper;
 
     private VisibilityKindEUMLImpl theVisibilityKind;
-    
-    private CommandStackImpl theCommandStack;
 
     /**
      * This keeps track of the editing domain that is used to track all changes
@@ -509,11 +508,13 @@ public class EUMLModelImplementation implements ModelImplementation {
         return null;
     }
 
-    public CommandStackImpl getCommandStack() {
-        if (theCommandStack == null) {
-            theCommandStack = new CommandStackImpl(this);
-        }
-        return theCommandStack;
+    /**
+     * The command stack implementation is out of scope in eUML,
+     * instead use the command stack provided by ArgoUML.
+     */
+    @Deprecated
+    public CommandStack getCommandStack() {
+        return null;
     }
 
 }

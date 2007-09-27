@@ -42,6 +42,7 @@ import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Behavior;
@@ -124,17 +125,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 }
             }
         };
-        ChangeCommand cmd;
-        if (stereos.size() == 1) {
-            cmd = new ChangeCommand(
-                    modelImpl, run, "Apply the stereotype # to the element #",
-                    stereos.iterator().next(), modelElement);
-        } else {
-            cmd = new ChangeCommand(
-                    modelImpl, run, "Apply # stereotypes to the element #",
-                    stereos.size(), modelElement);
-        }
-        editingDomain.getCommandStack().execute(cmd);
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void addAnnotatedElement(final Object comment,
@@ -153,10 +144,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         (Element) annotatedElement);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Add the comment # to the element #",
-                        comment, annotatedElement));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void addClient(final Object dependency, final Object element) {
@@ -174,10 +162,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         (NamedElement) element);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Add the client # to the dependency #",
-                        element, dependency));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void addClientDependency(Object handle, Object dependency) {
@@ -203,12 +188,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         RunnableClass run = getRunnableClassForAddCommand(
                 (Association) handle, position, (Property) connection);
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl,
-                        run,
-                        "Add the AssociationEnd (Property) # to the Association #",
-                        connection, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void addConstraint(final Object handle, final Object mc) {
@@ -225,10 +205,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((Constraint) mc).getConstrainedElements().add((Element) handle);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Add the constraint # to the element #", mc, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void addDeploymentLocation(Object handle, Object node) {
@@ -290,10 +267,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException("f must be instance of Feature"); //$NON-NLS-1$
         }
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, getRunnableClassForAddCommand(
-                                (Classifier) handle, index, (Feature) f),
-                        "Add the feature # to the classifier #", f, handle));
+                new ChangeCommand(editingDomain, getRunnableClassForAddCommand(
+                        (Classifier) handle, index, (Feature) f)));
     }
 
     public void addFeature(Object handle, Object f) {
@@ -315,12 +290,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     "literal must be instance of EnumerationLiteral"); //$NON-NLS-1$
         }
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, getRunnableClassForAddCommand(
-                                (Enumeration) handle, index,
-                                (EnumerationLiteral) literal),
-                        "Add the EnumerationLiteral # to the Enumeration #",
-                        literal, handle));
+                new ChangeCommand(editingDomain, getRunnableClassForAddCommand(
+                        (Enumeration) handle, index,
+                        (EnumerationLiteral) literal)));
     }
 
     public void addMethod(final Object handle, final Object method) {
@@ -340,16 +312,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((BehavioralFeature) handle).getMethods().add((Behavior) method);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl,
-                        run,
-                        "Add the Behavior (method) # to the BehavioralFeature (operation) #",
-                        method, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
     
-    public void addOwnedElement(Object handle, Object me, String msg,
-            Object... objects) {
+    public void addOwnedElement(Object handle, Object me) {
         if (!(handle instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "The handle must be instance of Namespace"); //$NON-NLS-1$
@@ -359,17 +325,14 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     "'me' must be instance of Element"); //$NON-NLS-1$
         }
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(modelImpl, getRunnableClassForAddCommand(
-                        (Namespace) handle, (Element) me), msg, objects));
-    }
-
-    public void addOwnedElement(Object handle, Object me) {
-        addOwnedElement(handle, me, "Add the owned element # to the owner #", me, handle);
+                new ChangeCommand(editingDomain, getRunnableClassForAddCommand(
+                        (Namespace) handle, (Element) me)));
     }
 
     public void addParameter(Object handle, int index, Object parameter) {
         // TODO: In UML2.x Event has no parameters.
-        // TODO: Treat ObjectFlowState (this doesn't exist anymore in UML2) and Classifier
+        // TODO: Treat ObjectFlowState (this doesn't exist anymore in UML2) and
+        // Classifier
         if (!(handle instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
                     "handle must be instance of BehavioralFeature"); //$NON-NLS-1$
@@ -379,12 +342,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     "parameter must be instance of Parameter"); //$NON-NLS-1$
         }
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, getRunnableClassForAddCommand(
-                                (BehavioralFeature) handle, index,
-                                (Parameter) parameter),
-                        "Add the owned element # to the owner #", parameter,
-                        handle));
+                new ChangeCommand(editingDomain, getRunnableClassForAddCommand(
+                        (BehavioralFeature) handle, index,
+                        (Parameter) parameter)));
     }
 
     public void addParameter(Object handle, Object parameter) {
@@ -397,12 +357,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     "handle and qualifier must be instances of Property"); //$NON-NLS-1$
         }
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, getRunnableClassForAddCommand(
-                                (Property) handle, position,
-                                (Property) qualifier),
-                        "Add the qualifier # to the property #", qualifier,
-                        handle));
+                new ChangeCommand(editingDomain, getRunnableClassForAddCommand(
+                        (Property) handle, position, (Property) qualifier)));
     }
 
     public void addRaisedSignal(Object handle, Object sig) {
@@ -434,11 +390,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         (NamedElement) element);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Add the supplier # to the dependency #", element,
-                        dependency));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void addSupplierDependency(Object supplier, Object dependency) {
@@ -1041,12 +993,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         (Element) annotatedElement);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl,
-                        run,
-                        "Remove the link between the comment # and the element #",
-                        comment, annotatedElement));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void removeClientDependency(final Object handle, final Object dep) {
@@ -1063,11 +1010,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((NamedElement) handle).getClientDependencies().remove(dep);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Remove the client dependency # from the element #",
-                        handle, dep));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void removeConnection(final Object handle, final Object connection) {
@@ -1089,11 +1032,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 }
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Remove the association end # from the association #",
-                        connection, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void removeConstraint(Object handle, Object cons) {
@@ -1126,10 +1065,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     "value must be instance of Element"); //$NON-NLS-1$
         }
         editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl,
-                        getRunnableClassForRemoveCommand((Element) value),
-                        "Remove the element # from the owner #", value, handle));
+                new ChangeCommand(editingDomain,
+                        getRunnableClassForRemoveCommand((Element) value)));
     }
 
     public void removeParameter(Object handle, Object parameter) {
@@ -1163,11 +1100,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((Dependency) dependency).getSuppliers().remove(supplier);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Remove the supplier # from the dependency #",
-                        supplier, dependency));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void removeTargetFlow(Object handle, Object flow) {
@@ -1197,10 +1130,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 }
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Set isAbstract to # for #",
-                        isAbstract, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setActive(final Object handle, final boolean isActive) {
@@ -1213,10 +1143,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((org.eclipse.uml2.uml.Class) handle).setIsActive(isActive);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Set isActive to # for #", isActive,
-                        handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setAggregation(final Object handle, final Object aggregationKind) {
@@ -1233,11 +1160,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((Property) handle).setAggregation((AggregationKind) aggregationKind);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Set the aggregation # to the association end #",
-                        aggregationKind, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setAnnotatedElements(final Object handle, final Collection elems) {
@@ -1262,11 +1185,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 }
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Set # annotated alements for the comment #",
-                        elems.size(), handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setAssociation(Object handle, Object association) {
@@ -1312,12 +1231,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((Generalization) handle).setSpecific((Classifier) child);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl,
-                        run,
-                        "Set the # as the specific classifier of the generalization #",
-                        child, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setConcurrency(Object handle, Object concurrencyKind) {
@@ -1375,9 +1289,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((RedefinableElement) handle).setIsLeaf(isLeaf);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Set isLeaf to # for #", isLeaf, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setModelElementContainer(Object handle, Object container) {
@@ -1408,11 +1320,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     ((MultiplicityElement) handle).setUpper(upper_);
                 }
             };
-            editingDomain.getCommandStack().execute(
-                    new ChangeCommand(
-                            modelImpl, run,
-                            "Set the multiplicity # to the element #", arg,
-                            handle));
+            editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
         } else {
             throw new NotYetImplementedException();
         }
@@ -1431,11 +1339,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((NamedElement) handle).setName(name);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Set the name \"#\" to the named element #",
-                        name, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setNamespace(Object handle, Object ns) {
@@ -1452,11 +1356,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((Property) handle).setIsNavigable(flag);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Set isNavigable to # for the association end #", flag,
-                        handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setOperations(Object classifier, List operations) {
@@ -1500,12 +1400,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((Generalization) handle).setGeneral((Classifier) parent);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl,
-                        run,
-                        "Set the # as the general classifier of the generalization #",
-                        parent, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setPowertype(Object handle, Object powerType) {
@@ -1526,10 +1421,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((Operation) handle).setIsQuery(isQuery);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Set isQuery to # for the operation #",
-                        isQuery, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setRaisedSignals(Object handle, Collection raisedSignals) {
@@ -1546,11 +1438,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((StructuralFeature) handle).setIsReadOnly(isReadOnly);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Set isReadOnly to # for the structural feature #",
-                        isReadOnly, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setResident(Object handle, Object resident) {
@@ -1596,10 +1484,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((Feature) feature).setIsStatic(isStatic);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Set isStatic to # for the feature #",
-                        isStatic, feature));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setTaggedValue(Object handle, String tag, String value) {
@@ -1629,10 +1514,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((TypedElement) handle).setType((Type) type);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Set the type # for the typed element #", type, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public void setVisibility(final Object handle, final Object visibility) {
@@ -1649,11 +1531,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 ((NamedElement) handle).setVisibility((VisibilityKind) visibility);
             }
         };
-        editingDomain.getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Set the visibility # to the named element #",
-                        visibility, handle));
+        editingDomain.getCommandStack().execute(new ChangeCommand(editingDomain, run));
     }
 
     public Collection getParents(Object generalizableElement) {

@@ -38,6 +38,7 @@ import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
@@ -320,9 +321,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             }
         };
         modelImpl.getEditingDomain().getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Remove from the model the element #",
-                        elem));
+                new ChangeCommand(modelImpl.getEditingDomain(), run));
     }
     
     public boolean isRemoved(Object o) {

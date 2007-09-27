@@ -32,6 +32,7 @@ import java.util.HashSet;
 import org.argouml.model.NotImplementedException;
 import org.argouml.model.UseCasesHelper;
 import org.eclipse.emf.edit.command.CommandParameter;
+import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.ExtensionPoint;
@@ -76,9 +77,7 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
             }
         };
         modelImpl.getEditingDomain().getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Add the extend # to the #", extend,
-                        handle));
+                new ChangeCommand(modelImpl.getEditingDomain(), run));
     }
     
     public void addExtensionPoint(final Object handle,
@@ -106,9 +105,7 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
             }
         };
         modelImpl.getEditingDomain().getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Add the extension point # to the #",
-                        extensionPoint, handle));
+                new ChangeCommand(modelImpl.getEditingDomain(), run));
     }
 
     public void addInclude(final Object usecase, final Object include) {
@@ -124,9 +121,7 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
             }
         };
         modelImpl.getEditingDomain().getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Add the include # to the case #",
-                        include, usecase));
+                new ChangeCommand(modelImpl.getEditingDomain(), run));
     }
 
     public Collection getAllActors(Object ns) {
@@ -207,9 +202,7 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
             }
         };
         modelImpl.getEditingDomain().getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Remove the include # from the case #",
-                        include, usecase));
+                new ChangeCommand(modelImpl.getEditingDomain(), run));
     }
 
     public void setAddition(final Object handle, final Object useCase) {
@@ -225,9 +218,7 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
             }
         };
         modelImpl.getEditingDomain().getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run, "Set the addition # to the include #",
-                        useCase, handle));
+                new ChangeCommand(modelImpl.getEditingDomain(), run));
     }
 
     public void setBase(Object extend, Object base) {
@@ -273,10 +264,7 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
             }
         };
         modelImpl.getEditingDomain().getCommandStack().execute(
-                new ChangeCommand(
-                        modelImpl, run,
-                        "Set # extension points for the case #",
-                        extensionPoints.size(), handle));
+                new ChangeCommand(modelImpl.getEditingDomain(), run));
     }
 
     public void setIncludes(Object handle, Collection includes) {
