@@ -2112,19 +2112,19 @@ public abstract class FigNodeModelElement
      * Do not override this method, override 
      * {@link #setStandardBounds(int, int, int, int)} instead.
      * 
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     * {@inheritDoc}
      */
     protected void setBoundsImpl(final int x, final int y, final int w,
-	    final int h) {
+            final int h) {
 
-	if (getPracticalView() == STEREOTYPE_VIEW_BIG_ICON) {
-	    if (stereotypeFigProfileIcon != null) {
-		    stereotypeFigProfileIcon.setBounds(stereotypeFigProfileIcon
-			.getX(), stereotypeFigProfileIcon.getY(), w, h);
-		    // FigClass calls setBoundsImpl before we set 
-		    // the stereotypeFigProfileIcon
-	    }
-	} else {
+        if (getPracticalView() == STEREOTYPE_VIEW_BIG_ICON) {
+            if (stereotypeFigProfileIcon != null) {
+                stereotypeFigProfileIcon.setBounds(stereotypeFigProfileIcon
+                        .getX(), stereotypeFigProfileIcon.getY(), w, h);
+                // FigClass calls setBoundsImpl before we set
+                // the stereotypeFigProfileIcon
+            }
+        } else {
 	    setStandardBounds(x, y, w, h);
 	    if (getStereotypeView() == STEREOTYPE_VIEW_SMALL_ICON) {
 	        updateSmallIcons(w);

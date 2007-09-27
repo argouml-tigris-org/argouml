@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Image;
-import java.beans.PropertyChangeEvent;
 
 import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
@@ -64,13 +63,8 @@ public class FigProfileIcon extends FigNode {
 	image.setLocked(true);
     }
     
-    /**
-     * @param x
-     * @param y
-     * @param w
-     * @param h
-     * @see org.tigris.gef.presentation.FigNode#setBoundsImpl(int, int, int, int)
-     */
+
+    @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
 	int width = Math.max(image.getWidth(), label.getWidth());
 

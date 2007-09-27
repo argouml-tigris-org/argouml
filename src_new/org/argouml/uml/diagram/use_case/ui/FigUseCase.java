@@ -336,6 +336,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @return  The desired text of the default name.
      */
+    @Override
     public String placeString() {
         return "new Use Case";
     }
@@ -349,6 +350,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @return  A new copy of the the current fig.
      */
+    @Override
     public Object clone() {
         FigUseCase figClone = (FigUseCase) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -379,6 +381,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @return    A collection of menu items
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         /* Check if multiple items are selected: */
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
@@ -427,17 +430,13 @@ public class FigUseCase extends FigNodeModelElement
      * @return the class name and bounds together with compartment
      * visibility.
      */
+    @Override
     public String classNameAndBounds() {
         return super.classNameAndBounds()
                 + "extensionPointVisible=" + isExtensionPointVisible();
     }
 
-    /**
-     * Returns whether the extension points are currently displayed.<p>
-     *
-     * @return  <code>true</code> if the extensionpoints are visible,
-     *          <code>false</code> otherwise.
-     *
+    /*
      * @see org.argouml.uml.diagram.ExtensionsCompartmentContainer#isExtensionPointVisible()
      */
     public boolean isExtensionPointVisible() {
@@ -497,6 +496,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @return  The new selection object (a GEF entity).
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionUseCase(this);
     }
@@ -510,6 +510,7 @@ public class FigUseCase extends FigNodeModelElement
      * @return  The dimensions of the smallest size bounding box of the use
      *          case.
      */
+    @Override
     public Dimension getMinimumSize() {
 
         Dimension textSize = getTextSize();
@@ -610,6 +611,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @param h  height of bounding box
      */
+    @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
 
         // Remember where we are at present, so we can tell GEF later. Then
@@ -751,6 +753,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @param col The colour desired.
      */
+    @Override
     public void setLineColor(Color col) {
         cover.setLineColor(col);
     }
@@ -762,6 +765,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @return  The colour in use.
      */
+    @Override
     public Color getLineColor() {
         return cover.getLineColor();
     }
@@ -773,6 +777,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @param col  The colour desired.
      */
+    @Override
     public void setFillColor(Color col) {
         cover.setFillColor(col);
     }
@@ -784,6 +789,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @return  The colour in use.
      */
+    @Override
     public Color getFillColor() {
         return cover.getFillColor();
     }
@@ -796,6 +802,7 @@ public class FigUseCase extends FigNodeModelElement
      * @param f  <code>true</code> if the oval is to be filled,
      *           <code>false</code> if not.
      */
+    @Override
     public void setFilled(boolean f) {
         cover.setFilled(f);
     }
@@ -808,6 +815,7 @@ public class FigUseCase extends FigNodeModelElement
      * @return  <code>true</code> if the oval is to be filled,
      *          <code>false</code> if not.
      */
+    @Override
     public boolean getFilled() {
         return cover.getFilled();
     }
@@ -819,6 +827,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @param w  The line width desired.
      */
+    @Override
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
     }
@@ -830,6 +839,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @return  The line width set.
      */
+    @Override
     public int getLineWidth() {
         return cover.getLineWidth();
     }
@@ -871,6 +881,7 @@ public class FigUseCase extends FigNodeModelElement
          * @return           The connection point on the boundary of the
          *                   elipse.
          */
+        @Override
         public Point connectionPoint(Point anotherPt) {
             double rx = _w / 2;
             double ry = _h / 2;
@@ -903,6 +914,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @param me  The mouse action that caused us to be invoked.
      */
+    @Override
     public void mousePressed(MouseEvent me) {
 
         // Deal with anything from the parent first
@@ -952,6 +964,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @param me  The mouse action that caused us to be invoked.
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
 	super.mouseClicked(me);
 
@@ -973,6 +986,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @param me  The mouse action that caused us to be invoked.
      */
+    @Override
     public void mouseExited(MouseEvent me) {
         super.mouseExited(me);
         unhighlight();
@@ -994,6 +1008,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * {@inheritDoc}
      */
+    @Override
     protected void textEdited(FigText ft) throws PropertyVetoException {
         // Let the parent do anything it wants first (in casu: the usecase name)
         super.textEdited(ft);
@@ -1019,6 +1034,7 @@ public class FigUseCase extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(
      *      org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
         super.textEditStarted(ft);
         if (epVec.getFigs().contains(ft)) {
@@ -1089,6 +1105,7 @@ public class FigUseCase extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
 
         // Let our superclass sort itself out first
@@ -1103,6 +1120,7 @@ public class FigUseCase extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeAllElementListeners();
@@ -1135,6 +1153,7 @@ public class FigUseCase extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
+    @Override
     public void renderingChanged() {
         if (getOwner() != null) {
             updateExtensionPoint();
@@ -1243,6 +1262,7 @@ public class FigUseCase extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
+    @Override
     protected void updateNameText() {
         Object useCase = getOwner();
         if (useCase == null) {
@@ -1267,6 +1287,7 @@ public class FigUseCase extends FigNodeModelElement
      *
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
+    @Override
     public List getGravityPoints() {
         final int maxPoints = 30;
         List ret = new ArrayList(maxPoints);
@@ -1291,6 +1312,7 @@ public class FigUseCase extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
         super.updateStereotypeText();
         if (getOwner() == null) {

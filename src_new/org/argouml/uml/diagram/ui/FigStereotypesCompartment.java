@@ -313,6 +313,7 @@ public class FigStereotypesCompartment extends FigCompartment {
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
         Fig fig;
         int yy = y;

@@ -35,15 +35,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.argouml.application.events.ArgoDiagramAppearanceEvent;
-import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
+
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * Class to display graphics for an Actor in a diagram.
@@ -151,6 +151,7 @@ public class FigActor extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionActor(this);
     }
@@ -159,6 +160,7 @@ public class FigActor extends FigNodeModelElement {
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(
      *         java.awt.event.MouseEvent)
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         // Modifiers ...
@@ -171,6 +173,7 @@ public class FigActor extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
+    @Override
     public boolean isResizable() {
         return false;
     }
@@ -178,6 +181,7 @@ public class FigActor extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         int w = Math.max(nameDim.width, 40);
@@ -193,6 +197,7 @@ public class FigActor extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setBoundsImpl(final int x, final int y, 
             final int w, final int h) {
         int middle = x + w / 2;
@@ -246,6 +251,7 @@ public class FigActor extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
      */
+    @Override
     public Object deepHitPort(int x, int y) {
         Object o = super.deepHitPort(x, y);
         if (o != null) {
@@ -261,6 +267,7 @@ public class FigActor extends FigNodeModelElement {
      * Makes sure that the edges stick to the outline of the fig.
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
+    @Override
     public List getGravityPoints() {
         final int maxPoints = 20;
         List ret = new ArrayList();
@@ -290,6 +297,7 @@ public class FigActor extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         //      name updating
         super.modelChanged(mee);
@@ -312,6 +320,7 @@ public class FigActor extends FigNodeModelElement {
         }
     }
 
+    @Override
     protected int getNameFigFontStyle() {
         Object cls = getOwner();
         return Model.getFacade().isAbstract(cls) ? Font.ITALIC : Font.PLAIN;
@@ -347,14 +356,15 @@ public class FigActor extends FigNodeModelElement {
          * Makes sure that the edges stick to the outline of the fig.
          * @see org.tigris.gef.presentation.Fig#getGravityPoints()
          */
+        @Override
         public List getGravityPoints() {
             return parent.getGravityPoints();
         }
 
         /**
-         * The serial version - Eclise generated for Rev. 1.40
+         * The serial version - Eclipse generated for Rev. 1.40
          */
         private static final long serialVersionUID = 5973857118854162659L;
     }
 
-} /* end class FigActor */
+}
