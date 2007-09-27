@@ -66,9 +66,6 @@ public class TestExtensionMechanismsFactory extends TestCase {
      */
     static List<String> getTestableModelElements() {
         List<String> c = new ArrayList<String>(Arrays.asList(allModelElements));
-        // TODO: Stereotype was untested before, but I'm not sure if it was
-        // intentional.  Seems more like an oversight. - tfm
-//        c.remove("Stereotype");
         return c;
     }
     
@@ -100,16 +97,21 @@ public class TestExtensionMechanismsFactory extends TestCase {
         ExtensionMechanismsFactory emFactory =
             Model.getExtensionMechanismsFactory();
         Object model = Model.getModelManagementFactory().createModel();
-        Object stereo = emFactory.buildStereotype("mystereo", model);
+        Object stereo = emFactory.buildStereotype("mystereo1", model);
         try {
-            emFactory.buildTagDefinition("myTD", stereo, model);
+            emFactory.buildTagDefinition("myTDx", stereo, model);
             fail("Illegal buildTagDefinition with both sterotype"
                     + " and model didn't throw exception.");
         } catch (IllegalArgumentException e) {
             // Expected
         }
-        emFactory.buildTagDefinition("myTD", stereo, null);
-        emFactory.buildTagDefinition("myTD", stereo, null, "Boolean");
+        emFactory.buildTagDefinition("myTD1", stereo, null);
+        emFactory.buildTagDefinition("myTD2", stereo, null, "Boolean");
+        Collection tds =
+            Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(model,
+                        Model.getMetaTypes().getTagDefinition());
+        assertEquals("TagDefinition not deleted", 2, tds.size());
     }
 
     /**
