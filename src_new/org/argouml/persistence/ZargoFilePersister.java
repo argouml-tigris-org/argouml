@@ -80,6 +80,7 @@ class ZargoFilePersister extends UmlFilePersister {
     /*
      * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
+    @Override
     public String getExtension() {
         return "zargo";
     }
@@ -87,6 +88,7 @@ class ZargoFilePersister extends UmlFilePersister {
     /*
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
+    @Override
     protected String getDesc() {
         return Translator.localize("combobox.filefilter.zargo");
     }
@@ -140,15 +142,11 @@ class ZargoFilePersister extends UmlFilePersister {
             writer =
                 new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
 
-            int size = project.getMembers().size();
-            for (int i = 0; i < size; i++) {
-                ProjectMember projectMember =
-                    (ProjectMember) project.getMembers().get(i);
+            for (ProjectMember projectMember : project.getMembers()) {
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
-                                + ((ProjectMember) project.getMembers()
-                                        .get(i)).getType());
+                                + projectMember.getType());
                     }
                     stream.putNextEntry(
                             new ZipEntry(projectMember.getZipName()));
@@ -206,6 +204,7 @@ class ZargoFilePersister extends UmlFilePersister {
     /*
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
+    @Override
     public Project doLoad(File file)
         throws OpenException, InterruptedException {
         
