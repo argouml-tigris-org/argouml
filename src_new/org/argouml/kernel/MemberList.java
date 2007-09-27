@@ -145,9 +145,6 @@ public class MemberList implements List {
         if (profileConfiguration != null) {
             temp.add(profileConfiguration);
         }
-        if (profileConfiguration != null) {
-            temp.add(profileConfiguration);
-        }
         return temp;
     }
     
@@ -264,7 +261,7 @@ public class MemberList implements List {
         if (i == diagramMembers.size()) {
             return todoList;
         }
-        if (i == diagramMembers.size() + 1) {
+        if (i == (diagramMembers.size() + 1)) {
             return profileConfiguration;
         }
 
