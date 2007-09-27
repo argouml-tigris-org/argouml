@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,14 @@ public class FigSubsystem extends FigPackage {
     private FigPoly figPoly = new FigPoly(Color.black, Color.black);
 
     /**
-     * The main Constructor.
+     * Constructor.
+     * 
+     * @param modelElement
+     *                Subsystem model element for which Fig is to be created.
+     * @param x
+     *                initial X coordinate
+     * @param y
+     *                initial Y coordinate
      */
     public FigSubsystem(Object modelElement, int x, int y) {
         super(modelElement, x, y);
@@ -67,6 +74,7 @@ public class FigSubsystem extends FigPackage {
     /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
 
         if (figPoly != null) {
@@ -75,14 +83,15 @@ public class FigSubsystem extends FigPackage {
                     - oldBounds.y);
 
         }
-        super.setBoundsImpl(x, y, w, h);
+        super.setStandardBounds(x, y, w, h);
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
+    @Override
     public String placeString() {
         return "new Subsystem";
     }
 
-} /* end class FigSubsystem */
+}
