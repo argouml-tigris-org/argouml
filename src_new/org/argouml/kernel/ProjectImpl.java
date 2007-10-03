@@ -99,7 +99,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     private ProjectSettings projectSettings;
 
-    private List<String> searchpath;
+    private final List<String> searchpath = new ArrayList<String>();
 
     // TODO: break into 3 main member types
     // model, diagram and other
@@ -119,7 +119,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     private final List models = new ArrayList();
     
     private Object root;
-    private Collection roots = new HashSet();
+    private final Collection roots = new HashSet();
     
 
     /**
@@ -143,7 +143,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     private HashMap<String, Object> defaultModelTypeCache;
 
-    private Collection trashcan = new ArrayList();
+    private final Collection trashcan = new ArrayList();
 
     // TODO: Change this to use an UndoManager instance per project when
     // GEF has been enhanced.
@@ -176,7 +176,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         // this should be moved to a ui action.
         version = ApplicationVersion.getVersion();
 
-        searchpath = new ArrayList<String>();
         historyFile = "";
         defaultModelTypeCache = new HashMap<String, Object>();
 
@@ -201,7 +200,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setName(String n)
+    public void setName(final String n)
         throws URISyntaxException {
         String s = "";
         if (getURI() != null) {
@@ -236,7 +235,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setFile(File file) {
+    public void setFile(final File file) {
         URI theProjectUri = file.toURI();
 
         if (LOG.isDebugEnabled()) {
@@ -258,11 +257,11 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public List<String> getSearchPathList() {
-        return searchpath;
+        return Collections.unmodifiableList(searchpath);
     }
 
 
-    public void addSearchPath(String searchPathElement) {
+    public void addSearchPath(final String searchPathElement) {
         if (!searchpath.contains(searchPathElement)) {
             searchpath.add(searchPathElement);
         }
@@ -319,7 +318,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     /**
      * @param m the model
      */
-    private void addModelMember(Object m) {
+    private void addModelMember(final Object m) {
 
         boolean memberFound = false;
         Object currentMember =
@@ -348,17 +347,20 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void addModel(Object model) {
+    public void addModel(final Object model) {
 
-        if (!Model.getFacade().isANamespace(model)) {
+        if (!Model.getFacade().isAModel(model)) {
             throw new IllegalArgumentException();
 	}
-
-        // fire indeterminate change to avoid copying vector
         if (!models.contains(model)) {
-            models.add(model);
-            roots.add(model);
-        }
+            setRoot(model);
+        }        
+        addModelInternal(model);
+    }
+
+    private void addModelInternal(final Object model) {
+        models.add(model);
+        roots.add(model);
         setCurrentNamespace(model);
         setSaveEnabled(true);
     }
@@ -486,7 +488,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setHistoryFile(String s) {
+    public void setHistoryFile(final String s) {
         historyFile = s;
     }
 
@@ -632,7 +634,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setCurrentNamespace(Object m) {
+    public void setCurrentNamespace(final Object m) {
 
         if (m != null && !Model.getFacade().isANamespace(m)) {
             throw new IllegalArgumentException();
@@ -676,7 +678,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void addDiagram(ArgoDiagram d) {
+    public void addDiagram(final ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
 	d.setProject(this);
         diagrams.add(d);
@@ -896,7 +898,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     @SuppressWarnings("deprecation")
-    public void setDefaultModel(Object theDefaultModel) {
+    public void setDefaultModel(final Object theDefaultModel) {
         // TODO: Marcus Aurelio deprecated this, but also changed the
         // implementation to just throw an exception.  If it's no longer
         // functional, we probably need to just remove it altogether.
@@ -913,7 +915,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
     @Deprecated
-    public void setProfiles(Collection packages) {
+    public void setProfiles(final Collection packages) {
         // TODO: Marcus Aurelio deprecated this, but also changed the
         // implementation to just throw an exception.  If it's no longer
         // functional, we probably need to just remove it altogether.
@@ -1004,15 +1006,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
         // TODO: We don't really want to do the following, but I'm not sure
         // what depends on it - tfm - 20070725
         Model.getModelManagementFactory().setRootModel(theRoot);
-        addModel(theRoot);
-        Collection newRoots = new ArrayList();
+        addModelInternal(theRoot);
+        roots.clear();
         roots.add(theRoot);
-        roots = newRoots;
     }
 
     
     public final Collection getRoots() {
-        return roots;
+        return Collections.unmodifiableCollection(roots);
     }
 
 
@@ -1031,7 +1032,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 }
             }
         }
-        roots = elements;
+        roots.clear();
+        roots.addAll(elements);
     }
 
     public boolean isValidDiagramName(String name) {
@@ -1058,13 +1060,15 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     @SuppressWarnings("deprecation")
-    public void setSearchpath(Vector<String> theSearchpath) {
-        searchpath = theSearchpath;
+    public void setSearchpath(final Vector<String> theSearchpath) {
+        searchpath.clear();
+        searchpath.addAll(theSearchpath);
     }
 
 
-    public void setSearchPath(List<String> theSearchpath) {
-        searchpath = theSearchpath;
+    public void setSearchPath(final List<String> theSearchpath) {
+        searchpath.clear();
+        searchpath.addAll(theSearchpath);
     }
 
     public void setUUIDRefs(Map<String, Object> uUIDRefs) {
@@ -1082,7 +1086,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setActiveDiagram(ArgoDiagram theDiagram) {
+    public void setActiveDiagram(final ArgoDiagram theDiagram) {
         activeDiagram = theDiagram;
     }
 
@@ -1101,8 +1105,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
         }
         roots.clear();
         models.clear();
-
         diagrams.clear();
+        searchpath.clear();
 
         if (uuidRefs != null) {
             uuidRefs.clear();
@@ -1120,7 +1124,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         authoremail = null;
         description = null;
         version = null;
-        searchpath = null;
         historyFile = null;
         currentNamespace = null;
         vetoSupport = null;
