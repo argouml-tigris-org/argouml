@@ -162,7 +162,12 @@ public interface DataTypesFactory extends Factory {
      * Create a MultiplicityRange from a string.
      * 
      * @since UML 1.4
-     * @param str the string definition of the range
+     * @param str
+     *                the string definition of the range. The string has the
+     *                form <code>lower..upper</code> where <code>lower</code>
+     *                and <code>upper</code> are non-negative integers are the
+     *                asterisk character (*) representing "unlimited". The
+     *                string "*" is equivalent to "0..*".
      * @return MultiplicityRange A multiplicity range
      */
     public Object createMultiplicityRange(String str);
