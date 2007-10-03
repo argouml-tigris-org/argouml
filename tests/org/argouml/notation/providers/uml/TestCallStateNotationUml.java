@@ -27,10 +27,10 @@ package org.argouml.notation.providers.uml;
 import java.text.ParseException;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 
 /**
@@ -63,7 +63,6 @@ public class TestCallStateNotationUml extends TestCase {
         Object model =
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();
-        p.getRoots().clear();
         p.addModel(model);
         aClass = Model.getCoreFactory().buildClass(model);
         aClass2 = Model.getCoreFactory().buildClass(model);
@@ -85,7 +84,7 @@ public class TestCallStateNotationUml extends TestCase {
     }
     
     /**
-     * An extra setup fiunction.
+     * An extra setup method.
      */
     protected void setUp2() {
         aCallAction = 
@@ -100,9 +99,7 @@ public class TestCallStateNotationUml extends TestCase {
         setUp2();
         CallStateNotationUml notation = new CallStateNotationUml(aCallState);
         String notationStr = notation.toString(aCallState, null);
-        assertTrue("Notation not correctly generated - "
-                + "Resulted in: '" + notationStr + "'", 
-                notationStr.equals("myOper"));
+        assertEquals("Notation not correctly generated", "myOper", notationStr);
     }
 
     /**
@@ -113,9 +110,8 @@ public class TestCallStateNotationUml extends TestCase {
         CallStateNotationUml notation = new CallStateNotationUml(aCallState);
         Model.getCoreHelper().setName(aClass, "ClassA");
         String notationStr = notation.toString(aCallState, null);
-        assertTrue("Notation not correctly generated - "
-                + "Resulted in: '" + notationStr + "'", 
-                notationStr.equals("myOper\n(ClassA)"));
+        assertEquals("Notation not correctly generated", "myOper\n(ClassA)",
+                notationStr);
     }
     
     /**
@@ -123,73 +119,57 @@ public class TestCallStateNotationUml extends TestCase {
      * re-creating the string from the modelelements. 
      * The resulting string should be equal to the original.
      */
-    public void testGenerateRoundTrip() {
+    public void testGenerateRoundTrip() throws ParseException {
         CallStateNotationUml notation = new CallStateNotationUml(aCallState);
         Model.getCoreHelper().setName(aClass, "ClassA");
-        try {
-            notation.parseCallState(aCallState, "myOper\n(ClassA)");
-        } catch (ParseException e) {
-            assertTrue("Unexpected exception: " + e.getMessage(), true);
-        }
+        notation.parseCallState(aCallState, "myOper\n(ClassA)");
         Object entry = Model.getFacade().getEntry(aCallState); 
-        assertTrue("No entry action generated", entry != null);
+        assertNotNull("No entry action generated", entry);
         Object op = Model.getFacade().getOperation(entry);
-        assertTrue("Operation not linked to entry action", op != null);
+        assertNotNull("Operation not linked to entry action", op);
         String notationStr = notation.toString(aCallState, null);
-        assertTrue("Notation not correctly generated - "
-                + "Resulted in: '" + notationStr + "'", 
-                notationStr.equals("myOper\n(ClassA)"));
+        assertEquals("Notation not correctly generated", "myOper\n(ClassA)",
+                notationStr);
     }
 
     /**
      * Test changing the operation.
+     * @throws ParseException on failure
      */
-    public void testChangeOperation() {
+    public void testChangeOperation() throws ParseException {
         CallStateNotationUml notation = new CallStateNotationUml(aCallState);
         Model.getCoreHelper().setName(aClass, "ClassA");
         setUp2();
-        try {
-            notation.parseCallState(aCallState, "myOper2\n(ClassA)");
-        } catch (ParseException e) {
-            assertTrue("Unexpected exception: " + e.getMessage(), true);
-        }
+        notation.parseCallState(aCallState, "myOper2\n(ClassA)");
         Object entry = Model.getFacade().getEntry(aCallState); 
-        assertTrue("No entry action generated", entry != null);
+        assertNotNull("No entry action generated", entry);
         Object op = Model.getFacade().getOperation(entry);
-        assertTrue("Operation not linked to entry action", op != null);
+        assertNotNull("Operation not linked to entry action", op);
         String name = Model.getFacade().getName(op);
-        assertTrue("Operation name incorrect - resulted in: '" + name + "'", 
-                "myOper2".equals(name));
+        assertEquals("Operation name incorrect", "myOper2", name);
         String notationStr = notation.toString(aCallState, null);
-        assertTrue("Notation not correctly generated - "
-                + "Resulted in: '" + notationStr + "'", 
-                notationStr.equals("myOper2\n(ClassA)"));
+        assertEquals("Notation not correctly generated", "myOper2\n(ClassA)",
+                notationStr);
     }
     
     /**
      * Test changing the Class and Operation.
+     * @throws ParseException on failure
      */
-    public void testChangeOperationAndClass() {
+    public void testChangeOperationAndClass() throws ParseException {
         CallStateNotationUml notation = new CallStateNotationUml(aCallState);
         Model.getCoreHelper().setName(aClass, "ClassA");
         Model.getCoreHelper().setName(aClass2, "ClassB");
         setUp2();
-        try {
-            notation.parseCallState(aCallState, "myOperB\n(ClassB)");
-        } catch (ParseException e) {
-            assertTrue("Unexpected exception: " + e.getMessage(), true);
-        }
+        notation.parseCallState(aCallState, "myOperB\n(ClassB)");
         Object entry = Model.getFacade().getEntry(aCallState); 
-        assertTrue("No entry action generated", entry != null);
+        assertNotNull("No entry action generated", entry);
         Object op = Model.getFacade().getOperation(entry);
-        assertTrue("Operation not linked to entry action", op != null);
+        assertNotNull("Operation not linked to entry action", op);
         String name = Model.getFacade().getName(op);
-        assertTrue("Operation name incorrect - resulted in: '" + name + "'", 
-                "myOperB".equals(name));
+        assertEquals("Operation name incorrect" ,"myOperB", name);
         String notationStr = notation.toString(aCallState, null);
-        assertTrue("Notation not correctly generated - "
-                + "Resulted in: '" + notationStr + "'", 
-                notationStr.equals("myOperB\n(ClassB)"));
+        assertEquals("Notation not correctly generated", "myOperB\n(ClassB)", notationStr);
     }
     
     /**
@@ -201,73 +181,65 @@ public class TestCallStateNotationUml extends TestCase {
         Model.getCoreHelper().setName(aClass, "ClassA");
         try {
             notation.parseCallState(aCallState, "myOper\n(ClassA");
-            assertTrue("Expected 'wrong brackets' exception did not happen", 
-                    true);
+            fail("Expected 'wrong brackets' exception did not happen");
         } catch (ParseException e) {
             //ok
         }
         try {
             notation.parseCallState(aCallState, "myOper\nClassA)");
-            assertTrue("Expected 'wrong brackets' exception did not happen", 
-                    true);
+            fail("Expected 'wrong brackets' exception did not happen");
         } catch (ParseException e) {
             //ok
         }
         try {
             notation.parseCallState(aCallState, "myOper\n)ClassA(");
-            assertTrue("Expected 'wrong brackets' exception did not happen", 
-                    true);
+            fail("Expected 'wrong brackets' exception did not happen");
         } catch (ParseException e) {
             //ok
         }
         try {
             notation.parseCallState(aCallState, "myOperX\n(ClassA)");
-            assertTrue("Expected 'Operation not found' exception "
-                        + "did not happen", true);
+            fail("Expected 'Operation not found' exception "
+                        + "did not happen");
         } catch (ParseException e) {
             //ok
         }
         try {
             notation.parseCallState(aCallState, "myOper\n(ClassB)");
-            assertTrue("Expected 'Operation not found' exception "
-                        + "did not happen", true);
+            fail("Expected 'Operation not found' exception "
+                        + "did not happen");
         } catch (ParseException e) {
             //ok
         }
         try {
             notation.parseCallState(aCallState, "myOper\n(ClassX)");
-            assertTrue("Expected 'Classifier not found' exception "
-                        + "did not happen", true);
+            fail("Expected 'Classifier not found' exception "
+                        + "did not happen");
         } catch (ParseException e) {
             //ok
         }
         try {
             notation.parseCallState(aCallState, "X");
-            assertTrue("Expected exception did not happen", true);
+            fail("Expected exception did not happen");
         } catch (ParseException e) {
             //ok
         }
     }
     
     /**
-     * The entered string does not have a linefeed.
+     * The entered string does not have a newline.
      */
-    public void testGenerateNoLineFeed() {
+    public void testGenerateNoLineFeed() throws ParseException {
         CallStateNotationUml notation = new CallStateNotationUml(aCallState);
         Model.getCoreHelper().setName(aClass, "ClassA");
-        try {
-            notation.parseCallState(aCallState, "myOper(ClassA)");
-        } catch (ParseException e) {
-            assertTrue("Unexpected exception: " + e.getMessage(), true);
-        }
-        Object entry = Model.getFacade().getEntry(aCallState); 
-        assertTrue("No entry action generated", entry != null);
+        notation.parseCallState(aCallState, "myOper(ClassA)");
+        Object entry = Model.getFacade().getEntry(aCallState);
+        assertNotNull("No entry action generated", entry);
         Object op = Model.getFacade().getOperation(entry);
-        assertTrue("Operation not linked to entry action", op != null);
+        assertNotNull("Operation not linked to entry action", op);
         String notationStr = notation.toString(aCallState, null);
-        assertTrue("Notation not correctly generated - "
-                + "Resulted in: '" + notationStr + "'", 
-                notationStr.equals("myOper\n(ClassA)"));
+        assertEquals("Notation not correctly generated", "myOper\n(ClassA)",
+                notationStr);
     }
     
     /**
