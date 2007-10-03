@@ -320,9 +320,8 @@ Property files to be searched:
     </copy>
   	
     <copy todir="${argo.build.classes}/org/argouml">
-      <!-- registry.xml doesn't appear to be used any more - tfm 20070930 -->
       <fileset dir="${argo.src.dir}/org/argouml"
-          includes="*.xmi,registry.xml,argo.ini"/>
+          includes="*.xmi,argo.ini"/>
      </copy>
  	
     <!-- copy test files -->
