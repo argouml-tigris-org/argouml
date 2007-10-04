@@ -355,7 +355,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         if (!models.contains(model)) {
             setRoot(model);
         }        
-        addModelInternal(model);
     }
 
     private void addModelInternal(final Object model) {
@@ -507,9 +506,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public Collection getModels() {
         Set ret = new HashSet();
         ret.addAll(models);
-        // TODO are the profiles part of the getModels()???
-//        ret.addAll(profilePackages);
-        return ret;
+        ret.addAll(getProfileConfiguration().getProfiles());
+        return Collections.unmodifiableCollection(models);
     }
 
 
@@ -517,7 +515,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         if (models.size() != 1) {
             return null;
         }
-        return models.get(0);
+        return models.iterator().next();
     }
 
 
@@ -598,7 +596,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public Collection findAllPresentationsFor(Object obj) {
-        Collection figs = new ArrayList();
+        Collection<Fig> figs = new ArrayList<Fig>();
         for (ArgoDiagram diagram : diagrams) {
             Fig aFig = diagram.presentationFor(obj);
             if (aFig != null) {
@@ -760,7 +758,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             return diagrams.get(0);
         }
         if (models.size() > 0) {
-            return models.get(0);
+            return models.iterator().next();
         }
         return null;
     }
