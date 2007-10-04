@@ -44,6 +44,7 @@ public class TestNotationProvider extends TestCase
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
@@ -55,7 +56,7 @@ public class TestNotationProvider extends TestCase
     /**
      * Test the existence of the 
      * toString(Object modelElement, HashMap args) method.
-     * TODO: Need to find a more usefull test.
+     * TODO: Need to find a more useful test.
      */
     public void testToString() {
         NotationProvider np = new NPImpl();
@@ -115,7 +116,6 @@ public class TestNotationProvider extends TestCase
         Object model =
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();
-        p.getRoots().clear();
         p.addModel(model);
         aClass = Model.getCoreFactory().buildClass(model);
         
