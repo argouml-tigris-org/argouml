@@ -43,10 +43,10 @@ import org.tigris.gef.presentation.Fig;
  * project. It contains the list of diagrams and UML models, various project
  * properties such as the author's name, and defaults for various settings.
  * <p>
- * TODO: This interface was mechanically refactored from the implementation class
- * {@link ProjectImpl}. It needs to be reviewed and cleaned up, eliminating
- * methods which should be part of the public API and splitting the interface
- * into smaller function specific (e.g. TrashCan) interfaces.
+ * TODO: This interface was mechanically refactored from the implementation
+ * class {@link ProjectImpl}. It needs to be reviewed and cleaned up,
+ * eliminating methods which should be part of the public API and splitting the
+ * interface into smaller function specific (e.g. TrashCan) interfaces.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  * @since 0.25.4 when it replaced the concrete class of the same name
