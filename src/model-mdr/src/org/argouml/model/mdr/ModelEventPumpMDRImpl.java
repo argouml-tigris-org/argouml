@@ -97,12 +97,14 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     /**
      * Map of Element/attribute tuples and the listeners they have registered.
      */
-    private Map elements = Collections.synchronizedMap(new HashMap());
+    private Registry<PropertyChangeListener> elements = 
+        new Registry<PropertyChangeListener>();
 
     /**
      * Map of Class/attribute tuples and the listeners they have registered.
      */
-    private Map listenedClasses = Collections.synchronizedMap(new HashMap());
+    private Registry<PropertyChangeListener> listenedClasses = 
+        new Registry<PropertyChangeListener>();
 
     /**
      * Map of subtypes for all types in our metamodel.
@@ -335,7 +337,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             fire(event);
             // Unregister deleted instances after all events have been delivered
             if (event instanceof DeleteInstanceEvent) {
-                unregister(elements, null, ((MDRObject) event.getSource())
+                elements.unregister(null, ((MDRObject) event.getSource())
                         .refMofId(), null);
             }
         }
@@ -393,11 +395,11 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         // registered for multiple relevant matches
         Set<PropertyChangeListener> listeners = new HashSet<PropertyChangeListener>();
         synchronized (lock) {
-            listeners.addAll(getMatches(elements, mofId, event
+            listeners.addAll(elements.getMatches(mofId, event
                     .getPropertyName()));
 
             // This will include all subtypes registered
-            listeners.addAll(getMatches(listenedClasses, className, event
+            listeners.addAll(listenedClasses.getMatches(className, event
                     .getPropertyName()));
         }
 
@@ -463,7 +465,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     + "]");
         }
         synchronized (lock) {
-            register(elements, listener, mofId, propertyNames);
+            elements.register(listener, mofId, propertyNames);
         }
     }
 
@@ -492,7 +494,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     + "]");
         }
         synchronized (lock) {
-            unregister(elements, listener, mofId, propertyNames);
+            elements.unregister(listener, mofId, propertyNames);
         }
     }
 
@@ -518,9 +520,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             Collection<String> subtypes = subtypeMap.get(className);
             verifyAttributeNames(className, propertyNames);
             synchronized (lock) {
-                register(listenedClasses, listener, className, propertyNames);
+                listenedClasses.register(listener, className, propertyNames);
                 for (String subtype : subtypes) {
-                    register(listenedClasses, listener, subtype, propertyNames);
+                    listenedClasses.register(listener, subtype, propertyNames);
                 }
             }
             return;
@@ -545,9 +547,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
             Collection<String> subtypes = subtypeMap.get(className);
             synchronized (lock) {
-                unregister(listenedClasses, listener, className, propertyNames);
+                listenedClasses.unregister(listener, className, propertyNames);
                 for (String subtype : subtypes) {
-                    unregister(listenedClasses, listener, subtype,
+                    listenedClasses.unregister(listener, subtype,
                             propertyNames);
                 }
             }
@@ -589,134 +591,6 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         } catch (InterruptedException e) {
             LOG.error("Interrupted while waiting in flushModelEvents");
         }
-    }
-
-    /**
-     * Register an object with given keys(s) in the registry. The object is
-     * registered in multiple locations for quick lookup. During matching an
-     * object registered without subkeys will match any subkey. Multiple calls
-     * with the same item and key pair will only result in a single registration
-     * being made.
-     *
-     * @param registry
-     *            registry to use
-     * @param item
-     *            object to be registered
-     * @param key
-     *            primary key for registration
-     * @param subkeys
-     *            array of subkeys. If null, register under primary key only.
-     *            The special value of the empty string ("") must not be used as
-     *            a subkey by the caller.
-     */
-    static void register(Map registry, Object item, String key,
-            String[] subkeys) {
-
-        // Lookup primary key, creating new entry if needed
-        Map entry = (Map) registry.get(key);
-        if (entry == null) {
-            entry = new HashMap();
-            registry.put(key, entry);
-        }
-
-        // If there are no subkeys, register using our special value
-        // to indicate that this is a primary key only registration
-        if (subkeys == null || subkeys.length < 1) {
-            subkeys =
-                new String[] {
-                    "",
-                };
-        }
-
-        for (int i = 0; i < subkeys.length; i++) {
-            List list = (ArrayList) entry.get(subkeys[i]);
-            if (list == null) {
-                list = new ArrayList();
-                entry.put(subkeys[i], list);
-            }
-            if (!list.contains(item)) {
-                list.add(item);
-            } else {
-                LOG.debug("Duplicate registration attempt for " + key + ":"
-                        + subkeys + " Listener: " + item);
-            }
-        }
-    }
-
-    /**
-     * Unregister an item or all items which match key set.
-     *
-     * @param registry registry to use
-     * @param item object to be unregistered.  If null, unregister all
-     * matching objects.
-     * @param key primary key for registration
-     * @param subkeys array of subkeys.  If null, unregister under primary
-     * key only.
-     */
-    static void unregister(Map registry, Object item, String key,
-            String[] subkeys) {
-
-        Map entry = (HashMap) registry.get(key);
-        if (entry == null) {
-            return;
-        }
-
-        if (subkeys != null && subkeys.length > 0) {
-            for (int i = 0; i < subkeys.length; i++) {
-                lookupRemoveItem(entry, subkeys[i], item);
-            }
-        } else {
-            if (item == null) {
-                registry.remove(key);
-            } else {
-                lookupRemoveItem(entry, "", item);
-            }
-        }
-    }
-
-    private static void lookupRemoveItem(Map map, String key, Object item) {
-        List list = (ArrayList) map.get(key);
-        if (list == null) {
-            return;
-        }
-        if (item == null) {
-            map.remove(key);
-            return;
-        }
-        if (!list.contains(item)) {
-            LOG.debug("Attempt to unregister non-existant registration" + key
-                    + " Listener: " + item);
-        }
-        while (list.contains(item)) {
-            list.remove(item);
-        }
-        if (list.isEmpty()) {
-            map.remove(key);
-        }
-    }
-
-    /**
-     * Return a list of items which have been registered for given key(s).
-     * Returns items registered both for the key/subkey pair as well as
-     * those registered just for the primary key.
-     * @param registry
-     * @param key
-     * @param subkey
-     * @return collection of items previously registered.
-     */
-    static Collection getMatches(Map registry, String key, String subkey) {
-
-        List results = new ArrayList();
-        Map entry = (HashMap) registry.get(key);
-        if (entry != null) {
-            if (entry.containsKey(subkey)) {
-                results.addAll((ArrayList) entry.get(subkey));
-            }
-            if (entry.containsKey("")) {
-                results.addAll((ArrayList) entry.get(""));
-            }
-        }
-        return results;
     }
 
     /**
@@ -793,7 +667,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * Traverse metamodel and build list of subtypes for every metatype.
      */
     private Map<String, Collection<String>> buildTypeMap(ModelPackage extent) {
-        Map<String, Collection<String>> names = new HashMap<String, Collection<String>>();
+        Map<String, Collection<String>> names = 
+            new HashMap<String, Collection<String>>();
         for (Object metaclass : extent.getMofClass().refAllOfClass()) {
             ModelElement element = (ModelElement) metaclass;
             String name = element.getName();
@@ -817,7 +692,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         Collection<String> allSubtypes = new HashSet<String>();
         if (me instanceof GeneralizableElement) {
             GeneralizableElement ge = (GeneralizableElement) me;
-            Collection<ModelElement> subtypes = extent.getGeneralizes().getSubtype(ge);
+            Collection<ModelElement> subtypes = extent.getGeneralizes()
+                    .getSubtype(ge);
             for (ModelElement st : subtypes) {
                 allSubtypes.add(st.getName());
                 allSubtypes.addAll(getSubtypes(extent, st));
@@ -941,9 +817,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     /**
      * Getter provided for the dev module to allow it to discover the
      * listeners contained by the event pump.
-     * @return The structure of listeners
+     * @return The registry of listeners
      */
-    Map getElements() {
+    Registry<PropertyChangeListener> getElements() {
         return elements;
     }
     
@@ -956,4 +832,147 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     Object getByMofId(String mofId) {
         return repository.getByMofId(mofId);
     }
+
+}
+
+
+/**
+ * A simple typed registry which supports two levels of string keys.
+ * 
+ * @param <T> type of object to be registered
+ * @author Tom Morris
+ */
+class Registry<T> {
+    
+    private static final Logger LOG = Logger.getLogger(Registry.class);
+    
+    Map<String, Map<String, List<T>>> registry;
+    
+    /**
+     * Construct a new registry for the given type of object.
+     */
+    Registry() {
+        registry = Collections
+                .synchronizedMap(new HashMap<String, Map<String, List<T>>>());
+    }
+
+    /**
+     * Register an object with given keys(s) in the registry. The object is
+     * registered in multiple locations for quick lookup. During matching an
+     * object registered without subkeys will match any subkey. Multiple calls
+     * with the same item and key pair will only result in a single registration
+     * being made.
+     * 
+     * @param item object to be registered
+     * @param key primary key for registration
+     * @param subkeys array of subkeys. If null, register under primary key
+     *                only. The special value of the empty string ("") must not
+     *                be used as a subkey by the caller.
+     */
+    void register(T item, String key,
+            String[] subkeys) {
+
+        // Lookup primary key, creating new entry if needed
+        Map<String, List<T>> entry = registry.get(key);
+        if (entry == null) {
+            entry = new HashMap<String, List<T>>();
+            registry.put(key, entry);
+        }
+
+        // If there are no subkeys, register using our special value
+        // to indicate that this is a primary key only registration
+        if (subkeys == null || subkeys.length < 1) {
+            subkeys =
+                new String[] {
+                    "",
+                };
+        }
+
+        for (int i = 0; i < subkeys.length; i++) {
+            List<T> list = entry.get(subkeys[i]);
+            if (list == null) {
+                list = new ArrayList<T>();
+                entry.put(subkeys[i], list);
+            }
+            if (!list.contains(item)) {
+                list.add(item);
+            } else {
+                LOG.debug("Duplicate registration attempt for " + key + ":"
+                        + subkeys + " Listener: " + item);
+            }
+        }
+    }
+
+    /**
+     * Unregister an item or all items which match key set.
+     *
+     * @param item object to be unregistered.  If null, unregister all
+     * matching objects.
+     * @param key primary key for registration
+     * @param subkeys array of subkeys.  If null, unregister under primary
+     * key only.
+     */
+     void unregister(T item, String key, String[] subkeys) {
+        Map<String, List<T>> entry = registry.get(key);
+        if (entry == null) {
+            return;
+        }
+
+        if (subkeys != null && subkeys.length > 0) {
+            for (int i = 0; i < subkeys.length; i++) {
+                lookupRemoveItem(entry, subkeys[i], item);
+            }
+        } else {
+            if (item == null) {
+                registry.remove(key);
+            } else {
+                lookupRemoveItem(entry, "", item);
+            }
+        }
+    }
+
+    private void lookupRemoveItem(Map<String, List<T>> map, String key, 
+            T item) {
+        List<T> list = map.get(key);
+        if (list == null) {
+            return;
+        }
+        if (item == null) {
+            map.remove(key);
+            return;
+        }
+        if (!list.contains(item)) {
+            LOG.debug("Attempt to unregister non-existant registration" + key
+                    + " Listener: " + item);
+        }
+        while (list.contains(item)) {
+            list.remove(item);
+        }
+        if (list.isEmpty()) {
+            map.remove(key);
+        }
+    }
+
+    /**
+     * Return a list of items which have been registered for given key(s).
+     * Returns items registered both for the key/subkey pair as well as
+     * those registered just for the primary key.
+     * @param key
+     * @param subkey
+     * @return collection of items previously registered.
+     */
+    Collection<T> getMatches(String key, String subkey) {
+        List<T> results = new ArrayList<T>();
+        Map<String, List<T>> entry = registry.get(key);
+        if (entry != null) {
+            if (entry.containsKey(subkey)) {
+                results.addAll(entry.get(subkey));
+            }
+            if (entry.containsKey("")) {
+                results.addAll(entry.get(""));
+            }
+        }
+        return results;
+    }
+
 }

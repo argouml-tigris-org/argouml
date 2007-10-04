@@ -25,9 +25,6 @@
 package org.argouml.model.mdr;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -38,13 +35,14 @@ import junit.framework.TestCase;
  */
 public class TestModelEventPump extends TestCase {
 
-    private Map registry;
+    private Registry<String> registry ;
     
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() {
-        registry = Collections.synchronizedMap(new HashMap());
+        registry = new Registry<String>();
     }
     
     /**
@@ -52,95 +50,95 @@ public class TestModelEventPump extends TestCase {
      * to register and look up listeners
      */
     public void testRegistry() {
-        Collection matches;
+        Collection<String> matches;
 
-        ModelEventPumpMDRImpl.register(registry, "value1", "key1", null);
-        ModelEventPumpMDRImpl.register(registry, "main2", "key2", null);
-        ModelEventPumpMDRImpl.register(registry, "sub2", "key2",
+        registry.register("value1", "key1", null);
+        registry.register("main2", "key2", null);
+        registry.register("sub2", "key2",
                 new String[] {"subkey2"});
 
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key1", "foo");
+        matches = registry.getMatches("key1", "foo");
         checkSingle("value1", matches);
         
-        assertTrue(ModelEventPumpMDRImpl.getMatches(registry, "key3", "foo")
+        assertTrue(registry.getMatches("key3", "foo")
                 .isEmpty()); 
         
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key2", "foo");
+        matches = registry.getMatches("key2", "foo");
         checkSingle("main2", matches);
 
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key2", "subkey2");
+        matches = registry.getMatches("key2", "subkey2");
         assertTrue(matches.contains("sub2"));
         assertTrue(matches.contains("main2"));
         assertEquals(2, matches.size());
 
-        ModelEventPumpMDRImpl.unregister(registry, "main2", "key2", null);
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key2", "subkey2");
+        registry.unregister("main2", "key2", null);
+        matches = registry.getMatches("key2", "subkey2");
         checkSingle("sub2", matches);
         
         // Test multipe items registered for single key set
-        ModelEventPumpMDRImpl.register(registry, "multi1", "key4", null);
-        ModelEventPumpMDRImpl.register(registry, "multi2", "key4", null);
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key4", "foo");
+        registry.register("multi1", "key4", null);
+        registry.register("multi2", "key4", null);
+        matches = registry.getMatches("key4", "foo");
         assertTrue(matches.contains("multi1"));
         assertTrue(matches.contains("multi2"));
         assertEquals(2, matches.size());
 
-        ModelEventPumpMDRImpl.unregister(registry, "multi1", "key4", null);
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key4", "foo");
+        registry.unregister("multi1", "key4", null);
+        matches = registry.getMatches("key4", "foo");
         checkSingle("multi2", matches);
         
-        ModelEventPumpMDRImpl.unregister(registry, "multi3", "key4", null);
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key4", "foo");
+        registry.unregister("multi3", "key4", null);
+        matches = registry.getMatches("key4", "foo");
         checkSingle("multi2", matches);        
 
-        ModelEventPumpMDRImpl.unregister(registry, "multi2", "key4", null);
-        assertTrue(ModelEventPumpMDRImpl.getMatches(registry, "key4", "foo")
+        registry.unregister("multi2", "key4", null);
+        assertTrue(registry.getMatches("key4", "foo")
                 .isEmpty());
 
         // Remove with null item should remove all entries for key
-        ModelEventPumpMDRImpl.register(registry, "multi3", "key4", null);
-        ModelEventPumpMDRImpl.register(registry, "multi4", "key4", null);
-        ModelEventPumpMDRImpl.unregister(registry, null, "key4", null);
-        assertTrue(ModelEventPumpMDRImpl.getMatches(registry, "key4", "foo")
+        registry.register("multi3", "key4", null);
+        registry.register("multi4", "key4", null);
+        registry.unregister(null, "key4", null);
+        assertTrue(registry.getMatches("key4", "foo")
                 .isEmpty());
 
 
-        ModelEventPumpMDRImpl.register(registry, "multi1", "key4",
+        registry.register("multi1", "key4",
                 new String[] {"subkey"});
-        ModelEventPumpMDRImpl.register(registry, "multi2", "key4",
+        registry.register("multi2", "key4",
                 new String[] {"subkey"});
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key4", "subkey");
+        matches = registry.getMatches("key4", "subkey");
         assertTrue(matches.contains("multi1"));
         assertTrue(matches.contains("multi2"));
         assertEquals(2, matches.size());
         
-        assertTrue(ModelEventPumpMDRImpl.getMatches(registry, "key4", "foo")
+        assertTrue(registry.getMatches("key4", "foo")
                 .isEmpty());
         
-        ModelEventPumpMDRImpl.unregister(registry, "multi3", "key4",
+        registry.unregister("multi3", "key4",
                 new String[] {"subkey"});
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key4", "subkey");
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key4", "subkey");
+        matches = registry.getMatches("key4", "subkey");
+        matches = registry.getMatches("key4", "subkey");
         assertTrue(matches.contains("multi1"));
         assertTrue(matches.contains("multi2"));
         assertEquals(2, matches.size());
         
-        ModelEventPumpMDRImpl.unregister(registry, "multi2", "key4",
+        registry.unregister("multi2", "key4",
                 new String[] {"subkey"});
-        matches = ModelEventPumpMDRImpl.getMatches(registry, "key4", "subkey");
+        matches = registry.getMatches("key4", "subkey");
         checkSingle("multi1", matches);        
 
-        ModelEventPumpMDRImpl.register(registry, "multi3", "key4",
+        registry.register("multi3", "key4",
                 new String[] {"subkey"});
-        ModelEventPumpMDRImpl.register(registry, "multi4", "key4", null);
+        registry.register("multi4", "key4", null);
 
-        ModelEventPumpMDRImpl.unregister(registry, null, "key4", null);
-        assertTrue(ModelEventPumpMDRImpl.getMatches(registry, "key4", "subkey")
+        registry.unregister(null, "key4", null);
+        assertTrue(registry.getMatches("key4", "subkey")
                 .isEmpty());
 
     }
     
-    private void checkSingle(String value, Collection matches) {
+    private void checkSingle(String value, Collection<String> matches) {
         assertEquals(1, matches.size());
         assertEquals(value, matches.iterator().next()); 
     }
