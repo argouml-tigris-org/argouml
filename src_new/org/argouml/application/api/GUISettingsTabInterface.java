@@ -35,6 +35,10 @@ import javax.swing.JPanel;
  * Changes can be made during editing of the tabs, but the tab must
  * be able to undo any change if requested
  * through {@link #handleSettingsTabCancel}.<p>
+ * 
+ * Warning: Do not access the Projectmanager in the constructor 
+ * of classes that implement this interface! This because the
+ * SettingsTabs are created before an initial Project is created.
  *
  * @author Thierry Lach
  * @since 0.9.4
