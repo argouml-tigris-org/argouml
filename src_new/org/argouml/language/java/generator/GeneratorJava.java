@@ -157,8 +157,9 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         }
         Object classifier = modelElement;
         String filename = name + ".java";
+        StringBuilder sbPath = new StringBuilder(path);
         if (!path.endsWith(FILE_SEPARATOR)) {
-            path += FILE_SEPARATOR;
+            sbPath.append(FILE_SEPARATOR);
         }
 
         String packagePath =
@@ -166,7 +167,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 
         int lastIndex = -1;
         do {
-            File f = new File(path);
+            File f = new File(sbPath.toString());
             if (!f.isDirectory()) {
                 if (!f.mkdir()) {
                     LOG.error(" could not make directory " + path);
@@ -183,15 +184,15 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
                 index = packagePath.length();
             }
 
-            path += packagePath.substring(lastIndex + 1, index)
-                + FILE_SEPARATOR;
+            sbPath.append(packagePath.substring(lastIndex + 1, index)
+                + FILE_SEPARATOR);
             lastIndex = index;
         } while (true);
 
-        String pathname = path + filename;
+        String pathname = sbPath.toString() + filename;
         //cat.info("-----" + pathname + "-----");
 
-        //now decide wether file exist and need an update or is to be
+        //now decide whether file exist and need an update or is to be
         //newly generated
         File f = new File(pathname);
         isFileGeneration = true; // used to produce method javadoc

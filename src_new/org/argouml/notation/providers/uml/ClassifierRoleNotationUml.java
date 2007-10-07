@@ -260,28 +260,33 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
      */
     public String toString(Object modelElement, HashMap args) {
         String nameString = Model.getFacade().getName(modelElement);
-        if (nameString == null) nameString = "";
+        if (nameString == null) { 
+            nameString = "";
+        }
         nameString = nameString.trim();
-        String baseString = "";
+        StringBuilder baseString = new StringBuilder();
 
         // Loop through all base classes, building a comma separated list
 
         Collection c = Model.getFacade().getBases(modelElement);
         if (c != null && c.size() > 0) {
             Vector bases = new Vector(c);
-            baseString += Model.getFacade().getName(bases.elementAt(0));
+            baseString.append(Model.getFacade().getName(bases.elementAt(0)));
 
             for (int i = 1; i < bases.size(); i++) {
-                baseString +=
-                    ", " + Model.getFacade().getName(bases.elementAt(i));
+                baseString.append(
+                    ", " + Model.getFacade().getName(bases.elementAt(i)));
             }
         }
-        baseString = baseString.trim();
-
+        baseString = new StringBuilder(baseString.toString().trim());       
         // Build the final string
-        if (nameString.length() != 0) nameString = "/" + nameString;
-        if (baseString.length() != 0) baseString = ":" + baseString;
-        return nameString + baseString;
+        if (nameString.length() != 0) {
+            nameString = "/" + nameString;
+        }
+        if (baseString.length() != 0) {
+            baseString = baseString.insert(0, ":");
+        }
+        return nameString + baseString.toString();
     }
 
 }

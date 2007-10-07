@@ -137,7 +137,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      * @return a string which represents the path
      */
     protected String generatePath(Object modelElement, HashMap args) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         if (isValue("pathVisible", args)) {
             Object p = modelElement;
             Stack stack = new Stack();
@@ -147,14 +147,14 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
                 ns = Model.getFacade().getNamespace(ns);
             }
             while (!stack.isEmpty()) {
-                s += (String) stack.pop() + "::";
+                s.append((String) stack.pop() + "::");
             }
 
-            if (s.length() > 0 && !s.endsWith(":")) {
-                s += "::";
+            if (s.length() > 0 && !(s.lastIndexOf(":") == s.length() - 1)) {
+                s.append("::");
             }
         }
-        return s;
+        return s.toString();
     }
 
     /**
@@ -175,8 +175,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             s = NotationUtilityUml.generateVisibility(v);
             if (s.length() > 0) {
                 s = s + " ";
-            }
-            /* This for when nothing is generated: omit the space. */
+            }            
         }
         return s;
     }

@@ -97,7 +97,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         MyTokenizer st;
 
         String name = null;
-        String stereotype = null;
+        StringBuilder stereotype = null;
         String token;
 
         try {
@@ -113,13 +113,13 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
                         		st.getTokenIndex());
                     }
 
-                    stereotype = "";
+                    stereotype = new StringBuilder();
                     while (true) {
                         token = st.nextToken();
                         if (">>".equals(token) || "\u00BB".equals(token)) {
                             break;
                         }
-                        stereotype += token;
+                        stereotype.append(token);
                     }
                 } else {
                     if (name != null) {
@@ -167,7 +167,8 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
             Model.getCoreHelper().setName(role, name);
         }
 
-        StereotypeUtility.dealWithStereotypes(role, stereotype, true);
+        StereotypeUtility.dealWithStereotypes(role, 
+                stereotype.toString(), true);
     }
 
     /*

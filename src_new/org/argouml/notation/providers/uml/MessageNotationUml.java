@@ -143,7 +143,7 @@ public class MessageNotationUml extends MessageNotation {
 
         String action = "";
         String number;
-        String predecessors = "";
+        StringBuilder predecessors = new StringBuilder();
         int lpn;
 
         if (modelElement == null) {
@@ -173,14 +173,15 @@ public class MessageNotationUml extends MessageNotation {
                 }
 
                 if (predecessors.length() > 0) {
-                    predecessors += ", ";
+                    predecessors.append(", ");
                 }
-                predecessors += generateMessageNumber(msg, ptr2.message, mpn);
+                predecessors.append(
+                        generateMessageNumber(msg, ptr2.message, mpn));
                 precnt++;
             }
 
             if (precnt > 0) {
-                predecessors += " / ";
+                predecessors.append(" / ");
             }
         }
 
@@ -343,7 +344,7 @@ public class MessageNotationUml extends MessageNotation {
         Collection arguments;
         Iterator it;
         String s;
-        String p;
+        StringBuilder p;
         boolean first;
 
         Object script = Model.getFacade().getScript(theAction);
@@ -354,7 +355,7 @@ public class MessageNotationUml extends MessageNotation {
             s = "";
         }
 
-        p = "";
+        p = new StringBuilder();
         arguments = Model.getFacade().getActualArguments(theAction);
         if (arguments != null) {
             it = arguments.iterator();
@@ -362,11 +363,12 @@ public class MessageNotationUml extends MessageNotation {
             while (it.hasNext()) {
                 Object arg = it.next();
                 if (!first) {
-                    p += ", ";
+                    p.append(", ");
                 }
 
                 if (Model.getFacade().getValue(arg) != null) {
-                    p += generateExpression(Model.getFacade().getValue(arg));
+                    p.append(generateExpression(
+                            Model.getFacade().getValue(arg)));
                 }
                 first = false;
             }
@@ -385,7 +387,7 @@ public class MessageNotationUml extends MessageNotation {
             return s;
         }
 
-        return s + " (" + p + ")";
+        return s + " (" + p.toString() + ")";
     }
 
     private String generateExpression(Object expr) {
@@ -453,10 +455,10 @@ public class MessageNotationUml extends MessageNotation {
      */
     protected void parseMessage(Object mes, String s) throws ParseException {
         String fname = null;
-        String guard = null;
+        StringBuilder guard = null;
         String paramExpr = null;
         String token;
-        String varname = null;
+        StringBuilder varname = null;
         Vector predecessors = new Vector();
         Vector seqno = null;
         Vector currentseq = new Vector();
@@ -483,7 +485,7 @@ public class MessageNotationUml extends MessageNotation {
                 if (" ".equals(token) || "\t".equals(token)) {
                     if (currentseq == null) {
                         if (varname != null && fname == null) {
-                            varname += token;
+                            varname.append(token);
                         }
                     }
                 } else if ("[".equals(token)) {
@@ -500,13 +502,13 @@ public class MessageNotationUml extends MessageNotation {
                                 st.getTokenIndex());
                     }
 
-                    guard = "";
+                    guard = new StringBuilder();
                     while (true) {
                         token = st.nextToken();
                         if ("]".equals(token)) {
                             break;
                         }
-                        guard += token;
+                        guard.append(token);
                     }
                 } else if ("*".equals(token)) {
                     if (mustBePre) {
@@ -634,10 +636,10 @@ public class MessageNotationUml extends MessageNotation {
                         hasPredecessors = true;
                     } else {
                         if (varname == null && fname != null) {
-                            varname = fname + token;
+                            varname = new StringBuilder(fname + token);
                             fname = null;
                         } else if (varname != null && fname == null) {
-                            varname += token;
+                            varname.append(token);
                         } else {
                             String msg = "parsing.error.message.found-comma";
                             throw new ParseException(
@@ -648,7 +650,7 @@ public class MessageNotationUml extends MessageNotation {
                 } else if ("=".equals(token) || ":=".equals(token)) {
                     if (currentseq == null) {
                         if (varname == null) {
-                            varname = fname;
+                            varname = new StringBuilder(fname);
                             fname = "";
                         } else {
                             fname = "";
@@ -669,11 +671,11 @@ public class MessageNotationUml extends MessageNotation {
                                     st.getTokenIndex());
                         }
                         if (varname == null) {
-                            varname = "";
+                            varname = new StringBuilder();
                         }
                         paramExpr = token.substring(1, token.length() - 1);
                     } else if (varname != null && fname == null) {
-                        varname += token;
+                        varname.append(token);
                     } else if (fname == null || fname.length() == 0) {
                         fname = token;
                     } else {
@@ -807,12 +809,12 @@ public class MessageNotationUml extends MessageNotation {
         }
 
         if (guard != null) {
-            guard = "[" + guard.trim() + "]";
+            guard = new StringBuilder("[" + guard.toString().trim() + "]");
             if (iterative) {
                 if (parallell) {
-                    guard = "*//" + guard;
+                    guard = guard.insert(0, "*//");
                 } else {
-                    guard = "*" + guard;
+                    guard = guard.insert(0, "*");
                 }
             }
             Project project =
@@ -820,7 +822,7 @@ public class MessageNotationUml extends MessageNotation {
             ProjectSettings ps = project.getProjectSettings();
             Object expr =
                 Model.getDataTypesFactory().createIterationExpression(
-                        ps.getNotationLanguage(), guard);
+                        ps.getNotationLanguage(), guard.toString());
             Model.getCommonBehaviorHelper().setRecurrence(
                     Model.getFacade().getAction(mes), expr);
         }
@@ -867,12 +869,12 @@ public class MessageNotationUml extends MessageNotation {
                 }
 
                 if (idx >= 0) {
-                    varname = body.substring(0, idx);
+                    varname = new StringBuilder(body.substring(0, idx));
                 } else {
-                    varname = "";
+                    varname = new StringBuilder();
                 }
             } else {
-                varname = "";
+                varname = new StringBuilder();
             }
         }
 
@@ -883,7 +885,7 @@ public class MessageNotationUml extends MessageNotation {
         if (fname != null) {
             String expr = fname.trim();
             if (varname.length() > 0) {
-                expr = varname.trim() + " := " + expr;
+                expr = varname.toString().trim() + " := " + expr;
             }
 
             if (Model.getFacade().getScript(
@@ -942,8 +944,8 @@ public class MessageNotationUml extends MessageNotation {
             Object/* MMessage */root;
             // Find the preceding message, if any, on either end of the
             // association.
-            String pname = "";
-            String mname = "";
+            StringBuilder pname = new StringBuilder();
+            StringBuilder mname = new StringBuilder();
             String gname = generateMessageNumber(mes);
             boolean swapRoles = false;
             int majval = 0;
@@ -972,23 +974,23 @@ public class MessageNotationUml extends MessageNotation {
                 }
 
                 if (i > 0) {
-                    mname += ".";
+                    mname.append(".");
                 }
-                mname += Integer.toString(bv) + (char) ('a' + sv);
+                mname.append(Integer.toString(bv) + (char) ('a' + sv));
 
                 if (i + 3 < seqno.size()) {
                     if (i > 0) {
-                        pname += ".";
+                        pname.append(".");
                     }
-                    pname += Integer.toString(bv) + (char) ('a' + sv);
+                    pname.append(Integer.toString(bv) + (char) ('a' + sv));
                 }
             }
 
             root = null;
             if (pname.length() > 0) {
-                root = findMsg(Model.getFacade().getSender(mes), pname);
+                root = findMsg(Model.getFacade().getSender(mes), pname.toString());
                 if (root == null) {
-                    root = findMsg(Model.getFacade().getReceiver(mes), pname);
+                    root = findMsg(Model.getFacade().getReceiver(mes), pname.toString());
                     if (root != null) {
                         swapRoles = true;
                     }
@@ -1000,9 +1002,9 @@ public class MessageNotationUml extends MessageNotation {
                 swapRoles = true;
             }
 
-            if (compareMsgNumbers(mname, gname)) {
+            if (compareMsgNumbers(mname.toString(), gname.toString())) {
                 // Do nothing
-            } else if (isMsgNumberStartOf(gname, mname)) {
+            } else if (isMsgNumberStartOf(gname.toString(), mname.toString())) {
             	String msg = "parsing.error.message.subtree-rooted-self";
                 throw new ParseException(Translator.localize(msg), 0);
             } else if (Model.getFacade().getPredecessors(mes).size() > 1
@@ -1563,15 +1565,15 @@ public class MessageNotationUml extends MessageNotation {
 
         it = c.iterator();
         if (it.hasNext()) {
-            String expr = name + "(";
+            StringBuilder expr = new StringBuilder(name + "(");
             int i;
             for (i = 0; i < params; i++) {
                 if (i > 0) {
-                    expr += ", ";
+                    expr.append(", ");
                 }
-                expr += "param" + (i + 1);
+                expr.append("param" + (i + 1));
             }
-            expr += ")";
+            expr.append(")");
             // Jaap Branderhorst 2002-23-09 added next lines to link
             // parameters and operations to the figs that represent
             // them
@@ -1582,7 +1584,8 @@ public class MessageNotationUml extends MessageNotation {
             Object op = Model.getCoreFactory().buildOperation(cls, returnType);
 
             try {
-                (new OperationNotationUml(op)).parseOperation(expr, op);
+                (new OperationNotationUml(op)).parseOperation(
+                        expr.toString(), op);
             } catch (ParseException pe) {
                 LOG.error("Unexpected ParseException in getOperation: " + pe,
                         pe);

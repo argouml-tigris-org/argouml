@@ -220,13 +220,13 @@ public class AttributeNotationUml extends AttributeNotation {
     protected void parseAttribute(
             String text,
             Object attribute) throws ParseException {
-        String multiplicity = null;
+        StringBuilder multiplicity = null;
         String name = null;
-        Vector properties = null;
-        String stereotype = null;
+        Vector<String> properties = null;
+        StringBuilder stereotype = null;
         String token;
         String type = null;
-        String value = null;
+        StringBuilder value = null;
         String visibility = null;
         boolean hasColon = false;
         boolean hasEq = false;
@@ -250,11 +250,11 @@ public class AttributeNotationUml extends AttributeNotation {
                 if (" ".equals(token) || "\t".equals(token)
                         || ",".equals(token)) {
                     if (hasEq) {
-                        value += token;
+                        value.append(token);
                     }
                 } else if ("<<".equals(token) || "\u00AB".equals(token)) {
                     if (hasEq) {
-                        value += token;
+                        value.append(token);
                     } else {
                         if (stereotype != null) {
                             String msg = 
@@ -262,18 +262,18 @@ public class AttributeNotationUml extends AttributeNotation {
                             throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
-                        stereotype = "";
+                        stereotype = new StringBuilder();
                         while (true) {
                             token = st.nextToken();
                             if (">>".equals(token) || "\u00BB".equals(token)) {
                                 break;
                             }
-                            stereotype += token;
+                            stereotype.append(token);
                         }
                     }
                 } else if ("[".equals(token)) {
                     if (hasEq) {
-                        value += token;
+                        value.append(token);
                     } else {
                         if (multiplicity != null) {
                             String msg = 
@@ -281,31 +281,31 @@ public class AttributeNotationUml extends AttributeNotation {
                             throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
-                        multiplicity = "";
+                        multiplicity = new StringBuilder();
                         multindex = st.getTokenIndex() + 1;
                         while (true) {
                             token = st.nextToken();
                             if ("]".equals(token)) {
                                 break;
                             }
-                            multiplicity += token;
+                            multiplicity.append(token);
                         }
                     }
                 } else if ("{".equals(token)) {
-                    String propname = "";
-                    String propvalue = null;
+                    StringBuilder propname = new StringBuilder();
+                    StringBuilder propvalue = null;
 
                     if (properties == null) {
-                        properties = new Vector();
+                        properties = new Vector<String>();
                     }
                     while (true) {
                         token = st.nextToken();
                         if (",".equals(token) || "}".equals(token)) {
                             if (propname.length() > 0) {
-                                properties.add(propname);
-                                properties.add(propvalue);
+                                properties.add(propname.toString());
+                                properties.add(propvalue.toString());
                             }
-                            propname = "";
+                            propname = new StringBuilder();
                             propvalue = null;
 
                             if ("}".equals(token)) {
@@ -320,16 +320,16 @@ public class AttributeNotationUml extends AttributeNotation {
                                 throw new ParseException(Translator.localize(
                                         msg, args), st.getTokenIndex());
                             }
-                            propvalue = "";
+                            propvalue = new StringBuilder();
                         } else if (propvalue == null) {
-                            propname += token;
+                            propname.append(token);
                         } else {
-                            propvalue += token;
+                            propvalue.append(token);
                         }
                     }
                     if (propname.length() > 0) {
-                        properties.add(propname);
-                        properties.add(propvalue);
+                        properties.add(propname.toString());
+                        properties.add(propvalue.toString());
                     }
                 } else if (":".equals(token)) {
                     hasColon = true;
@@ -341,7 +341,7 @@ public class AttributeNotationUml extends AttributeNotation {
                         throw new ParseException(Translator.localize(msg), st
                                 .getTokenIndex());
                     }
-                    value = "";
+                    value = new StringBuilder();
                     hasColon = false;
                     hasEq = true;
                 } else {
@@ -365,7 +365,7 @@ public class AttributeNotationUml extends AttributeNotation {
                         }
                         type = token;
                     } else if (hasEq) {
-                        value += token;
+                        value.append(token);
                     } else {
                         if (name != null && visibility != null) {
                             String msg = "parsing.error.attribute.extra-text";
@@ -406,15 +406,20 @@ public class AttributeNotationUml extends AttributeNotation {
         } catch (NoSuchElementException nsee) {
             String msg = "parsing.error.attribute.unexpected-end-attribute";
             throw new ParseException(Translator.localize(msg), text.length());
-        } catch (ParseException pre) {
-            throw pre;
+        } 
+        // catch & rethrow is not necessary if we don't do nothing (penyaskito)
+        // catch (ParseException pre) {
+        //      throw pre;
+        // }
+
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("ParseAttribute [name: " + name 
+                    + " visibility: " + visibility 
+                    + " type: " + type + " value: " + value.toString() 
+                    + " stereo: " + stereotype.toString() 
+                    + " mult: " + multiplicity.toString());
         }
-
-        LOG.debug("ParseAttribute [name: " + name + " visibility: "
-                + visibility + " type: " + type + " value: " + value
-                + " stereo: " + stereotype + " mult: " + multiplicity);
-
-        if (properties != null) {
+        if (properties != null && LOG.isDebugEnabled()) {
             for (int i = 0; i + 1 < properties.size(); i += 2) {
                 LOG.debug("\tProperty [name: " + properties.get(i) + " = "
                         + properties.get(i + 1) + "]");
@@ -450,16 +455,15 @@ public class AttributeNotationUml extends AttributeNotation {
                 ProjectManager.getManager().getCurrentProject();
             ProjectSettings ps = project.getProjectSettings();
             Object initExpr = Model.getDataTypesFactory().createExpression(
-                    ps.getNotationLanguage(), value.trim());
+                    ps.getNotationLanguage(), value.toString().trim());
             Model.getCoreHelper().setInitialValue(attribute, initExpr);
         }
 
         if (multiplicity != null) {
             try {
-                Model.getCoreHelper().setMultiplicity(
-                        attribute,
-                        Model.getDataTypesFactory()
-                                .createMultiplicity(multiplicity.trim()));
+                Model.getCoreHelper().setMultiplicity(attribute,
+                        Model.getDataTypesFactory().createMultiplicity(
+                                multiplicity.toString().trim()));
             } catch (IllegalArgumentException iae) {
                 String msg = "parsing.error.attribute.bad-multiplicity";
                 Object[] args = {iae};
@@ -474,7 +478,8 @@ public class AttributeNotationUml extends AttributeNotation {
                     NotationUtilityUml.attributeSpecialStrings);
         }
 
-        StereotypeUtility.dealWithStereotypes(attribute, stereotype, true);
+        StereotypeUtility.dealWithStereotypes(attribute, 
+                stereotype.toString(), true);
     }
 
     /*
@@ -528,12 +533,12 @@ public class AttributeNotationUml extends AttributeNotation {
                     changeableKind = "addOnly";
                 }
             }
-            StringBuffer properties = new StringBuffer();
+            StringBuilder properties = new StringBuilder();
             if (changeableKind.length() > 0) {
                 properties.append("{ ").append(changeableKind).append(" }");
             }
 
-            StringBuffer sb = new StringBuffer(20);
+            StringBuilder sb = new StringBuilder(20);
             if ((stereo != null) && (stereo.length() > 0)) {
                 sb.append(stereo).append(" ");
             }
