@@ -180,8 +180,8 @@ public abstract class UMLRadioButtonPanel
 
     private static List<String[]> toList(Map<String, String> map) {
         List<String[]> list = new ArrayList<String[]>();
-        for (String key : map.keySet()) {
-            list.add(new String[] {key, map.get(key)});
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            list.add(new String[] {entry.getKey(), entry.getValue()});
         }
         return list;
     }

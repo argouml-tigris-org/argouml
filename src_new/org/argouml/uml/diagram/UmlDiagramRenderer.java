@@ -225,10 +225,11 @@ public abstract class UmlDiagramRenderer
     private void setStyleAttributes(Fig fig, Map attributeMap) {
         String name;
         String value;
-        Iterator it = attributeMap.keySet().iterator();
+        Iterator it = attributeMap.entrySet().iterator();
         while (it.hasNext()) {
-            name = (String) it.next();
-            value = (String) attributeMap.get(name);
+            Map.Entry entry = (Map.Entry) it.next();
+            name = (String) entry.getKey();
+            value = (String) entry.getValue();
 
             if ("operationsVisible".equals(name)) {
                 ((OperationsCompartmentContainer) fig)

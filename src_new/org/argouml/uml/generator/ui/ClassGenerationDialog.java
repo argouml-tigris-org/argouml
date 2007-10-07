@@ -357,10 +357,11 @@ public class ClassGenerationDialog
                     } // end for (all nodes)
 
                     // generate the files
-                    Iterator nit = nodesPerPath.keySet().iterator();
+                    Iterator nit = nodesPerPath.entrySet().iterator();
                     while (nit.hasNext()) {
-                        String basepath = (String) nit.next();
-                        Set nodeColl = (Set) nodesPerPath.get(basepath);
+                        Map.Entry entry = (Map.Entry) nit.next();
+                        String basepath = (String) entry.getKey();
+                        Set nodeColl = (Set) entry.getValue();
                         // TODO: the last argument (recursive flag) should be a
                         // selectable option
                         Collection files =
