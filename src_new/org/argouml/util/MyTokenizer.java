@@ -724,7 +724,7 @@ public class MyTokenizer implements Enumeration {
 	TokenSep first = null;
 	TokenSep p = null;
 	int idx0, idx1, length;
-	String val = "";
+	StringBuilder val = new StringBuilder();
 	char c;
 
 	length = str.length();
@@ -734,17 +734,17 @@ public class MyTokenizer implements Enumeration {
 		if (c == '\\') {
 		    idx1++;
 		    if (idx1 < length)
-			val += str.charAt(idx1);
+			val.append(str.charAt(idx1));
 		} else if (c == ',') {
 		    break;
 		} else {
-		    val += c;
+		    val.append(c);
 		}
 	    }
 	    idx1 = Math.min(idx1, length);
 	    if (idx1 > idx0) {
-		p = new TokenSep(val);
-		val = "";
+		p = new TokenSep(val.toString());
+		val = new StringBuilder();
 		p.setNext(first);
 		first = p;
 	    }

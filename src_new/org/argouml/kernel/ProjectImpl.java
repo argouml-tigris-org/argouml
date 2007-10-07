@@ -1153,13 +1153,13 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public String repair() {
-        String report = "";
+        StringBuilder report = new StringBuilder();
         Iterator it = members.iterator();
         while (it.hasNext()) {
             ProjectMember member = (ProjectMember) it.next();
-            report += member.repair();
+            report.append(member.repair());
         }
-        return report;
+        return report.toString();
     }
 
 

@@ -192,7 +192,7 @@ public class NotationUtilityJava {
      */
     static String generatePath(Object modelElement, 
             HashMap args) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         if (NotationProvider.isValue("pathVisible", args)) {
             Stack stack = new Stack();
             Object ns = Model.getFacade().getNamespace(modelElement);
@@ -201,14 +201,14 @@ public class NotationUtilityJava {
                 ns = Model.getFacade().getNamespace(ns);
             }
             while (!stack.isEmpty()) {
-                s += (String) stack.pop() + ".";
+                s.append((String) stack.pop() + ".");
             }
 
-            if (s.length() > 0 && !s.endsWith(".")) {
-                s += ".";
+            if (s.length() > 0 && !(s.lastIndexOf(".") == s.length() - 1)) {
+                s.append(".");
             }
         }
-        return s;
+        return s.toString();
     }
 
     /**

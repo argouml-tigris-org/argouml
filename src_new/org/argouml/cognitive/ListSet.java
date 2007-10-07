@@ -318,14 +318,15 @@ public class ListSet<T extends Object>
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        String res = "Set{";
+        StringBuilder sb = new StringBuilder("Set{");        
         for (Iterator it = iterator(); it.hasNext(); ) {
-            res += it.next();
+            sb.append(it.next());
             if (it.hasNext()) {
-                res += ", ";
+                sb.append(", ");
             }
         }
-        return res + "}";
+        sb.append("}");
+        return sb.toString();
     }
 
     /**

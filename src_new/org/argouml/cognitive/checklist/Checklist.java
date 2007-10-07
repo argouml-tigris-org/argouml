@@ -140,13 +140,13 @@ public class Checklist extends ArrayList<CheckItem> implements List<CheckItem>,
      */
     @Override
     public String toString() {
-	String res;
-	res = getClass().getName() + " {\n";
+	StringBuilder sb = new StringBuilder();
+	sb.append(getClass().getName() + " {\n");
         for (CheckItem item : this) {
-	    res += "    " + item.toString() + "\n";
+	    sb.append("    " + item.toString() + "\n");
 	}
-	res += "  }";
-	return res;
+	sb.append("  }");
+	return sb.toString();
     }
 
 }
