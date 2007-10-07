@@ -26,6 +26,7 @@ package org.argouml.model.mdr;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -108,23 +109,25 @@ public final class EventPumpInspectorPanel extends JPanel {
      */
     TreeNode getTree() {
         ModelEventPumpMDRImpl mep = (ModelEventPumpMDRImpl) Model.getPump();
-        Map elements = mep.getElements();
+        Registry<PropertyChangeListener> elements = mep.getElements();
         DefaultMutableTreeNode root =
             new DefaultMutableTreeNode("registry");
-        for (Iterator it = elements.keySet().iterator(); it.hasNext(); ) {
-            String item = it.next().toString();
+        for (Iterator it = elements.registry.entrySet().iterator(); 
+                it.hasNext(); ) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String item = entry.getKey().toString();
             DefaultMutableTreeNode modelElementNode =
                 new DefaultMutableTreeNode(getDescr(item));
             root.add(modelElementNode);
-            Map propertyMap = (Map) elements.get(item);
-            for (Iterator propertyIterator = propertyMap.keySet().iterator(); 
+            Map propertyMap = (Map) entry.getValue();
+            for (Iterator propertyIterator = propertyMap.entrySet().iterator(); 
                     propertyIterator.hasNext();) {
-                Object property = propertyIterator.next();
+                Map.Entry propertyEntry = (Map.Entry) propertyIterator.next();
                 DefaultMutableTreeNode propertyNode =
-                    new DefaultMutableTreeNode(property);
+                    new DefaultMutableTreeNode(propertyEntry.getKey());
                 modelElementNode.add(propertyNode);
 
-                List listenerList = (List) propertyMap.get(property);
+                List listenerList = (List) propertyEntry.getValue();
                 for (Iterator listIt = listenerList.iterator();
                         listIt.hasNext(); ) {
                     Object listener = listIt.next();
