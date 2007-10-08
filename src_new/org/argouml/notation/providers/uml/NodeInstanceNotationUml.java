@@ -107,24 +107,24 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
             nameStr = Model.getFacade().getName(modelElement).trim();
         }
         // construct bases string (comma separated)
-        String baseStr = "";
+        StringBuilder baseStr = new StringBuilder();
         Collection col = Model.getFacade().getClassifiers(modelElement);
         if (col != null && col.size() > 0) {
             Iterator it = col.iterator();
-            baseStr = Model.getFacade().getName(it.next());
+            baseStr.append(Model.getFacade().getName(it.next()));
             while (it.hasNext()) {
-                baseStr += ", " + Model.getFacade().getName(it.next());
+                baseStr.append(", " + Model.getFacade().getName(it.next()));
             }
         }
 
         if ((nameStr.length() == 0) && (baseStr.length() == 0)) {
             return "";
         }
-        baseStr = baseStr.trim();
-        if (baseStr.length() < 1) {
+        String base = baseStr.toString().trim();
+        if (base.length() < 1) {
             return nameStr.trim();
         }
-        return nameStr.trim() + " : " + baseStr;
+        return nameStr.trim() + " : " + base;
     }
 
 }

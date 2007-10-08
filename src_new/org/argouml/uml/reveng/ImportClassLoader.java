@@ -267,16 +267,16 @@ public final class ImportClassLoader extends URLClassLoader {
     public String toString() {
 
         URL[] urls = this.getURLs();
-        String path = "";
+        StringBuilder path = new StringBuilder();
 
         for (int i = 0; i < urls.length; i++) {
-            path = path + urls[i].getFile();
+            path.append(urls[i].getFile());
             if (i < urls.length - 1) {
-                path += ";";
+                path.append(";");
 	    }
         }
 
-        return path;
+        return path.toString();
     }
 }
 

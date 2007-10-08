@@ -107,26 +107,26 @@ public class ObjectNotationUml extends ObjectNotation {
         Vector bases = new Vector(
                 Model.getFacade().getClassifiers(modelElement));
 
-        String baseString = "";
+        StringBuilder baseString = new StringBuilder();
 
         if (Model.getFacade().getClassifiers(modelElement) != null
                 && Model.getFacade().getClassifiers(modelElement).size() > 0) {
 
-            baseString += Model.getFacade().getName(bases.elementAt(0));
+            baseString.append(Model.getFacade().getName(bases.elementAt(0)));
             for (int i = 1; i < bases.size(); i++) {
-                baseString +=
-                        ", "  + Model.getFacade().getName(bases.elementAt(i));
+                baseString.append(
+                        ", "  + Model.getFacade().getName(bases.elementAt(i)));
             }
         }
 
         if ((nameStr.length() == 0) && (baseString.length() == 0)) {
             return "";
         }
-        baseString = baseString.trim();
-        if (baseString.length() < 1) {
+        String base = baseString.toString().trim();
+        if (base.length() < 1) {
             return nameStr.trim();
         }
-        return nameStr.trim() + " : " + baseString;
+        return nameStr.trim() + " : " + base;
     }
 
 }

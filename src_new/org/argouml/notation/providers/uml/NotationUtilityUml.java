@@ -270,7 +270,7 @@ public final class NotationUtilityUml {
 
         Vector path = null;
         String name = null;
-        String stereotype = null;
+        StringBuilder stereotype = null;
         String token;
 
         try {
@@ -286,13 +286,13 @@ public final class NotationUtilityUml {
                                 st.getTokenIndex());
                     }
 
-                    stereotype = "";
+                    stereotype = new StringBuilder();
                     while (true) {
                         token = st.nextToken();
                         if (">>".equals(token) || "\u00BB".equals(token)) {
                             break;
                         }
-                        stereotype += token;
+                        stereotype.append(token);
                     }
                 } else if ("::".equals(token)) {
                     if (name != null) {
@@ -366,7 +366,7 @@ public final class NotationUtilityUml {
             Model.getCoreHelper().setName(me, name);
         }
 
-        StereotypeUtility.dealWithStereotypes(me, stereotype, false);
+        StereotypeUtility.dealWithStereotypes(me, stereotype.toString(), false);
 
         if (path != null) {
             Object nspe =
@@ -446,7 +446,7 @@ public final class NotationUtilityUml {
      * @return a string which represents the path
      */
     protected static String generatePath(Object modelElement) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         Object p = modelElement;
         Stack<String> stack = new Stack<String>();
         Object ns = Model.getFacade().getNamespace(p);
@@ -455,13 +455,13 @@ public final class NotationUtilityUml {
             ns = Model.getFacade().getNamespace(ns);
         }
         while (!stack.isEmpty()) {
-            s += stack.pop() + "::";
+            s.append(stack.pop() + "::");
         }
 
-        if (s.length() > 0 && !s.endsWith(":")) {
-            s += "::";
+        if (s.length() > 0 && !(s.lastIndexOf(":") == s.length() - 1)) {
+            s.append("::");
         }
-        return s;
+        return s.toString();
     }
 
     /**
@@ -521,7 +521,7 @@ public final class NotationUtilityUml {
             String name = null;
             String tok;
             String type = null;
-            String value = null;
+            StringBuilder value = null;
             Object p = null;
             boolean hasColon = false;
             boolean hasEq = false;
@@ -540,7 +540,7 @@ public final class NotationUtilityUml {
                     break;
                 } else if (" ".equals(tok) || "\t".equals(tok)) {
                     if (hasEq) {
-                        value += tok;
+                        value.append(tok);
                     }
                 } else if (":".equals(tok)) {
                     hasColon = true;
@@ -554,7 +554,7 @@ public final class NotationUtilityUml {
                     }
                     hasEq = true;
                     hasColon = false;
-                    value = "";
+                    value = new StringBuilder();
                 } else if (hasColon) {
                     if (type != null) {
                         String msg = "parsing.error.notation-utility.two-types";
@@ -578,7 +578,7 @@ public final class NotationUtilityUml {
 
                     type = tok;
                 } else if (hasEq) {
-                    value += tok;
+                    value.append(tok);
                 } else {
                     if (name != null && kind != null) {
                         String msg =
@@ -640,7 +640,7 @@ public final class NotationUtilityUml {
                         .createExpression(
                                 // TODO: Find a better default language
                                 ps.getNotationLanguage(),
-                                value.trim());
+                                value.toString().trim());
                 Model.getCoreHelper().setDefaultValue(p, initExpr);
             }
         }
@@ -1067,7 +1067,7 @@ public final class NotationUtilityUml {
         Collection c;
         Iterator it;
         String s;
-        String p;
+        StringBuilder p;
         boolean first;
         if (m == null) {
             return "";
@@ -1081,7 +1081,7 @@ public final class NotationUtilityUml {
             s = "";
         }
 
-        p = "";
+        p = new StringBuilder();
         c = Model.getFacade().getActualArguments(m);
         if (c != null) {
             it = c.iterator();
@@ -1089,11 +1089,11 @@ public final class NotationUtilityUml {
             while (it.hasNext()) {
                 Object arg = it.next();
                 if (!first) {
-                    p += ", ";
+                    p.append(", ");
                 }
 
                 if (Model.getFacade().getValue(arg) != null) {
-                    p += generateExpression(Model.getFacade().getValue(arg));
+                    p.append(generateExpression(Model.getFacade().getValue(arg)));
                 }
                 first = false;
             }

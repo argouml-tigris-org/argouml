@@ -190,7 +190,7 @@ public class OperationNotationUml extends OperationNotation {
         boolean hasColon = false;
         String name = null;
         String parameterlist = null;
-        String stereotype = null;
+        StringBuilder stereotype = null;
         String token;
         String type = null;
         String visibility = null;
@@ -219,13 +219,13 @@ public class OperationNotationUml extends OperationNotation {
                         parseError("operation.stereotypes", 
                                 st.getTokenIndex());
                     }
-                    stereotype = "";
+                    stereotype = new StringBuilder();
                     while (true) {
                         token = st.nextToken();
                         if (">>".equals(token) || "\u00BB".equals(token)) {
                             break;
                         }
-                        stereotype += token;
+                        stereotype.append(token);
                     }
                 } else if ("{".equals(token)) {
                     properties = tokenOpenBrace(st, properties);
@@ -350,7 +350,8 @@ public class OperationNotationUml extends OperationNotation {
         // but create any other parsed stereotypes as needed
         if (!Model.getFacade().isAReception(op) 
                 || !RECEPTION_KEYWORD.equals(stereotype)) {
-            StereotypeUtility.dealWithStereotypes(op, stereotype, true);
+            StereotypeUtility.dealWithStereotypes(op, 
+                    stereotype.toString(), true);
         }
     }
 
@@ -383,8 +384,8 @@ public class OperationNotationUml extends OperationNotation {
     private Vector tokenOpenBrace(MyTokenizer st, Vector properties)
         throws ParseException {
         String token;
-        String propname = "";
-        String propvalue = null;
+        StringBuilder propname = new StringBuilder();
+        StringBuilder propvalue = null;
 
         if (properties == null) {
             properties = new Vector();
@@ -396,7 +397,7 @@ public class OperationNotationUml extends OperationNotation {
                     properties.add(propname);
                     properties.add(propvalue);
                 }
-                propname = "";
+                propname = new StringBuilder();
                 propvalue = null;
 
                 if ("}".equals(token)) {
@@ -412,16 +413,16 @@ public class OperationNotationUml extends OperationNotation {
                             args), 
                             st.getTokenIndex());
                 }
-                propvalue = "";
+                propvalue = new StringBuilder();
             } else if (propvalue == null) {
-                propname += token;
+                propname.append(token);
             } else {
-                propvalue += token;
+                propvalue.append(token);
             }
         }
         if (propname.length() > 0) {
-            properties.add(propname);
-            properties.add(propvalue);
+            properties.add(propname.toString());
+            properties.add(propvalue.toString());
         }
         return properties;
     }

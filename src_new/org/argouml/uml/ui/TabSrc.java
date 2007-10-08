@@ -113,9 +113,9 @@ public class TabSrc
 	    files = new SourceUnit[code.size()];
 	    files = (SourceUnit[]) code.toArray(files);
 	    for (int i = 0; i < files.length; i++) {
-		String title = files[i].getName();
+		StringBuilder title = new StringBuilder(files[i].getName());
 		if (files[i].getBasePath().length() > 0) {
-		    title += " ( " + files[i].getFullName() + ")";
+		    title.append(" ( " + files[i].getFullName() + ")");
 		}
 		cbFiles.addItem(title);
 	    }
