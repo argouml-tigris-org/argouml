@@ -27,14 +27,10 @@ package org.argouml.kernel;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
-
-import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
@@ -176,8 +172,8 @@ class DefaultUndoManager implements UndoManager {
         
         private String label;
         
-        Interaction(String label) {
-            this.label = label;
+        Interaction(String lbl) {
+            label = lbl;
         }
         
         public void undo() {
@@ -253,14 +249,14 @@ class DefaultUndoManager implements UndoManager {
         private String sizeProperty;
         
         public InteractionStack(
-                String labelProperty,
-                String addedProperty,
-                String removedProperty,
-                String sizeProperty) {
-            this.labelProperty = labelProperty;
-            this.addedProperty = addedProperty;
-            this.removedProperty = removedProperty;
-            this.sizeProperty = sizeProperty;
+                String labelProp,
+                String addedProp,
+                String removedProp,
+                String sizeProp) {
+            labelProperty = labelProp;
+            addedProperty = addedProp;
+            removedProperty = removedProp;
+            sizeProperty = sizeProp;
         }
         
         public Interaction push(Interaction item) {
