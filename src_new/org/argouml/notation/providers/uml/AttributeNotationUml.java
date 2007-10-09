@@ -223,7 +223,9 @@ public class AttributeNotationUml extends AttributeNotation {
         StringBuilder multiplicity = null;
         String name = null;
         Vector<String> properties = null;
-        StringBuilder stereotype = null;
+        StringBuilder stereotype = null; // This is null as until
+                                // the first stereotype declaration is seen.
+                                // After that it is non-null.
         String token;
         String type = null;
         StringBuilder value = null;
@@ -293,7 +295,7 @@ public class AttributeNotationUml extends AttributeNotation {
                     }
                 } else if ("{".equals(token)) {
                     StringBuilder propname = new StringBuilder();
-                    StringBuilder propvalue = null;
+                    String propvalue = null;
 
                     if (properties == null) {
                         properties = new Vector<String>();
@@ -303,7 +305,7 @@ public class AttributeNotationUml extends AttributeNotation {
                         if (",".equals(token) || "}".equals(token)) {
                             if (propname.length() > 0) {
                                 properties.add(propname.toString());
-                                properties.add(propvalue.toString());
+                                properties.add(propvalue);
                             }
                             propname = new StringBuilder();
                             propvalue = null;
@@ -320,16 +322,16 @@ public class AttributeNotationUml extends AttributeNotation {
                                 throw new ParseException(Translator.localize(
                                         msg, args), st.getTokenIndex());
                             }
-                            propvalue = new StringBuilder();
+                            propvalue = "";
                         } else if (propvalue == null) {
                             propname.append(token);
                         } else {
-                            propvalue.append(token);
+                            propvalue += token;
                         }
                     }
                     if (propname.length() > 0) {
                         properties.add(propname.toString());
-                        properties.add(propvalue.toString());
+                        properties.add(propvalue);
                     }
                 } else if (":".equals(token)) {
                     hasColon = true;
@@ -416,7 +418,8 @@ public class AttributeNotationUml extends AttributeNotation {
             LOG.debug("ParseAttribute [name: " + name 
                     + " visibility: " + visibility 
                     + " type: " + type + " value: " + value.toString() 
-                    + " stereo: " + stereotype.toString() 
+                    + " stereo: "
+                    + (stereotype != null ? stereotype.toString() : "null")
                     + " mult: " + multiplicity.toString());
         }
         if (properties != null && LOG.isDebugEnabled()) {
@@ -479,7 +482,8 @@ public class AttributeNotationUml extends AttributeNotation {
         }
 
         StereotypeUtility.dealWithStereotypes(attribute, 
-                stereotype.toString(), true);
+                stereotype != null ? stereotype.toString() : null,
+                true);
     }
 
     /*
