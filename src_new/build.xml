@@ -64,7 +64,7 @@ If you want to compile ArgoUML, you need to have following:
   <!-- Convenience target for locating property files.                     -->
   <!-- =================================================================== -->
 
- <target name="list-property-files" depends="init"
+  <target name="list-property-files" depends="init"
          description="List the property files read by the build.">
 
     <!-- ====================================================== -->
@@ -72,21 +72,21 @@ If you want to compile ArgoUML, you need to have following:
     <!-- what operating system we are running on                -->
     <!-- ====================================================== -->
     <pathconvert pathsep="${path.separator}" property="lbp.path">
-        <path>
-            <pathelement location="${local.build.properties}"/>
-	</path>
+      <path>
+        <pathelement location="${local.build.properties}"/>
+      </path>
     </pathconvert>
 
     <pathconvert pathsep="${path.separator}" property="ubp.path">
-        <path>
-            <pathelement location="${user.build.properties}"/>
-	</path>
+      <path>
+        <pathelement location="${user.build.properties}"/>
+      </path>
     </pathconvert>
 
     <pathconvert pathsep="${path.separator}" property="dp.path">
-        <path>
-            <pathelement location="default.properties"/>
-	</path>
+      <path>
+        <pathelement location="default.properties"/>
+      </path>
     </pathconvert>
 
     <!-- ====================================================== -->
@@ -117,7 +117,7 @@ Property files to be searched:
 
     </echo>
 
- </target>
+  </target>
 
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
@@ -126,7 +126,7 @@ Property files to be searched:
   <target name="init">
 
     <tstamp>
-        <format pattern="yyyy" property="year"/>
+      <format pattern="yyyy" property="year"/>
     </tstamp>
 
     <property name="argo.dist.dir" value="../DIST"/>
@@ -136,7 +136,7 @@ Property files to be searched:
               value="${user.home}/argouml.build.properties"/>
     <property file="${local.build.properties}"/>
     <property file="${user.build.properties}"/>
-       
+
     <!-- we really need an absolute path for argo.root.dir -->
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}/.." />
@@ -208,7 +208,7 @@ Property files to be searched:
 
     <property name="argo.timestamp.version" 
               value="${argo.build.version}-${DSTAMP}-${TSTAMP}"/>
- 
+
     <property name="version.package" value="org/argouml/application"/>
 
     <available classname="org.tigris.gef.base.Globals"
@@ -242,7 +242,7 @@ Property files to be searched:
     <!-- If it is not set, it defaults to argo.bin.dir, and               -->
     <!-- "build install"  will not do anything.                           -->
     <property name="developer.bin.dir" value="${argo.bin.dir}"/>
-    
+
     <!-- Set of properties with fixed paths that we pass to subtasks -->
     <propertyset id="absolute-properties" dynamic="false">
       <propertyref name="argo.root.dir" />
@@ -270,18 +270,20 @@ Property files to be searched:
 
     <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
       <classpath>
-	 <path refid="ant.optional.classpath"/>
+        <path refid="ant.optional.classpath"/>
       </classpath>
     </taskdef>
 
     <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator" name="junitreport">
       <classpath>
-	 <path refid="ant.optional.classpath"/>
+        <path refid="ant.optional.classpath"/>
       </classpath>
     </taskdef>
-    
+
+    <taskdef resource="checkstyletask.properties"
+             classpath="${checkstyle.jar.path}"/>
   </target>
-  
+
 
   <!-- Note this file can only make Ant display values set in the
        file correctly, but external values in the environment or
@@ -298,11 +300,11 @@ Property files to be searched:
     <mkdir dir="${argo.build.dir}"/>
     <mkdir dir="${argo.build.dir}/ext"/>
     <mkdir dir="${argo.build.classes}"/>
- 
+
     <copy todir="${argo.build.classes}/org/argouml/Images">
       <fileset dir="${argo.src.dir}/org/argouml/Images" excludes="CVS/**" includes="**/**"/>
     </copy>
-  	
+
     <copy todir="${argo.build.classes}/org/argouml/i18n">
       <fileset dir="${argo.src.dir}/org/argouml/i18n" includes="*.properties"/>
     </copy>
@@ -312,18 +314,18 @@ Property files to be searched:
         excludes="CVS/**" 
         includes="**/**"/>
     </copy>
-  	<!-- this should copy across all .tee files, dtds and xslt  for persistence mechanism -->
+    <!-- this should copy across all .tee files, dtds and xslt  for persistence mechanism -->
     <copy todir="${argo.build.classes}/org/argouml/persistence">
       <fileset dir="${argo.src.dir}/org/argouml/persistence" 
         excludes="CVS/**" 
         includes="**/**"/>
     </copy>
-  	
+
     <copy todir="${argo.build.classes}/org/argouml">
       <fileset dir="${argo.src.dir}/org/argouml"
           includes="*.xmi,argo.ini"/>
-     </copy>
- 	
+    </copy>
+
     <!-- copy test files -->
     <copy todir="${argo.tests.classes}/testmodels">
       <fileset dir="${argo.tests.src}/testmodels" excludes="CVS/**" includes="**/**"/>
@@ -446,11 +448,11 @@ Property files to be searched:
     <uptodate property="version.is.current"
                 targetfile="${argo.src.dir}/${version.package}/ArgoVersion.java">
       <srcfiles dir="${argo.src.dir}/templates">
-          <include name="ArgoVersion.template"/>
+        <include name="ArgoVersion.template"/>
       </srcfiles>
       <srcfiles dir="${argo.src.dir}">
-          <include name="default.properties"/>
-          <include name="build.properties"/>
+        <include name="default.properties"/>
+        <include name="build.properties"/>
       </srcfiles>
     </uptodate>
   </target>
@@ -468,12 +470,12 @@ Property files to be searched:
   <target name="build-model" depends="prepare">
     <echo message="Building Model API"/>
     <ant dir="${argo.model.dir}" inheritAll="false" target="install">
-      <propertyset dynamic="false"> 
+      <propertyset dynamic="false">
         <propertyset refid="absolute-properties"/>
-      </propertyset> 
+      </propertyset>
     </ant>
   </target>
-  
+
   <target name="compile"
       depends="prepare,prerequisites,update-version,generateparser,build-model,build-mdr"
       description="Compile the sources.">
@@ -489,10 +491,10 @@ Property files to be searched:
     	   srcdir="${argo.src.dir}"
     	   source="1.5"
     	   target="1.5">
-        <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
-    	<classpath>
-	  <path refid="argo.compile.classpath"/>
-       </classpath>
+      <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+      <classpath>
+        <path refid="argo.compile.classpath"/>
+      </classpath>
     </javac>
 
     <available file="${argo.tests.src}" type="dir" property="has.tests"/>
@@ -562,7 +564,7 @@ Property files to be searched:
       </sourcepath>
 
       <classpath>
-	  <path refid="argo.compile.classpath"/>
+        <path refid="argo.compile.classpath"/>
       </classpath>
 
       <!-- Links allow reference to external classes from within
@@ -615,7 +617,7 @@ Property files to be searched:
       </sourcepath>
 
       <classpath>
-	  <path refid="argo.compile.classpath"/>
+        <path refid="argo.compile.classpath"/>
       </classpath>
 
       <!-- Links allow reference to external classes from within
@@ -654,19 +656,19 @@ Property files to be searched:
           description="Clean out all built files.">
 
     <ant dir="${argo.model.dir}" inheritAll="false" target="clean">
-      <propertyset dynamic="false"> 
+      <propertyset dynamic="false">
         <propertyset refid="absolute-properties"/>
-      </propertyset> 
+      </propertyset>
     </ant>
     <ant dir="${argo.mdr.dir}" inheritAll="false" target="clean">
-      <propertyset dynamic="false"> 
+      <propertyset dynamic="false">
         <propertyset refid="absolute-properties"/>
-      </propertyset> 
+      </propertyset>
     </ant>
     <ant dir="${argo.euml.dir}" inheritAll="false" target="clean">
-      <propertyset dynamic="false"> 
+      <propertyset dynamic="false">
         <propertyset refid="absolute-properties"/>
-      </propertyset> 
+      </propertyset>
     </ant>
     <delete dir="${argo.build.dir}/tests"/>
     <delete dir="${argo.build.dir}/src_new"/>
@@ -676,14 +678,14 @@ Property files to be searched:
 
     <!-- TODO: Some of these are obsolete -->
     <delete>
-        <fileset dir="${argo.build.dir}">
-            <include name="*.jar"/>
-            <include name="Fop.java"/>
-            <include name="Fop.class"/>
-            <include name="README.txt"/>
-            <include name="argouml.sh"/>
-            <include name="argouml.bat"/>
-        </fileset>
+      <fileset dir="${argo.build.dir}">
+        <include name="*.jar"/>
+        <include name="Fop.java"/>
+        <include name="Fop.class"/>
+        <include name="README.txt"/>
+        <include name="argouml.sh"/>
+        <include name="argouml.bat"/>
+      </fileset>
     </delete>
 
     <antcall target="cleanparser"/>
@@ -698,15 +700,15 @@ Property files to be searched:
           fork="yes"
           taskname="argouml"
     	  maxmemory="500M">
-        <sysproperty key="log4j.configuration"
+      <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/error_console.lcf"/>
-        <assertions>
-          <enable/>
-        </assertions>
-        <classpath>
-	  <pathelement location="${argo.build.classes}"/>
-	  <path refid="argo.runtime.classpath"/>
-        </classpath>
+      <assertions>
+        <enable/>
+      </assertions>
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <path refid="argo.runtime.classpath"/>
+      </classpath>
     </java>
   </target>
 
@@ -716,15 +718,15 @@ Property files to be searched:
           fork="yes"
           taskname="argouml"
     	  maxmemory="500M">
-        <sysproperty key="log4j.configuration"
+      <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/full_console.lcf"/>
-        <assertions>
-          <enable/>
-        </assertions>
-        <classpath>
-	  <pathelement location="${argo.build.classes}"/>
-	  <path refid="argo.runtime.classpath"/>
-        </classpath>
+      <assertions>
+        <enable/>
+      </assertions>
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <path refid="argo.runtime.classpath"/>
+      </classpath>
     </java>
   </target>
 
@@ -734,15 +736,15 @@ Property files to be searched:
           fork="yes"
           taskname="argouml"
     	  maxmemory="500M">
-        <sysproperty key="log4j.configuration"
+      <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/info_console.lcf"/>
-        <assertions>
-          <enable/>
-        </assertions>
-        <classpath>
-	  <pathelement location="${argo.build.classes}"/>
-	  <path refid="argo.runtime.classpath"/>
-        </classpath>
+      <assertions>
+        <enable/>
+      </assertions>
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <path refid="argo.runtime.classpath"/>
+      </classpath>
     </java>
   </target>
 
@@ -778,9 +780,9 @@ Property files to be searched:
         <pathelement location="${junit.jar.path}"/>
         <pathelement location="${easymock.jar.path}"/>
         <pathelement location="${jdepend.jar.path}"/>
-	<path refid="argo.compile.classpath"/>
+        <path refid="argo.compile.classpath"/>
       </classpath>
-     </javac>
+    </javac>
 
     <!-- We want debug, optimize, deprecation to be non-modifiable here -->
     <javac debug="true" 
@@ -799,7 +801,7 @@ Property files to be searched:
         <pathelement location="${junit.jar.path}"/>
         <pathelement location="${easymock.jar.path}"/>
         <pathelement location="${jdepend.jar.path}"/>
-	<path refid="argo.compile.classpath"/>
+        <path refid="argo.compile.classpath"/>
       </classpath>
     </javac>
 
@@ -818,7 +820,7 @@ Property files to be searched:
         <pathelement location="${junit.jar.path}"/>
         <pathelement location="${easymock.jar.path}"/>
         <pathelement location="${jdepend.jar.path}"/>
-	<path refid="argo.compile.classpath"/>
+        <path refid="argo.compile.classpath"/>
       </classpath>
     </javac>
   </target>
@@ -836,10 +838,10 @@ Property files to be searched:
     <mkdir dir="${argo.tests.reports}/junit/output"/>
     <mkdir dir="${argo.tests.reports}/junit/output/html"/>
     <delete>
-        <fileset dir="${argo.tests.reports}/junit/output">
-           <include name="TEST-*.xml"/>
-           <include name="TEST-*.txt"/>
-        </fileset>
+      <fileset dir="${argo.tests.reports}/junit/output">
+        <include name="TEST-*.xml"/>
+        <include name="TEST-*.txt"/>
+      </fileset>
     </delete>
   </target>
 
@@ -862,9 +864,9 @@ Property files to be searched:
     <echo message="=== Calling MDR build ==="/>
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
     <ant dir="${argo.mdr.dir}" target="install" inheritAll="false" >
-      <propertyset dynamic="false"> 
+      <propertyset dynamic="false">
         <propertyset refid="absolute-properties"/>
-      </propertyset> 
+      </propertyset>
     </ant>
   </target>
 
@@ -878,9 +880,9 @@ Property files to be searched:
     <echo message="=== Calling eUML build ==="/>
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar"/>
     <ant dir="${argo.euml.dir}" target="install" inheritAll="false" >
-      <propertyset dynamic="false"> 
+      <propertyset dynamic="false">
         <propertyset refid="absolute-properties"/>
-      </propertyset> 
+      </propertyset>
     </ant>
   </target>
 
@@ -895,25 +897,25 @@ Property files to be searched:
            fork="yes" dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
            maxmemory="48M" printsummary="${junit.printsummary}">
-        <sysproperty key="test.model.uml" 
+      <sysproperty key="test.model.uml" 
             value="${argo.mdr.dir}/src/org/argouml/model/mdr/mof/01-02-15.xml"/>
-        <sysproperty key="argouml.model.implementation" 
+      <sysproperty key="argouml.model.implementation" 
             value="${test.model.implementation}"/>
-	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
-	<sysproperty key="java.awt.headless" value="true"/>
-	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
-        <assertions>
-          <enable/>
-        </assertions>
-        <classpath>
-            <path refid="ant.optional.classpath"/>
-            <pathelement location="${argo.build.classes}"/>
-            <pathelement location="${argo.tests.classes}"/>
-            <path refid="argo.runtime.classpath"/>
-            <pathelement location="${easymock.jar.path}"/>
-            <pathelement location="${jdepend.jar.path}"/>
-        </classpath>
-        <formatter type="xml"/>
+      <sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
+      <sysproperty key="java.awt.headless" value="true"/>
+      <sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
+      <assertions>
+        <enable/>
+      </assertions>
+      <classpath>
+        <path refid="ant.optional.classpath"/>
+        <pathelement location="${argo.build.classes}"/>
+        <pathelement location="${argo.tests.classes}"/>
+        <path refid="argo.runtime.classpath"/>
+        <pathelement location="${easymock.jar.path}"/>
+        <pathelement location="${jdepend.jar.path}"/>
+      </classpath>
+      <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
         <fileset dir="${argo.tests.src}">
           <include name="org/argouml/**/Test*.java"/>
@@ -942,19 +944,19 @@ Property files to be searched:
            fork="yes" dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
            maxmemory="128M" printsummary="${junit.printsummary}">
-	<sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
-	<sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
-        <assertions>
-          <enable/>
-        </assertions>
-        <classpath>
-            <path refid="ant.optional.classpath"/>
-            <pathelement location="${argo.build.classes}"/>
-            <pathelement location="${argo.tests.classes}"/>
-            <path refid="argo.runtime.classpath"/>
-            <pathelement location="${easymock.jar.path}"/>
-        </classpath>
-        <formatter type="xml"/>
+      <sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
+      <sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
+      <assertions>
+        <enable/>
+      </assertions>
+      <classpath>
+        <path refid="ant.optional.classpath"/>
+        <pathelement location="${argo.build.classes}"/>
+        <pathelement location="${argo.tests.classes}"/>
+        <path refid="argo.runtime.classpath"/>
+        <pathelement location="${easymock.jar.path}"/>
+      </classpath>
+      <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
         <fileset dir="${argo.tests.src}">
           <include name="org/argouml/**/GUITest*.java"/>
@@ -978,30 +980,30 @@ Property files to be searched:
     <!-- Don't do anything. -->
     <java classname="org.argouml.application.Main" 
           fork="yes">
-        <assertions>
-          <enable/>
-        </assertions>
-        <classpath>
-	  <pathelement location="${argo.build.classes}"/>
-	  <path refid="argo.runtime.classpath"/>
-        </classpath>
-        <arg value="-batch"/>
+      <assertions>
+        <enable/>
+      </assertions>
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <path refid="argo.runtime.classpath"/>
+      </classpath>
+      <arg value="-batch"/>
     </java>
 
     <!-- Exit. -->
     <java classname="org.argouml.application.Main" 
           fork="yes">
-        <assertions>
-          <enable/>
-        </assertions>
-        <classpath>
-	  <pathelement location="${argo.build.classes}"/>
-	  <path refid="argo.runtime.classpath"/>
-        </classpath>
-        <arg value="-nosplash"/>
-        <arg value="-batch"/>
-        <arg value="-command"/>
-        <arg value="org.argouml.uml.ui.ActionExit"/>
+      <assertions>
+        <enable/>
+      </assertions>
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <path refid="argo.runtime.classpath"/>
+      </classpath>
+      <arg value="-nosplash"/>
+      <arg value="-batch"/>
+      <arg value="-command"/>
+      <arg value="org.argouml.uml.ui.ActionExit"/>
     </java>
 
   </target>
@@ -1019,17 +1021,17 @@ Property files to be searched:
           depends="compile,junit-setup"
           description="Start the TestRunner with all test cases from ../tests loaded.">
     <java classname="junit.swingui.TestRunner" fork="yes" taskname="argouml">
-        <assertions>
-          <enable/>
-        </assertions>
-        <classpath>
-	  <pathelement location="${argo.build.dir}/argo_junit_tests.jar"/>
-          <pathelement location="${argo.tests.classes}"/>
-	  <pathelement location="${argo.build.classes}"/>
-          <pathelement location="${junit.jar.path}"/>
-          <pathelement location="${easymock.jar.path}"/>
-	  <path refid="argo.runtime.classpath"/>
-        </classpath>
+      <assertions>
+        <enable/>
+      </assertions>
+      <classpath>
+        <pathelement location="${argo.build.dir}/argo_junit_tests.jar"/>
+        <pathelement location="${argo.tests.classes}"/>
+        <pathelement location="${argo.build.classes}"/>
+        <pathelement location="${junit.jar.path}"/>
+        <pathelement location="${easymock.jar.path}"/>
+        <path refid="argo.runtime.classpath"/>
+      </classpath>
     </java>
   </target>
 
@@ -1057,9 +1059,9 @@ Cyclic - If the package contains a dependency cycle
 For details see http://www.clarkware.com/software/JDepend.html.
     </echo>
     <java classname="jdepend.swingui.JDepend" failonerror="true" fork="true">
-      <arg value="."/> 
+      <arg value="."/>
       <classpath>
-	<path refid="ant.optional.classpath"/>
+        <path refid="ant.optional.classpath"/>
       </classpath>
     </java>
   </target>
@@ -1076,7 +1078,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <sysproperty key="outdir" value="../build/javasrc"/>
       <sysproperty key="verbose" value="yes"/>
       <classpath>
-	<pathelement location="${javasrc.jar.path}"/>
+        <pathelement location="${javasrc.jar.path}"/>
         <pathelement location="${antlrall.jar.path}"/>
       </classpath>
       <arg value="."/>
@@ -1087,13 +1089,66 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <sysproperty key="outdir" value="../build/javasrc"/>
       <sysproperty key="verbose" value="yes"/>
       <classpath>
-	<pathelement location="${javasrc.jar.path}"/>
-	<pathelement location="${antlrall.jar.path}"/>
+        <pathelement location="${javasrc.jar.path}"/>
+        <pathelement location="${antlrall.jar.path}"/>
       </classpath>
       <arg value="../build/javasrc"/>
     </java>
   </target>
 
+
+  <!-- =================================================================== -->
+  <!-- Runs checkstyle to find style problems in ArgoUML.                  -->
+  <!-- =================================================================== -->
+
+  <target name="checkstyle" 
+    description="Run Checkstyle on all sources (xml report)" 
+    depends="ant.optional.init">
+
+    <echo>
+	  Running checkstyle on ${source.dir}.
+    </echo>
+
+    <property name="checkstyle.reports.dir" value="${argo.tests.reports}/checkstyle"/>
+    <mkdir dir="${checkstyle.reports.dir}" />
+    <delete>
+      <fileset dir="${checkstyle.reports.dir}">
+        <include name="*.xml" />
+      </fileset>
+    </delete>
+
+    <checkstyle config="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml">
+      <property key="checkstyle.header.file" 
+        value="${argo.tools.dir}/checkstyle/java.header" />
+      <formatter type="xml" toFile="${checkstyle.reports.dir}/checkstyle-report.xml" />
+      <fileset dir="${argo.src.dir}/org" includes="**/*.java">
+        <exclude name="**/JavaLexer.java" />
+        <exclude name="**/JavaRecognizer.java" />
+        <exclude name="**/JavaTokenTypes.java" />
+      </fileset>
+    </checkstyle>
+
+    <!--
+      <fileset dir="${argo.model.dir}/src" includes="**/*.java"/>
+      <fileset dir="${argo.mdr.dir}/src" includes="**/*.java"/>
+      <fileset dir="${argo.tests.dir}" includes="**/*.java"/>
+      <fileset dir="../modules/classfile/src/org/argouml/uml/reveng/classfile">
+        <exclude name="ClassfileParser.java" />
+        <exclude name="ClassfileParserTokenTypes.java" />
+        <exclude name="ClassfileTokenTypes.java" />
+        <exclude name="ClassfileTreeParser.java" />
+      </fileset>
+      <fileset dir="../modules/cpp/src/org/argouml/language/cpp/reveng">
+        <exclude name="CPPLexer.java" />
+        <exclude name="CPPParser.java" />
+        <exclude name="STDCTokenTypes.java" />
+      </fileset>
+      -->
+
+  </target>
+
+  <!-- Internal target to aggregate tasks for CruiseControl -->
+  <target name="cruisecontrol" depends="tests,checkstyle" />
 
   <!-- ################################################################### -->
   <!-- Section with temporary targets and experiments.                     -->
@@ -1118,29 +1173,30 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <!-- Runs Classycle to find cyclic dependencies in ArgoUML.              -->
   <!-- =================================================================== -->
-    <target name="classycle" depends="compile" 
+  <target name="classycle" depends="compile" 
         description="Analyze sources for cyclic dependencies using Classcycle">
-      <echo>
+    <echo>
   Running classcyle on ${source.dir}.
   </echo>
-      <property name="classycle.output" value="${argo.build.dir}/classycle"/>
-      <property name="classycle.dir" value="${argo.tools.dir}/Classycle"/>
-      <mkdir dir="${classycle.output}"/>
-      <java jar="${classycle.dir}/classycle.jar" failonerror="false" 
+    <property name="classycle.output" value="${argo.build.dir}/classycle"/>
+    <property name="classycle.dir" value="${argo.tools.dir}/Classycle"/>
+    <mkdir dir="${classycle.output}"/>
+    <java jar="${classycle.dir}/classycle.jar" failonerror="false" 
           fork="true" maxmemory="32M">
-        <arg value="-mergeInnerClasses"/>
-        <arg value="-includingClasses=org.argouml.*"/>
-        <arg value="-excludingClasses=java.*,javax.*"/>
-        <arg value="-xmlFile=${classycle.output}/argouml-classcycles.xml"/>
-        <arg value="-title=ArgoUML-${argo.build.version}"/>
-        <arg value="${argo.build.classes}"/>
-      </java>
-      <copy todir="${classycle.output}">
-        <fileset dir="${classycle.dir}">
-          <include name="*.xsl"/>
-          <include name="images/**"/>
-        </fileset>
-      </copy>
-    </target>
+      <arg value="-mergeInnerClasses"/>
+      <arg value="-includingClasses=org.argouml.*"/>
+      <arg value="-excludingClasses=java.*,javax.*"/>
+      <arg value="-xmlFile=${classycle.output}/argouml-classcycles.xml"/>
+      <arg value="-title=ArgoUML-${argo.build.version}"/>
+      <arg value="${argo.build.classes}"/>
+    </java>
+    <copy todir="${classycle.output}">
+      <fileset dir="${classycle.dir}">
+        <include name="*.xsl"/>
+        <include name="images/**"/>
+      </fileset>
+    </copy>
+  </target>
 
-</project><!-- End of file -->
+</project>
+<!-- End of file -->
