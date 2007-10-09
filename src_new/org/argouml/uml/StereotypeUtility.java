@@ -243,7 +243,8 @@ public class StereotypeUtility {
      * given in the form of a "," seperated string of stereotype names.
      *
      * @param umlobject the UML element to adapt
-     * @param stereotype comma seperated stereotype names
+     * @param stereotype Comma seperated list stereotype names. Empty string
+     *                   or <code>null</code> represents no stereotypes.
      * @param full false if stereotypes are only added,
      *             true if removal should be done, too.
      */
