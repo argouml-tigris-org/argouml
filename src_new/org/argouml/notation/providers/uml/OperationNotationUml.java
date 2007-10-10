@@ -25,11 +25,12 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Vector;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -194,7 +195,7 @@ public class OperationNotationUml extends OperationNotation {
         String token;
         String type = null;
         String visibility = null;
-        Vector<String> properties = null;
+        List<String> properties = null;
         int paramOffset = 0;
 
         s = s.trim();
@@ -382,14 +383,14 @@ public class OperationNotationUml extends OperationNotation {
      * @return updated vector of properties
      * @throws ParseException
      */
-    private Vector tokenOpenBrace(MyTokenizer st, Vector properties)
+    private List<String> tokenOpenBrace(MyTokenizer st, List<String> properties)
         throws ParseException {
         String token;
         StringBuilder propname = new StringBuilder();
         String propvalue = null;
 
         if (properties == null) {
-            properties = new Vector();
+            properties = new ArrayList<String>();
         }
         while (true) {
             token = st.nextToken();

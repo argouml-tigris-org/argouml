@@ -28,9 +28,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Stack;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -38,6 +38,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.uml.StereotypeUtility;
+import org.argouml.util.CustomSeparator;
 import org.argouml.util.MyTokenizer;
 
 /**
@@ -54,7 +55,7 @@ public final class NotationUtilityUml {
     /**
      * The vector of CustomSeparators to use when tokenizing attributes.
      */
-    static Vector attributeCustomSep;
+    static List<CustomSeparator> attributeCustomSep;
 
     /**
      * The array of special properties for operations.
@@ -64,12 +65,12 @@ public final class NotationUtilityUml {
     /**
      * The vector of CustomSeparators to use when tokenizing attributes.
      */
-    static Vector operationCustomSep;
+    static List<CustomSeparator> operationCustomSep;
 
     /**
      * The vector of CustomSeparators to use when tokenizing parameters.
      */
-    private static Vector parameterCustomSep;
+    private static List<CustomSeparator> parameterCustomSep;
 
     /**
      * The character with a meaning as a visibility at the start
@@ -86,19 +87,19 @@ public final class NotationUtilityUml {
     static {
         attributeSpecialStrings = new PropertySpecialString[2];
 
-        attributeCustomSep = new Vector();
+        attributeCustomSep = new ArrayList<CustomSeparator>();
         attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
         attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
         operationSpecialStrings = new PropertySpecialString[8];
 
-        operationCustomSep = new Vector();
+        operationCustomSep = new ArrayList<CustomSeparator>();
         operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
         operationCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
-        parameterCustomSep = new Vector();
+        parameterCustomSep = new ArrayList<CustomSeparator>();
         parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         parameterCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
         parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
@@ -268,7 +269,7 @@ public final class NotationUtilityUml {
         throws ParseException {
         MyTokenizer st;
 
-        Vector path = null;
+        List<String> path = null;
         String name = null;
         StringBuilder stereotype = null;
         String token;
@@ -307,7 +308,7 @@ public final class NotationUtilityUml {
                     }
 
                     if (path == null) {
-                        path = new Vector();
+                        path = new ArrayList<String>();
                     }
                     if (name != null) {
                         path.add(name);
@@ -700,7 +701,7 @@ public final class NotationUtilityUml {
     }
 
     /**
-     * Applies a Vector of name value pairs of properties to a model element.
+     * Applies a List of name/value pairs of properties to a model element.
      * The name is treated as the tag of a tagged value unless it is one of the
      * PropertySpecialStrings, in which case the action of the
      * PropertySpecialString is invoked.
@@ -708,11 +709,11 @@ public final class NotationUtilityUml {
      * @param elem
      *            An model element to apply the properties to.
      * @param prop
-     *            A Vector with name, value pairs of properties.
+     *            A List with name, value pairs of properties.
      * @param spec
      *            An array of PropertySpecialStrings to use.
      */
-    static void setProperties(Object elem, Vector prop,
+    static void setProperties(Object elem, List<String> prop,
             PropertySpecialString[] spec) {
         String name;
         String value;
@@ -720,8 +721,8 @@ public final class NotationUtilityUml {
 
     nextProp:
         for (i = 0; i + 1 < prop.size(); i += 2) {
-            name = (String) prop.get(i);
-            value = (String) prop.get(i + 1);
+            name = prop.get(i);
+            value = prop.get(i + 1);
 
             if (name == null) {
                 continue;
@@ -733,7 +734,7 @@ public final class NotationUtilityUml {
             }
 
             for (j = i + 2; j < prop.size(); j += 2) {
-                String s = (String) prop.get(j);
+                String s = prop.get(j);
                 if (s != null && name.equalsIgnoreCase(s.trim())) {
                     continue nextProp;
                 }
