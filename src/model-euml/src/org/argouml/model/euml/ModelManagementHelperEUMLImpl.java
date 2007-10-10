@@ -29,6 +29,7 @@ package org.argouml.model.euml;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.ModelManagementHelper;
@@ -215,11 +216,16 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         return null;
     }
 
-    public Object getElement(Vector path, Object theRootNamespace) {
+    public Object getElement(Vector<String> path, Object theRootNamespace) {
         // TODO Auto-generated method stub
         return null;
     }
 
+    public Object getElement(List<String> path, Object theRootNamespace) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
     public Vector<String> getPath(Object element) {
         // TODO: Needs completing - stub implementation only! - tfm
         Vector<String> path = new Vector<String>();
@@ -227,6 +233,13 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         return path;
     }
 
+    public List<String> getPathList(Object element) {
+        // TODO: Needs completing - stub implementation only! - tfm
+        List<String> path = new ArrayList<String>();
+        path.add(modelImpl.getFacade().getName(element));
+        return path;
+    }
+    
     public boolean isCyclicOwnership(Object parent, Object child) {
         // TODO Auto-generated method stub
         return false;
