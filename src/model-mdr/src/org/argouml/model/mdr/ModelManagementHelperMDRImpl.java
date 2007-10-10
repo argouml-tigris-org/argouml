@@ -36,6 +36,7 @@ import java.util.Vector;
 import javax.jmi.model.MofClass;
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefClass;
+import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 
 import org.argouml.model.InvalidElementException;
@@ -44,6 +45,7 @@ import org.omg.uml.behavioralelements.collaborations.Collaboration;
 import org.omg.uml.behavioralelements.commonbehavior.Instance;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Element;
 import org.omg.uml.foundation.core.GeneralizableElement;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
@@ -326,24 +328,23 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return vmes;
     }
 
-    
+    @Deprecated
     public Object getElement(Vector path, Object theRootNamespace) {
-        ModelElement root = (ModelElement) theRootNamespace;
-        Object name;
-        int i;
+        return getElement((List) path, theRootNamespace);
+    }
 
+    public Object getElement(List<String> path, Object theRootNamespace) {
+        ModelElement root = (ModelElement) theRootNamespace;
         // TODO: This is very inefficient.  Investigate a direct method - tfm
         
-        for (i = 0; i < path.size(); i++) {
+        for (int i = 0; i < path.size(); i++) {
             if (root == null || !(root instanceof Namespace)) {
                 return null;
             }
 
-            name = path.get(i);
-            Iterator it = ((Namespace) root).getOwnedElement().iterator();
+            String name = path.get(i);
             root = null;
-            while (it.hasNext()) {
-                ModelElement me = (ModelElement) it.next();
+            for (ModelElement me : ((Namespace) root).getOwnedElement()) {
                 if (i < path.size() - 1 && !(me instanceof Namespace)) {
                     continue;
                 }
@@ -355,15 +356,14 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         }
         return root;
     }
-
     
-    public Vector getPath(Object element) {
-        Vector path;
+    public Vector<String> getPath(Object element) {
+        Vector<String> path;
 
         // TODO: This only returns the path to the innermost nested Model.
         // We should have a version that returns the full path. - tfm
         if (element == null || element instanceof Model) {
-            return new Vector();
+            return new Vector<String>();
         }
 
         path = getPath(modelImpl.getFacade().getModelElementContainer(element));
@@ -372,6 +372,21 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return path;
     }
 
+    public List<String> getPathList(Object element) {
+
+        if (element == null) {
+            return new ArrayList<String>();
+        }
+        if (!(element instanceof RefObject)) {
+            throw new IllegalArgumentException();
+        }
+
+        List<String> path = getPathList(((RefObject) element)
+                .refImmediateComposite());
+        path.add(modelImpl.getFacade().getName(element));
+
+        return path;
+    }
     
     public Object getCorrespondingElement(Object elem, Object model) {
         return getCorrespondingElement(elem, model, true);
