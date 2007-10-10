@@ -25,6 +25,7 @@
 package org.argouml.model;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -114,32 +115,78 @@ public interface ModelManagementHelper {
 
     /**
      * Get the modelelement a given path below a given root-namespace.
+     * 
+     * @param path
+     *                the given path
+     * @param theRootNamespace
+     *                the given namespace to start from
+     * @return the modelelement looked for, or null if not found
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getElement(List, Object)}.
+     */
+    @Deprecated
+    Object getElement(Vector<String> path, Object theRootNamespace);
+
+    /**
+     * Get the modelelement a given path below a given root-namespace.
      *
      * @param path the given path
      * @param theRootNamespace the given namespace to start from
      * @return the modelelement looked for, or null if not found
      */
-    Object getElement(Vector path, Object theRootNamespace);
+    Object getElement(List<String> path, Object theRootNamespace);
+    
+    /**
+     * Finds the absolute path of a ModelElement. Ie the name of each namespace
+     * starting at the root (the Model) and ending with the name of the element.
+     * <p>
+     * The returned Vector implicitly starts at the root (the model) and follows
+     * element's chain of owning namespaces back down to element. The first
+     * element will thus be the name of the top level namespace below the model,
+     * and the last element will be the name of element itself. Note thus that
+     * for the model the path will be empty.
+     * 
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getPathList(Object)} but
+     *             be aware that the implementations are not 100% compatible.
+     *             Read the Javadoc for the new method to understand the
+     *             difference.
+     * @param element
+     *                is the object to resolve the path for.
+     * @return A Vector as described above.
+     * @throws IllegalArgumentException
+     *                 if element isn't a ModelElement properly owned by
+     *                 namespaces and a model.
+     * 
+     */
+    @Deprecated
+    Vector<String> getPath(Object element);
 
     /**
-     * Finds the absolute path of a ModelElement. Ie the name of each
-     * namespace starting at the root (the Model) and ending with the
-     * name of the element.<p>
-     *
-     * The returned Vector implicitly starts at the root (the model)
-     * and follows element's chain of owning namespaces back down to
-     * element. The first element will thus be the name of the top level
-     * namespace below the model, and the last element will be the name
-     * of element itself. Note thus that for the model the path will be
-     * empty.
-     *
-     * @param  element is the object to resolve the path for.
-     * @return A Vector as described above.
-     * @throws IllegalArgumentException if element isn't a ModelElement
-     *         properly owned by namespaces and a model.
+     * Find the absolute path of a ModelElement. Ie the name of each namespace
+     * starting a root or top level model element and ending with the name of
+     * the element.
+     * <p>
+     * The returned List implicitly starts with a root element and follows
+     * element's chain of owning namespaces back down to element. The first
+     * element will thus be the name of the top level namespace, and the last
+     * element will be the name of element itself.
+     * <p>
+     * <em>COMPATIBILITY WARNING</em> - The previous version of this method
+     * {@link #getPath(Object)} would only return the path to the <em>first</em>
+     * enclosing Model, not the root, and it would not include the name of the
+     * model itself. This version will keep going up until it finds an element
+     * with no parent and it includes the name of that top level element which
+     * means that it will normally be one element longer than the previous
+     * method.
+     * 
+     * @param element
+     *                is the object to resolve the path for.
+     * @return A List of namespaces as described above.
+     * @throws IllegalArgumentException
+     *                 if element isn't a ModelElement properly owned by
+     *                 namespaces and a model.
      */
-    Vector getPath(Object element);
-
+    List<String> getPathList(Object element);
+    
     /**
      * Get local equivalent to a profile ModelElement. Equivalent to calling
      * {@link #getCorrespondingElement(Object, Object, boolean)} with a value of
