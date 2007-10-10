@@ -1147,6 +1147,54 @@ For details see http://www.clarkware.com/software/JDepend.html.
 
   </target>
 
+  <target name="pmd-init" depends="ant.optional.init">
+    <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpath="${pmd.jar.path}"/>
+    <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpath="${pmd.jar.path}"/>
+    <property name="pmd.reports.dir" value="${argo.tests.reports}/pmd"/>
+    <mkdir dir="${pmd.reports.dir}"/>
+  </target>
+
+  <target name="pmd" depends="pmd-init">
+
+    <delete>
+      <fileset dir="${pmd.reports.dir}">
+        <include name="*.xml, *.htm*"/>
+      </fileset>
+    </delete>
+
+    <pmd shortFilenames="true">
+      <ruleset>rulesets/favorites.xml</ruleset>
+      <ruleset>basic</ruleset>
+      <formatter type="html" toFile="${pmd.reports.dir}/pmd-report.html" 
+        linkPrefix="http://pmd.sourceforge.net/xref/"/>
+      <fileset dir="${argo.src.dir}/org" includes="**/*.java">
+        <exclude name="**/JavaLexer.java"/>
+        <exclude name="**/JavaRecognizer.java"/>
+        <exclude name="**/JavaTokenTypes.java"/>
+      </fileset>
+    </pmd>
+  </target>
+
+  <target name="cpd" depends="pmd-init">
+    <property name="cpd.report.file" value="${pmd.reports.dir}/cpd-report"/>
+    
+    <mkdir dir="${pmd.reports.dir}"/>
+    <delete file="${cpd.report.file}.*"/>
+    <cpd minimumTokenCount="100" outputFile="${cpd.report.file}.xml" 
+      format="xml" encoding="UTF-8">
+      <fileset dir="${argo.src.dir}">
+        <include name="**/*.java"/>
+        <exclude name="**/JavaLexer.java"/>
+        <exclude name="**/JavaRecognizer.java"/>
+        <exclude name="**/JavaTokenTypes.java"/>
+      </fileset>
+    </cpd>
+    
+    <xslt in="${cpd.report.file}.xml" style="${pmd.xslt.path}/cpdhtml.xslt" 
+      out="${cpd.report.file}.html"/>
+
+  </target>
+
   <!-- Internal target to aggregate tasks for CruiseControl -->
   <target name="cruisecontrol" depends="tests,checkstyle" />
 
