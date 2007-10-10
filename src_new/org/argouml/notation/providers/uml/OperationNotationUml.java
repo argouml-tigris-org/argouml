@@ -194,7 +194,7 @@ public class OperationNotationUml extends OperationNotation {
         String token;
         String type = null;
         String visibility = null;
-        Vector properties = null;
+        Vector<String> properties = null;
         int paramOffset = 0;
 
         s = s.trim();
@@ -349,9 +349,10 @@ public class OperationNotationUml extends OperationNotation {
         // Don't create a stereotype for <<signal>> on a Reception
         // but create any other parsed stereotypes as needed
         if (!Model.getFacade().isAReception(op) 
-                || !RECEPTION_KEYWORD.equals(stereotype)) {
+                || !RECEPTION_KEYWORD.equals(stereotype.toString())) {
             StereotypeUtility.dealWithStereotypes(op, 
-                    stereotype.toString(), true);
+                    stereotype != null ? stereotype.toString() : null, 
+                    true);
         }
     }
 
@@ -385,7 +386,7 @@ public class OperationNotationUml extends OperationNotation {
         throws ParseException {
         String token;
         StringBuilder propname = new StringBuilder();
-        StringBuilder propvalue = null;
+        String propvalue = null;
 
         if (properties == null) {
             properties = new Vector();
@@ -394,7 +395,7 @@ public class OperationNotationUml extends OperationNotation {
             token = st.nextToken();
             if (",".equals(token) || "}".equals(token)) {
                 if (propname.length() > 0) {
-                    properties.add(propname);
+                    properties.add(propname.toString());
                     properties.add(propvalue);
                 }
                 propname = new StringBuilder();
@@ -413,16 +414,16 @@ public class OperationNotationUml extends OperationNotation {
                             args), 
                             st.getTokenIndex());
                 }
-                propvalue = new StringBuilder();
+                propvalue = "";
             } else if (propvalue == null) {
                 propname.append(token);
             } else {
-                propvalue.append(token);
+                propvalue += token;
             }
         }
         if (propname.length() > 0) {
             properties.add(propname.toString());
-            properties.add(propvalue.toString());
+            properties.add(propvalue);
         }
         return properties;
     }

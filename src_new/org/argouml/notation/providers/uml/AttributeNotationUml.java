@@ -417,10 +417,9 @@ public class AttributeNotationUml extends AttributeNotation {
         if (LOG.isDebugEnabled()) {
             LOG.debug("ParseAttribute [name: " + name 
                     + " visibility: " + visibility 
-                    + " type: " + type + " value: " + value.toString() 
-                    + " stereo: "
-                    + (stereotype != null ? stereotype.toString() : "null")
-                    + " mult: " + multiplicity.toString());
+                    + " type: " + type + " value: " + value 
+                    + " stereo: " + stereotype
+                    + " mult: " + multiplicity);
         }
         if (properties != null && LOG.isDebugEnabled()) {
             for (int i = 0; i + 1 < properties.size(); i += 2) {
