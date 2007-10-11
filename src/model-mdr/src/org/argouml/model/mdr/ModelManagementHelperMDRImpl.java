@@ -45,7 +45,6 @@ import org.omg.uml.behavioralelements.collaborations.Collaboration;
 import org.omg.uml.behavioralelements.commonbehavior.Instance;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
-import org.omg.uml.foundation.core.Element;
 import org.omg.uml.foundation.core.GeneralizableElement;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
@@ -328,11 +327,6 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return vmes;
     }
 
-    @Deprecated
-    public Object getElement(Vector path, Object theRootNamespace) {
-        return getElement((List) path, theRootNamespace);
-    }
-
     public Object getElement(List<String> path, Object theRootNamespace) {
         ModelElement root = (ModelElement) theRootNamespace;
         // TODO: This is very inefficient.  Investigate a direct method - tfm
@@ -357,6 +351,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return root;
     }
     
+    @Deprecated
     public Vector<String> getPath(Object element) {
         Vector<String> path;
 
