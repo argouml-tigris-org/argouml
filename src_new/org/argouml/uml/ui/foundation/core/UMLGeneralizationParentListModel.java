@@ -47,14 +47,14 @@ public class UMLGeneralizationParentListModel
             return;
         }
         removeAllElements();
-        addElement(Model.getFacade().getParent(getTarget()));
+        addElement(Model.getFacade().getGeneral(getTarget()));
     }
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return (Model.getFacade().getParent(getTarget()) == o);
+        return (Model.getFacade().getGeneral(getTarget()) == o);
     }
 
 

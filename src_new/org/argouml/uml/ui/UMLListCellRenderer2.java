@@ -193,7 +193,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                             new Object[] {name, baseString});
                 } else if (showPath) {
                     List pathList =
-                            Model.getModelManagementHelper().getPath(value);
+                            Model.getModelManagementHelper().getPathList(value);
                     String path;
                     if (pathList.size() > 1) {
                         path = (String) pathList.get(0);

@@ -167,9 +167,9 @@ public class FigGeneralization extends FigEdgeModelElement {
         if (Model.getFacade().isAGeneralization(own)) {
             Object gen = own;	// MGeneralization
             Object subType =
-        	Model.getFacade().getChild(gen); // GeneralizableElement
+        	Model.getFacade().getSpecific(gen); // GeneralizableElement
             Object superType =
-        	Model.getFacade().getParent(gen); // GeneralizableElement
+        	Model.getFacade().getGeneral(gen); // GeneralizableElement
             // Due to errors in earlier releases of argouml it can
             // happen that there is a generalization without a child
             // or parent.

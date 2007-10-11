@@ -26,6 +26,7 @@ package org.argouml.uml;
 
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.Model;
@@ -58,7 +59,9 @@ public class GenDescendantClasses implements ChildGenerator {
 
 	Object cls = o;
 	Collection gens = Model.getFacade().getSpecializations(cls);
-	if (gens == null) return res.elements();
+	if (gens == null) {
+	    return res.elements();
+	}
 	accumulateDescendants(cls, res);
 	return res.elements();
     }
@@ -66,19 +69,19 @@ public class GenDescendantClasses implements ChildGenerator {
 
     /**
      * @param cls the starting class (in fact GeneralizableElement)
-     * @param accum the accumulated list of descendents
+     * @param accum the accumulated list of descendants
      */
-    public void accumulateDescendants(Object cls, Vector accum) {
-	Vector gens = new Vector(Model.getFacade().getSpecializations(cls));
-	if (gens == null) return;
-	int size = gens.size();
-	for (int i = 0; i < size; i++) {
-	    Object g = (gens.elementAt(i));
-	    Object ge = Model.getFacade().getChild(g);
+    private void accumulateDescendants(final Object cls, List accum) {
+	Collection gens = Model.getFacade().getSpecializations(cls);
+	if (gens == null) {
+	    return;
+	}
+	for (Object g : gens) {
+	    Object ge = Model.getFacade().getSpecific(g);
 	    if (!accum.contains(ge)) {
 		accum.add(ge);
 		accumulateDescendants(cls, accum);
 	    }
 	}
     }
-} /* end class GenDescendantClasses */
+} 

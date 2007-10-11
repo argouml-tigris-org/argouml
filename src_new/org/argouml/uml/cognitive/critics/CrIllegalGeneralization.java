@@ -52,13 +52,14 @@ public class CrIllegalGeneralization extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAGeneralization(dm))) {
 	    return NO_PROBLEM;
 	}
 	Object gen = dm;
-	Object cls1 = Model.getFacade().getParent(gen);
-	Object cls2 = Model.getFacade().getChild(gen);
+	Object cls1 = Model.getFacade().getGeneral(gen);
+	Object cls2 = Model.getFacade().getSpecific(gen);
 	if (cls1 == null || cls2 == null) {
 	    return NO_PROBLEM;
 	}
@@ -70,4 +71,4 @@ public class CrIllegalGeneralization extends CrUML {
 	return NO_PROBLEM;
     }
 
-} /* end class CrIllegalGeneralization */
+}

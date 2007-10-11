@@ -55,9 +55,7 @@ import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.profile.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
@@ -433,7 +431,7 @@ class ModelMemberFilePersister extends MemberFilePersister
                         + facade.getUMLClassName(statemachine)
                         + "<<" + facade.getName(statemachine) + ">>");
                 diagram = diagramFactory.createDiagram(
-                	UMLActivityDiagram.class,
+                        DiagramType.Activity,
                 	namespace,
                 	statemachine);
             } else {
@@ -441,7 +439,7 @@ class ModelMemberFilePersister extends MemberFilePersister
                         + facade.getUMLClassName(statemachine)
                         + "<<" + facade.getName(statemachine) + ">>");
                 diagram = diagramFactory.createDiagram(
-                	UMLStateDiagram.class,
+                        DiagramType.State,
                 	namespace,
                 	statemachine);
             }
@@ -454,13 +452,13 @@ class ModelMemberFilePersister extends MemberFilePersister
         // ArgoUML requires it for correct operation
         if (atLeastOne && project.getDiagramCount() < 1) {
             ArgoDiagram d = diagramFactory.createDiagram(
-        	    UMLClassDiagram.class, curModel, null);
+                    DiagramType.Class, curModel, null);
             project.addMember(d);
         }
         if (project.getDiagramCount() >= 1
                 && project.getActiveDiagram() == null) {
             project.setActiveDiagram(
-                    (ArgoDiagram) project.getDiagrams().get(0));
+                    project.getDiagramList().get(0));
         }
     }
 

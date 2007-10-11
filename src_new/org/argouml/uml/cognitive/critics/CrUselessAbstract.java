@@ -58,6 +58,7 @@ public class CrUselessAbstract extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClass(dm))) {
             return false;
@@ -86,15 +87,13 @@ class ChildGenDerivedClasses implements ChildGenerator {
 	if (specs == null) {
 	    return EnumerationEmpty.theInstance();
 	}
-	// TODO: it would be nice to have a EnumerationXform
-	// and a Functor object in uci.util
 	Vector specClasses = new Vector(specs.size());
         for (Object g : specs) {
-	    Object ge = Model.getFacade().getChild(g);
+	    Object ge = Model.getFacade().getSpecific(g);
 	    if (ge != null) {
 		specClasses.add(ge);
 	    }
 	}
 	return specClasses.elements();
     }
-} /* end class derivedClasses */
+}

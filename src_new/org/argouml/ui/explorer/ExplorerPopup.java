@@ -265,7 +265,7 @@ public class ExplorerPopup extends JPopupMenu {
         if (multiSelect) {
             Collection coll = TargetManager.getInstance().getTargets();
             Iterator iter = (coll != null) ? coll.iterator() : null;
-            ArrayList classifiers = new ArrayList();
+            List<Object> classifiers = new ArrayList<Object>();
             while (iter != null && iter.hasNext()) {
                 Object o = iter.next();
                 if (Model.getFacade().isAClassifier(o)
@@ -320,7 +320,7 @@ public class ExplorerPopup extends JPopupMenu {
      */
     private void initMenuCreateModelElements() {
 	List targets = TargetManager.getInstance().getTargets();
-        List menuItems = new ArrayList();
+        List<JMenuItem> menuItems = new ArrayList<JMenuItem>();
 	if (targets.size() >= 2) {
 	    // Check to see if all targets are classifiers
 	    // before adding an option to create an association between
@@ -386,7 +386,7 @@ public class ExplorerPopup extends JPopupMenu {
         	    " " + menuLocalize("menu.popup.realizes") + " ");
 	}
 	if (menuItems.size() == 1) {
-	    add((JMenuItem) menuItems.get(0));
+	    add(menuItems.get(0));
 	} else if (menuItems.size() > 1) {
 	    JMenu menu =
 		new JMenu(menuLocalize("menu.popup.create-model-element"));
@@ -398,7 +398,7 @@ public class ExplorerPopup extends JPopupMenu {
     }
     
     private void addCreateModelElementAction(
-	        Collection menuItems,
+	        Collection<JMenuItem> menuItems,
 		Object metaType,
 		String relationshipDescr) {
 	List targets = TargetManager.getInstance().getTargets();
@@ -477,7 +477,7 @@ public class ExplorerPopup extends JPopupMenu {
             coll.addAll(Model.getFacade().getSuppliers(edge));
         } else if (Model.getFacade().isAGeneralization(edge)) {
             coll = new ArrayList();
-            Object parent = Model.getFacade().getParent(edge);
+            Object parent = Model.getFacade().getGeneral(edge);
             coll.add(parent);
             coll.addAll(Model.getFacade().getChildren(parent));
         }

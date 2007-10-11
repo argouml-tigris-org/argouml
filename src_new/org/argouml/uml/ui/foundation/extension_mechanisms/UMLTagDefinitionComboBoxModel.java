@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -49,8 +48,9 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
      * Constructor for UMLTagDefinitionComboBoxModel.
      */
     public UMLTagDefinitionComboBoxModel() {
-        // TODO: no such event named tagdefinition
-        super("tagdefinition", false);
+        // TODO: What property name do we need here?  
+        // We're forced to have something, but nothing will really work.
+        super("definedTag", false);
     }
 
 
@@ -67,6 +67,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#setSelectedItem(java.lang.Object)
      */
+    @Override
     public void setSelectedItem(Object o) {
         setFireListEvents(false);
         super.setSelectedItem(o);
@@ -91,21 +92,22 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
     }
 
     private Collection getApplicableTagDefinitions(Object t) {
-        Set paths = new HashSet();
-        Set availableTagDefs = new TreeSet(new Comparator() {
-            public int compare(Object o1, Object o2) {
-                try {
-                    String name1 = Model.getFacade().getName(o1);
-                    String name2 = Model.getFacade().getName(o2);
-                    name1 = (name1 != null ? name1 : "");
-                    name2 = (name2 != null ? name2 : "");
+        Set<List<String>> paths = new HashSet<List<String>>();
+        Set<Object> availableTagDefs = new TreeSet<Object>(
+                new Comparator<Object>() {
+                    public int compare(Object o1, Object o2) {
+                        try {
+                            String name1 = Model.getFacade().getName(o1);
+                            String name2 = Model.getFacade().getName(o2);
+                            name1 = (name1 != null ? name1 : "");
+                            name2 = (name2 != null ? name2 : "");
 
-                    return name1.compareTo(name2);
-                } catch (Exception e) {
-                    throw new ClassCastException(e.getMessage());
-                }
-            }
-        });
+                            return name1.compareTo(name2);
+                        } catch (Exception e) {
+                            throw new ClassCastException(e.getMessage());
+                        }
+                    }
+                });
         Collection stereotypes = Model.getFacade().getStereotypes(t);
         Project project = ProjectManager.getManager().getCurrentProject();
         for (Object model : project.getModels()) {
@@ -137,16 +139,15 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
      * never contain two objects with the same path, unless they are added by
      * other means.
      */
-    private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
-            Collection source) {
-        Iterator it2 = source.iterator();
-
-        while (it2.hasNext()) {
-            Object obj = it2.next();
-            Object path = Model.getModelManagementHelper().getPath(obj);
+    private static void addAllUniqueModelElementsFrom(Set elements,
+            Set<List<String>> paths, Collection sources) {
+        
+        for (Object source : sources) {
+            List<String> path = Model.getModelManagementHelper().getPathList(
+                    source);
             if (!paths.contains(path)) {
                 paths.add(path);
-                elements.add(obj);
+                elements.add(source);
             }
         }
     }

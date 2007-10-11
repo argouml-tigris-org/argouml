@@ -72,11 +72,13 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Set elements = new TreeSet(new Comparator() {
+        Set<Object> elements = new TreeSet<Object>(new Comparator<Object>() {
             public int compare(Object o1, Object o2) {
-                List path1 = Model.getModelManagementHelper().getPath(o1);
+                List<String> path1 = Model.getModelManagementHelper()
+                        .getPathList(o1);
                 Collections.reverse(path1);
-                List path2 = Model.getModelManagementHelper().getPath(o2);
+                List<String> path2 = Model.getModelManagementHelper()
+                        .getPathList(o2);
                 Collections.reverse(path2);
                 return compareStringLists(path1, path2);
             }
@@ -113,15 +115,16 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      * Compare two lists of strings using case-insensitive comparison.
      * @return equivalent of list1.compareTo(list2)
      */
-    private static int compareStringLists(List list1, List list2) {
-        Iterator i2 = list2.iterator();
-        Iterator i1 = list1.iterator();
+    private static int compareStringLists(List<String> list1, 
+            List<String> list2) {
+        Iterator<String> i2 = list2.iterator();
+        Iterator<String> i1 = list1.iterator();
         while (i2.hasNext()) {
-            String name2 = (String) i2.next();
+            String name2 = i2.next();
             if (!i1.hasNext()) {
                 return -1;
             }
-            String name1 = (String) i1.next();
+            String name1 = i1.next();
             if (name1 == null) {
                 return -1;
             }
@@ -153,6 +156,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         /*
          * The default behavior for super implementation is

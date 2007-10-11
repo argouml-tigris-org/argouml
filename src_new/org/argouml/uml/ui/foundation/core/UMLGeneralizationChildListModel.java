@@ -46,13 +46,13 @@ public class UMLGeneralizationChildListModel extends UMLModelElementListModel2 {
             return;
         }
         removeAllElements();
-        addElement(Model.getFacade().getChild(getTarget()));
+        addElement(Model.getFacade().getSpecific(getTarget()));
     }
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return (Model.getFacade().getChild(getTarget()) == o);
+        return (Model.getFacade().getSpecific(getTarget()) == o);
     }
 }

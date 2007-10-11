@@ -54,45 +54,40 @@ public class CompartmentFigText extends FigSingleLineText {
     private static final Logger LOG =
 	Logger.getLogger(CompartmentFigText.class);
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Instance variables
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
-     * The bounding figure of the compartment containing this fig text.<p>
+     * The bounding figure of the compartment containing this fig text.
      */
-    private Fig           refFig;
+    private Fig refFig;
 
     /**
-     * Record whether we are currently highlighted.<p>
+     * Record whether we are currently highlighted.
      */
-    private boolean       isHighlighted;
+    private boolean isHighlighted;
 
     /**
-     * Build a new compartment figText of the given dimensions, within
-     * the compartment described by <code>aFig</code>.<p>
-     *
-     * Invoke the parent constructor, then set the reference to the
-     * associated compartment figure. The associated FigText is marked
-     * as expand only.<p>
-     *
-     * <em>Warning</em>. Won't work properly if <code>aFig</code> is
-     * null. A warning is printed.<p>
-     *
-     * @param x      X coordinate of the top left of the FigText.
-     *
-     * @param y      Y coordinate of the top left of the FigText.
-     *
-     * @param w      Width of the FigText.
-     *
-     * @param h      Height of the FigText.
-     *
-     * @param aFig  The figure describing the whole compartment
+     * Build a new compartment figText of the given dimensions, within the
+     * compartment described by <code>aFig</code>.
+     * <p>
      * 
-     * @param np    The notationProvider. 
-     *                      See NotationProviderFactory2.
+     * Invoke the parent constructor, then set the reference to the associated
+     * compartment figure. The associated FigText is marked as expand only.
+     * <p>
+     * 
+     * <em>Warning</em>. Won't work properly if <code>aFig</code> is null.
+     * A warning is printed.
+     * <p>
+     * 
+     * @param x X coordinate of the top left of the FigText.
+     * 
+     * @param y Y coordinate of the top left of the FigText.
+     * 
+     * @param w Width of the FigText.
+     * 
+     * @param h Height of the FigText.
+     * 
+     * @param aFig The figure describing the whole compartment
+     * 
+     * @param np The notationProvider. See NotationProviderFactory2.
      */
     public CompartmentFigText(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
@@ -182,7 +177,7 @@ public class CompartmentFigText extends FigSingleLineText {
         refFig = aFig;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
      */
     @Override
@@ -210,6 +205,7 @@ public class CompartmentFigText extends FigSingleLineText {
      * @return  Current fill colour&mdash;always the fill colour of the
      *          associated compartment fig.
      */
+    @Override
     public Color getLineColor() {
         return refFig.getLineColor();
     }
@@ -243,4 +239,4 @@ public class CompartmentFigText extends FigSingleLineText {
     public boolean isHighlighted() {
         return isHighlighted;
     }
-} /* End of class CompartmentFigText */
+}

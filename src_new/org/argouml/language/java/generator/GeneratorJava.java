@@ -85,7 +85,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 
     private static final Set JAVA_TYPES;
     static {
-	HashSet types = new HashSet();
+	Set<String> types = new HashSet<String>();
 	types.add("void");
 	types.add("boolean");
 	types.add("byte");
@@ -431,7 +431,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
 	    // now check packages of all generalized types
 	    for (j = c.iterator(); j.hasNext();) {
 		Object gen = j.next();
-		Object parent = Model.getFacade().getParent(gen);
+		Object parent = Model.getFacade().getGeneral(gen);
 		if (parent == cls) {
 		    continue;
 		}
@@ -1325,7 +1325,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         // Add each constraint
 
         class TagExtractor extends DepthFirstAdapter {
-            private LinkedList llsTags = new LinkedList();
+            private LinkedList<String> llsTags = new LinkedList<String>();
             private String constraintName;
             private int constraintID;
 
@@ -1347,6 +1347,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
             /*
              * @see tudresden.ocl.parser.analysis.Analysis#caseAConstraintBody(tudresden.ocl.parser.node.AConstraintBody)
              */
+            @Override
             public void caseAConstraintBody(AConstraintBody node) {
                 // We don't care for anything below this node, so we
                 // do not use apply anymore.
@@ -1501,7 +1502,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         while (it.hasNext()) {
             Object generalization = it.next();
             Object generalizableElement =
-                Model.getFacade().getParent(generalization);
+                Model.getFacade().getGeneral(generalization);
             // assert ge != null
             if (generalizableElement != null) {
                 classes.add(generalizableElement);
@@ -1546,13 +1547,15 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
     }
 
     /*
-     * Returns a visibility String either for a MVisibilityKind (according to
+     * Returns a visibility String either for a VisibilityKind (according to
      * the definition in NotationProvider2), but also for a model element,
-     * because if it is a MFeature, then the tag 'src_visibility' is to be
+     * because if it is a Feature, then the tag 'src_visibility' is to be
      * taken into account for generating language dependent visibilities.
      */
     private String generateVisibility(Object o) {
 	if (Model.getFacade().isAFeature(o)) {
+            // TODO: The src_visibility tag doesn't appear to be created
+            // anywhere by ArgoUML currently
 	    Object tv = Model.getFacade().getTaggedValue(o, "src_visibility");
 	    if (tv != null) {
 		String tagged = (String) Model.getFacade().getValue(tv);
