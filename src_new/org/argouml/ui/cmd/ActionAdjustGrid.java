@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -54,7 +55,7 @@ import org.tigris.gef.base.LayerGrid;
  */
 public class ActionAdjustGrid extends AbstractAction {
 
-    private HashMap<String, Comparable> myMap;
+    private final Map<String, Comparable> myMap;
     private static final String DEFAULT_ID = "03";
     private static ButtonGroup myGroup;
 
@@ -66,24 +67,31 @@ public class ActionAdjustGrid extends AbstractAction {
      *          the spacing, paintLines and paintDots. 
      * @param name the name for this action
      */
-    private ActionAdjustGrid(HashMap<String, Comparable> map, String name) {
+    private ActionAdjustGrid(final Map<String, Comparable> map,
+            final String name) {
         super();
         myMap = map;
         putValue(Action.NAME, name);
     }
 
-    public void actionPerformed(ActionEvent e) {
-        Editor ce = Globals.curEditor();
-        Layer grid = ce.getLayerManager().findLayerNamed("Grid");
+    public void actionPerformed(final ActionEvent e) {
+        final Editor editor = Globals.curEditor();
+        final Layer grid = editor.getLayerManager().findLayerNamed("Grid");
         if (grid instanceof LayerGrid) {
             if (myMap != null) {
-                grid.adjust(myMap);
+                // Kludge required by GEF's use of HashMap in the API
+                // TODO: This can be removed if they ever fix GEF to use Maps
+                if (myMap instanceof HashMap) {
+                    grid.adjust((HashMap<String, Comparable>) myMap);
+                } else {
+                    grid.adjust(new HashMap<String, Comparable>(myMap));
+                }
                 Configuration.setString(Argo.KEY_GRID, (String) getValue("ID"));
             }
         }
     }
     
-    static void setGroup(ButtonGroup group) {
+    static void setGroup(final ButtonGroup group) {
         myGroup = group;
     }
     
@@ -131,77 +139,38 @@ public class ActionAdjustGrid extends AbstractAction {
      * @param longStrings
      * @return List of Actions which adjust the grid
      */
-    static List<Action> createAdjustGridActions(boolean longStrings) {
+    static List<Action> createAdjustGridActions(final boolean longStrings) {
         List<Action> result = new ArrayList<Action>();
-        Action a;
-        String shortname, longname, name;
 
-        shortname = "menu.item.lines-16";
-        longname = "action.adjust-grid.lines-16";
-        name = Translator.localize(longStrings ? longname : shortname);
-        HashMap<String, Comparable> map1 = new HashMap<String, Comparable>(4);
-        map1.put("spacing", new Integer(16));
-        map1.put("paintLines", new Boolean(true));
-        map1.put("paintDots", new Boolean(true));
-        a = new ActionAdjustGrid(map1, name);
-        a.putValue("ID", "01");
-        a.putValue("shortcut", KeyStroke.getKeyStroke(
-                KeyEvent.VK_1, DEFAULT_MASK));
-        result.add(a);
-
-        shortname = "menu.item.lines-8";
-        longname = "action.adjust-grid.lines-8";
-        name = Translator.localize(longStrings ? longname : shortname);
-        HashMap<String, Comparable> map2 = new HashMap<String, Comparable>(4);
-        map2.put("spacing", new Integer(8));
-        map2.put("paintLines", new Boolean(true));
-        map2.put("paintDots", new Boolean(true));
-        a = new ActionAdjustGrid(map2, name);
-        a.putValue("ID", "02");
-        a.putValue("shortcut", KeyStroke.getKeyStroke(
-                KeyEvent.VK_2, DEFAULT_MASK));
-        result.add(a);
-        
-        shortname = "menu.item.dots-16";
-        longname = "action.adjust-grid.dots-16";
-        name = Translator.localize(longStrings ? longname : shortname);
-        HashMap<String, Comparable> map3 = new HashMap<String, Comparable>(4);
-        map3.put("spacing", new Integer(16));
-        map3.put("paintLines", new Boolean(false));
-        map3.put("paintDots", new Boolean(true));
-        a = new ActionAdjustGrid(map3, name);
-        a.putValue("ID", "03"); /* This ID is used as DEFAULT_ID ! */
-        a.putValue("shortcut", KeyStroke.getKeyStroke(
-                KeyEvent.VK_3, DEFAULT_MASK));
-        result.add(a);
-
-        shortname = "menu.item.dots-32";
-        longname = "action.adjust-grid.dots-32";
-        name = Translator.localize(longStrings ? longname : shortname);
-        HashMap<String, Comparable> map4 = new HashMap<String, Comparable>(4);
-        map4.put("spacing", new Integer(32));
-        map4.put("paintLines", new Boolean(false));
-        map4.put("paintDots", new Boolean(true));
-        a = new ActionAdjustGrid(map4, name);
-        a.putValue("ID", "04");
-        a.putValue("shortcut", KeyStroke.getKeyStroke(
-                KeyEvent.VK_4, DEFAULT_MASK));
-        result.add(a);
-        
-        shortname = "menu.item.none";
-        longname = "action.adjust-grid.none";
-        name = Translator.localize(longStrings ? longname : shortname);
-        HashMap<String, Comparable> map5 = new HashMap<String, Comparable>(4);
-        map5.put("spacing", new Integer(16));
-        map5.put("paintLines", new Boolean(false));
-        map5.put("paintDots", new Boolean(false));
-        a = new ActionAdjustGrid(map5, name);
-        a.putValue("ID", "05");
-        a.putValue("shortcut", KeyStroke.getKeyStroke(
-                KeyEvent.VK_5, DEFAULT_MASK));
-        result.add(a);
-        
+        result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-16"
+                : "menu.item.lines-16", 16, true, true, "01", KeyEvent.VK_1));
+        result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-8"
+                : "menu.item.lines-8", 8, true, true, "02", KeyEvent.VK_2));
+        result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-16"
+                : "menu.item.lines-16", 16, false, true, "03", KeyEvent.VK_3));
+        result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-32"
+                : "menu.item.lines-32", 32, false, true, "04", KeyEvent.VK_4));
+        result.add(buildGridAction(
+                longStrings ? "action.adjust-grid.lines-none"
+                        : "menu.item.lines-none", 16, false, false, "05",
+                KeyEvent.VK_5));
+     
         return result;
+    }
+
+    private static Action buildGridAction(final String property,
+            final int spacing, final boolean paintLines,
+            final boolean paintDots, final String id, final int key) {
+        String name = Translator.localize(property);
+        HashMap<String, Comparable> map1 = new HashMap<String, Comparable>(4);
+        map1.put("spacing", Integer.valueOf(spacing));
+        map1.put("paintLines", Boolean.valueOf(paintLines));
+        map1.put("paintDots", Boolean.valueOf(paintDots));
+        Action action = new ActionAdjustGrid(map1, name);
+        action.putValue("ID", id);
+        action.putValue("shortcut", KeyStroke.getKeyStroke(
+                key, DEFAULT_MASK));
+        return action;
     }
 
 }
