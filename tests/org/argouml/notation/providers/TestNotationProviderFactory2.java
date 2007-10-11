@@ -24,7 +24,7 @@
 
 package org.argouml.notation.providers;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
@@ -112,9 +112,9 @@ public class TestNotationProviderFactory2 extends TestCase {
         }
 
         /*
-         * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+         * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
          */
-        public String toString(Object modelElement, HashMap args) {
+        public String toString(Object modelElement, Map args) {
             return modelElement.toString() + args.size();
         }
 

@@ -27,6 +27,7 @@ package org.argouml.notation;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -55,12 +56,12 @@ public class TestNotationProvider extends TestCase
 
     /**
      * Test the existence of the 
-     * toString(Object modelElement, HashMap args) method.
+     * toString(Object modelElement, Map args) method.
      * TODO: Need to find a more useful test.
      */
     public void testToString() {
         NotationProvider np = new NPImpl();
-        HashMap<String, String> args = new HashMap<String, String>();
+        Map<String, String> args = new HashMap<String, String>();
         args.put("b", "c");
         assertTrue("Test toString()", "a1".equals(np.toString("a", args)));
         args.put("d", "e");
@@ -71,7 +72,7 @@ public class TestNotationProvider extends TestCase
      * Test the isValue utility function.
      */
     public void testIsValue() {
-        HashMap<String, Object> args = new HashMap<String, Object>();
+        Map<String, Object> args = new HashMap<String, Object>();
         args.put("not a boolean", "c");
         args.put("true", Boolean.TRUE);
         args.put("false", Boolean.FALSE);
@@ -98,9 +99,9 @@ public class TestNotationProvider extends TestCase
         }
 
         /*
-         * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+         * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
          */
-        public String toString(Object modelElement, HashMap args) {
+        public String toString(Object modelElement, Map args) {
             return modelElement.toString() + args.size();
         }
 

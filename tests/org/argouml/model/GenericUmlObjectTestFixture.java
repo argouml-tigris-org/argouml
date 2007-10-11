@@ -25,6 +25,7 @@
 package org.argouml.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -33,7 +34,7 @@ import junit.framework.TestCase;
  */
 public abstract class GenericUmlObjectTestFixture extends TestCase {
 
-    private HashMap truths = new HashMap();
+    private Map<Object, Boolean> truths = new HashMap<Object, Boolean>();
 
     private boolean validated = false;
 
@@ -110,7 +111,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * @param b the value
      */
     protected void setTruth(Object class1, boolean b) {
-	truths.put(class1, new Boolean(b));
+	truths.put(class1, Boolean.valueOf(b));
     }
 
     /**
@@ -247,7 +248,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      */
     private void runTruthTest(boolean result, Object class1) {
         // TODO: Look up class in truth table
-        Boolean truth = (Boolean) truths.get(class1);
+        Boolean truth = truths.get(class1);
         if (truth == null) {
 	    truth = Boolean.FALSE;
         }
