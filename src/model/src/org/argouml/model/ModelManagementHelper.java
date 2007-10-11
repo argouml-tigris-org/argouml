@@ -36,9 +36,18 @@ import java.util.Vector;
  */
 public interface ModelManagementHelper {
     
-    public String FRIEND_STEREOTYPE = "friend";
-    public String IMPORT_STEREOTYPE = "import";
-    public String ACCESS_STEREOTYPE = "access";
+    /**
+     * Name of stereotype applied to Permission which is a friend.
+     */
+    String FRIEND_STEREOTYPE = "friend";
+    /**
+     * Name of stereotype applied to a Permission which is for import.
+     */
+    String IMPORT_STEREOTYPE = "import";
+    /**
+     * Name of stereotype applied to Permission which is an package access.
+     */
+    String ACCESS_STEREOTYPE = "access";
     
     /**
      * Returns all subsystems found in this namespace and in its children.
@@ -112,19 +121,6 @@ public interface ModelManagementHelper {
      * that may possibly be imported in the given package
      */
     Collection getAllPossibleImports(Object pack);
-
-    /**
-     * Get the modelelement a given path below a given root-namespace.
-     * 
-     * @param path
-     *                the given path
-     * @param theRootNamespace
-     *                the given namespace to start from
-     * @return the modelelement looked for, or null if not found
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getElement(List, Object)}.
-     */
-    @Deprecated
-    Object getElement(Vector<String> path, Object theRootNamespace);
 
     /**
      * Get the modelelement a given path below a given root-namespace.
@@ -202,8 +198,8 @@ public interface ModelManagementHelper {
      * @return An element of the same type and at the same position in the model
      *         as elem, or if that would turn out impossible then null.
      * @see {@link #getCorrespondingElement(Object, Object, boolean)}
-     * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model implementation
-     * maintains cross XMI file references now.
+     * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model 
+     * implementation maintains cross XMI file references now.
      */
     @Deprecated
     Object getCorrespondingElement(Object elem, Object model);
@@ -224,8 +220,8 @@ public interface ModelManagementHelper {
      * @param canCreate determines if objects can be copied into model.
      * @return An element of the same type and at the same position in the
      *  model as elem, or if that would turn out impossible then null.
-     * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model implementation
-     * maintains cross XMI file references now.
+     * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model 
+     * implementation maintains cross XMI file references now.
      */
     @Deprecated
     Object getCorrespondingElement(Object elem, Object model,
