@@ -72,7 +72,7 @@ public class ZipModelLoader extends StreamModelLoader {
 			path);
 	    }
 	    try {
-		is = openZipStreamAt(modelFile.toURL(), extension);
+		is = openZipStreamAt(modelFile.toURI().toURL(), extension);
 	    } catch (MalformedURLException e) {
 		LOG.error("Exception while loading profile '" + modelFilename
 			+ "'", e);

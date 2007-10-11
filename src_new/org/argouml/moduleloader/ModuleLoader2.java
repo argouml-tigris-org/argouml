@@ -510,7 +510,7 @@ public final class ModuleLoader2 {
 		        // classloader than the default here? - - tfm
 	                ClassLoader classloader =
 			    new URLClassLoader(new URL[] {
-				file.toURL(),
+				file.toURI().toURL(),
 			    });
 	                try {
 	                    processJarFile(classloader, file);

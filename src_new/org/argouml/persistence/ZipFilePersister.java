@@ -221,14 +221,15 @@ class ZipFilePersister extends XmiFilePersister {
                 fileName.substring(
                         fileName.indexOf('.'),
                         fileName.lastIndexOf('.'));
-            InputStream stream = openZipStreamAt(file.toURL(), extension);
+            InputStream stream = openZipStreamAt(file.toURI().toURL(),
+                    extension);
 
             // TODO: What progressMgr is to be used here? Where does
             //       it come from?
             InputSource is =
                 new InputSource(
                     new XmiInputStream(stream, this, 100000, null));
-            is.setSystemId(file.toURL().toExternalForm());
+            is.setSystemId(file.toURI().toURL().toExternalForm());
 
             ModelMemberFilePersister modelPersister =
                 new ModelMemberFilePersister();

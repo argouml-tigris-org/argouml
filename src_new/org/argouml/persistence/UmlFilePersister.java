@@ -378,7 +378,7 @@ public class UmlFilePersister extends AbstractFilePersister {
             progressMgr.nextPhase();
 
             inputStream = new XmlInputStream(
-                        file.toURL().openStream(),
+                        file.toURI().toURL().openStream(),
                         "argo",
                         file.length(),
                         100000);
@@ -514,7 +514,7 @@ public class UmlFilePersister extends AbstractFilePersister {
     private int getPersistenceVersionFromFile(File file) throws OpenException {
         InputStream stream = null;
         try {
-            stream = new BufferedInputStream(file.toURL()
+            stream = new BufferedInputStream(file.toURI().toURL()
                     .openStream());
             int version = getPersistenceVersion(stream);
             stream.close();
@@ -582,7 +582,7 @@ public class UmlFilePersister extends AbstractFilePersister {
     private String getReleaseVersionFromFile(File file) throws OpenException {
         InputStream stream = null;
         try {
-            stream = new BufferedInputStream(file.toURL().openStream());
+            stream = new BufferedInputStream(file.toURI().toURL().openStream());
             String version = getReleaseVersion(stream);
             stream.close();
             return version;
