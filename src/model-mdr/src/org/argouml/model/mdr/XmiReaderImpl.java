@@ -124,7 +124,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         modelPackage = mp;
     }
 
-    
+    @Deprecated
     public Collection parse(InputSource inputSource) throws UmlException {
         return parse(inputSource, false);
     }
@@ -157,10 +157,12 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
              * 
              * org/netbeans/lib/jmi/util/Logger.java
              * 
-             * This can be uses to disable logging.  Default output is System.err
+             * This can be uses to disable logging.  Default output is 
+             * System.err
              * setProperty("org.netbeans.lib.jmi.Logger.fileName", "")
              * 
-             * The property org.netbeans.lib.jmi.Logger controls the minimum severity level for logging
+             * The property org.netbeans.lib.jmi.Logger controls the minimum 
+             * severity level for logging
              */
             // Turn off NetBeans logging to System.err
 //            System.setProperty("org.netbeans.lib.jmi.Logger.fileName", "");
@@ -187,7 +189,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                 String systemId = inputSource.getSystemId();
                 if (systemId == null) {
                     File file = copySource(inputSource);
-                    systemId = file.toURL().toExternalForm();
+                    systemId = file.toURI().toURL().toExternalForm();
                     inputSource = new InputSource(systemId);
                 }
                 newElements =
