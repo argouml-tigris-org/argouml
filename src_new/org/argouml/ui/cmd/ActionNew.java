@@ -80,7 +80,7 @@ public class ActionNew extends AbstractAction {
         TargetManager.getInstance().cleanHistory();
         p.remove();
         p = ProjectManager.getManager().makeEmptyProject();
-        TargetManager.getInstance().setTarget(p.getDiagrams().toArray()[0]);
+        TargetManager.getInstance().setTarget(p.getDiagramList().get(0));
         Designer.enableCritiquing();
         Model.getPump().startPumpingEvents();
     }
@@ -89,4 +89,4 @@ public class ActionNew extends AbstractAction {
      * The UID.
      */
     private static final long serialVersionUID = -3943153836514178100L;
-} /* end class ActionNew */
+} 
