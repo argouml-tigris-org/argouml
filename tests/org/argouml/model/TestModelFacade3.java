@@ -119,10 +119,10 @@ public class TestModelFacade3 extends TestCase {
                     String primitiveName = params[i]
                                                   .getName();
                     if (primitiveName.equals("int")) {
-                        foo[i] = new Integer(0);
+                        foo[i] = Integer.valueOf(0);
                     }
                     if (primitiveName.equals("boolean")) {
-                        foo[i] = new Boolean(true);
+                        foo[i] = Boolean.TRUE;
                     }
                     if (primitiveName.equals("short")) {
                         foo[i] = new Short("0");
