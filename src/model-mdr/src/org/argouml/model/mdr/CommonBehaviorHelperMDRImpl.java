@@ -300,7 +300,7 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     }
 
 
-    public void setClassifiers(Object handle, Vector classifiers) {
+    public void setClassifiers(Object handle, Collection classifiers) {
         if (handle instanceof Instance) {
             ((Instance) handle).getClassifier().retainAll(classifiers);
             ((Instance) handle).getClassifier().addAll(classifiers);            
