@@ -2418,7 +2418,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + expr);
     }
 
-    
+    @Deprecated
     public void setChangeability(Object handle, Object ck) {
         if (ck == null || ck instanceof ChangeableKind) {
             ChangeableKind changeableKind = (ChangeableKind) ck;
@@ -2782,6 +2782,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
+    @Deprecated
     public void setOwnerScope(Object handle, Object os) {
         if (handle instanceof Feature
                 && (os == null || os instanceof ScopeKind)) {
@@ -2964,6 +2965,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
+    @Deprecated
     public void setTaggedValue(Object handle, String tag, String value) {
         if (handle instanceof ModelElement) {
             TaggedValue tv =
@@ -2984,12 +2986,14 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
+    @Deprecated
     public void setTaggedValues(Object handle, Collection taggedValues) {
         Model.getExtensionMechanismsHelper().setTaggedValue(handle,
                 taggedValues);
     }
 
 
+    @Deprecated
     public void setTargetScope(Object handle, Object scopeKind) {
         if (scopeKind instanceof ScopeKind) {
             if (handle instanceof StructuralFeature) {

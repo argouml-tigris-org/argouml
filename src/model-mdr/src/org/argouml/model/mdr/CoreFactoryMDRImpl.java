@@ -116,7 +116,8 @@ import org.omg.uml.modelmanagement.UmlPackage;
 class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         CoreFactory {
 
-    private static final Logger LOG = Logger.getLogger(CoreFactoryMDRImpl.class);
+    private static final Logger LOG = Logger
+            .getLogger(CoreFactoryMDRImpl.class);
     
     /**
      * The model implementation.
@@ -287,7 +288,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public EnumerationLiteral buildEnumerationLiteral(String name, Object enumeration) {
+    public EnumerationLiteral buildEnumerationLiteral(String name,
+            Object enumeration) {
         EnumerationLiteral el = createEnumerationLiteral();
         el.setName(name);
         el.setEnumeration((Enumeration) enumeration);
@@ -491,7 +493,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public UmlAssociation buildAssociation(Object classifier1, Object classifier2) {
+    public UmlAssociation buildAssociation(Object classifier1,
+            Object classifier2) {
         Classifier c1 = (Classifier) classifier1;
         Classifier c2 = (Classifier) classifier2;
         return buildAssociation(c1, true, AggregationKindEnum.AK_NONE, c2,
@@ -524,9 +527,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public AssociationEnd buildAssociationEnd(Object assoc, String name, Object type,
-            Object multi, Object stereo, boolean navigable, Object order,
-            Object aggregation, Object scope, Object changeable,
+    public AssociationEnd buildAssociationEnd(Object assoc, String name,
+            Object type, Object multi, Object stereo, boolean navigable,
+            Object order, Object aggregation, Object scope, Object changeable,
             Object visibility) {
         // wellformednessrules and preconditions
         if (assoc == null || !(assoc instanceof UmlAssociation) || type == null
@@ -805,7 +808,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     public UmlClass buildClass() {
         ModelCommand command = new ModelCommand() {
-            UmlClass cl;
+            private UmlClass cl;
             public UmlClass execute() {
                 cl = createClass();
                 cl.setName("");
@@ -1013,7 +1016,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return per;
     }
 
-
+    @Deprecated
     public Generalization buildGeneralization(Object child, Object parent, 
             String name) {
         if (child == null || parent == null
@@ -1127,7 +1130,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    public Operation buildOperation2(Object cls, Object returnType, String name) {
+    public Operation buildOperation2(Object cls, Object returnType, 
+            String name) {
         Operation oper = buildOperation(cls, returnType);
         if (oper != null) {
             oper.setName(name);
@@ -1172,7 +1176,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    public Abstraction buildRealization(Object clnt, Object spplr, Object model) {
+    public Abstraction buildRealization(Object clnt, Object spplr, 
+            Object model) {
         ModelElement client = (ModelElement) clnt;
         ModelElement supplier = (ModelElement) spplr;
         if (client == null || supplier == null || client.getNamespace() == null
@@ -1277,7 +1282,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    public Binding buildBinding(Object client, Object supplier, List arguments) {
+    public Binding buildBinding(Object client, Object supplier, 
+            List arguments) {
         Collection<Dependency> clientDeps = ((ModelElement) client)
                 .getClientDependency();
         for (Dependency dep : clientDeps) {
