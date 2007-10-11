@@ -1672,10 +1672,10 @@ public interface Facade {
     Object getClassifier(Object handle);
 
     /**
-     * Get the classifierss of an Instance.
+     * Get the classifiers of an Instance.
      *
      * @param handle the Instance
-     * @return the classifierss of the Instance
+     * @return the classifiers of the Instance
      */
     Collection getClassifiers(Object handle);
 
