@@ -96,7 +96,7 @@ public class GUITestProjectBrowser extends TestCase {
      * Test the existance of public static members.
      */
     public void compileTestPublicStaticMembers() {
-	new Integer(ProjectBrowser.DEFAULT_COMPONENTWIDTH
+	Integer.valueOf(ProjectBrowser.DEFAULT_COMPONENTWIDTH
 	        + ProjectBrowser.DEFAULT_COMPONENTHEIGHT);
     }
 
@@ -133,7 +133,7 @@ public class GUITestProjectBrowser extends TestCase {
 	p.moveToTrash(package2);
         Model.getPump().flushModelEvents();
 	assertEquals("The target is not reset to the first diagram",
-            p.getDiagrams().get(0), tm.getTarget());
+            p.getDiagramList().get(0), tm.getTarget());
     }
 
     /**

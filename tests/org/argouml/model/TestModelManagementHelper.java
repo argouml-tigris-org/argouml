@@ -41,7 +41,7 @@ public class TestModelManagementHelper extends TestCase {
     private Object theStereotype;
     private Object theTagDefinition;
     private Object theClass;
-    private Collection tdPath = new ArrayList();
+    private Collection<String> tdPath = new ArrayList<String>();
 
     /**
      * Constructor for TestModelManagementHelper.
@@ -55,6 +55,7 @@ public class TestModelManagementHelper extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() {
         InitializeModel.initializeDefault();
     }
@@ -97,7 +98,7 @@ public class TestModelManagementHelper extends TestCase {
         theTagDefinition = Model.getExtensionMechanismsFactory()
                 .buildTagDefinition("TagDefinition", theStereotype, null);
 
-        // Note: the containing model is not included in the returned path
+        tdPath.add("TheModel");
         tdPath.add("TheGoodPackage");
         tdPath.add("containedStereotype");
         tdPath.add("TagDefinition");
@@ -153,9 +154,9 @@ public class TestModelManagementHelper extends TestCase {
     public void testGetPathForTagDefinitionInStereotype() {
         setUpTestsOfTagDefinitionContainedInStereotype();
 
-        Collection path = Model.getModelManagementHelper().getPath(
+        Collection path = Model.getModelManagementHelper().getPathList(
                 theTagDefinition);
-        assertTrue("Wrong path returned for TagDefinition", 
-                tdPath.equals(path));
+        assertEquals("Wrong path returned for TagDefinition", 
+                tdPath, path);
     }
 }
