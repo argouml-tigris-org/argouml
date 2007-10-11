@@ -59,7 +59,7 @@ public class TestUmlGeneralization extends GenericUmlObjectTestFixture {
         assertNotNull(gen);
         assertTrue(gen.size() == 1);
         assertTrue(gen.contains(gen2));
-        assertTrue(Model.getFacade().getParent(gen2) == class3);
+        assertTrue(Model.getFacade().getGeneral(gen2) == class3);
     }
 
     /**
@@ -71,7 +71,7 @@ public class TestUmlGeneralization extends GenericUmlObjectTestFixture {
         assertNotNull(gen);
         assertTrue(gen.size() == 1);
         assertTrue(gen.contains(gen1));
-        assertTrue(Model.getFacade().getChild(gen1) == class1);
+        assertTrue(Model.getFacade().getSpecific(gen1) == class1);
     }
     
     /**

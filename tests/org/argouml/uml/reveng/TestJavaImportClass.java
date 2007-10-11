@@ -58,6 +58,7 @@ public class TestJavaImportClass extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() {
         if (isParsed) {
             return;
@@ -203,11 +204,11 @@ public class TestJavaImportClass extends TestCase {
         assertEquals("The generalization name is wrong.",
             "TestClass -> Object", Model.getFacade().getName(generalization));
         assertEquals("The child of the generalization should be the class.",
-            parsedClass, Model.getFacade().getChild(generalization));
+            parsedClass, Model.getFacade().getSpecific(generalization));
         assertEquals("The parent of the generalization should be \"Object\".",
             "Object",
             Model.getFacade().getName(
-                        Model.getFacade().getParent(generalization)));
+                        Model.getFacade().getGeneral(generalization)));
         Collection dependencies =
             Model.getFacade().getClientDependencies(parsedClass);
         assertNotNull("No dependencies found for class.", dependencies);
