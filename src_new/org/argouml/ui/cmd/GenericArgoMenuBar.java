@@ -30,6 +30,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -89,15 +90,15 @@ import org.tigris.toolbar.ToolBar;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**
- * GenericArgoMenuBar defines the menubar for all operating systems which do not
- * explicitely ask for a different kind of menu bar, such as Mac OS X.
+ * GenericArgoMenuBar defines the menu bar for all operating systems which do 
+ * not explicitly ask for a different kind of menu bar, such as Mac OS X.
  * <p>
  * 
  * Menu's and the mnemonics of menu's and the menuitems are separated in the
  * PropertyResourceBundle <em>menu.properties</em>.
  * <p>
  * 
- * menuitems are separated in the PropertyResourceBundle
+ * menu items are separated in the PropertyResourceBundle
  * <em>action.properties</em>.
  * <p>
  * 
@@ -119,8 +120,13 @@ import org.tigris.toolbar.ToolBarFactory;
 public class GenericArgoMenuBar extends JMenuBar implements
         TargetListener {
 
+    private static List<JMenu> moduleMenus = new ArrayList<JMenu>();
+
+    private static List<Action> moduleCreateDiagramActions = 
+        new ArrayList<Action>();
+    
     /**
-     * The zooming factor.
+     * The zoom factor - defaults to 90%/110%
      */
     public static final double ZOOM_FACTOR = 0.9;
 
@@ -147,9 +153,9 @@ public class GenericArgoMenuBar extends JMenuBar implements
     private JToolBar createDiagramToolbar;
 
     /**
-     * lru project list.
+     * Most recently used project list.
      */
-    private LastRecentlyUsedMenuList lruList;
+    private LastRecentlyUsedMenuList mruList;
 
     /**
      * Edit menu.
@@ -172,7 +178,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
     private JMenu createDiagramMenu;
 
     /**
-     * Currently disactivated.
+     * Currently not used by core ArgoUML.
      */
     private JMenu tools;
 
@@ -209,6 +215,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
     public GenericArgoMenuBar() {
         initActions();
         initMenus();
+        initModulesUI();
     }
 
     private void initActions() {
@@ -264,32 +271,20 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * Construct the ordinary all purpose Argo Menu Bar.
      */
     protected void initMenus() {
-        // ------------------------------------- File Menu
         initMenuFile();
-
-        // ------------------------------------- Edit Menu
         initMenuEdit();
-
-        // ------------------------------------- View Menu
         initMenuView();
-
-        // ------------------------------------- Create Menu
         initMenuCreate();
-
-        // ------------------------------------- Arrange Menu
         initMenuArrange();
-
-        // ------------------------------------- Generation Menu
         initMenuGeneration();
-
-        // ------------------------------------- Critique Menu
         initMenuCritique();
-
-        // ------------------------------------- Tools Menu
         initMenuTools();
-
-        // ------------------------------------- Help Menu
         initMenuHelp();
+    }
+    
+    private void initModulesUI () {
+        initModulesMenus();
+        initModulesActions();
     }
 
     /**
@@ -373,7 +368,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         file.addSeparator();
 
         // add last recently used list _before_ exit menu
-        lruList = new LastRecentlyUsedMenuList(file);
+        mruList = new LastRecentlyUsedMenuList(file);
 
         // and exit menu entry starting with separator. 
         file.addSeparator();
@@ -941,7 +936,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
         tools = new JMenu(menuLocalize("Tools"));
         setMnemonic(tools, "Tools");
 
+        // TODO: Add empty placeholder here?        
+        
         add(tools);
+
     }
 
     /**
@@ -968,6 +966,17 @@ public class GenericArgoMenuBar extends JMenuBar implements
         add(help);
     }
     
+    private void initModulesMenus() {
+        for (JMenu menu : moduleMenus) {
+            add(menu);
+        }
+    }
+    
+    private void initModulesActions() {
+        for (Action action : moduleCreateDiagramActions) {            
+            createDiagramToolbar.add(action);
+        }
+    }
 
     /**
      * Get the create diagram toolbar.
@@ -1037,17 +1046,11 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * @return the prepared str
      */
     private static String prepareKey(String str) {
-        StringBuffer strb = new StringBuffer(str.toLowerCase());
-        for (int i = 0; i < (strb.length() - 1); i++) {
-            if (strb.charAt(i) == ' ') {
-                strb.setCharAt(i, '-');
-            }
-        }
-        return strb.toString();
+        return str.toLowerCase().replace(' ', '-');
     }
 
     /**
-     * Adds the entry to the lru list.
+     * Adds the entry to the mru list.
      * 
      * @param filename
      *            of the project
@@ -1056,7 +1059,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * directly - tfm.
      */
     public void addFileSaved(String filename) {
-        lruList.addEntry(filename);
+        mruList.addEntry(filename);
     }
 
     /**
@@ -1093,5 +1096,13 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
     public void targetSet(TargetEvent e) {
         setTarget();
+    }
+    
+    public static void registerMenuItem(JMenu menu) {
+        moduleMenus.add(menu);
+    }
+
+    public static void registerCreateDiagramAction(Action action) {
+        moduleCreateDiagramActions.add(action);
     }
 }
