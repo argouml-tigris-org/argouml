@@ -113,10 +113,10 @@ public abstract class AbstractCommonBehaviorHelperDecorator
         impl.setOperation(handle, operation);
     }
 
-    public void setClassifiers(Object handle, Vector v) {
-        impl.setClassifiers(handle, v);
+    public void setClassifiers(Object handle, Collection classifiers) {
+        impl.setClassifiers(handle, classifiers);
     }
-
+    
     public void setCommunicationLink(Object handle, Object c) {
         impl.setCommunicationLink(handle, c);
     }

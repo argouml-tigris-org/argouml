@@ -162,13 +162,15 @@ public interface CommonBehaviorHelper {
     void setOperation(Object handle, Object operation);
 
     /**
-     * Sets the classifiers of some instance.
-     *
-     * @param handle is the instance
-     * @param v is the classifier vector
+     * Sets the classifiers of the given instance.
+     * 
+     * @param handle
+     *                is the instance
+     * @param classifiers
+     *                collection of classifiers
      */
-    void setClassifiers(Object handle, Vector v);
-
+    void setClassifiers(Object handle, Collection classifiers);
+    
     /**
      * Sets the communicationLink between a link c and a stimulus handle.
      *
