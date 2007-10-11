@@ -101,7 +101,7 @@ public class AnonymousClassCodePiece extends NamedCodePiece {
                       Stack parseStateStack) throws IOException {
         ParseState parseState = (ParseState) parseStateStack.peek();
         Object mClass = /*(MClass)*/
-            parseState.newClassifier((new Integer(number)).toString());
+            parseState.newClassifier((Integer.valueOf(number)).toString());
 
         if (mClass != null) {
             parseStateStack.push(new ParseState(mClass));

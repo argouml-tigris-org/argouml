@@ -127,31 +127,31 @@ class ArgoTokenTable extends XMLTokenTableBase {
      * @see org.argouml.persistence.XMLTokenTableBase#setupTokens()
      */
     protected void setupTokens() {
-	addToken(STRING_ARGO, new Integer(TOKEN_ARGO));
-        addToken(STRING_AUTHORNAME, new Integer(TOKEN_AUTHORNAME));
-        addToken(STRING_AUTHOREMAIL, new Integer(TOKEN_AUTHOREMAIL));
-	addToken(STRING_VERSION, new Integer(TOKEN_VERSION));
-	addToken(STRING_DESCRIPTION, new Integer(TOKEN_DESCRIPTION));
-	addToken(STRING_SEARCHPATH, new Integer(TOKEN_SEARCHPATH));
-	addToken(STRING_MEMBER, new Integer(TOKEN_MEMBER));
-	addToken(STRING_HISTORYFILE, new Integer(TOKEN_HISTORYFILE));
-        addToken(STRING_DOCUMENTATION, new Integer(TOKEN_DOCUMENTATION));
-        addToken(STRING_SETTINGS, new Integer(TOKEN_SETTINGS));
-        addToken(STRING_NOTATIONLANGUAGE, new Integer(TOKEN_NOTATIONLANGUAGE));
-        addToken(STRING_SHOWBOLDNAMES, new Integer(TOKEN_SHOWBOLDNAMES));
-        addToken(STRING_USEGUILLEMOTS, new Integer(TOKEN_USEGUILLEMOTS));
-        addToken(STRING_SHOWVISIBILITY, new Integer(TOKEN_SHOWVISIBILITY));
-        addToken(STRING_SHOWMULTIPLICITY, new Integer(TOKEN_SHOWMULTIPLICITY));
-        addToken(STRING_SHOWINITIALVALUE, new Integer(TOKEN_SHOWINITIALVALUE));
-        addToken(STRING_SHOWPROPERTIES, new Integer(TOKEN_SHOWPROPERTIES));
-        addToken(STRING_SHOWTYPES, new Integer(TOKEN_SHOWTYPES));
-        addToken(STRING_SHOWSTEREOTYPES, new Integer(TOKEN_SHOWSTEREOTYPES));
+	addToken(STRING_ARGO, Integer.valueOf(TOKEN_ARGO));
+        addToken(STRING_AUTHORNAME, Integer.valueOf(TOKEN_AUTHORNAME));
+        addToken(STRING_AUTHOREMAIL, Integer.valueOf(TOKEN_AUTHOREMAIL));
+	addToken(STRING_VERSION, Integer.valueOf(TOKEN_VERSION));
+	addToken(STRING_DESCRIPTION, Integer.valueOf(TOKEN_DESCRIPTION));
+	addToken(STRING_SEARCHPATH, Integer.valueOf(TOKEN_SEARCHPATH));
+	addToken(STRING_MEMBER, Integer.valueOf(TOKEN_MEMBER));
+	addToken(STRING_HISTORYFILE, Integer.valueOf(TOKEN_HISTORYFILE));
+        addToken(STRING_DOCUMENTATION, Integer.valueOf(TOKEN_DOCUMENTATION));
+        addToken(STRING_SETTINGS, Integer.valueOf(TOKEN_SETTINGS));
+        addToken(STRING_NOTATIONLANGUAGE, Integer.valueOf(TOKEN_NOTATIONLANGUAGE));
+        addToken(STRING_SHOWBOLDNAMES, Integer.valueOf(TOKEN_SHOWBOLDNAMES));
+        addToken(STRING_USEGUILLEMOTS, Integer.valueOf(TOKEN_USEGUILLEMOTS));
+        addToken(STRING_SHOWVISIBILITY, Integer.valueOf(TOKEN_SHOWVISIBILITY));
+        addToken(STRING_SHOWMULTIPLICITY, Integer.valueOf(TOKEN_SHOWMULTIPLICITY));
+        addToken(STRING_SHOWINITIALVALUE, Integer.valueOf(TOKEN_SHOWINITIALVALUE));
+        addToken(STRING_SHOWPROPERTIES, Integer.valueOf(TOKEN_SHOWPROPERTIES));
+        addToken(STRING_SHOWTYPES, Integer.valueOf(TOKEN_SHOWTYPES));
+        addToken(STRING_SHOWSTEREOTYPES, Integer.valueOf(TOKEN_SHOWSTEREOTYPES));
         addToken(STRING_DEFAULTSHADOWWIDTH, 
-                new Integer(TOKEN_DEFAULTSHADOWWIDTH));
-        addToken(STRING_FONTNAME, new Integer(TOKEN_FONTNAME));
-        addToken(STRING_FONTSIZE, new Integer(TOKEN_FONTSIZE));
+                Integer.valueOf(TOKEN_DEFAULTSHADOWWIDTH));
+        addToken(STRING_FONTNAME, Integer.valueOf(TOKEN_FONTNAME));
+        addToken(STRING_FONTSIZE, Integer.valueOf(TOKEN_FONTSIZE));
         addToken(STRING_GENERATION_OUTPUT_DIR, 
-                new Integer(TOKEN_GENERATION_OUTPUT_DIR));
+                Integer.valueOf(TOKEN_GENERATION_OUTPUT_DIR));
     }
 
 } /* end class ArgoTokenTable */

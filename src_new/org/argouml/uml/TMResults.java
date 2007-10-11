@@ -213,8 +213,8 @@ public class TMResults extends AbstractTableModel {
     private Object countNodesAndEdges(Diagram d) {
         int numNodes = d.getNodes().size();
         int numEdges = d.getEdges().size();
-        Object[] msgArgs = {new Integer(numNodes),
-                            new Integer(numEdges),
+        Object[] msgArgs = {Integer.valueOf(numNodes),
+                            Integer.valueOf(numEdges),
 	};
         return Translator.messageFormat("dialog.nodes-and-edges", msgArgs);
     }

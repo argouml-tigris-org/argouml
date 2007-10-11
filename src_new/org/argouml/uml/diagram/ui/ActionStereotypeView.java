@@ -83,7 +83,7 @@ public abstract class ActionStereotypeView extends AbstractActionRadioMenuItem {
      */
     Object valueOfTarget(Object t) {
 	if (t instanceof FigNodeModelElement) {
-	    return new Integer(((FigNodeModelElement) t).getStereotypeView());
+	    return Integer.valueOf(((FigNodeModelElement) t).getStereotypeView());
 	} else {
 	    return t;
 	}

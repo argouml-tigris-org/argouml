@@ -173,7 +173,7 @@ public class JavaImport implements ImportInterface {
             LOG.info("Parsing " + f.getAbsolutePath());
 
             modeller.setAttribute("level", 
-                    new Integer(pass));
+                    Integer.valueOf(pass));
 
             try {
                 // start parsing at the compilationUnit rule

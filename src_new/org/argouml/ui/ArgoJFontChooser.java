@@ -249,12 +249,13 @@ public class ArgoJFontChooser extends JDialog {
      */
     private JList getJlstSizes() {
         if (jlstSizes == null) {
-            jlstSizes = new JList(new Integer[] {new Integer(8),
-                new Integer(9), new Integer(10), new Integer(11),
-                new Integer(12), new Integer(14), new Integer(16),
-                new Integer(18), new Integer(20), new Integer(22),
-                new Integer(24), new Integer(26), new Integer(28),
-                new Integer(36), new Integer(48), new Integer(72) });
+            jlstSizes = new JList(new Integer[] {Integer.valueOf(8),
+                Integer.valueOf(9), Integer.valueOf(10), Integer.valueOf(11),
+                Integer.valueOf(12), Integer.valueOf(14), Integer.valueOf(16),
+                Integer.valueOf(18), Integer.valueOf(20), Integer.valueOf(22),
+                Integer.valueOf(24), Integer.valueOf(26), Integer.valueOf(28),
+                Integer.valueOf(36), Integer.valueOf(48), Integer.valueOf(72)
+            });
             jlstSizes.setSelectedValue(resultSize, true);
 
             jlstSizes.getSelectionModel().addListSelectionListener(

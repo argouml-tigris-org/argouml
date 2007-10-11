@@ -689,7 +689,7 @@ public class ProjectSettings {
      * @return Returns the shadow width.
      */
     public String getDefaultShadowWidth() {
-        return new Integer(defaultShadowWidth).toString();
+        return Integer.valueOf(defaultShadowWidth).toString();
     }
 
     /**
@@ -741,7 +741,7 @@ public class ProjectSettings {
      * @return Returns the default stereotype view
      */
     public String getDefaultStereotypeView() {
-        return new Integer(defaultStereotypeView).toString();
+        return Integer.valueOf(defaultStereotypeView).toString();
     }
     
     /**

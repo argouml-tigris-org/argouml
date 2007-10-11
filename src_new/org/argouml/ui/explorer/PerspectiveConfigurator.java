@@ -534,7 +534,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
     class NewPerspectiveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             Object[] msgArgs = {
-                new Integer((perspectiveList.getModel().getSize() + 1)),
+                Integer.valueOf((perspectiveList.getModel().getSize() + 1)),
 	    };
 	    ExplorerPerspective newPers =
 		new ExplorerPerspective(Translator.messageFormat(

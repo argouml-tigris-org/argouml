@@ -658,7 +658,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 	while (it.hasNext()) {
 	    Fig f = (Fig) it.next();
 	    if (f instanceof FigPartition) {
-		map.put(new Integer(f.getX()), f);
+		map.put(Integer.valueOf(f.getX()), f);
 	    }
 	}
 	

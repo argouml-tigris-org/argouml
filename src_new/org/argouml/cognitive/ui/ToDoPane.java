@@ -432,13 +432,13 @@ public class ToDoPane extends JPanel
 	    return MessageFormat.
 		format(Translator.localize("label.todopane.item"),
 		       new Object[] {
-			   new Integer(size),
+			   Integer.valueOf(size),
 		       });
 	default:
 	    return MessageFormat.
 		format(Translator.localize("label.todopane.items"),
 		       new Object[] {
-			   new Integer(size),
+			   Integer.valueOf(size),
 		       });
         }
     }

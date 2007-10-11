@@ -101,8 +101,8 @@ public class ProgressMonitorWindow implements
     
     // these settings are needed to make the ProgressMonitor pop up early
     static {
-        UIManager.put("ProgressBar.repaintInterval", new Integer(150));
-        UIManager.put("ProgressBar.cycleTime", new Integer(1050));        
+        UIManager.put("ProgressBar.repaintInterval", Integer.valueOf(150));
+        UIManager.put("ProgressBar.cycleTime", Integer.valueOf(1050));        
     }
 
     /*

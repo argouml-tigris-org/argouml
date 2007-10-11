@@ -198,7 +198,7 @@ public class TabResults
     public void setResults(List res, List dia) {
         results = res;
         diagrams = dia;
-        Object[] msgArgs = {new Integer(results.size()) };
+        Object[] msgArgs = {Integer.valueOf(results.size()) };
         resultsLabel.setText(Translator.messageFormat(
             "dialog.tabresults.results-items", msgArgs));
         resultsModel.setTarget(results, diagrams);
@@ -363,7 +363,7 @@ public class TabResults
 		}
 	    }
 	    relatedModel.setTarget(related, null);
-	    Object[] msgArgs = {new Integer(related.size()) };
+	    Object[] msgArgs = {Integer.valueOf(related.size()) };
 	    relatedLabel.setText(Translator.messageFormat(
                 "dialog.find.related-elements", msgArgs));
 	}

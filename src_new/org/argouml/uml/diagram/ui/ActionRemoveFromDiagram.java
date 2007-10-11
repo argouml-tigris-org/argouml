@@ -56,7 +56,7 @@ public class ActionRemoveFromDiagram extends AbstractAction {
     	    Translator.localize("action.remove-from-diagram.mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {
             putValue(Action.MNEMONIC_KEY,
-		     new Integer(localMnemonic.charAt(0)));
+		     Integer.valueOf(localMnemonic.charAt(0)));
         }
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, name);

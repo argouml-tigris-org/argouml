@@ -186,7 +186,7 @@ class ParseState {
 	classnamePrefix =
 	    classnamePrefix.substring(0, classnamePrefix.indexOf("$") + 1);
 	anonymousClassCounter++;
-	return (new Integer(anonymousClassCounter)).toString();
+	return (Integer.valueOf(anonymousClassCounter)).toString();
     }
 
     /**

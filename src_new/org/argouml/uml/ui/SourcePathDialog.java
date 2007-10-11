@@ -127,7 +127,7 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
         for (int i = firstSelectedRow; i <= lastSelectedRow; i++) {
             if (rowSM.isSelectedIndex(i)) {
                 numSelectedRows++;
-                selectedIndexesList.add(new Integer(i));
+                selectedIndexesList.add(Integer.valueOf(i));
             }
         }
         int[] indexes = new int[selectedIndexesList.size()];
