@@ -103,7 +103,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 
     /**
      * Constructs a model for a combobox. The container given is used
-     * to retreive the target that is manipulated through this
+     * to retrieve the target that is manipulated through this
      * combobox. If clearable is true, the user can select null in the
      * combobox and thereby clear the attribute in the model.
      *
