@@ -25,9 +25,10 @@
 package org.argouml.notation.providers.java;
 
 import java.text.ParseException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Vector;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -65,7 +66,7 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
             String msg = "statusmsg.bar.error.parsing.node-modelelement";
             Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
@@ -87,7 +88,7 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
         boolean privat = false;
         boolean protect = false;
         String token;
-        Vector path = null;
+        List<String> path = null;
         String name = null;
 
         try {
@@ -121,7 +122,7 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
                     }
 
                     if (path == null) {
-                        path = new Vector();
+                        path = new ArrayList<String>();
                     }
                     if (name != null) {
                         path.add(name);
@@ -216,9 +217,9 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         String name;
         name = Model.getFacade().getName(modelElement);
         if (name == null) return "";

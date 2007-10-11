@@ -65,12 +65,12 @@ public final class NotationUtilityUml {
     /**
      * The vector of CustomSeparators to use when tokenizing attributes.
      */
-    static List<CustomSeparator> operationCustomSep;
+    static final List<CustomSeparator> operationCustomSep;
 
     /**
      * The vector of CustomSeparators to use when tokenizing parameters.
      */
-    private static List<CustomSeparator> parameterCustomSep;
+    private static final List<CustomSeparator> parameterCustomSep;
 
     /**
      * The character with a meaning as a visibility at the start

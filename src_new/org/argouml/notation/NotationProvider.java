@@ -28,7 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -59,7 +59,7 @@ public abstract class NotationProvider {
      * name(s) for which a listener is registered. This facilitates easy removal
      * of a complex set of listeners.
      */
-    private Collection<Object[]> listeners = new ArrayList<Object[]>();
+    private final Collection<Object[]> listeners = new ArrayList<Object[]>();
 
     /**
      * @return a i18 key that represents a help string
@@ -73,11 +73,11 @@ public abstract class NotationProvider {
      * The default is false.
      * 
      * @param key the string for the key
-     * @param map the hashmap to check for the presence 
+     * @param map the Map to check for the presence 
      * and value of the key
      * @return true if the value for the key is true, otherwise false
      */
-    public static boolean isValue(String key, HashMap map) {
+    public static boolean isValue(final String key, final Map map) {
         if (map == null) {
             return false;
         }
@@ -105,7 +105,7 @@ public abstract class NotationProvider {
      * @param args arguments that may determine the notation
      * @return the string written in the correct notation
      */
-    public abstract String toString(Object modelElement, HashMap args);
+    public abstract String toString(Object modelElement, Map args);
     
     /**
      * Initialise the appropriate model change listeners 
@@ -131,8 +131,8 @@ public abstract class NotationProvider {
      * @param modelElement the modelelement that we provide 
      * notation for
      */
-    public void cleanListener(PropertyChangeListener listener, 
-            Object modelElement) {
+    public void cleanListener(final PropertyChangeListener listener, 
+            final Object modelElement) {
         removeAllElementListeners(listener);
     }
     
@@ -157,7 +157,7 @@ public abstract class NotationProvider {
      * notation for
      * @param pce the received event, that we base the changes on
      */
-    public void updateListener(PropertyChangeListener listener, 
+    public void updateListener(final PropertyChangeListener listener, 
             Object modelElement,
             PropertyChangeEvent pce) {
         // e.g. for an operation:

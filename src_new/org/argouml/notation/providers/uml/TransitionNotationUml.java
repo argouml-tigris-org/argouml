@@ -27,7 +27,7 @@ package org.argouml.notation.providers.uml;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -66,7 +66,7 @@ public class TransitionNotationUml extends TransitionNotation {
             String msg = "statusmsg.bar.error.parsing.transition";
             Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
@@ -440,9 +440,9 @@ public class TransitionNotationUml extends TransitionNotation {
     }
 
     /*
-     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         Object trigger = Model.getFacade().getTrigger(modelElement);
     	Object guard = Model.getFacade().getGuard(modelElement);
         Object effect = Model.getFacade().getEffect(modelElement);
@@ -610,6 +610,8 @@ public class TransitionNotationUml extends TransitionNotation {
         if (action != null) {
             addElementListener(listener, action,
                     new String[] {
+                    // TODO: Action isn't a valid property name
+                    // Or is it?  Double check validity checking code
                         "script", "actualArgument", "action"
                     });
             Collection args = Model.getFacade().getActualArguments(action);
@@ -632,10 +634,19 @@ public class TransitionNotationUml extends TransitionNotation {
     private void addListenersForEvent(PropertyChangeListener listener, 
             Object event) {
         if (event != null) {
-            addElementListener(listener, event,
-                    new String[] {
-                        "parameter", "name", "when", "changeExpression"
-                    });
+            if (Model.getFacade().isAEvent(event)) {
+                addElementListener(listener, event,
+                        new String[] {
+                            "parameter", "name"});                
+            }
+            if (Model.getFacade().isATimeEvent(event)) {
+                addElementListener(listener, event, new String[] {"when"});
+            }
+            if (Model.getFacade().isAChangeEvent(event)) {
+                addElementListener(listener, event,
+                        new String[] {"changeExpression"});                
+            }   
+
             Collection prms = Model.getFacade().getParameters(event);
             Iterator i = prms.iterator();
             while (i.hasNext()) {

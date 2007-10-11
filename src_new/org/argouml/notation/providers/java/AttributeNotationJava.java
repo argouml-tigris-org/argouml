@@ -24,7 +24,7 @@
 
 package org.argouml.notation.providers.java;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -69,9 +69,9 @@ public class AttributeNotationJava extends AttributeNotation {
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         StringBuffer sb = new StringBuffer(80);
         sb.append(NotationUtilityJava.generateVisibility(modelElement));
         sb.append(NotationUtilityJava.generateScope(modelElement));

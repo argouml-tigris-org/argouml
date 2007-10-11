@@ -26,7 +26,7 @@ package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Iterator;
 
 import org.argouml.application.events.ArgoEventPump;
@@ -76,7 +76,7 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
             String msg = "statusmsg.bar.error.parsing.association-name";
             Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
@@ -85,9 +85,9 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
         if (isValue("fullyHandleStereotypes", args)) {
@@ -135,7 +135,7 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
      * @param args arguments that influence the generation
      * @return a string representing the visibility
      */
-    protected String generateVisibility(Object modelElement, HashMap args) {
+    protected String generateVisibility(Object modelElement, Map args) {
         String s = "";
         if (isValue("visibilityVisible", args)) {
             Object v = Model.getFacade().getVisibility(modelElement);

@@ -27,10 +27,10 @@ package org.argouml.notation.providers.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Vector;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -85,7 +85,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.classifierrole";
             Object[] args = {pe.getLocalizedMessage(),
-                             new Integer(pe.getErrorOffset()), };
+                             Integer.valueOf(pe.getErrorOffset()), };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
                     Translator.messageFormat(msg, args)));
@@ -120,7 +120,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
         String token;
         String role = null;
         String base = null;
-        Vector bases = null;
+        List<String> bases = null;
         boolean hasColon = false;
         boolean hasSlash = false;
 
@@ -137,7 +137,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
 
                     if (base != null) {
                         if (bases == null) {
-                            bases = new Vector();
+                            bases = new ArrayList<String>();
                         }
                         bases.add(base);
                     }
@@ -147,7 +147,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
                     hasSlash = false;
 
                     if (bases == null) {
-                        bases = new Vector();
+                        bases = new ArrayList<String>();
                     }
                     if (base != null) {
                         bases.add(base);
@@ -156,7 +156,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
                 } else if (",".equals(token)) {
                     if (base != null) {
                         if (bases == null) {
-                            bases = new Vector();
+                            bases = new ArrayList<String>();
                         }
                         bases.add(base);
                     }
@@ -197,7 +197,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
 
         if (base != null) {
             if (bases == null) {
-                bases = new Vector();
+                bases = new ArrayList<String>();
             }
             bases.add(base);
         }
@@ -256,9 +256,9 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         String nameString = Model.getFacade().getName(modelElement);
         if (nameString == null) { 
             nameString = "";
@@ -270,12 +270,12 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
 
         Collection c = Model.getFacade().getBases(modelElement);
         if (c != null && c.size() > 0) {
-            Vector bases = new Vector(c);
-            baseString.append(Model.getFacade().getName(bases.elementAt(0)));
+            List<String> bases = new ArrayList<String>(c);
+            baseString.append(Model.getFacade().getName(bases.get(0)));
 
             for (int i = 1; i < bases.size(); i++) {
                 baseString.append(
-                    ", " + Model.getFacade().getName(bases.elementAt(i)));
+                    ", " + Model.getFacade().getName(bases.get(i)));
             }
         }
         baseString = new StringBuilder(baseString.toString().trim());       

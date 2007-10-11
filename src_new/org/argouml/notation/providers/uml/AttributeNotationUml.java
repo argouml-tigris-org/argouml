@@ -25,9 +25,10 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
@@ -82,7 +83,7 @@ public class AttributeNotationUml extends AttributeNotation {
             String msg = "statusmsg.bar.error.parsing.attribute";
             Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this, 
@@ -217,12 +218,13 @@ public class AttributeNotationUml extends AttributeNotation {
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      */
+    // TODO: This method is WAY too long.  Split it up.
     protected void parseAttribute(
             String text,
             Object attribute) throws ParseException {
         StringBuilder multiplicity = null;
         String name = null;
-        Vector<String> properties = null;
+        List<String> properties = null;
         StringBuilder stereotype = null; // This is null as until
                                 // the first stereotype declaration is seen.
                                 // After that it is non-null.
@@ -298,7 +300,7 @@ public class AttributeNotationUml extends AttributeNotation {
                     String propvalue = null;
 
                     if (properties == null) {
-                        properties = new Vector<String>();
+                        properties = new ArrayList<String>();
                     }
                     while (true) {
                         token = st.nextToken();
@@ -502,7 +504,7 @@ public class AttributeNotationUml extends AttributeNotation {
      * 
      * {@inheritDoc}
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
 

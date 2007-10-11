@@ -24,7 +24,7 @@
 
 package org.argouml.notation.providers.uml;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.argouml.kernel.ProjectManager;
@@ -59,7 +59,7 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
 //            String msg = "statusmsg.bar.error.parsing.extensionpoint";
 //            Object[] args = {
 //                pe.getLocalizedMessage(),
-//                new Integer(pe.getErrorOffset()),
+//                Integer.valueOf(pe.getErrorOffset()),
 //            };
 //            ProjectBrowser.getInstance().getStatusBar().showStatus(
 //                    Translator.messageFormat(msg, args));
@@ -212,7 +212,7 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
      *
      * {@inheritDoc}
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
 //        if (Model.getUmlFactory().isRemoved(modelElement)) {
 //            /* This is a normal situation, 
 //             * e.g. when an extensionpoint is removed by parsing, 

@@ -24,9 +24,10 @@
 
 package org.argouml.notation.providers.uml;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -80,7 +81,7 @@ public class ObjectNotationUml extends ObjectNotation {
         }
 
         Model.getCommonBehaviorHelper().setClassifiers(modelElement, 
-                new Vector());
+                Collections.EMPTY_LIST);
         if (baseTokens != null) {
             while (baseTokens.hasMoreElements()) {
                 String typeString = baseTokens.nextToken();
@@ -96,26 +97,23 @@ public class ObjectNotationUml extends ObjectNotation {
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         String nameStr = "";
         if (Model.getFacade().getName(modelElement) != null) {
             nameStr = Model.getFacade().getName(modelElement).trim();
         }
 
-        Vector bases = new Vector(
-                Model.getFacade().getClassifiers(modelElement));
 
         StringBuilder baseString = new StringBuilder();
-
-        if (Model.getFacade().getClassifiers(modelElement) != null
-                && Model.getFacade().getClassifiers(modelElement).size() > 0) {
-
-            baseString.append(Model.getFacade().getName(bases.elementAt(0)));
-            for (int i = 1; i < bases.size(); i++) {
-                baseString.append(
-                        ", "  + Model.getFacade().getName(bases.elementAt(i)));
+        Iterator bases = Model.getFacade().getClassifiers(modelElement)
+                .iterator();
+        if (bases.hasNext()) {
+            baseString.append(Model.getFacade().getName(bases.next()));
+            while (bases.hasNext()) {
+                baseString.append(", ").append(
+                        Model.getFacade().getName(bases.next()));
             }
         }
 

@@ -25,7 +25,7 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.argouml.application.events.ArgoEventPump;
@@ -77,7 +77,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
             String msg = "statusmsg.bar.error.parsing.association-end-name";
             Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
@@ -174,7 +174,8 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString(Object modelElement, HashMap args) {
+    @Override
+    public String toString(Object modelElement, Map args) {
         String name = Model.getFacade().getName(modelElement);
         if (name == null) {
             name = "";

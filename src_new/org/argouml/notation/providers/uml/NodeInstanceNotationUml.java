@@ -24,11 +24,12 @@
 
 package org.argouml.notation.providers.uml;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.notation.providers.NodeInstanceNotation;
@@ -75,19 +76,20 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
 
         tokenizer = new StringTokenizer(bases, ",");
 
-        Vector v = new Vector();
+        List classifiers = new ArrayList();
         Object ns = Model.getFacade().getNamespace(modelElement);
         if (ns != null) {
             while (tokenizer.hasMoreElements()) {
                 String newBase = tokenizer.nextToken();
                 Object cls = Model.getFacade().lookupIn(ns, newBase.trim());
                 if (cls != null) {
-                    v.add(cls);
+                    classifiers.add(cls);
                 }
             }
         }
 
-        Model.getCommonBehaviorHelper().setClassifiers(modelElement, v);
+        Model.getCommonBehaviorHelper().setClassifiers(modelElement,
+                classifiers);
         Model.getCoreHelper().setName(modelElement, name);
     }
 
@@ -99,9 +101,9 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         String nameStr = "";
         if (Model.getFacade().getName(modelElement) != null) {
             nameStr = Model.getFacade().getName(modelElement).trim();
