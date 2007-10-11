@@ -113,7 +113,7 @@ public class ResolvedCritic {
     public ResolvedCritic(Critic c, ListSet offs, boolean canCreate)
 	throws UnresolvableException {
 	if (c == null) {
-	    throw new NullPointerException();
+	    throw new IllegalArgumentException();
 	}
 
 	//LOG.debug("Adding resolution for: " + c.getClass() + " " + canCreate);
