@@ -136,11 +136,11 @@ class CommonBehaviorHelperEUMLImpl implements CommonBehaviorHelper {
         
     }
 
-    public void setClassifiers(Object handle, Vector v) {
-        // TODO Auto-generated method stub
-        
-    }
 
+    public void setClassifiers(Object handle, Collection classifiers) {
+        // TODO Auto-generated method stub
+    }
+    
     public void setCommunicationLink(Object handle, Object c) {
         // TODO Auto-generated method stub
         
