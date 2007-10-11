@@ -100,6 +100,7 @@ public class FigSingleLineText extends ArgoFigText {
 
 
 
+    @Override
     public Dimension getMinimumSize() {
         Dimension d = new Dimension();
 
@@ -123,6 +124,7 @@ public class FigSingleLineText extends ArgoFigText {
         return d;
     }
 
+    @Override
     protected boolean isStartEditingKey(KeyEvent ke) {
         if ((ke.getModifiers()
 	     & (KeyEvent.META_MASK | KeyEvent.ALT_MASK)) == 0) {
@@ -132,6 +134,7 @@ public class FigSingleLineText extends ArgoFigText {
         }
     }
     
+    @Override
     public void setOwner(Object owner) {
         super.setOwner(owner);
         if (owner != null && properties != null) {
@@ -143,6 +146,7 @@ public class FigSingleLineText extends ArgoFigText {
         }
     }
     
+    @Override
     public void removeFromDiagram() {
         if (getOwner() != null && properties != null) {
             Model.getPump().removeModelEventListener(
@@ -152,6 +156,7 @@ public class FigSingleLineText extends ArgoFigText {
         }
     }
     
+    @Override
     public void propertyChange(PropertyChangeEvent pce) {
         if (getOwner() == pce.getSource()
                 && properties != null
