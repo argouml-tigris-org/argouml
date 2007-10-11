@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -40,7 +41,7 @@ import org.argouml.model.Model;
 import org.argouml.util.MyTokenizer;
 
 /**
- * @author BTarling
+ * @author Bob Tarling
  *
  */
 public class StereotypeUtility {
@@ -50,7 +51,6 @@ public class StereotypeUtility {
      */
     private StereotypeUtility() {
         super();
-        // TODO: Auto-generated constructor stub
     }
 
     public static Action[] getApplyStereotypeActions(Object modelElement) {
@@ -76,23 +76,23 @@ public class StereotypeUtility {
      * @param modelElement the given modelelement
      * @return the set with stereotype UML objects
      */
-    @SuppressWarnings("unchecked")
-    public static Set getAvailableStereotypes(Object modelElement) {
-        Set paths = new HashSet();
-        Set availableStereotypes = new TreeSet(new Comparator() {
-            public int compare(Object o1, Object o2) {
-                try {
-                    String name1 = Model.getFacade().getName(o1);
-                    String name2 = Model.getFacade().getName(o2);
-                    name1 = (name1 != null ? name1 : "");
-                    name2 = (name2 != null ? name2 : "");
+    public static Set<Object> getAvailableStereotypes(Object modelElement) {
+        Set<List> paths = new HashSet<List>();
+        Set<Object> availableStereotypes = new TreeSet<Object>(
+                new Comparator<Object>() {
+                    public int compare(Object o1, Object o2) {
+                        try {
+                            String name1 = Model.getFacade().getName(o1);
+                            String name2 = Model.getFacade().getName(o2);
+                            name1 = (name1 != null ? name1 : "");
+                            name2 = (name2 != null ? name2 : "");
 
-                    return name1.compareTo(name2);
-                } catch (Exception e) {
-                    throw new ClassCastException(e.getMessage());
-                }
-            }
-        });            
+                            return name1.compareTo(name2);
+                        } catch (Exception e) {
+                            throw new ClassCastException(e.getMessage());
+                        }
+                    }
+                });
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
         
@@ -144,9 +144,9 @@ public class StereotypeUtility {
         return availableStereotypes;
     }
 
-    @SuppressWarnings("unchecked")
-    private static Collection getTopLevelStereotypes(Collection topLevelModels) {
-        Collection ret = new ArrayList();
+    private static Collection<Object> getTopLevelStereotypes(
+            Collection<Object> topLevelModels) {
+        Collection<Object> ret = new ArrayList<Object>();
         for (Object model : topLevelModels) {
             for (Object stereotype : Model.getExtensionMechanismsHelper()
                     .getStereotypes(model)) {
@@ -160,8 +160,8 @@ public class StereotypeUtility {
     }
     
     private static void getApplicableStereotypesInNamespace(
-            Object modelElement, Set paths, Set availableStereotypes,
-            Object namespace) {
+            Object modelElement, Set<List> paths,
+            Set<Object> availableStereotypes, Object namespace) {
         Collection allProfiles = getAllProfilePackages(Model.getFacade()
                 .getModel(modelElement));
         Collection<Object> allAppliedProfiles = new ArrayList<Object>();
@@ -183,9 +183,9 @@ public class StereotypeUtility {
                 getAppliableStereotypes(modelElement, allAppliedProfiles));
     }
     
-    private static Collection getAppliableStereotypes(Object modelElement,
-            Collection<Object> allAppliedProfiles) {
-        Collection ret = new ArrayList();
+    private static Collection<Object> getAppliableStereotypes(
+            Object modelElement, Collection<Object> allAppliedProfiles) {
+        Collection<Object> ret = new ArrayList<Object>();
         for (Object profile : allAppliedProfiles) {
             for (Object stereotype : Model.getExtensionMechanismsHelper()
                     .getStereotypes(profile)) {
@@ -195,11 +195,11 @@ public class StereotypeUtility {
                 }
             }
         }
-        
+
         return ret;
     }
 
-    private static Collection getAllProfilePackages(Object model) {
+    private static Collection<Object> getAllProfilePackages(Object model) {
         Collection col = Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model,
                         Model.getMetaTypes().getPackage());
@@ -223,13 +223,10 @@ public class StereotypeUtility {
      * never contain two objects with the same path, unless they are added by
      * other means.
      */
-    private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
-            Collection source) {
-        Iterator it2 = source.iterator();
-
-        while (it2.hasNext()) {
-            Object obj = it2.next();
-            Object path = Model.getModelManagementHelper().getPath(obj);
+    private static void addAllUniqueModelElementsFrom(Set<Object> elements,
+            Set<List> paths, Collection<Object> source) {
+        for (Object obj : source) {
+            List path = Model.getModelManagementHelper().getPathList(obj);
             if (!paths.contains(path)) {
                 paths.add(path);
                 elements.add(obj);
@@ -240,10 +237,10 @@ public class StereotypeUtility {
     /**
      * This function shall replace the previous set of stereotypes
      * of the given modelelement with a new set,
-     * given in the form of a "," seperated string of stereotype names.
+     * given in the form of a "," separated string of stereotype names.
      *
      * @param umlobject the UML element to adapt
-     * @param stereotype Comma seperated list stereotype names. Empty string
+     * @param stereotype Comma separated list stereotype names. Empty string
      *                   or <code>null</code> represents no stereotypes.
      * @param full false if stereotypes are only added,
      *             true if removal should be done, too.
@@ -252,10 +249,10 @@ public class StereotypeUtility {
             boolean full) {
         String token;
         MyTokenizer mst;
-        Collection stereotypes = new ArrayList();
+        Collection<String> stereotypes = new ArrayList<String>();
 
         /* Convert the string (e.g. "aaa,bbb,ccc")
-         * into seperate stereotype-names (e.g. "aaa", "bbb", "ccc").
+         * into separate stereotype-names (e.g. "aaa", "bbb", "ccc").
          */
         if (stereotype != null) {
             mst = new MyTokenizer(stereotype, " ,\\,");
@@ -269,10 +266,9 @@ public class StereotypeUtility {
 
         if (full) {
             // collect the to be removed stereotypes
-            Collection toBeRemoved = new ArrayList();
-            Iterator i = Model.getFacade().getStereotypes(umlobject).iterator();
-            while (i.hasNext()) {
-                String stereotypename = Model.getFacade().getName(i.next());
+            Collection<Object> toBeRemoved = new ArrayList<Object>();
+            for (Object stereo : Model.getFacade().getStereotypes(umlobject)) {
+                String stereotypename = Model.getFacade().getName(stereo);
                 if (stereotypename != null
                         && !stereotypes.contains(stereotypename)) {
                     toBeRemoved.add(getStereotype(umlobject, stereotypename));
@@ -280,9 +276,8 @@ public class StereotypeUtility {
             }
 
             // and now remove them
-            i = toBeRemoved.iterator();
-            while (i.hasNext()) {
-                Model.getCoreHelper().removeStereotype(umlobject, i.next());
+            for (Object o : toBeRemoved) {
+                Model.getCoreHelper().removeStereotype(umlobject, o);
             }
         }
 
