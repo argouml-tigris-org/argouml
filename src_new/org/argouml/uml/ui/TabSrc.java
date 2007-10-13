@@ -117,7 +117,7 @@ public class TabSrc
 		if (files[i].getBasePath().length() > 0) {
 		    title.append(" ( " + files[i].getFullName() + ")");
 		}
-		cbFiles.addItem(title);
+		cbFiles.addItem(title.toString());
 	    }
 	}
     }
