@@ -93,7 +93,7 @@ public class DetailsPane
     private Object currentTarget;
 
     /**
-     * a list of all the tabs, which are JPanels, in the JTabbedPane tabs.
+     * The list of all the tabs, which are JPanels, in the JTabbedPane tabs.
      */
     private List<JPanel> tabPanelList = new ArrayList<JPanel>();
 
@@ -196,9 +196,10 @@ public class DetailsPane
     }
 
     /**
-     * Selects the to do tab, and sets the target of that tab.<p>
+     * Selects the to do tab, and sets the target of that tab.
+     * 
      * @param item the selected todo item
-     * @return true if ? Yes when? TODO: Explain.
+     * @return true if todo tab is really selected.
      */
     public boolean setToDoItem(Object item) {
         enableTabs(item);
@@ -430,18 +431,14 @@ public class DetailsPane
         return null;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // event handlers
-
     /**
      * Reacts to a change in the selected tab by calling
-     *
      * refresh() for TabToDoTarget's
      * &
-     * setTarget on a  TabModelTarget or TabFigTarget instance
+     * setTarget on a  TabModelTarget or TabFigTarget instance. <p>
      *
-     * old notes: called when the user selects a new tab, by clicking or
-     *  otherwise.
+     * Called when the user selects a new tab, by clicking or
+     * otherwise.
      *
      * {@inheritDoc}
      */
@@ -449,22 +446,22 @@ public class DetailsPane
         LOG.debug("DetailsPane state changed");
         Component sel = topLevelTabbedPane.getSelectedComponent();
 
-        // update the tab
+        // update the previously selected tab
         if (lastNonNullTab >= 0) {
 	    Object tab = tabPanelList.get(lastNonNullTab);
 	    if (tab instanceof TargetListener) {
+                // not visible any more - so remove as listener
 	        removeTargetListener((TargetListener) tab);
 	    }
 	}
         Object target = TargetManager.getInstance().getTarget();
 
-        if (!(sel instanceof TargetListener)) {
-            if (sel instanceof TabToDoTarget) {
-                ((TabToDoTarget) sel).setTarget(target);
-            } else if (sel instanceof TabTarget) {
-                ((TabTarget) sel).setTarget(target);
-            }
-        } else {
+        if (sel instanceof TabToDoTarget) {
+            ((TabToDoTarget) sel).setTarget(target);
+        } else if (sel instanceof TabTarget) {
+            ((TabTarget) sel).setTarget(target);
+        }
+        if (sel instanceof TargetListener) {
             removeTargetListener((TargetListener) sel);
             addTargetListener((TargetListener) sel);
         }
@@ -582,7 +579,7 @@ public class DetailsPane
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleTarget(), false);
+        setTarget(e.getNewTarget(), false);
         fireTargetAdded(e);
     }
 
@@ -590,7 +587,7 @@ public class DetailsPane
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleTarget(), false);
+        setTarget(e.getNewTarget(), false);
         fireTargetRemoved(e);
     }
 
@@ -598,7 +595,7 @@ public class DetailsPane
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(TargetManager.getInstance().getSingleTarget(), true);
+        setTarget(e.getNewTarget(), true);
         fireTargetSet(e);
     }
 
@@ -623,17 +620,16 @@ public class DetailsPane
                         shouldEnable = true;
                     }
                 }
+                removeTargetListener((TargetListener) tab);
                 if (shouldEnable) {
-                    removeTargetListener((TargetListener) tab);
                     addTargetListener((TargetListener) tab);
                 }
             }
 
             topLevelTabbedPane.setEnabledAt(i, shouldEnable);
-
         }
-
     }
+
     private void fireTargetSet(TargetEvent targetEvent) {
         //          Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
