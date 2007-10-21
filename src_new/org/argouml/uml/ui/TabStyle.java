@@ -246,15 +246,9 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         stylePanel = findPanelFor(targetClass);
 
         if (stylePanel != null) {
-            if (stylePanel instanceof TargetListener) {
-                // TargetManager now replaces the old
-                // functionality of
-                // setTarget
-                removeTargetListener(stylePanel);
-                addTargetListener(stylePanel);
-            } else {
-                stylePanel.setTarget(target);
-            }
+            removeTargetListener(stylePanel);
+            addTargetListener(stylePanel);
+            stylePanel.setTarget(target);
             add(stylePanel, BorderLayout.NORTH);
             shouldBeEnabled = true;
             lastPanel = stylePanel;
