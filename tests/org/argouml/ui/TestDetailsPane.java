@@ -108,6 +108,7 @@ public class TestDetailsPane extends TestCase {
 			    new Object[] {
 				clazz,
 			    });
+        TargetManager.getInstance().setTarget(clazz);
         pane.targetSet(e);
         assertEquals("3:", propertyPane, pane.getTabs().getSelectedComponent());
         pane.getTabs().setSelectedComponent(todoPane);
