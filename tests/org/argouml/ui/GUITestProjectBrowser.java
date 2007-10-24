@@ -31,6 +31,7 @@ import javax.swing.Action;
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
+import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -49,6 +50,8 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
  */
 public class GUITestProjectBrowser extends TestCase {
 
+    private static final String GURKBURK = "Gurkburk";
+
     /**
      * Constructor.
      *
@@ -64,6 +67,9 @@ public class GUITestProjectBrowser extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        SplashScreen splashScreen = new SplashScreen();
+        assertNotNull(ProjectBrowser.makeInstance(splashScreen, 
+                true, new ToDoPane(splashScreen)));
     }
 
     /**
@@ -71,7 +77,6 @@ public class GUITestProjectBrowser extends TestCase {
      * Also test that everything is set up properly within the object.
      */
     public void testConstruction() {
-	assertNotNull(ProjectBrowser.getInstance());
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	assertNotNull(pb.getLocale());
 	assertNotNull(pb.getAppName());
@@ -88,8 +93,8 @@ public class GUITestProjectBrowser extends TestCase {
     public void testAppName() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 
-	pb.setAppName("Gurkburk");
-	assertEquals("Gurkburk", pb.getAppName());
+	pb.setAppName(GURKBURK);
+	assertEquals(GURKBURK, pb.getAppName());
     }
 
     /**
@@ -162,6 +167,8 @@ public class GUITestProjectBrowser extends TestCase {
 
         Model.getPump().flushModelEvents();
 
+        pb.setAppName(GURKBURK);
+
         tm.setTarget(diagram1);
         assertTrue("Title should contain diagram1 name", 
                 pb.getTitle().indexOf(diagram1.getName()) != -1);
@@ -171,7 +178,7 @@ public class GUITestProjectBrowser extends TestCase {
                 pb.getTitle().indexOf(diagram2.getName()) != -1);
         
         assertTrue("Title should contain application name", 
-                pb.getTitle().indexOf("Gurkburk") != -1);
+                pb.getTitle().indexOf(GURKBURK) != -1);
 
         assertTrue("Title should contain *", 
                 pb.getTitle().indexOf("*") != -1);
@@ -180,7 +187,7 @@ public class GUITestProjectBrowser extends TestCase {
         a.putValue("non-interactive", Boolean.TRUE);
         a.actionPerformed(null);
         
-        assertTrue("Title should not contain *", 
-                pb.getTitle().indexOf("*") == -1);
+        assertTrue("Title should contain *", 
+                pb.getTitle().indexOf("*") != -1);
     }
 }
