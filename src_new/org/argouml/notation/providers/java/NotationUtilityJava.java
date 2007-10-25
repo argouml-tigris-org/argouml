@@ -40,7 +40,8 @@ public class NotationUtilityJava {
     /**
      * The constructor - nothing to construct.
      */
-    NotationUtilityJava() { }
+    NotationUtilityJava() {
+    }
 
     /**
      * Returns a visibility String either for a VisibilityKind, but also 
@@ -53,6 +54,8 @@ public class NotationUtilityJava {
      */
     static String generateVisibility(Object o) {
         if (Model.getFacade().isAFeature(o)) {
+            // TODO: The src_visibility tag doesn't appear to be created
+            // anywhere by ArgoUML currently
             Object tv = Model.getFacade().getTaggedValue(o, "src_visibility");
             if (tv != null) {
                 Object tvValue = Model.getFacade().getValue(tv);
@@ -201,7 +204,7 @@ public class NotationUtilityJava {
                 ns = Model.getFacade().getNamespace(ns);
             }
             while (!stack.isEmpty()) {
-                s.append(stack.pop() + ".");
+                s.append(stack.pop()).append(".");
             }
 
             if (s.length() > 0 && !(s.lastIndexOf(".") == s.length() - 1)) {
