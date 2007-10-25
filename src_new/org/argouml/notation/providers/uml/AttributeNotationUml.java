@@ -482,9 +482,7 @@ public class AttributeNotationUml extends AttributeNotation {
                     NotationUtilityUml.attributeSpecialStrings);
         }
 
-        StereotypeUtility.dealWithStereotypes(attribute, 
-                stereotype != null ? stereotype.toString() : null,
-                true);
+        StereotypeUtility.dealWithStereotypes(attribute, stereotype, true);
     }
 
     /*

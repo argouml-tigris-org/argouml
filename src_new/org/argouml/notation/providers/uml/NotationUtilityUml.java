@@ -53,7 +53,7 @@ public final class NotationUtilityUml {
     static PropertySpecialString[] attributeSpecialStrings;
 
     /**
-     * The vector of CustomSeparators to use when tokenizing attributes.
+     * The list of CustomSeparators to use when tokenizing attributes.
      */
     static List<CustomSeparator> attributeCustomSep;
 
@@ -68,7 +68,7 @@ public final class NotationUtilityUml {
     static final List<CustomSeparator> operationCustomSep;
 
     /**
-     * The vector of CustomSeparators to use when tokenizing parameters.
+     * The list of CustomSeparators to use when tokenizing parameters.
      */
     private static final List<CustomSeparator> parameterCustomSep;
 
@@ -367,7 +367,7 @@ public final class NotationUtilityUml {
             Model.getCoreHelper().setName(me, name);
         }
 
-        StereotypeUtility.dealWithStereotypes(me, stereotype.toString(), false);
+        StereotypeUtility.dealWithStereotypes(me, stereotype, false);
 
         if (path != null) {
             Object nspe =

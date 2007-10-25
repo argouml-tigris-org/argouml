@@ -351,9 +351,7 @@ public class OperationNotationUml extends OperationNotation {
         // but create any other parsed stereotypes as needed
         if (!Model.getFacade().isAReception(op) 
                 || !RECEPTION_KEYWORD.equals(stereotype.toString())) {
-            StereotypeUtility.dealWithStereotypes(op, 
-                    stereotype != null ? stereotype.toString() : null, 
-                    true);
+            StereotypeUtility.dealWithStereotypes(op, stereotype, true);
         }
     }
 

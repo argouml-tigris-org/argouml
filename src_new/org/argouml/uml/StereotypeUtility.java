@@ -233,17 +233,38 @@ public class StereotypeUtility {
             }
         }
     }
-    
+
     /**
-     * This function shall replace the previous set of stereotypes
-     * of the given modelelement with a new set,
-     * given in the form of a "," separated string of stereotype names.
-     *
+     * Replace the previous set of stereotypes applied to the given modelelement
+     * with a new set, given in the form of a "," separated string of stereotype
+     * names.
+     * 
+     * @param element the UML element to modify
+     * @param stereotype Comma separated list of stereotype names. Empty string
+     *                or <code>null</code> represents no stereotypes.
+     * @param removeCurrent true if all current stereotypes should be removed
+     *                before adding the new stereotypes, false if new
+     *                stereotypes should be added to existing ones.
+     */
+    public static void dealWithStereotypes(Object element,
+            StringBuilder stereotype, boolean removeCurrent) {
+        if (stereotype == null) {
+            dealWithStereotypes(element, (String) null, removeCurrent);
+        } else {
+            dealWithStereotypes(element, stereotype.toString(), removeCurrent);
+        }
+    }
+
+    /**
+     * This function shall replace the previous set of stereotypes of the given
+     * modelelement with a new set, given in the form of a "," separated string
+     * of stereotype names.
+     * 
      * @param umlobject the UML element to adapt
-     * @param stereotype Comma separated list stereotype names. Empty string
-     *                   or <code>null</code> represents no stereotypes.
-     * @param full false if stereotypes are only added,
-     *             true if removal should be done, too.
+     * @param stereotype Comma separated list stereotype names. Empty string or
+     *                <code>null</code> represents no stereotypes.
+     * @param full false if stereotypes are only added, true if removal should
+     *                be done, too.
      */
     public static void dealWithStereotypes(Object umlobject, String stereotype,
             boolean full) {

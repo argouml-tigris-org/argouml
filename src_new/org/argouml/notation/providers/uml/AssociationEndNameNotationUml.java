@@ -167,12 +167,12 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
             Model.getCoreHelper().setName(role, name);
         }
 
-        StereotypeUtility.dealWithStereotypes(role, 
-                stereotype.toString(), true);
+        StereotypeUtility.dealWithStereotypes(role, stereotype, true);
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object,
+     *      java.util.HashMap)
      */
     @Override
     public String toString(Object modelElement, Map args) {
