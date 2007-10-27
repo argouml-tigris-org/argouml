@@ -228,8 +228,8 @@ according to the table below.
               <entry>Author Date Id Revision</entry>
               <entry>
 All text files, Java files, XML files.
-This is for the &dollar;Id&dollar;-tag at the top of all source files
-and the &dollar;Date&dollar; tag on some web pages.
+This is for the Id-tag at the top of all source files
+and the Date-tag on some web pages.
 </entry>
             </row>
           </tbody>
