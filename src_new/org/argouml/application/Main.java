@@ -177,15 +177,16 @@ public class Main {
 
             String projectName = null;
 
+            // TODO: Move command line parsing to separate method
+        
             // Parse command line args:
             // The assumption is that all options precede
             // the name of a project file to load.
             String theTheme = null;
             for (int i = 0; i < args.length; i++) {
                 if (args[i].startsWith("-")) {
-                    String themeName =
-                        LookAndFeelMgr.getInstance()
-                        .getThemeClassNameFromArg(args[i]);
+                    String themeName = LookAndFeelMgr.getInstance()
+                            .getThemeClassNameFromArg(args[i]);
                     if (themeName != null) {
                         theTheme = themeName;
                     } else if (
@@ -299,8 +300,7 @@ public class Main {
                         LOG.info("Re-opening project " + s);
                         projectName = s;
                     } else {
-                        LOG.warn(
-                                "Cannot re-open " + s 
+                        LOG.warn("Cannot re-open " + s
                                 + " because it does not exist");
                     }
                 }
@@ -333,9 +333,7 @@ public class Main {
                             Translator.localize(
                                     "statusmsg.bar.defaultproject"));
                 } else {
-                    Object[] msgArgs = {
-                            projectName,
-                    };
+                    Object[] msgArgs = {projectName};
                     splash.getStatusBar().showStatus(
                             Translator.messageFormat(
                                     "statusmsg.bar.readingproject",
