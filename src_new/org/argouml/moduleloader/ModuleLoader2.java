@@ -662,6 +662,14 @@ public final class ModuleLoader2 {
             LOG.error("The default constructor for class " + classname
                       + " is not found.", e);
             return false;
+        } catch (NoClassDefFoundError e) {
+            LOG.error("Unable to find required class while loading "
+                    + classname + " - may indicate an obsolete"
+                    + " extension module or an unresolved dependency", e);
+            return false;
+        } catch (Exception e) {
+            LOG.error("Unexpected error while loading " + classname, e);
+            return false;
         }
 
         if (!Modifier.isPublic(defaultConstructor.getModifiers())) {
@@ -689,12 +697,12 @@ public final class ModuleLoader2 {
                     + " cannot be called.", e);
             return false;
         } catch (NoClassDefFoundError e) {
-            LOG.error("Unable to find required class while loading "
+            LOG.error("Unable to find required class while instantiating "
                     + classname + " - may indicate an obsolete"
-                    + " extension module", e);
+                    + " extension module or an unresolved dependency", e);
             return false;
         } catch (Exception e) {
-            LOG.error("Unexpected error while loading " + classname, e);
+            LOG.error("Unexpected error while instantiating " + classname, e);
             return false;
         }
 
