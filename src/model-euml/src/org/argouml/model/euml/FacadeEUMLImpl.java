@@ -1983,10 +1983,10 @@ class FacadeEUMLImpl implements Facade {
             return ((Classifier) handle).isAbstract();
         } else if (handle instanceof BehavioralFeature) {
             return ((BehavioralFeature) handle).isAbstract();
-        } else {
+        } else if (handle instanceof Element){
             return false;
-//            throw new IllegalArgumentException();
         }
+        throw new IllegalArgumentException();
     }
 
     public boolean isActive(Object handle) {
@@ -2050,7 +2050,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isLeaf(Object handle) {
-        return ((RedefinableElement) handle).isLeaf();
+        if (handle instanceof RedefinableElement) {
+            return ((RedefinableElement) handle).isLeaf();
+        } else if (handle instanceof Element) {
+            return false;
+        }
+        throw new IllegalArgumentException();
     }
 
     public boolean isNavigable(Object handle) {
