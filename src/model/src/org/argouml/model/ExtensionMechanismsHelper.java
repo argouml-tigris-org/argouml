@@ -90,14 +90,18 @@ public interface ExtensionMechanismsHelper {
             				 Object modelElement);
 
     /**
-     * Returns true if the given stereotype has a baseclass that
-     * equals the baseclass of the given modelelement or one of the
-     * superclasses of the given modelelement.
-     *
-     * @param theModelElement is the model element
-     * @param theStereotype   is the stereotype
+     * Returns true if the given stereotype has a baseclass that equals the
+     * baseclass of the given modelelement or one of the superclasses of the
+     * given modelelement.
+     * 
+     * @param theModelElement
+     *                is the model element
+     * @param theStereotype
+     *                is the stereotype
      * @return boolean
-     * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
+     * @deprecated Deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #isValidStereotype(Object,Object)} instead (note
+     *             different capitalization),
      */
     boolean isValidStereoType(Object theModelElement, Object theStereotype);
 

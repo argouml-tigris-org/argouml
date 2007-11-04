@@ -185,7 +185,7 @@ public interface ModelManagementHelper {
     
     /**
      * Get local equivalent to a profile ModelElement. Equivalent to calling
-     * {@link #getCorrespondingElement(Object, Object, boolean)} with a value of
+     * getCorrespondingElement(Object, Object, boolean) with a value of
      * <code>true</code> for the third parameter.
      * <p>
      * This function may fail and return null eg if some required object doesn't
@@ -197,7 +197,6 @@ public interface ModelManagementHelper {
      *                is the model the returned object shall belong to.
      * @return An element of the same type and at the same position in the model
      *         as elem, or if that would turn out impossible then null.
-     * @see {@link #getCorrespondingElement(Object, Object, boolean)}
      * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model 
      * implementation maintains cross XMI file references now.
      */
@@ -220,6 +219,7 @@ public interface ModelManagementHelper {
      * @param canCreate determines if objects can be copied into model.
      * @return An element of the same type and at the same position in the
      *  model as elem, or if that would turn out impossible then null.
+     *  
      * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model 
      * implementation maintains cross XMI file references now.
      */
