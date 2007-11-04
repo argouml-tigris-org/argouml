@@ -1,5 +1,5 @@
 // $Id: ActionAddStereotype.java 13040 2007-07-10 20:00:25Z linus $
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -78,11 +78,7 @@ class ActionAddStereotype extends UndoableAction {
                 .contains(stereotype)) {
             Model.getCoreHelper().removeStereotype(modelElement, stereotype);
         } else {
-            Object stereo =
-                Model.getModelManagementHelper()
-                    .getCorrespondingElement(stereotype,
-                        Model.getFacade().getModel(modelElement), true);
-            Model.getCoreHelper().addStereotype(modelElement, stereo);
+            Model.getCoreHelper().addStereotype(modelElement, stereotype);
         }
     }
 

@@ -566,13 +566,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
         }
         cls = findTypeInDefaultModel(s);
-        // hey, now we should move it to the model the user is working in
-        // TODO: Remove this when we support linked profiles - tfm - 20070726
-        if (cls != null) {
-            cls =
-                Model.getModelManagementHelper()
-                	.getCorrespondingElement(cls, getRoot());
-        }
+
         if (cls == null && defineNew) {
             LOG.debug("new Type defined!");
             cls =

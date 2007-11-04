@@ -182,6 +182,7 @@ public class TabStereotype extends PropPanel {
     /*
      * @see org.argouml.uml.ui.PropPanel#shouldBeEnabled(java.lang.Object)
      */
+    @Override
     public boolean shouldBeEnabled(Object target) {
         if (target instanceof Fig) {
             target = ((Fig) target).getOwner();
@@ -192,6 +193,7 @@ public class TabStereotype extends PropPanel {
     /*
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
+    @Override
     public void setTarget(Object theTarget) {
         super.setTarget(theTarget);
         if (isVisible()) {
@@ -213,12 +215,7 @@ public class TabStereotype extends PropPanel {
         if (modelElement == null) {
             return;
         }
-
-        Object stereo =
-            Model.getModelManagementHelper()
-                .getCorrespondingElement(stereotype,
-                        Model.getFacade().getModel(modelElement), true);
-        Model.getCoreHelper().addStereotype(modelElement, stereo);
+        Model.getCoreHelper().addStereotype(modelElement, stereotype);
     }
 
     /**

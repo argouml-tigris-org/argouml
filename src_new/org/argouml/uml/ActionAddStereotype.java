@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,23 +71,21 @@ public class ActionAddStereotype extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
         if (Model.getFacade().getStereotypes(modelElement)
                 .contains(stereotype)) {
             Model.getCoreHelper().removeStereotype(modelElement, stereotype);
         } else {
-            Object stereo =
-                Model.getModelManagementHelper()
-                    .getCorrespondingElement(stereotype,
-                        Model.getFacade().getModel(modelElement), true);
-            Model.getCoreHelper().addStereotype(modelElement, stereo);
+            Model.getCoreHelper().addStereotype(modelElement, stereotype);
         }
     }
 
     /*
      * @see javax.swing.Action#getValue(java.lang.String)
      */
+    @Override
     public Object getValue(String key) {
         if ("SELECTED".equals(key)) {
             if (Model.getFacade().getStereotypes(modelElement).contains(

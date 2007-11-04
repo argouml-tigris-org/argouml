@@ -339,8 +339,7 @@ public class StereotypeUtility {
                 name, obj); 
 
         if (stereo != null) {
-            return Model.getModelManagementHelper().getCorrespondingElement(
-                    stereo, root);
+            return stereo;
         }
 
         if (root != null && name.length() > 0) {
