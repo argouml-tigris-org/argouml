@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,59 +22,39 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.kernel;
+package org.argouml.dev;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import javax.swing.tree.DefaultMutableTreeNode;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import org.argouml.uml.diagram.sequence.MessageNode;
+import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
+import org.argouml.uml.diagram.sequence.ui.FigMessagePort;
 
-public final class UndoLogPanel extends JScrollPane {
+/**
+ * TODO: Add Javadoc
+ * 
+ * @author Bob Tarling
+ */
+public class MessageNodeBuilder {
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -3483889053389473380L;
-
-    private JPanel list;
-
-    /**
-     * The instance.
-     */
-    private static final UndoLogPanel INSTANCE = new UndoLogPanel();
-
-    /**
-     * @return The instance.
-     */
-    public static UndoLogPanel getInstance() {
-        return INSTANCE;
-    }
-
-    /**
-     * Constructor.
-     */
-    private UndoLogPanel() {
-        list = new JPanel(new GridLayout(0, 1));
-        JPanel listContainer = new JPanel(new BorderLayout());
-        listContainer.add(BorderLayout.NORTH, list);
-        this.setViewportView(listContainer);
-    }
-
-    void addMemento(Command memento) {
-        list.add(new JLabel(memento.toString()));
-        doLayout();
-        validate();
-        if (getVerticalScrollBar() != null) {
-            int maxScroll = getVerticalScrollBar().getMaximum();
-            getVerticalScrollBar().setValue(maxScroll + 1);
+    public static void addNodeTree(
+            DefaultMutableTreeNode treeNode,
+            FigClassifierRole fcr) {
+        int nodeCount = fcr.getNodeCount();
+        for (int i = 0; i < nodeCount; ++i) {
+            MessageNode mn = fcr.getNode(i);
+            String descr = 
+                "MessageNode y=" 
+                + fcr.getYCoordinate(mn) 
+                + " "
+                + mn.getState();
+            FigMessagePort fmp = mn.getFigMessagePort();
+            if (fmp != null) {
+                descr += " FigMessagePort registered";
+            }
+            DefaultMutableTreeNode tn = new DefaultMutableTreeNode(descr);
+            treeNode.add(tn);
+            CallerListNodeBuilder.addNodeTree(tn, mn);
         }
-    }
-
-    void removeMemento(Command memento) {
-        list.remove(list.getComponentCount() - 1);
-        doLayout();
-        validate();
     }
 }

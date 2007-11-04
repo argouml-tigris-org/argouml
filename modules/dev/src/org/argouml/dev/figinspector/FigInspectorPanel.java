@@ -25,14 +25,14 @@
 package org.argouml.dev.figinspector;
 
 import java.awt.BorderLayout;
-import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.argouml.dev.MessageNodeBuilder;
 import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
-import org.argouml.uml.diagram.sequence.ui.MessageNodeBuilder;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.event.GraphSelectionEvent;
@@ -137,8 +137,7 @@ public final class FigInspectorPanel
             addNode(tn, fe.getSourcePortFig());
             addNode(tn, fe.getDestFigNode());
             addNode(tn, fe.getDestPortFig());
-            for (Iterator it = fe.getPathItemFigs().iterator(); it.hasNext(); ) {
-                Fig pathFig = (Fig) it.next();
+            for (Fig pathFig : (Vector<Fig>) fe.getPathItemFigs()) {
                 addNode(tn, pathFig);
             }
         }
@@ -154,8 +153,13 @@ public final class FigInspectorPanel
     private String getDescr(Fig f) {
         String className = f.getClass().getName();
         String descr = className.substring(className.lastIndexOf(".") + 1);
-        descr += " bounds=[" + f.getX() + "," + f.getY() + "," + f.getWidth() + "," + f.getHeight() + "]";
-        descr += " fill=[" + f.getFillColor().getRed() + "," + f.getFillColor().getGreen() + "," + f.getFillColor().getBlue() + "]";
+        descr +=
+                " bounds=[" + f.getX() + "," + f.getY() + "," + f.getWidth()
+                        + "," + f.getHeight() + "]";
+        descr +=
+                " fill=[" + f.getFillColor().getRed() + ","
+                        + f.getFillColor().getGreen() + ","
+                        + f.getFillColor().getBlue() + "]";
         if (f instanceof FigText) {
             descr += " \"" + ((FigText) f).getText() + "\"";
         }

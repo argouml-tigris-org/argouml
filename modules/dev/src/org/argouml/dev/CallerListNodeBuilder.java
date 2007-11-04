@@ -22,13 +22,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.sequence;
+package org.argouml.dev;
 
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.argouml.uml.diagram.sequence.MessageNode;
+
+/**
+ * TODO: Add Javadoc
+ * 
+ * @author Bob Tarling
+ */
 public class CallerListNodeBuilder {
 
     public static void addNodeTree(

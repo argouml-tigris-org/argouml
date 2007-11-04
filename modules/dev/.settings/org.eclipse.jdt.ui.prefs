@@ -1,7 +1,7 @@
-#Sat Jun 30 13:28:39 EDT 2007
+#Sat Nov 03 14:37:11 EDT 2007
 eclipse.preferences.version=1
 formatter_profile=_ArgoUML
-formatter_settings_version=10
+formatter_settings_version=11
 internal.default.compliance=default
 org.eclipse.jdt.ui.exception.name=e
 org.eclipse.jdt.ui.gettersetter.use.is=true

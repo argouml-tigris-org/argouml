@@ -1,5 +1,5 @@
-// $Id: FigInspectorPanel.java 11132 2006-09-06 23:29:12Z bobtarling $
-// Copyright (c) 2006 The Regents of the University of California. All
+// $Id: EventPumpInspectorPanel.java 11132 2006-09-06 23:29:12Z bobtarling $
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,14 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model.mdr;
+package org.argouml.dev;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -108,48 +105,27 @@ public final class EventPumpInspectorPanel extends JPanel {
      * @return a root tree node
      */
     TreeNode getTree() {
-        ModelEventPumpMDRImpl mep = (ModelEventPumpMDRImpl) Model.getPump();
-        Registry<PropertyChangeListener> elements = mep.getElements();
         DefaultMutableTreeNode root =
-            new DefaultMutableTreeNode("registry");
-        for (Iterator it = elements.registry.entrySet().iterator(); 
-                it.hasNext(); ) {
-            Map.Entry entry = (Map.Entry) it.next();
-            String item = entry.getKey().toString();
-            DefaultMutableTreeNode modelElementNode =
-                new DefaultMutableTreeNode(getDescr(item));
-            root.add(modelElementNode);
-            Map propertyMap = (Map) entry.getValue();
-            for (Iterator propertyIterator = propertyMap.entrySet().iterator(); 
-                    propertyIterator.hasNext();) {
-                Map.Entry propertyEntry = (Map.Entry) propertyIterator.next();
-                DefaultMutableTreeNode propertyNode =
-                    new DefaultMutableTreeNode(propertyEntry.getKey());
-                modelElementNode.add(propertyNode);
-
-                List listenerList = (List) propertyEntry.getValue();
-                for (Iterator listIt = listenerList.iterator();
-                        listIt.hasNext(); ) {
-                    Object listener = listIt.next();
-                    DefaultMutableTreeNode listenerNode =
-                        new DefaultMutableTreeNode(
-                                listener.getClass().getName());
-                    propertyNode.add(listenerNode);
-                }
-            }
-        }
-
+            new DefaultMutableTreeNode("Event Pump Debug Info");
+        addSubtree(root, Model.getPump().getDebugInfo());
         return root;
     }
-
-    private String getDescr(String mofId) {
-        ModelEventPumpMDRImpl mep = (ModelEventPumpMDRImpl) Model.getPump();
-        Object modelElement = mep.getByMofId(mofId);
-        String descr = Model.getFacade().getName(modelElement);
-        if (descr != null && descr.trim().length() != 0) {
-            return "\"" + descr + "\" - " + modelElement.toString();
-        } else {
-            return modelElement.toString();
+    
+    private void addSubtree(DefaultMutableTreeNode root, List list) {
+        DefaultMutableTreeNode node = null;
+        for (Object o : list) {
+            if (o instanceof String) {
+                node = new DefaultMutableTreeNode(o);
+                root.add(node);
+            } else if (o instanceof List) {
+                if (node == null) {
+                    node = new DefaultMutableTreeNode();
+                }
+                addSubtree(node, (List) o);
+            } else {
+                throw new IllegalStateException("Unexpected object");
+            }
         }
     }
+
 }

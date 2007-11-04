@@ -30,6 +30,11 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+/**
+ * TODO: Add Javadoc
+ * 
+ * @author Bob Tarling
+ */
 public class FigTree extends JTree {
 
     /**
@@ -40,7 +45,7 @@ public class FigTree extends JTree {
     /**
      * The Constructor.
      *
-     * @param fn
+     * @param fn root node of tree
      */
     public FigTree(DefaultMutableTreeNode fn) {
         super(fn);
