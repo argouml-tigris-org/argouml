@@ -47,8 +47,11 @@ public class UMLGeneralizableElementRootCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        if (getTarget() != null) {
-            setSelected(Model.getFacade().isRoot(getTarget()));
+        Object target = getTarget();
+        if (target != null && Model.getFacade().isAUMLElement(target)) {
+            setSelected(Model.getFacade().isRoot(target));
+        } else {
+            setSelected(false);
         }
     }
 

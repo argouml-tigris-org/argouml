@@ -49,11 +49,10 @@ public class UMLGeneralizableElementAbstractCheckBox extends UMLCheckBox2 {
      */
     public void buildModel() {
         Object target = getTarget();
-        if (target != null 
-                && (Model.getFacade().isAGeneralizableElement(target)
-                || Model.getFacade().isAOperation(target)
-                || Model.getFacade().isAReception(target))) {
+        if (target != null && Model.getFacade().isAUMLElement(target)) {
             setSelected(Model.getFacade().isAbstract(target));
+        } else {
+            setSelected(false);
         }
     }
 
