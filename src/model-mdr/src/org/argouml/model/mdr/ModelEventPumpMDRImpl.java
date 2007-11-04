@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,6 +53,7 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.netbeans.api.mdr.MDRManager;
@@ -393,7 +395,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
         // Any given listener is only called once even if it is
         // registered for multiple relevant matches
-        Set<PropertyChangeListener> listeners = new HashSet<PropertyChangeListener>();
+        Set<PropertyChangeListener> listeners =
+                new HashSet<PropertyChangeListener>();
         synchronized (lock) {
             listeners.addAll(elements.getMatches(mofId, event
                     .getPropertyName()));
@@ -703,11 +706,13 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     }
 
     /**
-     * Traverse metamodel and build list of names for all attributes and reference ends.
+     * Traverse metamodel and build list of names for all attributes and
+     * reference ends.
      */
     private Map<String, Collection<String>> buildPropertyNameMap(
             ModelPackage extent) {
-        Map<String, Collection<String>> names = new HashMap<String, Collection<String>>();
+        Map<String, Collection<String>> names =
+                new HashMap<String, Collection<String>>();
         for (Reference reference : (Collection<Reference>) extent
                 .getReference().refAllOfClass()) {
             mapAssociationEnd(names, reference.getExposedEnd());
@@ -807,30 +812,61 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                              + "' for class '"
                              + metaclass.getName()
                              + "' doesn't exist in metamodel");
-//                  throw new IllegalArgumentException("Property '"
-//                            + attributes[i] + "' doesn't exist in metamodel");
+//                    throw new IllegalArgumentException("Property '"
+//                            + attribute + "' doesn't exist in metamodel");
                 }
             }
         }
     }
+    
 
-    /**
-     * Getter provided for the dev module to allow it to discover the
-     * listeners contained by the event pump.
-     * @return The registry of listeners
-     */
-    Registry<PropertyChangeListener> getElements() {
-        return elements;
+    @SuppressWarnings("unchecked")
+    public List getDebugInfo() {
+        List info = new ArrayList();
+        info.add("Event Listeners");
+        for (Iterator it = elements.registry.entrySet().iterator(); 
+                it.hasNext(); ) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String item = entry.getKey().toString();
+            List modelElementNode = newDebugNode(getDebugDescription(item));
+            info.add(modelElementNode);
+            Map propertyMap = (Map) entry.getValue();
+            for (Iterator propertyIterator = propertyMap.entrySet().iterator(); 
+                    propertyIterator.hasNext();) {
+                Map.Entry propertyEntry = (Map.Entry) propertyIterator.next();
+                List propertyNode =
+                    newDebugNode(propertyEntry.getKey().toString());
+                modelElementNode.add(propertyNode);
+
+                List listenerList = (List) propertyEntry.getValue();
+                for (Iterator listIt = listenerList.iterator();
+                        listIt.hasNext(); ) {
+                    Object listener = listIt.next();
+                    List listenerNode =
+                        newDebugNode(
+                                listener.getClass().getName());
+                    propertyNode.add(listenerNode);
+                }
+            }
+        }
+
+        return info;
+    }
+
+    private List newDebugNode(String name) {
+        List list = new ArrayList();
+        list.add(name);
+        return list;
     }
     
-    /**
-     * Getter provided for the dev module to allow it to determine the model
-     * element from a MOF ID returned within the getElements() structure.
-     * @param mofId The MOF ID of the model element
-     * @return The model element
-     */
-    Object getByMofId(String mofId) {
-        return repository.getByMofId(mofId);
+    private String getDebugDescription(String mofId) {
+        Object modelElement = repository.getByMofId(mofId);
+        String name = Model.getFacade().getName(modelElement);
+        if (name != null && name.trim().length() != 0) {
+            return "\"" + name + "\" - " + modelElement.toString();
+        } else {
+            return modelElement.toString();
+        }
     }
 
 }
@@ -912,7 +948,7 @@ class Registry<T> {
      * @param subkeys array of subkeys.  If null, unregister under primary
      * key only.
      */
-     void unregister(T item, String key, String[] subkeys) {
+    void unregister(T item, String key, String[] subkeys) {
         Map<String, List<T>> entry = registry.get(key);
         if (entry == null) {
             return;
