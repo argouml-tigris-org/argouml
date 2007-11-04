@@ -25,6 +25,7 @@
 package org.argouml.model;
 
 import java.beans.PropertyChangeListener;
+import java.util.List;
 
 
 /**
@@ -227,4 +228,16 @@ public interface ModelEventPump {
      * Blocks until all events have been delivered.
      */
     void flushModelEvents();
+    
+    /**
+     * Get debug info for the event pump. Information returned is implementation
+     * specific. List returned contains either Strings or Lists. Lists may be
+     * nested arbitrarily deeply forming a tree of information. If a node
+     * contains children, the first entry in the list is expected to be a String
+     * with subsequent entries representing children.
+     * 
+     * @return List of Strings or other Lists.
+     */
+    @SuppressWarnings("unchecked")
+    public List getDebugInfo();
 }
