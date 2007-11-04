@@ -317,7 +317,7 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        if (handle instanceof ModelElement) {
+        if (isAUMLElement(handle)) {
             return false;
         } else {
             return illegalArgumentBoolean(handle);
@@ -1049,7 +1049,7 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        if (handle instanceof ModelElement) {
+        if (isAUMLElement(handle)) {
             return false;
         } else {
             return illegalArgumentBoolean(handle);
@@ -1071,7 +1071,7 @@ class FacadeMDRImpl implements Facade {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        if (handle instanceof ModelElement) {
+        if (isAUMLElement(handle)) {
             return false;
         } else {
             return illegalArgumentBoolean(handle);
@@ -1198,15 +1198,7 @@ class FacadeMDRImpl implements Facade {
 
 
     public boolean isReturn(Object handle) {
-        try {
-            if (handle instanceof Parameter) {
-                return ParameterDirectionKindEnum.PDK_RETURN
-                .equals(((Parameter) handle).getKind());
-            }
-            return illegalArgumentBoolean(handle);
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
+        return hasReturnParameterDirectionKind(handle);
     }
 
 
