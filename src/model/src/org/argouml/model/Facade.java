@@ -1447,7 +1447,7 @@ public interface Facade {
 
     /**
      * Recognizer for Parameter's with a DirectionKind of Return.
-     *
+     * TODO: This is a duplicate of {@link #hasReturnParameterDirectionKind(Object)}
      * @param handle candidate parameter
      * @return true if handle is a return parameter.
      */
@@ -2563,7 +2563,9 @@ public interface Facade {
 
     /**
      * Determine if the passed parameter has a RETURN direction kind.
-     *
+     * 
+     * TODO: This is a duplicate of {@link #isReturn(Object)}
+     * 
      * @return true if it is a return direction kind
      * @param handle the parameter
      */
