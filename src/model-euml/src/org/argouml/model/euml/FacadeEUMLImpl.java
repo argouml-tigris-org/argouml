@@ -91,6 +91,7 @@ import org.eclipse.uml2.uml.OutputPin;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Parameter;
+import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Pseudostate;
@@ -1370,8 +1371,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean hasReturnParameterDirectionKind(Object handle) {
-        throw new NotYetImplementedException();
-
+        if (handle instanceof Parameter) {
+            return ParameterDirectionKind.RETURN_LITERAL
+                    .equals(((Parameter) handle).getDirection());
+        }
+        throw new IllegalArgumentException("Argument must be a Parameter");
     }
 
     public boolean isAAbstraction(Object handle) {
@@ -2022,6 +2026,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isConcurrent(Object handle) {
+        // TODO: Only occurrence of isConcurrent in UML 2.1.1 is in index
+        // it's not on the page that is indexed
         throw new NotYetImplementedException();
     }
 
@@ -2030,7 +2036,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isFrozen(Object handle) {
-        throw new NotYetImplementedException();
+        return isReadOnly(handle);
     }
 
     public boolean isInitialized(Object handle) {
@@ -2045,8 +2051,15 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isInternal(Object handle) {
-        throw new NotYetImplementedException();
-
+        if (handle instanceof Transition) {
+            Object state = getState(handle);
+            Object end0 = getSource(handle);
+            Object end1 = getTarget(handle);
+            if (end0 != null) {
+                return ((state == end0) && (state == end1));
+            }
+        }
+        throw new IllegalArgumentException();
     }
 
     public boolean isLeaf(Object handle) {
@@ -2093,7 +2106,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isReturn(Object handle) {
-        throw new NotYetImplementedException();
+        return hasReturnParameterDirectionKind(handle);
     }
 
     public boolean isRoot(Object handle) {
