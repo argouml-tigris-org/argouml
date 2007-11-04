@@ -383,17 +383,18 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return path;
     }
     
+    @Deprecated
     public Object getCorrespondingElement(Object elem, Object model) {
-        return getCorrespondingElement(elem, model, true);
+        return elem;
     }
 
-
+    @Deprecated
     public Object getCorrespondingElement(Object elem, Object model,
             boolean canCreate) {
         return elem;
     }
 
-
+    @Deprecated
     public boolean corresponds(Object obj1, Object obj2) {
         return obj1.equals(obj2);
     }

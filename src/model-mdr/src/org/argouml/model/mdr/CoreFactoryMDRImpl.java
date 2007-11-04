@@ -2185,10 +2185,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Model targetModel = (Model) org.argouml.model.Model.getFacade()
                     .getModel(targetME);
             for (Stereotype s : sourceME.getStereotype()) {
-                Stereotype st = (Stereotype) modelImpl
-                        .getModelManagementHelper().getCorrespondingElement(
-                                s, targetModel, true);
-                targetME.getStereotype().add(st);
+                targetME.getStereotype().add(s);
             }
         }
     }

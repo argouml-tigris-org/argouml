@@ -330,12 +330,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
 
     public void addCopyStereotype(Object modelElement, Object stereotype) {
-        if (stereotype != null) {
-            stereotype =
-                modelImpl.getModelManagementHelper().
-                    getCorrespondingElement(stereotype,
-                            modelImpl.getFacade().getModel(modelElement), true);
-        }
         modelImpl.getCoreHelper().addStereotype(modelElement, stereotype);
     }
 
@@ -451,10 +445,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         if (handle instanceof TaggedValue) {
             TaggedValue tv = (TaggedValue) handle;
             if (tag instanceof TagDefinition) {
-                tag =
-                    modelImpl.getModelManagementHelper()
-                        .getCorrespondingElement(tag,
-                                modelImpl.getFacade().getModel(handle), true);
                 tv.setType((TagDefinition) tag);
             } else {
                 // TODO: Remove old UML 1.3 code
@@ -465,7 +455,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 }
                 if (td == null) {
                     td =
-                        (TagDefinition)
                         ((ExtensionMechanismsFactoryMDRImpl) modelImpl
                             .getExtensionMechanismsFactory())
                             .getTagDefinition(tag.toString());
@@ -474,12 +463,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                         model = modelImpl.getModelManagementFactory()
                                 .getRootModel();
                     }
-                    td = 
-                        (TagDefinition) 
-                        modelImpl.getModelManagementHelper()
-                            .getCorrespondingElement(
-                                td, model, 
-                                true);
                     tv.setType(td);
                 } else {
                     // TODO: This is going to change the name of the
@@ -572,9 +555,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                     model = 
                         modelImpl.getModelManagementFactory().getRootModel();
                 }
-                type = 
-                    modelImpl.getModelManagementHelper()
-                        .getCorrespondingElement(type, model, true);
                 ((TaggedValue) handle).setType((TagDefinition) type);
                 return;
             }
@@ -587,6 +567,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     /**
      * @deprecated Use {@link #hasStereotype(Object,String)} instead
      */
+    @Deprecated
     public boolean hasStereoType(Object handle, String name) {
         return hasStereotype(handle, name);
     }

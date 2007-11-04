@@ -212,10 +212,6 @@ class ExtensionMechanismsFactoryMDRImpl extends
     public TaggedValue buildTaggedValue(String tag, String value) {
         TaggedValue tv = createTaggedValue();
         TagDefinition td = getTagDefinition(tag);
-        td = 
-            (TagDefinition) 
-            modelImpl.getModelManagementHelper().getCorrespondingElement(
-                td, modelImpl.getModelManagementFactory().getRootModel(), true);
         tv.setType(td);
         // TODO: Some CASE tools appear to manage only one
         // dataValue. This is an array of String according to the
