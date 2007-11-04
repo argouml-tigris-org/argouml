@@ -44,6 +44,7 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.Notification;
@@ -52,6 +53,7 @@ import org.eclipse.emf.common.notify.impl.NotificationImpl;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * The implementation of the ModelEventPump for eUML.
@@ -467,9 +469,33 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         return name;
     }
 
+    @SuppressWarnings("unchecked")
     public List getDebugInfo() {
-        // TODO: Auto-generated method stub
-        return Collections.EMPTY_LIST;
+        List info = new ArrayList();
+        info.add("Event Listeners"); //$NON-NLS-1$
+        for (Iterator it = registerForElements.entrySet().iterator(); 
+                it.hasNext(); ) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String item = entry.getKey().toString();
+            List modelElementNode = newDebugNode(item);
+            info.add(modelElementNode);
+            List listenerList = (List) entry.getValue();
+            for (Iterator listIt = listenerList.iterator(); 
+                    listIt.hasNext();) {
+                Listener listener = (Listener)listIt.next();
+                List listenerNode =
+                    newDebugNode(
+                            listener.getListener().getClass().getName());
+                modelElementNode.add(listenerNode);
+            }
+        }
+        return info;
+    }
+       
+    private List newDebugNode(String name) {
+        List list = new ArrayList();
+        list.add(name);
+        return list;
     }
 
 }
