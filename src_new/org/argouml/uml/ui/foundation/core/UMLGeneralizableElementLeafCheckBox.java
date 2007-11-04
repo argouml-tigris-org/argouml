@@ -47,9 +47,13 @@ public class UMLGeneralizableElementLeafCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        if (getTarget() != null 
-                && Model.getFacade().isAGeneralizableElement(getTarget())) {
-            setSelected(Model.getFacade().isLeaf(getTarget()));
+        Object target = getTarget();
+        if (target != null 
+                && (Model.getFacade().isAGeneralizableElement(target)
+                        || Model.getFacade().isAOperation(target)
+                        || Model.getFacade().isAAssociation(target)
+                        || Model.getFacade().isAReception(target))) {
+            setSelected(Model.getFacade().isLeaf(target));
         }
     }
 
