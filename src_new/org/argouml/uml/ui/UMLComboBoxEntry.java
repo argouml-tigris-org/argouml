@@ -42,7 +42,8 @@ import org.argouml.uml.profile.Profile;
  * 
  *  This class does not seem to be in use currently. 
  *  Is it a good idea to complete this? Or shall we remove?
- *  @deprecated in 0.25.1 This class is never instantiated by ArgoUML
+ *  @deprecated in 0.25.1 by Bob Tarling. This class is never instantiated 
+ *  by ArgoUML.
  */
 public class UMLComboBoxEntry implements Comparable {
     
