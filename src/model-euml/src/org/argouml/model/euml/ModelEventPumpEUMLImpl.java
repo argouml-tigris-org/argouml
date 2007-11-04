@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -476,18 +477,37 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         for (Iterator it = registerForElements.entrySet().iterator(); 
                 it.hasNext(); ) {
             Map.Entry entry = (Map.Entry) it.next();
+
             String item = entry.getKey().toString();
             List modelElementNode = newDebugNode(item);
             info.add(modelElementNode);
             List listenerList = (List) entry.getValue();
+            
+            Map<String, List<String>> map = new HashMap<String, List<String>>();
+            
             for (Iterator listIt = listenerList.iterator(); 
                     listIt.hasNext();) {
                 Listener listener = (Listener)listIt.next();
-                List listenerNode =
-                    newDebugNode(
-                            listener.getListener().getClass().getName());
-                modelElementNode.add(listenerNode);
+
+                if (listener.getProperties() != null){
+                    for (String eventName : listener.getProperties()){
+                        if (!map.containsKey(eventName)){
+                            map.put(eventName, new LinkedList<String>());
+                        }
+                        map.get(eventName).add(listener.getListener().getClass().getName());
+                    }
+                }
+                else {
+                    if (!map.containsKey("")){
+                        map.put("", new LinkedList<String>());
+                    }
+                    map.get("").add(listener.getListener().getClass().getName());
+                }                
             }
+            for (Map.Entry o : map.entrySet()) {
+                modelElementNode.add((String)o.getKey());    
+                modelElementNode.add((List<String>)o.getValue());
+            }                        
         }
         return info;
     }
