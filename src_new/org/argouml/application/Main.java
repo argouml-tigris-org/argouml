@@ -868,7 +868,7 @@ class LoadModules implements Runnable {
 
     
     private static final String[] OPTIONAL_INTERNAL_MODULES = {
-        "org.argouml.ui.DeveloperModule",
+        "org.argouml.dev.DeveloperModule",
     };
     
     /**
@@ -876,14 +876,12 @@ class LoadModules implements Runnable {
      * classpath.
      */
     private void huntForInternalModules() {
-        for (int i = 0; i < OPTIONAL_INTERNAL_MODULES.length; i++) {
+        for (String module : OPTIONAL_INTERNAL_MODULES) {
             try {
-                ModuleLoader2.addClass(OPTIONAL_INTERNAL_MODULES[i]);
+                ModuleLoader2.addClass(module);
             } catch (ClassNotFoundException e) {
                 /* We don't care if optional modules aren't found. */
-                LOG.debug("Module "
-                        + OPTIONAL_INTERNAL_MODULES[i]
-                        + " not found");
+                LOG.debug("Module " + module + " not found");
             }            
         }
         ModuleLoader2.doLoad(false);

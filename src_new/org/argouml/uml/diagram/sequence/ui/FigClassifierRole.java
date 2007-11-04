@@ -968,13 +968,14 @@ public class FigClassifierRole extends FigNodeModelElement
         return foundNode;
     }
 
-    int getYCoordinate(MessageNode node) {
+    public int getYCoordinate(MessageNode node) {
         return lifeLineFig.getYCoordinate(linkPositions.indexOf(node));
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @Override
     public void setOwner(Object own) {
         super.setOwner(own);
         bindPort(own, headFig);

@@ -42,13 +42,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -60,7 +60,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
-import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -135,6 +134,22 @@ public final class ProjectBrowser
     private static final Logger LOG =
         Logger.getLogger(ProjectBrowser.class);
 
+
+    /**
+     * Position of pane in overall browser window.
+     */
+    public enum Position {
+        Center, North, South, East, West,
+        NorthEast, SouthEast, SouthWest, NorthWest
+    }
+    
+    // Make sure the correspondence that we depend on doesn't change
+    static {
+        assert Position.Center.toString().equals(BorderSplitPane.CENTER);
+        assert Position.North.toString().equals(BorderSplitPane.NORTH); 
+        assert Position.NorthEast.toString().equals(BorderSplitPane.NORTHEAST); 
+    }
+    
     /**
      * Flag to indicate if we are the main application
      * or being integrated in another top level application such
@@ -171,7 +186,8 @@ public final class ProjectBrowser
     private DetailsPane southEastPane;
     private DetailsPane southPane;
 
-    private Map detailsPanesByCompassPoint = new HashMap();
+    private Map<Position, DetailsPane> detailsPanesByCompassPoint = 
+        new HashMap<Position, DetailsPane>();
 
     private GenericArgoMenuBar menuBar;
 
@@ -349,6 +365,7 @@ public final class ProjectBrowser
     /*
      * @see java.awt.Component#getLocale()
      */
+    @Override
     public Locale getLocale() {
         return Locale.getDefault();
     }
@@ -395,18 +412,17 @@ public final class ProjectBrowser
     }
 
     private Component assemblePanels() {
-        addPanel(editorPane, BorderSplitPane.CENTER);
-        addPanel(explorerPane, BorderSplitPane.WEST);
-        addPanel(todoPane, BorderSplitPane.SOUTHWEST);
+        addPanel(editorPane, Position.Center);
+        addPanel(explorerPane, Position.West);
+        addPanel(todoPane, Position.SouthWest);
 
         // There are various details panes all of which could hold
         // different tabs pages according to users settings.
         // Place each pane in the required border area.
-        Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            String position = (String) entry.getKey();
-            addPanel((Component) entry.getValue(), position);
+        for (Map.Entry<Position, DetailsPane> entry 
+                : detailsPanesByCompassPoint.entrySet()) {
+            Position position = entry.getKey();
+            addPanel(entry.getValue(), position);
         }
         
         // Toolbar boundary is the area between the menu and the status
@@ -425,7 +441,7 @@ public final class ProjectBrowser
 
 
         /**
-         * Registers all toolbars and enables north panel hidding when all
+         * Registers all toolbars and enables north panel hiding when all
          * toolbars are hidden.
          */
         ArgoToolbarManager.getInstance().registerToolbar(
@@ -508,24 +524,24 @@ public final class ProjectBrowser
                     Horizontal.getInstance());
 
         if (southPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, southPane);
+            detailsPanesByCompassPoint.put(Position.South, southPane);
         }
         if (southEastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST,
+            detailsPanesByCompassPoint.put(Position.SouthEast,
                     southEastPane);
         }
         if (eastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.EAST, eastPane);
+            detailsPanesByCompassPoint.put(Position.East, eastPane);
         }
         if (northWestPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST,
+            detailsPanesByCompassPoint.put(Position.NorthWest,
                     northWestPane);
         }
         if (northPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, northPane);
+            detailsPanesByCompassPoint.put(Position.North, northPane);
         }
         if (northEastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST,
+            detailsPanesByCompassPoint.put(Position.NorthEast,
                     northEastPane);
         }
 
@@ -537,14 +553,15 @@ public final class ProjectBrowser
         }
     }
 
+    
     /**
      * Add a panel to a split pane area.
      *
      * @param comp the panel to add
-     * @param obj the position (BorderSplitPane.EAST etc)
+     * @param position the position where the panel should be added
      */
-    void addPanel(Component comp, Object obj) {
-        workAreaPane.add(comp, obj);
+    public void addPanel(Component comp, Position position) {
+        workAreaPane.add(comp, position.toString());
     }
 
     /**
@@ -552,7 +569,7 @@ public final class ProjectBrowser
      *
      * @param comp the panel to remove
      */
-    void removePanel(Component comp) {
+    public void removePanel(Component comp) {
         workAreaPane.remove(comp);
         workAreaPane.validate();
         workAreaPane.repaint();
@@ -822,7 +839,7 @@ public final class ProjectBrowser
 
 
     /**
-     * Given a list of targets, displays the according diagram.
+     * Given a list of targets, displays the corresponding diagram.
      * This method jumps to the diagram showing the targets,
      * and scrolls to make it visible.
      *
@@ -833,19 +850,19 @@ public final class ProjectBrowser
         if (targets == null || targets.size() == 0) {
             return;
         }
-        Vector dms = new Vector(targets);
-        Object first = dms.elementAt(0);
+        List dms = new ArrayList(targets);
+        Object first = dms.get(0);
         if (first instanceof Diagram && dms.size() > 1) {
             setTarget(first);
-            setTarget(dms.elementAt(1));
+            setTarget(dms.get(1));
             return;
         }
         if (first instanceof Diagram && dms.size() == 1) {
             setTarget(first);
             return;
         }
-        Vector diagrams =
-            ProjectManager.getManager().getCurrentProject().getDiagrams();
+        List<ArgoDiagram> diagrams =
+            ProjectManager.getManager().getCurrentProject().getDiagramList();
         Object target = TargetManager.getInstance().getTarget();
         if ((target instanceof Diagram)
             && ((Diagram) target).countContained(dms) == dms.size()) {
@@ -853,10 +870,9 @@ public final class ProjectBrowser
             return;
         }
 
-        Diagram bestDiagram = null;
+        ArgoDiagram bestDiagram = null;
         int bestNumContained = 0;
-        for (int i = 0; i < diagrams.size(); i++) {
-            Diagram d = (Diagram) diagrams.elementAt(i);
+        for (ArgoDiagram d : diagrams) {
             int nc = d.countContained(dms);
             if (nc > bestNumContained) {
                 bestNumContained = nc;
@@ -892,6 +908,7 @@ public final class ProjectBrowser
     /*
      * @see java.awt.Component#setVisible(boolean)
      */
+    @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
         if (b) {
@@ -1257,8 +1274,8 @@ public final class ProjectBrowser
         ProjectFilePersister persister = null;
 
         try {
-            if (!PersistenceManager.getInstance()
-                    .confirmOverwrite(ArgoFrame.getInstance(), overwrite, file)) {
+            if (!PersistenceManager.getInstance().confirmOverwrite(
+                    ArgoFrame.getInstance(), overwrite, file)) {
                 return false;
             }
 
