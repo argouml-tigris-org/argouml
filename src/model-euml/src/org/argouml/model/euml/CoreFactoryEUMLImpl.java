@@ -80,9 +80,9 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     /**
      * The model implementation.
      */
-    private EUMLModelImplementation modelImpl;
+    private final EUMLModelImplementation modelImpl;
 
-    private EditingDomain editingDomain;
+    private final EditingDomain editingDomain;
 
     /**
      * Constructor.
