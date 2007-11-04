@@ -57,7 +57,7 @@ class XmiReaderEUMLImpl implements XmiReader {
      */
     private EUMLModelImplementation modelImpl;
     
-    private static Set<String> searchDirs = new HashSet();
+    private static Set<String> searchDirs = new HashSet<String>();
     
     private Resource resource;
 
@@ -72,21 +72,20 @@ class XmiReaderEUMLImpl implements XmiReader {
     }
 
     public int getIgnoredElementCount() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return 0;
     }
 
     public String[] getIgnoredElements() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return new String[0];
     }
 
-    @SuppressWarnings("unchecked")
     public Map getXMIUUIDToObjectMap() {
         if (resource == null) {
             throw new IllegalStateException();
         }
-        HashMap map = new HashMap();
+        Map<String, EObject> map = new HashMap<String, EObject>();
         Iterator<EObject> it = resource.getAllContents();
         while (it.hasNext()) {
             EObject o  = it.next();
@@ -102,7 +101,8 @@ class XmiReaderEUMLImpl implements XmiReader {
     public Collection parse(InputSource inputSource, boolean profile)
             throws UmlException {
         if (inputSource == null) {
-            throw new NullPointerException("The input source must be non-null."); //$NON-NLS-1$
+            throw new NullPointerException(
+                    "The input source must be non-null."); //$NON-NLS-1$
         }
         InputStream is = null;
         boolean needsClosing = false;
@@ -155,7 +155,7 @@ class XmiReaderEUMLImpl implements XmiReader {
     }
 
     public boolean setIgnoredElements(String[] elementNames) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
