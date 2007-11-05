@@ -160,8 +160,6 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
 	availableList.setMinimumSize(new Dimension(50, 50));
 	usedList.setMinimumSize(new Dimension(50, 50));
-
-	refreshLists();
 	
 	JPanel leftList = new JPanel();
 	leftList.setLayout(new BorderLayout());
