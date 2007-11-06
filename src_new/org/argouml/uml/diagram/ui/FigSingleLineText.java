@@ -44,7 +44,9 @@ import org.tigris.gef.presentation.FigText;
  * <li>There is no line border
  * <li>There is space below the line for a "Clarifier",
  * i.e. a red squiggly line.
- * </ul>
+ * </ul><p>
+ * 
+ * This Fig may have a NotationProvider to render the text.
  *
  * @author Bob Tarling
  */
@@ -169,11 +171,16 @@ public class FigSingleLineText extends ArgoFigText {
             //  : pce.getPropertyName(); 
             setText();
         }
+//      super.propertyChange(pce); // Adding this gives loads of problems!!!
+
         if ("remove".equals(pce.getPropertyName()) 
                 && (pce.getSource() == getOwner())) {
             deleteFromModel();
+        } else if (notationProvider != null) {
+            notationProvider.updateListener(this, getOwner(), pce);
+            this.setText(notationProvider.toString(getOwner(), null));
+            damage();
         }
-//        super.propertyChange(pce); // Adding this gives loads of problems!!!
     }
 
     /**
@@ -197,6 +204,9 @@ public class FigSingleLineText extends ArgoFigText {
      * @param np The notationProvider to set.
      */
     void setNotationProvider(NotationProvider np) {
+        if (notationProvider != null && getOwner() != null) {
+            notationProvider.cleanListener(this, getOwner());
+        }
         this.notationProvider = np;
     }
 }

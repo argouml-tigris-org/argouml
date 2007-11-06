@@ -36,7 +36,6 @@ import javax.swing.Action;
 
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
@@ -56,6 +55,8 @@ import org.tigris.gef.presentation.Fig;
 
 /**
  * Class to display graphics for any UML Classifier in a diagram.<p>
+ * 
+ * This Fig has an Operations compartment. <p>
  *
  * Note that the upper line of the name box will be blanked out
  * if there is eventually a stereotype above.
@@ -148,18 +149,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
 
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee instanceof AttributeChangeEvent) {
-            Object source = mee.getSource();
-            if (Model.getFacade().isAOperation(source) 
-                    || Model.getFacade().isAMethod(source)
-                    || Model.getFacade().isAParameter(source)
-                    || Model.getFacade().isAReception(source)) {
-                // TODO: We just need to get someone to rerender a single line
-                // of text which represents the element here, but I'm not sure
-                // how to do that, so redraw the whole compartment. - tfm
-                updateOperations();
-            }
-        } else if (mee instanceof AssociationChangeEvent 
+        if (mee instanceof AssociationChangeEvent 
                 && getOwner().equals(mee.getSource())) {
             Object o = null;
             if (mee instanceof AddAssociationEvent) {
