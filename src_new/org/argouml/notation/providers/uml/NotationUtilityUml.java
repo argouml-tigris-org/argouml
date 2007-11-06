@@ -690,13 +690,6 @@ public final class NotationUtilityUml {
             type = Model.getCoreFactory().buildClass(name,
                     defaultSpace);
         }
-        if (Model.getFacade().getModel(type) != p.getModel()
-                && !Model.getModelManagementHelper().getAllNamespaces(
-                       p.getModel()).contains(
-                               Model.getFacade().getNamespace(type))) {
-            type = Model.getModelManagementHelper().getCorrespondingElement(
-                    type, Model.getFacade().getModel(defaultSpace));
-        }
         return type;
     }
 
