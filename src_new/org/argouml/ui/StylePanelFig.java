@@ -247,7 +247,7 @@ public class StylePanelFig
 
         // Change the fill colour
 
-        if (target.getFilled()) {
+        if (target.isFilled()) {
             Color c = target.getFillColor();
             fillField.setSelectedItem(c);
             if (c != null && !fillField.getSelectedItem().equals(c)) {

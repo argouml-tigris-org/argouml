@@ -126,7 +126,12 @@ public class FigPool extends FigNodeModelElement {
      */
     @Override
     public boolean getFilled() {
-        return getBigPort().getFilled();
+        return getBigPort().isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return getBigPort().isFilled();
     }
 
     /*

@@ -729,8 +729,9 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean filled) {
-        if (headFig.getFilled() != filled) {
+        if (headFig.isFilled() != filled) {
             headFig.setFilled(filled);
             damage();
         }
@@ -739,6 +740,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return headFig.getFillColor();
     }
@@ -746,9 +748,16 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
-        return headFig.getFilled();
+        return headFig.isFilled();
     }
+
+    @Override
+    public boolean isFilled() {
+        return headFig.isFilled();
+    }
+
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()

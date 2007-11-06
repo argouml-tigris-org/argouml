@@ -196,7 +196,12 @@ public class FigSimpleState extends FigState {
      */
     @Override
     public boolean getFilled() {
-        return cover.getFilled();
+        return cover.isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return cover.isFilled();
     }
 
     /*

@@ -411,6 +411,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         bodyTextFig.setFilled(false); // The text is always opaque.
         outlineFig.setFilled(f);
@@ -420,8 +421,14 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
-        return outlineFig.getFilled();
+        return outlineFig.isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return outlineFig.isFilled();
     }
 
     /*

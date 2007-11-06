@@ -155,6 +155,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         getBigPort().setFilled(f);
         getNameFig().setFilled(f);
@@ -164,13 +165,20 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
-        return getBigPort().getFilled();
+        return getBigPort().isFilled();
     }
-
+    
+    @Override
+    public boolean isFilled() {
+        return getBigPort().isFilled();
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         rightLine.setLineWidth(w);
         leftLine.setLineWidth(w);

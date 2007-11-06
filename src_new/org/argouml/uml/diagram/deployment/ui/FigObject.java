@@ -46,8 +46,6 @@ import org.tigris.gef.presentation.FigText;
 public class FigObject extends FigNodeModelElement {
 
     private FigRect cover;
-    private Object resident =
-            Model.getCoreFactory().createElementResidence();
 
     /**
      * Main constructor.
@@ -108,42 +106,63 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
-    public void setLineColor(Color col) { cover.setLineColor(col); }
+    public void setLineColor(Color col) {
+        cover.setLineColor(col);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
-    public Color getLineColor() { return cover.getLineColor(); }
+    public Color getLineColor() {
+        return cover.getLineColor();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
-    public void setFillColor(Color col) { cover.setFillColor(col); }
+    public void setFillColor(Color col) {
+        cover.setFillColor(col);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
-    public Color getFillColor() { return cover.getFillColor(); }
+    public Color getFillColor() {
+        return cover.getFillColor();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
-    public void setFilled(boolean f) { cover.setFilled(f); }
+    public void setFilled(boolean f) {
+        cover.setFilled(f);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
-    public boolean getFilled() { return cover.getFilled(); }
+    public boolean getFilled() {
+        return cover.isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return cover.isFilled();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
-    public void setLineWidth(int w) { cover.setLineWidth(w); }
+    public void setLineWidth(int w) {
+        cover.setLineWidth(w);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
-    public int getLineWidth() { return cover.getLineWidth(); }
+    public int getLineWidth() {
+        return cover.getLineWidth();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()

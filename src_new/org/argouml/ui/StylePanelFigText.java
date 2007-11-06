@@ -177,7 +177,7 @@ public class StylePanelFigText extends StylePanelFig {
             textColorField.setSelectedItem(c);
         }
 
-        if (ft.getFilled()) {
+        if (ft.isFilled()) {
             Color fc = ft.getFillColor();
             getFillField().setSelectedItem(fc);
             if (fc != null && !getFillField().getSelectedItem().equals(fc)) {
