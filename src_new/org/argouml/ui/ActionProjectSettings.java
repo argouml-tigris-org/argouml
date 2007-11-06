@@ -49,7 +49,7 @@ public class ActionProjectSettings extends AbstractAction {
      */
     public ActionProjectSettings() {
         super(Translator.localize("action.properties"),
-                ResourceLoaderWrapper.lookupIcon("action.settings"));
+                ResourceLoaderWrapper.lookupIcon("properties"));
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
                 Translator.localize("action.properties"));
