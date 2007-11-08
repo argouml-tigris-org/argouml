@@ -116,7 +116,7 @@ public class ComponentInstanceNotationUml extends ComponentInstanceNotation {
         Collection col = Model.getFacade().getClassifiers(modelElement);
         if (col != null && col.size() > 0) {
             Iterator it = col.iterator();
-            baseStr = new StringBuilder(Model.getFacade().getName(it.next()));
+            baseStr.append(Model.getFacade().getName(it.next()));
             while (it.hasNext()) {
                 baseStr.append(", " + Model.getFacade().getName(it.next()));
             }
