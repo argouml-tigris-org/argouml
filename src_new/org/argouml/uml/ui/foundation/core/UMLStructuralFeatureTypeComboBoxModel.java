@@ -128,9 +128,14 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
             if (name1 == null) {
                 return -1;
             }
-            int comparison = name1.compareTo(name2);
+            int comparison = name1.compareToIgnoreCase(name2);
             if (comparison != 0) {
                 return comparison;
+            } else {
+                comparison = name1.compareTo(name2);
+                if (comparison != 0) {
+                    return comparison;
+                }
             }
         }
         if (i2.hasNext()) {
