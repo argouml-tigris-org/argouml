@@ -112,7 +112,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
     }
     
     /**
-     * Compare two lists of strings using case-insensitive comparison.
+     * Compare two lists of strings using case-sensitive comparison.
      * @return equivalent of list1.compareTo(list2)
      */
     private static int compareStringLists(List<String> list1, 
@@ -128,7 +128,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
             if (name1 == null) {
                 return -1;
             }
-            int comparison = name1.compareToIgnoreCase(name2);
+            int comparison = name1.compareTo(name2);
             if (comparison != 0) {
                 return comparison;
             }
