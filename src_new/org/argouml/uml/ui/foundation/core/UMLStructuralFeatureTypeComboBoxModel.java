@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.beans.PropertyChangeEvent;
+import java.text.Collator;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -74,6 +75,8 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Set<Object> elements = new TreeSet<Object>(new Comparator<Object>() {
             public int compare(Object o1, Object o2) {
+                // Elements are collated first by name and then by 
+                // their enclosing path to distinguish them
                 List<String> path1 = Model.getModelManagementHelper()
                         .getPathList(o1);
                 Collections.reverse(path1);
@@ -112,13 +115,19 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
     }
     
     /**
-     * Compare two lists of strings using case-sensitive comparison.
+     * Compare two lists of strings using a primary strength text collator. 
+     * This will collate e, E, é, É together, but not eliminate non-identical
+     * strings which collate in the same place.
+     * 
      * @return equivalent of list1.compareTo(list2)
      */
     private static int compareStringLists(List<String> list1, 
             List<String> list2) {
+        Collator collator = Collator.getInstance();
+        collator.setStrength(Collator.PRIMARY);
         Iterator<String> i2 = list2.iterator();
         Iterator<String> i1 = list1.iterator();
+        boolean caseDiffers = false;
         while (i2.hasNext()) {
             String name2 = i2.next();
             if (!i1.hasNext()) {
@@ -128,20 +137,27 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
             if (name1 == null) {
                 return -1;
             }
-            int comparison = name1.compareToIgnoreCase(name2);
+            int comparison = collator.compare(name1, name2);
             if (comparison != 0) {
                 return comparison;
-            } else {
-                comparison = name1.compareTo(name2);
-                if (comparison != 0) {
-                    return comparison;
-                }
             }
+            caseDiffers = caseDiffers | !(name1.equals(name2));
         }
         if (i2.hasNext()) {
             return 1;
         }
-        return 0;
+        // If the strings differed only in non-primary characteristics at
+        // some point (case, accent, etc) pick an arbitrary collating order.
+        // We don't call them equal to keep them from being merged in the list.
+        if (caseDiffers) {
+            return 1;
+        }
+        // It's illegal in UML to have multiple elements in a namespace with
+        // the same name, but if it happens, keep them distinct so the user
+        // has a chance of catching the error.  Pick an arbitrary collating 
+        // order.
+        // Note: this may make the collating order unstable.
+        return 1;
     }
 
     /*
