@@ -57,9 +57,14 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigNodeInstance extends FigNodeModelElement {
 
-    private int d = 20;
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    /**
+     * Offset in x & y for depth perspective lines of cube.
+     * TODO: This is the same value as the member 'D'in 
+     * {@link org.tigris.gef.presentation.FigCube}, but there is
+     * nothing enforcing that correspondance.  Things will probably
+     * break if they don't match.
+     */
+    private static final int DEPTH = 20;
 
     private FigCube cover;
 
@@ -69,20 +74,16 @@ public class FigNodeInstance extends FigNodeModelElement {
     private int height = 180;
     
     private NotationProvider notationProvider;
-    
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Main constructor - used for file loading.
      */
     public FigNodeInstance() {
-        setBigPort(new CubePortFigRect(x, y - d, width + d, height + d, d));
+        setBigPort(new CubePortFigRect(x, y - DEPTH, width + DEPTH, height
+                + DEPTH, DEPTH));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
         cover = new FigCube(x, y, width, height, Color.black, Color.white);
-        d = 20;
-        //d = cover.getDepth();
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
@@ -113,6 +114,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
+    @Override
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isANodeInstance(own)) {
@@ -125,13 +127,16 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
+    @Override
     public String placeString() {
+        // TODO: I18N
         return "new NodeInstance";
     }
 
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigNodeInstance figClone = (FigNodeInstance) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -142,12 +147,11 @@ public class FigNodeInstance extends FigNodeModelElement {
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // acessors
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color c) {
         cover.setLineColor(c);
     }
@@ -155,6 +159,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
     }
@@ -175,6 +180,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         cover.setFilled(f);
     }
@@ -182,6 +188,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionNodeInstance(this);
     }
@@ -189,19 +196,21 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
         int w = Math.max(stereoDim.width, nameDim.width + 1) + 20;
         int h = stereoDim.height + nameDim.height + 20;
-        w = Math.max(3 * d, w); // so it still looks like a cube
-        h = Math.max(3 * d, h);
+        w = Math.max(3 * DEPTH, w); // so it still looks like a cube
+        h = Math.max(3 * DEPTH, h);
         return new Dimension(w, h);
     }
 
     /*
      * @see org.tigris.gef.presentation.FigNode#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
@@ -209,15 +218,15 @@ public class FigNodeInstance extends FigNodeModelElement {
 
         Rectangle oldBounds = getBounds();
         getBigPort().setBounds(x, y, w, h);
-        cover.setBounds(x, y + d, w - d, h - d);
+        cover.setBounds(x, y + DEPTH, w - DEPTH, h - DEPTH);
 
         Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
         getNameFig().setBounds(
-                x + 4, y + d + stereoDim.height + 1,
-                w - d - 8, nameDim.height);
-        getStereotypeFig().setBounds(x + 1, y + d + 1,
-                w - d - 2, stereoDim.height);
+                x + 4, y + DEPTH + stereoDim.height + 1,
+                w - DEPTH - 8, nameDim.height);
+        getStereotypeFig().setBounds(x + 1, y + DEPTH + 1,
+                w - DEPTH - 2, stereoDim.height);
         _x = x;
         _y = y;
         _w = w;
@@ -229,16 +238,15 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
         getStereotypeFig().setOwner(getOwner());
     }
 
-    ////////////////////////////////////////////////////////////////
-    // user interaction methods
-
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
         setLineColor(Color.black);
@@ -247,6 +255,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig encloser) {
         if (getOwner() != null) {
             Object nod = getOwner();
@@ -292,6 +301,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
             notationProvider.parse(getOwner(), ft.getText());
@@ -302,6 +312,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProvider.getParsingHelp());
@@ -311,6 +322,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
+    @Override
     public boolean getUseTrapRect() {
         return true;
     }
@@ -318,6 +330,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee instanceof AssociationChangeEvent 
@@ -331,6 +344,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeAllElementListeners();
@@ -356,6 +370,7 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
+    @Override
     protected void updateNameText() {
         if (isReadyToEdit()) {
             getNameFig().setText(notationProvider.toString(getOwner(), null));
@@ -367,27 +382,28 @@ public class FigNodeInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
+    @Override
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
         int[] xs = {
             r.x,
-            r.x + d,
+            r.x + DEPTH,
             r.x + r.width,
             r.x + r.width,
-            r.x + r.width - d,
+            r.x + r.width - DEPTH,
             r.x,
             r.x,
         };
         int[] ys = {
-            r.y + d,
+            r.y + DEPTH,
             r.y,
             r.y,
-            r.y + r.height - d,
+            r.y + r.height - DEPTH,
             r.y + r.height,
             r.y + r.height,
-            r.y + d,
+            r.y + DEPTH,
         };
         Point p = Geometry.ptClosestTo(xs, ys, 7, anotherPt);
         return p;
     }
-} /* end class FigMNodeInstance */
+}
