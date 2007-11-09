@@ -130,39 +130,6 @@ public class FigMNode extends FigNodeModelElement {
 	return figClone;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    @Override
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
-            damage();
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
-     */
-    @Override
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        if (newOwner != null) {
-            // add the listeners to the newOwner
-            addElementListener(newOwner);
-            Collection c = Model.getFacade().getStereotypes(newOwner);
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                Object st = i.next();
-                addElementListener(st, "name");
-            }
-        }
-    }
 
     /**
      * Build a collection of menu items relevant for a right-click popup menu.
@@ -270,6 +237,14 @@ public class FigMNode extends FigNodeModelElement {
     }
 
     /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
+    @Override
+    protected void updateStereotypeText() {
+        getStereotypeFig().setOwner(getOwner());
+    }
+
+    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     @Override
@@ -312,14 +287,6 @@ public class FigMNode extends FigNodeModelElement {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
-     */
-    @Override
-    protected void updateStereotypeText() {
-        getStereotypeFig().setOwner(getOwner());
-    }
-
-    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
     @Override
@@ -333,8 +300,45 @@ public class FigMNode extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
     @Override
-    public boolean getUseTrapRect() { return true; }
+    public boolean getUseTrapRect() {
+        return true;
+    }
 
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner(), getOwner());
+            damage();
+        }
+    }
+
+    /*
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    @Override
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+        if (oldOwner != null) {
+            removeAllElementListeners();
+        }
+        if (newOwner != null) {
+            // add the listeners to the newOwner
+            addElementListener(newOwner);
+            Collection c = Model.getFacade().getStereotypes(newOwner);
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                Object st = i.next();
+                addElementListener(st, "name");
+            }
+        }
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
