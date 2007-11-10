@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -93,7 +93,7 @@ public class FigMNode extends FigNodeModelElement {
     }
 
     /**
-     * Constructor which hooks the new Fig into an existing UML element.
+     * Construct a FigMNode based on an existing UML Node element.
      *
      * @param gm ignored
      * @param node the UML element
@@ -107,14 +107,6 @@ public class FigMNode extends FigNodeModelElement {
 	}
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    @Override
-    public String placeString() {
-        // TODO: I18N
-        return "new Node";
-    }
 
     /*
      * @see java.lang.Object#clone()
@@ -131,12 +123,7 @@ public class FigMNode extends FigNodeModelElement {
     }
 
 
-    /**
-     * Build a collection of menu items relevant for a right-click popup menu.
-     *
-     * @param     me     a mouse event
-     * @return           a collection of menu items
-     *
+    /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     @Override
@@ -202,8 +189,9 @@ public class FigMNode extends FigNodeModelElement {
 	Dimension stereoDim = getStereotypeFig().getMinimumSize();
 	Dimension nameDim = getNameFig().getMinimumSize();
 
-	int w = Math.max(stereoDim.width, nameDim.width + 1);
-	int h = stereoDim.height + nameDim.height - 4;
+	int w = Math.max(stereoDim.width, nameDim.width + 1) + DEPTH;
+	int h = stereoDim.height + nameDim.height + DEPTH;
+	
         w = Math.max(3 * DEPTH, w); // so it still looks like a cube
         h = Math.max(3 * DEPTH, h);
 	return new Dimension(w, h);
@@ -366,7 +354,7 @@ public class FigMNode extends FigNodeModelElement {
         Point p = Geometry.ptClosestTo(xs, ys, 7, anotherPt);
         return p;
     }
-
+    
     /**
      * The UID.
      */
