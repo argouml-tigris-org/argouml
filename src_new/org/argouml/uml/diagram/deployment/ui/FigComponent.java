@@ -103,16 +103,11 @@ public class FigComponent extends FigNodeModelElement {
         updateBounds();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() {
-        return "new Component";
-    }
 
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigComponent figClone = (FigComponent) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -129,6 +124,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee instanceof AssociationChangeEvent 
@@ -142,6 +138,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeAllElementListeners();
@@ -166,6 +163,7 @@ public class FigComponent extends FigNodeModelElement {
      *
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         // Modifiers ...
@@ -185,6 +183,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color c) {
         cover.setLineColor(c);
         getStereotypeFig().setFilled(false);
@@ -198,6 +197,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionComponent(this);
     }
@@ -205,6 +205,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
@@ -218,6 +219,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
 
         Rectangle oldBounds = getBounds();
@@ -253,6 +255,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig encloser) {
 
         Object comp = getOwner();
@@ -296,7 +299,10 @@ public class FigComponent extends FigNodeModelElement {
     /**
      * TODO: This is not used anywhere. Can we remove it?
      * @param figures ?
+     * @deprecated for 0.25.4 by tfmorris.  Unused in ArgoUML.  Not clear it was ever 
+     * intended to be part of the public API.
      */
+    @Deprecated
     public void setNode(Vector figures) {
         int size = figures.size();
         if (figures != null && (size > 0)) {
@@ -313,6 +319,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
+    @Override
     public boolean getUseTrapRect() {
         return true;
     }
@@ -320,6 +327,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
         getStereotypeFig().setOwner(getOwner());
     }
@@ -327,6 +335,7 @@ public class FigComponent extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp("parsing.help.fig-component");
@@ -339,21 +348,19 @@ public class FigComponent extends FigNodeModelElement {
      * Get the rectangle on whose corners the dragging handles are to
      * be drawn.  Used by Selection Resize.
      */
+    @Override
     public Rectangle getHandleBox() {
-
         Rectangle r = getBounds();
         return new Rectangle(r.x + BX, r.y, r.width - BX,
                 r.height);
-
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setHandleBox(int, int, int, int)
      */
+    @Override
     public void setHandleBox(int x, int y, int w, int h) {
-
         setBounds(x - BX, y, w + BX, h);
-
     }
 
     /**
@@ -361,4 +368,4 @@ public class FigComponent extends FigNodeModelElement {
      */
     static final long serialVersionUID = 1647392857462847651L;
 
-} /* end class FigComponent */
+}

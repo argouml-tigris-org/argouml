@@ -82,18 +82,15 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getNotationProviderType()
      */
+    @Override
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_OBJECT;
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() { return "new Object"; }
-
-    /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigObject figClone = (FigObject) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -106,6 +103,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         cover.setLineColor(col);
     }
@@ -113,6 +111,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return cover.getLineColor();
     }
@@ -120,6 +119,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         cover.setFillColor(col);
     }
@@ -127,6 +127,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return cover.getFillColor();
     }
@@ -134,6 +135,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         cover.setFilled(f);
     }
@@ -141,6 +143,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
         return cover.isFilled();
     }
@@ -153,6 +156,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
     }
@@ -160,6 +164,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return cover.getLineWidth();
     }
@@ -167,6 +172,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionObject(this);
     }
@@ -174,6 +180,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension nameMin = getNameFig().getMinimumSize();
 
@@ -189,6 +196,7 @@ public class FigObject extends FigNodeModelElement {
      *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
@@ -213,6 +221,7 @@ public class FigObject extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig encloser) {
 	assert Model.getFacade().isAObject(getOwner());
 
@@ -245,4 +254,4 @@ public class FigObject extends FigNodeModelElement {
         }
     }
 
-} /* end class FigObject */
+}

@@ -81,9 +81,6 @@ public class FigPackage extends FigNodeModelElement
      */
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     private static final int MIN_HEIGHT = 21;
 
     private int width = 140;
@@ -96,9 +93,6 @@ public class FigPackage extends FigNodeModelElement
      * The total height of the tab.
      */
     private int tabHeight = 20;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private FigText body;
 
@@ -209,13 +203,6 @@ public class FigPackage extends FigNodeModelElement
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    @Override
-    public String placeString() {
-        return "new Package";
-    }
 
     /*
      * @see java.lang.Object#clone()
@@ -236,8 +223,6 @@ public class FigPackage extends FigNodeModelElement
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
@@ -370,8 +355,6 @@ public class FigPackage extends FigNodeModelElement
                 + "visibilityVisible=" + isVisibilityVisible();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessor methods
 
     /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()

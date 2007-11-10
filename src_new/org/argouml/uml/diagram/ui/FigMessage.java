@@ -133,15 +133,6 @@ public class FigMessage extends FigNodeModelElement {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    @Override
-    public String placeString() {
-        // TODO: I18N
-        return "new Message";
-    }
-
 
     @Override
     public Object clone() {
@@ -432,7 +423,7 @@ public class FigMessage extends FigNodeModelElement {
         // thing should be removed? - tfm 
 //        super.updateListeners(newOwner);
         
-        // Do nothing until code is reviewed
+        // TODO: Do nothing until code is reviewed
         if (true) {
             return;
         }

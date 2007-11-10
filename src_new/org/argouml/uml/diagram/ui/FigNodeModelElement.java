@@ -434,15 +434,13 @@ public abstract class FigNodeModelElement
             String placeString = Model.getFacade().getName(getOwner());
             if (placeString == null) {
                 placeString =
+                    // TODO: I18N
                     "new " + Model.getFacade().getUMLClassName(getOwner());
             }
             return placeString;
         }
         return "";
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * @param id UID

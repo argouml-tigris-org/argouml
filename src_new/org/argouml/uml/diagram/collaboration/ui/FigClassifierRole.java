@@ -148,6 +148,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
+    @Override
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAClassifierRole(own)) {
@@ -157,17 +158,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         }
     }
 
-    /**
-     * Return the default name to use for this classifier role.<p>
-     *
-     * Seems to be immediately overwritten by the empty string, but may be
-     * useful in defining the default name size?<p>
-     *
-     * @return  The string to use ("new Classifier Role" in this case).
-     */
-    public String placeString() {
-        return "new Classifier Role";
-    }
 
     /**
      * Version of the clone to ensure all sub-figs are copied.<p>
@@ -177,7 +167,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      *
      * @return  A new copy of the the current fig.
      */
-
+    @Override
     public Object clone() {
         FigClassifierRole figClone = (FigClassifierRole) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -199,6 +189,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * Similarly if there is text, we must make sure it is marked
      * displayed.<p>
      */
+    @Override
     protected void updateStereotypeText() {
         Rectangle rect = getBounds();
 
@@ -460,4 +451,4 @@ public class FigClassifierRole extends FigNodeModelElement {
         return new SelectionClassifierRole(this);
     }
 
-} /* end class FigClassifierRole */
+}

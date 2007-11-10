@@ -113,6 +113,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
+    @Override
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAComponentInstance(own)) {
@@ -122,16 +123,11 @@ public class FigComponentInstance extends FigNodeModelElement {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() {
-        return "new ComponentInstance";
-    }
 
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigComponentInstance figClone = (FigComponentInstance) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -148,6 +144,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee instanceof AssociationChangeEvent 
@@ -161,6 +158,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeAllElementListeners();
@@ -186,6 +184,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color c) {
         cover.setLineColor(c);
         getStereotypeFig().setFilled(false);
@@ -199,6 +198,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionComponentInstance(this);
     }
@@ -206,6 +206,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
@@ -219,6 +220,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
@@ -257,6 +259,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
         setLineColor(Color.black);
@@ -265,6 +268,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
+    @Override
     public void mousePressed(MouseEvent me) {
         super.mousePressed(me);
         Editor ce = Globals.curEditor();
@@ -277,6 +281,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig encloser) {
 
         if (getOwner() != null) {
@@ -335,6 +340,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
+    @Override
     public boolean getUseTrapRect() {
         return true;
     }
@@ -342,6 +348,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
             notationProvider.parse(getOwner(), ft.getText());
@@ -352,6 +359,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProvider.getParsingHelp());
@@ -361,6 +369,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
         getStereotypeFig().setOwner(getOwner());
     }
@@ -368,6 +377,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
+    @Override
     protected void updateNameText() {
         if (isReadyToEdit()) {
             getNameFig().setText(notationProvider.toString(getOwner(), null));
@@ -378,25 +388,20 @@ public class FigComponentInstance extends FigNodeModelElement {
 
     /*
      * @see org.tigris.gef.presentation.Fig#getHandleBox()
-     *
-     * Get the rectangle on whose corners the dragging handles are to
-     * be drawn.  Used by Selection Resize.
      */
+    @Override
     public Rectangle getHandleBox() {
-
         Rectangle r = getBounds();
         return new Rectangle(r.x + BX, r.y, r.width - BX,
                 r.height);
-
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setHandleBox(int, int, int, int)
      */
+    @Override
     public void setHandleBox(int x, int y, int w, int h) {
-
         setBounds(x - BX, y, w + BX, h);
-
     }
 
     /**
@@ -404,4 +409,4 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     static final long serialVersionUID = 1647392857462847651L;
 
-} /* end class FigComponentInstance */
+}

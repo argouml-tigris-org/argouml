@@ -88,8 +88,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private FigRect cover;
     private FigText state;      // the state name
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Main Constructor FigObjectFlowState (called from file loading).
@@ -193,13 +191,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    @Override
-    public String placeString() {
-        return "new ObjectFlowState";
-    }
 
     /*
      * @see java.lang.Object#clone()
@@ -310,9 +301,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
             state.setText(notationProviderState.toString(getOwner(), null));
         }
     }
-
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
@@ -439,4 +427,4 @@ public class FigObjectFlowState extends FigNodeModelElement {
         return new SelectionActionState(this);
     }
 
-} /* end class FigObjectFlowState */
+}

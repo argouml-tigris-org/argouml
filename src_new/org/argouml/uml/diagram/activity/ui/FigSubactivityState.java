@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,8 +46,6 @@ import org.tigris.gef.presentation.FigText;
  * @author MVW
  */
 public class FigSubactivityState extends FigStateVertex {
-    ////////////////////////////////////////////////////////////////
-    // constants
 
     private static final int PADDING = 8;
 
@@ -61,8 +59,6 @@ public class FigSubactivityState extends FigStateVertex {
     private static final int SW = 9;
     private static final int SH = 5;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private FigRRect cover;
     //private FigGroup icon;
@@ -70,9 +66,6 @@ public class FigSubactivityState extends FigStateVertex {
     private FigRRect s1;
     private FigRRect s2;
     private FigLine s3;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Main Constructor (called from file loading).
@@ -139,15 +132,9 @@ public class FigSubactivityState extends FigStateVertex {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() {
-        return "new SubactivityState";
-    }
-
-    /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigSubactivityState figClone = (FigSubactivityState) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -157,12 +144,11 @@ public class FigSubactivityState extends FigStateVertex {
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
 
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         int w = nameDim.width + PADDING * 2;
@@ -175,6 +161,7 @@ public class FigSubactivityState extends FigStateVertex {
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
@@ -200,6 +187,7 @@ public class FigSubactivityState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         cover.setLineColor(col);
     }
@@ -228,6 +216,7 @@ public class FigSubactivityState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         cover.setFilled(f);
     }
@@ -248,6 +237,7 @@ public class FigSubactivityState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
     }
@@ -255,6 +245,7 @@ public class FigSubactivityState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return cover.getLineWidth();
     }
@@ -262,6 +253,7 @@ public class FigSubactivityState extends FigStateVertex {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         // Let our superclass sort itself out first
         super.modelChanged(mee);
@@ -275,6 +267,7 @@ public class FigSubactivityState extends FigStateVertex {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeAllElementListeners();
@@ -293,6 +286,7 @@ public class FigSubactivityState extends FigStateVertex {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
+    @Override
     protected void updateNameText() {
         String s = "";
         if (getOwner() != null) {
@@ -307,4 +301,4 @@ public class FigSubactivityState extends FigStateVertex {
         getNameFig().setText(s);
     }
 
-} /* end class FigSubactivityState */
+}

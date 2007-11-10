@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
@@ -85,12 +84,5 @@ public class FigModel extends FigPackage {
         super.setStandardBounds(x, y, w, h);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    @Override
-    public String placeString() {
-        return "new Model";
-    }
 
 }

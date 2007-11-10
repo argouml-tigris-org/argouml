@@ -62,7 +62,7 @@ public class FigActor extends FigNodeModelElement {
     protected static final int MIN_VERT_PADDING = 4;
 
     //These are the positions of child figs inside this fig
-    //They mst be added in the constructor in this order.
+    //They must be added in the constructor in this order.
     //For now the name must not be last as this would force
     //zero width lines (until GEF is fixed)
     private static final int HEAD_POSN = 2;
@@ -121,6 +121,7 @@ public class FigActor extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int width) {
         // Miss out the text fix, this should have no line
         getFigAt(HEAD_POSN).setLineWidth(width);
@@ -133,20 +134,12 @@ public class FigActor extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean filled) {
         // Only the head should be filled (not the text)
         getFigAt(HEAD_POSN).setFilled(filled);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() {
-        return "new Actor";
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
 
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
@@ -268,9 +261,9 @@ public class FigActor extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
     @Override
-    public List getGravityPoints() {
+    public List<Point> getGravityPoints() {
         final int maxPoints = 20;
-        List ret = new ArrayList();
+        List<Point> ret = new ArrayList<Point>();
         int cx = getFigAt(HEAD_POSN).getCenter().x;
         int cy = getFigAt(HEAD_POSN).getCenter().y;
         int radiusx = Math.round(getFigAt(HEAD_POSN).getWidth() / 2) + 1;
