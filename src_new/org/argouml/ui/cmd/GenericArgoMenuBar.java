@@ -31,6 +31,7 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -86,7 +87,6 @@ import org.tigris.gef.base.ReorderAction;
 import org.tigris.gef.base.SelectAllAction;
 import org.tigris.gef.base.SelectInvertAction;
 import org.tigris.gef.base.ZoomAction;
-import org.tigris.toolbar.ToolBar;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**
@@ -291,20 +291,19 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * Build the menu "File".
      */
     private void initMenuFile() {
-
+        Collection<Action> toolbarTools = new ArrayList<Action>();
         JMenu file = new JMenu(menuLocalize("File"));
         add(file);
         setMnemonic(file, "File");
-        fileToolbar = new ToolBar("misc.toolbar.file");
         JMenuItem newItem = file.add(new ActionNew());
         setMnemonic(newItem, "New");
         ShortcutMgr.assignAccelerator(newItem, ShortcutMgr.ACTION_NEW_PROJECT);
-        fileToolbar.add((new ActionNew()));
+        toolbarTools.add((new ActionNew()));
         JMenuItem openProjectItem = file.add(new ActionOpenProject());
         setMnemonic(openProjectItem, "Open");
         ShortcutMgr.assignAccelerator(openProjectItem,
                 ShortcutMgr.ACTION_OPEN_PROJECT);
-        fileToolbar.add(new ActionOpenProject());
+        toolbarTools.add(new ActionOpenProject());
         file.addSeparator();
 
         JMenuItem saveProjectItem = file.add(ProjectBrowser.getInstance()
@@ -312,7 +311,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(saveProjectItem, "Save");
         ShortcutMgr.assignAccelerator(saveProjectItem,
                 ShortcutMgr.ACTION_SAVE_PROJECT);
-        fileToolbar.add((ProjectBrowser.getInstance().getSaveAction()));
+        toolbarTools.add((ProjectBrowser.getInstance().getSaveAction()));
         JMenuItem saveProjectAsItem = file.add(new ActionSaveProjectAs());
         setMnemonic(saveProjectAsItem, "SaveAs");
         ShortcutMgr.assignAccelerator(saveProjectAsItem,
@@ -336,7 +335,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         file.addSeparator();
 
         Action a = new ActionProjectSettings();
-        fileToolbar.add(a);
+        toolbarTools.add(a);
 
         JMenuItem pageSetupItem = file.add(new ActionPageSetup());
         setMnemonic(pageSetupItem, "PageSetup");
@@ -346,7 +345,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         JMenuItem printItem = file.add(new ActionPrint());
         setMnemonic(printItem, "Print");
         ShortcutMgr.assignAccelerator(printItem, ShortcutMgr.ACTION_PRINT);
-        fileToolbar.add((new ActionPrint()));
+        toolbarTools.add((new ActionPrint()));
         JMenuItem saveGraphicsItem = file.add(new ActionSaveGraphics());
         setMnemonic(saveGraphicsItem, "SaveGraphics");
         ShortcutMgr.assignAccelerator(saveGraphicsItem,
@@ -377,6 +376,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
         // exit shortcut is not user configurable!
         exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
               InputEvent.ALT_MASK));
+
+        fileToolbar = (new ToolBarFactory(toolbarTools)).createToolBar();
+        fileToolbar.setName(Translator.localize("misc.toolbar.file"));
+        fileToolbar.setFloatable(true);
     }
 
     /**
@@ -627,57 +630,63 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * The sequence of these items was determined by issue 1821.
      */
     private void initMenuCreate() {
+        Collection<Action> toolbarTools = new ArrayList<Action>();
         createDiagramMenu = add(new JMenu(menuLocalize("Create Diagram")));
         setMnemonic(createDiagramMenu, "Create Diagram");
-        createDiagramToolbar = new ToolBar("misc.toolbar.create-diagram");
         JMenuItem usecaseDiagram = createDiagramMenu
                 .add(new ActionUseCaseDiagram());
         setMnemonic(usecaseDiagram, "Usecase Diagram");
-        createDiagramToolbar.add((new ActionUseCaseDiagram()));
+        toolbarTools.add((new ActionUseCaseDiagram()));
         ShortcutMgr.assignAccelerator(usecaseDiagram,
                 ShortcutMgr.ACTION_USE_CASE_DIAGRAM);
 
         JMenuItem classDiagram =
             createDiagramMenu.add(new ActionClassDiagram());
         setMnemonic(classDiagram, "Class Diagram");
-        createDiagramToolbar.add((new ActionClassDiagram()));
+        toolbarTools.add((new ActionClassDiagram()));
         ShortcutMgr.assignAccelerator(classDiagram,
                 ShortcutMgr.ACTION_CLASS_DIAGRAM);
 
         JMenuItem sequenzDiagram =
             createDiagramMenu.add(new ActionSequenceDiagram());
         setMnemonic(sequenzDiagram, "Sequenz Diagram");
-        createDiagramToolbar.add((new ActionSequenceDiagram()));
+        toolbarTools.add((new ActionSequenceDiagram()));
         ShortcutMgr.assignAccelerator(sequenzDiagram,
                 ShortcutMgr.ACTION_SEQUENCE_DIAGRAM);
 
         JMenuItem collaborationDiagram =
             createDiagramMenu.add(new ActionCollaborationDiagram());
         setMnemonic(collaborationDiagram, "Collaboration Diagram");
-        createDiagramToolbar.add((new ActionCollaborationDiagram()));
+        toolbarTools.add((new ActionCollaborationDiagram()));
         ShortcutMgr.assignAccelerator(collaborationDiagram,
                 ShortcutMgr.ACTION_COLLABORATION_DIAGRAM);
 
         JMenuItem stateDiagram =
             createDiagramMenu.add(new ActionStateDiagram());
         setMnemonic(stateDiagram, "Statechart Diagram");
-        createDiagramToolbar.add((new ActionStateDiagram()));
+        toolbarTools.add((new ActionStateDiagram()));
         ShortcutMgr.assignAccelerator(stateDiagram,
                 ShortcutMgr.ACTION_STATE_DIAGRAM);
 
         JMenuItem activityDiagram =
             createDiagramMenu.add(new ActionActivityDiagram());
         setMnemonic(activityDiagram, "Activity Diagram");
-        createDiagramToolbar.add((new ActionActivityDiagram()));
+        toolbarTools.add((new ActionActivityDiagram()));
         ShortcutMgr.assignAccelerator(activityDiagram,
                 ShortcutMgr.ACTION_ACTIVITY_DIAGRAM);
 
         JMenuItem deploymentDiagram =
             createDiagramMenu.add(new ActionDeploymentDiagram());
         setMnemonic(deploymentDiagram, "Deployment Diagram");
-        createDiagramToolbar.add((new ActionDeploymentDiagram()));
+        toolbarTools.add((new ActionDeploymentDiagram()));
         ShortcutMgr.assignAccelerator(deploymentDiagram,
                 ShortcutMgr.ACTION_DEPLOYMENT_DIAGRAM);
+
+        createDiagramToolbar = 
+            (new ToolBarFactory(toolbarTools)).createToolBar();
+        createDiagramToolbar.setName(
+                Translator.localize("misc.toolbar.create-diagram"));
+        createDiagramToolbar.setFloatable(true);
     }
 
     /**
@@ -1005,8 +1014,21 @@ public class GenericArgoMenuBar extends JMenuBar implements
      */
     public JToolBar getEditToolbar() {
         if (editToolbar == null) {
-            editToolbar = ToolBarFactory.createToolBar(edit);
+            /* Create the edit toolbar based on the Menu.
+             * All menuItems that have an Icon are presumed to 
+             * be based upon an Action, 
+             * and these Actions are used in the toolbar.  */
+            Collection<Action> c = new ArrayList<Action>();
+            for (Object mi : edit.getMenuComponents()) {
+                if (mi instanceof JMenuItem) {
+                    if (((JMenuItem) mi).getIcon() != null) {
+                        c.add(((JMenuItem) mi).getAction());
+                    }
+                }
+            }
+            editToolbar = (new ToolBarFactory(c)).createToolBar();
             editToolbar.setName(Translator.localize("misc.toolbar.edit"));
+            editToolbar.setFloatable(true);
         }
         return editToolbar;
     }
@@ -1028,9 +1050,13 @@ public class GenericArgoMenuBar extends JMenuBar implements
      */
     public JToolBar getViewToolbar() {
         if (viewToolbar == null) {
-            viewToolbar = new ToolBar("misc.toolbar.view");
-            viewToolbar.add(new ActionFind());
-            viewToolbar.add(new ZoomSliderButton());
+            Collection<Object> c = new ArrayList<Object>();
+            //Component or Action
+            c.add(new ActionFind());
+            c.add(new ZoomSliderButton());
+            viewToolbar = (new ToolBarFactory(c)).createToolBar();
+            viewToolbar.setName(Translator.localize("misc.toolbar.view"));
+            viewToolbar.setFloatable(true);
         }
         return viewToolbar;
     }
