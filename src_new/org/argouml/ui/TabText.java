@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.util.Collections;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -38,7 +39,7 @@ import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.TabModelTarget;
-import org.tigris.toolbar.ToolBar;
+import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * A tab that contains textual information.
@@ -46,8 +47,7 @@ import org.tigris.toolbar.ToolBar;
 public class TabText
     extends AbstractArgoJPanel
     implements TabModelTarget, DocumentListener {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+
     private Object target;
     private JTextArea textArea = new JTextArea();
     private boolean parseChanges = true;
@@ -63,9 +63,6 @@ public class TabText
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(TabText.class);
-
-    ////////////////////////////////////////////////////////////////
-    // constructor
 
     /**
      * Create a text tab without a toolbar.
@@ -93,15 +90,15 @@ public class TabText
 
         // If a toolbar was requested, create an empty one.
         if (withToolbar) {
-            toolbar = new ToolBar();
+            toolbar = (new ToolBarFactory(Collections.EMPTY_LIST))
+                .createToolBar();
             toolbar.setOrientation(SwingConstants.HORIZONTAL);
+            toolbar.setFloatable(false);
             toolbar.setName(getTitle());
             add(toolbar, BorderLayout.NORTH);
         }
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     private void doGenerateText() {
         parseChanges = false;
@@ -190,9 +187,6 @@ public class TabText
         }
         LOG.debug("parsing text:" + s);
     }
-
-    ////////////////////////////////////////////////////////////////
-    // event handlers
 
     /*
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
