@@ -55,7 +55,7 @@ public class PropPanelSignalEvent extends PropPanelEvent {
 
         JList signalList = new UMLSignalEventSignalList(
                 new UMLSignalEventSignalListModel());
-        signalList.setVisibleRowCount(1);
+        signalList.setVisibleRowCount(2);
         addField("label.signal",
                 new JScrollPane(signalList));
 

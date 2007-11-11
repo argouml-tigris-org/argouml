@@ -66,10 +66,10 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
         deferrableEventsScroll = new JScrollPane(deferrableList);
 
         JList entryList = new UMLStateEntryList(new UMLStateEntryListModel());
-        entryList.setVisibleRowCount(1);
+        entryList.setVisibleRowCount(2);
         entryScroll = new JScrollPane(entryList);
         JList exitList = new UMLStateExitList(new UMLStateExitListModel());
-        exitList.setVisibleRowCount(1);
+        exitList.setVisibleRowCount(2);
         exitScroll = new JScrollPane(exitList);
         JList internalTransitionList = new UMLMutableLinkedList(
                 new UMLStateInternalTransition(), null,
@@ -77,7 +77,7 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
         internalTransitionsScroll = new JScrollPane(internalTransitionList);
         JList doList = new UMLStateDoActivityList(
                 new UMLStateDoActivityListModel());
-        doList.setVisibleRowCount(1);
+        doList.setVisibleRowCount(2);
         doScroll = new JScrollPane(doList);
     }
 

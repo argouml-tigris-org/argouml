@@ -54,7 +54,7 @@ public class PropPanelSendAction extends PropPanelAction {
             new UMLMutableLinkedList(
                 new UMLSendActionSignalListModel(), action, 
                 new ActionNewSignal(), null, true);
-        list.setVisibleRowCount(1);
+        list.setVisibleRowCount(2);
         JScrollPane signalScroll = new JScrollPane(list);
         addFieldBefore(Translator.localize("label.signal"),
                 signalScroll,

@@ -69,7 +69,7 @@ public class PropPanelCallState extends AbstractPropPanelState {
         callActionEntryList =
             new UMLCallStateEntryList(
                 new UMLStateEntryListModel());
-        callActionEntryList.setVisibleRowCount(1);
+        callActionEntryList.setVisibleRowCount(2);
         callActionEntryScroll = new JScrollPane(callActionEntryList);
 
         addField(Translator.localize("label.name"),

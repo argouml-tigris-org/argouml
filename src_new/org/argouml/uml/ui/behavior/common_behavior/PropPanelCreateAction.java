@@ -48,7 +48,7 @@ public class PropPanelCreateAction extends PropPanelAction {
             new UMLMutableLinkedList(
                 new UMLCreateActionClassifierListModel(),
                 action, null, null, true);
-        list.setVisibleRowCount(1);
+        list.setVisibleRowCount(2);
         JScrollPane instantiationScroll = new JScrollPane(list);
         addFieldBefore(Translator.localize("label.instantiation"),
                 instantiationScroll,
