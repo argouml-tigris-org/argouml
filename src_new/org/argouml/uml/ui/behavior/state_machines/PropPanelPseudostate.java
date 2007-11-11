@@ -82,27 +82,33 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getJoin())) {
-                getTitleLabel().setText("label.pseudostate.join");
+                getTitleLabel().setText(
+                        Translator.localize("label.pseudostate.join"));
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getChoice())) {
-                getTitleLabel().setText("label.pseudostate.choice");
+                getTitleLabel().setText(
+                        Translator.localize("label.pseudostate.choice"));
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getDeepHistory())) {
-                getTitleLabel().setText("label.pseudostate.deephistory");
+                getTitleLabel().setText(
+                        Translator.localize("label.pseudostate.deephistory"));
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getShallowHistory())) {
-                getTitleLabel().setText("label.pseudostate.shallowhistory");
+                getTitleLabel().setText(
+                        Translator.localize("label.pseudostate.shallowhistory"));
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getInitial())) {
-                getTitleLabel().setText("label.pseudostate.initial");
+                getTitleLabel().setText(
+                        Translator.localize("label.pseudostate.initial"));
             }
             if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getJunction())) {
-                getTitleLabel().setText("label.pseudostate.junction");
+                getTitleLabel().setText(
+                        Translator.localize("label.pseudostate.junction"));
             }
             Icon icon =
                 ResourceLoaderWrapper.getInstance().lookupIcon(target);

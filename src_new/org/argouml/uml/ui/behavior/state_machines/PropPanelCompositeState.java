@@ -29,6 +29,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
@@ -47,7 +48,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      * The serial version.
      */
     private static final long serialVersionUID = 4758716706184949796L;
-    
+
     private JList subverticesList = null;
     private Action addConcurrentRegion;
     private Action deleteConcurrentRegion;
@@ -58,8 +59,8 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
      */
-    public PropPanelCompositeState(String name, ImageIcon icon,
-            Orientation orientation) {
+    public PropPanelCompositeState(final String name, final ImageIcon icon,
+            final Orientation orientation) {
         super(name, icon, orientation);
         initialize();
     }
@@ -104,6 +105,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
+    @Override
     protected void addExtraButtons() {
         super.addExtraButtons();
         addConcurrentRegion = new ActionAddConcurrentRegion();
@@ -111,7 +113,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         deleteConcurrentRegion = new ActionDeleteConcurrentRegion();
         addAction(deleteConcurrentRegion);
     }
-    
+
     protected void updateExtraButtons() {
         addConcurrentRegion.setEnabled(addConcurrentRegion.isEnabled());
         deleteConcurrentRegion.setEnabled(deleteConcurrentRegion.isEnabled());
@@ -130,20 +132,24 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
     /*
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
-    public void setTarget(Object t) {
+    @Override
+    public void setTarget(final Object t) {
         super.setTarget(t);
         updateExtraButtons();
-        Object target = TargetManager.getInstance().getModelTarget();
+        final Object target = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isAConcurrentRegion(target)) {
-            getTitleLabel().setText("label.concurrent.region");
+            getTitleLabel().setText(
+                    Translator.localize("label.concurrent.region"));
         } else if (Model.getFacade().isConcurrent(target)) {
-            getTitleLabel().setText("label.concurrent.composite.state");
+            getTitleLabel().setText(
+                    Translator.localize("label.concurrent.composite.state"));
         } else {
-            getTitleLabel().setText("label.composite-state");
+            getTitleLabel().setText(
+                    Translator.localize("label.composite-state"));
         }
     }
 
-} /* end class PropPanelCompositeState */
+}
 
 
 

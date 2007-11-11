@@ -29,9 +29,6 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -52,7 +49,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     /**
      * Construct a property panel for SubmachineState elements with the given
      * params.
-     * 
+     *
      * @param name
      *            the name of the properties panel
      * @param icon
@@ -60,8 +57,8 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
      * @param orientation
      *            the orientation of the panel
      */
-    public PropPanelSubmachineState(String name, ImageIcon icon,
-            Orientation orientation) {
+    public PropPanelSubmachineState(final String name, final ImageIcon icon,
+            final Orientation orientation) {
         super(name, icon, orientation);
         initialize();
     }
@@ -72,12 +69,11 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     public PropPanelSubmachineState() {
         super("label.submachinestate", lookupIcon("SubmachineState"),
                 ConfigLoader.getTabPropsOrientation());
-        getTitleLabel().setText("label.submachinestate");
         addField("label.name",
                 getNameTextField());
         addField("label.container",
                 getContainerScroll());
-        JComboBox submachineBox = new UMLComboBox2(
+        final JComboBox submachineBox = new UMLComboBox2(
                 new UMLSubmachineStateComboBoxModel(),
                 ActionSetSubmachineStateSubmachine.getInstance());
         addField("label.submachine",
@@ -110,6 +106,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
+    @Override
     protected void addExtraButtons() {
         // Intentionally do nothing.
     }
@@ -117,26 +114,10 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelCompositeState#updateExtraButtons()
      */
+    @Override
     protected void updateExtraButtons() {
         // Intentionally do nothing.
     }
 
-    /*
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        super.targetSet(e);
-        if (e != null) {
-            Object source = e.getSource();
-            if (source != null
-                    && source instanceof TargetManager) {
-                Object target =
-                    ((TargetManager) e.getSource()).getModelTarget();
-                if (Model.getFacade().isASubmachineState(target)) {
-                    getTitleLabel().setText("label.submachinestate");
-                }
-            }
-        }
-    }
 
 }
