@@ -83,6 +83,7 @@ public class ExplorerTree
      */
     public ExplorerTree() {
         super();
+
         this.setModel(new ExplorerTreeModel(ProjectManager.getManager()
 			                    .getCurrentProject(), this));
         this.addMouseListener(new ExplorerMouseListener(this));
@@ -232,6 +233,7 @@ public class ExplorerTree
             setShowStereotype(ps.getShowStereotypesValue());
 
             if (getModel() instanceof ExplorerTreeModel) {
+
                 ((ExplorerTreeModel) getModel()).updateChildren(tee.getPath());
             }
         }
@@ -280,11 +282,14 @@ public class ExplorerTree
      */
     private void setSelection(Object[] targets) {
         updatingSelectionViaTreeSelection = true;
+
         this.clearSelection();
         addTargetsInternal(targets);
         updatingSelectionViaTreeSelection = false;
     }
 
+
+    
     private void addTargetsInternal(Object[] addedTargets) {
         if (addedTargets.length < 1) {
             return;
@@ -296,13 +301,14 @@ public class ExplorerTree
             } else {
                 targets.add(t);
             }
+            // TODO: The following can be removed if selectAll gets fixed
+            selectVisible(t);
         }
 
-        ExplorerTreeModel model = (ExplorerTreeModel) getModel();
-        ExplorerTreeNode root = (ExplorerTreeNode) model.getRoot();
-        
-        
-        selectChildren(model, root, targets);
+        // TODO: This doesn't perform well enough with large models to have
+        // it enabled by default.  If the performance can't be improved, 
+        // perhaps we can introduce a manual "find in explorer tree" action.
+//        selectAll(targets);
     
         int[] selectedRows = getSelectionRows();
         if (selectedRows != null && selectedRows.length > 0) {
@@ -314,21 +320,45 @@ public class ExplorerTree
         }
     }
 
-    /*
-     * Perform recursive search of subtree rooted at 'node', selecting all nodes which 
-     * have a userObject matching one of our targets.
+    /**
+     * Select any targets which are visible in the explorer pane
      */
-    private void selectChildren(ExplorerTreeModel model, ExplorerTreeNode node, Set targets) {
+    private void selectVisible(Object target) {
+        for (int j = 0; j < getRowCount(); j++) {
+            Object rowItem =
+                    ((DefaultMutableTreeNode) getPathForRow(j)
+                            .getLastPathComponent()).getUserObject();
+            if (rowItem == target) {
+                addSelectionRow(j);
+            }
+        }
+    }
+
+
+    /**
+     * Search the entire tree and select all instances of targets found.
+     */
+    private void selectAll(Set targets) {
+        ExplorerTreeModel model = (ExplorerTreeModel) getModel();
+        ExplorerTreeNode root = (ExplorerTreeNode) model.getRoot();  
+        selectChildren(model, root, targets);
+    }
+    
+    /*
+     * Perform recursive search of subtree rooted at 'node', selecting all nodes
+     * which have a userObject matching one of our targets.
+     */
+    private void selectChildren(ExplorerTreeModel model, ExplorerTreeNode node,
+            Set targets) {
         if (targets.isEmpty()) {
             return;
         }
+
         Object nodeObject = node.getUserObject();
         if (nodeObject != null) {
             for (Object t : targets) {
                 if (t == nodeObject) {
-                    updatingSelectionViaTreeSelection = true;
                     addSelectionPath(new TreePath(node.getPath()));
-                    updatingSelectionViaTreeSelection = false;
                     // target may appear multiple places in the tree, so 
                     // we don't stop here (but it's expensive to search
                     // the whole tree) - tfm - 20070904
@@ -343,8 +373,9 @@ public class ExplorerTree
         while (e.hasMoreElements()) {
             selectChildren(model, (ExplorerTreeNode) e.nextElement(), targets);
         }
-
     }
+
+
 
     /**
      * Manages selecting the item to show in Argo's other
@@ -473,16 +504,20 @@ public class ExplorerTree
         public void targetAdded(TargetEvent e) {
             if (!updatingSelection) {
                 updatingSelection = true;
-                Object[] addedTargets = e.getAddedTargets();
-                addTargetsInternal(addedTargets);
+                Object[] targets = e.getAddedTargets();
+                
+                updatingSelectionViaTreeSelection = true;
+                addTargetsInternal(targets);
+                updatingSelectionViaTreeSelection = false;
                 updatingSelection = false;
             }
             // setTargets(e.getNewTargets());
         }
 
+
         /*
          * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
-	 *         org.argouml.ui.targetmanager.TargetEvent)
+         *      org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetRemoved(TargetEvent e) {
             if (!updatingSelection) {
@@ -526,7 +561,6 @@ public class ExplorerTree
 
         }
     }
-
 
     /**
      * The UID.
