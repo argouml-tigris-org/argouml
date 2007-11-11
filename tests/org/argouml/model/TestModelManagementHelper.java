@@ -124,7 +124,7 @@ public class TestModelManagementHelper extends TestCase {
      * Test getAllModelElementsOfKind() to make sure that it doesn't
      * return elements which are not in the requested namespace.
      */
-    public void testGetAllModelElementsOfKindNamespaceContraint() {
+    public void testGetAllModelElementsOfKindNamespaceConstraint() {
         setUpTestsOfTagDefinitionContainedInStereotype();
         Model.getCoreHelper().addStereotype(theClass, theStereotype);
         Collection elements = Model.getModelManagementHelper()
@@ -133,6 +133,9 @@ public class TestModelManagementHelper extends TestCase {
         assertTrue("Elements not in namespace returned", elements.isEmpty());
         elements = Model.getModelManagementHelper().getAllModelElementsOfKind(
                 theBadPackage, Model.getMetaTypes().getUMLClass());
+        assertTrue("Elements not in namespace returned", elements.isEmpty());
+        elements = Model.getModelManagementHelper().getAllModelElementsOfKind(
+                theBadPackage, Model.getMetaTypes().getPackage());
         assertTrue("Elements not in namespace returned", elements.isEmpty());
     }
     
