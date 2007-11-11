@@ -39,6 +39,7 @@ import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.ModelManagementHelper;
 import org.omg.uml.behavioralelements.collaborations.Collaboration;
@@ -67,13 +68,17 @@ import org.omg.uml.modelmanagement.UmlPackage;
  */
 class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     
+    private static final Logger LOG = 
+        Logger.getLogger(ModelManagementHelperMDRImpl.class);
+    
     /**
      * The model implementation.
      */
     private MDRModelImplementation modelImpl;
 
     /**
-     * Don't allow instantiation.
+     * Construct a ModelManagementHelper.  Not for use outside of the
+     * Model subsystem implementation.
      * 
      * @param implementation
      *            To get other helpers and factories.
@@ -166,6 +171,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     
 
     public Collection getAllModelElementsOfKind(Object nsa, Object type) {
+        long startTime = System.currentTimeMillis();
         if (nsa == null || type == null) {
             return Collections.EMPTY_LIST;
         }
@@ -184,7 +190,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
          */
         String name = ((Class) type).getName();
         name = name.substring(name.lastIndexOf(".") + 1);
-        if (name.startsWith("Uml")) name = name.substring(3);
+        if (name.startsWith("Uml")) {
+            name = name.substring(3);
+        }
 
         Collection allOfType = Collections.EMPTY_LIST;
         // Get all (UML) metaclasses and search for the requested one
@@ -216,6 +224,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 returnElements.add(me);
             } 
         }
+        long duration = System.currentTimeMillis() - startTime;
+        LOG.debug("Get allOfKind took " + duration + " msec.");
         return returnElements;
     }
 
@@ -227,8 +237,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         Object current = 
             modelImpl.getFacade().getModelElementContainer(candidate);
         while (current != null) {
-            if (container.equals(current))
+            if (container.equals(current)) {
                 return true;
+            }
             current = modelImpl.getFacade().getModelElementContainer(current);
         }
         return false;
@@ -330,23 +341,26 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
 
     public Object getElement(List<String> path, Object theRootNamespace) {
         ModelElement root = (ModelElement) theRootNamespace;
-        // TODO: This is very inefficient.  Investigate a direct method - tfm
-        
+
         for (int i = 0; i < path.size(); i++) {
             if (root == null || !(root instanceof Namespace)) {
                 return null;
             }
 
             String name = path.get(i);
-            root = null;
+            boolean found = false;
             for (ModelElement me : ((Namespace) root).getOwnedElement()) {
                 if (i < path.size() - 1 && !(me instanceof Namespace)) {
                     continue;
                 }
                 if (name.equals(me.getName())) {
                     root = me;
+                    found = true;
                     break;
                 }
+            }
+            if (!found) {
+                return null;
             }
         }
         return root;
