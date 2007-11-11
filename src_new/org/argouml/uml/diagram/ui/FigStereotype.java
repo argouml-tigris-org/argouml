@@ -62,7 +62,6 @@ public class FigStereotype extends CompartmentFigText {
 
         setFilled(false);
         setLineWidth(0);
-        setFont(getProject().getProjectSettings().getFontPlain());
         setTextColor(Color.black);
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_LEFT);
