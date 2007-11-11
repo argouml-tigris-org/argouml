@@ -91,7 +91,8 @@ public class ExplorerTreeModel extends DefaultTreeModel
     /**
      * The children currently being updated.
      */
-    private List<ExplorerTreeNode> updatingChildren = new ArrayList<ExplorerTreeNode>();
+    private List<ExplorerTreeNode> updatingChildren =
+            new ArrayList<ExplorerTreeNode>();
 
     /**
      * A Runnable object that when executed does update some
@@ -450,22 +451,19 @@ public class ExplorerTreeModel extends DefaultTreeModel
                         + e.getStackTrace());
             }
 
-	    if (children != null) {
-	        for (Object child : children) {
-		    if (child == null) {
-			LOG.warn("PerspectiveRule " + rule + " wanted to "
-				 + "add null to the explorer tree!");
-		    } else if (!newChildren.contains(child)) {
-			newChildren.add(child);
-		    }
-		}
-	    }
+            for (Object child : children) {
+                if (child == null) {
+                    LOG.warn("PerspectiveRule " + rule + " wanted to "
+                            + "add null to the explorer tree!");
+                } else if (!newChildren.contains(child)) {
+                    newChildren.add(child);
+                }
+            }
+
 
             try {
                 Set dependencies = rule.getDependencies(modelElement);
-                if (dependencies != null) {
-                    deps.addAll(dependencies);
-                }
+                deps.addAll(dependencies);
             } catch (InvalidElementException e) {
                 LOG.debug("InvalidElementException in ExplorerTree : " 
                         + e.getStackTrace());
