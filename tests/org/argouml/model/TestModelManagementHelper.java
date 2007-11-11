@@ -26,6 +26,7 @@ package org.argouml.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -41,7 +42,7 @@ public class TestModelManagementHelper extends TestCase {
     private Object theStereotype;
     private Object theTagDefinition;
     private Object theClass;
-    private Collection<String> tdPath = new ArrayList<String>();
+    private List<String> tdPath = new ArrayList<String>();
 
     /**
      * Constructor for TestModelManagementHelper.
@@ -153,6 +154,7 @@ public class TestModelManagementHelper extends TestCase {
     
     /**
      * Test the getPath method with a tag definition contained in a stereotype.
+     * Also test lookup of element by path name in a series of namespaces.
      */
     public void testGetPathForTagDefinitionInStereotype() {
         setUpTestsOfTagDefinitionContainedInStereotype();
@@ -161,5 +163,11 @@ public class TestModelManagementHelper extends TestCase {
                 theTagDefinition);
         assertEquals("Wrong path returned for TagDefinition", 
                 tdPath, path);
+        
+        // Go the other way to lookup an element by path 
+        Object st =
+                Model.getModelManagementHelper().getElement(
+                        tdPath.subList(1, 3), theModel);
+        assertEquals("Found wrong element", theStereotype, st);
     }
 }
