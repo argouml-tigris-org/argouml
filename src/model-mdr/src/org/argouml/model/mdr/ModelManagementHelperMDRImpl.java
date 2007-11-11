@@ -224,7 +224,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
      * TODO: Investigate a faster way to do this
      */
     private boolean contained(Object container, Object candidate) {
-        Object current = candidate;
+        Object current = 
+            modelImpl.getFacade().getModelElementContainer(candidate);
         while (current != null) {
             if (container.equals(current))
                 return true;
