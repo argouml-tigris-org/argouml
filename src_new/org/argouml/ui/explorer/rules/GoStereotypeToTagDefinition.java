@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,9 +48,10 @@ public class GoStereotypeToTagDefinition extends AbstractPerspectiveRule {
     /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getChildren(java.lang.Object)
      */
-    public Collection getChildren(Object parent) {
+    @Override
+    public Collection getChildren(final Object parent) {
         if (Model.getFacade().isAStereotype(parent)) {
-            List list = new ArrayList();
+            final List list = new ArrayList();
 
             if (Model.getFacade().getTagDefinitions(parent) != null
                     && Model.getFacade().getTagDefinitions(parent).size() > 0) {
@@ -57,12 +59,13 @@ public class GoStereotypeToTagDefinition extends AbstractPerspectiveRule {
             }
             return list;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getRuleName()
      */
+    @Override
     public String getRuleName() {
         return "Stereotype->TagDefinition";
     }
@@ -70,6 +73,7 @@ public class GoStereotypeToTagDefinition extends AbstractPerspectiveRule {
     /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#toString()
      */
+    @Override
     public String toString() {
         return super.toString();
     }
@@ -77,14 +81,14 @@ public class GoStereotypeToTagDefinition extends AbstractPerspectiveRule {
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
-    public Set getDependencies(Object parent) {
+    public Set getDependencies(final Object parent) {
         if (Model.getFacade().isAStereotype(parent)) {
-            Set set = new HashSet();
+            final Set set = new HashSet();
             set.add(parent);
             set.addAll(Model.getFacade().getTagDefinitions(parent));
             return set;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
 }

@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class GoSummaryToOperation extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.summary.operation");
+        return Translator.localize("misc.summary.operation");
     }
 
     /*
@@ -52,10 +53,10 @@ public class GoSummaryToOperation extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (parent instanceof OperationsNode) {
-	    return Model.getFacade().getOperations(
-		    ((OperationsNode) parent).getParent());
-	}
-	return null;
+            return Model.getFacade().getOperations(
+                    ((OperationsNode) parent).getParent());
+        }
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -67,6 +68,7 @@ public class GoSummaryToOperation extends AbstractPerspectiveRule {
 	    set.add(((OperationsNode) parent).getParent());
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
+
 }

@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -42,7 +43,7 @@ public class GoNodeToResidentComponent extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.node.resident.component");
+        return Translator.localize("misc.node.resident.component");
     }
 
     /*
@@ -52,14 +53,14 @@ public class GoNodeToResidentComponent extends AbstractPerspectiveRule {
         if (Model.getFacade().isANode(parent)) {
             return Model.getFacade().getDeployedComponents(parent);
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        return null;
+        return Collections.EMPTY_SET;
     }
 
 }

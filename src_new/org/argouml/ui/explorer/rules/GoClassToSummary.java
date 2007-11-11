@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class GoClassToSummary extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.class.summary");
+	return Translator.localize("misc.class.summary");
     }
 
     /*
@@ -79,7 +80,7 @@ public class GoClassToSummary extends AbstractPerspectiveRule {
 	    return list;
 	}
 
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -99,7 +100,7 @@ public class GoClassToSummary extends AbstractPerspectiveRule {
 	    return set;
 	}
 
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     private boolean hasIncomingDependencies(Object parent) {

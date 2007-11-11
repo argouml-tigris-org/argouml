@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -41,7 +42,7 @@ public class GoProfileToModel extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.profile.model");
+	return Translator.localize("misc.profile.model");
     }
 
     /*
@@ -52,10 +53,10 @@ public class GoProfileToModel extends AbstractPerspectiveRule {
             try {
                 return ((Profile) parent).getProfilePackages();
             } catch (ProfileException e) {
-                return null;
+                return Collections.EMPTY_SET;
             }
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -63,6 +64,6 @@ public class GoProfileToModel extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: What?
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

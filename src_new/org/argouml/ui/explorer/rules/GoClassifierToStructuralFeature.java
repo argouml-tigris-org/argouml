@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ import org.argouml.model.Model;
 
 /**
  * Rule for Class->Attribute.
- *
+ * 
  */
 public class GoClassifierToStructuralFeature extends AbstractPerspectiveRule {
 
@@ -41,17 +42,17 @@ public class GoClassifierToStructuralFeature extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.class.attribute");
+        return Translator.localize("misc.class.attribute");
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (Model.getFacade().isAClassifier(parent)) {
-	    return Model.getFacade().getStructuralFeatures(parent);
-	}
-	return null;
+        if (Model.getFacade().isAClassifier(parent)) {
+            return Model.getFacade().getStructuralFeatures(parent);
+        }
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -59,10 +60,10 @@ public class GoClassifierToStructuralFeature extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         if (Model.getFacade().isAClassifier(parent)) {
-	    Set set = new HashSet();
-	    set.add(parent);
-	    return set;
-	}
-	return null;
+            Set set = new HashSet();
+            set.add(parent);
+            return set;
+        }
+        return Collections.EMPTY_SET;
     }
 }

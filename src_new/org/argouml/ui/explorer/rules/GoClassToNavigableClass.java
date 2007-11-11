@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -44,7 +45,7 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.class.navigable-class");
+        return Translator.localize("misc.class.navigable-class");
     }
 
     /*
@@ -52,14 +53,14 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
         if (!Model.getFacade().isAClass(parent)) {
-            return null;
+            return Collections.EMPTY_SET;
         }
 
         List childClasses = new ArrayList();
 
         Collection ends = Model.getFacade().getAssociationEnds(parent);
         if (ends == null) {
-            return null;
+            return Collections.EMPTY_SET;
         }
 
         Iterator it = ends.iterator();
@@ -105,6 +106,6 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

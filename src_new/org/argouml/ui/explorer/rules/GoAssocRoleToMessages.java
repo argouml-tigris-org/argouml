@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ public class GoAssocRoleToMessages extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.association-role.messages");
+        return Translator.localize("misc.association-role.messages");
     }
 
     /*
@@ -49,7 +50,7 @@ public class GoAssocRoleToMessages extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (!Model.getFacade().isAAssociationRole(parent)) {
-	    return null;
+	    return Collections.EMPTY_SET;
 	}
 	return Model.getFacade().getMessages(parent);
     }
@@ -63,6 +64,6 @@ public class GoAssocRoleToMessages extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,7 +52,7 @@ public class GoInteractionToMessages extends AbstractPerspectiveRule {
         if (Model.getFacade().isAInteraction(parent)) {
             return Model.getFacade().getMessages(parent);
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -63,6 +64,6 @@ public class GoInteractionToMessages extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

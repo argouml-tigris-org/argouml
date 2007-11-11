@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -49,7 +50,7 @@ public class GoProjectToRoots extends AbstractPerspectiveRule {
 
     
     public String getRuleName() {
-	return Translator.localize ("misc.project.roots");
+	return Translator.localize("misc.project.roots");
     }
 
 
@@ -57,11 +58,11 @@ public class GoProjectToRoots extends AbstractPerspectiveRule {
         if (parent instanceof Project) {
             return ((Project) parent).getRoots();
         }
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     
     public Set getDependencies(Object parent) {
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

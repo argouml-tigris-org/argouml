@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -44,7 +45,7 @@ public class GoPackageToElementImport extends AbstractPerspectiveRule {
         if (Model.getFacade().isAPackage(parent)) {
             return Model.getFacade().getElementImports(parent);
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -58,7 +59,7 @@ public class GoPackageToElementImport extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        return null;
+        return Collections.EMPTY_SET;
     }
 
 }

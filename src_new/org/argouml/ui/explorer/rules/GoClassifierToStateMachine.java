@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class GoClassifierToStateMachine extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.classifier.statemachine");
+        return Translator.localize("misc.classifier.statemachine");
     }
 
     /*
@@ -54,7 +55,7 @@ public class GoClassifierToStateMachine extends AbstractPerspectiveRule {
 	if (Model.getFacade().isAClassifier(parent)) {
 	    return Model.getFacade().getBehaviors(parent);
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -66,6 +67,6 @@ public class GoClassifierToStateMachine extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

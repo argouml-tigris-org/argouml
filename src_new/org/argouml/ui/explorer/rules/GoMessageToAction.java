@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -44,7 +45,7 @@ public class GoMessageToAction extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.message.action");
+	return Translator.localize("misc.message.action");
     }
 
     /*
@@ -62,7 +63,7 @@ public class GoMessageToAction extends AbstractPerspectiveRule {
 	    }
 	}
 
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -75,6 +76,6 @@ public class GoMessageToAction extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

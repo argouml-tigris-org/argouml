@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,7 +46,7 @@ public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
      *          Point</code>").
      */
     public String getRuleName() {
-        return Translator.localize ("misc.use-case.extension-point");
+        return Translator.localize("misc.use-case.extension-point");
     }
 
     /*
@@ -55,7 +56,7 @@ public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
         if (Model.getFacade().isAUseCase(parent)) {
             return Model.getFacade().getExtensionPoints(parent);
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -67,7 +68,7 @@ public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
-}  /* End of class GoUseCaseToExtensionPoint */
 
+}

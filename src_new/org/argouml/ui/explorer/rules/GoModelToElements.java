@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ public class GoModelToElements extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.model.elements");
+	return Translator.localize("misc.model.elements");
     }
 
     /*
@@ -51,7 +52,7 @@ public class GoModelToElements extends AbstractPerspectiveRule {
 	if (Model.getFacade().isANamespace(parent)) {
 	    return Model.getFacade().getOwnedElements(parent);
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -63,6 +64,6 @@ public class GoModelToElements extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

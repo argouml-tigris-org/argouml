@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class GoSignalToReception extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-    	return Translator.localize ("Signal->Reception");
+    	return Translator.localize("Signal->Reception");
     }
 
     /*
@@ -54,7 +55,7 @@ public class GoSignalToReception extends AbstractPerspectiveRule {
 	if (Model.getFacade().isASignal(parent)) {
 	    return Model.getFacade().getReceptions(parent);
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -66,6 +67,6 @@ public class GoSignalToReception extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

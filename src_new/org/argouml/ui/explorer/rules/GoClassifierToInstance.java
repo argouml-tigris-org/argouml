@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class GoClassifierToInstance extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.classifier.collaboration");
+        return Translator.localize("misc.classifier.collaboration");
     }
 
     /*
@@ -48,7 +49,7 @@ public class GoClassifierToInstance extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
         if (!Model.getFacade().isAClassifier(parent)) {
-            return null;
+            return Collections.EMPTY_SET;
         }
         return Model.getFacade().getInstances(parent);
     }
@@ -62,6 +63,6 @@ public class GoClassifierToInstance extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }
