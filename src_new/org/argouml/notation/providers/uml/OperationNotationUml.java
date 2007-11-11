@@ -538,9 +538,17 @@ public class OperationNotationUml extends OperationNotation {
                         }
                         returnParasSb.append(",");
                     }
-                    returnParasSb.delete(
-                            returnParasSb.length() - 1,
-                            returnParasSb.length());
+                    // if we have only one return value and without type,
+                    // the return param string is ": ,", we remove it
+                    if (returnParasSb.length() == 3) {
+                        returnParasSb.delete(0, returnParasSb.length());
+                    }
+                    // else: we remove only the extra ","
+                    else {
+                        returnParasSb.delete(
+                                returnParasSb.length() - 1,
+                                returnParasSb.length());
+                    }
                 }
             }
 
