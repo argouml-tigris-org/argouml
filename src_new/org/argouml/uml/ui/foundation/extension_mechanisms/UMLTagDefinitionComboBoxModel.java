@@ -103,8 +103,12 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
                             name2 = (name2 != null ? name2 : "");
                             int result = name1.compareTo(name2);
                             if (result == 0) {
-                                // Never eliminate anything
-                                return 1;
+                                // Don't return equals based on name only
+                                if (o1.equals(o2)) {
+                                    return 0;
+                                } else {
+                                    return 1;
+                                }
                             } else {
                                 return result;
                             }
@@ -132,7 +136,9 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
                 notValids.add(tagDef);
             }
         }
+        int size = availableTagDefs.size();
         availableTagDefs.removeAll(notValids);
+        int delta = size - availableTagDefs.size();
         return availableTagDefs;
     }
 
