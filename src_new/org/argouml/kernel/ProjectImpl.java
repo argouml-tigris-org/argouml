@@ -506,7 +506,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public Collection getModels() {
         Set result = new HashSet();
         result.addAll(models);
-        result.addAll(getProfileConfiguration().getProfiles());
+        for (Profile profile : getProfileConfiguration().getProfiles()) {
+            try {
+                result.addAll(profile.getProfilePackages());
+            } catch (org.argouml.uml.profile.ProfileException e) {
+                LOG.error("Exception when fetching models from profile "
+                        + profile.getDisplayName(), e);
+            }
+        }
         return Collections.unmodifiableCollection(result);
     }
 
