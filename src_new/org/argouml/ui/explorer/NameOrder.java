@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 
 package org.argouml.ui.explorer;
 
+import java.text.Collator;
 import java.util.Comparator;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -43,17 +44,25 @@ import org.tigris.gef.base.Diagram;
  */
 public class NameOrder
     implements Comparator {
+    
+    private Collator collator = Collator.getInstance();
 
     /**
      * Creates a new instance of NameOrder.
      */
     public NameOrder() {
+        collator.setStrength(Collator.PRIMARY);
     }
 
     /*
+     * Do string compare of names of UML objects.  Comparison is
+     * case insensitive using a primary strength collator in the user's
+     * locale.
+     * 
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     public int compare(Object obj1, Object obj2) {
+        
 	if (obj1 instanceof DefaultMutableTreeNode) {
 	    DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj1;
 	    obj1 = node.getUserObject();
@@ -76,17 +85,8 @@ public class NameOrder
      *         A positive or negative int if the names differ.
      */
     protected int compareUserObjects(Object obj, Object obj1) {
-        if ((obj instanceof Diagram || Model.getFacade().isAModelElement(obj))
-                && (obj1 instanceof Diagram
-                        || Model.getFacade().isAModelElement(obj1))) {
-	    String name = getName(obj);
-	    String name1 = getName(obj1);
-            int ret = name.compareTo(name1);
-
-	    return ret;
-	}
-
-	return 0;
+        // this is safe because getName always returns a string of some type
+        return collator.compare(getName(obj), getName(obj1));
     }
 
     /**
@@ -103,16 +103,16 @@ public class NameOrder
             name = "Profile Configuration";
         } else if (obj instanceof Profile) {
             name = ((Profile) obj).getDisplayName();
-        } else {
-            if (Model.getFacade().isAModelElement(obj)) { 
-                try {
-                    name = Model.getFacade().getName(obj);
-                } catch (InvalidElementException e) {
-                    name = Translator.localize("misc.name.deleted");
-                }
+        } else if (Model.getFacade().isAModelElement(obj)) {
+            try {
+                name = Model.getFacade().getName(obj);
+            } catch (InvalidElementException e) {
+                name = Translator.localize("misc.name.deleted");
             }
+        } else {
             name = "??";
         }
+
         if (name == null) {
             return "";
         }
@@ -122,6 +122,7 @@ public class NameOrder
     /*
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return Translator.localize("combobox.order-by-name");
     }
