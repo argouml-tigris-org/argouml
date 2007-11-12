@@ -504,10 +504,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public Collection getModels() {
-        Set ret = new HashSet();
-        ret.addAll(models);
-        ret.addAll(getProfileConfiguration().getProfiles());
-        return Collections.unmodifiableCollection(models);
+        Set result = new HashSet();
+        result.addAll(models);
+        result.addAll(getProfileConfiguration().getProfiles());
+        return Collections.unmodifiableCollection(result);
     }
 
 
