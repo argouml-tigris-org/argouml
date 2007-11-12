@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -101,8 +101,13 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
                             String name2 = Model.getFacade().getName(o2);
                             name1 = (name1 != null ? name1 : "");
                             name2 = (name2 != null ? name2 : "");
-
-                            return name1.compareTo(name2);
+                            int result = name1.compareTo(name2);
+                            if (result == 0) {
+                                // Never eliminate anything
+                                return 1;
+                            } else {
+                                return result;
+                            }
                         } catch (Exception e) {
                             throw new ClassCastException(e.getMessage());
                         }
