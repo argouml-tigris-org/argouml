@@ -46,11 +46,13 @@ public class TypeThenNameOrder extends NameOrder {
     }
 
     /*
-     * Compares obj1 and obj2 as per the class description.
-     * Nulls are sorted first.
-     *
+     * Compares obj1 and obj2 sorting by user object type, then name. Diagrams
+     * are sorted first, then packages, then other types. sorts by name within
+     * type groups. Nulls are sorted first for names.
+     * 
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
+    @Override
     public int compare(Object obj1, Object obj2) {
 	if (obj1 instanceof DefaultMutableTreeNode) {
 	    DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj1;
@@ -104,6 +106,7 @@ public class TypeThenNameOrder extends NameOrder {
     /*
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return Translator.localize("combobox.order-by-type-name");
     }
