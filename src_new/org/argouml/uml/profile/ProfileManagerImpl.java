@@ -71,7 +71,6 @@ public class ProfileManagerImpl implements ProfileManager {
         
         registerProfile(ProfileUML.getInstance());
         registerProfile(ProfileJava.getInstance());
-        registerProfile(ProfileCpp.getInstance());
 
         loadDirectoriesFromConfiguration();
 

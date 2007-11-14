@@ -32,6 +32,8 @@ import org.argouml.profile.DefaultTypeStrategy;
 import org.argouml.profile.FormatingStrategy;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileModelLoader;
+import org.argouml.profile.ResourceModelLoader;
 
 /**
  * This class represents the default UML profile

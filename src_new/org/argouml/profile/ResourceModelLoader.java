@@ -1,4 +1,4 @@
-// $Id: ProfileModelLoader.java 13040 2007-07-10 20:00:25Z linus $
+// $Id: ResourceModelLoader.java 13040 2007-07-10 20:00:25Z linus $
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,26 +22,53 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.internal;
+package org.argouml.profile;
 
 import java.util.Collection;
 
-import org.argouml.profile.ProfileException;
+import org.apache.log4j.Logger;
 
 /**
- * Objects implementing this class are responsible for loading profile models
+ * Loads models using the default ClassLoader or a provided one.
  *
  * @author maurelio1234
  */
-public interface ProfileModelLoader {
+public class ResourceModelLoader extends StreamModelLoader {
+
     /**
-     * Tries to load a model from the specified path
-     * 
-     * @param path the path where the profile can be found. <b>
-     *             The expected string format is implementation specific! 
-     * @return the set of defined packages
-     * @throws ProfileException if the profile could not be loaded for some 
-     *                          reason
+     * Logger.
      */
-    Collection loadModel(String path) throws ProfileException;  
+    private static final Logger LOG = Logger
+	    .getLogger(ResourceModelLoader.class);
+    
+    private Class clazz;
+    
+    /**
+     * The default constructor for this class. Loads resources from the same 
+     * ClassLoader that loaded this class.
+     */
+    public ResourceModelLoader() {
+	this.clazz = this.getClass();
+    }
+    
+    /**
+     * Loads resources from the ClassLoader that loaded the given class
+     * 
+     * @param c the reference class
+     */
+    public ResourceModelLoader(Class c) {
+	clazz = c;
+    }
+
+    /**
+     * @param path the model path
+     * @return the model
+     * @throws ProfileException if the profile could not be loaded 
+     * @see org.argouml.uml.profile.StreamModelLoader#loadModel(java.lang.String)
+     */
+    public Collection loadModel(String path) throws ProfileException {
+        LOG.info("Loading profile from resource'" + path + "'");
+        return super.loadModel(clazz.getResourceAsStream(path));
+    }
+
 }

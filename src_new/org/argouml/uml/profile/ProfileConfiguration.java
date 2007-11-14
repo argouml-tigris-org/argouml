@@ -149,6 +149,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
             try {
                 profileModels.addAll(p.getProfilePackages());
             } catch (ProfileException e) {
+                LOG.warn("Error retrieving profile's " + p + " packages.", e);
             }
             
             FigNodeStrategy fns = p.getFigureStrategy();
@@ -161,6 +162,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
             }
 
             updateStrategies();
+            // FIXME: remove this dependency
             ExplorerEventAdaptor.getInstance().structureChanged();
         }
     }
@@ -206,6 +208,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
         }
 
         updateStrategies();        
+        // FIXME: remove this dependency
         ExplorerEventAdaptor.getInstance().structureChanged();
     }
     
@@ -264,7 +267,9 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
 
     /**
-     * Find a stereotype with the given name which is applicable to the given element.
+     * Find a stereotype with the given name which is applicable to the given 
+     * element.
+     * 
      * @param name name of stereotype to look for
      * @param element model element to which the stereotype must be applicable
      * @return the stereotype or null if none found

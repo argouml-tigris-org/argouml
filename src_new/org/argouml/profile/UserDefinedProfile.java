@@ -22,15 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.internal;
+package org.argouml.profile;
 
 import java.io.File;
 import java.util.Collection;
-
-import org.argouml.profile.FigNodeStrategy;
-import org.argouml.profile.FormatingStrategy;
-import org.argouml.profile.Profile;
-import org.argouml.profile.ProfileException;
 
 /**
  * Represents a profile defined by the user

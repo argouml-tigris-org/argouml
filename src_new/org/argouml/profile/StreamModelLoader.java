@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.internal;
+package org.argouml.profile;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
-import org.argouml.profile.ProfileException;
 import org.xml.sax.InputSource;
 
 /**

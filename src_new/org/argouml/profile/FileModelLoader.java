@@ -1,4 +1,4 @@
-// $Id: ResourceModelLoader.java 13040 2007-07-10 20:00:25Z linus $
+// $Id: FileModelLoader.java 13040 2007-07-10 20:00:25Z linus $
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,54 +22,47 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.internal;
+package org.argouml.profile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.argouml.profile.ProfileException;
 
 /**
- * Loads models using the default ClassLoader or a provided one.
+ * An implementation for the ProfileModelLoader that loads profiles from files.
  *
  * @author maurelio1234
  */
-public class ResourceModelLoader extends StreamModelLoader {
-
+public class FileModelLoader extends StreamModelLoader {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-	    .getLogger(ResourceModelLoader.class);
-    
-    private Class clazz;
-    
-    /**
-     * The default constructor for this class. Loads resources from the same 
-     * ClassLoader that loaded this class.
-     */
-    public ResourceModelLoader() {
-	this.clazz = this.getClass();
-    }
-    
-    /**
-     * Loads resources from the ClassLoader that loaded the given class
-     * 
-     * @param c the reference class
-     */
-    public ResourceModelLoader(Class c) {
-	clazz = c;
-    }
+    private static final Logger LOG = Logger.getLogger(FileModelLoader.class);
 
     /**
-     * @param path the model path
-     * @return the model
-     * @throws ProfileException if the profile could not be loaded 
+     * @param modelFilename the model to be loaded
+     * @return the profile model
+     * @throws ProfileException if the model file can't be read or found.
      * @see org.argouml.uml.profile.StreamModelLoader#loadModel(java.lang.String)
      */
-    public Collection loadModel(String path) throws ProfileException {
-        LOG.info("Loading profile from resource'" + path + "'");
-        return super.loadModel(clazz.getResourceAsStream(path));
+    public Collection loadModel(String modelFilename) throws ProfileException {
+        LOG.info("Loading profile from file'" + modelFilename + "'");
+        InputStream is = null;
+        //
+        //  try to find a file with that name
+        //
+        try {
+            File modelFile = new File(modelFilename);
+            is = new FileInputStream(modelFile);
+            
+            return super.loadModel(is);
+        } catch (FileNotFoundException ex) {
+            throw new ProfileException("Model file not found!");
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-// $Id: FileModelLoader.java 13040 2007-07-10 20:00:25Z linus $
+// $Id: ProfileModelLoader.java 13040 2007-07-10 20:00:25Z linus $
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,50 +22,24 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.internal;
+package org.argouml.profile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
-import org.argouml.profile.ProfileException;
-
 /**
- * An implementation for the ProfileModelLoader that loads profiles from file 
- * resources.
+ * Objects implementing this class are responsible for loading profile models
  *
  * @author maurelio1234
  */
-public class FileModelLoader extends StreamModelLoader {
+public interface ProfileModelLoader {
     /**
-     * Logger.
+     * Tries to load a model from the specified path
+     * 
+     * @param path the path where the profile can be found. <b>
+     *             The expected string format is implementation specific! 
+     * @return the set of defined packages
+     * @throws ProfileException if the profile could not be loaded for some 
+     *                          reason
      */
-    private static final Logger LOG = Logger
-	    .getLogger(FileModelLoader.class);
-
-    /**
-     * @param modelFilename the model to be loaded
-     * @return the profile model
-     * @throws ProfileException if the model file can't be read or found.
-     * @see org.argouml.uml.profile.StreamModelLoader#loadModel(java.lang.String)
-     */
-    public Collection loadModel(String modelFilename) throws ProfileException {
-        LOG.info("Loading profile from file'" + modelFilename + "'");
-        InputStream is = null;
-        //
-        //  try to find a file with that name
-        //
-        try {
-            File modelFile = new File(modelFilename);
-            is = new FileInputStream(modelFile);
-            
-            return super.loadModel(is);
-        } catch (FileNotFoundException ex) {
-            throw new ProfileException("Model file not found!");
-        }
-    }
-
+    Collection loadModel(String path) throws ProfileException;  
 }

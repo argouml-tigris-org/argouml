@@ -36,6 +36,7 @@ import org.argouml.configuration.ConfigurationKey;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileManager;
+import org.argouml.profile.UserDefinedProfile;
 
 /**
  * Default <code>ProfileManager</code> implementation
