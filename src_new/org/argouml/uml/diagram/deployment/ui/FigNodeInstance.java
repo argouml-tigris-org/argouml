@@ -25,12 +25,10 @@
 package org.argouml.uml.diagram.deployment.ui;
 
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
@@ -46,7 +44,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author 5eichler@informatik.uni-hamburg.de
  */
-public class FigNodeInstance extends FigMNode {
+public class FigNodeInstance extends AbstractFigNode {
 
 
     
@@ -87,20 +85,6 @@ public class FigNodeInstance extends FigMNode {
     public Object clone() {
         Object clone = super.clone();
         return clone;
-    }
-
-    /*
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
-     */
-    @Override
-    public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
-        // Remove the extra menu entry that was added for Node
-        // This is a kludge, but it's the only small piece of functionality
-        // that exists in FigMNode, but not FigNodeInstance, so we've
-        // arrange the inheritance this way around for the time being. - tfm
-        popUpActions.remove(popUpActions.size() - 1);
-        return popUpActions;
     }
 
 

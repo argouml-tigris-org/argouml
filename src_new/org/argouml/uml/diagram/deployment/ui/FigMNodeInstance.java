@@ -30,7 +30,7 @@ import org.tigris.gef.graph.GraphModel;
  * Compatibility stub for FigNodeInstance's old name.
  * 
  * @deprecated for 0.25.3 by tfmorris - use {@link FigNodeInstance}
- * @author tom.morris
+ * @author tfmorris <tfmorris@gmail.com>
  */
 public class FigMNodeInstance extends FigNodeInstance {
     
