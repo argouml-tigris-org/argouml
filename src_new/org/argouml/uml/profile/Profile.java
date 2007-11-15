@@ -192,7 +192,11 @@ public abstract class Profile {
     }
     
     /**
-     * @return the UML Model that contains the profile model
+     * Returns the top level UML Packages that contain the profile. Usually this
+     * is a single top level Model or Package with the <<profile>> stereotype,
+     * but that is not guaranteed.
+     * 
+     * @return the top level UML Packages that contain the profile
      * @throws ProfileException if failed to get profile.
      */
     public abstract Collection getProfilePackages() throws ProfileException;
