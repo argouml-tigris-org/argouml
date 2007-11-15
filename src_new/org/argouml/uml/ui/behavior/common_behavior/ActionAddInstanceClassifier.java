@@ -52,9 +52,10 @@ public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
     }
 
     /**
-     * The constructor for ActionAddExtendExtensionPoint.
-     * For an Object, the <code>choice</code> will be "Class", for any other
-     * Instance, it will be "Classifier".
+     * Construct Add Classifier action for an instance.  When used with a UML
+     * Object (an instance of a UML Class), the argument <code>choice</code>
+     * will be UMLClass instead of Classifier to further restrict the 
+     * available choices.
      *
      * @param choice the classifier type we are adding
      */
