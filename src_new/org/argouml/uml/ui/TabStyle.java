@@ -305,12 +305,14 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
     /**
      * Get the class for the required stylepanel.
      *
-     * @param targetClass the class of the current seelcted target.
+     * @param targetClass the class of the current selected target.
      * @return the panel class for the class given or
      * null if none available.
      */
     public Class panelClassFor(Class targetClass) {
-        if (targetClass == null) return null;
+        if (targetClass == null) {
+            return null;
+        }
 
         StringNamespace classNs = (StringNamespace) StringNamespace
                 .parse(targetClass);
@@ -325,27 +327,27 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
         classNs.popNamespaceElement();
 
-        Class cls;
+        String[] bases = new String[] { classNs.toString(), baseNs.toString() };
+        for (String stylePanelName : stylePanelNames) {
+            for (String baseName : bases) {
+                String name = baseName + "." + stylePanelName
+                        + targetClassElement;
+                Class cls = loadClass(name);
+                if (cls != null) {
+                    return cls;
+                }
+            }
+        }
+        return null;
+    }
 
-        for (int i = 0; i < stylePanelNames.length; i++) {
-            try {
-                cls = Class.forName(classNs.toString() + "."
-                        + stylePanelNames[i] + targetClassElement);
-                return cls;
-            } catch (ClassNotFoundException ignore) {
-                LOG.debug("ClassNotFoundException. Could not find class:"
-                        + classNs.toString() + "." + stylePanelNames[i]
-                        + targetClassElement);
-            }
-            try {
-                cls = Class.forName(baseNs.toString() + "."
-                        + stylePanelNames[i] + targetClassElement);
-                return cls;
-            } catch (ClassNotFoundException ignore) {
-                LOG.debug("ClassNotFoundException. Could not find class:"
-                        + classNs.toString() + "." + stylePanelNames[i]
-                        + targetClassElement);
-            }
+    private Class loadClass(String name) {
+        try {
+            Class cls = Class.forName(name);
+            return cls;
+        } catch (ClassNotFoundException ignore) {
+            LOG.debug("ClassNotFoundException. Could not find class:"
+                    + name);
         }
         return null;
     }
