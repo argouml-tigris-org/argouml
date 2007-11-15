@@ -97,13 +97,13 @@ public class Tools {
         try {
 
             // class preloading, so packages are there...
-            Class cls = Class.forName("org.tigris.gef.base.Editor");
-            cls = Class.forName("org.xml.sax.AttributeList");
-            cls = Class.forName("org.apache.log4j.Logger");
+            Class cls = org.tigris.gef.base.Editor.class;
+            cls = org.xml.sax.AttributeList.class;
+            cls = org.apache.log4j.Logger.class;
             
             // TODO: The following is MDR specific.  We need something generic
             // to all Model subsystems - tfm 20070716
-            cls = Class.forName("org.netbeans.api.mdr.MDRManager");
+            cls = org.netbeans.api.mdr.MDRManager.class;
 
             StringBuffer sb = new StringBuffer();
 
