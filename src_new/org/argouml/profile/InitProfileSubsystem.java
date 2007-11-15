@@ -27,7 +27,6 @@ package org.argouml.profile;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
 
@@ -36,15 +35,6 @@ import org.argouml.application.api.InitSubsystem;
  * @author Luis Sergio Oliveira (euluis)
  */
 public class InitProfileSubsystem implements InitSubsystem {
-    
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(
-            InitProfileSubsystem.class);
-
-    private static String profileManagerClass = 
-        "org.argouml.profile.internal.ProfileManagerImpl";
 
     /*
      * @see org.argouml.application.api.InitSubsystem#getProjectSettingsTabs()
@@ -64,16 +54,8 @@ public class InitProfileSubsystem implements InitSubsystem {
      * @see org.argouml.application.api.InitSubsystem#init()
      */
     public void init() {
-        try {
-            Class implType = Class.forName(profileManagerClass);
-            ProfileManager profileManager = 
-                (ProfileManager) implType.newInstance();
-            ProfileFacade.setManager(profileManager);
-        } catch (Exception e) {
-            LOG.error("Failed to initialize ProfileManager implementation!", 
-                    e);
-            throw new RuntimeException(e);
-        }
+        ProfileFacade.setManager(
+                new org.argouml.profile.internal.ProfileManagerImpl());
     }
 
 }
