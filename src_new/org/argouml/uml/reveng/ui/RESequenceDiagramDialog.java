@@ -528,6 +528,7 @@ public class RESequenceDiagramDialog
 
             diagram.add(crFig);
             graphModel.addNode(node);
+            // TODO: Send event instead of calling event adapter directly
             ExplorerEventAdaptor.getInstance().modelElementChanged(
                 Model.getFacade().getNamespace(classifier));
         }

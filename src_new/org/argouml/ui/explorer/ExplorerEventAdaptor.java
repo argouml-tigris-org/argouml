@@ -90,6 +90,9 @@ public final class ExplorerEventAdaptor
     /**
      * The tree structure has changed significantly.  
      * Inform the associated tree model.
+     * 
+     * TODO:  This shouldn't be public.  Components desiring to
+     * inform the Explorer of changes should send events.
      */
     public void structureChanged() {
         if (treeModel == null) {
@@ -102,7 +105,11 @@ public final class ExplorerEventAdaptor
      * forwards this event to the tree model.
      *
      * @param element the modelelement to be removed
+     * @deprecated for 0.25.4 by tfmorris.  Send an event rather than calling
+     * this method directly.  This is not currently used by ArgoUML and removal
+     * is handled by Model subsystem events.
      */
+    @Deprecated
     public void modelElementRemoved(Object element) {
         if (treeModel == null) {
             return;
@@ -114,6 +121,9 @@ public final class ExplorerEventAdaptor
      * forwards this event to the tree model.
      *
      * @param element the modelelement to be added
+     * 
+     * TODO:  This shouldn't be public.  Components desiring to
+     * inform the Explorer of changes should send events.
      */
     public void modelElementAdded(Object element) {
         if (treeModel == null) {
@@ -126,6 +136,9 @@ public final class ExplorerEventAdaptor
      * forwards this event to the tree model.
      *
      * @param element the modelelement to be changed
+     * 
+     * TODO:  This shouldn't be public.  Components desiring to
+     * inform the Explorer of changes should send events.
      */
     public void modelElementChanged(Object element) {
         if (treeModel == null) {
