@@ -629,9 +629,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
         Object sel = ruleLibraryList.getSelectedValue();
         int selLibNr = ruleLibraryList.getSelectedIndex();
         try {
-            String ruleName = sel.getClass().getName();
-            PerspectiveRule newRule =
-                (PerspectiveRule) Class.forName(ruleName).newInstance();
+            PerspectiveRule newRule = 
+                (PerspectiveRule) sel.getClass().newInstance();
 
             perspectiveRulesListModel.insertElementAt(newRule, 0);
             ((ExplorerPerspective) perspectiveList.getSelectedValue())
