@@ -82,12 +82,19 @@ public class StereotypeUtility {
                 new Comparator<Object>() {
                     public int compare(Object o1, Object o2) {
                         try {
+                            if (o1.equals(o2)) {
+                                return 0;
+                            }
                             String name1 = Model.getFacade().getName(o1);
                             String name2 = Model.getFacade().getName(o2);
                             name1 = (name1 != null ? name1 : "");
                             name2 = (name2 != null ? name2 : "");
-
-                            return name1.compareTo(name2);
+                            int nameCompare = name1.compareTo(name2);
+                            if (nameCompare == 0) {
+                                return 1;
+                            } else {
+                                return nameCompare;
+                            }
                         } catch (Exception e) {
                             throw new ClassCastException(e.getMessage());
                         }

@@ -75,6 +75,9 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Set<Object> elements = new TreeSet<Object>(new Comparator<Object>() {
             public int compare(Object o1, Object o2) {
+                if (o1.equals(o2)) {
+                    return 0;
+                }
                 // Elements are collated first by name and then by 
                 // their enclosing path to distinguish them
                 List<String> path1 = Model.getModelManagementHelper()
