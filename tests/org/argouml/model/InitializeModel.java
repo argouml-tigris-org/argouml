@@ -37,7 +37,7 @@ public final class InitializeModel {
      * The default model implementation to start.
      */
     private static final String DEFAULT_MODEL_IMPLEMENTATION =
-        org.argouml.model.mdr.MDRModelImplementation.class.toString();
+        "org.argouml.model.mdr.MDRModelImplementation";
 
 
     /**
@@ -62,11 +62,10 @@ public final class InitializeModel {
 
     /**
      * Initialize the Model subsystem with the MDR ModelImplementation.
-     * @throws UmlException 
      */
-    public static void initializeMDR() throws UmlException {
-        Model.setImplementation(
-                new org.argouml.model.mdr.MDRModelImplementation());
+    public static void initializeMDR() {
+        initializeModelImplementation(
+                "org.argouml.model.mdr.MDRModelImplementation");
     }
 
     /**
@@ -75,10 +74,9 @@ public final class InitializeModel {
      * @return the newly created MockModelImplementation.
      */
     public static MockModelImplementation initializeMock() {
-        MockModelImplementation impl = 
-            new org.argouml.model.MockModelImplementation();
-        Model.setImplementation(impl);
-        return impl;
+        return (MockModelImplementation)
+            initializeModelImplementation(
+                "org.argouml.model.MockModelImplementation");
     }
 
     private static ModelImplementation initializeModelImplementation(
