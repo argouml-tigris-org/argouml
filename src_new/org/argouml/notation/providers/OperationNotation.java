@@ -94,15 +94,17 @@ public abstract class OperationNotation extends NotationProvider {
                 removeElementListener(listener, pce.getOldValue());
             }
         }
-        //  We also show types of parameters
-        for (Object param : Model.getFacade().getParameters(modelElement)) {
-            if (pce.getSource() == param
-                    && ("type".equals(pce.getPropertyName()))) {
-                if (pce instanceof AddAssociationEvent) {
-                    addElementListener(listener, pce.getNewValue());
-                }
-                if (pce instanceof RemoveAssociationEvent) {
-                    removeElementListener(listener, pce.getOldValue());
+        if (!Model.getUmlFactory().isRemoved(modelElement)) {
+            //  We also show types of parameters
+            for (Object param : Model.getFacade().getParameters(modelElement)) {
+                if (pce.getSource() == param
+                        && ("type".equals(pce.getPropertyName()))) {
+                    if (pce instanceof AddAssociationEvent) {
+                        addElementListener(listener, pce.getNewValue());
+                    }
+                    if (pce instanceof RemoveAssociationEvent) {
+                        removeElementListener(listener, pce.getOldValue());
+                    }
                 }
             }
         }
