@@ -310,10 +310,9 @@ public class StereotypeUtility {
         }
 
         // add stereotypes
-        if (!stereotypes.isEmpty()) {
-            Iterator i = stereotypes.iterator();
-            while (i.hasNext()) {
-                String stereotypename = (String) i.next();
+        for (String stereotypename : stereotypes) {
+            if (!Model.getExtensionMechanismsHelper()
+                    .hasStereotype(umlobject, stereotypename)) {
                 Object umlstereo = getStereotype(umlobject, stereotypename);
                 if (umlstereo != null) {
                     Model.getCoreHelper().addStereotype(umlobject, umlstereo);

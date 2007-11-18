@@ -289,7 +289,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
                 if (Model.getExtensionMechanismsHelper().isValidStereotype(
                         element, stereo)) {
-                    return element;
+                    return stereo;
                 }
             }
         }
