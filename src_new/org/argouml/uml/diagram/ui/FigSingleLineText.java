@@ -204,7 +204,7 @@ public class FigSingleLineText extends ArgoFigText {
      * @param np The notationProvider to set.
      */
     void setNotationProvider(NotationProvider np) {
-        if (notationProvider != null && getOwner() != null) {
+        if (notationProvider != null) {
             notationProvider.cleanListener(this, getOwner());
         }
         this.notationProvider = np;
