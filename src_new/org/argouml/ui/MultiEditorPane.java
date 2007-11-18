@@ -59,17 +59,44 @@ public class MultiEditorPane
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(MultiEditorPane.class);
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    
+    /**
+     * Classes for tabs to be included in the property panel.
+     * (previously stored in org/argouml/argo.ini)
+     * TODO: This is just used to track dependencies for now.  When
+     * we want to actually switch over to using this and dropping
+     * argo.ini, we'll want the form below which contains instances
+     * instead of classes.
+     */
+    private static final Class[] tabClasses = new Class[] {
+        org.argouml.uml.diagram.ui.TabDiagram.class,
+        // org.argouml.ui.TabTable
+        // TabMetrics
+        // TabJavaSrc | TabSrc
+        // TabUMLDisplay
+        // TabHash
+    };
+    
+    /**
+     * Classes for tabs to be included in the property panel.
+     * (previously stored in org/argouml/argo.ini)
+     */
+//    private final JPanel[] tabInstances = new JPanel[] {
+//        new org.argouml.uml.diagram.ui.TabDiagram(),
+//        // org.argouml.ui.TabTable
+//        // TabMetrics
+//        // TabJavaSrc | TabSrc
+//        // TabUMLDisplay
+//        // TabHash
+//    };
 
     private JTabbedPane tabs = new JTabbedPane(SwingConstants.BOTTOM);
 
-    private List tabPanels = new ArrayList();
+    private List<JPanel> tabPanels = new ArrayList<JPanel>();
+//    private List<JPanel> tabPanels = 
+//        new ArrayList<JPanel>(Arrays.asList(tabInstances));
+    
     private Component lastTab;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructs the MultiEditorPane. This is the pane in which the tabs with
@@ -80,25 +107,28 @@ public class MultiEditorPane
      */
     public MultiEditorPane() {
         LOG.info("making MultiEditorPane");
+        
+        // TODO: Instantiate our required tabs directly instead of using
+        // reflection in ConfigLoader.
         ConfigLoader.loadTabs(tabPanels, "multi", Horizontal.getInstance());
 
         setLayout(new BorderLayout());
         add(tabs, BorderLayout.CENTER);
 
-        // _tabs.addChangeListener(this);
         for (int i = 0; i < tabPanels.size(); i++) {
             String title = "tab";
-            JPanel t = (JPanel) tabPanels.get(i);
+            JPanel t = tabPanels.get(i);
             if (t instanceof AbstractArgoJPanel) {
                 title = ((AbstractArgoJPanel) t).getTitle();
             }
+            // TODO: I18N
             tabs.addTab("As " + title, t);
             tabs.setEnabledAt(i, false);
             if (t instanceof TargetListener) {
                 TargetManager.getInstance()
 		    .addTargetListener((TargetListener) t);
             }
-        } /* end for */
+        }
 
         tabs.addChangeListener(this);
         tabs.addMouseListener(this);
@@ -108,6 +138,7 @@ public class MultiEditorPane
     /*
      * @see java.awt.Component#getPreferredSize()
      */
+    @Override
     public Dimension getPreferredSize() {
         return new Dimension(400, 500);
     }
@@ -115,6 +146,7 @@ public class MultiEditorPane
     /*
      * @see java.awt.Component#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         return new Dimension(100, 100);
     }
@@ -154,9 +186,6 @@ public class MultiEditorPane
         }
     }
 
-    ////////////////////////////////////////////////////////////////
-    // actions
-
     /**
      * Returns the index of a tab with a certain name in the JTabbedPane which
      * is the component shown by the multieditorpane. At the moment (version
@@ -168,8 +197,9 @@ public class MultiEditorPane
     public int getIndexOfNamedTab(String tabName) {
         for (int i = 0; i < tabPanels.size(); i++) {
             String title = tabs.getTitleAt(i);
-            if (title != null && title.equals(tabName))
+            if (title != null && title.equals(tabName)) {
                 return i;
+            }
         }
         return -1;
     }
@@ -181,8 +211,9 @@ public class MultiEditorPane
      */
     public void selectTabNamed(String tabName) {
         int index = getIndexOfNamedTab(tabName);
-        if (index != -1)
+        if (index != -1) {
             tabs.setSelectedIndex(index);
+        }
     }
 
     /**
@@ -217,8 +248,9 @@ public class MultiEditorPane
         LOG.debug(
             "MultiEditorPane state changed:" + lastTab.getClass().getName());
         lastTab.setVisible(true);
-        if (lastTab instanceof TabModelTarget)
+        if (lastTab instanceof TabModelTarget) {
              ((TabModelTarget) lastTab).refresh();
+        }
     }
 
     /*
@@ -332,4 +364,3 @@ public class MultiEditorPane
 
 }
 
-/* end class MultiEditorPane */

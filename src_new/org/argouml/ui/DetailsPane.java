@@ -51,8 +51,14 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
+import org.argouml.uml.ui.TabConstraints;
+import org.argouml.uml.ui.TabDocumentation;
 import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.TabProps;
+import org.argouml.uml.ui.TabSrc;
+import org.argouml.uml.ui.TabStereotype;
+import org.argouml.uml.ui.TabStyle;
+import org.argouml.uml.ui.TabTaggedValues;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientable;
 import org.tigris.swidgets.Orientation;
@@ -79,9 +85,50 @@ public class DetailsPane
      */
     private static final Logger LOG = Logger.getLogger(DetailsPane.class);
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    /**
+     * Classes for tabs to be included in the property panel.
+     * (previously stored in org/argouml/argo.ini)
+     * TODO: This is just used to track dependencies for now.  When
+     * we want to actually switch over to using this and dropping
+     * argo.ini, we'll want the form below which contains instances
+     * instead of classes.
+     */
+    private static final Class[] tabClasses = new Class[] {
+        org.argouml.cognitive.ui.TabToDo.class, 
+        TabProps.class,
+        TabDocumentation.class, 
+        TabStyle.class,
+        // TabDocs
+        TabSrc.class,
+        // TabJavaSrc | TabSrc
+        TabConstraints.class, 
+        TabStereotype.class, 
+        TabTaggedValues.class,
+        org.argouml.cognitive.checklist.ui.TabChecklist.class,
+        // TabHistory
+        // TabHash
+    };
 
+    /**
+     * Classes for tabs to be included in the property panel.
+     * (previously stored in org/argouml/argo.ini)
+     */
+//    private final JPanel[] tabs = new JPanel[] {
+//        new org.argouml.cognitive.ui.TabToDo(), 
+//        new TabProps(),
+//        new TabDocumentation(), 
+//        new TabStyle(),
+//        // TabDocs
+//        new TabSrc(),
+//        // TabJavaSrc | TabSrc
+//        new TabConstraints(), 
+//        new TabStereotype(), 
+//        new TabTaggedValues(),
+//        new org.argouml.cognitive.checklist.ui.TabChecklist(),
+//        // TabHistory
+//        // TabHash
+//    };
+    
     /**
      * The top level pane, which is a tabbed pane.
      */
@@ -96,6 +143,9 @@ public class DetailsPane
      * The list of all the tabs, which are JPanels, in the JTabbedPane tabs.
      */
     private List<JPanel> tabPanelList = new ArrayList<JPanel>();
+    // TODO: switch to the following when we create tabs ourselves
+//    private List<JPanel> tabPanelList = 
+//        new ArrayList<JPanel>(Arrays.asList(tabs));
 
     /**
      * index of the selected tab in the JTabbedPane.
@@ -124,8 +174,6 @@ public class DetailsPane
     private void removeTargetListener(TargetListener listener) {
         listenerList.remove(TargetListener.class, listener);
     }
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Gets all of the tabPanels from the ConfigLoader, then
@@ -141,7 +189,10 @@ public class DetailsPane
     public DetailsPane(String compassPoint, Orientation orientation) {
         LOG.info("making DetailsPane(" + compassPoint + ")");
 
+        // TODO: Instantiate our required tabs directly instead of using
+        // reflection in ConfigLoader.
         ConfigLoader.loadTabs(tabPanelList, compassPoint, orientation);
+        
         setLayout(new BorderLayout());
         setFont(new Font("Dialog", Font.PLAIN, 10));
         add(topLevelTabbedPane, BorderLayout.CENTER);
@@ -183,8 +234,6 @@ public class DetailsPane
         topLevelTabbedPane.addChangeListener(this);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * Returns the JTabbedPane that contains all details panels.
@@ -336,12 +385,11 @@ public class DetailsPane
     /*
      * @see java.awt.Component#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         return new Dimension(100, 100);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // actions
 
     /**
      * Get the index of the tab with the given name.
