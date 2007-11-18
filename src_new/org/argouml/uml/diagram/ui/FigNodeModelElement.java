@@ -2194,8 +2194,17 @@ public abstract class FigNodeModelElement
      * @return the font style for the nameFig.
      */
     protected int getNameFigFontStyle() {
-        ProjectSettings ps = getProject().getProjectSettings();
-        showBoldName = ps.getShowBoldNamesValue();
+    	showBoldName = false;
+    	Project p = getProject();
+
+        /**
+         *  When and why p could be NULL?
+         *  See issue 4911.
+         */
+        if (p != null) {
+            ProjectSettings ps = p.getProjectSettings();
+            showBoldName = ps.getShowBoldNamesValue();
+        }
         
         return showBoldName ? Font.BOLD : Font.PLAIN;
     }
