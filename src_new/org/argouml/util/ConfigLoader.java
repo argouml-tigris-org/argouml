@@ -42,7 +42,6 @@ import org.tigris.swidgets.Orientation;
 
 /**
  * This class loads panel classes specified by a configuration file.
- *
  */
 public class ConfigLoader {
 
@@ -62,18 +61,16 @@ public class ConfigLoader {
     }
 
     /**
-     * Load the tab panels as defined in the configuration file.
+     * Load the tab panels as defined in the configuration file. The system
+     * property <code>argo.config</code> can be used to override the default
+     * config file which is <code>org/argouml/argo.ini</code>
      * 
-     * @param tabs
-     *            the list of tabs in the panel
-     * @param panelName
-     *            the panel name
-     * @param orientation
-     *            the orientation
-     * 
+     * @param tabs List in which to return the tabs that were loaded.
+     * @param panelName the panel name
+     * @param orientation the orientation (Horizontal or Vertical)
      */
     public static void loadTabs(List tabs, String panelName,
-            Orientation orientation) {
+            final Orientation orientation) {
 
         String position = null;
         if (panelName.equals("north") || panelName.equals("south")
@@ -118,66 +115,95 @@ public class ConfigLoader {
             }
 
             if (lnr != null) {
-                try {
-                    String line = lnr.readLine();
-                    while (line != null) {
-                        Class tabClass =
-                            parseConfigLine(line, panelName,
-                                    lnr.getLineNumber(), configFile);
-                        if (tabClass != null) {
-                            try {
-                                String className = tabClass.getName();
-                                String shortClassName =
-                                    className.substring(className
-                                        .lastIndexOf('.') + 1).toLowerCase();
-                                ConfigurationKey key = Configuration
-                                    .makeKey("layout", shortClassName);
-                                if (position == null || position
-                                        .equalsIgnoreCase(Configuration
-                                                .getString(key, "South"))) {
-                                    if (className.equals(
-                                            "org.argouml.uml.ui.TabProps")) {
-                                        tabPropsOrientation = orientation;
-                                    }
-                                    Object newTab = tabClass.newInstance();
-                                    tabs.add(newTab);
-                                }
-                            }
-                            catch (InstantiationException ex) {
-                                LOG.error("Could not make instance of "
-					   + tabClass.getName());
-                            }
-                            catch (IllegalAccessException ex) {
-                                LOG.error("Could not make instance of "
-					   + tabClass.getName());
-                            }
-                        }
-                        line = lnr.readLine();
-                    }
-                }
-                catch (IOException io) {
-                    LOG.error(io);
-                }
+                readConfigFile(tabs, panelName, orientation, position, lnr,
+                        configFile);
             }
             else {
-                LOG.error("lnr is null");
+                LOG.error("Unable to instantiate a config file reader");
             }
         }
     }
 
     /**
-     * Parse a line in the text file containing
-     * the configuration of ArgoUML, "/org/argouml/argo.ini".
-     *
+     * Read each line from the config file, parsing each line and adding
+     * the relevant tabs.
+     * 
+     * @param tabs List of tabs which were added.
+     * @param panelName
+     * @param orientation
+     * @param position
+     * @param lnr reader for the config file
+     * @param configFile name of the config file (used for error reporting)
+     */
+    private static void readConfigFile(List tabs, String panelName,
+            Orientation orientation, String position, LineNumberReader lnr,
+            String configFile) {
+        try {
+            String line = lnr.readLine();
+            while (line != null) {
+                Class tabClass = parseConfigLine(line, panelName, lnr
+                        .getLineNumber(), configFile);
+                if (tabClass != null) {
+                    addTab(tabs, orientation, position, tabClass);
+                }
+                line = lnr.readLine();
+            }
+        }
+        catch (IOException io) {
+            LOG.error(io);
+        }
+    }
+
+    /**
+     * Instantiates the class for a tab and adds it to the list of loaded tabs.
+     * 
+     * @param tabs list of tabs which have been added.
+     * @param orientation orientation of the TabProps tab
+     * @param position
+     * @param tabClass the class to be instantiated as a new tab
+     */
+    private static void addTab(List tabs, Orientation orientation,
+            String position, Class tabClass) {
+        try {
+            String className = tabClass.getName();
+            String shortClassName = className.substring(
+                    className.lastIndexOf('.') + 1).toLowerCase();
+            ConfigurationKey key = Configuration.makeKey("layout",
+                    shortClassName);
+            if (position == null
+                    || position.equalsIgnoreCase(Configuration
+                            .getString(key, "South"))) {
+                if (className.equals("org.argouml.uml.ui.TabProps")) {
+                    tabPropsOrientation = orientation;
+                }
+                Object newTab = tabClass.newInstance();
+                tabs.add(newTab);
+            }
+        } catch (InstantiationException ex) {
+            LOG.error("Could not make instance of "
+                    + tabClass.getName());
+        } catch (IllegalAccessException ex) {
+            LOG.error("Could not make instance of "
+                    + tabClass.getName());
+        }
+    }
+
+    /**
+     * Parse a line in the text file containing the configuration of ArgoUML,
+     * "/org/argouml/argo.ini".  Also has the side effect of loading the
+     * named class if one is found.
+     * 
      * @param line the given line
      * @param panelName the name of the panel
      * @param lineNum the number of the current line
      * @param configFile the configuration file name
      * @return the resulting class of the tabpanel
      */
-    public static Class parseConfigLine(String line, String panelName,
-					int lineNum, String configFile) {
-	if (line.startsWith("tabpath:")) {
+    public static Class parseConfigLine(final String line,
+            final String panelName, final int lineNum, 
+            final String configFile) {
+        
+        if (line.startsWith("tabpath:")) {
 	    String newPath = stripBeforeColon(line).trim();
 	    if (newPath.length() > 0) {
 	        tabPath = newPath;
