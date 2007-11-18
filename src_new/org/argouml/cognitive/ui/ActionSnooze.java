@@ -45,6 +45,7 @@ public class ActionSnooze extends ToDoItemAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
 	if (!(getRememberedTarget() instanceof ToDoItem)) return;
@@ -54,5 +55,5 @@ public class ActionSnooze extends ToDoItemAction {
 	p.snooze();
 	TabToDo.incrementNumHushes();
     }
-} /* end class ActionSnooze */
+}
 

@@ -40,7 +40,6 @@ import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.TabToDoTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.undo.UndoableAction;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Vertical;
@@ -53,16 +52,11 @@ import org.tigris.toolbar.ToolBarFactory;
 public class TabToDo extends AbstractArgoJPanel 
     implements TabToDoTarget, ComponentListener {
     
-    ////////////////////////////////////////////////////////////////
-    // static variables
     private static int numHushes;
 
-    private static Action actionNewToDoItem = new ActionNewToDoItem();
-    private static ToDoItemAction actionResolve = new ActionResolve();
-    private static ToDoItemAction actionSnooze = new ActionSnooze();
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    private static final Action actionNewToDoItem = new ActionNewToDoItem();
+    private static final ToDoItemAction actionResolve = new ActionResolve();
+    private static final ToDoItemAction actionSnooze = new ActionSnooze();
 
     private WizDescription description = new WizDescription();
     private JPanel lastPanel;
@@ -70,15 +64,14 @@ public class TabToDo extends AbstractArgoJPanel
     private Object target;
 
     /**
-     * increments the numHushes.
+     * Increment the number of times we've been "snoozed" (or hushed).
      */
     public static void incrementNumHushes() {
         numHushes++;
     }
 
     /**
-     * The constructor.
-     * Is only called thanks to its listing in the org/argouml/argo.ini file.
+     * Construct a ToDo tab for the property panel.
      */
     public TabToDo() {
         super("tab.todo-item");
@@ -260,4 +253,4 @@ public class TabToDo extends AbstractArgoJPanel
     }
 
     
-} /* end class TabToDo */
+}
