@@ -76,14 +76,18 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
             Editor editor = Globals.curEditor();
             if (editor == null) {
                 // TODO: The above doesn't work reliably in a constructor.  We
-                // need a better way of getting default fig settings for the owning
-                // project rather than using the project manager singleton. - tfm
+                // need a better way of getting default fig settings 
+                // for the owning project rather than using the 
+                // project manager singleton. - tfm
                 return ProjectManager.getManager().getCurrentProject();
             }
             Layer lay = editor.getLayerManager().getActiveLayer();
             if (lay instanceof LayerPerspective) {
                 layer = (LayerPerspective) lay;
             }
+        }
+        if (layer == null) {
+            return null;
         }
         UMLMutableGraphSupport gm = 
             (UMLMutableGraphSupport) layer.getGraphModel();
