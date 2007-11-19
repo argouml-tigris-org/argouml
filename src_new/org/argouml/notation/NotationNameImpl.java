@@ -58,6 +58,8 @@ class NotationNameImpl
     private String version;
     private Icon icon;
 
+    /** The one and only list of notations available 
+     * in the running ArgoUML application. */
     private static ArrayList<NotationName> notations = 
         new ArrayList<NotationName>();
 
