@@ -188,9 +188,14 @@ public class ProjectSettings {
 
     /**
      * @param newLanguage the notation language.
+     * @return true if the notation is set - false if it does not exist
      */
-    public void setNotationLanguage(final String newLanguage) {
-        if (notationLanguage.equals(newLanguage)) return;
+    public boolean setNotationLanguage(final String newLanguage) {
+        if (notationLanguage.equals(newLanguage)) return true;
+        if (Notation.findNotation(newLanguage) == null) {
+            /* This Notation is not available! */
+            return false;
+        }
         
         final String oldLanguage = notationLanguage;
         
@@ -214,6 +219,7 @@ public class ProjectSettings {
         }
         memento.redo();
         ProjectManager.getManager().setSaveEnabled(true);
+        return true;
     }
     
     /**
