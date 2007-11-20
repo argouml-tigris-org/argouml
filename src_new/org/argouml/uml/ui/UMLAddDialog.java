@@ -34,6 +34,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -69,12 +71,12 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     /**
      * The choices a user has
      */
-    private Vector choices = null;
+    private List choices = null;
 
     /**
      * The preselected choices
      */
-    private Vector preSelected = null;
+    private List preSelected = null;
 
     /**
      * The selected choices.
@@ -128,7 +130,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      *            choices list. If true preselected choices are removed from the
      *            choices list.
      */
-    public UMLAddDialog(Vector theChoices, Vector preselected, String theTitle,
+    public UMLAddDialog(List theChoices, List preselected, String theTitle,
             boolean multiselectAllowed, boolean exclusive) {
         this(theChoices, preselected, theTitle, new UMLListCellRenderer2(true),
                 multiselectAllowed, exclusive);
@@ -152,7 +154,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      *            choices list. If true preselected choices are removed from the
      *            choices list.
      */
-    public UMLAddDialog(Vector theChoices, Vector preselected, String theTitle,
+    public UMLAddDialog(List theChoices, List preselected, String theTitle,
             ListCellRenderer renderer, boolean multiselectAllowed,
             boolean exclusive) {
         multiSelectAllowed = multiselectAllowed;
@@ -301,7 +303,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      *            the given list
      * @return DefaultListModel
      */
-    protected DefaultListModel constructListModel(Vector vec) {
+    protected DefaultListModel constructListModel(List vec) {
         DefaultListModel model = new DefaultListModel();
         for (int i = 0; i < vec.size(); i++) {
             model.addElement(vec.get(i));
@@ -348,33 +350,65 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 
     /**
+     * Return the choices a user can make.
+     *
+     * @return List of choices
+     */
+    public List getChoicesList() {
+        List result = new ArrayList();
+        getChoicesListInternal(result);
+        return result;
+    }
+    
+    /**
      * Returns the choices a user can make.
      *
      * @return Vector
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSelectedChoicesList()}.
      */
     public Vector getChoices() {
+        Vector result = new Vector();
+        getChoicesListInternal(result);
+        return result;
+    }
+
+    private void getChoicesListInternal(List result) {
         int[] indices = choicesList.getSelectedIndices();
-        Vector returnVector = new Vector();
         for (int i = 0; i < indices.length; i++) {
-            returnVector.add(choices.get(indices[i]));
+            result.add(choices.get(indices[i]));
         }
-        return returnVector;
     }
 
     /**
      * Returns the selected elements in the selected list
      *
+     * @return List of elements
+     */
+    public List getSelectedChoicesList() {
+        List result = new ArrayList();
+        getSelectedChoicesInternal(result);
+        return result;
+    }
+    
+    /**
+     * Returns the selected elements in the selected list
+     * 
      * @return Vector
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSelectedChoicesList()}.
      */
     public Vector getSelectedChoices() {
-        Vector returnVector = new Vector();
+        Vector result = new Vector();
+        getSelectedChoicesInternal(result);
+        return result;
+    }
+
+    private void getSelectedChoicesInternal(List result) {
         if (selectedList != null && selected != null) {
             int[] indices = selectedList.getSelectedIndices();
             for (int i = 0; i < indices.length; i++) {
-                returnVector.add(selected.get(indices[i]));
+                result.add(selected.get(indices[i]));
             }
         }
-        return returnVector;
     }
 
     /**
@@ -382,17 +416,28 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * if the selected choices are to be known.
      *
      * @return Vector
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSelectedList()}.
      */
     public Vector getSelected() {
         return selected;
     }
 
     /**
+     * Returns the by the user selected elements. This method should be called
+     * if the selected choices are to be known.
+     *
+     * @return List
+     */
+    public List getSelectedList() {
+        return selected;
+    }
+    
+    /**
      * Adds the selected elements in the choices list to the selected list.
      * Updates the GUI too.
      */
     public void addSelection() {
-        Vector theChoices = getChoices();
+        List theChoices = getChoicesList();
         choices.removeAll(theChoices);
         for (int i = 0; i < theChoices.size(); i++) {
             ((DefaultListModel) choicesList.getModel())
@@ -410,7 +455,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * choices list. Updates the GUI too.
      */
     public void removeSelection() {
-        Vector theChoices = getSelectedChoices();
+        List theChoices = getSelectedChoicesList();
         selected.removeAll(theChoices);
         for (int i = 0; i < theChoices.size(); i++) {
             ((DefaultListModel) selectedList.getModel())
