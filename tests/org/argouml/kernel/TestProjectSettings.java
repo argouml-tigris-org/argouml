@@ -27,13 +27,16 @@ package org.argouml.kernel;
 import java.beans.PropertyChangeEvent;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.configuration.Configuration;
+import org.argouml.model.InitializeModel;
+import org.argouml.notation.InitNotation;
 import org.argouml.notation.Notation;
+import org.argouml.notation.providers.java.InitNotationJava;
+import org.argouml.notation.providers.uml.InitNotationUml;
 
 /**
  * Tests for the ProjectSettings.
@@ -272,7 +275,8 @@ public class TestProjectSettings extends TestCase {
                 ((String) pce.getNewValue()).equals("2"));
         
         rxdEvent = null;
-        p.getProjectSettings().setNotationLanguage("Java");
+        /* We initialised Java Notation, so let's activate it: */
+        assertTrue(p.getProjectSettings().setNotationLanguage("Java"));
         /* This assumes events are dispatched on the same thread. */
         assertTrue("Got no notation event", rxdEvent != null);
         pce = (PropertyChangeEvent) rxdEvent.getSource();
@@ -291,6 +295,9 @@ public class TestProjectSettings extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        (new InitNotation()).init();
+        (new InitNotationUml()).init();
+        (new InitNotationJava()).init();
         /* Needed for initialisations: */
         ProjectManager.getManager().getCurrentProject();
     }
