@@ -42,4 +42,4 @@ public class PropPanelUMLStateDiagram extends PropPanelDiagram {
 
     }
 
-} /* end class PropPanelDiagram */
+}

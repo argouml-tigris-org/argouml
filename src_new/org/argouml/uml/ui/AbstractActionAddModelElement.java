@@ -78,6 +78,7 @@ public abstract class AbstractActionAddModelElement extends UndoableAction {
      * @see
      * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         UMLAddDialog dialog =
@@ -153,6 +154,7 @@ public abstract class AbstractActionAddModelElement extends UndoableAction {
     /*
      * @see javax.swing.Action#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
         return !getChoices().isEmpty();
     }
