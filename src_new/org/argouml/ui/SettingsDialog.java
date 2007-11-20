@@ -53,8 +53,6 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
 
     private JTabbedPane tabs;
 
-    private boolean doingShow;
-
     private boolean windowOpen;
 
     /**
@@ -99,20 +97,13 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
         addWindowListener(this);
     }
 
-    /*
-     * @see java.awt.Dialog#show()
-     */
-    public void show() {
-        // If a recursive call from setVisible(), just return
-        if (doingShow) {
-            return;
+    @Override
+    public void setVisible(boolean show) {
+        if (show) {
+            handleRefresh();
+            toFront();
         }
-        doingShow = true;
-        handleRefresh();
-        super.show();
-        toFront();
-        setVisible(true);
-        doingShow = false;
+        super.setVisible(show);
         // windowOpen state will be changed when window is activated
     }
 
