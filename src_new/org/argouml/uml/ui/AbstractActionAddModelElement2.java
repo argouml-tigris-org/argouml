@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
@@ -48,8 +49,15 @@ public abstract class AbstractActionAddModelElement2 extends UndoableAction {
     private boolean multiSelect = true;
     private boolean exclusive = true;
 
-    public AbstractActionAddModelElement2() {
-        super(Translator.localize("menu.popup.add"));
+    /**
+     * Construct an action to add a model element to some list.
+     */
+    protected AbstractActionAddModelElement2() {
+        super(Translator.localize("menu.popup.add-modelelement"),
+                null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("menu.popup.add-modelelement"));
     }
 
     public AbstractActionAddModelElement2(String name) {
