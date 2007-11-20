@@ -40,6 +40,7 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -88,7 +89,7 @@ public class PropPanelClassifierInState extends PropPanelClassifier {
                 getClassifierInStateTypeSelector()));
         
         // field for States
-        AbstractActionAddModelElement actionAdd = 
+        AbstractActionAddModelElement2 actionAdd = 
             new ActionAddCISState();
         AbstractActionRemoveElement actionRemove = 
             new ActionRemoveCISState();

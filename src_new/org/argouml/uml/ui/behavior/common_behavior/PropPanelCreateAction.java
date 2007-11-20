@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 
 /**
@@ -44,7 +44,7 @@ public class PropPanelCreateAction extends PropPanelAction {
     public PropPanelCreateAction() {
         super("label.create-action", lookupIcon("CreateAction"));
 
-        AbstractActionAddModelElement action =
+        AbstractActionAddModelElement2 action =
             new ActionAddCreateActionInstantiation();
         UMLMutableLinkedList list =
             new UMLMutableLinkedList(

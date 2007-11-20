@@ -25,13 +25,13 @@
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
@@ -40,7 +40,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -199,8 +199,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
      * sorted list of strings.
      */
     void initMetaClasses() {
-        Collection<String> tmpMetaClasses = 
-            Model.getCoreHelper().getAllMetatypeNames();
+        Collection<String> tmpMetaClasses =
+                Model.getCoreHelper().getAllMetatypeNames();
         if (tmpMetaClasses instanceof List) {
             metaClasses = (List<String>) tmpMetaClasses;
         } else {
@@ -255,11 +255,11 @@ public class PropPanelStereotype extends PropPanelModelElement {
      *
      * @author Michiel
      */
-    class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement {
-
+    class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement2 {
+        
         @Override
-        protected Vector getChoices() {
-            return new Vector<String>(metaClasses);
+        protected List getChoices() {
+            return metaClasses;
         }
 
         @Override
@@ -268,18 +268,18 @@ public class PropPanelStereotype extends PropPanelModelElement {
         }
 
         @Override
-        protected Vector getSelected() {
-            Vector vec = new Vector();
+        protected List getSelected() {
+            List result = new ArrayList();
             if (Model.getFacade().isAStereotype(getTarget())) {
-                Collection bases = 
-                    Model.getFacade().getBaseClasses(getTarget());
-                vec.addAll(bases);
+                Collection bases =
+                        Model.getFacade().getBaseClasses(getTarget());
+                result.addAll(bases);
             }
-            return vec;
+            return result;
         }
 
         @Override
-        protected void doIt(Vector selected) {
+        protected void doIt(List selected) {
             Object stereo = getTarget();
             Set<Object> oldSet = new HashSet<Object>(getSelected());
             Set toBeRemoved = new HashSet<Object>(oldSet);
@@ -289,7 +289,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
                     toBeRemoved.remove(o);
                 } else {
                     Model.getExtensionMechanismsHelper()
-                        .addBaseClass(stereo, o);
+                            .addBaseClass(stereo, o);
                 }
             }
             for (Object o : toBeRemoved) {
@@ -317,8 +317,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
             if (baseclass != null) {
                 Object st = getTarget();
                 if (Model.getFacade().isAStereotype(st)) {
-                    Model.getExtensionMechanismsHelper()
-                        .removeBaseClass(st, baseclass);
+                    Model.getExtensionMechanismsHelper().removeBaseClass(st,
+                            baseclass);
                 }
             }
         }

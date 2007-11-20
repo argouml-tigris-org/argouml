@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,31 +24,32 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.event.ActionEvent;
 import java.util.Vector;
 
 import javax.swing.Action;
-import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.ArgoFrame;
-import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Abstract action that is the parent to all add actions that add the
- * modelelements via the UMLAddDialog.
+ * modelelements via the UMLAddDialog.  This is the original form the API which
+ * being preserved just long enough to migrate everyone to the List-based API.
+ * 
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated for 0.25.4 by tfmorris. Use
+ *             {@link AbstractActionAddModelElement2#}.
  */
-public abstract class AbstractActionAddModelElement extends UndoableAction {
-
-    private Object target;
-    private boolean multiSelect = true;
-    private boolean exclusive = true;
+public abstract class AbstractActionAddModelElement extends
+        AbstractActionAddModelElement2 {
 
     /**
-     * The constructor.
+     * Construct an action to add a model element to some list.
+     * 
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link AbstractActionAddModelElement2#AbstractActionAddModelElement2()}.
      */
+    @Deprecated
     protected AbstractActionAddModelElement() {
         super(Translator.localize("menu.popup.add-modelelement"),
                 null);
@@ -59,104 +60,36 @@ public abstract class AbstractActionAddModelElement extends UndoableAction {
 
 
     /**
-     * Returns the UML model target.
-     * @return UML ModelElement
-     */
-    protected Object getTarget() {
-        return target;
-    }
-
-    /**
-     * Sets the UML model target.
-     * @param theTarget The target to set
-     */
-    public void setTarget(Object theTarget) {
-        target = theTarget;
-    }
-
-    /*
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        UMLAddDialog dialog =
-	    new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(),
-			     isMultiSelect(),
-			     isExclusive());
-        int result = dialog.showDialog(ArgoFrame.getInstance());
-        if (result == JOptionPane.OK_OPTION) {
-            doIt(dialog.getSelected());
-        }
-    }
-
-    /**
      * Returns the choices the user has in the UMLAddDialog. The choices are
      * depicted on the left side of the UMLAddDialog (sorry Arabic users) and
      * can be moved via the buttons on the dialog to the right side. On the
      * right side are the selected modelelements.
+     * 
      * @return Vector
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link AbstractActionAddModelElement2#getChoices()).
      */
+    @Deprecated
     protected abstract Vector getChoices();
 
     /**
      * The modelelements already selected BEFORE the dialog is shown.
      * @return Vector
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link AbstractActionAddModelElement2#getSelected()).
      */
+    @Deprecated
     protected abstract Vector getSelected();
-
-    /**
-     * Returns the title of the dialog.
-     * @return String
-     */
-    protected abstract String getDialogTitle();
 
     /**
      * The action that has to be done by ArgoUml after the user clicks ok in the
      * UMLAddDialog.
      * @param selected The choices the user has selected in the UMLAddDialog
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link AbstractActionAddModelElement2#doIt(java.util.List)).
      */
+    @Deprecated
     protected abstract void doIt(Vector selected);
 
-    /**
-     * Returns the exclusive.
-     * @return boolean
-     */
-    public boolean isExclusive() {
-        return exclusive;
-    }
-
-    /**
-     * Returns the multiSelect.
-     * @return boolean
-     */
-    public boolean isMultiSelect() {
-        return multiSelect;
-    }
-
-    /**
-     * Sets the exclusive.
-     * @param theExclusive The exclusive to set
-     */
-    public void setExclusive(boolean theExclusive) {
-        exclusive = theExclusive;
-    }
-
-    /**
-     * Sets the multiSelect.
-     * @param theMultiSelect The multiSelect to set
-     */
-    public void setMultiSelect(boolean theMultiSelect) {
-        multiSelect = theMultiSelect;
-    }
-
-    /*
-     * @see javax.swing.Action#isEnabled()
-     */
-    @Override
-    public boolean isEnabled() {
-        return !getChoices().isEmpty();
-    }
 
 }

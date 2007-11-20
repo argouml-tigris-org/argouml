@@ -29,7 +29,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -72,7 +72,7 @@ public class PropPanelNodeInstance extends PropPanelInstance {
                 new JScrollPane(resList));
 
         addSeparator();
-        AbstractActionAddModelElement a =
+        AbstractActionAddModelElement2 a =
             new ActionAddInstanceClassifier(Model.getMetaTypes().getNode());
         JScrollPane classifierScroll =
                 new JScrollPane(new UMLMutableLinkedList(

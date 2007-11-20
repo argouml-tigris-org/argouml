@@ -24,7 +24,8 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JScrollPane;
 
@@ -32,7 +33,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 
@@ -48,7 +49,7 @@ public class PropPanelSendAction extends PropPanelAction {
     public PropPanelSendAction() {
         super("label.send-action", lookupIcon("SendAction"));
 
-        AbstractActionAddModelElement action =
+        AbstractActionAddModelElement2 action =
             new ActionAddSendActionSignal();
         UMLMutableLinkedList list =
             new UMLMutableLinkedList(
@@ -77,12 +78,11 @@ public class PropPanelSendAction extends PropPanelAction {
 
 /**
  * This action binds Instances to one  Classifiers,
- * which declare its structure and behaviour.
+ * which declare its structure and behavior.
  */
-class ActionAddSendActionSignal extends AbstractActionAddModelElement {
+class ActionAddSendActionSignal extends AbstractActionAddModelElement2 {
 
     private Object choiceClass = Model.getMetaTypes().getSignal();
-
 
     /**
      * Constructor.
@@ -93,11 +93,8 @@ class ActionAddSendActionSignal extends AbstractActionAddModelElement {
     }
 
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
-     *         java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
+    @Override
+    protected void doIt(List selected) {
         if (selected != null && selected.size() >= 1) {
             Model.getCommonBehaviorHelper().setSignal(
                     getTarget(),
@@ -107,11 +104,8 @@ class ActionAddSendActionSignal extends AbstractActionAddModelElement {
         }
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        Vector ret = new Vector();
+    protected List getChoices() {
+        List ret = new ArrayList();
         if (getTarget() != null) {
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
@@ -120,19 +114,15 @@ class ActionAddSendActionSignal extends AbstractActionAddModelElement {
         }
         return ret;
     }
+    
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-signal");
     }
+    
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        Vector ret = new Vector();
+    protected List getSelected() {
+        List ret = new ArrayList();
         Object signal = Model.getFacade().getSignal(getTarget());
         if (signal != null) {
             ret.add(signal);

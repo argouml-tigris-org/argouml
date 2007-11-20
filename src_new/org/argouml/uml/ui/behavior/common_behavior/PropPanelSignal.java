@@ -26,14 +26,15 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 
 import java.awt.event.ActionEvent;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLModelElementListModel2;
@@ -92,7 +93,7 @@ public class PropPanelSignal extends PropPanelClassifier {
 		
         addSeparator();
 		
-        AbstractActionAddModelElement actionAddContext =
+        AbstractActionAddModelElement2 actionAddContext =
             new ActionAddContextSignal();
         AbstractActionRemoveElement actionRemoveContext =
             new ActionRemoveContextSignal();
@@ -103,7 +104,7 @@ public class PropPanelSignal extends PropPanelClassifier {
                         actionRemoveContext, true));
         addField(Translator.localize("label.contexts"),
                 operationScroll);		
-        AbstractActionAddModelElement actionAddReception =
+        AbstractActionAddModelElement2 actionAddReception =
             new ActionAddReceptionSignal();
         AbstractActionRemoveElement actionRemoveReception =
             new ActionRemoveReceptionSignal();
@@ -173,7 +174,7 @@ class UMLSignalReceptionListModel extends UMLModelElementListModel2 {
  * 
  * @author Michiel
  */
-class ActionAddReceptionSignal extends AbstractActionAddModelElement {
+class ActionAddReceptionSignal extends AbstractActionAddModelElement2 {
 
     /**
      * The serial version.
@@ -190,8 +191,8 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement {
     /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
-    protected Vector getChoices() {
-        Vector ret = new Vector();
+    protected List getChoices() {
+        List ret = new ArrayList();
         Object model =
             ProjectManager.getManager().getCurrentProject().getModel();
         if (getTarget() != null) {
@@ -205,8 +206,8 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement {
     /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
-    protected Vector getSelected() {
-        Vector ret = new Vector();
+    protected List getSelected() {
+        List ret = new ArrayList();
         ret.addAll(Model.getFacade().getReceptions(getTarget()));
         return ret;
     }
@@ -221,7 +222,7 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement {
     /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
-    protected void doIt(Vector selected) {
+    protected void doIt(List selected) {
         Model.getCommonBehaviorHelper().setReception(getTarget(), selected);
     }
 

@@ -65,7 +65,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     private JPopupMenu popupMenu;
 
-    private AbstractActionAddModelElement addAction = null;
+    private AbstractActionAddModelElement2 addAction = null;
 
     private AbstractActionNewModelElement newAction = null;
 
@@ -108,7 +108,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      * @param showIcon true if an icon should be shown
      */
     public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
-            AbstractActionAddModelElement theAddAction,
+            AbstractActionAddModelElement2 theAddAction,
             AbstractActionNewModelElement theNewAction,
             AbstractActionRemoveElement theDeleteAction, boolean showIcon) {
         super(dataModel, showIcon);
@@ -127,7 +127,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      * @param theNewAction the action for new
      */
     public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
-            AbstractActionAddModelElement theAddAction,
+            AbstractActionAddModelElement2 theAddAction,
             AbstractActionNewModelElement theNewAction) {
         this(dataModel, theAddAction, theNewAction, null, true);
     }
@@ -139,7 +139,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      * @param theAddAction the action for adding
      */
     public UMLMutableLinkedList(UMLModelElementListModel2 dataModel,
-            AbstractActionAddModelElement theAddAction) {
+            AbstractActionAddModelElement2 theAddAction) {
         this(dataModel, theAddAction, null, null, true);
     }
 
@@ -233,7 +233,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      *
      * @return UMLChangeAction
      */
-    public AbstractActionAddModelElement getAddAction() {
+    public AbstractActionAddModelElement2 getAddAction() {
         return addAction;
     }
 
@@ -252,7 +252,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
      * @param action
      *            The addAction to set
      */
-    public void setAddAction(AbstractActionAddModelElement action) {
+    public void setAddAction(AbstractActionAddModelElement2 action) {
         if (action != null)
             addPossible = true;
         addAction = action;
@@ -340,7 +340,8 @@ public class UMLMutableLinkedList extends UMLLinkedList
      * 
      * This allows to replace the complete default menu with a custom menu.
      * If nobody is using this, then we better remove this functionality, and 
-     * just return a new menu all the time - that would simplify initialising it.
+     * just return a new menu all the time - that would simplify initializing
+     * it.
      *
      * @param menu
      *            The popupMenu to set
