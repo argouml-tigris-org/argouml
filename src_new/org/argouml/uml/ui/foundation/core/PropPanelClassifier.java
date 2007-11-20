@@ -82,11 +82,27 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         new UMLClassOperationListModel();
 
     /**
+     * Construct a property panel for a Classififer with the given name and
+     * icon.
+     * 
+     * @param name the title of the properties panel
+     * @param icon the icon shown next to the name
+     */
+    public PropPanelClassifier(String name, ImageIcon icon) {
+        super(name, icon);
+        initialize();
+    }
+    
+    /**
      * The constructor.
      *
      * @param title the title of the properties panel
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelClassifier(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelClassifier(String title, Orientation orientation) {
         super(title, orientation);
         initialize();
@@ -98,7 +114,11 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      * @param name the title of the properties panel
      * @param orientation the orientation of the panel
      * @param icon the icon shown next to the name
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelClassifier(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelClassifier(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);

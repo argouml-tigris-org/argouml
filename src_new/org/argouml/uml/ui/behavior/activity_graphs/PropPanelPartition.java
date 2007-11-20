@@ -39,7 +39,6 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 
 /**
@@ -59,8 +58,7 @@ public class PropPanelPartition extends PropPanelModelElement {
      * constructor.
      */
     public PropPanelPartition() {
-        super("Swimlane",  lookupIcon("Partition"),
-      	      ConfigLoader.getTabPropsOrientation());
+        super("label.partition-title",  lookupIcon("Partition"));
 
         addField(Translator.localize("label.name"), getNameTextField());
         

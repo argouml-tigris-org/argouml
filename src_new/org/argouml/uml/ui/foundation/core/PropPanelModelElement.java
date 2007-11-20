@@ -44,7 +44,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -100,33 +99,54 @@ public abstract class PropPanelModelElement extends PropPanel {
 	new UMLModelElementTargetFlowListModel();
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a model element with the given name, icon,
+     * and orientation.
+     * 
      * @param name the name of the properties panel
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelElement(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelModelElement(String name, ImageIcon icon,
             Orientation orientation) {
-        super(name, icon, orientation);
+        super(name, icon);
+        setOrientation(orientation);
     }
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a model element with the given name and
+     * icon.
+     * 
      * @param name the name of the properties panel
      * @param orientation the orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelElement(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelModelElement(String name, Orientation orientation) {
         super(name, orientation);
     }
 
     /**
+     * The constructor.
+     *
+     * @param name the name of the properties panel
+     * @param icon the ico
+     */
+    public PropPanelModelElement(String name, ImageIcon icon) {
+        super(name, icon);
+    }
+    
+    /**
      * Constructor that is used if no other proppanel can be found for a
      * modelelement of some kind. Since this is the default
      */
     public PropPanelModelElement() {
-        this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
+        this("label.model-element-title", (ImageIcon) null);
         addField("label.name",
                 getNameTextField());
         addField("label.namespace",
@@ -168,9 +188,9 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     /**
      * @return a scrollpane for the namespace
-     * @deprecated use {@link #getNamespaceSelector()}
-     *         When was this deprecated? Can it be removed?
+     * @deprecated for 0.24 by bobtarling.  Use {@link #getNamespaceSelector()}
      */
+    @Deprecated
     protected JComponent getNamespaceScroll() {
         if (namespaceScroll == null) {
             JList namespaceList = new UMLLinkedList(namespaceListModel);

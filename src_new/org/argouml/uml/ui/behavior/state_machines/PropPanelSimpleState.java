@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.ImageIcon;
 
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -45,8 +44,7 @@ public class PropPanelSimpleState extends AbstractPropPanelState {
      * Construct a new default property panel for a Simple State.
      */
     public PropPanelSimpleState() {
-        this("label.simple.state", lookupIcon("SimpleState"),
-                ConfigLoader.getTabPropsOrientation());
+        this("label.simple.state", lookupIcon("SimpleState"));
     }
 
     /**
@@ -56,34 +54,41 @@ public class PropPanelSimpleState extends AbstractPropPanelState {
      * @param name the name of the properties panel, shown at the top
      * @param icon the icon shown at the top
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelSimpleState(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelSimpleState(String name, ImageIcon icon,
             Orientation orientation) {
-        super(name, icon, orientation);
+        this(name, icon);
+        setOrientation(orientation);
+    }
+    
+    /**
+     * Construct a new property panel for a Simple State with the given
+     * attributes.
+     * 
+     * @param name the name of the properties panel, shown at the top
+     * @param icon the icon shown at the top
+     */
+    private PropPanelSimpleState(String name, ImageIcon icon) {
+        super(name, icon);
 
-        addField("label.name",
-                getNameTextField());
-        addField("label.container",
-                getContainerScroll());
-        addField("label.entry",
-                getEntryScroll());
-        addField("label.exit",
-                getExitScroll());
-        addField("label.do-activity",
-                getDoScroll());
-        addField("label.deferrable",
-                getDeferrableEventsScroll());
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
+        addField("label.entry", getEntryScroll());
+        addField("label.exit", getExitScroll());
+        addField("label.do-activity", getDoScroll());
+        addField("label.deferrable", getDeferrableEventsScroll());
 
         addSeparator();
 
-        addField("label.incoming",
-                getIncomingScroll());
-        addField("label.outgoing",
-                getOutgoingScroll());
-        addField("label.internal-transitions",
-                getInternalTransitionsScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
+        addField("label.internal-transitions", getInternalTransitionsScroll());
 
     }
 
-} /* end class PropPanelSimpleState */
+}
 

@@ -46,7 +46,7 @@ public class PropPanelSendAction extends PropPanelAction {
      * The constructor.
      */
     public PropPanelSendAction() {
-        super("SendAction", lookupIcon("SendAction"));
+        super("label.send-action", lookupIcon("SendAction"));
 
         AbstractActionAddModelElement action =
             new ActionAddSendActionSignal();
@@ -64,6 +64,7 @@ public class PropPanelSendAction extends PropPanelAction {
     /**
      * @see org.argouml.uml.ui.behavior.common_behavior.PropPanelAction#addExtraActions()
      */
+    @Override
     protected void addExtraActions() {
         addAction(new ActionNewSignal());
     }

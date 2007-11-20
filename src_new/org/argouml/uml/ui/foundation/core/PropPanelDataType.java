@@ -39,7 +39,6 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -58,10 +57,26 @@ public class PropPanelDataType extends PropPanelClassifier {
      * @param title title string for the property panel
      * @param icon icon
      * @param orientation horizontal or vertical orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelDataType(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelDataType(String title, ImageIcon icon,
             Orientation orientation) {
-        super(title, icon, orientation);
+        this(title, icon);
+        setOrientation(orientation);
+    }
+    
+    /**
+     * Construct a property panel for UML DataType elements.
+     * 
+     * @param title title string for the property panel
+     * @param icon icon
+     * @param orientation horizontal or vertical orientation
+     */
+    public PropPanelDataType(String title, ImageIcon icon) {
+        super(title, icon);
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -105,8 +120,7 @@ public class PropPanelDataType extends PropPanelClassifier {
      * The constructor.
      */
     public PropPanelDataType() {
-        this("DataType", lookupIcon("DataType"),
-                ConfigLoader.getTabPropsOrientation());
+        this("label.data-type", lookupIcon("DataType"));
     }
 
     private static class ActionAddQueryOperation
@@ -123,6 +137,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAClassifier(target)) {
@@ -150,6 +165,7 @@ public class PropPanelDataType extends PropPanelClassifier {
      *
      * @return JScrollPane
      */
+    @Override
     public JScrollPane getOperationScroll() {
         if (operationScroll == null) {
             JList list = new UMLLinkedList(operationListModel);

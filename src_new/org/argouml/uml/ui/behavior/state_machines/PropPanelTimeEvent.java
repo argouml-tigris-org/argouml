@@ -31,7 +31,6 @@ import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.UMLTimeExpressionModel;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a TimeEvent.
@@ -44,13 +43,13 @@ public class PropPanelTimeEvent extends PropPanelEvent {
      * The constructor.
      */
     public PropPanelTimeEvent() {
-        super("label.time.event", lookupIcon("TimeEvent"), ConfigLoader
-                .getTabPropsOrientation());
+        super("label.time.event", lookupIcon("TimeEvent"));
     }
 
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
      */
+    @Override
     public void initialize() {
         super.initialize();
 

@@ -111,6 +111,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelAttribute;
 import org.argouml.uml.ui.foundation.core.PropPanelClass;
 import org.argouml.uml.ui.foundation.core.PropPanelComment;
 import org.argouml.uml.ui.foundation.core.PropPanelComponent;
+import org.argouml.uml.ui.foundation.core.PropPanelConstraint;
 import org.argouml.uml.ui.foundation.core.PropPanelDataType;
 import org.argouml.uml.ui.foundation.core.PropPanelDependency;
 import org.argouml.uml.ui.foundation.core.PropPanelElementResidence;
@@ -132,10 +133,10 @@ import org.argouml.uml.ui.model_management.PropPanelElementImport;
 import org.argouml.uml.ui.model_management.PropPanelModel;
 import org.argouml.uml.ui.model_management.PropPanelPackage;
 import org.argouml.uml.ui.model_management.PropPanelSubsystem;
-import org.argouml.util.ConfigLoader;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Orientable;
 import org.tigris.swidgets.Orientation;
 
@@ -158,11 +159,10 @@ public class TabProps
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(TabProps.class);
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+
     private boolean shouldBeEnabled = false;
     private JPanel blankPanel = new JPanel();
-    private Hashtable panels = new Hashtable();
+    private Hashtable<Class, TabModelTarget> panels = new Hashtable<Class, TabModelTarget>();
     private JPanel lastPanel;
     private String panelClassBaseName = "";
 
@@ -192,7 +192,7 @@ public class TabProps
     public TabProps(String tabName, String panelClassBase) {
         super(tabName);
         TargetManager.getInstance().addTargetListener(this);
-        setOrientation(ConfigLoader.getTabPropsOrientation());
+        setOrientation(Horizontal.getInstance());
         panelClassBaseName = panelClassBase;
         setLayout(new BorderLayout());
     }
@@ -204,6 +204,7 @@ public class TabProps
      *
      * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
+    @Override
     public void setOrientation(Orientation orientation) {
         super.setOrientation(orientation);
         Enumeration pps = panels.elements();
@@ -302,8 +303,10 @@ public class TabProps
      * @return the tab panel
      */
     private TabModelTarget findPanelFor(Object trgt) {
+        // TODO: No test coverage for this or createPropPanel? - tfm
+        
         /* 1st attempt: get a panel that we created before: */
-        TabModelTarget p = (TabModelTarget) panels.get(trgt.getClass());
+        TabModelTarget p = panels.get(trgt.getClass());
         if (p != null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Getting prop panel for: " + trgt.getClass().getName()
@@ -341,6 +344,8 @@ public class TabProps
 
 	TabModelTarget propPanel = null;
 
+
+	
         // Create prop panels for diagrams
         if (modelElement instanceof UMLActivityDiagram) {
             propPanel = new PropPanelUMLActivityDiagram();
@@ -356,7 +361,11 @@ public class TabProps
             propPanel = new PropPanelUMLStateDiagram();
         } else if (modelElement instanceof UMLUseCaseDiagram) {
             propPanel = new PropPanelUMLUseCaseDiagram();
-        } else if (Model.getFacade().isASubmachineState(modelElement)) {
+        }
+            // TODO: This needs to be in type hierarchy order to work properly
+            // and create the most specific property panel properly
+            
+        else if (Model.getFacade().isASubmachineState(modelElement)) {
             propPanel = new PropPanelSubmachineState();
         } else if (Model.getFacade().isASubactivityState(modelElement)) {
             propPanel = new PropPanelSubactivityState();
@@ -404,6 +413,8 @@ public class TabProps
             propPanel = new PropPanelComponentInstance();
         } else if (Model.getFacade().isACompositeState(modelElement)) {
             propPanel = new PropPanelCompositeState();
+        } else if (Model.getFacade().isAConstraint(modelElement)) {
+            propPanel = new PropPanelConstraint();
         } else if (Model.getFacade().isACreateAction(modelElement)) {
             propPanel = new PropPanelCreateAction();
         } else if (Model.getFacade().isAEnumeration(modelElement)) {
@@ -517,8 +528,13 @@ public class TabProps
         } else if (modelElement instanceof FigText) {
             propPanel = new PropPanelString();
         }
-
+        
+        if (propPanel instanceof Orientable) {
+            ((Orientable) propPanel).setOrientation(getOrientation());
+        }
+        
         if (propPanel instanceof PropPanel) {
+            ((PropPanel) propPanel).setOrientation(getOrientation());
             ((PropPanel) propPanel).buildToolbar();
         }
 

@@ -37,7 +37,6 @@ import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.ActionSetElementOwnershipSpecification;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an ElementImport. <p>
@@ -58,7 +57,7 @@ public class PropPanelElementImport extends PropPanelModelElement {
      * Constructor.
      */
     public PropPanelElementImport() {
-        super("ElementImport", ConfigLoader.getTabPropsOrientation());
+        super("label.element-import", lookupIcon("ElementImport"));
 
         addField(Translator.localize("label.alias"),
                 getAliasTextField());

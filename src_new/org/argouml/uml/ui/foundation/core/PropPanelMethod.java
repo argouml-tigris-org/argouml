@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,7 +43,6 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
-import org.argouml.util.ConfigLoader;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -64,8 +63,7 @@ public class PropPanelMethod extends PropPanelFeature {
      * Construct a property panel for UML Method elements.
      */
     public PropPanelMethod() {
-        super("Method", lookupIcon("Method"), ConfigLoader
-                .getTabPropsOrientation());
+        super("label.method", lookupIcon("Method"));
         UMLPlainTextDocument uptd = new UMLMethodBodyDocument();
 
         addField(Translator.localize("label.name"),
@@ -334,4 +332,4 @@ public class PropPanelMethod extends PropPanelFeature {
      * The UID.
      */
     private static final long serialVersionUID = -6443549338375514393L;
-} /* end class PropPanelMethod */
+}

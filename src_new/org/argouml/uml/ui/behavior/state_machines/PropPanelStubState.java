@@ -29,7 +29,6 @@ import javax.swing.JComboBox;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.util.ConfigLoader;
 
 /**
  * @since Dec 15, 2002
@@ -46,14 +45,10 @@ public class PropPanelStubState extends PropPanelStateVertex {
      * Constructor for PropPanelStubState.
      */
     public PropPanelStubState() {
-        super("label.stub.state", lookupIcon("StubState"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.stub.state", lookupIcon("StubState"));
 
-        addField("label.name",
-                getNameTextField());
-
-        addField("label.container",
-                getContainerScroll());
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
 
         JComboBox referencestateBox =
                 new UMLComboBox2(
@@ -66,10 +61,8 @@ public class PropPanelStubState extends PropPanelStateVertex {
 
         addSeparator();
 
-        addField("label.incoming",
-                getIncomingScroll());
-
-        addField("label.outgoing",
-                getOutgoingScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
     }
+    
 }

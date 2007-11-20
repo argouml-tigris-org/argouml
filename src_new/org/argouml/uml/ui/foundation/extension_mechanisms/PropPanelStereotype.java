@@ -52,7 +52,6 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationL
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
-import org.argouml.util.ConfigLoader;
 import org.tigris.gef.undo.UndoManager;
 
 /**
@@ -95,8 +94,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
      * Construct a stereotype properties panel.
      */
     public PropPanelStereotype() {
-        super("Stereotype", lookupIcon("Stereotype"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.stereotype-title", lookupIcon("Stereotype"));
 
         addField(Translator.localize("label.name"), getNameTextField());
 
@@ -325,4 +323,4 @@ public class PropPanelStereotype extends PropPanelModelElement {
             }
         }
     }
-} /* end class PropPanelStereotype */
+}

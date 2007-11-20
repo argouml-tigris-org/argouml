@@ -36,7 +36,6 @@ import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * A property panel for Guards. 
@@ -56,7 +55,7 @@ public class PropPanelGuard extends PropPanelModelElement {
      * 
      */
     public PropPanelGuard() {
-        super("label.guard", ConfigLoader.getTabPropsOrientation());
+        super("label.guard", lookupIcon("Guard"));
         
         addField("label.name", getNameTextField());
         

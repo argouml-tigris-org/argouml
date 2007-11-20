@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,7 +42,6 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Properties panel of an ActionSequence.
@@ -55,7 +54,7 @@ public class PropPanelActionSequence extends PropPanelModelElement {
      * Construct a default property panel for an Action.
      */
     public PropPanelActionSequence() {
-        this("ActionSequence", lookupIcon("ActionSequence"));
+        this("label.action-sequence", lookupIcon("ActionSequence"));
     }
 
     /**
@@ -67,7 +66,7 @@ public class PropPanelActionSequence extends PropPanelModelElement {
      *            the icon to be shown next to the name
      */
     public PropPanelActionSequence(String name, ImageIcon icon) {
-        super(name, icon, ConfigLoader.getTabPropsOrientation());
+        super(name, icon);
         initialize();
     }
 
@@ -183,6 +182,7 @@ class ActionRemoveAction extends AbstractActionRemoveElement {
     /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object action = getObjectToRemove();
@@ -209,6 +209,7 @@ class UMLActionSequenceActionList extends UMLMutableLinkedList {
     /*
      * @see org.argouml.uml.ui.UMLMutableLinkedList#getPopupMenu()
      */
+    @Override
     public JPopupMenu getPopupMenu() {
         return new PopupMenuNewAction(ActionNewAction.Roles.MEMBER, this);
     }

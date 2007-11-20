@@ -40,7 +40,6 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanel;
-import org.argouml.util.ConfigLoader;
 
 /**
  * This class represents the properties panel for a Diagram.
@@ -49,13 +48,13 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelDiagram extends PropPanel {
 
     /**
-     * Constructs a proppanel with a given name.
+     * Construct a property panel with a given name and icon.
      * 
      * @param diagramName the diagram name to use as the title of the panel
      * @param icon an icon to display on the panel
      */
     protected PropPanelDiagram(String diagramName, ImageIcon icon) {
-        super(diagramName, icon, ConfigLoader.getTabPropsOrientation());
+        super(diagramName, icon);
 
         JTextField field = new JTextField();
         field.getDocument().addDocumentListener(new DiagramNameDocument(field));
@@ -76,8 +75,7 @@ public class PropPanelDiagram extends PropPanel {
         this("Diagram", null);
     }
 
-
-} /* end class PropPanelDiagram */
+}
 
 class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
 
@@ -101,6 +99,7 @@ class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
     /*
      * @see javax.swing.Action#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
         return true;
     }
@@ -108,6 +107,7 @@ class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getTarget();
         Object destination = navigateTo(target);

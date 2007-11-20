@@ -27,11 +27,9 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an Interface.
- *
  */
 public class PropPanelInterface extends PropPanelClassifier {
 
@@ -44,7 +42,7 @@ public class PropPanelInterface extends PropPanelClassifier {
      * Construct a property panel for UML Interface elements.
      */
     public PropPanelInterface() {
-        super("Interface", ConfigLoader.getTabPropsOrientation());
+        super("label.interface", lookupIcon("Interface"));
         
         addField(Translator.localize("label.name"), getNameTextField());
         addField(Translator.localize("label.namespace"),
@@ -75,4 +73,4 @@ public class PropPanelInterface extends PropPanelClassifier {
         addAction(getDeleteAction());
     }
 
-} /* end class PropPanelInterface */
+}

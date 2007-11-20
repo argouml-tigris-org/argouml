@@ -53,7 +53,6 @@ import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
-import org.argouml.util.ConfigLoader;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -90,9 +89,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
      * Construct a property panel for TagDefinition elements.
      */
     public PropPanelTagDefinition() {
-        super("TagDefinition",
-            lookupIcon("TagDefinition"),
-            ConfigLoader.getTabPropsOrientation());
+        super("label.tag-definition-title", lookupIcon("TagDefinition"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

@@ -30,7 +30,6 @@ import javax.swing.JScrollPane;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a ChangeEvent.
@@ -40,17 +39,16 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelChangeEvent extends PropPanelEvent {
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a Change Event.
      */
     public PropPanelChangeEvent() {
-        super("label.change.event", lookupIcon("ChangeEvent"),
-              ConfigLoader.getTabPropsOrientation());
+        super("label.change.event", lookupIcon("ChangeEvent"));
     }
 
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
      */
+    @Override
     public void initialize() {
         super.initialize();
 

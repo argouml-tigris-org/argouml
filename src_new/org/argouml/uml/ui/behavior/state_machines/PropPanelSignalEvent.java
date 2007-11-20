@@ -28,28 +28,25 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a SignalEvent.
- *
  *
  * @author oliver.heyden
  */
 public class PropPanelSignalEvent extends PropPanelEvent {
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a Signal Event.
      */
     public PropPanelSignalEvent() {
-        super("label.signal.event", lookupIcon("SignalEvent"),
-              ConfigLoader.getTabPropsOrientation());
+        super("label.signal.event", lookupIcon("SignalEvent"));
     }
 
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
      */
+    @Override
     public void initialize() {
         super.initialize();
 

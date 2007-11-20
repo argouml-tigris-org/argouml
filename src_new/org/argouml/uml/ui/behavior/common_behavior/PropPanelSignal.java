@@ -40,7 +40,6 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel of a Signal.
@@ -61,7 +60,7 @@ public class PropPanelSignal extends PropPanelClassifier {
      * Construct a default property panel for a Signal.
      */
     public PropPanelSignal() {
-        this("Signal", "SignalSending");
+        this("label.signal-title", "SignalSending");
     }
     
     /**
@@ -75,8 +74,7 @@ public class PropPanelSignal extends PropPanelClassifier {
      *            name of the image icon to use
      */
     public PropPanelSignal(String title, String iconName) {
-        super(title, lookupIcon(iconName),
-                ConfigLoader.getTabPropsOrientation());
+        super(title, lookupIcon(iconName));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -251,6 +249,7 @@ class ActionRemoveContextSignal extends AbstractActionRemoveElement {
     /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object context = getObjectToRemove(); 
@@ -286,6 +285,7 @@ class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
     /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object reception = getObjectToRemove(); 

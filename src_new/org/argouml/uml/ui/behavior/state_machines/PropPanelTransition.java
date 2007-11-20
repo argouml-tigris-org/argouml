@@ -42,7 +42,6 @@ import org.argouml.uml.ui.behavior.common_behavior.ActionNewTerminateAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewUninterpretedAction;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 import org.argouml.util.ToolBarUtility;
 
 /**
@@ -61,9 +60,7 @@ public class PropPanelTransition extends PropPanelModelElement {
      * Construct a new property panel for a Transition.
      */
     public PropPanelTransition() {
-        super("label.transition",
-            lookupIcon("Transition"),
-            ConfigLoader.getTabPropsOrientation());
+        super("label.transition-title", lookupIcon("Transition"));
 
         addField("label.name",
                 getNameTextField());

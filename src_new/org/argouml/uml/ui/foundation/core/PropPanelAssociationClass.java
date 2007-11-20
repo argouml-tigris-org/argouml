@@ -31,7 +31,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an AssociationClass.
@@ -64,9 +63,7 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
      * Construct a property panel for AssociationClass elements.
      */
     public PropPanelAssociationClass() {
-        super("label.association-class", 
-                lookupIcon("AssociationClass"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.association-class", lookupIcon("AssociationClass"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

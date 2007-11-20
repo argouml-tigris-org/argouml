@@ -37,7 +37,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel of a CallEvent.
@@ -47,17 +46,16 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelCallEvent extends PropPanelEvent {
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a Call Event.
      */
     public PropPanelCallEvent() {
-        super("label.call-event", lookupIcon("CallEvent"),
-              ConfigLoader.getTabPropsOrientation());
+        super("label.call-event", lookupIcon("CallEvent"));
     }
 
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
      */
+    @Override
     public void initialize() {
         super.initialize();
 
@@ -89,6 +87,7 @@ class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();

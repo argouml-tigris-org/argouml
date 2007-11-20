@@ -31,7 +31,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Property Panel for the collection of pseudostates (branch, fork, ...). It
@@ -48,19 +47,15 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
      * Construct a new property panel for a PseudoState (branch, fork, etc).
      */
     public PropPanelPseudostate() {
-        super("label.pseudostate", null, ConfigLoader.getTabPropsOrientation());
+        super("label.pseudostate", lookupIcon("State"));
 
-        addField("label.name",
-                getNameTextField());
-        addField("label.container",
-                getContainerScroll());
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
 
         addSeparator();
 
-        addField("label.incoming",
-                getIncomingScroll());
-        addField("label.outgoing",
-                getOutgoingScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
 
         TargetManager.getInstance().addTargetListener(this);
     }
@@ -122,6 +117,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
     /*
      * @see org.argouml.uml.ui.PropPanel#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
+    @Override
     public void targetAdded(TargetEvent e) {
         if (Model.getFacade().isAPseudostate(e.getNewTarget())) {
             refreshTarget();
@@ -132,6 +128,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
     /*
      * @see org.argouml.uml.ui.PropPanel#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
+    @Override
     public void targetRemoved(TargetEvent e) {
         if (Model.getFacade().isAPseudostate(e.getNewTarget())) {
             refreshTarget();
@@ -142,6 +139,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
     /*
      * @see org.argouml.uml.ui.PropPanel#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
+    @Override
     public void targetSet(TargetEvent e) {
         if (Model.getFacade().isAPseudostate(e.getNewTarget())) {
             refreshTarget();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,6 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -60,12 +59,10 @@ public class PropPanelLink extends PropPanelModelElement {
         new UMLLinkAssociationComboBoxModel();
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a Link element.
      */
     public PropPanelLink() {
-        super("Link", lookupIcon("Link"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.link", lookupIcon("Link"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -184,6 +181,7 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
     /*
     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
     */
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         /*
          * Rebuild the list from scratch to be sure it's correct.
@@ -221,6 +219,7 @@ class ActionSetLinkAssociation extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
     	super.actionPerformed(e);
         Object source = e.getSource();

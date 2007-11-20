@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The property panel for an AssociationEnd.
@@ -34,10 +33,10 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
 
     /**
-     * Constructs the proppanel and places all scrollpanes etc. on the canvas.
+     * Construct the proppanel and place all scrollpanes etc. on the canvas.
      */
     public PropPanelAssociationEndRole() {
-        super("AssociationEndRole", ConfigLoader.getTabPropsOrientation());
+        super("label.association-end-role", lookupIcon("AssociationEndRole"));
         setAssociationLabel(Translator.localize("label.association-role"));
         createControls();
         positionStandardControls();

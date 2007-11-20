@@ -34,7 +34,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -58,41 +57,50 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      * @param name the name of the properties panel
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelCompositeState(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelCompositeState(final String name, final ImageIcon icon,
             final Orientation orientation) {
-        super(name, icon, orientation);
+        super(name, icon);
+        setOrientation(orientation);
         initialize();
     }
 
+    /**
+     * Constructor for PropPanelCompositeState.
+     * @param name the name of the properties panel
+     * @param icon the icon to be shown next to the name
+     */
+    public PropPanelCompositeState(final String name, final ImageIcon icon) {
+        super(name, icon);
+        initialize();
+    }
+    
     /**
      * Construct a new property panel for a CompositeState.
      *
      */
     public PropPanelCompositeState() {
-        super("label.composite-state", lookupIcon("CompositeState"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.composite-state", lookupIcon("CompositeState"));
         initialize();
 
-        addField("label.name",
-                getNameTextField());
-        addField("label.container",
-                getContainerScroll());
-        /*addField("label.modifiers",
-                new UMLCompositeStateConcurrentCheckBox());*/
-        addField("label.entry",
-                getEntryScroll());
-        addField("label.exit",
-                getExitScroll());
-        addField("label.do-activity",
-                getDoScroll());
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
+        /*
+         * addField("label.modifiers", new
+         * UMLCompositeStateConcurrentCheckBox());
+         */
+        addField("label.entry", getEntryScroll());
+        addField("label.exit", getExitScroll());
+        addField("label.do-activity", getDoScroll());
 
         addSeparator();
 
-        addField("label.incoming",
-                getIncomingScroll());
-        addField("label.outgoing",
-                getOutgoingScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
         addField("label.internal-transitions",
                 getInternalTransitionsScroll());
 

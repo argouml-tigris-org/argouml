@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -38,7 +39,6 @@ import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -114,6 +114,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * The list of qualifiers that owns this association end
      */
     private JScrollPane qualifiersScroll;
+    
+    private String associationLabel;
+
 
     /**
      * Constructs the proppanel including initializing all scrollpanes, panels
@@ -121,13 +124,26 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * @param name name/title of the property panel
      * @param orientation orientation of the panel
      * @see org.argouml.uml.ui.PropPanel#PropPanel(String, Orientation)
+     * @deprecated for 0.25.4 by tfmorris.  Use setOrientation after
+     * instantiation to select orientation.
      */
+    @Deprecated
     protected PropPanelAssociationEnd(String name, Orientation orientation) {
         super(name, orientation);
     }
 
-    private String associationLabel;
 
+    /**
+     * Constructs the proppanel including initializing all scrollpanes, panels
+     * etc. but excluding placing them on the proppanel itself.
+     * 
+     * @param name name/title of the property panel
+     * @param orientation orientation of the panel
+     * @see org.argouml.uml.ui.PropPanel#PropPanel(String, ImageIcon)
+     */
+    protected PropPanelAssociationEnd(String name, ImageIcon icon) {
+        super(name, icon);
+    }
 
     /**
      * Constructs the proppanel and places all scrollpanes etc. on the canvas.
@@ -135,8 +151,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * @see java.lang.Object#Object()
      */
     public PropPanelAssociationEnd() {
-        super("label.association-end", 
-                ConfigLoader.getTabPropsOrientation());
+        super("label.association-end", lookupIcon("AssociationEnd"));
         associationLabel = Translator.localize("label.association");
         createControls();
         positionStandardControls();

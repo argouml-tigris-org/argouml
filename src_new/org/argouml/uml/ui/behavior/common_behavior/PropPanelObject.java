@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,6 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 
 /**
@@ -44,8 +43,7 @@ public class PropPanelObject extends PropPanelInstance {
      * Construct a property panel for UML Object elements.
      */
     public PropPanelObject() {
-	super("Object", lookupIcon("Object"),
-            ConfigLoader.getTabPropsOrientation());
+	super("label.object", lookupIcon("Object"));
 
 	addField(Translator.localize("label.name"), getNameTextField());
 

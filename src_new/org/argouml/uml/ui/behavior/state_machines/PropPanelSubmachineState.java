@@ -32,7 +32,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -56,44 +55,58 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
      *            the icon to be shown next to the name
      * @param orientation
      *            the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelCompositeState(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelSubmachineState(final String name, final ImageIcon icon,
             final Orientation orientation) {
-        super(name, icon, orientation);
+        super(name, icon);
+        setOrientation(orientation);
         initialize();
     }
 
     /**
+     * Construct a property panel for SubmachineState elements with the given
+     * params.
+     *
+     * @param name
+     *            the name of the properties panel
+     * @param icon
+     *            the icon to be shown next to the name
+     */
+    public PropPanelSubmachineState(final String name, final ImageIcon icon) {
+        super(name, icon);
+        // TODO: Are these constructors organized correctly?  We aren't
+        // providing our own initialize(), so all the work done in the default
+        // constructor will be skipped for 
+        // our subclasses (PropPanelSubactivityState) - tfm - 20071119
+        initialize();
+    }
+    
+    /**
      * Construct a default property panel SubmachineState elements.
      */
     public PropPanelSubmachineState() {
-        super("label.submachinestate", lookupIcon("SubmachineState"),
-                ConfigLoader.getTabPropsOrientation());
-        addField("label.name",
-                getNameTextField());
-        addField("label.container",
-                getContainerScroll());
+        super("label.submachinestate", lookupIcon("SubmachineState"));
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
         final JComboBox submachineBox = new UMLComboBox2(
                 new UMLSubmachineStateComboBoxModel(),
                 ActionSetSubmachineStateSubmachine.getInstance());
         addField("label.submachine",
                 new UMLComboBoxNavigator(Translator.localize(
                         "tooltip.nav-submachine"), submachineBox));
-        addField("label.entry",
-                getEntryScroll());
-        addField("label.exit",
-                getExitScroll());
-        addField("label.do-activity",
-                getDoScroll());
+        addField("label.entry", getEntryScroll());
+        addField("label.exit", getExitScroll());
+        addField("label.do-activity", getDoScroll());
 
         addSeparator();
 
-        addField("label.incoming",
-                getIncomingScroll());
-        addField("label.outgoing",
-                getOutgoingScroll());
-        addField("label.internal-transitions",
-                getInternalTransitionsScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
+        addField("label.internal-transitions", getInternalTransitionsScroll());
 
         addSeparator();
 

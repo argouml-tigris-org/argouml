@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a FinalState.
@@ -42,28 +41,21 @@ public class PropPanelFinalState extends AbstractPropPanelState {
      * Construct a new property panel for a Final State.
      */
     public PropPanelFinalState() {
-        super("label.final.state", lookupIcon("FinalState"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.final.state", lookupIcon("FinalState"));
 
-        addField("label.name",
-                getNameTextField());
-        addField("label.container",
-                getContainerScroll());
-        addField("label.entry",
-                getEntryScroll());
-        addField("label.do-activity",
-                getDoScroll());
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
+        addField("label.entry", getEntryScroll());
+        addField("label.do-activity", getDoScroll());
 
         addSeparator();
 
-        addField("label.incoming",
-                getIncomingScroll());
-        addField("label.internal-transitions",
-                getInternalTransitionsScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.internal-transitions", getInternalTransitionsScroll());
 
     }
 
-} /* end class PropPanelFinalState */
+} 
 
 
 

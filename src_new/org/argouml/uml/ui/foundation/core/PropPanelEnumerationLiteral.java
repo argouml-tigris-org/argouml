@@ -33,7 +33,6 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an EnumerationLiteral.
@@ -55,7 +54,7 @@ public class PropPanelEnumerationLiteral extends PropPanelModelElement {
      * Construct a property panel for UML EnumerationLiterals.
      */
     public PropPanelEnumerationLiteral() {
-        super("EnumerationLiteral", ConfigLoader.getTabPropsOrientation());
+        super("label.enumeration-literal", lookupIcon("EnumerationLiteral"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -68,7 +67,7 @@ public class PropPanelEnumerationLiteral extends PropPanelModelElement {
         addAction(new ActionNewStereotype());
         addAction(getDeleteAction());
     }
-} /* end class PropPanelAttribute */
+}
 
 /**
  * The list model for the namespace of a diagram.

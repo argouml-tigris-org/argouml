@@ -31,7 +31,6 @@ import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Builds the property panel for an Include relationship.<p>
@@ -54,14 +53,10 @@ public class PropPanelInclude extends PropPanelModelElement {
      * Construct a property panel for Include model elements.
      */
     public PropPanelInclude() {
-        super("label.includes",
-                lookupIcon("Include"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.include", lookupIcon("Include"));
 
-        addField("label.name",
-		 getNameTextField());
-        addField("label.namespace",
-                getNamespaceSelector());
+        addField("label.name", getNameTextField());
+        addField("label.namespace", getNamespaceSelector());
 
         addSeparator();
 
@@ -162,4 +157,4 @@ public class PropPanelInclude extends PropPanelModelElement {
     }
 
 
-} /* end class PropPanelInclude */
+} 

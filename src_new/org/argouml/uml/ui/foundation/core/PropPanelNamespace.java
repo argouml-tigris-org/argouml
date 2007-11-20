@@ -44,12 +44,26 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         new UMLNamespaceOwnedElementListModel();
 
     /**
+     * Construct a property panel for a Namespace with the given name and icon.
+     *
+     * @param panelName the name of the panel to be shown at the top
+     * @param icon the icon to be shown next to the name
+     */
+    public PropPanelNamespace(String panelName, ImageIcon icon) {
+        super(panelName, icon);
+    }
+    
+    /**
      * The constructor.
      *
      * @param panelName the name of the panel to be shown at the top
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelNamespace(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelNamespace(String panelName, ImageIcon icon,
             Orientation orientation) {
         super(panelName, icon, orientation);
@@ -60,7 +74,11 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      *
      * @param title the name of the panel to be shown at the top
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelNamespace(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelNamespace(String title, Orientation orientation) {
     	super(title, orientation);
     }
@@ -121,4 +139,4 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
 
     }
 
-} /* end class PropPanelClass */
+}

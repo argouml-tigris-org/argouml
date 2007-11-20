@@ -28,7 +28,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a ElementResidence. <p>
@@ -44,7 +43,7 @@ public class PropPanelElementResidence extends PropPanelModelElement {
      * Construct a property panel for a ElementResidence.
      */
     public PropPanelElementResidence() {
-        super("ElementResidence", ConfigLoader.getTabPropsOrientation());
+        super("label.element-residence", lookupIcon("ElementResidence"));
 
         add(getNamespaceVisibilityPanel());
         addSeparator();

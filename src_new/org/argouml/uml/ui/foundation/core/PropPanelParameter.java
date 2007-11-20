@@ -41,7 +41,6 @@ import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The property panel for parameters.
@@ -61,13 +60,9 @@ public class PropPanelParameter extends PropPanelModelElement {
      * Construct a property panel for UML Parameter elements.
      */
     public PropPanelParameter() {
-        super(
-	      "Parameter",
-	      lookupIcon("Parameter"),
-	      ConfigLoader.getTabPropsOrientation());
+        super("label.parameter", lookupIcon("Parameter"));
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
+        addField(Translator.localize("label.name"), getNameTextField());
         addField(Translator.localize("label.owner"),
                 getBehavioralFeatureScroll());
 

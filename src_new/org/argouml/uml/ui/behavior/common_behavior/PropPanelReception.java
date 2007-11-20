@@ -38,7 +38,6 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBo
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * PropertyPanel for a Reception.
@@ -56,8 +55,7 @@ public class PropPanelReception extends PropPanelFeature {
      * Construct a property panel for a Reception.
      */
     public PropPanelReception() {
-        super("Reception", lookupIcon("Reception"), ConfigLoader
-                .getTabPropsOrientation());
+        super("label.reception", lookupIcon("Reception"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

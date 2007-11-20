@@ -49,11 +49,14 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
 
     /**
      * Constructor for PropPanelEvent.
-     *
+     * 
      * @param name the name string of the properties panel
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation
+     * @deprecated for 0.25.4 by tfmorris. Use constructor without Orientation
+     *             argument and use setOrientation after instantiation.
      */
+    @Deprecated
     public PropPanelEvent(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
@@ -61,20 +64,28 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
     }
 
     /**
+     * Construct a property panel for an Event.
+     * 
+     * @param name the name string of the properties panel
+     * @param icon the icon to be shown next to the name
+     */
+    public PropPanelEvent(String name, ImageIcon icon) {
+        super(name, icon);
+        initialize();
+    }
+    
+    /**
      * Initialize the panel with all fields and stuff.
      */
     protected void initialize() {
 
         paramScroll = getParameterScroll();
 
-        addField("label.name",
-                getNameTextField());
-        addField("label.namespace",
-                getNamespaceSelector());
+        addField("label.name", getNameTextField());
+        addField("label.namespace", getNamespaceSelector());
 
         addSeparator();
-        addField("label.parameters",
-                getParameterScroll());
+        addField("label.parameters", getParameterScroll());
         JList transitionList = new UMLLinkedList(
                 new UMLEventTransitionListModel());
         transitionList.setVisibleRowCount(2);
@@ -102,4 +113,4 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         return paramScroll;
     }
 
-} /* end class PropPanelEvent */
+}

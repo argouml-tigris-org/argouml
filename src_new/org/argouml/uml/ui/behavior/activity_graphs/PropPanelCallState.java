@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateEntryListModel;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -52,8 +51,22 @@ public class PropPanelCallState extends AbstractPropPanelState {
      *
      */
     public PropPanelCallState() {
-        this("CallState", lookupIcon("CallState"), ConfigLoader
-                .getTabPropsOrientation());
+        this("label.call-state", lookupIcon("CallState"));
+    }
+
+    /**
+     * @param name the name of the properties panel
+     * @param icon the icon to be shown next to the name
+     * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelCallState(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
+     */
+    @Deprecated
+    public PropPanelCallState(String name, ImageIcon icon,
+            Orientation orientation) {
+        this(name, icon);
+        setOrientation(orientation);
     }
 
     /**
@@ -61,10 +74,9 @@ public class PropPanelCallState extends AbstractPropPanelState {
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
      */
-    public PropPanelCallState(String name, ImageIcon icon,
-            Orientation orientation) {
+    public PropPanelCallState(String name, ImageIcon icon) {
 
-        super(name, icon, orientation);
+        super(name, icon);
 
         callActionEntryList =
             new UMLCallStateEntryList(

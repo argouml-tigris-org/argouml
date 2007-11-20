@@ -33,7 +33,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine;
-import org.argouml.util.ConfigLoader;
 
 /**
  * PropertyPanel for Activitygraphs. It inherits almost everything from
@@ -45,9 +44,10 @@ public class PropPanelActivityGraph extends PropPanelStateMachine {
      * The constructor.
      */
     public PropPanelActivityGraph() {
-        super("ActivityGraph", ConfigLoader.getTabPropsOrientation());
+        super("label.activity-graph-title", lookupIcon("ActivityGraph"));
     }
     
+    @Override
     protected UMLComboBoxModel2 getContextComboBoxModel() {
         return new UMLActivityGraphContextComboBoxModel();
     }
@@ -55,6 +55,7 @@ public class PropPanelActivityGraph extends PropPanelStateMachine {
     /**
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine#initialize()
      */
+    @Override
     protected void initialize() {
         super.initialize();
         

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,7 +48,6 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an ObjectFlowState.
@@ -70,13 +69,10 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
      * Construct a property panel for ObjectFlowState elements.
      */
     public PropPanelObjectFlowState() {
-        super("ObjectFlowState", lookupIcon("ObjectFlowState"), ConfigLoader
-                .getTabPropsOrientation());
+        super("label.object-flow-state", lookupIcon("ObjectFlowState"));
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.container"),
-                getContainerScroll());
+        addField(Translator.localize("label.name"), getNameTextField());
+        addField(Translator.localize("label.container"), getContainerScroll());
 
         addField(Translator.localize("label.synch-state"),
                 new UMLActionSynchCheckBox());
@@ -121,6 +117,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState#addExtraButtons()
      */
+    @Override
     protected void addExtraButtons() {
         /* We do not want the Internal Transitions button here. */
 
@@ -135,6 +132,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
     /*
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
+    @Override
     public void setTarget(Object t) {
         Object oldTarget = getTarget();
         super.setTarget(t);
@@ -341,6 +339,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         /*
          * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Object state = getObjectToRemove();
@@ -479,6 +478,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             super();
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object target = getTarget();
             if (Model.getFacade().isAObjectFlowState(target)) {
@@ -503,6 +503,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         /*
          * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Object param = getObjectToRemove();

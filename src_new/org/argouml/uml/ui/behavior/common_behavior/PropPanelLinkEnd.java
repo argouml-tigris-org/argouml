@@ -34,7 +34,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.argouml.util.ConfigLoader;
 
 /**
  * A basic property panel for link ends.
@@ -55,11 +54,8 @@ public class PropPanelLinkEnd extends PropPanelModelElement {
      * Construct a property panel for a Link End.
      */
     public PropPanelLinkEnd() {
-        super("label.association-link-end", 
-                lookupIcon("AssociationEnd"),
-                ConfigLoader.getTabPropsOrientation());
-        addField("label.name",
-                getNameTextField());
+        super("label.association-link-end", lookupIcon("AssociationEnd"));
+        addField("label.name", getNameTextField());
 
         addSeparator();
 

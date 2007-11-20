@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,11 +35,10 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.UMLContainerResidentListModel;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel of a NodeInstance.
- *
+ * <p>
  * TODO: this property panel needs refactoring to remove dependency on old gui
  * components.
  */
@@ -54,8 +53,7 @@ public class PropPanelNodeInstance extends PropPanelInstance {
      * Construct a property panel for Node Instance elements.
      */
     public PropPanelNodeInstance() {
-        super("Node Instance", lookupIcon("NodeInstance"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.node-instance", lookupIcon("NodeInstance"));
 
         addField(Translator.localize("label.name"), getNameTextField());
         addField(Translator.localize("label.namespace"),

@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLTextField2;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a SynchState.
@@ -43,23 +42,17 @@ public class PropPanelSynchState extends PropPanelStateVertex {
      * Construct a property panel for a Synch State.
      */
     public PropPanelSynchState() {
-        super("label.synch-state",
-            lookupIcon("SynchState"),
-            ConfigLoader.getTabPropsOrientation());
+        super("label.synch-state", lookupIcon("SynchState"));
 
-        addField("label.name",
-                getNameTextField());
-        addField("label.container",
-                getContainerScroll());
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
         addField("label.bound",
                 new UMLTextField2(new UMLSynchStateBoundDocument()));
 
         addSeparator();
 
-        addField("label.incoming",
-                getIncomingScroll());
-        addField("label.outgoing",
-                getOutgoingScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
     }
 
 }

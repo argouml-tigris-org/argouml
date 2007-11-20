@@ -33,7 +33,6 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Property panel for collaborations. 
@@ -51,10 +50,9 @@ public class PropPanelCollaboration extends PropPanelNamespace {
      * Construct a property panel for a Collaboration.
      */
     public PropPanelCollaboration() {
-        super("Collaboration", ConfigLoader.getTabPropsOrientation());
+        super("label.collaboration", lookupIcon("Collaboration"));
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
+        addField(Translator.localize("label.name"), getNameTextField());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 

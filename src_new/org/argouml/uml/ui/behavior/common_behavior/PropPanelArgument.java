@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,6 @@ import org.argouml.uml.ui.UMLExpressionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.argouml.util.ConfigLoader;
 
 /**
  *
@@ -45,14 +44,11 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelArgument extends PropPanelModelElement {
 
-    // //////////////////////////////////////////////////////////////
-    // contructors
     /**
      * Constructor.
      */
     public PropPanelArgument() {
-
-        super("Argument", ConfigLoader.getTabPropsOrientation());
+        super("label.argument", lookupIcon("Argument"));
 
         addField(Translator.localize("label.name"), getNameTextField());
 

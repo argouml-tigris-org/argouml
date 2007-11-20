@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 
 /**
@@ -47,28 +46,21 @@ public class PropPanelActor extends PropPanelClassifier {
      * Construct a new property panel for an Actor.
      */
     public PropPanelActor() {
-    	super("label.actor", lookupIcon("Actor"),
-                ConfigLoader.getTabPropsOrientation());
+    	super("label.actor", lookupIcon("Actor"));
 
-
-    	addField("label.name",
-                getNameTextField());
-    	addField("label.namespace",
-                getNamespaceSelector());
+    	addField("label.name", getNameTextField());
+        addField("label.namespace", getNamespaceSelector());
 
         add(getModifiersPanel());
 
     	addSeparator();
 
-    	addField("label.generalizations",
-                getGeneralizationScroll());
-    	addField("label.specializations",
-                getSpecializationScroll());
+    	addField("label.generalizations", getGeneralizationScroll());
+        addField("label.specializations", getSpecializationScroll());
 
     	addSeparator();
 
-    	addField("label.association-ends",
-            getAssociationEndScroll());
+    	addField("label.association-ends", getAssociationEndScroll());
 
         // The toolbar buttons that go at the top:
         addAction(new ActionNavigateContainerElement());
@@ -78,4 +70,4 @@ public class PropPanelActor extends PropPanelClassifier {
         addAction(getDeleteAction());
     }
 
-} /* end class PropActor */
+}

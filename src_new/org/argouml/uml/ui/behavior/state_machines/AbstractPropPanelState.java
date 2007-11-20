@@ -48,17 +48,32 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
     private JScrollPane deferrableEventsScroll;
 
 
-
     /**
      * Constructor for AbstractPropPanelState.
      * @param name the name of the properties panel, to be shown at the top
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #AbstractPropPanelState(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
-    public AbstractPropPanelState(
-                    String name, ImageIcon icon, Orientation orientation)
-    {
-        super(name, icon, orientation);
+    @Deprecated
+    public AbstractPropPanelState(String name, ImageIcon icon,
+            Orientation orientation) {
+        this(name, icon);
+        setOrientation(orientation);
+    }
+
+    /**
+     * Construct a property panel for a State. Since State is abstract, this
+     * will never be instantiated directly, but rather as part of the
+     * instantiation of one of its concrete subclasses.
+     * 
+     * @param name the name of the properties panel, to be shown at the top
+     * @param icon the icon to be shown next to the name
+     */
+    public AbstractPropPanelState(String name, ImageIcon icon) {
+        super(name, icon);
 
         JList deferrableList = new UMLStateDeferrableEventList(
                 new UMLStateDeferrableEventListModel());

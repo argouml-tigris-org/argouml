@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Proppanel for comments (notes). <p>
@@ -56,7 +55,7 @@ public class PropPanelComment extends PropPanelModelElement {
      * Construct a property panel for a Comment.
      */
     public PropPanelComment() {
-        super("Comment", ConfigLoader.getTabPropsOrientation());
+        super("label.comment", lookupIcon("Comment"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -132,6 +131,7 @@ class ActionDeleteAnnotatedElement extends AbstractActionRemoveElement {
     /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent arg0) {
         super.actionPerformed(arg0);
         Model.getCoreHelper().removeAnnotatedElement(

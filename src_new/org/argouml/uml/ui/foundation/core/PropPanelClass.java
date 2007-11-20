@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a Class.
@@ -42,14 +41,10 @@ public class PropPanelClass extends PropPanelClassifier {
      * Construct a property panel for UML Class elements.
      */
     public PropPanelClass() {
-        super("label.class",
-            lookupIcon("Class"),
-            ConfigLoader.getTabPropsOrientation());
+        super("label.class", lookupIcon("Class"));
 
-        addField("label.name",
-                getNameTextField());
-        addField("label.namespace",
-                getNamespaceSelector());
+        addField("label.name", getNameTextField());
+        addField("label.namespace", getNamespaceSelector());
         getModifiersPanel().add(new UMLClassActiveCheckBox());
         add(getModifiersPanel());
         add(getNamespaceVisibilityPanel());
@@ -86,4 +81,4 @@ public class PropPanelClass extends PropPanelClassifier {
         addAction(getDeleteAction());
     }
 
-} /* end class PropPanelClass */
+}

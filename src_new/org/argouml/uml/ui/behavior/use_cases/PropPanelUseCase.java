@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -35,7 +34,6 @@ import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Builds the property panel for a use case.<p>
@@ -53,29 +51,20 @@ public class PropPanelUseCase extends PropPanelClassifier {
      * Construct a property panel for a UseCase.
      */
     public PropPanelUseCase() {
-        // TODO: I18N
-        super("label.usecase",
-            lookupIcon("UseCase"),
-            ConfigLoader.getTabPropsOrientation());
+        super("label.usecase", lookupIcon("UseCase"));
 
-        addField("label.name",
-                getNameTextField());
-    	addField("label.namespace",
-                getNamespaceSelector());
+        addField("label.name", getNameTextField());
+        addField("label.namespace", getNamespaceSelector());
 
         add(getModifiersPanel());
         
-        addField("label.client-dependencies",
-                getClientDependencyScroll());
-        addField("label.supplier-dependencies",
-                getSupplierDependencyScroll());
+        addField("label.client-dependencies", getClientDependencyScroll());
+        addField("label.supplier-dependencies", getSupplierDependencyScroll());
         
 	addSeparator();
 
-	addField("label.generalizations",
-            getGeneralizationScroll());
-	addField("label.specializations",
-            getSpecializationScroll());
+	addField("label.generalizations", getGeneralizationScroll());
+        addField("label.specializations", getSpecializationScroll());
 
 	JList extendsList = new UMLLinkedList(new UMLUseCaseExtendListModel());
 	addField("label.extends",

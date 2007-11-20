@@ -35,7 +35,6 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociation;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an AssociationRole.
@@ -51,11 +50,9 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
      * Construct a property panel for an AssociationRole.
      */
     public PropPanelAssociationRole() {
-        // TODO: I18N
-        super("Association Role", ConfigLoader.getTabPropsOrientation());
+        super("label.association-role-title");
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
+        addField(Translator.localize("label.name"), getNameTextField());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 

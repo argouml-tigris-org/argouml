@@ -32,11 +32,10 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
- * Theproperties panel for a Association.
+ * The properties panel for a Association.
  *
  */
 public class PropPanelAssociation extends PropPanelRelationship {
@@ -71,40 +70,45 @@ public class PropPanelAssociation extends PropPanelRelationship {
      * Construct a property panel for UML Association elements.
      */
     public PropPanelAssociation() {
-        this("label.association", 
-                ConfigLoader.getTabPropsOrientation());
-        addField("label.name",
-                getNameTextField());
-        addField("label.namespace",
-                getNamespaceSelector());
+        this("label.association");
+        addField("label.name", getNameTextField());
+        addField("label.namespace", getNamespaceSelector());
         add(modifiersPanel);
 
         addSeparator();
 
-        addField("label.connections",
-                assocEndScroll);
+        addField("label.connections", assocEndScroll);
 
         addSeparator();
 
-        addField("label.association-roles",
-                associationRoleScroll);
-        addField("label.association-links",
-                linksScroll);
+        addField("label.association-roles", associationRoleScroll);
+        addField("label.association-links", linksScroll);
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewStereotype());
         addAction(getDeleteAction());
-
     }
 
     /**
      * Construct a property panel for an Association.
-     *
+     * 
      * @param title the title of the panel
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #PropPanelAssociation()}.
      */
+    @Deprecated
     protected PropPanelAssociation(String title, Orientation orientation) {
-        super(title, lookupIcon("Association"), orientation);
+        this(title);
+        setOrientation(orientation);
+    }
+    
+    /**
+     * Construct a property panel for an Association.
+     *
+     * @param title the title of the panel
+     */
+    protected PropPanelAssociation(String title) {
+        super(title, lookupIcon("Association"));
         initialize();
         JList assocEndList = new UMLLinkedList(
                 new UMLAssociationConnectionListModel());
@@ -130,4 +134,4 @@ public class PropPanelAssociation extends PropPanelRelationship {
 
     }
 
-} /* end class PropPanelAssociation */
+}

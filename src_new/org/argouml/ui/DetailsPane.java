@@ -98,15 +98,15 @@ public class DetailsPane
         TabProps.class,
         TabDocumentation.class, 
         TabStyle.class,
-        // TabDocs
+        // TabDocs,
         TabSrc.class,
-        // TabJavaSrc | TabSrc
+        // TabJavaSrc | TabSrc,
         TabConstraints.class, 
         TabStereotype.class, 
         TabTaggedValues.class,
         org.argouml.cognitive.checklist.ui.TabChecklist.class,
-        // TabHistory
-        // TabHash
+        // TabHistory,
+        // TabHash,
     };
 
     /**
@@ -118,15 +118,15 @@ public class DetailsPane
 //        new TabProps(),
 //        new TabDocumentation(), 
 //        new TabStyle(),
-//        // TabDocs
+//        // TabDocs,
 //        new TabSrc(),
-//        // TabJavaSrc | TabSrc
+//        // TabJavaSrc | TabSrc,
 //        new TabConstraints(), 
 //        new TabStereotype(), 
 //        new TabTaggedValues(),
 //        new org.argouml.cognitive.checklist.ui.TabChecklist(),
-//        // TabHistory
-//        // TabHash
+//        // TabHistory,
+//        // TabHash,
 //    };
     
     /**
@@ -158,6 +158,8 @@ public class DetailsPane
      * time.
      */
     private EventListenerList listenerList = new EventListenerList();
+    
+    private Orientation orientation;
 
     /**
      * Adds a listener.
@@ -186,12 +188,16 @@ public class DetailsPane
      * @param compassPoint the position for which to build the pane
      * @param orientation is the orientation.
      */
-    public DetailsPane(String compassPoint, Orientation orientation) {
+    public DetailsPane(String compassPoint, Orientation theOrientation) {
         LOG.info("making DetailsPane(" + compassPoint + ")");
+        
+        orientation = theOrientation;
 
         // TODO: Instantiate our required tabs directly instead of using
         // reflection in ConfigLoader.
         ConfigLoader.loadTabs(tabPanelList, compassPoint, orientation);
+        
+        setOrientation(orientation);
         
         setLayout(new BorderLayout());
         setFont(new Font("Dialog", Font.PLAIN, 10));
@@ -450,12 +456,9 @@ public class DetailsPane
      * @return the property panel
      */
     public TabProps getTabProps() {
-        Iterator iter = tabPanelList.iterator();
-        Object o;
-        while (iter.hasNext()) {
-            o = iter.next();
-            if (o instanceof TabProps) {
-                return (TabProps) o;
+        for (JPanel tab : tabPanelList) {
+            if (tab instanceof TabProps) {
+                return (TabProps) tab;
             }
         }
         return null;
@@ -467,13 +470,11 @@ public class DetailsPane
      * @param tabClass the given class
      * @return the tab instance for the given class
      */
-    public AbstractArgoJPanel getTab(Class tabClass) {
-        Iterator iter = tabPanelList.iterator();
-        Object o;
-        while (iter.hasNext()) {
-            o = iter.next();
-            if (o.getClass().equals(tabClass)) {
-                return (AbstractArgoJPanel) o;
+    public AbstractArgoJPanel getTab(
+            Class<? extends AbstractArgoJPanel> tabClass) {
+        for (JPanel tab : tabPanelList) {
+            if (tab.getClass().equals(tabClass)) {
+                return (AbstractArgoJPanel) tab;
             }
         }
         return null;

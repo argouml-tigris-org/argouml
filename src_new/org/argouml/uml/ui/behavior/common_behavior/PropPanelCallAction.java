@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,16 +46,16 @@ import org.tigris.gef.undo.UndoableAction;
 public class PropPanelCallAction extends PropPanelAction {
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a CallAction element.
      */
     public PropPanelCallAction() {
-        super("CallAction", lookupIcon("CallAction"));
+        super("label.call-action", lookupIcon("CallAction"));
     }
 
     /*
      * @see org.argouml.uml.ui.behavior.common_behavior.PropPanelAction#initialize()
      */
+    @Override
     public void initialize() {
         super.initialize();
 
@@ -215,6 +215,7 @@ public class PropPanelCallAction extends PropPanelAction {
          *
          * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
          */
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (evt instanceof AttributeChangeEvent) {
                 if (evt.getPropertyName().equals("operation")) {
@@ -237,4 +238,4 @@ public class PropPanelCallAction extends PropPanelAction {
      * The UID.
      */
     private static final long serialVersionUID = 6998109319912301992L;
-} /* end class PropPanelCallAction */
+}

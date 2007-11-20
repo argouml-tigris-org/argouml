@@ -49,7 +49,6 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
-import org.argouml.util.ConfigLoader;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -74,8 +73,7 @@ public class PropPanelClassifierInState extends PropPanelClassifier {
      * Construct a property panel for a ClassifierInState.
      */
     public PropPanelClassifierInState() {
-        super("ClassifierInState", lookupIcon("ClassifierInState"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.classifier-in-state", lookupIcon("ClassifierInState"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

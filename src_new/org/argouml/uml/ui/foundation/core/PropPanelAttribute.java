@@ -40,7 +40,6 @@ import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an Attribute of a Classifier, 
@@ -61,7 +60,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
      *
      */
     public PropPanelAttribute() {
-        super("Attribute", ConfigLoader.getTabPropsOrientation());
+        super("label.attribute", lookupIcon("Attribute"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
