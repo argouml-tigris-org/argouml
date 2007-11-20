@@ -25,7 +25,8 @@
 package org.argouml.uml.ui.model_management;
 
 import java.awt.event.ActionEvent;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -206,10 +207,10 @@ public class PropPanelPackage extends PropPanelNamespace  {
 } /* end class PropPanelPackage */
 
 /**
- * NOTE: This class almost, but not quite, implements the interfaces
- * defined in {@link org.argouml.uml.ui.AbstractActionAddModelElement}.  The difference
- * is that the doIt(), getChoices(), and getSelected() methods here
- * accept an extra argument containing the target.
+ * NOTE: This class almost, but not quite, implements the interfaces defined in
+ * {@link org.argouml.uml.ui.AbstractActionAddModelElement}. The difference is
+ * that the doIt(), getChoices(), and getSelected() methods here accept an extra
+ * argument containing the target.
  */
 class ActionDialogElementImport extends UndoableAction {
 
@@ -238,25 +239,25 @@ class ActionDialogElementImport extends UndoableAction {
                         isExclusive());
             int result = dialog.showDialog(ArgoFrame.getInstance());
             if (result == JOptionPane.OK_OPTION) {
-                doIt(target, dialog.getSelected());
+                doIt(target, dialog.getSelectedList());
             }
         }
     }
     
-    protected Vector getChoices(Object target) {
-        Vector vec = new Vector();
+    protected List getChoices(Object target) {
+        List result = new ArrayList();
         /* TODO: correctly implement next function 
          * in the model subsystem for 
          * issue 1942: */
-        vec.addAll(Model.getModelManagementHelper()
+        result.addAll(Model.getModelManagementHelper()
                 .getAllPossibleImports(target));
-        return vec;
+        return result;
     }
     
-    protected Vector getSelected(Object target) {
-        Vector vec = new Vector();
-        vec.addAll(Model.getFacade().getImportedElements(target));
-        return vec;
+    protected List getSelected(Object target) {
+        List result = new ArrayList();
+        result.addAll(Model.getFacade().getImportedElements(target));
+        return result;
     }
     
     protected String getDialogTitle() {
@@ -271,7 +272,8 @@ class ActionDialogElementImport extends UndoableAction {
         return true;
     }
     
-    protected void doIt(Object target, Vector selected) {
+    protected void doIt(Object target, List selected) {
         Model.getModelManagementHelper().setImportedElements(target, selected);
     }
+
 }
