@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JTabbedPane;
@@ -81,11 +81,8 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
         addButton(applyButton);
 
         // Add settings from the settings registry.
-        Iterator iter = GUI.getInstance().getSettingsTabs().iterator();
-        while (iter.hasNext()) {
-            GUISettingsTabInterface stp =
-                (GUISettingsTabInterface) iter.next();
-
+        settingsTabs = GUI.getInstance().getSettingsTabs();
+        for (GUISettingsTabInterface stp : settingsTabs) {
             tabs.addTab(
                     Translator.localize(stp.getTabKey()),
                     stp.getTabPanel());
@@ -136,11 +133,8 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
      * Called when the user has pressed Save. Performs "Save" in all Tabs.
      */
     private void handleSave() {
-        for (int i = 0; i < tabs.getComponentCount(); i++) {
-            Object o = tabs.getComponent(i);
-            if (o instanceof GUISettingsTabInterface) {
-                ((GUISettingsTabInterface) o).handleSettingsTabSave();
-            }
+        for (GUISettingsTabInterface tab : settingsTabs) {
+            tab.handleSettingsTabSave();
         }
         windowOpen = false;
         Configuration.save();
@@ -150,11 +144,8 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
      * Called when the user has pressed Cancel. Performs "Cancel" in all Tabs.
      */
     private void handleCancel() {
-        for (int i = 0; i < tabs.getComponentCount(); i++) {
-            Object o = tabs.getComponent(i);
-            if (o instanceof GUISettingsTabInterface) {
-                ((GUISettingsTabInterface) o).handleSettingsTabCancel();
-            }
+        for (GUISettingsTabInterface tab : settingsTabs) {
+            tab.handleSettingsTabCancel();
         }
         windowOpen = false;
     }
@@ -163,11 +154,8 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
      * Perform "Refresh" in all Tabs.
      */
     private void handleRefresh() {
-        for (int i = 0; i < tabs.getComponentCount(); i++) {
-            Object o = tabs.getComponent(i);
-            if (o instanceof GUISettingsTabInterface) {
-                ((GUISettingsTabInterface) o).handleSettingsTabRefresh();
-            }
+        for (GUISettingsTabInterface tab : settingsTabs) {
+            tab.handleSettingsTabRefresh();
         }
     }
 
@@ -233,4 +221,6 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
      * The serial version.
      */
     private static final long serialVersionUID = -8233301947357843703L;
+
+    private List<GUISettingsTabInterface> settingsTabs;
 }
