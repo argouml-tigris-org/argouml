@@ -61,48 +61,73 @@ public class TestXmiFilePersister extends TestCase {
     /**
      * This is a regression test for issue 1504.
      * Test basic serialization to XMI file.
+     * 
+     * @throws Exception if saving fails.
      */
-    public void testSave() {
+    public void testSave() throws Exception {
+        Project p = ProjectManager.getManager().makeEmptyProject();
+        Object clazz = Model.getCoreFactory().buildClass(p.getModel());
+        Object returnType =
+            ProjectManager.getManager()
+            	.getCurrentProject().getDefaultReturnType();
+        Object oper =
+            Model.getCoreFactory().buildOperation(clazz, returnType);
+        Model.getCoreHelper().setType(
+                Model.getFacade().getParameter(oper, 0),
+                p.findType("String"));
+        File file = new File("test.xmi");
+        XmiFilePersister persister = new XmiFilePersister();
+        p.preSave();
+        persister.save(p, file);
+        p.postSave();
+    }
+    
+    /**
+     * This is more like a functional test, exercising several sub-systems 
+     * of ArgoUML, including persistence, kernel and model.
+     * It is composed of the following steps:
+     * <ol>
+     * <li>create a model with a class in it, then assert that the class is 
+     * found in the project;</li>
+     * <li>save the model as an XMI file;</li>
+     * <li>load the model and create a project around it, then assert that 
+     * the class is found again.</li>
+     * </ol>
+     * 
+     * @throws Exception when any of the activities fails
+     */
+    public void testCreateSaveAndLoadYeldsCorrectModel() throws Exception {
+        Project project = ProjectManager.getManager().makeEmptyProject();
+        Object model = project.getModel();
+        assertNotNull(model);
+        Model.getCoreFactory().buildClass("Foo", model);
+        assertNotNull(project.findType("Foo", false));
+        File file = new File("testCreateSaveAndLoadYeldsCorrectModel.xmi");
+        XmiFilePersister persister = new XmiFilePersister();
+        project.preSave();
+        persister.save(project, file);
+        project.postSave();
 
-        try {
-            Project p = ProjectManager.getManager().makeEmptyProject();
-            Object clazz = Model.getCoreFactory().buildClass(p.getModel());
-            Object returnType =
-                ProjectManager.getManager()
-                	.getCurrentProject().getDefaultReturnType();
-            Object oper =
-                Model.getCoreFactory().buildOperation(clazz, returnType);
-            Model.getCoreHelper().setType(
-                    Model.getFacade().getParameter(oper, 0),
-                    p.findType("String"));
-            File file = new File("test.xmi");
-            XmiFilePersister persister = new XmiFilePersister();
-            p.preSave();
-            persister.save(p, file);
-            p.postSave();
-        } catch (Exception e) {
-            fail("Save resulted in an exception");
-        }
+        ProjectManager.getManager().makeEmptyProject();
+        
+        persister = new XmiFilePersister();
+        project = persister.doLoad(file);
+        assertNotNull(project.findType("Foo", false));
     }
 
     /**
      * This is a regression test for issue 1504.
      * Test loading from minimal XMI file.
+     * 
+     * @throws Exception if loading project fails
      */
-    public void testLoadProject() {
+    public void testLoadProject() throws Exception {
+        File file = new File("test.xmi");
 
-        try {
-            File file = new File("test.xmi");
+        XmiFilePersister persister = new XmiFilePersister();
 
-            XmiFilePersister persister = new XmiFilePersister();
+        ProjectManager.getManager().makeEmptyProject();
 
-            ProjectManager.getManager().makeEmptyProject();
-
-            persister.doLoad(file);
-        } catch (OpenException e) {
-            fail("Load resulted in an exception");
-        } catch (InterruptedException e) {
-            fail("Load resulted in an exception");
-        }
+        persister.doLoad(file);
     }
 }
