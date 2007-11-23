@@ -119,10 +119,6 @@ public class TestDependencies extends TestCase {
 
         String[] top = {
             "org.argouml.application",
-            // The following 2 are not supposed to pass, but they do.
-            // Hence these packages are not used anywhere:
-            "org.argouml.cognitive.checklist.ui",
-            "org.argouml.util.osdep.win32",
         };
         for (int i = 0; i < top.length; i++) {
             suite.addTest(new CheckTopLevel(jdepend, top[i]));
