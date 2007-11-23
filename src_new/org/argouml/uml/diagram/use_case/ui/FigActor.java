@@ -157,9 +157,9 @@ public class FigActor extends FigNodeModelElement {
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         // Modifiers ...
-        popUpActions.insertElementAt(
-                buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                buildModifierPopUp(ABSTRACT | LEAF | ROOT));
         return popUpActions;
     }
 

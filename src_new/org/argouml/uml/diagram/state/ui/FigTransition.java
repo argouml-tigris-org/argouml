@@ -66,8 +66,7 @@ public class FigTransition extends FigEdgeModelElement {
      */
     private boolean dashed;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
+
     /**
      * The main constructor.
      */
@@ -152,7 +151,9 @@ public class FigTransition extends FigEdgeModelElement {
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         /* None of the menu-items below apply
          * when multiple modelelements are selected:*/
-        if (ms) return popUpActions;
+        if (ms) {
+            return popUpActions;
+        }
 
         Action a;
 
@@ -170,13 +171,13 @@ public class FigTransition extends FigEdgeModelElement {
         a = new ButtonActionNewTimeEvent();
         a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
         triggerMenu.add(a);
-        popUpActions.insertElementAt(triggerMenu,
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                triggerMenu);
 
         a = new ButtonActionNewGuard();
         a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
-        popUpActions.insertElementAt(a,
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(), a);
 
         ArgoJMenu effectMenu =
             new ArgoJMenu("menu.popup.effect");
@@ -204,8 +205,8 @@ public class FigTransition extends FigEdgeModelElement {
         a = ActionNewActionSequence.getButtonInstance();
         a.putValue(Action.NAME, a.getValue(Action.SHORT_DESCRIPTION));
         effectMenu.add(a);
-        popUpActions.insertElementAt(effectMenu,
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(), 
+                effectMenu);
 
         return popUpActions;
     }

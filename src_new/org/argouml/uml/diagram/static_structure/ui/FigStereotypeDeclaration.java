@@ -126,8 +126,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         addMenu.add(new ActionNewTagDefinition());
         addMenu.add(ActionEdgesDisplay.getShowEdges());
         addMenu.add(ActionEdgesDisplay.getHideEdges());
-        popUpActions.insertElementAt(addMenu,
-            popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(), addMenu);
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
@@ -136,18 +135,17 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
             showMenu.add((Action) i.next());
         }
         if (showMenu.getComponentCount() > 0) {
-            popUpActions.insertElementAt(showMenu,
-                    popUpActions.size() - getPopupAddOffset());
+            popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                    showMenu);
         }
 
         // Modifiers ...
-        popUpActions.insertElementAt(
-                buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                buildModifierPopUp(ABSTRACT | LEAF | ROOT));
 
         // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                buildVisibilityPopUp());
 
         return popUpActions;
     }

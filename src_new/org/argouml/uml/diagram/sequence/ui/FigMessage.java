@@ -78,7 +78,7 @@ public abstract class FigMessage
      * @param     me     a mouse event
      * @return           a collection of menu items
      *
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     * @see org.tigris.gef.ui.PopupGenerator2#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
@@ -86,8 +86,8 @@ public abstract class FigMessage
         // the menu item for RE a sequence into the diagram is offered always,
         // because a check (e.g. does a operation with a body exist) would be
         // too expensive
-        popUpActions.insertElementAt(new ActionRESequenceDiagram(this),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                new ActionRESequenceDiagram(this));
 
         return popUpActions;
     }

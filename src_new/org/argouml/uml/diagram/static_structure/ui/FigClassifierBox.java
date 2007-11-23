@@ -249,16 +249,19 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     
         // Add ...
         ArgoJMenu addMenu = buildAddMenu();
-        popUpActions.insertElementAt(addMenu,
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                addMenu);
 
         // Modifier ...
-        popUpActions.insertElementAt(buildModifierPopUp(),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                buildModifierPopUp());
     
         // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                buildVisibilityPopUp());
     
         return popUpActions;
     }

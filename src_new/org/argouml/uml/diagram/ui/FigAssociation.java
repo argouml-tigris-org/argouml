@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -276,7 +275,9 @@ public class FigAssociation extends FigEdgeModelElement {
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         /* None of the menu-items below apply
          * when multiple modelelements are selected:*/
-        if (ms) return popUpActions;
+        if (ms) {
+            return popUpActions;
+        }
 
 	// x^2 + y^2 = r^2  (equation of a circle)
 	Point firstPoint = this.getFirstPoint();
@@ -307,17 +308,16 @@ public class FigAssociation extends FigEdgeModelElement {
             multMenu.add(ActionMultiplicity.getSrcMultZeroToOne());
             multMenu.add(ActionMultiplicity.getSrcMultOneToMany());
             multMenu.add(ActionMultiplicity.getSrcMultZeroToMany());
-            popUpActions.insertElementAt(multMenu,
-                popUpActions.size() - getPopupAddOffset());
+            popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                    multMenu);
 
             ArgoJMenu aggMenu = new ArgoJMenu("menu.popup.aggregation");
 
 	    aggMenu.add(ActionAggregation.getSrcAggNone());
 	    aggMenu.add(ActionAggregation.getSrcAgg());
 	    aggMenu.add(ActionAggregation.getSrcAggComposite());
-	    popUpActions.insertElementAt(aggMenu,
-					 (popUpActions.size()
-					  - getPopupAddOffset()));
+	    popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                    aggMenu);
 	} else if (destDeterminingFactor < rSquared) {
             ArgoJMenu multMenu =
 		new ArgoJMenu("menu.popup.multiplicity");
@@ -325,17 +325,15 @@ public class FigAssociation extends FigEdgeModelElement {
 	    multMenu.add(ActionMultiplicity.getDestMultZeroToOne());
 	    multMenu.add(ActionMultiplicity.getDestMultOneToMany());
 	    multMenu.add(ActionMultiplicity.getDestMultZeroToMany());
-	    popUpActions.insertElementAt(multMenu,
-					 (popUpActions.size()
-					  - getPopupAddOffset()));
+	    popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                    multMenu);
 
             ArgoJMenu aggMenu = new ArgoJMenu("menu.popup.aggregation");
 	    aggMenu.add(ActionAggregation.getDestAggNone());
 	    aggMenu.add(ActionAggregation.getDestAgg());
 	    aggMenu.add(ActionAggregation.getDestAggComposite());
-	    popUpActions.insertElementAt(aggMenu,
-					 (popUpActions.size()
-					  - getPopupAddOffset()));
+	    popUpActions
+                    .add(popUpActions.size() - getPopupAddOffset(), aggMenu);
 	}
 	// else: No particular options for right click in middle of line
 
@@ -370,9 +368,8 @@ public class FigAssociation extends FigEdgeModelElement {
                     ascEnd,
                     ActionNavigability.ENDTOSTART));
 
-		popUpActions.insertElementAt(navMenu,
-					     (popUpActions.size()
-					      - getPopupAddOffset()));
+		popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                        navMenu);
 	    }
 	}
 

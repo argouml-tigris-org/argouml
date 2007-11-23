@@ -365,12 +365,6 @@ public class FigUseCase extends FigNodeModelElement
         return figClone;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Fig accessors
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * Build a collection of menu items relevant for a right-click
      * popup menu on a Use Case.<p>
@@ -398,14 +392,12 @@ public class FigUseCase extends FigNodeModelElement
         }
         addMenu.add(new ActionAddNote());
 
-        popUpActions.insertElementAt(addMenu,
-            popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(), addMenu);
 
         // Modifier menu. Placed one before last, so the "Properties" entry is
         // always last.
-        popUpActions.insertElementAt(
-                buildModifierPopUp(LEAF | ROOT),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                buildModifierPopUp(LEAF | ROOT));
 
         return popUpActions;
     }
