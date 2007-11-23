@@ -82,7 +82,6 @@ Export-Package: org.argouml.application,
  org.argouml.uml.util.namespace,
  org.argouml.util,
  org.argouml.util.logging,
- org.argouml.util.osdep,
- org.argouml.util.osdep.win32
+ org.argouml.util.osdep
 Eclipse-RegisterBuddy: org.argouml.core.lib, org.argouml.core.model
 Eclipse-BuddyPolicy: registered
