@@ -39,7 +39,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -76,10 +75,10 @@ import org.argouml.ui.SplashScreen;
 import org.argouml.ui.cmd.ActionExit;
 import org.argouml.ui.cmd.InitUiCmdSubsystem;
 import org.argouml.ui.cmd.PrintManager;
+import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.reveng.java.JavaImport;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
-import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 
 /**
  * This is the main class for two of the types 
@@ -274,7 +273,7 @@ public class Main {
 
             SubsystemUtility.initSubsystem(new InitModuleLoader());
 
-            // Initialize the Java code generator.
+            // Initialize the Java code generator. (why so early? - tfm)
             GeneratorJava.getInstance();
 
             // The reason the gui is initialized before the commands are run
@@ -780,7 +779,7 @@ public class Main {
                     "SPACE", "pressed",
                     "released SPACE", "released"
                 })
-        );  
+        );         
         return pb;
     }
 
@@ -815,16 +814,6 @@ class PostLoad implements Runnable {
      */
     private List<Runnable> postLoadActions;
 
-    /**
-     * Constructor.
-     *
-     * @param v The actions to perform.
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #PostLoad(List)}.
-     */
-    @Deprecated
-    public PostLoad(Vector<Runnable> v) {
-        this((List<Runnable>) v);
-    }
 
     /**
      * Constructor.

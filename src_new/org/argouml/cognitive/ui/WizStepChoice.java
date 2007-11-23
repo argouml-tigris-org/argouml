@@ -29,7 +29,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
@@ -54,20 +53,6 @@ public class WizStepChoice extends WizStep {
     private int selectedIndex = -1;
 
 
-    /**
-     * The constructor.
-     *
-     * @param w the wizard
-     * @param instr the instructions
-     * @param ch the choices
-     * @deprecated for 0.25.4 by tfmorris.  
-     * Use {@link #WizStepChoice(Wizard, String, List)}.
-     */
-    @Deprecated
-    public WizStepChoice(Wizard w, String instr, Vector<String> ch) {
-        this(w, instr, (List<String>) ch);
-    }
-    
     /**
      * The constructor.
      *

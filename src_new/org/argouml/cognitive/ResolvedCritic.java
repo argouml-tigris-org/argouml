@@ -26,7 +26,6 @@ package org.argouml.cognitive;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
@@ -54,22 +53,9 @@ public class ResolvedCritic {
      */
     private List<String> offenders;
 
-    /**
-     * Creates a new ResolvedCritic using the name of the Critic and the
-     * Vector of objects that triggered the Critic given as parameters.
-     *
-     * @param	cr	The name of the Critic that has been resolved
-     * @param	offs	The Vector of related objects.
-     * @deprecated for 0.25.4 by tfmorris.  Use 
-     * {@link #ResolvedCritic(String, List)}.
-     */
-    @Deprecated
-    public ResolvedCritic(String cr, Vector offs) {
-        this(cr, (List) offs);
-    }
 
     /**
-     * Creates a new ResolvedCritic using the name of the Critic and the
+     * Create a new ResolvedCritic using the name of the Critic and the
      * List of objects that triggered the Critic given as parameters.
      *
      * @param   cr      The name of the Critic that has been resolved

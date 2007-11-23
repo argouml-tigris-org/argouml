@@ -206,15 +206,6 @@ public class ToDoPane extends JPanel
     
     /**
      * @param pers the perspectives
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #setPerspectives(List)}.
-     */
-    @Deprecated
-    public void setPerspectives(Vector<ToDoPerspective> pers) {
-        setPerspectives((List<ToDoPerspective>) pers);
-    }
-
-    /**
-     * @param pers the perspectives
      */
     public void setPerspectives(List<ToDoPerspective> pers) {
         perspectives = pers;

@@ -35,7 +35,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -179,16 +178,6 @@ public class TabResults
      */
     public void setGenerator(ChildGenerator gen) {
 	cg = gen;
-    }
-
-    /**
-     * @param res the results
-     * @param dia the diagrams
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #setResults(List, List)}.
-     */
-    @Deprecated
-    public void setResults(Vector res, Vector dia) {
-        setResults((List) res, (List) dia);
     }
 
     /**
