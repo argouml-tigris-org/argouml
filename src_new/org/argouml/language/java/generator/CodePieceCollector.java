@@ -27,14 +27,14 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.util.Iterator;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
@@ -49,15 +49,15 @@ import org.argouml.configuration.Configuration;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class CodePieceCollector {
+class CodePieceCollector {
     /** Code pieces the parser found. */
-    private Vector codePieces;
+    private List<NamedCodePiece> codePieces;
 
     /**
        Constructor.
     */
     public CodePieceCollector() {
-	codePieces = new Vector();
+	codePieces = new ArrayList<NamedCodePiece>();
     }
 
     /**
@@ -70,15 +70,15 @@ public class CodePieceCollector {
 	int index = 0;
 
 	// Insert in sorted order
-	for (Iterator i = codePieces.iterator(); i.hasNext(); index++) {
-	    CodePiece cp = (CodePiece) i.next();
+        for (NamedCodePiece cp : codePieces) {
+            index++;
 	    if (cp.getStartLine() > codePiece.getStartLine()
 		|| (cp.getStartLine() == codePiece.getStartLine()
 		    && cp.getStartPosition() > codePiece.getStartPosition())) {
 		break;
 	    }
 	}
-	codePieces.insertElementAt(codePiece, index);
+	codePieces.add(index, codePiece);
     }
 
     /**
@@ -110,11 +110,10 @@ public class CodePieceCollector {
 	    new BufferedWriter(new OutputStreamWriter(out, encoding));
 	int line = 0;
 	int column = 0;
-	Stack parseStateStack = new Stack();
+	Stack<ParseState> parseStateStack = new Stack<ParseState>();
 	parseStateStack.push(new ParseState(mNamespace));
 
-	for (Iterator i = codePieces.iterator(); i.hasNext();) {
-	    NamedCodePiece cp = (NamedCodePiece) i.next();
+	for (NamedCodePiece cp : codePieces) {
 	    // copy until code piece
 	    while (line < cp.getStartLine()) {
 		line++;

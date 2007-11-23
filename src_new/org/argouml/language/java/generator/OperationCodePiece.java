@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,8 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 import org.argouml.model.Model;
 
@@ -40,7 +39,7 @@ import org.argouml.model.Model;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class OperationCodePiece extends NamedCodePiece {
+class OperationCodePiece extends NamedCodePiece {
     /**
      * The code piece this operation represents.
      */
@@ -115,18 +114,17 @@ public class OperationCodePiece extends NamedCodePiece {
      */
     public void write (BufferedReader reader,
                        BufferedWriter writer,
-                       Stack parseStateStack) throws IOException {
-        ParseState parseState = (ParseState) parseStateStack.peek();
-        Vector features = parseState.getNewFeatures();
+                       Stack<ParseState> parseStateStack) throws IOException {
+        ParseState parseState = parseStateStack.peek();
+        List features = parseState.getNewFeaturesList();
         boolean found = false;
 
-        for (Iterator j = features.iterator(); j.hasNext() && !found;) {
-            Object feature = /*(MFeature)*/ j.next();
+        for (Object feature : features) {
             if (Model.getFacade().getName(feature).equals(name)
                     && Model.getFacade().isAOperation(feature)) {
                 found = true;
                 parseState.newFeature(feature);
-                Object mOperation = /*(MOperation)*/ feature;
+                Object mOperation = feature;
                 writer.write(GeneratorJava.getInstance()
 			     .generateOperation(mOperation, true));
             }

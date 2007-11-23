@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,7 @@ import java.util.Stack;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class ClassCodePiece extends NamedCodePiece {
+class ClassCodePiece extends NamedCodePiece {
     /** The code piece this class represents. */
     private CodePiece classDef;
 
@@ -100,9 +100,9 @@ public class ClassCodePiece extends NamedCodePiece {
      */
     public void write(BufferedReader reader,
                       BufferedWriter writer,
-                      Stack parseStateStack) throws IOException {
-	ParseState parseState = (ParseState) parseStateStack.peek();
-	Object mClass = /*(MClass)*/ parseState.newClassifier(name);
+                      Stack<ParseState> parseStateStack) throws IOException {
+	ParseState parseState = parseStateStack.peek();
+	Object mClass = parseState.newClassifier(name);
 
 	if (mClass != null) {
 	    parseStateStack.push(new ParseState(mClass));

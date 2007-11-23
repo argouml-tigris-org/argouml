@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,10 +27,10 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 import org.argouml.model.Model;
 
@@ -59,7 +59,7 @@ class CodeGenerator {
 
 	ClassCodePiece ccp =
 	    new ClassCodePiece(null, Model.getFacade().getName(mClass));
-	Stack parseStateStack = new Stack();
+	Stack<ParseState> parseStateStack = new Stack<ParseState>();
 	parseStateStack.push(
 	        new ParseState(Model.getFacade().getNamespace(mClass)));
 	ccp.write(reader, writer, parseStateStack);
@@ -68,8 +68,7 @@ class CodeGenerator {
 
 	// Features
 	Collection features = Model.getFacade().getFeatures(mClass);
-	for (Iterator i = features.iterator(); i.hasNext();) {
-	    Object feature = /*(MFeature)*/ i.next();
+	for (Object feature : features) {
 	    if (Model.getFacade().isAOperation(feature)) {
 		generateOperation(/*(MOperation)*/ feature, mClass,
 				  reader, writer);
@@ -82,8 +81,7 @@ class CodeGenerator {
 
 	// Inner classes
 	Collection elements = Model.getFacade().getOwnedElements(mClass);
-	for (Iterator i = elements.iterator(); i.hasNext();) {
-	    Object element = /*(MModelElement)*/ i.next();
+	for (Object element : elements) {
 	    if (Model.getFacade().isAClass(element)) {
 		generateClass(element, reader, writer);
 	    } else if (Model.getFacade().isAInterface(element)) {
@@ -108,7 +106,7 @@ class CodeGenerator {
 	throws IOException {
 	InterfaceCodePiece icp =
 	    new InterfaceCodePiece(null, Model.getFacade().getName(mInterface));
-	Stack parseStateStack = new Stack();
+	Stack<ParseState> parseStateStack = new Stack<ParseState>();
 	parseStateStack.push(
 	        new ParseState(Model.getFacade().getNamespace(mInterface)));
 	icp.write(reader, writer, parseStateStack);
@@ -117,8 +115,7 @@ class CodeGenerator {
 
 	// Features
 	Collection features = Model.getFacade().getFeatures(mInterface);
-	for (Iterator i = features.iterator(); i.hasNext();) {
-	    Object feature = /*(MFeature)*/ i.next();
+        for (Object feature : features) {
 	    if (Model.getFacade().isAOperation(feature)) {
 		generateOperation(/*(MOperation)*/ feature,
 				  mInterface, reader, writer);
@@ -131,8 +128,7 @@ class CodeGenerator {
 
 	// Inner classes
 	Collection elements = Model.getFacade().getOwnedElements(mInterface);
-	for (Iterator i = elements.iterator(); i.hasNext();) {
-	    Object element = /*(MModelElement)*/ i.next();
+        for (Object element : elements) {
 	    if (Model.getFacade().isAClass(element)) {
 		generateClass(element, reader, writer);
 	    } else if (Model.getFacade().isAInterface(element)) {
@@ -164,7 +160,7 @@ class CodeGenerator {
 				   new SimpleCodePiece(new StringBuffer(),
 						       0, 0, 0),
 				   Model.getFacade().getName(mOperation));
-	Stack parseStateStack = new Stack();
+	Stack<ParseState> parseStateStack = new Stack<ParseState>();
 	parseStateStack.push(new ParseState(mClassifier));
 	ocp.write(reader, writer, parseStateStack);
 
@@ -192,16 +188,16 @@ class CodeGenerator {
 					 BufferedWriter writer)
 	throws IOException {
 
-	Vector names = new Vector();
+	List<CodePiece> names = new ArrayList<CodePiece>();
 	StringBuffer sbName =
 	    new StringBuffer(Model.getFacade().getName(mAttribute));
-	names.addElement(new SimpleCodePiece(sbName, 0, 0, 0));
+	names.add(new SimpleCodePiece(sbName, 0, 0, 0));
 	AttributeCodePiece acp =
 	    new AttributeCodePiece(null,
 				   new SimpleCodePiece(new StringBuffer(),
 						       0, 0, 0),
 				   names);
-	Stack parseStateStack = new Stack();
+	Stack<ParseState> parseStateStack = new Stack<ParseState>();
 	parseStateStack.push(new ParseState(mClassifier));
 	acp.write(reader, writer, parseStateStack);
 	writer.write(";\n");

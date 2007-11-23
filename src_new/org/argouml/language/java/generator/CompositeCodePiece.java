@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,19 +27,19 @@
   Author: Marcus Andersson andersson@users.sourceforge.net
 */
 
-
 package org.argouml.language.java.generator;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 /**
    This piece of code is a composition of several adjacent pieces of
    code. The code piece can have holes.
 */
-public class CompositeCodePiece extends CodePiece {
+class CompositeCodePiece extends CodePiece {
     /** The code pieces this code piece consists of. */
-    private Vector codePieces;
+    private List<CodePiece> codePieces;
 
     /**
      * Create a composite piece of code.
@@ -48,9 +48,9 @@ public class CompositeCodePiece extends CodePiece {
      *            A starter code piece.
      */
     public CompositeCodePiece(CodePiece codePiece) {
-	codePieces = new Vector();
+	codePieces = new ArrayList<CodePiece>();
 	if (codePiece != null) {
-	    codePieces.addElement(codePiece);
+	    codePieces.add(codePiece);
 	}
     }
 
@@ -61,7 +61,7 @@ public class CompositeCodePiece extends CodePiece {
      */
     public void add(CodePiece codePiece) {
 	if (codePiece != null) {
-	    codePieces.addElement(codePiece);
+	    codePieces.add(codePiece);
 	}
     }
 
@@ -69,14 +69,15 @@ public class CompositeCodePiece extends CodePiece {
      * @see org.argouml.language.java.generator.CodePiece#getText()
      */
     public StringBuffer getText() {
-	Iterator i = codePieces.iterator();
-	CodePiece cp = (CodePiece) i.next();
+	Iterator<CodePiece> i = codePieces.iterator();
+	CodePiece cp = i.next();
+	
 	StringBuffer text = cp.getText();
 	int prevEnd = cp.getEndPosition();
 	int prevLine = cp.getEndLine();
 
-	for (; i.hasNext();) {
-	    cp = (CodePiece) i.next();
+	while(i.hasNext()) {
+	    cp = i.next();
 	    int spaces = cp.getStartPosition() - prevEnd;
 	    if (prevLine != cp.getStartLine()) {
 		text.append('\n');
@@ -97,7 +98,7 @@ public class CompositeCodePiece extends CodePiece {
      */
     public int getStartPosition() {
 	if (codePieces.size() > 0) {
-	    return ((CodePiece) codePieces.firstElement()).getStartPosition();
+	    return codePieces.get(0).getStartPosition();
         }
         return 0;
     }
@@ -107,7 +108,7 @@ public class CompositeCodePiece extends CodePiece {
      */
     public int getEndPosition() {
 	if (codePieces.size() > 0) {
-	    return ((CodePiece) codePieces.lastElement()).getEndPosition();
+            return codePieces.get(codePieces.size() - 1).getEndPosition();
         }
 	return 0;
     }
@@ -117,7 +118,7 @@ public class CompositeCodePiece extends CodePiece {
      */
     public int getStartLine() {
 	if (codePieces.size() > 0) {
-	    return ((CodePiece) codePieces.firstElement()).getStartLine();
+	    return codePieces.get(0).getStartLine();
         }
         return 0;
     }
@@ -127,7 +128,7 @@ public class CompositeCodePiece extends CodePiece {
      */
     public int getEndLine() {
 	if (codePieces.size() > 0) {
-	    return ((CodePiece) codePieces.lastElement()).getEndLine();
+	    return codePieces.get(codePieces.size() - 1).getEndLine();
         }
         return 0;
     }
