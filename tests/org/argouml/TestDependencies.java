@@ -105,7 +105,6 @@ public class TestDependencies extends TestCase {
             "org.argouml.uml.generator",
             "org.argouml.uml.util.namespace",
             "org.argouml.util.logging",
-            "org.argouml.util.osdep.win32",
             "org.argouml.util.osdep",
             "org.argouml.util",
             // There was a comment saying that the below has no cycles, but
@@ -132,7 +131,6 @@ public class TestDependencies extends TestCase {
             "org.argouml.taskmgmt",
             "org.argouml.util.logging",
             "org.argouml.util.osdep",
-            "org.argouml.util.osdep.win32",
         };
         for (int i = 0; i < low.length; i++) {
             suite.addTest(new CheckLowLevel(jdepend, low[i]));
@@ -233,7 +231,7 @@ public class TestDependencies extends TestCase {
             if (afferents.size() > 0) {
                 StringBuffer msg = new StringBuffer("JDepend "
                     + "indicates an afferent dependency "
-                    + "in a top level package: ");
+                    + "to a top level package: ");
                 msg.append(p.getName());
                 msg.append(" is used by ");
                 msg.append(afferents.size());
