@@ -62,7 +62,7 @@ public class TestDetailsPane extends TestCase {
      * Test setting a target.
      */
     public void testTargetSet() {
-        DetailsPane pane = new DetailsPane("detail", Horizontal.getInstance());
+        DetailsPane pane = new DetailsPane("South", Horizontal.getInstance());
         JPanel todoPane = pane.getTab(TabToDo.class);
         JPanel propertyPane = pane.getTab(TabProps.class);
 //        JPanel docPane = pane.getTab(TabDocumentation.class);
