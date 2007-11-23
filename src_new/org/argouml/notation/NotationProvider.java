@@ -195,8 +195,14 @@ public abstract class NotationProvider {
             LOG.warn("Encountered deleted object during delete of " + element);
             return;
         }
-        listeners.add(new Object[] {element, null});
-        Model.getPump().addModelEventListener(listener, element);
+        Object[] entry = new Object[] {element, null};
+        if (!listeners.contains(entry)) {
+            listeners.add(entry);
+            Model.getPump().addModelEventListener(listener, element);
+        } else {
+            LOG.warn("Attempted duplicate registration of event listener"
+                    + " - Element: " + element + " Listener: " + listener);
+        }
     }
     
     /*
