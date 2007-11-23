@@ -32,6 +32,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,6 +48,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.swingext.LeftArrowIcon;
 import org.argouml.swingext.UpArrowIcon;
+import org.argouml.ui.ProjectBrowser.Position;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -59,7 +61,6 @@ import org.argouml.uml.ui.TabSrc;
 import org.argouml.uml.ui.TabStereotype;
 import org.argouml.uml.ui.TabStyle;
 import org.argouml.uml.ui.TabTaggedValues;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientable;
 import org.tigris.swidgets.Orientation;
 
@@ -86,50 +87,6 @@ public class DetailsPane
     private static final Logger LOG = Logger.getLogger(DetailsPane.class);
 
     /**
-     * Classes for tabs to be included in the property panel.
-     * (previously stored in org/argouml/argo.ini)
-     * TODO: This is just used to track dependencies for now.  When
-     * we want to actually switch over to using this and dropping
-     * argo.ini, we'll want the form below which contains instances
-     * instead of classes.
-     */
-    private static final Class[] tabClasses = new Class[] {
-        org.argouml.cognitive.ui.TabToDo.class, 
-        TabProps.class,
-        TabDocumentation.class, 
-        TabStyle.class,
-        // TabDocs,
-        TabSrc.class,
-        // TabJavaSrc | TabSrc,
-        TabConstraints.class, 
-        TabStereotype.class, 
-        TabTaggedValues.class,
-        org.argouml.cognitive.checklist.ui.TabChecklist.class,
-        // TabHistory,
-        // TabHash,
-    };
-
-    /**
-     * Classes for tabs to be included in the property panel.
-     * (previously stored in org/argouml/argo.ini)
-     */
-//    private final JPanel[] tabs = new JPanel[] {
-//        new org.argouml.cognitive.ui.TabToDo(), 
-//        new TabProps(),
-//        new TabDocumentation(), 
-//        new TabStyle(),
-//        // TabDocs,
-//        new TabSrc(),
-//        // TabJavaSrc | TabSrc,
-//        new TabConstraints(), 
-//        new TabStereotype(), 
-//        new TabTaggedValues(),
-//        new org.argouml.cognitive.checklist.ui.TabChecklist(),
-//        // TabHistory,
-//        // TabHash,
-//    };
-    
-    /**
      * The top level pane, which is a tabbed pane.
      */
     private JTabbedPane topLevelTabbedPane = new JTabbedPane();
@@ -139,13 +96,11 @@ public class DetailsPane
      */
     private Object currentTarget;
 
+    
     /**
      * The list of all the tabs, which are JPanels, in the JTabbedPane tabs.
      */
     private List<JPanel> tabPanelList = new ArrayList<JPanel>();
-    // TODO: switch to the following when we create tabs ourselves
-//    private List<JPanel> tabPanelList = 
-//        new ArrayList<JPanel>(Arrays.asList(tabs));
 
     /**
      * index of the selected tab in the JTabbedPane.
@@ -186,16 +141,14 @@ public class DetailsPane
      * Registers listeners.<p>
      *
      * @param compassPoint the position for which to build the pane
-     * @param orientation is the orientation.
+     * @param theOrientation is the orientation.
      */
     public DetailsPane(String compassPoint, Orientation theOrientation) {
         LOG.info("making DetailsPane(" + compassPoint + ")");
         
         orientation = theOrientation;
 
-        // TODO: Instantiate our required tabs directly instead of using
-        // reflection in ConfigLoader.
-        ConfigLoader.loadTabs(tabPanelList, compassPoint, orientation);
+        loadTabs(compassPoint, theOrientation);
         
         setOrientation(orientation);
         
@@ -240,7 +193,27 @@ public class DetailsPane
         topLevelTabbedPane.addChangeListener(this);
     }
 
-
+    // TODO: Some parts of ArgoUML have preliminary support for multiple
+    // details panels, but we currently only support the default South (bottom) panel
+    private void loadTabs(String direction, Orientation orientation) {
+        if (Position.South.toString().equalsIgnoreCase(direction)) {
+            tabPanelList.addAll(Arrays.asList(new JPanel[] {
+                new org.argouml.cognitive.ui.TabToDo(),
+                new TabProps(),
+                new TabDocumentation(),
+                new TabStyle(),
+                // TabDocs,
+                new TabSrc(),
+                // TabJavaSrc | TabSrc,
+                new TabConstraints(), new TabStereotype(),
+                new TabTaggedValues(),
+                new org.argouml.cognitive.checklist.ui.TabChecklist(),
+                // TabHistory,
+                // TabHash,
+            }));
+        } 
+    }
+    
     /**
      * Returns the JTabbedPane that contains all details panels.
      *
@@ -497,13 +470,13 @@ public class DetailsPane
 
         // update the previously selected tab
         if (lastNonNullTab >= 0) {
-	    Object tab = tabPanelList.get(lastNonNullTab);
+	    JPanel tab = tabPanelList.get(lastNonNullTab);
 	    if (tab instanceof TargetListener) {
                 // not visible any more - so remove as listener
 	        removeTargetListener((TargetListener) tab);
 	    }
 	}
-        Object target = TargetManager.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getSingleTarget();
 
         if (sel instanceof TabToDoTarget) {
             ((TabToDoTarget) sel).setTarget(target);
@@ -513,6 +486,11 @@ public class DetailsPane
         if (sel instanceof TargetListener) {
             removeTargetListener((TargetListener) sel);
             addTargetListener((TargetListener) sel);
+            // Newly selected tab may have stale target info, so generate
+            // a new set target event for it to refresh it
+            ((TargetListener) sel).targetSet(new TargetEvent(this,
+                    TargetEvent.TARGET_SET, new Object[] {},
+                    new Object[] {target}));
         }
 
         if (target != null
@@ -656,7 +634,9 @@ public class DetailsPane
      */
     private void enableTabs(Object target) {
 
-        // iterate through the tabbed panels to determine wether they
+        // TODO: Quick return here for target == null? - tfm
+        
+        // iterate through the tabbed panels to determine whether they
         // should be enabled.
         for (int i = 0; i < tabPanelList.size(); i++) {
             JPanel tab = tabPanelList.get(i);
@@ -669,6 +649,8 @@ public class DetailsPane
                         shouldEnable = true;
                     }
                 }
+                // TODO: Do we want all enabled tabs to listen or only the one
+                // that is selected/visible? - tfm
                 removeTargetListener((TargetListener) tab);
                 if (shouldEnable) {
                     addTargetListener((TargetListener) tab);

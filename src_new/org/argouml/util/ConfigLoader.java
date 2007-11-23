@@ -41,10 +41,12 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
+import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Orientation;
 
 /**
- * This class loads property panel tab classes specified by a configuration file.
+ * This class loads property panel tab classes specified by a configuration
+ * file.
  */
 public class ConfigLoader {
 
@@ -53,7 +55,7 @@ public class ConfigLoader {
     private static final String CONFIG_FILE_PROPERTY = "argo.config";
     private static final String DEFAULT_CONFIG_FILE = "/org/argouml/argo.ini";
     private static String tabPath = "org.argouml";
-    private static Orientation tabPropsOrientation;
+    private static Orientation tabPropsOrientation = Horizontal.getInstance();
 
     /**
      * @return the orientation
@@ -143,7 +145,7 @@ public class ConfigLoader {
             is = ConfigLoader.class.getResourceAsStream(configFile);
         }
         if (is == null) {
-                LOG.error("Unable to instantiate a config file reader");
+            LOG.error("Unable to instantiate a config file reader");
             return null;
         }
         try {
@@ -277,11 +279,11 @@ public class ConfigLoader {
 
     private static void updateOrientation(List<JPanel> tabs,
             Orientation orientation) {
-        for (JPanel tab : tabs) {
-            if (tab instanceof org.argouml.uml.ui.TabProps) {
-                tabPropsOrientation = orientation;
-            }
-        }
+//        for (JPanel tab : tabs) {
+//            if (tab instanceof org.argouml.uml.ui.TabProps) {
+//                tabPropsOrientation = orientation;
+//            }
+//        }
     }
 
 }

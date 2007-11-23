@@ -31,6 +31,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -44,8 +45,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.TabModelTarget;
-import org.argouml.util.ConfigLoader;
-import org.tigris.swidgets.Horizontal;
 
 /**
  * The upper right pane in the ArgoUML user interface.  It may have several
@@ -59,42 +58,24 @@ public class MultiEditorPane
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(MultiEditorPane.class);
-    
+        
     /**
      * Classes for tabs to be included in the property panel.
      * (previously stored in org/argouml/argo.ini)
-     * TODO: This is just used to track dependencies for now.  When
-     * we want to actually switch over to using this and dropping
-     * argo.ini, we'll want the form below which contains instances
-     * instead of classes.
      */
-    private static final Class[] tabClasses = new Class[] {
-        org.argouml.uml.diagram.ui.TabDiagram.class,
+    private final JPanel[] tabInstances = new JPanel[] {
+        new org.argouml.uml.diagram.ui.TabDiagram(),
         // org.argouml.ui.TabTable
         // TabMetrics
         // TabJavaSrc | TabSrc
         // TabUMLDisplay
         // TabHash
     };
-    
-    /**
-     * Classes for tabs to be included in the property panel.
-     * (previously stored in org/argouml/argo.ini)
-     */
-//    private final JPanel[] tabInstances = new JPanel[] {
-//        new org.argouml.uml.diagram.ui.TabDiagram(),
-//        // org.argouml.ui.TabTable
-//        // TabMetrics
-//        // TabJavaSrc | TabSrc
-//        // TabUMLDisplay
-//        // TabHash
-//    };
 
     private JTabbedPane tabs = new JTabbedPane(SwingConstants.BOTTOM);
 
-    private List<JPanel> tabPanels = new ArrayList<JPanel>();
-//    private List<JPanel> tabPanels = 
-//        new ArrayList<JPanel>(Arrays.asList(tabInstances));
+    private List<JPanel> tabPanels = 
+        new ArrayList<JPanel>(Arrays.asList(tabInstances));
     
     private Component lastTab;
 
@@ -107,10 +88,6 @@ public class MultiEditorPane
      */
     public MultiEditorPane() {
         LOG.info("making MultiEditorPane");
-        
-        // TODO: Instantiate our required tabs directly instead of using
-        // reflection in ConfigLoader.
-        ConfigLoader.loadTabs(tabPanels, "multi", Horizontal.getInstance());
 
         setLayout(new BorderLayout());
         add(tabs, BorderLayout.CENTER);
@@ -249,7 +226,7 @@ public class MultiEditorPane
             "MultiEditorPane state changed:" + lastTab.getClass().getName());
         lastTab.setVisible(true);
         if (lastTab instanceof TabModelTarget) {
-             ((TabModelTarget) lastTab).refresh();
+            ((TabModelTarget) lastTab).refresh();
         }
     }
 
