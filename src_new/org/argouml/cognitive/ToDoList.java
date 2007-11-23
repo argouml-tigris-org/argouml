@@ -24,6 +24,7 @@
 
 package org.argouml.cognitive;
 
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -133,8 +134,6 @@ public class ToDoList extends Observable implements Runnable,
      */
     private boolean isPaused;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
 
     /**
      * Creates a new todolist. The only ToDoList is owned by the Designer.
@@ -306,9 +305,6 @@ public class ToDoList extends Observable implements Runnable,
         setChanged();
         super.notifyObservers();
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * @return the todo items
@@ -572,7 +568,10 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @param off the offender
      * @return the todo tems for this offender
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #elementListForOffender(Object)}.
      */
+    @Deprecated
     public Vector<ToDoItem> elementsForOffender(Object off) {
         return new Vector<ToDoItem>(elementListForOffender(off));
     }
@@ -610,7 +609,7 @@ public class ToDoList extends Observable implements Runnable,
      */
     @Deprecated
     public Enumeration<ToDoItem> elements() {
-        return new Vector<ToDoItem>(items).elements();
+        return Collections.enumeration(items);
     }
 
     /**

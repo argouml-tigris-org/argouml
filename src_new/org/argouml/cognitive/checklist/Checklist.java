@@ -26,13 +26,14 @@ package org.argouml.cognitive.checklist;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
 /**
  * A Checklist is basically a list of CheckItems.  It also provides
- * some convience functions for adding trivial CheckItems (ones that
+ * some convenience functions for adding trivial CheckItems (ones that
  * have no predicate).
  *
  * In ArgoUML, Checklists are shown in the TabChecklist panel.
@@ -108,12 +109,12 @@ public class Checklist extends ArrayList<CheckItem> implements List<CheckItem>,
     }
 
     /**
-     * @return the list in enumeration format
+     * @return an enumeration of the list
      * @deprecated for 0.25.4 by tfmorris.
      */
     @Deprecated
     public Enumeration<CheckItem> elements() {
-        return new Vector<CheckItem>(this).elements();
+        return Collections.enumeration(this);
     }
 
 
