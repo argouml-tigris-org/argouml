@@ -196,7 +196,9 @@ public class DetailsPane
     // TODO: Some parts of ArgoUML have preliminary support for multiple
     // details panels, but we currently only support the default South (bottom) panel
     private void loadTabs(String direction, Orientation orientation) {
-        if (Position.South.toString().equalsIgnoreCase(direction)) {
+        if (Position.South.toString().equalsIgnoreCase(direction)
+                // Special case for backward compatibility
+                || "detail".equalsIgnoreCase(direction)) {
             tabPanelList.addAll(Arrays.asList(new JPanel[] {
                 new org.argouml.cognitive.ui.TabToDo(),
                 new TabProps(),
