@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -80,6 +80,10 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 
     /**
      * The selected choices.
+     * TODO: This should be switched to a List when {@link #getSelected()}
+     * is removed.  It needs to remain a Vector for now to preserve the 
+     * semantics of {@link #getSelected()} because it returns the Vector
+     * itself, not a copy.
      */
     private Vector selected = null;
 
@@ -118,9 +122,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * represented with their names in the choices list and the selected list.
      *
      * @param theChoices
-     *            A vector with the choices a user has.
+     *            A List containing the choices a user has.
      * @param preselected
-     *            A vector with already preselected choices
+     *            A List containing the preselected choices
      * @param theTitle
      *            The title of the dialog
      * @param multiselectAllowed
@@ -140,9 +144,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * Constructs a UMLAddDialog with a given UMLListCellRenderer.
      *
      * @param theChoices
-     *            A vector with the choices a user has.
+     *            A List containing the choices a user has.
      * @param preselected
-     *            A vector with already preselected choices
+     *            A List containing the preselected choices
      * @param theTitle
      *            The title of the dialog
      * @param renderer
@@ -297,16 +301,16 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 
     /**
-     * Utility method to construct a DefaultListModel from a Vector
+     * Utility method to construct a DefaultListModel from a List
      *
      * @param vec
      *            the given list
      * @return DefaultListModel
      */
-    protected DefaultListModel constructListModel(List vec) {
+    protected DefaultListModel constructListModel(List list) {
         DefaultListModel model = new DefaultListModel();
-        for (int i = 0; i < vec.size(); i++) {
-            model.addElement(vec.get(i));
+        for (Object o : list) {
+            model.addElement(o);
         }
         return model;
     }
@@ -373,11 +377,11 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 
     private void getChoicesListInternal(List result) {
-        int[] indices = choicesList.getSelectedIndices();
-        for (int i = 0; i < indices.length; i++) {
-            result.add(choices.get(indices[i]));
+        for (int index : choicesList.getSelectedIndices()) {
+            result.add(choices.get(index));
         }
     }
+
 
     /**
      * Returns the selected elements in the selected list
@@ -392,7 +396,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     
     /**
      * Returns the selected elements in the selected list
-     * 
+     *
      * @return Vector
      * @deprecated for 0.25.4 by tfmorris. Use {@link #getSelectedChoicesList()}.
      */
@@ -404,13 +408,13 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 
     private void getSelectedChoicesInternal(List result) {
         if (selectedList != null && selected != null) {
-            int[] indices = selectedList.getSelectedIndices();
-            for (int i = 0; i < indices.length; i++) {
-                result.add(selected.get(indices[i]));
+            for (int index : selectedList.getSelectedIndices()) {
+                result.add(selected.get(index));
             }
         }
     }
 
+    
     /**
      * Returns the by the user selected elements. This method should be called
      * if the selected choices are to be known.
@@ -419,6 +423,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSelectedList()}.
      */
     public Vector getSelected() {
+        // TODO: Because we return our internal data directly, we can't copy
+        // it from a List to a Vector and keep the same semantics
+        // return new Vector(selected);
         return selected;
     }
 
@@ -431,7 +438,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     public List getSelectedList() {
         return selected;
     }
-    
+
     /**
      * Adds the selected elements in the choices list to the selected list.
      * Updates the GUI too.
@@ -486,7 +493,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * emptied.
      */
     public void cancel() {
-        selected.removeAllElements();
+        selected.clear();
         if (preSelected != null) {
             selected.addAll(preSelected);
         }
