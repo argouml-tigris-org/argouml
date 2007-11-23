@@ -105,7 +105,7 @@ public class TestPropertyPanels extends TestCase {
 
         if (theDetailsPane == null) {
             theDetailsPane =
-        	new DetailsPane("detail", Horizontal.getInstance());
+        	new DetailsPane("South", Horizontal.getInstance());
         }
     }
 
