@@ -44,9 +44,6 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
     /** The root of the model. */
     private Object root;
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
-
     /**
      * The constructor.
      *
@@ -56,8 +53,6 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         super(name);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // TreeModel implementation
 
     /*
      * @see javax.swing.tree.TreeModel#getRoot()
@@ -70,10 +65,7 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
      */
     public Object getChild(Object parent, int index) {
-
-        int nSubs = getGoRules().size();
-        for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) getGoRules().elementAt(i);
+        for (TreeModel tm : getGoRuleList()) {
             int childCount = tm.getChildCount(parent);
             if (index < childCount) {
                 return tm.getChild(parent, index);
@@ -87,11 +79,8 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
      * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
      */
     public int getChildCount(Object parent) {
-
         int childCount = 0;
-        int nSubs = getGoRules().size();
-        for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) getGoRules().elementAt(i);
+        for (TreeModel tm : getGoRuleList()) {
             childCount += tm.getChildCount(parent);
         }
         return childCount;
@@ -102,11 +91,8 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
      * java.lang.Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
-
         int childCount = 0;
-        int nSubs = getGoRules().size();
-        for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) getGoRules().elementAt(i);
+        for (TreeModel tm : getGoRuleList()) {
             int childIndex = tm.getIndexOfChild(parent, child);
             if (childIndex != -1) {
                 return childIndex + childCount;
@@ -123,11 +109,10 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object node) {
-        int nSubs = getGoRules().size();
-        for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) getGoRules().elementAt(i);
-            if (!tm.isLeaf(node))
+        for (TreeModel tm : getGoRuleList()) {
+            if (!tm.isLeaf(node)) {
                 return false;
+            }
         }
         return true;
     }
@@ -140,9 +125,7 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         //  Empty implementation - not used.
     }
 
-    ////////////////////////////////////////////////////////////////
-    // other methods
-
+    
     /**
      * @param r the root of the model
      */
@@ -150,4 +133,4 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         root = r;
     }
 
-} /* end class TreeModelComposite */
+}
