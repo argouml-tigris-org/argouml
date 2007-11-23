@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,13 +24,15 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 
 
 /**
@@ -40,7 +42,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  * the type of Classifier is parameter to one of this action's constructors.
  *
  */
-public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
+public class ActionAddInstanceClassifier extends AbstractActionAddModelElement2 {
 
     private Object choiceClass = Model.getMetaTypes().getClassifier();
 
@@ -64,18 +66,15 @@ public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
         choiceClass = choice;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
+
+    @Override
+    protected void doIt(Collection selected) {
         Model.getCommonBehaviorHelper().setClassifiers(getTarget(), selected);
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        Vector ret = new Vector();
+
+    protected List getChoices() {
+        List ret = new ArrayList();
         if (getTarget() != null) {
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
@@ -85,18 +84,14 @@ public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-specifications");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        Vector ret = new Vector();
+
+    protected List getSelected() {
+        List ret = new ArrayList();
         ret.addAll(Model.getFacade().getClassifiers(getTarget()));
         return ret;
     }

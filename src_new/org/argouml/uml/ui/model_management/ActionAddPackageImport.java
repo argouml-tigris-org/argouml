@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,18 +24,20 @@
 
 package org.argouml.uml.ui.model_management;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 
 /**
  * Add an import to a package.
  * 
  * @author Michiel
  */
-class ActionAddPackageImport extends AbstractActionAddModelElement {
+class ActionAddPackageImport extends AbstractActionAddModelElement2 {
 
     /**
      * Constructor for ActionAddPackageImport.
@@ -44,11 +46,9 @@ class ActionAddPackageImport extends AbstractActionAddModelElement {
         super();
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        Vector vec = new Vector();
+
+    protected List getChoices() {
+        List vec = new ArrayList();
         /* TODO: correctly implement next function 
          * in the model subsystem for 
          * issue 1942: */
@@ -57,26 +57,21 @@ class ActionAddPackageImport extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        Vector vec = new Vector();
+
+    protected List getSelected() {
+        List vec = new ArrayList();
         vec.addAll(Model.getFacade().getImportedElements(getTarget()));
         return vec;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-imported-elements");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
+
+    @Override
+    protected void doIt(Collection selected) {
         Object pack = getTarget();
         Model.getModelManagementHelper().setImportedElements(pack, selected);
     }

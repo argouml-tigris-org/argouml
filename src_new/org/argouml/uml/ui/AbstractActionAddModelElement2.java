@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
@@ -53,8 +54,7 @@ public abstract class AbstractActionAddModelElement2 extends UndoableAction {
      * Construct an action to add a model element to some list.
      */
     protected AbstractActionAddModelElement2() {
-        super(Translator.localize("menu.popup.add-modelelement"),
-                null);
+        super(Translator.localize("menu.popup.add-modelelement"), null);
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
                 Translator.localize("menu.popup.add-modelelement"));
@@ -107,7 +107,9 @@ public abstract class AbstractActionAddModelElement2 extends UndoableAction {
      * UMLAddDialog.
      * @param selected The choices the user has selected in the UMLAddDialog
      */
-    protected void doIt(List selected) {
+    protected void doIt(Collection selected) {
+        // TODO: This is for backward compatibility.  It can be removed after
+        // the deprecation period for AbstractActionAddModelElement has lapsed
         if (this instanceof AbstractActionAddModelElement) {
             ((AbstractActionAddModelElement) this).doIt((Vector) selected);
         }

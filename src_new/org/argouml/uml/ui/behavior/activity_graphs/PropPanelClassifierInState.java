@@ -28,8 +28,8 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
@@ -39,7 +39,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
@@ -196,12 +195,10 @@ class UMLClassifierInStateTypeComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object model =
             ProjectManager.getManager().getCurrentProject().getModel();
-        Collection c = 
+        Collection classifiers = 
             new ArrayList(Model.getCoreHelper().getAllClassifiers(model));
         Collection newList = new ArrayList();
-        Iterator i = c.iterator();
-        while (i.hasNext()) {
-            Object classifier = i.next();
+        for (Object classifier : classifiers) {
             if (!Model.getFacade().isAClassifierInState(classifier)) {
                 newList.add(classifier);
             }
@@ -249,7 +246,7 @@ class UMLClassifierInStateTypeComboBoxModel extends UMLComboBoxModel2 {
     }
 }
 
-class ActionAddCISState extends AbstractActionAddModelElement {
+class ActionAddCISState extends AbstractActionAddModelElement2 {
     
     /**
      * The serial version.
@@ -269,7 +266,7 @@ class ActionAddCISState extends AbstractActionAddModelElement {
     /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
-    protected void doIt(Vector selected) {
+    protected void doIt(Collection selected) {
         Object cis = getTarget();
         if (Model.getFacade().isAClassifierInState(cis)) {
             Model.getActivityGraphsHelper().setInStates(cis, selected);
@@ -279,8 +276,8 @@ class ActionAddCISState extends AbstractActionAddModelElement {
     /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
-    protected Vector getChoices() {
-        Vector ret = new Vector();
+    protected List getChoices() {
+        List ret = new ArrayList();
         Object cis = getTarget();
         Object classifier = Model.getFacade().getType(cis);
         if (Model.getFacade().isAClassifier(classifier)) {
@@ -301,12 +298,12 @@ class ActionAddCISState extends AbstractActionAddModelElement {
     /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
-    protected Vector getSelected() {
+    protected List getSelected() {
         Object cis = getTarget();
         if (Model.getFacade().isAClassifierInState(cis)) {
-            return new Vector(Model.getFacade().getInStates(cis));
+            return new ArrayList(Model.getFacade().getInStates(cis));
         }
-        return new Vector();
+        return Collections.EMPTY_LIST;
     }
 }
 

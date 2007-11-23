@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,11 +24,13 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 
 /**
  * Provide a dialog which helps the user to select one event
@@ -38,7 +40,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  * @author MarkusK
  *
  */
-class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
+class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement2 {
     /**
      * The one and only instance of this class.
      */
@@ -53,11 +55,9 @@ class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
         setMultiSelect(false);
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        Vector vec = new Vector();
+
+    protected List getChoices() {
+        List vec = new ArrayList();
 
         vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
                 Model.getFacade().getModel(getTarget()),
@@ -66,11 +66,9 @@ class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        Vector vec = new Vector();
+
+    protected List getSelected() {
+        List vec = new ArrayList();
         Object signal = Model.getFacade().getSignal(getTarget());
         if (signal != null) {
             vec.add(signal);
@@ -78,23 +76,20 @@ class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement {
         return vec;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-signal");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
+
+    @Override
+    protected void doIt(Collection selected) {
         Object event = getTarget();
         if (selected == null || selected.size() == 0) {
             Model.getCommonBehaviorHelper().setSignal(event, null);
         } else {
             Model.getCommonBehaviorHelper().setSignal(event,
-                    selected.get(0));
+                    selected.iterator().next());
         }
     }
 

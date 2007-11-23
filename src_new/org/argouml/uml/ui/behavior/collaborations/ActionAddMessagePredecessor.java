@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,14 +22,16 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 
 /**
  * Action to add a predecessor to some message.
@@ -37,7 +39,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
+public class ActionAddMessagePredecessor extends AbstractActionAddModelElement2 {
 
     private static final ActionAddMessagePredecessor SINGLETON =
 	new ActionAddMessagePredecessor();
@@ -49,40 +51,35 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
         super();
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        if (getTarget() == null) return new Vector();
-        Vector vec = new Vector();
+
+    protected List getChoices() {
+        if (getTarget() == null) {
+            return Collections.EMPTY_LIST;
+        }
+        List vec = new ArrayList();
         vec.addAll(Model.getCollaborationsHelper()
                 .getAllPossiblePredecessors(getTarget()));
         return vec;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        if (getTarget() == null)
+
+    protected List getSelected() {
+        if (getTarget() == null) {
 	    throw new IllegalStateException(
                 "getSelected may not be called with null target");
-        Vector vec = new Vector();
+        }
+        List vec = new ArrayList();
         vec.addAll(Model.getFacade().getPredecessors(getTarget()));
         return vec;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.add-predecessors");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
+
+    protected void doIt(Collection selected) {
 	if (getTarget() == null)
 	    throw new IllegalStateException(
                 "doIt may not be called with null target");

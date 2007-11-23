@@ -38,7 +38,7 @@ import org.argouml.i18n.Translator;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  * @deprecated for 0.25.4 by tfmorris. Use
- *             {@link AbstractActionAddModelElement2#}.
+ *             {@link AbstractActionAddModelElement2}.
  */
 public abstract class AbstractActionAddModelElement extends
         AbstractActionAddModelElement2 {
@@ -51,8 +51,7 @@ public abstract class AbstractActionAddModelElement extends
      */
     @Deprecated
     protected AbstractActionAddModelElement() {
-        super(Translator.localize("menu.popup.add-modelelement"),
-                null);
+        super(Translator.localize("menu.popup.add-modelelement"), null);
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
                 Translator.localize("menu.popup.add-modelelement"));
@@ -67,7 +66,7 @@ public abstract class AbstractActionAddModelElement extends
      * 
      * @return Vector
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link AbstractActionAddModelElement2#getChoices()).
+     *             {@link AbstractActionAddModelElement2#getChoices()}.
      */
     @Deprecated
     protected abstract Vector getChoices();
@@ -76,7 +75,7 @@ public abstract class AbstractActionAddModelElement extends
      * The modelelements already selected BEFORE the dialog is shown.
      * @return Vector
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link AbstractActionAddModelElement2#getSelected()).
+     *             {@link AbstractActionAddModelElement2#getSelected()}.
      */
     @Deprecated
     protected abstract Vector getSelected();
@@ -86,7 +85,7 @@ public abstract class AbstractActionAddModelElement extends
      * UMLAddDialog.
      * @param selected The choices the user has selected in the UMLAddDialog
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link AbstractActionAddModelElement2#doIt(java.util.List)).
+     *             {@link AbstractActionAddModelElement2#doIt(java.util.List)}.
      */
     @Deprecated
     protected abstract void doIt(Vector selected);

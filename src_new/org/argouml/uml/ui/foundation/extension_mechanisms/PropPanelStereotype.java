@@ -199,8 +199,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
      * sorted list of strings.
      */
     void initMetaClasses() {
-        Collection<String> tmpMetaClasses =
-                Model.getCoreHelper().getAllMetatypeNames();
+        Collection<String> tmpMetaClasses = 
+            Model.getCoreHelper().getAllMetatypeNames();
         if (tmpMetaClasses instanceof List) {
             metaClasses = (List<String>) tmpMetaClasses;
         } else {
@@ -255,8 +255,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
      *
      * @author Michiel
      */
-    class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement2 {
-        
+    class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement2{
+
         @Override
         protected List getChoices() {
             return metaClasses;
@@ -271,15 +271,15 @@ public class PropPanelStereotype extends PropPanelModelElement {
         protected List getSelected() {
             List result = new ArrayList();
             if (Model.getFacade().isAStereotype(getTarget())) {
-                Collection bases =
-                        Model.getFacade().getBaseClasses(getTarget());
+                Collection bases = 
+                    Model.getFacade().getBaseClasses(getTarget());
                 result.addAll(bases);
             }
             return result;
         }
 
         @Override
-        protected void doIt(List selected) {
+        protected void doIt(Collection selected) {
             Object stereo = getTarget();
             Set<Object> oldSet = new HashSet<Object>(getSelected());
             Set toBeRemoved = new HashSet<Object>(oldSet);

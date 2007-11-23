@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,19 +24,21 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 
 /**
  * This action adds a context to a signal.
  *
  * @author mvw@tigris.org
  */
-public class ActionAddContextSignal extends AbstractActionAddModelElement {
+public class ActionAddContextSignal extends AbstractActionAddModelElement2 {
 
     /**
      * The constructor.
@@ -45,11 +47,8 @@ public class ActionAddContextSignal extends AbstractActionAddModelElement {
         super();
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        Vector ret = new Vector();
+    protected List getChoices() {
+        List ret = new ArrayList();
         Object model =
             ProjectManager.getManager().getCurrentProject().getModel();
         if (getTarget() != null) {
@@ -59,26 +58,20 @@ public class ActionAddContextSignal extends AbstractActionAddModelElement {
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        Vector ret = new Vector();
+
+    protected List getSelected() {
+        List ret = new ArrayList();
         ret.addAll(Model.getFacade().getContexts(getTarget()));
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-contexts");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
+
+    protected void doIt(Collection selected) {
         Model.getCommonBehaviorHelper().setContexts(getTarget(), selected);
     }
 

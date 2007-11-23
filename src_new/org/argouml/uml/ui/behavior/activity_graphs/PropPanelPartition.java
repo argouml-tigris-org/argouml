@@ -25,7 +25,9 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -33,7 +35,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -108,14 +110,15 @@ public class PropPanelPartition extends PropPanelModelElement {
         return activityGraphScroll;
     }
 
-    class ActionAddPartitionContent extends AbstractActionAddModelElement {
+    class ActionAddPartitionContent extends AbstractActionAddModelElement2 {
 
         public ActionAddPartitionContent() {
             super();
             setMultiSelect(true);
         }
 
-        protected void doIt(Vector selected) {
+        @Override
+        protected void doIt(Collection selected) {
             Object partition = getTarget();
             if (Model.getFacade().isAPartition(partition)) {
                 Model.getActivityGraphsHelper().setContents(
@@ -123,8 +126,8 @@ public class PropPanelPartition extends PropPanelModelElement {
             }
         }
 
-        protected Vector getChoices() {
-            Vector ret = new Vector();
+        protected List getChoices() {
+            List ret = new ArrayList();
             if (Model.getFacade().isAPartition(getTarget())) {
                 Object partition = getTarget();
                 Object ag = Model.getFacade().getActivityGraph(partition);
@@ -141,8 +144,8 @@ public class PropPanelPartition extends PropPanelModelElement {
             return Translator.localize("dialog.title.add-contents");
         }
 
-        protected Vector getSelected() {
-            Vector ret = new Vector();
+        protected List getSelected() {
+            List ret = new ArrayList();
             ret.addAll(Model.getFacade().getContents(getTarget()));
             return ret;
         }

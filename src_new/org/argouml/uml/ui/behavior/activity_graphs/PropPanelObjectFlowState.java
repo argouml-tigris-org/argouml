@@ -29,8 +29,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -40,7 +39,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -174,10 +173,8 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
      * @param ret a collection of states
      */
     static void removeTopStateFrom(Collection ret) {
-        Iterator i = ret.iterator();
         Collection tops = new ArrayList();
-        while (i.hasNext()) {
-            Object state = i.next();
+        for (Object state : ret) {
             if (Model.getFacade().isACompositeState(state)
                     && Model.getFacade().isTop(state)) {
                 tops.add(state);
@@ -244,7 +241,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         private static final long serialVersionUID = -7742772495832660119L;
     }
 
-    static class ActionAddOFSState extends AbstractActionAddModelElement {
+    static class ActionAddOFSState extends AbstractActionAddModelElement2 {
         private Object choiceClass = Model.getMetaTypes().getState();
 
 
@@ -256,11 +253,8 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             setMultiSelect(true);
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
-         *         java.util.Vector)
-         */
-        protected void doIt(Vector selected) {
+
+        protected void doIt(Collection selected) {
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Object type = Model.getFacade().getType(t);
@@ -282,11 +276,9 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             }
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-         */
-        protected Vector getChoices() {
-            Vector ret = new Vector();
+
+        protected List getChoices() {
+            List ret = new ArrayList();
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Object classifier = getType(t);
@@ -300,25 +292,21 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             return ret;
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-         */
+
         protected String getDialogTitle() {
             return Translator.localize("dialog.title.add-state");
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-         */
-        protected Vector getSelected() {
+
+        protected List getSelected() {
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Object type = Model.getFacade().getType(t);
                 if (Model.getFacade().isAClassifierInState(type)) {
-                    return new Vector(Model.getFacade().getInStates(type));
+                    return new ArrayList(Model.getFacade().getInStates(type));
                 }
             }
-            return new Vector();
+            return new ArrayList();
         }
 
         /**
@@ -401,7 +389,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
     }
     
     
-    static class ActionAddOFSParameter extends AbstractActionAddModelElement {
+    static class ActionAddOFSParameter extends AbstractActionAddModelElement2 {
         private Object choiceClass = Model.getMetaTypes().getParameter();
 
         /**
@@ -412,22 +400,17 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             setMultiSelect(true);
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
-         *         java.util.Vector)
-         */
-        protected void doIt(Vector selected) {
+
+        protected void doIt(Collection selected) {
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Model.getActivityGraphsHelper().setParameters(t, selected);
             }
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-         */
-        protected Vector getChoices() {
-            Vector ret = new Vector();
+
+        protected List getChoices() {
+            List ret = new ArrayList();
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Object classifier = getType(t);
@@ -452,22 +435,18 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             return ret;
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-         */
+
         protected String getDialogTitle() {
             return Translator.localize("dialog.title.add-state");
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-         */
-        protected Vector getSelected() {
+
+        protected List getSelected() {
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
-                return new Vector(Model.getFacade().getParameters(t));
+                return new ArrayList(Model.getFacade().getParameters(t));
             }
-            return new Vector();
+            return new ArrayList();
         }
         
     }

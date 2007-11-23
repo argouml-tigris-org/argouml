@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JScrollPane;
@@ -188,9 +189,7 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement2 {
         super();
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
+
     protected List getChoices() {
         List ret = new ArrayList();
         Object model =
@@ -203,26 +202,21 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement2 {
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
+
     protected List getSelected() {
         List ret = new ArrayList();
         ret.addAll(Model.getFacade().getReceptions(getTarget()));
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-receptions");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(List selected) {
+
+    @Override
+    protected void doIt(Collection selected) {
         Model.getCommonBehaviorHelper().setReception(getTarget(), selected);
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,12 +24,13 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Vector;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 
 /**
  * @since Oct 6, 2002
@@ -37,7 +38,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  * @stereotype singleton
  */
 public class ActionAddExtendExtensionPoint
-    extends AbstractActionAddModelElement {
+    extends AbstractActionAddModelElement2 {
 
     private static final ActionAddExtendExtensionPoint SINGLETON =
         new ActionAddExtendExtensionPoint();
@@ -48,18 +49,15 @@ public class ActionAddExtendExtensionPoint
         super();
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
+
+    @Override
+    protected void doIt(Collection selected) {
         Model.getUseCasesHelper().setExtensionPoints(getTarget(), selected);
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        Vector ret = new Vector();
+
+    protected List getChoices() {
+        List ret = new ArrayList();
         if (getTarget() != null) {
             Object extend = /*(MExtend)*/getTarget();
             Collection c = Model.getFacade().getExtensionPoints(
@@ -69,19 +67,15 @@ public class ActionAddExtendExtensionPoint
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize(
                 "dialog.title.add-extensionpoints");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        Vector ret = new Vector();
+
+    protected List getSelected() {
+        List ret = new ArrayList();
         ret.addAll(Model.getFacade().getExtensionPoints(getTarget()));
         return ret;
     }

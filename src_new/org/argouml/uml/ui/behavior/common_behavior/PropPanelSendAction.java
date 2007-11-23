@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JScrollPane;
@@ -36,7 +37,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-
 
 /**
  * The properties panel for a SendAction.
@@ -94,11 +94,11 @@ class ActionAddSendActionSignal extends AbstractActionAddModelElement2 {
 
 
     @Override
-    protected void doIt(List selected) {
+    protected void doIt(Collection selected) {
         if (selected != null && selected.size() >= 1) {
             Model.getCommonBehaviorHelper().setSignal(
                     getTarget(),
-                    selected.get(0));
+                    selected.iterator().next());
         } else {
             Model.getCommonBehaviorHelper().setSignal(getTarget(), null);
         }
