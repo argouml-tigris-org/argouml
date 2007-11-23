@@ -280,7 +280,7 @@ public class Main {
             // The reason the gui is initialized before the commands are run
             // is that some of the commands will use the projectbrowser.
             st.mark("initialize gui");
-            initializeGUI(splash);
+            ProjectBrowser pb = initializeGUI(splash);
 
             SubsystemUtility.initSubsystem(new InitUiCmdSubsystem());
             SubsystemUtility.initSubsystem(new InitNotationUI());
@@ -313,9 +313,6 @@ public class Main {
                     PersistenceManager.getInstance().fixExtension(projectName);
                 urlToOpen = projectUrl(projectName, urlToOpen);
             }
-
-            st.mark("initialize ProjectBrowser");
-            ProjectBrowser pb = ProjectBrowser.getInstance();
 
             st.mark("perform commands");
             if (batch) {
@@ -744,7 +741,7 @@ public class Main {
      *
      * @param splash the splash screeen
      */
-    private static void initializeGUI(SplashScreen splash) {
+    private static ProjectBrowser initializeGUI(SplashScreen splash) {
         // make the projectbrowser
         JPanel todoPane = new ToDoPane(splash);
 	ProjectBrowser pb = ProjectBrowser.makeInstance(splash, true, todoPane);
@@ -783,7 +780,8 @@ public class Main {
                     "SPACE", "pressed",
                     "released SPACE", "released"
                 })
-        );         
+        );  
+        return pb;
     }
 
     /**
