@@ -48,6 +48,7 @@ public class SaveSwingWorker extends SwingWorker {
      * @param aOverwrite   whether to show the UI or not
      */
     public SaveSwingWorker(boolean aOverwrite, File aFile) {
+        super("ArgoSaveProjectThread");
         overwrite = aOverwrite;
         file = aFile;
     }

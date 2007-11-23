@@ -49,6 +49,7 @@ public class LoadSwingWorker extends SwingWorker {
      * @param aShowUi	whether to show the UI or not
      */
     public LoadSwingWorker(File aFile, boolean aShowUi) {
+        super("ArgoLoadProjectThread");
         this.showUi = aShowUi;
         this.file = aFile;
     }

@@ -66,9 +66,18 @@ public abstract class SwingWorker {
      */
     private static class ThreadVar {
         private Thread thread;
-        ThreadVar(Thread t) { thread = t; }
-        synchronized Thread get() { return thread; }
-        synchronized void clear() { thread = null; }
+
+        ThreadVar(Thread t) {
+            thread = t;
+        }
+
+        synchronized Thread get() {
+            return thread;
+        }
+
+        synchronized void clear() {
+            thread = null;
+        }
     }
 
     private ThreadVar threadVar;
@@ -241,7 +250,7 @@ public abstract class SwingWorker {
 
 
     /**
-     * Start a thread that will call the <code>construct</code> method
+     * Construct a worker thread that will call the <code>construct</code> method
      * and then exit.
      */
     public SwingWorker() {
@@ -267,6 +276,11 @@ public abstract class SwingWorker {
         Thread t = new Thread(doConstruct);
         threadVar = new ThreadVar(t);
         
+    }
+    
+    public SwingWorker(String threadName) {
+        this();
+        threadVar.get().setName(threadName);
     }
 
     /**
