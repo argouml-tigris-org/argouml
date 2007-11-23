@@ -148,6 +148,7 @@ public final class ProjectBrowser
         assert Position.Center.toString().equals(BorderSplitPane.CENTER);
         assert Position.North.toString().equals(BorderSplitPane.NORTH); 
         assert Position.NorthEast.toString().equals(BorderSplitPane.NORTHEAST); 
+        assert Position.South.toString().equals(BorderSplitPane.SOUTH); 
     }
     
     /**
@@ -1468,7 +1469,6 @@ public final class ProjectBrowser
      */
     public void loadProjectWithProgressMonitor(File file, boolean showUI) {
         LoadSwingWorker worker = new LoadSwingWorker(file, showUI);
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         worker.start();
     }
     	
