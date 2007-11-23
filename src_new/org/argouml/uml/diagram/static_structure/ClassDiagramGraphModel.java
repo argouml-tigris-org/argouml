@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
@@ -492,7 +491,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	//throws PropertyVetoException
 
 	if ("ownedElement".equals(pce.getPropertyName())) {
-	    Vector oldOwned = (Vector) pce.getOldValue();
+	    List oldOwned = (List) pce.getOldValue();
 	    Object elementImport = pce.getNewValue();
             Object modelElement =
                     Model.getFacade().getModelElement(elementImport);

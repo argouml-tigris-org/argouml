@@ -25,16 +25,20 @@
 package org.argouml.uml;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Vector;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.model.Model;
 import org.tigris.gef.util.ChildGenerator;
-/** Utility class to generate the subclasses of a class.  It
- *  recursively moves down the class hierarchy.  But it does that in a
- *  safe way that will nothang in case of cyclic inheritance.
- *  @stereotype singleton
+
+/**
+ * Utility class to generate the subclasses of a class. It recursively moves
+ * down the class hierarchy. But it does that in a safe way that will not hang
+ * in case of cyclic inheritance.
+ * 
+ * @stereotype singleton
  */
 
 public class GenDescendantClasses implements ChildGenerator {
@@ -52,18 +56,12 @@ public class GenDescendantClasses implements ChildGenerator {
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
-	Vector res = new Vector();
-	if (!(Model.getFacade().isAGeneralizableElement(o))) {
-	    return res.elements();
+        Set res = new HashSet();
+        if (Model.getFacade().isAGeneralizableElement(o)) {
+            Object cls = o;
+            accumulateDescendants(cls, res);
         }
-
-	Object cls = o;
-	Collection gens = Model.getFacade().getSpecializations(cls);
-	if (gens == null) {
-	    return res.elements();
-	}
-	accumulateDescendants(cls, res);
-	return res.elements();
+        return Collections.enumeration(res);
     }
 
 
@@ -71,7 +69,7 @@ public class GenDescendantClasses implements ChildGenerator {
      * @param cls the starting class (in fact GeneralizableElement)
      * @param accum the accumulated list of descendants
      */
-    private void accumulateDescendants(final Object cls, List accum) {
+    private void accumulateDescendants(final Object cls, Collection accum) {
 	Collection gens = Model.getFacade().getSpecializations(cls);
 	if (gens == null) {
 	    return;

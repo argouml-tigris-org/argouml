@@ -24,10 +24,11 @@
 
 package org.argouml.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Vector;
 
 /**
  * Internal class for managing the delimiters in MyTokenizer. It's rather
@@ -495,7 +496,7 @@ public class MyTokenizer implements Enumeration {
     private final TokenSep delims;
     private String savedToken;
     private int savedIdx;
-    private Vector customSeps;
+    private List customSeps;
     private String putToken;
 
     /**
@@ -531,7 +532,7 @@ public class MyTokenizer implements Enumeration {
 	tokIdx = 0;
 	eIdx = string.length();
 	savedToken = null;
-	customSeps = new Vector();
+	customSeps = new ArrayList();
 	customSeps.add(sep);
     }
 
@@ -550,7 +551,7 @@ public class MyTokenizer implements Enumeration {
 	tokIdx = 0;
 	eIdx = string.length();
 	savedToken = null;
-	customSeps = new Vector(seps);
+	customSeps = new ArrayList(seps);
     }
 
     /**

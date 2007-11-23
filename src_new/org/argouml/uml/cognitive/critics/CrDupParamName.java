@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -54,13 +55,14 @@ public class CrDupParamName extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!Model.getFacade().isABehavioralFeature(dm)) {
 	    return NO_PROBLEM;
 	}
 
 	Object bf = dm;
-	Vector namesSeen = new Vector();
+	Collection<String> namesSeen = new ArrayList<String>();
 	Iterator params = Model.getFacade().getParameters(bf).iterator();
 	while (params.hasNext()) {
 	    Object p = params.next();
@@ -74,10 +76,10 @@ public class CrDupParamName extends CrUML {
 		return PROBLEM_FOUND;
 	    }
 
-	    namesSeen.addElement(pName);
+	    namesSeen.add(pName);
 	}
 
 	return NO_PROBLEM;
     }
 
-} /* end class CrDupParamName */
+}

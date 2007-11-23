@@ -25,7 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -66,13 +66,10 @@ public class ActionRemoveFromDiagram extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        int size = 0;
         Editor ce = Globals.curEditor();
         MutableGraphSupport graph = (MutableGraphSupport) ce.getGraphModel();
-        Vector figs = ce.getSelectionManager().getFigs();
-        size = figs.size();
-        for (int i = 0; i < size; i++) {
-            Fig f = (Fig) figs.elementAt(i);
+        List<Fig> figs = ce.getSelectionManager().getFigs();
+        for (Fig f : figs) {
             if (!(f.getOwner() instanceof CommentEdge)) {
                 if (f instanceof GraphElement) {
                     f.removeFromDiagram();

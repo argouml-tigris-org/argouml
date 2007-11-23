@@ -26,8 +26,6 @@ package org.argouml.uml.reveng.java;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
@@ -40,7 +38,7 @@ import org.argouml.model.Model;
 class ParseState {
 
     /**
-     * Logger.<p>
+     * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ParseState.class);
 
@@ -48,13 +46,13 @@ class ParseState {
      * When the classifier parse is finished, these features will be
      * removed from the model.
      */
-    private Vector obsoleteFeatures;
+    private Collection obsoleteFeatures;
 
     /**
      * When the classifier parse is finished, these inner classes
      * will be removed from the model.
      */
-    private Vector obsoleteInnerClasses;
+    private Collection obsoleteInnerClasses;
 
     /**
      * This prefix is appended to inner classes, if any.
@@ -88,7 +86,7 @@ class ParseState {
      * @param javaLangPackage The default package java.lang.
      */
     public ParseState(Object model, Object javaLangPackage) {
-	obsoleteInnerClasses = new Vector();
+	obsoleteInnerClasses = new ArrayList();
 	classifier = null;
 	context =
 	    new PackageContext(new PackageContext(null, model),
@@ -114,9 +112,9 @@ class ParseState {
             + Model.getFacade().getName(mClassifier)
             + "$";
         obsoleteFeatures =
-            new Vector(Model.getFacade().getFeatures(mClassifier));
+            new ArrayList(Model.getFacade().getFeatures(mClassifier));
         obsoleteInnerClasses =
-            new Vector(Model.getFacade().getOwnedElements(mClassifier));
+            new ArrayList(Model.getFacade().getOwnedElements(mClassifier));
         context =
             new OuterClassifierContext(
                     previousState.context,
@@ -224,8 +222,7 @@ class ParseState {
     	if (obsoleteFeatures == null) {
             return;
         }
-    	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
-            Object feature = i.next();
+        for (Object feature : obsoleteFeatures) {
             Model.getCoreHelper().removeFeature(classifier, feature);
             Model.getUmlFactory().delete(feature);
     	}
@@ -239,8 +236,7 @@ class ParseState {
     	if (obsoleteInnerClasses == null) {
 	    return;
 	}
-	for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext();) {
-	    Object element = i.next();
+	for (Object element : obsoleteInnerClasses) {
 	    if (Model.getFacade().isAClassifier(element)) {
 		Model.getUmlFactory().delete(element);
 	    }
@@ -264,8 +260,7 @@ class ParseState {
      * @return The found feature, null if not found.
      */
     public Object getFeature(String name) {
-	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
-	    Object mFeature = i.next();
+        for (Object mFeature : obsoleteFeatures) {
 	    if (name.equals(Model.getFacade().getName(mFeature))) {
 		return mFeature;
 	    }
@@ -281,8 +276,7 @@ class ParseState {
      */
     public Collection getFeatures(String name) {
     	ArrayList list = new ArrayList();
-	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
-	    Object mFeature = i.next();
+    	for (Object mFeature : obsoleteFeatures) {
 	    if (name.equals(Model.getFacade().getName(mFeature))) {
 		list.add(mFeature);
 	    }
@@ -297,8 +291,7 @@ class ParseState {
      * @return The found method, null if not found.
      */
     public Object getMethod(String name) {
-	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
-	    Object mFeature = i.next();
+        for (Object mFeature : obsoleteFeatures) {
 	    if (Model.getFacade().isAMethod(mFeature)
 		&& name.equals(Model.getFacade().getName(mFeature))) {
 		return mFeature;
@@ -314,8 +307,7 @@ class ParseState {
      * @return The found operation, null if not found.
      */
     public Object getOperation(String name) {
-	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
-	    Object feature = i.next();
+        for (Object feature : obsoleteFeatures) {
 	    if (Model.getFacade().isAOperation(feature)
                     && name.equals(Model.getFacade().getName(feature))) {
 		return feature;
@@ -331,8 +323,7 @@ class ParseState {
      * @return The found attribute, null if not found.
      */
     public Object getAttribute(String name) {
-        for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
-            Object feature = i.next();
+        for (Object feature : obsoleteFeatures) {
             if (Model.getFacade().isAAttribute(feature)
                     && name.equals(Model.getFacade().getName(feature))) {
                 return feature;

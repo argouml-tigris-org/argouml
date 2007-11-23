@@ -24,8 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.Icon;
 
@@ -107,6 +108,7 @@ public class CrOperNameConflict extends CrUML {
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
      *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only do this for classifiers
@@ -115,33 +117,25 @@ public class CrOperNameConflict extends CrUML {
             return NO_PROBLEM;
         }
 
-	Iterator ops = Model.getFacade().getOperations(dm).iterator();
-
         // Get all the features (giving up if there are none). Then loop
         // through finding all operations. Each time we find one, we compare
         // its signature with all previous (held in vector operSeen), and then
         // if it doesn't match add it to the vector.
 
-        Vector operSeen = new Vector();
-
-        while (ops.hasNext()) {
-
-	    Object op = ops.next();
+        Collection operSeen = new ArrayList();
+        for (Object op : Model.getFacade().getOperations(dm)) {
 
             // Compare against all earlier operations. If there's a match we've
             // found the problem
-
-            int        size = operSeen.size();
-
-            for (int i = 0; i < size; i++) {
-                if (signaturesMatch(op, operSeen.get(i))) {
+            for (Object o : operSeen) {
+                if (signaturesMatch(op, o)) {
                     return PROBLEM_FOUND;
                 }
             }
 
             // Add to the vector and round to look at the next one
 
-            operSeen.addElement(op);
+            operSeen.add(op);
         }
 
         // If we drop out here, there was no match and we have no problem
@@ -162,6 +156,7 @@ public class CrOperNameConflict extends CrUML {
      *
      * @return       The {@link javax.swing.Icon Icon} to use.
      */
+    @Override
     public Icon getClarifier() {
         return ClOperationCompartment.getTheInstance();
     }
@@ -201,15 +196,18 @@ public class CrOperNameConflict extends CrUML {
 	// Check that the names match.
 
 	String name1 = Model.getFacade().getName(op1);
-	if (name1 == null)
+	if (name1 == null) {
 	    return false;
+	}
 
 	String name2 = Model.getFacade().getName(op2);
-	if (name2 == null)
+	if (name2 == null) {
 	    return false;
+	}
 
-	if (!name1.equals(name2))
+	if (!name1.equals(name2)) {
 	    return false;
+	}
 
 	// Check that the parameter lists match.
 
@@ -238,34 +236,35 @@ public class CrOperNameConflict extends CrUML {
 		return true;	// Both lists have the same length
 
 	    // Different lengths:
-	    if (p1 == null)
-		return false;
-	    if (p2 == null)
-		return false;
+	    if (p1 == null || p2 == null) {
+                return false;
+            }
 
 	    // Compare the type of the parameters. If any of the types is
 	    // null, then we have a match.
 	    Object p1type = Model.getFacade().getType(p1);
-	    if (p1type == null)
+	    if (p1type == null) {
 		continue;
+	    }
 
 	    Object p2type = Model.getFacade().getType(p2);
-	    if (p2type == null)
+	    if (p2type == null) {
 		continue;
+	    }
 
-	    if (!p1type.equals(p2type))
+	    if (!p1type.equals(p2type)) {
 		return false;
+	    }
 
 	    // This pair of params where the same. Lets check the next pair.
 	}
 
-	if (!params1.hasNext()
-	    && !params2.hasNext()) {
-	    // Both lists have the same length.
-	    return true;
-	}
+	if (!params1.hasNext() && !params2.hasNext()) {
+            // Both lists have the same length.
+            return true;
+        }
 
 	return false;
     }
 
-} /* end class CrOperNameConflict.java */
+}

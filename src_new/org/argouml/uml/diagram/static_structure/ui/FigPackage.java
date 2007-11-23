@@ -510,12 +510,14 @@ public class FigPackage extends FigNodeModelElement
         Vector popUpActions = super.getPopUpActions(me);
 
         // Modifier ...
-        popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                buildModifierPopUp(ABSTRACT | LEAF | ROOT));
 
         // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                buildVisibilityPopUp());
 
         return popUpActions;
     }
@@ -525,14 +527,12 @@ public class FigPackage extends FigNodeModelElement
         ArgoJMenu showMenu = super.buildShowPopUp();
         /* Only show the menuitems if they make sense: */
         Editor ce = Globals.curEditor();
-        Vector figs = ce.getSelectionManager().getFigs();
-        Iterator i = figs.iterator();
+        List<Fig> figs = ce.getSelectionManager().getFigs();
         boolean sOn = false;
         boolean sOff = false;
         boolean vOn = false;
         boolean vOff = false;
-        while (i.hasNext()) {
-            Fig f = (Fig) i.next();
+        for (Fig f : figs) {
             if (f instanceof StereotypeContainer) {
                 boolean v = ((StereotypeContainer) f).isStereotypeVisible();
                 if (v) {
@@ -575,10 +575,8 @@ public class FigPackage extends FigNodeModelElement
      */
     private void doStereotype(boolean value) {
         Editor ce = Globals.curEditor();
-        Vector figs = ce.getSelectionManager().getFigs();
-        Iterator i = figs.iterator();
-        while (i.hasNext()) {
-            Fig f = (Fig) i.next();
+        List<Fig> figs = ce.getSelectionManager().getFigs();
+        for (Fig f : figs) {
             if (f instanceof StereotypeContainer) {
                 ((StereotypeContainer) f).setStereotypeVisible(value);
             }
@@ -597,10 +595,8 @@ public class FigPackage extends FigNodeModelElement
      */
     private void doVisibility(boolean value) {
         Editor ce = Globals.curEditor();
-        Vector figs = ce.getSelectionManager().getFigs();
-        Iterator i = figs.iterator();
-        while (i.hasNext()) {
-            Fig f = (Fig) i.next();
+        List<Fig> figs = ce.getSelectionManager().getFigs();
+        for (Fig f : figs) {
             if (f instanceof VisibilityContainer) {
                 ((VisibilityContainer) f).setVisibilityVisible(value);
             }

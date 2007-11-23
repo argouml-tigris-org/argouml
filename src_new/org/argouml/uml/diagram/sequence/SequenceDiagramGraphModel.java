@@ -27,11 +27,11 @@ package org.argouml.uml.diagram.sequence;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.DeleteInstanceEvent;
@@ -98,7 +98,7 @@ public class SequenceDiagramGraphModel
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
     public List getPorts(Object nodeOrEdge) {
-        Vector ports = new Vector();
+        List ports = new ArrayList();
         if (Model.getFacade().isAClassifierRole(nodeOrEdge)) {
             ports.addAll(Model.getFacade().getReceivedMessages(nodeOrEdge));
             ports.addAll(Model.getFacade().getSentMessages(nodeOrEdge));
@@ -120,7 +120,7 @@ public class SequenceDiagramGraphModel
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
     public List getInEdges(Object port) {
-        Vector res = new Vector();
+        List res = new ArrayList();
         if (Model.getFacade().isAClassifierRole(port)) {
             res.addAll(Model.getFacade().getSentMessages(port));
         }
@@ -131,7 +131,7 @@ public class SequenceDiagramGraphModel
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
     public List getOutEdges(Object port) {
-        Vector res = new Vector();
+        List res = new ArrayList();
         if (Model.getFacade().isAClassifierRole(port)) {
             res.addAll(Model.getFacade().getReceivedMessages(port));
         }
@@ -401,7 +401,7 @@ public class SequenceDiagramGraphModel
         //throws PropertyVetoException
 
         if ("ownedElement".equals(pce.getPropertyName())) {
-            Vector oldOwned = (Vector) pce.getOldValue();
+            List oldOwned = (List) pce.getOldValue();
             Object eo = pce.getNewValue();
             Object me = Model.getFacade().getModelElement(eo);
             if (oldOwned.contains(eo)) {

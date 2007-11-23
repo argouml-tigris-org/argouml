@@ -24,8 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
@@ -113,9 +114,9 @@ public class CrDupRoleNames extends CrUML {
         // Loop through all the ends, comparing the name against those already
         // seen (ignoring any with no name).
         // No problem if there are no connections defined, we will fall
-	// through immediatly.
+	// through immediately.
 
-        Vector   namesSeen = new Vector();
+        Collection<String>   namesSeen = new ArrayList<String>();
 
         Iterator conns = Model.getFacade().getConnections(dm).iterator();
         while (conns.hasNext()) {
@@ -134,7 +135,7 @@ public class CrDupRoleNames extends CrUML {
                 return PROBLEM_FOUND;
             }
 
-            namesSeen.addElement(name);
+            namesSeen.add(name);
         }
 
         // If we drop out there were no clashes
@@ -142,5 +143,5 @@ public class CrDupRoleNames extends CrUML {
         return NO_PROBLEM;
     }
 
-} /* end class CrDupRoleNames */
+}
 

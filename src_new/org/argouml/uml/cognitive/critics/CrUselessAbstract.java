@@ -25,9 +25,10 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
@@ -64,8 +65,9 @@ public class CrUselessAbstract extends CrUML {
             return false;
         }
 	Object cls = dm;
-	if (!Model.getFacade().isAbstract(cls))
+	if (!Model.getFacade().isAbstract(cls)) {
 	    return false;  // original class was not abstract
+	}
 	ListSet derived =
 	    (new ListSet(cls)).reachable(new ChildGenDerivedClasses());
         for (Object c : derived) {
@@ -83,17 +85,17 @@ public class CrUselessAbstract extends CrUML {
 class ChildGenDerivedClasses implements ChildGenerator {
     public Enumeration gen(Object o) {
 	Object c = o;
-	List specs = new ArrayList(Model.getFacade().getSpecializations(c));
+	Collection specs = new ArrayList(Model.getFacade().getSpecializations(c));
 	if (specs == null) {
 	    return EnumerationEmpty.theInstance();
 	}
-	Vector specClasses = new Vector(specs.size());
+	List specClasses = new ArrayList(specs.size());
         for (Object g : specs) {
 	    Object ge = Model.getFacade().getSpecific(g);
 	    if (ge != null) {
 		specClasses.add(ge);
 	    }
 	}
-	return specClasses.elements();
+	return Collections.enumeration(specClasses);
     }
 }

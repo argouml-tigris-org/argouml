@@ -25,9 +25,10 @@
 package org.argouml.uml;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import org.argouml.model.Model;
 import org.tigris.gef.util.ChildGenerator;
@@ -60,14 +61,14 @@ public class GenCompositeClasses implements ChildGenerator {
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
-	Vector res = new Vector();
+	List res = new ArrayList();
 	if (!(Model.getFacade().isAClassifier(o))) {
-	    return res.elements();
+	    return Collections.enumeration(res);
 	}
 	Object cls = o;
-	Vector ends = new Vector(Model.getFacade().getAssociationEnds(cls));
+	List ends = new ArrayList(Model.getFacade().getAssociationEnds(cls));
 	if (ends == null) {
-	    return res.elements();
+	    return Collections.enumeration(res);
 	}
 	Iterator assocEnds = ends.iterator();
 	while (assocEnds.hasNext()) {
@@ -88,12 +89,12 @@ public class GenCompositeClasses implements ChildGenerator {
 		}
 	    }
 	}
-	return res.elements();
+	return Collections.enumeration(res);
     }
 
     /**
      * The UID.
      */
     private static final long serialVersionUID = -6027679124153204193L;
-} /* end class GenCompositeClasses */
+}
 

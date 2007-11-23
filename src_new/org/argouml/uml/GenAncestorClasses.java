@@ -25,9 +25,10 @@
 package org.argouml.uml;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.List;
-import java.util.Vector;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.model.Model;
 import org.tigris.gef.util.ChildGenerator;
@@ -41,22 +42,18 @@ public class GenAncestorClasses implements ChildGenerator {
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object cls) {
-	Vector res = new Vector();
-
-	if (!(Model.getFacade().isAGeneralizableElement(cls))) {
-	    return res.elements();
+	Set res = new HashSet();
+	if (Model.getFacade().isAGeneralizableElement(cls)) {
+	    accumulateAncestors(cls, res);
         }
-	Collection gens = Model.getFacade().getGeneralizations(cls);
-	if (gens == null) return res.elements();
-	accumulateAncestors(cls, res);
-	return res.elements();
+	return Collections.enumeration(res);
     }
 
     /**
      * @param cls the class (in fact any GeneralizableElement will do)
      * @param accum the accumulated list of generalizations
      */
-    public void accumulateAncestors(Object cls, List accum) {
+    public void accumulateAncestors(Object cls, Collection accum) {
 	Collection gens = Model.getFacade().getGeneralizations(cls);
 	if (gens == null) {
 	    return;

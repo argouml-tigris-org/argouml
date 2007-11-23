@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
@@ -54,13 +54,6 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionCompartmentDisplay extends UndoableAction {
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Instance variables
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * A flag to indicate whether the action should show or hide the
      * relevant compartment.
@@ -78,13 +71,6 @@ public class ActionCompartmentDisplay extends UndoableAction {
     private static final int COMPARTMENT_EXTENSIONPOINT = 4;
     private static final int COMPARTMENT_ENUMLITERAL = 8;
 
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Class variables
-    //
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * Static instance to show the attribute compartment of a class.
@@ -168,11 +154,7 @@ public class ActionCompartmentDisplay extends UndoableAction {
                 "action.hide-enumeration-literal-compartment", 
                 COMPARTMENT_ENUMLITERAL);
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // constructors
-    //
-    ///////////////////////////////////////////////////////////////////////////
+
 
     /**
      * Constructor for a new instance. Can only be called by this class or
@@ -191,12 +173,6 @@ public class ActionCompartmentDisplay extends UndoableAction {
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // main methods
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * Return the compartment show and/or hide actions needed for the selected
      * Figs.
@@ -207,9 +183,7 @@ public class ActionCompartmentDisplay extends UndoableAction {
     public static Collection getActions() {
         Collection actions = new ArrayList();
         Editor ce = Globals.curEditor();
-        Vector figs = ce.getSelectionManager().getFigs();
-        Iterator i = figs.iterator();
-        
+
         int present = 0;
         int visible = 0;
         
@@ -225,8 +199,8 @@ public class ActionCompartmentDisplay extends UndoableAction {
         boolean enumPresent = false;
         boolean enumVisible = false;
 
-        while (i.hasNext()) {
-            Fig f = (Fig) i.next();
+        List<Fig> figs = ce.getSelectionManager().getFigs();
+        for (Fig f : figs) {
             
             if (f instanceof AttributesCompartmentContainer) {
                 present++;
@@ -357,7 +331,6 @@ public class ActionCompartmentDisplay extends UndoableAction {
 	}
     }
 
-} /* end class ActionCompartmentDisplay */
-
+}
 
 

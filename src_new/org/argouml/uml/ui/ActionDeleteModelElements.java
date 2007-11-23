@@ -28,7 +28,7 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -274,10 +274,12 @@ public class ActionDeleteModelElements extends UndoableAction {
         int size = 0;
         try {
             Editor ce = Globals.curEditor();
-            Vector figs = ce.getSelectionManager().getFigs();
+            List<Fig> figs = ce.getSelectionManager().getFigs();
             size = figs.size();
         } catch (Exception e) {
-        // Ignore
+            // TODO: This catch block needs to be narrower and do something
+            // with the caught exception - tfm 20071120
+            // Ignore
         }
         if (size > 0) {
             return true;

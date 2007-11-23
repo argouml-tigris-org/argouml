@@ -24,9 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -40,7 +40,7 @@ import org.argouml.uml.cognitive.UMLDecision;
  * @author jrobbins
  */
 //TODO: split into one critic for inherited problems and
-//one for pproblems directly in this class.
+//one for problems directly in this class.
 public class CrOppEndVsAttr extends CrUML {
 
     /**
@@ -60,16 +60,17 @@ public class CrOppEndVsAttr extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *         java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isAClassifier(dm))) {
             return NO_PROBLEM;
         }
         Object cls = /*(MClassifier)*/ dm;
-        Vector namesSeen = new Vector();
+        Collection<String> namesSeen = new ArrayList<String>();
         Collection str = Model.getFacade().getFeatures(cls);
 
 
-        // warn about inheritied name conflicts, different critic?
+        // warn about inherited name conflicts, different critic?
         Iterator features = str.iterator();
         while (features.hasNext()) {
             Object o = features.next();
@@ -90,13 +91,13 @@ public class CrOppEndVsAttr extends CrUML {
                 continue;
             }
 
-            namesSeen.addElement(nameStr);
+            namesSeen.add(nameStr);
 
         }
 
         Collection assocEnds = Model.getFacade().getAssociationEnds(cls);
 
-        // warn about inheritied name conflicts, different critic?
+        // warn about inherited name conflicts, different critic?
         Iterator myEnds = assocEnds.iterator();
         while (myEnds.hasNext()) {
             Object myAe = /*(MAssociationEnd)*/ myEnds.next();
@@ -139,4 +140,4 @@ public class CrOppEndVsAttr extends CrUML {
      * The UID.
      */
     private static final long serialVersionUID = 5784567698177480475L;
-} /* end class CrOppEndVsAttr.java */
+}

@@ -278,22 +278,22 @@ public abstract class FigEdgeModelElement
         Vector popUpActions = super.getPopUpActions(me);
         
         // popupAddOffset should be equal to the number of items added here:
-        popUpActions.addElement(new JSeparator());
+        popUpActions.add(new JSeparator());
         popupAddOffset = 1;
         if (removeFromDiagram) {
-            popUpActions.addElement(
+            popUpActions.add(
                     ProjectActions.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
-        popUpActions.addElement(new ActionDeleteModelElements());
+        popUpActions.add(new ActionDeleteModelElements());
         popupAddOffset++;
 
         /* Check if multiple items are selected: */
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         if (!ms) {
             ToDoList list = Designer.theDesigner().getToDoList();
-            Vector items =
-                (Vector) list.elementsForOffender(getOwner()).clone();
+            List<ToDoItem> items =
+                (List<ToDoItem>) list.elementsForOffender(getOwner()).clone();
             if (items != null && items.size() > 0) {
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
                 ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
@@ -301,27 +301,26 @@ public abstract class FigEdgeModelElement
                     critiques.add(new ActionGoToCritique(itemUnderMouse));
                     critiques.addSeparator();
                 }
-                int size = items.size();
-                for (int i = 0; i < size; i++) {
-                    ToDoItem item = (ToDoItem) items.elementAt(i);
-                    if (item == itemUnderMouse)
+                for (ToDoItem item : items) {
+                    if (item == itemUnderMouse) {
                         continue;
+                    }
                     critiques.add(new ActionGoToCritique(item));
                 }
-                popUpActions.insertElementAt(new JSeparator(), 0);
-                popUpActions.insertElementAt(critiques, 0);
+                popUpActions.add(0, new JSeparator());
+                popUpActions.add(0, critiques);
             }
         }
         // Add stereotypes submenu
         Action[] stereoActions = getApplyStereotypeActions();
         if (stereoActions != null && stereoActions.length > 0) {
-            popUpActions.insertElementAt(new JSeparator(), 0);
+            popUpActions.add(0, new JSeparator());
             ArgoJMenu stereotypes = new ArgoJMenu(
                     "menu.popup.apply-stereotypes");
             for (int i = 0; i < stereoActions.length; ++i) {
                 stereotypes.addCheckItem(stereoActions[i]);
             }
-            popUpActions.insertElementAt(stereotypes, 0);
+            popUpActions.add(0, stereotypes);
         }
         return popUpActions;
     }
@@ -358,10 +357,8 @@ public abstract class FigEdgeModelElement
         int iconPos = 25, gap = 1, xOff = -4, yOff = -4;
         Point p = new Point();
         ToDoList list = Designer.theDesigner().getToDoList();
-        Vector items = list.elementsForOffender(getOwner());
-        int size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -374,9 +371,7 @@ public abstract class FigEdgeModelElement
             }
         }
         items = list.elementsForOffender(this);
-        size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -419,10 +414,8 @@ public abstract class FigEdgeModelElement
         int iconPos = 25, xOff = -4, yOff = -4;
         Point p = new Point();
         ToDoList list = Designer.theDesigner().getToDoList();
-        Vector items = list.elementsForOffender(getOwner());
-        int size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             stuffPointAlongPerimeter(iconPos, p);
             int width = icon.getIconWidth();
@@ -434,8 +427,7 @@ public abstract class FigEdgeModelElement
                 return item;
             iconPos += width;
         }
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -445,9 +437,7 @@ public abstract class FigEdgeModelElement
             }
         }
         items = list.elementsForOffender(this);
-        size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             stuffPointAlongPerimeter(iconPos, p);
             int width = icon.getIconWidth();
@@ -459,8 +449,7 @@ public abstract class FigEdgeModelElement
                 return item;
             iconPos += width;
         }
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);

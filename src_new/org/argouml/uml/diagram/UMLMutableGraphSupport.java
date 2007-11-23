@@ -30,7 +30,6 @@ import java.util.Dictionary;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
@@ -66,12 +65,12 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     /**
      * Contains all the nodes in the graphmodel/diagram.
      */
-    private Vector nodes = new Vector();
+    private List nodes = new ArrayList();
 
     /**
-     * Constains all the edges in the graphmodel/diagram.
+     * Contains all the edges in the graphmodel/diagram.
      */
-    private Vector edges = new Vector();
+    private List edges = new ArrayList();
 
     /**
      * The "home" UML model of this diagram, not all ModelElements in this
@@ -100,7 +99,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * Get all the nodes from the graphmodel/diagram.
      *
      * @see org.tigris.gef.graph.MutableGraphSupport#getNodes()
-     * @return Vector of nodes in the graphmodel/diagram
+     * @return List of nodes in the graphmodel/diagram
      */
     public List getNodes() {
         return nodes;
@@ -109,7 +108,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     /**
      * Get all the edges from the graphmodel/diagram.
      *
-     * @return Vector of edges in the graphmodel/diagram
+     * @return List of edges in the graphmodel/diagram
      */
     public List getEdges() {
         return edges;
@@ -135,11 +134,12 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      *
      * @param node node to remove
      */
+    @Override
     public void removeNode(Object node) {
 	if (!containsNode(node)) {
 	    return;
 	}
-	nodes.removeElement(node);
+	nodes.remove(node);
 	fireNodeRemoved(node);
     }
 
@@ -148,11 +148,12 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      *
      * @param edge edge to remove
      */
+    @Override
     public void removeEdge(Object edge) {
 	if (!containsEdge(edge)) {
 	    return;
 	}
-	edges.removeElement(edge);
+	edges.remove(edge);
 	fireEdgeRemoved(edge);
     }
 
@@ -343,8 +344,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         if (edge instanceof CommentEdge) {
             return ((CommentEdge) edge).getDestination();
         } else if (Model.getFacade().isAAssociation(edge)) {
-            Vector conns = new Vector(Model.getFacade().getConnections(edge));
-            return conns.elementAt(1);
+            List conns = new ArrayList(Model.getFacade().getConnections(edge));
+            return conns.get(1);
         } else if (Model.getFacade().isARelationship(edge)
                 || Model.getFacade().isATransition(edge)
                 || Model.getFacade().isAAssociationEnd(edge)) {

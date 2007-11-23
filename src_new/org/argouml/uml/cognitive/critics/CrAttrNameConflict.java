@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.Icon;
 
@@ -73,20 +74,24 @@ public class CrAttrNameConflict extends CrUML {
      * @return true if there are two with the same name.
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClassifier(dm))) {
             return NO_PROBLEM;
         }
 
-	Vector namesSeen = new Vector();
-
+	Collection<String> namesSeen = new ArrayList<String>();
 	Iterator attrs = Model.getFacade().getAttributes(dm).iterator();
 	while (attrs.hasNext()) {
 	    String name = Model.getFacade().getName(attrs.next());
-	    if (name == null || name.length() == 0) continue;
+	    if (name == null || name.length() == 0) {
+	        continue;
+	    }
 
-	    if (namesSeen.contains(name)) return PROBLEM_FOUND;
-	    namesSeen.addElement(name);
+	    if (namesSeen.contains(name)) {
+	        return PROBLEM_FOUND;
+	    }
+	    namesSeen.add(name);
 	}
 	return NO_PROBLEM;
     }
@@ -94,9 +99,10 @@ public class CrAttrNameConflict extends CrUML {
     /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
+    @Override
     public Icon getClarifier() {
 	return ClAttributeCompartment.getTheInstance();
     }
 
-} /* end class CrAttrNameConflict */
+}
 

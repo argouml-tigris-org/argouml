@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -90,18 +90,15 @@ public class ActionAggregation extends UndoableAction {
 	agg = a;
     }
 
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-	Vector sels = Globals.curEditor().getSelectionManager().selections();
+	List sels = Globals.curEditor().getSelectionManager().selections();
 	if (sels.size() == 1) {
-	    Selection sel = (Selection) sels.firstElement();
+	    Selection sel = (Selection) sels.get(0);
 	    Fig f = sel.getContent();
 	    Object owner = ((FigEdgeModelElement) f).getOwner();
 	    Collection ascEnds = Model.getFacade().getConnections(owner);
@@ -118,10 +115,10 @@ public class ActionAggregation extends UndoableAction {
 	}
     }
 
-    /**
-     * @return true if the action is enabled
+    /*
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
 	return true;
     }

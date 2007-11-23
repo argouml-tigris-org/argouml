@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -269,11 +268,11 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
      *             ever intended to be part of the public API.
      */
     @Deprecated
-    public void setNode(Vector figures) {
+    public void setNode(List figures) {
         int size = figures.size();
         if (figures != null && (size > 0)) {
             for (int i = 0; i < size; i++) {
-                Object o = figures.elementAt(i);
+                Object o = figures.get(i);
                 if (o instanceof FigComponent) {
                     FigComponent figcomp = (FigComponent) o;
                     figcomp.setEnclosingFig(this);

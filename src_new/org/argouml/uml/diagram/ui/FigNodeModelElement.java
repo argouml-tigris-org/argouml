@@ -243,8 +243,8 @@ public abstract class FigNodeModelElement
      * Contains the figs of the floating stereotypes when viewed in 
      * <code>SmallIcon</code> mode.
      */
-    private   Vector floatingStereotypes = new Vector();
-    
+    private List<Fig> floatingStereotypes = new ArrayList<Fig>();
+
     /**
      * The current stereotype view
      * 
@@ -278,7 +278,7 @@ public abstract class FigNodeModelElement
      * FigGroup that this FigNodeModelElement "is", since these are the
      * figures that make up this high-level primitive figure.
      */
-    private Vector enclosedFigs = new Vector();
+    private Vector<Fig> enclosedFigs = new Vector<Fig>();
 
     /**
      * The figure enclosing this figure.
@@ -382,6 +382,7 @@ public abstract class FigNodeModelElement
     /*
      * @see java.lang.Object#finalize()
      */
+    @Override
     protected void finalize() throws Throwable {
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
         ArgoEventPump.removeListener(
@@ -507,31 +508,32 @@ public abstract class FigNodeModelElement
      * This method shall return a Vector of one of these 4 types:
      * AbstractAction, JMenu, JMenuItem, JSeparator.
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
 
         // Show ...
         ArgoJMenu show = buildShowPopUp();
         if (show.getMenuComponentCount() > 0) {
-            popUpActions.addElement(show);
+            popUpActions.add(show);
         }
         
         // popupAddOffset should be equal to the number of items added here:
-        popUpActions.addElement(new JSeparator());
+        popUpActions.add(new JSeparator());
         popupAddOffset = 1;
         if (removeFromDiagram) {
-            popUpActions.addElement(
+            popUpActions.add(
                     ProjectActions.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
-        popUpActions.addElement(new ActionDeleteModelElements());
+        popUpActions.add(new ActionDeleteModelElements());
         popupAddOffset++;
 
         /* Check if multiple items are selected: */
         if (TargetManager.getInstance().getTargets().size() == 1) {
             ToDoList list = Designer.theDesigner().getToDoList();
-            Vector items =
-                    (Vector) list.elementsForOffender(getOwner()).clone();
+            List<ToDoItem> items =
+                    (List<ToDoItem>) list.elementsForOffender(getOwner()).clone();
             if (items != null && items.size() > 0) {
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
                 ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
@@ -539,28 +541,26 @@ public abstract class FigNodeModelElement
                     critiques.add(new ActionGoToCritique(itemUnderMouse));
                     critiques.addSeparator();
                 }
-                int size = items.size();
-                for (int i = 0; i < size; i++) {
-                    ToDoItem item = (ToDoItem) items.elementAt(i);
+                for (ToDoItem item : items) {
                     if (item != itemUnderMouse) {
                         critiques.add(new ActionGoToCritique(item));
                     }
                 }
-                popUpActions.insertElementAt(new JSeparator(), 0);
-                popUpActions.insertElementAt(critiques, 0);
+                popUpActions.add(0, new JSeparator());
+                popUpActions.add(0, critiques);
             }
 
             // Add stereotypes submenu
             Action[] stereoActions =
                 StereotypeUtility.getApplyStereotypeActions(getOwner());
             if (stereoActions != null) {
-                popUpActions.insertElementAt(new JSeparator(), 0);
+                popUpActions.add(0, new JSeparator());
                 ArgoJMenu stereotypes =
                     new ArgoJMenu("menu.popup.apply-stereotypes");
                 for (int i = 0; i < stereoActions.length; ++i) {
                     stereotypes.addCheckItem(stereoActions[i]);
                 }
-                popUpActions.insertElementAt(stereotypes, 0);
+                popUpActions.add(0, stereotypes);
             }
             
             // add stereotype view submenu
@@ -571,7 +571,7 @@ public abstract class FigNodeModelElement
             stereotypesView.addRadioItem(new ActionStereotypeViewBigIcon(this));
             stereotypesView.addRadioItem(new ActionStereotypeViewSmallIcon(this));
             
-            popUpActions.insertElementAt(stereotypesView, 0);
+            popUpActions.add(0, stereotypesView);
         }
 
         return popUpActions;
@@ -635,6 +635,7 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getEnclosingFig()
      */
+    @Override
     public Fig getEnclosingFig() {
         return encloser;
     }
@@ -649,6 +650,7 @@ public abstract class FigNodeModelElement
      * 
      * @see org.tigris.gef.presentation.FigNode#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig newEncloser) {
         Fig oldEncloser = encloser;
         
@@ -744,7 +746,8 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getEnclosedFigs()
      */
-    public Vector getEnclosedFigs() {
+    @Override
+    public Vector<Fig> getEnclosedFigs() {
         return enclosedFigs;
     }
 
@@ -754,16 +757,16 @@ public abstract class FigNodeModelElement
      *
      * @param figures in the new order
      */
-    public void elementOrdering(Vector figures) {
+    public void elementOrdering(List<Fig> figures) {
         int size = figures.size();
         getLayer().bringToFront(this);
         if (size > 0) {
             for (int i = 0; i < size; i++) {
-                Object o = figures.elementAt(i);
+                Object o = figures.get(i);
                 if (o instanceof FigNodeModelElement
                     && o != getEnclosingFig()) {
                     FigNodeModelElement fignode = (FigNodeModelElement) o;
-                    Vector enclosed = fignode.getEnclosedFigs();
+                    List<Fig> enclosed = fignode.getEnclosedFigs();
                     fignode.elementOrdering(enclosed);
                 }
             }
@@ -790,10 +793,8 @@ public abstract class FigNodeModelElement
         int iconX = getX();
         int iconY = getY() - 10;
         ToDoList list = Designer.theDesigner().getToDoList();
-        Vector items = list.elementsForOffender(getOwner());
-        int size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -805,9 +806,7 @@ public abstract class FigNodeModelElement
             }
         }
         items = list.elementsForOffender(this);
-        size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -828,10 +827,8 @@ public abstract class FigNodeModelElement
     public ToDoItem hitClarifier(int x, int y) {
         int iconX = getX();
         ToDoList list = Designer.theDesigner().getToDoList();
-        Vector items = list.elementsForOffender(getOwner());
-        int size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
             if (y >= getY() - 15
@@ -842,8 +839,7 @@ public abstract class FigNodeModelElement
             }
             iconX += width;
         }
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -854,9 +850,7 @@ public abstract class FigNodeModelElement
             }
         }
         items = list.elementsForOffender(this);
-        size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
             if (y >= getY() - 15
@@ -867,8 +861,7 @@ public abstract class FigNodeModelElement
             }
             iconX += width;
         }
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -884,6 +877,7 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
      */
+    @Override
     public String getTipString(MouseEvent me) {
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
@@ -1572,14 +1566,11 @@ public abstract class FigNodeModelElement
 	    originalNameFig = null;
 	}
 	
-	if (!floatingStereotypes.isEmpty()) {
-	    Iterator it = floatingStereotypes.iterator();
-	    while (it.hasNext()) {
-		Object icon = it.next();
-		this.removeFig((Fig) icon);
+	for (Fig icon : floatingStereotypes) {
+		this.removeFig(icon);
 	    }
-	    floatingStereotypes.clear();
-	}
+	floatingStereotypes.clear();
+	
 	
 	int practicalView = getPracticalView();
 	Object modelElement = getOwner();
@@ -1687,6 +1678,7 @@ public abstract class FigNodeModelElement
      * 
      * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
      */
+    @Override
     public boolean hit(Rectangle r) {
         int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
         if (_filled) {
@@ -1698,6 +1690,7 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
+    @Override
     public final void removeFromDiagram() {
         Fig delegate = getRemoveDelegate();
         if (delegate instanceof FigNodeModelElement) {
@@ -1733,6 +1726,7 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
+    @Override
     public void postLoad() {
         ArgoEventPump.removeListener(this);
         ArgoEventPump.addListener(this);
@@ -1866,13 +1860,13 @@ public abstract class FigNodeModelElement
      * @param yInc the increment in the y direction
      */
     public void displace (int xInc, int yInc) {
-        Vector figsVector;
+        List<Fig> figsVector;
         Rectangle rFig = getBounds();
         setLocation(rFig.x + xInc, rFig.y + yInc);
-        figsVector = ((Vector) getEnclosedFigs().clone());
+        figsVector = ((List<Fig>) getEnclosedFigs().clone());
         if (!figsVector.isEmpty()) {
             for (int i = 0; i < figsVector.size(); i++) {
-                ((FigNodeModelElement) figsVector.elementAt(i))
+                ((FigNodeModelElement) figsVector.get(i))
                             .displace(xInc, yInc);
             }
         }

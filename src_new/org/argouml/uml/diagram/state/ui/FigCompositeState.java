@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.Model;
@@ -153,18 +154,18 @@ public class FigCompositeState extends FigState {
 
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
-        Vector regionsVector = getEnclosedFigs();
+        List regionsList = getEnclosedFigs();
 
 
         /* If it is concurrent and contains concurrent regions,
         the bottom region has a minimum height*/
         if (getOwner() != null) {
             if (Model.getFacade().isConcurrent(getOwner())
-                    && !regionsVector.isEmpty()
-                    && regionsVector.lastElement()
+                    && !regionsList.isEmpty()
+                    && regionsList.get(regionsList.size() - 1)
                         instanceof FigConcurrentRegion) {
-                FigConcurrentRegion f =
-                    ((FigConcurrentRegion) regionsVector.lastElement());
+                FigConcurrentRegion f = ((FigConcurrentRegion) regionsList
+                        .get(regionsList.size() - 1));
                 Rectangle regionBounds = f.getBounds();
                 if ((h - oldBounds.height + regionBounds.height)
                         <= (f.getMinimumSize().height)) {
@@ -200,13 +201,13 @@ public class FigCompositeState extends FigState {
         the regions are resized*/
         if (getOwner() != null) {
             if (Model.getFacade().isConcurrent(getOwner())
-                    && !regionsVector.isEmpty()
-                    && regionsVector.lastElement()
+                    && !regionsList.isEmpty()
+                    && regionsList.get(regionsList.size() - 1)
                         instanceof FigConcurrentRegion) {
-                FigConcurrentRegion f =
-                    ((FigConcurrentRegion) regionsVector.lastElement());
-                for (int i = 0; i < regionsVector.size() - 1; i++) {
-                    ((FigConcurrentRegion) regionsVector.elementAt(i))
+                FigConcurrentRegion f = ((FigConcurrentRegion) regionsList
+                        .get(regionsList.size() - 1));
+                for (int i = 0; i < regionsList.size() - 1; i++) {
+                    ((FigConcurrentRegion) regionsList.get(i))
                         .setBounds(x - oldBounds.x, y - oldBounds.y,
                                 w - 6, true);
                 }
@@ -245,12 +246,6 @@ public class FigCompositeState extends FigState {
     }
 
 
-
-
-
-    ////////////////////////////////////////////////////////////////
-    // fig accessors
-
     /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
@@ -259,10 +254,9 @@ public class FigCompositeState extends FigState {
         /* Check if multiple items are selected: */
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         if (!ms) {
-            popUpActions.insertElementAt(
-                new ActionAddConcurrentRegion(),
-                                         (popUpActions.size()
-                                          - getPopupAddOffset()));
+            popUpActions.add(
+                    popUpActions.size() - getPopupAddOffset(),
+                    new ActionAddConcurrentRegion());
         }
         return popUpActions;
     }
