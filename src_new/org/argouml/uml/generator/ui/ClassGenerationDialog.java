@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,7 +41,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -64,7 +64,6 @@ import org.argouml.uml.generator.CodeGenerator;
 import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.Language;
 import org.argouml.util.ArgoDialog;
-import org.tigris.gef.util.Converter;
 import org.tigris.swidgets.Dialog;
 
 /**
@@ -82,12 +81,9 @@ public class ClassGenerationDialog
     private static final Logger LOG =
         Logger.getLogger(ClassGenerationDialog.class);
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private TableModelClassChecks classTableModel;
     private boolean isPathInModel;
-    private List languages;
+    private List<Language> languages;
 
     private JTable classTable;
     private JComboBox outputDirectoryComboBox;
@@ -98,15 +94,13 @@ public class ClassGenerationDialog
      */
     private int languageHistory;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructor.
      *
      * @param nodes The nodes to generate.
      */
-    public ClassGenerationDialog(Vector nodes) {
+    public ClassGenerationDialog(List nodes) {
         this(nodes, false);
     }
 
@@ -117,7 +111,7 @@ public class ClassGenerationDialog
      * @param inModel <code>true</code> if the path is in the model.
      *        TODO: Correct?
      */
-    public ClassGenerationDialog(Vector nodes, boolean inModel) {
+    public ClassGenerationDialog(List nodes, boolean inModel) {
         super(
             Translator.localize("dialog.title.generate-classes"),
             Dialog.OK_CANCEL_OPTION,
@@ -181,9 +175,7 @@ public class ClassGenerationDialog
         contentPanel.add(centerPanel, BorderLayout.CENTER);
 
         // Output Directory
-
-        outputDirectoryComboBox =
-            new JComboBox(Converter.convert(new Vector(getClasspathEntries())));
+        outputDirectoryComboBox = new JComboBox(getClasspathEntries().toArray());
 
         JButton browseButton = new JButton();
         nameButton(browseButton, "button.browse");
@@ -232,6 +224,7 @@ public class ClassGenerationDialog
     /*
      * @see org.tigris.swidgets.Dialog#nameButtons()
      */
+    @Override
     protected void nameButtons() {
         super.nameButtons();
         nameButton(getOkButton(), "button.generate");
@@ -267,13 +260,13 @@ public class ClassGenerationDialog
     }
 
     private void buildLanguages() {
-        Map ll = GeneratorManager.getInstance().getGenerators();
-        languages = new Vector(ll.keySet());
+        languages = new ArrayList<Language>(
+                GeneratorManager.getInstance().getLanguages());
     }
 
     private static Collection getClasspathEntries() {
         String classpath = System.getProperty("java.class.path");
-        Collection entries = new TreeSet();
+        Collection<String> entries = new TreeSet<String>();
 
         Project p = ProjectManager.getManager().getCurrentProject();
         entries.add(p.getProjectSettings().getGenerationOutputDir());
@@ -293,6 +286,7 @@ public class ClassGenerationDialog
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
 
@@ -303,10 +297,10 @@ public class ClassGenerationDialog
                         .getSelectedItem()).trim();
             Project p = ProjectManager.getManager().getCurrentProject();
             p.getProjectSettings().setGenerationOutputDir(path);
-            List[] fileNames = new Vector[languages.size()];
+            List<String>[] fileNames = new List[languages.size()];
             for (int i = 0; i < languages.size(); i++) {
-                fileNames[i] = new Vector();
-                Language language = (Language) languages.get(i);
+                fileNames[i] = new ArrayList<String>();
+                Language language = languages.get(i);
                 GeneratorManager genMan = GeneratorManager.getInstance();
                 CodeGenerator generator = genMan.getGenerator(language);
                 Set nodes = classTableModel.getChecked(language);
@@ -408,7 +402,7 @@ public class ClassGenerationDialog
 
     private void doBrowse() {
         try {
-            // Show Filechooser to select OuputDirectory
+            // Show Filechooser to select OutputDirectory
             JFileChooser chooser =
                 new JFileChooser(
                     (String) outputDirectoryComboBox
@@ -439,8 +433,7 @@ public class ClassGenerationDialog
     }
 
     class TableModelClassChecks extends AbstractTableModel {
-        ////////////////
-        // instance varables
+
         private List classes;
         private Set[] checked;
 
@@ -468,15 +461,16 @@ public class ClassGenerationDialog
                 // 0.14alpha1) names were not initialized correctly.  this
                 // is a patch for that.
                 if (name == null || name.length() == 0) {
+                    // TODO: This is modifying the user's model - bad! - tfm
                     Model.getCoreHelper().setName(cls, "");
                     // continue;
                 }
 
                 for (int j = 0; j < getLanguagesCount(); j++) {
                     if (isSupposedToBeGeneratedAsLanguage(
-                            (Language) languages.get(j), cls)) {
+                            languages.get(j), cls)) {
                         checked[j].add(cls);
-                    } else if (((Language) languages.get(j)).getName().equals(
+                    } else if ((languages.get(j)).getName().equals(
                             Notation.getConfiguredNotation()
                                     .getConfigurationValue())) {
                         checked[j].add(cls);
@@ -534,7 +528,7 @@ public class ClassGenerationDialog
         }
 
         ////////////////
-        // TableModel implemetation
+        // TableModel implementation
         
         /*
          * @see javax.swing.table.TableModel#getColumnCount()
@@ -546,9 +540,10 @@ public class ClassGenerationDialog
         /*
          * @see javax.swing.table.TableModel#getColumnName(int)
          */
+        @Override
         public String getColumnName(int c) {
             if (c >= 0 && c < getLanguagesCount()) {
-                return ((Language) languages.get(c)).getName();
+                return languages.get(c).getName();
             } else if (c == getLanguagesCount()) {
                 return "Class Name";
             }
@@ -570,6 +565,7 @@ public class ClassGenerationDialog
         /*
          * @see javax.swing.table.TableModel#isCellEditable(int, int)
          */
+        @Override
         public boolean isCellEditable(int row, int col) {
             Object cls = classes.get(row);
             if (col == getLanguagesCount()) {
@@ -619,6 +615,7 @@ public class ClassGenerationDialog
          * @see javax.swing.table.TableModel#setValueAt(
          *          java.lang.Object, int, int)
          */
+        @Override
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
             if (columnIndex == getLanguagesCount()) {
                 return;

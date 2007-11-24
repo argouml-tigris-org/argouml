@@ -61,7 +61,8 @@ public final class GeneratorManager {
         return INSTANCE;
     }
 
-    private Map generators = new HashMap();
+    private Map<Language, CodeGenerator> generators = 
+        new HashMap<Language, CodeGenerator>();
 
     private Language currLanguage = null;
 
@@ -97,7 +98,7 @@ public final class GeneratorManager {
      * @return The old generator being removed or null.
      */
     public CodeGenerator removeGenerator(Language lang) {
-        CodeGenerator old = (CodeGenerator) generators.remove(lang);
+        CodeGenerator old = generators.remove(lang);
         if (lang.equals(currLanguage)) {
             Iterator it = generators.keySet().iterator();
             if (it.hasNext()) {
@@ -138,7 +139,7 @@ public final class GeneratorManager {
         if (lang == null) {
             return null;
         }
-        return (CodeGenerator) generators.get(lang);
+        return generators.get(lang);
     }
 
     /**
@@ -170,14 +171,15 @@ public final class GeneratorManager {
      * @return A copy of the map of the generators. The map
      * keys Language objects, and values are CodeGenerator objects.
      */
-    public Map getGenerators() {
-        return (Map) ((HashMap) generators).clone();
+    public Map<Language, CodeGenerator> getGenerators() {
+        Object  clone = ((HashMap<Language, CodeGenerator>) generators).clone();
+        return (Map<Language, CodeGenerator>) clone;
     }
 
     /**
      * @return A copy of the Set of the languages.
      */
-    public Set getLanguages() {
+    public Set<Language> getLanguages() {
         return generators.keySet();
     }
 
@@ -188,9 +190,7 @@ public final class GeneratorManager {
      * doesn't exist.
      */
     public Language findLanguage(String name) {
-        Iterator it = getLanguages().iterator();
-        while (it.hasNext()) {
-            Language lang = (Language) it.next();
+        for (Language lang : getLanguages()) {
             if (lang.getName().equals(name)) {
                 return lang;
             }
