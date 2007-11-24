@@ -1581,7 +1581,7 @@ public final class ProjectBrowser
                 LOG.error("Out of memory while loading project", ex);
                 reportError(
                         pmw,
-                        Translator.localize("dialog.error.memory.limit.error"),
+                        Translator.localize("dialog.error.memory.limit"),
                         showUI);
             } catch (java.lang.InterruptedException ex) {
                 project = oldProject;
