@@ -63,6 +63,9 @@ public class LoadSwingWorker extends SwingWorker {
      * @return		always null
      */
     public Object construct(ProgressMonitor pmw) {
+        // Load project at slightly lower priority to keep UI responsive
+        Thread currentThread = Thread.currentThread();
+        currentThread.setPriority(currentThread.getPriority() - 1);
         // loads the project
         ProjectBrowser.getInstance().loadProject(file, showUi, pmw);
         return null;
