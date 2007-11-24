@@ -96,6 +96,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
@@ -244,7 +245,7 @@ public abstract class FigNodeModelElement
      * <code>SmallIcon</code> mode.
      */
     private List<Fig> floatingStereotypes = new ArrayList<Fig>();
-
+    
     /**
      * The current stereotype view
      * 
@@ -270,7 +271,7 @@ public abstract class FigNodeModelElement
      * @see FigProfileIcon
      */
     private FigText originalNameFig;
-    
+
     /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
      * it is a Package then these are the Classes, Interfaces, Packages etc
@@ -1362,7 +1363,7 @@ public abstract class FigNodeModelElement
                 Project p = getProject();
                 if (p != null) {
                     updateFont();
-                }
+                    }
                 updateBounds();
             }
         }
@@ -1559,8 +1560,8 @@ public abstract class FigNodeModelElement
 
 	    this.removeFig(stereotypeFigProfileIcon);
 	    stereotypeFigProfileIcon = null;
-	}
-	
+    }
+
 	if (originalNameFig != null) {
 	    this.setNameFig(originalNameFig);
 	    originalNameFig = null;
@@ -1569,7 +1570,7 @@ public abstract class FigNodeModelElement
 	for (Fig icon : floatingStereotypes) {
 		this.removeFig(icon);
 	    }
-	floatingStereotypes.clear();
+	    floatingStereotypes.clear();
 	
 	
 	int practicalView = getPracticalView();
@@ -2018,7 +2019,7 @@ public abstract class FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
      */
     public Project getProject() {
-	LayerPerspective layer = (LayerPerspective) getLayer();
+        LayerPerspective layer = (LayerPerspective) getLayer();
         if (layer == null) {
             /* TODO: Without this, we fail to draw e.g. a Class.
              * But is this a good solution? 
@@ -2039,9 +2040,13 @@ public abstract class FigNodeModelElement
         if (layer == null) {
             return null;
         }
-	UMLMutableGraphSupport gm = 
-	    (UMLMutableGraphSupport) layer.getGraphModel();
-	return gm.getProject();
+
+	GraphModel gm = layer.getGraphModel();
+        if (gm instanceof UMLMutableGraphSupport) {
+            return ((UMLMutableGraphSupport) gm).getProject();
+        } else {
+            return ProjectManager.getManager().getCurrentProject();
+        }
     }
     
     /**
@@ -2166,16 +2171,16 @@ public abstract class FigNodeModelElement
 //      calcBounds(); // Don't do this! Causes e.g. FigActor to not center properly.
         updateBounds();
         damage();
-    }
+}
 
-    /**
+/**
      * This function should, for all FigTexts, 
      * recalculate the font-style (plain, bold, italic, bold/italic),
      * and apply it by calling FigText.setFont(). <p>
-     * 
+ *
      * If the "deepUpdateFont" function does not 
      * work for a subclass, then override this method.
-     */
+ */
     protected void updateFont() {
         int style = getNameFigFontStyle();
         Font f = getProject().getProjectSettings().getFont(style);
@@ -2201,9 +2206,9 @@ public abstract class FigNodeModelElement
          */
         if (p != null) {
             ProjectSettings ps = p.getProjectSettings();
-            showBoldName = ps.getShowBoldNamesValue();
+        showBoldName = ps.getShowBoldNamesValue();
         }
-        
+
         return showBoldName ? Font.BOLD : Font.PLAIN;
     }
 
@@ -2231,4 +2236,5 @@ public abstract class FigNodeModelElement
             }
         }
     }
-}
+    }
+    

@@ -44,6 +44,7 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -143,9 +144,12 @@ public class ArgoFigText extends FigText
         if (layer == null) {
             return null;
         }
-        UMLMutableGraphSupport gm = 
-            (UMLMutableGraphSupport) layer.getGraphModel();
-        return gm.getProject();
+        GraphModel gm = layer.getGraphModel();
+        if (gm instanceof UMLMutableGraphSupport) {
+            return ((UMLMutableGraphSupport) gm).getProject();
+        } else {
+            return ProjectManager.getManager().getCurrentProject();
+        }
     }
 
     /**

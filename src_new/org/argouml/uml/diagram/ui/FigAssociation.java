@@ -41,6 +41,7 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -49,6 +50,7 @@ import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.ArrowHead;
@@ -132,8 +134,17 @@ public class FigAssociation extends FigEdgeModelElement {
         setBetweenNearestPoints(true);
         
         // next line necessary for loading
-        setLayer(ProjectManager.getManager().getCurrentProject()
-		 .getActiveDiagram().getLayer());
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {
+            ArgoDiagram d = p.getActiveDiagram();
+            if (d != null) {
+                Layer l = d.getLayer();
+                if (l!= null) {
+                    setLayer(l);                    
+                }
+            }
+        }
+
     }
 
     /**
