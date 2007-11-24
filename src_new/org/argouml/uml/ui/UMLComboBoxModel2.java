@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -259,24 +258,24 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param col the elements to be removed
      */
     protected void removeAll(Collection col) {
-        Iterator it = col.iterator();
-        int lower = -1;
-        int index = -1;
+        int first = -1;
+        int last = -1;
         fireListEvents = false;
-        while (it.hasNext()) {
-            Object o = it.next();
+        for (Object o : col) {
+            int index = getIndexOf(o);
             removeElement(o);
-            if (lower == -1) { // start of interval
-                lower = getIndexOf(o);
-                index = lower;
+            if (first == -1) { // start of interval
+                first = index;
+                last = index;
             } else {
-                if (getIndexOf(o) != index + 1) { // end of interval
+                if (index  != last + 1) { // end of interval
                     fireListEvents = true;
-                    fireIntervalRemoved(this, lower, index);
+                    fireIntervalRemoved(this, first, last);
                     fireListEvents = false;
-                    lower = -1;
+                    first = index;
+                    last = index;
                 } else { // in middle of interval
-                    index++;
+                    last++;
                 }
             }
         }
@@ -289,12 +288,10 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param col the elements to be addd
      */
     protected void addAll(Collection col) {
-        Iterator it = col.iterator();
         Object o2 = getSelectedItem();
         fireListEvents = false;
         int oldSize = objects.size();
-        while (it.hasNext()) {
-            Object o = it.next();
+        for (Object o : col) {
             addElement(o);
         }
         if (o2 != null) {
@@ -508,9 +505,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
             return true;
 	}
         if (elem instanceof Collection) {
-            Iterator it = ((Collection) elem).iterator();
-            while (it.hasNext()) {
-                if (!objects.contains(it.next())) {
+            for (Object o : (Collection) elem) {
+                if (!objects.contains(o)) {
                     return false;
 		}
             }
@@ -539,11 +535,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
             }
         } else {
             Collection col = (Collection) getChangedElement(e);
-            Iterator it = col.iterator();
             if (!col.isEmpty()) {
                 valid = true;
-                while (it.hasNext()) {
-                    Object o = it.next();
+                for (Object o : col) {
                     if (!isValidElement(o)) {
                         valid = false;
                         break;
