@@ -138,7 +138,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * etc. but excluding placing them on the proppanel itself.
      * 
      * @param name name/title of the property panel
-     * @param orientation orientation of the panel
+     * @param icon the icon
      * @see org.argouml.uml.ui.PropPanel#PropPanel(String, ImageIcon)
      */
     protected PropPanelAssociationEnd(String name, ImageIcon icon) {

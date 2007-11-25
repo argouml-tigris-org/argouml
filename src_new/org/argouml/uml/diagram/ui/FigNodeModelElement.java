@@ -2236,5 +2236,5 @@ public abstract class FigNodeModelElement
             }
         }
     }
-    }
+}
     

@@ -139,7 +139,7 @@ public class FigAssociation extends FigEdgeModelElement {
             ArgoDiagram d = p.getActiveDiagram();
             if (d != null) {
                 Layer l = d.getLayer();
-                if (l!= null) {
+                if (l != null) {
                     setLayer(l);                    
                 }
             }

@@ -72,7 +72,6 @@ public class PropPanelCallState extends AbstractPropPanelState {
     /**
      * @param name the name of the properties panel
      * @param icon the icon to be shown next to the name
-     * @param orientation the orientation of the panel
      */
     public PropPanelCallState(String name, ImageIcon icon) {
 

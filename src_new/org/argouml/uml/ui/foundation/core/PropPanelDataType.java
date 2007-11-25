@@ -73,7 +73,6 @@ public class PropPanelDataType extends PropPanelClassifier {
      * 
      * @param title title string for the property panel
      * @param icon icon
-     * @param orientation horizontal or vertical orientation
      */
     public PropPanelDataType(String title, ImageIcon icon) {
         super(title, icon);
