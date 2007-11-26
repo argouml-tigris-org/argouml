@@ -34,6 +34,7 @@ import java.util.Collection;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -87,7 +88,8 @@ public class TabStereotype extends PropPanel {
      * Construct new Stereotype tab.
      */
     public TabStereotype() {
-        super(Translator.localize("tab.stereotype"), (orientation
+        super(Translator.localize("tab.stereotype"), (ImageIcon) null);
+        setOrientation((orientation
                 .equals("West") || orientation.equals("East")) ? Vertical
                 .getInstance() : Horizontal.getInstance());
         setLayout(new BorderLayout());
