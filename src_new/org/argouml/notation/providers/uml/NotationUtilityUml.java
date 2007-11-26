@@ -63,7 +63,7 @@ public final class NotationUtilityUml {
     static PropertySpecialString[] operationSpecialStrings;
 
     /**
-     * The vector of CustomSeparators to use when tokenizing attributes.
+     * The List of CustomSeparators to use when tokenizing attributes.
      */
     static final List<CustomSeparator> operationCustomSep;
 

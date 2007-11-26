@@ -996,7 +996,7 @@ public class Modeller {
      * @param name
      *            The name of the operation as a string
      * @param parameters
-     *            A number of vectors, each representing a parameter.
+     *            A number of lists, each representing a parameter.
      * @param javadoc
      *            The javadoc comment. null or "" if no comment available.
      * @param forceIt
@@ -2117,7 +2117,7 @@ public class Modeller {
 
     /**
      * Get collection of method calls.
-     * @return vector containing collected method calls
+     * @return list containing collected method calls
      */
     public synchronized List<String> getMethodCalls() {
         return methodCalls;

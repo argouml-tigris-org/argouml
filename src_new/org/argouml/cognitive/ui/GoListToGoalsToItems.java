@@ -94,7 +94,7 @@ public class GoListToGoalsToItems extends AbstractGoList {
 	    return getGoalList().indexOf(child);
 	}
 	if (parent instanceof Goal) {
-	    // instead of makning a new vector, decrement index, return when
+	    // instead of making a new list, decrement index, return when
 	    // found and index == 0
 	    List<ToDoItem> candidates = new ArrayList<ToDoItem>();
 	    Goal g = (Goal) parent;

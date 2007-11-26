@@ -90,7 +90,7 @@ public class CrClassWithoutComponent extends CrUML {
 
     /**
      * If there are classes that are not inside a component
-     * the returned vector-set is not null. Then in the vector-set
+     * the returned ListSet is not null. Then in the ListSet
      * are the UMLDeploymentDiagram and all FigClasses with no
      * enclosing FigComponent
      *

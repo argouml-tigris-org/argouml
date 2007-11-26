@@ -377,8 +377,8 @@ public class OperationNotationUml extends OperationNotation {
      * Parse tokens following an open brace (properties).
      * 
      * @param st tokenizer being used
-     * @param properties current properties vector
-     * @return updated vector of properties
+     * @param properties current properties list
+     * @return updated list of properties
      * @throws ParseException
      */
     private List<String> tokenOpenBrace(MyTokenizer st, List<String> properties)

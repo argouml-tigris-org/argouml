@@ -69,7 +69,7 @@ public class UseCaseDiagramGraphModel
      * @param nodeOrEdge  A model element, for whom the list of ports is
      *                    wanted.
      *
-     * @return            A vector of the ports found.
+     * @return            A List of the ports found.
      */
     public List getPorts(Object nodeOrEdge) {
         if (Model.getFacade().isAActor(nodeOrEdge)) {
@@ -110,7 +110,7 @@ public class UseCaseDiagramGraphModel
      *
      * @param port  The port for which we want to know the incoming edges.
      *
-     * @return      A vector of objects which are the incoming edges.
+     * @return      A list of objects which are the incoming edges.
      */
     public List getInEdges(Object port) {
         if (Model.getFacade().isAActor(port) 
@@ -134,12 +134,12 @@ public class UseCaseDiagramGraphModel
      *
      * <em>Needs more work</em>.  This would seem superficially to be
      * identical to {@link #getInEdges}, but in our implementation we
-     * return an empty vector.<p>
+     * return an empty list.<p>
      *
      * @param port  The port for which we want to know the outgoing edges.
      *
-     * @return      A vector of objects which are the outgoing edges. Currently
-     *              return the empty vector.
+     * @return      A list of objects which are the outgoing edges. Currently
+     *              return the empty list.
      */
     public List getOutEdges(Object port) {
         return Collections.EMPTY_LIST;
@@ -518,7 +518,7 @@ public class UseCaseDiagramGraphModel
         // Only interested in the "ownedElement" property. Either something has
         // been added to the namespace for this model, or removed. In the
         // latter case the "something" will be in the old value of the
-        // property, which is the vector of owned elements, and the new value
+        // property, which is the collection of owned elements, and the new value
         // will be the element import describing the model element and the
         // model from which it was removed
 

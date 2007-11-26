@@ -162,8 +162,8 @@ public class FigClassifierRole extends FigNodeModelElement {
     /**
      * Version of the clone to ensure all sub-figs are copied.<p>
      *
-     * Uses the generic superclass clone which gives a vector of all the
-     * figs. Then initialize our instance variables from this vector.<p>
+     * Uses the generic superclass clone which gives a list of all the
+     * figs. Then initialize our instance variables from this list.<p>
      *
      * @return  A new copy of the the current fig.
      */

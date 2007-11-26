@@ -90,7 +90,7 @@ public class CrInstanceWithoutClassifier extends CrUML {
 
     /**
      * If there are instances that have no classifiers they belong to
-     * the returned vector-set is not null. Then in the vector-set
+     * the returned ListSet is not null. Then in the ListSet
      * are the UMLDeploymentDiagram and all FigObjects, FigComponentInstances
      * and FigMNodeInstances with no classifier.
      *

@@ -97,7 +97,7 @@ public class CrOperNameConflict extends CrUML {
      *
      * This algorithm is quadratic in the number of operations. If
      * this became a problem, we would have to consider sorting the
-     * operations vector and comparing only adjacent pairs
+     * operations list and comparing only adjacent pairs
      * (potentially O(n log n) performance).<p>
      *
      * @param  dm    the {@link Object} to be checked against the critic.
@@ -119,8 +119,8 @@ public class CrOperNameConflict extends CrUML {
 
         // Get all the features (giving up if there are none). Then loop
         // through finding all operations. Each time we find one, we compare
-        // its signature with all previous (held in vector operSeen), and then
-        // if it doesn't match add it to the vector.
+        // its signature with all previous (held in collection operSeen), and then
+        // if it doesn't match add it to the collection.
 
         Collection operSeen = new ArrayList();
         for (Object op : Model.getFacade().getOperations(dm)) {
@@ -133,7 +133,7 @@ public class CrOperNameConflict extends CrUML {
                 }
             }
 
-            // Add to the vector and round to look at the next one
+            // Add to the collection and round to look at the next one
 
             operSeen.add(op);
         }

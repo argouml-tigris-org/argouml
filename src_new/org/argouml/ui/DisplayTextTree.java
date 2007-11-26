@@ -406,7 +406,7 @@ public class DisplayTextTree extends JTree {
     /**
      * Called in reexpand().
      *
-     * @return a Vector containing all expanded paths
+     * @return a List containing all expanded paths
      */
     protected List<TreePath> getExpandedPaths() {
 

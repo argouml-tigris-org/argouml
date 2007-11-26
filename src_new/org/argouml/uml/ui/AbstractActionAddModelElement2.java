@@ -91,7 +91,7 @@ public abstract class AbstractActionAddModelElement2 extends UndoableAction {
      * depicted on the left side of the UMLAddDialog (sorry Arabic users) and
      * can be moved via the buttons on the dialog to the right side. On the
      * right side are the selected modelelements.
-     * @return Vector
+     * @return List of choices
      */
     protected abstract List getChoices();
 

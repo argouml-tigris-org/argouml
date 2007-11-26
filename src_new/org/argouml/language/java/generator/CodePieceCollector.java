@@ -62,7 +62,7 @@ class CodePieceCollector {
 
     /**
        The parser adds a code piece here. The code pieces will be
-       inserted in sorted order in the codePieces vector.
+       inserted in sorted order in the codePieces list.
 
        @param codePiece A named code piece found in the code.
     */

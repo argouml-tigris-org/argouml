@@ -474,7 +474,7 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @param item the todo item to be removed
      * @return <code>true</code> if the argument was a component of this
-     *          vector; <code>false</code> otherwise
+     *          list; <code>false</code> otherwise
      */
     private synchronized boolean removeE(ToDoItem item) {
         boolean res = items.remove(item);
@@ -484,7 +484,7 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @param item the todo item to be removed
      * @return <code>true</code> if the argument was a component of this
-     *          vector; <code>false</code> otherwise
+     *          list; <code>false</code> otherwise
      */
     public boolean removeElement(ToDoItem item) {
         boolean res = removeE(item);
@@ -498,7 +498,7 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @param item the todo item to be resolved
      * @return <code>true</code> if the argument was a component of this
-     *          vector; <code>false</code> otherwise
+     *          list; <code>false</code> otherwise
      */
     public boolean resolve(ToDoItem item) {
         boolean res = removeE(item);
@@ -510,7 +510,7 @@ public class ToDoList extends Observable implements Runnable,
      * @param item the todo item
      * @param reason the reason TODO: Use it!
      * @return <code>true</code> if the argument was a component of this
-     *          vector; <code>false</code> otherwise
+     *          list; <code>false</code> otherwise
      * @throws UnresolvableException unable to resolve
      */
     public boolean explicitlyResolve(ToDoItem item, String reason)

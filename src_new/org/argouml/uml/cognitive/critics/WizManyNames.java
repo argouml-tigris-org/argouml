@@ -54,7 +54,7 @@ public class WizManyNames extends UMLWizard {
             .localize("critics.WizManyNames-ins");
 
     /**
-     * A vector of model elements.
+     * A list of model elements.
      */
     private List mes;
 
@@ -87,7 +87,7 @@ public class WizManyNames extends UMLWizard {
         for (int i = 0; i < 3 && i < mSize; ++i) {
             if (!Model.getFacade().isAModelElement(elements.get(i))) {
                 throw new IllegalArgumentException(
-                        "The vector should contain model elements in "
+                        "The list should contain model elements in "
                                 + "the first 3 positions");
             }
         }

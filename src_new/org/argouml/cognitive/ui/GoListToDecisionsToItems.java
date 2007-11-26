@@ -109,7 +109,7 @@ public class GoListToDecisionsToItems extends AbstractGoList {
 	    return getDecisionList().indexOf(child);
 	}
 	if (parent instanceof Decision) {
-	    // instead of makning a new vector, decrement index, return when
+	    // instead of making a new list, decrement index, return when
 	    // found and index == 0
 	    List<ToDoItem> candidates = new ArrayList<ToDoItem>();
 	    Decision dec = (Decision) parent;

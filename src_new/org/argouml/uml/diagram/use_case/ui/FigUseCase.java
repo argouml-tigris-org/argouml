@@ -234,7 +234,7 @@ public class FigUseCase extends FigNodeModelElement
         epBigPort.setLineWidth(0);
         epBigPort.setVisible(false);
 
-        // The group for the extension points. The first entry in the vector
+        // The group for the extension points. The first entry in the group
         // is the overall surrounding box itself. The group is not filled, nor
         // has any line. The first entry we add is the epBigPort
 
@@ -344,9 +344,9 @@ public class FigUseCase extends FigNodeModelElement
     /**
      * Make a copy of the current fig.<p>
      *
-     * Uses the generic superclass clone which gives a vector of all
+     * Uses the generic superclass clone which gives a list of all
      * the figs. Then initialize our instance variables from this
-     * vector.<p>
+     * list.<p>
      *
      * @return  A new copy of the the current fig.
      */
@@ -1085,7 +1085,7 @@ public class FigUseCase extends FigNodeModelElement
      */
     private CompartmentFigText unhighlight() {
 
-        // Loop through the vector of extension points, until we find a
+        // Loop through the list of extension points, until we find a
         // highlighted one.
         for (CompartmentFigText ft : getEPFigs()) {
             if (ft.isHighlighted()) {

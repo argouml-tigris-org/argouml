@@ -51,16 +51,12 @@ public class ActionAddAssociationSpecification extends
         super();
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
+
     protected void doIt(Collection selected) {
         Model.getCoreHelper().setSpecifications(getTarget(), selected);
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
+
     protected List getChoices() {
         List ret = new ArrayList();
         if (getTarget() != null) {
@@ -73,16 +69,12 @@ public class ActionAddAssociationSpecification extends
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-specifications");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
+
     protected List getSelected() {
         List ret = new ArrayList();
         ret.addAll(Model.getFacade().getSpecifications(getTarget()));

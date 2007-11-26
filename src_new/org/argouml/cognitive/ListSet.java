@@ -67,7 +67,7 @@ public class ListSet<T extends Object>
     /**
      * The constructor.
      *
-     * @param n the initial capacity of the vector
+     * @param n the initial capacity of the ListSet
      */
     public ListSet(int n) {
         list = new ArrayList<T>(n);

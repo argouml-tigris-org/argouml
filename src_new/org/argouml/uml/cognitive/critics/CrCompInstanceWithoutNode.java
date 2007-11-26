@@ -91,7 +91,7 @@ public class CrCompInstanceWithoutNode extends CrUML {
 
     /**
      * If there are component-instances that have no enclosing FigMNodeInstance
-     * the returned vector-set is not null. Then in the vector-set
+     * the returned ListSet is not null. Then in the ListSet
      * are the UMLDeploymentDiagram and all FigComponentInstances with no
      * enclosing FigMNodeInstance
      *

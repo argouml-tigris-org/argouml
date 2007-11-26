@@ -263,9 +263,6 @@ class ActionAddCISState extends AbstractActionAddModelElement2 {
         setMultiSelect(true);
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
     protected void doIt(Collection selected) {
         Object cis = getTarget();
         if (Model.getFacade().isAClassifierInState(cis)) {
@@ -273,9 +270,7 @@ class ActionAddCISState extends AbstractActionAddModelElement2 {
         }
     }
     
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
+
     protected List getChoices() {
         List ret = new ArrayList();
         Object cis = getTarget();
@@ -288,16 +283,12 @@ class ActionAddCISState extends AbstractActionAddModelElement2 {
         return ret;
     }
     
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-state");
     }
     
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
+    
     protected List getSelected() {
         Object cis = getTarget();
         if (Model.getFacade().isAClassifierInState(cis)) {

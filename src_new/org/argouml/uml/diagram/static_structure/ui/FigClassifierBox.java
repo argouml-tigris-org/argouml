@@ -169,8 +169,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     }
 
     /**
-     * @return The vector of graphics for operations (if any).
-     * First one is the rectangle for the entire operations box.
+     * @return The Fig for the operations compartment
      */
     protected FigOperationsCompartment getOperationsFig() {
         return operationsFig;

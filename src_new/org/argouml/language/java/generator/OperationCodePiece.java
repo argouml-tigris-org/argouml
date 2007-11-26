@@ -110,7 +110,7 @@ class OperationCodePiece extends NamedCodePiece {
      *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
      *
      * Write the code this piece represents to file. Remove this
-     * feature from the top vector in the stack newFeaturesStack.
+     * feature from the top list in the stack newFeaturesStack.
      */
     public void write (BufferedReader reader,
                        BufferedWriter writer,
