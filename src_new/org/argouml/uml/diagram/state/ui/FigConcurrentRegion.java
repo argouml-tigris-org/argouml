@@ -33,6 +33,7 @@ import java.awt.event.MouseMotionListener;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JSeparator;
@@ -188,14 +189,14 @@ public class FigConcurrentRegion extends FigState
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
         int adjacentindex = -1;
-        Vector regionsVector = null;
+        List regionsList = null;
         int index = 0;
         if (getEnclosingFig() != null) {
             x = oldBounds.x;
             w = oldBounds.width;
             FigCompositeState f = ((FigCompositeState) getEnclosingFig());
-            regionsVector = f.getEnclosedFigs();
-            index = regionsVector.indexOf(this, 0);
+            regionsList = f.getEnclosedFigs();
+            index = regionsList.indexOf(this);
 
             /* if curHandle.index is 0 or 2,
              * the adjacent region is the previous region
@@ -207,7 +208,7 @@ public class FigConcurrentRegion extends FigState
                 adjacentindex = index - 1;
             }
             if (((curHandle.index == 5) || (curHandle.index == 7))
-                    && (index < (regionsVector.size() - 1)))
+                    && (index < (regionsList.size() - 1)))
                 adjacentindex = index + 1;
             if (h <= getMinimumSize().height) {
                 if (h <= oldBounds.height) {
@@ -235,19 +236,19 @@ public class FigConcurrentRegion extends FigState
                 int hIncrement = oldBounds.height - h;
                 FigConcurrentRegion adjacentFig =
                     ((FigConcurrentRegion)
-                        regionsVector.elementAt(adjacentindex));
+                        regionsList.get(adjacentindex));
                 if ((adjacentFig.getBounds().height + hIncrement)
                         <= adjacentFig.getMinimumSize().height) {
                     y = oldBounds.y;
                     h = oldBounds.height;
                 } else {
                     if ((curHandle.index == 0) || (curHandle.index == 2)) {
-                        ((FigConcurrentRegion) regionsVector.
-                            elementAt(adjacentindex)).setBounds(0, hIncrement);
+                        ((FigConcurrentRegion) regionsList.
+                            get(adjacentindex)).setBounds(0, hIncrement);
                     }
                     if ((curHandle.index == 5) || (curHandle.index == 7)) {
-                        ((FigConcurrentRegion) regionsVector.
-                            elementAt(adjacentindex)).setBounds(-hIncrement,
+                        ((FigConcurrentRegion) regionsList.
+                            get(adjacentindex)).setBounds(-hIncrement,
                                     hIncrement);
                     }
                 }
