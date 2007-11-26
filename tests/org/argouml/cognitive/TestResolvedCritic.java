@@ -67,7 +67,7 @@ public class TestResolvedCritic extends TestCase {
         List<String> list = new ArrayList<String>();
         ListSet set = new ListSet();
 
-        /* ResolvedCritic(String, Vector) */
+        /* ResolvedCritic(String, List) */
 
         rc = new ResolvedCritic("rc", (List<String>) null);
         assertTrue("getCritic simple", "rc".equals(rc.getCritic()));
@@ -84,7 +84,7 @@ public class TestResolvedCritic extends TestCase {
                 rc.getOffenderList() != null
                 && "str1".equals(rc.getOffenderList().get(0)));
 
-        /* ResolvedCritic(Critic, VectorSet) */
+        /* ResolvedCritic(Critic, ListSet) */
 
         try {
             rc = new ResolvedCritic(c, null);
@@ -115,7 +115,7 @@ public class TestResolvedCritic extends TestCase {
             assertTrue("create 2 with MClass", false);
         }
 
-        /* ResolvedCritic(Critic, VectorSet, boolean) */
+        /* ResolvedCritic(Critic, ListSet, boolean) */
 
         /* testmc should now have an ItemUID so we should be able to
          * create without adding a new ItemUID */
