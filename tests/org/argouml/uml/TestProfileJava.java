@@ -28,10 +28,11 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * 
@@ -57,6 +58,7 @@ public class TestProfileJava extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

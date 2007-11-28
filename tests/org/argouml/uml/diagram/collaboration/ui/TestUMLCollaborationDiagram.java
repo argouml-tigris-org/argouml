@@ -28,6 +28,7 @@ import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
+import org.argouml.profile.InitProfileSubsystem;
 
 
 /**
@@ -50,6 +51,7 @@ public class TestUMLCollaborationDiagram extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

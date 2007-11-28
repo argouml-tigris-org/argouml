@@ -70,7 +70,7 @@ import org.argouml.model.UmlException;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.util.ThreadUtils;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
@@ -264,13 +264,11 @@ public class UmlFilePersister extends AbstractFilePersister {
             // Write out XMI section first
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember =
-                    (ProjectMember) project.getMembers().get(i);
+                ProjectMember projectMember = project.getMembers().get(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
-                              + ((ProjectMember) project.getMembers()
-                                    .get(i)).getType());
+                              + project.getMembers().get(i).getType());
                     }
                     MemberFilePersister persister
                         = getMemberFilePersister(projectMember);
@@ -290,13 +288,11 @@ public class UmlFilePersister extends AbstractFilePersister {
 
             // Write out all non-XMI sections
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember =
-                    (ProjectMember) project.getMembers().get(i);
+                ProjectMember projectMember = project.getMembers().get(i);
                 if (!projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
-                              + ((ProjectMember) project.getMembers().
-                                    get(i)).getType());
+                              + project.getMembers().get(i).getType());
                     }
                     MemberFilePersister persister
                         = getMemberFilePersister(projectMember);

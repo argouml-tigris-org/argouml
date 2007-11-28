@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.profile.ProfileConfiguration;
 import org.tigris.gef.base.Diagram;
 
 /**

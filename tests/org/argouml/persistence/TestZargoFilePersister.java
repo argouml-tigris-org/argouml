@@ -39,6 +39,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 
 /**
@@ -53,6 +54,7 @@ public class TestZargoFilePersister extends TestCase {
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();
         (new InitDiagramAppearanceUI()).init();
+        (new InitProfileSubsystem()).init();
     }
 
     /**

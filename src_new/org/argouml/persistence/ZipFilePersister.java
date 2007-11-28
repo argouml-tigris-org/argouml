@@ -46,7 +46,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.kernel.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**

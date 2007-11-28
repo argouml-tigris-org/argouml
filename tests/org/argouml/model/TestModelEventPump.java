@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Test delivery of Model events.
@@ -81,6 +82,7 @@ public class TestModelEventPump extends TestCase {
         super.setUp();
 
         elem = Model.getCoreFactory().createClass();
+        new InitProfileSubsystem().init();
         Project project = ProjectManager.getManager().getCurrentProject();
         Object model = project.getRoot();
         Model.getCoreHelper().addOwnedElement(model, elem);

@@ -28,6 +28,7 @@ import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * General test methods for UMLActivityDiagrams
@@ -49,6 +50,7 @@ public class TestUMLActivityDiagram extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

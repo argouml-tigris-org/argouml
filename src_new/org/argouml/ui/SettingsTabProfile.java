@@ -53,10 +53,10 @@ import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.profile.Profile;
-import org.argouml.uml.profile.ProfileException;
-import org.argouml.uml.profile.ProfileManagerImpl;
-import org.argouml.uml.profile.UserDefinedProfile;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileFacade;
+import org.argouml.profile.UserDefinedProfile;
 
 /**
  * The Tab containing the global settings for profiles
@@ -252,12 +252,12 @@ public class SettingsTabProfile extends JPanel implements
                 .toArray()));
         defaultList.setModel(new DefaultComboBoxModel(getUsedProfiles()
                 .toArray()));
-        directoryList.setModel(new DefaultComboBoxModel(ProfileManagerImpl
-                .getInstance().getSearchPathDirectories().toArray()));
+        directoryList.setModel(new DefaultComboBoxModel(ProfileFacade
+                .getManager().getSearchPathDirectories().toArray()));
     }
 
     private List<Profile> getUsedProfiles() {
-        return new ArrayList<Profile>(ProfileManagerImpl.getInstance()
+        return new ArrayList<Profile>(ProfileFacade.getManager()
                 .getDefaultProfiles());
     }
 
@@ -265,7 +265,7 @@ public class SettingsTabProfile extends JPanel implements
         List<Profile> used = getUsedProfiles();
         List<Profile> ret = new ArrayList<Profile>();
         
-        for (Profile profile : ProfileManagerImpl.getInstance()
+        for (Profile profile : ProfileFacade.getManager()
                 .getRegisteredProfiles()) {
             if (!used.contains(profile)) {
                 ret.add(profile);
@@ -303,7 +303,7 @@ public class SettingsTabProfile extends JPanel implements
                 Profile selected = (Profile) modelAvl.getElementAt(availableList
                         .getSelectedIndex());
                 if (selected instanceof UserDefinedProfile) {
-                    ProfileManagerImpl.getInstance().removeProfile(selected);
+                    ProfileFacade.getManager().removeProfile(selected);
                     modelAvl.removeElement(selected);
                 } else {
                     JOptionPane.showMessageDialog(this, Translator
@@ -334,7 +334,7 @@ public class SettingsTabProfile extends JPanel implements
                 try {
                     UserDefinedProfile profile = new UserDefinedProfile(file);
 
-                    ProfileManagerImpl.getInstance().registerProfile(profile);
+                    ProfileFacade.getManager().registerProfile(profile);
 
                     modelAvl.addElement(profile);
                 } catch (ProfileException e) {
@@ -361,7 +361,7 @@ public class SettingsTabProfile extends JPanel implements
 
             if (refresh) {
                 handleSettingsTabSave();
-                ProfileManagerImpl.getInstance().refreshRegisteredProfiles();
+                ProfileFacade.getManager().refreshRegisteredProfiles();
                 refreshLists();
             }            
         } else if (arg0.getSource() == addDirectory) {
@@ -450,7 +450,7 @@ public class SettingsTabProfile extends JPanel implements
             usedItens.add((Profile) modelUsd.getElementAt(i));
         }
 
-        for (Profile profile : ProfileManagerImpl.getInstance()
+        for (Profile profile : ProfileFacade.getManager()
                 .getDefaultProfiles()) {
             if (!usedItens.contains(profile)) {
                 toRemove.add(profile);
@@ -458,13 +458,13 @@ public class SettingsTabProfile extends JPanel implements
         }
 
         for (Profile profile : toRemove) {
-            ProfileManagerImpl.getInstance().removeFromDefaultProfiles(profile);
+            ProfileFacade.getManager().removeFromDefaultProfiles(profile);
         }
 
         for (Profile profile : usedItens) {
-            if (!ProfileManagerImpl.getInstance().getDefaultProfiles()
+            if (!ProfileFacade.getManager().getDefaultProfiles()
                     .contains(profile)) {
-                ProfileManagerImpl.getInstance().addToDefaultProfiles(profile);
+                ProfileFacade.getManager().addToDefaultProfiles(profile);
             }
         }
    
@@ -475,7 +475,7 @@ public class SettingsTabProfile extends JPanel implements
             usedItensDir.add((String) modelDir.getElementAt(i));
         }
 
-        for (String dirEntry : ProfileManagerImpl.getInstance()
+        for (String dirEntry : ProfileFacade.getManager()
                 .getSearchPathDirectories()) {
             if (!usedItensDir.contains(dirEntry)) {
                 toRemoveDir.add(dirEntry);
@@ -483,14 +483,14 @@ public class SettingsTabProfile extends JPanel implements
         }
 
         for (String dirEntry : toRemoveDir) {
-            ProfileManagerImpl.getInstance()
+            ProfileFacade.getManager()
                     .removeSearchPathDirectory(dirEntry);
         }
 
         for (String dirEntry : usedItensDir) {
-            if (!ProfileManagerImpl.getInstance().getSearchPathDirectories()
+            if (!ProfileFacade.getManager().getSearchPathDirectories()
                     .contains(dirEntry)) {
-                ProfileManagerImpl.getInstance().addSearchPathDirectory(
+                ProfileFacade.getManager().addSearchPathDirectory(
                         dirEntry);
             }
         }

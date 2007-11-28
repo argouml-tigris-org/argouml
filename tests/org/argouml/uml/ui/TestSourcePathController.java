@@ -30,6 +30,7 @@ import java.io.File;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.uml.reveng.ImportInterface;
 
 /**
@@ -75,6 +76,7 @@ public class TestSourcePathController extends TestCase {
     protected void setUp() {
         modelElemSourcePath = "ArgoUML/issues2579/src";
         // setup the Project due to its use in SourcePathTableModel ctor
+        new InitProfileSubsystem().init();
         ProjectManager.getManager().makeEmptyProject();
         model = ProjectManager.getManager().getCurrentProject().getRoot();
         Object taggedValue = Model.getExtensionMechanismsFactory()

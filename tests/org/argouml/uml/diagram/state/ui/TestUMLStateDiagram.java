@@ -28,6 +28,7 @@ import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * General test methods for UMLUseCaseDiagrams
@@ -49,6 +50,7 @@ public class TestUMLStateDiagram extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

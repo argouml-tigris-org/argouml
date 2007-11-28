@@ -36,12 +36,10 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.uml.profile.Profile;
-import org.argouml.uml.profile.ProfileConfiguration;
-import org.argouml.uml.profile.ProfileJava;
-import org.argouml.uml.profile.ProfileManager;
-import org.argouml.uml.profile.ProfileManagerImpl;
-import org.argouml.uml.profile.ProfileUML;
+import org.argouml.profile.InitProfileSubsystem;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileFacade;
+import org.argouml.profile.ProfileManager;
 
 /**
  * Tests the {@link ProjectImpl} with profiles, specifically this enables the 
@@ -59,9 +57,7 @@ public class TestProjectWithProfiles extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeMDR();
-        ProjectManager.getManager().setCurrentProject(null);
-        // FIXME: in the near future we we'll do also:
-        //new InitProfileSubsystem().init();
+        new InitProfileSubsystem().init();
         
         if (ApplicationVersion.getVersion() == null) {
             Class<?> argoVersionClass = 
@@ -72,7 +68,7 @@ public class TestProjectWithProfiles extends TestCase {
             assertNotNull(ApplicationVersion.getVersion());
         }
     }
-    
+
     public void testCreatedProjectContainsProfileConfiguration() {
         Project project = ProjectManager.getManager().makeEmptyProject();
         ProfileConfiguration profileConfiguration = 
@@ -80,7 +76,7 @@ public class TestProjectWithProfiles extends TestCase {
         assertNotNull(profileConfiguration);
         assertNotNull(profileConfiguration.getProfiles());
         assertTrue(profileConfiguration.getProfiles().contains(
-                ProfileUML.getInstance()));
+                ProfileFacade.getManager().getUMLProfile()));
     }
     
     /**
@@ -110,11 +106,11 @@ public class TestProjectWithProfiles extends TestCase {
      * 
      * @throws Exception when something goes wrong
      */
-    public void xtestRemoveProfileWithModelThatRefersToProfile() 
+    public void testRemoveProfileWithModelThatRefersToProfile() 
         throws Exception {
-        ProfileManager profileManager = ProfileManagerImpl.getInstance();
+        ProfileManager profileManager = ProfileFacade.getManager();
         Profile javaProfile = profileManager.getProfileForClass(
-                ProfileJava.class.getName());
+                "org.argouml.profile.internal.ProfileJava");
         if (!profileManager.getDefaultProfiles().contains(javaProfile)) {
             profileManager.addToDefaultProfiles(javaProfile);
         }
@@ -160,6 +156,7 @@ public class TestProjectWithProfiles extends TestCase {
         persister.save(project, file);
         
         project = persister.doLoad(file);
+        project.postLoad();
         fooClass = project.findType("Foo", false);
         // FIXME: fails here when executed with other tests in Eclipse
         assertNotNull(fooClass);

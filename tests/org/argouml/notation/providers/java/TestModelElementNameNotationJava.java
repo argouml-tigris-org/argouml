@@ -32,6 +32,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.ModelElementNameNotation;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Tests the ModelElementNameNotationJava class.
@@ -44,6 +45,7 @@ public class TestModelElementNameNotationJava extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
         theClass = Model.getCoreFactory().buildClass("TheClass", getModel());
     }
 

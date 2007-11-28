@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.kernel.ProfileConfiguration;
 
 /**
  * Rule for Project->Profile.

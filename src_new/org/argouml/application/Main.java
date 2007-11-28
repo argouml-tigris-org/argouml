@@ -68,6 +68,7 @@ import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.notation.ui.InitNotationUI;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
@@ -260,6 +261,10 @@ public class Main {
             initModel();
 
             updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
+            
+            // Initialize the Profile subsystem
+            st.mark("initialize the profile subsystem");
+            new InitProfileSubsystem().init();
 
             /*
              * Initialize the module loader. At least the plug-ins that provide

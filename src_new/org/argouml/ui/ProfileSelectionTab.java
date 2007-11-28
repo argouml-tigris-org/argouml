@@ -48,12 +48,12 @@ import javax.swing.filechooser.FileFilter;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.uml.profile.Profile;
-import org.argouml.uml.profile.ProfileConfiguration;
-import org.argouml.uml.profile.ProfileException;
-import org.argouml.uml.profile.ProfileManager;
-import org.argouml.uml.profile.ProfileManagerImpl;
-import org.argouml.uml.profile.UserDefinedProfile;
+import org.argouml.profile.Profile;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileManager;
+import org.argouml.profile.ProfileFacade;
+import org.argouml.profile.UserDefinedProfile;
 
 /**
  * The Tab where new profiles can be added and the registered
@@ -85,8 +85,7 @@ public class ProfileSelectionTab extends JPanel implements
      * @author maurelio1234
      */
     private class AvailableProfilesListModel implements ListModel {
-	private ProfileManager profileManager = ProfileManagerImpl
-		.getInstance();
+	private ProfileManager profileManager = ProfileFacade.getManager();
 
 	private List<ListDataListener> listeners = 
 	    new ArrayList<ListDataListener>();
@@ -330,7 +329,7 @@ public class ProfileSelectionTab extends JPanel implements
                 Profile selected = modelAvl.getProfileAt(availableList
                         .getSelectedIndex());
                 if (selected instanceof UserDefinedProfile) {
-                    ProfileManagerImpl.getInstance().removeProfile(selected);
+                    ProfileFacade.getManager().removeProfile(selected);
 
                     modelAvl.fireListeners();
                     modelUsd.fireListeners();
@@ -363,7 +362,7 @@ public class ProfileSelectionTab extends JPanel implements
 
                 try {
                     UserDefinedProfile profile = new UserDefinedProfile(file);
-                    ProfileManagerImpl.getInstance().registerProfile(profile);
+                    ProfileFacade.getManager().registerProfile(profile);
 
                     ProjectManager.getManager().getCurrentProject()
                             .getProfileConfiguration().addProfile(profile);

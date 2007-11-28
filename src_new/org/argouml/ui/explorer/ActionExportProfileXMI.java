@@ -43,7 +43,7 @@ import org.argouml.model.XmiWriter;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.UmlFilePersister;
 import org.argouml.ui.ArgoFrame;
-import org.argouml.uml.profile.Profile;
+import org.argouml.profile.Profile;
 import org.argouml.uml.ui.ProjectFileView;
 
 /**

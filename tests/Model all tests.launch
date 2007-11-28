@@ -1,9 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/argouml-core-tests/org/argouml/model/AllTests.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
-<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.argouml.model.AllTests"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
+<stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit3"/>
 <listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.jdt.launching.JRE_CONTAINER&quot; javaProject=&quot;argouml-core-tests&quot; path=&quot;1&quot; type=&quot;4&quot;/&gt;&#13;&#10;"/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;argouml-core-model-mdr&quot; type=&quot;1&quot;/&gt;&#13;&#10;"/>
@@ -26,9 +33,8 @@
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/argouml-core-tools/lib/easymock12.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#13;&#10;"/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry id=&quot;org.eclipse.jdt.launching.classpathentry.defaultClasspath&quot;&gt;&#13;&#10;&lt;memento exportedEntriesOnly=&quot;false&quot; project=&quot;argouml-core-tests&quot;/&gt;&#13;&#10;&lt;/runtimeClasspathEntry&gt;&#13;&#10;"/>
 </listAttribute>
+<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.argouml.model.AllTests"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="argouml-core-tests"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx64M -Dtest.model.uml=${resource_loc:/argouml-core-model-mdr/src/org/argouml/model/mdr/mof/01-02-15.xml} -Dlog4j.configuration=${resource_loc:/argouml/org/argouml/resource/default_console.lcf} -Djava.awt.headless=&quot;true&quot; -Dargouml.tests.dir=${project_loc}"/>
-<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
-<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
-<stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit3"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="${project_loc:xpto} -Xmx64M -Dtest.model.uml=${resource_loc:/argouml-core-model-mdr/src/org/argouml/model/mdr/mof/01-02-15.xml} -Dlog4j.configuration=${resource_loc:/argouml/org/argouml/resource/default_console.lcf} -Djava.awt.headless=&quot;true&quot; -Dargouml.tests.dir=${project_loc}"/>
 </launchConfiguration>

@@ -43,6 +43,7 @@ import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.ui.TabProps;
@@ -130,6 +131,7 @@ public class TestPropertyPanels extends TestCase {
         new InitNotation().init();
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();
+        (new InitProfileSubsystem()).init();
 
 
         // constains instances of each modelelement

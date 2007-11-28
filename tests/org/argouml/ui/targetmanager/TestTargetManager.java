@@ -36,6 +36,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ArgoDiagramImpl;
 import org.tigris.gef.presentation.Fig;
@@ -789,6 +790,7 @@ public class TestTargetManager extends TestCase {
      */
     protected void setUp() {
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
 
 	TargetManager.getInstance().setTarget(null);
     }

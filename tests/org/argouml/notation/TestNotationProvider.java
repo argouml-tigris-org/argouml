@@ -35,6 +35,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * @author Michiel
@@ -49,6 +50,7 @@ public class TestNotationProvider extends TestCase
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     private Object aClass;

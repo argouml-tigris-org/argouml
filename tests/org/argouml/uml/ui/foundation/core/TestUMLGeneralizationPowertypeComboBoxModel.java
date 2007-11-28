@@ -30,6 +30,7 @@ import org.argouml.model.InitializeModel;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 /**
@@ -93,6 +94,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
         Object mmodel =
             Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(mmodel, "untitledModel");

@@ -29,8 +29,8 @@ import java.util.Collections;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.profile.Profile;
-import org.argouml.uml.profile.ProfileException;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
 
 /**
  * Rule for Project->Profile.

@@ -33,6 +33,7 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -71,6 +72,7 @@ public class TestActionStateDiagram extends TestCase {
     public TestActionStateDiagram(String arg0) {
         super(arg0);
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /*

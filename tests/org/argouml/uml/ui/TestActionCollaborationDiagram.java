@@ -33,6 +33,7 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -102,6 +103,7 @@ public class TestActionCollaborationDiagram extends TestCase {
      */
     protected void setUp() {
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
         action = getAction();
         ns = getNamespace();
         validNamespaces = getValidNamespaceClasses();

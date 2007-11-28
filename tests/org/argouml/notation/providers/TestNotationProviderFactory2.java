@@ -35,6 +35,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
+import org.argouml.profile.InitProfileSubsystem;
 
 
 
@@ -53,6 +54,7 @@ public class TestNotationProviderFactory2 extends TestCase {
      */
     protected void setUp() throws Exception {
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
         name = Notation.makeNotation(
                     "Test",
                     null,

@@ -34,8 +34,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.profile.Profile;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.profile.Profile;
 import org.tigris.gef.presentation.Fig;
 
 /**

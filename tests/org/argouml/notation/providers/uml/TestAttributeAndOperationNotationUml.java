@@ -39,6 +39,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.providers.java.InitNotationJava;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * @author michiel
@@ -116,6 +117,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
+        (new InitProfileSubsystem()).init();
         (new InitNotation()).init();
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();

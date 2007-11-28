@@ -56,8 +56,7 @@ import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.profile.Profile;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.profile.Profile;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -509,7 +508,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         for (Profile profile : getProfileConfiguration().getProfiles()) {
             try {
                 result.addAll(profile.getProfilePackages());
-            } catch (org.argouml.uml.profile.ProfileException e) {
+            } catch (org.argouml.profile.ProfileException e) {
                 LOG.error("Exception when fetching models from profile "
                         + profile.getDisplayName(), e);
             }

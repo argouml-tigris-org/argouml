@@ -32,6 +32,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Test the notation for a CallState.
@@ -60,6 +61,7 @@ public class TestCallStateNotationUml extends TestCase {
      */
     protected void setUp() {
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
         Object model =
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();

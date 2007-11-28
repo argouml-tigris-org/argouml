@@ -28,8 +28,8 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.profile.FormatingStrategy;
-import org.argouml.uml.profile.Profile;
+import org.argouml.profile.FormatingStrategy;
+import org.argouml.profile.Profile;
 
 /**
  * A combobox entry. <p>

@@ -29,6 +29,7 @@ import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
@@ -83,6 +84,7 @@ public class TestItemUID extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

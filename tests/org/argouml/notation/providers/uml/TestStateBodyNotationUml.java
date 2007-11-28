@@ -33,6 +33,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Test StateBodyNotationUml (formerly ParserDisplay): parsing state body.
@@ -60,6 +61,7 @@ public class TestStateBodyNotationUml extends TestCase {
     protected void setUp() {
         Object model =
             Model.getModelManagementFactory().createModel();
+        new InitProfileSubsystem().init();
         Project p = ProjectManager.getManager().getCurrentProject();
         aClass = Model.getCoreFactory().buildClass(model);
         Object returnType = p.getDefaultReturnType();

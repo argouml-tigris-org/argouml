@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.profile;
+package org.argouml.kernel;
 
 import java.awt.Image;
 import java.util.Collection;
@@ -33,9 +33,13 @@ import java.util.Set;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.AbstractProjectMember;
-import org.argouml.kernel.Project;
 import org.argouml.model.Model;
+import org.argouml.profile.DefaultTypeStrategy;
+import org.argouml.profile.FigNodeStrategy;
+import org.argouml.profile.FormatingStrategy;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 
 /**
@@ -75,8 +79,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public ProfileConfiguration(Project project) {
 	super(EXTENSION, project);
 	
-        for (Profile p 
-                : ProfileManagerImpl.getInstance().getDefaultProfiles()) {
+        for (Profile p : ProfileFacade.getManager().getDefaultProfiles()) {
             addProfile(p);
         }
 
@@ -305,7 +308,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
      */
     public Object findType(String name) {
         for (Object model : getProfileModels()) {
-            Object result = ModelUtils.findTypeInModel(name, model);
+            Object result = findTypeInModel(name, model);
             if (result != null) {
                 return result;
             }
@@ -313,6 +316,44 @@ public class ProfileConfiguration extends AbstractProjectMember {
         return null;
     }
 
+    /**
+     * Finds a type in a model by name
+     * 
+     * FIXME: duplicated from the method with the same name in 
+     * org.argouml.profile.internal.ModelUtils.
+     * 
+     * @param s the type name
+     * @param model the model
+     * @return the type or <code>null</code> if the type has not been found.
+     */
+    public static Object findTypeInModel(String s, Object model) {
+
+        if (!Model.getFacade().isANamespace(model)) {
+            throw new IllegalArgumentException(
+                    "Looking for the classifier " + s
+                    + " in a non-namespace object of " + model
+                    + ". A namespace was expected.");
+        }
+
+        Collection allClassifiers =
+            Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(model,
+                        Model.getMetaTypes().getClassifier());
+
+        Object[] classifiers = allClassifiers.toArray();
+        Object classifier = null;
+
+        for (int i = 0; i < classifiers.length; i++) {
+
+            classifier = classifiers[i];
+            if (Model.getFacade().getName(classifier) != null
+                        && Model.getFacade().getName(classifier).equals(s)) {
+                return classifier;
+            }
+        }
+
+        return null;
+    }
 
     @SuppressWarnings("unchecked")
     public Collection findByMetaType(Object metaType) {

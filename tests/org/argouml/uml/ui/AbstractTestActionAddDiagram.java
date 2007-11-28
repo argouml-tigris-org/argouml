@@ -35,6 +35,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
@@ -75,6 +76,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
         (new InitNotation()).init();
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();
+        (new InitProfileSubsystem()).init();
 
 	action = getAction();
 

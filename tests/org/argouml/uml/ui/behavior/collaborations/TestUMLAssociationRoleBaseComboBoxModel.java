@@ -30,6 +30,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 /**
@@ -73,6 +74,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
 
         Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLAssociationRoleBaseComboBoxModel();

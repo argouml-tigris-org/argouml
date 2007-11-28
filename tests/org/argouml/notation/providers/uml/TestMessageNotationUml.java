@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Test class to test the parsing of a message.<p>
@@ -55,6 +56,7 @@ public class TestMessageNotationUml extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

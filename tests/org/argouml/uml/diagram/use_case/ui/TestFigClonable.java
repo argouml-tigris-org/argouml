@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.use_case.ui;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Test if a Fig is cloneable.
@@ -47,6 +48,7 @@ public class TestFigClonable extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

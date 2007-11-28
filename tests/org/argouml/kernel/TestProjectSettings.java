@@ -37,6 +37,7 @@ import org.argouml.notation.InitNotation;
 import org.argouml.notation.Notation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Tests for the ProjectSettings.
@@ -295,6 +296,7 @@ public class TestProjectSettings extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        (new InitProfileSubsystem()).init();
         (new InitNotation()).init();
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();

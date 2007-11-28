@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.presentation.FigText;
@@ -76,6 +77,7 @@ public class TestStylePanel extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

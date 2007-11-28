@@ -30,6 +30,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 
@@ -52,6 +53,7 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
     public TestUMLCollaborationRepresentedOperationComboBoxModel(String arg0) {
         super(arg0);
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /*

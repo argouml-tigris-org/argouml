@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 
 import java.util.Iterator;
 
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.kernel.ProfileConfiguration;
 
 /**
  * @since Oct 12, 2002

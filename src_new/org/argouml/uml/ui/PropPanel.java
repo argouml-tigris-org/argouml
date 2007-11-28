@@ -61,7 +61,7 @@ import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.kernel.ProfileConfiguration;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Horizontal;

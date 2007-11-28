@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.deployment.ui;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
+import org.argouml.profile.InitProfileSubsystem;
 
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 
@@ -50,6 +51,7 @@ public class TestUMLDeploymentDiagram extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

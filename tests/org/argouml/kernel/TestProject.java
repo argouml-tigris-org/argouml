@@ -31,6 +31,7 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
@@ -473,5 +474,6 @@ public class TestProject extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         ProjectManager.getManager().setCurrentProject(null);
+        new InitProfileSubsystem().init();
     }
 }

@@ -56,7 +56,7 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.DiagramFactory.DiagramType;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.kernel.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**

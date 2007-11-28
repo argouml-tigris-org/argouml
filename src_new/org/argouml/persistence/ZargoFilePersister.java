@@ -53,7 +53,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectMember;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.util.FileConstants;
 import org.argouml.util.ThreadUtils;
 import org.xml.sax.InputSource;

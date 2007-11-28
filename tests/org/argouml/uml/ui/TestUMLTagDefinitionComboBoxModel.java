@@ -32,6 +32,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboB
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Test cases for the UMLTagDefinitionComboBoxModel class.
@@ -69,6 +70,7 @@ public class TestUMLTagDefinitionComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
         proj = ProjectManager.getManager().getCurrentProject();
         model = proj.getModel();
 

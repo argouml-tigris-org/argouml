@@ -48,10 +48,10 @@ import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
-import org.argouml.uml.profile.Profile;
-import org.argouml.uml.profile.ProfileConfiguration;
-import org.argouml.uml.profile.ProfileManagerImpl;
-import org.argouml.uml.profile.UserDefinedProfile;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileFacade;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.profile.UserDefinedProfile;
 
 /**
  * Persister for Project's Profile Configuration
@@ -95,8 +95,8 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 		}
 
 		Profile profile = null;
-		List<Profile> profiles = ProfileManagerImpl.getInstance()
-			.getRegisteredProfiles();
+		List<Profile> profiles = 
+		    ProfileFacade.getManager().getRegisteredProfiles();
 
 		if (line.equals("<userDefined>")) {
                     line = br.readLine().trim();
@@ -127,7 +127,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 		} else if (line.equals("<plugin>")) {
 		    String className = br.readLine().trim();
 
-                    profile = ProfileManagerImpl.getInstance()
+                    profile = ProfileFacade.getManager()
                             .getProfileForClass(className);
 		    
 		    line = br.readLine().trim();

@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -56,6 +57,7 @@ public class TestDetailsPane extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

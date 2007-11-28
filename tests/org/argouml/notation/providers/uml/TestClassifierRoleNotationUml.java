@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Test ClassifierRoleNotationUml (formerly ParserDisplay):
@@ -64,6 +65,7 @@ public class TestClassifierRoleNotationUml extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

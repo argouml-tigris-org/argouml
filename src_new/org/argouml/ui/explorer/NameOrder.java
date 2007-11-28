@@ -32,8 +32,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.uml.profile.Profile;
-import org.argouml.uml.profile.ProfileConfiguration;
+import org.argouml.profile.Profile;
+import org.argouml.kernel.ProfileConfiguration;
 import org.tigris.gef.base.Diagram;
 
 /**

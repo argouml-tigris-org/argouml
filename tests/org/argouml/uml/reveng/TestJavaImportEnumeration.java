@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.uml.reveng.java.JavaLexer;
 import org.argouml.uml.reveng.java.JavaRecognizer;
 import org.argouml.uml.reveng.java.Modeller;
@@ -78,6 +79,7 @@ public class TestJavaImportEnumeration extends TestCase {
         assertNotNull("Creation of model failed.", parsedModel);
 
         Model.getModelManagementFactory().setRootModel(parsedModel);
+        new InitProfileSubsystem().init();
 
         Modeller modeller = new Modeller(parsedModel,
                 new DummyImportSettings(), "TestClass.java");

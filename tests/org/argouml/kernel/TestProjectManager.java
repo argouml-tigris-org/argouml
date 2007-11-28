@@ -29,6 +29,7 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * @since Nov 22, 2002
@@ -51,6 +52,7 @@ public class TestProjectManager extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**

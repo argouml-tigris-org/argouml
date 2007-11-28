@@ -33,6 +33,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
+import org.argouml.profile.InitProfileSubsystem;
 
 /**
  * Test ParserDisplay: parsing transitions.
@@ -60,6 +61,7 @@ public class TestTransitionNotationUml extends TestCase {
     protected void setUp() {
         InitializeModel.initializeDefault();
         assertTrue("Model subsystem init failed.", Model.isInitiated());
+        new InitProfileSubsystem().init();
         Project p = ProjectManager.getManager().getCurrentProject();
         Object model =
             Model.getModelManagementFactory().createModel();

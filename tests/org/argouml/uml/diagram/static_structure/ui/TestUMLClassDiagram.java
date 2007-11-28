@@ -33,6 +33,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -64,6 +65,7 @@ public class TestUMLClassDiagram extends TestCase {
         (new InitNotationJava()).init();
 
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
         nodeTypes =
                 new Object[] {
                         Model.getCoreFactory().createClass(),

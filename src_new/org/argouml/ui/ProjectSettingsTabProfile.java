@@ -54,11 +54,11 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.profile.Profile;
-import org.argouml.uml.profile.ProfileConfiguration;
-import org.argouml.uml.profile.ProfileException;
-import org.argouml.uml.profile.ProfileManagerImpl;
-import org.argouml.uml.profile.UserDefinedProfile;
+import org.argouml.profile.Profile;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileFacade;
+import org.argouml.profile.UserDefinedProfile;
 
 /**
  * The Tab where new profiles can be added and the registered
@@ -215,7 +215,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
         List<Profile> used = getUsedProfiles();
         List<Profile> ret = new ArrayList<Profile>();
         
-        for (Profile profile : ProfileManagerImpl.getInstance()
+        for (Profile profile : ProfileFacade.getManager()
                 .getRegisteredProfiles()) {
             if (!used.contains(profile)) {
                 ret.add(profile);
@@ -269,9 +269,9 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 }
                 
                 if (remove) {
-                    if (!ProfileManagerImpl.getInstance()
+                    if (!ProfileFacade.getManager()
                             .getRegisteredProfiles().contains(selected)
-                            && !ProfileManagerImpl.getInstance()
+                            && !ProfileFacade.getManager()
                                     .getDefaultProfiles().contains(selected)) {
                         remove = (JOptionPane
                                 .showConfirmDialog(
@@ -299,7 +299,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 Profile selected = (Profile) modelAvailable
                         .getElementAt(availableList.getSelectedIndex());
                 if (selected instanceof UserDefinedProfile) {
-                    ProfileManagerImpl.getInstance().removeProfile(selected);
+                    ProfileFacade.getManager().removeProfile(selected);
                     modelAvailable.removeElement(selected);
                 } else {
                     JOptionPane.showMessageDialog(this, Translator
@@ -329,7 +329,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
                 try {
                     UserDefinedProfile profile = new UserDefinedProfile(file);
-                    ProfileManagerImpl.getInstance().registerProfile(profile);
+                    ProfileFacade.getManager().registerProfile(profile);
 
                     modelAvailable.addElement(profile);
                 } catch (ProfileException e) {
