@@ -36,21 +36,25 @@ import org.argouml.application.api.InitSubsystem;
  */
 public class InitProfileSubsystem implements InitSubsystem {
 
-    /*
+    /**
      * @see org.argouml.application.api.InitSubsystem#getProjectSettingsTabs()
+     * 
+     * @return the settings for this subsystem
      */
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {
         return new ArrayList<GUISettingsTabInterface>();
     }
 
-    /*
+    /**
      * @see org.argouml.application.api.InitSubsystem#getSettingsTabs()
+     * 
+     * @return the settings for this subsystem
      */
     public List<GUISettingsTabInterface> getSettingsTabs() {
         return new ArrayList<GUISettingsTabInterface>();
     }
 
-    /*
+    /**
      * @see org.argouml.application.api.InitSubsystem#init()
      */
     public void init() {

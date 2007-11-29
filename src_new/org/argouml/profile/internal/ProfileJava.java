@@ -1,4 +1,4 @@
-// $Id: ProfileJava.java 13298 2007-08-12 19:40:57Z maurelio1234 $
+// $Id: ProfileJava.java 13298 2007-08-12 19:40:57Z euluis $
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -69,7 +69,7 @@ public class ProfileJava extends Profile {
                 ProfileUML.class.getName()));
     }
 
-    /*
+    /**
      * @return "Java"
      * @see org.argouml.uml.profile.Profile#getDisplayName()
      */
@@ -77,15 +77,17 @@ public class ProfileJava extends Profile {
 	return NAME;
     }
 
-    /*
+    /**
+     * @return the Collection containing the profile model
      * @see org.argouml.uml.profile.Profile#getProfilePackages()
      */
     @Override
-    public Collection getProfilePackages() throws ProfileException {
+    public Collection getProfilePackages() {
         return model;
     }
     
-    /*
+    /**
+     * @return the default type strategy
      * @see org.argouml.uml.profile.Profile#getDefaultTypeStrategy()
      */
     @Override

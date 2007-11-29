@@ -35,14 +35,25 @@ package org.argouml.profile;
  */
 public class ProfileFacade {
 
+    /**
+     * Register a profile in the {@link ProfileManager}.
+     * @param profile the profile to be registered
+     */
     public static void register(Profile profile) {
         getManager().registerProfile(profile);
     }
 
+    /**
+     * Remove or unregister the profile from the {@link ProfileManager}.
+     * @param profile the profile to be removed
+     */
     public static void remove(Profile profile) {
         getManager().removeProfile(profile);
     }
 
+    /**
+     * @return the profile manager
+     */
     public static ProfileManager getManager() {
         if (manager == null)
             notInitialized("manager");

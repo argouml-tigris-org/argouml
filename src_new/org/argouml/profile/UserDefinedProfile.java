@@ -78,11 +78,19 @@ public class UserDefinedProfile extends Profile {
     }
 
 
+    /**
+     * @return null
+     * @see org.argouml.profile.Profile#getFormatingStrategy()
+     */
     @Override
     public FormatingStrategy getFormatingStrategy() {
 	return null;
     }
 
+    /**
+     * @return null
+     * @see org.argouml.profile.Profile#getFigureStrategy()
+     */
     @Override
     public FigNodeStrategy getFigureStrategy() {
 	return null;
@@ -95,13 +103,21 @@ public class UserDefinedProfile extends Profile {
         return modelFile;
     }
     
+    /**
+     * @return the name of the model and the file name
+     * @see org.argouml.profile.Profile#toString()
+     */
     @Override
     public String toString() {
         return super.toString() + " [" + getModelFile() + "]";
     }
 
+    /**
+     * @return the container that contains the model
+     * @see org.argouml.profile.Profile#getProfilePackages()
+     */
     @Override
-    public Collection getProfilePackages() throws ProfileException {
+    public Collection getProfilePackages() {
         return model;
     }
 }

@@ -76,7 +76,7 @@ public class ProfileUML extends Profile {
 	return formatingStrategy;
     }
 
-    /*
+    /**
      * @return "UML 1.4"
      * @see org.argouml.uml.profile.Profile#getDisplayName()
      */
@@ -84,15 +84,17 @@ public class ProfileUML extends Profile {
 	return NAME;
     }
 
-    /*
+    /**
+     * @return the container which contains the profile model(s).
      * @see org.argouml.uml.profile.Profile#getProfilePackages()
      */
     @Override
-    public Collection getProfilePackages() throws ProfileException {
+    public Collection getProfilePackages() {
         return model;
     }
     
-    /*
+    /**
+     * @return the type strategy
      * @see org.argouml.uml.profile.Profile#getDefaultTypeStrategy()
      */
     @Override
