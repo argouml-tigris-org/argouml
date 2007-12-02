@@ -1,5 +1,5 @@
-// $Id: ProfileJava.java 13298 2007-08-12 19:40:57Z euluis $
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,16 +52,15 @@ public class ProfileJava extends Profile {
      */
     @SuppressWarnings("unchecked")
     ProfileJava(Profile uml) throws ProfileException {
-	profileModelLoader = new ResourceModelLoader();
-	model = profileModelLoader
-		.loadModel("/org/argouml/default-java.xmi");
+        profileModelLoader = new ResourceModelLoader();
+        model = profileModelLoader.loadModel("/org/argouml/default-java.xmi");
 
         if (model == null) {
             model = new ArrayList();
             model.add(Model.getModelManagementFactory().createModel());
         }
-        	
-	addProfileDependency(uml);
+
+        addProfileDependency(uml);
     }    
     
     ProfileJava() throws ProfileException {
@@ -69,27 +68,18 @@ public class ProfileJava extends Profile {
                 ProfileUML.class.getName()));
     }
 
-    /**
-     * @return "Java"
-     * @see org.argouml.uml.profile.Profile#getDisplayName()
-     */
+
     public String getDisplayName() {
-	return NAME;
+        return NAME;
     }
 
-    /**
-     * @return the Collection containing the profile model
-     * @see org.argouml.uml.profile.Profile#getProfilePackages()
-     */
+
     @Override
     public Collection getProfilePackages() {
         return model;
     }
     
-    /**
-     * @return the default type strategy
-     * @see org.argouml.uml.profile.Profile#getDefaultTypeStrategy()
-     */
+
     @Override
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return new DefaultTypeStrategy() {

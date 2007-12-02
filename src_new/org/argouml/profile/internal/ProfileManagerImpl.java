@@ -1,4 +1,4 @@
-// $Id: ProfileManagerImpl.java 13298 2007-11-30 19:40:57Z euluis $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,10 +27,8 @@ package org.argouml.profile.internal;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
-
 
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
@@ -45,6 +43,8 @@ import org.argouml.profile.UserDefinedProfile;
  * @author Marcos Aurélio
  */
 public class ProfileManagerImpl implements ProfileManager {
+
+    private static final String DIRECTORY_SEPARATOR = "*";
 
     /**
      * The configuration key for the default profiles.
@@ -93,7 +93,7 @@ public class ProfileManagerImpl implements ProfileManager {
         disableConfigurationUpdate = true;
         
         StringTokenizer tokenizer = new StringTokenizer(Configuration
-                .getString(KEY_DEFAULT_PROFILES), "*", false);
+                .getString(KEY_DEFAULT_PROFILES), DIRECTORY_SEPARATOR, false);
 
         while (tokenizer.hasMoreTokens()) {
             String desc = tokenizer.nextToken();
@@ -128,7 +128,7 @@ public class ProfileManagerImpl implements ProfileManager {
                     buf.append("C" + p.getClass().getName());
                 }
 
-                buf.append("*");
+                buf.append(DIRECTORY_SEPARATOR);
             }
 
             Configuration.setString(KEY_DEFAULT_PROFILES, buf.toString());
@@ -139,7 +139,7 @@ public class ProfileManagerImpl implements ProfileManager {
         disableConfigurationUpdate = true;
         
         StringTokenizer tokenizer = new StringTokenizer(Configuration
-                .getString(KEY_DEFAULT_DIRECTORIES), "*", false);
+                .getString(KEY_DEFAULT_DIRECTORIES), DIRECTORY_SEPARATOR, false);
 
         while (tokenizer.hasMoreTokens()) {
             searchDirectories.add(tokenizer.nextToken());
@@ -153,25 +153,19 @@ public class ProfileManagerImpl implements ProfileManager {
             StringBuffer buf = new StringBuffer();
 
             for (String s : searchDirectories) {
-                buf.append(s + "*");
+                buf.append(s).append(DIRECTORY_SEPARATOR);
             }
 
             Configuration.setString(KEY_DEFAULT_DIRECTORIES, buf.toString());
         }
     }
 
-    /**
-     * @return the list of registered profiles
-     * @see org.argouml.profile.ProfileManager#getRegisteredProfiles()
-     */
+
     public List<Profile> getRegisteredProfiles() {
         return profiles;
     }
 
-    /**
-     * @param p a profile to be registered so that it is available to the users
-     * @see org.argouml.profile.ProfileManager#registerProfile(org.argouml.profile.Profile)
-     */
+
     public void registerProfile(Profile p) {        
         if (p != null && !profiles.contains(p)) {
             if (p instanceof UserDefinedProfile
@@ -186,11 +180,7 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-    /**
-     * @param p the profile to unregister - it will no longer be available for 
-     *          selection by users
-     * @see org.argouml.profile.ProfileManager#removeProfile(org.argouml.profile.Profile)
-     */
+
     public void removeProfile(Profile p) {
         if (p != null) {
             profiles.remove(p);
@@ -198,17 +188,10 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-    /**
-     * @param profileClass a string with the profile class name
-     * @return the profile if found, null otherwise
-     * @see org.argouml.profile.ProfileManager#getProfileForClass(java.lang.String)
-     */
-    public Profile getProfileForClass(String profileClass) {
-        Iterator it = profiles.iterator();
-        Profile found = null;
 
-        while (it.hasNext()) {
-            Profile p = (Profile) it.next();
+    public Profile getProfileForClass(String profileClass) {
+        Profile found = null;
+        for (Profile p : profiles) {
             if (p.getClass().getName().equals(profileClass)) {
                 found = p;
                 break;
@@ -217,30 +200,21 @@ public class ProfileManagerImpl implements ProfileManager {
         return found;
     }
 
-    /**
-     * @param p profile to be added to the default application profiles - new 
-     *          models will reference it by default
-     * @see org.argouml.profile.ProfileManager#addToDefaultProfiles(org.argouml.profile.Profile)
-     */
+
     public void addToDefaultProfiles(Profile p) {
-        if (p != null && profiles.contains(p) && !defaultProfiles.contains(p)) {
+        if (p != null && profiles.contains(p) 
+                && !defaultProfiles.contains(p)) {
             defaultProfiles.add(p);
             updateDefaultProfilesConfiguration();
         }
     }
 
-    /**
-     * @return the list of default profiles
-     * @see org.argouml.profile.ProfileManager#getDefaultProfiles()
-     */
+
     public List<Profile> getDefaultProfiles() {
         return Collections.unmodifiableList(defaultProfiles);
     }
 
-    /**
-     * @param p the profile to remove from the default profiles
-     * @see org.argouml.profile.ProfileManager#removeFromDefaultProfiles(org.argouml.profile.Profile)
-     */
+
     public void removeFromDefaultProfiles(Profile p) {
         if (p != null && profiles.contains(p)) {
             defaultProfiles.remove(p);
@@ -248,11 +222,7 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-    /**
-     * @param path a directory name where the manager will try to look for 
-     *             user defined profiles as XMI files
-     * @see org.argouml.profile.ProfileManager#addSearchPathDirectory(java.lang.String)
-     */
+
     public void addSearchPathDirectory(String path) {
         if (path != null && !searchDirectories.contains(path)) {
             searchDirectories.add(path);
@@ -261,19 +231,11 @@ public class ProfileManagerImpl implements ProfileManager {
     }
 
 
-    /**
-     * @return the list of search directories
-     * @see org.argouml.profile.ProfileManager#getSearchPathDirectories()
-     */
     public List<String> getSearchPathDirectories() {
         return Collections.unmodifiableList(searchDirectories);
     }
 
 
-    /**
-     * @param path the directory to remove
-     * @see org.argouml.profile.ProfileManager#removeSearchPathDirectory(java.lang.String)
-     */
     public void removeSearchPathDirectory(String path) {
         if (path != null) {
             searchDirectories.remove(path);
@@ -282,9 +244,6 @@ public class ProfileManagerImpl implements ProfileManager {
     }
 
 
-    /**
-     * @see org.argouml.profile.ProfileManager#refreshRegisteredProfiles()
-     */
     public void refreshRegisteredProfiles() {
 
         for (String dirName : searchDirectories) {
@@ -327,10 +286,7 @@ public class ProfileManagerImpl implements ProfileManager {
         return null;
     }
 
-    /**
-     * @return the UML profile
-     * @see org.argouml.profile.ProfileManager#getUMLProfile()
-     */
+
     public Profile getUMLProfile() {
         for (Profile p : getRegisteredProfiles())
             if (p.getDisplayName() != null 

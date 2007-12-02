@@ -31,32 +31,20 @@ import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
 
 /**
- *
+ * Initializer class for the Profile subsystem.
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
 public class InitProfileSubsystem implements InitSubsystem {
 
-    /**
-     * @see org.argouml.application.api.InitSubsystem#getProjectSettingsTabs()
-     * 
-     * @return the settings for this subsystem
-     */
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {
         return new ArrayList<GUISettingsTabInterface>();
     }
 
-    /**
-     * @see org.argouml.application.api.InitSubsystem#getSettingsTabs()
-     * 
-     * @return the settings for this subsystem
-     */
     public List<GUISettingsTabInterface> getSettingsTabs() {
         return new ArrayList<GUISettingsTabInterface>();
     }
 
-    /**
-     * @see org.argouml.application.api.InitSubsystem#init()
-     */
     public void init() {
         ProfileFacade.setManager(
                 new org.argouml.profile.internal.ProfileManagerImpl());

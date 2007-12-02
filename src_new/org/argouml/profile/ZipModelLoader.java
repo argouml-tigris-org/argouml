@@ -1,4 +1,4 @@
-// $Id: ZipModelLoader.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,53 +41,45 @@ import org.apache.log4j.Logger;
  * @author maurelio1234
  */
 public class ZipModelLoader extends StreamModelLoader {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger
-	    .getLogger(ZipModelLoader.class);
 
-    /**
-     * @param modelFilename the zip file
-     * @return the loaded model
-     * @throws ProfileException if the profile could not be loaded
-     * @see org.argouml.uml.profile.StreamModelLoader#loadModel(java.lang.String)
-     */
+    private static final Logger LOG = Logger.getLogger(ZipModelLoader.class);
+
+
     public Collection loadModel(String modelFilename) throws ProfileException {
-	LOG.info("Loading profile from ZIP '" + modelFilename + "'");
+        LOG.info("Loading profile from ZIP '" + modelFilename + "'");
 
-	InputStream is = null;
-	File modelFile = new File(modelFilename);
-	// TODO: This is in the wrong place.  It's not profile specific.
-	// It needs to be moved to main XMI reading code. - tfm 20060326
-	if (modelFilename.endsWith("zip")) {
-	    String filename = modelFile.getName();
-	    String extension = filename.substring(filename.indexOf('.'),
-		    filename.lastIndexOf('.'));
-	    String path = modelFile.getParent();
-	    // Add the path of the model to the search path, so we can
-	    // read dependent models
-	    if (path != null) {
-		System.setProperty("org.argouml.model.modules_search_path",
-			path);
-	    }
-	    try {
-		is = openZipStreamAt(modelFile.toURI().toURL(), extension);
-	    } catch (MalformedURLException e) {
-		LOG.error("Exception while loading profile '" + modelFilename
-			+ "'", e);
-		throw new ProfileException(e);
-	    } catch (IOException e) {
-		LOG.error("Exception while loading profile '" + modelFilename
-			+ "'", e);
+        InputStream is = null;
+        File modelFile = new File(modelFilename);
+        // TODO: This is in the wrong place.  It's not profile specific.
+        // It needs to be moved to main XMI reading code. - tfm 20060326
+        if (modelFilename.endsWith("zip")) {
+            String filename = modelFile.getName();
+            String extension = filename.substring(filename.indexOf('.'),
+                    filename.lastIndexOf('.'));
+            String path = modelFile.getParent();
+            // Add the path of the model to the search path, so we can
+            // read dependent models
+            if (path != null) {
+                System.setProperty("org.argouml.model.modules_search_path",
+                        path);
+            }
+            try {
+                is = openZipStreamAt(modelFile.toURI().toURL(), extension);
+            } catch (MalformedURLException e) {
+                LOG.error("Exception while loading profile '" + modelFilename
+                        + "'", e);
                 throw new ProfileException(e);
-	    }
+            } catch (IOException e) {
+                LOG.error("Exception while loading profile '" + modelFilename
+                        + "'", e);
+                throw new ProfileException(e);
+            }
 
-	    if (is != null) {
-		return super.loadModel(is);
-	    }
-	}
-	
+            if (is != null) {
+                return super.loadModel(is);
+            }
+        }
+        
         throw new ProfileException("Profile could not be loaded!");
     }
 
@@ -106,13 +98,13 @@ public class ZipModelLoader extends StreamModelLoader {
      *             if there is a problem opening the file.
      */
     private ZipInputStream openZipStreamAt(URL url, String ext)
-	throws IOException {
-	ZipInputStream zis = new ZipInputStream(url.openStream());
-	ZipEntry entry = zis.getNextEntry();
-	while (entry != null && !entry.getName().endsWith(ext)) {
-	    entry = zis.getNextEntry();
-	}
-	return zis;
+        throws IOException {
+        ZipInputStream zis = new ZipInputStream(url.openStream());
+        ZipEntry entry = zis.getNextEntry();
+        while (entry != null && !entry.getName().endsWith(ext)) {
+            entry = zis.getNextEntry();
+        }
+        return zis;
     }
 
 }

@@ -1,4 +1,4 @@
-// $Id: Profile.java 13298 2007-08-12 19:40:57Z maurelio1234 $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,7 +33,9 @@ import org.argouml.model.Model;
 
 
 /**
- * Represents a Profile
+ * Abstract class representing a Profile.  It contains default types and 
+ * presentation characteristics that can be tailored to various modeling
+ * environments.
  * 
  * @author Marcos Aurélio
  */
@@ -98,24 +100,24 @@ public abstract class Profile {
     }
 
     /**
-     * @return the formating strategy offered by this profile, if any. <br>
-     * 	       <b>null</b> if this profile has no formating strategy.
+     * @return the formating strategy offered by this profile, if any. Returns
+     *         <code>null</code> if this profile has no formating strategy.
      */
     public FormatingStrategy getFormatingStrategy() {
         return null;
     }
-    
+
     /**
-     * @return the FigNodeStrategy offered by this profile, if any. <br>
-     * 	       <b>null</b> if this profile has no FigNodeStrategy.
+     * @return the FigNodeStrategy offered by this profile, if any. Returns
+     *         <code>null</code> if this profile has no FigNodeStrategy.
      */
-    public FigNodeStrategy   getFigureStrategy() {
+    public FigNodeStrategy getFigureStrategy() {
         return null;
     }
 
     /**
-     * @return the DefaultTypeStrategy offered by this profile, if any. <br>
-     *         <b>null</b> if this profile has no DefaultTypeStrategy.
+     * @return the DefaultTypeStrategy offered by this profile, if any. Returns
+     *         <code>null</code> if this profile has no DefaultTypeStrategy.
      */
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return null;
@@ -192,8 +194,10 @@ public abstract class Profile {
     }
     
     /**
-     * @return the UML Model that contains the profile model
-     * @throws ProfileException if failed to get profile.
+     * @return a collection of the top level UML Packages containing the
+     *         profile.
+     * @throws ProfileException
+     *                 if failed to get profile.
      */
     public abstract Collection getProfilePackages() throws ProfileException;
     
@@ -225,8 +229,8 @@ public abstract class Profile {
     
     /**
      * @return the display name
-     * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return getDisplayName();
     }

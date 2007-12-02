@@ -1,4 +1,4 @@
-// $Id: ProfileUML.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -51,15 +51,15 @@ public class ProfileUML extends Profile {
     private Collection model;
     
     /**
-     * The default constructor for this class 
+     * Construct a Profile for UML modeling. 
      * @throws ProfileException 
      */
     @SuppressWarnings("unchecked")
     ProfileUML() throws ProfileException {
         formatingStrategy = new JavaFormatingStrategy();
-	profileModelLoader = new ResourceModelLoader();
-	model = profileModelLoader
-		.loadModel(PROFILE_FILE);
+        profileModelLoader = new ResourceModelLoader();
+        model = profileModelLoader
+                .loadModel(PROFILE_FILE);
 
         if (model == null) {
             model = new ArrayList();
@@ -67,36 +67,23 @@ public class ProfileUML extends Profile {
         }        
     }    
 
-    
-    /**
-     * @return the Java formating strategy
-     * @see org.argouml.uml.profile.Profile#getFormatingStrategy()
-     */
+    @Override
     public FormatingStrategy getFormatingStrategy() {
-	return formatingStrategy;
+        return formatingStrategy;
     }
 
-    /**
-     * @return "UML 1.4"
-     * @see org.argouml.uml.profile.Profile#getDisplayName()
-     */
+    @Override
     public String getDisplayName() {
-	return NAME;
+        return NAME;
     }
 
-    /**
-     * @return the container which contains the profile model(s).
-     * @see org.argouml.uml.profile.Profile#getProfilePackages()
-     */
+
     @Override
     public Collection getProfilePackages() {
         return model;
     }
     
-    /**
-     * @return the type strategy
-     * @see org.argouml.uml.profile.Profile#getDefaultTypeStrategy()
-     */
+
     @Override
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return new DefaultTypeStrategy() {

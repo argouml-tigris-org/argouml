@@ -1,4 +1,4 @@
-// $Id: FileModelLoader.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,17 +38,10 @@ import org.apache.log4j.Logger;
  * @author maurelio1234
  */
 public class FileModelLoader extends StreamModelLoader {
-    /**
-     * Logger.
-     */
+
     private static final Logger LOG = Logger.getLogger(FileModelLoader.class);
 
-    /**
-     * @param modelFilename the model to be loaded
-     * @return the profile model
-     * @throws ProfileException if the model file can't be read or found.
-     * @see org.argouml.uml.profile.StreamModelLoader#loadModel(java.lang.String)
-     */
+    
     public Collection loadModel(String modelFilename) throws ProfileException {
         LOG.info("Loading profile from file'" + modelFilename + "'");
         InputStream is = null;

@@ -1,4 +1,4 @@
-// $Id: JavaFormatingStrategy.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -30,47 +30,42 @@ import org.argouml.model.Model;
 import org.argouml.profile.FormatingStrategy;
 
 /**
- * The Formating Strategy based on Java naming conventions 
+ * The Formating Strategy based on Java naming conventions.
  *
  * @author Marcos Aurélio
  */
 public class JavaFormatingStrategy implements FormatingStrategy {
     
-    /**
-     * @param element the element to be formated
-     * @param namespace the element's namespace
-     * @return the formated string
-     * @see org.argouml.uml.profile.FormatingStrategy#formatElement(java.lang.Object, java.lang.Object)
-     */
+
     public String formatElement(Object element, Object namespace) {
-	String value = null;
-	if (element == null) {
-	    value = "";
-	} else {
-	    Object elementNs = Model.getFacade().getNamespace(element);
-	    //
-	    //   if element is an AssociationEnd use
-	    //      the namespace of containing association
-	    //
-	    if (Model.getFacade().isAAssociationEnd(element)) {
-		Object assoc = Model.getFacade().getAssociation(element);
-		if (assoc != null) {
-		    elementNs = Model.getFacade().getNamespace(assoc);
-		}
-	    }
-	    if (elementNs == namespace) {
-		value = Model.getFacade().getName(element);
-		if (value == null || value.length() == 0) {
-		    value = defaultName(element, namespace);
-		}
-	    } else {
-		StringBuffer buffer = new StringBuffer();
-		String pathSep = getPathSeparator();
-		buildPath(buffer, element, pathSep);
-		value = buffer.toString();
-	    }
-	}
-	return value;
+        String value = null;
+        if (element == null) {
+            value = "";
+        } else {
+            Object elementNs = Model.getFacade().getNamespace(element);
+            //
+            //   if element is an AssociationEnd use
+            //      the namespace of containing association
+            //
+            if (Model.getFacade().isAAssociationEnd(element)) {
+                Object assoc = Model.getFacade().getAssociation(element);
+                if (assoc != null) {
+                    elementNs = Model.getFacade().getNamespace(assoc);
+                }
+            }
+            if (elementNs == namespace) {
+                value = Model.getFacade().getName(element);
+                if (value == null || value.length() == 0) {
+                    value = defaultName(element, namespace);
+                }
+            } else {
+                StringBuffer buffer = new StringBuffer();
+                String pathSep = getPathSeparator();
+                buildPath(buffer, element, pathSep);
+                value = buffer.toString();
+            }
+        }
+        return value;
     }
 
     /**
@@ -79,49 +74,49 @@ public class JavaFormatingStrategy implements FormatingStrategy {
      * @return the default name for the given associationend
      */
     protected String defaultAssocEndName(Object assocEnd,
-					 Object namespace) {
-	String name = null;
-	Object type = Model.getFacade().getType(assocEnd);
-	if (type != null) {
-	    name = formatElement(type, namespace);
-	} else {
-	    name = "unknown type";
-	}
-	Object mult = Model.getFacade().getMultiplicity(assocEnd);
-	if (mult != null) {
-	    StringBuffer buf = new StringBuffer(name);
-	    buf.append("[");
-	    buf.append(Integer.toString(Model.getFacade().getLower(mult)));
-	    buf.append("..");
-	    int upper = Model.getFacade().getUpper(mult);
-	    if (upper >= 0) {
-		buf.append(Integer.toString(upper));
-	    } else {
-		buf.append("*");
-	    }
-	    buf.append("]");
-	    name = buf.toString();
-	}
-	return name;
+                                         Object namespace) {
+        String name = null;
+        Object type = Model.getFacade().getType(assocEnd);
+        if (type != null) {
+            name = formatElement(type, namespace);
+        } else {
+            name = "unknown type";
+        }
+        Object mult = Model.getFacade().getMultiplicity(assocEnd);
+        if (mult != null) {
+            StringBuffer buf = new StringBuffer(name);
+            buf.append("[");
+            buf.append(Integer.toString(Model.getFacade().getLower(mult)));
+            buf.append("..");
+            int upper = Model.getFacade().getUpper(mult);
+            if (upper >= 0) {
+                buf.append(Integer.toString(upper));
+            } else {
+                buf.append("*");
+            }
+            buf.append("]");
+            name = buf.toString();
+        }
+        return name;
     }
 
     /**
-     * This function creates a default association name from its ends.
+     * Create a default association name from its ends.
      *
      * @param assoc the given association
      * @param ns the namespace
      * @return the default association name
      */
     protected String defaultAssocName(Object assoc, Object ns) {
-	StringBuffer buf = new StringBuffer();
-	Iterator iter = Model.getFacade().getConnections(assoc).iterator();
-	for (int i = 0; iter.hasNext(); i++) {
-	    if (i != 0) {
-		buf.append("-");
-	    }
-	    buf.append(defaultAssocEndName(iter.next(), ns));
-	}
-	return buf.toString();
+        StringBuffer buf = new StringBuffer();
+        Iterator iter = Model.getFacade().getConnections(assoc).iterator();
+        for (int i = 0; iter.hasNext(); i++) {
+            if (i != 0) {
+                buf.append("-");
+            }
+            buf.append(defaultAssocEndName(iter.next(), ns));
+        }
+        return buf.toString();
     }
 
     /**
@@ -132,11 +127,11 @@ public class JavaFormatingStrategy implements FormatingStrategy {
     protected String defaultGeneralizationName(Object gen, Object namespace) {
         Object child = Model.getFacade().getSpecific(gen);
         Object parent = Model.getFacade().getGeneral(gen);
-	StringBuffer buf = new StringBuffer();
-	buf.append(formatElement(child, namespace));
-	buf.append(" extends ");
-	buf.append(formatElement(parent, namespace));
-	return buf.toString();
+        StringBuffer buf = new StringBuffer();
+        buf.append(formatElement(child, namespace));
+        buf.append(" extends ");
+        buf.append(formatElement(parent, namespace));
+        return buf.toString();
     }
 
     /**
@@ -145,28 +140,28 @@ public class JavaFormatingStrategy implements FormatingStrategy {
      * @return a default name for this modelelement
      */
     protected String defaultName(Object element, Object namespace) {
-	String name = null;
-	if (Model.getFacade().isAAssociationEnd(element)) {
-	    name = defaultAssocEndName(element, namespace);
-	} else {
-	    if (Model.getFacade().isAAssociation(element)) {
-		name = defaultAssocName(element, namespace);
-	    }
-	    if (Model.getFacade().isAGeneralization(element)) {
-		name = defaultGeneralizationName(element, namespace);
-	    }
-	}
-	if (name == null) {
+        String name = null;
+        if (Model.getFacade().isAAssociationEnd(element)) {
+            name = defaultAssocEndName(element, namespace);
+        } else {
+            if (Model.getFacade().isAAssociation(element)) {
+                name = defaultAssocName(element, namespace);
+            }
+            if (Model.getFacade().isAGeneralization(element)) {
+                name = defaultGeneralizationName(element, namespace);
+            }
+        }
+        if (name == null) {
             name = "anon";
         }
-	return name;
+        return name;
     }
 
     /**
      * @return the path separator (currently ".")
      */
     protected String getPathSeparator() {
-	return ".";
+        return ".";
     }
 
     /**
@@ -178,60 +173,55 @@ public class JavaFormatingStrategy implements FormatingStrategy {
             String pathSep) {
         if (element != null) {
             Object parent = Model.getFacade().getNamespace(element);
-	    if (parent != null && parent != element) {
-		buildPath(buffer, parent, pathSep);
-		buffer.append(pathSep);
-	    }
-	    String name = Model.getFacade().getName(element);
-	    if (name == null || name.length() == 0) {
-		name = defaultName(element, null);
-	    }
-	    buffer.append(name);
-	}
+            if (parent != null && parent != element) {
+                buildPath(buffer, parent, pathSep);
+                buffer.append(pathSep);
+            }
+            String name = Model.getFacade().getName(element);
+            if (name == null || name.length() == 0) {
+                name = defaultName(element, null);
+            }
+            buffer.append(name);
+        }
     }
 
     /**
      * @return the string that separates elements
      */
     protected String getElementSeparator() {
-	return ", ";
+        return ", ";
     }
 
     /**
      * @return the string that represents an empty collection
      */
     protected String getEmptyCollection() {
-	return "[empty]";
+        return "[empty]";
     }
 
-    /**
-     * @param iter the iterator of the collection
-     * @param namespace the namespace to be applied on the elements
-     * @return the formated string
-     * @see org.argouml.uml.profile.FormatingStrategy#formatCollection(java.util.Iterator, java.lang.Object)
-     */
+
     public String formatCollection(Iterator iter, Object namespace) {
-	String value = null;
-	if (iter.hasNext()) {
-	    StringBuffer buffer = new StringBuffer();
-	    String elementSep = getElementSeparator();
-	    Object obj = null;
-	    for (int i = 0; iter.hasNext(); i++) {
-		if (i > 0) {
-		    buffer.append(elementSep);
-		}
-		obj = iter.next();
-		if (Model.getFacade().isAModelElement(obj)) {
-		    buffer.append(formatElement(obj, namespace));
-		} else {
-		    buffer.append(obj.toString());
-		}
-	    }
-	    value = buffer.toString();
-	} else {
-	    value = getEmptyCollection();
-	}
-	return value;
+        String value = null;
+        if (iter.hasNext()) {
+            StringBuffer buffer = new StringBuffer();
+            String elementSep = getElementSeparator();
+            Object obj = null;
+            for (int i = 0; iter.hasNext(); i++) {
+                if (i > 0) {
+                    buffer.append(elementSep);
+                }
+                obj = iter.next();
+                if (Model.getFacade().isAModelElement(obj)) {
+                    buffer.append(formatElement(obj, namespace));
+                } else {
+                    buffer.append(obj.toString());
+                }
+            }
+            value = buffer.toString();
+        } else {
+            value = getEmptyCollection();
+        }
+        return value;
     }
 
 }

@@ -1,4 +1,4 @@
-// $Id: FigNodeStrategy.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

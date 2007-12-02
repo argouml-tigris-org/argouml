@@ -1,5 +1,5 @@
-// $Id: ProfileException.java 13040 2007-07-10 20:00:25Z linus $
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,9 +25,11 @@
 package org.argouml.profile;
 
 /**
- * An exception to be thrown during failure of a opening
- * and reading some storage medium.
- * @author Bob Tarling
+ * An exception to be thrown during failure in the Profile subsystem.
+ * This will typically be a wrapped exception containing the exception
+ * representing the underlying failure cause.
+ * 
+ * @author Marcus Aurelio (maurelio1234)
  */
 public class ProfileException extends Exception {
 

@@ -1,4 +1,4 @@
-// $Id: ProfileManager.java 13090 2007-07-16 12:37:40Z maurelio1234 $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,7 +27,7 @@ package org.argouml.profile;
 import java.util.List;
 
 /**
- * Manages the global set of registered profiles.
+ * Interface to the manager for the global set of registered profiles.
  *
  * @author maurelio1234
  */
@@ -36,16 +36,18 @@ public interface ProfileManager {
     /**
      * Register a new profile.
      * 
-     * @param p the profile
+     * @param profile A profile to be registered so that it is available to the
+     *                users.
      */
-    void registerProfile(Profile p);
+    void registerProfile(Profile profile);
 
     /**
-     * Remove a profile from the list.
+     * Remove a profile from the list of registered profiles.
      * 
-     * @param p the profile
+     * @param profile the profile to unregister. It will no longer be available
+     *                for selection by users
      */
-    void removeProfile(Profile p);
+    void removeProfile(Profile profile);
     
     /**
      * @return the list of registered profiles
@@ -53,36 +55,38 @@ public interface ProfileManager {
     List<Profile> getRegisteredProfiles();
     
     /**
-     * TODO: Add better Javadoc here.
+     * Search for a Profile with the given Java classname.
      * 
      * @return the profile instance for the class or null if there is none.
-     * @param className the name of the class for which to get the profile
+     * @param className the name of the Java class to search for.
      */
     Profile getProfileForClass(String className);
     
     /**
-     * @return the default set of profiles
+     * @return the default list of profiles
      */
     List<Profile> getDefaultProfiles();
     
     /**
      * Add a profile to the default list.
      * 
-     * @param p profile to add
+     * @param profile profile to be added to the default application profiles.
+     *                New models will reference it by default
      */
-    void addToDefaultProfiles(Profile p);
+    void addToDefaultProfiles(Profile profile);
     
     /**
      * Remove a profile from the default list.
      * 
-     * @param p the profile to be removed
+     * @param profile the profile to be removed
      */
-    void removeFromDefaultProfiles(Profile p);
+    void removeFromDefaultProfiles(Profile profile);
     
     /**
      * Add a new directory to the directory list.
      * 
-     * @param path user defined directory
+     * @param path a directory name where the manager will try to look for 
+     *             user defined profiles as XMI files
      */
     void addSearchPathDirectory(String path);
     

@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -29,7 +29,7 @@ import java.util.Collection;
 import org.argouml.model.Model;
 
 /**
- * Contains helper methods
+ * Helper utility methods for searching the model.
  *
  * @author maurelio1234
  */
@@ -55,12 +55,7 @@ public class ModelUtils {
                 .getAllModelElementsOfKind(model,
                         Model.getMetaTypes().getClassifier());
 
-        Object[] classifiers = allClassifiers.toArray();
-        Object classifier = null;
-
-        for (int i = 0; i < classifiers.length; i++) {
-
-            classifier = classifiers[i];
+        for (Object classifier : allClassifiers) {
             if (Model.getFacade().getName(classifier) != null
                         && Model.getFacade().getName(classifier).equals(s)) {
                 return classifier;

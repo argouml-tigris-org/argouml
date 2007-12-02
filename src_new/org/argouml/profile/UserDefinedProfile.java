@@ -1,4 +1,4 @@
-// $Id: UserDefinedProfile.java 13094 2007-07-18 11:44:08Z maurelio1234 $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,7 +38,7 @@ public class UserDefinedProfile extends Profile {
     private File modelFile;
     private Collection model;
     private boolean fromZargo;
-    
+
     /**
      * The default constructor for this class
      * 
@@ -46,12 +46,12 @@ public class UserDefinedProfile extends Profile {
      * @throws ProfileException if the profile could not be loaded
      */
     public UserDefinedProfile(File file) throws ProfileException {
-	this.displayName = file.getName();
-	this.modelFile = file;
+        this.displayName = file.getName();
+        this.modelFile = file;
         this.model = new FileModelLoader().loadModel(modelFile.getPath());
         this.fromZargo = false;
     }
-    
+
     /**
      * This constructor is used by the persitence subsystem
      * when loading an user defined profile from a zargo file.
@@ -65,13 +65,11 @@ public class UserDefinedProfile extends Profile {
         this.model = theModel;
         this.fromZargo = true;
     }
-    
+
     /**
      * @return the string that should represent this profile in the GUI. An
      *         start (*) is placed on it if it comes from the currently opened
      *         zargo file.
-     * 
-     * @see org.argouml.uml.profile.Profile#getDisplayName()
      */
     public String getDisplayName() {
         return displayName + (fromZargo ? "*" : "");
@@ -79,21 +77,21 @@ public class UserDefinedProfile extends Profile {
 
 
     /**
-     * @return null
-     * @see org.argouml.profile.Profile#getFormatingStrategy()
+     * Returns null.  This profile has no formatting strategy.
+     * @return null.
      */
     @Override
     public FormatingStrategy getFormatingStrategy() {
-	return null;
+        return null;
     }
 
     /**
-     * @return null
-     * @see org.argouml.profile.Profile#getFigureStrategy()
+     * Returns null.  This profile has no figure strategy.
+     * @return null.
      */
     @Override
     public FigNodeStrategy getFigureStrategy() {
-	return null;
+        return null;
     }
 
     /**
@@ -102,20 +100,17 @@ public class UserDefinedProfile extends Profile {
     public File getModelFile() {
         return modelFile;
     }
-    
+
     /**
      * @return the name of the model and the file name
-     * @see org.argouml.profile.Profile#toString()
      */
     @Override
     public String toString() {
+        // TODO: I18N
         return super.toString() + " [" + getModelFile() + "]";
     }
 
-    /**
-     * @return the container that contains the model
-     * @see org.argouml.profile.Profile#getProfilePackages()
-     */
+
     @Override
     public Collection getProfilePackages() {
         return model;

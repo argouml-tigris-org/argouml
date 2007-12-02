@@ -1,4 +1,4 @@
-// $Id: ResourceModelLoader.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,7 +39,7 @@ public class ResourceModelLoader extends StreamModelLoader {
      * Logger.
      */
     private static final Logger LOG = Logger
-	    .getLogger(ResourceModelLoader.class);
+            .getLogger(ResourceModelLoader.class);
     
     private Class clazz;
     
@@ -48,7 +48,7 @@ public class ResourceModelLoader extends StreamModelLoader {
      * ClassLoader that loaded this class.
      */
     public ResourceModelLoader() {
-	this.clazz = this.getClass();
+        this.clazz = this.getClass();
     }
     
     /**
@@ -57,15 +57,10 @@ public class ResourceModelLoader extends StreamModelLoader {
      * @param c the reference class
      */
     public ResourceModelLoader(Class c) {
-	clazz = c;
+        clazz = c;
     }
 
-    /**
-     * @param path the model path
-     * @return the model
-     * @throws ProfileException if the profile could not be loaded 
-     * @see org.argouml.uml.profile.StreamModelLoader#loadModel(java.lang.String)
-     */
+
     public Collection loadModel(String path) throws ProfileException {
         LOG.info("Loading profile from resource'" + path + "'");
         return super.loadModel(clazz.getResourceAsStream(path));

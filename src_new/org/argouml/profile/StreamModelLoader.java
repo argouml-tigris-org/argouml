@@ -1,4 +1,4 @@
-// $Id: StreamModelLoader.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -34,26 +34,26 @@ import org.argouml.model.XmiReader;
 import org.xml.sax.InputSource;
 
 /**
- * Loads models from a given InputStream
+ * Abstract ProfileModelLoader which loads models from an InputStream.
  *
  * @author Marcos Aurélio
  */
 public abstract class StreamModelLoader implements ProfileModelLoader {
-    /**
-     * Logger.
-     */
+
     private static final Logger LOG = Logger.getLogger(StreamModelLoader.class);
 
     /**
-     * @param is the stream from where the model should be loaded
+     * @param inputStream the stream from where the model should be loaded
      * @return the model
      * @throws ProfileException if the XMIReader couldn't read the input stream
      */
-    protected Collection loadModel(InputStream is) throws ProfileException {
-        if (is != null) {
+    protected Collection loadModel(InputStream inputStream)
+        throws ProfileException {
+        
+        if (inputStream != null) {
             try {
                 XmiReader xmiReader = Model.getXmiReader();
-                InputSource inputSource = new InputSource(is);
+                InputSource inputSource = new InputSource(inputStream);
                 Collection elements = xmiReader.parse(inputSource, true);
                 return elements;
             } catch (UmlException e) {
@@ -62,6 +62,6 @@ public abstract class StreamModelLoader implements ProfileModelLoader {
             }
         }
         LOG.error("Profile not found");
-        throw new ProfileException("Profile not found!");	
+        throw new ProfileException("Profile not found!");
     }
 }

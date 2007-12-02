@@ -1,4 +1,4 @@
-// $Id: ProfileModelLoader.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,19 +27,20 @@ package org.argouml.profile;
 import java.util.Collection;
 
 /**
- * Objects implementing this class are responsible for loading profile models
+ * Interface to be implemented by profile model loaders.
  *
  * @author maurelio1234
  */
 public interface ProfileModelLoader {
+    
     /**
-     * Tries to load a model from the specified path
+     * Load a model from the specified path.
      * 
-     * @param path the path where the profile can be found. <b>
-     *             The expected string format is implementation specific! 
+     * @param path the path where the profile can be found. <em>Note:</em>The
+     *                expected string format is implementation specific!
      * @return the set of defined packages
-     * @throws ProfileException if the profile could not be loaded for some 
-     *                          reason
+     * @throws ProfileException if the profile could not be loaded for some
+     *                 reason
      */
     Collection loadModel(String path) throws ProfileException;  
 }

@@ -1,4 +1,4 @@
-// $Id: FormatingStrategy.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,28 +27,34 @@ package org.argouml.profile;
 import java.util.Iterator;
 
 /**
- * Represents the formating strategy to be used when formating
- * model element names
- *
+ * Interface for the formating strategy to be used when formating model element
+ * names.
+ * 
  * @author Marcos Aurélio
  */
 public interface FormatingStrategy {
+    
     /**
-     *    This method produces a string that represents the specific
-     *    model element in the context of the specified namespace.
-     *    @param element element to represent.
-     *    @param namespace context namespace (may be null).
-     *    @return a string representing the model element
+     * Produce a string that represents the specific model element in the
+     * context of the specified namespace.
+     * 
+     * @param element
+     *                element to represent.
+     * @param namespace
+     *                context namespace (may be null).
+     * @return a string representing the model element
      */
-    public abstract String formatElement(Object element,
-					 Object namespace);
+    public abstract String formatElement(Object element, Object namespace);
+
     /**
-     *   This method produces a string the represents the collection
-     *   of model elements in the context of the specified namespace.
-     *   @param iter iterator over collection
-     *   @param namespace context namespace (may be null).
-     *   @return a string representing the collection
+     * Produce a string the represents the collection of model elements in the
+     * context of the specified namespace.
+     * 
+     * @param iter
+     *                iterator over collection
+     * @param namespace
+     *                context namespace (may be null).
+     * @return a string representing the collection
      */
-    public abstract String formatCollection(Iterator iter,
-					    Object namespace);
+    public abstract String formatCollection(Iterator iter, Object namespace);
 }
