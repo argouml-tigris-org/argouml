@@ -138,8 +138,10 @@ public class ProfileManagerImpl implements ProfileManager {
     private void loadDirectoriesFromConfiguration() {
         disableConfigurationUpdate = true;
         
-        StringTokenizer tokenizer = new StringTokenizer(Configuration
-                .getString(KEY_DEFAULT_DIRECTORIES), DIRECTORY_SEPARATOR, false);
+        StringTokenizer tokenizer = 
+            new StringTokenizer(
+                    Configuration.getString(KEY_DEFAULT_DIRECTORIES), 
+                    DIRECTORY_SEPARATOR, false);
 
         while (tokenizer.hasMoreTokens()) {
             searchDirectories.add(tokenizer.nextToken());
