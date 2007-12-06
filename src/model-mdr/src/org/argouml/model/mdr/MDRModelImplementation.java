@@ -299,6 +299,10 @@ public class MDRModelImplementation implements ModelImplementation {
         // Create an extent for the uml data
         umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
         LOG.debug("MDR Init - tried to get UML extent");
+        if (umlPackage != null) {
+            umlPackage.refDelete();
+            umlPackage = null;
+        }
         if (umlPackage == null) {
             try {
                 umlPackage =
