@@ -300,22 +300,24 @@ public class MDRModelImplementation implements ModelImplementation {
         umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
         LOG.debug("MDR Init - tried to get UML extent");
         if (umlPackage != null) {
+            // NOTE: If we switch to a persistent repository like the b-tree
+            // repository we'll want to keep the old extent(s) around
             umlPackage.refDelete();
             umlPackage = null;
+            LOG.debug("MDR Init - UML extent existed - "
+                    + "deleted it and all UML data");
         }
-        if (umlPackage == null) {
-            try {
-                umlPackage =
-                    (UmlPackage) repository.createExtent(
-                            MODEL_EXTENT_NAME, mofPackage);
-            } catch (CreationFailedException e) {
-                throw new UmlException(e);
-            }
-            LOG.debug("MDR Init - created UML extent");
+        try {
+            umlPackage =
+                (UmlPackage) repository.createExtent(
+                        MODEL_EXTENT_NAME, mofPackage);
+        } catch (CreationFailedException e) {
+            throw new UmlException(e);
         }
+        LOG.debug("MDR Init - created UML extent");
 
         if (umlPackage == null) {
-            throw new UmlException("Could not find MofPackage UML");
+            throw new UmlException("Could not create UML extent");
         }
 
         // Create and start event pump first so it's available for all others
