@@ -273,7 +273,12 @@ public final class ProjectBrowser
             this.setJMenuBar(menuBar);
             //getContentPane().add(_menuBar, BorderLayout.NORTH);
             getContentPane().add(assemblePanels(), BorderLayout.CENTER);
-            getContentPane().add(statusBar, BorderLayout.SOUTH);
+
+            JPanel bottom = new JPanel();
+            bottom.setLayout(new BorderLayout());
+            bottom.add(statusBar, BorderLayout.CENTER);
+            bottom.add(new HeapMonitor(), BorderLayout.EAST);
+            getContentPane().add(bottom, BorderLayout.SOUTH);
 
             setAppName(applicationName);
 
