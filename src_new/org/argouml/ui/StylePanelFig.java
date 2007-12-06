@@ -222,7 +222,9 @@ public class StylePanelFig
         } else {
             hasEditableBoundingBox(true);
         }
-        if (target == null) return;
+        if (target == null) {
+            return;
+        }
 
         // The boundary box as held in the target fig, and as listed in
         // the
@@ -306,7 +308,9 @@ public class StylePanelFig
     protected void setTargetBBox() {
     	Fig target = getPanelTarget();
         // Can't do anything if we don't have a fig.
-        if (target == null) { return; }
+        if (target == null) {
+            return;
+        }
         // Parse the boundary box text. Null is
         // returned if it is empty or
         // invalid, which causes no change. Otherwise we tell
@@ -314,7 +318,9 @@ public class StylePanelFig
         // a change, make the change and tell GEF we've
         // finished.
         Rectangle bounds = parseBBox();
-        if (bounds == null) { return; }
+        if (bounds == null) {
+            return;
+        }
 
         if (!target.getBounds().equals(bounds)) {
             target.setBounds(bounds.x, bounds.y, bounds.width,
@@ -370,6 +376,8 @@ public class StylePanelFig
                 return res;
             }
             res.width = Integer.parseInt(st.nextToken());
+            // TODO: What does the magic number 6000 represent here?
+            // Put it in an explanatory literal! - tfm - 20071205
             if ((res.width + res.x) > 6000) {
                 res.width = 6000 - res.x;
                 changed = true;
@@ -379,11 +387,16 @@ public class StylePanelFig
                 return res;
             }
             res.height = Integer.parseInt(st.nextToken());
+            // TODO: What does the magic number 6000 represent here?
+            // Put it in an explanatory literal! - tfm - 20071205
             if ((res.height + res.y) > 6000) {
                 res.height = 6000 - res.y;
                 changed = true;
             }
             if (res.x < 0 || res.y < 0 || res.width < 0 || res.height < 0) {
+                // TODO: This exception will be thrown during autoscrolling
+                // when the edge of the canvas is reached causing either
+                // the width or height to be "adjusted" to a negative value
                 throw new IllegalArgumentException();
             }
             if (changed) {
