@@ -50,19 +50,14 @@ import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.CommentEdge;
-import org.argouml.uml.Profile;
-import org.argouml.uml.ProfileException;
-import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.profile.Profile;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.undo.Memento;
-import org.tigris.gef.undo.UndoManager;
 
 /**
  * The ProjectImpl is a data structure that represents the designer's
@@ -103,7 +98,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     private ProjectSettings projectSettings;
 
-    private List<String> searchpath;
+    private final List<String> searchpath = new ArrayList<String>();
 
     // TODO: break into 3 main member types
     // model, diagram and other
@@ -123,7 +118,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     private final List models = new ArrayList();
     
     private Object root;
-    private Collection roots = new HashSet();
+    private final Collection roots = new HashSet();
     
 
     /**
@@ -131,12 +126,11 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     private final List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
     
-    private Collection<Object> profilePackages = new HashSet<Object>();
     private Object currentNamespace;
     private Map<String, Object> uuidRefs;
     private transient VetoableChangeSupport vetoSupport;
 
-    private Profile profile;
+    private ProfileConfiguration profileConfiguration;
 
     /**
      * The active diagram, pointer to a diagram in the list with diagrams.
@@ -148,8 +142,12 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     private HashMap<String, Object> defaultModelTypeCache;
 
-    private Collection trashcan = new ArrayList();
+    private final Collection trashcan = new ArrayList();
 
+    // TODO: Change this to use an UndoManager instance per project when
+    // GEF has been enhanced.
+    private UndoManager undoManager = DefaultUndoManager.getInstance();
+    
     /**
      * Constructor.
      *
@@ -165,7 +163,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * Constructor.
      */
     public ProjectImpl() {
-        profile = new ProfileJava();
+        setProfileConfiguration(new ProfileConfiguration(this));
+
         projectSettings = new ProjectSettings();
 
         Model.getModelManagementFactory().setRootModel(null);
@@ -176,22 +175,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
         // this should be moved to a ui action.
         version = ApplicationVersion.getVersion();
 
-        searchpath = new ArrayList<String>();
         historyFile = "";
         defaultModelTypeCache = new HashMap<String, Object>();
 
         LOG.info("making empty project with empty model");
-        try {
-            // Jaap Branderhorst 2002-12-09
-            // load the default model
-            // this is NOT the way how it should be since this makes argo
-            // depend on Java even more.
-            setProfiles(profile.getProfilePackages());
-        } catch (ProfileException e) {
-            // TODO: how are we going to handle exceptions here?
-            // I think we need a ProjectException.
-            LOG.error("Exception setting the default profile", e);
-        }
         addSearchPath("PROJECT_DIR");
     }
 
@@ -212,7 +199,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setName(String n)
+    public void setName(final String n)
         throws URISyntaxException {
         String s = "";
         if (getURI() != null) {
@@ -247,7 +234,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setFile(File file) {
+    public void setFile(final File file) {
         URI theProjectUri = file.toURI();
 
         if (LOG.isDebugEnabled()) {
@@ -269,11 +256,11 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public List<String> getSearchPathList() {
-        return searchpath;
+        return Collections.unmodifiableList(searchpath);
     }
 
 
-    public void addSearchPath(String searchPathElement) {
+    public void addSearchPath(final String searchPathElement) {
         if (!searchpath.contains(searchPathElement)) {
             searchpath.add(searchPathElement);
         }
@@ -330,7 +317,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     /**
      * @param m the model
      */
-    private void addModelMember(Object m) {
+    private void addModelMember(final Object m) {
 
         boolean memberFound = false;
         Object currentMember =
@@ -359,17 +346,19 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void addModel(Object model) {
+    public void addModel(final Object model) {
 
-        if (!Model.getFacade().isANamespace(model)) {
+        if (!Model.getFacade().isAModel(model)) {
             throw new IllegalArgumentException();
 	}
-
-        // fire indeterminate change to avoid copying vector
         if (!models.contains(model)) {
-            models.add(model);
-            roots.add(model);
-        }
+            setRoot(model);
+        }        
+    }
+
+    private void addModelInternal(final Object model) {
+        models.add(model);
+        roots.add(model);
         setCurrentNamespace(model);
         setSaveEnabled(true);
     }
@@ -380,14 +369,16 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
         if (activeDiagram == d) {
-            ArgoDiagram defaultDiagram;
+            ArgoDiagram defaultDiagram = null;
             if (diagrams.size() == 1) {
                 // We're deleting the last diagram so lets create a new one
                 // TODO: Once we go MDI we won't need this.
-                defaultDiagram =
-                    DiagramFactory.getInstance().createDefaultDiagram(
-                            getRoot());
-                addMember(defaultDiagram);
+                Object projectRoot = getRoot();
+                if (!Model.getUmlFactory().isRemoved(projectRoot)) {
+                    defaultDiagram = DiagramFactory.getInstance()
+                            .createDefaultDiagram(projectRoot);
+                    addMember(defaultDiagram);
+                }
             } else {
                 // Make the topmost diagram (that is not the one being deleted)
                 // current.
@@ -424,20 +415,17 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setAuthorname(final String s) {
         final String oldAuthorName = authorname;
-        Memento memento = new Memento() {
-            public void redo() {
+        AbstractCommand command = new AbstractCommand() {
+            public Object execute() {
                 authorname = s;
+                return null;
             }
 
             public void undo() {
                 authorname = oldAuthorName;
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        setSaveEnabled(true);
+        undoManager.execute(command);
     }
 
 
@@ -448,20 +436,17 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setAuthoremail(final String s) {
         final String oldAuthorEmail = authoremail;
-        Memento memento = new Memento() {
-            public void redo() {
+        AbstractCommand command = new AbstractCommand() {
+            public Object execute() {
                 authoremail = s;
+                return null;
             }
 
             public void undo() {
                 authoremail = oldAuthorEmail;
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        setSaveEnabled(true);
+        undoManager.execute(command);
     }
 
 
@@ -482,20 +467,17 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void setDescription(final String s) {
         final String oldDescription = description;
-        Memento memento = new Memento() {
-            public void redo() {
+        AbstractCommand command = new AbstractCommand() {
+            public Object execute() {
                 description = s;
+                return null;
             }
 
             public void undo() {
                 description = oldDescription;
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        setSaveEnabled(true);
+        undoManager.execute(command);
     }
 
 
@@ -504,12 +486,12 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setHistoryFile(String s) {
+    public void setHistoryFile(final String s) {
         historyFile = s;
     }
 
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "unchecked" })
     public Vector getUserDefinedModels() {
         return new Vector(models);
     }
@@ -521,10 +503,17 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public Collection getModels() {
-        Set ret = new HashSet();
-        ret.addAll(models);
-        ret.addAll(profilePackages);
-        return ret;
+        Set result = new HashSet();
+        result.addAll(models);
+        for (Profile profile : getProfileConfiguration().getProfiles()) {
+            try {
+                result.addAll(profile.getProfilePackages());
+            } catch (org.argouml.profile.ProfileException e) {
+                LOG.error("Exception when fetching models from profile "
+                        + profile.getDisplayName(), e);
+            }
+        }
+        return Collections.unmodifiableCollection(result);
     }
 
 
@@ -532,7 +521,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         if (models.size() != 1) {
             return null;
         }
-        return models.get(0);
+        return models.iterator().next();
     }
 
 
@@ -542,20 +531,29 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public Object getDefaultAttributeType() {
-        // TODO: Move this to a profile - tfm - 20070307
-        return findType("int");
+        if (profileConfiguration.getDefaultTypeStrategy() != null) {
+            return profileConfiguration.getDefaultTypeStrategy()
+                    .getDefaultAttributeType();
+        }
+        return null;
     }
 
 
     public Object getDefaultParameterType() {
-        // TODO: Move this to a profile - tfm - 20070307
-        return findType("int");
+        if (profileConfiguration.getDefaultTypeStrategy() != null) {
+            return profileConfiguration.getDefaultTypeStrategy()
+                    .getDefaultParameterType();
+        }
+        return null;
     }
     
 
     public Object getDefaultReturnType() {
-        // TODO: Move this to a profile - tfm - 20070307
-        return findType("void");
+        if (profileConfiguration.getDefaultTypeStrategy() != null) {
+            return profileConfiguration.getDefaultTypeStrategy()
+                    .getDefaultReturnType();
+        }
+        return null;
     }
 
 
@@ -574,13 +572,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
         }
         cls = findTypeInDefaultModel(s);
-        // hey, now we should move it to the model the user is working in
-        // TODO: Remove this when we support linked profiles - tfm - 20070726
-        if (cls != null) {
-            cls =
-                Model.getModelManagementHelper()
-                	.getCorrespondingElement(cls, getRoot());
-        }
+
         if (cls == null && defineNew) {
             LOG.debug("new Type defined!");
             cls =
@@ -604,7 +596,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public Collection findAllPresentationsFor(Object obj) {
-        Collection figs = new ArrayList();
+        Collection<Fig> figs = new ArrayList<Fig>();
         for (ArgoDiagram diagram : diagrams) {
             Fig aFig = diagram.presentationFor(obj);
             if (aFig != null) {
@@ -612,16 +604,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
         }
         return figs;
-    }
-
-    private Object findTypeInPackages(String name, Collection namespaces) {
-        for (Object namespace : namespaces) {
-            Object type = findTypeInModel(name, namespace);
-            if (type != null) {
-                return type;
-            }
-        }
-        return null;
     }
 
     public Object findTypeInModel(String typeName, Object namespace) {
@@ -650,7 +632,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setCurrentNamespace(Object m) {
+    public void setCurrentNamespace(final Object m) {
 
         if (m != null && !Model.getFacade().isANamespace(m)) {
             throw new IllegalArgumentException();
@@ -694,7 +676,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void addDiagram(ArgoDiagram d) {
+    public void addDiagram(final ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
 	d.setProject(this);
         diagrams.add(d);
@@ -776,7 +758,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             return diagrams.get(0);
         }
         if (models.size() > 0) {
-            return models.get(0);
+            return models.iterator().next();
         }
         return null;
     }
@@ -886,9 +868,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
         } else if (obj instanceof ArgoDiagram) {
             removeProjectMemberDiagram((ArgoDiagram) obj);
-            // only need to manually delete diagrams because they
-            // don't have a decent event system set up.
-            ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);
+            // Need to manually delete diagrams from explorer because they
+            // don't have a decent event system set up:
+            ProjectManager.getManager()
+                    .firePropertyChanged("remove", obj, null);
         } else if (obj instanceof Fig) {
             ((Fig) obj).deleteFromModel();
             // TODO: Bob says - I've never seen this appear in the log.
@@ -913,76 +896,95 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     @SuppressWarnings("deprecation")
-    public void setDefaultModel(Object theDefaultModel) {
-
-        if (!Model.getFacade().isAModel(theDefaultModel)) {
-            throw new IllegalArgumentException(
-                    "The default model must be a Model type. Received a "
-                    + theDefaultModel.getClass().getName());
-        }
-
-        profilePackages.clear();
-        profilePackages.add(theDefaultModel);
-        defaultModelTypeCache = new HashMap<String, Object>();
+    public void setDefaultModel(final Object theDefaultModel) {
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+        throw new UnsupportedOperationException();
+//        if (!Model.getFacade().isAModel(theDefaultModel)) {
+//            throw new IllegalArgumentException(
+//                    "The default model must be a Model type. Received a "
+//                    + theDefaultModel.getClass().getName());
+//        }
+//
+//        profilePackages.clear();
+//        profilePackages.add(theDefaultModel);
+//        defaultModelTypeCache = new HashMap<String, Object>();
     }
 
-
-    public void setProfiles(Collection packages) {
-
-        for (Object pkg : packages) {
-            if (!Model.getFacade().isAPackage(pkg)) {
-                throw new IllegalArgumentException(
-                        "Profiles must be of type Package. Received a "
-                                + pkg.getClass().getName());
-            }
-        }
-
-        profilePackages.clear();
-        profilePackages.addAll(packages);
-        defaultModelTypeCache = new HashMap<String, Object>();
+    @Deprecated
+    public void setProfiles(final Collection packages) {
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+        throw new UnsupportedOperationException();
+//        for (Object pkg : packages) {
+//            if (!Model.getFacade().isAPackage(pkg)) {
+//                throw new IllegalArgumentException(
+//                        "Profiles must be of type Package. Received a "
+//                                + pkg.getClass().getName());
+//            }
+//        }
+//
+//        profilePackages.clear();
+//        profilePackages.addAll(packages);
+//        defaultModelTypeCache = new HashMap<String, Object>();
     }
+
 
     @SuppressWarnings("deprecation")
     public Object getDefaultModel() {
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+        throw new UnsupportedOperationException();
         // First priority is Model for best backward compatibility
-        for (Object pkg : profilePackages) {
-            if (Model.getFacade().isAModel(pkg)) {
-                return pkg;
-            }
-        }
-        // then a Package
-        for (Object pkg : profilePackages) {
-            if (Model.getFacade().isAPackage(pkg)) {
-                return pkg;
-            }
-        }
-        // if all else fails, just the first element
-        return profilePackages.iterator().next();
+//        for (Object pkg : profilePackages) {
+//            if (Model.getFacade().isAModel(pkg)) {
+//                return pkg;
+//                            }
+//        }
+//        // then a Package
+//        for (Object pkg : profilePackages) {
+//            if (Model.getFacade().isAPackage(pkg)) {
+//                return pkg;
+//            }
+//        }
+//        // if all else fails, just the first element
+//        return profilePackages.iterator().next();
     }
+
     
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Collection getProfiles() {
-        return profilePackages;
+        throw new UnsupportedOperationException();
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+//        return profilePackages;
     }
 
     public Object findTypeInDefaultModel(String name) {
         if (defaultModelTypeCache.containsKey(name)) {
             return defaultModelTypeCache.get(name);
         }
-
-        Object result = findTypeInPackages(name, profilePackages);
+        
+        Object result = profileConfiguration.findType(name);
+        
         defaultModelTypeCache.put(name, result);
         return result;
     }
 
 
     @SuppressWarnings("deprecation")
-    public Object getRoot() {
+    public final Object getRoot() {
         return root;
     }
 
 
     @SuppressWarnings("deprecation")
-    public void setRoot(Object theRoot) {
+    public void setRoot(final Object theRoot) {
 
         if (theRoot == null) {
             throw new IllegalArgumentException(
@@ -1002,16 +1004,19 @@ public class ProjectImpl implements java.io.Serializable, Project {
         // TODO: We don't really want to do the following, but I'm not sure
         // what depends on it - tfm - 20070725
         Model.getModelManagementFactory().setRootModel(theRoot);
-        addModel(theRoot);
+        addModelInternal(theRoot);
+        roots.clear();
+        roots.add(theRoot);
     }
 
     
-    public Collection getRoots() {
-        return roots;
+    public final Collection getRoots() {
+        return Collections.unmodifiableCollection(roots);
     }
 
 
-    public void setRoots(Collection elements) {
+    public void setRoots(final Collection elements) {
+        boolean modelFound = false;
         for (Object element : elements) {
             if (!Model.getFacade().isAPackage(element)) {
                 LOG.warn("Top level element other than package found - " 
@@ -1019,9 +1024,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
             if (Model.getFacade().isAModel(element)) {
                 addModel(element);
+                if (!modelFound) {
+                    setRoot(element);
+                    modelFound = true;
+                }
             }
         }
-        roots = elements;
+        roots.clear();
+        roots.addAll(elements);
     }
 
     public boolean isValidDiagramName(String name) {
@@ -1048,13 +1058,15 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     @SuppressWarnings("deprecation")
-    public void setSearchpath(Vector<String> theSearchpath) {
-        searchpath = theSearchpath;
+    public void setSearchpath(final Vector<String> theSearchpath) {
+        searchpath.clear();
+        searchpath.addAll(theSearchpath);
     }
 
 
-    public void setSearchPath(List<String> theSearchpath) {
-        searchpath = theSearchpath;
+    public void setSearchPath(final List<String> theSearchpath) {
+        searchpath.clear();
+        searchpath.addAll(theSearchpath);
     }
 
     public void setUUIDRefs(Map<String, Object> uUIDRefs) {
@@ -1072,7 +1084,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public void setActiveDiagram(ArgoDiagram theDiagram) {
+    public void setActiveDiagram(final ArgoDiagram theDiagram) {
         activeDiagram = theDiagram;
     }
 
@@ -1091,17 +1103,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
         }
         roots.clear();
         models.clear();
-
-        if (profilePackages != null) {
-            for (Object pkg : profilePackages) {
-                LOG.debug("Deleting profile element "
-                        + Model.getFacade().getName(pkg));
-                Model.getUmlFactory().delete(pkg);
-            }
-            profilePackages.clear();
-        }
-
         diagrams.clear();
+        searchpath.clear();
 
         if (uuidRefs != null) {
             uuidRefs.clear();
@@ -1119,7 +1122,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         authoremail = null;
         description = null;
         version = null;
-        searchpath = null;
         historyFile = null;
         currentNamespace = null;
         vetoSupport = null;
@@ -1139,24 +1141,49 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Profile getProfile() {
-        return profile;
+        throw new UnsupportedOperationException();
+        // TODO: Marcus Aurelio deprecated this, but also changed the
+        // implementation to just throw an exception.  If it's no longer
+        // functional, we probably need to just remove it altogether.
+//        return profile;
     }
 
 
     public String repair() {
-        String report = "";
+        StringBuilder report = new StringBuilder();
         Iterator it = members.iterator();
         while (it.hasNext()) {
             ProjectMember member = (ProjectMember) it.next();
-            report += member.repair();
+            report.append(member.repair());
         }
-        return report;
+        return report.toString();
     }
 
 
     public ProjectSettings getProjectSettings() {
         return projectSettings;
+    }
+    public UndoManager getUndoManager() {
+        return undoManager;
+    }
+        
+    public ProfileConfiguration getProfileConfiguration() {
+        return profileConfiguration;
+    }
+
+    public void setProfileConfiguration(ProfileConfiguration pc) {
+        if (this.profileConfiguration != null) {
+            this.members.remove(this.profileConfiguration);         
+        }
+        
+        this.profileConfiguration = pc;
+
+        // there's just one ProfileConfiguration in a project
+        // and there's no other way to add another one
+        members.add(pc);        
     }
 
 }

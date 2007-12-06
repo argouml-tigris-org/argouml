@@ -26,7 +26,9 @@ package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.event.EventListenerList;
@@ -34,17 +36,12 @@ import javax.swing.event.EventListenerList;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
-import org.argouml.model.MementoCreationObserver;
 import org.argouml.model.Model;
-import org.argouml.model.ModelMemento;
+import org.argouml.model.ModelCommand;
+import org.argouml.model.ModelCommandCreationObserver;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.tigris.gef.graph.MutableGraphSupport;
-import org.tigris.gef.undo.Memento;
-import org.tigris.gef.undo.UndoManager;
 
 /**
  * This class manages the projects loaded in argouml,
@@ -64,7 +61,7 @@ import org.tigris.gef.undo.UndoManager;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public final class ProjectManager implements MementoCreationObserver {
+public final class ProjectManager implements ModelCommandCreationObserver {
 
     /**
      * The name of the property that defines the current project.
@@ -74,13 +71,17 @@ public final class ProjectManager implements MementoCreationObserver {
 
     /**
      * The name of the property that there is no project.
+     * @deprecated in 0.25.4 By Bob Tarling This is unused.
      */
+    @Deprecated
     public static final String NO_PROJECT =
         "noProject";
 
     /**
      * The name of the property that defines the save state.
+     * @deprecated in 0.25.4 By Bob Tarling This is unused.
      */
+    @Deprecated
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
     /**
@@ -134,7 +135,7 @@ public final class ProjectManager implements MementoCreationObserver {
      */
     private ProjectManager() {
         super();
-        Model.setMementoCreationObserver(this);
+        Model.setModelCommandCreationObserver(this);
     }
 
     /**
@@ -162,7 +163,7 @@ public final class ProjectManager implements MementoCreationObserver {
      * @param oldValue The old value.
      * @param newValue The new value.
      */
-    private void firePropertyChanged(String propertyName,
+    void firePropertyChanged(String propertyName,
                                      Object oldValue, Object newValue) {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
@@ -202,10 +203,9 @@ public final class ProjectManager implements MementoCreationObserver {
         currentProject = newProject;
         if (currentProject != null
             && currentProject.getActiveDiagram() == null) {
-            Vector diagrams = currentProject.getDiagrams();
+            List<ArgoDiagram> diagrams = currentProject.getDiagramList();
             if (diagrams != null && !diagrams.isEmpty()) {
-                ArgoDiagram activeDiagram =
-                    (ArgoDiagram) currentProject.getDiagrams().get(0);
+                ArgoDiagram activeDiagram = diagrams.get(0);
                 currentProject.setActiveDiagram(activeDiagram);
             }
         }
@@ -248,29 +248,34 @@ public final class ProjectManager implements MementoCreationObserver {
      *            default diagrams (Class and Use Case)
      * @return Project the newly created project
      */
-    public Project makeEmptyProject(boolean addDefaultDiagrams) {    
-        Model.getPump().stopPumpingEvents();
-        
-        creatingCurrentProject = true;
-        LOG.info("making empty project");
-        Project oldProject = currentProject;
-        currentProject = new ProjectImpl();
-        if (addDefaultDiagrams) {
-            createDefaultDiagrams();
-        }
-        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
-                            oldProject, currentProject);
-        creatingCurrentProject = false;
+    public Project makeEmptyProject(final boolean addDefaultDiagrams) {    
+        final Command cmd = new NonUndoableCommand() {
 
-        UndoManager.getInstance().empty();
-        if (!UndoEnabler.isEnabled()) {
-            UndoManager.getInstance().setUndoMax(0);
-        }
-        Model.getPump().startPumpingEvents();
-        
-        if (saveAction != null) {
-            saveAction.setEnabled(false);
-        }
+            @Override
+            public Object execute() {
+                Model.getPump().stopPumpingEvents();
+                
+                creatingCurrentProject = true;
+                LOG.info("making empty project");
+                final Project oldProject = currentProject;
+                currentProject = new ProjectImpl();
+                if (addDefaultDiagrams) {
+                    createDefaultDiagrams();
+                }
+                firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
+                                    oldProject, currentProject);
+                creatingCurrentProject = false;
+
+                Model.getPump().startPumpingEvents();
+                
+                if (saveAction != null) {
+                    saveAction.setEnabled(false);
+                }
+                return null;
+            }
+        };
+        cmd.execute();
+        currentProject.getUndoManager().addCommand(cmd);
         return currentProject;
     }
 
@@ -278,14 +283,17 @@ public final class ProjectManager implements MementoCreationObserver {
         Object model = Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(model,
                 Translator.localize("misc.untitled-model"));
-        currentProject.setRoot(model);
+        Collection roots = new ArrayList();
+        roots.add(model);
+        currentProject.setRoots(roots);
         currentProject.setCurrentNamespace(model);
         currentProject.addMember(model);
         DiagramFactory df = DiagramFactory.getInstance();
-        ArgoDiagram d = df.createDiagram(UMLClassDiagram.class, model, null);
+        ArgoDiagram d = df.createDiagram(DiagramFactory.DiagramType.Class,
+                model, null);
         currentProject.addMember(d);
-        currentProject.addMember(
-        	df.createDiagram(UMLUseCaseDiagram.class, model, null));
+        currentProject.addMember(df.createDiagram(
+                DiagramFactory.DiagramType.UseCase, model, null));
         currentProject.addMember(new ProjectMemberTodoList("",
                 currentProject));
         currentProject.setActiveDiagram(d);
@@ -302,7 +310,6 @@ public final class ProjectManager implements MementoCreationObserver {
         // any changes in those subsystems will enable the
         // save button/menu item etc.
         Designer.setSaveAction(save);
-        MutableGraphSupport.setSaveAction(save);
     }
     
     /**
@@ -341,34 +348,34 @@ public final class ProjectManager implements MementoCreationObserver {
     }
 
     /**
-     * Called when the model subsystem creates a memento.
+     * Called when the model subsystem creates a command.
      * We must add this to the UndoManager.
      *
-     * @param memento the memento.
-     * @see org.argouml.model.MementoCreationObserver#mementoCreated(org.argouml.model.ModelMemento)
+     * @param command the command.
+     * @see org.argouml.model.ModelCommandCreationObserver#modelCommandCreated(org.argouml.model.ModelCommand)
      */
-    public void mementoCreated(final ModelMemento memento) {
+    public Object execute(final ModelCommand command) {
         if (saveAction != null) {
             saveAction.setEnabled(true);
         }
-        Memento wrappedMemento = new Memento() {
-            private ModelMemento modelMemento = memento;
+        AbstractCommand wrappedCommand = new AbstractCommand() {
+            private ModelCommand modelCommand = command;
             public void undo() {
-                modelMemento.undo();
+                modelCommand.undo();
             }
-            public void redo() {
-                modelMemento.redo();
+            public boolean isUndoable() {
+                return modelCommand.isUndoable();
             }
-            public void dispose() {
-                modelMemento.dispose();
+            public boolean isRedoable() {
+                return modelCommand.isRedoable();
             }
-            
+            public Object execute() {
+                return modelCommand.execute();
+            }
             public String toString() {
-                return (isStartChain() ? "*" : " ") + "ModelMemento "
-                        + modelMemento;
+                return modelCommand.toString();
             }
-
         };
-        UndoManager.getInstance().addMemento(wrappedMemento);
+        return getCurrentProject().getUndoManager().execute(wrappedCommand);
     }
 }

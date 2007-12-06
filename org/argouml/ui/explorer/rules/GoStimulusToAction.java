@@ -24,10 +24,11 @@
 
 package org.argouml.ui.explorer.rules;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -42,13 +43,14 @@ public class GoStimulusToAction extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (!Model.getFacade().isAStimulus(parent))
-            return null;
+        if (!Model.getFacade().isAStimulus(parent)) {
+            return Collections.EMPTY_SET;
+        }
         Object ms = parent;
         Object action = Model.getFacade().getDispatchAction(ms);
-        Vector vector = new Vector();
-        vector.addElement(action);
-        return vector;
+        Collection result = new ArrayList();
+        result.add(action);
+        return result;
 
     }
 
@@ -61,7 +63,7 @@ public class GoStimulusToAction extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -70,4 +72,5 @@ public class GoStimulusToAction extends AbstractPerspectiveRule {
     public String getRuleName() {
         return Translator.localize("misc.stimulus.action");
     }
+
 }

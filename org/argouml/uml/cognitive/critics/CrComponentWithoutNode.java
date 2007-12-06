@@ -92,7 +92,7 @@ public class CrComponentWithoutNode extends CrUML {
 
     /**
      * If there are components that have no enclosing FigMNode
-     * the returned vector-set is not null. Then in the vector-set
+     * the returned ListSet is not null. Then in the ListSet
      * are the UMLDeploymentDiagram and all FigComponents with no
      * enclosing FigMNode
      *

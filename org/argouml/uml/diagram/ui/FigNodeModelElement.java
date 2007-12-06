@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -51,6 +53,8 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoDiagramAppearanceEventListener;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
@@ -92,9 +96,11 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -115,6 +121,7 @@ public abstract class FigNodeModelElement
         KeyListener,
         PropertyChangeListener,
         PathContainer,
+        ArgoDiagramAppearanceEventListener,
         ArgoNotationEventListener,
         Highlightable,
         IItemUID,
@@ -128,14 +135,6 @@ public abstract class FigNodeModelElement
         Logger.getLogger(FigNodeModelElement.class);
 
     private DiElement diElement;
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-
-    private static final Font LABEL_FONT;
-    private static final Font ITALIC_LABEL_FONT;
-    private static final Font BOLD_LABEL_FONT;
-    private static final Font BOLD_ITALIC_LABEL_FONT;
 
     private NotationProvider notationProviderName;
     private HashMap<String, Object> npArguments = new HashMap<String, Object>();
@@ -171,24 +170,6 @@ public abstract class FigNodeModelElement
      */
     private static int popupAddOffset;
 
-    static {
-        LABEL_FONT =
-        /* TODO: Why is this different from the FigEdgeModelElement?
-         * Should we not use one of the following? 
-         * LookAndFeelMgr.getInstance().getStandardFont();
-         * new javax.swing.plaf.metal.DefaultMetalTheme().getUserTextFont(); */
-            new javax.swing.plaf.metal.DefaultMetalTheme().getSubTextFont();
-        ITALIC_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
-        BOLD_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.BOLD, 
-                    LABEL_FONT.getSize() + 2);
-        BOLD_ITALIC_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.BOLD | Font.ITALIC, 
-                    LABEL_FONT.getSize() + 2);
-
-    }
-
     /**
      * Used for #buildModifierPopUp().
      */
@@ -209,6 +190,32 @@ public abstract class FigNodeModelElement
      */
     protected static final int ACTIVE = 8;
 
+    /**
+     * Used for #setStereotypeView(). Represents the default view for 
+     * stereotypes applied to this node.
+     * 
+     * @see ActionStereotypeViewTextual
+     */
+    public static final int STEREOTYPE_VIEW_TEXTUAL = 0;
+
+    /**
+     * Used for #setStereotypeView(). Represents the view for 
+     * stereotypes where the default representation is replaced by a provided
+     * icon. 
+     * 
+     * @see ActionStereotypeViewBigIcon
+     */
+    public static final int STEREOTYPE_VIEW_BIG_ICON = 1;
+
+    /**
+     * Used for #setStereotypeView(). Represents the view for 
+     * stereotypes where the default view is adorned with a small version of the
+     * provided icon.
+     * 
+     * @see ActionStereotypeViewSmallIcon
+     */
+    public static final int STEREOTYPE_VIEW_SMALL_ICON = 2;
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -229,13 +236,50 @@ public abstract class FigNodeModelElement
     private Fig stereotypeFig;
 
     /**
+     * The <code>FigProfileIcon</code> being currently displayed
+     */
+    private FigProfileIcon stereotypeFigProfileIcon;
+
+    /**
+     * Contains the figs of the floating stereotypes when viewed in 
+     * <code>SmallIcon</code> mode.
+     */
+    private List<Fig> floatingStereotypes = new ArrayList<Fig>();
+    
+    /**
+     * The current stereotype view
+     * 
+     * @see #STEREOTYPE_VIEW_TEXTUAL
+     * @see #STEREOTYPE_VIEW_SMALL_ICON
+     * @see #STEREOTYPE_VIEW_BIG_ICON
+     */
+    private   int stereotypeView = STEREOTYPE_VIEW_TEXTUAL;   
+    
+    /**
+     * The width of the profile icons when viewed at the small icon mode.
+     * The icon width is resized to <code>ICON_WIDTH</code> and the height is 
+     * set to a value that attempts to keep the original width/height 
+     * proportion. 
+     */
+    private static final int ICON_WIDTH = 16;
+    
+    /**
+     * When stereotypes are shown in <code>BigIcon</code> mode the 
+     * <code>nameFig</code> is replaced by the one provided by the 
+     * <code>FigProfileIcon</code> 
+     * 
+     * @see FigProfileIcon
+     */
+    private FigText originalNameFig;
+
+    /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
      * it is a Package then these are the Classes, Interfaces, Packages etc
      * that are on this figure. This is not the same as the figures in the
      * FigGroup that this FigNodeModelElement "is", since these are the
      * figures that make up this high-level primitive figure.
      */
-    private Vector enclosedFigs = new Vector();
+    private Vector<Fig> enclosedFigs = new Vector<Fig>();
 
     /**
      * The figure enclosing this figure.
@@ -269,15 +313,17 @@ public abstract class FigNodeModelElement
     private Collection<Object[]> listeners = new ArrayList<Object[]>();
     
     /**
-     * The main constructor.
-     *
+     * The main constructor. <p>
+     * 
+     * The owner nor the Layer (which has a 1..1 relation to the Diagram)
+     * are set in this stage of the creation of the Fig.
      */
     protected FigNodeModelElement() {
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
-        nameFig = new FigSingleLineText(10, 10, 90, 21, true);
+        nameFig = new FigNameWithAbstract(10, 10, 90, 21, true);
         nameFig.setLineWidth(1);
         nameFig.setFilled(true);
         nameFig.setText(placeString());
@@ -289,25 +335,25 @@ public abstract class FigNodeModelElement
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.addListener(
+                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
         
 
         Project project = getProject();
         ProjectSettings ps = project.getProjectSettings();
 
-        showBoldName = ps.getShowBoldNamesValue();
-        if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-            nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
-                    : ITALIC_LABEL_FONT);
-        } else {
-            nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
-        }
         setShadowSize(ps.getDefaultShadowWidthValue());
         /* TODO: how to handle changes in shadowsize 
          * from the project properties? */
+        
+        stereotypeView = ps.getDefaultStereotypeViewValue();
     }
 
     /**
-     * Construct a figure at a specific position for a given model element.
+     * Construct a figure at a specific position for a given model element. <p>
+     * 
+     * The Layer (which has a 1..1 relation to the Diagram)
+     * is not yet set in this stage of the creation of the Fig.
      * 
      * @param element ModelElement associated with figure
      * @param x horizontal location
@@ -321,11 +367,27 @@ public abstract class FigNodeModelElement
         setLocation(x, y);
     }
 
+    /**
+     * This is the final call at creation time of the Fig, i.e. here
+     * it is put on a Diagram.
+     * 
+     * @param lay the Layer (which has a 1..1 relation to the Diagram)
+     * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
+     */
+    @Override
+    public void setLayer(Layer lay) {
+        super.setLayer(lay);
+        determineDefaultPathVisible();
+    }
+
     /*
      * @see java.lang.Object#finalize()
      */
+    @Override
     protected void finalize() throws Throwable {
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.removeListener(
+                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
         super.finalize();
     }
 
@@ -374,15 +436,13 @@ public abstract class FigNodeModelElement
             String placeString = Model.getFacade().getName(getOwner());
             if (placeString == null) {
                 placeString =
+                    // TODO: I18N
                     "new " + Model.getFacade().getUMLClassName(getOwner());
             }
             return placeString;
         }
         return "";
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * @param id UID
@@ -423,12 +483,7 @@ public abstract class FigNodeModelElement
     protected void setNameFig(FigText fig) {
         nameFig = fig;
         if (nameFig != null) {
-            if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-                nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
-                        : ITALIC_LABEL_FONT);
-            } else {
-                nameFig.setFont(showBoldName ? BOLD_LABEL_FONT : LABEL_FONT);
-            }
+            updateFont();
         }
     }
 
@@ -450,28 +505,36 @@ public abstract class FigNodeModelElement
         nameFig.setText(n);
     }
 
-    /*
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+    /**
+     * This method shall return a Vector of one of these 4 types:
+     * AbstractAction, JMenu, JMenuItem, JSeparator.
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
 
+        // Show ...
+        ArgoJMenu show = buildShowPopUp();
+        if (show.getMenuComponentCount() > 0) {
+            popUpActions.add(show);
+        }
+        
         // popupAddOffset should be equal to the number of items added here:
-        popUpActions.addElement(new JSeparator());
+        popUpActions.add(new JSeparator());
         popupAddOffset = 1;
         if (removeFromDiagram) {
-            popUpActions.addElement(
+            popUpActions.add(
                     ProjectActions.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
-        popUpActions.addElement(new ActionDeleteModelElements());
+        popUpActions.add(new ActionDeleteModelElements());
         popupAddOffset++;
 
         /* Check if multiple items are selected: */
         if (TargetManager.getInstance().getTargets().size() == 1) {
             ToDoList list = Designer.theDesigner().getToDoList();
-            Vector items =
-                    (Vector) list.elementsForOffender(getOwner()).clone();
+            List<ToDoItem> items =
+                    (List<ToDoItem>) list.elementsForOffender(getOwner()).clone();
             if (items != null && items.size() > 0) {
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
                 ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
@@ -479,32 +542,54 @@ public abstract class FigNodeModelElement
                     critiques.add(new ActionGoToCritique(itemUnderMouse));
                     critiques.addSeparator();
                 }
-                int size = items.size();
-                for (int i = 0; i < size; i++) {
-                    ToDoItem item = (ToDoItem) items.elementAt(i);
+                for (ToDoItem item : items) {
                     if (item != itemUnderMouse) {
                         critiques.add(new ActionGoToCritique(item));
                     }
                 }
-                popUpActions.insertElementAt(new JSeparator(), 0);
-                popUpActions.insertElementAt(critiques, 0);
+                popUpActions.add(0, new JSeparator());
+                popUpActions.add(0, critiques);
             }
 
             // Add stereotypes submenu
             Action[] stereoActions =
                 StereotypeUtility.getApplyStereotypeActions(getOwner());
             if (stereoActions != null) {
-                popUpActions.insertElementAt(new JSeparator(), 0);
+                popUpActions.add(0, new JSeparator());
                 ArgoJMenu stereotypes =
                     new ArgoJMenu("menu.popup.apply-stereotypes");
                 for (int i = 0; i < stereoActions.length; ++i) {
                     stereotypes.addCheckItem(stereoActions[i]);
                 }
-                popUpActions.insertElementAt(stereotypes, 0);
+                popUpActions.add(0, stereotypes);
             }
+            
+            // add stereotype view submenu
+            ArgoJMenu stereotypesView =
+                new ArgoJMenu("menu.popup.stereotype-view");
+            
+            stereotypesView.addRadioItem(new ActionStereotypeViewTextual(this));
+            stereotypesView.addRadioItem(new ActionStereotypeViewBigIcon(this));
+            stereotypesView.addRadioItem(new ActionStereotypeViewSmallIcon(this));
+            
+            popUpActions.add(0, stereotypesView);
         }
 
         return popUpActions;
+    }
+
+    protected ArgoJMenu buildShowPopUp() {
+        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
+
+        Object owner = getOwner();
+        if (Model.getFacade().isAModelElement(owner)) {
+            Object ns = Model.getFacade().getNamespace(owner);
+            if (ns != null) {
+                /* Only show the path item when there is an owning namespace. */
+                showMenu.add(new ActionSetPath(isPathVisible(), this));
+            }
+        }
+        return showMenu;
     }
 
     /**
@@ -551,6 +636,7 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getEnclosingFig()
      */
+    @Override
     public Fig getEnclosingFig() {
         return encloser;
     }
@@ -565,6 +651,7 @@ public abstract class FigNodeModelElement
      * 
      * @see org.tigris.gef.presentation.FigNode#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig newEncloser) {
         Fig oldEncloser = encloser;
         
@@ -660,7 +747,8 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getEnclosedFigs()
      */
-    public Vector getEnclosedFigs() {
+    @Override
+    public Vector<Fig> getEnclosedFigs() {
         return enclosedFigs;
     }
 
@@ -670,16 +758,16 @@ public abstract class FigNodeModelElement
      *
      * @param figures in the new order
      */
-    public void elementOrdering(Vector figures) {
+    public void elementOrdering(List<Fig> figures) {
         int size = figures.size();
         getLayer().bringToFront(this);
         if (size > 0) {
             for (int i = 0; i < size; i++) {
-                Object o = figures.elementAt(i);
+                Object o = figures.get(i);
                 if (o instanceof FigNodeModelElement
                     && o != getEnclosingFig()) {
                     FigNodeModelElement fignode = (FigNodeModelElement) o;
-                    Vector enclosed = fignode.getEnclosedFigs();
+                    List<Fig> enclosed = fignode.getEnclosedFigs();
                     fignode.elementOrdering(enclosed);
                 }
             }
@@ -706,10 +794,8 @@ public abstract class FigNodeModelElement
         int iconX = getX();
         int iconY = getY() - 10;
         ToDoList list = Designer.theDesigner().getToDoList();
-        Vector items = list.elementsForOffender(getOwner());
-        int size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -721,9 +807,7 @@ public abstract class FigNodeModelElement
             }
         }
         items = list.elementsForOffender(this);
-        size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -744,10 +828,8 @@ public abstract class FigNodeModelElement
     public ToDoItem hitClarifier(int x, int y) {
         int iconX = getX();
         ToDoList list = Designer.theDesigner().getToDoList();
-        Vector items = list.elementsForOffender(getOwner());
-        int size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
             if (y >= getY() - 15
@@ -758,8 +840,7 @@ public abstract class FigNodeModelElement
             }
             iconX += width;
         }
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -770,9 +851,7 @@ public abstract class FigNodeModelElement
             }
         }
         items = list.elementsForOffender(this);
-        size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
             if (y >= getY() - 15
@@ -783,8 +862,7 @@ public abstract class FigNodeModelElement
             }
             iconX += width;
         }
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -800,6 +878,7 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
      */
+    @Override
     public String getTipString(MouseEvent me) {
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
@@ -848,7 +927,12 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * set some new bounds.
+     * Determine new bounds. <p>
+     * 
+     * This algorithm makes the box grow 
+     * (if the calculated minimum size grows), 
+     * but then it can never shrink again 
+     * (not even if the calculated minimum size is smaller).
      */
     protected void updateBounds() {
         if (!checkSize) {
@@ -1102,6 +1186,7 @@ public abstract class FigNodeModelElement
                 addElementListener(mee.getNewValue(), "name");
             }
             updateStereotypeText();
+            updateStereotypeIcon();
             damage();
         }
     }
@@ -1213,8 +1298,12 @@ public abstract class FigNodeModelElement
         initNotationProviders(owner);
         readyToEdit = true;
         renderingChanged();
-        updateBounds();
+//        updateBounds(); // included in the previous line.
+        /* This next line presumes that the 1st fig with this owner 
+         * is the previous port - and consequently nullifies the owner 
+         * of this 1st fig. */
         bindPort(owner, bigPort);
+        nameFig.setOwner(owner); // for setting abstract
         updateListeners(null, owner);
     }
 
@@ -1253,7 +1342,6 @@ public abstract class FigNodeModelElement
         if (getOwner() == null) {
             LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
                     + "] is null.");
-            LOG.warn("I return...");
             return;
         }
 
@@ -1274,17 +1362,8 @@ public abstract class FigNodeModelElement
                         getOwner(), npArguments));
                 Project p = getProject();
                 if (p != null) {
-                    ProjectSettings ps = p.getProjectSettings();
-                    showBoldName = ps.getShowBoldNamesValue();
-                    if ((nameFig.getFont().getStyle() & Font.ITALIC) != 0) {
-                        nameFig.setFont(showBoldName ? BOLD_ITALIC_LABEL_FONT
-                                : ITALIC_LABEL_FONT);
-                    } else {
-                        nameFig
-                        .setFont(showBoldName ? BOLD_LABEL_FONT
-                                : LABEL_FONT);
+                    updateFont();
                     }
-                }
                 updateBounds();
             }
         }
@@ -1305,6 +1384,9 @@ public abstract class FigNodeModelElement
             return;
         }
         MutableGraphSupport.enableSaveAction();
+        // TODO: Use this event mechanism to update 
+        // the checkmark on the Presentation Tab:
+        firePropChange("pathVisible", !visible, visible);
         pathVisible = visible;
         if (notationProviderName != null) {
             npArguments.put("pathVisible", Boolean.valueOf(visible));
@@ -1314,6 +1396,41 @@ public abstract class FigNodeModelElement
             damage();
         }
     }
+    
+    /**
+     * At creation time of the Fig, we determine 
+     * if the path should be visible by default. <p>
+     * 
+     * The path is a concatenation of the names of all packages by which 
+     * this modelelement is contained, 
+     * seperated by "::" (for UML at least). <p>
+     * 
+     * If the default namespace of the diagram corresponds 
+     * to the namespace of the modelelement, 
+     * then we do NOT show the path. Otherwise, we do. <p>
+     * 
+     * RRose uses the same heuristic algorithm, 
+     * but shows "(from &lt;path&gt;)" below the name, 
+     * while we follow the UML syntax.
+     */
+    protected void determineDefaultPathVisible() {
+        Object modelElement = getOwner();
+        LayerPerspective layer = (LayerPerspective) getLayer();
+        if ((layer != null) 
+                && Model.getFacade().isAModelElement(modelElement)) {
+            ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
+            Object elementNs = Model.getFacade().getNamespace(modelElement);
+            Object diagramNs = diagram.getNamespace();
+            if (elementNs != null) {
+                boolean visible = elementNs != diagramNs; 
+                npArguments.put("pathVisible", Boolean.valueOf(visible));
+                renderingChanged();
+                damage();
+            }
+            // it is done
+        }
+        // either layer or owner was null
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#classNameAndBounds()
@@ -1322,7 +1439,8 @@ public abstract class FigNodeModelElement
         return getClass().getName()
             + "[" + getX() + ", " + getY() + ", "
             + getWidth() + ", " + getHeight() + "]"
-            + "pathVisible=" + isPathVisible() + ";";
+            + "pathVisible=" + isPathVisible() + ";"
+            + "stereotypeView=" + getStereotypeView() + ";";
     }
 
     /**
@@ -1420,8 +1538,121 @@ public abstract class FigNodeModelElement
     public void renderingChanged() {
         updateNameText();
         updateStereotypeText();
+        updateStereotypeIcon();        
         updateBounds();
         damage();
+    }
+
+    protected void updateStereotypeIcon() {
+	if (getOwner() == null) {
+	    LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
+		    + "] is null.");
+	    LOG.warn("I return...");
+	    return;
+	}
+
+	if (stereotypeFigProfileIcon != null) {
+	    Iterator it = getFigs().iterator();
+	    while (it.hasNext()) {
+		Object fig = it.next();
+		((Fig) fig).setVisible(fig != stereotypeFigProfileIcon);
+	    }
+
+	    this.removeFig(stereotypeFigProfileIcon);
+	    stereotypeFigProfileIcon = null;
+    }
+
+	if (originalNameFig != null) {
+	    this.setNameFig(originalNameFig);
+	    originalNameFig = null;
+	}
+	
+	for (Fig icon : floatingStereotypes) {
+		this.removeFig(icon);
+	    }
+	    floatingStereotypes.clear();
+	
+	
+	int practicalView = getPracticalView();
+	Object modelElement = getOwner();
+	Collection stereos = Model.getFacade().getStereotypes(modelElement);
+	 
+	Fig stereoFig = getStereotypeFig();
+        if (stereoFig instanceof FigStereotypesCompartment) {
+            ((FigStereotypesCompartment) stereoFig)
+                    .setHidingStereotypesWithIcon(practicalView == STEREOTYPE_VIEW_SMALL_ICON);
+        }
+
+	if (practicalView == STEREOTYPE_VIEW_BIG_ICON) {
+	    
+	    if (stereos != null) {
+		Image replaceIcon = null;
+
+		if (stereos.size() == 1) {
+		    Object stereo = stereos.iterator().next();
+		    replaceIcon = ProjectManager.getManager()
+			    .getCurrentProject().getProfileConfiguration()
+			    .getFigNodeStrategy().getIconForStereotype(stereo);
+		}
+		
+		if (replaceIcon != null) {
+		    stereotypeFigProfileIcon = new FigProfileIcon(replaceIcon,
+			    getName());
+		    stereotypeFigProfileIcon.setOwner(getOwner());
+
+		    stereotypeFigProfileIcon.setLocation(getBigPort()
+			    .getLocation());
+		    this.addFig(stereotypeFigProfileIcon);
+
+		    originalNameFig = this.getNameFig();
+		    this.setNameFig(stereotypeFigProfileIcon.getLabelFig());
+
+		    stereotypeFigProfileIcon.getLabelFig().addPropertyChangeListener(this);
+		    
+		    getBigPort().
+		    	setBounds(stereotypeFigProfileIcon.getBounds());
+		 
+		    Iterator it = getFigs().iterator();
+		    while (it.hasNext()) {
+			Object fig = it.next();
+			((Fig) fig).setVisible(fig == stereotypeFigProfileIcon);
+		    }
+		    
+		}
+	    }
+	} else if (practicalView == STEREOTYPE_VIEW_SMALL_ICON) {
+            int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
+
+            Iterator it = stereos.iterator();
+            while (it.hasNext()) {
+                Object stereo = it.next();
+                Image icon = ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration().getFigNodeStrategy()
+                        .getIconForStereotype(stereo);
+                if (icon != null) {
+                    FigImage fimg = new FigImage(i,
+                            this.getBigPort().getY() + 2, icon);
+                    fimg.setSize(ICON_WIDTH,
+                            (icon.getHeight(null) * ICON_WIDTH)
+                                    / icon.getWidth(null));
+
+                    addFig(fimg);
+                    floatingStereotypes.add(fimg);
+
+                    i -= ICON_WIDTH - 2;
+                }
+            }
+
+            updateSmallIcons(this.getWidth());
+        }
+
+	updateStereotypeText();
+	
+        damage();
+	calcBounds();
+	updateEdges();
+	this.updateBounds();
+	this.redraw();
     }
 
     /*
@@ -1448,6 +1679,7 @@ public abstract class FigNodeModelElement
      * 
      * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
      */
+    @Override
     public boolean hit(Rectangle r) {
         int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
         if (_filled) {
@@ -1459,6 +1691,7 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
+    @Override
     public final void removeFromDiagram() {
         Fig delegate = getRemoveDelegate();
         if (delegate instanceof FigNodeModelElement) {
@@ -1494,6 +1727,7 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
+    @Override
     public void postLoad() {
         ArgoEventPump.removeListener(this);
         ArgoEventPump.addListener(this);
@@ -1523,21 +1757,23 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @return Returns the lABEL_FONT.
+     * @deprecated by MVW in V0.25.4. Use ProjectSettings instead.
+     * @return the diagram font
      */
-    public static Font getLabelFont() {
-        return LABEL_FONT;
+    public Font getLabelFont() {
+        return getProject().getProjectSettings().getFontPlain();
     }
 
     /**
-     * @return Returns the iTALIC_LABEL_FONT.
+     * @deprecated by MVW in V0.25.4. Use ProjectSettings instead.
+     * @return the italic diagram font
      */
-    public static Font getItalicLabelFont() {
-        return ITALIC_LABEL_FONT;
+    public Font getItalicLabelFont() {
+        return getProject().getProjectSettings().getFontItalic();
     }
 
     /**
-     * @param bp The _bigPort to set.
+     * @param bp the bigPort, which is the port where edges connect to this node
      */
     protected void setBigPort(Fig bp) {
         this.bigPort = bp;
@@ -1592,6 +1828,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * TODO: Move this in FigGroup (in GEF).
+     * 
      * @param scb The suppressCalcBounds to set.
      */
     protected void setSuppressCalcBounds(boolean scb) {
@@ -1623,13 +1861,13 @@ public abstract class FigNodeModelElement
      * @param yInc the increment in the y direction
      */
     public void displace (int xInc, int yInc) {
-        Vector figsVector;
+        List<Fig> figsVector;
         Rectangle rFig = getBounds();
         setLocation(rFig.x + xInc, rFig.y + yInc);
-        figsVector = ((Vector) getEnclosedFigs().clone());
+        figsVector = ((List<Fig>) getEnclosedFigs().clone());
         if (!figsVector.isEmpty()) {
             for (int i = 0; i < figsVector.size(); i++) {
-                ((FigNodeModelElement) figsVector.elementAt(i))
+                ((FigNodeModelElement) figsVector.get(i))
                             .displace(xInc, yInc);
             }
         }
@@ -1763,17 +2001,25 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
+    /*
      * This optional method is not implemented.  It will throw an
      * {@link UnsupportedOperationException} if used.  Figs are 
-     * added to a GraphModel which is, in turn, owned by a project.
+     * added to a GraphModel which is, in turn, owned by a project.<p>
+     * 
+     * This method is identical to the one in ArgoFigGroup.
      */
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
     }
     
+    /**
+     * This method is identical to the one in ArgoFigGroup.
+     * 
+     * @return the project
+     * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
+     */
     public Project getProject() {
-	LayerPerspective layer = (LayerPerspective) getLayer();
+        LayerPerspective layer = (LayerPerspective) getLayer();
         if (layer == null) {
             /* TODO: Without this, we fail to draw e.g. a Class.
              * But is this a good solution? 
@@ -1781,8 +2027,9 @@ public abstract class FigNodeModelElement
             Editor editor = Globals.curEditor();
             if (editor == null) {
                 // TODO: The above doesn't work reliably in a constructor.  We
-                // need a better way of getting default fig settings for the owning
-                // project rather than using the project manager singleton. - tfm
+                // need a better way of getting default fig settings 
+                // for the owning project rather than using the 
+                // project manager singleton. - tfm
                 return ProjectManager.getManager().getCurrentProject();
             }
             Layer lay = editor.getLayerManager().getActiveLayer();
@@ -1790,9 +2037,16 @@ public abstract class FigNodeModelElement
                 layer = (LayerPerspective) lay;
             }
         }
-	UMLMutableGraphSupport gm = 
-	    (UMLMutableGraphSupport) layer.getGraphModel();
-	return gm.getProject();
+        if (layer == null) {
+            return null;
+        }
+
+	GraphModel gm = layer.getGraphModel();
+        if (gm instanceof UMLMutableGraphSupport) {
+            return ((UMLMutableGraphSupport) gm).getProject();
+        } else {
+            return ProjectManager.getManager().getCurrentProject();
+        }
     }
     
     /**
@@ -1804,5 +2058,183 @@ public abstract class FigNodeModelElement
 	return TargetManager.getInstance().getSingleModelTarget()
 		== getOwner();
     }
+
     
+        /**
+     * @return current stereotype view
+     */
+    public int getStereotypeView() {
+        return stereotypeView;
+    }
+
+    /**
+     * When using <code>BigIcon</code> mode and zero or more than one stereotype
+     * the practical view should be the default one. 
+     * 
+     * @return current practical stereotype view
+     */
+    public int getPracticalView() {               
+	int practicalView = getStereotypeView();
+        Object modelElement = getOwner();
+
+        if (modelElement != null) {
+            Collection stereos = Model.getFacade().getStereotypes(modelElement);
+
+            if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON
+                    && (stereos == null || stereos.size() != 1 ||
+                            (stereos
+                            .size() == 1 && getProject()
+                            .getProfileConfiguration().getFigNodeStrategy()
+                            .getIconForStereotype(stereos.iterator().next()) == null))) {
+                practicalView = STEREOTYPE_VIEW_TEXTUAL;
+            }
+            return practicalView;
+        } else {
+            return practicalView;
+        }
+    }
+    
+    /**
+     * Sets the stereotype view
+     * @param s the stereotype view to be set
+     */
+    public void setStereotypeView(int s) {
+        this.stereotypeView = s;
+        try {
+            renderingChanged();
+        } catch (Exception e) {
+        }
+    }
+    
+    /**
+     * Sets the bounds of this classifier. Takes the stereotype view into 
+     * consideration.<br>
+     * 
+     * Do not override this method, override 
+     * {@link #setStandardBounds(int, int, int, int)} instead.
+     * 
+     * {@inheritDoc}
+     */
+    protected void setBoundsImpl(final int x, final int y, final int w,
+            final int h) {
+
+        if (getPracticalView() == STEREOTYPE_VIEW_BIG_ICON) {
+            if (stereotypeFigProfileIcon != null) {
+                stereotypeFigProfileIcon.setBounds(stereotypeFigProfileIcon
+                        .getX(), stereotypeFigProfileIcon.getY(), w, h);
+                // FigClass calls setBoundsImpl before we set
+                // the stereotypeFigProfileIcon
+            }
+        } else {
+	    setStandardBounds(x, y, w, h);
+	    if (getStereotypeView() == STEREOTYPE_VIEW_SMALL_ICON) {
+	        updateSmallIcons(w);
+	    }
+	}
+    }
+
+    private void updateSmallIcons(int wid) {
+        int i = this.getX() + wid - ICON_WIDTH - 2;
+
+        Iterator it = floatingStereotypes.iterator();
+        while (it.hasNext()) {
+            FigImage ficon = (FigImage) it.next();
+            ficon.setLocation(i, this.getBigPort().getY() + 2);
+            i -= ICON_WIDTH - 2;
+        }
+
+        getNameFig().setRightMargin(
+                floatingStereotypes.size() * (ICON_WIDTH + 5));
+    }
+    
+    /**
+     * Replaces {@link #setBoundsImpl(int, int, int, int)}.
+     * 
+     * @param x Desired X coordinate of upper left corner
+     * @param y Desired Y coordinate of upper left corner
+     * @param w Desired width of the FigClass
+     * @param h Desired height of the FigClass
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
+     */
+    protected void setStandardBounds(final int x, final int y,
+            final int w, final int h) {
+
+    }
+    
+    /**
+     * Handles diagram font changing.
+     * @param e the event or null
+     * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
+     */
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+        updateFont();
+//      calcBounds(); // Don't do this! Causes e.g. FigActor to not center properly.
+        updateBounds();
+        damage();
 }
+
+/**
+     * This function should, for all FigTexts, 
+     * recalculate the font-style (plain, bold, italic, bold/italic),
+     * and apply it by calling FigText.setFont(). <p>
+ *
+     * If the "deepUpdateFont" function does not 
+     * work for a subclass, then override this method.
+ */
+    protected void updateFont() {
+        int style = getNameFigFontStyle();
+        Font f = getProject().getProjectSettings().getFont(style);
+        nameFig.setFont(f);
+        deepUpdateFont(this);
+    }
+
+    /**
+     * Determines the font style based on the UML model. 
+     * Overrule this in Figs that have to show bold or italic based on the 
+     * UML model they represent. 
+     * E.g. abstract classes show their name in italic.
+     * 
+     * @return the font style for the nameFig.
+     */
+    protected int getNameFigFontStyle() {
+    	showBoldName = false;
+    	Project p = getProject();
+
+        /**
+         *  When and why p could be NULL?
+         *  See issue 4911.
+         */
+        if (p != null) {
+            ProjectSettings ps = p.getProjectSettings();
+        showBoldName = ps.getShowBoldNamesValue();
+        }
+
+        return showBoldName ? Font.BOLD : Font.PLAIN;
+    }
+
+    /**
+     * Changes the font for all Figs contained in the given FigGroup. <p>
+     * 
+     *  TODO: In fact, there is a design error in this method:
+     *  E.g. for a class, if the name is Italic since the class is abstract,
+     *  then the classes features should be in Plain font.
+     *  This problem can be fixed by implementing 
+     *  the updateFont() method in all subclasses.
+     *  
+     * @param fg the FigGroup to change the font of.
+     */
+    private void deepUpdateFont(FigGroup fg) {
+        List<Fig> figs = fg.getFigs();
+        for (Fig f : figs) {
+            if (f instanceof ArgoFigText) {
+                ((ArgoFigText) f).diagramFontChanged(null);
+                fg.calcBounds();
+            }
+            if (f instanceof FigGroup) {
+                deepUpdateFont((FigGroup) f);
+                f.calcBounds();
+            }
+        }
+    }
+}
+    

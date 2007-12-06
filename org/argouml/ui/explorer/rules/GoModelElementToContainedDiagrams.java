@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -65,7 +66,7 @@ public class GoModelElementToContainedDiagrams extends AbstractPerspectiveRule {
             }
             return ret;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*

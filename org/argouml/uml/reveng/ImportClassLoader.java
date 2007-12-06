@@ -145,7 +145,7 @@ public final class ImportClassLoader extends URLClassLoader {
      */
     public void addFile(File f) throws MalformedURLException {
         try {
-            this.addURL(f.toURL());
+            this.addURL(f.toURI().toURL());
         } catch (MalformedURLException e) {
 	    LOG.warn("could not add file ", e);
 	}
@@ -161,7 +161,7 @@ public final class ImportClassLoader extends URLClassLoader {
 
         URL url = null;
         try {
-            url = f.toURL();
+            url = f.toURI().toURL();
         } catch (MalformedURLException e) {
 	    LOG.warn("could not remove file ", e);
             return;
@@ -220,7 +220,7 @@ public final class ImportClassLoader extends URLClassLoader {
             String token = st.nextToken();
 
             try {
-		urlList.add(new File(token).toURL());
+		urlList.add(new File(token).toURI().toURL());
             } catch (MalformedURLException e) {
 		LOG.error(e);
 	    }
@@ -267,16 +267,16 @@ public final class ImportClassLoader extends URLClassLoader {
     public String toString() {
 
         URL[] urls = this.getURLs();
-        String path = "";
+        StringBuilder path = new StringBuilder();
 
         for (int i = 0; i < urls.length; i++) {
-            path = path + urls[i].getFile();
+            path.append(urls[i].getFile());
             if (i < urls.length - 1) {
-                path += ";";
+                path.append(";");
 	    }
         }
 
-        return path;
+        return path.toString();
     }
 }
 

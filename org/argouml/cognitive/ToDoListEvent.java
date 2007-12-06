@@ -43,20 +43,11 @@ public class ToDoListEvent {
     public ToDoListEvent() {
         items = null;
     }
-    
-    /**
-     * The constructor.
-     *
-     * @param i the Vector of ToDoItems that were changed/added/removed 
-     */
-    public ToDoListEvent(Vector<ToDoItem> i) {
-        items = i;
-    }
 
     /**
      * The constructor.
      *
-     * @param i the Vector of ToDoItems that were changed/added/removed 
+     * @param i the List of ToDoItems that were changed/added/removed 
      */
     public ToDoListEvent(List<ToDoItem> i) {
         items = i;

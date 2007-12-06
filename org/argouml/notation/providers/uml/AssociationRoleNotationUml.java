@@ -26,7 +26,7 @@ package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Iterator;
 
 import org.argouml.application.events.ArgoEventPump;
@@ -70,7 +70,7 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
             String msg = "statusmsg.bar.error.parsing.association-end-name";
             Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
@@ -191,7 +191,7 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
      * 
      * {@inheritDoc}
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         //get the associationRole name
         String name = Model.getFacade().getName(modelElement);
         if (name == null) name = "";

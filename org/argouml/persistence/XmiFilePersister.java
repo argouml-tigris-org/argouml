@@ -237,9 +237,9 @@ class XmiFilePersister extends AbstractFilePersister
             ThreadUtils.checkIfInterrupted();
             
             InputSource source = new InputSource(new XmiInputStream(file
-                    .toURL().openStream(), this, phaseSpace,
+                    .toURI().toURL().openStream(), this, phaseSpace,
                     progressMgr));
-            source.setSystemId(file.toURL().toString());
+            source.setSystemId(file.toURI().toURL().toString());
             
             ModelMemberFilePersister modelPersister =
                 new ModelMemberFilePersister();

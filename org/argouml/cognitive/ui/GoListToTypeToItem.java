@@ -94,7 +94,7 @@ public class GoListToTypeToItem extends AbstractGoList {
 	    return KnowledgeTypeNode.getTypeList().indexOf(child);
 	}
 	if (parent instanceof KnowledgeTypeNode) {
-	    // instead of makning a new vector, decrement index, return when
+	    // instead of making a new list, decrement index, return when
 	    // found and index == 0
 	    List<ToDoItem> candidates = new ArrayList<ToDoItem>();
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;

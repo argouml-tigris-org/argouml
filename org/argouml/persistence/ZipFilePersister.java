@@ -46,6 +46,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.kernel.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -195,6 +196,8 @@ class ZipFilePersister extends XmiFilePersister {
             persister =
                 PersistenceManager.getInstance()
                     .getDiagramMemberFilePersister();
+        } else if (pm instanceof ProfileConfiguration) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         } else if (pm instanceof ProjectMemberModel) {
@@ -218,23 +221,16 @@ class ZipFilePersister extends XmiFilePersister {
                 fileName.substring(
                         fileName.indexOf('.'),
                         fileName.lastIndexOf('.'));
-            InputStream stream = openZipStreamAt(file.toURL(), extension);
+            InputStream stream = openZipStreamAt(file.toURI().toURL(),
+                    extension);
 
             // TODO: What progressMgr is to be used here? Where does
             //       it come from?
             InputSource is =
                 new InputSource(
                     new XmiInputStream(stream, this, 100000, null));
-            is.setSystemId(file.toURL().toExternalForm());
+            is.setSystemId(file.toURI().toURL().toExternalForm());
 
-            // Add the path of the current model to the search path, so we can
-            // find linked models relative it
-            String path = file.getParent();
-            if (path != null) {
-                System.setProperty("org.argouml.model.modules_search_path",
-                        path);
-            }
-            
             ModelMemberFilePersister modelPersister =
                 new ModelMemberFilePersister();
             

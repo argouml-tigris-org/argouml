@@ -26,7 +26,7 @@ package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -72,7 +72,7 @@ public class CallStateNotationUml extends CallStateNotation {
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.callstate";
             Object[] args = {pe.getLocalizedMessage(),
-                             new Integer(pe.getErrorOffset()), };
+                             Integer.valueOf(pe.getErrorOffset()), };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
                     Translator.messageFormat(msg, args)));
@@ -212,9 +212,9 @@ public class CallStateNotationUml extends CallStateNotation {
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         String ret = "";
         Object action = Model.getFacade().getEntry(modelElement);
         if (Model.getFacade().isACallAction(action)) {

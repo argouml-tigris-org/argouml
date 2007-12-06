@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,6 @@ import javax.swing.JComboBox;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.util.ConfigLoader;
 
 /**
  * @since Dec 15, 2002
@@ -46,31 +45,24 @@ public class PropPanelStubState extends PropPanelStateVertex {
      * Constructor for PropPanelStubState.
      */
     public PropPanelStubState() {
-        super("Stub State", lookupIcon("StubState"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.stub.state", lookupIcon("StubState"));
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-
-        addField(Translator.localize("label.container"),
-                getContainerScroll());
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
 
         JComboBox referencestateBox =
                 new UMLComboBox2(
                         new UMLStubStateComboBoxModel(),
                         ActionSetStubStateReferenceState.getInstance());
-        addField(Translator.localize("label.referencestate"),
+        addField("label.referencestate",
                 new UMLComboBoxNavigator(
-                        this,
                         Translator.localize("tooltip.nav-stubstate"),
                         referencestateBox));
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
-                getIncomingScroll());
-
-        addField(Translator.localize("label.outgoing"),
-                getOutgoingScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
     }
+    
 }

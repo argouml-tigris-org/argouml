@@ -25,8 +25,10 @@
 package org.argouml.notation.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
@@ -54,6 +56,10 @@ public class InitNotationUI implements InitSubsystem {
             new ArrayList<GUISettingsTabInterface>();
         result.add(new SettingsTabNotation(Argo.SCOPE_APPLICATION));
         return result;
+    }
+
+    public List<AbstractArgoJPanel> getDetailsTabs() {
+        return Collections.emptyList();
     }
 
 }

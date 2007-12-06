@@ -197,7 +197,7 @@ public class FigSubmachineState extends FigState {
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setStandardBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
         }
@@ -291,6 +291,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         cover.setFilled(f);
         getBigPort().setFilled(f);
@@ -299,8 +300,14 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
-        return cover.getFilled();
+        return cover.isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return cover.isFilled();
     }
 
     /*

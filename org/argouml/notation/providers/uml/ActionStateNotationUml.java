@@ -24,7 +24,7 @@
 
 package org.argouml.notation.providers.uml;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import org.argouml.model.Model;
 import org.argouml.notation.providers.ActionStateNotation;
@@ -77,7 +77,8 @@ public class ActionStateNotationUml extends ActionStateNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString(Object modelElement, HashMap args) {
+    @Override
+    public String toString(Object modelElement, Map args) {
         String ret = "";
         Object action = Model.getFacade().getEntry(modelElement);
         if (action != null) {

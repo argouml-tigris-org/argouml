@@ -39,7 +39,7 @@ public class PropPanelException extends PropPanelSignal {
      * Construct the property panel.
      */
     public PropPanelException() {
-        super("Exception", "Exception");
+        super("label.exception", "Exception");
     }
 
 }

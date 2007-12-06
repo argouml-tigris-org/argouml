@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -54,9 +55,8 @@ import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.DiagramFactory.DiagramType;
+import org.argouml.kernel.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -73,7 +73,24 @@ class ModelMemberFilePersister extends MemberFilePersister
         Logger.getLogger(ModelMemberFilePersister.class);
 
     /**
-     * Loads a model (XMI only) from an input source. BE ADVISED this
+     * Loads a model (XMI only) from a URL. BE ADVISED this
+     * method has a side effect. It sets _UUIDREFS to the model.<p>
+     *
+     * If there is a problem with the xmi file, an error is set in the
+     * getLastLoadStatus() field. This needs to be examined by the
+     * calling function.<p>
+     *
+     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
+     * java.io.InputStream)
+     */
+    public void load(Project project, URL url)
+        throws OpenException {
+        
+        load(project, new InputSource(url.toExternalForm()));
+    }
+    
+    /**
+     * Loads a model (XMI only) from an input stream. BE ADVISED this
      * method has a side effect. It sets _UUIDREFS to the model.<p>
      *
      * If there is a problem with the xmi file, an error is set in the
@@ -85,8 +102,14 @@ class ModelMemberFilePersister extends MemberFilePersister
      */
     public void load(Project project, InputStream inputStream)
         throws OpenException {
+        
+        load(project, new InputSource(inputStream));
+    }
 
-        InputSource source = new InputSource(inputStream);
+
+    private void load(Project project, InputSource source)
+        throws OpenException {
+
         Object mmodel = null;
 
         // 2002-07-18
@@ -115,7 +138,7 @@ class ModelMemberFilePersister extends MemberFilePersister
 
         project.addMember(mmodel);
 
-        project.setUUIDRefs(new HashMap(getUUIDRefs()));
+        project.setUUIDRefs(new HashMap<String, Object>(getUUIDRefs()));
     }
 
     /*
@@ -137,6 +160,8 @@ class ModelMemberFilePersister extends MemberFilePersister
      *         org.argouml.kernel.ProjectMember, java.io.Writer,
      *         java.lang.Integer)
      */
+    @Deprecated
+    @Override
     public void save(ProjectMember member, Writer w, boolean xmlFragment)
     	throws SaveException {
 
@@ -164,7 +189,7 @@ class ModelMemberFilePersister extends MemberFilePersister
                 xmiWriter.write();
                 addXmlFileToWriter((PrintWriter) w, tempFile);
             } else {
-                // Othewise we are writing into a zip writer or to XMI.
+                // Otherwise we are writing into a zip writer or to XMI.
                 XmiWriter xmiWriter = 
                     Model.getXmiWriter(model, w, 
                             ApplicationVersion.getVersion() + "(" 
@@ -182,7 +207,7 @@ class ModelMemberFilePersister extends MemberFilePersister
     /**
      * Save the project model to XMI.
      * 
-     * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.OutputStream, boolean)
+     * @see org.argouml.persistence.MemberFilePersister#save(ProjectMember, OutputStream)
      */
     public void save(ProjectMember member, OutputStream outStream)
         throws SaveException {
@@ -218,6 +243,8 @@ class ModelMemberFilePersister extends MemberFilePersister
             persister =
                 PersistenceManager.getInstance()
                     .getDiagramMemberFilePersister();
+        } else if (pm instanceof ProfileConfiguration) {
+            persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         }
@@ -229,7 +256,7 @@ class ModelMemberFilePersister extends MemberFilePersister
     }
     
     private Object curModel;
-    private HashMap uUIDRefs;
+    private HashMap<String, Object> uUIDRefs;
 
     private Collection elementsRead;
 
@@ -248,7 +275,7 @@ class ModelMemberFilePersister extends MemberFilePersister
      * 
      * @return the UUID
      */
-    public HashMap getUUIDRefs() {
+    public HashMap<String, Object> getUUIDRefs() {
         return uUIDRefs;
     }
 
@@ -283,8 +310,10 @@ class ModelMemberFilePersister extends MemberFilePersister
 
     /**
      * Read a XMI file from the given inputsource.
+     * 
      * @param p Project to which load the inputsource.
-     * @param source The InputSource
+     * @param source The InputSource. The systemId of the input source should be
+     *                set so that it can be used to resolve external references.
      * @throws OpenException If an error occur while reading the source
      */
     public synchronized void readModels(InputSource source)
@@ -299,6 +328,19 @@ class ModelMemberFilePersister extends MemberFilePersister
             } else {
                 reader.setIgnoredElements(null);
             }
+
+            List<String> searchPath = reader.getSearchPath();
+            String pathList = 
+                System.getProperty("org.argouml.model.modules_search_path");
+            if (pathList != null) {
+                String[] paths = pathList.split(",");
+                for (String path : paths) {
+                    if (!searchPath.contains(path)) {
+                        reader.addSearchPath(path);
+                    }
+                }
+            }
+            reader.addSearchPath(source.getSystemId());
             
             curModel = null;
             elementsRead = reader.parse(source, false);
@@ -317,7 +359,8 @@ class ModelMemberFilePersister extends MemberFilePersister
                     }
                 }
             }
-            uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
+            uUIDRefs = 
+                new HashMap<String, Object>(reader.getXMIUUIDToObjectMap());
         } catch (XmiException ex) {
             throw new XmiFormatException(ex);
         } catch (UmlException ex) {
@@ -388,7 +431,7 @@ class ModelMemberFilePersister extends MemberFilePersister
                         + facade.getUMLClassName(statemachine)
                         + "<<" + facade.getName(statemachine) + ">>");
                 diagram = diagramFactory.createDiagram(
-                	UMLActivityDiagram.class,
+                        DiagramType.Activity,
                 	namespace,
                 	statemachine);
             } else {
@@ -396,7 +439,7 @@ class ModelMemberFilePersister extends MemberFilePersister
                         + facade.getUMLClassName(statemachine)
                         + "<<" + facade.getName(statemachine) + ">>");
                 diagram = diagramFactory.createDiagram(
-                	UMLStateDiagram.class,
+                        DiagramType.State,
                 	namespace,
                 	statemachine);
             }
@@ -409,13 +452,13 @@ class ModelMemberFilePersister extends MemberFilePersister
         // ArgoUML requires it for correct operation
         if (atLeastOne && project.getDiagramCount() < 1) {
             ArgoDiagram d = diagramFactory.createDiagram(
-        	    UMLClassDiagram.class, curModel, null);
+                    DiagramType.Class, curModel, null);
             project.addMember(d);
         }
         if (project.getDiagramCount() >= 1
                 && project.getActiveDiagram() == null) {
             project.setActiveDiagram(
-                    (ArgoDiagram) project.getDiagrams().get(0));
+                    project.getDiagramList().get(0));
         }
     }
 

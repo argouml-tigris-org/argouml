@@ -126,7 +126,12 @@ public class FigPool extends FigNodeModelElement {
      */
     @Override
     public boolean getFilled() {
-        return getBigPort().getFilled();
+        return getBigPort().isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return getBigPort().isFilled();
     }
 
     /*
@@ -161,7 +166,7 @@ public class FigPool extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     @Override
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected void setStandardBounds(int x, int y, int w, int h) {
 	
         Rectangle oldBounds = getBounds();
         getBigPort().setBounds(x, y, w, h);

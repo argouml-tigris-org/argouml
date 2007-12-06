@@ -46,7 +46,6 @@ import org.argouml.uml.ui.UMLRecurrenceExpressionModel;
 import org.argouml.uml.ui.UMLScriptExpressionModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * An abstract representatation of the properties panel of an Action.
@@ -62,7 +61,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
      * Construct a default property panel for an Action.
      */
     public PropPanelAction() {
-        this("Action", null);
+        this("label.action", null);
     }
 
     /**
@@ -74,7 +73,7 @@ public abstract class PropPanelAction extends PropPanelModelElement {
      *            the icon to be shown next to the name
      */
     public PropPanelAction(String name, ImageIcon icon) {
-        super(name, icon, ConfigLoader.getTabPropsOrientation());
+        super(name, icon);
         initialize();
     }
 
@@ -155,6 +154,7 @@ class ActionCreateArgument extends AbstractActionNewModelElement {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         Object t = TargetManager.getInstance().getTarget();
         if (Model.getFacade().isAAction(t)) {

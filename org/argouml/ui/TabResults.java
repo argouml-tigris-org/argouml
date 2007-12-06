@@ -35,7 +35,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -48,6 +47,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ChildGenRelated;
@@ -184,21 +184,11 @@ public class TabResults
     /**
      * @param res the results
      * @param dia the diagrams
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #setResults(List, List)}.
-     */
-    @Deprecated
-    public void setResults(Vector res, Vector dia) {
-        setResults((List) res, (List) dia);
-    }
-
-    /**
-     * @param res the results
-     * @param dia the diagrams
      */
     public void setResults(List res, List dia) {
         results = res;
         diagrams = dia;
-        Object[] msgArgs = {new Integer(results.size()) };
+        Object[] msgArgs = {Integer.valueOf(results.size()) };
         resultsLabel.setText(Translator.messageFormat(
             "dialog.tabresults.results-items", msgArgs));
         resultsModel.setTarget(results, diagrams);
@@ -363,7 +353,7 @@ public class TabResults
 		}
 	    }
 	    relatedModel.setTarget(related, null);
-	    Object[] msgArgs = {new Integer(related.size()) };
+	    Object[] msgArgs = {Integer.valueOf(related.size()) };
 	    relatedLabel.setText(Translator.messageFormat(
                 "dialog.find.related-elements", msgArgs));
 	}

@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,31 +47,33 @@ public class GoCollaborationToDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.collaboration.diagram");
+        return Translator.localize("misc.collaboration.diagram");
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (!Model.getFacade().isACollaboration(parent))
-            return null;
+        if (!Model.getFacade().isACollaboration(parent)) {
+            return Collections.EMPTY_SET;
+        }
 
         Project p = ProjectManager.getManager().getCurrentProject();
-        if (p == null)
-            return null;
+        if (p == null) {
+            return Collections.EMPTY_SET;
+        }
 
         Set<ArgoDiagram> res = new HashSet<ArgoDiagram>();
         for (ArgoDiagram d : p.getDiagramList()) {
             if (d instanceof UMLCollaborationDiagram
-                && ((UMLCollaborationDiagram) d).getNamespace() == parent) {
+                    && ((UMLCollaborationDiagram) d).getNamespace() == parent) {
                 res.add(d);
             }
             /* Also show unattached sequence diagrams: */
             if ((d instanceof UMLSequenceDiagram)
-                && (Model.getFacade().getRepresentedClassifier(parent) == null)
-                &&  (Model.getFacade().getRepresentedOperation(parent) == null)
-                && (parent == ((UMLSequenceDiagram) d).getNamespace())) {
+                    && (Model.getFacade().getRepresentedClassifier(parent) == null)
+                    && (Model.getFacade().getRepresentedOperation(parent) == null)
+                    && (parent == ((UMLSequenceDiagram) d).getNamespace())) {
                 res.add(d);
             }
         }
@@ -82,6 +85,6 @@ public class GoCollaborationToDiagram extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: What?
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

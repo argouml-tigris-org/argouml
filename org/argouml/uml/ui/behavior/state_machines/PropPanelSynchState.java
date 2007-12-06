@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,9 +24,7 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLTextField2;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a SynchState.
@@ -44,23 +42,17 @@ public class PropPanelSynchState extends PropPanelStateVertex {
      * Construct a property panel for a Synch State.
      */
     public PropPanelSynchState() {
-        super("Synch State",
-            lookupIcon("SynchState"),
-            ConfigLoader.getTabPropsOrientation());
+        super("label.synch-state", lookupIcon("SynchState"));
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.container"),
-                getContainerScroll());
-        addField(Translator.localize("label.bound"),
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
+        addField("label.bound",
                 new UMLTextField2(new UMLSynchStateBoundDocument()));
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
-                getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
-                getOutgoingScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
     }
 
 }

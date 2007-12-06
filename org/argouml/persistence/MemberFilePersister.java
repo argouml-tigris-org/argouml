@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.URL;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
@@ -45,8 +46,7 @@ import org.argouml.kernel.ProjectMember;
  */
 abstract class MemberFilePersister {
     /**
-     * Load the member based on instance variables
-     * which should have been setup in the constructor.
+     * Load a project member from an InputStream.
      *
      * @param project the project to persist
      * @param inputStream the inputStream to parse to load the member.
@@ -56,6 +56,16 @@ abstract class MemberFilePersister {
         throws OpenException;
 
     /**
+     * Load a project member from an InputStream.
+     *
+     * @param project the project to persist
+     * @param inputStream the inputStream to parse to load the member.
+     * @throws OpenException on any parsing errors.
+     */
+    public abstract void load(Project project, URL url)
+        throws OpenException;
+    
+    /**
      * Gets the tag name which is the root tag for this member.
      * @return tag name.
      */
@@ -64,12 +74,14 @@ abstract class MemberFilePersister {
 
     /**
      * Save the projectmember as XML to the given writer.
-     *
+     * 
      * @param member The project member to save.
      * @param writer The Writer to which to save the XML.
      * @throws SaveException if the save fails
-     * @deprecated for 0.25.4 by tfmorris.
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #save(ProjectMember, OutputStream)}.
      */
+    @Deprecated
     public void save(
             ProjectMember member,
             Writer writer) throws SaveException {
@@ -102,6 +114,7 @@ abstract class MemberFilePersister {
      * @deprecated for 0.25.4 by tfmorris. Use 
      * {@link #save(ProjectMember, OutputStream, boolean)}.
      */
+    @Deprecated
     public abstract void save(
             ProjectMember member,
             Writer writer,

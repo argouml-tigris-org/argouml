@@ -39,7 +39,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -53,11 +52,10 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
-import org.argouml.application.api.GUISettingsTabInterface;
-import org.argouml.application.api.InitSubsystem;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.checklist.ui.InitCheckListUI;
 import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
@@ -71,14 +69,15 @@ import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.notation.ui.InitNotationUI;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.ui.ArgoFrame;
-import org.argouml.ui.GUI;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.ui.cmd.ActionExit;
 import org.argouml.ui.cmd.InitUiCmdSubsystem;
 import org.argouml.ui.cmd.PrintManager;
+import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.reveng.java.JavaImport;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
@@ -120,302 +119,324 @@ public class Main {
      * @param args command line parameters
      */
     public static void main(String[] args) {
-	LOG.info("ArgoUML Started.");
+        try {
+            LOG.info("ArgoUML Started.");
+
+            SimpleTimer st = new SimpleTimer();
+            st.mark("begin");
+
+            checkJVMVersion();
+            checkHostsFile();
+
+            // Force the configuration to load
+            Configuration.load();
+
+            // Synchronize the startup directory
+            String directory = Argo.getDirectory();
+            org.tigris.gef.base.Globals.setLastDirectory(directory);
+
+            // Initialise the version of this application
+            initVersion();
+
+            // Set the i18n locale
+            Translator.init(Configuration.getString(Argo.KEY_LOCALE));
+
+            // create an anonymous class as a kind of adaptor for the cognitive
+            // System to provide proper translation/i18n.
+            org.argouml.cognitive.Translator.setTranslator(
+                    new AbstractCognitiveTranslator() {
+                        public String i18nlocalize(String key) {
+                            return Translator.localize(key);
+                        }
+
+                        public String i18nmessageFormat(String key,
+                                Object[] iArgs) {
+                            return Translator.messageFormat(key, iArgs);
+                        }
+                    });
+
+            // then, print out some version info for debuggers...
+            org.argouml.util.Tools.logVersionInfo();
+
+            st.mark("arguments");
+
+            /* set properties for application behaviour */
+            System.setProperty("gef.imageLocation", "/org/argouml/Images");
+
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+            /* FIX: set the application name for Mac OS X */
+            System.setProperty(
+                    "com.apple.mrj.application.apple.menu.about.name",
+                    "ArgoUML");
+
+            boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
+            boolean reloadRecent = Configuration.getBoolean(
+                    Argo.KEY_RELOAD_RECENT_PROJECT, false);
+            boolean batch = false;
+            List<String> commands = new ArrayList<String>();
+
+            String projectName = null;
+
+            // TODO: Move command line parsing to separate method
         
-        SimpleTimer st = new SimpleTimer();
-        st.mark("begin");
-        
-        checkJVMVersion();
-        checkHostsFile();
-
-        // Force the configuration to load
-        Configuration.load();
-
-        // Synchronize the startup directory
-        String directory = Argo.getDirectory();
-        org.tigris.gef.base.Globals.setLastDirectory(directory);
-        
-        // Initialise the version of this application
-        initVersion();
-
-        // Set the i18n locale
-        Translator.init(Configuration.getString(Argo.KEY_LOCALE));
-
-        // create an anonymous class as a kind of adaptor for the cognitive
-        // System to provide proper translation/i18n.
-        org.argouml.cognitive.Translator.setTranslator(
-            new AbstractCognitiveTranslator() {
-                public String i18nlocalize(String key) {
-                    return Translator.localize(key);
-                }
-
-                public String i18nmessageFormat(String key, Object[] iArgs) {
-                    return Translator.messageFormat(key, iArgs);
-                }
-            });
-
-        // then, print out some version info for debuggers...
-        org.argouml.util.Tools.logVersionInfo();
-
-        st.mark("arguments");
-
-        /* set properties for application behaviour */
-        System.setProperty("gef.imageLocation", "/org/argouml/Images");
-
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
-
-        /* FIX: set the application name for Mac OS X */
-        System.setProperty("com.apple.mrj.application.apple.menu.about.name",
-			   "ArgoUML");
-
-        boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
-	// TODO: document use. Ref. 1/2
-        boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
-        boolean reloadRecent =
-            Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
-	boolean batch = false;
-	List<String> commands = new ArrayList<String>();
-
-        String projectName = null;
-
-        // Parse command line args:
-        // The assumption is that all options precede
-        // the name of a project file to load.
-        String theTheme = null;
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].startsWith("-")) {
-		String themeName =
-                    LookAndFeelMgr.getInstance()
-                        .getThemeClassNameFromArg(args[i]);
-                if (themeName != null) {
-		    theTheme = themeName;
-                } else if (
-                    args[i].equalsIgnoreCase("-help")
-                        || args[i].equalsIgnoreCase("-h")
-                        || args[i].equalsIgnoreCase("--help")
-                        || args[i].equalsIgnoreCase("/?")) {
-                    printUsage();
-                    System.exit(0);
-                } else if (args[i].equalsIgnoreCase("-nosplash")) {
-                    doSplash = false;
-                } else if (args[i].equalsIgnoreCase("-nopreload")) {
-                    preload = false;
-                } else if (args[i].equalsIgnoreCase("-norecentfile")) {
-                    reloadRecent = false;
-                } else if (args[i].equalsIgnoreCase("-command")
-			   && i + 1 < args.length) {
-		    commands.add(args[i + 1]);
-		    i++;
-                } else if (args[i].equalsIgnoreCase("-locale")
-                           && i + 1 < args.length) {
-                    Translator.setLocale(args[i + 1]);
-                    i++;
-                } else if (args[i].equalsIgnoreCase("-batch")) {
-                    batch = true;
-                } else if (args[i].equalsIgnoreCase("-open") 
-                        && i + 1 < args.length) {
-                    projectName = args[++i];
-                } else if (args[i].equalsIgnoreCase("-print") 
-                        && i + 1 < args.length) {
-                    // let's load the project
-                    String projectToBePrinted = 
-                        PersistenceManager.getInstance().fixExtension(
-                                args[++i]);
-                    URL urlToBePrinted = projectUrl(projectToBePrinted, null);
-                    ProjectBrowser.getInstance().loadProject(
-                            new File(urlToBePrinted.getFile()), true, null);
-                    // now, let's print it
-                    PrintManager.getInstance().print();
-                    // nothing else to do (?)
-                    System.exit(0);
+            // Parse command line args:
+            // The assumption is that all options precede
+            // the name of a project file to load.
+            String theTheme = null;
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].startsWith("-")) {
+                    String themeName = LookAndFeelMgr.getInstance()
+                            .getThemeClassNameFromArg(args[i]);
+                    if (themeName != null) {
+                        theTheme = themeName;
+                    } else if (
+                            args[i].equalsIgnoreCase("-help")
+                            || args[i].equalsIgnoreCase("-h")
+                            || args[i].equalsIgnoreCase("--help")
+                            || args[i].equalsIgnoreCase("/?")) {
+                        printUsage();
+                        System.exit(0);
+                    } else if (args[i].equalsIgnoreCase("-nosplash")) {
+                        doSplash = false;
+                    } else if (args[i].equalsIgnoreCase("-norecentfile")) {
+                        reloadRecent = false;
+                    } else if (args[i].equalsIgnoreCase("-command")
+                            && i + 1 < args.length) {
+                        commands.add(args[i + 1]);
+                        i++;
+                    } else if (args[i].equalsIgnoreCase("-locale")
+                            && i + 1 < args.length) {
+                        Translator.setLocale(args[i + 1]);
+                        i++;
+                    } else if (args[i].equalsIgnoreCase("-batch")) {
+                        batch = true;
+                    } else if (args[i].equalsIgnoreCase("-open") 
+                            && i + 1 < args.length) {
+                        projectName = args[++i];
+                    } else if (args[i].equalsIgnoreCase("-print") 
+                            && i + 1 < args.length) {
+                        // let's load the project
+                        String projectToBePrinted = 
+                            PersistenceManager.getInstance().fixExtension(
+                                    args[++i]);
+                        URL urlToBePrinted = projectUrl(projectToBePrinted,
+                                null);
+                        ProjectBrowser.getInstance().loadProject(
+                                new File(urlToBePrinted.getFile()), true, null);
+                        // now, let's print it
+                        PrintManager.getInstance().print();
+                        // nothing else to do (?)
+                        System.exit(0);
+                    } else {
+                        System.err
+                                .println("Ignoring unknown/incomplete option '"
+                                        + args[i] + "'");
+                    }
                 } else {
-                    System.err.println(
-                        "Ignoring unknown/incomplete option '" + args[i] + "'");
-                }
-            } else {
-                if (projectName == null) {
-                    System.out.println(
-                        "Setting projectName to '" + args[i] + "'");
-                    projectName = args[i];
+                    if (projectName == null) {
+                        System.out.println(
+                                "Setting projectName to '" + args[i] + "'");
+                        projectName = args[i];
+                    }
                 }
             }
-        }
 
-        // We have to do this to set the LAF for the splash screen
-        st.mark("initialize laf");
-        LookAndFeelMgr.getInstance().initializeLookAndFeel();
-        if (theTheme != null) {
-            LookAndFeelMgr.getInstance().setCurrentTheme(theTheme);
-        }
-        
-        // Get the splash screen up as early as possible
-        st.mark("create splash");
-        SplashScreen splash = null;
-        if (doSplash && !batch) {
-            splash = initializeSplash();
-        }
+            // We have to do this to set the LAF for the splash screen
+            st.mark("initialize laf");
+            LookAndFeelMgr.getInstance().initializeLookAndFeel();
+            if (theTheme != null) {
+                LookAndFeelMgr.getInstance().setCurrentTheme(theTheme);
+            }
 
-        // Initialize the Model subsystem
-        st.mark("initialize model subsystem");
+            // Get the splash screen up as early as possible
+            st.mark("create splash");
+            SplashScreen splash = null;
+            if (doSplash && !batch) {
+                splash = initializeSplash();
+            }
 
-        initModel();
-        
-        updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
+            // Initialize the Model subsystem
+            st.mark("initialize model subsystem");
 
-        // Initialize the Java code generator.
-        GeneratorJava.getInstance();
-        
-	// The reason the gui is initialized before the commands are run
-	// is that some of the commands will use the projectbrowser.
-	st.mark("initialize gui");
-        initializeGUI(splash);
-        
-        initSubsystem(new InitUiCmdSubsystem());
-        initSubsystem(new InitNotationUI());
-        initSubsystem(new InitNotation());
-        initSubsystem(new InitNotationUml());
-        initSubsystem(new InitNotationJava());
+            initModel();
 
-        if (reloadRecent && projectName == null) {
-            // If no project was entered on the command line,
-            // try to reload the most recent project if that option is true
-            String s =
-                Configuration.getString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
-            if (!("".equals(s))) {
-                File file = new File(s);
-                if (file.exists()) {
-                    LOG.info("Re-opening project " + s);
-                    projectName = s;
+            updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
+            
+            // Initialize the Profile subsystem
+            st.mark("initialize the profile subsystem");
+            new InitProfileSubsystem().init();
+
+            /*
+             * Initialize the module loader. At least the plug-ins that provide
+             * profiles need to be initialized before the project is loaded,
+             * because some of these profile may have been set as default
+             * profiles and need to be applied to the project as soon as it has
+             * been created or loaded. the first instance of a Project is needed
+             * during the gui initialization
+             */
+            st.mark("modules");
+
+            SubsystemUtility.initSubsystem(new InitModuleLoader());
+
+            // Initialize the Java code generator. (why so early? - tfm)
+            GeneratorJava.getInstance();
+
+            // The reason the gui is initialized before the commands are run
+            // is that some of the commands will use the projectbrowser.
+            st.mark("initialize gui");
+            ProjectBrowser pb = initializeGUI(splash);
+
+            SubsystemUtility.initSubsystem(new InitUiCmdSubsystem());
+            SubsystemUtility.initSubsystem(new InitNotationUI());
+            SubsystemUtility.initSubsystem(new InitNotation());
+            SubsystemUtility.initSubsystem(new InitNotationUml());
+            SubsystemUtility.initSubsystem(new InitNotationJava());
+            SubsystemUtility.initSubsystem(new InitDiagramAppearanceUI());
+            SubsystemUtility.initSubsystem(new InitCheckListUI());
+
+            if (reloadRecent && projectName == null) {
+                // If no project was entered on the command line,
+                // try to reload the most recent project if that option is true
+                String s = Configuration.getString(
+                        Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
+                if (!("".equals(s))) {
+                    File file = new File(s);
+                    if (file.exists()) {
+                        LOG.info("Re-opening project " + s);
+                        projectName = s;
+                    } else {
+                        LOG.warn("Cannot re-open " + s
+                                + " because it does not exist");
+                    }
+                }
+            }
+
+            URL urlToOpen = null;
+
+            if (projectName != null) {
+                projectName =
+                    PersistenceManager.getInstance().fixExtension(projectName);
+                urlToOpen = projectUrl(projectName, urlToOpen);
+            }
+
+            st.mark("perform commands");
+            if (batch) {
+                performCommands(commands);
+                commands = null;
+
+                System.out.println("Exiting because we are running in batch.");
+                new ActionExit().doCommand(null);
+                return;
+            }
+
+            if (splash != null) {
+                if (urlToOpen == null) {
+                    splash.getStatusBar().showStatus(
+                            Translator.localize(
+                                    "statusmsg.bar.defaultproject"));
                 } else {
-                    LOG.warn(
-                        "Cannot re-open " + s + " because it does not exist");
+                    Object[] msgArgs = {projectName};
+                    splash.getStatusBar().showStatus(
+                            Translator.messageFormat(
+                                    "statusmsg.bar.readingproject",
+                                    msgArgs));
                 }
-            }
-        }
 
-        URL urlToOpen = null;
-
-        if (projectName != null) {
-            projectName =
-                PersistenceManager.getInstance().fixExtension(projectName);
-            urlToOpen = projectUrl(projectName, urlToOpen);
-        }
-
-        st.mark("initialize ProjectBrowser");
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-
-        st.mark("perform commands");
-	if (batch) {
-	    performCommands(commands);
-	    commands = null;
-
-	    System.out.println("Exiting because we are running in batch.");
-	    new ActionExit().doCommand(null);
-	    return;
-	}
-
-        if (splash != null) {
-            if (urlToOpen == null) {
-		splash.getStatusBar().showStatus(
-		    Translator.localize("statusmsg.bar.defaultproject"));
-            } else {
-		Object[] msgArgs = {
-		    projectName,
-		};
-		splash.getStatusBar().showStatus(
-		    Translator.messageFormat("statusmsg.bar.readingproject",
-					     msgArgs));
+                splash.getStatusBar().showProgress(40);
             }
 
-            splash.getStatusBar().showProgress(40);
+            st.mark("make empty project");
+
+            Designer.disableCritiquing();
+            Designer.clearCritiquing();
+
+            boolean projectLoaded = false;
+            if (urlToOpen != null) {
+                String filename = urlToOpen.getFile();
+                File file = new File(filename);
+                System.err.println("The url of the file to open is " 
+                        + urlToOpen);
+                System.err.println("The filename is " + filename);
+                System.err.println("The file is " + file);
+                System.err.println("File.exists = " + file.exists());
+                projectLoaded = pb.loadProject(file, true, null);
+            }
+
+            if (!projectLoaded) {
+                // Although this looks redundant, it's needed to get all
+                // the initialization state set correctly.  
+                // Too many side effects as part of initialization!
+                ProjectManager.getManager().setCurrentProject(
+                        ProjectManager.getManager().getCurrentProject());
+                ProjectManager.getManager().setSaveEnabled(false);
+            }
+
+            st.mark("set project");
+
+            Designer.enableCritiquing();
+
+            st.mark("perspectives");
+
+            if (splash != null) {
+                splash.getStatusBar().showProgress(75);
+            }
+
+            st.mark("open window");
+
+            updateProgress(splash, 95, "statusmsg.bar.open-project-browser");
+
+            ArgoFrame.getInstance().setVisible(true);
+
+            st.mark("close splash");
+            if (splash != null) {
+                splash.setVisible(false);
+                splash.dispose();
+                splash = null;
+            }
+
+            performCommands(commands);
+            commands = null;
+
+            st.mark("start critics");
+            Runnable startCritics = new StartCritics();
+            Main.addPostLoadAction(startCritics);
+
+            st.mark("start loading modules");
+            Runnable moduleLoader = new LoadModules();
+            Main.addPostLoadAction(moduleLoader);
+
+            PostLoad pl = new PostLoad(postLoadActions);
+            Thread postLoadThead = new Thread(pl);
+            postLoadThead.start();
+
+            LOG.info("");
+            LOG.info("profile of load time ############");
+            for (Enumeration i = st.result(); i.hasMoreElements();) {
+                LOG.info(i.nextElement());
+            }
+            LOG.info("#################################");
+            LOG.info("");
+
+            st = null;
+            ArgoFrame.getInstance().setCursor(
+                    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+            //ToolTipManager.sharedInstance().setInitialDelay(500);
+            ToolTipManager.sharedInstance().setDismissDelay(50000000);
+        } catch (Throwable t) {
+            try {
+                LOG.fatal("Fatal error on startup.  ArgoUML failed to start", 
+                        t);
+            } finally {
+                System.out.println("Fatal error on startup.  "
+                        + "ArgoUML failed to start.");
+                t.printStackTrace();
+                System.exit(1);
+            }
         }
-
-        st.mark("make empty project");
-
-        Designer.disableCritiquing();
-        Designer.clearCritiquing();
-
-        boolean projectLoaded = false;
-        if (urlToOpen != null) {
-            String filename = urlToOpen.getFile();
-            File file = new File(filename);
-            System.err.println("The url of the file to open is " + urlToOpen);
-            System.err.println("The filename is " + filename);
-            System.err.println("The file is " + file);
-            System.err.println("File.exists = " + file.exists());
-            projectLoaded = pb.loadProject(file, true, null);
-        }
-        
-        if (!projectLoaded) {
-            // Although this looks redundant, it's needed to get all
-            // the initialization state set correctly.  
-            // Too many side effects as part of initialization!
-            ProjectManager.getManager().setCurrentProject(
-                    ProjectManager.getManager().getCurrentProject());
-            ProjectManager.getManager().setSaveEnabled(false);
-        }
-
-        st.mark("set project");
-
-        Designer.enableCritiquing();
-
-        st.mark("perspectives");
-
-        if (splash != null) {
-            splash.getStatusBar().showProgress(75);
-        }
-
-        // Initialize the module loader.
-        st.mark("modules");
-
-        initSubsystem(new InitModuleLoader());
-
-        st.mark("open window");
-
-        updateProgress(splash, 95, "statusmsg.bar.open-project-browser");
-
-        ArgoFrame.getInstance().setVisible(true);
-
-        st.mark("close splash");
-        if (splash != null) {
-            splash.setVisible(false);
-            splash.dispose();
-            splash = null;
-        }
-
-        performCommands(commands);
-        commands = null;
-
-        st.mark("start critics");
-        Runnable startCritics = new StartCritics();
-        Main.addPostLoadAction(startCritics);
-
-        st.mark("start preloader");
-        if (preload) {
-            Runnable preloader = new PreloadClasses();
-            Main.addPostLoadAction(preloader);
-        }
-
-        PostLoad pl = new PostLoad(postLoadActions);
-        Thread postLoadThead = new Thread(pl);
-        postLoadThead.start();
-
-        LOG.info("");
-        LOG.info("profile of load time ############");
-        for (Enumeration i = st.result(); i.hasMoreElements();) {
-            LOG.info(i.nextElement());
-        }
-        LOG.info("#################################");
-        LOG.info("");
-
-        st = null;
-        ArgoFrame.getInstance().setCursor(
-                Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-        //ToolTipManager.sharedInstance().setInitialDelay(500);
-        ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
-
+    
     /**
      * Initialise the UMl model repository.
      */
@@ -482,7 +503,6 @@ public class Main {
         System.err.println("  -help           display this information");
         LookAndFeelMgr.getInstance().printThemeArgs();
         System.err.println("  -nosplash       don't display logo at startup");
-        System.err.println("  -nopreload      don't preload common classes");
         System.err.println("  -norecentfile   don't reload last saved file");
         System.err.println("  -command <arg>  command to perform on startup");
         System.err.println("  -batch          don't start GUI");
@@ -539,7 +559,8 @@ public class Main {
 
 
     /**
-     * Add an element to the PostLoadActions list.
+     * Add an element to the PostLoadActions list,
+     * which contains actions that are run after ArgoUML has started.
      *
      * @param r a "Runnable" action
      */
@@ -726,7 +747,7 @@ public class Main {
      *
      * @param splash the splash screeen
      */
-    private static void initializeGUI(SplashScreen splash) {
+    private static ProjectBrowser initializeGUI(SplashScreen splash) {
         // make the projectbrowser
         JPanel todoPane = new ToDoPane(splash);
 	ProjectBrowser pb = ProjectBrowser.makeInstance(splash, true, todoPane);
@@ -766,22 +787,7 @@ public class Main {
                     "released SPACE", "released"
                 })
         );         
-    }
-
-    /**
-     * The use of this method in the top-level package 
-     * prevents that the subsystem would depend on the GUI.
-     * 
-     * @param subsystem the subsystem to be initialised
-     */
-    static void initSubsystem(InitSubsystem subsystem) {
-        subsystem.init();
-        for (GUISettingsTabInterface tab : subsystem.getSettingsTabs()) {
-            GUI.getInstance().addSettingsTab(tab);
-        }
-        for (GUISettingsTabInterface tab : subsystem.getProjectSettingsTabs()) {
-            GUI.getInstance().addProjectSettingsTab(tab);
-        }
+        return pb;
     }
 
     /**
@@ -815,16 +821,6 @@ class PostLoad implements Runnable {
      */
     private List<Runnable> postLoadActions;
 
-    /**
-     * Constructor.
-     *
-     * @param v The actions to perform.
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #PostLoad(List)}.
-     */
-    @Deprecated
-    public PostLoad(Vector<Runnable> v) {
-        this((List<Runnable>) v);
-    }
 
     /**
      * Constructor.
@@ -856,17 +852,17 @@ class PostLoad implements Runnable {
 } /* end class PostLoad */
 
 /**
- * Class to do preloading of a lot of classes.
+ * Class to load modules.
  */
-class PreloadClasses implements Runnable {
+class LoadModules implements Runnable {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(PreloadClasses.class);
+    private static final Logger LOG = Logger.getLogger(LoadModules.class);
 
     
     private static final String[] OPTIONAL_INTERNAL_MODULES = {
-        "org.argouml.ui.DeveloperModule",
+        "org.argouml.dev.DeveloperModule",
     };
     
     /**
@@ -874,16 +870,15 @@ class PreloadClasses implements Runnable {
      * classpath.
      */
     private void huntForInternalModules() {
-        for (int i = 0; i < OPTIONAL_INTERNAL_MODULES.length; i++) {
+        for (String module : OPTIONAL_INTERNAL_MODULES) {
             try {
-                ModuleLoader2.addClass(OPTIONAL_INTERNAL_MODULES[i]);
+                ModuleLoader2.addClass(module);
             } catch (ClassNotFoundException e) {
                 /* We don't care if optional modules aren't found. */
+                LOG.debug("Module " + module + " not found");
             }            
         }
-        // TODO: This already was done in Main.main().  If it can be deferred,
-        // remove it from there and reenable this. - tfm - 20070511
-//        ModuleLoader2.doLoad(false);
+        ModuleLoader2.doLoad(false);
     }
 
     /*
@@ -892,58 +887,7 @@ class PreloadClasses implements Runnable {
     public void run() {
 	new JavaImport().init();
 	huntForInternalModules();
-
-	Class c = null;
-	LOG.info("preloading...");
-
-	// Alphabetic order
-        c = org.argouml.kernel.DelayedChangeNotify.class;
-        c = org.argouml.cognitive.critics.Wizard.class;
-        c = org.argouml.ui.Clarifier.class;
-        c = org.argouml.ui.StylePanelFigNodeModelElement.class;
-        c = org.argouml.uml.GenCompositeClasses.class;
-        c = org.argouml.uml.cognitive.critics.ClAttributeCompartment.class;
-        c = org.argouml.uml.cognitive.critics.ClClassName.class;
-        c = org.argouml.uml.cognitive.critics.ClOperationCompartment.class;
-        c = org.argouml.uml.diagram.static_structure.ui.FigClass.class;
-        c = org.argouml.uml.diagram.static_structure.ui.FigInterface.class;
-        c = org.argouml.uml.diagram.static_structure.ui.FigPackage.class;
-        c = org.argouml.uml.diagram.static_structure.ui.SelectionClass.class;
-        c =
-            org.argouml.uml.diagram.static_structure.ui
-	    .StylePanelFigClass.class;
-        c =
-            org.argouml.uml.diagram.static_structure.ui
-	    .StylePanelFigInterface.class;
-        c = org.argouml.uml.diagram.ui.FigAssociation.class;
-        c = org.argouml.uml.diagram.ui.FigGeneralization.class;
-        c = org.argouml.uml.diagram.ui.FigRealization.class;
-        c = org.tigris.gef.base.ModeCreateEdgeAndNode.class;
-        c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
-        c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
-        c = org.argouml.uml.ui.foundation.core.PropPanelClass.class;
-        c = org.argouml.uml.ui.foundation.core.PropPanelInterface.class;
-
-        c = org.tigris.gef.base.Geometry.class;
-        c = org.tigris.gef.base.ModeModify.class;
-        c = org.tigris.gef.base.ModePlace.class;
-        c = org.tigris.gef.base.PathConvPercentPlusConst.class;
-        c = org.tigris.gef.base.SelectionResize.class;
-        c = org.tigris.gef.event.ModeChangeEvent.class;
-        c = org.tigris.gef.graph.GraphEdgeHooks.class;
-        c = org.tigris.gef.graph.GraphEvent.class;
-        c = org.tigris.gef.graph.presentation.NetEdge.class;
-        c = org.tigris.gef.presentation.ArrowHeadNone.class;
-        c = org.tigris.gef.presentation.FigPoly.class;
-        c = org.tigris.gef.ui.ColorRenderer.class;
-        c = org.tigris.gef.ui.Swatch.class;
-        c = org.tigris.gef.util.EnumerationEmpty.class;
-        c = org.tigris.gef.util.EnumerationSingle.class;
-
-        if (c == null) {
-            LOG.error(" preloading error");
-        }
-        LOG.info("preloading done");
+        LOG.info("Module loading done");
     }
 
-} /* end class PreloadClasses */
+} /* end class LoadModules */

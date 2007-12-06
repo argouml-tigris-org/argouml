@@ -202,12 +202,12 @@ import java.util.*;
  * Modified by Thomas Neustupny (July 06, 2005)
  *    Update to Java 1.5 for the Import feature of ArgoUML
  *    o Removed all AST stuff
- *    o Added a lot of stuff for the UML Modeller
- *    o Not passing typeArguments and typeParameters to the Modeller (don't how they map to UML)
+ *    o Added a lot of stuff for the UML Modeler
+ *    o Not passing typeArguments and typeParameters to the Modeler (don't how they map to UML)
  *
  * Modified by Tom Morris (March 29, 2007)
  *    o Added support for enums
- *    o Added support to pass variableLengthParameterDeclaration to Modeller
+ *    o Added support to pass variableLengthParameterDeclaration to Modeler
  *    o Added stubs for typeParameters, typeArguments, annotations and
  *      annotationDefinitions and so we can warn when they're skipped.
  *
@@ -420,7 +420,8 @@ tokens {
      */
     private void addDotCall(String id, String thisOrSuper, boolean parenths) {
         StringBuffer sb = new StringBuffer();
-        String prev = (String)getModeller().getMethodCalls().lastElement();
+        List<String> calls = getModeller().getMethodCalls();
+        String prev = calls.get(calls.size() - 1);
         if (thisOrSuper != null) {
             sb.append(thisOrSuper);
         } else if (prev != null) {
@@ -545,7 +546,8 @@ classTypeSpec returns [String type=null]
 classOrInterfaceType returns [String type=null]
     {StringBuffer sb = new StringBuffer();
      String name = null;
-     Vector ta = null;}
+     // TODO: type arguments not currently returned
+     List<String> ta = null;}
     :    t1:IDENT {name = t1.getText();} (ta=typeArguments)?
         {sb.append(name);}
         (options{greedy=true;}: // match as many as possible
@@ -579,16 +581,16 @@ wildcardType returns [String type=null]
     ;
 
 // Type arguments to a class or interface type
-typeArguments returns [Vector names = new Vector()]
+typeArguments returns [List<String> names = new ArrayList<String>()]
 {int currentLtLevel = 0;
  String n = null;}
     :
         {currentLtLevel = ltCounter;}
         LT {ltCounter++;}
-        n=typeArgument {names.addElement(n);}
+        n=typeArgument {names.add(n);}
         (options{greedy=true;}: // match as many as possible
             {inputState.guessing !=0 || ltCounter == currentLtLevel + 1}?
-            COMMA! n=typeArgument {names.addElement(n);}
+            COMMA! n=typeArgument {names.add(n);}
         )*
 
         (    // turn warning off since Antlr generates the right code,
@@ -610,7 +612,7 @@ protected typeArgumentsOrParametersEnd
     |    BSR! {ltCounter-=3;}
     ;
 
-// Restriction on wildcard types based on super class or derrived class
+// Restriction on wildcard types based on super class or derived class
 typeArgumentBounds returns [String tab=null]
 {String t=null;}
     :
@@ -725,7 +727,7 @@ annotationMemberValuePairs
     :    annotationMemberValuePair ( COMMA annotationMemberValuePair )*
     ;
 
-annotationMemberValuePair returns [Vector amps = new Vector();]
+annotationMemberValuePair returns [List<String> amps = new ArrayList<String>()]
     :    IDENT ASSIGN annotationMemberValueInitializer
     ;
 
@@ -767,9 +769,9 @@ superClassClause returns [String superClassName = null]
 
 // Definition of a Java class
 classDefinition[String javadoc, short modifiers]
-{String superClassName = null; Vector ic = null; Vector tparam=null;}
+{String superClassName = null; List<String> ic = null; List<String> tparam=null;}
     :    "class" className:IDENT
-        // it _might_ have type paramaters
+        // it _might_ have type parameters
         (tparam=typeParameters)?
         // it _might_ have a superclass...
         superClassName=superClassClause
@@ -792,9 +794,9 @@ classDefinition[String javadoc, short modifiers]
 
 // Definition of a Java Interface
 interfaceDefinition[String javadoc, short modifiers]
-{Vector ie=null;Vector tparam=null;}
+{List<String> ie=null;List<String> tparam=null;}
     :    "interface" interfaceName:IDENT
-        // it _might_ have type paramaters
+        // it _might_ have type parameters
         (tparam=typeParameters)?
         // it might extend some other interfaces
         ie=interfaceExtends
@@ -806,7 +808,7 @@ interfaceDefinition[String javadoc, short modifiers]
     ;
 
 enumDefinition[String javadoc, short modifiers]
-{Vector ic=null;}
+{List<String> ic=null;}
     :    "enum" enumName:IDENT
         // it might implement some interfaces...
         ic=implementsClause
@@ -831,14 +833,14 @@ annotationDefinition[String javadoc, short modifiers]
         // TODO: need a popClassifier or perhaps endAnnotationDefinintion here
     ;
 
-typeParameters returns [Vector names = new Vector()]
+typeParameters returns [List<String> names = new ArrayList<String>()]
 {int currentLtLevel = 0; String n=null;}
     :
         {currentLtLevel = ltCounter;
         getModeller().addTypeParameters();}
         LT {ltCounter++;}
-        n=typeParameter {names.addElement(n);}
-        (COMMA n=typeParameter)* {names.addElement(n);}
+        n=typeParameter {names.add(n);}
+        (COMMA n=typeParameter)* {names.add(n);}
         (typeArgumentsOrParametersEnd)?
 
         // make sure we have gobbled up enough '>' characters
@@ -899,7 +901,7 @@ enumBlock
 
 // An annotation field
 annotationField
-{short mods=0; String t=null; Vector param=null; String a=null;
+{short mods=0; String t=null; List<ParameterDeclaration> param=null; String a=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
     :    mods=modifiers
         (    typeDefinitionInternal[mods]
@@ -945,7 +947,7 @@ enumConstantBlock
 //An enum constant field is just like a class field but without
 //the posibility of a constructor definition or a static initializer
 enumConstantField
-{short mods=0; String t=null; Vector param=null; String a=null; Vector tparam=null;
+{short mods=0; String t=null; List<ParameterDeclaration> param=null; String a=null; List<String> tparam=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
     :    mods=modifiers
         (    typeDefinitionInternal[mods]
@@ -982,27 +984,27 @@ enumConstantField
     ;
 
 // An interface can extend several other interfaces...
-interfaceExtends returns [Vector names=new Vector()]
+interfaceExtends returns [List<String> names=new ArrayList<String>()]
     {String n=null;}
     :    (
         "extends"
-        n=classOrInterfaceType {names.addElement(n);}
-        ( COMMA n=classOrInterfaceType {names.addElement(n);} )*
+        n=classOrInterfaceType {names.add(n);}
+        ( COMMA n=classOrInterfaceType {names.add(n);} )*
         )?
     ;
 
 // A class can implement several interfaces...
-implementsClause returns [Vector names=new Vector()]
+implementsClause returns [List<String> names=new ArrayList<String>()]
     {String n=null;}
     :    (
-            "implements" n=classOrInterfaceType {names.addElement(n);}
-            ( COMMA n=classOrInterfaceType {names.addElement(n);} )*
+            "implements" n=classOrInterfaceType {names.add(n);}
+            ( COMMA n=classOrInterfaceType {names.add(n);} )*
         )?
     ;
 
 // Now the various things that can be defined inside a class
 classField
-{short mods=0; String t=null; Vector param=null; String a=null; Vector tparam=null;
+{short mods=0; String t=null; List<ParameterDeclaration> param=null; String a=null; List<String> tparam=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
     :    // method, constructor, or variable declaration
         mods=modifiers
@@ -1055,7 +1057,7 @@ classField
 
 // Now the various things that can be defined inside a interface
 interfaceField
-{short mods=0; String t=null; Vector param=null; String a=null; Vector tparam=null;
+{short mods=0; String t=null; List<ParameterDeclaration> param=null; String a=null; List<String> tparam=null;
  boolean isOutestCompStat = !isInCompoundStatement();}
     :    // method, constructor, or variable declaration
         mods=modifiers
@@ -1199,7 +1201,7 @@ initializer
 // for the method.
 // This also watches for a list of exception classes in a "throws" clause.
 ctorHead[ short mods]
-    {Vector param = null;
+    {List<ParameterDeclaration> param = null;
      boolean isOutestCompStat = !isInCompoundStatement();}
     :    name:IDENT // the name of the method
 
@@ -1207,7 +1209,7 @@ ctorHead[ short mods]
         LPAREN param=parameterDeclarationList RPAREN
 
         {if (isOutestCompStat && level > 0) {
-           setMethod(getModeller().addOperation(mods, new Vector(), null, 
+           setMethod(getModeller().addOperation(mods, Collections.EMPTY_LIST, null, 
             name.getText(), param,  getJavadocComment(), (parserMode == MODE_IMPORT_PASS2)));
          }}
         // get the list of exceptions that this method is declared to throw
@@ -1222,8 +1224,8 @@ throwsClause
 // A list of formal parameters
 //     Zero or more parameters
 //     If a parameter is variable length (e.g. String... myArg) it is the right-most parameter
-parameterDeclarationList returns [Vector paramList=new Vector()]
-{Vector currentParameter=null;}
+parameterDeclarationList returns [List<ParameterDeclaration> paramList=new ArrayList<ParameterDeclaration>()]
+{ParameterDeclaration currentParameter=null;}
     // The semantic check in ( .... )* block is flagged as superfluous, and seems superfluous but
     // is the only way I could make this work. If my understanding is correct this is a known bug
     :    (    ( parameterDeclaration )=> currentParameter=parameterDeclaration { paramList.add(currentParameter); }
@@ -1235,27 +1237,23 @@ parameterDeclarationList returns [Vector paramList=new Vector()]
     ;
 
 // A formal parameter.
-parameterDeclaration returns [Vector pd=new Vector()]
+parameterDeclaration returns [ParameterDeclaration pd=null]
 {short pm=0; String ts=null; String pdb=null;}
     :    pm=parameterModifier ts=typeSpec id:IDENT
         pdb=declaratorBrackets
-        { pd.add(new Short(pm));
-          pd.add(ts + pdb);
-          pd.add(id.getText());}
+        { pd = new ParameterDeclaration(pm, ts + pdb, id.getText());}
     ;
 
-variableLengthParameterDeclaration returns [Vector pd=new Vector()]
+variableLengthParameterDeclaration returns [ParameterDeclaration pd=null]
 {short pm=0; String ts=null; String pdb=null;}
     :    pm=parameterModifier ts=typeSpec TRIPLE_DOT id:IDENT
         pdb=declaratorBrackets
-        { pd.add(new Short(pm));
-          pd.add(ts + "..." + pdb); // interpretation handled by Modeller
-          pd.add(id.getText());}
+        { pd = new ParameterDeclaration(pm, ts + "..." + pdb, id.getText());}
     ;
 
-parameterModifier returns [short mods=0;]
+parameterModifier returns [short mods=0]
     //final can appear amongst annotations in any order - greedily consume any preceding
-    //annotations to shut nond-eterminism warnings off
+    //annotations to shut non-determinism warnings off
     :    (options{greedy=true;} : annotation)* ("final" {mods |= ACC_FINAL;})? (annotation)*
     ;
 
@@ -1622,7 +1620,7 @@ unaryExpressionNotPlusMinus
 postfixExpression
 { String thisOrSuper = null;
   boolean parenths = LA(1) == LPAREN;
-  Vector ta=null; }
+  List<String> ta=null; }
     :
         primaryExpression
         (
@@ -1703,7 +1701,7 @@ primaryExpression
  *  this or super.
  */
 identPrimary
-{ StringBuffer sb = null; Vector ta=null;}
+{ StringBuffer sb = null; List<String> ta=null;}
     :    (ta=typeArguments)?
         id:IDENT
         { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {
@@ -1810,7 +1808,7 @@ identPrimary
  *
  */
 newExpression
-    {String t = null; Vector ta=null;}
+    {String t = null; List<String> ta=null;}
     :    "new" (ta=typeArguments)? t=type
         (    LPAREN argList RPAREN
             { if ((parserMode & MODE_REVENG_SEQUENCE) != 0) {

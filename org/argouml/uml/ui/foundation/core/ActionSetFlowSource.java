@@ -26,7 +26,8 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.Action;
 
@@ -70,7 +71,7 @@ public class ActionSetFlowSource extends UndoableAction {
                 }
                 if (old != source.getSelectedItem()) {
                     if (source.getSelectedItem() != null) {
-                        Vector sources = new Vector();
+                        Collection sources = new ArrayList();
                         sources.add(source.getSelectedItem());
                         Model.getCoreHelper().setSources(flow, sources);
                     }

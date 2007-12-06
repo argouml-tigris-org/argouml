@@ -88,8 +88,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private FigRect cover;
     private FigText state;      // the state name
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Main Constructor FigObjectFlowState (called from file loading).
@@ -136,6 +134,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
+    @Override
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAModelElement(own)) {
@@ -153,6 +152,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         renderingChanged();
@@ -162,6 +162,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner != null) {
             removeAllElementListeners();
@@ -190,16 +191,11 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() {
-        return "new ObjectFlowState";
-    }
 
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigObjectFlowState figClone = (FigObjectFlowState) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -213,6 +209,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig encloser) {
         LayerPerspective layer = (LayerPerspective) getLayer();
         // If the layer is null, then most likely we are being deleted.
@@ -225,6 +222,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * The space between the 2 text figs is: PADDING.
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension tempDim = getNameFig().getMinimumSize();
         int w = tempDim.width + PADDING * 2;
@@ -246,7 +244,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    @Override
+    protected void setStandardBounds(int x, int y, int w, int h) {
         //if (getNameFig() == null) return;
         Rectangle oldBounds = getBounds();
 
@@ -274,6 +273,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
+    @Override
     public void renderingChanged() {
         updateClassifierText();
         updateStateText();
@@ -302,32 +302,42 @@ public class FigObjectFlowState extends FigNodeModelElement {
         }
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
-
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
-    public void setLineColor(Color col) { cover.setLineColor(col); }
+    @Override
+    public void setLineColor(Color col) {
+        cover.setLineColor(col);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
-    public Color getLineColor() { return cover.getLineColor(); }
+    @Override
+    public Color getLineColor() {
+        return cover.getLineColor();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
-    public void setFillColor(Color col) { cover.setFillColor(col); }
+    @Override
+    public void setFillColor(Color col) {
+        cover.setFillColor(col);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
-    public Color getFillColor() { return cover.getFillColor(); }
+    @Override
+    public Color getFillColor() {
+        return cover.getFillColor();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         cover.setFilled(f);
     }
@@ -335,13 +345,20 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
-        return cover.getFilled();
+        return cover.isFilled();
+    }
+    
+    @Override
+    public boolean isFilled() {
+        return cover.isFilled();
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
     }
@@ -349,6 +366,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return cover.getLineWidth();
     }
@@ -356,6 +374,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
+    @Override
     public void keyTyped(KeyEvent ke) {
         if (!isReadyToEdit()) {
             if (Model.getFacade().isAModelElement(getOwner())) {
@@ -376,6 +395,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
             notationProviderType.parse(getOwner(), ft.getText());
@@ -389,6 +409,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProviderType.getParsingHelp());
@@ -401,8 +422,9 @@ public class FigObjectFlowState extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionActionState(this);
     }
 
-} /* end class FigObjectFlowState */
+}

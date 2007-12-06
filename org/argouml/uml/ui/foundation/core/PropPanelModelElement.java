@@ -44,7 +44,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -100,56 +99,77 @@ public abstract class PropPanelModelElement extends PropPanel {
 	new UMLModelElementTargetFlowListModel();
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a model element with the given name, icon,
+     * and orientation.
+     * 
      * @param name the name of the properties panel
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelElement(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelModelElement(String name, ImageIcon icon,
             Orientation orientation) {
-        super(name, icon, orientation);
+        super(name, icon);
+        setOrientation(orientation);
     }
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a model element with the given name and
+     * icon.
+     * 
      * @param name the name of the properties panel
      * @param orientation the orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelElement(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelModelElement(String name, Orientation orientation) {
         super(name, orientation);
     }
 
     /**
+     * The constructor.
+     *
+     * @param name the name of the properties panel
+     * @param icon the ico
+     */
+    public PropPanelModelElement(String name, ImageIcon icon) {
+        super(name, icon);
+    }
+    
+    /**
      * Constructor that is used if no other proppanel can be found for a
      * modelelement of some kind. Since this is the default
      */
     public PropPanelModelElement() {
-        this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("label.name"),
+        this("label.model-element-title", (ImageIcon) null);
+        addField("label.name",
                 getNameTextField());
-        addField(Translator.localize("label.namespace"),
+        addField("label.namespace",
                 getNamespaceSelector());
 
         addSeparator();
 
-        addField(Translator.localize("label.supplier-dependencies"),
+        addField("label.supplier-dependencies",
                 getSupplierDependencyScroll());
-        addField(Translator.localize("label.client-dependencies"),
+        addField("label.client-dependencies",
                 getClientDependencyScroll());
-        addField(Translator.localize("label.source-flows"),
+        addField("label.source-flows",
                 getSourceFlowScroll());
-        addField(Translator.localize("label.target-flows"),
+        addField("label.target-flows",
                 getTargetFlowScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.constraints"),
+        addField("label.constraints",
                 getConstraintScroll());
         add(getNamespaceVisibilityPanel());
         
-        addField(Translator.localize("label.derived"),
+        addField("label.derived",
                 new UMLDerivedCheckBox());
 
     }
@@ -168,8 +188,9 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     /**
      * @return a scrollpane for the namespace
-     * @deprecated use {@link #getNamespaceSelector()}
+     * @deprecated for 0.24 by bobtarling.  Use {@link #getNamespaceSelector()}
      */
+    @Deprecated
     protected JComponent getNamespaceScroll() {
         if (namespaceScroll == null) {
             JList namespaceList = new UMLLinkedList(namespaceListModel);
@@ -192,7 +213,6 @@ public abstract class PropPanelModelElement extends PropPanel {
                     new ActionSetModelElementNamespace(), true);
         }
         return new UMLComboBoxNavigator(
-                this,
                 Translator.localize("label.namespace.navigate.tooltip"),
                 namespaceSelector);
     }

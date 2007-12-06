@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -52,7 +53,7 @@ public class GoPackageToClass extends AbstractPerspectiveRule {
                 .getAllModelElementsOfKind(parent,
                         Model.getMetaTypes().getUMLClass());
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -60,6 +61,6 @@ public class GoPackageToClass extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // Todo: What?
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

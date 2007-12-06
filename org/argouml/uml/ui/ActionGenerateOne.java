@@ -25,9 +25,9 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -46,9 +46,6 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionGenerateOne extends UndoableAction {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * The constructor.
      */
@@ -59,15 +56,13 @@ public class ActionGenerateOne extends UndoableAction {
                 Translator.localize("action.generate-selected-classes"));
     }
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-        Vector classes = getCandidates();
+        List classes = getCandidates();
         // There is no need to test if classes is empty because
         // the shouldBeEnabled mechanism blanks out the possibility to
         // choose this alternative in this case.
@@ -80,23 +75,22 @@ public class ActionGenerateOne extends UndoableAction {
      * candidate class
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
         if (!super.isEnabled()) {
             return false;
 	}
-        Vector classes = getCandidates();
+        List classes = getCandidates();
         return classes.size() > 0;
     }
 
     /**
      * @return the candidates for generation
      */
-    private Vector getCandidates() {
-        Vector classes = new Vector();
+    private List getCandidates() {
+        List classes = new ArrayList();
         Collection targets = TargetManager.getInstance().getTargets();
-        Iterator it = targets.iterator();
-        while (it.hasNext()) {
-            Object target = it.next();
+        for (Object target : targets) {
             if (target instanceof Fig) {
                 target = ((Fig) target).getOwner();
             }
@@ -108,4 +102,4 @@ public class ActionGenerateOne extends UndoableAction {
         return classes;
     }
 
-} /* end class ActionGenerateOne */
+}

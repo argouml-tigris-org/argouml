@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -44,7 +45,7 @@ public class GoComponentToResidentModelElement extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.component.resident.modelelement");
+        return Translator.localize("misc.component.resident.modelelement");
     }
 
     /*
@@ -61,14 +62,14 @@ public class GoComponentToResidentModelElement extends AbstractPerspectiveRule {
             }
             return result;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        return null;
+        return Collections.EMPTY_SET;
     }
 
 }

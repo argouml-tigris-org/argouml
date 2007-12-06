@@ -30,9 +30,7 @@ import javax.swing.Action;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
-import org.tigris.gef.undo.UndoableAction;
-
-
+import org.argouml.ui.UndoableAction;
 
 /**
  * Stops critiquing and the TodoList validity checking thread in ToDoList.

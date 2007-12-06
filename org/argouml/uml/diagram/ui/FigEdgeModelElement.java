@@ -49,6 +49,8 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoDiagramAppearanceEventListener;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
@@ -80,7 +82,6 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.IItemUID;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionDeleteModelElements;
@@ -91,7 +92,9 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigEdgePoly;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
@@ -111,6 +114,7 @@ public abstract class FigEdgeModelElement
         KeyListener,
         PropertyChangeListener,
         ArgoNotationEventListener,
+        ArgoDiagramAppearanceEventListener,
         Highlightable,
         IItemUID,
         ArgoFig {
@@ -125,24 +129,6 @@ public abstract class FigEdgeModelElement
      * be removed from the diagram.
      */
     private boolean removeFromDiagram = true;
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-
-    private static final Font LABEL_FONT;
-    private static final Font ITALIC_LABEL_FONT;
-
-    static {
-        LABEL_FONT =
-        /* TODO: Why is this different from the FigNodeModelElement?
-         * Should we not use one of the following? 
-         * LookAndFeelMgr.getInstance().getStandardFont();
-         * new javax.swing.plaf.metal.DefaultMetalTheme().getSubTextFont();
-         * new javax.swing.plaf.metal.DefaultMetalTheme().getUserTextFont(); */
-            new Font("Dialog", Font.PLAIN, 10);
-        ITALIC_LABEL_FONT =
-            new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
-    }
 
     /**
      * Offset from the end of the set of popup actions at which new items
@@ -186,7 +172,7 @@ public abstract class FigEdgeModelElement
      */
     public FigEdgeModelElement() {
 
-        nameFig = new FigSingleLineText(10, 30, 90, 20, false);
+        nameFig = new FigNameWithAbstract(10, 30, 90, 20, false);
         nameFig.setTextFilled(false);
 
         stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
@@ -194,6 +180,8 @@ public abstract class FigEdgeModelElement
         setBetweenNearestPoints(true);
 
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.addListener(
+                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
     }
 
     /**
@@ -281,29 +269,31 @@ public abstract class FigEdgeModelElement
         return tip;
     }
 
-    /*
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+    /**
+     * This method shall return a Vector of one of these 4 types:
+     * AbstractAction, JMenu, JMenuItem, JSeparator.
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         
         // popupAddOffset should be equal to the number of items added here:
-        popUpActions.addElement(new JSeparator());
+        popUpActions.add(new JSeparator());
         popupAddOffset = 1;
         if (removeFromDiagram) {
-            popUpActions.addElement(
+            popUpActions.add(
                     ProjectActions.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
-        popUpActions.addElement(new ActionDeleteModelElements());
+        popUpActions.add(new ActionDeleteModelElements());
         popupAddOffset++;
 
         /* Check if multiple items are selected: */
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         if (!ms) {
             ToDoList list = Designer.theDesigner().getToDoList();
-            Vector items =
-                (Vector) list.elementsForOffender(getOwner()).clone();
+            List<ToDoItem> items =
+                (List<ToDoItem>) list.elementsForOffender(getOwner()).clone();
             if (items != null && items.size() > 0) {
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
                 ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
@@ -311,27 +301,26 @@ public abstract class FigEdgeModelElement
                     critiques.add(new ActionGoToCritique(itemUnderMouse));
                     critiques.addSeparator();
                 }
-                int size = items.size();
-                for (int i = 0; i < size; i++) {
-                    ToDoItem item = (ToDoItem) items.elementAt(i);
-                    if (item == itemUnderMouse)
+                for (ToDoItem item : items) {
+                    if (item == itemUnderMouse) {
                         continue;
+                    }
                     critiques.add(new ActionGoToCritique(item));
                 }
-                popUpActions.insertElementAt(new JSeparator(), 0);
-                popUpActions.insertElementAt(critiques, 0);
+                popUpActions.add(0, new JSeparator());
+                popUpActions.add(0, critiques);
             }
         }
         // Add stereotypes submenu
         Action[] stereoActions = getApplyStereotypeActions();
         if (stereoActions != null && stereoActions.length > 0) {
-            popUpActions.insertElementAt(new JSeparator(), 0);
+            popUpActions.add(0, new JSeparator());
             ArgoJMenu stereotypes = new ArgoJMenu(
                     "menu.popup.apply-stereotypes");
             for (int i = 0; i < stereoActions.length; ++i) {
                 stereotypes.addCheckItem(stereoActions[i]);
             }
-            popUpActions.insertElementAt(stereotypes, 0);
+            popUpActions.add(0, stereotypes);
         }
         return popUpActions;
     }
@@ -368,10 +357,8 @@ public abstract class FigEdgeModelElement
         int iconPos = 25, gap = 1, xOff = -4, yOff = -4;
         Point p = new Point();
         ToDoList list = Designer.theDesigner().getToDoList();
-        Vector items = list.elementsForOffender(getOwner());
-        int size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -384,9 +371,7 @@ public abstract class FigEdgeModelElement
             }
         }
         items = list.elementsForOffender(this);
-        size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -429,10 +414,8 @@ public abstract class FigEdgeModelElement
         int iconPos = 25, xOff = -4, yOff = -4;
         Point p = new Point();
         ToDoList list = Designer.theDesigner().getToDoList();
-        Vector items = list.elementsForOffender(getOwner());
-        int size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             stuffPointAlongPerimeter(iconPos, p);
             int width = icon.getIconWidth();
@@ -444,8 +427,7 @@ public abstract class FigEdgeModelElement
                 return item;
             iconPos += width;
         }
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -455,9 +437,7 @@ public abstract class FigEdgeModelElement
             }
         }
         items = list.elementsForOffender(this);
-        size = items.size();
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             stuffPointAlongPerimeter(iconPos, p);
             int width = icon.getIconWidth();
@@ -469,8 +449,7 @@ public abstract class FigEdgeModelElement
                 return item;
             iconPos += width;
         }
-        for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem) items.elementAt(i);
+        for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
@@ -482,12 +461,13 @@ public abstract class FigEdgeModelElement
         return null;
     }
 
-    /*
-     * Returns a {@link SelectionRerouteEdge} object that manages selection
+    /**
+     * Return a {@link SelectionRerouteEdge} object that manages selection
      * and rerouting of the edge.
      *
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionRerouteEdge(this);
     }
@@ -551,6 +531,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
@@ -826,6 +807,10 @@ public abstract class FigEdgeModelElement
             String nameStr = notationProviderName.toString(
                     getOwner(), npArguments);
             nameFig.setText(nameStr);
+            Project p = getProject();
+            if (p != null) {
+                updateFont();
+            }
             calcBounds();
             setBounds(getBounds());
         }
@@ -844,20 +829,24 @@ public abstract class FigEdgeModelElement
 
     /**
      * This method should only be called once for any one Fig instance that
-     * represents a model element (ie not for a FigEdgeNote).
-     * It is called either by the constructor that takes an model element as an
-     * argument or it is called by PGMLStackParser after it has created the Fig
-     * by use of the empty constructor.
-     * The assigned model element (owner) must not change during the lifetime
-     * of the Fig.
-     * TODO: It is planned to refactor so that there is only one Fig
-     * constructor. When this is achieved this method can refactored out.
+     * represents a model element (ie not for a FigEdgeNote). It is called
+     * either by the constructor that takes an model element as an argument or
+     * it is called by PGMLStackParser after it has created the Fig by use of
+     * the empty constructor.
+     * <p>
+     * The assigned model element (owner) must not change during the lifetime of
+     * the Fig.
      * 
      * @param owner the model element that this Fig represents.
      * @throws IllegalArgumentException if the owner given is not a model
-     * element
+     *                 element
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    /*
+     * TODO: It is planned to refactor so that there is only one Fig
+     * constructor. When this is achieved this method can refactored out.
+     */
+    @Override
     public void setOwner(Object owner) {
         if (owner == null) {
             throw new IllegalArgumentException("An owner must be supplied");
@@ -872,6 +861,7 @@ public abstract class FigEdgeModelElement
                     + owner.getClass().getName());
         }
         super.setOwner(owner);
+        nameFig.setOwner(owner); // for setting abstract
         if (edgePort != null) {
             edgePort.setOwner(getOwner());
         }
@@ -956,6 +946,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#setLayer(org.tigris.gef.base.Layer)
      */
+    @Override
     public void setLayer(Layer lay) {
         super.setLayer(lay);
         getFig().setLayer(lay);
@@ -964,6 +955,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
+    @Override
     public void deleteFromModel() {
         Object own = getOwner();
         if (own != null) {
@@ -1018,6 +1010,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
      */
+    @Override
     public boolean hit(Rectangle r) {
 	// Check if labels etc have been hit
 	// Apparently GEF does require PathItems to be "annotations"
@@ -1073,19 +1066,8 @@ public abstract class FigEdgeModelElement
             fig.removeFromDiagram();
         }
 
-        /* TODO: MVW: Why the next action?
-         * Deleting a fig from 1 diagram should not influence others!
-         * */
-        // GEF does not take into account the multiple diagrams we have
-        // therefore we loop through our diagrams and delete each and every
-        // occurence on our own
-        for (ArgoDiagram diagram : getProject().getDiagramList()) {
-            diagram.damage();
-        }
-
-        /* TODO: MVW: Should we not call damage()
-         * for diagrams AFTER the next step? */
         super.removeFromDiagram();
+        damage();
     }
     
     protected void superRemoveFromDiagram() {
@@ -1095,6 +1077,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#damage()
      */
+    @Override
     public void damage() {
         super.damage();
         getFig().damage();
@@ -1246,23 +1229,26 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
+    @Override
     public void postLoad() {
         ArgoEventPump.removeListener(this);
         ArgoEventPump.addListener(this);
     }
 
     /**
-     * @return Returns the lABEL_FONT.
+     * @deprecated
+     * @return Returns the plain font.
      */
-    public static Font getLabelFont() {
-        return LABEL_FONT;
+    public Font getLabelFont() {
+        return getProject().getProjectSettings().getFontPlain();
     }
 
     /**
-     * @return Returns the iTALIC_LABEL_FONT.
+     * @deprecated
+     * @return Returns the italic font.
      */
-    public static Font getItalicLabelFont() {
-        return ITALIC_LABEL_FONT;
+    public Font getItalicLabelFont() {
+        return getProject().getProjectSettings().getFontItalic();
     }
 
     /**
@@ -1405,4 +1391,73 @@ public abstract class FigEdgeModelElement
         return gm.getProject();
     }
     
+    /**
+     * Handles diagram font changing.
+     * @param e the event
+     * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
+     */
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+        updateFont();
+        calcBounds(); //TODO: Does this help?
+        redraw();
+    }
+    
+    /**
+     * This function should, for all FigTexts, 
+     * recalculate the font-style (plain, bold, italic, bold/italic),
+     * and apply it by calling FigText.setFont().
+     */
+    protected void updateFont() {
+        Project p = getProject();
+        if (p == null) {
+            return;
+        }
+        int style = getNameFigFontStyle();
+        Font f = p.getProjectSettings().getFont(style);
+        nameFig.setFont(f);
+        deepUpdateFont(this);
+    }
+
+    /**
+     * Determines the font style based on the UML model. 
+     * Overrule this in Figs that have to show bold or italic based on the 
+     * UML model they represent. 
+     * E.g. abstract classes show their name in italic.
+     * 
+     * @return the font style for the nameFig.
+     */
+    protected int getNameFigFontStyle() {
+        return Font.PLAIN;
+    }
+
+    private void deepUpdateFont(FigEdge fe) {
+        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        for (Object pathFig : fe.getPathItemFigs()) {
+            deepUpdateFontRecursive(f, pathFig);
+        }
+        fe.calcBounds();
+    }
+
+    /**
+     * Changes the font for all Figs contained in the given FigGroup. <p>
+     * 
+     *  TODO: In fact, there is a design error in this method:
+     *  E.g. for a class, if the name is Italic since the class is abstract,
+     *  then the classes features should be in Plain font.
+     *  This problem can be fixed by implementing 
+     *  the updateFont() method in all subclasses.
+     *  
+     * @param fg the FigGroup to change the font of.
+     */
+    private void deepUpdateFontRecursive(Font f, Object pathFig) {
+        if (pathFig instanceof ArgoFigText) {
+            ((ArgoFigText) pathFig).updateFont();
+        } else if (pathFig instanceof FigText) {
+            ((FigText) pathFig).setFont(f);
+        } else if (pathFig instanceof FigGroup) {
+            for (Object fge : ((FigGroup) pathFig).getFigs()) {
+                deepUpdateFontRecursive(f, fge);
+            }
+        }
+    }
 }

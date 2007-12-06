@@ -25,7 +25,7 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -57,21 +57,21 @@ public class MultiplicityNotationUml extends MultiplicityNotation {
     }
 
     @Override
-    public void parse(Object multiplicityOwner, String text) {
+    public void parse(final Object multiplicityOwner, final String text) {
         try {
             parseMultiplicity(multiplicityOwner, text);
         } catch (ParseException pe) {
-            String msg = "statusmsg.bar.error.parsing.multiplicity";
-            Object[] args = {pe.getLocalizedMessage(),
-                             new Integer(pe.getErrorOffset()), };
+            final String msg = "statusmsg.bar.error.parsing.multiplicity";
+            final Object[] args = {pe.getLocalizedMessage(),
+                             Integer.valueOf(pe.getErrorOffset()), };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
                     Translator.messageFormat(msg, args)));
         }
     }
 
-    protected Object parseMultiplicity(Object multiplicityOwner, String s1) 
-        throws ParseException {
+    protected Object parseMultiplicity(final Object multiplicityOwner,
+            final String s1) throws ParseException {
         String s = s1.trim();
         Object multi = null;
         try {
@@ -84,7 +84,7 @@ public class MultiplicityNotationUml extends MultiplicityNotation {
     }
     
     @Override
-    public String toString(Object multiplicityOwner, HashMap args) {
+    public String toString(Object multiplicityOwner, Map args) {
         Object mulitiplicity = 
             Model.getFacade().getMultiplicity(multiplicityOwner);
         return NotationUtilityUml.generateMultiplicity(mulitiplicity);

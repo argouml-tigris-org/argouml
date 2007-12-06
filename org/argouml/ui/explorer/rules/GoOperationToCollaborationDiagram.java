@@ -26,6 +26,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,7 +64,7 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
             }
             return ret;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -71,14 +72,14 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: What?
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.operation.collaboration-diagram");
+        return Translator.localize("misc.operation.collaboration-diagram");
     }
 
 }

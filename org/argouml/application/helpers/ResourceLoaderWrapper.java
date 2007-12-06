@@ -178,6 +178,16 @@ public final class ResourceLoaderWrapper {
     }
 
     /**
+     * This public operation is needed 
+     * to allow modules to add their own images.
+     * 
+     * @param location the path were the images are
+     */
+    public static void addResourceLocation(String location) {
+        ResourceLoader.addResourceLocation(location);
+    }
+
+    /**
      * Find the correct icon for a key.
      *
      * @param resource The name of the resource to look up.

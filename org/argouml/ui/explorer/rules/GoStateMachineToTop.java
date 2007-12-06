@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,7 +44,7 @@ public class GoStateMachineToTop extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.state-machine.top-state");
+        return Translator.localize("misc.state-machine.top-state");
     }
 
     /*
@@ -56,7 +57,7 @@ public class GoStateMachineToTop extends AbstractPerspectiveRule {
             list.add(Model.getFacade().getTop(parent));
 	    return list;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -69,6 +70,7 @@ public class GoStateMachineToTop extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
+
 }

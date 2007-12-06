@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -49,8 +48,9 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
      * Constructor for UMLTagDefinitionComboBoxModel.
      */
     public UMLTagDefinitionComboBoxModel() {
-        // TODO: no such event named tagdefinition
-        super("tagdefinition", false);
+        // TODO: What property name do we need here?  
+        // We're forced to have something, but nothing will really work.
+        super("definedTag", false);
     }
 
 
@@ -67,6 +67,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#setSelectedItem(java.lang.Object)
      */
+    @Override
     public void setSelectedItem(Object o) {
         setFireListEvents(false);
         super.setSelectedItem(o);
@@ -91,21 +92,31 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
     }
 
     private Collection getApplicableTagDefinitions(Object t) {
-        Set paths = new HashSet();
-        Set availableTagDefs = new TreeSet(new Comparator() {
-            public int compare(Object o1, Object o2) {
-                try {
-                    String name1 = Model.getFacade().getName(o1);
-                    String name2 = Model.getFacade().getName(o2);
-                    name1 = (name1 != null ? name1 : "");
-                    name2 = (name2 != null ? name2 : "");
-
-                    return name1.compareTo(name2);
-                } catch (Exception e) {
-                    throw new ClassCastException(e.getMessage());
-                }
-            }
-        });
+        Set<List<String>> paths = new HashSet<List<String>>();
+        Set<Object> availableTagDefs = new TreeSet<Object>(
+                new Comparator<Object>() {
+                    public int compare(Object o1, Object o2) {
+                        try {
+                            String name1 = Model.getFacade().getName(o1);
+                            String name2 = Model.getFacade().getName(o2);
+                            name1 = (name1 != null ? name1 : "");
+                            name2 = (name2 != null ? name2 : "");
+                            int result = name1.compareTo(name2);
+                            if (result == 0) {
+                                // Don't return equals based on name only
+                                if (o1.equals(o2)) {
+                                    return 0;
+                                } else {
+                                    return 1;
+                                }
+                            } else {
+                                return result;
+                            }
+                        } catch (Exception e) {
+                            throw new ClassCastException(e.getMessage());
+                        }
+                    }
+                });
         Collection stereotypes = Model.getFacade().getStereotypes(t);
         Project project = ProjectManager.getManager().getCurrentProject();
         for (Object model : project.getModels()) {
@@ -114,10 +125,10 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
                             model,
                             Model.getMetaTypes().getTagDefinition()));
         }
-        addAllUniqueModelElementsFrom(availableTagDefs, paths,
-                Model.getModelManagementHelper().getAllModelElementsOfKind(
-                        project.getDefaultModel(),
+        addAllUniqueModelElementsFrom(availableTagDefs, paths, project
+                .getProfileConfiguration().findByMetaType(
                         Model.getMetaTypes().getTagDefinition()));
+                        
         List notValids = new ArrayList();
         for (Object tagDef : availableTagDefs) {
             Object owner = Model.getFacade().getOwner(tagDef);
@@ -125,7 +136,9 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
                 notValids.add(tagDef);
             }
         }
+        int size = availableTagDefs.size();
         availableTagDefs.removeAll(notValids);
+        int delta = size - availableTagDefs.size();
         return availableTagDefs;
     }
 
@@ -137,16 +150,15 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
      * never contain two objects with the same path, unless they are added by
      * other means.
      */
-    private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
-            Collection source) {
-        Iterator it2 = source.iterator();
-
-        while (it2.hasNext()) {
-            Object obj = it2.next();
-            Object path = Model.getModelManagementHelper().getPath(obj);
+    private static void addAllUniqueModelElementsFrom(Set elements,
+            Set<List<String>> paths, Collection sources) {
+        
+        for (Object source : sources) {
+            List<String> path = Model.getModelManagementHelper().getPathList(
+                    source);
             if (!paths.contains(path)) {
                 paths.add(path);
-                elements.add(obj);
+                elements.add(source);
             }
         }
     }

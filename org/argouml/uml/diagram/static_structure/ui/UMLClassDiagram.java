@@ -424,7 +424,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionPermission == null) {
             actionPermission = makeCreateDependencyAction(
         	    ModeCreatePermission.class,
-                        Model.getMetaTypes().getPermission(),
+                        Model.getMetaTypes().getPackageImport(),
                         "button.new-permission");
         }
 

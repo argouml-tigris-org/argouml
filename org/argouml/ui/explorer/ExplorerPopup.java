@@ -56,6 +56,9 @@ import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
+import org.argouml.profile.Profile;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.profile.ProfileException;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionClassDiagram;
@@ -92,6 +95,9 @@ public class ExplorerPopup extends JPopupMenu {
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
         super("Explorer popup menu");
 
+        final Project currentProject =
+            ProjectManager.getManager().getCurrentProject();
+
         /* Check if multiple items are selected. */
         boolean multiSelect =
                 TargetManager.getInstance().getTargets().size() > 1;
@@ -99,13 +105,14 @@ public class ExplorerPopup extends JPopupMenu {
         boolean modelElementsOnly = true;
         for (Iterator it = TargetManager.getInstance().getTargets().iterator();
                 it.hasNext() && modelElementsOnly; ) {
-            if (!Model.getFacade().isAUMLElement(it.next())) {
+            Object element = it.next();
+            if (!Model.getFacade().isAUMLElement(element)
+                    // profile elements are NOT model elements
+                    || isRelatedToProfiles(currentProject, element)) {
         	modelElementsOnly = false;
             }
         }
 
-        final Project currentProject =
-            ProjectManager.getManager().getCurrentProject();
         final ArgoDiagram activeDiagram = currentProject.getActiveDiagram();
 
         // TODO: I've made some attempt to rationalize the conditions here
@@ -126,9 +133,15 @@ public class ExplorerPopup extends JPopupMenu {
         // this.add(action);
         // }
 
-        if (!multiSelect) {
+        if (!multiSelect
+                // a profile element is not considered a selection
+                && !isRelatedToProfiles(currentProject, selectedItem)) {
             initMenuCreateDiagrams();
             this.add(createDiagrams);
+        }
+        
+        if (!multiSelect && selectedItem instanceof Profile) {
+            this.add(new ActionExportProfileXMI((Profile) selectedItem));
         }
         
         if (modelElementsOnly) {
@@ -136,8 +149,11 @@ public class ExplorerPopup extends JPopupMenu {
         }
 
         final Object projectModel = currentProject.getModel();
-        final boolean modelElementSelected =
-            Model.getFacade().isAUMLElement(selectedItem);
+        final boolean modelElementSelected = Model.getFacade().isAUMLElement(
+                selectedItem)
+                // avoids modifications on profile models
+                && !isRelatedToProfiles(currentProject, selectedItem);
+
 
         if (modelElementSelected) {
             final boolean nAryAssociationSelected =
@@ -249,11 +265,14 @@ public class ExplorerPopup extends JPopupMenu {
         if (multiSelect) {
             Collection coll = TargetManager.getInstance().getTargets();
             Iterator iter = (coll != null) ? coll.iterator() : null;
-            ArrayList classifiers = new ArrayList();
+            List<Object> classifiers = new ArrayList<Object>();
             while (iter != null && iter.hasNext()) {
                 Object o = iter.next();
                 if (Model.getFacade().isAClassifier(o)
-                     && !Model.getFacade().isARelationship(o)) {
+                     && !Model.getFacade().isARelationship(o)
+
+                     // avoids modifications on profile models
+                     && !isRelatedToProfiles(currentProject, o)) {
                     classifiers.add(o);
                 }
             }
@@ -301,7 +320,7 @@ public class ExplorerPopup extends JPopupMenu {
      */
     private void initMenuCreateModelElements() {
 	List targets = TargetManager.getInstance().getTargets();
-        List menuItems = new ArrayList();
+        List<JMenuItem> menuItems = new ArrayList<JMenuItem>();
 	if (targets.size() >= 2) {
 	    // Check to see if all targets are classifiers
 	    // before adding an option to create an association between
@@ -355,7 +374,7 @@ public class ExplorerPopup extends JPopupMenu {
         	    " " + menuLocalize("menu.popup.extends") + " ");
             addCreateModelElementAction(
         	    menuItems,
-        	    Model.getMetaTypes().getPermission(),
+        	    Model.getMetaTypes().getPackageImport(),
         	    " " + menuLocalize("menu.popup.has-permission-on") + " ");
             addCreateModelElementAction(
         	    menuItems,
@@ -367,7 +386,7 @@ public class ExplorerPopup extends JPopupMenu {
         	    " " + menuLocalize("menu.popup.realizes") + " ");
 	}
 	if (menuItems.size() == 1) {
-	    add((JMenuItem) menuItems.get(0));
+	    add(menuItems.get(0));
 	} else if (menuItems.size() > 1) {
 	    JMenu menu =
 		new JMenu(menuLocalize("menu.popup.create-model-element"));
@@ -379,7 +398,7 @@ public class ExplorerPopup extends JPopupMenu {
     }
     
     private void addCreateModelElementAction(
-	        Collection menuItems,
+	        Collection<JMenuItem> menuItems,
 		Object metaType,
 		String relationshipDescr) {
 	List targets = TargetManager.getInstance().getTargets();
@@ -458,7 +477,7 @@ public class ExplorerPopup extends JPopupMenu {
             coll.addAll(Model.getFacade().getSuppliers(edge));
         } else if (Model.getFacade().isAGeneralization(edge)) {
             coll = new ArrayList();
-            Object parent = Model.getFacade().getParent(edge);
+            Object parent = Model.getFacade().getGeneral(edge);
             coll.add(parent);
             coll.addAll(Model.getFacade().getChildren(parent));
         }
@@ -626,45 +645,71 @@ public class ExplorerPopup extends JPopupMenu {
      * @author Bob Tarling
      */
     private class ActionCreateAssociationRole extends AbstractAction {
-	
-	private Object metaType; 
-	private List classifierRoles;
-	
-	private final Logger LOG =
-	    Logger.getLogger(ActionCreateModelElement.class);
-	
-	public ActionCreateAssociationRole(
-		Object metaType, 
-		List classifierRoles) {
-	    super(menuLocalize("menu.popup.create") + " "
-		    + Model.getMetaTypes().getName(metaType));
-	    this.metaType = metaType;
-	    this.classifierRoles = classifierRoles;
-	}
 
-	public void actionPerformed(ActionEvent e) {
+        private Object metaType; 
+        private List classifierRoles;
+
+        private final Logger LOG =
+            Logger.getLogger(ActionCreateModelElement.class);
+
+        public ActionCreateAssociationRole(
+                Object metaType, 
+                List classifierRoles) {
+            super(menuLocalize("menu.popup.create") + " "
+                    + Model.getMetaTypes().getName(metaType));
+            this.metaType = metaType;
+            this.classifierRoles = classifierRoles;
+        }
+
+        public void actionPerformed(ActionEvent e) {
             try {
-		Object newElement = Model.getUmlFactory().buildConnection(
-		    metaType,
-		    classifierRoles.get(0),
-		    null,
-		    classifierRoles.get(1),
-		    null,
-		    null,
-		    null);
-		for (int i = 2; i < classifierRoles.size(); ++i) {
+                Object newElement = Model.getUmlFactory().buildConnection(
+                        metaType,
+                        classifierRoles.get(0),
+                        null,
+                        classifierRoles.get(1),
+                        null,
+                        null,
+                        null);
+                for (int i = 2; i < classifierRoles.size(); ++i) {
                     Model.getUmlFactory().buildConnection(
-			    Model.getMetaTypes().getAssociationEndRole(),
-			    newElement,
-			    null,
-			    classifierRoles.get(i),
-			    null,
-			    null,
-			    null);
-		}
-	    } catch (IllegalModelElementConnectionException e1) {
-		LOG.error("Exception", e1);
-	    }
-	}
+                            Model.getMetaTypes().getAssociationEndRole(),
+                            newElement,
+                            null,
+                            classifierRoles.get(i),
+                            null,
+                            null,
+                            null);
+                }
+            } catch (IllegalModelElementConnectionException e1) {
+                LOG.error("Exception", e1);
+            }
+        }
+    }
+    
+    private boolean isRelatedToProfiles(Project currentProject,
+            Object selectedItem) {
+        boolean found = selectedItem instanceof ProfileConfiguration
+                || selectedItem instanceof Profile
+                || selectedItem instanceof ArgoDiagram;
+                
+        if (!found) {
+            for (Profile profile : currentProject.getProfileConfiguration()
+                    .getProfiles()) {
+                Collection models;
+                try {
+                    models = profile.getProfilePackages();
+                    for (Object model : models) {
+                        if ((Model.getFacade().getModel(selectedItem)
+                                .equals(model))) {
+                            found = true;
+                            break;
+                        }
+                    }
+                } catch (ProfileException e) {
+                }
+            }
+        }
+        return found;
     }
 }

@@ -53,10 +53,25 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
      * @param name the name of the tabpanel shown at the top
      * @param icon the icon of the tabpanel shown at the top
      * @param orientation the orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelStateVertex(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelStateVertex(String name, ImageIcon icon,
             Orientation orientation) {
-        super(name, icon, orientation);
+        this(name, icon);
+        setOrientation(orientation);
+    }
+    
+    /**
+     * Constructor for PropPanelStateVertex.
+     *
+     * @param name the name of the tabpanel shown at the top
+     * @param icon the icon of the tabpanel shown at the top
+     */
+    public PropPanelStateVertex(String name, ImageIcon icon) {
+        super(name, icon);
         JList incomingList = new UMLLinkedList(
                 new UMLStateVertexIncomingListModel());
         incomingScroll = new JScrollPane(incomingList);

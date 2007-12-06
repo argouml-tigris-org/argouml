@@ -69,7 +69,20 @@ public class ProgressMonitorWindow implements
      * @see org.argouml.persistence.ProgressListener#progress(org.argouml.persistence.ProgressEvent)
      */
     public void progress(final ProgressEvent event) {
-        updateProgress((int) event.getPosition());
+        final int progress = (int) event.getPosition();
+        if (this.pbar != null) {
+            // File load/save gets done on a background thread, so we'll 
+            // probably have to queue this to the Swing event thread
+            if (!SwingUtilities.isEventDispatchThread()) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        updateProgress(progress);                        
+                    }
+                });
+            } else {
+                updateProgress(progress);
+            }
+        }
     }
     
     /*
@@ -79,10 +92,11 @@ public class ProgressMonitorWindow implements
     public void updateProgress(final int progress) {
         if (this.pbar != null) {
             pbar.setProgress(progress);
-            Object[] args = new Object[]{String.valueOf(progress)};
+            Object[] args = new Object[] {String.valueOf(progress)};
             pbar.setNote(Translator.localize("dialog.progress.note", args));
         }
     }
+
     
     /*
      * @see org.argouml.application.api.ProgressMonitor#isCanceled()
@@ -101,8 +115,8 @@ public class ProgressMonitorWindow implements
     
     // these settings are needed to make the ProgressMonitor pop up early
     static {
-        UIManager.put("ProgressBar.repaintInterval", new Integer(150));
-        UIManager.put("ProgressBar.cycleTime", new Integer(1050));        
+        UIManager.put("ProgressBar.repaintInterval", Integer.valueOf(150));
+        UIManager.put("ProgressBar.cycleTime", Integer.valueOf(1050));        
     }
 
     /*

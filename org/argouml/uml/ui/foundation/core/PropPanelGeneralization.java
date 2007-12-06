@@ -33,7 +33,6 @@ import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a Generalization.
@@ -54,17 +53,12 @@ public class PropPanelGeneralization extends PropPanelModelElement {
      * Construct a property panel for Generalization elements.
      */
     public PropPanelGeneralization() {
-        super(
-	    Translator.localize("label.generalization"),
-            lookupIcon("Generalization"),
-            ConfigLoader.getTabPropsOrientation());
+        super("label.generalization", lookupIcon("Generalization"));
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
+        addField(Translator.localize("label.name"), getNameTextField());
         addField(Translator.localize("label.discriminator"),
                 getDiscriminatorTextField());
-        addField(Translator.localize("label.namespace"),
-                getNamespaceSelector());
+        addField(Translator.localize("label.namespace"), getNamespaceSelector());
 
         addSeparator();
 

@@ -87,6 +87,30 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
         return false;
     }
 
+    /* 
+     * For a deployment diagram, not just any 
+     * namespace will do - we need a package. 
+     */
+    @Override
+    protected Object findNamespace() {
+        Object ns = super.findNamespace();
+        if (ns == null) {
+            return ns;
+        }
+        if (!Model.getFacade().isANamespace(ns)) {
+            return ns;
+        }
+        while (!Model.getFacade().isAPackage(ns)) {
+            // ns is a namespace, but not a package
+            Object candidate = Model.getFacade().getNamespace(ns);
+            if (!Model.getFacade().isANamespace(candidate)) {
+                return null;
+            }
+            ns = candidate;
+        }
+        return ns;
+    }
+
     /**
      * The UID.
      */

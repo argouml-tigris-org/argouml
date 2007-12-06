@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,6 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Proppanel for Constraints . <p>
@@ -50,7 +49,7 @@ public class PropPanelConstraint extends PropPanelModelElement {
      * Construct a property panel for Constraint elements.
      */
     public PropPanelConstraint() {
-        super("Constraint", ConfigLoader.getTabPropsOrientation());
+        super("label.constraint", lookupIcon("Constraint"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

@@ -111,7 +111,9 @@ public class ActionAddOperation extends UndoableAction {
      */
     public boolean shouldBeEnabled() {
         Object target = TargetManager.getInstance().getSingleModelTarget();
-        if (target == null) return false;
+        if (target == null) {
+            return false;
+        }
         return Model.getFacade().isAClassifier(target)
             || Model.getFacade().isAFeature(target);
     }
@@ -120,4 +122,4 @@ public class ActionAddOperation extends UndoableAction {
      * The UID.
      */
     private static final long serialVersionUID = -1383845502957256177L;
-} /* end class ActionAddOperation */
+}

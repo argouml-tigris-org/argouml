@@ -50,6 +50,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.undo.UndoManager;
 
 /**
  * This class represents all Diagrams within ArgoUML.
@@ -89,6 +90,12 @@ public abstract class ArgoDiagramImpl extends Diagram
      */
     public ArgoDiagramImpl() {
         super();
+        if (!(UndoManager.getInstance() instanceof DiagramUndoManager)) {
+            UndoManager.setInstance(new DiagramUndoManager());
+            LOG.info("Setting Diagram undo manager");
+        } else {
+            LOG.info("Diagram undo manager already set");
+        }
         // really dirty hack to remove unwanted listeners
         getLayer().getGraphModel().removeGraphEventListener(getLayer());
     }
@@ -108,6 +115,12 @@ public abstract class ArgoDiagramImpl extends Diagram
     public ArgoDiagramImpl(String diagramName) {
         // next line patch to issue 596 (hopefully)
         super(diagramName);
+        if (!(UndoManager.getInstance() instanceof DiagramUndoManager)) {
+            UndoManager.setInstance(new DiagramUndoManager());
+            LOG.info("Setting Diagram undo manager");
+        } else {
+            LOG.info("Diagram undo manager already set");
+        }
         try {
             setName(diagramName);
         } catch (PropertyVetoException pve) { }
@@ -199,16 +212,14 @@ public abstract class ArgoDiagramImpl extends Diagram
         boolean faultFixed;
         do {
             faultFixed = false;
-            List figs = new ArrayList(getLayer().getContentsNoEdges());
-            for (Iterator i = figs.iterator(); i.hasNext();) {
-                Fig f = (Fig) i.next();
+            List<Fig> figs = new ArrayList<Fig>(getLayer().getContentsNoEdges());
+            for (Fig f : figs) {
                 if (repairFig(f, report)) {
                     faultFixed = true;
                 }
             }
-            figs = new ArrayList(getLayer().getContentsEdgesOnly());
-            for (Iterator i = figs.iterator(); i.hasNext();) {
-                Fig f = (Fig) i.next();
+            figs = new ArrayList<Fig>(getLayer().getContentsEdgesOnly());
+            for (Fig f : figs) {
                 if (repairFig(f, report)) {
                     faultFixed = true;
                 }
@@ -404,7 +415,7 @@ public abstract class ArgoDiagramImpl extends Diagram
 
 
     public List presentationsFor(Object obj) {
-        List presentations = new ArrayList();
+        List<Fig> presentations = new ArrayList<Fig>();
         int figCount = getLayer().getContents().size();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig fig = (Fig) getLayer().getContents().get(figIndex);
@@ -418,10 +429,10 @@ public abstract class ArgoDiagramImpl extends Diagram
 
     // TODO: Move to GEF
     public void remove() {
-        List contents = new ArrayList(getLayer().getContents());
+        List<Fig> contents = new ArrayList<Fig>(getLayer().getContents());
         int size = contents.size();
         for (int i = 0; i < size; ++i) {
-            Fig f = (Fig) contents.get(i);
+            Fig f = contents.get(i);
             f.removeFromDiagram();
         }
         firePropertyChange("remove", null, null);

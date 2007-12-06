@@ -26,7 +26,7 @@ package org.argouml.notation.providers.java;
 
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -57,8 +57,9 @@ public class AssociationNameNotationJava extends AssociationNameNotation {
      * 
      * @see org.argouml.notation.providers.AssociationNameNotation#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
      */
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
+    @Override
+    public void initialiseListener(final PropertyChangeListener listener, 
+            final Object modelElement) {
         addElementListener(listener, modelElement, 
                 new String[] {"isLeaf"});
         super.initialiseListener(listener, modelElement);
@@ -74,14 +75,14 @@ public class AssociationNameNotationJava extends AssociationNameNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
      */
-    public void parse(Object modelElement, String text) {
+    public void parse(final Object modelElement, final String text) {
         try {
             ModelElementNameNotationJava.parseModelElement(modelElement, text);
         } catch (ParseException pe) {
-            String msg = "statusmsg.bar.error.parsing.node-modelelement";
-            Object[] args = {
+            final String msg = "statusmsg.bar.error.parsing.node-modelelement";
+            final Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
@@ -92,7 +93,8 @@ public class AssociationNameNotationJava extends AssociationNameNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString(Object modelElement, HashMap args) {
+    @Override
+    public String toString(final Object modelElement, final Map args) {
         String name;
         name = Model.getFacade().getName(modelElement);
         if (name == null) return "";

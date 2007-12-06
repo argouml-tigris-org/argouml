@@ -167,7 +167,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
     /**
      * Calculate the weight of this node. The function distinguishes between
-     * note-nodes and standard-nodes, because a note shall be positioned to the
+     * note-nodes and standard-nodes, because a note should be positioned to the
      * right of its first related node, if it exists. Therefor the weight is a
      * function of the weight of the related node. For standard-nodes the weight
      * is a function of up-/downlinks, column and uplink factor.
@@ -176,14 +176,14 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      */
     public float calculateWeight() {
         weight = 0;
-        float w = getSubtreeWeight();
         for (ClassdiagramNode node : uplinks) {
             weight = Math.max(weight, node.getWeight()
                     * UPLINK_FACTOR
                     * (1 + 1 / Math
                             .max(1, node.getColumn() + UPLINK_FACTOR)));
         }
-        weight += w + 1 / Math.max(1, getColumn() + UPLINK_FACTOR);
+        weight += getSubtreeWeight()
+                + (1 / Math.max(1, getColumn() + UPLINK_FACTOR));
         return weight;
     }
 

@@ -24,10 +24,11 @@
 
 package org.argouml.notation.providers.java;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
@@ -75,9 +76,9 @@ public class OperationNotationJava extends OperationNotation {
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         StringBuffer sb = new StringBuffer(80);
         String nameStr = null;
         boolean constructor = false;
@@ -132,7 +133,7 @@ public class OperationNotationJava extends OperationNotation {
         }
 
         // name and params
-        Vector params = new Vector(
+        List params = new ArrayList(
                 Model.getFacade().getParameters(modelElement));
         params.remove(rp);
 
@@ -144,7 +145,7 @@ public class OperationNotationJava extends OperationNotation {
                     sb.append(", ");
                 }
                 sb.append(NotationUtilityJava.generateParameter(
-                        params.elementAt(i)));
+                        params.get(i)));
             }
         }
 

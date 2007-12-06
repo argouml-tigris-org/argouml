@@ -63,12 +63,12 @@ import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
 import org.argouml.uml.diagram.sequence.ui.FigMessage;
 import org.argouml.uml.diagram.sequence.ui.SequenceDiagramLayer;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.java.JavaLexer;
 import org.argouml.uml.reveng.java.JavaRecognizer;
@@ -168,9 +168,9 @@ public class RESequenceDiagramDialog
             // maybe there is an easier way to find
             // the current diagram than this:
             Project p = ProjectManager.getManager().getCurrentProject();
-            Iterator iter = p.getDiagrams().iterator();
+            Iterator<ArgoDiagram> iter = p.getDiagramList().iterator();
             while (iter.hasNext()) {
-                diagram = (ArgoDiagram) iter.next();
+                diagram = iter.next();
                 if (graphModel == diagram.getGraphModel()) {
                     break;
                 }
@@ -274,12 +274,12 @@ public class RESequenceDiagramDialog
                 && Model.getFacade().getNamespace(target) != null) {
             newTarget = Model.getFacade().getNamespace(target);
         } else if (target instanceof Diagram) {
-            Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
+            Diagram firstDiagram = (Diagram) p.getDiagramList().get(0);
             if (target != firstDiagram) {
                 newTarget = firstDiagram;
             } else {
-                if (p.getDiagrams().size() > 1) {
-                    newTarget = p.getDiagrams().get(1);
+                if (p.getDiagramList().size() > 1) {
+                    newTarget = p.getDiagramList().get(1);
                 } else {
                     newTarget = p.getRoot();
                 }
@@ -368,7 +368,7 @@ public class RESequenceDiagramDialog
         top.add(new JLabel("Assumption table:"), labelConstraints);
         top.add(new JButton("Update"), fieldConstraints);
 
-        List assumptions = new ArrayList();
+        List<String> assumptions = new ArrayList<String>();
         assumptions.add("calls.hasMoreElements()");
         assumptions.add("methods != null && !methods.isEmpty()");
         Object[] data = null;
@@ -474,7 +474,7 @@ public class RESequenceDiagramDialog
                 theClassifier);
         diagram =
             DiagramFactory.getInstance().createDiagram(
-                UMLSequenceDiagram.class,
+                DiagramType.Sequence,
                 collaboration,
                 null);
         graphModel = (SequenceDiagramGraphModel) diagram.getGraphModel();
@@ -528,6 +528,7 @@ public class RESequenceDiagramDialog
 
             diagram.add(crFig);
             graphModel.addNode(node);
+            // TODO: Send event instead of calling event adapter directly
             ExplorerEventAdaptor.getInstance().modelElementChanged(
                 Model.getFacade().getNamespace(classifier));
         }
@@ -804,6 +805,7 @@ public class RESequenceDiagramDialog
      */
     private Object permissionLookup(Object comp, String clsName) {
         Object theClassifier = null;
+        // TODO: This could use the new CoreHelper.getPackageImports()
         Collection cdeps = Model.getFacade().getClientDependencies(comp);
         Iterator iter1 = cdeps != null ? cdeps.iterator() : null;
         while (theClassifier == null && iter1 != null && iter1.hasNext()) {
@@ -816,6 +818,11 @@ public class RESequenceDiagramDialog
                         && iter2 != null
                         && iter2.hasNext()) {
                     Object elem = iter2.next();
+                    // TODO: I'm not sure what this is trying to do, but it
+                    // probably isn't what it thinks it is.  The supplier to
+                    // an import is going to be a Package, which is not a
+                    // Classifier.  Perhaps this intends to process the 
+                    // ownedElements of the Package. - tfm - 20070803
                     if (Model.getFacade().isAClassifier(elem)
                          && clsName.equals(Model.getFacade().getName(elem))) {
                         theClassifier = elem;

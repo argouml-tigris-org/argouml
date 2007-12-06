@@ -45,6 +45,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.checklist.CheckItem;
 import org.argouml.cognitive.checklist.CheckManager;
@@ -52,7 +53,6 @@ import org.argouml.cognitive.checklist.Checklist;
 import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.gef.presentation.Fig;
@@ -167,12 +167,16 @@ public class TabChecklist extends AbstractArgoJPanel
     /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
-    public Object getTarget() { return target; }
+    public Object getTarget() {
+        return target;
+    }
 
     /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
-    public void refresh() { setTarget(target); }
+    public void refresh() {
+        setTarget(target);
+    }
 
     /*
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
@@ -334,7 +338,9 @@ class TableModelChecklist extends AbstractTableModel
     /*
      * @see javax.swing.table.TableModel#getColumnCount()
      */
-    public int getColumnCount() { return 2; }
+    public int getColumnCount() {
+        return 2;
+    }
 
     /*
      * @see javax.swing.table.TableModel#getColumnName(int)
@@ -356,11 +362,11 @@ class TableModelChecklist extends AbstractTableModel
     public Class getColumnClass(int c) {
 	if (c == 0) {
 	    return Boolean.class;
-	}
-	if (c == 1) {
+	} else if (c == 1) {
+	    return String.class;
+	} else {
 	    return String.class;
 	}
-	return String.class;
     }
 
     /*

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,10 +29,9 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel for a Datatype.
+ * The properties panel for an Enumeration element.
  */
 public class PropPanelEnumeration extends PropPanelDataType {
 
@@ -42,19 +41,18 @@ public class PropPanelEnumeration extends PropPanelDataType {
         new UMLEnumerationLiteralsListModel();
 
     /**
-     * The constructor.
+     * Construct a property panel for the UML Enumeration element.
      */
     public PropPanelEnumeration() {
-        super("Enumeration", lookupIcon("Enumeration"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.enumeration-title", lookupIcon("Enumeration"));
 
-        addField(Translator.localize("label.literals"),
-                getLiteralsScroll());
+        addField(Translator.localize("label.literals"), getLiteralsScroll());
     }
 
     /*
      * @see org.argouml.uml.ui.foundation.core.PropPanelDataType#addEnumerationButtons()
      */
+    @Override
     protected void addEnumerationButtons() {
         super.addEnumerationButtons();
         addAction(new ActionAddLiteral());

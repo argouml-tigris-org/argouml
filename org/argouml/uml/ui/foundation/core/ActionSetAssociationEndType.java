@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,10 +53,10 @@ public class ActionSetAssociationEndType extends UndoableAction {
     }
 
 
-
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
     	super.actionPerformed(e);
         Object source = e.getSource();
@@ -77,17 +77,12 @@ public class ActionSetAssociationEndType extends UndoableAction {
         }
         if (newClassifier != oldClassifier && end != null
                 && newClassifier != null) {
-            newClassifier = Model.getModelManagementHelper()
-                .getCorrespondingElement(
-                      newClassifier,
-                      Model.getFacade().getModel(end));
             Model.getCoreHelper().setType(end, newClassifier);
             super.actionPerformed(e);
         }
 
     }
-
-
+    
 
     /**
      * @return Returns the SINGLETON.

@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -40,7 +41,7 @@ import org.argouml.model.Model;
 import org.argouml.util.MyTokenizer;
 
 /**
- * @author BTarling
+ * @author Bob Tarling
  *
  */
 public class StereotypeUtility {
@@ -50,7 +51,6 @@ public class StereotypeUtility {
      */
     private StereotypeUtility() {
         super();
-        // TODO: Auto-generated constructor stub
     }
 
     public static Action[] getApplyStereotypeActions(Object modelElement) {
@@ -76,31 +76,152 @@ public class StereotypeUtility {
      * @param modelElement the given modelelement
      * @return the set with stereotype UML objects
      */
-    public static Set getAvailableStereotypes(Object modelElement) {
-        Set paths = new HashSet();
-        Set availableStereotypes = new TreeSet(new Comparator() {
-            public int compare(Object o1, Object o2) {
-                try {
-                    String name1 = Model.getFacade().getName(o1);
-                    String name2 = Model.getFacade().getName(o2);
-                    name1 = (name1 != null ? name1 : "");
-                    name2 = (name2 != null ? name2 : "");
-
-                    return name1.compareTo(name2);
-                } catch (Exception e) {
-                    throw new ClassCastException(e.getMessage());
-                }
-            }
-        });            
+    public static Set<Object> getAvailableStereotypes(Object modelElement) {
+        Set<List> paths = new HashSet<List>();
+        Set<Object> availableStereotypes = new TreeSet<Object>(
+                new Comparator<Object>() {
+                    public int compare(Object o1, Object o2) {
+                        try {
+                            if (o1.equals(o2)) {
+                                return 0;
+                            }
+                            String name1 = Model.getFacade().getName(o1);
+                            String name2 = Model.getFacade().getName(o2);
+                            name1 = (name1 != null ? name1 : "");
+                            name2 = (name2 != null ? name2 : "");
+                            int nameCompare = name1.compareTo(name2);
+                            if (nameCompare == 0) {
+                                return 1;
+                            } else {
+                                return nameCompare;
+                            }
+                        } catch (Exception e) {
+                            throw new ClassCastException(e.getMessage());
+                        }
+                    }
+                });
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
+        
+        Collection topLevelModels =
+            ProjectManager.getManager().getCurrentProject().getModels();
+        
+        // adds all stereotypes defined at the top level namespaces        
+        Collection topLevelStereotypes = getTopLevelStereotypes(topLevelModels);
+        
+        Collection validTopLevelStereotypes = new ArrayList();
             
         addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
                 .getExtensionMechanismsHelper().getAllPossibleStereotypes(
                         models, modelElement));
+        for (Object stereotype : topLevelStereotypes) {
+            if (Model.getExtensionMechanismsHelper().isValidStereotype(
+                    modelElement, stereotype)) {
+                validTopLevelStereotypes.add(stereotype);
+            }            
+        }
+
+        addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                validTopLevelStereotypes);
+        
+        // adds all stereotypes defined at the profiles applied to the
+        // current namespace
+        Object namespace = Model.getFacade().getNamespace(modelElement);
+        if (namespace != null) {
+            while (true) {
+                getApplicableStereotypesInNamespace(modelElement, paths,
+                        availableStereotypes, namespace);
+                Object newNamespace = Model.getFacade().getNamespace(namespace);
+
+                if (newNamespace == null) {
+                    break;
+                }
+
+                namespace = newNamespace;
+            }
+        }
+        
+        // adds all stereotypes defined at the profiles applied 
+        // to the current project
+        addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration()
+                        .findAllStereotypesForModelElement(modelElement));
+        
         return availableStereotypes;
     }
+
+    private static Collection<Object> getTopLevelStereotypes(
+            Collection<Object> topLevelModels) {
+        Collection<Object> ret = new ArrayList<Object>();
+        for (Object model : topLevelModels) {
+            for (Object stereotype : Model.getExtensionMechanismsHelper()
+                    .getStereotypes(model)) {
+                Object namespace = Model.getFacade().getNamespace(stereotype);
+                if (Model.getFacade().getNamespace(namespace) == null) {
+                    ret.add(stereotype);
+                }
+            }
+        }
+        return ret;
+    }
     
+    private static void getApplicableStereotypesInNamespace(
+            Object modelElement, Set<List> paths,
+            Set<Object> availableStereotypes, Object namespace) {
+        Collection allProfiles = getAllProfilePackages(Model.getFacade()
+                .getModel(modelElement));
+        Collection<Object> allAppliedProfiles = new ArrayList<Object>();
+        
+        for (Object profilePackage : allProfiles) {
+            Collection allDependencies = Model.getCoreHelper().getDependencies(
+                    profilePackage, namespace);
+
+            for (Object dependency : allDependencies) {
+                if (Model.getExtensionMechanismsHelper().hasStereotype(
+                        dependency, "appliedProfile")) {
+                    allAppliedProfiles.add(profilePackage);
+                    break;
+                }
+            }
+        }
+        
+        addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                getAppliableStereotypes(modelElement, allAppliedProfiles));
+    }
+    
+    private static Collection<Object> getAppliableStereotypes(
+            Object modelElement, Collection<Object> allAppliedProfiles) {
+        Collection<Object> ret = new ArrayList<Object>();
+        for (Object profile : allAppliedProfiles) {
+            for (Object stereotype : Model.getExtensionMechanismsHelper()
+                    .getStereotypes(profile)) {
+                if (Model.getExtensionMechanismsHelper().isValidStereotype(
+                        modelElement, stereotype)) {
+                    ret.add(stereotype);
+                }
+            }
+        }
+
+        return ret;
+    }
+
+    private static Collection<Object> getAllProfilePackages(Object model) {
+        Collection col = Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(model,
+                        Model.getMetaTypes().getPackage());
+        Collection<Object> ret = new ArrayList<Object>();
+        
+        for (Object element : col) {
+            if (Model.getFacade().isAPackage(element)
+                    && Model.getExtensionMechanismsHelper().hasStereotype(
+                            element, "profile")) {
+                ret.add(element);
+            }
+        }
+        return ret;
+    }
+
     /**
      * Helper method for buildModelList.
      * <p>
@@ -109,38 +230,57 @@ public class StereotypeUtility {
      * never contain two objects with the same path, unless they are added by
      * other means.
      */
-    private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
-            Collection source) {
-        Iterator it2 = source.iterator();
-
-        while (it2.hasNext()) {
-            Object obj = it2.next();
-            Object path = Model.getModelManagementHelper().getPath(obj);
+    private static void addAllUniqueModelElementsFrom(Set<Object> elements,
+            Set<List> paths, Collection<Object> source) {
+        for (Object obj : source) {
+            List path = Model.getModelManagementHelper().getPathList(obj);
             if (!paths.contains(path)) {
                 paths.add(path);
                 elements.add(obj);
             }
         }
     }
-    
+
     /**
-     * This function shall replace the previous set of stereotypes
-     * of the given modelelement with a new set,
-     * given in the form of a "," seperated string of stereotype names.
-     *
+     * Replace the previous set of stereotypes applied to the given modelelement
+     * with a new set, given in the form of a "," separated string of stereotype
+     * names.
+     * 
+     * @param element the UML element to modify
+     * @param stereotype Comma separated list of stereotype names. Empty string
+     *                or <code>null</code> represents no stereotypes.
+     * @param removeCurrent true if all current stereotypes should be removed
+     *                before adding the new stereotypes, false if new
+     *                stereotypes should be added to existing ones.
+     */
+    public static void dealWithStereotypes(Object element,
+            StringBuilder stereotype, boolean removeCurrent) {
+        if (stereotype == null) {
+            dealWithStereotypes(element, (String) null, removeCurrent);
+        } else {
+            dealWithStereotypes(element, stereotype.toString(), removeCurrent);
+        }
+    }
+
+    /**
+     * This function shall replace the previous set of stereotypes of the given
+     * modelelement with a new set, given in the form of a "," separated string
+     * of stereotype names.
+     * 
      * @param umlobject the UML element to adapt
-     * @param stereotype comma seperated stereotype names
-     * @param full false if stereotypes are only added,
-     *             true if removal should be done, too.
+     * @param stereotype Comma separated list stereotype names. Empty string or
+     *                <code>null</code> represents no stereotypes.
+     * @param full false if stereotypes are only added, true if removal should
+     *                be done, too.
      */
     public static void dealWithStereotypes(Object umlobject, String stereotype,
             boolean full) {
         String token;
         MyTokenizer mst;
-        Collection stereotypes = new ArrayList();
+        Collection<String> stereotypes = new ArrayList<String>();
 
         /* Convert the string (e.g. "aaa,bbb,ccc")
-         * into seperate stereotype-names (e.g. "aaa", "bbb", "ccc").
+         * into separate stereotype-names (e.g. "aaa", "bbb", "ccc").
          */
         if (stereotype != null) {
             mst = new MyTokenizer(stereotype, " ,\\,");
@@ -154,10 +294,9 @@ public class StereotypeUtility {
 
         if (full) {
             // collect the to be removed stereotypes
-            Collection toBeRemoved = new ArrayList();
-            Iterator i = Model.getFacade().getStereotypes(umlobject).iterator();
-            while (i.hasNext()) {
-                String stereotypename = Model.getFacade().getName(i.next());
+            Collection<Object> toBeRemoved = new ArrayList<Object>();
+            for (Object stereo : Model.getFacade().getStereotypes(umlobject)) {
+                String stereotypename = Model.getFacade().getName(stereo);
                 if (stereotypename != null
                         && !stereotypes.contains(stereotypename)) {
                     toBeRemoved.add(getStereotype(umlobject, stereotypename));
@@ -165,17 +304,15 @@ public class StereotypeUtility {
             }
 
             // and now remove them
-            i = toBeRemoved.iterator();
-            while (i.hasNext()) {
-                Model.getCoreHelper().removeStereotype(umlobject, i.next());
+            for (Object o : toBeRemoved) {
+                Model.getCoreHelper().removeStereotype(umlobject, o);
             }
         }
 
         // add stereotypes
-        if (!stereotypes.isEmpty()) {
-            Iterator i = stereotypes.iterator();
-            while (i.hasNext()) {
-                String stereotypename = (String) i.next();
+        for (String stereotypename : stereotypes) {
+            if (!Model.getExtensionMechanismsHelper()
+                    .hasStereotype(umlobject, stereotypename)) {
                 Object umlstereo = getStereotype(umlobject, stereotypename);
                 if (umlstereo != null) {
                     Model.getCoreHelper().addStereotype(umlobject, umlstereo);
@@ -203,19 +340,12 @@ public class StereotypeUtility {
             return stereo;
         }
 
-        try {
-            Project project = ProjectManager.getManager().getCurrentProject();
-            Profile profile = project.getProfile();
-            stereo = recFindStereotype(obj, profile.getProfileModel(), name);
-        } catch (ProfileException e) {
-            // TODO: How are we going to handle exceptions here?
-            // I suspect the profile should be part of the project
-            // and not a singleton.
-        }
+        Project project = ProjectManager.getManager().getCurrentProject();
+        stereo = project.getProfileConfiguration().findStereotypeForObject(
+                name, obj); 
 
         if (stereo != null) {
-            return Model.getModelManagementHelper().getCorrespondingElement(
-                    stereo, root);
+            return stereo;
         }
 
         if (root != null && name.length() > 0) {
@@ -249,8 +379,8 @@ public class StereotypeUtility {
 
         if (Model.getFacade().isAStereotype(root)
                 && name.equals(Model.getFacade().getName(root))) {
-            if (Model.getExtensionMechanismsHelper().isValidStereoType(obj,
-            /* (MStereotype) */root)) {
+            if (Model.getExtensionMechanismsHelper().isValidStereotype(obj,
+                    root)) {
                 return root;
             }
         }

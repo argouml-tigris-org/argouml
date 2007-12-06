@@ -33,7 +33,7 @@ import javax.swing.Action;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ProjectBrowser;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * Action to display the todo pane.

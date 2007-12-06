@@ -25,7 +25,8 @@
 package org.argouml.uml.ui.model_management;
 
 import java.awt.event.ActionEvent;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -54,7 +55,6 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
-import org.argouml.util.ConfigLoader;
 import org.tigris.gef.undo.UndoableAction;
 import org.tigris.swidgets.Orientation;
 
@@ -84,20 +84,35 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * Construct a default property panel for UML Package elements.
      */
     public PropPanelPackage() {
-        this("Package", lookupIcon("Package"),
-                ConfigLoader.getTabPropsOrientation());
+        this("label.package", lookupIcon("Package"));
     }
 
+    /**
+     * Construct a property panel for UML Packages with the name and icon..
+     * 
+     * @param title the title for this panel
+     * @param icon the icon to show next to the title
+     */
+    public PropPanelPackage(String title, ImageIcon icon) {
+        super(title, icon);
+        placeElements();
+    }
+    
     /**
      * Construct a property panel for UML Packages with the given parameters.
      * 
      * @param title the title for this panel
      * @param orientation the orientation
      * @param icon the icon to show next to the title
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelPackage(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelPackage(String title, ImageIcon icon,
             Orientation orientation) {
-        super(title, icon, orientation);
+        super(title, icon);
+        setOrientation(orientation);
         placeElements();
     }
 
@@ -106,10 +121,8 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * should override to place the elements the way they want.
      */
     protected void placeElements() {
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.namespace"),
-                getNamespaceSelector());
+        addField("label.name", getNameTextField());
+        addField("label.namespace", getNamespaceSelector());
 
         add(getNamespaceVisibilityPanel());
 
@@ -117,14 +130,14 @@ public class PropPanelPackage extends PropPanelNamespace  {
         
         addSeparator();
         
-        addField(Translator.localize("label.generalizations"),
+        addField("label.generalizations",
                 getGeneralizationScroll());
-        addField(Translator.localize("label.specializations"),
+        addField("label.specializations",
                 getSpecializationScroll());
         
         addSeparator();
         
-        addField(Translator.localize("label.owned-elements"),
+        addField("label.owned-elements",
                 getOwnedElementsScroll());
 
         JList importList =
@@ -133,7 +146,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
                 null,
                 new ActionRemovePackageImport(),
                 true);
-        addField(Translator.localize("label.imported-elements"),
+        addField("label.imported-elements",
                 new JScrollPane(importList));
 
         addAction(new ActionNavigateNamespace());
@@ -193,6 +206,12 @@ public class PropPanelPackage extends PropPanelNamespace  {
 
 } /* end class PropPanelPackage */
 
+/**
+ * NOTE: This class almost, but not quite, implements the interfaces defined in
+ * {@link org.argouml.uml.ui.AbstractActionAddModelElement}. The difference is
+ * that the doIt(), getChoices(), and getSelected() methods here accept an extra
+ * argument containing the target.
+ */
 class ActionDialogElementImport extends UndoableAction {
 
     public ActionDialogElementImport() {
@@ -207,6 +226,7 @@ class ActionDialogElementImport extends UndoableAction {
     /**
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object target = TargetManager.getInstance().getSingleModelTarget();
@@ -219,25 +239,25 @@ class ActionDialogElementImport extends UndoableAction {
                         isExclusive());
             int result = dialog.showDialog(ArgoFrame.getInstance());
             if (result == JOptionPane.OK_OPTION) {
-                doIt(target, dialog.getSelected());
+                doIt(target, dialog.getSelectedList());
             }
         }
     }
     
-    protected Vector getChoices(Object target) {
-        Vector vec = new Vector();
+    protected List getChoices(Object target) {
+        List result = new ArrayList();
         /* TODO: correctly implement next function 
          * in the model subsystem for 
          * issue 1942: */
-        vec.addAll(Model.getModelManagementHelper()
+        result.addAll(Model.getModelManagementHelper()
                 .getAllPossibleImports(target));
-        return vec;
+        return result;
     }
     
-    protected Vector getSelected(Object target) {
-        Vector vec = new Vector();
-        vec.addAll(Model.getFacade().getImportedElements(target));
-        return vec;
+    protected List getSelected(Object target) {
+        List result = new ArrayList();
+        result.addAll(Model.getFacade().getImportedElements(target));
+        return result;
     }
     
     protected String getDialogTitle() {
@@ -252,7 +272,8 @@ class ActionDialogElementImport extends UndoableAction {
         return true;
     }
     
-    protected void doIt(Object target, Vector selected) {
+    protected void doIt(Object target, List selected) {
         Model.getModelManagementHelper().setImportedElements(target, selected);
     }
+
 }

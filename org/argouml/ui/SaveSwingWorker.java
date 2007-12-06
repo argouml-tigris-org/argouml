@@ -48,6 +48,7 @@ public class SaveSwingWorker extends SwingWorker {
      * @param aOverwrite   whether to show the UI or not
      */
     public SaveSwingWorker(boolean aOverwrite, File aFile) {
+        super("ArgoSaveProjectThread");
         overwrite = aOverwrite;
         file = aFile;
     }
@@ -61,6 +62,9 @@ public class SaveSwingWorker extends SwingWorker {
      * @return          always null
      */
     public Object construct(ProgressMonitor pmw) {
+        // Save project at slightly lower priority to keep UI responsive
+        Thread currentThread = Thread.currentThread();
+        currentThread.setPriority(currentThread.getPriority() - 1);
         // saves the project
         result = ProjectBrowser.getInstance().trySave(overwrite, file, pmw);
         return null;

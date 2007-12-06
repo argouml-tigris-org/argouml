@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -81,9 +81,13 @@ public class GoListToOffenderToItem extends AbstractGoList {
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object node) {
-	if (node instanceof ToDoList) return false;
-	if (getChildCount(node) > 0) return false;
-	return true;
+        if (node instanceof ToDoList) {
+            return false;
+        }
+        if (getChildCount(node) > 0) {
+            return false;
+        }
+        return true;
     }
 
 
@@ -103,10 +107,11 @@ public class GoListToOffenderToItem extends AbstractGoList {
     }
 
     /**
-     * Get a list of children.
+     * Get a list of children. Note that unlike its predecessor getChildren(),
+     * this never returns null. If there are no children, it will return an
+     * empty list.
      * 
-     * @param parent
-     *            the parent object to check
+     * @param parent the parent object to check
      * @return a list of children for the given object
      */
     public List<ToDoItem> getChildrenList(Object parent) {

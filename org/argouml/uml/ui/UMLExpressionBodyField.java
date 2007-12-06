@@ -68,6 +68,7 @@ public class UMLExpressionBodyField extends JTextArea
         getDocument().addDocumentListener(this);
         setToolTipText(Translator.localize("label.body.tooltip"));
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
+        setRows(2); // make it strech vertically
     }
 
     /*

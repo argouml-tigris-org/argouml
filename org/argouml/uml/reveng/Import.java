@@ -982,7 +982,8 @@ class ImportClasspathDialog extends JDialog {
                 URL[] urls = new URL[pathsModel.size()];
                 for (int i = 0; i < urls.length; i++) {
                     try {
-                        urls[i] = new File((String) pathsModel.get(i)).toURL();
+                        urls[i] = new File((String) pathsModel.get(i)).toURI()
+                                .toURL();
                     } catch (Exception e1) {
                         LOG.warn("could not do ok: could not make"
                                 + "url " + pathsModel.get(i) + ", " + e1,

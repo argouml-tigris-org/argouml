@@ -27,6 +27,7 @@ package org.argouml.language.java.cognitive.critics;
 import java.util.Collections;
 import java.util.List;
 
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
 import org.argouml.cognitive.Agency;
@@ -60,6 +61,10 @@ public class InitJavaCritics implements InitSubsystem {
         Agency.register(crMultiInherit, classCls);
         Agency.register(crMultiRealization, interfaceCls);
         //Agency.register(crReservedNameJava, interfaceCls);
+    }
+
+    public List<AbstractArgoJPanel> getDetailsTabs() {
+        return Collections.emptyList();
     }
 
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,11 +26,15 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a Permission.
- *
+ * <p>
+ * TODO: In UML 2.x, the import and access Permissions have become
+ * PackageImports with public visibility and non-public visibility respectively.
+ * (ArgoUML only supports the <<import>> Permission currently). The friend
+ * Permission has been dropped. Also the type hierarchy has been reorganized so
+ * that PackageImport is not a subtype of Dependency.
  */
 public class PropPanelPermission extends PropPanelDependency {
 
@@ -43,10 +47,9 @@ public class PropPanelPermission extends PropPanelDependency {
      * Construct a property panel for UML Permission elements.
      */
     public PropPanelPermission() {
-        super("Permission", ConfigLoader.getTabPropsOrientation());
+        super("label.permission", lookupIcon("Permission"));
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
+        addField(Translator.localize("label.name"), getNameTextField());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
@@ -61,5 +64,5 @@ public class PropPanelPermission extends PropPanelDependency {
         addAction(getDeleteAction());
     }
 
-} /* end class PropPanelPermission */
+}
 

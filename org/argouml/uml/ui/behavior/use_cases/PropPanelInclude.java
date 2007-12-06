@@ -26,13 +26,11 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import javax.swing.JList;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Builds the property panel for an Include relationship.<p>
@@ -55,25 +53,21 @@ public class PropPanelInclude extends PropPanelModelElement {
      * Construct a property panel for Include model elements.
      */
     public PropPanelInclude() {
-        super("Include",
-                lookupIcon("Include"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.include", lookupIcon("Include"));
 
-        addField(Translator.localize("label.name"),
-		 getNameTextField());
-        addField(Translator.localize("label.namespace"),
-                getNamespaceSelector());
+        addField("label.name", getNameTextField());
+        addField("label.namespace", getNamespaceSelector());
 
         addSeparator();
 
         JList baseBox =
 	    new UMLLinkedList(new UMLIncludeBaseListModel());
-        addField(Translator.localize("label.usecase-base"),
+        addField("label.usecase-base",
 		 getSingleRowScroll(baseBox));
 
         JList additionBox =
 	    new UMLLinkedList(new UMLIncludeAdditionListModel());
-        addField(Translator.localize("label.addition"),
+        addField("label.addition",
 		 getSingleRowScroll(additionBox));
 
         // Add the toolbar buttons:
@@ -163,4 +157,4 @@ public class PropPanelInclude extends PropPanelModelElement {
     }
 
 
-} /* end class PropPanelInclude */
+} 

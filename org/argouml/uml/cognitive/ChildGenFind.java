@@ -24,9 +24,10 @@
 
 package org.argouml.uml.cognitive;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Vector;
+import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
@@ -55,29 +56,20 @@ public class ChildGenFind implements ChildGenerator {
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
-	if (o instanceof Project) {
-	    Project p = (Project) o;
-	    Vector res = new Vector();
-	    res.addAll(p.getUserDefinedModelList());
-	    res.addAll(p.getDiagramList());
-	    return res.elements();
-	}
-        
-        if (o instanceof Diagram) {
+        List res = new ArrayList();
+        if (o instanceof Project) {
+            Project p = (Project) o;
+            res.addAll(p.getUserDefinedModelList());
+            res.addAll(p.getDiagramList());
+        } else if (o instanceof Diagram) {
             Diagram d = (Diagram) o;
-
-            Vector res = new Vector();
             res.addAll(d.getGraphModel().getNodes());
             res.addAll(d.getGraphModel().getEdges());
-            return res.elements();
-        }
-
-	if (Model.getFacade().isAModelElement(o)) {
-            return Collections.enumeration(Model.getFacade()
-                    .getModelElementContents(o));
+        } else if (Model.getFacade().isAModelElement(o)) {
+            res.addAll(Model.getFacade().getModelElementContents(o));
         }
         
-	return new Vector().elements();
+	return Collections.enumeration(res);
     }
 
     /**

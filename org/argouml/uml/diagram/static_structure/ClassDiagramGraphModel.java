@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
@@ -58,8 +57,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /*
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
-    public List getPorts(Object nodeOrEdge) {
-	List res = new ArrayList(); 
+    public List<Object> getPorts(Object nodeOrEdge) {
+	List<Object> res = new ArrayList<Object>(); 
 	if (Model.getFacade().isAClassifier(nodeOrEdge)) {
 	    res.add(nodeOrEdge);
 	}
@@ -94,7 +93,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public List getInEdges(Object port) {
 
-	List edges = new ArrayList();
+	List<Object> edges = new ArrayList<Object>();
 
 	// top of the hierarchy is ME:
 	if (Model.getFacade().isAModelElement(port)) {
@@ -139,7 +138,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public List getOutEdges(Object port) {
 
-	List edges = new ArrayList();
+	List<Object> edges = new ArrayList<Object>();
 
 	// top of the hierarchy is ME:
 	if (Model.getFacade().isAModelElement(port)) {
@@ -168,7 +167,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	            while (it2.hasNext()) {
                         Object nextAssocEnd = it2.next();
                         if (!thisEnd.equals(nextAssocEnd)
-                                && Model.getFacade().isNavigable(nextAssocEnd)) {
+                                && Model.getFacade().isNavigable(
+                                        nextAssocEnd)) {
                             edges.add(nextAssocEnd);
                         }
                     }
@@ -185,6 +185,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
+    @Override
     public boolean canAddNode(Object node) {
         if (Model.getFacade().isAAssociation(node)
                 && !Model.getFacade().isANaryAssociation(node)) {
@@ -226,6 +227,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (Model.getFacade().isAModel(node)) {
             return false; // issue 3774
         }
+        if (Model.getFacade().isAClassifierRole(node)) {
+            return false;
+        }
         return Model.getFacade().isAClassifier(node)
             || Model.getFacade().isAPackage(node)
             || Model.getFacade().isAStereotype(node)
@@ -236,6 +240,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
+    @Override
     public boolean canAddEdge(Object edge) {
         if (edge == null) {
             return false;
@@ -284,8 +289,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             }
 
         } else if (Model.getFacade().isAGeneralization(edge)) {
-            sourceModelElement = Model.getFacade().getChild(edge);
-            destModelElement = Model.getFacade().getParent(edge);
+            sourceModelElement = Model.getFacade().getSpecific(edge);
+            destModelElement = Model.getFacade().getGeneral(edge);
         } else if (Model.getFacade().isADependency(edge)) {
             Collection clients = Model.getFacade().getClients(edge);
             Collection suppliers = Model.getFacade().getSuppliers(edge);
@@ -341,6 +346,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
      */
+    @Override
     public void addNode(Object node) {
 	if (!canAddNode(node)) {
 	    return;
@@ -365,6 +371,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *
      * @param edge the edge to be added
      */
+    @Override
     public void addEdge(Object edge) {
         if (edge == null) {
             throw new IllegalArgumentException("Cannot add a null edge");
@@ -408,6 +415,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @param node
      *            the model element to query for connections
      */
+    @Override
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
 
@@ -483,7 +491,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	//throws PropertyVetoException
 
 	if ("ownedElement".equals(pce.getPropertyName())) {
-	    Vector oldOwned = (Vector) pce.getOldValue();
+	    List oldOwned = (List) pce.getOldValue();
 	    Object elementImport = pce.getNewValue();
             Object modelElement =
                     Model.getFacade().getModelElement(elementImport);
@@ -531,6 +539,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *
      * @return whether or not the rerouting is allowed
      */
+    @Override
     public boolean canChangeConnectedNode(Object newNode, Object oldNode,
 					  Object edge) {
 
@@ -561,6 +570,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @param edge this is the edge that is being dragged/rerouted
      * @param isSource tells us which end is being rerouted.
      */
+    @Override
     public void changeConnectedNode(Object newNode, Object oldNode,
 				    Object edge, boolean isSource) {
 	if (Model.getFacade().isAAssociation(edge)) {
@@ -664,4 +674,4 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
     }
 
-} /* end class ClassDiagramGraphModel */
+}

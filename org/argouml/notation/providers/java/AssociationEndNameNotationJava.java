@@ -24,7 +24,7 @@
 
 package org.argouml.notation.providers.java;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -78,7 +78,8 @@ public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
-    public String toString(Object modelElement, HashMap args) {
+    @Override
+    public String toString(Object modelElement, Map args) {
         String name = Model.getFacade().getName(modelElement);
         if (name == null) {
             name = "";

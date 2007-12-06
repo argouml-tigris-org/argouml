@@ -27,14 +27,13 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 
 /**
  * An Action to add client dependencies to some modelelement.
@@ -42,7 +41,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  * @author Michiel
  */
 public class ActionAddSupplierDependencyAction extends
-        AbstractActionAddModelElement {
+        AbstractActionAddModelElement2 {
 
     /**
      * The constructor.
@@ -56,13 +55,11 @@ public class ActionAddSupplierDependencyAction extends
      * Constraint: This code only deals with 1 supplier per dependency!
      * TODO: Do we need more?
      * 
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.List)
      */
-    protected void doIt(Vector selected) {
+    protected void doIt(Collection selected) {
         Set oldSet = new HashSet(getSelected());
-        Iterator i = selected.iterator();
-        while (i.hasNext()) {
-            Object supplier = i.next();
+        for (Object supplier : oldSet) {
             if (oldSet.contains(supplier)) {
                 oldSet.remove(supplier); //to be able to remove dep's later
             } else {
@@ -72,9 +69,7 @@ public class ActionAddSupplierDependencyAction extends
 
         Collection toBeDeleted = new ArrayList();
         Collection c =  Model.getFacade().getSupplierDependencies(getTarget());
-        i = c.iterator();
-        while (i.hasNext()) {
-            Object dependency = i.next();
+        for (Object dependency : c) {
             if (oldSet.containsAll(
                     Model.getFacade().getClients(dependency))) {
                 toBeDeleted.add(dependency);
@@ -87,8 +82,8 @@ public class ActionAddSupplierDependencyAction extends
     /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
-    protected Vector getChoices() {
-        Vector ret = new Vector();
+    protected List getChoices() {
+        List ret = new ArrayList();
         Object model =
             ProjectManager.getManager().getCurrentProject().getModel();
         if (getTarget() != null) {
@@ -110,12 +105,11 @@ public class ActionAddSupplierDependencyAction extends
     /*
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
-    protected Vector getSelected() {
-        Vector v = new Vector();
+    protected List getSelected() {
+        List v = new ArrayList();
         Collection c =  Model.getFacade().getSupplierDependencies(getTarget());
-        Iterator i = c.iterator();
-        while (i.hasNext()) {
-            v.addAll(Model.getFacade().getClients(i.next()));
+        for (Object supplierDependency : c) {
+            v.addAll(Model.getFacade().getClients(supplierDependency));
         }
         return v;
     }

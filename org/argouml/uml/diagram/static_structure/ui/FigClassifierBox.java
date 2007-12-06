@@ -36,7 +36,6 @@ import javax.swing.Action;
 
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
@@ -55,7 +54,9 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Class to display graphics for a UML Class in a diagram.<p>
+ * Class to display graphics for any UML Classifier in a diagram.<p>
+ * 
+ * This Fig has an Operations compartment. <p>
  *
  * Note that the upper line of the name box will be blanked out
  * if there is eventually a stereotype above.
@@ -138,53 +139,17 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         damage();
     }
     
-    /**
-     * Updates the name if modelchanged receives an "isAbstract" event.
-     * 
-     * TODO:  This really belongs in (the non-existent) FigGeneralizableElement.
-     */
-    protected void updateAbstract() {
-        Rectangle rect = getBounds();
-        if (getOwner() == null) {
-            return;
-        }
-        Object cls = getOwner();
-        if (Model.getFacade().isAbstract(cls)) {
-            getNameFig().setFont(getItalicLabelFont());
-        } else {
-            getNameFig().setFont(getLabelFont());
-        }
-        super.updateNameText();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-    }
-
-
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
         updateOperations();
-        updateAbstract();
         super.renderingChanged();
     }
 
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (mee instanceof AttributeChangeEvent) {
-            Object source = mee.getSource();
-            if (Model.getFacade().isAOperation(source) 
-                    || Model.getFacade().isAMethod(source)
-                    || Model.getFacade().isAParameter(source)
-                    || Model.getFacade().isAReception(source)) {
-                // TODO: We just need to get someone to rerender a single line
-                // of text which represents the element here, but I'm not sure
-                // how to do that, so redraw the whole compartment. - tfm
-                updateOperations();
-            } else if (source.equals(getOwner()) 
-                    && "isAbstract".equals(mee.getPropertyName())) {
-                updateAbstract();
-            }
-        } else if (mee instanceof AssociationChangeEvent 
+        if (mee instanceof AssociationChangeEvent 
                 && getOwner().equals(mee.getSource())) {
             Object o = null;
             if (mee instanceof AddAssociationEvent) {
@@ -204,8 +169,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     }
 
     /**
-     * @return The vector of graphics for operations (if any).
-     * First one is the rectangle for the entire operations box.
+     * @return The Fig for the operations compartment
      */
     protected FigOperationsCompartment getOperationsFig() {
         return operationsFig;
@@ -284,27 +248,31 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     
         // Add ...
         ArgoJMenu addMenu = buildAddMenu();
-        popUpActions.insertElementAt(addMenu,
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                addMenu);
+
+        // Modifier ...
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                buildModifierPopUp());
     
-        // Show ...
-        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
+        // Visibility ...
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                buildVisibilityPopUp());
+    
+        return popUpActions;
+    }
+
+    protected ArgoJMenu buildShowPopUp() {
+        ArgoJMenu showMenu = super.buildShowPopUp();
+
         Iterator i = ActionCompartmentDisplay.getActions().iterator();
         while (i.hasNext()) {
             showMenu.add((Action) i.next());
         }
-        popUpActions.insertElementAt(showMenu,
-                popUpActions.size() - getPopupAddOffset());
-    
-        // Modifier ...
-        popUpActions.insertElementAt(buildModifierPopUp(),
-                popUpActions.size() - getPopupAddOffset());
-    
-        // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
-    
-        return popUpActions;
+        return showMenu;
     }
 
     protected ArgoJMenu buildAddMenu() {

@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -78,7 +79,7 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
             }
             return returnList;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -86,6 +87,6 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: What?
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

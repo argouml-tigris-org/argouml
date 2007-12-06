@@ -186,7 +186,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
                                 np);
                     // bounds not relevant here
                     comp.setOwner(umlObject);
-                    
+                    np.initialiseListener(comp, umlObject);
                 } else {
                     /* This one is still useable, so let's retain it, */
                     /* but its position may have been changed: */
@@ -197,6 +197,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
                     /* We need to set a new notationprovider, since 
                      * the Notation language may have been changed:  */
                     comp.setNotationProvider(np);
+                    np.initialiseListener(comp, umlObject);
                 }
                 addFig(comp); // add it again (but now in the right sequence)
                 

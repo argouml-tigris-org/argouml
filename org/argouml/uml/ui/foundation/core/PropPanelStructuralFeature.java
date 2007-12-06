@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import org.argouml.i18n.Translator;
@@ -49,12 +50,24 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
     /**
      * Constructor for PropPanelStructuralFeature.
      * @param name the name of the panel, to be shown at the top
-     * @param orientation the orientation of the panel
      */
+    protected PropPanelStructuralFeature(String name, ImageIcon icon) {
+        super(name, icon);
+
+    }
+    
+    /**
+     * Constructor for PropPanelStructuralFeature.
+     * @param name the name of the panel, to be shown at the top
+     * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelStructuralFeature(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
+     */
+    @Deprecated
     protected PropPanelStructuralFeature(String name,
 					 Orientation orientation) {
 	super(name, orientation);
-
     }
 
     /**

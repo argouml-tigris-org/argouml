@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,8 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 import org.argouml.model.Model;
 
@@ -40,7 +39,7 @@ import org.argouml.model.Model;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class ClassifierEndCodePiece extends NamedCodePiece {
+class ClassifierEndCodePiece extends NamedCodePiece {
     /**
      * The curly bracket at the end.
      */
@@ -96,15 +95,14 @@ public class ClassifierEndCodePiece extends NamedCodePiece {
      */
     public void write(BufferedReader reader,
                       BufferedWriter writer,
-                      Stack parseStateStack) throws IOException {
-        ParseState parseState = (ParseState) parseStateStack.pop();
+                      Stack<ParseState> parseStateStack) throws IOException {
+        ParseState parseState = parseStateStack.pop();
         Object mClassifier = parseState.getClassifier();
-        Vector newFeatures = parseState.getNewFeatures();
-        Vector newInnerClasses = parseState.getNewInnerClasses();
+        List newFeatures = parseState.getNewFeaturesList();
+        List newInnerClasses = parseState.getNewInnerClassesList();
 
         // Insert new features
-        for (Iterator i = newFeatures.iterator(); i.hasNext();) {
-            Object mFeature = /*(MFeature)*/ i.next();
+        for (Object mFeature : newFeatures) {
             if (Model.getFacade().isAOperation(mFeature)) {
                 CodeGenerator.generateOperation(mFeature,
 						mClassifier, reader, writer);
@@ -115,8 +113,7 @@ public class ClassifierEndCodePiece extends NamedCodePiece {
         }
 
         // Insert new inner classes
-        for (Iterator i = newInnerClasses.iterator(); i.hasNext();) {
-            Object element = /*(MModelElement)*/ i.next();
+        for (Object element : newInnerClasses) {
             if (Model.getFacade().isAClass(element)) {
                 CodeGenerator.generateClass(element, reader, writer);
             } else if (Model.getFacade().isAInterface(element)) {

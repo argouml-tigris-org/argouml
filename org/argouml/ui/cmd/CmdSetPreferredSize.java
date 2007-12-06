@@ -26,14 +26,14 @@ package org.argouml.ui.cmd;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
-import org.argouml.i18n.Translator;
 import org.tigris.gef.base.Cmd;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.presentation.Fig;
+
+import org.argouml.i18n.Translator;
 
 
 /**
@@ -98,7 +98,7 @@ public class CmdSetPreferredSize extends Cmd {
      * @param f the fig to resize
      */
     public void setFigToResize(Fig f) {
-        List figs = new ArrayList(1);
+        List<Fig> figs = new ArrayList<Fig>(1);
         figs.add(f);
         setArg("figs", figs);
     }
@@ -108,7 +108,7 @@ public class CmdSetPreferredSize extends Cmd {
      *
      * @param figs the list of figs to resize
      */
-    public void setFigToResize(Vector figs) {
+    public void setFigToResize(List figs) {
         setArg("figs", figs);
     }
 
@@ -119,7 +119,7 @@ public class CmdSetPreferredSize extends Cmd {
      */
     public void doIt() {
         Editor ce = Globals.curEditor();
-        List figs = (List) getArg("figs");
+        List<Fig> figs = (List<Fig>) getArg("figs");
         if (figs == null) {
             SelectionManager sm = ce.getSelectionManager();
             if (sm.getLocked()) {
@@ -129,19 +129,22 @@ public class CmdSetPreferredSize extends Cmd {
             figs = sm.getFigs();
         }
 
-        if (figs == null) return;
+        if (figs == null) {
+            return;
+        }
         int size = figs.size();
         if (size == 0) return;
 
         for (int i = 0; i < size; i++) {
-            Fig fi = (Fig) figs.get(i);
+            Fig fi = figs.get(i);
             /* Only resize elements which the user would also be able
              * to resize: */
             if (fi.isResizable() 
                     /* But exclude elements that enclose others, 
                      * since their algorithms to calculate the minimum size 
                      * does not take enclosed objects into account: */
-                    && (fi.getEnclosedFigs().size() == 0)) {
+                    && (fi.getEnclosedFigs() == null 
+                            || fi.getEnclosedFigs().size() == 0)) {
                 if (mode == PREFERRED_SIZE) {
                     fi.setSize(fi.getPreferredSize());
                 } else {

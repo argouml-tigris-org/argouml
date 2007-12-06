@@ -24,8 +24,9 @@
 
 package org.argouml.util.logging;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * This class makes it easy to get the time between two or several
@@ -34,8 +35,8 @@ import java.util.Vector;
  * @author Linus Tolke
  */
 public class SimpleTimer {
-    private Vector points = new Vector();
-    private Vector labels = new Vector();
+    private List<Long> points = new ArrayList<Long>();
+    private List<String> labels = new ArrayList<String>();
 
     /**
      * The constructor. Creates a simple timer.
@@ -54,11 +55,11 @@ public class SimpleTimer {
     /**
      * Mark (Store) the current time.
      *
-     * @param label the mark will be labelled with this string
+     * @param label the mark will be labeled with this string
      */
     public void mark(String label) {
 	mark();
-	labels.setElementAt(label, labels.size() - 1);
+	labels.set(labels.size() - 1, label);
     }
 
     /**
@@ -106,18 +107,14 @@ public class SimpleTimer {
                     res.append("                            ");
                     res.append("                            ");
                     res.setLength(60);
-    		    res.append((((Long) points.elementAt(count)).
-    		            longValue()
-    		            - ((Long) points.elementAt(count - 1))
-    		            .longValue()));
+    		    res
+                            .append((((Long) points.get(count)).longValue() - ((Long) points
+                                    .get(count - 1)).longValue()));
                 } else if (count == points.size()) {
                     res.append("Total                      ");
                     res.setLength(18);
-                    res.append((((Long) points.
-                            elementAt(points.size() - 1))
-                            .longValue()
-                            - ((Long) points.
-                                    elementAt(0)).longValue()));
+                    res.append((((Long) points.get(points.size() - 1))
+                            .longValue() - ((Long) points.get(0)).longValue()));
                 }
             }
             count++;

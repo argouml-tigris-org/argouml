@@ -91,7 +91,7 @@ public class CrInterfaceWithoutComponent extends CrUML {
 
     /**
      * If there are interfaces that are not inside a component
-     * the returned vector-set is not null. Then in the vector-set
+     * the returned ListSet is not null. Then in the ListSet
      * are the UMLDeploymentDiagram and all FigInterfaces with no
      * enclosing FigComponent
      *

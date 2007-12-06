@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.argouml
-Bundle-Version: 0.25.3
+Bundle-Version: 0.25.3.qualifier
 Bundle-Localization: plugin
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -35,6 +35,7 @@ Export-Package: org.argouml.application,
  org.argouml.ocl,
  org.argouml.pattern.cognitive.critics,
  org.argouml.persistence,
+ org.argouml.profile,
  org.argouml.swingext,
  org.argouml.taskmgmt,
  org.argouml.ui,
@@ -82,7 +83,6 @@ Export-Package: org.argouml.application,
  org.argouml.uml.util.namespace,
  org.argouml.util,
  org.argouml.util.logging,
- org.argouml.util.osdep,
- org.argouml.util.osdep.win32
+ org.argouml.util.osdep
 Eclipse-RegisterBuddy: org.argouml.core.lib, org.argouml.core.model
 Eclipse-BuddyPolicy: registered

@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,7 +44,7 @@ public class GoGeneralizableElementToSpecialized
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.classifier.specialized-classifier");
+	return Translator.localize("misc.classifier.specialized-classifier");
     }
 
     /*
@@ -53,7 +54,7 @@ public class GoGeneralizableElementToSpecialized
 	if (Model.getFacade().isAGeneralizableElement(parent)) {
 	    return Model.getFacade().getChildren(parent);
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -65,8 +66,7 @@ public class GoGeneralizableElementToSpecialized
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
-} /* end class GoGenElementToDerived */
-
+}
 

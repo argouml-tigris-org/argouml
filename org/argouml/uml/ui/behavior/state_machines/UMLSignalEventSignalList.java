@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JPopupMenu;
 
+import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewSignal;
@@ -44,7 +45,7 @@ class UMLSignalEventSignalList extends UMLMutableLinkedList {
      */
     public UMLSignalEventSignalList(
         UMLModelElementListModel2 dataModel) {
-        super(dataModel, null, null, null, true);
+        super(dataModel, (AbstractActionAddModelElement) null, null, null, true);
         setDelete(false);
         setDeleteAction(null);
     }

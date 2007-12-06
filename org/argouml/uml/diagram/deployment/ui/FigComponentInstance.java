@@ -25,29 +25,22 @@
 package org.argouml.uml.diagram.deployment.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -55,43 +48,16 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author 5eichler
  */
-public class FigComponentInstance extends FigNodeModelElement {
-
-    /**
-     * The distance between the left edge of the fig and the left edge of the
-     * main rectangle.
-     * Originally named BIGPORT_X (which explains what BX stands for).
-     */
-    private static final int BX = 10;
-
-    private static final int OVERLAP = 0;
-
-    private FigRect cover;
-    private FigRect upperRect;
-    private FigRect lowerRect;
+public class FigComponentInstance extends AbstractFigComponent {
 
     private NotationProvider notationProvider;
 
     /**
-     * Constructor.
+     * Construct a default ComponentInstance figure.
      */
     public FigComponentInstance() {
-        cover = new FigRect(BX, 10, 120, 80, Color.black, Color.white);
-        upperRect =
-            new FigRect(0, 2 * BX, 2 * BX, BX, Color.black, Color.white);
-        lowerRect =
-            new FigRect(0, 4 * BX, 2 * BX, BX, Color.black, Color.white);
-
-        getNameFig().setLineWidth(0);
-        getNameFig().setFilled(false);
+        super();
         getNameFig().setUnderline(true);
-
-        addFig(getBigPort());
-        addFig(cover);
-        addFig(getStereotypeFig());
-        addFig(getNameFig());
-        addFig(upperRect);
-        addFig(lowerRect);
     }
 
     /**
@@ -101,18 +67,13 @@ public class FigComponentInstance extends FigNodeModelElement {
      * @param node the UML element
      */
     public FigComponentInstance(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-        if (Model.getFacade().isAClassifier(node)
-                && (Model.getFacade().getName(node) != null)) {
-            getNameFig().setText(Model.getFacade().getName(node));
-        }
-        updateBounds();
+        super(gm, node);
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
+    @Override
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAComponentInstance(own)) {
@@ -123,148 +84,52 @@ public class FigComponentInstance extends FigNodeModelElement {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() {
-        return "new ComponentInstance";
-    }
-
-    /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigComponentInstance figClone = (FigComponentInstance) super.clone();
-        Iterator it = figClone.getFigs().iterator();
-        figClone.setBigPort((FigRect) it.next());
-        figClone.cover = (FigRect) it.next();
-        it.next();
-        figClone.setNameFig((FigText) it.next());
-        figClone.upperRect = (FigRect) it.next();
-        figClone.lowerRect = (FigRect) it.next();
-
+        // nothing extra to do currently
         return figClone;
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
-            damage();
-        }
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+        super.updateListeners(oldOwner, newOwner);
         if (newOwner != null) {
-            // add the listeners to the newOwner
-            addElementListener(newOwner);
-            Collection c = Model.getFacade().getStereotypes(newOwner);
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                Object st = i.next();
-                addElementListener(st, "name");
-            }
-            c = Model.getFacade().getClassifiers(newOwner);
-            i = c.iterator();
-            while (i.hasNext()) {
-                Object st = i.next();
-                addElementListener(st, "name");
+            for (Object classifier 
+                    : Model.getFacade().getClassifiers(newOwner)) {
+                addElementListener(classifier, "name");
             }
         }
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
-     */
-    public void setLineColor(Color c) {
-        cover.setLineColor(c);
-        getStereotypeFig().setFilled(false);
-        getStereotypeFig().setLineWidth(0);
-        getNameFig().setFilled(false);
-        getNameFig().setLineWidth(0);
-        upperRect.setLineColor(c);
-        lowerRect.setLineColor(c);
-    }
-
+   
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionComponentInstance(this);
     }
 
     /*
-     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
-     */
-    public Dimension getMinimumSize() {
-        Dimension stereoDim = getStereotypeFig().getMinimumSize();
-        Dimension nameDim = getNameFig().getMinimumSize();
-
-        int h = Math.max(stereoDim.height + nameDim.height - OVERLAP, 4 * BX);
-        int w = Math.max(stereoDim.width, nameDim.width) + 2 * BX;
-
-        return new Dimension(w, h);
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
-     */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
-        if (getNameFig() == null) {
-            return;
-        }
-
-        Rectangle oldBounds = getBounds();
-        getBigPort().setBounds(x + BX, y, w - BX, h);
-        cover.setBounds(x + BX, y, w - BX, h);
-
-        Dimension stereoDim = getStereotypeFig().getMinimumSize();
-        Dimension nameDim = getNameFig().getMinimumSize();
-        if (h < (6 * BX)) {
-            upperRect.setBounds(x, y + 2 * h / 6, 20, 10);
-            lowerRect.setBounds(x, y + 4 * h / 6, 20, 10);
-        } else {
-            upperRect.setBounds(x, y + 2 * BX, 2 * BX, BX);
-            lowerRect.setBounds(x, y + 4 * BX, 2 * BX, BX);
-        }
-
-        getStereotypeFig().setBounds(x + 2 * BX + 1,
-                y + 1,
-                w - 2 * BX - 2,
-                stereoDim.height);
-        getNameFig().setBounds(x + 2 * BX + 1,
-                y + stereoDim.height - OVERLAP + 1,
-                w - 2 * BX - 2,
-                nameDim.height);
-        _x = x;
-        _y = y;
-        _w = w;
-        _h = h;
-        firePropChange("bounds", oldBounds, getBounds());
-        updateEdges();
-    }
-
-    /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
+        // TODO: What is this needed for? - tfm
         setLineColor(Color.black);
     }
 
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
+    @Override
     public void mousePressed(MouseEvent me) {
         super.mousePressed(me);
         Editor ce = Globals.curEditor();
@@ -277,6 +142,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig encloser) {
 
         if (getOwner() != null) {
@@ -316,8 +182,8 @@ public class FigComponentInstance extends FigNodeModelElement {
                 }
             } else if (isVisible()
                     // If we are not visible most likely we're being deleted.
-                    // TODO: This indicates a more fundamental problem that should
-                    // be investigated - tfm - 20061230
+                    // TODO: This indicates a more fundamental problem that 
+                    // should be investigated - tfm - 20061230
                     && encloser == null && getEnclosingFig() != null) {
                 if (Model.getFacade().getNodeInstance(comp) != null) {
                     Model.getCommonBehaviorHelper()
@@ -332,16 +198,11 @@ public class FigComponentInstance extends FigNodeModelElement {
         }
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
-     */
-    public boolean getUseTrapRect() {
-        return true;
-    }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
             notationProvider.parse(getOwner(), ft.getText());
@@ -352,6 +213,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProvider.getParsingHelp());
@@ -361,13 +223,15 @@ public class FigComponentInstance extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
         getStereotypeFig().setOwner(getOwner());
     }
-
+    
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
+    @Override
     protected void updateNameText() {
         if (isReadyToEdit()) {
             getNameFig().setText(notationProvider.toString(getOwner(), null));
@@ -376,32 +240,4 @@ public class FigComponentInstance extends FigNodeModelElement {
         setBounds(r.x, r.y, r.width, r.height);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getHandleBox()
-     *
-     * Get the rectangle on whose corners the dragging handles are to
-     * be drawn.  Used by Selection Resize.
-     */
-    public Rectangle getHandleBox() {
-
-        Rectangle r = getBounds();
-        return new Rectangle(r.x + BX, r.y, r.width - BX,
-                r.height);
-
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setHandleBox(int, int, int, int)
-     */
-    public void setHandleBox(int x, int y, int w, int h) {
-
-        setBounds(x - BX, y, w + BX, h);
-
-    }
-
-    /**
-     * The UID.
-     */
-    static final long serialVersionUID = 1647392857462847651L;
-
-} /* end class FigComponentInstance */
+}

@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +48,7 @@ public class GoNamespaceToClassifierAndPackage
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.namespace.classifer-or-package");
+        return Translator.localize("misc.namespace.classifer-or-package");
     }
 
     /*
@@ -55,7 +56,7 @@ public class GoNamespaceToClassifierAndPackage
      */
     public Collection getChildren(Object parent) {
         if (!Model.getFacade().isANamespace(parent)) {
-            return null;
+            return Collections.EMPTY_SET;
         }
 
         Iterator elements =
@@ -82,6 +83,6 @@ public class GoNamespaceToClassifierAndPackage
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

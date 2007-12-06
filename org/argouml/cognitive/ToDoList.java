@@ -24,6 +24,7 @@
 
 package org.argouml.cognitive;
 
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,12 +44,12 @@ import org.argouml.i18n.Translator;
  * Implements a list of ToDoItem's.<p>
  *
  * It spawns a "sweeper" thread that periodically goes through the list
- * and elimiates ToDoItem's that are no longer valid.<p>
+ * and eliminates ToDoItem's that are no longer valid.<p>
  *
  * One difficulty designers face is keeping track of all
- * the myrid details of their task. It is all to
+ * the myriad details of their task. It is all too
  * easy to skip a step in the design process,
- * leave part of the design unspecified, of make
+ * leave part of the design unspecified, or make
  * a mistake that requires revision. ArgoUML provides
  * the designer with a "to do" list user interface
  * that presents action items in an organized form.
@@ -74,6 +75,11 @@ public class ToDoList extends Observable implements Runnable,
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ToDoList.class);
+    
+    /**
+     * Number of seconds thread should sleep between passes
+     */
+    private static final int SLEEP_SECONDS = 3;
 
     // TODO: Offenders need to be more strongly typed. - tfm 20070630
     private static Object recentOffender;
@@ -128,8 +134,6 @@ public class ToDoList extends Observable implements Runnable,
      */
     private boolean isPaused;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
 
     /**
      * Creates a new todolist. The only ToDoList is owned by the Designer.
@@ -151,7 +155,7 @@ public class ToDoList extends Observable implements Runnable,
      */
     public synchronized void spawnValidityChecker(Designer d) {
         designer = d;
-        validityChecker = new Thread(this, "ValidityCheckingThread");
+        validityChecker = new Thread(this, "Argo-ToDoValidityCheckingThread");
         validityChecker.setDaemon(true);
         validityChecker.setPriority(Thread.MIN_PRIORITY);
         validityChecker.start();
@@ -178,7 +182,7 @@ public class ToDoList extends Observable implements Runnable,
             forceValidityCheck(removes);
             removes.clear();
             try {
-		Thread.sleep(3000);
+		Thread.sleep(SLEEP_SECONDS * 1000);
 	    } catch (InterruptedException ignore) {
                 LOG.error("InterruptedException!!!", ignore);
             }
@@ -301,9 +305,6 @@ public class ToDoList extends Observable implements Runnable,
         setChanged();
         super.notifyObservers();
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * @return the todo items
@@ -473,7 +474,7 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @param item the todo item to be removed
      * @return <code>true</code> if the argument was a component of this
-     *          vector; <code>false</code> otherwise
+     *          list; <code>false</code> otherwise
      */
     private synchronized boolean removeE(ToDoItem item) {
         boolean res = items.remove(item);
@@ -483,7 +484,7 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @param item the todo item to be removed
      * @return <code>true</code> if the argument was a component of this
-     *          vector; <code>false</code> otherwise
+     *          list; <code>false</code> otherwise
      */
     public boolean removeElement(ToDoItem item) {
         boolean res = removeE(item);
@@ -497,7 +498,7 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @param item the todo item to be resolved
      * @return <code>true</code> if the argument was a component of this
-     *          vector; <code>false</code> otherwise
+     *          list; <code>false</code> otherwise
      */
     public boolean resolve(ToDoItem item) {
         boolean res = removeE(item);
@@ -509,7 +510,7 @@ public class ToDoList extends Observable implements Runnable,
      * @param item the todo item
      * @param reason the reason TODO: Use it!
      * @return <code>true</code> if the argument was a component of this
-     *          vector; <code>false</code> otherwise
+     *          list; <code>false</code> otherwise
      * @throws UnresolvableException unable to resolve
      */
     public boolean explicitlyResolve(ToDoItem item, String reason)
@@ -567,7 +568,10 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @param off the offender
      * @return the todo tems for this offender
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #elementListForOffender(Object)}.
      */
+    @Deprecated
     public Vector<ToDoItem> elementsForOffender(Object off) {
         return new Vector<ToDoItem>(elementListForOffender(off));
     }
@@ -605,7 +609,7 @@ public class ToDoList extends Observable implements Runnable,
      */
     @Deprecated
     public Enumeration<ToDoItem> elements() {
-        return new Vector<ToDoItem>(items).elements();
+        return Collections.enumeration(items);
     }
 
     /**
@@ -766,9 +770,6 @@ public class ToDoList extends Observable implements Runnable,
             }
         }
     }
-
-    ////////////////////////////////////////////////////////////////
-    // internal methods
 
 
     @Override

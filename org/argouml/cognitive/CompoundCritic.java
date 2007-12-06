@@ -105,20 +105,6 @@ public class CompoundCritic extends Critic {
 	critics.add(c4);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
-    /**
-     * @param c
-     *            the new list of critics that completely replaces the old list
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #setCritics(List)}.
-     *             Unused in ArgoUML. Can be scheduled for speedy removal.
-     */
-    @Deprecated
-    public void setCritics(Vector<Critic> c) {
-        critics = c;
-    }
-
     /**
      * @param c the new list of critics that completely
      *                replaces the old list

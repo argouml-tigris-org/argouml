@@ -45,7 +45,7 @@ public final class ActionSequenceDiagram extends ActionNewDiagram {
     public ArgoDiagram createDiagram(Object namespace) {
         return DiagramFactory.getInstance().createDiagram(
                 DiagramFactory.DiagramType.Sequence,
-                createCollaboration(),
+                createCollaboration(namespace),
                 null);
     }
 

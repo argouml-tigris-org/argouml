@@ -28,7 +28,7 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -47,7 +47,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.CommentEdge;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
 import org.tigris.gef.base.Editor;
@@ -275,16 +274,19 @@ public class ActionDeleteModelElements extends UndoableAction {
         int size = 0;
         try {
             Editor ce = Globals.curEditor();
-            Vector figs = ce.getSelectionManager().getFigs();
+            List<Fig> figs = ce.getSelectionManager().getFigs();
             size = figs.size();
         } catch (Exception e) {
-        // Ignore
+            // TODO: This catch block needs to be narrower and do something
+            // with the caught exception - tfm 20071120
+            // Ignore
         }
         if (size > 0) {
             return true;
         }
         Object target = TargetManager.getInstance().getTarget();
-        if (target instanceof ArgoDiagram) { // we cannot delete the last diagram
+        if (target instanceof ArgoDiagram) { 
+            // we cannot delete the last diagram
             return (ProjectManager.getManager().getCurrentProject()
                 .getDiagramList().size() > 1);
         }

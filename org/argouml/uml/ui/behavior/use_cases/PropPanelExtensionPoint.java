@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,6 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Builds the property panel for an extension point.<p>
@@ -60,34 +59,32 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
      * Construct a new property panel for an ExtensionPoint.
      */
     public PropPanelExtensionPoint() {
-        super("ExtensionPoint", ConfigLoader.getTabPropsOrientation());
+        super("label.extension-point",  lookupIcon("ExtensionPoint"));
 
         // First column
 
         // nameField, stereotypeBox and namespaceScroll are all set up by
         // PropPanelModelElement.
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
+        addField("label.name", getNameTextField());
 
-        // Our location (a String).  Allow the location label to
+        // Our location (a String). Allow the location label to
         // expand vertically so we all float to the top.
 
         JTextField locationField = new UMLTextField2(
                 new UMLExtensionPointLocationDocument());
-        addField(Translator.localize("label.location"),
+        addField("label.location",
                 locationField);
 
         addSeparator();
 
-        addField(Translator.localize("label.usecase-base"),
+        addField("label.usecase-base",
                 getSingleRowScroll(new UMLExtensionPointUseCaseListModel()));
 
         JList extendList = new UMLLinkedList(
                 new UMLExtensionPointExtendListModel());
-        addField(Translator.localize("label.extend"),
+        addField("label.extend",
                 new JScrollPane(extendList));
-
 
         addAction(new ActionNavigateContainerElement());
         addAction(new ActionNewExtensionPoint());
@@ -102,6 +99,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
      * This is a change from the norm, which is to navigate to the parent
      * namespace.<p>
      */
+    @Override
     public void navigateUp() {
         Object target = getTarget();
 
@@ -140,6 +138,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAExtensionPoint(target)) {
@@ -151,4 +150,4 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         }
     }
 
-} /* end class PropPanelExtend */
+}

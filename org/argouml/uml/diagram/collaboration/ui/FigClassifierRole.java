@@ -148,6 +148,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
+    @Override
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAClassifierRole(own)) {
@@ -157,27 +158,16 @@ public class FigClassifierRole extends FigNodeModelElement {
         }
     }
 
-    /**
-     * Return the default name to use for this classifier role.<p>
-     *
-     * Seems to be immediately overwritten by the empty string, but may be
-     * useful in defining the default name size?<p>
-     *
-     * @return  The string to use ("new Classifier Role" in this case).
-     */
-    public String placeString() {
-        return "new Classifier Role";
-    }
 
     /**
      * Version of the clone to ensure all sub-figs are copied.<p>
      *
-     * Uses the generic superclass clone which gives a vector of all the
-     * figs. Then initialize our instance variables from this vector.<p>
+     * Uses the generic superclass clone which gives a list of all the
+     * figs. Then initialize our instance variables from this list.<p>
      *
      * @return  A new copy of the the current fig.
      */
-
+    @Override
     public Object clone() {
         FigClassifierRole figClone = (FigClassifierRole) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -199,6 +189,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * Similarly if there is text, we must make sure it is marked
      * displayed.<p>
      */
+    @Override
     protected void updateStereotypeText() {
         Rectangle rect = getBounds();
 
@@ -232,42 +223,71 @@ public class FigClassifierRole extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
-    public void setLineColor(Color col) { cover.setLineColor(col); }
+    @Override
+    public void setLineColor(Color col) {
+        cover.setLineColor(col);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
-    public Color getLineColor() { return cover.getLineColor(); }
+    @Override
+    public Color getLineColor() {
+        return cover.getLineColor();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
-    public void setFillColor(Color col) { cover.setFillColor(col); }
+    @Override
+    public void setFillColor(Color col) {
+        cover.setFillColor(col);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
-    public Color getFillColor() { return cover.getFillColor(); }
+    @Override
+    public Color getFillColor() {
+        return cover.getFillColor();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
-    public void setFilled(boolean f) { cover.setFilled(f); }
+    @Override
+    public void setFilled(boolean f) {
+        cover.setFilled(f);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
-    public boolean getFilled() { return cover.getFilled(); }
+    @Override
+    public boolean getFilled() {
+        return cover.isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return cover.isFilled();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
-    public void setLineWidth(int w) { cover.setLineWidth(w); }
+    @Override
+    public void setLineWidth(int w) {
+        cover.setLineWidth(w);
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
-    public int getLineWidth() { return cover.getLineWidth(); }
+    @Override
+    public int getLineWidth() {
+        return cover.getLineWidth();
+    }
 
 
     /**
@@ -279,7 +299,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      *
      * @return  The minimum size of this fig.
      */
-
+    @Override
     public Dimension getMinimumSize() {
 
         Dimension stereoMin  = getStereotypeFig().getMinimumSize();
@@ -318,7 +338,8 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Patch to
      *         allow for stereotype as well.
      */
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    @Override
+    protected void setStandardBounds(int x, int y, int w, int h) {
 
         // In the rather unlikely case that we have no name, we give up.
 
@@ -377,6 +398,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @throws PropertyVetoException by the parser
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
             notationProvider.parse(getOwner(), ft.getText());
@@ -387,6 +409,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProvider.getParsingHelp());
@@ -398,6 +421,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
+    @Override
     protected void updateNameText() {
         if (notationProvider != null) {
             getNameFig().setText(notationProvider.toString(getOwner(), null));
@@ -407,6 +431,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee instanceof AddAssociationEvent
@@ -421,8 +446,9 @@ public class FigClassifierRole extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionClassifierRole(this);
     }
 
-} /* end class FigClassifierRole */
+}

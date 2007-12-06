@@ -24,8 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
@@ -78,9 +79,9 @@ public class CrDupRoleNames extends CrUML {
      *   that an association role is more tightly constrained than its
      *   parent.</p>
      *
-     * <p>Then loop through the ends, building a vector of end names that we
+     * <p>Then loop through the ends, building a list of end names that we
      *   have seen, and looking to see if the current end is already in that
-     *   vector. We ignore any ends that are unnamed, or have the empty string
+     *   list. We ignore any ends that are unnamed, or have the empty string
      *   as name.</p>
      *
      * <p>Whilst this is an O(n^2) algorithm, most associations have only two
@@ -113,9 +114,9 @@ public class CrDupRoleNames extends CrUML {
         // Loop through all the ends, comparing the name against those already
         // seen (ignoring any with no name).
         // No problem if there are no connections defined, we will fall
-	// through immediatly.
+	// through immediately.
 
-        Vector   namesSeen = new Vector();
+        Collection<String>   namesSeen = new ArrayList<String>();
 
         Iterator conns = Model.getFacade().getConnections(dm).iterator();
         while (conns.hasNext()) {
@@ -127,14 +128,14 @@ public class CrDupRoleNames extends CrUML {
                 continue;
             }
 
-            // Is the name already in the vector of those seen, if not add it
+            // Is the name already in the list of those seen, if not add it
             // and go on round.
 
             if (namesSeen.contains(name)) {
                 return PROBLEM_FOUND;
             }
 
-            namesSeen.addElement(name);
+            namesSeen.add(name);
         }
 
         // If we drop out there were no clashes
@@ -142,5 +143,5 @@ public class CrDupRoleNames extends CrUML {
         return NO_PROBLEM;
     }
 
-} /* end class CrDupRoleNames */
+}
 

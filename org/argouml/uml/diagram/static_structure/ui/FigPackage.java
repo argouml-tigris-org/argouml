@@ -32,8 +32,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
@@ -52,6 +52,7 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.StereotypeContainer;
 import org.argouml.uml.diagram.VisibilityContainer;
+import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Editor;
@@ -80,9 +81,6 @@ public class FigPackage extends FigNodeModelElement
      */
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     private static final int MIN_HEIGHT = 21;
 
     private int width = 140;
@@ -95,9 +93,6 @@ public class FigPackage extends FigNodeModelElement
      * The total height of the tab.
      */
     private int tabHeight = 20;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private FigText body;
 
@@ -199,6 +194,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
      */
+    @Override
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAPackage(own)) {
@@ -207,16 +203,11 @@ public class FigPackage extends FigNodeModelElement
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
-     */
-    public String placeString() {
-        return "new Package";
-    }
 
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigPackage figClone = (FigPackage) super.clone();
         Iterator thisIter = this.getFigs().iterator();
@@ -232,12 +223,11 @@ public class FigPackage extends FigNodeModelElement
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         super.setLineColor(col);
         getStereotypeFig().setLineColor(col);
@@ -249,6 +239,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return body.getLineColor();
     }
@@ -256,6 +247,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         super.setFillColor(col);
         getStereotypeFig().setFillColor(col);
@@ -267,6 +259,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return body.getFillColor();
     }
@@ -274,6 +267,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         getStereotypeFig().setFilled(f);
         getNameFig().setFilled(f);
@@ -283,13 +277,20 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
-        return body.getFilled();
+        return body.isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return body.isFilled();
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         getNameFig().setLineWidth(w);
         body.setLineWidth(w);
@@ -298,6 +299,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return body.getLineWidth();
     }
@@ -305,6 +307,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
         Object modelElement = getOwner();
 
@@ -344,6 +347,7 @@ public class FigPackage extends FigNodeModelElement
      * @return the class name and bounds together with compartment
      * visibility.
      */
+    @Override
     public String classNameAndBounds() {
         return super.classNameAndBounds()
                 + "stereotypeVisible=" + isStereotypeVisible()
@@ -351,12 +355,11 @@ public class FigPackage extends FigNodeModelElement
                 + "visibilityVisible=" + isVisibilityVisible();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessor methods
 
     /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
+    @Override
     public boolean getUseTrapRect() {
         return true;
     }
@@ -364,6 +367,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
@@ -416,7 +420,8 @@ public class FigPackage extends FigNodeModelElement
      *
      * @param h  Desired height of the FigClass
      */
-    protected void setBoundsImpl(int xa, int ya, int w, int h) {
+    @Override
+    protected void setStandardBounds(int xa, int ya, int w, int h) {
         // Save our old boundaries (needed later), and get minimum size
         // info. "aSize" will be used to maintain a running calculation of our
         // size at various points.
@@ -500,21 +505,34 @@ public class FigPackage extends FigNodeModelElement
      * @param     me     a mouse event
      * @return          a collection of menu items
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
 
-        // Show ...
-        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
+        // Modifier ...
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                buildModifierPopUp(ABSTRACT | LEAF | ROOT));
+
+        // Visibility ...
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                buildVisibilityPopUp());
+
+        return popUpActions;
+    }
+
+    @Override
+    protected ArgoJMenu buildShowPopUp() {
+        ArgoJMenu showMenu = super.buildShowPopUp();
         /* Only show the menuitems if they make sense: */
         Editor ce = Globals.curEditor();
-        Vector figs = ce.getSelectionManager().getFigs();
-        Iterator i = figs.iterator();
+        List<Fig> figs = ce.getSelectionManager().getFigs();
         boolean sOn = false;
         boolean sOff = false;
         boolean vOn = false;
         boolean vOff = false;
-        while (i.hasNext()) {
-            Fig f = (Fig) i.next();
+        for (Fig f : figs) {
             if (f instanceof StereotypeContainer) {
                 boolean v = ((StereotypeContainer) f).isStereotypeVisible();
                 if (v) {
@@ -547,18 +565,7 @@ public class FigPackage extends FigNodeModelElement
             showMenu.add(new ShowVisibilityAction());
         }
 
-        popUpActions.insertElementAt(showMenu,
-            popUpActions.size() - getPopupAddOffset());
-
-        // Modifier ...
-        popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - getPopupAddOffset());
-
-        // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
-
-        return popUpActions;
+        return showMenu;
     }
 
     /**
@@ -568,10 +575,8 @@ public class FigPackage extends FigNodeModelElement
      */
     private void doStereotype(boolean value) {
         Editor ce = Globals.curEditor();
-        Vector figs = ce.getSelectionManager().getFigs();
-        Iterator i = figs.iterator();
-        while (i.hasNext()) {
-            Fig f = (Fig) i.next();
+        List<Fig> figs = ce.getSelectionManager().getFigs();
+        for (Fig f : figs) {
             if (f instanceof StereotypeContainer) {
                 ((StereotypeContainer) f).setStereotypeVisible(value);
             }
@@ -590,10 +595,8 @@ public class FigPackage extends FigNodeModelElement
      */
     private void doVisibility(boolean value) {
         Editor ce = Globals.curEditor();
-        Vector figs = ce.getSelectionManager().getFigs();
-        Iterator i = figs.iterator();
-        while (i.hasNext()) {
-            Fig f = (Fig) i.next();
+        List<Fig> figs = ce.getSelectionManager().getFigs();
+        for (Fig f : figs) {
             if (f instanceof VisibilityContainer) {
                 ((VisibilityContainer) f).setVisibilityVisible(value);
             }
@@ -630,12 +633,9 @@ public class FigPackage extends FigNodeModelElement
 		    Project lP =
 			ProjectManager.getManager().getCurrentProject();
 
-		    Vector diags = lP.getDiagrams();
-		    Enumeration diagEnum = diags.elements();
+		    List<ArgoDiagram> diags = lP.getDiagramList();
 		    ArgoDiagram lFirst = null;
-		    while (diagEnum.hasMoreElements()) {
-			ArgoDiagram lDiagram =
-			    (ArgoDiagram) diagEnum.nextElement();
+		    for (ArgoDiagram lDiagram : diags) {
 			Object lDiagramNS = lDiagram.getNamespace();
 			if ((lNS == null && lDiagramNS == null)
 			    || (lNS.equals(lDiagramNS))) {
@@ -714,7 +714,7 @@ public class FigPackage extends FigNodeModelElement
 
             ArgoDiagram classDiagram =
                 DiagramFactory.getInstance().
-                    createDiagram(UMLClassDiagram.class, namespace, null);
+                    createDiagram(DiagramType.Class, namespace, null);
 
             String diagramName = defaultName + "_" + classDiagram.getName();
 
@@ -763,6 +763,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
 
         /* The following 2 lines should be retained for reference.
@@ -785,6 +786,7 @@ public class FigPackage extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
+    @Override
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
         int[] xs = {
@@ -804,6 +806,7 @@ public class FigPackage extends FigNodeModelElement
         return p;
     }
     
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
 	
 	if (mee instanceof RemoveAssociationEvent
@@ -854,6 +857,7 @@ public class FigPackage extends FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent ae) {
             super.actionPerformed(ae);
             doStereotype(false);
@@ -884,6 +888,7 @@ public class FigPackage extends FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent ae) {
             super.actionPerformed(ae);
             doStereotype(true);
@@ -914,6 +919,7 @@ public class FigPackage extends FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent ae) {
             super.actionPerformed(ae);
             doVisibility(false);
@@ -944,6 +950,7 @@ public class FigPackage extends FigNodeModelElement
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent ae) {
             super.actionPerformed(ae);
             doVisibility(true);
@@ -987,6 +994,7 @@ class PackagePortFigRect extends FigRect {
     /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
+    @Override
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
         int[] xs = {

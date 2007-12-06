@@ -27,6 +27,7 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collections;
 import java.util.List;
 
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
 import org.argouml.cognitive.Agency;
@@ -427,4 +428,7 @@ public class InitCognitiveCritics implements InitSubsystem {
         return Collections.emptyList();
     }
 
+    public List<AbstractArgoJPanel> getDetailsTabs() {
+        return Collections.emptyList();
+    }
 }

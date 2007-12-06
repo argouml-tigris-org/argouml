@@ -233,6 +233,7 @@ public interface ArgoDiagram {
      * @deprecated for 0.25.4 by tfmorris. Use {@link #getFigIterator()}.
      * @see Diagram#elements()
      */
+    @Deprecated
     public Enumeration elements();
     /**
      * @param listener
@@ -263,13 +264,13 @@ public interface ArgoDiagram {
             PropertyChangeListener listener);
     
     /**
-     * @return
+     * @return the GEF graphmodel for this diagram
      * @see Diagram#getGraphModel()
      */
     public GraphModel getGraphModel();
     
     /**
-     * @return
+     * @return the GEF LayerPerspective of this diagram
      * @see Diagram#getLayer()
      */
     public LayerPerspective getLayer();

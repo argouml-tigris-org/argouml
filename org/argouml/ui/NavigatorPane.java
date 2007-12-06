@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,10 +26,13 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
@@ -40,7 +43,7 @@ import org.argouml.ui.explorer.NameOrder;
 import org.argouml.ui.explorer.PerspectiveComboBox;
 import org.argouml.ui.explorer.PerspectiveManager;
 import org.argouml.ui.explorer.TypeThenNameOrder;
-import org.tigris.toolbar.ToolBar;
+import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * The upper-left pane of the main ArgoUML window, contains a tree view
@@ -52,9 +55,6 @@ import org.tigris.toolbar.ToolBar;
  */
 class NavigatorPane
     extends JPanel {
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructs a new navigator panel.<p>
@@ -71,20 +71,20 @@ class NavigatorPane
         JComboBox perspectiveCombo = new PerspectiveComboBox();
         JComboBox orderByCombo = new JComboBox();
         ExplorerTree tree = new DnDExplorerTree();
-        ToolBar toolbar = new ToolBar();
 
+        Collection<Object> toolbarTools = new ArrayList<Object>();
+        toolbarTools.add(new ActionPerspectiveConfig());
+        toolbarTools.add(perspectiveCombo);
+        JToolBar toolbar = (new ToolBarFactory(toolbarTools)).createToolBar();
         toolbar.setFloatable(false);
-        toolbar.add(new ActionPerspectiveConfig());
-        toolbar.add(perspectiveCombo);
-
-        ToolBar toolbar2 = new ToolBar();
-
-        toolbar2.setFloatable(false);
 
         orderByCombo.addItem(new TypeThenNameOrder());
         orderByCombo.addItem(new NameOrder());
 
-        toolbar2.add(orderByCombo);
+        Collection<Object> toolbarTools2 = new ArrayList<Object>();
+        toolbarTools2.add(orderByCombo);
+        JToolBar toolbar2 = (new ToolBarFactory(toolbarTools2)).createToolBar();
+        toolbar2.setFloatable(false);
 
         JPanel toolbarpanel = new JPanel();
         toolbarpanel.setLayout(new BorderLayout());
@@ -105,9 +105,6 @@ class NavigatorPane
         orderByCombo.addItemListener((ExplorerTreeModel) tree.getModel());
         PerspectiveManager.getInstance().loadUserPerspectives();
     }
-
-    ////////////////////////////////////////////////////////////////
-    // methods
 
     /*
      * @see java.awt.Component#getMinimumSize()

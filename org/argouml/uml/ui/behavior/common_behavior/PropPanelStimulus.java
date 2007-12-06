@@ -31,7 +31,6 @@ import org.argouml.uml.ui.UMLStimulusActionTextField;
 import org.argouml.uml.ui.UMLStimulusActionTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a Stimulus.
@@ -49,8 +48,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
      * Construct a new property panel for a Stimulus.
      */
     public PropPanelStimulus() {
-        super("Stimulus Properties", lookupIcon("Stimulus"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.stimulus", lookupIcon("Stimulus"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());

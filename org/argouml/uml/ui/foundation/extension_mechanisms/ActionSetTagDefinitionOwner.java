@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,6 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.tigris.gef.undo.UndoableAction;
@@ -69,6 +68,7 @@ public class ActionSetTagDefinitionOwner extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
@@ -82,17 +82,7 @@ public class ActionSetTagDefinitionOwner extends UndoableAction {
             LOG.info("Set owner to " + o);
             if (Model.getFacade().isAStereotype(o)
                     && Model.getFacade().isATagDefinition(tagDefinition)) {
-                Object model =
-                    ProjectManager.getManager().getCurrentProject().getModel();
-                final Object stereo =
-                    Model.getModelManagementHelper()
-                        .getCorrespondingElement(o, model, true);
-                // TODO: Why was this next code here? Is it save to remove it?
-//                SwingUtilities.invokeLater(new Runnable() {
-//                    public void run() {
-                Model.getCoreHelper().setOwner(tagDefinition, stereo);
-//                    }
-//                });
+                Model.getCoreHelper().setOwner(tagDefinition, o);
             }
         }
     }

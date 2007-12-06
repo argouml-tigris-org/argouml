@@ -28,7 +28,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -96,11 +96,12 @@ public class ActionAddConcurrentRegion extends UndoableAction {
             /*Here the actions to divide a region*/
             Fig f = TargetManager.getInstance().getFigTarget();
 
-            if (Model.getFacade().isAConcurrentRegion(f.getOwner()))
+            if (Model.getFacade().isAConcurrentRegion(f.getOwner())) {
                 f = f.getEnclosingFig();
+            }
 
-            Vector nodesInside;
-            nodesInside = ((Vector) f.getEnclosedFigs().clone());
+            List<Fig> nodesInside;
+            nodesInside = ((List<Fig>) f.getEnclosedFigs().clone());
             Object st = f.getOwner();
             Editor editor = Globals.curEditor();
             GraphModel gm = editor.getGraphModel();
@@ -112,8 +113,9 @@ public class ActionAddConcurrentRegion extends UndoableAction {
             Rectangle rFig = f.getBounds();
             Fig encloser = null;
             encloser = f;
-            if (!(gm instanceof MutableGraphModel))
+            if (!(gm instanceof MutableGraphModel)) {
                   return;
+            }
 
             StateDiagramGraphModel mgm = (StateDiagramGraphModel) gm;
 
@@ -141,7 +143,7 @@ public class ActionAddConcurrentRegion extends UndoableAction {
                 if (!nodesInside.isEmpty()) {
                     for (int i = 0; i < nodesInside.size(); i++) {
                         FigStateVertex curFig =
-                            (FigStateVertex) nodesInside.elementAt(i);
+                            (FigStateVertex) nodesInside.get(i);
                         curFig.setEnclosingFig(region);
                         curFig.redrawEnclosedFigs();
                     }

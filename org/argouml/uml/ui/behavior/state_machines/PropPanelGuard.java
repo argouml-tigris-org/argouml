@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.ui.ActionNavigateTransition;
 import org.argouml.uml.ui.UMLExpressionBodyField;
@@ -37,7 +36,6 @@ import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * A property panel for Guards. 
@@ -57,17 +55,16 @@ public class PropPanelGuard extends PropPanelModelElement {
      * 
      */
     public PropPanelGuard() {
-        super("Guard", ConfigLoader.getTabPropsOrientation());
+        super("label.guard", lookupIcon("Guard"));
         
-        addField(Translator.localize("label.name"), getNameTextField());
+        addField("label.name", getNameTextField());
         
-        addField(Translator.localize("label.transition"), new JScrollPane(
+        addField("label.transition", new JScrollPane(
                 getSingleRowScroll(new UMLGuardTransitionListModel())));
         
         addSeparator();
 
-        JPanel exprPanel = createBorderPanel(Translator
-                .localize("label.expression"));
+        JPanel exprPanel = createBorderPanel("label.expression");
         UMLExpressionModel2 expressionModel = new UMLExpressionExpressionModel(
                 this, "expression");
         JTextArea ebf = new UMLExpressionBodyField(expressionModel, true);

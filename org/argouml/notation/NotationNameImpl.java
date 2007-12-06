@@ -58,7 +58,10 @@ class NotationNameImpl
     private String version;
     private Icon icon;
 
-    private static ArrayList notations = new ArrayList();
+    /** The one and only list of notations available 
+     * in the running ArgoUML application. */
+    private static ArrayList<NotationName> notations = 
+        new ArrayList<NotationName>();
 
     /**
      * A notation without a version or icon.
@@ -209,7 +212,7 @@ class NotationNameImpl
      *
      * @return a List with all notations
      */
-    static List getAvailableNotations() {
+    static List<NotationName> getAvailableNotations() {
         return Collections.unmodifiableList(notations);
     }
 

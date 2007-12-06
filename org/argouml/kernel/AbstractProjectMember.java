@@ -76,7 +76,9 @@ public abstract class AbstractProjectMember implements ProjectMember {
     /**
      * Returns a unique member's name for storage in a zipfile.
      * The project's base name is prepended followed by an
-     * underscore '_'.
+     * underscore '_'. <p>
+     * 
+     * Used by "argo.tee".
      *
      * @return the name for zip file storage
      */
@@ -133,6 +135,8 @@ public abstract class AbstractProjectMember implements ProjectMember {
     }
 
     /**
+     * Used by "argo.tee".
+     * 
      * @return a short string defining the member type.
      * Usually equals the file extension.
      */

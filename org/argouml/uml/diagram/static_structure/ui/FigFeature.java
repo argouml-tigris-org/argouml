@@ -49,6 +49,7 @@ import org.tigris.gef.presentation.Handle;
  */
 public abstract class FigFeature extends CompartmentFigText {
 
+    // TODO: for UML 2.x this is isStatic
     private static final String EVENT_NAME = "ownerScope";
     
     private static class SelectionFeature extends Selection {
@@ -105,8 +106,7 @@ public abstract class FigFeature extends CompartmentFigText {
         super.setOwner(owner);
         
         if (owner != null) {
-            updateOwnerScope(Model.getScopeKind().getClassifier().equals(
-                    Model.getFacade().getOwnerScope(owner)));
+            updateOwnerScope(Model.getFacade().isStatic(owner));
             Model.getPump().addModelEventListener(this, owner, EVENT_NAME);
         }
     }
@@ -128,6 +128,7 @@ public abstract class FigFeature extends CompartmentFigText {
     public void propertyChange(PropertyChangeEvent pce) {
         super.propertyChange(pce);
         if (EVENT_NAME.equals(pce.getPropertyName())) {
+            // TODO: This needs to be modified for UML 2.x
             updateOwnerScope(Model.getScopeKind().getClassifier().equals(
                     pce.getNewValue()));    
         }

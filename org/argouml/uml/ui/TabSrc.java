@@ -26,11 +26,14 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JComboBox;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Predicate;
 import org.argouml.language.ui.LanguageComboBox;
 import org.argouml.model.Model;
 import org.argouml.ui.TabText;
@@ -43,7 +46,7 @@ import org.tigris.gef.presentation.FigNode;
 
 /**
  * Details panel tabbed panel for displaying a source code representation of
- * a UML model element in a particular Notation.
+ * a UML model element in a particular Language.
  */
 public class TabSrc
     extends TabText
@@ -59,16 +62,26 @@ public class TabSrc
 
     private LanguageComboBox cbLang = new LanguageComboBox();
     private JComboBox cbFiles = new JComboBox();
+    
+    /**
+     * These predicates determine if this tab is enabled.
+     */
+    private static List<Predicate> predicates;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
 
     /**
      * Create a tab that contains a toolbar.
-     * Then add a notation selector onto it.
+     * Then add a language selector onto it.
      */
     public TabSrc() {
         super("tab.source", true);
+        if (predicates == null) {
+            predicates = new ArrayList<Predicate>();
+            /* Add a predicate for ArgoUML's
+             * default capabilities: */
+            predicates.add(new DefaultPredicate());
+        }
+
         setEditable(false);
         langName = (Language) cbLang.getSelectedItem();
         fileName = null;
@@ -80,16 +93,13 @@ public class TabSrc
         cbFiles.addItemListener(this);
     }
 
-    /*
-     * @see java.lang.Object#finalize()
-     */
+
+    @Override
     protected void finalize() {
         cbLang.removeItemListener(this);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
+    
     /**
      * Populate files[] and cbFiles, using the specified element.
      */
@@ -103,18 +113,17 @@ public class TabSrc
 	    files = new SourceUnit[code.size()];
 	    files = (SourceUnit[]) code.toArray(files);
 	    for (int i = 0; i < files.length; i++) {
-		String title = files[i].getName();
+		StringBuilder title = new StringBuilder(files[i].getName());
 		if (files[i].getBasePath().length() > 0) {
-		    title += " ( " + files[i].getFullName() + ")";
+		    title.append(" ( " + files[i].getFullName() + ")");
 		}
-		cbFiles.addItem(title);
+		cbFiles.addItem(title.toString());
 	    }
 	}
     }
 
-    /*
-     * @see org.argouml.ui.TabText#genText(java.lang.Object)
-     */
+
+    @Override
     protected String genText(Object modelObject) {
         if (files == null) {
 	    generateSource(modelObject);
@@ -124,9 +133,7 @@ public class TabSrc
         return null;
     }
 
-    /*
-     * @see org.argouml.ui.TabText#parseText(java.lang.String)
-     */
+    @Override
     protected void parseText(String s) {
         LOG.debug("TabSrc   setting src for " 
                 + Model.getFacade().getName(getTarget()));
@@ -141,9 +148,8 @@ public class TabSrc
         //Parser.ParseAndUpdate(modelObject, s);
     }
 
-    /*
-     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
-     */
+
+    @Override
     public void setTarget(Object t) {
         Object modelTarget = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
         setShouldBeEnabled(Model.getFacade().isAClassifier(modelTarget));
@@ -154,17 +160,19 @@ public class TabSrc
 
     /**
      * Determines if the current tab should be enabled with the given target.
-     * Returns true if the given target is either
-     * a modelelement or is a fig with as owner a modelelement.
+     * Returns true if the given target is or represents a Classifier.
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
 
         setShouldBeEnabled(false);
-        if (Model.getFacade().isAClassifier(target)) {
-            setShouldBeEnabled(true);
+        for (Predicate p : predicates) {
+            if (p.evaluate(target)) {
+                setShouldBeEnabled(true);
+            }
         }
 
         return shouldBeEnabled();
@@ -193,12 +201,28 @@ public class TabSrc
         }
     }
 
-    /*
-     * @see org.argouml.ui.TabTarget#refresh()
-     */
+    @Override
     public void refresh() {
         setTarget(getTarget());
     }
 
+    /**
+     * This function allows extra predicates to be added.
+     * The predicates are conditions for cases where the 
+     * TabSrc should show source code. If a plugin module 
+     * is able to generate code for certain objects, for
+     * which ArgoUML itself does not generate code, then
+     * this function will allow the module to show the tab.
+     *  
+     * @param predicate the predicate to be added
+     */
+    public static void addPredicate(Predicate predicate) {
+        predicates.add(predicate);
+    }
 
-} /* end class TabSrc */
+    class DefaultPredicate implements Predicate {
+        public boolean evaluate(Object object) {
+            return (Model.getFacade().isAClassifier(object));
+        }
+    }
+}

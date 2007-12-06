@@ -61,6 +61,7 @@ public class CrNoAssociations extends CrUML {
      * @return <CODE>PROBLEM_FOUND</CODE> if there is a problem,
      *         otherwise <CODE>NO_PROBLEM</CODE>
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isAClassifier(dm)))
             return NO_PROBLEM;
@@ -137,7 +138,7 @@ public class CrNoAssociations extends CrUML {
         Iterator iter = Model.getFacade().getGeneralizations(dm).iterator();
 
         while (iter.hasNext()) {
-            Object parent = Model.getFacade().getParent(iter.next());
+            Object parent = Model.getFacade().getGeneral(iter.next());
 
             if (parent == dm)
                 continue;
@@ -177,4 +178,4 @@ public class CrNoAssociations extends CrUML {
         return false;
     }
 
-} /* end class CrNoAssociations */
+}

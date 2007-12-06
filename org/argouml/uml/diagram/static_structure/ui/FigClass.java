@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.Action;
 
@@ -340,7 +339,7 @@ public class FigClass extends FigClassifierBox
         if (classifier == null) {
             return;
         }
-        int i = new Vector(getAttributesFig().getFigs()).indexOf(ft);
+        int i = new ArrayList(getAttributesFig().getFigs()).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -351,7 +350,7 @@ public class FigClass extends FigClassifierBox
                     highlightedFigText.getOwner(), null));
             return;
         }
-        i = new Vector(getOperationsFig().getFigs()).indexOf(ft);
+        i = new ArrayList(getOperationsFig().getFigs()).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -437,7 +436,7 @@ public class FigClass extends FigClassifierBox
                 } else {
                     fgVec = getAttributesFig();
                 }
-                v = new Vector(fgVec.getFigs());
+                v = new ArrayList(fgVec.getFigs());
                 i = 1;
             }
             ft2 = (FigText) v.get(i);
@@ -581,7 +580,7 @@ public class FigClass extends FigClassifierBox
      * 
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    protected void setBoundsImpl(final int x, final int y,
+    protected void setStandardBounds(final int x, final int y,
             final int w, final int h) {
         Rectangle oldBounds = getBounds();
 

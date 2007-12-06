@@ -52,9 +52,9 @@ public class StartCritics implements Runnable {
      */
     public void run() {
         Designer dsgr = Designer.theDesigner();
-        Main.initSubsystem(new InitCognitiveCritics());
-        Main.initSubsystem(new InitJavaCritics());
-        Main.initSubsystem(new InitPatternCritics());
+        SubsystemUtility.initSubsystem(new InitCognitiveCritics());
+        SubsystemUtility.initSubsystem(new InitJavaCritics());
+        SubsystemUtility.initSubsystem(new InitPatternCritics());
         org.argouml.uml.cognitive.checklist.Init.init();
         Project p = ProjectManager.getManager().getCurrentProject();
         // set the icon for this poster

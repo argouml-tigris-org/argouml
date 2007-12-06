@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
@@ -36,7 +37,9 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Class to display graphics for a UML MSynchState in a diagram.
+ * Class to display graphics for a UML SynchState in a diagram. <p>
+ * 
+ * TODO: If the font increases, the circle should grow, too.
  *
  * @author pepargouml@yahoo.es
  */
@@ -72,7 +75,6 @@ public class FigSynchState extends FigStateVertex {
         bound = new FigText(X - 2, Y + 2, 0, 0, true);
         bound.setFilled(false);
         bound.setLineWidth(0);
-        bound.setFont(getLabelFont());
         bound.setTextColor(Color.black);
         bound.setReturnAction(FigText.END_EDITING);
         bound.setTabAction(FigText.END_EDITING);
@@ -210,7 +212,13 @@ public class FigSynchState extends FigStateVertex {
     }
 
     /**
-     * The UID.
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateFont()
      */
-    private static final long serialVersionUID = -7025279430656399031L;
+    @Override
+    protected void updateFont() {
+        super.updateFont();
+        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        bound.setFont(f);
+    }
+
 } /* end class FigSynchState */

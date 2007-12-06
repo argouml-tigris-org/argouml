@@ -31,12 +31,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectSettings;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 
-
 /**
- * @stereotype singleton
+ * Parser for ArgoUML project description file (.argo)
  */
 class ArgoParser extends SAXParserBase {
 
@@ -45,10 +45,8 @@ class ArgoParser extends SAXParserBase {
      */
     private static final Logger LOG = Logger.getLogger(ArgoParser.class);
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private Project project;
+    
     private ProjectSettings ps;
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
@@ -63,40 +61,68 @@ class ArgoParser extends SAXParserBase {
         super();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // main parsing methods
-
     /**
      * @param theProject the project to populate
-     * @param is the reader
+     * @param source the input source
      * @throws SAXException on error when parsing xml
      */
-    public void readProject(Project theProject, Reader is)
-    	throws SAXException {
+    public void readProject(Project theProject, InputSource source)
+        throws SAXException {
 
-        if (is == null) {
+        if (source == null) {
             throw new IllegalArgumentException(
-                    "An input stream must be supplied");
+                    "An InputSource must be supplied");
         }
 
-        PersistenceManager.getInstance().setLastLoadMessage("OK");
-        PersistenceManager.getInstance().setLastLoadStatus(true);
-
+        preRead(theProject);
+        
         try {
-            LOG.info("=======================================");
-            LOG.info("== READING PROJECT " + theProject);
-            project = theProject;
-            ps = project.getProjectSettings();
-            parse(is);
+            parse(source);
         } catch (SAXException e) {
-            PersistenceManager.getInstance().setLastLoadStatus(false);
-            LOG.error("Exception reading project================");
-            LOG.error(is.toString());
-            PersistenceManager.getInstance().setLastLoadMessage(e.toString());
+            logError(source.toString(), e);
+            throw e;
+        }
+    }
+    
+    /**
+     * @param theProject the project to populate
+     * @param reader the reader
+     * @throws SAXException on error when parsing xml
+     */
+    public void readProject(Project theProject, Reader reader)
+    	throws SAXException {
+
+        if (reader == null) {
+            throw new IllegalArgumentException(
+                    "A reader must be supplied");
+        }
+
+        preRead(theProject);
+        
+        try {
+            parse(reader);
+        } catch (SAXException e) {
+            logError(reader.toString(), e);
             throw e;
         }
     }
 
+    private void preRead(Project theProject) {
+        PersistenceManager.getInstance().setLastLoadMessage("OK");
+        PersistenceManager.getInstance().setLastLoadStatus(true);
+        LOG.info("=======================================");
+        LOG.info("== READING PROJECT " + theProject);
+        project = theProject;
+        ps = project.getProjectSettings();
+    }
+
+    private void logError(String projectName, SAXException e) {
+        PersistenceManager.getInstance().setLastLoadStatus(false);
+        LOG.error("Exception reading project================");
+        LOG.error(projectName);
+        PersistenceManager.getInstance().setLastLoadMessage(e.toString());
+    }
+    
     /**
      * Get the project to which the URI is to be parsed.
      * @return the project
@@ -199,6 +225,12 @@ class ArgoParser extends SAXParserBase {
             break;
         case ArgoTokenTable.TOKEN_DEFAULTSHADOWWIDTH:
             handleDefaultShadowWidth(e);
+            break;
+        case ArgoTokenTable.TOKEN_FONTNAME:
+            handleFontName(e);
+            break;
+        case ArgoTokenTable.TOKEN_FONTSIZE:
+            handleFontSize(e);
             break;
         case ArgoTokenTable.TOKEN_GENERATION_OUTPUT_DIR:
             handleGenerationOutputDir(e);
@@ -314,7 +346,12 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleNotationLanguage(XMLElement e) {
         String language = e.getText().trim();
-        ps.setNotationLanguage(language);
+        boolean success = ps.setNotationLanguage(language);
+        /* TODO: Here we should e.g. show the user a message that 
+         * the loaded project was using a Notation that is not 
+         * currently available and a fall back on the default Notation 
+         * was done. Maybe this can be implemented in the 
+         * PersistenceManager? */
     }
 
     /**
@@ -392,16 +429,36 @@ class ArgoParser extends SAXParserBase {
     /**
      * @param e the element
      */
+    protected void handleFontName(XMLElement e) {
+        String dsw = e.getText().trim();
+        ps.setFontName(dsw);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleFontSize(XMLElement e) {
+        String dsw = e.getText().trim();
+        try {
+            ps.setFontSize(Integer.parseInt(dsw));
+        } catch (NumberFormatException e1) {
+            LOG.error("NumberFormatException while parsing Font Size", e1);
+        }
+    }
+
+    /**
+     * @param e the element
+     */
     protected void handleGenerationOutputDir(XMLElement e) {
         String dsw = e.getText().trim();
         ps.setGenerationOutputDir(dsw);
     }
 
     /**
-     * Get the numer of diagram members read.
-     * @return the numer of diagram members read.
+     * Get the number of diagram members read.
+     * @return the number of diagram members read.
      */
     public List getMemberList() {
         return memberList;
     }
-} /* end class ArgoParser */
+}

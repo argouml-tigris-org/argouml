@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,6 +54,7 @@ public class ActionSetTagDefinitionType extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
@@ -73,13 +74,6 @@ public class ActionSetTagDefinitionType extends UndoableAction {
             }
         }
         if (newClassifier != oldClassifier && attr != null) {
-            if (newClassifier != null) {
-                newClassifier = Model
-                    .getModelManagementHelper().getCorrespondingElement(
-                                    newClassifier,
-                                    Model.getFacade().getModel(attr));
-            }
-
             Model.getCoreHelper().setType(attr, newClassifier);
         }
     }

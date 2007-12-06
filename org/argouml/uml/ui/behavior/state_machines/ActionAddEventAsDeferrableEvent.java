@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,13 +24,13 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 
 /**
  * Provide a dialog which helps the user to select events
@@ -40,7 +40,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  * @author MarkusK
  */
 public class ActionAddEventAsDeferrableEvent
-    extends AbstractActionAddModelElement {
+    extends AbstractActionAddModelElement2 {
 
     /**
      * The one and only instance of this class.
@@ -56,11 +56,9 @@ public class ActionAddEventAsDeferrableEvent
         setMultiSelect(true);
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        Vector vec = new Vector();
+
+    protected List getChoices() {
+        List vec = new ArrayList();
         // TODO: the namespace of created events is currently the model.
         // I think this is wrong, they should be
         // in the namespace of the activitygraph!
@@ -75,11 +73,9 @@ public class ActionAddEventAsDeferrableEvent
         return vec;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        Vector vec = new Vector();
+
+    protected List getSelected() {
+        List vec = new ArrayList();
         Collection events = Model.getFacade().getDeferrableEvents(getTarget());
         if (events != null) {
             vec.addAll(events);
@@ -87,35 +83,27 @@ public class ActionAddEventAsDeferrableEvent
         return vec;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-events");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
-     *         java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
+
+    @Override
+    protected void doIt(Collection selected) {
         Object state = getTarget();
         if (!Model.getFacade().isAState(state)) return;
-        Collection oldOnes = new Vector(Model.getFacade()
+        Collection oldOnes = new ArrayList(Model.getFacade()
                 .getDeferrableEvents(state));
-        Collection toBeRemoved = new Vector(oldOnes);
-        Iterator i = selected.iterator();
-        while (i.hasNext()) {
-            Object o = i.next();
+        Collection toBeRemoved = new ArrayList(oldOnes);
+        for (Object o : selected) {
             if (oldOnes.contains(o)) {
                 toBeRemoved.remove(o);
             } else {
                 Model.getStateMachinesHelper().addDeferrableEvent(state, o);
             }
         }
-        i = toBeRemoved.iterator();
-        while (i.hasNext()) {
-            Object o = i.next();
+        for (Object o : toBeRemoved) {
             Model.getStateMachinesHelper().removeDeferrableEvent(state, o);
         }
     }

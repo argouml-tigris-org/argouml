@@ -126,8 +126,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         addMenu.add(new ActionNewTagDefinition());
         addMenu.add(ActionEdgesDisplay.getShowEdges());
         addMenu.add(ActionEdgesDisplay.getHideEdges());
-        popUpActions.insertElementAt(addMenu,
-            popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(), addMenu);
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
@@ -136,18 +135,17 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
             showMenu.add((Action) i.next());
         }
         if (showMenu.getComponentCount() > 0) {
-            popUpActions.insertElementAt(showMenu,
-                    popUpActions.size() - getPopupAddOffset());
+            popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                    showMenu);
         }
 
         // Modifiers ...
-        popUpActions.insertElementAt(
-                buildModifierPopUp(ABSTRACT | LEAF | ROOT),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                buildModifierPopUp(ABSTRACT | LEAF | ROOT));
 
         // Visibility ...
-        popUpActions.insertElementAt(buildVisibilityPopUp(),
-                popUpActions.size() - getPopupAddOffset());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                buildVisibilityPopUp());
 
         return popUpActions;
     }
@@ -195,7 +193,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    protected void setBoundsImpl(final int x, final int y,
+    protected void setStandardBounds(final int x, final int y,
             final int w, final int h) {
         Rectangle oldBounds = getBounds();
 
@@ -251,17 +249,6 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         return fc;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
-     */
-    public void renderingChanged() {
-        if (getOwner() != null) {
-            // TODO: Update Tags and Constraints
-            updateAbstract();
-        }
-        super.renderingChanged();
-    }
-
     /**
      * Handles changes to the model. Takes into account the event that
      * occurred. If you need to update the whole fig, consider using
@@ -298,25 +285,5 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
             }
             /* TODO: constraints, ... */
         }
-    }
-    
-    /**
-     * Updates the name if modelchanged receives an "isAbstract" event.
-     * TODO: method has been copied from FigClass. We need something common to
-     * FigGeneralizableElement or a decorator. (mk)
-     */
-    protected void updateAbstract() {
-        Rectangle rect = getBounds();
-        if (getOwner() == null) {
-            return;
-        }
-        Object cls =  getOwner();
-        if (Model.getFacade().isAbstract(cls)) {
-            getNameFig().setFont(getItalicLabelFont());
-        } else {
-            getNameFig().setFont(getLabelFont());
-        }
-        super.updateNameText();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 } /* end class FigClass */

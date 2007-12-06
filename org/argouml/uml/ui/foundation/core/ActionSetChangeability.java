@@ -46,6 +46,7 @@ public class ActionSetChangeability extends UndoableAction {
      * ADDONLY_COMMAND determines a changeability kind.
      * TODO: Removed from UML 2.x.  Phase out of UI - tfm - 20070529
      */
+    @Deprecated
     public static final String ADDONLY_COMMAND = "addonly";
 
     /**

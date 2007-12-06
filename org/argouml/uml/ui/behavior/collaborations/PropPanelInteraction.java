@@ -50,7 +50,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
      * Construct a property panel for an Interaction.
      */
     public PropPanelInteraction() {
-        super("Interaction", ConfigLoader.getTabPropsOrientation());
+        super("label.interaction-title", lookupIcon("Interaction"));
 
     	addField(Translator.localize("label.name"),
                 getNameTextField());

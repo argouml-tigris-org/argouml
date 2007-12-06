@@ -119,7 +119,7 @@ public class CrNoOperations extends CrUML {
 	Iterator iter = Model.getFacade().getGeneralizations(dm).iterator();
 
 	while (iter.hasNext()) {
-	    Object parent = Model.getFacade().getParent(iter.next());
+	    Object parent = Model.getFacade().getGeneral(iter.next());
 
 	    if (parent == dm)
 		continue;

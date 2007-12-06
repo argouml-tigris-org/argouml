@@ -42,13 +42,13 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -62,6 +62,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -70,6 +71,8 @@ import org.argouml.cognitive.Designer;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Command;
+import org.argouml.kernel.NonUndoableCommand;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -100,9 +103,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
-import org.tigris.gef.undo.RedoAction;
-import org.tigris.gef.undo.UndoAction;
-import org.tigris.gef.undo.UndoManager;
 import org.tigris.gef.util.Util;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
@@ -135,6 +135,23 @@ public final class ProjectBrowser
     private static final Logger LOG =
         Logger.getLogger(ProjectBrowser.class);
 
+
+    /**
+     * Position of pane in overall browser window.
+     */
+    public enum Position {
+        Center, North, South, East, West,
+        NorthEast, SouthEast, SouthWest, NorthWest
+    }
+    
+    // Make sure the correspondence that we depend on doesn't change
+    static {
+        assert Position.Center.toString().equals(BorderSplitPane.CENTER);
+        assert Position.North.toString().equals(BorderSplitPane.NORTH); 
+        assert Position.NorthEast.toString().equals(BorderSplitPane.NORTHEAST); 
+        assert Position.South.toString().equals(BorderSplitPane.SOUTH); 
+    }
+    
     /**
      * Flag to indicate if we are the main application
      * or being integrated in another top level application such
@@ -171,7 +188,8 @@ public final class ProjectBrowser
     private DetailsPane southEastPane;
     private DetailsPane southPane;
 
-    private Map detailsPanesByCompassPoint = new HashMap();
+    private Map<Position, DetailsPane> detailsPanesByCompassPoint = 
+        new HashMap<Position, DetailsPane>();
 
     private GenericArgoMenuBar menuBar;
 
@@ -212,18 +230,6 @@ public final class ProjectBrowser
     private AbstractAction saveAction;
 
     /**
-     * The action to redo the last undone action.
-     */
-    private final AbstractAction redoAction =
-        new RedoAction(Translator.localize("action.redo"));
-
-    /**
-     * The action to undo the last user interaction.
-     */
-    private final UndoAction undoAction =
-        new UndoAction(Translator.localize("action.undo"));
-
-    /**
      * The action to remove the current selected Figs from the diagram.
      */
     private final ActionRemoveFromDiagram removeFromDiagram =
@@ -248,6 +254,8 @@ public final class ProjectBrowser
      * @param mainApplication
      *            flag indicating whether we are the top level application.
      *            False if we are providing components to another top level app.
+     * @param leftBottomPane 
+     *            the panel to fit in the left bottom corner
      */
     private ProjectBrowser(String applicationName, SplashScreen splash, 
              boolean mainApplication, JPanel leftBottomPane) {
@@ -304,7 +312,17 @@ public final class ProjectBrowser
                         /* We get many many events (why?), so let's filter: */
                             && (obj != evt.getNewValue())) {
                         obj = evt.getNewValue();
-                        UndoManager.getInstance().startChain();
+                        // TODO: Bob says -
+                        // We're looking at focus change to
+                        // flag the start of an interaction. This
+                        // is to detect when focus is gained in a prop
+                        // panel field on the assumption edting of that
+                        // field is about to start.
+                        // Not a good assumption. We Need to see if we can get
+                        // rid of this.
+                        Project p = 
+                            ProjectManager.getManager().getCurrentProject();
+                        p.getUndoManager().startInteraction("Focus");
                         /* This next line is ideal for debugging the taborder
                          * (focus traversal), see e.g. issue 1849.
                          */
@@ -318,14 +336,13 @@ public final class ProjectBrowser
     }
 
     /**
-     * Singleton retrieval method for the projectbrowser. Lazely instantiates
-     * the projectbrowser.
+     * Singleton retrieval method for the projectbrowser.
+     * Do not use this before makeInstance is called!
+     *  
      * @return the singleton instance of the projectbrowser
      */
     public static synchronized ProjectBrowser getInstance() {
-        if (theInstance == null) {
-            theInstance = new ProjectBrowser();
-        }
+        assert theInstance != null;
         return theInstance;
     }
 
@@ -339,6 +356,7 @@ public final class ProjectBrowser
      * @param mainApplication
      *            true to create a top level application, false if integrated
      *            with something else.
+     * @param leftBottomPane the panel to fit in the left bottom corner
      * 
      * @return the singleton instance of the projectbrowser
      */
@@ -351,6 +369,7 @@ public final class ProjectBrowser
     /*
      * @see java.awt.Component#getLocale()
      */
+    @Override
     public Locale getLocale() {
         return Locale.getDefault();
     }
@@ -360,6 +379,7 @@ public final class ProjectBrowser
      * Creates the panels in the working area.
      *
      * @param splash true if we show  the splashscreen during startup
+     * @param leftBottomPane the panel to fit in the left bottom corner
      */
     protected void createPanels(SplashScreen splash, JPanel leftBottomPane) {
 
@@ -397,18 +417,17 @@ public final class ProjectBrowser
     }
 
     private Component assemblePanels() {
-        addPanel(editorPane, BorderSplitPane.CENTER);
-        addPanel(explorerPane, BorderSplitPane.WEST);
-        addPanel(todoPane, BorderSplitPane.SOUTHWEST);
+        addPanel(editorPane, Position.Center);
+        addPanel(explorerPane, Position.West);
+        addPanel(todoPane, Position.SouthWest);
 
         // There are various details panes all of which could hold
         // different tabs pages according to users settings.
         // Place each pane in the required border area.
-        Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            String position = (String) entry.getKey();
-            addPanel((Component) entry.getValue(), position);
+        for (Map.Entry<Position, DetailsPane> entry 
+                : detailsPanesByCompassPoint.entrySet()) {
+            Position position = entry.getKey();
+            addPanel(entry.getValue(), position);
         }
         
         // Toolbar boundary is the area between the menu and the status
@@ -427,7 +446,7 @@ public final class ProjectBrowser
 
 
         /**
-         * Registers all toolbars and enables north panel hidding when all
+         * Registers all toolbars and enables north panel hiding when all
          * toolbars are hidden.
          */
         ArgoToolbarManager.getInstance().registerToolbar(
@@ -510,24 +529,24 @@ public final class ProjectBrowser
                     Horizontal.getInstance());
 
         if (southPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, southPane);
+            detailsPanesByCompassPoint.put(Position.South, southPane);
         }
         if (southEastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST,
+            detailsPanesByCompassPoint.put(Position.SouthEast,
                     southEastPane);
         }
         if (eastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.EAST, eastPane);
+            detailsPanesByCompassPoint.put(Position.East, eastPane);
         }
         if (northWestPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST,
+            detailsPanesByCompassPoint.put(Position.NorthWest,
                     northWestPane);
         }
         if (northPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, northPane);
+            detailsPanesByCompassPoint.put(Position.North, northPane);
         }
         if (northEastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST,
+            detailsPanesByCompassPoint.put(Position.NorthEast,
                     northEastPane);
         }
 
@@ -539,14 +558,15 @@ public final class ProjectBrowser
         }
     }
 
+    
     /**
      * Add a panel to a split pane area.
      *
      * @param comp the panel to add
-     * @param obj the position (BorderSplitPane.EAST etc)
+     * @param position the position where the panel should be added
      */
-    void addPanel(Component comp, Object obj) {
-        workAreaPane.add(comp, obj);
+    public void addPanel(Component comp, Position position) {
+        workAreaPane.add(comp, position.toString());
     }
 
     /**
@@ -554,7 +574,7 @@ public final class ProjectBrowser
      *
      * @param comp the panel to remove
      */
-    void removePanel(Component comp) {
+    public void removePanel(Component comp) {
         workAreaPane.remove(comp);
         workAreaPane.validate();
         workAreaPane.repaint();
@@ -824,7 +844,7 @@ public final class ProjectBrowser
 
 
     /**
-     * Given a list of targets, displays the according diagram.
+     * Given a list of targets, displays the corresponding diagram.
      * This method jumps to the diagram showing the targets,
      * and scrolls to make it visible.
      *
@@ -835,19 +855,19 @@ public final class ProjectBrowser
         if (targets == null || targets.size() == 0) {
             return;
         }
-        Vector dms = new Vector(targets);
-        Object first = dms.elementAt(0);
+        List dms = new ArrayList(targets);
+        Object first = dms.get(0);
         if (first instanceof Diagram && dms.size() > 1) {
             setTarget(first);
-            setTarget(dms.elementAt(1));
+            setTarget(dms.get(1));
             return;
         }
         if (first instanceof Diagram && dms.size() == 1) {
             setTarget(first);
             return;
         }
-        Vector diagrams =
-            ProjectManager.getManager().getCurrentProject().getDiagrams();
+        List<ArgoDiagram> diagrams =
+            ProjectManager.getManager().getCurrentProject().getDiagramList();
         Object target = TargetManager.getInstance().getTarget();
         if ((target instanceof Diagram)
             && ((Diagram) target).countContained(dms) == dms.size()) {
@@ -855,10 +875,9 @@ public final class ProjectBrowser
             return;
         }
 
-        Diagram bestDiagram = null;
+        ArgoDiagram bestDiagram = null;
         int bestNumContained = 0;
-        for (int i = 0; i < diagrams.size(); i++) {
-            Diagram d = (Diagram) diagrams.elementAt(i);
+        for (ArgoDiagram d : diagrams) {
             int nc = d.countContained(dms);
             if (nc > bestNumContained) {
                 bestNumContained = nc;
@@ -894,6 +913,7 @@ public final class ProjectBrowser
     /*
      * @see java.awt.Component#setVisible(boolean)
      */
+    @Override
     public void setVisible(boolean b) {
         super.setVisible(b);
         if (b) {
@@ -1259,8 +1279,8 @@ public final class ProjectBrowser
         ProjectFilePersister persister = null;
 
         try {
-            if (!PersistenceManager.getInstance()
-                    .confirmOverwrite(ArgoFrame.getInstance(), overwrite, file)) {
+            if (!PersistenceManager.getInstance().confirmOverwrite(
+                    ArgoFrame.getInstance(), overwrite, file)) {
                 return false;
             }
 
@@ -1453,7 +1473,6 @@ public final class ProjectBrowser
      */
     public void loadProjectWithProgressMonitor(File file, boolean showUI) {
         LoadSwingWorker worker = new LoadSwingWorker(file, showUI);
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         worker.start();
     }
     	
@@ -1487,9 +1506,6 @@ public final class ProjectBrowser
         // active, so I remove the current project, before
         // loading the new one.
 
-        boolean wasGeneratingMementos = 
-            UndoManager.getInstance().isGenerateMementos();
-        UndoManager.getInstance().addMementoLock(this);
         Designer.disableCritiquing();
         Designer.clearCritiquing();
         clearDialogs();
@@ -1569,7 +1585,7 @@ public final class ProjectBrowser
                 LOG.error("Out of memory while loading project", ex);
                 reportError(
                         pmw,
-                        Translator.localize("dialog.error.memory.limit.error"),
+                        Translator.localize("dialog.error.memory.limit"),
                         showUI);
             } catch (java.lang.InterruptedException ex) {
                 project = oldProject;
@@ -1663,6 +1679,17 @@ public final class ProjectBrowser
                                     project);
                             ProjectManager.getManager().removeProject(
                                     oldProject);
+                            project.getProjectSettings().init();
+                            Command cmd = new NonUndoableCommand() {
+                                public Object execute() {
+                                    // This is temporary. Load project
+                                    // should create a new project
+                                    // with its own UndoManager and so
+                                    // there should be no Command
+                                    return null;
+                                }
+                            };
+                            project.getUndoManager().addCommand(cmd);
                         }
                     }
 
@@ -1672,8 +1699,7 @@ public final class ProjectBrowser
                         LOG.info("There are " + project.getDiagramList().size()
                                 + " diagrams in the current project");
                     }
-                    UndoManager.getInstance().empty();
-                    UndoManager.getInstance().removeMementoLock(this);
+                    
                     Designer.enableCritiquing();
         	} finally {
                     // Make sure save action is always reinstated
@@ -1780,24 +1806,7 @@ public final class ProjectBrowser
                 windows[i].dispose();
             }
         }
-        FindDialog.getInstance().doClearTabs();
-        FindDialog.getInstance().doResetFields();
-    }
-
-    /**
-     * Get the action that can undo the last user interaction on this project.
-     * @return the undo action.
-     */
-    public AbstractAction getUndoAction() {
-        return undoAction;
-    }
-
-    /**
-     * Get the action that can redo the last undone action.
-     * @return the redo action.
-     */
-    public AbstractAction getRedoAction() {
-        return redoAction;
+        FindDialog.getInstance().reset();
     }
 
     /**

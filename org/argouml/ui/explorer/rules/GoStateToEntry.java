@@ -24,10 +24,11 @@
 
 package org.argouml.ui.explorer.rules;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -46,11 +47,11 @@ public class GoStateToEntry extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
         if (Model.getFacade().isAState(parent)
 	        && Model.getFacade().getEntry(parent) != null) {
-            Vector children = new Vector();
+            Collection children = new ArrayList();
             children.add(Model.getFacade().getEntry(parent));
             return children;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -62,14 +63,14 @@ public class GoStateToEntry extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.state.entry");
+        return Translator.localize("misc.state.entry");
     }
 
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,6 @@ import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * TODO: this property panel needs refactoring to remove dependency on
@@ -52,20 +51,16 @@ public class PropPanelNode extends PropPanelClassifier {
      * Construct a property panel for a UML Node element.
      */
     public PropPanelNode() {
-        super("Node", lookupIcon("Node"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.node", lookupIcon("Node"));
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
+        addField(Translator.localize("label.name"), getNameTextField());
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
-
         add(getModifiersPanel());
 
         addSeparator();
 
         addField("Generalizations:", getGeneralizationScroll());
-
         addField("Specializations:", getSpecializationScroll());
 
         addSeparator();
@@ -82,7 +77,7 @@ public class PropPanelNode extends PropPanelClassifier {
     }
 
 
-} /* end class PropPanelNode */
+} 
 
 class UMLNodeDeployedComponentListModel extends UMLModelElementListModel2 {
     

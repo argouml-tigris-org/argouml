@@ -41,7 +41,7 @@ public class GoDiagramToEdge extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.diagram.edge");
+	return Translator.localize("misc.diagram.edge");
     }
 
     /*
@@ -51,7 +51,7 @@ public class GoDiagramToEdge extends AbstractPerspectiveRule {
         if (parent instanceof Diagram) {
             return ((Diagram) parent).getEdges();
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*

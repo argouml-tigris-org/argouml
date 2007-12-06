@@ -48,11 +48,28 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
     private JPanel visibilityPanel;
 
     /**
+     * Construct a property panel for a Feature with the given name and icon.
+     * 
+     * @param name name of property which contains string to use for property
+     *                panel name. This will be localized by the super
+     *                constructor.
+     * @param icon icon
+     */
+    protected PropPanelFeature(String name, ImageIcon icon) {
+        super(name, icon);
+    }
+    
+    /**
      * Constructor.
+     * 
      * @param name name
      * @param icon icon
      * @param orientation orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelElement(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     protected PropPanelFeature(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
@@ -63,7 +80,11 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
      *
      * @param name the name to be shown at the top of the panel
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelModelElement(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     protected PropPanelFeature(String name, Orientation orientation) {
         super(name, orientation);
     }

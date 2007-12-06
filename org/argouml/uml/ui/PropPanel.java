@@ -52,18 +52,19 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
-import org.argouml.uml.Profile;
+import org.argouml.kernel.ProfileConfiguration;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
+import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.LabelledLayout;
 import org.tigris.swidgets.Orientation;
 import org.tigris.swidgets.Vertical;
@@ -76,7 +77,8 @@ import org.tigris.toolbar.ToolBarFactory;
  * The property panel is {@link org.tigris.swidgets.LabelledLayout} layed out as
  * a number (specified in the constructor) of equally sized panels that split
  * the available space. Each panel has a column of "captions" and matching
- * column of "fields" which are laid out indepently from the other panels.<p>
+ * column of "fields" which are laid out independently from the other
+ * panels.<p>
  *
  * The Properties panels for UML Model Elements are structured in an inheritance
  * hierarchy that matches the UML metamodel.
@@ -103,24 +105,34 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     private JPanel buttonPanel = new JPanel(new GridLayout());
 
     private JLabel titleLabel;
-    
+
+    /**
+     * A list with "actions".<p>
+     *
+     * Action in this respect are one of:<ul>
+     * <li> {@link Action}
+     * <li> {@link JButton}
+     * <li> {@link Object}[]
+     * </ul>
+     */
     private List actions = new ArrayList();
 
     private static Font stdFont =
         LookAndFeelMgr.getInstance().getStandardFont();
 
     /**
-     * Construct new PropPanel using LabelledLayout.<p>
-     *
-     * @param icon
-     *            The icon to display for the panel
-     * @param title
-     *            The title of the panel
-     * @param orientation
-     *            the orientation
+     * Construct new PropPanel using LabelledLayout.
+     * <p>
+     * @param icon The icon to display for the panel
+     * @param label The label for the title of the panel (to be localized).
+     * @param orientation the orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanel(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
-    public PropPanel(String title, ImageIcon icon, Orientation orientation) {
-        super(title);
+    @Deprecated
+    public PropPanel(String label, ImageIcon icon, Orientation orientation) {
+        super(Translator.localize(label));
         setOrientation(orientation);
 
         LabelledLayout layout =
@@ -129,9 +141,10 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         setLayout(layout);
 
         if (icon != null) {
-            setTitleLabel(new JLabel(title, icon, SwingConstants.LEFT));
+            setTitleLabel(new JLabel(Translator.localize(label), icon,
+                    SwingConstants.LEFT));
         } else {
-            setTitleLabel(new JLabel(title));
+            setTitleLabel(new JLabel(Translator.localize(label)));
         }
         titleLabel.setLabelFor(buttonPanel);
         add(titleLabel);
@@ -142,21 +155,42 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     /**
      * Constructs a new Proppanel without an icon. If there is an icon it's
-     * updated at runtime via settarget.<p>
-     *
-     * @param title
-     *            the title
-     * @param orientation
-     *            the orientation
+     * updated at runtime via settarget.
+     * <p>
+     * @param label The label for the title of the PropPanel (to be localized).
+     * @param orientation the orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanel(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
-    public PropPanel(String title, Orientation orientation) {
-        this(title, null, orientation);
+    @Deprecated
+    public PropPanel(String label, Orientation orientation) {
+        this(label, (ImageIcon) null, orientation);
+    }
+    
+    /**
+     * Constructs a new Proppanel with default orientation.<p>
+     *
+     * @param label
+     *            The label for the title of the PropPanel (to be localized).
+     * @param icon icon to use for panel
+     */
+    public PropPanel(String label, ImageIcon icon) {
+        this(label, icon, Horizontal.getInstance());
     }
 
     /*
      * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
+    @Override
     public void setOrientation(Orientation orientation) {
+        // TODO: Do we need to change the layout manager when
+        // changing orientation to match the behavior of the constructor?
+//        if (getOrientation() != orientation) {
+//            LabelledLayout layout = new LabelledLayout(orientation == Vertical
+//                    .getInstance());
+//            setLayout(layout);
+//        } 
         super.setOrientation(orientation);
     }
 
@@ -168,7 +202,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      *            the action which will be used in the toolbar button.
      */
     protected void addAction(Action action) {
-        this.actions.add(action);
+        actions.add(action);
     }
 
     /**
@@ -196,7 +230,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @param actionArray the Actions.
      */
     protected void addAction(Object[] actionArray) {
-        this.actions.add(actionArray);
+        actions.add(actionArray);
     }
     
     public void buildToolbar() {
@@ -239,7 +273,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @return the label added
      */
     public JLabel addField(String label, Component component) {
-        JLabel jlabel = new JLabel(label);
+        JLabel jlabel = new JLabel(Translator.localize(label));
         jlabel.setFont(stdFont);
         component.setFont(stdFont);
         jlabel.setLabelFor(component);
@@ -262,10 +296,10 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public JLabel addFieldAfter(String label, Component component,
             Component afterComponent) {
-        int nComponent = this.getComponentCount();
+        int nComponent = getComponentCount();
         for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == afterComponent) {
-                JLabel jlabel = new JLabel(label);
+                JLabel jlabel = new JLabel(Translator.localize(label));
                 jlabel.setFont(stdFont);
                 component.setFont(stdFont);
                 jlabel.setLabelFor(component);
@@ -291,10 +325,10 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public JLabel addFieldBefore(String label, Component component,
             Component beforeComponent) {
-        int nComponent = this.getComponentCount();
+        int nComponent = getComponentCount();
         for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == beforeComponent) {
-                JLabel jlabel = new JLabel(label);
+                JLabel jlabel = new JLabel(Translator.localize(label));
                 jlabel.setFont(stdFont);
                 component.setFont(stdFont);
                 jlabel.setLabelFor(component);
@@ -429,7 +463,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
 
     /**
-     * This method can be overriden in derived Panels where the appropriate
+     * This method can be overridden in derived Panels where the appropriate
      * namespace for display may not be the same as the namespace of the target.
      *
      * @return the namespace
@@ -446,8 +480,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
      */
-    public Profile getProfile() {
-        return ProjectManager.getManager().getCurrentProject().getProfile();
+    public ProfileConfiguration getProfile() {
+        return ProjectManager.getManager().getCurrentProject()
+                .getProfileConfiguration();
     }
 
     /*
@@ -460,15 +495,17 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(java.lang.Object)
      */
-    public String formatElement(/* MModelElement */Object element) {
-        return getProfile().formatElement(element, getDisplayNamespace());
+    public String formatElement(Object element) {
+        return getProfile().getFormatingStrategy().formatElement(element,
+                getDisplayNamespace());
     }
 
     /*
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(java.lang.Object)
      */
-    public String formatNamespace(/* MNamespace */Object namespace) {
-        return getProfile().formatElement(namespace, null);
+    public String formatNamespace(Object namespace) {
+        return getProfile().getFormatingStrategy().formatElement(namespace,
+                null);
     }
 
     /*
@@ -476,7 +513,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public String formatCollection(Iterator iter) {
         Object namespace = getDisplayNamespace();
-        return getProfile().formatCollection(iter, namespace);
+        return getProfile().getFormatingStrategy().formatCollection(iter,
+                namespace);
     }
 
 
@@ -579,7 +617,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      *            the title of the panel shown at the top
      */
     protected void setTitleLabel(JLabel theTitleLabel) {
-        this.titleLabel = theTitleLabel;
+        titleLabel = theTitleLabel;
         titleLabel.setFont(stdFont);
     }
 
@@ -592,7 +630,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
 
     protected JPanel createBorderPanel(String title) {
     	JPanel panel = new JPanel(new GridLayout2());
-    	TitledBorder border = new TitledBorder(title);
+    	TitledBorder border = new TitledBorder(Translator.localize(title));
     	border.setTitleFont(stdFont);
     	panel.setBorder(border);
     	return panel;

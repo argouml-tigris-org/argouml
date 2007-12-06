@@ -48,12 +48,28 @@ public abstract class PropPanelInstance extends PropPanelModelElement {
     stimuliReceiverListModel = new UMLInstanceReceiverStimulusListModel();
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for an Instance with the given name, icon and
+     * orientation.
+     * 
+     * @param name the name for the properties panel
+     * @param icon the icon shown next to the name
+     */
+    public PropPanelInstance(String name, ImageIcon icon) {
+        super(name, icon);
+    }
+    
+    /**
+     * Construct a property panel for an Instance with the given name, icon and
+     * orientation.
+     * 
      * @param name the name for the properties panel
      * @param icon the icon shown next to the name
      * @param orientation the orientation
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelInstance(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelInstance(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);

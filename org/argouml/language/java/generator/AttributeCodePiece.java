@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,9 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
 
 import org.argouml.model.Model;
 
@@ -43,7 +43,7 @@ import org.argouml.model.Model;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class AttributeCodePiece extends NamedCodePiece {
+class AttributeCodePiece extends NamedCodePiece {
     /**
      * The code piece this attribute represents.
      */
@@ -52,23 +52,22 @@ public class AttributeCodePiece extends NamedCodePiece {
     /**
      * The names of declared attributes.
      */
-    private Vector attributeNames;
+    private List<String> attributeNames;
 
     /**
        Constructor.
 
        @param modifiers The code piece for modifiers.
        @param type The code piece for the type.
-       @param names Vector with attribute names.
+       @param names List with attribute names.
     */
     public AttributeCodePiece(CodePiece modifiers,
                               CodePiece type,
-                              Vector names) {
-	attributeNames = new Vector();
+                              List<CodePiece> names) {
+	attributeNames = new ArrayList<String>();
 	attributeDef = new CompositeCodePiece(modifiers);
 	attributeDef.add(type);
-	for (Iterator i = names.iterator(); i.hasNext();) {
-	    CodePiece cp = (CodePiece) i.next();
+	for (CodePiece cp : names) {
 	    String cpText = cp.getText().toString().trim();
             if (cpText.indexOf('\n') > 0) {
                 cpText = cpText.substring(0, cpText.indexOf('\n')).trim();
@@ -137,19 +136,18 @@ public class AttributeCodePiece extends NamedCodePiece {
      */
     public void write(BufferedReader reader,
                       BufferedWriter writer,
-                      Stack parseStateStack) throws IOException {
-	ParseState parseState = (ParseState) parseStateStack.peek();
-	Vector features = parseState.getNewFeatures();
-	int k = 1, count = attributeNames.size();
+                      Stack<ParseState> parseStateStack) throws IOException {
+	ParseState parseState = parseStateStack.peek();
+	List features = parseState.getNewFeaturesList();
+	int k = 1;
+	int count = attributeNames.size();
 	boolean found = false;
 	// there might be multiple variable declarations in one line, so loop:
-	for (Iterator i = attributeNames.iterator(); i.hasNext(); k++) {
+	for (String name : attributeNames) {
+	    k++;
 	    boolean checkAssociations = true;
-	    String name = (String) i.next();
-	    Iterator j;
 	    // now find the matching feature
-	    for (j = features.iterator(); j.hasNext();) {
-		Object mFeature = /*(MFeature)*/ j.next();
+	    for (Object mFeature : features) {
 		if (Model.getFacade().isAAttribute(mFeature)
 		        && Model.getFacade().getName(mFeature).equals(name)) {
 		    // feature found, so it's an attribute (and no
@@ -159,8 +157,7 @@ public class AttributeCodePiece extends NamedCodePiece {
 		    // deletes feature from current ParseState
 		    parseState.newFeature(mFeature);
 
-		    Object attr = /*(MAttribute)*/ mFeature;
-		    writer.write(generator().generateCoreAttribute(attr));
+		    writer.write(generator().generateCoreAttribute(mFeature));
 
 		    if (k < count) {
 			writer.write("; "); // fixed comma separated attributes
@@ -172,19 +169,14 @@ public class AttributeCodePiece extends NamedCodePiece {
 		// feature not found: we need to check associations,
 		// because the parser can't distinguish between attributes
 		// and associations represented as class variables:
-		Vector ends = parseState.getAssociationEnds();
+		List ends = parseState.getAssociationEndsList();
 		if (!ends.isEmpty()) {
 		    // now find the first matching association end
-		    for (j = ends.iterator(); j.hasNext();) {
-			Object associationEnd = /*(MAssociationEnd)*/ j.next();
+		    for (Object associationEnd : ends) {
 			Object association =
 			    Model.getFacade().getAssociation(associationEnd);
-			Iterator connEnum =
-			    Model.getFacade()
-			    	.getConnections(association).iterator();
-			while (connEnum.hasNext()) {
-			    Object associationEnd2 =
-				/*(MAssociationEnd)*/ connEnum.next();
+			for (Object associationEnd2 : Model.getFacade()
+                                .getConnections(association)) {
 			    if (associationEnd2 != associationEnd
 				&& Model.getFacade()
 					.isNavigable(associationEnd2)

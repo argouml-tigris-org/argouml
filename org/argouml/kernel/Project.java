@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.argouml.uml.Profile;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.profile.Profile;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -42,10 +42,10 @@ import org.tigris.gef.presentation.Fig;
  * project. It contains the list of diagrams and UML models, various project
  * properties such as the author's name, and defaults for various settings.
  * <p>
- * TODO: This interface was mechanically refactored from the implemenation class
- * {@link ProjectImpl}. It needs to be reviewed and cleaned up, eliminating
- * methods which should be part of the public API and splitting the interface
- * into smaller function specific (e.g. TrashCan) interfaces.
+ * TODO: This interface was mechanically refactored from the implementation
+ * class {@link ProjectImpl}. It needs to be reviewed and cleaned up,
+ * eliminating methods which should be part of the public API and splitting the
+ * interface into smaller function specific (e.g. TrashCan) interfaces.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  * @since 0.25.4 when it replaced the concrete class of the same name
@@ -74,7 +74,7 @@ public interface Project {
      * @throws URISyntaxException if the argument cannot be converted to
      *         an URI.
      */
-    public void setName(String n) throws URISyntaxException;
+    public void setName(final String n) throws URISyntaxException;
 
     /**
      * Get the URI for this project.
@@ -88,7 +88,7 @@ public interface Project {
      *
      * @param theUri The URI to set.
      */
-    public void setURI(URI theUri);
+    public void setURI(final URI theUri);
 
     /**
      * Set the project file.
@@ -97,10 +97,10 @@ public interface Project {
      *
      * @param file File to set the project to.
      */
-    public void setFile(File file);
+    public void setFile(final File file);
 
     /**
-     * Used by "argo.tee".
+     * Not used by "argo.tee" any more.
      * 
      * @return the search path
      * @deprecated by tfmorris for 0.25.4.  Use {@link #getSearchPathList()}.
@@ -109,7 +109,7 @@ public interface Project {
     public Vector<String> getSearchPath();
     
     /**
-     * NOT used by "argo.tee" yet.
+     * Used by "argo.tee".
      * 
      * @return the search path
      */
@@ -124,11 +124,11 @@ public interface Project {
      * Sets the searchpath.
      * @param theSearchpath The searchpath to set
      */
-    public void setSearchPath(List<String> theSearchpath);
+    public void setSearchPath(final List<String> theSearchpath);
     
     /**
      * Get all members of the project.
-     * Used by "argo2.tee".
+     * Used by "argo.tee".
      *
      * @return all members.
      */
@@ -139,12 +139,12 @@ public interface Project {
      * 
      * @param m the member to be added
      */
-    public void addMember(Object m);
+    public void addMember(final Object m);
 
     /**
      * @param model a namespace
      */
-    public void addModel(Object model);
+    public void addModel(final Object model);
 
     /**
      * Get the author name. 
@@ -188,7 +188,7 @@ public interface Project {
      * Set the new version.
      * @param s The new version.
      */
-    public void setVersion(String s);
+    public void setVersion(final String s);
 
     /**
      * Get the description.
@@ -218,7 +218,7 @@ public interface Project {
      *
      * @param s The new history file.
      */
-    public void setHistoryFile(String s);
+    public void setHistoryFile(final String s);
 
 
     /**
@@ -342,7 +342,7 @@ public interface Project {
     /**
      * @param m the namespace
      */
-    public void setCurrentNamespace(Object m);
+    public void setCurrentNamespace(final Object m);
 
     /**
      * @return the namespace
@@ -380,7 +380,7 @@ public interface Project {
     /**
      * @param d the diagram to be added
      */
-    public void addDiagram(ArgoDiagram d);
+    public void addDiagram(final ArgoDiagram d);
 
     /**
      * @param me the given modelelement
@@ -405,7 +405,7 @@ public interface Project {
     public void preSave();
 
     /**
-     * This is execcuted after a save.
+     * This is executed after a save.
      */
     public void postSave();
 
@@ -449,12 +449,16 @@ public interface Project {
      *          {@link #setProfiles(Collection)}.
      */
     @Deprecated
-    public void setDefaultModel(Object theDefaultModel);
+    public void setDefaultModel(final Object theDefaultModel);
 
     /**
-     * @param packages a Collection of packages containing profiles.
+     * @param packages
+     *                a Collection of packages containing profiles.
+     * @deprecated by maurelio1234 for 0.25.4. Use
+     *             {@link #getProfileConfiguration()} instead.
      */
-    public void setProfiles(Collection packages);
+    @Deprecated
+    public void setProfiles(final Collection packages);
 
     /**
      * Get the default model.
@@ -467,9 +471,12 @@ public interface Project {
 
     /**
      * Get the collection of profile packages.
-     *
+     * 
      * @return collection of Packages containing profiles.
+     * @deprecated by maurelio1234 for 0.25.4. Use
+     *             {@link #getProfileConfiguration()} instead.
      */
+    @Deprecated
     public Object getProfiles();
 
     /**
@@ -498,7 +505,7 @@ public interface Project {
      * @deprecated for 0.25.4 by tfmorris - use {@link #setRoots}.
      */
     @Deprecated
-    public void setRoot(Object root);
+    public void setRoot(final Object root);
 
 
     /**
@@ -515,7 +522,7 @@ public interface Project {
      * 
      * @param elements Collection of top level ModelElements
      */
-    public void setRoots(Collection elements);
+    public void setRoots(final Collection elements);
     
     /**
      * Returns true if the given name is a valid name for a diagram. Valid means
@@ -552,13 +559,13 @@ public interface Project {
      * @deprecated for 0.25.4 by tfmorris. Use {@link #setSearchPath(List)}.
      */
     @Deprecated
-    public void setSearchpath(Vector<String> theSearchpath);
+    public void setSearchpath(final Vector<String> theSearchpath);
 
     /**
      * Sets the uUIDRefs.
      * @param uUIDRefs The uUIDRefs to set
      */
-    public void setUUIDRefs(Map<String, Object> uUIDRefs);
+    public void setUUIDRefs(final Map<String, Object> uUIDRefs);
 
     /**
      * Sets the vetoSupport.
@@ -576,7 +583,7 @@ public interface Project {
     /**
      * @param theDiagram the ArgoDiagram
      */
-    public void setActiveDiagram(ArgoDiagram theDiagram);
+    public void setActiveDiagram(final ArgoDiagram theDiagram);
 
     /**
      * Remove the project.
@@ -597,7 +604,10 @@ public interface Project {
 
     /**
      * @return Returns the profile.
+     * @deprecated for 0.25.4 by maurelio1234. Use {@link #getProfiles()}
+     *             instead.
      */
+    @Deprecated
     public Profile getProfile();
 
     /**
@@ -613,4 +623,24 @@ public interface Project {
      */
     public ProjectSettings getProjectSettings();
 
+    /**
+     * @return Returns the profile configuration.
+     */
+    public ProfileConfiguration getProfileConfiguration();
+
+
+    /**
+     * Set the profile configuration.
+     * 
+     * @param pc the profile configuration
+     */
+    public void setProfileConfiguration(final ProfileConfiguration pc);
+
+    /**
+     * Return the UndoManager for this project.  Undo is managed on a 
+     * per-project basis.
+     * 
+     * @return the UndoManager for this project
+     */
+    public UndoManager getUndoManager();
 }

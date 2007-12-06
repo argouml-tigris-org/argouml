@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,7 +58,7 @@ public class GoModelElementToContents extends AbstractPerspectiveRule {
         if (Model.getFacade().isAModelElement(parent)) {
             return Model.getFacade().getModelElementContents(parent);
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*

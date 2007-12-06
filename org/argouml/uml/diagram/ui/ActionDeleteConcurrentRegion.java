@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -80,6 +80,7 @@ public class ActionDeleteConcurrentRegion extends UndoableAction {
      * @param ae The event.
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
 
@@ -94,7 +95,7 @@ public class ActionDeleteConcurrentRegion extends UndoableAction {
         if (Model.getFacade().isAConcurrentRegion(f.getOwner())) {
             Fig encloser = f.getEnclosingFig();
 
-            Vector nodesInside = ((Vector) encloser.getEnclosedFigs().clone());
+            List<Fig> nodesInside = ((List<Fig>) encloser.getEnclosedFigs().clone());
             int index = nodesInside.indexOf(f);
             Rectangle r = f.getBounds();
             Rectangle encBound = encloser.getBounds();
@@ -106,11 +107,10 @@ public class ActionDeleteConcurrentRegion extends UndoableAction {
 
             // Adjust the position of the remaining nodes
             if (index < nodesInside.size() - 1) {
-        	Rectangle rFig =
-        	    ((Fig) nodesInside.elementAt(index + 1)).getBounds();
+        	Rectangle rFig = nodesInside.get(index + 1).getBounds();
         	height = rFig.y - r.y;
         	for (int i = ++index; i < nodesInside.size();  i++) {
-        	    ((FigNodeModelElement) nodesInside.elementAt(i))
+        	    ((FigNodeModelElement) nodesInside.get(i))
         	    .displace(0, -height);
         	}
             } else {
@@ -132,7 +132,7 @@ public class ActionDeleteConcurrentRegion extends UndoableAction {
         	if (!nodesInside.isEmpty()) {
         	    for (int i = 0; i < nodesInside.size(); i++) {
         		FigStateVertex curFig =
-        		    (FigStateVertex) nodesInside.elementAt(i);
+        		    (FigStateVertex) nodesInside.get(i);
         		curFig.setEnclosingFig(encloser);
         	    }
         	}

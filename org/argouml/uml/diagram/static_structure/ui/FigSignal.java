@@ -196,7 +196,7 @@ public class FigSignal extends FigClassifierBox {
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    protected void setBoundsImpl(final int x, final int y, final int w,
+    protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
 
         // Save our old boundaries so it can be used in property message later

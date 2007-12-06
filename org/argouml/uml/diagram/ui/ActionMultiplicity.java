@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -37,7 +37,6 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.UndoableAction;
 
-
 /**
  * Action to set the Multiplicity.
  *
@@ -45,10 +44,6 @@ import org.tigris.gef.undo.UndoableAction;
 public class ActionMultiplicity extends UndoableAction {
     private String str = "";
     private Object mult = null;
-
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
 
     // multiplicity
     private static UndoableAction srcMultOne = 
@@ -75,10 +70,6 @@ public class ActionMultiplicity extends UndoableAction {
     private static UndoableAction destMultOneToMany = 
         new ActionMultiplicity("1..*", "dest");
 
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * The Constructor.
      *
@@ -94,17 +85,15 @@ public class ActionMultiplicity extends UndoableAction {
     }
 
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
-    	Vector sels = Globals.curEditor().getSelectionManager().selections();
+    	List sels = Globals.curEditor().getSelectionManager().selections();
 	if (sels.size() == 1) {
-	    Selection sel = (Selection) sels.firstElement();
+	    Selection sel = (Selection) sels.get(0);
 	    Fig f = sel.getContent();
 	    Object owner = ((FigEdgeModelElement) f).getOwner();
 	    Collection ascEnds = Model.getFacade().getConnections(owner);
@@ -200,4 +189,4 @@ public class ActionMultiplicity extends UndoableAction {
     public static UndoableAction getDestMultOneToMany() {
         return destMultOneToMany;
     }
-} /* end class ActionSrcMultOneToMany */
+}

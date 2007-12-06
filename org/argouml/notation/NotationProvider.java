@@ -28,10 +28,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+
 import org.argouml.model.Model;
 
 /**
@@ -54,10 +54,12 @@ public abstract class NotationProvider {
         Logger.getLogger(NotationProvider.class);
     
     /**
-     * A collection of listeners registered for this notation. 
-     * This facilitates easy removal of a complex set of listeners. 
+     * A collection of properties of listeners registered for this notation.
+     * Each entry is a 2 element array containing the element and the property
+     * name(s) for which a listener is registered. This facilitates easy removal
+     * of a complex set of listeners.
      */
-    private Collection listeners = new ArrayList();
+    private final Collection<Object[]> listeners = new ArrayList<Object[]>();
 
     /**
      * @return a i18 key that represents a help string
@@ -71,12 +73,14 @@ public abstract class NotationProvider {
      * The default is false.
      * 
      * @param key the string for the key
-     * @param map the hashmap to check for the presence 
+     * @param map the Map to check for the presence 
      * and value of the key
      * @return true if the value for the key is true, otherwise false
      */
-    public static boolean isValue(String key, HashMap map) {
-        if (map == null) return false;
+    public static boolean isValue(final String key, final Map map) {
+        if (map == null) {
+            return false;
+        }
         Object o = map.get(key);
         if (!(o instanceof Boolean)) {
             return false;
@@ -101,7 +105,7 @@ public abstract class NotationProvider {
      * @param args arguments that may determine the notation
      * @return the string written in the correct notation
      */
-    public abstract String toString(Object modelElement, HashMap args);
+    public abstract String toString(Object modelElement, Map args);
     
     /**
      * Initialise the appropriate model change listeners 
@@ -127,8 +131,8 @@ public abstract class NotationProvider {
      * @param modelElement the modelelement that we provide 
      * notation for
      */
-    public void cleanListener(PropertyChangeListener listener, 
-            Object modelElement) {
+    public void cleanListener(final PropertyChangeListener listener, 
+            final Object modelElement) {
         removeAllElementListeners(listener);
     }
     
@@ -153,7 +157,7 @@ public abstract class NotationProvider {
      * notation for
      * @param pce the received event, that we base the changes on
      */
-    public void updateListener(PropertyChangeListener listener, 
+    public void updateListener(final PropertyChangeListener listener, 
             Object modelElement,
             PropertyChangeEvent pce) {
         // e.g. for an operation:
@@ -191,8 +195,14 @@ public abstract class NotationProvider {
             LOG.warn("Encountered deleted object during delete of " + element);
             return;
         }
-        listeners.add(new Object[] {element, null});
-        Model.getPump().addModelEventListener(listener, element);
+        Object[] entry = new Object[] {element, null};
+        if (!listeners.contains(entry)) {
+            listeners.add(entry);
+            Model.getPump().addModelEventListener(listener, element);
+        } else {
+            LOG.warn("Attempted duplicate registration of event listener"
+                    + " - Element: " + element + " Listener: " + listener);
+        }
     }
     
     /*
@@ -259,8 +269,7 @@ public abstract class NotationProvider {
      */
     protected final void removeAllElementListeners(
             PropertyChangeListener listener) {
-        for (Iterator iter = listeners.iterator(); iter.hasNext();) {
-            Object[] lis = (Object[]) iter.next();
+        for (Object[] lis : listeners) {
             Object property = lis[1];
             if (property == null) {
                 Model.getPump().removeModelEventListener(listener, lis[0]);

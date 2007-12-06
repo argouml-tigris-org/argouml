@@ -47,6 +47,8 @@ class OldModelMemberFilePersister extends ModelMemberFilePersister
      *         org.argouml.kernel.ProjectMember, java.io.Writer,
      *         boolean)
      */
+    @Deprecated
+    @Override
     public void save(ProjectMember member, Writer w, boolean xmlFragment)
     	throws SaveException {
 

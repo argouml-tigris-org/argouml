@@ -34,7 +34,6 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -44,10 +43,10 @@ import javax.swing.JToolBar;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -76,6 +75,10 @@ import org.tigris.toolbar.ToolBarFactory;
  * It used to be possible (in past versions of ArgoUML)
  * to spawn objects of this class into a dialog via the spawn method of its
  * parent.
+ * <p>
+ * NOTE: This tab is unlike the others in that it acts as a bridge to forward
+ * received Diagram events to the TargetManager.  (Not sure if this 
+ * functionality is duplicated elsewhere - tfm 20070924)
  */
 public class TabDiagram
     extends AbstractArgoJPanel
@@ -163,7 +166,7 @@ public class TabDiagram
     }
 
     /**
-     * Sets the target of the tab. The target should allways be an instance of
+     * Sets the target of the tab. The target should always be an instance of
      * UMLDiagram.
      * 
      * @param t the target
@@ -182,10 +185,13 @@ public class TabDiagram
         if (target != null) {
             target.removePropertyChangeListener("remove", this);
         }
+        
         newTarget.addPropertyChangeListener("remove", this);
 
         setToolBar(newTarget.getJToolBar());
-        
+
+        // NOTE: This listener needs to always be active 
+        // even if this tab isn't visible
         graph.removeGraphSelectionListener(this);
         graph.setDiagram(newTarget);
         graph.addGraphSelectionListener(this);
@@ -252,13 +258,14 @@ public class TabDiagram
     public void selectionChanged(GraphSelectionEvent gse) {
         if (!updatingSelection) {
             updatingSelection = true;
-            Vector sels = gse.getSelections(); // the new selection
-            ActionCut.getInstance().setEnabled(sels != null && !sels.isEmpty());
+            List<Fig> selections = gse.getSelections();
+            ActionCut.getInstance().setEnabled(
+                    selections != null && !selections.isEmpty());
 
             // TODO: If ActionCopy is no longer a singleton, how shall
             //       this work?
             ActionCopy.getInstance()
-                    .setEnabled(sels != null && !sels.isEmpty());
+                    .setEnabled(selections != null && !selections.isEmpty());
             /*
              * ActionPaste.getInstance().setEnabled( Globals.clipBoard
              * != null && !Globals.clipBoard.isEmpty());
@@ -268,22 +275,27 @@ public class TabDiagram
                 TargetManager.getInstance().getTargets();
 
             List removedTargets = new ArrayList(currentSelection);
-            Iterator i = sels.iterator();
-            while (i.hasNext()) {
-                Object o = i.next();
-                o = TargetManager.getInstance().getOwner(o);
-                if (currentSelection.contains(o)) {
-                    removedTargets.remove(o); // remains selected
+            List addedTargets = new ArrayList();
+            for (Object selection : selections) {
+                Object owner = TargetManager.getInstance().getOwner(selection);
+                if (currentSelection.contains(owner)) {
+                    removedTargets.remove(owner); // remains selected
                 } else {
                     // add to selection
-                    TargetManager.getInstance().addTarget(o);
+                    addedTargets.add(owner);
                 }
             }
-            i = removedTargets.iterator();
-            while (i.hasNext()) {
-                Object o = i.next();
-                // remove from selection
-                TargetManager.getInstance().removeTarget(o);
+            if (addedTargets.size() == 1
+                    && removedTargets.size() == currentSelection.size()) {
+                // Optimize for the normal case to minimize target changes
+                TargetManager.getInstance().setTarget(addedTargets.get(0));
+            } else {
+                for (Object o : removedTargets) {
+                    TargetManager.getInstance().removeTarget(o);
+                }
+                for (Object o : addedTargets) {
+                    TargetManager.getInstance().addTarget(o);
+                }
             }
             updatingSelection = false;
         }
@@ -367,14 +379,14 @@ public class TabDiagram
 
     private void select(Object[] targets) {
         LayerManager manager = graph.getEditor().getLayerManager();
-        Vector figList = new Vector();
+        List<Fig> figList = new ArrayList<Fig>();
         for (int i = 0; i < targets.length; i++) {
             if (targets[i] != null) {
-                Object theTarget = null;
+                Fig theTarget = null;
                 if (targets[i] instanceof Fig
 		        && manager.getActiveLayer().getContents().contains(
 		                targets[i])) {
-		    theTarget = targets[i];
+		    theTarget = (Fig) targets[i];
                 } else {
 		    theTarget = manager.presentationFor(targets[i]);
                 }
@@ -387,7 +399,7 @@ public class TabDiagram
 
 	if (!figList.equals(graph.selectedFigs())) {
             graph.deselectAll();
-            graph.select(figList);
+            graph.select(new Vector<Fig>(figList));
 	}
     }
 

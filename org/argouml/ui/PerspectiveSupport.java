@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,11 @@
 
 package org.argouml.ui;
 
-import javax.swing.tree.TreeModel;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
+
+import javax.swing.tree.TreeModel;
 
 import org.argouml.i18n.Translator;
 
@@ -42,15 +45,16 @@ public class PerspectiveSupport {
     /**
      * The go rules that this Tree model uses to build child nodes.
      */
-    private Vector goRules;
+    private List<TreeModel> goRules;
 
     /** name */
     private String name;
 
     /** list of all possible rules in the collection Todolist specific */
-    private static Vector rules = new Vector();
+    private static List<TreeModel> rules = new ArrayList<TreeModel>();
 
-    private PerspectiveSupport() { }
+    private PerspectiveSupport() {
+    }
 
     /**
      * Creates a new instance of PerspectiveSupport
@@ -59,7 +63,7 @@ public class PerspectiveSupport {
      */
     public PerspectiveSupport(String n) {
         name = Translator.localize(n);
-        goRules = new Vector();
+        goRules = new ArrayList<TreeModel>();
     }
 
     /**
@@ -70,7 +74,7 @@ public class PerspectiveSupport {
      * @param n the name to be localized
      * @param subs the go rules
      */
-    public PerspectiveSupport(String n, Vector subs) {
+    public PerspectiveSupport(String n, List<TreeModel> subs) {
         this(n);
         goRules = subs;
     }
@@ -84,8 +88,10 @@ public class PerspectiveSupport {
      * @param tm the tree model to be added
      */
     public void addSubTreeModel(TreeModel tm) {
-        if (goRules.contains(tm)) return;
-        goRules.addElement(tm);
+        if (goRules.contains(tm)) {
+            return;
+        }
+        goRules.add(tm);
     }
 
     /**
@@ -95,18 +101,29 @@ public class PerspectiveSupport {
      * @param tm the treemodel to be removed
      */
     public void removeSubTreeModel(TreeModel tm) {
-        goRules.removeElement(tm);
+        goRules.remove(tm);
+    }
+
+    /**
+     * Get the rules that together form the perspective.
+     * 
+     * @return the rules that form the perspecive
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSubTreeModelList()}.
+     */
+    @Deprecated
+    public Vector<TreeModel> getSubTreeModels() {
+        return new Vector<TreeModel>(goRules);
     }
 
     /**
      * Get the rules that together form the perspective.
      *
-     * @return the rules that form the perspecive
+     * @return the rules that form the perspective
      */
-    public Vector getSubTreeModels() {
+    public List<TreeModel> getSubTreeModelList() {
         return goRules;
     }
-
+    
     // ----------- name -------------------------
 
     /**
@@ -124,6 +141,7 @@ public class PerspectiveSupport {
     /*
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         if (getName() != null) return getName();
         else return super.toString();
@@ -136,14 +154,22 @@ public class PerspectiveSupport {
      * @param rule the rule to be added
      */
     public static void registerRule(TreeModel rule) {
-        rules.addElement(rule);
+        rules.add(rule);
+    }
+
+    /**
+     * @return Returns the _goRules.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getGoRuleList()}.
+     */
+    @Deprecated
+    protected Vector<TreeModel> getGoRules() {
+        return new Vector<TreeModel>(goRules);
     }
 
     /**
      * @return Returns the _goRules.
      */
-    protected Vector getGoRules() {
+    protected List<TreeModel> getGoRuleList() {
         return goRules;
     }
-
 }

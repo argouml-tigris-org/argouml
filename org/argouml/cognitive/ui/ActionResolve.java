@@ -29,12 +29,11 @@ import java.awt.event.ActionEvent;
 
 /**
  * The action to resolve a todo item.
- *
  */
 public class ActionResolve extends ToDoItemAction {
 
     /**
-     * The constructor.
+     * Construct an Action to resolve a ToDo item.
      */
     public ActionResolve() {
         super("action.resolve-item", true);
@@ -43,11 +42,12 @@ public class ActionResolve extends ToDoItemAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
 	DismissToDoItemDialog dialog = new DismissToDoItemDialog();
 	dialog.setTarget(getRememberedTarget());
 	dialog.setVisible(true);
     }
-} /* end class ActionResolve */
+}
 

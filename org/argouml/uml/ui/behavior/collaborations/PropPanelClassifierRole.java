@@ -35,7 +35,6 @@ import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * TODO: this property panel needs refactoring to remove dependency on
@@ -57,10 +56,9 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
      * Construct a property panel for a ClassifierRole.
      */
     public PropPanelClassifierRole() {
-	super("ClassifierRole", ConfigLoader.getTabPropsOrientation());
+	super("label.classifier-role", lookupIcon("ClassifierRole"));
 
-	addField(Translator.localize("label.name"),
-	    getNameTextField());
+	addField(Translator.localize("label.name"), getNameTextField());
 
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
@@ -76,7 +74,6 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 		true);
 	addField(Translator.localize("label.base"),
 		new JScrollPane(baseList));
-
 
 	addSeparator();
 
@@ -120,4 +117,4 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     }
 
 
-} /* end class PropPanelClassifierRole */
+}

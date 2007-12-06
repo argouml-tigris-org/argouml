@@ -440,7 +440,7 @@ public class ToDoItem implements Serializable, WizardItem {
 	    return false;
 	}
 
-	// For some reason VectorSet.equals() allocates a lot of memory, well
+	// For some reason ListSet.equals() allocates a lot of memory, well
 	// some memory at least. Lets try to avoid that when not needed by
 	// invoking this test only when the two previous tests are not decisive.
 	if (!getOffenders().equals(i.getOffenders())) {

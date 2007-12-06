@@ -29,6 +29,7 @@ import java.awt.event.ItemEvent;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import org.argouml.i18n.Translator;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 import org.tigris.gef.util.Converter;
 
@@ -39,8 +40,7 @@ import org.tigris.gef.util.Converter;
  */
 public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
 
-    // TODO: I18N
-    private JLabel arrowLabel = new JLabel("Arrow: ");
+    private JLabel arrowLabel = new JLabel(Translator.localize("label.localize"));
 
     private JComboBox arrowField = new JComboBox(Converter
             .convert(FigMessage.getArrowDirections()));

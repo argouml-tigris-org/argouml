@@ -25,7 +25,7 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -59,7 +59,7 @@ public class ObjectFlowStateTypeNotationUml
             String msg = "statusmsg.bar.error.parsing.objectflowstate";
             Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
@@ -118,9 +118,9 @@ public class ObjectFlowStateTypeNotationUml
     }
 
     /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         Object classifier = Model.getFacade().getType(modelElement);
         if (Model.getFacade().isAClassifierInState(classifier)) {
             classifier = Model.getFacade().getType(classifier);

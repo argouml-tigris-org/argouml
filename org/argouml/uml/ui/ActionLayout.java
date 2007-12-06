@@ -32,6 +32,7 @@ import javax.swing.Action;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.UndoableAction;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.activity.layout.ActivityDiagramLayouter;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
@@ -41,7 +42,6 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to automatically lay out a diagram.

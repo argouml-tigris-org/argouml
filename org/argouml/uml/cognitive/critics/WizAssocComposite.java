@@ -27,11 +27,11 @@ package org.argouml.uml.cognitive.critics;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-//import java.util.Vector;
 
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -117,7 +117,7 @@ public class WizAssocComposite extends UMLWizard {
     }
 
     /**
-     * Returns a vector of options to be used in creating a {@link
+     * Returns a list of options to be used in creating a {@link
      * WizStepChoice} that will exercise the options.
      * <p>
      * 
@@ -216,7 +216,7 @@ public class WizAssocComposite extends UMLWizard {
      * (<code>_step1Choice</code>) for subsequent use.
      * <p>
      * <em>Note</em>. If the association has been deleted, then we may not be
-     * able to create a vector of options. Under these circumstances we also
+     * able to create a list of options. Under these circumstances we also
      * return null.
      * <p>
      * 

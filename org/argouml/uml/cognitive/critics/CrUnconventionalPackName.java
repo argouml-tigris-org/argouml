@@ -106,22 +106,22 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
      */
     public String computeSuggestion(String nameStr) {
 
-        String sug = "";
+        StringBuilder sug = new StringBuilder();
         if (nameStr != null) {
             int size = nameStr.length();
             for (int i = 0; i < size; i++) {
                 char c = nameStr.charAt(i);
                 if (Character.isLowerCase(c)) {
-                    sug += c;
+                    sug.append(c);
                 } else if (Character.isUpperCase(c)) {
-                    sug += Character.toLowerCase(c);
+                    sug.append(Character.toLowerCase(c));
                 }
             }
         }
-        if (sug.equals("")) {
-            sug = "packageName";
+        if (sug.toString().equals("")) {
+            return "packageName";
         }
-        return sug;
+        return sug.toString();
     }
 
     /*

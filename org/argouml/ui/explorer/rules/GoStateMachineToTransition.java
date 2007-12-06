@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,7 +44,7 @@ public class GoStateMachineToTransition extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.state-machine.transition");
+        return Translator.localize("misc.state-machine.transition");
     }
 
     /*
@@ -53,7 +54,7 @@ public class GoStateMachineToTransition extends AbstractPerspectiveRule {
 	if (Model.getFacade().isAStateMachine(parent)) {
 	    return Model.getFacade().getTransitions(parent);
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -65,6 +66,7 @@ public class GoStateMachineToTransition extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
+    
 }

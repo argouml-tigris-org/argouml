@@ -265,7 +265,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
-    public void setBoundsImpl(int x, int y, int w, int h) {
+    public void setStandardBounds(int x, int y, int w, int h) {
         y = 50;
         Rectangle oldBounds = getBounds();
         w = headFig.getMinimumSize().width;
@@ -729,8 +729,9 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean filled) {
-        if (headFig.getFilled() != filled) {
+        if (headFig.isFilled() != filled) {
             headFig.setFilled(filled);
             damage();
         }
@@ -739,6 +740,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return headFig.getFillColor();
     }
@@ -746,9 +748,16 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
-        return headFig.getFilled();
+        return headFig.isFilled();
     }
+
+    @Override
+    public boolean isFilled() {
+        return headFig.isFilled();
+    }
+
 
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
@@ -968,13 +977,14 @@ public class FigClassifierRole extends FigNodeModelElement
         return foundNode;
     }
 
-    int getYCoordinate(MessageNode node) {
+    public int getYCoordinate(MessageNode node) {
         return lifeLineFig.getYCoordinate(linkPositions.indexOf(node));
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @Override
     public void setOwner(Object own) {
         super.setOwner(own);
         bindPort(own, headFig);

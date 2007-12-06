@@ -24,7 +24,8 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -39,7 +40,7 @@ import org.argouml.cognitive.ui.WizStepCue;
  */
 public class WizCueCards extends UMLWizard {
 
-    private Vector cues = new Vector();
+    private List cues = new ArrayList();
 
     /**
      * The constructor.
@@ -49,12 +50,17 @@ public class WizCueCards extends UMLWizard {
     /*
      * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
-    public int getNumSteps() { return cues.size(); }
+    @Override
+    public int getNumSteps() {
+        return cues.size();
+    }
 
     /**
      * @param s the text for the wizard step
      */
-    public void addCue(String s) { cues.addElement(s); }
+    public void addCue(String s) {
+        cues.add(s);
+    }
 
     /**
      * Create a new panel for the given step.
@@ -64,7 +70,7 @@ public class WizCueCards extends UMLWizard {
      */
     public JPanel makePanel(int newStep) {
 	if (newStep <= getNumSteps()) {
-	    String c = (String) cues.elementAt(newStep - 1);
+	    String c = (String) cues.get(newStep - 1);
 	    return new WizStepCue(this, c);
 	}
 	return null;
@@ -84,9 +90,10 @@ public class WizCueCards extends UMLWizard {
      *
      * @see org.argouml.cognitive.critics.Wizard#canFinish()
      */
+    @Override
     public boolean canFinish() {
 	return getStep() == getNumSteps();
     }
 
 
-} /* end class WizCueCards */
+}

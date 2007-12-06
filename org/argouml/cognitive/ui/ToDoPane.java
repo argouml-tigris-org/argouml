@@ -111,7 +111,7 @@ public class ToDoPane extends JPanel
     private JComboBox combo;
 
     /**
-     * Vector of TreeModels.
+     * List of TreeModels.
      */
     private List<ToDoPerspective> perspectives;
     private ToDoPerspective curPerspective;
@@ -204,15 +204,6 @@ public class ToDoPane extends JPanel
         return perspectives;
     }
     
-    /**
-     * @param pers the perspectives
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #setPerspectives(List)}.
-     */
-    @Deprecated
-    public void setPerspectives(Vector<ToDoPerspective> pers) {
-        setPerspectives((List<ToDoPerspective>) pers);
-    }
-
     /**
      * @param pers the perspectives
      */
@@ -432,13 +423,13 @@ public class ToDoPane extends JPanel
 	    return MessageFormat.
 		format(Translator.localize("label.todopane.item"),
 		       new Object[] {
-			   new Integer(size),
+			   Integer.valueOf(size),
 		       });
 	default:
 	    return MessageFormat.
 		format(Translator.localize("label.todopane.items"),
 		       new Object[] {
-			   new Integer(size),
+			   Integer.valueOf(size),
 		       });
         }
     }
@@ -530,7 +521,7 @@ public class ToDoPane extends JPanel
         ToDoPerspective poster = new ToDoByPoster();
         ToDoPerspective type = new ToDoByType();
 
-        // add the perspetives to a vector for the combobox
+        // add the perspectives to a list for the combobox
         List<ToDoPerspective> perspectives = new ArrayList<ToDoPerspective>();
 
         perspectives.add(priority);

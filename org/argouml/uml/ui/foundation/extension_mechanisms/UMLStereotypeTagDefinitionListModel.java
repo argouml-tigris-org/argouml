@@ -40,7 +40,7 @@ class UMLStereotypeTagDefinitionListModel
      * Constructor for UMLStereotypeTagDefinitionListModel.
      */
     public UMLStereotypeTagDefinitionListModel() {
-        super("dataValue");
+        super("definedTag");
         // TODO: Add referenceValue for tagged values 
         // which have a non-primitive type
     }

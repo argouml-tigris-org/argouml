@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +48,7 @@ public class GoSummaryToOutgoingDependency extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.summary.outgoing-dependency");
+        return Translator.localize("misc.summary.outgoing-dependency");
     }
 
     /*
@@ -56,7 +57,7 @@ public class GoSummaryToOutgoingDependency extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (parent instanceof OutgoingDependencyNode) {
-	    List list = new ArrayList();
+	    Collection list = new ArrayList();
 	    Iterator it =
 		Model.getFacade().getClientDependencies(
 			((OutgoingDependencyNode) parent).getParent())
@@ -71,7 +72,7 @@ public class GoSummaryToOutgoingDependency extends AbstractPerspectiveRule {
 
 	    return list;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -84,6 +85,7 @@ public class GoSummaryToOutgoingDependency extends AbstractPerspectiveRule {
 	    set.add(((OutgoingDependencyNode) parent).getParent());
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
+
 }

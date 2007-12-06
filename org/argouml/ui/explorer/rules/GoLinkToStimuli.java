@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,7 +44,7 @@ public class GoLinkToStimuli extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (!Model.getFacade().isALink(parent)) {
-            return null;
+            return Collections.EMPTY_SET;
         }
 	return Model.getFacade().getStimuli(parent);
     }
@@ -52,7 +53,7 @@ public class GoLinkToStimuli extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.link.stimuli");
+        return Translator.localize("misc.link.stimuli");
     }
 
     /*
@@ -65,6 +66,6 @@ public class GoLinkToStimuli extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

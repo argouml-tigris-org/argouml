@@ -26,10 +26,11 @@ package org.argouml.uml.diagram.collaboration;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
@@ -81,11 +82,12 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
     public List getPorts(Object nodeOrEdge) {
-	Vector res = new Vector();  //wasteful!
 	if (Model.getFacade().isAClassifierRole(nodeOrEdge)) {
-	    res.addElement(nodeOrEdge);
+	    List result = new ArrayList();
+	    result.add(nodeOrEdge);
+	    return result;
 	}
-	return res;
+	return Collections.EMPTY_LIST;
     }
 
     /*
@@ -103,20 +105,19 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
     public List getInEdges(Object port) {
-	Vector res = new Vector(); //wasteful!
+
 	if (Model.getFacade().isAClassifierRole(port)) {
-	    Object cr = /*(MClassifierRole)*/ port;
+	    Object cr = port;
 	    Collection ends = Model.getFacade().getAssociationEnds(cr);
 	    if (ends == null) {
-                return res; // empty Vector
+                return Collections.EMPTY_LIST;
             }
-	    Iterator iter = ends.iterator();
-	    while (iter.hasNext()) {
-		Object aer = /*(MAssociationEndRole)*/ iter.next();
-		res.addElement(Model.getFacade().getAssociation(aer));
+	    List result = new ArrayList();
+	    for (Object end : ends) {
+		result.add(Model.getFacade().getAssociation(end));
 	    }
 	}
-	return res;
+	return Collections.EMPTY_LIST;
     }
 
     /*
@@ -125,7 +126,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
     public List getOutEdges(Object port) {
-	return new Vector(); // TODO:?
+	return Collections.EMPTY_LIST; // TODO:?
     }
 
     ////////////////////////////////////////////////////////////////
@@ -136,6 +137,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
+    @Override
     public boolean canAddNode(Object node) {
         if (node == null) {
             return false;
@@ -159,6 +161,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
+    @Override
     public boolean canAddEdge(Object edge)  {
 	if (edge == null) {
             return false;
@@ -183,16 +186,17 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    end1 = Model.getFacade().getType(associationEndRole1);
 	} else if (Model.getFacade().isAGeneralization(edge)) {
 	    Object gen = /*(MGeneralization)*/ edge;
-	    end0 = Model.getFacade().getParent(gen);
-	    end1 = Model.getFacade().getChild(gen);
+	    end0 = Model.getFacade().getGeneral(gen);
+	    end1 = Model.getFacade().getSpecific(gen);
 	} else if (Model.getFacade().isADependency(edge)) {
 	    Collection clients = Model.getFacade().getClients(edge);
 	    Collection suppliers = Model.getFacade().getSuppliers(edge);
-	    if (clients == null || suppliers == null) {
+	    if (clients == null || clients.isEmpty() 
+	            || suppliers == null || suppliers.isEmpty()) {
                 return false;
             }
-	    end0 = (clients.toArray())[0];
-	    end1 = (suppliers.toArray())[0];
+	    end0 = clients.iterator().next();
+	    end1 = suppliers.iterator().next();
 	} else if (edge instanceof CommentEdge) {
 	    end0 = ((CommentEdge) edge).getSource();
 	    end1 = ((CommentEdge) edge).getDestination();
@@ -228,6 +232,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      *
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
      */
+    @Override
     public void addNode(Object node) {
 	LOG.debug("adding MClassifierRole node!!");
 	if (!canAddNode(node)) {
@@ -248,6 +253,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      *
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
+    @Override
     public void addEdge(Object edge) {
         LOG.debug("adding class edge!!!!!!");
         if (!canAddEdge(edge)) {
@@ -265,48 +271,42 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
+    @Override
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
 
 	if (Model.getFacade().isAClassifier(node)) {
 	    Collection ends = Model.getFacade().getAssociationEnds(node);
-	    Iterator iter = ends.iterator();
-	    while (iter.hasNext()) {
-		Object ae = /*(MAssociationEndRole)*/ iter.next();
-		if (canAddEdge(Model.getFacade().getAssociation(ae))) {
-                    addEdge(Model.getFacade().getAssociation(ae));
+	    for (Object end : ends) {
+		if (canAddEdge(Model.getFacade().getAssociation(end))) {
+                    addEdge(Model.getFacade().getAssociation(end));
                 }
 	    }
 	}
 	if (Model.getFacade().isAGeneralizableElement(node)) {
-	    Collection gn = Model.getFacade().getGeneralizations(node);
-	    Iterator iter = gn.iterator();
-	    while (iter.hasNext()) {
-		Object g = /*(MGeneralization)*/ iter.next();
-		if (canAddEdge(g)) {
-		    addEdge(g);
+	    Collection generalizations = 
+	        Model.getFacade().getGeneralizations(node);
+	    for (Object generalization : generalizations) {
+		if (canAddEdge(generalization)) {
+		    addEdge(generalization);
 		    return;
 		}
 	    }
-	    Collection sp = Model.getFacade().getSpecializations(node);
-	    iter = sp.iterator();
-	    while (iter.hasNext()) {
-		Object s = /*(MGeneralization)*/ iter.next();
-		if (canAddEdge(s)) {
-		    addEdge(s);
+	    Collection specializations = Model.getFacade().getSpecializations(node);
+	    for (Object specialization : specializations) {
+		if (canAddEdge(specialization)) {
+		    addEdge(specialization);
 		    return;
 		}
 	    }
 	}
 	if (Model.getFacade().isAModelElement(node)) {
-	    Vector specs =
-		new Vector(Model.getFacade().getClientDependencies(node));
-	    specs.addAll(Model.getFacade().getSupplierDependencies(node));
-	    Iterator iter = specs.iterator();
-	    while (iter.hasNext()) {
-		Object dep = /*(MDependency)*/ iter.next();
-		if (canAddEdge(dep)) {
-		    addEdge(dep);
+	    Collection dependencies =
+		new ArrayList(Model.getFacade().getClientDependencies(node));
+	    dependencies.addAll(Model.getFacade().getSupplierDependencies(node));
+	    for (Object dependency : dependencies) {
+		if (canAddEdge(dependency)) {
+		    addEdge(dependency);
 		    return;
 		}
 	    }
@@ -321,6 +321,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#canConnect(java.lang.Object,
      * java.lang.Object)
      */
+    @Override
     public boolean canConnect(Object fromP, Object toP) {
 	if ((Model.getFacade().isAClassifierRole(fromP))
 	    && (Model.getFacade().isAClassifierRole(toP))) {
@@ -339,7 +340,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	//throws PropertyVetoException
 
 	if ("ownedElement".equals(pce.getPropertyName())) {
-	    Vector oldOwned = (Vector) pce.getOldValue();
+	    List oldOwned = (List) pce.getOldValue();
 	    Object eo = /*(MElementImport)*/ pce.getNewValue();
 	    Object me = Model.getFacade().getModelElement(eo);
 	    if (oldOwned.contains(eo)) {

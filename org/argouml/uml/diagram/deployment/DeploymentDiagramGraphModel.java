@@ -26,10 +26,10 @@ package org.argouml.uml.diagram.deployment;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
@@ -61,28 +61,28 @@ public class DeploymentDiagramGraphModel
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
     public List getPorts(Object nodeOrEdge) {
-        Vector res = new Vector();  //wasteful!
+        List res = new ArrayList();
         if (Model.getFacade().isANode(nodeOrEdge)) {
-            res.addElement(nodeOrEdge);
+            res.add(nodeOrEdge);
         }
         if (Model.getFacade().isANodeInstance(nodeOrEdge)) {
-            res.addElement(nodeOrEdge);
+            res.add(nodeOrEdge);
         }
 
         if (Model.getFacade().isAComponent(nodeOrEdge)) {
-            res.addElement(nodeOrEdge);
+            res.add(nodeOrEdge);
         }
         if (Model.getFacade().isAComponentInstance(nodeOrEdge)) {
-            res.addElement(nodeOrEdge);
+            res.add(nodeOrEdge);
         }
         if (Model.getFacade().isAClass(nodeOrEdge)) {
-            res.addElement(nodeOrEdge);
+            res.add(nodeOrEdge);
         }
         if (Model.getFacade().isAInterface(nodeOrEdge)) {
-            res.addElement(nodeOrEdge);
+            res.add(nodeOrEdge);
         }
         if (Model.getFacade().isAObject(nodeOrEdge)) {
-            res.addElement(nodeOrEdge);
+            res.add(nodeOrEdge);
         }
         return res;
     }
@@ -99,16 +99,14 @@ public class DeploymentDiagramGraphModel
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
     public List getInEdges(Object port) {
-        Vector res = new Vector(); //wasteful!
+        List res = new ArrayList();
         if (Model.getFacade().isANode(port)) {
             Collection ends = Model.getFacade().getAssociationEnds(port);
             if (ends == null) {
-                return res; // empty Vector
+                return Collections.EMPTY_LIST;
             }
-            Iterator iter = ends.iterator();
-            while (iter.hasNext()) {
-                Object aec = iter.next();
-                res.add(Model.getFacade().getAssociation(aec));
+            for (Object end : ends) {
+                res.add(Model.getFacade().getAssociation(end));
             }
         }
         if (Model.getFacade().isANodeInstance(port)) {
@@ -119,12 +117,10 @@ public class DeploymentDiagramGraphModel
         if (Model.getFacade().isAComponent(port)) {
             Collection ends = Model.getFacade().getAssociationEnds(port);
             if (ends == null) {
-                return res; // empty Vector
+                return Collections.EMPTY_LIST;
             }
-            Iterator endEnum = ends.iterator();
-            while (endEnum.hasNext()) {
-                Object aec = endEnum.next();
-                res.addElement(Model.getFacade().getAssociation(aec));
+            for (Object end : ends) {
+                res.add(Model.getFacade().getAssociation(end));
             }
         }
         if (Model.getFacade().isAComponentInstance(port)) {
@@ -135,23 +131,19 @@ public class DeploymentDiagramGraphModel
         if (Model.getFacade().isAClass(port)) {
             Collection ends = Model.getFacade().getAssociationEnds(port);
             if (ends == null) {
-                return res; // empty Vector
+                return Collections.EMPTY_LIST;
             }
-            Iterator endEnum = ends.iterator();
-            while (endEnum.hasNext()) {
-                Object ae = endEnum.next();
-                res.addElement(Model.getFacade().getAssociation(ae));
+            for (Object end : ends) {
+                res.add(Model.getFacade().getAssociation(end));
             }
         }
         if (Model.getFacade().isAInterface(port)) {
             Collection ends = Model.getFacade().getAssociationEnds(port);
             if (ends == null) {
-                return res; // empty Vector
+                return Collections.EMPTY_LIST;
             }
-            Iterator endEnum = ends.iterator();
-            while (endEnum.hasNext()) {
-                Object ae = endEnum.next();
-                res.addElement(Model.getFacade().getAssociation(ae));
+            for (Object end : ends) {
+                res.add(Model.getFacade().getAssociation(end));
             }
         }
         if (Model.getFacade().isAObject(port)) {
@@ -168,7 +160,7 @@ public class DeploymentDiagramGraphModel
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
     public List getOutEdges(Object port) {
-        return new Vector(); // TODO:?
+        return Collections.EMPTY_LIST; // TODO:?
     }
 
     ////////////////////////////////////////////////////////////////
@@ -177,6 +169,7 @@ public class DeploymentDiagramGraphModel
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
+    @Override
     public boolean canAddNode(Object node) {
         if (node == null) {
             return false;
@@ -191,11 +184,10 @@ public class DeploymentDiagramGraphModel
         }
         if (Model.getFacade().isAAssociation(node)) {
             Collection ends = Model.getFacade().getConnections(node);
-            Iterator iter = ends.iterator();
             boolean canAdd = true;
-            while (iter.hasNext()) {
+            for (Object end : ends) {
                 Object classifier =
-                        Model.getFacade().getClassifier(iter.next());
+                        Model.getFacade().getClassifier(end);
                 if (!containsNode(classifier)) {
                     canAdd = false;
                     break;
@@ -216,6 +208,7 @@ public class DeploymentDiagramGraphModel
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
+    @Override
     public boolean canAddEdge(Object edge)  {
         if (edge == null) {
             return false;
@@ -277,6 +270,7 @@ public class DeploymentDiagramGraphModel
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
      */
+    @Override
     public void addNode(Object node) {
         LOG.debug("adding class node!!");
         if (!canAddNode(node)) {
@@ -295,6 +289,7 @@ public class DeploymentDiagramGraphModel
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
+    @Override
     public void addEdge(Object edge) {
         LOG.debug("adding class edge!!!!!!");
         if (!canAddEdge(edge)) {
@@ -312,14 +307,13 @@ public class DeploymentDiagramGraphModel
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
+    @Override
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
 
         if (Model.getFacade().isAClassifier(node)) {
             Collection ends = Model.getFacade().getAssociationEnds(node);
-            Iterator iter = ends.iterator();
-            while (iter.hasNext()) {
-                Object ae = iter.next();
+            for (Object ae : ends) {
                 if (!Model.getFacade().isANaryAssociation(
                         Model.getFacade().getAssociation(ae))
                         && canAddEdge(Model.getFacade().getAssociation(ae))) {
@@ -330,9 +324,7 @@ public class DeploymentDiagramGraphModel
         }
         if (Model.getFacade().isAAssociation(node)) {
             Collection ends = Model.getFacade().getConnections(node);
-            Iterator iter = ends.iterator();
-            while (iter.hasNext()) {
-                Object associationEnd = iter.next();
+            for (Object associationEnd : ends) {
                 if (canAddEdge(associationEnd)) {
                     addEdge(associationEnd);
                 }
@@ -340,9 +332,8 @@ public class DeploymentDiagramGraphModel
         }
         if (Model.getFacade().isAInstance(node)) {
             Collection ends = Model.getFacade().getLinkEnds(node);
-            Iterator iter = ends.iterator();
-            while (iter.hasNext()) {
-                Object link = Model.getFacade().getLink(iter.next());
+            for (Object end : ends) {
+                Object link = Model.getFacade().getLink(end);
                 if (canAddEdge(link)) {
                     addEdge(link);
                 }
@@ -350,35 +341,31 @@ public class DeploymentDiagramGraphModel
             }
         }
         if (Model.getFacade().isAGeneralizableElement(node)) {
-            Iterator iter =
-                    Model.getFacade().getGeneralizations(node).iterator();
-            while (iter.hasNext()) {
-                // g contains a Generalization
-                Object g = iter.next();
-                if (canAddEdge(g)) {
-                    addEdge(g);
+            Collection generalizations =
+                Model.getFacade().getGeneralizations(node);
+        
+            for (Object generalization : generalizations) {
+                if (canAddEdge(generalization)) {
+                    addEdge(generalization);
                 }
                 return;
             }
-            iter = Model.getFacade().getSpecializations(node).iterator();
-            while (iter.hasNext()) {
-                // s contains a specialization
-                Object s = iter.next();
-                if (canAddEdge(s)) {
-                    addEdge(s);
+            Collection specializations = 
+                Model.getFacade().getSpecializations(node);
+            for (Object specialization : specializations) {
+                if (canAddEdge(specialization)) {
+                    addEdge(specialization);
                 }
                 return;
             }
         }
         if (Model.getFacade().isAModelElement(node)) {
-            Vector specs =
-                new Vector(Model.getFacade().getClientDependencies(node));
-            specs.addAll(Model.getFacade().getSupplierDependencies(node));
-            Iterator iter = specs.iterator();
-            while (iter.hasNext()) {
-                Object dep = iter.next();
-                if (canAddEdge(dep)) {
-                    addEdge(dep);
+            List dependencies =
+                new ArrayList(Model.getFacade().getClientDependencies(node));
+            dependencies.addAll(Model.getFacade().getSupplierDependencies(node));
+            for (Object dependency : dependencies) {
+                if (canAddEdge(dependency)) {
+                    addEdge(dependency);
                 }
                 return;
             }
@@ -391,7 +378,7 @@ public class DeploymentDiagramGraphModel
      */
     public void vetoableChange(PropertyChangeEvent pce) {
         if ("ownedElement".equals(pce.getPropertyName())) {
-            Vector oldOwned = (Vector) pce.getOldValue();
+            List oldOwned = (List) pce.getOldValue();
             Object eo = pce.getNewValue();
             Object me = Model.getFacade().getModelElement(eo);
             if (oldOwned.contains(eo)) {
@@ -437,4 +424,4 @@ public class DeploymentDiagramGraphModel
      */
     static final long serialVersionUID = 1003748292917485298L;
 
-} /* end class DeploymentDiagramGraphModel */
+}

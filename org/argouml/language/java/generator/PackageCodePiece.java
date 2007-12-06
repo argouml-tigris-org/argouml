@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,7 +38,7 @@ import org.argouml.model.Model;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public class PackageCodePiece extends NamedCodePiece {
+class PackageCodePiece extends NamedCodePiece {
     /**
      * The code piece for the package identifier.
      */
@@ -94,9 +94,9 @@ public class PackageCodePiece extends NamedCodePiece {
      */
     public void write(BufferedReader reader,
                       BufferedWriter writer,
-                      Stack parseStateStack) throws IOException {
+                      Stack<ParseState> parseStateStack) throws IOException {
 
-	ParseState parseState = (ParseState) parseStateStack.peek();
+	ParseState parseState = parseStateStack.peek();
 	Object mNamespace = parseState.getNamespace();
 
 	if (!(Model.getFacade().isAModel(mNamespace))) {

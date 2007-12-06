@@ -38,6 +38,7 @@ public class UMLDerivedCheckBox extends UMLTaggedValueCheckBox {
      *
      */
     public UMLDerivedCheckBox() {
+        // TODO: This is a tagged value name which will never trigger an event
         super(Facade.DERIVED_TAG);
     }
 }

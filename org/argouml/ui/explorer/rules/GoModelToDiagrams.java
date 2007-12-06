@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -43,7 +44,7 @@ public class GoModelToDiagrams extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.model.diagram");
+        return Translator.localize("misc.model.diagram");
     }
 
     /*
@@ -56,7 +57,7 @@ public class GoModelToDiagrams extends AbstractPerspectiveRule {
 	    return ProjectManager.getManager()
                         .getCurrentProject().getDiagramList();
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -68,6 +69,6 @@ public class GoModelToDiagrams extends AbstractPerspectiveRule {
             set.add(parent);
             return set;
         }
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

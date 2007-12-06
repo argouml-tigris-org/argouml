@@ -68,8 +68,6 @@ public class Agency extends Observable { //implements java.io.Serialization
      */
     private static final Logger LOG = Logger.getLogger(Agency.class);
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     /**
      * A registry of all critics that are currently loaded into the
@@ -89,11 +87,9 @@ public class Agency extends Observable { //implements java.io.Serialization
     private static Hashtable<String, Critic> singletonCritics = 
         new Hashtable<String, Critic>(40);
 
-    ////////////////////////////////////////////////////////////////
-    // constructor and singleton methdos
 
     /**
-     * Contruct a new Agency instance with the given ControlMech as the
+     * Construct a new Agency instance with the given ControlMech as the
      * main control mechanism for determining which critics should be
      * active.
      *
@@ -104,7 +100,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     }
 
     /**
-     * Contruct a new Agency instance and use a StandardCM as the main
+     * Construct a new Agency instance and use a StandardCM as the main
      * control mechanism for determining which critics should be
      * active.
      */
@@ -113,7 +109,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     }
 
     /**
-     * Since Java does not really suport classes as first class
+     * Since Java does not really support classes as first class
      * objects, there is one instance of Agency that is passed around as
      * needed.<p>
      *
@@ -130,12 +126,9 @@ public class Agency extends Observable { //implements java.io.Serialization
 	}
         return dsgr.getAgency();
     }
-    
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
-     * @return the registery.
+     * @return the registry.
      */
     private static Hashtable<Class, List<Critic>> getCriticRegistry() {
         return criticRegistry;
@@ -156,9 +149,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     public static List<Critic> getCriticList() {
         return critics;
     }
-    
-    ////////////////////////////////////////////////////////////////
-    // critic registration
+
     /**
      * @param cr the critic to add/register
      */
@@ -308,8 +299,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         }
         return theCritics;
     }
-    ////////////////////////////////////////////////////////////////
-    // criticism control
+
 
     /**
      * Apply all critics that can be applied to the given
@@ -381,9 +371,6 @@ public class Agency extends Observable { //implements java.io.Serialization
      * @param d the designer
      */
     public void determineActiveCritics(Designer d) {
-        //     Enumeration clazzEnum = getCriticRegistry().keys();
-        //     while (clazzEnum.hasMoreElements()) {
-        //       Class clazz = (Class) (clazzEnum.nextElement());
         for (Critic c : critics) {
             if (controlMech.isRelevant(c, d)) {
                 c.beActive();
@@ -391,51 +378,10 @@ public class Agency extends Observable { //implements java.io.Serialization
                 c.beInactive();
             }
         }
-        //}
     }
 
-    ////////////////////////////////////////////////////////////////
-    // triggers
-    //
-    //   public static void addTrigger(Object dm, Designer dsgr, Object arg) {
-    //     Trigger t = new Trigger(dm, dsgr, arg);
-    //     getTriggers().addElement(t);
-    //     notifyStaticObservers(t);
-    //   }
-    //
-    //   public static void addTrigger(Object dm, Designer dsgr) {
-    //     addTrigger(dm, dsgr, null);
-    //   }
-    //
-    //   public static void fireTriggers() {
-    //     while (getTriggers().size() > 0)
-    //       fireTrigger((Trigger)(getTriggers().firstElement()));
-    //   }
-    //
-    //   /**
-    //    * Fire the given trigger and remove all identical triggers from
-    //    * the list of pending triggers.
-    //    */
-    //   public static void fireTrigger(Trigger t) {
-    //     Vector toRemove = new Vector();
-    //     Vector ts = getTriggers();
-    //     Enumeration cur = ts.elements();
-    //     while (cur.hasMoreElements()) {
-    //       Trigger t2 = (Trigger) cur.nextElement();
-    //       if (t.equals(t2)) toRemove.addElement(t2);
-    //     }
-    //     cur = toRemove.elements();
-    //     while (cur.hasMoreElements()) {
-    //       Trigger t2 = (Trigger) cur.nextElement();
-    //       ts.removeElement(t2);
-    //     }
-    //     t.fire();
-    //   }
-    ////////////////////////////////////////////////////////////////
-    // notifications and updates
-
     /**
-     * Let some object recieve notifications when the Agency changes
+     * Let some object receive notifications when the Agency changes
      * state.  Static observers are normal Observers on the singleton
      * instance of this class.
      *
@@ -461,35 +407,4 @@ public class Agency extends Observable { //implements java.io.Serialization
         }
     }
 
-} /* end class Agency */
-// /** This class store information about a design manipulation that
-//  * happens in some design editor and then it is matched against a
-//  * pattern associated with each Critic. Currently another Trigger
-//  * instance is used as the pattern. Null values in either Trigger are
-//  * considered wild-card value. <p>
-//  *
-//  * TODO: This code is not really used yet. Also, shouldn't
-//  * this be a public class so that the Editor can do something with it? */
-// class Trigger {
-//   Object _dm;
-//   Designer _dsgr;
-//   Object _arg;
-//   Trigger(Object dm, Designer dsgr, Object arg) {
-//     _dm = dm;
-//     _dsgr = dsgr;
-//     _arg = arg;
-//   }
-//
-//   boolean equals(Trigger t2) {
-//     return _dm == t2._dm && _dsgr == t2._dsgr && _arg == t2._arg;
-//   }
-//   public String toString() {
-//     return "Trigger[" + _dm.toString() + "\n----\n" +
-//        (_arg == null ? " " : _arg.toString()) + "]";
-//   }
-//   void fire() {
-//     /* TODO: should take arg into account, apply only some
-//      critics */
-//     Agency.applyAllCritics(_dm, _dsgr);
-//   }
-// } /* end class Trigger */
+}

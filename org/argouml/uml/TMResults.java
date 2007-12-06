@@ -25,7 +25,6 @@
 package org.argouml.uml;
 
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -62,15 +61,6 @@ public class TMResults extends AbstractTableModel {
      */
     public TMResults(boolean showTheInDiagramColumn) {
         showInDiagramColumn = showTheInDiagramColumn;
-    }
-
-    /**
-     * @param results the row objects
-     * @param theDiagrams the diagrams
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #setTarget(List, List)}.
-     */
-    public void setTarget(Vector results, Vector theDiagrams) {
-        setTarget((List) results, (List) theDiagrams);
     }
 
     /**
@@ -213,8 +203,8 @@ public class TMResults extends AbstractTableModel {
     private Object countNodesAndEdges(Diagram d) {
         int numNodes = d.getNodes().size();
         int numEdges = d.getEdges().size();
-        Object[] msgArgs = {new Integer(numNodes),
-                            new Integer(numEdges),
+        Object[] msgArgs = {Integer.valueOf(numNodes),
+                            Integer.valueOf(numEdges),
 	};
         return Translator.messageFormat("dialog.nodes-and-edges", msgArgs);
     }

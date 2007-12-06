@@ -46,14 +46,7 @@ public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        Object scope = Model.getFacade().getOwnerScope(getTarget());
-        if (scope != null
-                && scope.equals(
-                        Model.getScopeKind().getClassifier())) {
-            setSelected(true);
-        } else {
-            setSelected(false);
-        }
+        setSelected(Model.getFacade().isStatic(getTarget()));
     }
 
 }

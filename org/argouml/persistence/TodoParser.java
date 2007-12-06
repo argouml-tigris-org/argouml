@@ -77,7 +77,7 @@ class TodoParser extends SAXParserBase {
     private String critic;
 
     /**
-     * The offenders vector of the ResolvedCritic currently being
+     * The offenders list of the ResolvedCritic currently being
      * read.
      */
     private List offenders;

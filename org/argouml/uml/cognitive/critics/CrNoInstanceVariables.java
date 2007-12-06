@@ -39,11 +39,13 @@ import org.argouml.uml.cognitive.UMLDecision;
  * A critic to detect if a class has instance variables.
  * The critic fires currently only if a class and its base classes have
  * no attributes at all.
- * This is not neccesarily correct and the critic will have to deal with
+ * This is not necessarily correct and the critic will have to deal with
  * static attributes or attributes which are defined in a base class but are
  * private.
  */
 public class CrNoInstanceVariables extends CrUML {
+
+    private static final int MAX_DEPTH = 50;
 
     /**
      * The constructor.
@@ -128,13 +130,13 @@ public class CrNoInstanceVariables extends CrUML {
 	}
 
 	// I am only prepared to go this far.
-	if (depth > 50)
+	if (depth > MAX_DEPTH)
 	    return false;
 
 	Iterator iter = Model.getFacade().getGeneralizations(dm).iterator();
 
 	while (iter.hasNext()) {
-	    Object parent = Model.getFacade().getParent(iter.next());
+	    Object parent = Model.getFacade().getGeneral(iter.next());
 
 	    if (parent == dm)
 		continue;

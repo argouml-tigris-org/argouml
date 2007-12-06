@@ -35,7 +35,6 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
@@ -450,11 +449,11 @@ public abstract class ImportCommon implements ImportSettingsInternal {
 //        if (monitor != null) {
 //            monitor.updateSubTask(ImportsMessages.layoutingAction);
 //        }
-        Vector diagrams = di.getModifiedDiagrams();
+        List<ArgoDiagram> diagrams = di.getModifiedDiagramList();
         int total = startingProgress + diagrams.size()
                 / 10;
         for (int i = 0; i < diagrams.size(); i++) {
-            ArgoDiagram diagram = (ArgoDiagram) diagrams.elementAt(i);
+            ArgoDiagram diagram = diagrams.get(i);
             ClassdiagramLayouter layouter = new ClassdiagramLayouter(diagram);
             layouter.layout();
             int act = startingProgress + (i + 1) / 10;

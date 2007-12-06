@@ -38,15 +38,15 @@ import org.apache.log4j.Logger;
 
 /**
  * A BufferInputStream that is aware of XML structure.
- * It can searches for the first occurence of a named tag
+ * It searches for the first occurrence of a named tag
  * and reads only the data (inclusively) from that tag
  * to the matching end tag or it can search for the first
- * occurence of a named tag and read on the child tags.
+ * occurrence of a named tag and read on the child tags.
  * The tag is not expected to be an empty tag.
- * 
+ * <p>
  * TODO: This is hardwired to assume a fixed single byte
- * character encoding.  It probably needs to be updated to
- * handle multi-byte encodings. - tfm 20070607
+ * character encoding.  It needs to be updated to handle different
+ * encodings, including multi-byte encodings. - tfm 20070607
  * 
  * @author Bob Tarling
  */
@@ -75,7 +75,7 @@ class XmlInputStream extends BufferedInputStream {
      * @param inStream the input stream to wrap.
      * @param theTag the tag name from which to start reading
      * @param theLength the expected length of the input stream
-     * @param theEventSpacing the number of characers to read before
+     * @param theEventSpacing the number of characters to read before
      *        firing a progress event.
      */
     public XmlInputStream(

@@ -30,19 +30,16 @@ import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.ui.UndoableAction;
 import org.argouml.uml.ui.UMLListCellRenderer2;
-import org.tigris.gef.undo.UndoableAction;
-
-
 
 /**
  * The action to create a new todo item.
- *
  */
 public class ActionNewToDoItem extends UndoableAction {
 
     /**
-     * The constructor.
+     * Construct an action to create a new ToDo item.
      */
     public ActionNewToDoItem() {
         super(Translator.localize("action.new-todo-item"),
@@ -55,11 +52,12 @@ public class ActionNewToDoItem extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
         AddToDoItemDialog dialog = new AddToDoItemDialog(
                 new UMLListCellRenderer2(true));
         dialog.setVisible(true);
     }
-} /* end class ActionNewToDoItem */
+}
 

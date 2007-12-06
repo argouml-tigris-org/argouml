@@ -37,10 +37,10 @@ import javax.swing.JToolBar;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.model.Model;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.ocl.OCLUtil;
-import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBarManager;

@@ -26,21 +26,22 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 
 import java.awt.event.ActionEvent;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel of a Signal.
@@ -61,7 +62,7 @@ public class PropPanelSignal extends PropPanelClassifier {
      * Construct a default property panel for a Signal.
      */
     public PropPanelSignal() {
-        this("Signal", "SignalSending");
+        this("label.signal-title", "SignalSending");
     }
     
     /**
@@ -75,8 +76,7 @@ public class PropPanelSignal extends PropPanelClassifier {
      *            name of the image icon to use
      */
     public PropPanelSignal(String title, String iconName) {
-        super(title, lookupIcon(iconName),
-                ConfigLoader.getTabPropsOrientation());
+        super(title, lookupIcon(iconName));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -94,7 +94,7 @@ public class PropPanelSignal extends PropPanelClassifier {
 		
         addSeparator();
 		
-        AbstractActionAddModelElement actionAddContext =
+        AbstractActionAddModelElement2 actionAddContext =
             new ActionAddContextSignal();
         AbstractActionRemoveElement actionRemoveContext =
             new ActionRemoveContextSignal();
@@ -105,7 +105,7 @@ public class PropPanelSignal extends PropPanelClassifier {
                         actionRemoveContext, true));
         addField(Translator.localize("label.contexts"),
                 operationScroll);		
-        AbstractActionAddModelElement actionAddReception =
+        AbstractActionAddModelElement2 actionAddReception =
             new ActionAddReceptionSignal();
         AbstractActionRemoveElement actionRemoveReception =
             new ActionRemoveReceptionSignal();
@@ -175,7 +175,7 @@ class UMLSignalReceptionListModel extends UMLModelElementListModel2 {
  * 
  * @author Michiel
  */
-class ActionAddReceptionSignal extends AbstractActionAddModelElement {
+class ActionAddReceptionSignal extends AbstractActionAddModelElement2 {
 
     /**
      * The serial version.
@@ -189,11 +189,9 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement {
         super();
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-     */
-    protected Vector getChoices() {
-        Vector ret = new Vector();
+
+    protected List getChoices() {
+        List ret = new ArrayList();
         Object model =
             ProjectManager.getManager().getCurrentProject().getModel();
         if (getTarget() != null) {
@@ -204,26 +202,21 @@ class ActionAddReceptionSignal extends AbstractActionAddModelElement {
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-     */
-    protected Vector getSelected() {
-        Vector ret = new Vector();
+
+    protected List getSelected() {
+        List ret = new ArrayList();
         ret.addAll(Model.getFacade().getReceptions(getTarget()));
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-     */
+
     protected String getDialogTitle() {
         return Translator.localize("dialog.title.add-receptions");
     }
 
-    /*
-     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
-     */
-    protected void doIt(Vector selected) {
+
+    @Override
+    protected void doIt(Collection selected) {
         Model.getCommonBehaviorHelper().setReception(getTarget(), selected);
     }
 
@@ -251,6 +244,7 @@ class ActionRemoveContextSignal extends AbstractActionRemoveElement {
     /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object context = getObjectToRemove(); 
@@ -286,6 +280,7 @@ class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
     /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object reception = getObjectToRemove(); 

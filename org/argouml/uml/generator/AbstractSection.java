@@ -54,14 +54,13 @@ public abstract class AbstractSection {
     private static final String LINE_SEPARATOR =
 	System.getProperty("line.separator");
 
-    private Map mAry;
+    private Map<String, String> mAry;
 
     /**
      * Creates a new instance of Section.
      */
     public AbstractSection() {
-        mAry = new HashMap();
-        mAry.clear();
+        mAry = new HashMap<String, String>();        
     }
 
     /**
@@ -93,7 +92,7 @@ public abstract class AbstractSection {
             while (line != null) {
                 String sectionId = getSectId(line);
                 if (sectionId != null) {
-                    String content = (String) mAry.get(sectionId);
+                    String content = mAry.get(sectionId);
                     if (content != null) {
                         fw.write(line + LINE_SEPARATOR);
                         fw.write(content);
@@ -154,7 +153,7 @@ public abstract class AbstractSection {
             BufferedReader fr = new BufferedReader(f);
 
             String line = "";
-            String content = "";
+            StringBuilder content = new StringBuilder();
             boolean inSection = false;
             while (line != null) {
                 line = fr.readLine();
@@ -163,10 +162,10 @@ public abstract class AbstractSection {
                         String sectionId = getSectId(line);
                         if (sectionId != null) {
                             inSection = false;
-                            mAry.put(sectionId, content);
-                            content = "";
+                            mAry.put(sectionId, content.toString());
+                            content = new StringBuilder();
                         } else {
-                            content += line + LINE_SEPARATOR;
+                            content.append(line + LINE_SEPARATOR);
                         }
                     } else {
                         String sectionId = getSectId(line);

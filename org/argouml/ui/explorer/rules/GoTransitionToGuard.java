@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,7 +56,7 @@ public class GoTransitionToGuard extends AbstractPerspectiveRule {
             col.add(Model.getFacade().getGuard(parent));
             return col;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -67,6 +68,7 @@ public class GoTransitionToGuard extends AbstractPerspectiveRule {
             set.add(parent);
             return set;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
+
 }

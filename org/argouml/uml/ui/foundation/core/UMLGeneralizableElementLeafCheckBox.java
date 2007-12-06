@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,9 +47,11 @@ public class UMLGeneralizableElementLeafCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        if (getTarget() != null 
-                && Model.getFacade().isAGeneralizableElement(getTarget())) {
-            setSelected(Model.getFacade().isLeaf(getTarget()));
+        Object target = getTarget();
+        if (target != null && Model.getFacade().isAUMLElement(target)) {
+            setSelected(Model.getFacade().isLeaf(target));
+        } else {
+            setSelected(false);
         }
     }
 

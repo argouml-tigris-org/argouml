@@ -51,7 +51,7 @@ import org.tigris.gef.base.Diagram;
  * 
  * @author Bob Tarling
  */
-public class MemberList implements List {
+public class MemberList implements List<ProjectMember> {
 
     /**
      * Logger.
@@ -59,9 +59,12 @@ public class MemberList implements List {
     private static final Logger LOG = Logger.getLogger(MemberList.class);
 
     private AbstractProjectMember model;
+
     private List<ProjectMemberDiagram> diagramMembers = 
         new ArrayList<ProjectMemberDiagram>(10);
+
     private AbstractProjectMember todoList;
+    private AbstractProjectMember profileConfiguration;
 
     /**
      * The constructor.
@@ -70,7 +73,7 @@ public class MemberList implements List {
         LOG.info("Creating a member list");
     }
 
-    public boolean add(Object member) {
+    public synchronized boolean add(ProjectMember member) {
 
         if (member instanceof ProjectMemberModel) {
             // Always put the model at the top
@@ -80,6 +83,9 @@ public class MemberList implements List {
             // otherwise add the diagram at the start
             setTodoList((AbstractProjectMember) member);
             return true;
+        } else if (member instanceof ProfileConfiguration) {
+            setProfileConfiguration((AbstractProjectMember) member);
+            return true;
         } else if (member instanceof ProjectMemberDiagram) {
             // otherwise add the diagram at the start
             return diagramMembers.add((ProjectMemberDiagram) member);
@@ -87,7 +93,7 @@ public class MemberList implements List {
         return false;
     }
 
-    public boolean remove(Object member) {
+    public synchronized boolean remove(Object member) {
         LOG.info("Removing a member");
         if (member instanceof Diagram) {
             return removeDiagram((Diagram) member);
@@ -100,13 +106,34 @@ public class MemberList implements List {
             LOG.info("Removing todo list");
             setTodoList(null);
             return true;
+        } else if (profileConfiguration == member) {
+            LOG.info("Removing profile configuration");
+            setProfileConfiguration(null);
+            return true;
         } else {
-            return diagramMembers.remove(member);
+            final boolean removed = diagramMembers.remove(member);
+            if (!removed) {
+                LOG.warn("Failed to remove diagram member " + member);
+            }
+            return removed;
         }
     }
 
-    public Iterator iterator() {
-        List temp = new ArrayList(size());
+    public synchronized Iterator<ProjectMember> iterator() {
+        return buildTempList().iterator();
+    }
+
+    public synchronized ListIterator<ProjectMember> listIterator() {
+        return buildTempList().listIterator();
+    }
+
+    public synchronized ListIterator<ProjectMember> listIterator(int arg0) {
+        return buildTempList().listIterator(arg0);
+    }
+
+    private List<ProjectMember> buildTempList() {
+        List<ProjectMember> temp = 
+            new ArrayList<ProjectMember>(size());
         if (model != null) {
             temp.add(model);
         }
@@ -114,48 +141,25 @@ public class MemberList implements List {
         if (todoList != null) {
             temp.add(todoList);
         }
-        return temp.iterator();
+        if (profileConfiguration != null) {
+            temp.add(profileConfiguration);
+        }
+        return temp;
     }
-
-    public ListIterator listIterator() {
-        List temp = new ArrayList(size());
-        if (model != null) {
-            temp.add(model);
-        }
-        temp.addAll(diagramMembers);
-        if (todoList != null) {
-            temp.add(todoList);
-        }
-        return temp.listIterator();
-    }
-
-    public ListIterator listIterator(int arg0) {
-        List temp = new ArrayList(size());
-        if (model != null) {
-            temp.add(model);
-        }
-        temp.addAll(diagramMembers);
-        if (todoList != null) {
-            temp.add(todoList);
-        }
-        return temp.listIterator(arg0);
-    }
-
+    
     private boolean removeDiagram(Diagram d) {
-        Iterator it = diagramMembers.iterator();
-        while (it.hasNext()) {
-            Object obj = it.next();
-            ProjectMemberDiagram pmd = (ProjectMemberDiagram) obj;
+        for (ProjectMemberDiagram pmd : diagramMembers) {
             if (pmd.getDiagram() == d) {
                 pmd.remove();
                 diagramMembers.remove(pmd);
                 return true;
             }
         }
+        LOG.warn("Failed to remove diagram " + d);
         return false;
     }
 
-    public int size() {
+    public synchronized int size() {
         int size = diagramMembers.size();
         if (model != null) {
             ++size;
@@ -163,26 +167,35 @@ public class MemberList implements List {
         if (todoList != null) {
             ++size;
         }
+        if (profileConfiguration != null) {
+            ++size;
+        }
         return size;
     }
 
-    public boolean contains(Object member) {
+    public synchronized boolean contains(Object member) {
         if (todoList == member) {
             return true;
         }
         if (model == member) {
             return true;
         }
+        if (profileConfiguration == member) {
+            return true;
+        }
         return diagramMembers.contains(member);
     }
 
-    public void clear() {
+    public synchronized void clear() {
         LOG.info("Clearing members");
         if (model != null) {
             model.remove();
         }
         if (todoList != null) {
             todoList.remove();
+        }
+        if (profileConfiguration != null) {
+            profileConfiguration.remove();
         }
         Iterator membersIt = diagramMembers.iterator();
         while (membersIt.hasNext()) {
@@ -195,12 +208,15 @@ public class MemberList implements List {
      * @param type the type of the member
      * @return the member of the project
      */
-    public ProjectMember getMember(Class type) {
+    public synchronized ProjectMember getMember(Class type) {
         if (type == ProjectMemberModel.class) {
             return model;
         }
         if (type == ProjectMemberTodoList.class) {
             return todoList;
+        }
+        if (type == ProfileConfiguration.class) {
+            return profileConfiguration;
         }
         throw new IllegalArgumentException(
             "There is no single instance of a " + type.getName() + " member");
@@ -210,25 +226,30 @@ public class MemberList implements List {
      * @param type the type of the member
      * @return the member of the project
      */
-    public List getMembers(Class type) {
+    public synchronized List getMembers(Class type) {
         if (type == ProjectMemberModel.class) {
-            List temp = new ArrayList(1);
+            List<ProjectMember> temp = new ArrayList<ProjectMember>(1);
             temp.add(model);
             return temp;
         }
         if (type == ProjectMemberTodoList.class) {
-            List temp = new ArrayList(1);
+            List<ProjectMember> temp = new ArrayList<ProjectMember>(1);
             temp.add(todoList);
             return temp;
         }
         if (type == ProjectMemberDiagram.class) {
             return diagramMembers;
         }
+        if (type == ProfileConfiguration.class) {
+            List<ProjectMember> temp = new ArrayList<ProjectMember>(1);
+            temp.add(profileConfiguration);
+            return temp;
+        }
         throw new IllegalArgumentException(
             "There is no single instance of a " + type.getName() + " member");
     }
 
-    public Object get(int i) {
+    public synchronized ProjectMember get(int i) {
         if (model != null) {
             if (i == 0) {
                 return model;
@@ -237,27 +258,38 @@ public class MemberList implements List {
         }
 
         if (i == diagramMembers.size()) {
-            return todoList;
+            if (todoList != null) {
+                return todoList;
+            } else {
+                return profileConfiguration;
+            }
+        }
+        
+        if (i == (diagramMembers.size() + 1)) {
+            return profileConfiguration;
         }
 
         return diagramMembers.get(i);
     }
 
-    public boolean isEmpty() {
+    public synchronized boolean isEmpty() {
         return size() == 0;
     }
 
-    public Object[] toArray() {
-        Object[] temp = new Object[size()];
+    public synchronized ProjectMember[] toArray() {
+        ProjectMember[] temp = new ProjectMember[size()];
         int pos = 0;
         if (model != null) {
             temp[pos++] = model;
         }
-        for (int i = 0; i < diagramMembers.size(); ++i) {
-            temp[pos++] = diagramMembers.get(i);
+        for (ProjectMemberDiagram d : diagramMembers) {
+            temp[pos++] = d;
         }
         if (todoList != null) {
             temp[pos++] = todoList;
+        }
+        if (profileConfiguration != null) {
+            temp[pos++] = profileConfiguration;
         }
         return temp;
     }
@@ -267,39 +299,39 @@ public class MemberList implements List {
         todoList = member;
     }
 
-    public Object[] toArray(Object[] arg0) {
+    public <T> T[] toArray(T[] a) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean containsAll(Collection arg0) {
+    public boolean containsAll(Collection<?> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean addAll(Collection arg0) {
+    public boolean addAll(Collection<? extends ProjectMember> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean addAll(int arg0, Collection arg1) {
+    public boolean addAll(int arg0, Collection<? extends ProjectMember> arg1) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean removeAll(Collection arg0) {
+    public boolean removeAll(Collection<?> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean retainAll(Collection arg0) {
+    public boolean retainAll(Collection<?> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public Object set(int arg0, Object arg1) {
+    public ProjectMember set(int arg0, ProjectMember arg1) {
         throw new UnsupportedOperationException();
     }
 
-    public void add(int arg0, Object arg1) {
+    public void add(int arg0, ProjectMember arg1) {
         throw new UnsupportedOperationException();
     }
 
-    public Object remove(int arg0) {
+    public ProjectMember remove(int arg0) {
         throw new UnsupportedOperationException();
     }
 
@@ -311,7 +343,16 @@ public class MemberList implements List {
         throw new UnsupportedOperationException();
     }
 
-    public List subList(int arg0, int arg1) {
+    public List<ProjectMember> subList(int arg0, int arg1) {
         throw new UnsupportedOperationException();
     }
+
+    public AbstractProjectMember getProfileConfiguration() {
+        return profileConfiguration;
+    }
+
+    public void setProfileConfiguration(AbstractProjectMember profileConfig) {
+        profileConfiguration = profileConfig;
+    }
+
 }

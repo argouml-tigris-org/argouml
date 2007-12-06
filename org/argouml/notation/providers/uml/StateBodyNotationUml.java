@@ -27,7 +27,7 @@ package org.argouml.notation.providers.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -65,7 +65,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
             String msg = "statusmsg.bar.error.parsing.statebody";
             Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
@@ -81,9 +81,9 @@ public class StateBodyNotationUml extends StateBodyNotation {
     }
 
     /*
-     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         StringBuffer s = new StringBuffer();
 
         Object entryAction = Model.getFacade().getEntry(modelElement);

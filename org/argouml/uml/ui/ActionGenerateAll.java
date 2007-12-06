@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,10 +25,9 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.Action;
 
@@ -53,8 +52,6 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionGenerateAll extends UndoableAction {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructor.
@@ -67,12 +64,10 @@ public class ActionGenerateAll extends UndoableAction {
     }
 
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
 	ArgoDiagram activeDiagram =
@@ -82,17 +77,13 @@ public class ActionGenerateAll extends UndoableAction {
 	}
 
 	UMLClassDiagram d = (UMLClassDiagram) activeDiagram;
-	Vector classes = new Vector();
+	List classes = new ArrayList();
 	List nodes = d.getNodes();
-	Iterator elems = nodes.iterator();
-	while (elems.hasNext()) {
-	    Object owner = elems.next();
+	for (Object owner : nodes) {
 	    if (!Model.getFacade().isAClass(owner)
-		&& !Model.getFacade().isAInterface(owner)) {
-
-		continue;
-
-	    }
+                    && !Model.getFacade().isAInterface(owner)) {
+                continue;
+            }
 	    String name = Model.getFacade().getName(owner);
 	    if (name == null
 		|| name.length() == 0
@@ -101,16 +92,14 @@ public class ActionGenerateAll extends UndoableAction {
 		continue;
 
 	    }
-            classes.addElement(owner);
+            classes.add(owner);
 	}
 
 	if (classes.size() == 0) {
 
-            Iterator selectedObjects =
-                TargetManager.getInstance().getTargets().iterator();
-
-	    while (selectedObjects.hasNext()) {
-		Object selected = selectedObjects.next();
+            Collection selectedObjects =
+                TargetManager.getInstance().getTargets();
+            for (Object selected : selectedObjects) {
 		if (Model.getFacade().isAPackage(selected)) {
 		    addCollection(Model.getModelManagementHelper()
 				  .getAllModelElementsOfKind(
@@ -125,7 +114,7 @@ public class ActionGenerateAll extends UndoableAction {
 		} else if (Model.getFacade().isAClass(selected)
 			   || Model.getFacade().isAInterface(selected)) {
 		    if (!classes.contains(selected)) {
-		        classes.addElement(selected);
+		        classes.add(selected);
 		    }
 		}
 	    }
@@ -135,9 +124,11 @@ public class ActionGenerateAll extends UndoableAction {
     }
 
     /**
-     * @return true if the action is enabled and the diagram is a class diagram
+     * @return true if the action is enabled and the active diagram is a class
+     *         diagram
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
 	ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
@@ -148,12 +139,11 @@ public class ActionGenerateAll extends UndoableAction {
     /**
      * Adds elements from collection without duplicates.
      */
-    private void addCollection(Collection c, Vector v) {
-        for (Iterator it = c.iterator(); it.hasNext();) {
-            Object o = it.next();
+    private void addCollection(Collection c, Collection v) {
+        for (Object o : c) {
             if (!v.contains(o)) {
-                v.addElement(o);
+                v.add(o);
             }
         }
     }
-} /* end class ActionGenerateAll */
+}

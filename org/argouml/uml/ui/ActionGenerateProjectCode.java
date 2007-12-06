@@ -25,9 +25,9 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -47,9 +47,6 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionGenerateProjectCode extends UndoableAction {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      *  The constructor.
      */
@@ -62,15 +59,13 @@ public class ActionGenerateProjectCode extends UndoableAction {
     }
 
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
-        Vector classes = new Vector();
+        List classes = new ArrayList();
 	ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if (activeDiagram == null) {
@@ -92,11 +87,9 @@ public class ActionGenerateProjectCode extends UndoableAction {
 	//Collection elems =
 	//ModelManagementHelper.getHelper()
         //    .getAllModelElementsOfKind(MClassifier.class);
-	Iterator iter = elems.iterator();
-	while (iter.hasNext()) {
-	    Object cls = iter.next();
+	for (Object cls : elems) {
 	    if (isCodeRelevantClassifier(cls)) {
-		classes.addElement(cls);
+		classes.add(cls);
 	    }
 	}
 	ClassGenerationDialog cgd = new ClassGenerationDialog(classes, true);
@@ -149,4 +142,4 @@ public class ActionGenerateProjectCode extends UndoableAction {
     }
 
 
-} /* end class ActionGenerateProjectCode */
+}

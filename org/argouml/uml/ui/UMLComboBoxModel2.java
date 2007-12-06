@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -48,9 +47,7 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * ComboBoxmodel for UML modelelements. This implementation does not use
- * reflection and seperates Model, View and Controller better then does
- * the former UMLComboBoxModel. <p>
+ * ComboBox Model for UML modelelements. <p>
  *
  * This combobox allows selecting no value, if so indicated
  * at construction time of this class. I.e. it is "clearable".
@@ -105,7 +102,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 
     /**
      * Constructs a model for a combobox. The container given is used
-     * to retreive the target that is manipulated through this
+     * to retrieve the target that is manipulated through this
      * combobox. If clearable is true, the user can select null in the
      * combobox and thereby clear the attribute in the model.
      *
@@ -115,8 +112,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param clearable Flag to indicate if the user may select ""
      * as value in the combobox. If true the attribute that is shown
      * by this combobox may be set to null.
-     * Makes sure that there is allways a "" in the list with objects so the
-     * user has the oportunity to select this to clear the attribute.
+     * Makes sure that there is always a "" in the list with objects so the
+     * user has the opportunity to select this to clear the attribute.
      * @throws IllegalArgumentException if one of the arguments is null
      */
     public UMLComboBoxModel2(String name, boolean clearable) {
@@ -261,24 +258,24 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param col the elements to be removed
      */
     protected void removeAll(Collection col) {
-        Iterator it = col.iterator();
-        int lower = -1;
-        int index = -1;
+        int first = -1;
+        int last = -1;
         fireListEvents = false;
-        while (it.hasNext()) {
-            Object o = it.next();
+        for (Object o : col) {
+            int index = getIndexOf(o);
             removeElement(o);
-            if (lower == -1) { // start of interval
-                lower = getIndexOf(o);
-                index = lower;
+            if (first == -1) { // start of interval
+                first = index;
+                last = index;
             } else {
-                if (getIndexOf(o) != index + 1) { // end of interval
+                if (index  != last + 1) { // end of interval
                     fireListEvents = true;
-                    fireIntervalRemoved(this, lower, index);
+                    fireIntervalRemoved(this, first, last);
                     fireListEvents = false;
-                    lower = -1;
+                    first = index;
+                    last = index;
                 } else { // in middle of interval
-                    index++;
+                    last++;
                 }
             }
         }
@@ -291,12 +288,10 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param col the elements to be addd
      */
     protected void addAll(Collection col) {
-        Iterator it = col.iterator();
         Object o2 = getSelectedItem();
         fireListEvents = false;
         int oldSize = objects.size();
-        while (it.hasNext()) {
-            Object o = it.next();
+        for (Object o : col) {
             addElement(o);
         }
         if (o2 != null) {
@@ -510,9 +505,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
             return true;
 	}
         if (elem instanceof Collection) {
-            Iterator it = ((Collection) elem).iterator();
-            while (it.hasNext()) {
-                if (!objects.contains(it.next())) {
+            for (Object o : (Collection) elem) {
+                if (!objects.contains(o)) {
                     return false;
 		}
             }
@@ -541,11 +535,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
             }
         } else {
             Collection col = (Collection) getChangedElement(e);
-            Iterator it = col.iterator();
             if (!col.isEmpty()) {
                 valid = true;
-                while (it.hasNext()) {
-                    Object o = it.next();
+                for (Object o : col) {
                     if (!isValidElement(o)) {
                         valid = false;
                         break;
@@ -565,6 +557,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see javax.swing.AbstractListModel#fireContentsChanged(
      *          Object, int, int)
      */
+    @Override
     protected void fireContentsChanged(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel) {
             super.fireContentsChanged(source, index0, index1);
@@ -575,6 +568,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see javax.swing.AbstractListModel#fireIntervalAdded(
      *          Object, int, int)
      */
+    @Override
     protected void fireIntervalAdded(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel) {
             super.fireIntervalAdded(source, index0, index1);
@@ -585,6 +579,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see javax.swing.AbstractListModel#fireIntervalRemoved(
      *          Object, int, int)
      */
+    @Override
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel) {
             super.fireIntervalRemoved(source, index0, index1);

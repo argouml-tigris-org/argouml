@@ -24,7 +24,7 @@
 
 package org.argouml.notation.providers.java;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 import org.argouml.model.Model;
@@ -40,7 +40,8 @@ public class NotationUtilityJava {
     /**
      * The constructor - nothing to construct.
      */
-    NotationUtilityJava() { }
+    NotationUtilityJava() {
+    }
 
     /**
      * Returns a visibility String either for a VisibilityKind, but also 
@@ -53,6 +54,8 @@ public class NotationUtilityJava {
      */
     static String generateVisibility(Object o) {
         if (Model.getFacade().isAFeature(o)) {
+            // TODO: The src_visibility tag doesn't appear to be created
+            // anywhere by ArgoUML currently
             Object tv = Model.getFacade().getTaggedValue(o, "src_visibility");
             if (tv != null) {
                 Object tvValue = Model.getFacade().getValue(tv);
@@ -164,7 +167,7 @@ public class NotationUtilityJava {
      * the generated notation
      * @return a string which represents abstractness
      */
-    static String generateAbstract(Object modelElement, HashMap args) {
+    static String generateAbstract(Object modelElement, Map args) {
         if (Model.getFacade().isAbstract(modelElement)) {
             return "abstract ";
         }
@@ -177,7 +180,7 @@ public class NotationUtilityJava {
      * the generated notation
      * @return a string which represents leaf
      */
-    static String generateLeaf(Object modelElement, HashMap args) {
+    static String generateLeaf(Object modelElement, Map args) {
         if (Model.getFacade().isLeaf(modelElement)) {
             return "final ";
         }
@@ -191,24 +194,24 @@ public class NotationUtilityJava {
      * @return a string which represents the path
      */
     static String generatePath(Object modelElement, 
-            HashMap args) {
-        String s = "";
+            Map args) {
+        StringBuilder s = new StringBuilder();
         if (NotationProvider.isValue("pathVisible", args)) {
-            Stack stack = new Stack();
+            Stack<String> stack = new Stack<String>();
             Object ns = Model.getFacade().getNamespace(modelElement);
             while (ns != null && !Model.getFacade().isAModel(ns)) {
                 stack.push(Model.getFacade().getName(ns));
                 ns = Model.getFacade().getNamespace(ns);
             }
             while (!stack.isEmpty()) {
-                s += (String) stack.pop() + ".";
+                s.append(stack.pop()).append(".");
             }
 
-            if (s.length() > 0 && !s.endsWith(".")) {
-                s += ".";
+            if (s.length() > 0 && !(s.lastIndexOf(".") == s.length() - 1)) {
+                s.append(".");
             }
         }
-        return s;
+        return s.toString();
     }
 
     /**
@@ -218,7 +221,7 @@ public class NotationUtilityJava {
      * @return a string which represents the visibility
      */
     static String generateVisibility(Object modelElement, 
-            HashMap args) {
+            Map args) {
         String s = "";
         if (NotationProvider.isValue("visibilityVisible", args)) {
             s = NotationUtilityJava.generateVisibility(modelElement);

@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ public class GoCollaborationToInteraction extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.collaboration.interaction");
+        return Translator.localize("misc.collaboration.interaction");
     }
 
     /*
@@ -50,7 +51,7 @@ public class GoCollaborationToInteraction extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (!Model.getFacade().isACollaboration(parent)) {
-            return null;
+            return Collections.EMPTY_SET;
         }
 	return Model.getFacade().getInteractions(parent);
     }
@@ -65,6 +66,6 @@ public class GoCollaborationToInteraction extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

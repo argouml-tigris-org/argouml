@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -40,7 +41,7 @@ public class GoProjectToDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.project.diagram");
+	return Translator.localize("misc.project.diagram");
     }
 
     /*
@@ -50,7 +51,7 @@ public class GoProjectToDiagram extends AbstractPerspectiveRule {
 	if (parent instanceof Project) {
 	    return ((Project) parent).getDiagramList();
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -58,6 +59,6 @@ public class GoProjectToDiagram extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: What?
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

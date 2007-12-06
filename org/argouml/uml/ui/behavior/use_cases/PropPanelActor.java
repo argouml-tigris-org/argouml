@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,11 +24,9 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 
 /**
@@ -48,28 +46,21 @@ public class PropPanelActor extends PropPanelClassifier {
      * Construct a new property panel for an Actor.
      */
     public PropPanelActor() {
-    	super("Actor", lookupIcon("Actor"),
-                ConfigLoader.getTabPropsOrientation());
+    	super("label.actor", lookupIcon("Actor"));
 
-
-    	addField(Translator.localize("label.name"),
-                getNameTextField());
-    	addField(Translator.localize("label.namespace"),
-                getNamespaceSelector());
+    	addField("label.name", getNameTextField());
+        addField("label.namespace", getNamespaceSelector());
 
         add(getModifiersPanel());
 
     	addSeparator();
 
-    	addField(Translator.localize("label.generalizations"),
-                getGeneralizationScroll());
-    	addField(Translator.localize("label.specializations"),
-                getSpecializationScroll());
+    	addField("label.generalizations", getGeneralizationScroll());
+        addField("label.specializations", getSpecializationScroll());
 
     	addSeparator();
 
-    	addField(Translator.localize("label.association-ends"),
-            getAssociationEndScroll());
+    	addField("label.association-ends", getAssociationEndScroll());
 
         // The toolbar buttons that go at the top:
         addAction(new ActionNavigateContainerElement());
@@ -79,4 +70,4 @@ public class PropPanelActor extends PropPanelClassifier {
         addAction(getDeleteAction());
     }
 
-} /* end class PropActor */
+}

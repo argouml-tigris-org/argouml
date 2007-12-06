@@ -94,7 +94,7 @@ public abstract class ActionAddDiagram extends UndoableAction {
      *
      * @return the namespace or null
      */
-    private Object findNamespace() {
+    protected Object findNamespace() {
         Project p = ProjectManager.getManager().getCurrentProject();
         Object target = TargetManager.getInstance().getModelTarget();
         Object ns = null;

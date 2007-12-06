@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,8 +29,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -40,7 +39,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -48,7 +47,6 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an ObjectFlowState.
@@ -70,13 +68,10 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
      * Construct a property panel for ObjectFlowState elements.
      */
     public PropPanelObjectFlowState() {
-        super("ObjectFlowState", lookupIcon("ObjectFlowState"), ConfigLoader
-                .getTabPropsOrientation());
+        super("label.object-flow-state", lookupIcon("ObjectFlowState"));
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.container"),
-                getContainerScroll());
+        addField(Translator.localize("label.name"), getNameTextField());
+        addField(Translator.localize("label.container"), getContainerScroll());
 
         addField(Translator.localize("label.synch-state"),
                 new UMLActionSynchCheckBox());
@@ -84,7 +79,6 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         // field for Type (Classifier)
         addField(Translator.localize("label.type"),
             new UMLComboBoxNavigator(
-                this,
                 Translator.localize("label.classifierinstate.navigate.tooltip"),
                 getClassifierComboBox()));
 
@@ -122,6 +116,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState#addExtraButtons()
      */
+    @Override
     protected void addExtraButtons() {
         /* We do not want the Internal Transitions button here. */
 
@@ -136,6 +131,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
     /*
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
+    @Override
     public void setTarget(Object t) {
         Object oldTarget = getTarget();
         super.setTarget(t);
@@ -177,10 +173,8 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
      * @param ret a collection of states
      */
     static void removeTopStateFrom(Collection ret) {
-        Iterator i = ret.iterator();
         Collection tops = new ArrayList();
-        while (i.hasNext()) {
-            Object state = i.next();
+        for (Object state : ret) {
             if (Model.getFacade().isACompositeState(state)
                     && Model.getFacade().isTop(state)) {
                 tops.add(state);
@@ -247,7 +241,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         private static final long serialVersionUID = -7742772495832660119L;
     }
 
-    static class ActionAddOFSState extends AbstractActionAddModelElement {
+    static class ActionAddOFSState extends AbstractActionAddModelElement2 {
         private Object choiceClass = Model.getMetaTypes().getState();
 
 
@@ -259,11 +253,8 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             setMultiSelect(true);
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
-         *         java.util.Vector)
-         */
-        protected void doIt(Vector selected) {
+
+        protected void doIt(Collection selected) {
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Object type = Model.getFacade().getType(t);
@@ -285,11 +276,9 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             }
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-         */
-        protected Vector getChoices() {
-            Vector ret = new Vector();
+
+        protected List getChoices() {
+            List ret = new ArrayList();
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Object classifier = getType(t);
@@ -303,25 +292,21 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             return ret;
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-         */
+
         protected String getDialogTitle() {
             return Translator.localize("dialog.title.add-state");
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-         */
-        protected Vector getSelected() {
+
+        protected List getSelected() {
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Object type = Model.getFacade().getType(t);
                 if (Model.getFacade().isAClassifierInState(type)) {
-                    return new Vector(Model.getFacade().getInStates(type));
+                    return new ArrayList(Model.getFacade().getInStates(type));
                 }
             }
-            return new Vector();
+            return new ArrayList();
         }
 
         /**
@@ -342,6 +327,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         /*
          * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Object state = getObjectToRemove();
@@ -403,7 +389,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
     }
     
     
-    static class ActionAddOFSParameter extends AbstractActionAddModelElement {
+    static class ActionAddOFSParameter extends AbstractActionAddModelElement2 {
         private Object choiceClass = Model.getMetaTypes().getParameter();
 
         /**
@@ -414,22 +400,17 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             setMultiSelect(true);
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(
-         *         java.util.Vector)
-         */
-        protected void doIt(Vector selected) {
+
+        protected void doIt(Collection selected) {
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Model.getActivityGraphsHelper().setParameters(t, selected);
             }
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
-         */
-        protected Vector getChoices() {
-            Vector ret = new Vector();
+
+        protected List getChoices() {
+            List ret = new ArrayList();
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
                 Object classifier = getType(t);
@@ -454,22 +435,18 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             return ret;
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
-         */
+
         protected String getDialogTitle() {
             return Translator.localize("dialog.title.add-state");
         }
 
-        /*
-         * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
-         */
-        protected Vector getSelected() {
+
+        protected List getSelected() {
             Object t = getTarget();
             if (Model.getFacade().isAObjectFlowState(t)) {
-                return new Vector(Model.getFacade().getParameters(t));
+                return new ArrayList(Model.getFacade().getParameters(t));
             }
-            return new Vector();
+            return new ArrayList();
         }
         
     }
@@ -480,6 +457,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
             super();
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object target = getTarget();
             if (Model.getFacade().isAObjectFlowState(target)) {
@@ -504,6 +482,7 @@ public class PropPanelObjectFlowState extends AbstractPropPanelState
         /*
          * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Object param = getObjectToRemove();

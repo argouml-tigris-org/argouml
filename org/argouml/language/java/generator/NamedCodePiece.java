@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import java.util.Stack;
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
-public abstract class NamedCodePiece extends CodePiece {
+abstract class NamedCodePiece extends CodePiece {
     /**
      * Write the code this piece represents to file. The stack in the
      * parameter list contains the parser state when traversing up and
@@ -57,13 +57,13 @@ public abstract class NamedCodePiece extends CodePiece {
      */
     public abstract void write(BufferedReader reader,
                                BufferedWriter writer,
-                               Stack parseStateStack) throws IOException;
+                               Stack<ParseState> parseStateStack) throws IOException;
 
     /**
      * Read until the end of the code piece. As a precondition, the reader
      * must be positioned at the beginning of the code piece. If a writer
      * is given (not <tt>null</tt>), then everything that's read is written
-     * to the writer. (Ususally, both reader and writer point to the same
+     * to the writer. (Usually, both reader and writer point to the same
      * file).
      *
      * @param reader Read original code from this.

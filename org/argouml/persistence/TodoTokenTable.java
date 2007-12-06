@@ -92,18 +92,18 @@ class TodoTokenTable extends XMLTokenTableBase {
      * @see org.argouml.persistence.XMLTokenTableBase#setupTokens()
      */
     protected void setupTokens() {
-	addToken(STRING_TO_DO, new Integer(TOKEN_TO_DO));
-	addToken(STRING_TO_DO_LIST, new Integer(TOKEN_TO_DO_LIST));
-	addToken(STRING_TO_DO_ITEM, new Integer(TOKEN_TO_DO_ITEM));
-	addToken(STRING_HEADLINE, new Integer(TOKEN_HEADLINE));
-	addToken(STRING_DESCRIPTION, new Integer(TOKEN_DESCRIPTION));
-	addToken(STRING_PRIORITY, new Integer(TOKEN_PRIORITY));
-	addToken(STRING_MOREINFOURL, new Integer(TOKEN_MOREINFOURL));
+	addToken(STRING_TO_DO, Integer.valueOf(TOKEN_TO_DO));
+	addToken(STRING_TO_DO_LIST, Integer.valueOf(TOKEN_TO_DO_LIST));
+	addToken(STRING_TO_DO_ITEM, Integer.valueOf(TOKEN_TO_DO_ITEM));
+	addToken(STRING_HEADLINE, Integer.valueOf(TOKEN_HEADLINE));
+	addToken(STRING_DESCRIPTION, Integer.valueOf(TOKEN_DESCRIPTION));
+	addToken(STRING_PRIORITY, Integer.valueOf(TOKEN_PRIORITY));
+	addToken(STRING_MOREINFOURL, Integer.valueOf(TOKEN_MOREINFOURL));
 
-	addToken(STRING_RESOLVEDCRITICS, new Integer(TOKEN_RESOLVEDCRITICS));
-	addToken(STRING_ISSUE, new Integer(TOKEN_ISSUE));
-	addToken(STRING_POSTER, new Integer(TOKEN_POSTER));
-	addToken(STRING_OFFENDER, new Integer(TOKEN_OFFENDER));
+	addToken(STRING_RESOLVEDCRITICS, Integer.valueOf(TOKEN_RESOLVEDCRITICS));
+	addToken(STRING_ISSUE, Integer.valueOf(TOKEN_ISSUE));
+	addToken(STRING_POSTER, Integer.valueOf(TOKEN_POSTER));
+	addToken(STRING_OFFENDER, Integer.valueOf(TOKEN_OFFENDER));
     }
 }
 

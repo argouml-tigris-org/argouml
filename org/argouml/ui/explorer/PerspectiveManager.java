@@ -27,7 +27,6 @@ package org.argouml.ui.explorer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -77,9 +76,12 @@ import org.argouml.ui.explorer.rules.GoOperationToCollaborationDiagram;
 import org.argouml.ui.explorer.rules.GoOperationToSequenceDiagram;
 import org.argouml.ui.explorer.rules.GoPackageToClass;
 import org.argouml.ui.explorer.rules.GoPackageToElementImport;
+import org.argouml.ui.explorer.rules.GoProfileConfigurationToProfile;
+import org.argouml.ui.explorer.rules.GoProfileToModel;
 import org.argouml.ui.explorer.rules.GoProjectToCollaboration;
 import org.argouml.ui.explorer.rules.GoProjectToDiagram;
 import org.argouml.ui.explorer.rules.GoProjectToModel;
+import org.argouml.ui.explorer.rules.GoProjectToProfileConfiguration;
 import org.argouml.ui.explorer.rules.GoProjectToRoots;
 import org.argouml.ui.explorer.rules.GoProjectToStateMachine;
 import org.argouml.ui.explorer.rules.GoSignalToReception;
@@ -129,11 +131,11 @@ public final class PerspectiveManager {
 
     private static PerspectiveManager instance;
 
-    private List perspectiveListeners;
+    private List<PerspectiveManagerListener> perspectiveListeners;
 
-    private List perspectives;
+    private List<ExplorerPerspective> perspectives;
 
-    private List rules;
+    private List<PerspectiveRule> rules;
 
     /**
      * @return the instance (singleton)
@@ -150,9 +152,9 @@ public final class PerspectiveManager {
      */
     private PerspectiveManager() {
 
-        perspectiveListeners = new ArrayList();
-        perspectives = new ArrayList();
-        rules = new ArrayList();
+        perspectiveListeners = new ArrayList<PerspectiveManagerListener>();
+        perspectives = new ArrayList<ExplorerPerspective>();
+        rules = new ArrayList<PerspectiveRule>();
         loadRules();
     }
 
@@ -176,14 +178,9 @@ public final class PerspectiveManager {
      * @param perspective
      *            the perspective to be added
      */
-    public void addPerspective(Object perspective) {
+    public void addPerspective(ExplorerPerspective perspective) {
         perspectives.add(perspective);
-        Iterator listenerIt = perspectiveListeners.iterator();
-        while (listenerIt.hasNext()) {
-
-            PerspectiveManagerListener listener =
-                (PerspectiveManagerListener) listenerIt.next();
-
+        for (PerspectiveManagerListener listener : perspectiveListeners) {
             listener.addPerspective(perspective);
         }
     }
@@ -192,12 +189,9 @@ public final class PerspectiveManager {
      * @param newPerspectives
      *            the collection of perspectives to be added
      */
-    public void addAllPerspectives(Collection newPerspectives) {
-
-        Iterator newPerspectivesIt = newPerspectives.iterator();
-        while (newPerspectivesIt.hasNext()) {
-
-            Object newPerspective = newPerspectivesIt.next();
+    public void addAllPerspectives(
+            Collection<ExplorerPerspective> newPerspectives) {
+        for (ExplorerPerspective newPerspective : newPerspectives) {
             addPerspective(newPerspective);
         }
     }
@@ -206,15 +200,9 @@ public final class PerspectiveManager {
      * @param perspective
      *            the perspective to be removed
      */
-    public void removePerspective(Object perspective) {
-
+    public void removePerspective(ExplorerPerspective perspective) {
         perspectives.remove(perspective);
-        Iterator listenerIt = perspectiveListeners.iterator();
-        while (listenerIt.hasNext()) {
-
-            PerspectiveManagerListener listener =
-                (PerspectiveManagerListener) listenerIt.next();
-
+        for (PerspectiveManagerListener listener : perspectiveListeners) {
             listener.removePerspective(perspective);
         }
     }
@@ -224,17 +212,18 @@ public final class PerspectiveManager {
      */
     public void removeAllPerspectives() {
 
-        List pers = new ArrayList();
+        List<ExplorerPerspective> pers = new ArrayList<ExplorerPerspective>();
+
         pers.addAll(getPerspectives());
-        for (int i = 0; i < pers.size(); i++) {
-            removePerspective(pers.get(i));
+        for (ExplorerPerspective perspective : pers) {
+            removePerspective(perspective);
         }
     }
 
     /**
-     * @return the list of all persppectives
+     * @return the list of all perspectives
      */
-    public List getPerspectives() {
+    public List<ExplorerPerspective> getPerspectives() {
         return perspectives;
     }
 
@@ -327,7 +316,7 @@ public final class PerspectiveManager {
      * Loads a pre-defined default set of perspectives.
      */
     public void loadDefaultPerspectives() {
-        Collection c = getDefaultPerspectives();
+        Collection<ExplorerPerspective> c = getDefaultPerspectives();
 
         addAllPerspectives(c);
     }
@@ -335,10 +324,14 @@ public final class PerspectiveManager {
     /**
      * @return a collection of default perspectives (i.e. the predefined ones)
      */
-    public Collection getDefaultPerspectives() {
+    public Collection<ExplorerPerspective> getDefaultPerspectives() {
         ExplorerPerspective classPerspective =
             new ExplorerPerspective(
                 "combobox.item.class-centric");
+        classPerspective.addRule(new GoProjectToModel());
+        classPerspective.addRule(new GoProjectToProfileConfiguration());
+        classPerspective.addRule(new GoProfileConfigurationToProfile());
+        classPerspective.addRule(new GoProfileToModel());
         classPerspective.addRule(new GoProjectToRoots());
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
         classPerspective.addRule(new GoNamespaceToDiagram());
@@ -353,6 +346,10 @@ public final class PerspectiveManager {
         ExplorerPerspective packagePerspective =
             new ExplorerPerspective(
                 "combobox.item.package-centric");
+        packagePerspective.addRule(new GoProjectToModel());
+        packagePerspective.addRule(new GoProjectToProfileConfiguration());
+        packagePerspective.addRule(new GoProfileConfigurationToProfile());
+        packagePerspective.addRule(new GoProfileToModel());
         packagePerspective.addRule(new GoProjectToRoots());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
         packagePerspective.addRule(new GoPackageToElementImport());
@@ -398,6 +395,9 @@ public final class PerspectiveManager {
             new ExplorerPerspective(
                 "combobox.item.diagram-centric");
         diagramPerspective.addRule(new GoProjectToModel());
+        diagramPerspective.addRule(new GoProjectToProfileConfiguration());
+        diagramPerspective.addRule(new GoProfileConfigurationToProfile());
+        diagramPerspective.addRule(new GoProfileToModel());
         diagramPerspective.addRule(new GoModelToDiagrams());
         diagramPerspective.addRule(new GoDiagramToNode());
         diagramPerspective.addRule(new GoDiagramToEdge());
@@ -409,6 +409,9 @@ public final class PerspectiveManager {
             new ExplorerPerspective(
                 "combobox.item.inheritance-centric");
         inheritancePerspective.addRule(new GoProjectToModel());
+        inheritancePerspective.addRule(new GoProjectToProfileConfiguration());
+        classPerspective.addRule(new GoProfileConfigurationToProfile());
+        classPerspective.addRule(new GoProfileToModel());
         inheritancePerspective.addRule(new GoModelToBaseElements());
         inheritancePerspective
                 .addRule(new GoGeneralizableElementToSpecialized());
@@ -417,6 +420,9 @@ public final class PerspectiveManager {
             new ExplorerPerspective(
                 "combobox.item.class-associations");
         associationsPerspective.addRule(new GoProjectToModel());
+        associationsPerspective.addRule(new GoProjectToProfileConfiguration());
+        associationsPerspective.addRule(new GoProfileConfigurationToProfile());
+        associationsPerspective.addRule(new GoProfileToModel());
         associationsPerspective.addRule(new GoNamespaceToDiagram());
         associationsPerspective.addRule(new GoPackageToClass());
         associationsPerspective.addRule(new GoClassToAssociatedClass());
@@ -425,6 +431,9 @@ public final class PerspectiveManager {
             new ExplorerPerspective(
                 "combobox.item.residence-centric");
         residencePerspective.addRule(new GoProjectToModel());
+        residencePerspective.addRule(new GoProjectToProfileConfiguration());
+        residencePerspective.addRule(new GoProfileConfigurationToProfile());
+        residencePerspective.addRule(new GoProfileToModel());
         residencePerspective.addRule(new GoModelToNode());
         residencePerspective.addRule(new GoNodeToResidentComponent());
         residencePerspective.addRule(new GoComponentToResidentModelElement());
@@ -455,11 +464,16 @@ public final class PerspectiveManager {
         ExplorerPerspective compositionPerspective =
             new ExplorerPerspective(
                 "combobox.item.composite-centric");
+        compositionPerspective.addRule(new GoProjectToModel());
+        compositionPerspective.addRule(new GoProjectToProfileConfiguration());
+        compositionPerspective.addRule(new GoProfileConfigurationToProfile());
+        compositionPerspective.addRule(new GoProfileToModel());
         compositionPerspective.addRule(new GoProjectToRoots());
         compositionPerspective.addRule(new GoModelElementToContents());
         compositionPerspective.addRule(new GoModelElementToContainedDiagrams());
 
-        Collection c = new ArrayList();
+        Collection<ExplorerPerspective> c = 
+            new ArrayList<ExplorerPerspective>();
         c.add(packagePerspective);
         c.add(classPerspective);
         c.add(diagramPerspective);
@@ -515,7 +529,10 @@ public final class PerspectiveManager {
             new GoOperationToSequenceDiagram(), new GoPackageToClass(),
             new GoPackageToElementImport(),
             new GoProjectToCollaboration(), new GoProjectToDiagram(),
-            new GoProjectToModel(), new GoProjectToStateMachine(),
+            new GoProjectToModel(), new GoProjectToStateMachine(), 
+            new GoProjectToProfileConfiguration(), 
+            new GoProfileConfigurationToProfile(),
+            new GoProfileToModel(),
             new GoProjectToRoots(),
             new GoSignalToReception(), new GoStateMachineToTop(),
             new GoStatemachineToDiagram(), new GoStateMachineToState(),
@@ -561,7 +578,7 @@ public final class PerspectiveManager {
     /**
      * @return the collection of rules
      */
-    public Collection getRules() {
+    public Collection<PerspectiveRule> getRules() {
         return rules;
     }
 
@@ -578,37 +595,22 @@ public final class PerspectiveManager {
      *         saved in the user properties.
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
 
-        String p = "";
+        StringBuffer p = new StringBuffer();
 
-        Iterator perspectivesIt = getPerspectives().iterator();
-        while (perspectivesIt.hasNext()) {
-
-            ExplorerPerspective perspective =
-                (ExplorerPerspective) perspectivesIt.next();
-
+        for (ExplorerPerspective perspective : getPerspectives()) {
             String name = perspective.toString();
-
-            p += name + ",";
-
-            Object[] rulesArray = perspective.getRulesArray();
-
-            for (int x = 0; x < rulesArray.length; x++) {
-
-                PerspectiveRule rule = (PerspectiveRule) rulesArray[x];
-                p += rule.getClass().getName();
-
-                if (x < rulesArray.length - 1) {
-                    p += ",";
-                }
+            p.append(name).append(",");
+            for (PerspectiveRule rule : perspective.getList()) {
+                p.append(rule.getClass().getName()).append(",");
             }
-
-            if (perspectivesIt.hasNext()) {
-                p += ";";
-            }
+            p.deleteCharAt(p.length() - 1);
+            p.append(";");
         }
-
-        return p;
+        
+        p.deleteCharAt(p.length() - 1);
+        return p.toString();
     }
 }

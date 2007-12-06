@@ -43,7 +43,6 @@ import org.argouml.uml.ui.ActionNavigateUpPreviousDown;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * A property panel for Operations of Classifiers.
@@ -59,8 +58,7 @@ public class PropPanelOperation extends PropPanelFeature {
      * The constructor.
      */
     public PropPanelOperation() {
-        super("Operation", lookupIcon("Operation"), ConfigLoader
-                .getTabPropsOrientation());
+        super("label.operation", lookupIcon("Operation"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -138,10 +136,9 @@ public class PropPanelOperation extends PropPanelFeature {
     public void addRaisedSignal() {
         Object target = getTarget();
         if (Model.getFacade().isAOperation(target)) {
-            Object oper = /* (MOperation) */target;
+            Object oper = target;
             Object newSignal = Model.getCommonBehaviorFactory()
                     .createSignal();
-                    //((MOperation)oper).getFactory().createSignal();
 
             Model.getCoreHelper().addOwnedElement(
                     Model.getFacade().getNamespace(
@@ -158,7 +155,7 @@ public class PropPanelOperation extends PropPanelFeature {
     public void addMethod() {
         Object target = getTarget();
         if (Model.getFacade().isAOperation(target)) {
-            Object oper = /* (MOperation) */target;
+            Object oper = target;
             String name = Model.getFacade().getName(oper);
             Object newMethod = Model.getCoreFactory().buildMethod(name);
             Model.getCoreHelper().addMethod(oper, newMethod);
@@ -189,6 +186,7 @@ public class PropPanelOperation extends PropPanelFeature {
         /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAOperation(target)) {
@@ -220,6 +218,7 @@ public class PropPanelOperation extends PropPanelFeature {
         /*
          * @see org.tigris.gef.undo.UndoableAction#isEnabled()
          */
+        @Override
         public boolean isEnabled() {
             Object target = TargetManager.getInstance().getModelTarget();
             boolean result = true;
@@ -235,6 +234,7 @@ public class PropPanelOperation extends PropPanelFeature {
         /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Object target = TargetManager.getInstance().getModelTarget();
@@ -252,6 +252,7 @@ public class PropPanelOperation extends PropPanelFeature {
      *
      * @see org.argouml.uml.ui.PropPanel#getDisplayNamespace()
      */
+    @Override
     protected Object getDisplayNamespace() {
         Object namespace = null;
         Object target = getTarget();
@@ -265,4 +266,4 @@ public class PropPanelOperation extends PropPanelFeature {
         return namespace;
     }
 
-} /* end class PropPanelOperation */
+}

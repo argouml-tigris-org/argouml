@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,9 +54,9 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
     private Object object;
 
     /**
-     * the DropTargetDropEvent that caused this action.
+     * the location to drop the node.
      */
-    private DropTargetDropEvent dropEvent;
+    private Point location;
 
     /**
      * 0 if this is the 1st element dropped here,
@@ -85,7 +85,21 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
     public AddExistingNodeCommand(Object o, DropTargetDropEvent event,
             int cnt) {
         object = o;
-        dropEvent = event;
+        location = event.getLocation();
+        count = cnt;
+    }
+
+    /**
+     * @param o the UML modelelement to be added
+     * @param dropLocation the point where to drop the node.
+     *               Also <code>null</code> is acceptable.
+     * @param cnt 0 if this is the 1st element dropped here,
+     *            n if this is the (n+1)-th element dropped here.
+     */
+    public AddExistingNodeCommand(Object o, Point dropLocation,
+            int cnt) {
+        object = o;
+        location = dropLocation;
         count = cnt;
     }
 
@@ -112,7 +126,7 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
         ModePlace placeMode = new ModePlace(this, instructions);
         placeMode.setAddRelatedEdges(true);
 
-        if (dropEvent == null) {
+        if (location == null) {
             Globals.mode(placeMode, false);
         } else {
             /* Calculate the drop location, and place every n-th element
@@ -120,8 +134,8 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
              */
             Point p =
                 new Point(
-                    dropEvent.getLocation().x + (count * 100),
-                    dropEvent.getLocation().y);
+                    location.x + (count * 100),
+                    location.y);
             /* Take canvas scrolling into account.
              * The implementation below does place the element correctly
              * when the canvas has been scrolled.

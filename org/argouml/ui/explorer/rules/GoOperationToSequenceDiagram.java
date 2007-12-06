@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +48,7 @@ public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.operation.sequence-diagram");
+        return Translator.localize("misc.operation.sequence-diagram");
     }
 
     /*
@@ -72,7 +73,7 @@ public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule {
             }
             return ret;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -80,6 +81,6 @@ public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: What?
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

@@ -151,13 +151,11 @@ class OldZargoFilePersister extends ZargoFilePersister {
             int size = project.getMembers().size();
             Collection<String> names = new ArrayList<String>();
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember =
-                    (ProjectMember) project.getMembers().get(i);
+                ProjectMember projectMember = project.getMembers().get(i);
                 if (!(projectMember.getType().equalsIgnoreCase("xmi"))) {
                     if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member: "
-                                + ((ProjectMember) project.getMembers()
-                                        .get(i)).getZipName());
+                        LOG.info("Saving member: " 
+                                + project.getMembers().get(i).getZipName());
                     }
                     String name = projectMember.getZipName();
                     String originalName = name;
@@ -175,13 +173,11 @@ class OldZargoFilePersister extends ZargoFilePersister {
             }
             
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember =
-                    (ProjectMember) project.getMembers().get(i);
+                ProjectMember projectMember = project.getMembers().get(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
-                                + ((ProjectMember) project.getMembers()
-                                        .get(i)).getType());
+                                + project.getMembers().get(i).getType());
                     }
                     stream.putNextEntry(
                             new ZipEntry(projectMember.getZipName()));

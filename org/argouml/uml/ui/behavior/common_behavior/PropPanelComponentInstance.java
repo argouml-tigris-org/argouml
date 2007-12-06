@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,13 +29,12 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.UMLContainerResidentListModel;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a ComponentInstance.
@@ -48,11 +47,10 @@ public class PropPanelComponentInstance extends PropPanelInstance {
     private static final long serialVersionUID = 7178149693694151459L;
 
     /**
-     * Contructor.
+     * Construct a property panel for a ComponentInstance.
      */
     public PropPanelComponentInstance() {
-        super("Component Instance", lookupIcon("ComponentInstance"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.component-instance", lookupIcon("ComponentInstance"));
 
         addField(Translator.localize("label.name"), getNameTextField());
         addField(Translator.localize("label.namespace"),
@@ -71,7 +69,7 @@ public class PropPanelComponentInstance extends PropPanelInstance {
                 new JScrollPane(resList));
 
         addSeparator();
-        AbstractActionAddModelElement action =
+        AbstractActionAddModelElement2 action =
             new ActionAddInstanceClassifier(
                     Model.getMetaTypes().getComponent());
         JScrollPane classifierScroll =
@@ -86,4 +84,4 @@ public class PropPanelComponentInstance extends PropPanelInstance {
         addAction(getDeleteAction());
     }
 
-} /* end class PropPanelComponentInstance */
+}

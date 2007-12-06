@@ -51,8 +51,6 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
     private static ImageIcon icon = ResourceLoaderWrapper
             .lookupIconResource("ComboNav");
 
-    // TODO: Get rid of this and adjust/deprecate
-    // constructor
     private UMLUserInterfaceContainer theContainer;
 
     private JComboBox theComboBox;
@@ -60,7 +58,9 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
     private JButton theButton;
 
     /**
-     * Constructor
+     * Constructor.
+     * 
+     * @deprecated by MVW in 0.25.3. Use other constructor instead.
      * 
      * @param container
      *            Container, typically a PropPanel
@@ -71,9 +71,21 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
      */
     public UMLComboBoxNavigator(UMLUserInterfaceContainer container,
             String tooltip, JComboBox box) {
+        this(tooltip, box);
+        theContainer = container;
+    }
+
+    /**
+     * Constructor
+     * 
+     * @param tooltip
+     *            Tooltip key for button
+     * @param box
+     *            Associated combo box
+     */
+    public UMLComboBoxNavigator(String tooltip, JComboBox box) {
         super(new BorderLayout());
         theButton = new JButton(icon);
-        theContainer = container;
         theComboBox = box;
         theButton.setPreferredSize(new Dimension(icon.getIconWidth() + 6, icon
                 .getIconHeight() + 6));
@@ -86,7 +98,7 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
         Object item = theComboBox.getSelectedItem();
         setButtonEnabled(item);
     }
-    
+
     /**
      * Enforce that the preferred height is the minimum height.
      * This works around a bug in Windows LAF of JRE5 where a change

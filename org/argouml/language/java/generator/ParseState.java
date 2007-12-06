@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,9 @@
 
 package org.argouml.language.java.generator;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.Model;
@@ -46,12 +49,12 @@ public class ParseState {
     /**
      * The inner classes not found yet.
      */
-    private Vector newInnerClasses;
+    private List newInnerClasses;
 
     /**
      * The features not found yet.
      */
-    private Vector newFeatures;
+    private List newFeatures;
 
     /**
      * The current classifier.
@@ -68,14 +71,14 @@ public class ParseState {
             this.mClassifier = handle;
             namespace = handle;
             newFeatures =
-                new Vector(Model.getFacade().getFeatures(mClassifier));
+                new ArrayList(Model.getFacade().getFeatures(mClassifier));
             newInnerClasses =
-                new Vector(Model.getFacade().getOwnedElements(mClassifier));
+                new ArrayList(Model.getFacade().getOwnedElements(mClassifier));
         } else {
             this.mClassifier = null;
             namespace = handle;
-            newFeatures = new Vector();
-            newInnerClasses = new Vector();
+            newFeatures = new ArrayList();
+            newInnerClasses = new ArrayList();
         }
     }
 
@@ -114,11 +117,34 @@ public class ParseState {
 
     /**
      * Get all features not in the source.
+     * 
+     * @return all features not in the source
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getNewFeaturesList()}.
+     */
+    @Deprecated
+    public Vector getNewFeatures() {
+	return new Vector(newFeatures);
+    }
+
+    /**
+     * Get all features not in the source.
      *
      * @return all features not in the source
      */
-    public Vector getNewFeatures() {
-	return new Vector(newFeatures);
+    List getNewFeaturesList() {
+        return newFeatures;
+    }
+    
+    /**
+     * Get all inner classes not in the source.
+     * 
+     * @return all inner classes not in the source
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #getNewInnerClassesList()}.
+     */
+    @Deprecated
+    public Vector getNewInnerClasses() {
+	return new Vector(newInnerClasses);
     }
 
     /**
@@ -126,10 +152,10 @@ public class ParseState {
      *
      * @return all inner classes not in the source
      */
-    public Vector getNewInnerClasses() {
-	return new Vector(newInnerClasses);
+    List getNewInnerClassesList() {
+        return newInnerClasses;
     }
-
+    
     /**
      * Get the current namespace.
      *
@@ -143,12 +169,29 @@ public class ParseState {
      * Get the association ends.
      *
      * @return the association ends
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #getAssociationEndsList()}.
      */
+    @Deprecated
     public Vector getAssociationEnds() {
         Vector result = new Vector();
         if (mClassifier == null) {
             return result;
         }
+        result.addAll(Model.getFacade().getAssociationEnds(mClassifier));
+        return result;
+    }
+    
+    /**
+     * Get the association ends.
+     *
+     * @return the association ends
+     */
+    List getAssociationEndsList() {
+        if (mClassifier == null) {
+            return Collections.EMPTY_LIST;
+        }
+        List result = new ArrayList();
         result.addAll(Model.getFacade().getAssociationEnds(mClassifier));
         return result;
     }

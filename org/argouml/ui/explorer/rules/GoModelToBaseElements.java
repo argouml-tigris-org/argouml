@@ -26,8 +26,8 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -43,7 +43,7 @@ public class GoModelToBaseElements extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("misc.package.base-class");
+	return Translator.localize("misc.package.base-class");
     }
 
     /*
@@ -51,22 +51,20 @@ public class GoModelToBaseElements extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (Model.getFacade().isAPackage(parent)) {
-	    Collection col = new ArrayList();
-	    Iterator it =
+	    Collection result = new ArrayList();
+	    Collection generalizableElements =
 	        Model.getModelManagementHelper()
 	            .getAllModelElementsOfKind(
 	                    parent,
-	                    Model.getMetaTypes().getGeneralizableElement())
-	                .iterator();
-	    while (it.hasNext()) {
-	        Object gen = it.next();
-	        if (Model.getFacade().getGeneralizations(gen).isEmpty()) {
-	            col.add(gen);
+	                    Model.getMetaTypes().getGeneralizableElement());
+	    for (Object element : generalizableElements) {
+	        if (Model.getFacade().getGeneralizations(element).isEmpty()) {
+	            result.add(element);
 	        }
 	    }
-	    return col;
+	    return result;
 	}
-	return null;
+	return Collections.EMPTY_LIST;
     }
     
     /*
@@ -78,6 +76,6 @@ public class GoModelToBaseElements extends AbstractPerspectiveRule {
 	    set.add(parent);
 	    return set;
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

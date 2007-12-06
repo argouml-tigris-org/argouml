@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -40,7 +41,7 @@ public class GoDiagramToNode extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.diagram.node");
+        return Translator.localize("misc.diagram.node");
     }
 
     /*
@@ -50,7 +51,7 @@ public class GoDiagramToNode extends AbstractPerspectiveRule {
 	if (parent instanceof Diagram) {
 	    return ((Diagram) parent).getNodes();
 	}
-	return null;
+	return Collections.EMPTY_SET;
     }
 
     /*
@@ -58,6 +59,6 @@ public class GoDiagramToNode extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: what?
-	return null;
+	return Collections.EMPTY_SET;
     }
 }

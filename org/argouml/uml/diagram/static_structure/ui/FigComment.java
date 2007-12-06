@@ -49,6 +49,7 @@ import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
@@ -360,6 +361,15 @@ public class FigComment
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
+    /**
+     * @return an empty menu
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#buildShowPopUp()
+     */
+    @Override
+    protected ArgoJMenu buildShowPopUp() {
+        return new ArgoJMenu("menu.popup.show");
+    }
+
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
@@ -401,6 +411,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         bodyTextFig.setFilled(false); // The text is always opaque.
         outlineFig.setFilled(f);
@@ -410,8 +421,14 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
+    @Override
     public boolean getFilled() {
-        return outlineFig.getFilled();
+        return outlineFig.isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return outlineFig.isFilled();
     }
 
     /*
@@ -527,7 +544,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    protected void setBoundsImpl(int px, int py, int w, int h) {
+    protected void setStandardBounds(int px, int py, int w, int h) {
         if (bodyTextFig == null) {
             return;
         }

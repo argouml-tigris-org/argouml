@@ -40,7 +40,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * Properties panel for a Message.
@@ -51,7 +50,7 @@ public class PropPanelMessage extends PropPanelModelElement {
      * Construct a new property panel for a Message.
      */
     public PropPanelMessage() {
-        super("Message", ConfigLoader.getTabPropsOrientation());
+        super("label.message", lookupIcon("Message"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -106,6 +105,7 @@ public class PropPanelMessage extends PropPanelModelElement {
          * @see java.awt.event.ActionListener#actionPerformed(
          *         java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAMessage(target)) {
@@ -124,4 +124,4 @@ public class PropPanelMessage extends PropPanelModelElement {
      * The UID.
      */
     private static final long serialVersionUID = -8433911715875762175L;
-} /* end class PropPanelMessage */
+}

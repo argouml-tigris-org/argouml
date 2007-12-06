@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,7 +63,7 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
             }
             return ret;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
@@ -70,7 +71,7 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: what?
-	return null;
+	return Collections.EMPTY_SET;
     }
 
 
@@ -78,7 +79,7 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize (
+        return Translator.localize(
                 "misc.behavioral-feature.statechart-diagram");
     }
 }

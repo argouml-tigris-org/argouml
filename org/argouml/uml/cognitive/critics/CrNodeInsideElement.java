@@ -98,7 +98,7 @@ public class CrNodeInsideElement extends CrUML {
 
     /**
      * If there are nodes that have an enclosing Fig
-     * the returned vector-set is not null. Then in the vector-set
+     * the returned ListSet is not null. Then in the ListSet
      * are the UMLDeploymentDiagram and all FigMNodes with an
      * enclosing Fig
      *

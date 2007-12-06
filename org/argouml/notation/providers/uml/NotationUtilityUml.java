@@ -28,9 +28,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Stack;
-import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -38,6 +38,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.uml.StereotypeUtility;
+import org.argouml.util.CustomSeparator;
 import org.argouml.util.MyTokenizer;
 
 /**
@@ -52,9 +53,9 @@ public final class NotationUtilityUml {
     static PropertySpecialString[] attributeSpecialStrings;
 
     /**
-     * The vector of CustomSeparators to use when tokenizing attributes.
+     * The list of CustomSeparators to use when tokenizing attributes.
      */
-    static Vector attributeCustomSep;
+    static List<CustomSeparator> attributeCustomSep;
 
     /**
      * The array of special properties for operations.
@@ -62,14 +63,14 @@ public final class NotationUtilityUml {
     static PropertySpecialString[] operationSpecialStrings;
 
     /**
-     * The vector of CustomSeparators to use when tokenizing attributes.
+     * The List of CustomSeparators to use when tokenizing attributes.
      */
-    static Vector operationCustomSep;
+    static final List<CustomSeparator> operationCustomSep;
 
     /**
-     * The vector of CustomSeparators to use when tokenizing parameters.
+     * The list of CustomSeparators to use when tokenizing parameters.
      */
-    private static Vector parameterCustomSep;
+    private static final List<CustomSeparator> parameterCustomSep;
 
     /**
      * The character with a meaning as a visibility at the start
@@ -86,19 +87,19 @@ public final class NotationUtilityUml {
     static {
         attributeSpecialStrings = new PropertySpecialString[2];
 
-        attributeCustomSep = new Vector();
+        attributeCustomSep = new ArrayList<CustomSeparator>();
         attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
         attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
         operationSpecialStrings = new PropertySpecialString[8];
 
-        operationCustomSep = new Vector();
+        operationCustomSep = new ArrayList<CustomSeparator>();
         operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
         operationCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
-        parameterCustomSep = new Vector();
+        parameterCustomSep = new ArrayList<CustomSeparator>();
         parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         parameterCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
         parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
@@ -268,9 +269,9 @@ public final class NotationUtilityUml {
         throws ParseException {
         MyTokenizer st;
 
-        Vector path = null;
+        List<String> path = null;
         String name = null;
-        String stereotype = null;
+        StringBuilder stereotype = null;
         String token;
 
         try {
@@ -286,13 +287,13 @@ public final class NotationUtilityUml {
                                 st.getTokenIndex());
                     }
 
-                    stereotype = "";
+                    stereotype = new StringBuilder();
                     while (true) {
                         token = st.nextToken();
                         if (">>".equals(token) || "\u00BB".equals(token)) {
                             break;
                         }
-                        stereotype += token;
+                        stereotype.append(token);
                     }
                 } else if ("::".equals(token)) {
                     if (name != null) {
@@ -307,7 +308,7 @@ public final class NotationUtilityUml {
                     }
 
                     if (path == null) {
-                        path = new Vector();
+                        path = new ArrayList<String>();
                     }
                     if (name != null) {
                         path.add(name);
@@ -446,22 +447,22 @@ public final class NotationUtilityUml {
      * @return a string which represents the path
      */
     protected static String generatePath(Object modelElement) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         Object p = modelElement;
-        Stack stack = new Stack();
+        Stack<String> stack = new Stack<String>();
         Object ns = Model.getFacade().getNamespace(p);
         while (ns != null && !Model.getFacade().isAModel(ns)) {
             stack.push(Model.getFacade().getName(ns));
             ns = Model.getFacade().getNamespace(ns);
         }
         while (!stack.isEmpty()) {
-            s += (String) stack.pop() + "::";
+            s.append(stack.pop() + "::");
         }
 
-        if (s.length() > 0 && !s.endsWith(":")) {
-            s += "::";
+        if (s.length() > 0 && !(s.lastIndexOf(":") == s.length() - 1)) {
+            s.append("::");
         }
-        return s;
+        return s.toString();
     }
 
     /**
@@ -521,7 +522,7 @@ public final class NotationUtilityUml {
             String name = null;
             String tok;
             String type = null;
-            String value = null;
+            StringBuilder value = null;
             Object p = null;
             boolean hasColon = false;
             boolean hasEq = false;
@@ -540,7 +541,7 @@ public final class NotationUtilityUml {
                     break;
                 } else if (" ".equals(tok) || "\t".equals(tok)) {
                     if (hasEq) {
-                        value += tok;
+                        value.append(tok);
                     }
                 } else if (":".equals(tok)) {
                     hasColon = true;
@@ -554,7 +555,7 @@ public final class NotationUtilityUml {
                     }
                     hasEq = true;
                     hasColon = false;
-                    value = "";
+                    value = new StringBuilder();
                 } else if (hasColon) {
                     if (type != null) {
                         String msg = "parsing.error.notation-utility.two-types";
@@ -578,7 +579,7 @@ public final class NotationUtilityUml {
 
                     type = tok;
                 } else if (hasEq) {
-                    value += tok;
+                    value.append(tok);
                 } else {
                     if (name != null && kind != null) {
                         String msg =
@@ -640,7 +641,7 @@ public final class NotationUtilityUml {
                         .createExpression(
                                 // TODO: Find a better default language
                                 ps.getNotationLanguage(),
-                                value.trim());
+                                value.toString().trim());
                 Model.getCoreHelper().setDefaultValue(p, initExpr);
             }
         }
@@ -689,18 +690,11 @@ public final class NotationUtilityUml {
             type = Model.getCoreFactory().buildClass(name,
                     defaultSpace);
         }
-        if (Model.getFacade().getModel(type) != p.getModel()
-                && !Model.getModelManagementHelper().getAllNamespaces(
-                       p.getModel()).contains(
-                               Model.getFacade().getNamespace(type))) {
-            type = Model.getModelManagementHelper().getCorrespondingElement(
-                    type, Model.getFacade().getModel(defaultSpace));
-        }
         return type;
     }
 
     /**
-     * Applies a Vector of name value pairs of properties to a model element.
+     * Applies a List of name/value pairs of properties to a model element.
      * The name is treated as the tag of a tagged value unless it is one of the
      * PropertySpecialStrings, in which case the action of the
      * PropertySpecialString is invoked.
@@ -708,11 +702,11 @@ public final class NotationUtilityUml {
      * @param elem
      *            An model element to apply the properties to.
      * @param prop
-     *            A Vector with name, value pairs of properties.
+     *            A List with name, value pairs of properties.
      * @param spec
      *            An array of PropertySpecialStrings to use.
      */
-    static void setProperties(Object elem, Vector prop,
+    static void setProperties(Object elem, List<String> prop,
             PropertySpecialString[] spec) {
         String name;
         String value;
@@ -720,8 +714,8 @@ public final class NotationUtilityUml {
 
     nextProp:
         for (i = 0; i + 1 < prop.size(); i += 2) {
-            name = (String) prop.get(i);
-            value = (String) prop.get(i + 1);
+            name = prop.get(i);
+            value = prop.get(i + 1);
 
             if (name == null) {
                 continue;
@@ -733,7 +727,7 @@ public final class NotationUtilityUml {
             }
 
             for (j = i + 2; j < prop.size(); j += 2) {
-                String s = (String) prop.get(j);
+                String s = prop.get(j);
                 if (s != null && name.equalsIgnoreCase(s.trim())) {
                     continue nextProp;
                 }
@@ -1067,7 +1061,7 @@ public final class NotationUtilityUml {
         Collection c;
         Iterator it;
         String s;
-        String p;
+        StringBuilder p;
         boolean first;
         if (m == null) {
             return "";
@@ -1081,7 +1075,7 @@ public final class NotationUtilityUml {
             s = "";
         }
 
-        p = "";
+        p = new StringBuilder();
         c = Model.getFacade().getActualArguments(m);
         if (c != null) {
             it = c.iterator();
@@ -1089,11 +1083,11 @@ public final class NotationUtilityUml {
             while (it.hasNext()) {
                 Object arg = it.next();
                 if (!first) {
-                    p += ", ";
+                    p.append(", ");
                 }
 
                 if (Model.getFacade().getValue(arg) != null) {
-                    p += generateExpression(Model.getFacade().getValue(arg));
+                    p.append(generateExpression(Model.getFacade().getValue(arg)));
                 }
                 first = false;
             }

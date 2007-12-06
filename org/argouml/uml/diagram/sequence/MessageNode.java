@@ -131,7 +131,7 @@ public class MessageNode extends Object {
      * Get the list of callers
      * @return the caller list
      */
-    List getCallers() {
+    public List getCallers() {
     	return callers;
     }
 

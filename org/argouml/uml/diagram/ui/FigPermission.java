@@ -28,7 +28,13 @@ import org.tigris.gef.base.Layer;
 
 /**
  * The Fig for a permission, which is a form of dependency.
- *
+ * <p>
+ * TODO: In UML 2.x, the import and access Permissions have become
+ * PackageImports with public visibility and non-public visibility respectively.
+ * (ArgoUML only supports the <<import>> Permission currently). The friend
+ * Permission has been dropped. Also the type hierarchy has been reorganized so
+ * that PackageImport is not a subtype of Dependency.
+ * 
  * @author Markus Klink
  */
 public class FigPermission extends FigDependency {
@@ -60,5 +66,5 @@ public class FigPermission extends FigDependency {
         super(edge, lay);
     }
 
-} /* end class FigPermission */
+}
 

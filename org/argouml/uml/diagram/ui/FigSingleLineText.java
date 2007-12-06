@@ -44,7 +44,9 @@ import org.tigris.gef.presentation.FigText;
  * <li>There is no line border
  * <li>There is space below the line for a "Clarifier",
  * i.e. a red squiggly line.
- * </ul>
+ * </ul><p>
+ * 
+ * This Fig may have a NotationProvider to render the text.
  *
  * @author Bob Tarling
  */
@@ -72,7 +74,6 @@ public class FigSingleLineText extends ArgoFigText {
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
 
-        setFont(FigNodeModelElement.getLabelFont());
         setTextColor(Color.black);
         setFilled(false);
         setTabAction(FigText.END_EDITING);
@@ -101,6 +102,7 @@ public class FigSingleLineText extends ArgoFigText {
 
 
 
+    @Override
     public Dimension getMinimumSize() {
         Dimension d = new Dimension();
 
@@ -109,13 +111,13 @@ public class FigSingleLineText extends ArgoFigText {
         if (font == null) {
             return d;
         }
-        int maxW = getFontMetrics().stringWidth(getText());
+        int maxW = 0;
         int maxH = 0;
-        //int maxDescent = _fm.getMaxDescent();
         if (getFontMetrics() == null) {
             maxH = font.getSize();
         } else {
             maxH = getFontMetrics().getHeight();
+            maxW = getFontMetrics().stringWidth(getText());
         }
         int overallH = (maxH + getTopMargin() + getBotMargin());
         int overallW = maxW + getLeftMargin() + getRightMargin();
@@ -124,6 +126,7 @@ public class FigSingleLineText extends ArgoFigText {
         return d;
     }
 
+    @Override
     protected boolean isStartEditingKey(KeyEvent ke) {
         if ((ke.getModifiers()
 	     & (KeyEvent.META_MASK | KeyEvent.ALT_MASK)) == 0) {
@@ -133,6 +136,7 @@ public class FigSingleLineText extends ArgoFigText {
         }
     }
     
+    @Override
     public void setOwner(Object owner) {
         super.setOwner(owner);
         if (owner != null && properties != null) {
@@ -144,6 +148,7 @@ public class FigSingleLineText extends ArgoFigText {
         }
     }
     
+    @Override
     public void removeFromDiagram() {
         if (getOwner() != null && properties != null) {
             Model.getPump().removeModelEventListener(
@@ -153,9 +158,11 @@ public class FigSingleLineText extends ArgoFigText {
         }
     }
     
+    @Override
     public void propertyChange(PropertyChangeEvent pce) {
-        if (getOwner() != null
+        if (getOwner() == pce.getSource()
                 && properties != null
+                && Arrays.asList(properties).contains(pce.getPropertyName())
                 && pce instanceof AttributeChangeEvent) {
             /* TODO: Why does it fail for changing 
              * the name of an associationend?
@@ -163,6 +170,16 @@ public class FigSingleLineText extends ArgoFigText {
             //assert Arrays.asList(properties).contains(pce.getPropertyName()) 
             //  : pce.getPropertyName(); 
             setText();
+        }
+//      super.propertyChange(pce); // Adding this gives loads of problems!!!
+
+        if ("remove".equals(pce.getPropertyName()) 
+                && (pce.getSource() == getOwner())) {
+            deleteFromModel();
+        } else if (notationProvider != null) {
+            notationProvider.updateListener(this, getOwner(), pce);
+            this.setText(notationProvider.toString(getOwner(), null));
+            damage();
         }
     }
 
@@ -187,6 +204,9 @@ public class FigSingleLineText extends ArgoFigText {
      * @param np The notationProvider to set.
      */
     void setNotationProvider(NotationProvider np) {
+        if (notationProvider != null) {
+            notationProvider.cleanListener(this, getOwner());
+        }
         this.notationProvider = np;
     }
 }

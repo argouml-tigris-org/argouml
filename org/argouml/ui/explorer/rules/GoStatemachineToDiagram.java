@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,21 +74,21 @@ public class GoStatemachineToDiagram extends AbstractPerspectiveRule {
             }
             return returnList;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.state-machine.diagram");
+        return Translator.localize("misc.state-machine.diagram");
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        return null;
+        return Collections.EMPTY_SET;
     }
 
 }

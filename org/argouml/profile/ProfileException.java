@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,34 +22,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.kernel;
+package org.argouml.profile;
 
 /**
- * Control for enabling undo functionality. Remove once undo has acceptable
- * support through all of GEF and ArgoUML.
- *
- * @author Bob Tarling
+ * An exception to be thrown during failure in the Profile subsystem.
+ * This will typically be a wrapped exception containing the exception
+ * representing the underlying failure cause.
+ * 
+ * @author Marcus Aurelio (maurelio1234)
  */
-public final class UndoEnabler {
-
-    /**
-     * Change this value to true to enable undo.
-     * Do not commit in this state.
-     * TODO: Implement!
-     */
-    private static boolean enabled = false;
+public class ProfileException extends Exception {
 
     /**
      * The constructor.
+     *
+     * @param message the message to show
      */
-    private UndoEnabler() {
-        super();
+    public ProfileException(String message) {
+        super(message);
     }
 
     /**
-     * @return <code>true</code> if undo is enabled.
+     * The constructor.
+     *
+     * @param message the message to show
+     * @param theCause the cause for the exception
      */
-    public static boolean isEnabled() {
-        return enabled;
+    public ProfileException(String message, Throwable theCause) {
+        super(message, theCause);
+    }
+
+    /**
+     * The constructor.
+     *
+     * @param theCause the cause for the exception
+     */
+    public ProfileException(Throwable theCause) {
+        super(theCause);
     }
 }
+

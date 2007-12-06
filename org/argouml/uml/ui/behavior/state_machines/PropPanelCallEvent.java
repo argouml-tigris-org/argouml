@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel of a CallEvent.
@@ -47,26 +46,24 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelCallEvent extends PropPanelEvent {
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a Call Event.
      */
     public PropPanelCallEvent() {
-        super("Call event", lookupIcon("CallEvent"),
-              ConfigLoader.getTabPropsOrientation());
+        super("label.call-event", lookupIcon("CallEvent"));
     }
 
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
      */
+    @Override
     public void initialize() {
         super.initialize();
 
         UMLSearchableComboBox operationComboBox =
             new UMLCallEventOperationComboBox2(
                 new UMLCallEventOperationComboBoxModel());
-        addField(Translator.localize("label.operations"),
+        addField("label.operations",
                 new UMLComboBoxNavigator(
-                        this,
                         Translator.localize("label.operation.navigate.tooltip"),
                         operationComboBox));
 
@@ -90,6 +87,7 @@ class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();

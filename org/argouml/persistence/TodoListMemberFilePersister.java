@@ -33,6 +33,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -71,6 +72,15 @@ class TodoListMemberFilePersister extends MemberFilePersister {
             ProjectMemberTodoList pm = new ProjectMemberTodoList("", project);
             project.addMember(pm);
         } catch (Exception e) {
+            throw new OpenException(e);
+        }
+    }
+    
+    @Override
+    public void load(Project project, URL url) throws OpenException {   
+        try {
+            load(project, url.openStream());
+        } catch (IOException e) {
             throw new OpenException(e);
         }
     }

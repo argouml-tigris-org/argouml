@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -48,7 +47,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      * The serial version.
      */
     private static final long serialVersionUID = 4758716706184949796L;
-    
+
     private JList subverticesList = null;
     private Action addConcurrentRegion;
     private Action deleteConcurrentRegion;
@@ -58,53 +57,63 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
      * @param name the name of the properties panel
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelCompositeState(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
-    public PropPanelCompositeState(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon, orientation);
+    @Deprecated
+    public PropPanelCompositeState(final String name, final ImageIcon icon,
+            final Orientation orientation) {
+        super(name, icon);
+        setOrientation(orientation);
         initialize();
     }
 
+    /**
+     * Constructor for PropPanelCompositeState.
+     * @param name the name of the properties panel
+     * @param icon the icon to be shown next to the name
+     */
+    public PropPanelCompositeState(final String name, final ImageIcon icon) {
+        super(name, icon);
+        initialize();
+    }
+    
     /**
      * Construct a new property panel for a CompositeState.
      *
      */
     public PropPanelCompositeState() {
-        super("Composite State", lookupIcon("CompositeState"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.composite-state", lookupIcon("CompositeState"));
         initialize();
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.container"),
-                getContainerScroll());
-        /*addField(Translator.localize("label.modifiers"),
-                new UMLCompositeStateConcurrentCheckBox());*/
-        addField(Translator.localize("label.entry"),
-                getEntryScroll());
-        addField(Translator.localize("label.exit"),
-                getExitScroll());
-        addField(Translator.localize("label.do-activity"),
-                getDoScroll());
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
+        /*
+         * addField("label.modifiers", new
+         * UMLCompositeStateConcurrentCheckBox());
+         */
+        addField("label.entry", getEntryScroll());
+        addField("label.exit", getExitScroll());
+        addField("label.do-activity", getDoScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
-                getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
-                getOutgoingScroll());
-        addField(Translator.localize("label.internal-transitions"),
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
+        addField("label.internal-transitions",
                 getInternalTransitionsScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.subvertex"),
+        addField("label.subvertex",
                 new JScrollPane(subverticesList));
     }
 
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
+    @Override
     protected void addExtraButtons() {
         super.addExtraButtons();
         addConcurrentRegion = new ActionAddConcurrentRegion();
@@ -112,7 +121,7 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         deleteConcurrentRegion = new ActionDeleteConcurrentRegion();
         addAction(deleteConcurrentRegion);
     }
-    
+
     protected void updateExtraButtons() {
         addConcurrentRegion.setEnabled(addConcurrentRegion.isEnabled());
         deleteConcurrentRegion.setEnabled(deleteConcurrentRegion.isEnabled());
@@ -131,20 +140,24 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
     /*
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
-    public void setTarget(Object t) {
+    @Override
+    public void setTarget(final Object t) {
         super.setTarget(t);
         updateExtraButtons();
-        Object target = TargetManager.getInstance().getModelTarget();
+        final Object target = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isAConcurrentRegion(target)) {
-            getTitleLabel().setText("Concurrent Region");
+            getTitleLabel().setText(
+                    Translator.localize("label.concurrent.region"));
         } else if (Model.getFacade().isConcurrent(target)) {
-            getTitleLabel().setText("Concurrent Composite State");
+            getTitleLabel().setText(
+                    Translator.localize("label.concurrent.composite.state"));
         } else {
-            getTitleLabel().setText("Composite State");
+            getTitleLabel().setText(
+                    Translator.localize("label.composite-state"));
         }
     }
 
-} /* end class PropPanelCompositeState */
+}
 
 
 

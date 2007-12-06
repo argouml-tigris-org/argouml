@@ -26,11 +26,13 @@ package org.argouml.ui.explorer;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -40,7 +42,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeWillExpandListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.argouml.kernel.Project;
@@ -72,7 +73,7 @@ public class ExplorerTree
     private boolean updatingSelection;
 
     /**
-     * Prevents target event cycles between this and the Targetmanager
+     * Prevents target event cycles between this and the TargetManager
      * for tree selection events.
      */
     private boolean updatingSelectionViaTreeSelection;
@@ -82,13 +83,6 @@ public class ExplorerTree
      */
     public ExplorerTree() {
         super();
-
-        // issue 2261: we must add this project property change first
-        // in order to receive the new project event after
-        // the ExplorerEventAdaptor
-        //(which is initialised in the ExplorerTreeModel).
-        ProjectManager.getManager()
-            .addPropertyChangeListener(new ProjectPropertyChangeListener());
 
         this.setModel(new ExplorerTreeModel(ProjectManager.getManager()
 			                    .getCurrentProject(), this));
@@ -119,11 +113,12 @@ public class ExplorerTree
         }
 
         /**
-         * @see java.awt.event.MouseListener#mousePressed(
-         *         java.awt.event.MouseEvent)
-         *
          * Brings up the pop-up menu.
+         * 
+         * @see java.awt.event.MouseListener#mousePressed(
+         *      java.awt.event.MouseEvent)
          */
+        @Override
         public void mousePressed(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
@@ -132,16 +127,16 @@ public class ExplorerTree
         }
 
         /**
-         * @see java.awt.event.MouseListener#mouseReleased(
-         *         java.awt.event.MouseEvent)
-         *
          * Brings up the pop-up menu.
-         *
-         * On Windows and Motif platforms, the user brings up a popup menu
-         * by releasing the right mouse button while the cursor is over a
-         * component that is popup-enabled.
          * 
+         * On Windows and Motif platforms, the user brings up a popup menu by
+         * releasing the right mouse button while the cursor is over a component
+         * that is popup-enabled.
+         * 
+         * @see java.awt.event.MouseListener#mouseReleased(
+         *      java.awt.event.MouseEvent)
          */
+        @Override
         public void mouseReleased(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
@@ -150,11 +145,12 @@ public class ExplorerTree
         }
 
         /**
-         * @see java.awt.event.MouseListener#mouseClicked(
-         *         java.awt.event.MouseEvent)
-         *
          * Brings up the pop-up menu.
+         * 
+         * @see java.awt.event.MouseListener#mouseClicked(
+         *      java.awt.event.MouseEvent)
          */
+        @Override
         public void mouseClicked(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
@@ -231,6 +227,7 @@ public class ExplorerTree
          * @see javax.swing.event.TreeWillExpandListener#treeWillExpand(javax.swing.event.TreeExpansionEvent)
          */
         public void treeWillExpand(TreeExpansionEvent tee) {
+            // TODO: This should not need to know about ProjectSettings - tfm
             Project p = ProjectManager.getManager().getCurrentProject();
             ProjectSettings ps = p.getProjectSettings();
             setShowStereotype(ps.getShowStereotypesValue());
@@ -287,27 +284,98 @@ public class ExplorerTree
         updatingSelectionViaTreeSelection = true;
 
         this.clearSelection();
-        int rows = getRowCount();
-        for (int i = 0; i < targets.length; i++) {
-            Object target = targets[i];
-            if (target instanceof Fig) {
-                target = ((Fig) target).getOwner();
+        addTargetsInternal(targets);
+        updatingSelectionViaTreeSelection = false;
+    }
+
+
+    
+    private void addTargetsInternal(Object[] addedTargets) {
+        if (addedTargets.length < 1) {
+            return;
+        }
+        Set targets = new HashSet();
+        for (Object t : addedTargets) {
+            if (t instanceof Fig) {
+                targets.add(((Fig) t).getOwner());
+            } else {
+                targets.add(t);
             }
-            for (int j = 0; j < rows; j++) {
-                Object rowItem =
-		    ((DefaultMutableTreeNode) getPathForRow(j)
-		            .getLastPathComponent()).getUserObject();
-                if (rowItem == target) {
-                    this.addSelectionRow(j);
+            // TODO: The following can be removed if selectAll gets fixed
+            selectVisible(t);
+        }
+
+        // TODO: This doesn't perform well enough with large models to have
+        // it enabled by default.  If the performance can't be improved, 
+        // perhaps we can introduce a manual "find in explorer tree" action.
+//        selectAll(targets);
+    
+        int[] selectedRows = getSelectionRows();
+        if (selectedRows != null && selectedRows.length > 0) {
+            // TODO: This only works if the item is visible
+            // (all its parents are expanded)
+            // getExpandedDescendants, makeVisible
+            makeVisible(getPathForRow(selectedRows[0]));
+            scrollRowToVisible(selectedRows[0]);
+        }
+    }
+
+    /**
+     * Select any targets which are visible in the explorer pane
+     */
+    private void selectVisible(Object target) {
+        for (int j = 0; j < getRowCount(); j++) {
+            Object rowItem =
+                    ((DefaultMutableTreeNode) getPathForRow(j)
+                            .getLastPathComponent()).getUserObject();
+            if (rowItem == target) {
+                addSelectionRow(j);
+            }
+        }
+    }
+
+
+    /**
+     * Search the entire tree and select all instances of targets found.
+     */
+    private void selectAll(Set targets) {
+        ExplorerTreeModel model = (ExplorerTreeModel) getModel();
+        ExplorerTreeNode root = (ExplorerTreeNode) model.getRoot();  
+        selectChildren(model, root, targets);
+    }
+    
+    /*
+     * Perform recursive search of subtree rooted at 'node', selecting all nodes
+     * which have a userObject matching one of our targets.
+     */
+    private void selectChildren(ExplorerTreeModel model, ExplorerTreeNode node,
+            Set targets) {
+        if (targets.isEmpty()) {
+            return;
+        }
+
+        Object nodeObject = node.getUserObject();
+        if (nodeObject != null) {
+            for (Object t : targets) {
+                if (t == nodeObject) {
+                    addSelectionPath(new TreePath(node.getPath()));
+                    // target may appear multiple places in the tree, so 
+                    // we don't stop here (but it's expensive to search
+                    // the whole tree) - tfm - 20070904
+//                  targets.remove(t);
+//                  break;
                 }
             }
         }
-        updatingSelectionViaTreeSelection = false;
 
-        if (this.getSelectionCount() > 0) {
-            scrollRowToVisible(this.getSelectionRows()[0]);
+        model.updateChildren(new TreePath(node.getPath()));
+        Enumeration e = node.children();
+        while (e.hasMoreElements()) {
+            selectChildren(model, (ExplorerTreeNode) e.nextElement(), targets);
         }
     }
+
+
 
     /**
      * Manages selecting the item to show in Argo's other
@@ -437,37 +505,19 @@ public class ExplorerTree
             if (!updatingSelection) {
                 updatingSelection = true;
                 Object[] targets = e.getAddedTargets();
-
-                int rows = getRowCount();
-                for (int i = 0; i < targets.length; i++) {
-                    Object target = targets[i];
-                    if (target instanceof Fig) {
-                        target = ((Fig) target).getOwner();
-                    }
-                    for (int j = 0; j < rows; j++) {
-                        Object rowItem =
-                            ((DefaultMutableTreeNode)
-                                    getPathForRow(j).getLastPathComponent())
-                            .getUserObject();
-                        if (rowItem == target) {
-                            updatingSelectionViaTreeSelection = true;
-                            addSelectionRow(j);
-                            updatingSelectionViaTreeSelection = false;
-                        }
-                    }
-                }
-
-                if (getSelectionCount() > 0) {
-                    scrollRowToVisible(getSelectionRows()[0]);
-                }
+                
+                updatingSelectionViaTreeSelection = true;
+                addTargetsInternal(targets);
+                updatingSelectionViaTreeSelection = false;
                 updatingSelection = false;
             }
             // setTargets(e.getNewTargets());
         }
 
+
         /*
          * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
-	 *         org.argouml.ui.targetmanager.TargetEvent)
+         *      org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetRemoved(TargetEvent e) {
             if (!updatingSelection) {
@@ -511,34 +561,6 @@ public class ExplorerTree
 
         }
     }
-
-    class ProjectPropertyChangeListener implements PropertyChangeListener {
-
-        /**
-         * @see java.beans.PropertyChangeListener#propertyChange(
-         *         java.beans.PropertyChangeEvent)
-         *
-         * Listens to events coming from the project manager,
-         * i.e. when the current project changes,
-         * in order to expand the root node by default.
-         */
-        public void propertyChange(java.beans.PropertyChangeEvent pce) {
-
-            // project events
-            if (pce.getPropertyName()
-                    .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
-
-                TreeModel model = getModel();
-
-                if (model != null && model.getRoot() != null) {
-
-                    expandPath(getPathForRow(0));
-
-                }
-            }
-        }
-    }
-
 
     /**
      * The UID.

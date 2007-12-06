@@ -41,6 +41,7 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -49,6 +50,7 @@ import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.ArrowHead;
@@ -132,8 +134,17 @@ public class FigAssociation extends FigEdgeModelElement {
         setBetweenNearestPoints(true);
         
         // next line necessary for loading
-        setLayer(ProjectManager.getManager().getCurrentProject()
-		 .getActiveDiagram().getLayer());
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {
+            ArgoDiagram d = p.getActiveDiagram();
+            if (d != null) {
+                Layer l = d.getLayer();
+                if (l != null) {
+                    setLayer(l);                    
+                }
+            }
+        }
+
     }
 
     /**
@@ -242,38 +253,6 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    @Override
-    protected void modelChanged(PropertyChangeEvent e) {
-        if (getOwner() == null || getLayer() == null) {
-            return;
-        }
-        super.modelChanged(e);
-        if (e instanceof AttributeChangeEvent) {
-            if (e.getPropertyName().equals("isAbstract")/*
-                    || e.getPropertyName().equals("name")*/) {
-                updateAbstract();
-            }
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
-     */
-    @Override
-    protected void renderingChanged() {
-        // We don't want to redraw everything everytime 
-        // one things changes - Bob.
-        // So, do not call this unless really needed! We need 
-        // this for e.g. when the Notation Language changes,
-        // and this is called by setOwner() - Michiel.
-        updateAbstract();
-        updateMultiplicity();
-        super.renderingChanged();
-    }
-
     /**
      * Choose the arrowhead style for each end. <p>
      * 
@@ -307,7 +286,9 @@ public class FigAssociation extends FigEdgeModelElement {
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         /* None of the menu-items below apply
          * when multiple modelelements are selected:*/
-        if (ms) return popUpActions;
+        if (ms) {
+            return popUpActions;
+        }
 
 	// x^2 + y^2 = r^2  (equation of a circle)
 	Point firstPoint = this.getFirstPoint();
@@ -338,17 +319,16 @@ public class FigAssociation extends FigEdgeModelElement {
             multMenu.add(ActionMultiplicity.getSrcMultZeroToOne());
             multMenu.add(ActionMultiplicity.getSrcMultOneToMany());
             multMenu.add(ActionMultiplicity.getSrcMultZeroToMany());
-            popUpActions.insertElementAt(multMenu,
-                popUpActions.size() - getPopupAddOffset());
+            popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                    multMenu);
 
             ArgoJMenu aggMenu = new ArgoJMenu("menu.popup.aggregation");
 
 	    aggMenu.add(ActionAggregation.getSrcAggNone());
 	    aggMenu.add(ActionAggregation.getSrcAgg());
 	    aggMenu.add(ActionAggregation.getSrcAggComposite());
-	    popUpActions.insertElementAt(aggMenu,
-					 (popUpActions.size()
-					  - getPopupAddOffset()));
+	    popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                    aggMenu);
 	} else if (destDeterminingFactor < rSquared) {
             ArgoJMenu multMenu =
 		new ArgoJMenu("menu.popup.multiplicity");
@@ -356,17 +336,15 @@ public class FigAssociation extends FigEdgeModelElement {
 	    multMenu.add(ActionMultiplicity.getDestMultZeroToOne());
 	    multMenu.add(ActionMultiplicity.getDestMultOneToMany());
 	    multMenu.add(ActionMultiplicity.getDestMultZeroToMany());
-	    popUpActions.insertElementAt(multMenu,
-					 (popUpActions.size()
-					  - getPopupAddOffset()));
+	    popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                    multMenu);
 
             ArgoJMenu aggMenu = new ArgoJMenu("menu.popup.aggregation");
 	    aggMenu.add(ActionAggregation.getDestAggNone());
 	    aggMenu.add(ActionAggregation.getDestAgg());
 	    aggMenu.add(ActionAggregation.getDestAggComposite());
-	    popUpActions.insertElementAt(aggMenu,
-					 (popUpActions.size()
-					  - getPopupAddOffset()));
+	    popUpActions
+                    .add(popUpActions.size() - getPopupAddOffset(), aggMenu);
 	}
 	// else: No particular options for right click in middle of line
 
@@ -401,9 +379,8 @@ public class FigAssociation extends FigEdgeModelElement {
                     ascEnd,
                     ActionNavigability.ENDTOSTART));
 
-		popUpActions.insertElementAt(navMenu,
-					     (popUpActions.size()
-					      - getPopupAddOffset()));
+		popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                        navMenu);
 	    }
 	}
 
@@ -420,27 +397,6 @@ public class FigAssociation extends FigEdgeModelElement {
             srcMult.setText();
             destMult.setText();
         }
-    }
-
-    /**
-     * Updates the name if modelchanged receives an "isAbstract" event.
-     */
-    protected void updateAbstract() {
-        if (getNameFig() == null) {
-            return;
-        }
-        Rectangle rect = getBounds();
-        if (getOwner() == null) {
-            return;
-        }
-        Object assoc =  getOwner();
-        if (Model.getFacade().isAbstract(assoc)) {
-            getNameFig().setFont(getItalicLabelFont());
-        } else {
-            getNameFig().setFont(getLabelFont());
-        }
-        super.updateNameText();
-        setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
     /*
@@ -575,7 +531,12 @@ class FigMultiplicity extends FigSingleLineText
 /**
  * A textual Fig representing the ordering of some model element,
  * i.e. "{ordered}" or "{sorted}".
- * This has potential reuse for other edges showing ordering.
+ * This has potential reuse for other edges showing ordering. <p>
+ * 
+ * This Fig is not editable by the user. <p>
+ * 
+ * TODO: How can the user make it "sorted"?
+ * 
  * @author Bob Tarling
  */
 class FigOrdering extends FigSingleLineText {
@@ -586,6 +547,7 @@ class FigOrdering extends FigSingleLineText {
         super(10, 10, 90, 20, false, "ordering");
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
+        setEditable(false);
     }
 
     @Override
@@ -689,8 +651,10 @@ class FigRole extends FigSingleLineText
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         notationProviderRole.updateListener(this, getOwner(), pce);
-        setText();
-        damage();
+        if (!"remove".equals(pce.getPropertyName())) {
+            setText();
+            damage();
+        }
         super.propertyChange(pce);  // do we need this?
     }
 

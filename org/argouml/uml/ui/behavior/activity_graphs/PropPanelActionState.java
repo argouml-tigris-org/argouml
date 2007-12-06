@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,8 @@ package org.argouml.uml.ui.behavior.activity_graphs;
 import javax.swing.ImageIcon;
 
 import org.argouml.i18n.Translator;
-import org.tigris.swidgets.Orientation;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
-import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.Orientation;
 
 /**
  * User interface panel shown at the bottom of the screen that allows the user
@@ -46,8 +45,7 @@ public class PropPanelActionState extends AbstractPropPanelState {
      * Construct a default property panel for an Action State.
      */
     public PropPanelActionState() {
-        this("Action State", lookupIcon("ActionState"), 
-                ConfigLoader.getTabPropsOrientation());
+        this("label.action-state", lookupIcon("ActionState"));
     }
 
     /**
@@ -56,29 +54,38 @@ public class PropPanelActionState extends AbstractPropPanelState {
      * @param name the name of the properties panel
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelActionState(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     public PropPanelActionState(String name, ImageIcon icon,
             Orientation orientation) {
+        this(name, icon);
+        setOrientation(orientation);
+    }
+    
+    /**
+     * Construct a property panel for an Action State with the given params.
+     *
+     * @param name the name of the properties panel
+     * @param icon the icon to be shown next to the name
+     */
+    public PropPanelActionState(String name, ImageIcon icon) {
+        super(name, icon);
 
-        super(name, icon, orientation);
-
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.container"),
-                getContainerScroll());
-        addField(Translator.localize("label.entry"),
-                getEntryScroll());
+        addField(Translator.localize("label.name"), getNameTextField());
+        addField(Translator.localize("label.container"), getContainerScroll());
+        addField(Translator.localize("label.entry"), getEntryScroll());
 
         addField(Translator.localize("label.deferrable"),
                 getDeferrableEventsScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
-                getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
-                getOutgoingScroll());
+        addField(Translator.localize("label.incoming"), getIncomingScroll());
+        addField(Translator.localize("label.outgoing"), getOutgoingScroll());
 
     }
 
-} /* end class PropPanelActionState */
+}

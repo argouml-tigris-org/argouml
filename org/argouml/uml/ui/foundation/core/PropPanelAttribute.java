@@ -40,7 +40,6 @@ import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for an Attribute of a Classifier, 
@@ -61,14 +60,18 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
      *
      */
     public PropPanelAttribute() {
-        super("Attribute", ConfigLoader.getTabPropsOrientation());
+        super("label.attribute", lookupIcon("Attribute"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("label.owner"),
-                getOwnerScroll());
+        addField(Translator.localize("label.type"),
+                new UMLComboBoxNavigator(
+                        Translator.localize("label.class.navigate.tooltip"),
+                        getTypeComboBox()));
         addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
+        addField(Translator.localize("label.owner"),
+                getOwnerScroll());
 
         addSeparator();
         
@@ -79,14 +82,6 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
                 Translator.localize("label.modifiers"));
         modifiersPanel.add(getOwnerScopeCheckbox());
         add(modifiersPanel);
-        
-        addSeparator();
-
-        addField(Translator.localize("label.type"),
-                new UMLComboBoxNavigator(
-                        this,
-                        Translator.localize("label.class.navigate.tooltip"),
-                        getTypeComboBox()));
 
         UMLExpressionModel2 initialModel = new UMLInitialValueExpressionModel(
                 this, "initialValue");

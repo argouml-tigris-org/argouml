@@ -26,6 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -61,14 +62,14 @@ public class GoEnumerationToLiterals extends AbstractPerspectiveRule {
             }
             return list;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("misc.enumeration.literal");
+        return Translator.localize("misc.enumeration.literal");
     }
 
     /*
@@ -82,7 +83,7 @@ public class GoEnumerationToLiterals extends AbstractPerspectiveRule {
             set.addAll(Model.getFacade().getEnumerationLiterals(parent));
             return set;
         }
-        return null;
+        return Collections.EMPTY_SET;
     }
 
 }

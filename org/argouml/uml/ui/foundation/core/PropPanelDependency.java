@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -31,7 +32,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -62,7 +62,7 @@ public class PropPanelDependency extends PropPanelRelationship {
      * dependency itself) but does not have a proppanel of their own.
      */
     public PropPanelDependency() {
-        this("Dependency", ConfigLoader.getTabPropsOrientation());
+        this("label.dependency", lookupIcon("Dependency"));
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -84,10 +84,24 @@ public class PropPanelDependency extends PropPanelRelationship {
     /**
      * Constructor that should be used by subclasses to initialize the
      * attributes a dependency has.
-     * @see org.argouml.uml.ui.PropPanel#PropPanel(String, Orientation)
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelDependency(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
+    @Deprecated
     protected PropPanelDependency(String name, Orientation orientation) {
-        super(name, lookupIcon(name), orientation);
+        this(name, lookupIcon(name));
+        setOrientation(orientation);
+    }
+    
+
+    /**
+     * Constructor that should be used by subclasses to initialize the
+     * attributes a dependency has.
+     * @see org.argouml.uml.ui.PropPanel#PropPanel(String, ImageIcon)
+     */
+    protected PropPanelDependency(String name, ImageIcon icon) {
+        super(name, icon);
         JList supplierList = new UMLLinkedList(
                 new UMLDependencySupplierListModel(), true);
         supplierScroll = new JScrollPane(supplierList);
@@ -112,4 +126,4 @@ public class PropPanelDependency extends PropPanelRelationship {
     }
 
 
-} /* end class PropPanelDependency */
+}

@@ -25,11 +25,12 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Vector;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -73,7 +74,7 @@ public class OperationNotationUml extends OperationNotation {
             String msg = "statusmsg.bar.error.parsing.operation";
             Object[] args = {
                 pe.getLocalizedMessage(),
-                new Integer(pe.getErrorOffset()),
+                Integer.valueOf(pe.getErrorOffset()),
             };
             ArgoEventPump.fireEvent(new ArgoHelpEvent(
                     ArgoEventTypes.HELP_CHANGED, this,
@@ -190,11 +191,11 @@ public class OperationNotationUml extends OperationNotation {
         boolean hasColon = false;
         String name = null;
         String parameterlist = null;
-        String stereotype = null;
+        StringBuilder stereotype = null;
         String token;
         String type = null;
         String visibility = null;
-        Vector properties = null;
+        List<String> properties = null;
         int paramOffset = 0;
 
         s = s.trim();
@@ -219,13 +220,13 @@ public class OperationNotationUml extends OperationNotation {
                         parseError("operation.stereotypes", 
                                 st.getTokenIndex());
                     }
-                    stereotype = "";
+                    stereotype = new StringBuilder();
                     while (true) {
                         token = st.nextToken();
                         if (">>".equals(token) || "\u00BB".equals(token)) {
                             break;
                         }
-                        stereotype += token;
+                        stereotype.append(token);
                     }
                 } else if ("{".equals(token)) {
                     properties = tokenOpenBrace(st, properties);
@@ -349,7 +350,7 @@ public class OperationNotationUml extends OperationNotation {
         // Don't create a stereotype for <<signal>> on a Reception
         // but create any other parsed stereotypes as needed
         if (!Model.getFacade().isAReception(op) 
-                || !RECEPTION_KEYWORD.equals(stereotype)) {
+                || !RECEPTION_KEYWORD.equals(stereotype.toString())) {
             StereotypeUtility.dealWithStereotypes(op, stereotype, true);
         }
     }
@@ -376,27 +377,27 @@ public class OperationNotationUml extends OperationNotation {
      * Parse tokens following an open brace (properties).
      * 
      * @param st tokenizer being used
-     * @param properties current properties vector
-     * @return updated vector of properties
+     * @param properties current properties list
+     * @return updated list of properties
      * @throws ParseException
      */
-    private Vector tokenOpenBrace(MyTokenizer st, Vector properties)
+    private List<String> tokenOpenBrace(MyTokenizer st, List<String> properties)
         throws ParseException {
         String token;
-        String propname = "";
+        StringBuilder propname = new StringBuilder();
         String propvalue = null;
 
         if (properties == null) {
-            properties = new Vector();
+            properties = new ArrayList<String>();
         }
         while (true) {
             token = st.nextToken();
             if (",".equals(token) || "}".equals(token)) {
                 if (propname.length() > 0) {
-                    properties.add(propname);
+                    properties.add(propname.toString());
                     properties.add(propvalue);
                 }
-                propname = "";
+                propname = new StringBuilder();
                 propvalue = null;
 
                 if ("}".equals(token)) {
@@ -414,13 +415,13 @@ public class OperationNotationUml extends OperationNotation {
                 }
                 propvalue = "";
             } else if (propvalue == null) {
-                propname += token;
+                propname.append(token);
             } else {
                 propvalue += token;
             }
         }
         if (propname.length() > 0) {
-            properties.add(propname);
+            properties.add(propname.toString());
             properties.add(propvalue);
         }
         return properties;
@@ -478,9 +479,9 @@ public class OperationNotationUml extends OperationNotation {
      *
      * @author jaap.branderhorst@xs4all.nl
      *
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
-    public String toString(Object modelElement, HashMap args) {
+    public String toString(Object modelElement, Map args) {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
 
@@ -537,9 +538,17 @@ public class OperationNotationUml extends OperationNotation {
                         }
                         returnParasSb.append(",");
                     }
-                    returnParasSb.delete(
-                            returnParasSb.length() - 1,
-                            returnParasSb.length());
+                    // if we have only one return value and without type,
+                    // the return param string is ": ,", we remove it
+                    if (returnParasSb.length() == 3) {
+                        returnParasSb.delete(0, returnParasSb.length());
+                    }
+                    // else: we remove only the extra ","
+                    else {
+                        returnParasSb.delete(
+                                returnParasSb.length() - 1,
+                                returnParasSb.length());
+                    }
                 }
             }
 

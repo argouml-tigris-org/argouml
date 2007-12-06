@@ -36,9 +36,10 @@ import javax.swing.tree.TreePath;
 import org.tigris.gef.base.Diagram;
 
 /**
- * Ensures that explorer tree nodes have a default ordering.
- *
- * @author  alexb
+ * TreeNode implementation for Explorer. Ensures that explorer tree nodes have a
+ * default ordering.
+ * 
+ * @author alexb
  * @since 0.15.2, Created on 27 September 2003, 17:40
  */
 public class ExplorerTreeNode extends DefaultMutableTreeNode implements
@@ -66,6 +67,7 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode implements
     /*
      * @see javax.swing.tree.TreeNode#isLeaf()
      */
+    @Override
     public boolean isLeaf() {
 	if (!expanded) {
 	    model.updateChildren(new TreePath(model.getPathToRoot(this)));
@@ -96,10 +98,12 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode implements
      * @param node the modified node in the tree
      */
     public void nodeModified(Object node) {
-	if (modifySet.contains(node))
+	if (modifySet.contains(node)) {
 	    model.getNodeUpdater().schedule(this);
-	if (node == getUserObject())
+	}
+	if (node == getUserObject()) {
 	    model.nodeChanged(this);
+	}
     }
 
     /**

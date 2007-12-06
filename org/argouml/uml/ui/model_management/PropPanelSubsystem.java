@@ -38,7 +38,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
-import org.argouml.util.ConfigLoader;
 
 /**
  * A property panel for UML subsystems.
@@ -51,12 +50,10 @@ public class PropPanelSubsystem extends PropPanelPackage {
         new UMLClassifierFeatureListModel();
 
     /**
-     * The constructor.
-     *
+     * Construct a property panel for a Subsystem.
      */
     public PropPanelSubsystem() {
-        super("Subsystem", lookupIcon("Subsystem"),
-                ConfigLoader.getTabPropsOrientation());
+        super("label.subsystem", lookupIcon("Subsystem"));
 
         addField(Translator.localize("label.available-features"),
                 getFeatureScroll());
@@ -124,4 +121,4 @@ public class PropPanelSubsystem extends PropPanelPackage {
      * The UID.
      */
     private static final long serialVersionUID = -8616239241648089917L;
-} /* end class PropPanelSubsystem */
+}

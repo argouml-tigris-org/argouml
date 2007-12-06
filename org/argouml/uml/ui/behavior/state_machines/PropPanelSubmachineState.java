@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,13 +29,9 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -52,56 +48,69 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     /**
      * Construct a property panel for SubmachineState elements with the given
      * params.
-     * 
+     *
      * @param name
      *            the name of the properties panel
      * @param icon
      *            the icon to be shown next to the name
      * @param orientation
      *            the orientation of the panel
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #PropPanelCompositeState(String, ImageIcon)} and
+     *             setOrientation() after instantiation.
      */
-    public PropPanelSubmachineState(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon, orientation);
+    @Deprecated
+    public PropPanelSubmachineState(final String name, final ImageIcon icon,
+            final Orientation orientation) {
+        super(name, icon);
+        setOrientation(orientation);
         initialize();
     }
 
     /**
+     * Construct a property panel for SubmachineState elements with the given
+     * params.
+     *
+     * @param name
+     *            the name of the properties panel
+     * @param icon
+     *            the icon to be shown next to the name
+     */
+    public PropPanelSubmachineState(final String name, final ImageIcon icon) {
+        super(name, icon);
+        // TODO: Are these constructors organized correctly?  We aren't
+        // providing our own initialize(), so all the work done in the default
+        // constructor will be skipped for 
+        // our subclasses (PropPanelSubactivityState) - tfm - 20071119
+        initialize();
+    }
+    
+    /**
      * Construct a default property panel SubmachineState elements.
      */
     public PropPanelSubmachineState() {
-        super("Submachine State", lookupIcon("SubmachineState"),
-                ConfigLoader.getTabPropsOrientation());
-        getTitleLabel().setText("Submachine State");
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.container"),
-                getContainerScroll());
-        JComboBox submachineBox = new UMLComboBox2(
+        super("label.submachinestate", lookupIcon("SubmachineState"));
+        addField("label.name", getNameTextField());
+        addField("label.container", getContainerScroll());
+        final JComboBox submachineBox = new UMLComboBox2(
                 new UMLSubmachineStateComboBoxModel(),
                 ActionSetSubmachineStateSubmachine.getInstance());
-        addField(Translator.localize("label.submachine"),
-                new UMLComboBoxNavigator(this, Translator.localize(
+        addField("label.submachine",
+                new UMLComboBoxNavigator(Translator.localize(
                         "tooltip.nav-submachine"), submachineBox));
-        addField(Translator.localize("label.entry"),
-                getEntryScroll());
-        addField(Translator.localize("label.exit"),
-                getExitScroll());
-        addField(Translator.localize("label.do-activity"),
-                getDoScroll());
+        addField("label.entry", getEntryScroll());
+        addField("label.exit", getExitScroll());
+        addField("label.do-activity", getDoScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.incoming"),
-                getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
-                getOutgoingScroll());
-        addField(Translator.localize("label.internal-transitions"),
-                getInternalTransitionsScroll());
+        addField("label.incoming", getIncomingScroll());
+        addField("label.outgoing", getOutgoingScroll());
+        addField("label.internal-transitions", getInternalTransitionsScroll());
 
         addSeparator();
 
-        addField(Translator.localize("label.subvertex"),
+        addField("label.subvertex",
                 new JScrollPane(new UMLMutableLinkedList(
                         new UMLCompositeStateSubvertexListModel(), null,
                         ActionNewStubState.getInstance())));
@@ -110,6 +119,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex#addExtraButtons()
      */
+    @Override
     protected void addExtraButtons() {
         // Intentionally do nothing.
     }
@@ -117,26 +127,10 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     /*
      * @see org.argouml.uml.ui.behavior.state_machines.PropPanelCompositeState#updateExtraButtons()
      */
+    @Override
     protected void updateExtraButtons() {
         // Intentionally do nothing.
     }
 
-    /*
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        super.targetSet(e);
-        if (e != null) {
-            Object source = e.getSource();
-            if (source != null
-                    && source instanceof TargetManager) {
-                Object target =
-                    ((TargetManager) e.getSource()).getModelTarget();
-                if (Model.getFacade().isASubmachineState(target)) {
-                    getTitleLabel().setText("Submachine State");
-                }
-            }
-        }
-    }
 
 }
