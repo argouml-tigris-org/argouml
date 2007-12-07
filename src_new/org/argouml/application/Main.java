@@ -876,7 +876,6 @@ class LoadModules implements Runnable {
                 LOG.debug("Module " + module + " not found");
             }            
         }
-        ModuleLoader2.doLoad(false);
     }
 
     /*
