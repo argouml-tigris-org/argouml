@@ -29,7 +29,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
@@ -217,12 +217,16 @@ public class TabTaggedValues extends AbstractArgoJPanel
     /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
-    public Object getTarget() { return target; }
+    public Object getTarget() {
+        return target;
+    }
 
     /*
      * @see org.argouml.ui.TabTarget#refresh()
      */
-    public void refresh() { setTarget(target); }
+    public void refresh() {
+        setTarget(target);
+    }
 
     /*
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
@@ -282,12 +286,12 @@ public class TabTaggedValues extends AbstractArgoJPanel
         if (!e.getValueIsAdjusting()) {
             DefaultListSelectionModel sel = 
                 (DefaultListSelectionModel) e.getSource();
-            ArrayList tvs = new ArrayList(Model.getFacade()
-                    .getTaggedValuesCollection(target));
+            Collection tvs =
+                    Model.getFacade().getTaggedValuesCollection(target);
             int index = sel.getLeadSelectionIndex();
             if (index >= 0 && index < tvs.size()) {
                 Object tagDef = Model.getFacade().getTagDefinition(
-                        tvs.get(index));
+                        TabTaggedValuesModel.getFromCollection(tvs, index));
                 tagDefinitionsComboBoxModel.setSelectedItem(tagDef);
             }
         }
@@ -350,6 +354,7 @@ class ActionRemoveTaggedValue extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         TabTaggedValuesModel model = (TabTaggedValuesModel) table.getModel();

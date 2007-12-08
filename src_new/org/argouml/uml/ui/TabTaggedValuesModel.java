@@ -46,13 +46,13 @@ import org.argouml.model.Model;
 /**
  * The model for the table with the tagged values. Implementation for UML 1.4
  * and TagDefinitions.
+ * 
+ * TODO: This currently only supports TaggedValues with a TagDefinition which
+ * has a type of String.
  */
 public class TabTaggedValuesModel extends AbstractTableModel implements
         VetoableChangeListener, DelayedVChangeListener, PropertyChangeListener {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG =
         Logger.getLogger(TabTaggedValuesModel.class);
 
@@ -106,6 +106,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
     /*
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
+    @Override
     public String getColumnName(int c) {
         if (c == 0) {
             return Translator.localize("label.taggedvaluespane.tag");
@@ -124,6 +125,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             return (Class) Model.getMetaTypes().getTagDefinition();
         }
         if (c == 1) {
+            // TODO: This will vary based on the type of the TagDefinition
             return String.class;
         }
         return null;
@@ -188,11 +190,13 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
     /*
      * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
      */
+    @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         if (columnIndex != 0 && columnIndex != 1) {
             return;
         }
         if (columnIndex == 1 && aValue == null) {
+            // TODO: Use default value of appropriate type here
             aValue = "";
         }
         
@@ -236,12 +240,14 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             tagType = "";
         }
         if (tagValue == null) {
+            // TODO: Use default value of appropriate type for TD
             tagValue = "";
+//            tagValue = true;
         }
         Object tv = Model.getExtensionMechanismsFactory().createTaggedValue();
         
         // We really shouldn't add it until after it is set up, but we
-        // need it to have an owner for the following methods
+        // need it to have an owner for the following method calls
         Model.getExtensionMechanismsHelper().addTaggedValue(target, tv);
 
         Model.getExtensionMechanismsHelper().setTag(tv, tagType);
@@ -272,7 +278,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      * @param index index of the element to be returned
      * @return the object
      */
-    private Object getFromCollection(Collection collection, int index) {
+    static Object getFromCollection(Collection collection, int index) {
         if (collection instanceof List) {
             return ((List) collection).get(index);
         }
@@ -319,4 +325,4 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      * The UID.
      */
     private static final long serialVersionUID = -5711005901444956345L;
-} /* end class TableModelTaggedValues */
+}
