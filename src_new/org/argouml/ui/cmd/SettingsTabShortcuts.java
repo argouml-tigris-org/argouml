@@ -502,6 +502,7 @@ class SettingsTabShortcuts extends JPanel implements
         /*
          * @see javax.swing.table.TableModel#getColumnName(int)
          */
+        @Override
         public String getColumnName(int col) {
             return columnNames[col];
         }
@@ -530,6 +531,7 @@ class SettingsTabShortcuts extends JPanel implements
          * @see javax.swing.table.TableModel#setValueAt( java.lang.Object, int,
          *      int)
          */
+        @Override
         public void setValueAt(Object ob, int row, int col) {
             // if the given object is a KeyStroke instance, then we ca
             if (ob instanceof Action) {
@@ -574,6 +576,7 @@ class SettingsTabShortcuts extends JPanel implements
         /*
          * @see javax.swing.table.TableModel#isCellEditable(int, int)
          */
+        @Override
         public boolean isCellEditable(int row, int col) {
             return false;
         }
@@ -586,7 +589,7 @@ class SettingsTabShortcuts extends JPanel implements
 }
 
 /**
- * Argo's renderer for a KeyStroke object
+ * TableCellRenderer for a KeyStroke object.
  *
  * @author andrea.nironi@gmail.com
  */
@@ -596,6 +599,9 @@ class KeyStrokeCellRenderer extends DefaultTableCellRenderer {
      */
     private static final long serialVersionUID = -7086302679799095974L;
 
+    /**
+     * Construct a table cell rendered for key strokes.
+     */
     public KeyStrokeCellRenderer() {
         super();
         setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -606,6 +612,7 @@ class KeyStrokeCellRenderer extends DefaultTableCellRenderer {
      * 
      * @see javax.swing.table.DefaultTableCellRenderer#setValue(java.lang.Object)
      */
+    @Override
     public void setValue(Object value) {
         if (value != null && value instanceof KeyStroke) {
             value = KeyEventUtils.formatKeyStroke((KeyStroke) value);
