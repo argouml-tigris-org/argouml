@@ -1436,7 +1436,8 @@ public interface CoreHelper {
     void setEnumerationLiterals(Object enumeration, List literals);
     
     /**
-     * Returns names of all metatypes in metamodel
+     * Returns names of all metatypes in metamodel, including datatypes
+     * and primitive types.
      * 
      * TODO: This method rightly belongs in a separate interface dealing
      * with instances of MOF types as opposed to UML types like all the
@@ -1444,6 +1445,6 @@ public interface CoreHelper {
      * 
      * @return Collection containing Strings with names of all metatypes
      */
-    Collection getAllMetatypeNames();
+    Collection<String> getAllMetatypeNames();
 
 }
