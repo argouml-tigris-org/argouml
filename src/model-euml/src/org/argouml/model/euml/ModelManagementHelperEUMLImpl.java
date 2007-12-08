@@ -216,9 +216,8 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         return null;
     }
 
-    public Object getElement(Vector<String> path, Object theRootNamespace) {
-        // TODO Auto-generated method stub
-        return null;
+    public Object getElement(List<String> path) {
+        return getElement(path, null);
     }
 
     public Object getElement(List<String> path, Object theRootNamespace) {
