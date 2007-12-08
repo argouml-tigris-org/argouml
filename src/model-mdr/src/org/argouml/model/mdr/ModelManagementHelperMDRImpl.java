@@ -342,29 +342,70 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     public Object getElement(List<String> path, Object theRootNamespace) {
         ModelElement root = (ModelElement) theRootNamespace;
 
-        for (int i = 0; i < path.size(); i++) {
-            if (root == null || !(root instanceof Namespace)) {
-                return null;
-            }
+        if (root == null) {
+            return getElement(path);
+        } else {
 
-            String name = path.get(i);
-            boolean found = false;
-            for (ModelElement me : ((Namespace) root).getOwnedElement()) {
-                if (i < path.size() - 1 && !(me instanceof Namespace)) {
-                    continue;
+            for (int i = 0; i < path.size(); i++) {
+                if (root == null || !(root instanceof Namespace)) {
+                    return null;
                 }
-                if (name.equals(me.getName())) {
-                    root = me;
-                    found = true;
+
+                String name = path.get(i);
+                boolean found = false;
+                for (ModelElement me : ((Namespace) root).getOwnedElement()) {
+                    if (i < path.size() - 1 && !(me instanceof Namespace)) {
+                        continue;
+                    }
+                    if (name.equals(me.getName())) {
+                        root = me;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    return null;
+                }
+            }
+            return root;
+        }
+    }
+ 
+    
+    public Object getElement (List<String> fullPath) {
+        if (fullPath == null || fullPath.isEmpty()) {
+            return null;
+        }
+        Object element = null;
+        for (Object root : modelImpl.getFacade().getRootElements()) {
+            /* 
+             * modelImpl.getFacade().getRootElements()  gets all root elements
+             * in the UML repository, including available profiles that are not 
+             * part of the current project (degrades performance).
+             * 
+             * ProjectManager.getManager().getCurrentProject().getRoots() only 
+             * returns user model roots, and no profiles.
+             * 
+             * ProjectManager.getManager().getCurrentProject().getModels() gets
+             * all root models, but no root namespaces.
+             * 
+             * TODO: Which is best? Is there any other way?
+             */  
+            if (((ModelElement) root).getName().equals(fullPath.get(0))) {
+                element = root;
+                if (root instanceof Namespace && fullPath.size() > 1) {
+                    element = modelImpl.getModelManagementHelper().
+                    getElement(fullPath.subList(1, fullPath.size()), 
+                            root);
+                }
+                if (element != null) {
                     break;
                 }
             }
-            if (!found) {
-                return null;
-            }
         }
-        return root;
+        return element;
     }
+    
     
     @Deprecated
     public Vector<String> getPath(Object element) {
