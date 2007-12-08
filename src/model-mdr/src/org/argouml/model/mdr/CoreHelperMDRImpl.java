@@ -3146,17 +3146,33 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public Collection<String> getAllMetatypeNames() {
         Set<String> names = new HashSet<String>();
-        for (Iterator iter =
-                modelImpl.getModelPackage().getMofClass().refAllOfClass()
-                    .iterator();
-            iter.hasNext();) {
-            String name =
-                ((javax.jmi.model.ModelElement) iter.next()).getName();
-            if (names.contains(name)) {
-                LOG.error("Found duplicate class " + name + " in metamodel");
-            } else {
-                names.add(name);
+        for (Object element : modelImpl.getModelPackage().getMofClass()
+                .refAllOfClass()) {
+            String name = ((javax.jmi.model.ModelElement) element).getName();
+            if (names.add(name)) {
                 LOG.debug(" Class " + name);
+            } else {
+                LOG.error("Found duplicate class " + name + " in metamodel");
+            }
+        }
+        for (Object element : modelImpl.getModelPackage().getDataType()
+                .refAllOfClass()) {
+            String name = ((javax.jmi.model.DataType) element).getName();
+            if (names.add(name)) {
+                LOG.debug(" DataType " + name);
+            } else {
+                LOG.error("Found duplicate datatype " + name + " in metamodel");
+            }
+        }
+        // String, Integer, Long, Float, Double, etc
+        for (Object element : modelImpl.getModelPackage().getPrimitiveType()
+                .refAllOfClass()) {
+            String name = ((javax.jmi.model.PrimitiveType) element).getName();
+            if (names.add(name)) {
+                LOG.debug(" PrimitiveType " + name);
+            } else {
+                LOG.error("Found duplicate primitive type " + name 
+                        + " in metamodel");
             }
         }
         return names;
