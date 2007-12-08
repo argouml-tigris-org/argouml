@@ -60,6 +60,8 @@
         <UML:Stereotype xmi.id = '.:000000000000082B' name = 'create' isSpecification = 'false'
           isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
           <UML:Stereotype.baseClass>Usage</UML:Stereotype.baseClass>
+          <UML:Stereotype.baseClass>BehavioralFeature</UML:Stereotype.baseClass>
+          <UML:Stereotype.baseClass>CallEvent</UML:Stereotype.baseClass>
         </UML:Stereotype>
         <UML:Stereotype xmi.id = '.:000000000000082C' name = 'call' isSpecification = 'false'
           isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
@@ -73,20 +75,9 @@
           isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
           <UML:Stereotype.baseClass>Usage</UML:Stereotype.baseClass>
         </UML:Stereotype>
-        <UML:Stereotype xmi.id = '.:000000000000082F' name = 'create' isSpecification = 'false'
-          isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
-          <UML:Stereotype.baseClass>BehavioralFeature</UML:Stereotype.baseClass>
-        </UML:Stereotype>
         <UML:Stereotype xmi.id = '.:0000000000000830' name = 'destroy' isSpecification = 'false'
           isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
           <UML:Stereotype.baseClass>BehavioralFeature</UML:Stereotype.baseClass>
-        </UML:Stereotype>
-        <UML:Stereotype xmi.id = '.:0000000000000831' name = 'create' isSpecification = 'false'
-          isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
-          <UML:Stereotype.baseClass>CallEvent</UML:Stereotype.baseClass>
-        </UML:Stereotype>
-        <UML:Stereotype xmi.id = '.:0000000000000832' name = 'destroy' isSpecification = 'false'
-          isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
           <UML:Stereotype.baseClass>CallEvent</UML:Stereotype.baseClass>
         </UML:Stereotype>
         <UML:Stereotype xmi.id = '.:0000000000000833' name = 'derive' isSpecification = 'false'
@@ -144,9 +135,6 @@
         <UML:Stereotype xmi.id = '.:0000000000000840' name = 'implementation' isSpecification = 'false'
           isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
           <UML:Stereotype.baseClass>Generalization</UML:Stereotype.baseClass>
-        </UML:Stereotype>
-        <UML:Stereotype xmi.id = '.:0000000000000841' name = 'implementation' isSpecification = 'false'
-          isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
           <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
         </UML:Stereotype>
         <UML:Stereotype xmi.id = '.:0000000000000842' name = 'type' isSpecification = 'false'
