@@ -123,6 +123,14 @@ public interface ModelManagementHelper {
     Collection getAllPossibleImports(Object pack);
 
     /**
+     * Get the modelelement with the given path, starting at the root of repository.
+     *
+     * @param path the given path
+     * @return the modelelement looked for, or null if not found
+     */
+    Object getElement(List<String> path);
+    
+    /**
      * Get the modelelement a given path below a given root-namespace.
      *
      * @param path the given path
