@@ -22,13 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile;
+package org.argouml.profile.internal;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
+import org.argouml.profile.ProfileFacade;
 
 /**
  * Initializer class for the Profile subsystem.
