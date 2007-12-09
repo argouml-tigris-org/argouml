@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.profile.InitProfileSubsystem;
+import org.argouml.profile.internal.InitProfileSubsystem;
 
 /**
  * Test delivery of Model events.

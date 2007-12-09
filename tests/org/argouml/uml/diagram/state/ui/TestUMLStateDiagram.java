@@ -28,7 +28,7 @@ import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.InitProfileSubsystem;
+import org.argouml.profile.internal.InitProfileSubsystem;
 
 /**
  * General test methods for UMLUseCaseDiagrams

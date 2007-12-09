@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.argouml.model.InitializeModel;
+import org.argouml.profile.internal.InitProfileSubsystem;
 
 import junit.framework.TestCase;
 

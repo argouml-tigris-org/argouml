@@ -35,7 +35,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
-import org.argouml.profile.InitProfileSubsystem;
+import org.argouml.profile.internal.InitProfileSubsystem;
 
 
 

@@ -32,7 +32,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.ModelElementNameNotation;
-import org.argouml.profile.InitProfileSubsystem;
+import org.argouml.profile.internal.InitProfileSubsystem;
 
 /**
  * Tests the ModelElementNameNotationJava class.

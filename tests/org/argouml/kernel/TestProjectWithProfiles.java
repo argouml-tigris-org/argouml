@@ -36,10 +36,10 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.ProfileManager;
+import org.argouml.profile.internal.InitProfileSubsystem;
 
 /**
  * Tests the {@link ProjectImpl} with profiles, specifically this enables the 

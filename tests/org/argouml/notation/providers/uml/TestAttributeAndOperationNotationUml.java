@@ -39,7 +39,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.providers.java.InitNotationJava;
-import org.argouml.profile.InitProfileSubsystem;
+import org.argouml.profile.internal.InitProfileSubsystem;
 
 /**
  * @author michiel

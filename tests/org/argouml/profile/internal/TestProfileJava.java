@@ -27,7 +27,6 @@ package org.argouml.profile.internal;
 import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.InitProfileSubsystem;
 import org.argouml.profile.ProfileException;
 
 /**

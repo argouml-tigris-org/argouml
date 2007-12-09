@@ -30,7 +30,7 @@ import java.io.StringReader;
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
-import org.argouml.profile.InitProfileSubsystem;
+import org.argouml.profile.internal.InitProfileSubsystem;
 import org.argouml.uml.reveng.java.JavaLexer;
 import org.argouml.uml.reveng.java.JavaRecognizer;
 import org.argouml.uml.reveng.java.Modeller;

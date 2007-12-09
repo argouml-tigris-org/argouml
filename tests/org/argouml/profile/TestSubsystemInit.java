@@ -26,6 +26,7 @@ package org.argouml.profile;
 
 import org.argouml.application.api.InitSubsystem;
 import org.argouml.model.InitializeModel;
+import org.argouml.profile.internal.InitProfileSubsystem;
 
 import junit.framework.TestCase;
 
