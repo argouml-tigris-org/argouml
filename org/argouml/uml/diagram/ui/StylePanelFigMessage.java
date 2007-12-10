@@ -31,7 +31,6 @@ import javax.swing.JLabel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.StylePanelFigNodeModelElement;
-import org.tigris.gef.util.Converter;
 
 /**
  * Stylepanel which allows to set the arrow of a message.
@@ -42,8 +41,7 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
 
     private JLabel arrowLabel = new JLabel(Translator.localize("label.localize"));
 
-    private JComboBox arrowField = new JComboBox(Converter
-            .convert(FigMessage.getArrowDirections()));
+    private JComboBox arrowField = new JComboBox(FigMessage.getArrowDirections().toArray());
 
 
     /**

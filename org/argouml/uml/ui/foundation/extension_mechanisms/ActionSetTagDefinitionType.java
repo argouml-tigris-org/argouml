@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,18 +28,23 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.tigris.gef.undo.UndoableAction;
+
 /**
- * @since Nov 3, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * Action to set the type of a TagDefinition. The tagType attribute of a
+ * TagDefinition is a Name of a UML metaclass (ie String).
  */
 public class ActionSetTagDefinitionType extends UndoableAction {
 
     private static final ActionSetTagDefinitionType SINGLETON =
         new ActionSetTagDefinitionType();
+
+    private static final Logger LOG = 
+    	Logger.getLogger(ActionSetTagDefinitionType.class);
 
     /**
      * Constructor for ActionSetTagDefinitionType.
@@ -58,28 +63,29 @@ public class ActionSetTagDefinitionType extends UndoableAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
-        Object oldClassifier = null;
-        Object newClassifier = null;
-        Object attr = null;
+        LOG.debug("Receiving " + e + "/" + e.getID() + "/"
+                + e.getActionCommand());
+        String oldType = null;
+        String newType = null;
+        Object tagDef = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) source;
-            Object o = box.getTarget();
-            if (Model.getFacade().isATagDefinition(o)) {
-                attr = o;
-                oldClassifier = Model.getFacade().getType(attr);
+            Object t = box.getTarget();
+            if (Model.getFacade().isATagDefinition(t)) {
+                tagDef = t;
+                oldType = (String) Model.getFacade().getType(tagDef);
             }
-            o = box.getSelectedItem();
-            if (Model.getFacade().isAClassifier(o)) {
-                newClassifier = o;
-            }
+            newType = (String) box.getSelectedItem();
+            LOG.debug("Selected item is " + newType);
         }
-        if (newClassifier != oldClassifier && attr != null) {
-            Model.getCoreHelper().setType(attr, newClassifier);
+        if (newType != null && !newType.equals(oldType) && tagDef != null) {
+            LOG.debug("New type is " + newType);
+            Model.getExtensionMechanismsHelper().setTagType(tagDef, newType);
         }
     }
-
+    
     /**
-     * @return Returns the sINGLETON.
+     * @return Returns the singleton instance.
      */
     public static ActionSetTagDefinitionType getInstance() {
         return SINGLETON;

@@ -27,7 +27,6 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,11 +34,9 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
- * A model for stereotypes to handle their base class, or as it is a class from
- * the UML metamodel its metaclass.
- * 
- * TODO: This class needs to be replaced with a mechanism that supports multiple
- * base classes as added in UML 1.4.
+ * A model for selecting a UML metaclass. Originally designed for use in
+ * selecting the base class of stereotypes in UML 1.3, but now used to select
+ * the type of a TagDefinition.
  * 
  * @author mkl
  */
@@ -48,11 +45,12 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
     private List<String> metaClasses;
 
     /**
-     * Constructor.
+     * Construct a default combo box model.
      */
     public UMLMetaClassComboBoxModel() {
-        super("baseClass", true);
-        Collection<String> tmpMetaClasses = Model.getCoreHelper().getAllMetatypeNames();
+        super("tagType", true);
+        Collection<String> tmpMetaClasses =
+                Model.getCoreHelper().getAllMetatypeNames();
         
         if (tmpMetaClasses instanceof List) {
             metaClasses = (List<String>) tmpMetaClasses;
@@ -71,16 +69,10 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel2 {
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
+    @Override
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            Collection baseClasses =
-                    Model.getFacade().getBaseClasses(getTarget());
-            if (baseClasses != null) {
-                Iterator iter = baseClasses.iterator();
-                if (iter.hasNext()) {
-                    return iter.next();
-                }
-            }
+            return Model.getFacade().getType(getTarget());
         }
         return null;
     }

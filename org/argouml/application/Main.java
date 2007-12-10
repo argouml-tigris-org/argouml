@@ -69,7 +69,7 @@ import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.notation.ui.InitNotationUI;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.profile.InitProfileSubsystem;
+import org.argouml.profile.internal.InitProfileSubsystem;
 import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
@@ -878,7 +878,6 @@ class LoadModules implements Runnable {
                 LOG.debug("Module " + module + " not found");
             }            
         }
-        ModuleLoader2.doLoad(false);
     }
 
     /*

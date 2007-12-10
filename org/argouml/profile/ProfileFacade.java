@@ -65,7 +65,10 @@ public class ProfileFacade {
                 + " isn't initialized!");
     }
 
-    static void setManager(ProfileManager profileManager) {
+    /**
+     * @param profileManager the manager of the profiles to be used
+     */
+    public static void setManager(ProfileManager profileManager) {
         manager = profileManager;
     }
 

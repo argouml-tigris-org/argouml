@@ -181,7 +181,8 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
 	public void targetSet(TargetEvent e) {
 	    super.targetSet(e);
 	    Object target = getTarget();
-	    boolean exists = Model.getFacade().getMultiplicity(target) != null;
+	    boolean exists = target != null 
+                && Model.getFacade().getMultiplicity(target) != null;
 	    multiplicityComboBox.setEnabled(exists);
 	    multiplicityComboBox.setEditable(exists);
 	    checkBox.setSelected(exists);

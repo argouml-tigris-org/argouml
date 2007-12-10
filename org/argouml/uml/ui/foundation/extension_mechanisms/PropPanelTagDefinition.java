@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,20 +49,16 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
-import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
- * The properties panel for a Class.
+ * The properties panel for a TagDefinition.
  */
 public class PropPanelTagDefinition extends PropPanelModelElement {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 3563940705352568635L;
     private JComponent ownerSelector;
     private JComponent tdNamespaceSelector;
@@ -75,8 +71,8 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
             new UMLTagDefinitionOwnerComboBoxModel();
     private UMLComboBoxModel2 tdNamespaceComboBoxModel = 
         new UMLTagDefinitionNamespaceComboBoxModel();
-    // Despite the misleading name the following class does the right thing
-    private static UMLStructuralFeatureTypeComboBoxModel typeComboBoxModel;
+    private static UMLMetaClassComboBoxModel typeComboBoxModel;
+
     private static UMLTagDefinitionTypedValuesListModel typedValuesListModel = 
         new UMLTagDefinitionTypedValuesListModel();
 
@@ -84,7 +80,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
      * The combobox for the multiplicity of this type.
      */
     private JPanel multiplicityComboBox;
-
+    
     /**
      * Construct a property panel for TagDefinition elements.
      */
@@ -167,18 +163,11 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
     public UMLComboBox2 getTypeComboBox() {
         if (typeComboBox == null) {
             if (typeComboBoxModel == null) {
-                typeComboBoxModel =
-                    new UMLStructuralFeatureTypeComboBoxModel();
-                // TODO: Replace by:
-//                new UMLTagDefinitionTagTypeComboBoxModel();
-                // or should it be a textField?
+                typeComboBoxModel = new UMLMetaClassComboBoxModel();
             }
             typeComboBox =
-                new UMLComboBox2(
-                                 typeComboBoxModel,
-                                 ActionSetStructuralFeatureType.getInstance());
-            // TODO: (?) Replace by:
-//                        new ActionSetTagDefinitionTagType();
+                    new UMLComboBox2(typeComboBoxModel,
+                            ActionSetTagDefinitionType.getInstance());
             typeComboBox.setEnabled(false);
         }
         return typeComboBox;
@@ -211,6 +200,7 @@ class UMLTagDefinitionNamespaceComboBoxModel
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
+    @Override
     protected boolean isValidElement(Object o) {
         return Model.getFacade().isANamespace(o);
     }
@@ -218,19 +208,23 @@ class UMLTagDefinitionNamespaceComboBoxModel
     /*
      * @see org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel#buildModelList()
      */
+    @Override
     protected void buildModelList() {
-        Object model =
-            ProjectManager.getManager().getCurrentProject().getRoot();
+        Collection roots =
+            ProjectManager.getManager().getCurrentProject().getRoots();
         Collection c = new HashSet();
         c.add(null);
-        c.add(model);
-        c.addAll(Model.getModelManagementHelper().getAllNamespaces(model));
+        for (Object root : roots) {
+            c.add(root);
+            c.addAll(Model.getModelManagementHelper().getAllNamespaces(root));
+        }
         setElements(c);
     }
 
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         /*
          * Rebuild the list from scratch to be sure it's correct.
@@ -265,6 +259,7 @@ class ActionSetTagDefinitionNamespace extends UndoableAction {
     /*
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
     	super.actionPerformed(e);
         Object source = e.getSource();
