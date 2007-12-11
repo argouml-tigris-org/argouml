@@ -33,6 +33,8 @@ import java.util.Set;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
 import org.argouml.model.Model;
 import org.argouml.profile.DefaultTypeStrategy;
 import org.argouml.profile.FigNodeStrategy;
@@ -69,6 +71,13 @@ public class ProfileConfiguration extends AbstractProjectMember {
      * The extension used in serialization and returned by {@link #getType()}
      */
     public static final String EXTENSION = "profile";
+    
+
+    /**
+     * The configuration key for the default stereotype view.
+     */
+    public static final ConfigurationKey KEY_DEFAULT_STEREOTYPE_VIEW = 
+        Configuration.makeKey("profiles", "stereotypeView");
         
     /**
      * The default constructor for this class. Sets the Java profile as the 
