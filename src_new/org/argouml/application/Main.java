@@ -69,7 +69,6 @@ import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.notation.ui.InitNotationUI;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.internal.InitProfileSubsystem;
-import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
@@ -78,6 +77,7 @@ import org.argouml.ui.cmd.InitUiCmdSubsystem;
 import org.argouml.ui.cmd.PrintManager;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.reveng.java.JavaImport;
+import org.argouml.util.ArgoFrame;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 

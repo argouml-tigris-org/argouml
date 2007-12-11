@@ -32,7 +32,7 @@ import javax.swing.JFrame;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.AboutBox;
-import org.argouml.ui.ArgoFrame;
+import org.argouml.util.ArgoFrame;
 
 
 /**

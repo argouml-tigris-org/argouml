@@ -47,6 +47,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.util.ArgoFrame;
 
 /**
  * The basic stylepanel which provides the boundaries box,

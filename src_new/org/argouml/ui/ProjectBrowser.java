@@ -94,6 +94,7 @@ import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ProjectFileView;
 import org.argouml.uml.ui.TabProps;
+import org.argouml.util.ArgoFrame;
 import org.argouml.util.ThreadUtils;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;

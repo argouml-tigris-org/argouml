@@ -32,9 +32,9 @@ import javax.swing.JFileChooser;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.reveng.ImportInterface;
+import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoableAction;
 
 

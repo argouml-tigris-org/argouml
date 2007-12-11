@@ -34,8 +34,8 @@ import javax.swing.JOptionPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.util.ArgoFrame;
 
 /**
  * Action that reverts to the previously saved version of the project.

@@ -31,8 +31,8 @@ import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.ui.ArgoFrame;
 import org.argouml.uml.reveng.Import;
+import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoableAction;
 
 

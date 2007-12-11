@@ -42,8 +42,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
-import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.ArgoJFontChooser;
+import org.argouml.util.ArgoFrame;
 
 /**
  * Settings tab panel for handling diagram appearance settings.

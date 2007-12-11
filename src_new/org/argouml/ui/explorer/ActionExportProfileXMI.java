@@ -42,9 +42,9 @@ import org.argouml.model.UmlException;
 import org.argouml.model.XmiWriter;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.UmlFilePersister;
-import org.argouml.ui.ArgoFrame;
 import org.argouml.profile.Profile;
 import org.argouml.uml.ui.ProjectFileView;
+import org.argouml.util.ArgoFrame;
 
 /**
  * Exports the model of a selected profile as XMI
