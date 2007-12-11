@@ -93,6 +93,7 @@ public final class ExplorerEventAdaptor
      * 
      * TODO:  This shouldn't be public.  Components desiring to
      * inform the Explorer of changes should send events.
+     * @deprecated by mvw in V0.25.4. Use events instead.
      */
     public void structureChanged() {
         if (treeModel == null) {
