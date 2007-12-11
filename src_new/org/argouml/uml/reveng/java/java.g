@@ -237,7 +237,7 @@ tokens {
     STATIC_IMPORT; ENUM_DEF; ENUM_CONSTANT_DEF; FOR_EACH_CLAUSE; ANNOTATION_DEF; ANNOTATIONS;
     ANNOTATION; ANNOTATION_MEMBER_VALUE_PAIR; ANNOTATION_FIELD_DEF; ANNOTATION_ARRAY_INIT;
     TYPE_ARGUMENTS; TYPE_ARGUMENT; TYPE_PARAMETERS; TYPE_PARAMETER; WILDCARD_TYPE;
-    TYPE_UPPER_BOUNDS; TYPE_LOWER_BOUNDS;
+    TYPE_UPPER_BOUNDS; TYPE_LOWER_BOUNDS; EMPTY_COMMENT="/**/";
 }
 
 {
@@ -2045,9 +2045,26 @@ SL_COMMENT
           $setType(Token.SKIP); if (nl) newline(); }
     ;
 
+// Empty comment block needs to be distinguished from Javadoc
+EMPTY_COMMENT
+    :    "/**/"
+        { addWhitespace($getText);
+          $setType(Token.SKIP);}
+    ;
+
 // javadoc comments
 JAVADOC
     :    "/**"
+            ( /* Do not allow '/' for first character */
+            options {
+                generateAmbigWarnings=false;
+            }
+        :
+            '\r' '\n'        {newline();}
+        |    '\r'            {newline();}
+        |    '\n'            {newline();}
+        |    ~('/'|'\n'|'\r')
+        )        
         (    /*    '\r' '\n' can be matched in one alternative or by matching
                 '\r' in one iteration and '\n' in another.  I am trying to
                 handle any flavor of newline that comes in, but the language
