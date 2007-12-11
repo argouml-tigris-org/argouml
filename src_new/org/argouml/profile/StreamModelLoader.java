@@ -47,7 +47,7 @@ public abstract class StreamModelLoader implements ProfileModelLoader {
      * @return the model
      * @throws ProfileException if the XMIReader couldn't read the input stream
      */
-    protected Collection loadModel(InputStream inputStream)
+    public Collection loadModel(InputStream inputStream)
         throws ProfileException {
         
         if (inputStream != null) {

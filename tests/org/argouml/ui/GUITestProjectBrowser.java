@@ -29,11 +29,11 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.ui.cmd.ActionNew;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -67,6 +67,7 @@ public class GUITestProjectBrowser extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
+        new org.argouml.profile.internal.InitProfileSubsystem().init();
         SplashScreen splashScreen = new SplashScreen();
         assertNotNull(ProjectBrowser.makeInstance(splashScreen, 
                 true, new ToDoPane(splashScreen)));
