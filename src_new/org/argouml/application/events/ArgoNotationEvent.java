@@ -26,8 +26,7 @@ package org.argouml.application.events;
 
 /**
  * ArgoNotationEvent is used to notify interested parties
- * that the module which is the event source
- * has been posted, selected, or canceled.
+ * that the notation has been changed.
  */
 public class ArgoNotationEvent extends ArgoEvent {
 
