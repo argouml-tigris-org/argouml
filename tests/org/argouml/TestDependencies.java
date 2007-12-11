@@ -25,7 +25,9 @@
 package org.argouml;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -112,6 +114,8 @@ public class TestDependencies extends TestCase {
             // really is one - tfm 20070702
 //            "org.argouml.uml.cognitive.critics",
         };
+
+        suite.addTest(new TimeStamp());
         for (int i = 0; i < clean.length; i++) {
             suite.addTest(new CheckDependencyCycle(jdepend, clean[i]));
         }
@@ -161,6 +165,29 @@ public class TestDependencies extends TestCase {
         }
 
         return suite;
+    }
+    
+    static class DateUtils {
+        static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss Z";
+
+        public static String now() {
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+            return sdf.format(cal.getTime());
+        }
+
+    }
+
+    static class TimeStamp extends TestCase {
+
+        TimeStamp() {
+            super("Timestamp: " + DateUtils.now());
+        }
+
+        @SuppressWarnings("unchecked")
+        public void runTest() {
+            // do nothing by design
+        }
     }
 
     static class CheckDependencyCycle extends TestCase {
