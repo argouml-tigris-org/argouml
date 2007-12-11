@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
@@ -42,7 +43,7 @@ import org.tigris.gef.presentation.FigText;
  * A Fig designed to be the child of some FigNode or FigEdge to display the
  * stereotypes of the model element represented by the parent Fig.
  * Currently display of multiple stereotypes are stacked one on top of the
- * each enclosed by guillemots.<p>
+ * each enclosed by guillemets.<p>
  * 
  * The minimum width of this fig is the largest minimum width of its child
  * figs.<p>
@@ -51,8 +52,8 @@ import org.tigris.gef.presentation.FigText;
  * figs.<p>
  * 
  * TODO: Allow for UML2 style display where all stereotypes are displayed in
- * the same guillemot pair and are delimited by commas. The style should be
- * changable by calling getOrientation(Orientation). The swidget Orientation
+ * the same guillemet pair and are delimited by commas. The style should be
+ * changeable by calling getOrientation(Orientation). The swidget Orientation
  * class can be used for this.
  * @author Bob Tarling
  */
@@ -95,6 +96,7 @@ public class FigStereotypesCompartment extends FigCompartment {
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @Override
     public void setOwner(Object own) {
         if (own != null) {
             super.setOwner(own);
@@ -106,11 +108,13 @@ public class FigStereotypesCompartment extends FigCompartment {
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
+    @Override
     public void removeFromDiagram() {
         Model.getPump()
                 .removeModelEventListener(this, getOwner(), "stereotype");
     }
     
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
         if (event instanceof AddAssociationEvent) {
             AddAssociationEvent aae = (AddAssociationEvent) event;
@@ -306,7 +310,12 @@ public class FigStereotypesCompartment extends FigCompartment {
     }
 
     private Image getIconForStereotype(FigStereotype fs) {
-        return getProject().getProfileConfiguration().getFigNodeStrategy()
+        Project project = getProject();
+        if (project == null) {
+            LOG.warn("getProject() returned null");
+            return null;
+        }
+        return project.getProfileConfiguration().getFigNodeStrategy()
                 .getIconForStereotype(fs.getOwner());
     }
 
@@ -344,10 +353,20 @@ public class FigStereotypesCompartment extends FigCompartment {
     protected void createModelElement() {
     }
 
+    /**
+     * @return true if textual stereotypes are being hidden in preference to
+     *         displaying icon.
+     */
     public boolean isHidingStereotypesWithIcon() {
         return hidingStereotypesWithIcon;
     }
 
+    /**
+     * Turn on/off textual stereotype display in preference to icon.
+     * 
+     * @param hidingStereotypesWithIcon true to hide textual stereotypes and
+     *                show icon instead.
+     */
     public void setHidingStereotypesWithIcon(boolean hidingStereotypesWithIcon) {
         this.hidingStereotypesWithIcon = hidingStereotypesWithIcon;
         updateHiddenStereotypes();
