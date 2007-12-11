@@ -174,7 +174,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
             }
 
             updateStrategies();
-            // FIXME: remove this dependency
+            // TODO: remove this dependency
             ExplorerEventAdaptor.getInstance().structureChanged();
         }
     }
@@ -220,7 +220,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
         }
 
         updateStrategies();        
-        // FIXME: remove this dependency
+        // TODO: remove this dependency
         ExplorerEventAdaptor.getInstance().structureChanged();
     }
     
