@@ -254,6 +254,31 @@ public final class ArgoEventPump {
             break;
         }
     }
+
+    /**
+     * Handle firing a profile event.
+     *
+     * @param event The event to be fired.
+     * @param listener The listener.
+     */
+    private void handleFireProfileEvent(
+        ArgoProfileEvent event,
+        ArgoProfileEventListener listener) {
+        switch (event.getEventType()) {
+        case ArgoEventTypes.PROFILE_ADDED:
+            listener.profileAdded(event);
+            break;
+
+        case ArgoEventTypes.PROFILE_REMOVED:
+            listener.profileRemoved(event);
+            break;
+
+        default:
+            LOG.error("Invalid event:" + event.getEventType());
+            break;
+        }
+    }
+
     /**
      * Handle firing a generator event.
      *
@@ -331,6 +356,13 @@ public final class ArgoEventPump {
                 if (listener instanceof ArgoStatusEventListener) {
                     handleFireStatusEvent((ArgoStatusEvent) event,
                             (ArgoStatusEventListener) listener);
+                }
+            }
+            if (event.getEventType() >= ArgoEventTypes.ANY_PROFILE_EVENT
+                    && event.getEventType() < ArgoEventTypes.LAST_PROFILE_EVENT) {
+                if (listener instanceof ArgoProfileEventListener) {
+                    handleFireProfileEvent((ArgoProfileEvent) event,
+                            (ArgoProfileEventListener) listener);
                 }
             }
         }

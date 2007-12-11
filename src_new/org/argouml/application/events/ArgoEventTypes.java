@@ -202,6 +202,26 @@ public interface ArgoEventTypes {
     int LAST_DIAGRAM_APPEARANCE_EVENT = 1699;
 
     /**
+     * Indicating any profile event.
+     */
+    int ANY_PROFILE_EVENT = 1700;
+
+    /**
+     * Indicating that a profile has been added.
+     */
+    int PROFILE_ADDED = 1701;
+
+    /**
+     * Indicating that a profile has been removed.
+     */
+    int PROFILE_REMOVED = 1702;
+
+    /**
+     * Last profile event.
+     */
+    int LAST_PROFILE_EVENT = 1799;
+
+    /**
      * Id marker for the last Argo event.
      */
     int ARGO_EVENT_END            = 99999;

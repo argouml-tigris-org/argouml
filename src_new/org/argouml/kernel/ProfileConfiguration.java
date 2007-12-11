@@ -25,14 +25,18 @@
 package org.argouml.kernel;
 
 import java.awt.Image;
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProfileEvent;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.model.Model;
@@ -42,7 +46,6 @@ import org.argouml.profile.FormatingStrategy;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
-import org.argouml.ui.explorer.ExplorerEventAdaptor;
 
 /**
  *   This class captures represents the unique access point for the 
@@ -174,8 +177,9 @@ public class ProfileConfiguration extends AbstractProjectMember {
             }
 
             updateStrategies();
-            // TODO: remove this dependency
-            ExplorerEventAdaptor.getInstance().structureChanged();
+            ArgoEventPump.fireEvent(new ArgoProfileEvent(
+                    ArgoEventTypes.PROFILE_ADDED, new PropertyChangeEvent(this,
+                            "profile", null, p)));
         }
     }
         
@@ -219,9 +223,10 @@ public class ProfileConfiguration extends AbstractProjectMember {
             removeProfile(profile);
         }
 
-        updateStrategies();        
-        // TODO: remove this dependency
-        ExplorerEventAdaptor.getInstance().structureChanged();
+        updateStrategies();
+        ArgoEventPump.fireEvent(new ArgoProfileEvent(
+                ArgoEventTypes.PROFILE_REMOVED, new PropertyChangeEvent(this,
+                        "profile", p, null)));
     }
     
     private FigNodeStrategy compositeFigNodeStrategy = new FigNodeStrategy() {
