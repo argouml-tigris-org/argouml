@@ -33,7 +33,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;

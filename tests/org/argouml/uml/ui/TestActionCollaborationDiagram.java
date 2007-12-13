@@ -33,7 +33,7 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;

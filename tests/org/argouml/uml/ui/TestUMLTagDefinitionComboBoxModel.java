@@ -32,7 +32,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboB
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Test cases for the UMLTagDefinitionComboBoxModel class.

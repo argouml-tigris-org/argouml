@@ -26,7 +26,7 @@ package org.argouml.uml.diagram.state.ui;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Tests whether Figs in state.ui are clonable,

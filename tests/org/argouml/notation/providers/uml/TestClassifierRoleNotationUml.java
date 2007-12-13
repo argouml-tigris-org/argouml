@@ -32,7 +32,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Test ClassifierRoleNotationUml (formerly ParserDisplay):

@@ -30,7 +30,7 @@ import org.argouml.model.InitializeModel;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 /**

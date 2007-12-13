@@ -37,7 +37,7 @@ import org.argouml.notation.InitNotation;
 import org.argouml.notation.Notation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Tests for the ProjectSettings.

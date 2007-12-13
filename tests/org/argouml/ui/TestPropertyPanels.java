@@ -43,7 +43,7 @@ import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.ui.TabProps;

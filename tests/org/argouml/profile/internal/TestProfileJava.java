@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
 import org.argouml.profile.ProfileException;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Tests for the ProfileJava class.

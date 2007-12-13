@@ -39,7 +39,7 @@ import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.ProfileManager;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Tests the {@link ProjectImpl} with profiles, specifically this enables the 

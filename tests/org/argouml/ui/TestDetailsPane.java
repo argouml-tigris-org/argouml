@@ -31,7 +31,7 @@ import junit.framework.TestCase;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;

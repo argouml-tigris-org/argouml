@@ -29,7 +29,7 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * @since Nov 22, 2002

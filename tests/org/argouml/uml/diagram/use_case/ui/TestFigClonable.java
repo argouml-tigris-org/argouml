@@ -26,7 +26,7 @@ package org.argouml.uml.diagram.use_case.ui;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Test if a Fig is cloneable.

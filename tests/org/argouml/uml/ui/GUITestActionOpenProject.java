@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
+import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.util.CheckMain;
 
 /**
@@ -53,7 +54,7 @@ public class GUITestActionOpenProject extends TestCase {
     public void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
-        new org.argouml.profile.internal.InitProfileSubsystem().init();
+        new InitProfileSubsystem().init();
     }
 
     /**

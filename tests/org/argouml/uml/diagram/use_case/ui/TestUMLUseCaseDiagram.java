@@ -28,7 +28,7 @@ import org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * General test methods for UMLUseCaseDiagrams

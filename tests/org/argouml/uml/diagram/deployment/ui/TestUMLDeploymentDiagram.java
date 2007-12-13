@@ -26,7 +26,7 @@ package org.argouml.uml.diagram.deployment.ui;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.internal.InitProfileSubsystem;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 
