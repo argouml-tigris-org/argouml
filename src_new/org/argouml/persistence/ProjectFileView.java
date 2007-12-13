@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.persistence;
 
 import java.io.File;
 
@@ -30,8 +30,6 @@ import javax.swing.Icon;
 import javax.swing.filechooser.FileView;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.persistence.AbstractFilePersister;
-import org.argouml.persistence.PersistenceManager;
 
 /**
  * Provides an icon for project files. 
