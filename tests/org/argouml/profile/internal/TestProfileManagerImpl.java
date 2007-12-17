@@ -51,12 +51,6 @@ public class TestProfileManagerImpl extends TestCase {
     }
 
     public void testProfileManagerImpl() {
-        List<Profile> defaultProfiles = manager.getDefaultProfiles();
-        // FIXME: this is prone to failures because it depends on the user's 
-        // configuration.
-        assertEquals(1, defaultProfiles.size());
-        assertEquals(ProfileUML.NAME, 
-                defaultProfiles.iterator().next().getDisplayName());
         List<Profile> registeredProfiles = manager.getRegisteredProfiles();
         assertEquals(2, registeredProfiles.size());
         Set<String> profileNameSet = new HashSet<String>();
