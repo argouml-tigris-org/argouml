@@ -943,7 +943,7 @@ Property files to be searched:
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
            fork="yes" dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
-           maxmemory="128M" printsummary="${junit.printsummary}">
+           maxmemory="160M" printsummary="${junit.printsummary}">
       <sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
       <sysproperty key="argouml.tests.dir" value="${argo.tests.src}"/>
       <assertions>
