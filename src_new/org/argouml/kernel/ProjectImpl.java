@@ -517,6 +517,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @Deprecated
     public Object getModel() {
         if (models.size() != 1) {
             return null;
