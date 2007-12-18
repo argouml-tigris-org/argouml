@@ -411,8 +411,6 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     public Vector<String> getPath(Object element) {
         Vector<String> path;
 
-        // TODO: This only returns the path to the innermost nested Model.
-        // We should have a version that returns the full path. - tfm
         if (element == null || element instanceof Model) {
             return new Vector<String>();
         }
