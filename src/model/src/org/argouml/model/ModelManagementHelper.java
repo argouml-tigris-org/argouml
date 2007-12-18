@@ -134,7 +134,8 @@ public interface ModelManagementHelper {
      * Get the modelelement a given path below a given root-namespace.
      *
      * @param path the given path
-     * @param theRootNamespace the given namespace to start from
+     * @param theRootNamespace the given namespace to start from.  If null, start
+     * from the root (equivalent to {@link #getElement(List)}.
      * @return the modelelement looked for, or null if not found
      */
     Object getElement(List<String> path, Object theRootNamespace);
@@ -143,11 +144,16 @@ public interface ModelManagementHelper {
      * Finds the absolute path of a ModelElement. Ie the name of each namespace
      * starting at the root (the Model) and ending with the name of the element.
      * <p>
-     * The returned Vector implicitly starts at the root (the model) and follows
-     * element's chain of owning namespaces back down to element. The first
-     * element will thus be the name of the top level namespace below the model,
-     * and the last element will be the name of element itself. Note thus that
-     * for the model the path will be empty.
+     * The returned Vector implicitly starts at the <em>innermost</em>
+     * containing model and follows element's chain of owning namespaces back
+     * down to element. The first element will thus be the name of the namespace
+     * contained the Model, and the last element will be the name of element
+     * itself. Note thus that for the model the path will be empty.
+     * <p>
+     * <em>NOTE:</em>In the case of nested Models (ie a top level UML Model
+     * that contains other UML Models, this may not produce the expected
+     * results, but the historical behavior has been retained for backward
+     * compatibility. All new code should use {@link #getPathList(Object)}.
      * 
      * @deprecated for 0.25.4 by tfmorris. Use {@link #getPathList(Object)} but
      *             be aware that the implementations are not 100% compatible.
