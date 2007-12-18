@@ -214,7 +214,9 @@ public final class ProjectBrowser
     private NavigatorPane explorerPane;
 
     /**
-     * The todopane (lower left corner of screen).
+     * The todopane (lower left corner of screen). This may actually be a blank
+     * JPanel if the ProjectBrowser was lazily initialized via
+     * {@link #getInstance()}.
      */
     private JPanel todoPane;
 
@@ -360,7 +362,7 @@ public final class ProjectBrowser
      * @param mainApplication
      *            true to create a top level application, false if integrated
      *            with something else.
-     * 
+     * @param leftBottomPane panel to place in the bottom left corner of the GUI
      * @return the singleton instance of the projectbrowser
      */
     public static ProjectBrowser makeInstance(SplashScreen splash,
@@ -380,8 +382,10 @@ public final class ProjectBrowser
 
     /**
      * Creates the panels in the working area.
-     *
-     * @param splash true if we show  the splashscreen during startup
+     * 
+     * @param splash true if we show the splashscreen during startup
+     * @param leftBottomPane panel to be placed in the bottom left (southwest)
+     *                corner of the UI.
      */
     protected void createPanels(SplashScreen splash, JPanel leftBottomPane) {
 
@@ -402,7 +406,7 @@ public final class ProjectBrowser
         explorerPane = new NavigatorPane(splash);
 
         // The workarea is all the visible space except the menu,
-        // toolbar and status bar.  Workarea is layed out as a
+        // toolbar and status bar.  Workarea is laid out as a
         // BorderSplitPane where the various components that make up
         // the argo application can be positioned.
         workAreaPane = new BorderSplitPane();
