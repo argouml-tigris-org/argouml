@@ -61,7 +61,7 @@
   &cookbookmodules;
   
   <sect1>
-    <title>How are modules organized in the Java code</title>
+    <title>How are modules organized in the Java code?</title>
     <para>
       The previous section describes how modules and plug-ins are
       organized at the Java level independent of how they are actually

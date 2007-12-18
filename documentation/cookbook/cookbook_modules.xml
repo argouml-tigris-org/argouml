@@ -167,7 +167,7 @@ make functions available for batch command,
 but the example used for testing loaded the ProjectBrowser "too early"
 <!-- See issue ??? -->
 and the result wasn't so good.
-I (Linus) hopes this can be eventually fixed.)
+I (Linus) hope this can be eventually fixed.)
 </para>
     </sect3>
 

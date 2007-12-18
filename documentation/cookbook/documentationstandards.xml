@@ -88,8 +88,8 @@ Use specific and concrete terms rather than vague generalities.
   
       <listitem>
         <para>
-Break up your writing in short sections.
-Each section dealing with one topic.
+Break up your writing into short sections,
+each section dealing with a single topic.
 </para>
       </listitem>
   
@@ -297,7 +297,7 @@ Cross-referencing requires use of <literal>id.</literal>
           <literal>ref.</literal> is allowed
           to distinguish tutorial and reference
           material. The remainder of the tag should be descriptive, but concise
-          with words separate by underscore. Where a graphic is involved this
+          with words separated by underscores. Where a graphic is involved this
           remainder should correspond to the file name. For example
           <literal>fig.ref.navigation_pane</literal> for a figure showing the
           explorer, with the diagram in
@@ -434,7 +434,7 @@ Inline graphics can be done through
   <sect1>
     <title>For Eclipse Users</title>
 
-    <para>If you use the Eclipse, then the XML editor that comes
+    <para>If you use Eclipse, then the XML editor that comes
       with the Eclipse <emphasis>Tools Platform (WTP)</emphasis>
       project allows comfortable editing.
     </para>
@@ -442,7 +442,7 @@ Inline graphics can be done through
     <para>Regretfully, the docbook-validation of this editor 
       (as any other suitable editor that has been evaluated)
       currently does not support the way the cookbook
-      and quickguide are divided in 
+      and quickguide are divided into 
       seperate XML files. 
       The manual 
       consists of one single XML file, 
@@ -635,7 +635,7 @@ I (Jeremy Bennet, 2002?) suggest that the tutorial book be based
 around an &ooad; process
 (any preferences), and that each UML concept is introduced with each step
 of the process, followed by an explanation of how to do it under
-&argouml;. A <emphasis>simple</emphasis>case study will be needed
+&argouml;. A <emphasis>simple</emphasis> case study will be needed
 throughout.
 </para>
 
@@ -713,7 +713,7 @@ details
                 <para>What &argouml; has that other tools are missing
 (critics,
 to-do list,
-based in cognitive psychology theory).
+based on cognitive psychology theory).
 </para>
               </listitem>
 

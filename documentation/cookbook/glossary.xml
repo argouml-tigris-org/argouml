@@ -217,9 +217,9 @@ How does this relate to the Java GUI standards?
         <para>
 Usually used as "Remove from Diagram". The object that will be removed is
 not deleted from the model, i.e. it still exists, but is simply not present
-anymore on the current diagram. It might still be present on other diagrams,
+any more on the current diagram. It might still be present on other diagrams,
 or not, but it is surely present in the explorer.
-Additionally, all objects that can not be drawn without the removed object,
+Additionally, all objects that cannot be drawn without the removed object,
 are removed from the diagram, too. E.g. removing a class also removes all
 its associations.
 Once removed, an object can be "added" to a diagram (again).
@@ -232,7 +232,7 @@ Once removed, an object can be "added" to a diagram (again).
       <glossdef>
         <para>
 Save the existing project to a file.
-The Save operation save everything (it is a no-loss operation).
+The Save operation saves everything (it is a no-loss operation).
 A Save, Open cycle does not loose any information.
 (Don't use Export, or Write for this).
 </para>

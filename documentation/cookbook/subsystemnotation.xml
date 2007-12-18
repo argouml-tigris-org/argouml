@@ -61,7 +61,7 @@
 
   <para>
     In the scope of issue 3140, 
-    the notation architecturehas been discussed.
+    the notation architecture has been discussed.
     Later, a change has been performed to resolve dependency cycles.
   </para>
   <para>
@@ -70,7 +70,7 @@
     shall be a user-choice with project scope - 
     and we will never refine the scope
     to something more detailed. 
-    Hence we need not store the notationlanguage per Fig.
+    Hence we need not store the notation language per Fig.
     
     So, this means that you can set 
     the notation language in the project properties,

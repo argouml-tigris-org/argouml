@@ -184,8 +184,8 @@
       <classname>org.argouml.language</classname>. 
       In the case of languages
       other than Java, these classes will come from independent projects and
-      be package separately even though they share this package name space.
-      <warning>NOTE: There is a potential conflict here if two separately 
+      be packaged separately even though they share this package name space.
+      <warning>NOTE: There is a potential conflict here if two separate 
       language implementations use this name space in an uncoordinated fashion
       (e.g. two Ruby implementations using org.argouml.language.ruby).
       </warning>
@@ -363,7 +363,7 @@
     </para>
 
     <para>
-      The components that wants to be placed into any of these
+      The components that want to be placed into any of these
       register with the GUI subsystem using the appropriate method in
       <classname>org.argouml.ui.GUI</classname>.
     </para>
@@ -428,7 +428,7 @@
       </para>
       <para>Via an event mechanism this manager makes sure 
         that all objects interested
-        in knowing whether the selection changed are acknowledged.
+        in knowing whether the selection changed are notified.
       </para>
       <para>The TargetManager does not depend on the 
         <classname>org.argouml.ui</classname> package, 
@@ -525,8 +525,7 @@ south: 	TabXXX
     <para> The Help System is not yet implemented. </para>
     <para> The Help System will be located in
       <classname>org.argouml.help</classname>. </para>
-    <para> The Help System is a Model subsystem. See <xref
-        linkend="model_subsystems"></xref>.
+    <para> The Help System is a ??Infrastructure?? subsystem. 
       <!--
       TODO: It however violates the layer concept by providing menu items that fit
       into the GUI Framework.
@@ -596,8 +595,7 @@ south: 	TabXXX
     </para>
     <warning>This is a set of classes in the Cognitive subsystem, not a 
     subsystem of its own.</warning>
-    <para> The To do items is a Model subsystem. See <xref
-        linkend="model_subsystems"></xref>. </para>
+
   </sect1>
   
   <sect1 id="explorer">
@@ -911,7 +909,7 @@ to.
               contains finitely many elements and I assume that no-one will add
               go rules that add branches of infinite length that does not
               infinitely often contain elements from the model), but I don't
-              think anyone has don't it. Obviously finding all occurrences
+              think anyone has done it. Obviously finding all occurrences
               cannot be done. </para>
           </listitem>
         </itemizedlist> </para>
@@ -983,7 +981,7 @@ to.
               <itemizedlist>
                 <listitem>
                   <para> We use the same APIs for the modules that we use within
-                    ArgoUML meaning that we implement at document it only once.
+                    ArgoUML meaning that we implement and document it only once.
                     This replaces the Pluggable class at every point where
                     ArgoUML can be augmented. </para>
                 </listitem>
@@ -1024,11 +1022,11 @@ to.
             <para> The solution suggested is that the module loader persists in
               its attempts to enable a module so that the order among the modules
               is not important. For this to work the modules needs to signal when
-              they fail. This is done by returning false or throwing a Exception
+              they fail. This is done by returning false or throwing an Exception
               from the module enabling method. </para>
             <para> The module loader also provides an API that the well-behaving
               modules can use to test if the modules they depend on are enabled.
-              The less well-behaving module can just throw an exception when
+              The less well-behaving modules can just throw an exception when
               they fail to enable themselves properly. </para>
             <para> If a module cannot be disabled, because some other module
               depends on it then this is signaled by returning false from the

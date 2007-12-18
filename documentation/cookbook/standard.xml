@@ -127,7 +127,7 @@ an additional requirement for ArgoUML.
         <para>
 This is partly checked by Checkstyle.
 Checkstyle does currently only warn if a Javadoc comment is omitted for
-a public, protected or default visibility variables.
+public, protected or default visibility variables.
 </para>
       </listitem>
       <listitem>
@@ -153,7 +153,7 @@ Tabs must be set exactly every 8 spaces (not 4) and represent 2 indents.
 </para>
         <para>
 This is exactly as it is stated in the Sun Code Conventions.
-It is here just for the emphasis.
+It is here just for emphasis.
 </para>
         <para>
 This is checked by Checkstyle.
@@ -271,9 +271,9 @@ the deprecation or in the development team.
         <para>
 Comment:
 <!-- What does this mean?  It makes no sense to me. - tfm -->
-There is an ongoing work (probably perpetually) to change
+There is an ongoing task (probably perpetually) to change
 the calls to deprecated methods and classes that
-has been deprecated after used in ArgoUML.
+have been deprecated after use in ArgoUML.
 This is a normal part of improving ArgoUML.
 If this work is too slow it makes it impossible to upgrade to new
 versions of different sub-tools. 
@@ -294,7 +294,7 @@ have at most four levels of packages.
 </para>
         <para>
 Historically in the ArgoUML design,
-a deep package structure has been used.
+a deep package structure was used.
 There are several places in the code where the package structure is
 mimicking the UML hierarchy of objects resulting in impossibly long
 package names like
@@ -351,7 +351,7 @@ This requires you to have checked out the directories
 <filename class="directory">argouml/src_new</filename>.
 </para>
     <para>
-The last couple of Checkstyle result are also available in 
+The last couple of Checkstyle results are also available in 
 the Xenofarm result.
 </para>
     <para>
@@ -392,13 +392,13 @@ The source code repository is a shared resource in the project.
 This means that once you commit your stuff it has the potential
 of getting in the way of everybody else's work in the project.
 For this reason special considerations are needed.
-This chapter describes the how you should do to limit the risk
+This chapter describes what you should do to limit the risk
 of causing someone else problems.
 </para>
 
     <para>
 When you have done all the work, and all the testing and
-are about to commit something please do:
+are about to commit something please do the following:
       <orderedlist>
         <listitem>
           <para>
@@ -421,31 +421,31 @@ If your changes include removing files make a clean compile.
         <listitem>
           <para>
 If your changes include removing public or protected operations and
-attributes make a clean compile
+attributes, make a clean compile
 (<command>build clean</command> followed by
 <command>build run</command> or <command>build package</command>).
 </para>
           <para>
-The build mechanism does not yet have reliable 
+The build mechanism does not yet have a reliable 
 dependency checker enabled so this is the best way to make sure.
 </para>
         </listitem>
 
         <listitem>
           <para>
-If your changes include adding abstract operations make a clean compile
+If your changes include adding abstract operations, make a clean compile
 (<command>build clean</command> followed by
 <command>build run</command> or <command>build package</command>).
 </para>
           <para>
-The build mechanism does not yet have reliable 
+The build mechanism does not yet have a reliable 
 dependency checker enabled so this is the best way to make sure.
 </para>
         </listitem>
 
         <listitem>
           <para>
-If you have changed anything that has the potential of affecting
+If you have changed anything that has the potential to affect
 something in a totally different part of the code like internal
 data structure, handling of exceptions, 
 run all JUnit test cases
@@ -471,7 +471,7 @@ from the checked out copy, update to get the original version
 from the repository and start over with the compilation.
 </para>
           <para>
-If someone else have updated a file 
+If someone else has updated a file 
 (<command>svn update</command> shown U, or R)
 please compile again.
 </para>
@@ -507,11 +507,11 @@ trunk.
 </para>
     <para>
 <emphasis>Rationale:</emphasis>
-These ground rules is for the purpose of not stopping or hindering
-the work for anyone.
+These ground rules are not intended to stop or hinder
+anyone's work.
 Remember that there might be several developers working with
 different agendas and different efficiency (slower or faster)
-and the commits is the melting point of this.
+and the commits are the melting point of this.
 </para>
     <para>
 <emphasis>Perspective:</emphasis>
@@ -595,8 +595,8 @@ development machine is working against the Internet and when it is not.
 
       <listitem>
         <para>
-Public targets shall have description.
-Non-public targets shall not have description 
+Public targets shall have descriptions.
+Non-public targets shall not have descriptions 
 (write xml comments or echos instead).
         </para>
       </listitem>
@@ -636,7 +636,7 @@ must be handled in a good way if ArgoUML is going to be successful.
 Here is the list of things to check in the dependency
 and to discuss with yourself and maybe with the rest of the
 ArgoUML development team
-before considering to use it in the ArgoUML project.
+before considering it's use in the ArgoUML project.
 </para>
     <itemizedlist>
       <listitem>
@@ -665,8 +665,8 @@ We don't want to require our users to enter agreements to use ArgoUML.
 Java version
 </para>
         <para>
-The dependency must have a policy that matches the ArgoUML project policy
-on Java version requirements.
+The dependency must have a policy that is compatible with the ArgoUML project 
+policy on Java version requirements.
 </para>
         <para>
 Rationale: 
@@ -817,7 +817,7 @@ Four places in <filename>build.xml</filename>
 prerequisites,
 package (two places),
 new target check.<replaceable>dependency</replaceable>), and
-One possibly place in <filename>AboutBox.java</filename> (Constructor).
+one possible place in <filename>AboutBox.java</filename> (Constructor).
 Notice especially that <filename>build.xml</filename> shall not contain
 any version information.
 Notice also that the text in <filename>AboutBox.java</filename>
@@ -840,7 +840,7 @@ when starting ArgoUML and start using
 
     <para>
 See <xref linkend="issues_dependencies"></xref> for a discussion on 
-how to handle bugs found in dependency and
+how to handle bugs found in a dependency and
 updates of the version of a dependency.
 </para>
   </sect1>

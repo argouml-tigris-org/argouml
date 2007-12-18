@@ -296,7 +296,7 @@ file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.u
     <sect3>
       <title>...when running ArgoUML from the command line</title>
       <para>
-                There are currently two possibilities of running
+                There are currently two ways of running
                 <application>ArgoUML</application> from the command
                 line:
         <orderedlist>

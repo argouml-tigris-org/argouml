@@ -59,7 +59,7 @@ decisive language information of
 Command line argument
 </para>
         <para>
-The prepared Java Web Start alternatives also uses this to override
+The prepared Java Web Start alternatives also use this to override
 everything else.
 </para>
       </listitem>
@@ -140,9 +140,9 @@ The problems with internationalization are not so much the technical
 problems as to how it works but more so the problems are with
 getting, keeping and coordinating the correct competences to do
 the job.
-This comes from the fact that by necessity the different
-persons working with internationalization have different native languages
-and that complicates the communications.
+This comes from the fact that, as would be expected, the different
+persons working with internationalization often have different native languages
+which complicates the communication.
 </para>
     <para>
 To handle this problem for GNU applications 
@@ -197,8 +197,8 @@ Help with the improvements on ArgoUML by pin-pointing where ArgoUML
 needs to be modified to allow for localization.
 </para>
           <para>
-As ArgoUML is originally built without localization there may still have
-places in the GUI that is not localizable just by
+As ArgoUML was originally built without localization there may still be
+places in the GUI that are not localizable just by
 modifying the resource bundles. 
 Each such place is a Defect and shall be corrected.
 </para>
@@ -312,8 +312,8 @@ of the project once he is convinced that
 you have understood the responsibilities.
 </para>
           <para>
-The project are argouml subprojects so they are listed at the bottom of
-the argouml web page.
+The projects are ArgoUML subprojects so they are listed at the bottom of
+the ArgoUML web page.
 </para>
         </listitem>
 
@@ -345,7 +345,7 @@ appear in your language.
 This is only applicable for members of the language team.
 </para>
           <para>
-Make sure you are a Developer in the appropriate project.
+Make sure you are a Developer in the appropriate language project.
 </para>
           <para>
 Look at the files in
@@ -427,7 +427,7 @@ You will have to call the class
 to convert them to wherever they are used.
 </para>
               <para>
-This is how a real example would look like:
+This is how a real example would look:
 <programlisting>
 import org.argouml.i18n.Translator;
 ...
@@ -456,7 +456,7 @@ the default language.
 Contact all language-teams so that they can update their files.
 </para>
               <para>
-Currently (November 2003) there is a great confusion as to where
+Currently (November 2003) there is great confusion as to where
 we stand on the different translations.
 For this reason we can't say if any language team is up to date
 with the changes and served by such a contact.
@@ -482,7 +482,7 @@ This will make it easier for the translation team to
 spot the modification.
 </para>
           <para>
-There allegedly are tools in the java world to spot this kind of changes.
+There allegedly are tools in the java world to spot these kinds of changes.
 Until we have the tools and processes in place to handle them
 it is better to rely on this simpler mechanism to guarantee correctness.
 </para>

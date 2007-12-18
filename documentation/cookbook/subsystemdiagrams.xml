@@ -40,13 +40,13 @@ Purpose - To present the diagrams to the user and allow the user to manipulate
 the diagrams through the view.
 </para>
   <para>
-The Diagrams are be located in <classname>org.argouml.uml.diagram</classname>.
+The Diagrams are located in <classname>org.argouml.uml.diagram</classname>.
 </para>
   <para>
-The Diagrams is a View subsystem. <xref linkend="view_control_subsystems"></xref>.
+The Diagrams are a View subsystem. <xref linkend="view_control_subsystems"></xref>.
 </para>
   <para>
-The Diagrams are depending on the Model subsystem and the GUI.
+The Diagrams depend on the Model subsystem and the GUI.
 </para>
 
   <para>
@@ -339,10 +339,10 @@ you should make the Fig class.
         <orderedlist>
           <listitem>
             <para>
-For nodes, that are Figs that are enclosed figures like 
+Nodes that are Figs that are enclosed figures like 
 <classname>FigClass</classname>, 
 extend from <classname>FigNodeModelElement</classname>. 
-For edges, that are lines like <classname>FigAssociation</classname>, 
+Edges that are lines like <classname>FigAssociation</classname>, 
 extend from <classname>FigEdgeModelElement</classname>.
 The name of the Fig has to start with (yes indeed) Fig. 
 The rest of the name should be equal to the model element name.

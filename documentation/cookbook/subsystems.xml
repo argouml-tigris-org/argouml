@@ -34,7 +34,7 @@
   <indexterm>
     <primary>subsystem</primary> </indexterm> <indexterm>
     <primary>component</primary> </indexterm>
-  <para> The code within ArgoUML is separated in subsystems that each have a few
+  <para> The code within ArgoUML is separated into subsystems that each have a few
     responsibilities. </para>
   <para> In Issuezilla each subsystem has its issues sorted in a subcomponent with
     the same name as the subsystem. Furthermore the Diagrams subsystem has a set of
@@ -47,7 +47,7 @@
   <para> The subsystems are organized in layers. The purpose of the layers is to
     make it easy to see in what direction the dependencies are and thus allow us to
     know what dependencies are to be removed in the cases where we have circular
-    dependencies. This will also allow us to know which other subsystems that are
+    dependencies. This will also allow us to know which other subsystems are
     involved when testing a subsystem. </para>
   
   <sect1 id="subsystems_definition">
@@ -88,14 +88,17 @@ This is in subsections.
       <itemizedlist>
         <listitem>
           <para> a Facade class </para>
-          <para> The facade can be used by all other subsystems when using the
-            subsystem. </para>
-          <para> The Facade class is called
-            <classname><replaceable>SubsystemName</replaceable>
-            Facade</classname> and is located in the subsystem package. How it
-            is used is primarily documented in the class file itself (as javadoc)
-            but the more complex picture is documented in the Cookbook (in <xref
-              linkend="inside_subsystems"></xref>). </para>
+          <para>
+The facade can be used by all other subsystems when using the subsystem.
+          </para>
+          <para>
+The Facade class is called
+<classname><replaceable>SubsystemName</replaceable>Facade</classname> 
+and is located in the subsystem package. 
+How it is used is primarily documented in the class file itself (as javadoc)
+but the more complex picture is documented in the Cookbook (in 
+<xref linkend="inside_subsystems"></xref>). 
+          </para>
         </listitem>
         
         <listitem>
@@ -118,12 +121,12 @@ This is in subsections.
         </listitem>
         
         <listitem>
-          <para> If the subsystem uses a callback-technique the callback is
-            always made to an interface defined by the subsystem. The interface
-            is also in the subsystem package and it is called
-            <classname><replaceable>SubsystemName</replaceable>
-            <replaceable>PluginType</replaceable>Interface</classname>
-            . Example: <classname>ModelDiagramInterface</classname>,
+          <para>
+If the subsystem uses a callback-technique the callback is always made to 
+an interface defined by the subsystem. 
+The interface is also in the subsystem package and it is called
+<classname><replaceable>SubsystemName</replaceable><replaceable>PluginType</replaceable>Interface</classname>. 
+Example: <classname>ModelDiagramInterface</classname>,
             <classname>ModelTypeInterface</classname>. </para>
           <para>
             <mediaobject>
@@ -148,12 +151,14 @@ This is in subsections.
           <para> The use of Facade class is not wide spread in ArgoUML. This is
             because ArgoUML is traditionally built as a whole and no subsystems
             were clearly defined. </para>
-          <para> A Facade class provides the most common functions other
-            subsystems want to do when using that subsystems to reduce the need of
-            having to use anything else but the Facade class. The Facade class
-            should be very much more stable than the subsystem itself. Methods in
-            the Facade should change really slowly and only be removed after
-            several months (and one stable release) of deprecation. </para>
+          <para>
+A Facade class provides the most common functions other subsystems want to do 
+when using that subsystem to reduce the need of having to use anything else 
+but the Facade class. 
+The Facade class should be very much more stable than the subsystem itself. 
+Methods in the Facade should change very slowly and only be removed after
+several months (and one stable release) of deprecation. 
+          </para>
           <para> The Facade class is documented in the class file itself (as
             javadoc) and the more complex picture (if needed) is documented in
             the Cookbook (in <xref linkend="inside_subsystems"></xref>).
@@ -192,10 +197,12 @@ This is in subsections.
       Facade class of subsystem Y (putting only one import
       org.argouml.Y.YFacade; in each file in the subsystem X that uses subsystem
       Y). </para>
-    <para> The API solution makes the subsystem X depending on the subsystem Y
-      meaning that when we change the API of the subsystem Y we must also change
-      subsystem X. The facade calls solution doesn't make the subsystem X
-      depending on the API of subsystem Y but just the Facade of subsystem Y.
+    <para> 
+The API solution makes subsystem X depend on subsystem Y
+meaning that when we change the API of the subsystem Y we must also change
+subsystem X. 
+The facade calls solution doesn't make the subsystem X
+depend on the API of subsystem Y but just the Facade of subsystem Y.
     </para>
     <para> The choice between the usage of the API or the Facade shall be stated in
       the Cookbook's description of subsystem X in the list of used subsystems.

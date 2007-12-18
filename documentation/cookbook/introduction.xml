@@ -190,7 +190,7 @@ Choose the ones you are interested in.
 </para>
 
                 <para>
-From this on you can comment on bugs yourself directly in Issuezilla.
+From this point on you can comment on bugs yourself directly in Issuezilla.
 </para>
 
                 <para> You can also verify issues according to the verification
@@ -293,7 +293,7 @@ responsibilities in the project.
 </para>
           <para>
 This role is granted by the Project leader after he is convinced
-that you have learned the enough about the project w.r.t.:
+that you have learned enough about the project with regard to:
 </para>
           <itemizedlist>
             <listitem>
@@ -341,10 +341,10 @@ ArgoUML provides you with interesting challenges to your taste.
   <sect1>
     <title>About this Cookbook</title>
     <para> This document, the Cookbook for Developers of ArgoUML, is provided
-      with the hopes of being helpful for the developers of ArgoUML when it comes to
-      learning and understanding how ArgoUML work in order to improve on its
+      with the hope of being helpful for the developers of ArgoUML when it comes to
+      learning and understanding how ArgoUML works in order to improve on its
       functions and features.
-      It can also be of interest for persons that wish to analyze the ArgoUML
+      It may also be of interest for persons that wish to analyze the ArgoUML
       project for whatever purpose that may be. </para>
     <sect2>
       <title>In this Cookbook, you will find...</title>

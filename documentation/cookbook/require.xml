@@ -55,9 +55,9 @@ Every requirement has
 a number (REQ1, REQ2, REQ3, ...) that never changes,
 a revision (REVa, REVb, REVc, ...) that changes when the requirement change,
 a text that is the requirement text to implement,
-a rationale that is the description on why this is important,
-a stakeholder that is one of the stakeholders in the vision for who
-this is important.
+a rationale that is the description of why the requirement is important,
+and a stakeholder, i.e. a person or group that the requirement is
+important to.
 </para>
 
   <sect1>
@@ -88,7 +88,7 @@ User of ArgoUML
 
     <sect2 id="REQ2">
       <title>
-All views of a model element shall be update 
+All views of a model element shall be updated
 as soon as the model element is updated.
 </title>
       <para>
@@ -182,14 +182,14 @@ REQ14 REVa
 </para>
       <para>
 <emphasis>Rationale:</emphasis>
-Writing a correct syntax of anything is complicated.
+Writing anything in the correct syntax is complicated.
 Good compilers are helpful in pinpointing where the problem is
 (what line and what token is in error).
 The text fields in ArgoUML are
 not developed in the same way as source code and
 we have no compiler step to verify it all.
 Instead this validation needs to be done while editing meaning that
-the user needs all the help he can get to as quickly as possible,
+the user needs all the help he can get, as quickly as possible, to
 get the syntax right.
 TODO: Is this the correct motivation for this?
 </para>
@@ -212,7 +212,7 @@ REQ3 REVa
 <emphasis>Rationale:</emphasis>
 An exception in the log or on the screen is always the sign of a serious
 error in the application that should be reported as a DEFECT.
-If a mistyping generates such a problem the user might loose interest in
+If a mistyping generates such a problem the user might lose interest in
 ArgoUML as a tool because he percieves it as not working correctly.
 </para>
       <para>
@@ -241,7 +241,7 @@ the field and the format is obvious.
           <listitem>
             <para>
 Pressing F1 or choosing help from the menu shall display a popup
-window explaining for data and format required by the current input
+window explaining the data and format required by the current input
 field. 
 Input focus shall be left on the field during any user
 interaction with the popup (dragging, scrolling or closing).

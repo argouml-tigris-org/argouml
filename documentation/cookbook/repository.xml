@@ -114,7 +114,7 @@ to appear when starting ArgoUML and in the About box.
 Take care also to make the versions of these libraries explicit,
 so as to allow people building from sources to figure out
 exact dependencies. Easiest way is to rename the files to
-include version informations, the same way as shared
+include version information, the same way as shared
 libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
 etc...
 </para>

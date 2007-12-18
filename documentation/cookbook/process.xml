@@ -453,7 +453,7 @@ If applicable, write test cases
           </listitem>
           <listitem>
             <para>
-Set the issue in the end on "RESOLVED".
+Set the issue in the end to "RESOLVED".
 </para>
             <para>
 When the resolver is finished with the issue,
@@ -477,7 +477,7 @@ The Verifier may be neither the Reporter, nor the Resolver of the issue.
 The task of the Verifier is to check the quality of the solution by
 confirming that the solution is complete, to the point, bug-free, etc.
 This is an important part of the quality assurance work we do
-in the ArgoUML project and the object is to make sure that a resolved
+in the ArgoUML project and the objective is to make sure that a resolved
 issue is in fact resolved.
 </para>
       <para>
@@ -552,7 +552,7 @@ Do the following:
         <para>
 Pick any Issue that is NEW or REOPENED
 that you from the description think that you are able to solve.
-Best result if you also find some Issue that you really feel
+Best results are often obtained if you find an Issue that you really feel
 needs to be solved.
 <ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=NEW&amp;issue_status=REOPENED">The list of all of them</ulink>.
 </para>
@@ -651,7 +651,7 @@ that will include the fix.
       </listitem>
       <listitem>
         <para>
-Sit back and feel the personal satisfaction of having completed a
+Sit back and feel the personal satisfaction of having completed
 something that will be part of the ArgoUML product.
 </para>
       </listitem>
@@ -720,8 +720,8 @@ Do one of the following:
         <itemizedlist>
           <listitem>
             <para>
-If the problem is gone, the feature is present put the Issue in
-Status VERIFIED and
+If the problem is gone or the feature is present, set the Issue
+Status to VERIFIED and
 add the version of the ArgoUML used for the test in in the comment.
             </para>
             <para> Remark: As an additional activity, the 
@@ -734,7 +734,7 @@ add the version of the ArgoUML used for the test in in the comment.
 If the problem is still there, the feature does not work, put the
 Issue in Status REOPENED with a description of what is still there, is
 still missing.
-Also state what version of ArgoUML used for the test in the comment.
+Also state what version of ArgoUML was used for the test in the comment.
 </para>
           </listitem>
         </itemizedlist>
@@ -852,7 +852,7 @@ This is performed by the person that originally raised the Issue,
 by the QA responsible for that area,
 or by anyone for issues that are verified.
 You need to be a member of the project (any role).
-This can also be done by someone who would raise the issue but
+This can also be done by someone who would have raised the issue but
 did not because it was already present in Issuezilla.
 </para>
     <orderedlist>
@@ -909,7 +909,7 @@ with.
     </indexterm>
     <para>
 ArgoUML uses products internally and is very 
-dependent on that these products are functioning well.
+dependent on these products functioning well.
 This are products like GEF, MDR, OCL, log4j, ...
 </para>
     <para>
@@ -918,7 +918,7 @@ of the dependencies and cannot be or is extremely complicated to fix
 within ArgoUML.
 </para>
     <para>
-If this happens this is the way to handle this problem.
+If this happens, this is the way to handle this problem.
 </para>
     <para>
 This can be performed by any member of the project (any role).
@@ -1023,7 +1023,7 @@ and close the bugs registered in the dependency bug reporting tool.
 For dependencies that are not delivered with ArgoUML
 (JRE, Xerces, OS, drivers, HW, ...),
 the same process is taken except that
-the issue solved when it is entered in the ArgoUML FAQ or documentation
+the issue is solved when it is entered into the ArgoUML FAQ or documentation
 or in some cases as tests in the code testing that we are not using that
 version.
 At that point is resolved (as RESOLVED/FIXED).
@@ -1036,7 +1036,7 @@ testing the versions.
   </sect1>
 
   <sect1 id="proc-create-stable-releases">
-    <title>How to Create Stable Release</title>
+    <title>How to Create a Stable Release</title>
 
     <para>
 We have two kinds of releases of ArgoUML:
@@ -1069,9 +1069,9 @@ or soliciting help with implementation and test of new features.
 </para>
 
     <para>
-To increase the quality of a stable release, it is preceded by
-period during which a sequence of releases with increased quality
-standards.
+To increase the quality of a stable release, a stable release is preceded 
+by a period during which there are a sequence of releases with increased 
+quality standards.
 </para>
 
     <para>

@@ -182,7 +182,7 @@ The String parameter is ignored.
 <command>addSupportedDecision(UMLDecision.dec<replaceable>AAAA</replaceable>);</command>
 where <replaceable>AAAA</replaceable> is the design issue category
 this critic falls into
-(examples include STORAGE, PATTERN METHODS).
+(examples include STORAGE, PATTERNS, METHODS).
 </para>
             </listitem>
             <listitem>
@@ -249,7 +249,7 @@ You need to add two keys for the head and description,
 which will be named respectively
 <constant>critics.<replaceable>CrXxxxxYyyyZzzz</replaceable>-head</constant>
 and
-<constant>critics<replaceable>CrXxxxxYyyyZzzz</replaceable>-desc</constant>.
+<constant>critics.<replaceable>CrXxxxxYyyyZzzz</replaceable>-desc</constant>.
 There are plenty of examples to look at there.
 Headlines shall be unique, see issue 618.
 The other files 

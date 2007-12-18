@@ -33,7 +33,7 @@
 
   <para>
 Purpose - to provide a form view of the diagrams and objects in the model.
-The contents of the model is modifiable.
+The contents of the model are modifiable from the panel.
 </para>
   <para>
 The Property panels will be located in
@@ -58,9 +58,8 @@ Property Panels for UML model elements are found as class
 <filename>PropPanel<replaceable>XXX</replaceable>.java</filename>, 
 where <replaceable>XXX</replaceable> is the
 UML meta-class. They are in sub-packages of org.argouml.uml.ui
-corresponding to the <replaceable>XXX</replaceable> UML packages, 
-which in turn correspond to
-their section in the chapter 2 of the UML 1.3 spec. 
+corresponding to the UML package which contains the 
+<replaceable>XXX</replaceable> metaclass in the UML specification.
 </para>
 
     <para>
@@ -86,7 +85,7 @@ are provided in org.argouml.uml.ui.
         You will need to make an icon, in .gif format, 16 X 16 pixels, 
         with the transparent background color set to white. 
         Place this file in the org.argouml.Images directory 
-        (it must be named like Name.gif). 
+        (it must be named like <literal>Name.gif</literal>). 
         This icon will automatically be used in the toolbar 
         and in the Navigation pane.
     </para>
@@ -225,7 +224,7 @@ are provided in org.argouml.uml.ui.
           Model subsystem event name by invoking the constructor of the parent class, 
           with the event name as parameter.
         </para>
-        <para> A string naming an Model subsystem event that should force a refresh of 
+        <para> A string naming a Model subsystem event that should force a refresh of 
           the list model. A null value will cause all events to trigger a 
           refresh. The name of the event is the same as the name of the associated
           attribute or association end from the UML 1.4 metamodel.
@@ -913,7 +912,7 @@ are both handled via the protected method
 <methodname>HandleEvent</methodname> updates the property in 
 <classname>UMLTextProperty</classname> if it is really changed.
 If the update comes via user input, it is checked if it is valid input. 
-If it is not, a <classname>JOptionPane</classname> is shown with '
+If it is not, a <classname>JOptionPane</classname> is shown with
 a warning and the change is not committed into the model.
 If it is not via user input, the input is not checked and the
 property is set. If the property is set, the update method is called.
