@@ -147,7 +147,6 @@ public class Main {
             // Get the splash screen up as early as possible
             st.mark("create splash");
             SplashScreen splash = null;
-            SubsystemUtility.initSubsystem(new InitCheckListUI());
             if (!batch) {
                 // We have to do this to set the LAF for the splash screen
                 st.mark("initialize laf");
@@ -419,6 +418,7 @@ public class Main {
             SubsystemUtility.initSubsystem(new InitNotationUml());
             SubsystemUtility.initSubsystem(new InitNotationJava());
             SubsystemUtility.initSubsystem(new InitDiagramAppearanceUI());
+            SubsystemUtility.initSubsystem(new InitCheckListUI());
         }
         return pb;
     }
