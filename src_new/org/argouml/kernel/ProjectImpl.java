@@ -1098,8 +1098,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
         members.clear();
 
         for (Object model : roots) {
-            LOG.debug("Deleting root element "
-                    + Model.getFacade().getName(model));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Deleting root element "
+                        + Model.getFacade().getName(model));
+            }
             Model.getUmlFactory().delete(model);
         }
         roots.clear();
