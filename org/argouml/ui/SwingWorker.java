@@ -34,6 +34,7 @@ import javax.swing.Timer;
 import org.apache.log4j.Logger;
 import org.argouml.swingext.GlassPane;
 import org.argouml.taskmgmt.ProgressMonitor;
+import org.argouml.util.ArgoFrame;
 
 /**
  * This is the 3rd version of SwingWorker (also known as

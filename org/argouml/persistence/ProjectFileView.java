@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,39 +22,55 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.internal;
+package org.argouml.persistence;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.io.File;
 
-import org.argouml.application.api.AbstractArgoJPanel;
-import org.argouml.application.api.GUISettingsTabInterface;
-import org.argouml.application.api.InitSubsystem;
-import org.argouml.profile.ProfileFacade;
+import javax.swing.Icon;
+import javax.swing.filechooser.FileView;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 
 /**
- * Initializer class for the Profile subsystem.
+ * Provides an icon for project files. 
  * 
- * @author Luis Sergio Oliveira (euluis)
+ * @since Jun 2, 2006
+ * @author andrea.nironi@gmail.com @stereotype singleton
  */
-public class InitProfileSubsystem implements InitSubsystem {
+public final class ProjectFileView extends FileView {
 
-    public List<GUISettingsTabInterface> getProjectSettingsTabs() {
-        return new ArrayList<GUISettingsTabInterface>();
+    private static ProjectFileView instance = new ProjectFileView();
+    
+    /**
+     * Constructor for ProjectFileView.
+     */
+    private ProjectFileView() {
+        
     }
 
-    public List<GUISettingsTabInterface> getSettingsTabs() {
-        return new ArrayList<GUISettingsTabInterface>();
+    /**
+     * Returns the singleton instance.
+     * 
+     * @return ProjectFileView
+     */
+    public static ProjectFileView getInstance() {
+        return instance;
     }
-
-    public void init() {
-        ProfileFacade.setManager(
-                new org.argouml.profile.internal.ProfileManagerImpl());
-    }
-
-    public List<AbstractArgoJPanel> getDetailsTabs() {
-        return Collections.emptyList();
-    }
-
+    
+    /**
+     * Load an icon for a supported project file.
+     *  
+     * @param   f the file to check 
+     * @return  a nice icon if the file is known as a project file, 
+     * 			otherwise a default one
+     */
+    public Icon getIcon(File f) {
+    	AbstractFilePersister persister = PersistenceManager.getInstance()
+				.getPersisterFromFileName(f.getName());
+        if (persister != null && persister.hasAnIcon()) {
+            return ResourceLoaderWrapper.lookupIconResource("UmlNotation");
+        } else {
+            return null;
+        }
+    } 
 }

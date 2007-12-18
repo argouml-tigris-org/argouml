@@ -35,7 +35,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.ui.ArgoFrame;
+import org.argouml.util.ArgoFrame;
 import org.tigris.swidgets.Orientable;
 import org.tigris.swidgets.Orientation;
 

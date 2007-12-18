@@ -30,6 +30,7 @@ import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
 import org.argouml.taskmgmt.ProgressMonitor;
+import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoManager;
 
 /**

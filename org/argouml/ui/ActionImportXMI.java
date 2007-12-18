@@ -37,7 +37,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.uml.ui.ProjectFileView;
+import org.argouml.persistence.ProjectFileView;
 
 /**
  * This Action allows import of a XMI file.

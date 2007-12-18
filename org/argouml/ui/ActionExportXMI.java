@@ -33,7 +33,8 @@ import javax.swing.JFileChooser;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.uml.ui.ProjectFileView;
+import org.argouml.persistence.ProjectFileView;
+import org.argouml.util.ArgoFrame;
 
 /**
  * Exports the xmi of a project to a file choosen by the user.

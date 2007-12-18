@@ -33,8 +33,8 @@ import javax.swing.JFrame;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.ui.ArgoFrame;
 import org.argouml.ui.SystemInfoDialog;
+import org.argouml.util.ArgoFrame;
 
 /**
  * System information dialog.

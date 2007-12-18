@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,57 +22,28 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
-
-import java.io.File;
-
-import javax.swing.Icon;
-import javax.swing.filechooser.FileView;
-
-import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.persistence.AbstractFilePersister;
-import org.argouml.persistence.PersistenceManager;
+package org.argouml.application.events;
 
 /**
- * Provides an icon for project files. 
- * 
- * @since Jun 2, 2006
- * @author andrea.nironi@gmail.com @stereotype singleton
+ * ArgoProfileEvent is used to notify interested parties
+ * that the profile is changed.
+ *
+ * @author Michiel
  */
-public final class ProjectFileView extends FileView {
+public class ArgoProfileEvent extends ArgoEvent {
 
-    private static ProjectFileView instance = new ProjectFileView();
-    
     /**
-     * Constructor for ProjectFileView.
+     * @param eT reported by this event
+     * @param src object that caused the event
      */
-    private ProjectFileView() {
-        
+    public ArgoProfileEvent(int eT, Object src) {
+        super(eT, src);
     }
 
     /**
-     * Returns the singleton instance.
-     * 
-     * @return ProjectFileView
+     * Indicates the start of the 100-digit range for profile events.
+     *
+     * @return the first id reserved for events.
      */
-    public static ProjectFileView getInstance() {
-        return instance;
-    }
-    
-    /**
-     * Load an icon for a supported project file.
-     *  
-     * @param   f the file to check 
-     * @return  a nice icon if the file is known as a project file, 
-     * 			otherwise a default one
-     */
-    public Icon getIcon(File f) {
-    	AbstractFilePersister persister = PersistenceManager.getInstance()
-				.getPersisterFromFileName(f.getName());
-        if (persister != null && persister.hasAnIcon()) {
-            return ResourceLoaderWrapper.lookupIconResource("UmlNotation");
-        } else {
-            return null;
-        }
-    } 
+    public int getEventStartRange() { return ANY_PROFILE_EVENT; }
 }

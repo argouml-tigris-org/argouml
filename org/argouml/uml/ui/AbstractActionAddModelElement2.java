@@ -34,7 +34,7 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.ArgoFrame;
+import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoableAction;
 
 /**

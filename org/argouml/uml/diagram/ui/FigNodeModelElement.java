@@ -2068,8 +2068,10 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * When using <code>BigIcon</code> mode and zero or more than one stereotype
-     * the practical view should be the default one. 
+     * Return a stereotype view which is most practical for the current
+     * conditions. If the current mode is set to <code>BigIcon</code> mode and
+     * the model element has zero or more than one stereotype the practical view
+     * should be the textual view.
      * 
      * @return current practical stereotype view
      */

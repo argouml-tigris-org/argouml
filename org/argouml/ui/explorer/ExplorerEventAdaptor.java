@@ -26,6 +26,10 @@ package org.argouml.ui.explorer;
 
 import java.beans.PropertyChangeListener;
 
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoProfileEvent;
+import org.argouml.application.events.ArgoProfileEventListener;
 import org.argouml.configuration.Configuration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
@@ -85,6 +89,8 @@ public final class ExplorerEventAdaptor
         // tailored to cut down on event traffic. - tfm 20060410
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getModelElement(), (String[]) null);
+        ArgoEventPump.addListener(
+                ArgoEventTypes.ANY_PROFILE_EVENT, new ProfileChangeListener());
     }
 
     /**
@@ -93,6 +99,7 @@ public final class ExplorerEventAdaptor
      * 
      * TODO:  This shouldn't be public.  Components desiring to
      * inform the Explorer of changes should send events.
+     * @deprecated by mvw in V0.25.4. Use events instead.
      */
     public void structureChanged() {
         if (treeModel == null) {
@@ -208,7 +215,24 @@ public final class ExplorerEventAdaptor
                 treeModel.modelElementRemoved(pce.getOldValue());
             }
         }
+    }
+    
+    /**
+     * Listener for additions and removals of profiles.
+     * Since they generally have a major impact on the explorer tree, 
+     * we simply update them completely.
+     *
+     * @author Michiel
+     */
+    class ProfileChangeListener implements ArgoProfileEventListener {
 
+        public void profileAdded(ArgoProfileEvent e) {
+            structureChanged();
+        }
 
+        public void profileRemoved(ArgoProfileEvent e) {
+            structureChanged();
+        }
+        
     }
 }

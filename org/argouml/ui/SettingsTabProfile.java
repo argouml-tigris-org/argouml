@@ -50,13 +50,13 @@ import javax.swing.filechooser.FileFilter;
 
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
-import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * The Tab containing the global settings for profiles
@@ -94,12 +94,6 @@ public class SettingsTabProfile extends JPanel implements
             .localize("tab.profiles.directories.refresh"));    
 
     ///////
-
-    /**
-     * The configuration key for the default stereotype view.
-     */
-    public static final ConfigurationKey KEY_DEFAULT_STEREOTYPE_VIEW = 
-        Configuration.makeKey("profiles", "stereotypeView");
 
     private JLabel stereoLabel =
         new JLabel(Translator.localize("menu.popup.stereotype-view") + ": ");
@@ -144,16 +138,19 @@ public class SettingsTabProfile extends JPanel implements
 
                     switch (idx) {
                     case 0:
-                        Configuration.setInteger(KEY_DEFAULT_STEREOTYPE_VIEW,
-                                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
+                        Configuration.setInteger(
+                            ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
+                            FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
                         break;
                     case 1:
-                        Configuration.setInteger(KEY_DEFAULT_STEREOTYPE_VIEW,
-                                FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON);
+                        Configuration.setInteger(
+                            ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
+                            FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON);
                         break;
                     case 2:
-                        Configuration.setInteger(KEY_DEFAULT_STEREOTYPE_VIEW,
-                                FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
+                        Configuration.setInteger(
+                            ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
+                            FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
                         break;
                     }
                 }
@@ -318,7 +315,7 @@ public class SettingsTabProfile extends JPanel implements
                     return file.isDirectory()
                             || (file.isFile() && (file.getName().toLowerCase()
                                     .endsWith(".xml") || file.getName()
-                                    .toLowerCase().endsWith(".xmi")));
+                                        .toLowerCase().endsWith(".xmi")));
                 }
 
 		public String getDescription() {
@@ -423,7 +420,8 @@ public class SettingsTabProfile extends JPanel implements
     public void handleSettingsTabRefresh() {
         refreshLists();
  
-        switch (Configuration.getInteger(KEY_DEFAULT_STEREOTYPE_VIEW,
+        switch (Configuration.getInteger(
+                ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
                 FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL)) {
         case FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL:
             stereoField.setSelectedIndex(0);                

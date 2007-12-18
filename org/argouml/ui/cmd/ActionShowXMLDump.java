@@ -36,7 +36,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.PersistenceManager;
-import org.argouml.ui.ArgoFrame;
+import org.argouml.util.ArgoFrame;
 import org.argouml.util.UIUtils;
 
 /**

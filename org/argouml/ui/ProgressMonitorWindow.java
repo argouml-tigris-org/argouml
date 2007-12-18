@@ -32,6 +32,7 @@ import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
 import org.argouml.taskmgmt.ProgressEvent;
+import org.argouml.util.ArgoFrame;
 
 /**
  * Manages a ProgressMonitor dialog.

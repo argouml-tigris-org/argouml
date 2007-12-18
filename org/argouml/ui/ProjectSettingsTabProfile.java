@@ -50,15 +50,14 @@ import javax.swing.filechooser.FileFilter;
 
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
-import org.argouml.ui.explorer.ExplorerEventAdaptor;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.profile.Profile;
-import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * The Tab where new profiles can be added and the registered
@@ -447,8 +446,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 pc.addProfile(profile);
             }
         }
-        
-        ExplorerEventAdaptor.getInstance().structureChanged();        
+     
     }
 
 }
