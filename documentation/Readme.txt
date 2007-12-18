@@ -8,19 +8,31 @@ information on how to build and use the ArgoUML documentation.
 1. DOCUMENTATION STRUCTURE
 
 This README file should be located in the root directory of the ArgoUML
-documentation directory structure. At the time of writing, this is the
-'documentation' sub-directory of the ArgoUML root directory.
+documentation directory structure.  If you are using an Eclipse project
+based directory structure, the documentation root is named 
+'argouml-documentation' and is at the same level as the argouml directory.
+If you checked out the sources as a single tree for use with Ant from the
+command line, the documentation is a subdirectory of the root argouml
+directory.
 
 This directory will be referred to as ARGODOCS_HOME in the remainder of this
 document.
 
+Eclipse
+-------
+argouml                 <<-- ArgoUML root directory (aka ARGO_HOME)
+argouml-documentation   <<-- documentation root directory (aka ARGODOCS_HOME)
+
+Traditional Ant command line
+----------------------------
+argouml                 <<-- ArgoUML root directory (aka ARGO_HOME)
+  documentation         <<-- documentation root directory (aka ARGODOCS_HOME)
+
+
 The ArgoUML directory structure, with explanation of the parts of the
 documentation sub-directory is shown diagramatically below:
 
-
-argouml                 <<-- ArgoUML root directory (aka ARGO_HOME)
-  build
-  documentation         <<-- documentation root directory (aka ARGODOCS_HOME)
+  ARGODOCS_HOME
     cookbook            <<-- DocBook XML source for developers' cookbook
     docbook-setup       <<-- DTD, XSL stylesheets and customisation XSL
       docbookx          <<-- DocBook XML DTD v4.1.2
@@ -34,20 +46,21 @@ argouml                 <<-- ArgoUML root directory (aka ARGO_HOME)
       tutorial          <<-- images specific to the user manual tutorial part
     manual              <<-- DocBook XML source for the User Manual
     quick-guide         <<-- DocBook XML source for the Quick Guide
-  lib
-  modules
-  src
-  src_new
-  www
 
 
 In addition to this README file, ARGODOCS_HOME should contain at least the
 following files:
 
 - build.xml (an Ant build script file) 
-- build.bat (a Windows batch file to start the build process).
-- build.sh  (a Linux/Unix shell script file to start the build process)  
-
+- build.bat (a Windows batch file to start the build process when using 
+             the Ant/command line directory structure).
+- build.sh  (a Linux/Unix shell script file to start the build process when
+             using the Ant/command line directory structure).
+- build2.bat (a Windows batch file to start the build process when using 
+              the Eclipse project directory structure).
+- build2.sh  (a Linux/Unix shell script file to start the build process when
+              using the Eclipse project directory structure). 
+- default.properties - properties controlling the build process
 
 2. BUILDING ARGOUML DOCUMENTATION
 
@@ -59,24 +72,27 @@ The ArgoUML source contains almost everything you need to build the
 documentation for yourself as single file HTML, chunked HTML, or PDF.
 
 You need only to provide the following:
-- Java Development Kit v1.2.2 or later (i.e. JDK1.2.2 or later).
+- Java Development Kit v1.5 or later (i.e. JDK1.5 or later).
 - Jimi 1.0 if you wish to produce your own PDF (more on this below).
  
 Get a DOS console and type java. You should see a list of java options appear.
 If not, go get Java from sun.com
 
-1. Open an MSDOS command window (windows 9x), or command prompt (Windows
-   NT/2000) or terminal window (Linux/UNix)
+1. Open a command prompt (Windows) or terminal window (Linux/Unix)
 
 2. Ensure that the ARGODOCS_HOME directory is your current directory (see
    diagram above for ARGODOCS_HOME)
 
 3. Type one of the following and press the ENTER or RETURN key:
 
-     build       (on Windows)
+     build       (on Windows using the command line Ant directory structure)
 
-     ./build.sh  (on Unix/Linux)
+     ./build.sh  (on Unix/Linux using the command line Ant directory structure)
 
+     build2       (on Windows using the Eclipse project directory structure)
+
+     ./build2.sh  (on Unix/Linux using the Eclipse project directory structure)
+     
 4. This executes the default target in the build file, which is:
 
     build defaulthtml	-- builds the documentation in HTML format chunked 
@@ -85,16 +101,16 @@ If not, go get Java from sun.com
     NOTE: the first execution of the build will need to fetch from the internet 
     a set of files needed for the processing of the docbook files. This is the 
     target docbook-xsl-get. So, you must be online to be able to get this, at 
-    least for one time. If you must use a proxy to access the internet, then 
+    least the first time. If you must use a proxy to access the internet, then 
     either you need to change the build file using Ant's setproxy task or get 
-    it manually (the URL is in the build file).
+    it manually (the URL is in the file default.properties).
 
-The resulting documentation files is in the ARGO_HOME/build/documentation
-directory.
+The resulting documentation files are written into the 
+./build/documentation directory.
 
 For example here is the file tree after 'build docs'
 
-argouml
+
   build
     documentation
       defaulthtml
@@ -139,10 +155,10 @@ you own version of Jimi. The included Fop file is prepared for Jimi.
 
 1. Download Jimi (from http://java.sun.com/products/jimi/)
 
-2. Extract the archive
+2. Extract the files from the archive
 
-3. Then copy JimiProClasses.zip to the tools/lib dir renaming it 
-   to jimi-1.0.jar
+3. Copy JimiProClasses.zip to the tools/lib directory
+   (argouml-core-tools/lib if using Eclipse projects)
 
 You can then use the normal documentation build procedures for PDF, and PNG
 images will be included.
