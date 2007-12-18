@@ -66,7 +66,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -83,12 +82,9 @@ import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.diagram.IItemUID;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionDeleteModelElements;
-import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
@@ -1369,26 +1365,7 @@ public abstract class FigEdgeModelElement
     }
     
     public Project getProject() {
-        LayerPerspective layer = (LayerPerspective) getLayer();
-        if (layer == null) {
-            /* TODO: Without this, we fail to draw e.g. a Class.
-             * But is this a good solution? 
-             * Why is the Layer not set in the constructor? */
-            Editor editor = Globals.curEditor();
-            if (editor == null) {
-                // TODO: The above doesn't work reliably in a constructor.  We
-                // need a better way of getting default fig settings for the owning
-                // project rather than using the project manager singleton. - tfm
-                return ProjectManager.getManager().getCurrentProject();
-            }
-            Layer lay = editor.getLayerManager().getActiveLayer();
-            if (lay instanceof LayerPerspective) {
-                layer = (LayerPerspective) lay;
-            }
-        }
-        UMLMutableGraphSupport gm = 
-            (UMLMutableGraphSupport) layer.getGraphModel();
-        return gm.getProject();
+        return ArgoFigUtil.getProject(this);
     }
     
     /**
