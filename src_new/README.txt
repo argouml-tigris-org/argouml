@@ -1,6 +1,7 @@
 Welcome to ArgoUML!
 
-(This file was last updated by $Author$ on $Date$.)
+(This file was last updated by $Author$ 
+on $Date$.)
 
 In case you just downloaded and unzipped your ArgoUML distribution,
 here's how to proceed.
@@ -8,7 +9,7 @@ here's how to proceed.
 First, you need the runtime environment for Java (J2SE) installed, get it
 from http://www.java.com for your platform.
 
-At least a JRE 1.4 is required. Please let us know if you experience
+At least a JRE 1.5 is required. Please let us know if you experience
 any JDK related problems. Try typing "java" in a console window to see
 if Java is successfully installed.  You should get a list of your
 options. If not, try reinstalling Java.
@@ -66,7 +67,7 @@ in a subdirectory named ext.
 Memory:
 
 If you have plenty of memory and wants ArgoUML to be able to handle
-large projects, try:
+anything but the smallest projects, try:
 java -Xms250M -Xmx500M -jar argouml.jar 
 
 
