@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+<!--
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+
+<appendix id="documentation_what_goes_where">
+  <appendixinfo>
+    <abstract>
+      <para>
+This chapter describes what goes into which
+part of the documentation. These ideas are formulated by Linus Tolke.
+</para>
+    </abstract>
+    <authorgroup>
+      <author>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
+      </author>
+    </authorgroup>
+  </appendixinfo>
+  <title>Organization of ArgoUML documentation</title>
+  <para>
+There are eight (8) significantly different bits of documentation in the
+ArgoUML project.
+By documentation I mean some information of the product that is
+developed alongside the product and that has a persistent value.
+</para>
+  <orderedlist>
+    <listitem>
+      <para>The web sites</para>
+    </listitem>
+    <listitem>
+      <para>The manual and quick-guide</para>
+    </listitem>
+    <listitem>
+      <para>Help texts within the running ArgoUML</para>
+    </listitem>
+    <listitem>
+      <para>The FAQ</para>
+    </listitem>
+    <listitem>
+      <para>The cookbook</para>
+    </listitem>
+    <listitem>
+      <para>The javadoc of API and SPI of a subsystem</para>
+    </listitem>
+    <listitem>
+      <para>The code, variable names, class names</para>
+    </listitem>
+    <listitem>
+      <para>The javadoc</para>
+    </listitem>
+  </orderedlist>
+  <para>
+These different bits have all different purpose and audience and
+the purpose of this chapter is to try to define that.
+</para>
+  <table>
+    <title>Bits of documentation</title>
+    <tgroup cols="3">
+      <colspec colnum="1" colname="Bit" colwidth="1*"/>
+      <colspec colnum="2" colname="Main Purpose" colwidth="3*"/>
+      <colspec colnum="3" colname="Contains" colwidth="3*"/>
+      <thead>
+        <row>
+          <entry>Bit</entry>
+          <entry>Main purpose</entry>
+          <entry>Contains</entry>
+        </row>
+      </thead>
+      <tbody valign="top">
+        <row>
+          <!-- Bit -->
+          <entry>Web site(s)</entry>
+
+          <!-- Purpose -->
+          <entry>
+Is
+<itemizedlist>
+              <listitem>
+                <para>
+an entry point for the other parts of the documentation.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+the main download area for the ArgoUML product.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+the central point of the ArgoUML user community.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+the central point of the ArgoUML development project.
+</para>
+              </listitem>
+            </itemizedlist>
+
+This is for everyone, i.e. 
+<itemizedlist>
+              <listitem>
+                <para>
+developers in the project,
+</para>
+              </listitem>
+              <listitem>
+                <para>
+users of the product, and
+</para>
+              </listitem>
+              <listitem>
+                <para>
+people searching for UML tools for the purpose of trying, testing,
+evaluating, and using the tools.
+</para>
+              </listitem>
+            </itemizedlist>
+
+</entry>
+
+          <!-- Contains -->
+          <entry>
+References to all the other parts of the documentation.
+Current project information like the contents of the upcoming releases
+and the plan for the nearest future.
+Easy access illustration for new users.
+Some illustrations that do not fit in other parts.
+This is done as a complement to the other parts.
+Examples, tours.
+</entry>
+        </row>
+
+        <row>
+          <!-- Bit -->
+          <entry>Manual and quick-guide</entry>
+
+          <!-- Purpose -->
+          <entry>
+<para>
+Describe how ArgoUML is installed and used.
+Describe how UML is used with ArgoUML.
+</para>
+
+<para>
+This is for
+<itemizedlist>
+                <listitem>
+                  <para>
+Users of ArgoUML.
+</para>
+                </listitem>
+                <listitem>
+                  <para>
+Persons that want to evaluate ArgoUML for the purpose of starting to use it.
+</para>
+                </listitem>
+                <listitem>
+                  <para>
+Persons that are training to use UML and ArgoUML.
+</para>
+                </listitem>
+              </itemizedlist>
+</para>
+</entry>
+
+          <!-- Contains -->
+          <entry>
+<itemizedlist>
+              <listitem>
+                <para>
+Complete installation instructions for all supported installation schemes.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+Complete description on how to use ArgoUML in your project.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+Complete reference on how to use ArgoUML.
+</para>
+              </listitem>
+            </itemizedlist>
+</entry>
+        </row>
+
+        <row>
+          <!-- Bit -->
+          <entry>Help text in ArgoUML</entry>
+
+          <!-- Purpose -->
+          <entry>
+<para>Give a quick help with a specific feature or button.
+Give short explanations of all commands and actions.
+</para>
+
+<para>
+This is for the Users of ArgoUML.
+</para>
+</entry>
+
+          <!-- Contains -->
+          <entry>
+A complete set of quick help and explanations.
+</entry>
+        </row>
+
+        <row>
+          <!-- Bit -->
+          <entry>FAQ</entry>
+
+          <!-- Purpose -->
+          <entry>
+<para>
+Cope for shortcomings in ArgoUML, the help text, 
+the Manual and quick-guide and the web site.
+</para>
+
+<para>
+This is for
+the Users of ArgoUML and
+the Members of the users mailing list.
+</para>
+</entry>
+
+          <!-- Contains -->
+          <entry>
+A list of issues that are not addressed in the other part of the documentation.
+It is written in questions-answers-format and the contents is governed by
+the issues discussed recently in the user community.
+</entry>
+        </row>
+
+        <row>
+          <!-- Bit -->
+          <entry>Cookbook</entry>
+
+          <!-- Purpose -->
+          <entry>
+<itemizedlist>
+              <listitem>
+                <para>
+Make it possible to learn how ArgoUML works and how to extend it.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+Lower the threshold for new developers.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+Reduce the amount of knowledge of 
+complex design and
+reasons for certain design decisions,
+that are documented only in the heads of the developers.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+Reduce the amount of simple questions on the developers' mailing list.
+</para>
+              </listitem>
+            </itemizedlist>
+
+This is for 
+developers writing code, maintaining the documentation or the web site.
+</entry>
+
+          <!-- Contains -->
+          <entry>
+<itemizedlist>
+              <listitem>
+                <para>
+Instructions on how to add new functions and behavior.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+Instructions on how to build and publish a release.
+The purpose of this is to control the generation of each release.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+Project policies like what level of quality is aimed for and
+description of processes that achieves that level.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+The documentation of the development environment and how to set it up.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+The design, where it is so complex or involves so many classes and methods
+that it is meaningless to store it in the javadoc of the involved classes
+and methods.
+</para>
+                <para>
+The Cookbook contains one section for each subsystem
+where the internal design of that subsystem is kept.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+Design decisions as a 
+collection of knowledge around how and why the project makes
+certain decisions.
+</para>
+              </listitem>
+            </itemizedlist>
+</entry>
+        </row>
+
+        <row>
+          <!-- Bit -->
+          <entry>Javadoc of API and SPI of a subsystem</entry>
+
+          <!-- Purpose -->
+          <entry>
+<para>
+Explain how to use the subsystem.
+</para>
+
+<para>
+This is for developers that work with other parts of ArgoUML
+that interacts with the subsystem in question.
+</para>
+</entry>
+
+          <!-- Contains -->
+          <entry>
+Description of the function of all public classes,
+all public and protected methods, variables, and constants.
+</entry>
+        </row>
+
+        <row>
+          <!-- Bit -->
+          <entry>Javadoc of non API- and SPI-parts</entry>
+
+          <!-- Purpose -->
+          <entry>
+<para>
+Document the code to understand it later.
+</para>
+
+<para>
+Developers writing code in the same subsystem.
+</para>
+</entry>
+
+          <!-- Contains -->
+          <entry>
+Together with other comments and variable names,
+this is the description of the functions of all
+classes,
+operations,
+methods,
+variables, and
+constants.
+</entry>
+        </row>
+
+        <row>
+          <!-- Bit -->
+          <entry>Source Code</entry>
+
+          <!-- Purpose -->
+          <entry>
+Implement ArgoUML in a maintainable and understandable way.
+</entry>
+
+          <!-- Contains -->
+          <entry>
+See <xref linkend="standards"/> for details on how to write the code.
+</entry>
+        </row>
+
+      </tbody>
+    </tgroup>
+  </table>
+  <para>
+The Cookbook, the User Manual, and the Quick Guide, 
+are all written in docbook and generated into HTML and PDF 
+during deployment.
+See <xref linkend="app.docstand"/> for details on how to write these.
+</para>
+</appendix>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+indent-tabs-mode: nil
+End:
+
+-->

@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+  <head>
+    <title>Troubleshooting JavaWebStart (Discontinued)</title>
+  </head>
+
+  <body>
+    <h2>Frequently asked questions for JavaWebStart (Discontinued)</h2>
+<div class="app">
+
+<h3>Questions</h3>
+
+<h4>Basics</h4>
+<ul>
+<li><a href="#whatisit">What is JavaWebStart?</a></li>
+<li><a href="#howtoinstall">How do I install JavaWebStart?</a></li>
+</ul>
+
+<h4>Troubleshooting</h4>
+<ul>
+<li><a href="#badmime">It says Bad MIME type.</a></li>
+<li><a href="#expired">Your certificate has expired.</a></li>
+<li><a href="#other">Other problems.</a></li>
+</ul>
+
+<h3>Answers</h3>
+
+<h4>Basics</h4>
+<p><strong><a name="whatisit" />What is JavaWebStart?</strong></p>
+<p>
+It is a way to download and install and launch java applications via
+the web.  Once you have JWS installed, you can launch ArgoUML by
+clicking on a link.  You can also add an ArgoUML icon to your desktop.
+If you are using the JWS file for the "latest" stable or development
+release, you will automatically upgrade to new releases as they are
+made available.  For more infomation, see the <a
+href="http://java.sun.com/products/javawebstart/">JavaWebStart product
+page</a>.
+
+</p>
+
+<p><strong><a name="howtoinstall" />How do I install JavaWebStart?</strong></p>
+
+<p>See the installation instructions on the Sun web site: 
+<a href="http://java.sun.com/products/javawebstart/">JavaWebStart</a>.
+</p>
+<p>In particular, note that Mozilla and Netscape 6.x users must take an additional step
+to register the helper appliation in your browser preferences.</p>
+
+
+
+<h4>Troubleshooting</h4>
+
+<p><strong><a name="badmime" />Web Start returns a Bad MIME Type error. What's wrong?</strong></p>
+
+<p>This is from <a
+href="http://www.vamphq.com/jwsfaq.html#badmimetype">the JWS FAQ at
+VampHQ</a>.</p>
+
+<p>This is a very common problem and most likely caused by Web Start's
+failed attempt to automatically detect your proxy settings. The "Bad
+MIME Type" error displayed by Web Start is somewhat confusing as it
+should really be a "Resource Not Found" error.</p>
+
+<p>Your proxy will send back an error page either in HTML or plain
+text instead of the requested JNLP descriptor if it fails to get the
+JNLP descriptor requested by Web Start.</p>
+
+<p>You can change your proxy settings for Web Start manually by
+starting the Application Manager and using the Preference
+panel. (Select File|Preferences to get there.)</p>
+
+<p>Proxy Settings:
+<img src="images/proxy.gif" alt="Proxy Settings">
+</p>
+
+
+<p><strong><a name="expired" />It says that your certificate has expired.</strong></p>
+
+<p>Yeah, sorry about that.  We are looking into getting a new
+certificate.  For now, just click the "Start" button that proceeds
+with the expired certificate.
+</p>
+
+<p><strong><a name="other" />Other problems.</strong></p>
+
+<p>If you have any other problem with JWS, please:
+<ul>
+<li><a href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=Java+Web+Start&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED">check for existing bug reports</a> and add a comment to one of them, or</li>
+<li><a
+href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=DEFECT&component=website&subcomponent=Java%20Web%20Start&issue_file_loc=http%3A%2F%2Fargouml%2Etigris%2Eorg%2F&short_desc=Cannot%20start%20argouml%20from%20Java%20Web%20Start&comment=Java%20Web%20Start%20version:%20FILL%20IN%20INFORMATION%20FROM%20JAVA%20WEB%20START%20ABOUT%20BOX%0DJava%20version:%20%20%20%20%20%20%20%20%20%20%20FILL%20IN%20JAVA%20RUNTIME%20VERSIONS%20INFORMATION%20FROM%20JAVA%20WEB%20START%20SETTINGS%20JAVA%0D%0DFill%20in%20OS,%20Platform,%20and%20version%20of%20ArgoUML%20above!%20Put%20your%20observations%20below!%0D%0D">report
+it as a new bug</a>. Thanks.
+</p>
+
+
+</div>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+<div>&nbsp;<div/>
+  </body>
+</html>

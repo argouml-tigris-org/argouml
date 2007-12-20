@@ -1,0 +1,36 @@
+<!-- Delegating build script, used by cruisecontrol to build ArgoUML.
+     Note that the basedir is set to the checked out project -->
+<project name="build-argouml"
+        default="build"
+        basedir="checkout/argouml">
+
+  <property name="svnant.repository.user" value="guest"/>
+  <property name="svnant.repository.passwd" value=""/>
+  <property name="svnant.latest.url" value="http://argouml.tigris.org/svn/argouml/trunk"/>
+  <property name="" value=""/>
+  <property name="" value=""/>
+
+<!--
+  <path id="svn.classpath">
+    <pathelement location="${svnjavahl.jar}" />
+    <pathelement location="${svnant.jar}" />
+    <pathelement location="${svnClientAdapter.jar}" />
+  </path>
+
+  <taskdef  resource="svntask.properties" classpathref="svn.classpath"/> 
+-->
+
+  <target name="build">
+    <!-- Get the latest from SVN -->
+    <exec executable="svn">
+      <arg line="update ${svnant.latest.url} --username=${svnant.repository.user}"/>
+    </exec>
+<!--
+    <svn username="${svnant.repository.user}" password="${svnant.repository.passwd}">
+         <update file="argouml" />
+    </svn>
+-->
+    <!-- Call the target that does everything -->
+    <ant dir="src_new" antfile="build.xml" target="cruisecontrol"/>
+  </target>
+</project>

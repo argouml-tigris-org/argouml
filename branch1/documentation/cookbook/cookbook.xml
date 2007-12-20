@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+<!--
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+<!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
+
+<!ENTITY changelog SYSTEM "changelog.xml">
+<!ENTITY introduction SYSTEM "introduction.xml">
+<!ENTITY building SYSTEM "building.xml">
+<!ENTITY requirements SYSTEM "require.xml">
+<!ENTITY subsystems SYSTEM "subsystems.xml">
+<!ENTITY inside_subsystems SYSTEM "inside_subsystems.xml">
+<!ENTITY extending SYSTEM "extending.xml">
+<!ENTITY documentationorganization SYSTEM "documentation_organization.xml">
+<!ENTITY repository SYSTEM "repository.xml">
+<!ENTITY standards SYSTEM "standard.xml">
+<!ENTITY documentationstandards SYSTEM "documentationstandards.xml">
+<!ENTITY further_reading SYSTEM "further_reading.xml">
+<!ENTITY processes SYSTEM "process.xml">
+
+<!ENTITY subsystemmodel SYSTEM "subsystemmodel.xml">
+<!ENTITY subsystemcritics SYSTEM "subsystemcritics.xml">
+<!ENTITY subsystemdiagrams SYSTEM "subsystemdiagrams.xml">
+<!ENTITY subsystempersistence SYSTEM "subsystempersistence.xml">
+<!ENTITY subsystemnotation SYSTEM "subsystemnotation.xml">
+<!ENTITY subsystempropertypanels SYSTEM "subsystempropertypanels.xml">
+<!ENTITY subsysteminternationalization SYSTEM "subsysteminternationalization.xml">
+<!ENTITY subsystemlogging SYSTEM "subsystemlogging.xml">
+  
+<!ENTITY cookbookmodules SYSTEM "cookbook_modules.xml">
+<!ENTITY glossary SYSTEM "glossary.xml">
+
+
+
+<!ENTITY ooad "OOA&amp;D">
+<!ENTITY argoversion    "@VERSION@">
+<!ENTITY argouml "ArgoUML">
+
+]>
+
+<!-- This is the ArgoUML Developer Cookbook. 
+     - Please feel free to add to the content and insert your 
+     name in the Author Group.
+     - Images should be located in the general images section of the 
+     documentation module under the directory cookbook
+     - Please verify that your changes compile correctly before committing them
+-->
+
+<book>
+  <bookinfo>
+    <date>2001-11-10
+    </date>
+    <title>Cookbook for Developers of ArgoUML</title>
+    <subtitle>An introduction to Developing ArgoUML</subtitle>
+    <abstract>
+      <para>
+The purpose of this Cookbook is to help in coordinating and
+documenting the development of ArgoUML.
+</para>
+      <para>
+This version of the cookbook is loosely connected to the version
+&argoversion; of ArgoUML.
+</para>
+    </abstract>
+    <authorgroup>
+      <editor>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
+      </editor>
+      <author>
+        <firstname>Markus</firstname>
+        <surname>Klink</surname>
+      </author>
+      <author>
+        <firstname>Michiel</firstname>
+        <surname>van der Wulp</surname>
+      </author>
+    </authorgroup>
+    <legalnotice>
+      <para>
+Copyright (c) 1996-2007 The Regents of the University of
+California. All Rights Reserved. Permission to use, copy, modify, and
+distribute this software and its documentation without fee, and without
+a written agreement is hereby granted, provided that the above copyright
+notice and this paragraph appear in all copies. This software program and
+documentation are copyrighted by The Regents of the University of
+California. The software program and documentation are supplied "AS
+IS", without any accompanying services from The Regents. The Regents
+does not warrant that the operation of the program will be uninterrupted
+or error-free. The end-user understands that the program was developed
+for research purposes and is advised not to rely exclusively on the
+program for any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE
+LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR
+CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF
+THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF
+CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. THE
+UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+</para>
+    </legalnotice>
+  </bookinfo>
+  <toc/>
+  
+  &changelog;
+  
+  &introduction;
+  &building;
+  &requirements;
+  &subsystems;
+  &inside_subsystems;
+  &extending;
+  &standards;
+  &documentationstandards;
+  &processes;
+  
+  &glossary;
+
+  <index/>
+
+  &further_reading;
+  &repository;
+  &documentationorganization;
+  
+</book>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+indent-tabs-mode: nil
+End:
+
+-->
+
+<!--  LocalWords:  ModuleLoader
+ -->

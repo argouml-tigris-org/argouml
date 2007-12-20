@@ -1,0 +1,1118 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+<!--
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+
+<chapter id="inside_subsystems">
+  <title>Inside the subsystems</title> <warning>
+    <para> This chapter is currently under rework with new subsystem organization.
+    </para>
+    <para> Things that are not actually in place are: TargetManager </para>
+  </warning>
+  <para>...</para>
+  
+  <!--
+  Each section in this chapter describes a subsystem.
+  It starts with:
+  Purpose - one or two sentences/lines.
+  Where that subsystem is located.
+  What layer it belongs to.
+  -->
+  
+  &subsystemmodel;
+  &subsystemcritics;
+  &subsystemdiagrams;
+  &subsystempropertypanels;
+  &subsystempersistence;
+  &subsystemnotation;
+  
+  <sect1 id="reverseengineering">
+    <title>Reverse Engineering Subsystem</title> <indexterm>
+      <primary>Reverse Engineering</primary> </indexterm>
+    <para> Purpose: Provide a central registration point for language reverse
+      engineering modules as well as common reverse engineering methods for
+      all languages. </para>
+    <para> The Reverse Engineering subsystem is located in
+      <classname>org.argouml.uml.reveng</classname>. </para>
+    <para> The Reverse Engineering Subsystem is a Control subsystem. See <xref
+        linkend="view_control_subsystems"></xref>. </para>
+    
+    <itemizedlist>
+
+      <listitem>
+        <para> All language reverse engineering modules must implement the
+          <classname>org.argouml.uml.reveng.ImportInterface</classname> 
+          interface. </para>
+      </listitem>
+      <listitem>
+        <para> All modules must implement the
+          <classname>org.argouml.moduleloader.ModuleInterface</classname> 
+          interface. </para>
+      </listitem>
+      <listitem>
+          <para> At initialization time, each language registers themselves using
+          <classname>org.argouml.uml.reveng.ImportManager</classname>.
+          </para>
+      </listitem>
+      
+
+    </itemizedlist>
+    
+    <sect2>
+      <title>Common import code</title>
+      <para>In late 2006, the source importers were restructured to make them
+      GUI independent and move as much functionality as possible to common
+      code.  Things such as source file selection and class diagram creation
+      which previously had been provided by the specific language importers
+      are now provided as common services, simplifying creation of new
+      language importers.  These services also include a GUI independent method
+      for requesting, saving, and restoring any language-specific settings
+      (not fully implemented).</para>
+    </sect2>
+    
+    <sect2>
+      <title>Diagram layout algorithms</title>
+      <para> The classes in
+        org.argouml.uml.diagram.static_structure.layout.* hold the Class
+        diagram layout code. No layout for other diagram types yet. It's based on a
+        ranking scheme for classes and interfaces. The rank of a class/interface
+        depends on the total number of (direct or indirect) super-classes. So if
+        class B extends A (with rank(A)=0), then rank(B)=1. If C extends B, then
+        rank(C)=2 since it has 2 super-classes A,B. An implemented interface is
+        treated similar to a extended class. The objects are placed in rows then,
+        that depend on their rank. rank(0)=1st row. rank(1) =2nd row (below the
+        1st one) etc. Example: </para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/examples/example1.gif"
+            format="GIF"/>
+        </imageobject>
+      </mediaobject>
+      <para> In the next diagram, a link goes to an object that is not in the row
+        above: </para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/examples/example2.gif"
+            format="GIF"/>
+        </imageobject>
+      </mediaobject>
+      <para> In this case, insert virtual objects which are linked to the actual
+        target and link to them: </para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/examples/example3.gif"
+            format="GIF"/>
+        </imageobject>
+      </mediaobject>
+      <para> The objects are sorted within their row then to minimize crossing
+        links between them. Compute the average value of the vertical positions
+        of all linked objects in the row above. Example: we have 2 ranks, 0 and 1,
+        with 3 classes each: </para>
+      <blockquote>
+        <para> A B C : rank 0 </para>
+        <para> D E F : rank 1 </para>
+      </blockquote>
+      <para> We give the super-classes an index in their rank (assuming that they
+        are already sorted): </para>
+      <blockquote>
+        <para> A:0, B:1, C:2 </para>
+      </blockquote>
+      <para> D, E, F have the following links (A, B, C could be interfaces, so I allow
+        links to multiple super-classes here): </para>
+      <blockquote>
+        <para> D -> C </para>
+        <para> E -> A and C </para>
+        <para> F -> A and B </para>
+      </blockquote>
+      <para> Compute the average value of the indexes: </para>
+      <blockquote>
+        <para> D = 2 (C has index 2 / 1 link) </para>
+        <para> E = 0 + 2 / 2 = 1 (A=0, C=2 divide by 2 links) </para>
+        <para> F = 0 + 1 / 2 = 0.5 (A=0, B=1, 2 links) </para>
+      </blockquote>
+      <para> Then sort the subclasses by that value: </para>
+      <blockquote>
+        <para> F(is 0.5), E(is 1), D(is 2) </para>
+      </blockquote>
+      <para> So the placement is: </para>
+      <blockquote>
+        <para> A B C </para>
+        <para> (here are the links, but I can hardly paint them as ASCIIs) </para>
+        <para> F E D </para>
+      </blockquote>
+    </sect2>
+
+  </sect1>
+  
+  <sect1 id="codegeneration">
+    <title>Code Generation Subsystem</title>
+    <indexterm>
+      <primary>Code Generation</primary>
+    </indexterm>
+    <para> Purpose: Point where the different languages register that they know
+      how to do code generation and common functions for all languages. </para>
+    <para> The Code Generation is located in
+      <classname>org.argouml.language</classname>. </para>
+    <para> The Code Generation subsystem is a Control subsystem. See <xref
+        linkend="view_control_subsystems"></xref>. </para>
+
+    <para> The code to generate various languages 
+      that is supplied with ArgoUML 
+      is found in sub-packages of 
+      <classname>org.argouml.language</classname>. 
+      In the case of languages
+      other than Java, these classes will come from independent projects and
+      be packaged separately even though they share this package name space.
+      <warning>NOTE: There is a potential conflict here if two separate 
+      language implementations use this name space in an uncoordinated fashion
+      (e.g. two Ruby implementations using org.argouml.language.ruby).
+      </warning>
+      </para>
+    
+
+    <itemizedlist>
+
+      <listitem>
+        <para> All source language code generators must implement the
+          <classname>org.argouml.uml.generator.CodeGenerator</classname> 
+          interface. </para>
+      </listitem>
+      <listitem>
+        <para> All modules must implement the
+          <classname>org.argouml.moduleloader.ModuleInterface</classname> 
+          interface. </para>
+      </listitem>
+      <listitem>
+          <para>At initialization time, each language registers themselves using
+          <classname>org.argouml.uml.generator.GeneratorManager</classname>.
+          </para>
+      </listitem>
+      
+
+    </itemizedlist>
+
+  </sect1>
+  
+  <sect1 id="java">
+    <title>Java - Code Generation and Reverse Engineering</title>
+    <indexterm>
+      <primary>Reverse Engineering</primary>
+      <secondary>Java</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Code generation</primary>
+      <secondary>Java</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Round-trip Engineering</primary>
+      <secondary>Java</secondary> </indexterm>
+    <indexterm>
+      <primary>Java</primary>
+    </indexterm>
+
+    <para> Purpose - two purposes: to allow the model to be converted into java code
+      and updated either in java or in the model; to allow some java code to be
+      converted into a model. </para>
+    <para> The java things are located in
+      <classname>org.argouml.language.java</classname>. </para>
+    <para> The Java subsystem is a Loadable subsystem. See <xref
+        linkend="loadable_subsystems"></xref>. </para>
+    
+    <sect2 id="howdoi_reverse">
+      <title>How do I ...?</title>
+      <para>...</para></sect2>
+    
+    <sect2>
+      <title>Which sources are involved?</title>
+      <para> The package org.argouml.uml.reveng is supposed to hold those
+        classes that are common to all reverse engineering (RE) packages. 
+        At the moment this is the Import
+        class which is mainly responsible to recognize directories, get their
+        content and parse every known source file in them. These are only Java
+        files at the moment, but there might be other languages like C++ in the
+        future. With this concept you could mix several languages within a
+        project. </para>
+      <para> The package org.argouml.uml.reveng.java holds the Java specific
+        parts of the current RE code. C++ RE might go to
+        org.argouml.uml.reveng.cc, or so... </para>
+    </sect2>
+    <sect2>
+      <title>How is the grammar of the target language implemented?</title>
+      <para> It is an Antlr (<ulink url="http://www.antlr.org">
+        http://www.antlr.org</ulink>) grammar, based on the Antlr Java parser
+        example. The main difference is that the AST (Abstract Syntax Tree)
+        generation and tree-parser have been removed. The ArgoUML
+        code parses the source file and generates Model subsystem objects directly from the
+        sources. This was done to avoid the memory usage of an AST and the frequent
+        GC while parsing many source files. The disadvantage of this approach is
+        that it requires multiple parser passes rather than being able to work
+        from the pre-parsed AST.</para>
+    </sect2>
+    <sect2>
+      <title>Which model/diagram elements are generated?</title>
+      <para> The *context classes hold the current context for a package, class
+        etc. When the required information for an object is available, the
+        corresponding Model subsystem object is created.  The collection of
+        newly created model elements is returned to the common Import code
+        where it can be used to add the elements to a diagram or diagrams
+        if the user has so requested.
+        </para>
+    </sect2>
+  </sect1>
+
+  <sect1 id="otherlanguages">
+    <title>Other source languages (C++, Python, etc)</title>
+    <para> Each source language supported by ArgoUML has its own subsystem. They
+      are each different in level of support and implementation language.  All
+      languages except for Java are in their own dedicated Tigris project with
+      separate web site, mailing lists, source repository, etc.  For example,
+      the C++ plugin is located <ulink url="http://argouml-cpp.tigris.org/">
+      here</ulink>.
+    </para>
+    <para>Currently C++ has no reverse engineering but only code generation (and
+      a very simple one at that). The Java classfile module has only reverse 
+      engineering.
+    </para>
+    <para>There are stubs/shells for many different languages, but the following
+    are mature enough to be distributed with ArgoUML: C++ (Cpp), C# (Csharp), 
+    classfile, IDL, and PHP.  Others at various stages of development include:
+    Python, Ruby, and SQL.</para>
+    <para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/cookbook/Languages.gif"
+            format="GIF"/>
+        </imageobject>
+      </mediaobject> </para>
+    
+  </sect1>
+  
+  <sect1 id="guiframework">
+    <title>The GUI</title>
+    <indexterm>
+      <primary>GUI Framework</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Details Panel</primary>
+    </indexterm>
+
+    <para> Purpose - Provide an infrastructure with menus, tabs and panes
+      available for the other subsystems to fill with actions and contents.
+    </para>
+    <para> This subsystem has no knowledge of UML, Critics, Diagrams, or Model.
+    </para>
+    <para> The GUI Framework is located in
+      <classname>org.argouml.ui</classname>.
+    </para>
+    <para> This is implemented directly on top of Swing and Java. </para>
+    <para> The GUI framework provides the following options
+      <itemizedlist>
+        <listitem>
+          <para>The menu with actions</para>
+        </listitem>
+        <listitem>
+          <para>The tool-bar with actions</para>
+        </listitem>
+        <listitem>
+          <para>The Explorer (formerly called Navigator)</para>
+          <para>Located in
+            <classname>org.argouml.ui.explorer</classname>. Contains the
+            tree structure with configurable perspectives. </para>
+        </listitem>
+        <listitem>
+          <para>Tabbed pane</para>
+          <para> Could contain several different panes. </para>
+        </listitem>
+        <listitem>
+          <para>The TargetManager</para>
+          <para>See <xref linkend="targetmanager"></xref>.</para>
+        </listitem>
+        <listitem>
+          <para>The Settings Tab</para>
+        </listitem>
+
+      </itemizedlist>
+    </para>
+
+    <para>
+      The GUI subsystem does not contain any knowledge of what is going
+      to be put into the different panes but it has knowledge of
+      parts of the semantics of those components.
+    </para>
+
+    <para>
+      The components that want to be placed into any of these
+      register with the GUI subsystem using the appropriate method in
+      <classname>org.argouml.ui.GUI</classname>.
+    </para>
+
+    <para>Other subsystems that supply their own user interface, 
+      may be split into 2 packages, e.g.
+      <classname>org.argouml.some-subsystem</classname> and
+      <classname>org.argouml.some-subsystem.ui</classname>.
+      In such case the following figure indicates
+      the allowed dependencies:
+    </para>
+
+    <para>
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/cookbook/subsystem-ui.png"
+            format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </para>
+    
+    <sect2 id="targetmanager">
+      <title>The TargetManager</title>
+      <para> Located in
+        <classname>org.argouml.ui.targetmanager</classname>.
+      </para>
+      <para>The purpose of the targetmanager is 
+        to have a central spot to manage 
+        the list of current targets.
+      </para>
+      <para>The target of ArgoUML is 
+        the element currently selected by the user.
+        This can either be a UML element 
+        (an Interface or a Class for example) 
+        but it can also be a diagram
+        or anything that is shown on a diagram.</para>
+      <para>There can be multiple targets in case
+        someone selected multiple items in the explorer or on the diagram.
+        This can be done by shift-clicking or Ctrl-clicking items,
+        or by drawing a box on the diagram around the items to select.
+      </para>
+      <para>In case multiple targets are selected, 
+        the target manager will add each
+        target to the beginning of the list of targets. 
+        This way, the first item of the list is the last selected item.
+        Most functions in ArgoUML work on all selected items.
+        However, a few (intentionally) only work on one target,
+        such as the properties panels.
+      </para>
+      <para> Thanks to the architecture of ArgoUML of Modelelements and
+        Figs, one rule has been decided upon<!-- (by mvw@tigris.org) -->:
+        <emphasis>The list of targets shall not contain any Fig that has an
+        owner</emphasis>. Instead, the owner is enlisted. 
+      </para>
+      <para>The TargetManager is also 
+        the manager of the history of targets. 
+        Every time the user (or the program) selects a new target, 
+        this is recorded in the history. 
+        Via navigateBack and navigateForward, 
+        the user can browse through the history 
+        just like in an ordinary internet browser.
+      </para>
+      <para>Via an event mechanism this manager makes sure 
+        that all objects interested
+        in knowing whether the selection changed are notified.
+      </para>
+      <para>The TargetManager does not depend on the 
+        <classname>org.argouml.ui</classname> package, 
+        nor any of its sub-packages. 
+        Hence, it can be used by all of these 
+        to modify the target, 
+        or get it.
+      </para>
+      <para>In a discussion on the dev list, 
+        it has been decided that 
+        the TargetManager is GUI state, 
+        and hence shall be a part of the GUI subsystem,
+        and should not be used anywhere outside the GUI subsystem.
+        However, currently the TargetManager is used in other subsystems,
+        e.g. the Project. 
+        Hence, this needs refactoring. 
+      </para>
+
+    </sect2>
+
+  </sect1>
+  
+  <sect1 id="application">
+    <title>Application</title>
+    <para> Purpose - to provide the entry point when starting ArgoUML.
+      Responsibility to start the ball rolling. </para>
+    <para> The Application is located in
+      <classname>org.argouml.application</classname>. </para>
+    <para> The entry point is called
+      <classname>org.argouml.application.Main</classname>. </para>
+    
+    <sect2>
+      <title>What is loaded/initialized?</title>
+      <para> It all begins in org.argouml.application.Main: set up main
+        application frame (org.argouml.ui.ProjectBrowser), the project
+        (org.argouml.kernel.Project), numerous classes, and finally as a
+        background thread: cognitive support
+        (org.argouml.cognitive.Designer) and some more classes. </para>
+      <para> The ProjectBrowser initializes the menu, tool-bar, status bar and
+        the four main areas: navigation pane (org.argouml.ui.NavigatorPane),
+        editor pane (org.argouml.ui.MultiEditorPane), to do pane
+        (org.argouml.cognitive.ui.ToDoPane), and details pane
+        (org.argouml.ui.DetailsPane). Then, the actual project is set to
+        either a read from project file or a create newly generated project.
+      </para>
+    </sect2>
+    
+    <sect2>
+      <title>Details pane</title>
+      <para> The Details pane contains several tabs:
+        Property Panels (See <xref linkend="propertypanels"></xref>,
+        Critics explanations and wizards (belonging to the Critics subsystem)
+        (See <xref linkend="critics"></xref>), Documentation, Style,
+        Source, Constraints (OCL constraints on the current object. See
+          <xref linkend="ocl"></xref>), and Tagged values. <warning>
+          <para> It is not clear in what subsystem Documentation, Style, Source,
+          and Tagged values belong. </para> </warning> </para>
+      
+      <sect3 id="howdoi_detailspanel">
+        <title>How do I ...?</title>
+        <para>
+          <itemizedlist>
+            <listitem>
+              <para>...add a tab in the Details Panel?</para>
+              <para> Create your <classname>TabXXX</classname> class in
+                <classname>org.argouml.uml.ui</classname> by copying from
+                another <filename>TabYYY.java</filename> (e.g.
+                <classname>TabSrc</classname>,
+                <classname>TabStyle</classname>). Then register your
+                <classname>TabXXX</classname> in
+                <filename>org/argouml/argo.ini</filename> by adding a line
+                giving the compass point to place the tab. Like -
+                <programlisting>
+south: 	TabXXX
+</programlisting>
+              </para>
+            </listitem>
+            <listitem>
+              <para>...remove a tab from the Details Panel?</para>
+              <para> Remove the line for the tab from
+                <filename>org/argouml/argo.ini</filename>. </para>
+            </listitem>
+          </itemizedlist> </para>
+      </sect3>
+    </sect2>
+  </sect1>
+  
+  <sect1 id="help">
+    <title>Help System</title> <indexterm>
+      <primary>Help system</primary> </indexterm>
+    <para> Purpose - to provide the menu actions that start the help and other
+      documentation. To provide infrastructure that makes context sensitive
+      help possible. </para>
+    <para> The Help System is not yet implemented. </para>
+    <para> The Help System will be located in
+      <classname>org.argouml.help</classname>. </para>
+    <para> The Help System is a ??Infrastructure?? subsystem. 
+      <!--
+      TODO: It however violates the layer concept by providing menu items that fit
+      into the GUI Framework.
+      -->
+</para>
+    <para> Javahelp or some other help function will probably be used. </para>
+    
+  </sect1>
+  
+  &subsysteminternationalization;
+  &subsystemlogging;
+
+  <sect1 id="taskmgmt">
+    <title>TaskManagement</title>
+    <para> Purpose - Everything related to the concept of Task, Job 
+      or Request. </para>
+    <para> The TaskManagement is an infrastructure 
+      or low-level subsystem. See <xref
+      linkend="infrastructure_subsystems"></xref>. 
+      Currently, this subsystem contains the ProgressMonitor.
+    </para>
+    <para>The ProgressMonitor is explained by the following:
+      SomethingA needs a long running service from SomethingB. 
+      So, SomethingA decides to ask
+      for it in a different Thread of execution 
+      and to monitor the progress of 
+      the task in its main thread.
+      The reason why it monitors the progress 
+      could be because it wants to show feedback 
+      to the user via the GUI, 
+      but, it could also be in order 
+      to decide that if there is no progress, 
+      it should give up by interrupting its other Thread.
+    </para>
+  </sect1>
+
+  <sect1 id="configuration">
+    <title>Configuration</title>
+    <para> Purpose - Store and retrieve 
+      all configurable aspects 
+      of the ArgoUML application. </para>
+    <para> The Configuration subsystem is an infrastructure 
+      or low-level subsystem. See <xref
+      linkend="infrastructure_subsystems"></xref>. 
+      It handles all configuration that is stored 
+      in the user's home directory 
+      in the file named "argo.user.properties".
+    </para>
+    <para>Not inside the scope of this package 
+      are all the configuration settings 
+      that are stored in the project, 
+      i.e. in the .zargo file.
+    </para>
+  </sect1>
+  
+  <sect1 id="todoitems">
+    <title>To Do items</title>
+    <indexterm>
+      <primary>To Do Items</primary>
+    </indexterm>
+
+    <para> Purpose - To keep track of the To do items. Items are generated and
+      removed automatically by the critics. They could also be created by other
+      means. </para>
+    <para> The To Do items are located in 
+    <classname>org.argouml.cognitive.ToDoItem</classname>
+    </para>
+    <warning>This is a set of classes in the Cognitive subsystem, not a 
+    subsystem of its own.</warning>
+
+  </sect1>
+  
+  <sect1 id="explorer">
+    <title>Explorer</title>
+    <indexterm>
+      <primary>Explorer</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Object Explorer</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Navigator Tree</primary>
+    </indexterm>
+
+    <para> Purpose - to provide tree views of the model elements, diagrams and
+      other objects. Note: the Explorer used to be called the Navigator. </para>
+    <para> The Explorer is located in
+      <classname>org.argouml.ui.explorer</classname> and sub-packages.
+    </para>
+    <para> The Explorer is a Layer 2 subsystem. See <xref
+        linkend="view_control_subsystems"></xref>. </para>
+    
+    <sect2>
+      <title>Requirements</title>
+      <para> The Explorer must react to user and application events. </para>
+      <para> User events include
+        <itemizedlist spacing="compact" continuation="restarts">
+          <listitem>
+            <para> R1: selection of a node, which must notify the other views to
+              make the same selection. </para>
+          </listitem>
+          <listitem>
+            <para> R2: right click on a node, which brings up a pop-up menu.
+            </para>
+          </listitem>
+          <listitem>
+            <para> R3: selection of another perspective in the Combo box, which
+              must change the explorer to that perspective. A perspective
+              provides a different view of the model that will focus on one or
+              other part of the model. </para>
+          </listitem>
+          <listitem>
+            <para> R4: node expansion and collapse. </para>
+          </listitem>
+          
+          <listitem>
+            <para> R5: It is possible to drag name-space nodes on to other
+              name-space nodes. Dropping a name-space node onto another, will,
+              if the destination name-space is a valid one, update the explorer
+              and model. </para>
+          </listitem>
+          
+          <listitem>
+            <para> R6: sorting of nodes with a particular Ordering. [an ordering
+              is a comparator that orders child nodes in the explorer, e.g. by
+              name and/or type]. </para>
+          </listitem>
+          
+          <listitem>
+            <para> R7: copy diagram to clipboard functionality for
+              windows/java5 users. </para>
+          </listitem>
+          
+          <listitem>
+            <para> R8: tool-tip showing node name and type. </para>
+          </listitem>
+          
+          <listitem>
+            <para> R9: standard multiple discontinuous selection with mouse
+              and keyboard. </para>
+          </listitem>
+          
+          <listitem>
+            <para> R10: the user can configure the perspectives using a dialog.
+              Perspectives can be added, deleted, renamed, reordered and
+              duplicated. Perspective rules can be added and removed from a
+              perspective. The changes are saved to the user properties. If
+              there are user perspectives when ArgoUML starts, it loads these,
+              otherwise it loads a default set of perspectives. </para>
+          </listitem>
+          
+        </itemizedlist> </para>
+      <para> Application events include
+        <itemizedlist continuation="restarts" spacing="compact">
+          
+          <listitem>
+            <para> R11: change in selection in another view, any relevant rows to
+              be highlighted. </para>
+          </listitem>
+          <listitem>
+            <para> R12: the UML model changes, the tree must update to reflect
+              additions/deletions and name changes in the model. </para>
+          </listitem>
+          <listitem>
+            <para> R13: change of project, the tree must update. the root node
+              should be expanded with the default diagram selected. </para>
+          </listitem>
+        </itemizedlist> </para>
+    </sect2>
+    
+    <sect2>
+      <title>Public APIs and SPIs</title>
+      <para> The Explorer Subsystem provides/will provide the following APIs:
+        <itemizedlist continuation="restarts" spacing="compact">
+          
+          <listitem>
+            <para> API1: Addition / Removal of a Perspective from the
+              PerspectiveManager. Status: implemented </para>
+          </listitem>
+          <listitem>
+            <para> API2: Addition / Removal of a Perspective Rule from a
+              Perspective. Status: implemented </para>
+          </listitem>
+          <listitem>
+            <para> API3: Selection of the Perspective to be displayed by the
+              Explorer. Status: not implemented </para>
+          </listitem>
+          <listitem>
+            <para> API4: Selection of Ordering for Explorer nodes. [an Ordering
+              is a comparator that orders child nodes in the Explorer] Status:
+              not implemented </para>
+          </listitem>
+        </itemizedlist> </para>
+      
+      <para> The Explorer Subsystem provides/will provide the following SPIs:
+        <itemizedlist continuation="restarts" spacing="compact">
+          
+          <listitem>
+            <para> SPI1: Configurable Node pop-up menu. Status: not
+              implemented </para>
+          </listitem>
+          <listitem>
+            <para> SPI2: New PerspectiveRules can be defined and registered
+              with the 'library' of available rules. Status: not implemented
+            </para>
+          </listitem>
+          <listitem>
+            <para> SPI3: New Orderings can be defined and registered with the
+              available orderings. [an ordering is a comparator that orders
+              child nodes in the explorer] Status: not implemented </para>
+          </listitem>
+        </itemizedlist> </para>
+      
+      <para> The APIs collectively represent the Explorer subsystem facade and
+        the SPIs represent plug-ins. </para>
+    </sect2>
+    
+    <sect2 id="explorer-implementation-details">
+      <title>Details of the Explorer Implementation</title>
+      
+      <para> The Explorer is currently shown in the Explorer Pane
+        (<classname>org.argouml.ui.NavigatorPane</classname>) - the upper
+        left hand pane of ArgoUML. </para>
+      
+      <para> Except for the Explorer Pane, The Explorer is located in
+        org.argouml.ui.explorer.*. The explorer has been refactored since
+        version 0.15.2 so that it has a slightly more standard Java Swing
+        implementation. </para>
+      
+      <para> The explorer perspectives provide the different views of the
+        project. They are implemented by sets of PerspectiveRules that get the
+        child nodes for any parent node in the tree. </para>
+      
+      <para>
+        <mediaobject>
+          <imageobject>
+            <imagedata
+              fileref="images/cookbook/explorer-architecture.gif"
+              format="GIF"/>
+          </imageobject>
+        </mediaobject> </para>
+      
+      <para> The Explorer has 3 main subcomponents: a customized JTree, a
+        customized TreeModel and an interface for generating child nodes in the
+        tree which forms the tree Perspective.
+        <orderedlist continuation="restarts" spacing="compact">
+          
+          <listitem>
+            <para> The JTree (org.argouml.ui.explorer.ExplorerTree) has
+              been customized to maintain consistent selection state with the
+              other model views. It provides a pop up menu (ExplorerPopup) for
+              performing actions on specific model elements. There is specific
+              functionality in DnDExplorerTree for Drag and drop, and in
+              ExportExplorer for copy diagram to clipboard. </para>
+          </listitem>
+          <listitem>
+            <para> The TreeModel is a customized DefaultTreeModel that listens
+              to changes in the UML model. The JTree builds the tree model as the
+              user expands nodes, this minimizes the size of the model to those
+              part that the user is interested in. The TreeModel contains custom
+              DefaultMutableTreeNodes, ExplorerTreeNodes, that maintain
+              their own order on child nodes; this will typically be an
+              alphabetical order on the model element names. However, it could
+              be enhanced to include more powerful orders like total subtree
+              size. </para>
+          </listitem>
+          <listitem>
+            <para> The model uses the third part of the Explorer design,
+              PerspectiveRules, to add child nodes to the leaves of the tree. The
+              structure of the tree is wholly dependent on the collection of
+              PerspectiveRules that together provide a specialized view of the
+              UML model. This is very flexible and extensible. The
+              org.argouml.ui.explorer.rules package contains a default set
+              of PerspectiveRules. </para>
+          </listitem>
+        </orderedlist> </para>
+      <para> Each node is displayed with a name and an Icon, representing the type
+        of node it is in the UML model. This is done using the
+        <classname>org.argouml.uml.ui.UMLTreeRenderer</classname> (for
+        the Icon), and the text is produced in the
+        <methodname>convertValueToText(...)</methodname> method in
+        <classname>org.argouml.ui.explorer.ExplorerTree</classname>.
+      </para>
+    </sect2>
+    
+    <sect2>
+      <title>How do I ...?</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para>...add another perspective?</para>
+            <para>
+              <itemizedlist>
+                <listitem>
+                  <para> The perspectives can be configured using the
+                    <classname>org.argouml.ui.explorer.PerspectiveConfigurator</classname>
+                    by the User. The changes to the pre-defined built-in
+                    defaults are stored in the
+                    <filename>argo.user.properties</filename>
+                    file.
+</para>
+                </listitem>
+                <listitem>
+                  <para> If you want to do this as part of an extension to ArgoUML
+                    then you should use (see above) APIs 1,2 and 3, and SPI 2. The
+                    functions needed are present in the
+                    <classname>PerspectiveManager</classname>. </para>
+                </listitem>
+              </itemizedlist> </para>
+          </listitem>
+          <listitem>
+            <para>...improve the PopUp menu?</para>
+            <para> There is no way of doing this currently without modifying the
+              core of ArgoUML. You could use SPI1 when it gets implemented.
+            </para>
+          </listitem>
+          <listitem>
+            <para>...extend the Explorer in other ways?</para>
+            <para> The best way is to use the above APIs/SPIs; if they are not
+              implemented then it would be best to implement them and feedback
+              your improvements to the ArgoUML project so that your code works on
+              a recognized public API that will be maintained in the future.
+            </para>
+          </listitem>
+          
+          <listitem>
+            <para>...add new rules for new model elements?</para>
+            <para> You should create a GoRule/PerspectiveRule in
+              <address>org/argouml/ui/explorer/rules</address>. There
+              are plenty of examples to look at. The important things to get right
+              is of course that:
+            </para>
+            <para>
+              <itemizedlist>
+                <listitem><para> you return the right children</para>
+                </listitem>
+                <listitem>
+                  <para> return the objects that the TreeModel must
+                  listen to to know when to update the node (and the list of
+                  immediate children) After that you must register your GoRule
+                  in org/argouml/ui/explorer/PerspectiveManager
+                  </para>
+                </listitem>
+                <listitem><para> add it to the list in loadRules()</para>
+                </listitem>
+                <listitem>
+                  <para>
+perhaps add it to some of the default
+                  perspectives in oldLoadDefaultPerspectives(), I guess And
+                  then I think it should just be a matter of recompiling and
+                  possibly switching to the perspective you added your rule
+to.
+</para>
+                </listitem>
+              </itemizedlist>
+            </para>
+          </listitem>
+          
+          <listitem>
+            <para>...tell the explorer to refresh?</para>
+            <para> You are not supposed to. The TreeModel is supposed to listen to
+              events and refresh affected parts. And this is where the lack of
+              events for adding diagrams creates a problem. </para>
+            <para> Obviously it would be possible to add an operation somewhere
+              to revalidate the expanded parts of the Explorer, but I'm not aware
+              of the existence of such an operation today. </para>
+          </listitem>
+          
+          <listitem>
+            <para>...navigate programmatically to a certain explorer element
+              so that its path is exploded?
+            </para>
+            <para>In general you can't. The Explorer tree is lazy in that it only
+              explores the parts of the tree that the user has opened. And since
+              the GoRules are general navigating to them would require a
+              complete tree search. Which is also complicated by the fact that
+              the answer is not unique and there can be branches with infinite
+              depth. </para>
+            <para> In reality it would be possible to create an algorithm to
+              search out one occurrence of an element (since the model only
+              contains finitely many elements and I assume that no-one will add
+              go rules that add branches of infinite length that does not
+              infinitely often contain elements from the model), but I don't
+              think anyone has done it. Obviously finding all occurrences
+              cannot be done. </para>
+          </listitem>
+        </itemizedlist> </para>
+    </sect2>
+  </sect1>
+  
+  <sect1 id="moduleloader">
+    <title>Module loader</title>
+    <indexterm>
+      <primary>Module loader</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Pluggable interface</primary>
+    </indexterm>
+
+    <para> Purpose - to provide the mechanisms to load (and unload) the auxiliary
+      modules. </para>
+    <para> The Module loader is located in
+      <classname>org.argouml.moduleloader</classname>. </para>
+
+    <para> It is the modules' responsibility to connect and register to the
+      subsystem or subsystems it is going to work with using that subsystem's API,
+      Facade, or Plug-in interface. </para>
+    <para> A previous implemention of the module loader was located in
+      <classname>org.argouml.application.modules.ModuleLoader</classname>
+      with interfaces (Pluggable) in 
+      <classname>org.argouml.application.api</classname>, but it has been
+      replaced by the interface described here. </para>
+    <para> For details on how to build a module see <xref
+        linkend="modules_and_plugins"></xref>. </para>
+    <sect2>
+      <title>What the ModuleLoader does</title>
+      <para> The ModuleLoader looks for module jars. It scans
+        through all jars available in the ext directory. See Edit Settings
+        Environment tab. If you turn on logging on the debug level while running
+        ArgoUML you should be able to see what jar files it finds and what it does
+        with them. </para>
+      <para> A module jar contains the classes, resources and a manifest file. The
+        manifest file points out the class to be loaded. Also notice that the
+        Specification-Title and Vendor must be specified correctly for this to
+        work. [What does "correctly" mean in this context?]</para>
+    </sect2>
+    
+    <sect2 id="design-module-loader">
+      <title>Design of the Module Loader</title>
+      <para> Design:
+        <itemizedlist>
+          <listitem>
+            <para> We use a Loadable Proxy Pattern(?) for the modules. </para>
+          </listitem>
+          
+          <listitem>
+            <para> Each module can be enabled and disabled individually.
+              Dependencies between modules are allowed although not yet handled
+              gracefully. </para>
+          </listitem>
+          
+          <listitem>
+            <para> Each module is required to have one (1) class that implements
+              <classname>ModuleInterface</classname>. That class (and all
+              other classes that constitute the module) needs to be made
+              available for some class loader, either by including it in the
+              classpath or by letting the module loader hunt for it. </para>
+          </listitem>
+          <listitem>
+            <para> The modules are allowed to use all the APIs available from all
+              the subsystems within ArgoUML and from other modules. </para>
+            <para> This is a big improvement over the old module loader in that:
+              <itemizedlist>
+                <listitem>
+                  <para> We use the same APIs for the modules that we use within
+                    ArgoUML meaning that we implement and document it only once.
+                    This replaces the Pluggable class at every point where
+                    ArgoUML can be augmented. </para>
+                </listitem>
+                <listitem>
+                  <para> We can have the module have different classes to
+                    register at different parts of ArgoUML. </para>
+                </listitem>
+                <listitem>
+                  <para> We can have dynamic registrations that the module add
+                    and remove over time depending on some criteria that the
+                    module decides. </para>
+                </listitem>
+                <listitem>
+                  <para> We don't need to search through all modules at every
+                    possible point where ArgoUML can be augmented. </para>
+                </listitem>
+              </itemizedlist> Just as in the old solution, whenever a module
+              needs to do something to ArgoUML, there needs to be implemented an
+              API, possibly with registration/deregistration and callbacks.
+            </para>
+          </listitem>
+          
+          <listitem>
+            <para> All modules that can be found are examined at startup. They can
+              be enabled and disabled individually from a special available
+              modules window but have a default state that applies if the user
+              hasn't taken action. Currently the default state is "enabled".
+            </para>
+          </listitem>
+          
+          <listitem>
+            <para> Dependency between modules! </para>
+            <para> If a module cannot be enabled because some other module needs
+              to be enabled first or because some part of ArgoUML needs to be
+              initialized first this is a problem. This is because the initial
+              implementation is such that we have no register of dependencies.
+            </para>
+            <para> The solution suggested is that the module loader persists in
+              its attempts to enable a module so that the order among the modules
+              is not important. For this to work the modules needs to signal when
+              they fail. This is done by returning false or throwing an Exception
+              from the module enabling method. </para>
+            <para> The module loader also provides an API that the well-behaving
+              modules can use to test if the modules they depend on are enabled.
+              The less well-behaving modules can just throw an exception when
+              they fail to enable themselves properly. </para>
+            <para> If a module cannot be disabled, because some other module
+              depends on it then this is signaled by returning false from the
+              disabling method. </para>
+          </listitem>
+          
+          <listitem>
+            <para> Where modules are loaded from? </para>
+            <para> The modules are loaded from the same places as in the old module
+              loader. They can be internally i.e. available in the core jar file
+              of ArgoUML, from the <filename class="directory">
+              ext</filename> directory, or if running from JavaWebStart, they
+              can be downloaded from the site. </para>
+            <para> To reduce the complexity of the downloads, let's use it in the
+              simplest possible way: organize each module in a package and a jar
+              file, have the jnlp-file list that jar file as a part and a package
+              entry listing the classes, have a file listing optional classes
+              and a GUI that allows the user to download them. Once a class is
+              selected in the GUI it is loaded and, the JavaWebStart class loader
+              will guarantee that it is available. </para>
+          </listitem>
+          
+          <listitem>
+            <para> The scope of the modules. </para>
+            <para> Modules are always enabled and disabled on a per-application
+              (per jvm) basis and not on a per-project or per-frame basis.
+            </para>
+          </listitem>
+        </itemizedlist> </para>
+    </sect2>
+  </sect1>
+  
+  <sect1 id="ocl">
+    <title>OCL</title>
+    <indexterm>
+      <primary>OCL</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Constraints</primary>
+    </indexterm>
+
+    <para> Purpose - To allow for editing of strings in the OCL language. </para>
+    <para> The OCL is located in <classname>org.argouml.ocl</classname>.
+    </para>
+    <para> The OCL is a Layer 3 subsystem. See <xref
+        linkend="loadable_subsystems"></xref>. </para>
+    <para> The OCL editor GUI interface is
+      <classname>org.argouml.uml.ui.TabConstraints</classname> (shown in
+      the bottom right hand panel - details panel). </para>
+    <para> <classname>org.argouml.ocl.ArgoFacade</classname> adapts the
+      <classname>tudresden.ocl.gui.OCLEditor</classname> for ArgoUML.
+      There are some other helper classes in
+      <classname>org.argouml.ocl</classname>, with names beginning with OCL
+      but they are used for other purposes. Historically GEF uses OCL as a kind of
+      template language to convert the UML diagrams to pgml(and back again), it
+      doesn't have anything to do with OCL constraints in your UML model. </para>
+    <para> <classname>ArgoFacade</classname> is reused by
+      <classname>GeneratorJava</classname> and
+      <classname>TabConstraints</classname>.
+</para>
+    <para>
+      <indexterm>
+        <primary>Dresden OCL Toolkit</primary>
+      </indexterm>
+Currently this
+subsystem is more or less only Dresden OCL Toolkit and adaptation.
+</para>
+    <para> Because of a problem with the interpretation of the UML specification
+      and the OCL specification, the implementation of constraints in ArgoUML is
+      only possible for Classes, Interfaces and Features (Attributes and
+      Operations). See <ulink
+        url="http://argouml.tigris.org/issues/show_bug.cgi?id=1805">
+      Issue 1805 </ulink>. </para>
+  </sect1>
+  
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+cookbook.xml"
+indent-tabs-mode: nil
+End:
+
+-->

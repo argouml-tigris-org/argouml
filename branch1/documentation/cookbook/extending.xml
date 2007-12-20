@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+<!--
+// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+
+<chapter id="extending">
+  <title>Extending ArgoUML</title>
+  
+  <para> This section explains some general concepts which come in handy, when
+    developing additions to ArgoUML. </para>
+  
+  <sect1 id="howdoi_general">
+    <title>How do I ...?</title>
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para> ...get the corresponding UML element for a given
+            <classname>Fig<replaceable>XXX</replaceable></classname>
+            object? </para>
+          <para> Each <classname>Fig<replaceable>XXX</replaceable>
+            </classname> implements the method
+            <methodname>getOwner()</methodname> which returns the
+            appropriate owner element which is responsible for this Fig
+            element. </para>
+        </listitem>
+        <listitem>
+          <para> ...get the corresponding Fig element for a given
+            <classname>ModelElement</classname>? </para>
+          <para> for this one needs to iterate through all Fig objects and invoke
+            <methodname>getOwner</methodname>. Compare the result with the
+            given <classname>ModelElement</classname>. Be aware that there
+            might be more than one Fig object for a given
+            <classname>ModelElement</classname> if it appears in multiple
+            diagrams or there may be none if it has no diagrams. </para>
+        </listitem>
+      </itemizedlist> </para>
+  </sect1>
+  
+  &cookbookmodules;
+  
+  <sect1>
+    <title>How are modules organized in the Java code?</title>
+    <para>
+      The previous section describes how modules and plug-ins are
+      organized at the Java level independent of how they are actually
+      packaged.
+    </para>
+    <para> Within the ArgoUML project some parts of the code are developed
+      and packaged separately from the main ArgoUML source code.
+      This section describes how they are
+      organized and how you create such source-code modules. </para>
+    
+    <sect2>
+      <title>Requirements on modules</title>
+
+      <para>
+An external module requires:
+<orderedlist>
+          <listitem>
+            <para>
+The module main class implements org.argouml.moduleloader.ModuleInterface
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Archive the main class into a jar, with an entry "Name" in MANIFEST.MF
+specifying the name of the main class. For example, Name: 
+<programlisting>
+Name: your/own/domain/your/package/your.class
+</programlisting>
+The class in question must implement
+<classname>org.argouml.moduleloader.ModuleInterface</classname>.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Put the jar file into a directory called "ext" under the home directory of
+ArgoUML
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Run ArgoUML and check if the module appears in Edit -> Settings -> Modules
+</para>
+          </listitem>
+        </orderedlist>
+</para>
+
+      
+
+      <para> New modules that are added to ArgoUML shall reside in whole new
+        packages. Either you put your module classes in
+        <classname><replaceable>your.own.domain</replaceable>
+        .<replaceable>your.package.name</replaceable></classname> or if
+        you want to emphasize the connection to ArgoUML you can use
+        <classname>org.argouml.<replaceable>your.package.name</replaceable>
+        </classname> where <replaceable>your.package.name</replaceable>
+        is the name of your addition. </para>
+    </sect2>
+    
+    <sect2 id="howdoi_source_code_modules">
+      <title>How do I ...?</title>
+      <para>
+        <itemizedlist>
+          <listitem>
+            <para> ...create a new source-code module. </para>
+            <para> Suggestion, copy from the <filename class="directory">
+              menutest</filename> module as described here. </para>
+            <para> Make a copy of <filename class="directory">
+              argouml/modules/menutest</filename> into <filename
+                class="directory">argouml/modules/<replaceable>your
+              name</replaceable></filename>. </para>
+            <para> Add any jar you need to <filename class="directory">
+              argouml/modules/<replaceable>your name</replaceable>
+              /lib</filename> and add references to each of the jars in
+              <filename>argouml/modules/<replaceable>your
+              name</replaceable>/build.xml</filename>. </para>
+            <para> Edit <filename class="directory">
+              argouml/modules/<replaceable>your name</replaceable>
+              /module.properties</filename>
+            </para>
+            <para> Edit <filename>argouml/modules/<replaceable>your
+              name</replaceable>/src/org/manifest.mf</filename>.
+            </para>
+            <para> Reorganize the source files as necessary. Remove the
+              directory <filename class="directory">
+              argouml/modules/<replaceable>your name</replaceable>
+              /src/org/argouml/ui</filename> and create your own classes
+              like org.argouml.<replaceable>your package
+              name</replaceable> in <filename class="directory">
+              argouml/modules/<replaceable>your name</replaceable>
+              /src/org/argouml/<replaceable>your package
+              name</replaceable></filename>. </para>
+          </listitem>
+          <listitem>
+            <para> ...get Argo to use a plug-in? </para> <note>
+              <para> This description is for the old module loader. </para>
+            </note>
+            <para> Once you've created a jar file with a plug-in in it, you need to
+              make sure that Argo can find the jar to be able to execute it. </para>
+            <para> If you are using a "standard" ArgoUML source structure, then
+              you should be able to execute <command>build install</command>
+              or <command>ant install</command> in the source directory of the
+              plug-in. This will copy the jar file to the proper directory in the
+              main ArgoUML build target. You can test your plug-in by running
+              <command>build run</command> in the <filename
+                class="directory">src_new</filename> directory. </para>
+            <para> If you need to install the jar "the hard way", try the following
+              steps.
+              <itemizedlist>
+                <listitem><para> Start up ArgoUML. </para></listitem>
+                <listitem><para> Go to the menu
+                  <command>Edit->Settings</command> and look at the
+                  <command>Environment</command> tab. Find the entry
+                  labeled <literal>&dollar;{argo.ext.dir}</literal>. Create that
+                  directory if it does not already exist. </para></listitem>
+                <listitem><para> Copy the plug-in jar and any other jars
+                  required by it into that directory. </para></listitem>
+                <listitem><para> Start up ArgoUML again, and you should see the
+                  plug-in's startup banner (if it has one, of course). </para>
+                </listitem>
+                
+              </itemizedlist>
+            </para>
+          </listitem>
+        </itemizedlist> </para>
+    </sect2>
+  </sect1>
+  
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+cookbook.xml"
+indent-tabs-mode: nil
+End:
+
+-->

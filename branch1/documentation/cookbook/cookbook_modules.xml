@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+<!--
+// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+
+<sect1 id="modules_and_plugins">
+  <!--
+  <sect1info>
+    <authorgroup>
+      <author>
+        <firstname>Thierry</firstname>
+        <surname>Lach</surname>
+        <affiliation>
+          <address>
+  <email>thierry.lach@pentamark.com</email>
+    </address>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Will</firstname>
+        <surname>Howery</surname>
+        <affiliation>
+          <address>
+  <email>whowery@hotmail.com</email>
+    </address>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Thomas</firstname>
+        <surname>Neustupny</surname>
+        <affiliation>
+          <address>
+  <email>thn-d@gmx.de</email>
+    </address>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
+        <affiliation>
+          <address>
+  <email>linus@epact.se</email>
+    </address>
+        </affiliation>
+      </author>
+    </authorgroup>
+  </sect1info>
+  -->
+  <title>Modules </title>
+  <para>
+The ArgoUML tool provides a basis
+for UML design and potentially an executable architecture 
+environment for more specialized applications.
+This is solved by a clear interfaces between the ArgoUML core
+and the extensions.
+Extensions are called modules.
+</para>
+
+  <sect2 id="modules_vs_plugins">
+    <title>Modules</title>
+
+    <para>
+<itemizedlist>
+        <listitem>
+          <para>Modules</para>
+          <para>
+A module is a collection of classes and resource files that can
+be enabled and disabled in ArgoUML.
+Currently this is decided by the module's availability when ArgoUML starts 
+but in the future it could be made possible to enable modules from within 
+a running ArgoUML.
+</para>
+          <para>
+This module system is the extension capability to the ArgoUML tool. 
+It gives developers of ArgoUML and 
+developers of applications running within the ArgoUML architecture
+the ability to add
+functionality to the ArgoUML environment
+without modifying the basic ArgoUML tool.
+This flexibility is designed to encourage
+additional open source and/or commercial involvement
+with the open source UML tool.  
+</para>
+
+          <para>
+The module extensions load when ArgoUML starts.
+When the modules are loaded
+they have the capability of attaching
+to internal ArgoUML architectural elements.
+Once the plugins are attached,
+the plugins will receive calls at the right moment and
+can perform the correct action at that point.
+</para>
+
+          <para>
+Modules can be internal and external.
+The only difference is that the internal modules are part of
+the <filename>argouml.jar</filename> and the external are
+delivered as separate jar-files.
+</para>
+        </listitem>
+
+      </itemizedlist>
+</para>
+    <para>
+This is essentially and implementation of the Dynamic Linkage pattern 
+as described in
+Patterns in Java Volume 1 by Mark Grand ISBN 0-471-25839-3.
+The whole of ArgoUML Core is the Environment,
+the classes inheriting <classname>Pluggable</classname> are the
+AbstractLoadableClass.
+</para>
+
+  </sect2>
+
+
+  <sect2 id="modules">
+    <title>Modules</title>
+
+    <sect3>
+      <title>Module Architecture</title>
+      <para>
+The controlling class for the implementation is
+<classname>org.argouml.moduleloader.ModuleLoader2</classname>.
+It is a singleton created when first used.
+It is first used in the main initialization routine.
+</para>
+
+      <para>
+When created it searches through all available modules and creates
+a list of their main objects
+(implementing <classname>ModuleInterface</classname>).
+Currently (September 2004) this also means that the found modules are
+by default selected i.e. they are marked to be enabled.
+</para>
+
+      <para>
+At the end of the main initialization routine
+the selected modules are enabled.
+(The original idea was to do this several times during the main routine
+to allow for modules to
+add command line arguments,
+add languages, and
+make functions available for batch command,
+but the example used for testing loaded the ProjectBrowser "too early"
+<!-- See issue ??? -->
+and the result wasn't so good.
+I (Linus) hope this can be eventually fixed.)
+</para>
+    </sect3>
+
+    <sect3>
+      <title>The ModuleInterface interface</title>
+      <para>
+Each class used by the <classname>ModuleLoader2</classname>
+must implement the <classname>ModuleInterface</classname> interface.
+</para>
+      <para>
+This interface has methods for
+enabling,
+disabling and
+identifying
+the module.
+</para>
+      <para>
+When a module is enabled it is expected to register some class
+wherever it affects ArgoUML using the interfaces provided there.
+Since the same interfaces and registration mechanism is used internally
+within ArgoUML there is a small likelyhood that there already is
+an interface and a possibility to register.
+If there isn't, ArgoUML cannot currently be extended
+at that point.
+If you still need ArgoUML to be extended at that point you will have to
+work in getting this interface or registration mechanism implemented within
+ArgoUML.
+(This could also be another module that has to be amended.)
+</para>
+
+      <para>
+Classes administered by the module that registers to whatever
+place of ArgoUML they are interested in, does not need to have any
+connection to the module loader.
+They are written exactly as if they would have been if they were
+part of the core ArgoUML.
+</para>
+    </sect3>
+
+    <sect3 id="using_modules">
+      <title>Using Modules</title>
+      <para>
+When modules are used they can't be distinguished from the
+rest of the ArgoUML environment.
+</para>
+    </sect3>
+
+    <sect3 id="howdoi_modules">
+      <title>How do I ...?</title>
+      <para>
+<itemizedlist>
+
+          <listitem>
+            <para>...tell when a module is enabled?</para>
+            <para>
+The method <methodname>isEnabled</methodname>
+in <classname>ModuleLoader2</classname>
+returns true if the module with that name is enabled and false otherwise.
+</para>
+
+          </listitem>
+
+        </itemizedlist>
+</para>
+
+    </sect3>
+  </sect2>
+
+<!-- This example is obsolete.  It needs to be updated to the new architecture
+or replaced 
+  <sect2 id="plugins">
+    <title>Plugins</title>
+    <note>
+      <para>
+This description is for the old moduleloader.
+</para>
+    </note>
+
+    <sect3 id="architecture_plugins">
+      <title>Plugin Architecture</title>
+      <para>
+Each class must derive from the <classname>Pluggable</classname> interface.
+In addition to the methods declared in <classname>ArgoModule</classname>,
+which <classname>Pluggable</classname> extends
+(see <xref linkend="argomodule_interface"/>),
+the interface provides the following method:
+
+<itemizedlist>
+          <listitem>
+            <funcsynopsis>
+              <funcprototype>
+                <funcdef>
+boolean <function>inContext</function>
+</funcdef>
+                <paramdef>Object[] <parameter>context</parameter></paramdef>
+              </funcprototype>
+            </funcsynopsis>
+            <para>
+<function>inContext</function> allows a plug-in to decide
+if it is available under a specific context. 
+</para>
+          </listitem>
+        </itemizedlist>
+</para>
+      <para>
+One example of a plugin with multiple criteria is the PluggableMenu.
+PluggableMenu requires the first context to be a JMenuItem
+which wants the PluggableMenu attached to as the context,
+so that it can determine that it would attach to a menu.  The
+second context is an internal (non-localized) description 
+of the menu such as "File" or "View"
+so that the plugin can further decide.
+</para>
+    </sect3>
+
+    <sect3 id="howdoi_plugins">
+      <title>How do I ...?</title>
+
+      <para>
+
+        <itemizedlist>
+
+          <listitem><para>...create a pluggable settings tab?</para>
+            <para>...</para>
+          </listitem>
+
+          <listitem><para>...create a pluggable menu item?</para>
+            <para>
+Look at the modules junit and menutest for examples of how to add to
+menus using the PluggableMenu interface.
+</para>
+            <para>
+The implementation of inContext() that you provide should be similar to: 
+<programlisting>
+    public boolean inContext(Object[] o) { 
+        if (o.length &lt; 2) return false; 
+        if ((o[0] instanceof JMenuItem) &amp;&amp; 
+                ("Create Diagrams".equals(o[1]))) { 
+            return true; 
+        } 
+        return false; 
+    }
+</programlisting>
+</para>
+            <para>
+The string "Create Diagrams" is a non-localized key string passed in
+ProjectLoader at about line 440 in the statement
+<programlisting>
+    appendPluggableMenus(_createDiagrams, "Create Diagrams"); 
+</programlisting>
+
+There is no restriction on a single class implementing multiple
+plugins - quite the contrary, that is one of the reasons for providing
+the generic Pluggable interface that PluggableThings extend.
+</para>
+          </listitem>
+
+          <listitem><para>...create a pluggable notation?</para>
+            <para>...</para>
+          </listitem>
+
+          <listitem><para>...create a pluggable diagram?</para>
+            <para>
+Let's say we want to enable a Java diagram type as a plug-in.
+We use the interface PluggableDiagram that uses a
+method that returns an JMenuItem object:
+
+<programlisting>
+    public JMenuItem getDiagramMenuItem();
+</programlisting>
+
+The returned menu item will be added to the diagrams menu
+to allow to open a new diagram of this type.
+</para>
+            <para>
+In this example we do this by creating a helper class in the package
+org.argouml.application.helpers that implements the created
+plug-in interface PluggableDiagram, and call it DiagramHelper:
+
+<programlisting>
+public abstract class DiagramHelper extends ArgoDiagram
+implements PluggableDiagram {
+
+    /** Default localization key for diagrams
+     */
+    public final static String DIAGRAM_BUNDLE = "DiagramType";
+
+    /** String naming the resource bundle to use for localization.
+     */
+    protected String _bundle = "";
+
+    public DiagramHelper() {
+        _bundle = getDiagramResourceBundleKey();
+    }
+
+    public void setModuleEnabled(boolean v) { }
+
+    public boolean initializeModule() { return true; }
+
+    public boolean inContext(Object[] o) { return true; }
+
+    public boolean isModuleEnabled() { return true; }
+
+    public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+
+    public boolean shutdownModule() { return true; }
+
+    public JMenuItem getDiagramMenuItem()
+    {
+        return new JMenuItem(Argo.localize(_bundle,"diagram_type"));
+    }
+
+    public String getDiagramResourceBundleKey() {
+        return DIAGRAM_BUNDLE;
+    }
+}
+
+</programlisting>
+The extension of ArgoDiagram is specific to this example;
+the plug-in will provide a new ArgoUML diagram.
+
+<important>
+                <para>
+Don't forget to do the localization stuff, because the
+plug-in might be used in all languages ArgoUML offers!
+</para>
+              </important>
+
+</para>
+          </listitem>
+          <listitem>
+            <para>
+...do the localization stuff (not plug-in specific, but important)?
+</para>
+            <para>...</para>
+          </listitem>
+
+          <listitem><para>...create a pluggable resource bundle?</para>
+            <para>...</para>
+          </listitem>
+
+          <listitem><para>...create a new pluggable type?</para>
+            <para>
+<orderedlist>
+                <listitem>
+                  <para>
+Create the plug-ins interface
+</para>
+                  <para>
+
+In the package org.argouml.application.api, create an
+interface that extends <classname>Pluggable</classname> (in the same package).
+The class name must begin with 'Pluggable'.
+<note>
+                      <para>
+One of the main purposes of a plugin is
+to provide the capability to add an externally defined class
+that will be used by ArgoUML in the same way as a similar internal class.
+This means that modifications are needed all over ArgoUML
+in order to call the pluggable interface.
+Therefore this must be done in ArgoUML itself and 
+cannot be done in any module.
+</para>
+                    </note>
+</para>
+                  <para>
+It now inherits from <classname>ArgoModule</classname> the methods
+<programlisting>
+    public boolean initializeModule();
+    
+    public boolean shutdownModule();
+
+    public void setModuleEnabled(boolean tf);
+    
+    public boolean isModuleEnabled();
+
+    public String getModuleName();
+
+    public String getModuleDescription(); 
+    
+    public String getModuleVersion(); 
+    
+    public String getModuleAuthor(); 
+    
+    public Vector getModulePopUpActions(Vector popUpActions, Object context);
+
+    public String getModuleKey();
+</programlisting>
+
+and from <classname>Pluggable</classname> the methods
+
+<programlisting>
+
+    public boolean inContext(Object[] context);
+
+</programlisting>
+
+and thus provides the basic mechanism that plug-ins need.
+</para>
+                </listitem>
+
+                <listitem>
+                  <para>
+Decide in what context this is to be enabled and add calls there
+</para>
+
+                  <para>
+It is useful for those plugins which actually use context
+to provide a helper method
+
+<funcsynopsis>
+                      <funcprototype>
+                        <funcdef>
+Object[] <function>buildContext</function>
+</funcdef>
+                        <paramdef>classtype1 <parameter>parameter1</parameter></paramdef>
+                        <paramdef>classtype2 <parameter>parameter2</parameter></paramdef>
+                      </funcprototype>
+                    </funcsynopsis>
+which will serve two purposes.
+</para>
+                  <para>
+First, it will provide a simple way of creating the Object[] parameter.
+</para>
+                  <para>
+Second, it helps to document the context parameters within the class itself.
+</para>
+                  <para>
+Again using <classname>PluggableMenu</classname> as an example,
+it contains the function
+
+<programlisting>
+
+    public Object[] buildContext(JMenuItem parentMenuItem, String menuType);
+
+</programlisting>
+
+which is used as follows:
+
+<programlisting>
+    if (module.inContext(module.buildContext(_help, "Help"))) {
+        _help.add(module.getMenuItem(_help, "Help"));
+    }
+</programlisting>
+</para>
+                </listitem>
+              </orderedlist>
+
+</para>
+          </listitem>
+
+        </itemizedlist>
+
+</para>
+
+    </sect3>
+
+  </sect2>
+  
+********** end of obsolete example ************************* -->
+
+  <sect2>
+    <title>Tip for creating new modules (from Florent de Lamotte)</title>
+    <indexterm>
+      <primary>Modules</primary>
+      <secondary>understanding</secondary>
+    </indexterm>
+    <note>
+      <para>
+This description is for the old moduleloader.
+</para>
+    </note>
+
+    <para>Florent wrote a small tutorial for creating modules. It can be found on the <ulink url="http://argopno.tigris.org/documentation/argouml.html">ArgoPNO website</ulink>.
+</para>
+  </sect2>
+
+</sect1>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "sect1" nil)
+indent-tabs-mode: nil
+End:
+
+-->

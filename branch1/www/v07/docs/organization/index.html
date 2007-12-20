@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
+	<TITLE>untitled</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<P><FONT SIZE="5" COLOR="#008080" FACE="Tahoma"><B>Argo/UML Code Organization</B></FONT></P>
+<P>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="740">
+	<TR>
+		<TD VALIGN="BOTTOM" COLSPAN="2" BGCOLOR="#000099"><FONT COLOR="#CCFFFF" FACE="Tahoma"><B>&nbsp; Dependency Graph</B></FONT></TD>
+		<TD WIDTH="5" VALIGN="TOP" ROWSPAN="3" BGCOLOR="#808080"><IMG SRC="../../../images/topshadowmask.gif" WIDTH="5" HEIGHT="5" ALIGN="BOTTOM" BORDER="0"></TD>
+		<TD WIDTH="2%"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFF99">&nbsp;</TD>
+		<TD WIDTH="713" BGCOLOR="#FFFF99">&nbsp;<BR>
+			<BR>
+			<IMG SRC="../argo_depend.gif" WIDTH="713" HEIGHT="536" ALIGN="BOTTOM" BORDER="0"><BR>
+			<BR>
+			&nbsp;</TD>
+		<TD WIDTH="2%"><BR>
+			<BR>
+			&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD HEIGHT="5" VALIGN="TOP" COLSPAN="2" BGCOLOR="#808080"><IMG SRC="../../../images/leftshadowmask.gif" WIDTH="5" HEIGHT="5" ALIGN="BOTTOM" BORDER="0"></TD>
+		<TD WIDTH="2%" HEIGHT="5"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10"></TD>
+		<TD WIDTH="713"></TD>
+		<TD WIDTH="5"></TD>
+		<TD WIDTH="2%"></TD>
+	</TR>
+</TABLE>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="740">
+	<TR>
+		<TD VALIGN="BOTTOM" COLSPAN="2" BGCOLOR="#000099"><FONT COLOR="#CCFFFF" FACE="Tahoma"><B>&nbsp; Metrics</B></FONT></TD>
+		<TD WIDTH="5" VALIGN="TOP" ROWSPAN="3" BGCOLOR="#808080"><IMG SRC="../../../images/topshadowmask.gif" WIDTH="5" HEIGHT="5" ALIGN="BOTTOM" BORDER="0"></TD>
+		<TD WIDTH="2%"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFF99">&nbsp;</TD>
+		<TD WIDTH="720" BGCOLOR="#FFFF99">
+			<P><FONT SIZE="2" FACE="Tahoma">There are three major libraries that make up the bulk of the Argo/UML source code.
+			Each is made up of several Java packages. Argo/UML also contains several packages itself. <BR>
+			<BR>
+			The numbers next to each package indicate the number of classes in that package. Each package is described below.</FONT></P>
+			<UL>
+				<LI><FONT SIZE="2" COLOR="#660000" FACE="Tahoma"><B>GEF</B> (170 classes)</FONT>
+				<UL>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.gef (105) -- reusable graph editing framework: shapes, selections, grids,
+					editors, layers, commands</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.gef.demo (19) -- demonstrations how to use GEF</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.gef.event (2) -- events generated from GEF editors</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.graph (15) -- generic interface between GEF and graph representations, similiar
+					to Swing's TreeModel</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.util (12) -- general purpose utilities</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.ui (13) -- property sheet and other small user interface utilities</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.beans.editors (4) -- custom property editors used in property sheet</FONT>
+					<P>
+				</UL>
+				<LI><FONT SIZE="2" COLOR="#660000" FACE="Tahoma"><B>Argo</B> (38 classes)</FONT>
+				<UL>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.argo.kernel (34) -- reusable framework for critics, &quot;to do&quot; list,
+					design history</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.argo.checklists (4) -- framework for design checklists</FONT>
+					<P>
+				</UL>
+				<LI><FONT SIZE="2" COLOR="#660000" FACE="Tahoma"><B>UML meta-model</B> (120 classes)</FONT>
+				<UL>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.Foundation.Core (26) -- from UML Semantic Specification</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.Foundation.Data_Types (22) -- from UML Semantic Specification</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.Foundation.Extension_Mechanisms (2) -- from UML Semantic Specification</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.Behavioral_Elements.Common_Behavior (16) -- from UML Semantic Specification</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.Behavioral_Elements.State_Machines (20) -- from UML Semantic Specification</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.Behavioral_Elements.Use_Cases (2) -- from UML Semantic Specification</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.Behavioral_Elements.Collaborations (6) -- from UML Semantic Specification</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.Model_Management (5) -- from UML Semantic Specification</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.test.omg (15) -- examples from UML Notation Guide</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.generate (3) -- placeholder for future code generation features</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.util (3) -- general utilities related to UML meta-model</FONT>
+					<P>
+				</UL>
+				<LI><FONT SIZE="2" COLOR="#660000" FACE="Tahoma"><B>Argo/UML</B> (191 classes)</FONT>
+				<UL>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml (1) -- Main</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.ui (111) -- Argo/UML windows, dialogs, panels, navigational perspectives,
+					property panels</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.visual (25) -- UML diagram definitions, UML node and arc definitions</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.critics (44) -- design critics</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.critics.java (1) -- design critics</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.critics.patterns (3) -- design critics</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.checklist (6) -- design checklists</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">uci.Images -- gif images for splash screen and toolbar icons</FONT>
+					<P><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT>
+				</UL>
+			</UL>
+		</TD>
+		<TD WIDTH="2%"></TD>
+	</TR>
+	<TR>
+		<TD HEIGHT="5" VALIGN="TOP" COLSPAN="2" BGCOLOR="#808080"><IMG SRC="../../../images/leftshadowmask.gif" WIDTH="5" HEIGHT="5" ALIGN="BOTTOM" BORDER="0"></TD>
+		<TD WIDTH="2%" HEIGHT="5"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10"></TD>
+		<TD WIDTH="720"></TD>
+		<TD WIDTH="5"></TD>
+		<TD WIDTH="2%"></TD>
+	</TR>
+</TABLE>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="740">
+	<TR>
+		<TD VALIGN="BOTTOM" COLSPAN="2" BGCOLOR="#000099"><FONT COLOR="#CCFFFF" FACE="Tahoma"><B>&nbsp; Package Descriptions</B></FONT></TD>
+		<TD WIDTH="5" VALIGN="TOP" ROWSPAN="3" BGCOLOR="#808080"><IMG SRC="../../../images/topshadowmask.gif" WIDTH="5" HEIGHT="5" ALIGN="BOTTOM" BORDER="0"></TD>
+		<TD WIDTH="2%"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFF99">&nbsp;</TD>
+		<TD WIDTH="720" BGCOLOR="#FFFF99">
+			<P><FONT SIZE="2" FACE="Tahoma">Under the <B>uci.uml</B> directory, there are a series of packages that deal specifically
+			with all the aspects pertaining to UML diagrams. Just as everthing dealing with the user interface is located within
+			the uci.uml.ui package, so everything dealing with UML and the meta-model are located within the uci.uml package.
+			The meta-model consists of all the everything that lies within a UML diagram, and the graphical view may contain
+			only a few of the things that are contained in the meta-model. Whatever is added to the graphical editor is also
+			added to the meta-model, but if something is deleted from the graphical editor, it is not necessarily deleted from
+			the meta-model.</FONT></P>
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>uci.uml.Behavioral_Elements</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">This package takes care of such things as the types of associations, i.e. aggregation
+			or composite, and the multiplicity of an association.</FONT></P>
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>uci.uml.checklist</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">Most of the classes in this package are subclasses of UMLChecklist.java (click
+			to see </FONT><A HREF="checklist.html"><FONT SIZE="2" FACE="Tahoma">diagram</FONT></A><FONT SIZE="2" FACE="Tahoma">).
+			Checklists are currently widely used in design review meetings, in part, because they remind designers to cover
+			all design details and avoid common design errors. Argo provides checklists that serve the same purpose, but have
+			several advantages over passive printed lists:</FONT>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">Argo's checklists are made specific to the selected design element. Each type
+				of design element (e.g., Class, Attribute, Operation, Association) has its own checklist.</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">Irrelevant checklist items are automatically removed from the list.</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">The text of the checklist items are made specific to the design element being
+				reviewed. For example, Argo uses element names instead of the pronouns that would be used in a printed list.</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">(future) Checklist items can provide the designer with wizards that help complete
+				a specified design change. For example, the checklist item &quot;Should the attribute Age be moved to one of the
+				super classes of Person (e.g., Animal)&quot; could launch a wizard to help move the attribute up the class hierarchy.</FONT>
+			</UL>
+			<P><FONT SIZE="2" FACE="Tahoma">Checklists are somewhat similar to critics (in fact, they share some of the same
+			implementation), however they differ in the level of specificity so much that we feel that they should be presented
+			separately to designers. Critics look for very specific problems and provide specific suggestions when those problems
+			are detected. The designer still makes the final decision about any design changes, but the critic can automate
+			much of the analysis and work. In contrast, checklist items are much more general and vauge, they serve to remind
+			the designer, but it is the designer who must do most of the analysis and work. Checklists are easier to author
+			(see below), and useful checklist items can be upgraded to critics if appropriate.</FONT></P>
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>uci.uml.critics</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">The majority of the classes in this package are subclasses of CrUML.java (click
+			to see </FONT><A HREF="critics.html"><FONT SIZE="2" FACE="Tahoma">diagram</FONT></A><FONT SIZE="2" FACE="Tahoma">).
+			Design critics are simple agents that continuously execute in a background thread of control. They analyze the
+			design as the designer is working and suggest possible improvements. These suggestions range from indications of
+			syntax errors, to reminders to return to parts of the design that need finishing, to style guidelines, to the advice
+			of expert designers. Many critics offer to automatically improve the design. Critics are controlled so that their
+			suggestions are relavent and timely to the design task at hand, based on information in Argo's user model. Critics
+			never interrupt the designer, instead they post thier suggestions to the designer's &quot;to do&quot; list.</FONT></P>
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>uci.uml.Foundation</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">This package contains three subpackages listed below. The two classes that are
+			subclassed the most are ModelElementImpl.java and GeneralizableElementImpl.java (see the </FONT><A HREF="../hierarchies/meImpl/meImpl.html"><FONT
+			SIZE="2" FACE="Tahoma">diagram</FONT></A><FONT SIZE="2" FACE="Tahoma">). All of the classes in these packages are
+			part of what makes up the meta-model.</FONT></P>
+
+
+			<BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma"><B>uci.uml.Foundation.Core</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">This package contains some of the different types of elements that go into a UML
+			diagram such as an element that is generalizable, associations and association ends.</FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma"><B>uci.uml.Foundation.Data_Types</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">This package deals with aspects of associations such as the multiplicity and aggregation
+			kinds.</FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma"><B>uci.uml.Foundation.Extension_Mechanisms</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">This package deals with stereotypes and tagged values.</FONT></P>
+
+			</BLOCKQUOTE>
+
+			<H3><FONT SIZE="2" FACE="Tahoma"></FONT></H3>
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>uci.uml.generate</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">This package deals specifically with automatic code generation from the user's
+			current design.</FONT></P>
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>uci.uml.Model_Management</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">This package deals with managing the link between the graphical model and the meta-model.</FONT></P>
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>uci.uml.ui</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">Everything dealing with the user interface is located within this package and the
+			following subpackages. This package takes care of all the actions that can be made to a UML diagram such as the
+			menu actions and the toolbar actions. The class that is subclassed the most is the </FONT><A HREF="umlAction.html"><FONT
+			SIZE="2" FACE="Tahoma">UMLAction.java</FONT></A><FONT SIZE="2" FACE="Tahoma">, </FONT><A HREF="../hierarchies/tabSpawnable/tabSpawnable.html"><FONT
+			SIZE="2" FACE="Tahoma">TabSpawnable.java</FONT></A><FONT SIZE="2" FACE="Tahoma"> and </FONT><A HREF="token.html"><FONT
+			SIZE="2" FACE="Tahoma">Token.java</FONT></A><FONT SIZE="2" FACE="Tahoma">.</FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma"><B>uci.uml.ui.nav</B></FONT></P>
+
+
+			<BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma">Most of these classes implements the TreeModelPrereqs interface.</FONT></P>
+
+			</BLOCKQUOTE>
+
+			<P><FONT SIZE="2" FACE="Tahoma"><B>uci.uml.ui.props</B></FONT></P>
+
+
+			<BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma">Most of these classes inherit from PropPanel.java. These classes take care of the
+			property panels for each of the different diagram types. For example, an interface, instance or a generalization.</FONT></P>
+
+			</BLOCKQUOTE>
+
+			<P><FONT SIZE="2" FACE="Tahoma"><B>uci.uml.ui.table</B></FONT></P>
+
+
+			<BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma">ColumnDescriptor.java, TableModelComposite.java and TablePanel.java are some of
+			the classes that are subclassed the most in this package. This package enables a UML diagram to be viewed as a
+			table.</FONT></P>
+
+			</BLOCKQUOTE>
+
+			<P><FONT SIZE="2" FACE="Tahoma"><B>uci.uml.ui.todo</B></FONT></P>
+
+
+			<BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma">This class enables a to do list to be kept and managed. One difficulty designers
+			face is keeping track of all the myrid details of thier task. It is all to easy to skip a step in the design process,
+			leave part of the design unspecified, of make a mistake that requires revision. Argo provides the designer with
+			a &quot;to do&quot; list user interface that presents action items in an organized form. These items can be suggestions
+			from critics, reminders to finish steps in the process model, or personal notes entered by the designer. The choice
+			control at the top of the &quot;to do&quot; list pane allow the designer to organize items in different ways: by
+			priority, by decision supported, by offending design element, etc. Items are shown under all applicable headings.
+			The &quot;to do&quot; list may also be viewed as a flat list.</FONT></P>
+
+			</BLOCKQUOTE>
+
+			<P><FONT FACE="Tahoma"><BR>
+			</FONT><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>uci.uml.util</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">Used to generate children of classes.</FONT></P>
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>uci.uml.visual</B></FONT></P>
+
+			<P><FONT SIZE="2" FACE="Tahoma">Contains most of the classes dealing the the way elements of the UML diagram appear
+			within the graphical editor. The classes that are subclassed the most are </FONT><A HREF="../hierarchies/fnme/fnme.html"><FONT
+			SIZE="2" FACE="Tahoma">FigNodeModelElement</FONT></A><FONT SIZE="2" FACE="Tahoma">, </FONT><A HREF="../hierarchies/feme/feme.html"><FONT
+			SIZE="2" FACE="Tahoma">FigEdgeModelElement</FONT></A><FONT SIZE="2" FACE="Tahoma">, and </FONT><A HREF="../hierarchies/diagram/diagram.html"><FONT
+			SIZE="2" FACE="Tahoma">UMLDiagram</FONT></A><FONT SIZE="2" FACE="Tahoma">.<BR>
+			&nbsp;</FONT>
+		</TD>
+		<TD WIDTH="2%"></TD>
+	</TR>
+	<TR>
+		<TD HEIGHT="5" VALIGN="TOP" COLSPAN="2" BGCOLOR="#808080"><IMG SRC="../../../images/leftshadowmask.gif" WIDTH="5" HEIGHT="5" ALIGN="BOTTOM" BORDER="0"></TD>
+		<TD WIDTH="2%" HEIGHT="5"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10"></TD>
+		<TD WIDTH="720"></TD>
+		<TD WIDTH="5"></TD>
+		<TD WIDTH="2%"></TD>
+	</TR>
+</TABLE>
+
+<HR ALIGN="CENTER">
+<FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="../../index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML Release
+Page</FONT></A></P>
+<P><FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="../../../index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML
+Home</FONT></A></P>
+<P><FONT SIZE="2" FACE="Tahoma"><BR>
+&nbsp;</FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></P>
+
+<P><FONT SIZE="2" FACE="Tahoma">&nbsp;&nbsp;</FONT>
+
+</BODY>
+
+</HTML>

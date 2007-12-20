@@ -1,0 +1,50 @@
+<cruisecontrol>
+  <project name="argouml" buildafterfailed="true">
+    <listeners>
+      <currentbuildstatuslistener file="logs/argouml/status.txt" />
+    </listeners>
+
+    <!-- Bootstrappers are run every time the build runs,
+      *before* the modification checks -->
+    <bootstrappers></bootstrappers>
+
+    <!-- Defines where cruise looks for changes, to decide
+      whether to run the build -->
+    <modificationset quietperiod="300">
+      <svn
+        RepositoryLocation="http://argouml.tigris.org/svn/argouml/trunk argouml"
+        username="guest" />
+    </modificationset>
+
+    <!-- Configures the actual build loop, how often and which
+      build file/target ** values in seconds ** Increase! -->
+    <schedule interval="3600">
+      <ant anthome="checkout/argouml/tools/apache-ant-1.7.0"
+        buildfile="build-argouml.xml" target="build" uselogger="true"
+        usedebug="false" />
+    </schedule>
+
+    <!-- directory to write build logs to -->
+    <log logdir="logs/argouml">
+      <merge dir="checkout/argouml/build/tests/reports/junit/output/" />
+      <merge dir="checkout/argouml/build/tests/reports/checkstyle/" />
+    </log>
+
+    <!-- Publishers are run *after* a build completes -->
+    <publishers>
+
+      <!--  TODO: Not operational yet.  Needs valid Host and URL -->
+      <email mailhost="SMTP_HOST"
+        returnaddress="buildmaster@argouml.tigris.org"
+        buildresultsurl="http://localhost/cc/buildresults/argouml"
+        skipusers="false" 
+        spamwhilebroken="true">
+        
+        <always address="tfmorris@tigris.org" />
+        <failure address="tfmorris@tigris.org" />
+        <propertiesmapper file="emailmap.properties" />
+      </email>
+
+    </publishers>
+  </project>
+</cruisecontrol>

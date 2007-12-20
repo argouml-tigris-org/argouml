@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
+	<TITLE>untitled</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<P>
+<TABLE BORDER="0">
+	<TR>
+		<TD WIDTH="619">
+			<H2><FONT COLOR="#008080" FACE="Tahoma"><B>How To Make A Figure</B></FONT></H2>
+			<P><FONT SIZE="2" FACE="Tahoma">Every new diagram type that would appear in the Editor pane will need a property
+			panel associated with it in the Details pane, and make sure that it is correctly displayed in the Navigation pane
+			as well. To do this, the visual elements have to be created and the meta-model has to be changed to accomidate
+			the new diagram type. The best way the accomplish your goal is to find an implemented figure type with similar
+			features to the one you want to create, and use some of it's source code files as templates for the ones you need
+			to create. For instance, if Class type is implemented, and you want to make an Interface type, you could take FigClass.java,
+			copy it into the same directory, and rename it FigInterface.java, and them make the code modifications in that
+			file as appropriate. Also, a new icon for the toolbar will need to made for your new figure.</FONT></P>
+
+			<P><FONT SIZE="2" FACE="Tahoma">For the sake of this example, let's call our new figure <B>Interface</B>, and let's
+			say that this figure will be part of the <I>Class diagram</I>. All figures are either a node or an edge. Interface
+			will be a node.</FONT>
+		</TD>
+		<TD WIDTH="150">
+			<P ALIGN="CENTER"></P>
+
+			<P ALIGN="CENTER"><IMG SRC="instance.gif" WIDTH="98" HEIGHT="65" ALIGN="BOTTOM" BORDER="0"><BR>
+			<FONT SIZE="2" FACE="Tahoma">The figure you want to create.</FONT>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="619">
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>Ingredients</B></FONT></P>
+			<H4><FONT SIZE="2" FACE="Tahoma">Files you will need to create:</FONT></H4>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.visual.Fig<B>Interface</B></FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.Foundation.Core.<B>Interface</B></FONT>
+			</UL>
+			<H4><FONT SIZE="2" FACE="Tahoma">Files you will need to modify:</FONT></H4>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.visual.UMLClassDiagram</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.visual.ClassDiagramGraphModel</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">uci.uml.visual.ClassDiagramRenderer</FONT>
+			</UL>
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>Directions</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma"><B>FigInterface</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">Notice that the Class figure is similar to the one we want to create. So it would
+			be a time-saver to make a copy of FigClass.java, rename it FigInterface.java, and then make the appropriate modificaitons.</FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma"><B>Interface</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">You will not want to make any changes to the meta-model unless there is no other
+			way.</FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma"><B>UMLClassDiagram</B></FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma">This will be one of the last steps:</FONT></P>
+
+
+			<BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma">Create the Icon:</FONT></P>
+
+			<BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma">You will need to make an icon, in .gif format, 18 X 19 pixels, with the transparent
+			background color set to white. Place this file in the uci.Images directory (it must be named <B>Interface</B>.gif).
+			This icon will automatically be used in the toolbar and in the Navigation pane.</FONT></P>
+
+			</BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma">Modify the file:</FONT></P>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">Create a new action called _action<B>Interface</B></FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">Make the appropriate modifications in the method initToolBar()</FONT>
+			</UL>
+
+			</BLOCKQUOTE>
+
+			<P><FONT SIZE="2" COLOR="#000000" FACE="Tahoma"><B>ClassDiagramGraphModel</B></FONT></P>
+
+
+			<BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma">Methods to modify:</FONT>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">getPorts()</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">getInEdges()</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">canAddNode()</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">connect()</FONT>
+			</UL>
+
+			</BLOCKQUOTE>
+
+			<P><FONT SIZE="2" COLOR="#000000" FACE="Tahoma"><B>ClassDiagramRenderer</B></FONT></P>
+
+
+			<BLOCKQUOTE>
+			<P><FONT SIZE="2" FACE="Tahoma">Methods to modify:</FONT></P>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">getFigNodeFor()</FONT>
+			</UL>
+
+			</BLOCKQUOTE>
+
+			<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>Results</B></FONT></P>
+
+			<P><FONT SIZE="2" FACE="Tahoma">The final result should look like the below. Note that the toolbar and the tree
+			in the Navigation pane are using the same icon.</FONT>
+		</TD>
+		<TD WIDTH="150">&nbsp;</TD>
+	</TR>
+</TABLE>
+</P>
+<P><IMG SRC="result.gif" WIDTH="619" HEIGHT="472" ALIGN="BOTTOM" BORDER="0"></P>
+<P><FONT SIZE="4" COLOR="#000066" FACE="Tahoma"><B>Contact</B></FONT></P>
+
+<P><FONT SIZE="2" FACE="Tahoma">Please send comments and questions to: </FONT><A HREF="mailto:jrobbins=dev@ics.uci.edu"><FONT
+SIZE="2" FACE="Tahoma">Jason Robbins</FONT></A></P>
+
+<P>
+<HR ALIGN="CENTER">
+<FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="../../../index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML
+Release Page</FONT></A><A HREF="../recipe/../../../index.html"><FONT SIZE="2" FACE="Tahoma"></FONT></A></P>
+
+<P><FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="../../../../index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML
+Home</FONT></A>
+
+</BODY>
+
+</HTML>

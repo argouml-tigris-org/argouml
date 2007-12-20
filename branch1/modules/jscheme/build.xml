@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+
+<!-- ===========================================================================
+!!!!!!!!!!!!!!!!  Now requires ANT 1.4.1   !!!!!!!!!!!!!!!!!!!!!
+if you get a message like:
+
+build.xml:162: Could not create task of type: copy because I can't find it in th
+e list of task class definitions
+
+You are not running ANT 1.4.1
+
+============================================================================ -->
+
+<project name="argouml-module" default="usage" basedir=".">
+
+  <property environment="env"/>
+  <property file="module.properties"/>
+
+  <property name="argo.root.dir" value="../.."/>
+  <property name="module.root"
+            value="${argo.root.dir}/modules/${argo.module.name}"/>
+  <property name="module.lib.dir" value="${module.root}/lib"/>
+  <property file="/build.properties"/>
+  <property file="${argo.root.dir}/src_new/build.properties"/>
+  <property file="${user.home}/argouml.build.properties"/>
+  <property file="${argo.root.dir}/src_new/default.properties"/>
+
+  <path id="argo.classpath">
+    <pathelement location="${argo.root.dir}/build/argouml.jar" />
+    <pathelement location="${argo.root.dir}/build/argouml-model.jar" />
+    <pathelement location="${argo.root.dir}/build/xerces.jar" />
+    <pathelement location="${argo.root.dir}/build/swidgets.jar" />
+    <pathelement location="${argo.root.dir}/build/nsuml.jar" />
+    <pathelement location="${argo.root.dir}/build/ocl-argo.jar" />
+    <pathelement location="${argo.root.dir}/build/gef.jar" />
+    <pathelement location="${argo.root.dir}/build/antlrall.jar" />
+    <pathelement location="${argo.root.dir}/build/log4j.jar" />
+    <pathelement location="${argo.root.dir}/build/jh.jar" />
+    <pathelement location="${module.lib.dir}/jscheme.jar"/>
+  </path>
+
+  <!-- =================================================================== -->
+  <!-- Initialization target                                               -->
+  <!-- =================================================================== -->
+
+ <target name="init">
+
+    <tstamp>
+        <format property="year" pattern="yyyy"/>
+    </tstamp>
+
+    <property name="Name" value="ArgoModule-${argo.module.name}"/>
+    <property name="name" value="argomodule-${argo.module.name}"/>
+    <property name="build.version" value="${argo.module.version}-${DSTAMP}-${TSTAMP}"/>
+    <echo message="--------------- ${Name} ${build.version} [${year}] ------------"/>
+    <echo message="Using ${ant.version}"/>
+
+
+    <property name="argo.src.dir" value="${argo.root.dir}/src_new"/>
+    <property name="module.src.dir" value="${module.root}/src"/>
+    <property name="argo.lib.dir" value="${argo.root.dir}/lib"/>
+    <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
+
+    <property name="packages" value="org.argouml.*"/>
+    <property name="manifest" value="manifest.mf"/>
+    <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
+
+    <property name="argo.build.dir" value="${argo.root.dir}/build"/>
+    <property name="argo.build.src" value="${argo.root.dir}/src_new"/>
+    <property name="module.build.dir" value="${module.root}/build"/>
+    <property name="module.build.src" value="${module.src.dir}"/>
+    <property name="module.build.dest" value="${module.build.dir}/classes"/>
+    <property name="argo.build.dest" value="${argo.build.dir}/classes"/>
+
+    <property name="argo.jarfile"
+              value="${argo.build.dir}/argouml.jar"/>
+    <property name="module.jarfile.name"
+              value="${argo.module.jarfile}.jar"/>
+    <property name="module.jarfile"
+              value="${module.build.dir}/${module.jarfile.name}"/>
+
+
+    <property name="developer.lib.dir" value="${argo.build.dir}"/>
+
+    <!--dependset>
+       <srcfileset>
+       </srcfileset>
+       <targetfileset dir="$module.build.dest" includes="**/*.class">
+    </dependset-->
+
+  </target>
+
+  <!-- Note this file can only make Ant display values set in the file correctly, -->
+  <!-- but external values in the environment or properties file will be operational.  -->
+
+  <!-- =================================================================== -->
+  <!-- Help on usage                                                       -->
+  <!-- =================================================================== -->
+  <target name="usage" depends="init">
+    <echo message=""/>
+    <echo message=""/>
+    <echo message="${Name} Build file"/>
+    <echo message="-------------------------------------------------------------"/>
+    <echo message=""/>
+    <echo message=" available targets are:"/>
+    <echo message=""/>
+    <echo message="   compile      --> compiles the source code to the tree under ${module.build.dir}"/>
+    <echo message="   package      --> generates the ${argo.module.jarfile}.jar file"/>
+    <echo message="   run          --> runs ArgoUML ${argo.module.jarfile}.jar"/>
+    <echo message="   install      --> merges ./org into ../src_new/org tree"/>
+    <echo message="   usage        --> show this message (default)"/>
+    <echo message=""/>
+    <echo message=" See the comments inside the build.xml file for more details."/>
+    <echo message="-------------------------------------------------------------"/>
+    <echo message=""/>
+    <echo message=""/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+  <target name="prepare" depends="init">
+    <!-- create directories -->
+    <echo message="Preparing the build directories"/>
+    <!-- These must be there already -->
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+
+  <target name="compile" depends="prepare"> 
+
+    <echo message="Compiling the sources"/>
+
+    <!-- create directories -->
+    <mkdir dir="${module.build.dest}"/>
+
+    <javac srcdir="${module.build.src}"
+           destdir="${module.build.dest}"
+           excludes="*.txt,*.bat,*.xml,*.sh"
+           debug="${debug}"
+           deprecation="${deprecation}"
+           optimize="${optimize}">
+        <classpath>
+	  <path refid="argo.classpath"/>
+        </classpath>
+     </javac>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Creates the class package                                           -->
+  <!-- =================================================================== -->
+  <target name="package" depends="compile">
+    <filter token="version" value="${build.version}"/>
+    <copy file="${manifest.src}" tofile="${module.build.dest}/${manifest}" filtering="on" overwrite="on" />
+    <jar jarfile="${module.jarfile}"
+         basedir="${module.build.dest}"
+         includes="org/argouml/**"
+         excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
+         manifest="${module.build.dest}/${manifest}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run ArgoUML from compiled sources                                   -->
+  <!-- =================================================================== -->
+  <target name="run" depends="package">
+    <echo message="--- Executing ${Name} ---"/>
+    <java classname="org.argouml.application.Main"
+          fork="yes">
+        <classpath>
+            <fileset dir="${module.build.dir}">
+                <include name="${module.jarfile.name}" />
+	    </fileset>
+	    <path refid="argo.classpath"/>
+        </classpath>
+
+    </java>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean" depends="init">
+    <delete file="${developer.lib.dir}/ext/${module.jarfile.name}"/>
+    <delete file="${argo.build.dir}/ext/${module.jarfile.name}"/>
+    <delete file="${developer.lib.dir}/ext/jscheme.jar"/>
+    <delete file="${argo.build.dir}/ext/jscheme.jar"/>
+    <delete dir="${module.build.dir}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Move the jar file into the extension directory.                     -->
+  <!-- =================================================================== -->
+  <target name="install" depends="package">
+    <copy todir="${argo.build.dir}/ext">
+      <fileset dir="${module.lib.dir}" includes="jscheme.jar"/>
+      <fileset dir="${module.build.dir}" includes="${module.jarfile.name}"/>
+    </copy>
+    <!--copy todir="${developer.lib.dir}/ext">
+      <fileset dir="${module.lib.dir}" includes="jscheme.jar"/>
+      <fileset dir="${module.build.dir}" includes="${module.jarfile.name}"/>
+    </copy-->
+  </target>
+
+</project>
+
+<!-- End of file -->

@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ -->
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<TITLE>ArgoUML Tours - Building a Statechart Diagram</TITLE>
+</HEAD>
+
+<BODY>
+<A NAME="toc"></A>
+<p align="right" style="margin-bottom:0px;">
+  <A HREF="index.html">Back to ArgoUML Tours</A>
+</p>
+<H1 style="margin-top:0px;">Building a Statechart Diagram</H1>
+
+<P>This tutorial consists of 8 screens, each of which is described in a section of
+this page:<BR>
+This tutorial builds the Statechart Diagram of the Enroll.zargo project.<BR>
+(The screenshots in this tour were made with ArgoUML v0.6.2)</P>
+
+<UL>
+	<LI><A HREF="#01">01. The Finished Diagram</A>
+	<LI><A HREF="#02">02. Create a Statechart Diagram</A>
+	<LI><A HREF="#03">03. Change to Statechart Diagram</A>
+	<LI><A HREF="#04">04. Add Initial and Final States</A>
+	<LI><A HREF="#05">05. Adding States</A>
+	<LI><A HREF="#06">06. Adding Transitions</A>
+	<LI><A HREF="#07">07. Add a Composite State</A>
+	<LI><A HREF="#08">08. Finish</A>
+</UL>
+
+<hr>
+<P style="font-size: 80%; margin-top:0px; margin-bottom:0px;">
+Back to <A HREF="index.html">ArgoUML Tours</A><BR>
+Back to <A HREF="../index.html">ArgoUML Home</A>
+</P>
+<A NAME="01"></A>
+<HR>
+
+<TABLE BORDER="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD><h2>01. The Finished Diagram</h2></TD>
+		<TD align="right"><A HREF="#toc">TOC</A> &nbsp;|&nbsp;
+		<A HREF="#02">Next</A></TD>
+	</TR>
+</TABLE>
+
+<IMG SRC="captures/sdStep1.gif" BORDER="0">
+
+<p>This is what the final appearance of the Statechart diagram inside 
+the "Enroll.argo" example will look we are finished.
+The Explorer, To Do, and Details panes have all been omitted
+in order to show what the complete diagram will look like. 
+Every statechart diagram is associated with exacltly one class. 
+In this case, the statechart diagram above is associated with the 
+<A HREF="bdClassDiagram11.html">Grad class</A> from the 
+class diagram of Enroll.argo.</p>
+
+
+<A NAME="02"></A>
+<hr>
+
+<TABLE BORDER="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD><h2>02. Create a Statechart Diagram</h2></TD>
+		<TD align="right"><A HREF="#01">Back</A> &nbsp;|&nbsp;
+		<A HREF="#toc">TOC</A> &nbsp;|&nbsp;
+		<A HREF="#03">Next</A></TD>
+	</TR>
+</TABLE>
+
+<IMG SRC="captures/sdStep2.gif" ALIGN="BOTTOM" BORDER="0">
+
+<P>To create a new statechart diagram, you must first select the class 
+that you would like to make the statechart diagram for, and then choose 
+Create-Diagrams-StatechartDiagram. Once this is done, name the state
+diagram &quot;Grad states&quot;. 
+Double-click on &quot;Grad States&quot; to go to the 
+statechart diagram editor pane.</P>
+
+<A NAME="03"></A>
+<HR>
+
+<TABLE BORDER="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD><h2>03. Change to Statechart Diagram</h2></TD>
+		<TD align="right"><A HREF="#02">Back</A> &nbsp;|&nbsp;
+    <A HREF="#toc">TOC</A> &nbsp;|&nbsp;
+    <A HREF="#04">Next</A></TD>
+	</TR>
+</TABLE>
+
+<IMG SRC="captures/sdStep3.gif" ALIGN="BOTTOM" BORDER="0">
+
+<P>Change the explorer perspective to Diagram-centric.
+This does not have to be done to create the statechart diagram, 
+but it helps keep the tutorial clear. 
+Refer to <A HREF="bdUseCaseDiagram.html#02">Step #2</A> of 
+Building a Use Case Diagram for more help.</P>
+
+<A NAME="04"></A>
+<HR>
+
+<TABLE BORDER="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD><h2>04. Add Initial and Final States</h2></TD>
+		<TD align="right"><A HREF="#03">Back</A> &nbsp;|&nbsp;
+    <A HREF="#toc">TOC</A> &nbsp;|&nbsp;
+    <A HREF="#05">Next</A></TD>
+	</TR>
+</TABLE>
+
+<IMG SRC="captures/sdStep4.gif" ALIGN="BOTTOM" BORDER="0">
+
+<p>Use <IMG SRC="captures/ititialStateIcon.gif" ALIGN="BOTTOM" BORDER="0"> 
+to place the initial state, and 
+<IMG SRC="captures/finalStateIcon.gif" ALIGN="BOTTOM" BORDER="0"> 
+to place the final states.</p>
+
+<A NAME="05"></A>
+<HR>
+
+<TABLE BORDER="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD><h2>05. Adding States</h2></TD>
+		<TD align="right"><A HREF="#04">Back</A> &nbsp;|&nbsp;
+    <A HREF="#toc">TOC</A> &nbsp;|&nbsp;
+    <A HREF="#06">Next</A></TD>
+	</TR>
+</TABLE>
+
+<IMG SRC="captures/sdStep5.gif" ALIGN="BOTTOM" BORDER="0">
+
+<p>It would be easiest to double-click on 
+<IMG SRC="captures/stateIcon.gif" ALIGN="BOTTOM" BORDER="0">, and then 
+to place and name your seven states. 
+Use the broom tool 
+<IMG SRC="captures/broomIcon.gif" ALIGN="BOTTOM" BORDER="0"> 
+as needed for alignment. 
+(Note: Pressing the Control key and dragging the mouse allows you 
+to use the broom tool without using the toolbar).</p>
+
+<A NAME="06"></A>
+<HR>
+
+<TABLE BORDER="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD><h2>06. Adding Transitions</h2></TD>
+		<TD align="right"><A HREF="#05">Back</A> &nbsp;|&nbsp;
+    <A HREF="#toc">TOC</A> &nbsp;|&nbsp;
+    <A HREF="#07">Next</A></TD>
+	</TR>
+</TABLE>
+
+<IMG SRC="captures/sdStep6.gif" ALIGN="BOTTOM" BORDER="0">
+
+<p>Next, add and name the Trigger for all of the transitions 
+<IMG SRC="captures/transitionIcon.gif" ALIGN="BOTTOM" BORDER="0">.</p>
+
+<A NAME="07"></A></P>
+<HR>
+
+<TABLE BORDER="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD><h2>07. Adding a Composite State</h2></TD>
+		<TD align="right"><A HREF="#06">Back</A> &nbsp;|&nbsp;
+    <A HREF="#toc">TOC</A> &nbsp;|&nbsp;
+    <A HREF="#08">Next</A></TD>
+	</TR>
+</TABLE>
+
+<IMG SRC="captures/sdStep7.gif" ALIGN="BOTTOM" BORDER="0">
+
+<p>A composite state 
+<IMG SRC="captures/compositeStateIcon.gif" ALIGN="BOTTOM" BORDER="0"> 
+contains other states. 
+Place one of these in the diagram and then put the 
+&quot;writeDissertation&quot; and &quot;finalDefense&quot; states within it.</p>
+
+<A NAME="08"></A> 
+<HR>
+
+<TABLE BORDER="0" CELLSPACING="0" WIDTH="100%">
+	<TR>
+		<TD><h2>08. Finish</h2></TD>
+		<TD align="right"><A HREF="#07">Back</A> &nbsp;|&nbsp;
+    <A HREF="#toc">TOC</A></TD>
+	</TR>
+</TABLE>
+
+<IMG SRC="captures/sdStep8.gif" ALIGN="BOTTOM" BORDER="0">
+
+<p>Now your diagram is complete!</p>
+
+
+<hr>
+<P style="font-size: 80%; margin-top:0px; margin-bottom:0px;">
+Back to <A HREF="index.html">ArgoUML Tours</A><BR>
+Back to <A HREF="../index.html">ArgoUML Home</A>
+</P>
+<hr>
+
+</BODY>
+</HTML>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+	<provider id="org.tigris.subversion.subclipse.core.svnnature">
+		<project reference="0.9.3,http://gef.tigris.org/svn/gef/trunk,gef"/>
+		<project reference="0.9.3,http://swidgets.tigris.org/svn/swidgets/trunk,swidgets"/>
+		<project reference="0.9.3,http://toolbar.tigris.org/svn/toolbar/trunk,toolbar"/>
+	</provider>
+</psf>

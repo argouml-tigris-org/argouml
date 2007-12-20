@@ -1,0 +1,447 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<META NAME="GENERATOR" Content="Visual Page 2.0 for Windows">
+	<TITLE>untitled</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="white">
+
+<P><SCRIPT LANGUAGE="JavaScript1.2">
+
+<!--
+
+NS4 = (document.layers) ? 1 : 0;
+IE4 = (document.all) ? 1 : 0;
+ver4 = (NS4 || IE4) ? 1 : 0;
+
+function log(event) {
+    if (parseInt(navigator.appVersion) < 4) {
+        return true;
+    }
+
+    var l = null;
+    if (NS4) { l = document.layers['popup']; }
+    else { l = document.all['popup']; }
+
+    if (NS4) { 
+        l.top = event.y - 10;
+	l.left =  event.x + 20;    
+    }
+    else { 
+//        l.style.pixelTop =  10;
+//	l.style.pixelLeft = 20;
+    }
+
+
+    if (NS4) { l.visibility="show"; }
+//    else { l.style.visibility = "visible"; }
+
+    return true;
+}
+
+function hide(name) {
+    var l = null;
+    if (NS4) { l = document.layers[name]; }
+    else { l = document.all[name]; }
+    if (NS4) { l.visibility="hide"; }
+//    else { l.style.visibility = "hidden"; }
+  
+  return true;
+}
+
+// -->
+
+</SCRIPT><BR>
+<B><FONT SIZE="5" COLOR="teal" FACE="Tahoma">Argo/UML Code Organization</FONT></B></P>
+
+<P><FONT SIZE="2" FACE="Tahoma">Diagrams on this page:</FONT></P>
+
+<UL>
+	<LI><A HREF="#Main"><FONT SIZE="2" FACE="Tahoma">Main</FONT></A><FONT SIZE="2" FACE="Tahoma"></FONT>
+	<LI><A HREF="#Figures"><FONT SIZE="2" FACE="Tahoma">Figures</FONT></A><FONT SIZE="2" FACE="Tahoma"></FONT>
+	<LI><A HREF="#Modes"><FONT SIZE="2" FACE="Tahoma">Modes</FONT></A><FONT SIZE="2" FACE="Tahoma"></FONT>
+	<LI><A HREF="#Commands"><FONT SIZE="2" FACE="Tahoma">Commands</FONT></A>
+	<LI><A HREF="#GraphModels"><FONT SIZE="2" FACE="Tahoma">Graph Models</FONT></A>
+</UL>
+
+<P><FONT SIZE="2" FACE="Tahoma"></FONT></P>
+
+<P><FONT SIZE="2" FACE="Tahoma">Click on a class to see javadocs for that class.</FONT></P>
+
+<P>
+<HR ALIGN="CENTER">
+<FONT SIZE="2" FACE="Tahoma"></FONT></P>
+
+<P><B><FONT COLOR="#660000" FACE="Tahoma">Graph Editing Framework: </FONT></B><FONT COLOR="#660000" FACE="Tahoma"><A
+NAME="Main"></A></FONT><B><FONT COLOR="#660000" FACE="Tahoma">Main</FONT></B></P>
+
+<P><IMG SRC="gef_main.gif" WIDTH="616" HEIGHT="696" ALIGN="BOTTOM" BORDER="0" USEMAP="#Core_a2"></P>
+
+<P><FONT SIZE="1" FACE="Tahoma">Classes shown above</FONT> 
+<TABLE BORDER="1" CELLPADDING="2" CELLSPACING="0" WIDTH="660">
+	<TR>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/JGraph.html"><FONT SIZE="1" FACE="Arial, Helvetica">JGraph</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/SelectiionManager.html"><FONT SIZE="1" FACE="Arial, Helvetica">SelectionManager</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/Selection.html"><FONT SIZE="1" FACE="Arial, Helvetica">Selection</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/Editor.html"><FONT SIZE="2" FACE="Arial, Helvetica">Editor</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/Guide.html"><FONT SIZE="2" FACE="Arial, Helvetica">Guide</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/SelectionResize.html"><FONT SIZE="2" FACE="Arial, Helvetica">SelectionResize</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/LayerManager.html"><FONT SIZE="2" FACE="Arial, Helvetica">LayerManager</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/SelectionReshape.html"><FONT SIZE="2" FACE="Arial, Helvetica">SelectionReshape</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/ModeManager.html"><FONT SIZE="2" FACE="Arial, Helvetica">ModeManager</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/Layer.html"><FONT SIZE="2" FACE="Arial, Helvetica">Layer</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/Mode.html"><FONT SIZE="2" FACE="Arial, Helvetica">Mode</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/LayerDiagram.html"><FONT SIZE="2" FACE="Arial, Helvetica">LayerDiagram</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/LayerGrid.html"><FONT SIZE="2" FACE="Arial, Helvetica">LayerGrid</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/LayerPerspective.html"><FONT SIZE="2" FACE="Arial, Helvetica">LayerPerspective</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/graph/GraphModel.html"><FONT SIZE="2" FACE="Arial, Helvetica">GraphModel</FONT></A><FONT
+			SIZE="2" FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/graph/GraphNodeRenderer.html"><FONT SIZE="2" FACE="Arial, Helvetica">GraphNodeRenderer</FONT></A><FONT
+			SIZE="2" FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/graph/GraphEdgeRenderer.html"><FONT SIZE="2" FACE="Arial, Helvetica">GraphEdgeRenderer</FONT></A></TD>
+	</TR>
+</TABLE>
+</P>
+
+<P>
+<HR ALIGN="CENTER">
+</P>
+
+<P><B><FONT COLOR="#660000" FACE="Tahoma">Graph Editing Framework: </FONT></B><FONT COLOR="#660000" FACE="Tahoma"><A
+NAME="Figures"></A></FONT><B><FONT COLOR="#660000" FACE="Tahoma">Figures</FONT></B></P>
+
+<P><IMG SRC="gef_figs.gif" WIDTH="442" HEIGHT="666" ALIGN="BOTTOM" BORDER="0" USEMAP="#Core_b2"></P>
+
+<P><FONT SIZE="1" FACE="Tahoma">Classes shown above</FONT> </P>
+
+<P>
+<TABLE BORDER="1" CELLPADDING="2" CELLSPACING="0" WIDTH="660">
+	<TR>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/Fig.html"><FONT SIZE="2" FACE="Arial, Helvetica">Fig</FONT></A></TD>
+		<TD WIDTH="33%">&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/FigLine.html"><FONT SIZE="2" FACE="Arial, Helvetica">FigLine</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/FigRect.html"><FONT SIZE="2" FACE="Arial, Helvetica">FigRect</FONT></A></TD>
+		<TD WIDTH="33%">&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/FigEdge.html"><FONT SIZE="2" FACE="Arial, Helvetica">FigEdge</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/FigText.html"><FONT SIZE="2" FACE="Arial, Helvetica">FigText</FONT></A></TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/FigGroup.html"><FONT SIZE="2" FACE="Arial, Helvetica">FigGroup</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%"><A HREF="../../api/uci/gef/FigNode.html"><FONT SIZE="2" FACE="Arial, Helvetica">FigNode</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%">&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%">&nbsp;</TD>
+		<TD WIDTH="33%">&nbsp;</TD>
+	</TR>
+</TABLE>
+</P>
+
+<P>
+<HR ALIGN="CENTER">
+</P>
+
+<P><BR>
+<B><FONT COLOR="#660000" FACE="Tahoma">Graph Editing Framework: </FONT></B><FONT COLOR="#660000" FACE="Tahoma"><A
+NAME="Modes"></A></FONT><B><FONT COLOR="#660000" FACE="Tahoma">Modes</FONT></B></P>
+
+<P><IMG SRC="gef_modes.gif" WIDTH="577" HEIGHT="486" ALIGN="BOTTOM" BORDER="0" USEMAP="#mode_map"></P>
+
+<P><FONT SIZE="1" FACE="Tahoma">Classes shown above</FONT> </P>
+
+<P>
+<TABLE BORDER="1" CELLPADDING="2" CELLSPACING="0" WIDTH="660">
+	<TR>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/Mode.html"><FONT SIZE="2" FACE="Arial, Helvetica">Mode</FONT></A></TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/ModeSelect.html"><FONT SIZE="2" FACE="Arial, Helvetica">ModeSelect</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/ModeDragScroll.html"><FONT SIZE="2" FACE="Arial, Helvetica">ModeDragScroll</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/ModeBroom.html"><FONT SIZE="2" FACE="Arial, Helvetica">ModeBroom</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/ModeModify.html"><FONT SIZE="2" FACE="Arial, Helvetica">ModeModify</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/Handle.html"><FONT SIZE="2" FACE="Arial, Helvetica">Handle</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/Fig.html"><FONT SIZE="2" FACE="Arial, Helvetica">Fig</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/ModeCreate.html"><FONT SIZE="2" FACE="Arial, Helvetica">ModeCreate</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/ModePlace.html"><FONT SIZE="2" FACE="Arial, Helvetica">ModePlace</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/graph/GraphFactory.html"><FONT SIZE="2" FACE="Arial, Helvetica">GraphFactory</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/ModeCreateFigRect.html"><FONT SIZE="2" FACE="Arial, Helvetica">ModeCreateFigRect</FONT></A></TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+	</TR>
+</TABLE>
+</P>
+
+<P><BR>
+
+<HR ALIGN="CENTER">
+</P>
+
+<P><BR>
+<B><FONT COLOR="#660000" FACE="Tahoma">Graph Editing Framework: </FONT></B><FONT COLOR="#660000" FACE="Tahoma"><A
+NAME="Commands"></A></FONT><B><FONT COLOR="#660000" FACE="Tahoma">Commands</FONT></B></P>
+
+<P><IMG SRC="gef_commands.gif" WIDTH="576" HEIGHT="557" ALIGN="BOTTOM" BORDER="0" USEMAP="#command_map"></P>
+
+<P><FONT SIZE="1" FACE="Tahoma">Classes shown above</FONT> </P>
+
+<P>
+<TABLE BORDER="1" CELLPADDING="2" CELLSPACING="0" WIDTH="660">
+	<TR>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Arial, Helvetica">Action</FONT></TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/Cmd.html"><FONT SIZE="2" FACE="Arial, Helvetica">Cmd</FONT></A></TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdOpenPGML.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdOpenPGML</FONT></A><FONT
+			SIZE="2" FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/CmdSavePGML.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdSavePGML</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdPrint.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdPrint</FONT></A><FONT SIZE="2"
+			FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/CmdCreateNode.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdCreateNode</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdExit.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdExit</FONT></A><FONT SIZE="2"
+			FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/CmdSpawn.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdSpawn</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdSetMode.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdSetMode</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdNull.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdNull</FONT></A><FONT SIZE="2"
+			FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/CmdSequence.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdSequence</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdCopy.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdCopy</FONT></A><FONT SIZE="2"
+			FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/CmdPaste.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdPaste</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdDispose.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdDispose</FONT></A><FONT SIZE="2"
+			FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/CmdDelete.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdDelete</FONT></A></TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdSelectInvert.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdSelectInvert</FONT></A><FONT
+			SIZE="2" FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/CmdSelectAll.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdSelectAll</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdSelectNear.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdSelectNear</FONT></A><FONT
+			SIZE="2" FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/CmdSelectNext.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdSelectNext</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdDistribute.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdDistribute</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdNudge.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdNudge</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%">&nbsp;</TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/gef/CmdAlign.html"><FONT SIZE="2" FACE="Arial, Helvetica">CmdAlign</FONT></A></TD>
+	</TR>
+</TABLE>
+</P>
+
+<P><BR>
+
+<HR ALIGN="CENTER">
+</P>
+
+<P><BR>
+<B><FONT COLOR="#660000" FACE="Tahoma">Graph Editing Framework: </FONT></B><FONT COLOR="#660000" FACE="Tahoma"><A
+NAME="GraphModels"></A></FONT><B><FONT COLOR="#660000" FACE="Tahoma">Graph Models</FONT></B></P>
+
+<P><IMG SRC="gef_graph.gif" WIDTH="553" HEIGHT="700" ALIGN="BOTTOM" BORDER="0" USEMAP="#graph_map"></P>
+
+<P><FONT SIZE="1" FACE="Tahoma">Classes shown above</FONT> </P>
+
+<P>
+<TABLE BORDER="1" CELLPADDING="2" CELLSPACING="0" WIDTH="660">
+	<TR>
+		<TD WIDTH="50%"><A HREF="../../api/uci/graph/GraphModel.html"><FONT SIZE="2" FACE="Arial, Helvetica">GraphModel</FONT></A></TD>
+		<TD WIDTH="50%"><A HREF="../../api/uci/graph/GraphNodeRenderer.html"><FONT SIZE="2" FACE="Arial, Helvetica">GraphNodeRenderer</FONT></A><FONT
+			SIZE="2" FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/graph/DefaultGraphNodeRenderer.html"><FONT SIZE="2"
+			FACE="Arial, Helvetica">DefaultGraphNodeRenderer</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="50%">&nbsp;</TD>
+		<TD WIDTH="50%"><A HREF="../../api/uci/graph/GraphEdgeRenderer.html"><FONT SIZE="2" FACE="Arial, Helvetica">GraphEdgeRenderer</FONT></A><FONT
+			SIZE="2" FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/graph/DefaultGraphEdgeRenderer.html"><FONT SIZE="2"
+			FACE="Arial, Helvetica">DefaultGraphEdgeRenderer</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="50%"><A HREF="../../api/uci/graph/MutableGraphModel.html"><FONT SIZE="2" FACE="Arial, Helvetica">MutableGraphModel</FONT></A></TD>
+		<TD WIDTH="50%"><FONT SIZE="2" FACE="Arial, Helvetica">ObjectEvent, </FONT><A HREF="../../api/uci/graph/GraphEvent.html"><FONT
+			SIZE="2" FACE="Arial, Helvetica">GraphEvent</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="50%">&nbsp;</TD>
+		<TD WIDTH="50%"><A HREF="../../api/uci/graph/GraphListener.html"><FONT SIZE="2" FACE="Arial, Helvetica">GraphListener</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="50%"><A HREF="../../api/uci/graph/MutableGraphSupport.html"><FONT SIZE="2" FACE="Arial, Helvetica">MutableGraphModelSupport</FONT></A></TD>
+		<TD WIDTH="50%"><A HREF="../../api/uci/graph/DefaultGraphModel.html"><FONT SIZE="2" FACE="Arial, Helvetica">DefaultGraphModel</FONT></A><FONT
+			SIZE="2" FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/NetPrimitive.html"><FONT SIZE="2" FACE="Arial, Helvetica">NetPrimitve</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="50%">&nbsp;</TD>
+		<TD WIDTH="50%"><A HREF="../../api/uci/gef/NetList.html"><FONT SIZE="2" FACE="Arial, Helvetica">NetList</FONT></A><FONT SIZE="2"
+			FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/NetNode.html"><FONT SIZE="2" FACE="Arial, Helvetica">NetNode</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="50%">&nbsp;</TD>
+		<TD WIDTH="50%"><A HREF="../../api/uci/gef/NetPort.html"><FONT SIZE="2" FACE="Arial, Helvetica">NetPort</FONT></A><FONT SIZE="2"
+			FACE="Arial, Helvetica">, </FONT><A HREF="../../api/uci/gef/NetEdge.html"><FONT SIZE="2" FACE="Arial, Helvetica">NetEdge</FONT></A></TD>
+	</TR>
+</TABLE>
+
+<HR ALIGN="CENTER">
+<FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="../../index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML Release
+Page</FONT></A></P>
+
+<P><FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="../../../index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML
+Home</FONT></A></P>
+
+<P><FONT SIZE="2" FACE="Tahoma"><BR>
+&nbsp;</FONT></P>
+
+<P><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></P>
+
+<P><FONT SIZE="2" FACE="Tahoma">&nbsp;&nbsp;</FONT>
+
+<DIV>
+<LAYER NAME='popup' VISIBILITY="hide" onmouseout="return hide('popup');">
+	<P>
+	<TABLE BORDER="0" CELLPADDING="3" CELLSPACING="0">
+		<TR>
+			<TD BGCOLOR="#F0A000">
+				<TABLE BORDER="0" CELLPADDING="6" CELLSPACING="0">
+					<TR>
+						<TD BGCOLOR="white"><TT> See also UML 1.1 Semantics <A HREF="not_done_yet">page XXX</A>.<BR>
+							<B>Attributes</B><BR>
+							List of attributes...<BR>
+							<B>Operations</B><BR>
+							List of operations...</TT></TD>
+					</TR>
+				</TABLE>
+			</TD>
+		</TR>
+	</TABLE>
+</LAYER>
+</DIV>
+
+
+<MAP Name="Core_a2">
+<AREA Shape="Rect" coords = "266,605,381,669"  HREF="../../api/uci/gef/LayerPerspective.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "436,490,551,554"  HREF="../../api/uci/gef/LayerGrid.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "320,489,435,553"  HREF="../../api/uci/gef/LayerDiagram.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "376,143,519,207"  HREF="../../api/uci/gef/SelectionResize.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "411,213,558,277"  HREF="../../api/uci/gef/SelectionReshape.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "4,15,110,79"  HREF="../../api/uci/gef/JGraph.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "226,30,348,114"  HREF="../../api/uci/gef/SelectiionManager.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "430,38,556,102"  HREF="../../api/uci/gef/Selection.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "229,134,355,198"  HREF="../../api/uci/gef/Guide.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "24,112,191,241"  HREF="../../api/uci/gef/Editor.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "233,208,359,272"  HREF="../../api/uci/gef/LayerManager.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "404,333,535,451"  HREF="../../api/uci/gef/Layer.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "229,328,355,418"  HREF="../../api/uci/gef/ModeManager.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "466,647,566,666"  HREF="../../api/uci/graph/GraphEdgeRenderer.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "443,622,543,641"  HREF="../../api/uci/graph/GraphNodeRenderer.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "416,603,516,622"  HREF="../../api/uci/graph/GraphModel.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "56,408,177,472"  HREF="../../api/uci/gef/Mode.html" onmouseover="return log(event);">
+</MAP>
+
+<MAP Name="Core_b2">
+<AREA Shape="Rect" coords = "140,5,301,225"  HREF="../../api/uci/gef/Fig.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "15,313,141,402"  HREF="../../api/uci/gef/FigLine.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "142,302,268,391"  HREF="../../api/uci/gef/FigRect.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "27,439,153,528"  HREF="../../api/uci/gef/FigEdge.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "156,439,282,528"  HREF="../../api/uci/gef/FigText.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "288,436,414,525"  HREF="../../api/uci/gef/FigGroup.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "272,534,398,623"  HREF="../../api/uci/gef/FigNode.html" onmouseover="return log(event);">
+</MAP>
+
+<MAP Name="mode_map">
+<AREA Shape="Rect" coords = "1,302,86,354"  HREF="../../api/uci/gef/Fig.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "394,278,566,373"  HREF="../../api/uci/graph/GraphFactory.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "441,209,550,279"  HREF="../../api/uci/gef/Handle.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "97,362,242,447"  HREF="../../api/uci/gef/ModeCreateFigRect.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "245,254,378,336"  HREF="../../api/uci/gef/ModePlace.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "99,249,244,334"  HREF="../../api/uci/gef/ModeCreate.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "434,116,577,199"  HREF="../../api/uci/gef/ModeModify.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "313,111,432,199"  HREF="../../api/uci/gef/ModeBroom.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "189,124,295,197"  HREF="../../api/uci/gef/ModeDragScroll.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "40,112,185,197"  HREF="../../api/uci/gef/ModeSelect.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "232,4,377,89"  HREF="../../api/uci/gef/Mode.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "272,534,398,623"  HREF="../../api/uci/gef/FigNode.html" onmouseover="return log(event);">
+</MAP>
+
+<MAP Name="command_map">
+<AREA Shape="Rect" coords = "448,196,574,262"  HREF="../../api/uci/gef/CmdSetMode.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "303,185,407,212"  HREF="../../api/uci/gef/CmdExit.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "186,186,290,213"  HREF="../../api/uci/gef/CmdPrint.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "72,186,176,213"  HREF="../../api/uci/gef/CmdSavePGML.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "-1,227,103,254"  HREF="../../api/uci/gef/CmdOpenPGML.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "114,229,218,256"  HREF="../../api/uci/gef/CmdCreateNode.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "242,226,346,253"  HREF="../../api/uci/gef/CmdSpawn.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "336,323,440,350"  HREF="../../api/uci/gef/CmdDelete.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "319,354,423,381"  HREF="../../api/uci/gef/CmdDispose.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "199,322,303,349"  HREF="../../api/uci/gef/CmdPaste.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "180,354,284,381"  HREF="../../api/uci/gef/CmdCopy.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "38,356,142,383"  HREF="../../api/uci/gef/CmdSequence.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "9,321,113,348"  HREF="../../api/uci/gef/CmdNull.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "212,465,316,492"  HREF="../../api/uci/gef/CmdSelectNext.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "157,489,261,516"  HREF="../../api/uci/gef/CmdSelectNear.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "36,491,140,518"  HREF="../../api/uci/gef/CmdSelectInvert.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "97,459,201,486"  HREF="../../api/uci/gef/CmdSelectAll.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "460,464,561,517"  HREF="../../api/uci/graph/CmdNudge.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "348,463,446,516"  HREF="../../api/uci/gef/CmdDistribute.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "233,3,383,105"  HREF="../../api/uci/gef/Cmd.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "407,521,504,554"  HREF="../../api/uci/gef/CmdAlign.html" onmouseover="return log(event);">
+</MAP>
+
+<MAP Name="graph_map">
+<AREA Shape="Rect" coords = "426,657,564,680"  HREF="../../api/uci/gef/NetEdge.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "426,593,528,616"  HREF="../../api/uci/gef/NetPort.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "406,538,508,561"  HREF="../../api/uci/gef/NetNode.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "357,481,459,504"  HREF="../../api/uci/gef/NetList.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "447,434,549,457"  HREF="../../api/uci/gef/NetPrimitive.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "374,401,476,424"  HREF="../../api/uci/graph/DefaultGraphModel.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "330,258,516,370"  HREF="../../api/uci/graph/GraphListener.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "439,219,554,255"  HREF="../../api/uci/graph/GraphEvent.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "429,74,557,96"  HREF="../../api/uci/graph/DefaultGraphNodeRenderer.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "429,155,557,177"  HREF="../../api/uci/graph/DefaultGraphEdgeRenderer.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "279,97,460,154"  HREF="../../api/uci/graph/GraphEdgeRenderer.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "279,4,460,69"  HREF="../../api/uci/graph/GraphNodeRenderer.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "1,182,315,351"  HREF="../../api/uci/graph/MutableGraphModel.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "0,398,328,607"  HREF="../../api/uci/graph/MutableGraphSupport.html" onmouseover="return log(event);">
+<AREA Shape="Rect" coords = "2,2,265,157"  HREF="../../api/uci/graph/GraphModel.html" onmouseover="return log(event);">
+</MAP>
+
+</BODY>
+
+</HTML>

@@ -1,0 +1,93 @@
+Major changes between Argo/UML v0.7 and v0.6.2:
+
++ More fully tested under JDK 1.2.
+
++ Many depricated method calls removed.  This improvement was
+contributed by David Goudie.
+
++ New UI feature: "Rapid Construction Buttons" are toolbar buttons
+that appear around the currently selected node.  Clicking a button
+will add a new node and the appropriate edge.  Dragging from a
+button to an existing node will create a new edge between the current
+node and the target node.  Dragging from a button to empty space will
+create a new node at the mouse position and a new edge.
+
++ Loading time has been substancially reduced by: (1) Programmatically
+constructing an empty project rather than loading it from
+uci/uml/templates/Empty.argo.   Project templates should be used again
+in the future.  (2) Removing some accidental double initialization.
+(3) Constructing some of the user interface elements after the main
+window has been opened. (4) Avoiding file-not-found exceptions for
+actions and tree nodes that do not have icons defined.
+
++ The delay between the main window opening and the immediate placing
+the first class, package, or interface has been reduced by preloading
+classes that are normally loaded on demand.  This improves the
+Argo/UML's first impression of speed.
+
++ Got pop-up menus working in the UML diagram pane.
+
++ New pop-up menus on diagram elements.  (1) The "Critiques" submenu
+lists pending criticism for the target model element.  (2) "Send to
+back" and others have been moved to an "Ordering" submenu.  (3)
+Associations now have position-sensitive menu items for the
+multiplicity and aggregation of each association end.
+
++ Fixed a bug in the navigation perspective rules for "Class ->
+Aggregate Class" and "Class -> Composite Class".
+
++ Worked around a bug in uci.uml.ui.Project that caused diagrams to
+sometimes be added to the list of diagrams twice.  This caused the
+user interface to display blank lines at the top of the navigator
+pane.
+
++ Improved parsing of Argo Project files and XMI files.  This
+enhancement was contributed by Jim Holt.
+
++ Fixed the naming scheme for project member files.  Now project
+member names start with the base name of the project, and that part is
+updated when you change the name of the project.
+
++ Moved code related to critiquing out of uci/gef and
+uci/uml/Foundation/Core.  The code to draw clarifiers is now in
+uci/uml/visual/Selection*.java.  And the code to send critiqueASAP
+hints to the critiquing framework when a model element changes is now
+done through a more standard PropertyChangeListener.
+
++ Fixed a problem in the property panels that caused them to set the
+attributes of model elements when the model element is first selected.
+
++ Fixed the size of columns in many tables.
+
++ Changed the user interface for TabConstraints to be more clear and
+reliable.
+
++ Improved the speed of the "To Do" tree for the most common cases.
+
++ Improved the speed of navigator pane updates.
+
++ Javadoc comments are now saved as TaggedValues.
+
++ Changed the way that FigActor is drawn and resized.
+
++ Removed dead code: uci.gef.RedrawManager, uci.gef.ExecuteActionWindow,
+and uci.uml.util.UMLDescription.
+
++ Added a manifest entry so that you launch it via
+java -jar argouml.jar
+This requires JDK 1.2 and you must have xml4j in the same directory.
+
++ Added "Save GIF" option to File menu.  This change was contributed
+by Steve Poole.
+
++ Enhanced the way that compartments of a class icon are hidden or
+shown.  A new class FigNodeWithCompartments has been introduced as a
+base class for FigClass.  In a future release this will allow other
+icons to also have compartments that can be hidden or shown.  This
+change was contributed by Eric Lefevre.
+
++ The source code not unzips into a new directory: argouml070.  The
+plan is for the number to change with each release.
+
+Note: Changes not otherwise attributed were performed by Jason Robbins
+(jrobbins at collab.net) or Adam Gauthier (agauthie@ics.uci.edu).

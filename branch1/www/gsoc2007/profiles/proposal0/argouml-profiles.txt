@@ -1,0 +1,2903 @@
+Index: D:/ArgoUML/argouml/org/argouml/i18n/tab.properties
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/i18n/tab.properties	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/i18n/tab.properties	(working copy)
+@@ -36,6 +36,7 @@
+ tab.layout = Layout
+ tab.notation = Notations
+ tab.preferences = Preferences
++tab.profiles = Profiles
+ tab.properties = Properties
+ tab.shortcuts = Configure Shortcuts
+ tab.source = Source
+Index: D:/ArgoUML/argouml/org/argouml/kernel/Project.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/kernel/Project.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/kernel/Project.java	(working copy)
+@@ -52,9 +52,6 @@
+ import org.argouml.ui.targetmanager.TargetEvent;
+ import org.argouml.ui.targetmanager.TargetListener;
+ import org.argouml.ui.targetmanager.TargetManager;
+-import org.argouml.uml.Profile;
+-import org.argouml.uml.ProfileException;
+-import org.argouml.uml.ProfileJava;
+ import org.argouml.uml.ProjectMemberModel;
+ import org.argouml.uml.cognitive.ProjectMemberTodoList;
+ import org.argouml.uml.diagram.ArgoDiagram;
+@@ -64,6 +61,7 @@
+ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+ import org.argouml.uml.diagram.ui.UMLDiagram;
+ import org.argouml.uml.generator.GenerationPreferences;
++import org.argouml.uml.profile.ProfileConfiguration;
+ import org.tigris.gef.base.Diagram;
+ import org.tigris.gef.presentation.Fig;
+ import org.tigris.gef.undo.Memento;
+@@ -143,7 +141,7 @@
+     private GenerationPreferences cgPrefs;
+     private transient VetoableChangeSupport vetoSupport;
+ 
+-    private Profile profile;
++    private ProfileConfiguration profileConfiguration;
+ 
+     /**
+      * The active diagram, pointer to a diagram in the list with diagrams.
+@@ -171,7 +169,7 @@
+      * Constructor.
+      */
+     public Project() {
+-        profile = new ProfileJava();
++        profileConfiguration = new ProfileConfiguration();
+         projectSettings = new ProjectSettings();
+ 
+         Model.getModelManagementFactory().setRootModel(null);
+@@ -188,17 +186,13 @@
+         defaultModelTypeCache = new HashMap();
+ 
+         LOG.info("making empty project with empty model");
+-        try {
+-            // Jaap Branderhorst 2002-12-09
+-            // load the default model
+-            // this is NOT the way how it should be since this makes argo
+-            // depend on Java even more.
+-            setDefaultModel(profile.getProfileModel());
+-        } catch (ProfileException e) {
+-            // TODO: how are we going to handle exceptions here?
+-            // I think we need a ProjectException.
+-            LOG.error("Exception setting the default profile", e);
+-        }
++ 
++        // Jaap Branderhorst 2002-12-09
++        // load the default model
++        // this is NOT the way how it should be since this makes argo
++        // depend on Java even more.
++        setDefaultModel(profileConfiguration.getDefaultProfile().getModel());
++        
+         addSearchPath("PROJECT_DIR");
+         TargetManager.getInstance().addTargetListener(this);
+     }
+@@ -1391,8 +1385,8 @@
+     /**
+      * @return Returns the profile.
+      */
+-    public Profile getProfile() {
+-        return profile;
++    public ProfileConfiguration getProfileConfiguration() {
++        return profileConfiguration;
+     }
+ 
+     /**
+Index: D:/ArgoUML/argouml/org/argouml/cognitive/Highlightable.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/cognitive/Highlightable.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/cognitive/Highlightable.java	(working copy)
+@@ -1,4 +1,4 @@
+-// $Id:$
++// $Id$
+ // Copyright (c) 1996-99 The Regents of the University of California. All
+ // Rights Reserved. Permission to use, copy, modify, and distribute this
+ // software and its documentation without fee, and without a written
+Index: D:/ArgoUML/argouml/org/argouml/notation/providers/uml/NotationUtilityUml.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/notation/providers/uml/NotationUtilityUml.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/notation/providers/uml/NotationUtilityUml.java	(working copy)
+@@ -37,8 +37,8 @@
+ import org.argouml.kernel.ProjectManager;
+ import org.argouml.kernel.ProjectSettings;
+ import org.argouml.model.Model;
+-import org.argouml.uml.Profile;
+-import org.argouml.uml.ProfileException;
++import org.argouml.uml.profile.ProfileConfiguration;
++import org.argouml.uml.profile.ProfileException;
+ import org.argouml.util.MyTokenizer;
+ 
+ /**
+@@ -476,15 +476,24 @@
+             return stereo;
+         }
+ 
+-        try {
++//        try {
+             Project project = ProjectManager.getManager().getCurrentProject();
+-            Profile profile = project.getProfile();
+-            stereo = recFindStereotype(obj, profile.getProfileModel(), name);
+-        } catch (ProfileException e) {
++            ProfileConfiguration profile = project.getProfileConfiguration();
++            Vector models = profile.getProfileModels();
++            
++            for(int i=0;i<models.size();++i) {
++        	Object currentModel = models.elementAt(i);
++                stereo = recFindStereotype(obj, currentModel, name);
++                
++                if (stereo != null) {
++                    return stereo;
++                }
++            }
++//        } catch (ProfileException e) {
+             // TODO: How are we going to handle exceptions here?
+             // I suspect the profile should be part of the project
+             // and not a singleton.
+-        }
++//        }
+ 
+         if (stereo != null) {
+             return Model.getModelManagementHelper().getCorrespondingElement(
+Index: D:/ArgoUML/argouml/org/argouml/uml/Profile.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/Profile.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/Profile.java	(working copy)
+@@ -1,77 +0,0 @@
+-// $Id$
+-// Copyright (c) 1996-2006 The Regents of the University of California. All
+-// Rights Reserved. Permission to use, copy, modify, and distribute this
+-// software and its documentation without fee, and without a written
+-// agreement is hereby granted, provided that the above copyright notice
+-// and this paragraph appear in all copies.  This software program and
+-// documentation are copyrighted by The Regents of the University of
+-// California. The software program and documentation are supplied "AS
+-// IS", without any accompanying services from The Regents. The Regents
+-// does not warrant that the operation of the program will be
+-// uninterrupted or error-free. The end-user understands that the program
+-// was developed for research purposes and is advised not to rely
+-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-
+-
+-package org.argouml.uml;
+-
+-import java.util.Iterator;
+-/**
+- *   This abstract class captures the configurable behavior of Argo.
+- *
+- *   @author Curt Arnold
+- */
+-public abstract class Profile {
+-
+-    /**
+-     *    This method produces a string that represents the specific
+-     *    model element in the context of the specified namespace.
+-     *    @param element element to represent.
+-     *    @param namespace context namespace (may be null).
+-     *    @return a string representing the model element
+-     */
+-    public abstract String formatElement(Object element,
+-					 Object namespace);
+-    /**
+-     *   This method produces a string the represents the collection
+-     *   of model elements in the context of the specified namespace.
+-     *   @param iter iterator over collection
+-     *   @param namespace context namespace (may be null).
+-     *   @return a string representing the collection
+-     */
+-    public abstract String formatCollection(Iterator iter,
+-					    Object namespace);
+-    /**
+-     * @return the UML Model that contains the profile model
+-     * @throws ProfileException if failed to get profile.
+-     */
+-    public abstract Object getProfileModel() throws ProfileException;
+-    
+-    /**
+-     * Set the filename to load the profile model from.  This will be
+-     * remembered and used as the file for all future loads.
+-     * @param filename file name of XMI file containing model to use as profile
+-     * 
+-     * @throws ProfileException if the given file isn't a valid profile
+-     */
+-    public abstract void setProfileModelFilename(String filename)
+-        throws ProfileException;
+-    
+-    /**
+-     * Return the filename that was or will be used to load the profile/default
+-     * model.
+-     * @return the filename
+-     */
+-    public abstract String getProfileModelFilename();
+-
+-}
+Index: D:/ArgoUML/argouml/org/argouml/uml/ProfileJava.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/ProfileJava.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/ProfileJava.java	(working copy)
+@@ -1,448 +0,0 @@
+-// $Id$
+-// Copyright (c) 1996-2007 The Regents of the University of California. All
+-// Rights Reserved. Permission to use, copy, modify, and distribute this
+-// software and its documentation without fee, and without a written
+-// agreement is hereby granted, provided that the above copyright notice
+-// and this paragraph appear in all copies.  This software program and
+-// documentation are copyrighted by The Regents of the University of
+-// California. The software program and documentation are supplied "AS
+-// IS", without any accompanying services from The Regents. The Regents
+-// does not warrant that the operation of the program will be
+-// uninterrupted or error-free. The end-user understands that the program
+-// was developed for research purposes and is advised not to rely
+-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-
+-package org.argouml.uml;
+-
+-import java.io.File;
+-import java.io.FileInputStream;
+-import java.io.FileNotFoundException;
+-import java.io.IOException;
+-import java.io.InputStream;
+-import java.net.MalformedURLException;
+-import java.net.URL;
+-import java.util.Collection;
+-import java.util.Iterator;
+-import java.util.zip.ZipEntry;
+-import java.util.zip.ZipInputStream;
+-
+-import org.apache.log4j.Logger;
+-import org.argouml.application.api.Argo;
+-import org.argouml.configuration.Configuration;
+-import org.argouml.model.Model;
+-import org.argouml.model.UmlException;
+-import org.argouml.model.XmiReader;
+-import org.xml.sax.InputSource;
+-
+-/**
+- * This class implements the abstract class Profile for use in modelling
+- * Java language projects.  Eventually, this class may be replaced by
+- * a configurable profile.
+- *
+- * TODO: (MVW) I see only little Java specific stuff here.
+- * Most of this should be moved to a ProfileUML.java file, which
+- * should be used by default.
+- *
+- * TODO: (MVW) Document the use of "argo.defaultModel" in
+- * the argo.user.properties file.
+- * 
+- * TODO: This is an i18n nightmare.  Tons of hardcoded strings and
+- * string concatentation.  Change to use message formatting. - tfm 20060226
+- *
+- * @author Curt Arnold
+- */
+-public class ProfileJava extends Profile {
+-    /**
+-     * Logger.
+-     */
+-    private static final Logger LOG = Logger.getLogger(ProfileJava.class);
+-
+-    private Object defaultModel;
+-    
+-    static final String DEFAULT_PROFILE = 
+-                            "/org/argouml/model/mdr/profiles/default-uml14.xmi";
+-    
+-    private String defaultModelFilename;
+-
+-    /**
+-     * The constructor.
+-     */
+-    public ProfileJava() {
+-        // do nothing - profile loading deferred until needed
+-    }
+-
+-    /*
+-     * @see org.argouml.uml.Profile#formatElement(java.lang.Object,
+-     * java.lang.Object)
+-     */
+-    public String formatElement(Object element, Object namespace) {
+-	String value = null;
+-	if (element == null) {
+-	    value = "";
+-	} else {
+-	    Object elementNs = Model.getFacade().getNamespace(element);
+-	    //
+-	    //   if element is an AssociationEnd use
+-	    //      the namespace of containing association
+-	    //
+-	    if (Model.getFacade().isAAssociationEnd(element)) {
+-		Object assoc = Model.getFacade().getAssociation(element);
+-		if (assoc != null) {
+-		    elementNs = Model.getFacade().getNamespace(assoc);
+-		}
+-	    }
+-	    if (elementNs == namespace) {
+-		value = Model.getFacade().getName(element);
+-		if (value == null || value.length() == 0) {
+-		    value = defaultName(element, namespace);
+-		}
+-	    } else {
+-		StringBuffer buffer = new StringBuffer();
+-		String pathSep = getPathSeparator();
+-		buildPath(buffer, element, pathSep);
+-		value = buffer.toString();
+-	    }
+-	}
+-	return value;
+-    }
+-
+-    /**
+-     * @param assocEnd the given association end name
+-     * @param namespace the namespace
+-     * @return the default name for the given associationend
+-     */
+-    protected String defaultAssocEndName(Object assocEnd,
+-					 Object namespace) {
+-	String name = null;
+-	Object type = Model.getFacade().getType(assocEnd);
+-	if (type != null) {
+-	    name = formatElement(type, namespace);
+-	} else {
+-	    name = "unknown type";
+-	}
+-	Object mult = Model.getFacade().getMultiplicity(assocEnd);
+-	if (mult != null) {
+-	    StringBuffer buf = new StringBuffer(name);
+-	    buf.append("[");
+-	    buf.append(Integer.toString(Model.getFacade().getLower(mult)));
+-	    buf.append("..");
+-	    int upper = Model.getFacade().getUpper(mult);
+-	    if (upper >= 0) {
+-		buf.append(Integer.toString(upper));
+-	    } else {
+-		buf.append("*");
+-	    }
+-	    buf.append("]");
+-	    name = buf.toString();
+-	}
+-	return name;
+-    }
+-
+-    /**
+-     * This function creates a default association name from its ends.
+-     *
+-     * @param assoc the given association
+-     * @param ns the namespace
+-     * @return the default association name
+-     */
+-    protected String defaultAssocName(Object assoc, Object ns) {
+-	StringBuffer buf = new StringBuffer();
+-	Iterator iter = Model.getFacade().getConnections(assoc).iterator();
+-	for (int i = 0; iter.hasNext(); i++) {
+-	    if (i != 0) {
+-		buf.append("-");
+-	    }
+-	    buf.append(defaultAssocEndName(iter.next(), ns));
+-	}
+-	return buf.toString();
+-    }
+-
+-    /**
+-     * @param gen the given Generalization
+-     * @param namespace the namespace
+-     * @return the default generalization name
+-     */
+-    protected String defaultGeneralizationName(Object gen, Object namespace) {
+-	Object child = Model.getFacade().getChild(gen);
+-        Object parent = Model.getFacade().getParent(gen);
+-	StringBuffer buf = new StringBuffer();
+-	buf.append(formatElement(child, namespace));
+-	buf.append(" extends ");
+-	buf.append(formatElement(parent, namespace));
+-	return buf.toString();
+-    }
+-
+-    /**
+-     * @param element the given modelelement
+-     * @param namespace the namespace
+-     * @return a default name for this modelelement
+-     */
+-    protected String defaultName(Object element, Object namespace) {
+-	String name = null;
+-	if (Model.getFacade().isAAssociationEnd(element)) {
+-	    name = defaultAssocEndName(element, namespace);
+-	} else {
+-	    if (Model.getFacade().isAAssociation(element)) {
+-		name = defaultAssocName(element, namespace);
+-	    }
+-	    if (Model.getFacade().isAGeneralization(element)) {
+-		name = defaultGeneralizationName(element, namespace);
+-	    }
+-	}
+-	if (name == null) {
+-            name = "anon";
+-        }
+-	return name;
+-    }
+-
+-    /**
+-     * @return the path separator (currently ".")
+-     */
+-    protected String getPathSeparator() {
+-	return ".";
+-    }
+-
+-    /**
+-     * @param buffer (out) the buffer that will contain the path build
+-     * @param element the given modelelement
+-     * @param pathSep the path separator character(s)
+-     */
+-    private void buildPath(StringBuffer buffer, Object element, 
+-            String pathSep) {
+-        if (element != null) {
+-            Object parent = Model.getFacade().getNamespace(element);
+-	    if (parent != null && parent != element) {
+-		buildPath(buffer, parent, pathSep);
+-		buffer.append(pathSep);
+-	    }
+-	    String name = Model.getFacade().getName(element);
+-	    if (name == null || name.length() == 0) {
+-		name = defaultName(element, null);
+-	    }
+-	    buffer.append(name);
+-	}
+-    }
+-
+-    /**
+-     * @return the string that separates elements
+-     */
+-    protected String getElementSeparator() {
+-	return ", ";
+-    }
+-
+-    /**
+-     * @return the string that represents an empty collection
+-     */
+-    protected String getEmptyCollection() {
+-	return "[empty]";
+-    }
+-
+-    /*
+-     * @see org.argouml.uml.Profile#formatCollection(java.util.Iterator,
+-     * java.lang.Object)
+-     */
+-    public String formatCollection(Iterator iter, Object namespace) {
+-	String value = null;
+-	if (iter.hasNext()) {
+-	    StringBuffer buffer = new StringBuffer();
+-	    String elementSep = getElementSeparator();
+-	    Object obj = null;
+-	    for (int i = 0; iter.hasNext(); i++) {
+-		if (i > 0) {
+-		    buffer.append(elementSep);
+-		}
+-		obj = iter.next();
+-		if (Model.getFacade().isAModelElement(obj)) {
+-		    buffer.append(formatElement(obj, namespace));
+-		} else {
+-		    buffer.append(obj.toString());
+-		}
+-	    }
+-	    value = buffer.toString();
+-	} else {
+-	    value = getEmptyCollection();
+-	}
+-	return value;
+-    }
+-
+-    /*
+-     * @see org.argouml.uml.Profile#getProfileModel()
+-     */
+-    public Object getProfileModel() throws ProfileException {
+-        if (defaultModel == null) {
+-            defaultModel = loadProfileModel();
+-        }
+-        return defaultModel;
+-    }
+-    
+-    /*
+-     * @see org.argouml.uml.Profile#setProfileModelFilename(java.lang.String)
+-     */
+-    public void setProfileModelFilename(String name) throws ProfileException {
+-        if (loadProfile(name) != null) {
+-            Configuration.setString(Argo.KEY_DEFAULT_MODEL, name);
+-        } else {
+-            throw new ProfileException("Failed to load profile " + name);
+-        }
+-    }
+-    
+-    /*
+-     * @see org.argouml.uml.Profile#getProfileModelFilename()
+-     */
+-    public String getProfileModelFilename() {
+-        if (defaultModelFilename == null) {
+-            // TODO: Can we remove the use of this property
+-            // and just use the config file setting? - tfm 20060227
+-            defaultModelFilename  = System.getProperty("argo.defaultModel",
+-                    Configuration.getString(Argo.KEY_DEFAULT_MODEL,
+-                            DEFAULT_PROFILE));            
+-        }
+-        return defaultModelFilename;
+-    }
+-
+-    /**
+-     * This function loads our profile or default Model and returns it as a
+-     * Model. Priority is the property "argo.defaultModel", followed by value
+-     * stored in the Configuration properties. If these are both null or the
+-     * profile fails to load, we fall back to our DEFAULT_PROFILE.
+-     * <p>
+-     * 
+-     * Because parts of ArgoUML will fail ungracefully otherwise, we always try
+-     * to return something, even if it's just an empty model.
+-     * 
+-     * @return the profile model object or null
+-     */
+-    public Object loadProfileModel() {
+-        Object profileModel = null;
+-        String modelFilename = getProfileModelFilename();
+-
+-        if (modelFilename != null) {
+-            profileModel = loadProfile(modelFilename);
+-            if (profileModel != null) {
+-                return profileModel;
+-            }
+-        }
+-
+-        if (!(DEFAULT_PROFILE.equals(modelFilename))) {
+-            LOG.warn("Falling back to default profile '" 
+-                    + DEFAULT_PROFILE + "'");
+-            profileModel = loadProfile(DEFAULT_PROFILE);
+-            if (profileModel != null) {
+-                defaultModelFilename = DEFAULT_PROFILE;
+-                return profileModel;
+-            }
+-        }
+-
+-        LOG.error("Failed to load any profile - returning empty model");
+-        defaultModelFilename = "";
+-        return Model.getModelManagementFactory().createModel();
+-    }
+-    
+-    private Object loadProfile(String modelFilename) {
+-        LOG.info("Loading profile '" + modelFilename + "'");
+-        InputStream is = null;
+-        //
+-        //  try to find a file with that name
+-        //
+-        try {
+-            File modelFile = new File(modelFilename);
+-            // TODO: This is in the wrong place.  It's not profile specific.
+-            // It needs to be moved to main XMI reading code. - tfm 20060326
+-            if (modelFilename.endsWith("zip")) {
+-                String filename = modelFile.getName();
+-                String extension =
+-                    filename.substring(
+-                            filename.indexOf('.'), filename.lastIndexOf('.'));
+-                String path = modelFile.getParent();
+-                // Add the path of the model to the search path, so we can
+-                // read dependent models
+-                if (path != null) {
+-                    System.setProperty("org.argouml.model.modules_search_path",
+-                            path);
+-                }
+-                try {
+-                    is = openZipStreamAt(modelFile.toURL(), extension);
+-                } catch (MalformedURLException e) {
+-                    LOG.error("Exception while loading profile '"
+-                            + modelFilename + "'", e);
+-                    return null;
+-                } catch (IOException e) {
+-                    LOG.error("Exception while loading profile '"
+-                            + modelFilename + "'", e);
+-                    return null;
+-                }
+-            } else {
+-                is = new FileInputStream(modelFile);
+-            }
+-        } catch (FileNotFoundException ex) {
+-            // No file found, try looking in the resources
+-            
+-            // Not really an error, but we want to maximize our logging
+-            // for debugging in a WebStart environment - tfm
+-            LOG.error("Failed to load profile from file '" + modelFilename
+-                    + "', attempting to load as resource");
+-
+-            // Note that the class that we run getClass() in needs to be
+-            // in the same ClassLoader as the profile XMI file.
+-            // If we run using Java Web Start then we have every ArgoUML
+-            // file in the same jar (i.e. the same ClassLoader).
+-            is = this.getClass().getResourceAsStream(modelFilename);
+-        }
+-        if (is != null) {
+-
+-            try {
+-                XmiReader xmiReader = Model.getXmiReader();
+-                InputSource inputSource = new InputSource(is);
+-                LOG.info("Loaded profile '" + modelFilename + "'");
+-                Collection elements = xmiReader.parse(inputSource, true);
+-                if (elements.size() != 1) {
+-                    LOG.error("Error loading profile '" + modelFilename
+-                            + "' expected 1 top level element" + " found "
+-                            + elements.size());
+-                    return null;
+-                }
+-                return elements.iterator().next();
+-            } catch (UmlException e) {
+-                LOG.error("Exception while loading profile '" 
+-                        + modelFilename + "'", e);
+-                return null;
+-            }
+-        }
+-        LOG.error("Profile '" + modelFilename + "' not found");
+-        return null;
+-    }
+-
+-    /**
+-     * Open a ZipInputStream to the first file found with a given extension.
+-     *
+-     * TODO: Remove since this is a duplicate of ZipFilePersister method
+-     * when we have refactored the Persister subsystem.
+-     *
+-     * @param url
+-     *            The URL of the zip file.
+-     * @param ext
+-     *            The required extension.
+-     * @return the zip stream positioned at the required location.
+-     * @throws IOException
+-     *             if there is a problem opening the file.
+-     */
+-    private ZipInputStream openZipStreamAt(URL url, String ext)
+-        throws IOException {
+-        ZipInputStream zis = new ZipInputStream(url.openStream());
+-        ZipEntry entry = zis.getNextEntry();
+-        while (entry != null && !entry.getName().endsWith(ext)) {
+-            entry = zis.getNextEntry();
+-        }
+-        return zis;
+-    }
+-}
+Index: D:/ArgoUML/argouml/org/argouml/uml/cognitive/critics/WizAddConstructor.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/cognitive/critics/WizAddConstructor.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/cognitive/critics/WizAddConstructor.java	(working copy)
+@@ -36,8 +36,8 @@
+ import org.argouml.kernel.ProjectManager;
+ import org.argouml.model.Model;
+ import org.argouml.ui.targetmanager.TargetManager;
+-import org.argouml.uml.Profile;
+-import org.argouml.uml.ProfileException;
++import org.argouml.uml.profile.ProfileConfiguration;
++import org.argouml.uml.profile.ProfileException;
+ 
+ /**
+  * A wizard to add a constructor to a classifier.
+@@ -100,17 +100,12 @@
+      */
+     private Object getCreateStereotype(Object obj) {
+         Iterator iter = null;
+-        try {
+-            Project project = ProjectManager.getManager().getCurrentProject();
+-            Profile profile = project.getProfile();
+-            Object profileModel = profile.getProfileModel();
+-            iter = Model.getFacade().getOwnedElements(profileModel).iterator();
+-        } catch (ProfileException e) {
+-            // TODO: How are we going to handle exceptions here?
+-            // I suspect the profile should be part of the project
+-            // and not a singleton.
+-            LOG.error("Failed to get profile", e);
+-        }
++
++        Project project = ProjectManager.getManager().getCurrentProject();
++        ProfileConfiguration profile = project.getProfileConfiguration();
++        Object profileModel = profile.getDefaultProfile().getModel();
++        iter = Model.getFacade().getOwnedElements(profileModel).iterator();
++
+         while (iter.hasNext()) {
+             Object stereo = iter.next();
+             if (!Model.getFacade().isAStereotype(stereo)
+Index: D:/ArgoUML/argouml/org/argouml/uml/ProfileException.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/ProfileException.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/ProfileException.java	(working copy)
+@@ -1,62 +0,0 @@
+-// $Id$
+-// Copyright (c) 1996-2006 The Regents of the University of California. All
+-// Rights Reserved. Permission to use, copy, modify, and distribute this
+-// software and its documentation without fee, and without a written
+-// agreement is hereby granted, provided that the above copyright notice
+-// and this paragraph appear in all copies.  This software program and
+-// documentation are copyrighted by The Regents of the University of
+-// California. The software program and documentation are supplied "AS
+-// IS", without any accompanying services from The Regents. The Regents
+-// does not warrant that the operation of the program will be
+-// uninterrupted or error-free. The end-user understands that the program
+-// was developed for research purposes and is advised not to rely
+-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-
+-package org.argouml.uml;
+-
+-/**
+- * An exception to be thrown during failure of a opening
+- * and reading some storage medium.
+- * @author Bob Tarling
+- */
+-public class ProfileException extends Exception {
+-
+-    /**
+-     * The constructor.
+-     *
+-     * @param message the message to show
+-     */
+-    public ProfileException(String message) {
+-        super(message);
+-    }
+-
+-    /**
+-     * The constructor.
+-     *
+-     * @param message the message to show
+-     * @param theCause the cause for the exception
+-     */
+-    public ProfileException(String message, Throwable theCause) {
+-        super(message, theCause);
+-    }
+-
+-    /**
+-     * The constructor.
+-     *
+-     * @param theCause the cause for the exception
+-     */
+-    public ProfileException(Throwable theCause) {
+-        super(theCause);
+-    }
+-}
+-
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileException.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileException.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileException.java	(working copy)
+@@ -22,7 +22,7 @@
+ // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+ // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ 
+-package org.argouml.uml;
++package org.argouml.uml.profile;
+ 
+ /**
+  * An exception to be thrown during failure of a opening
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ResourceModelLoader.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/ResourceModelLoader.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/ResourceModelLoader.java	(revision 0)
+@@ -0,0 +1,53 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++import org.apache.log4j.Logger;
++
++public class ResourceModelLoader extends StreamModelLoader {
++
++    /**
++     * Logger.
++     */
++    private static final Logger LOG = Logger
++	    .getLogger(ResourceModelLoader.class);
++    
++    private static Class classloader;
++    
++    public ResourceModelLoader() {
++	this.classloader = this.getClass();
++    }
++    
++    public ResourceModelLoader(Class c) {
++	this.classloader = c;
++    }
++
++    public Object loadModel(String path) {
++        LOG.info("Loading profile from resource'" + path + "'");
++	return super.loadModel(this.classloader
++		.getResourceAsStream(path));
++    }
++
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/Profile.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/Profile.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/Profile.java	(revision 0)
+@@ -0,0 +1,52 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++
++
++/**
++ * Represents a Profile
++ * 
++ * @author Marcos Aurélio
++ */
++public abstract class Profile {
++    
++    /**
++     * @return the name for this profile 
++     */
++    public abstract String getDisplayName();
++    
++    /**
++     * @return the UML Model that contains the profile model
++     */
++    public abstract Object getModel();
++
++    /**
++     * @return the formating strategy offered by this profile, if any. <br>
++     * 	       <b>null</b> if this profile has no formating strategy.
++     */
++    public abstract FormatingStrategy getFormatingStrategy();
++
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/java/ProfileJava.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/java/ProfileJava.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/java/ProfileJava.java	(working copy)
+@@ -22,427 +22,54 @@
+ // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+ // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+ 
+-package org.argouml.uml;
++package org.argouml.uml.profile.java;
+ 
+-import java.io.File;
+-import java.io.FileInputStream;
+-import java.io.FileNotFoundException;
+-import java.io.IOException;
+-import java.io.InputStream;
+-import java.net.MalformedURLException;
+-import java.net.URL;
+-import java.util.Collection;
+-import java.util.Iterator;
+-import java.util.zip.ZipEntry;
+-import java.util.zip.ZipInputStream;
+-
+-import org.apache.log4j.Logger;
+-import org.argouml.application.api.Argo;
+-import org.argouml.configuration.Configuration;
+ import org.argouml.model.Model;
+-import org.argouml.model.UmlException;
+-import org.argouml.model.XmiReader;
+-import org.xml.sax.InputSource;
++import org.argouml.uml.profile.FormatingStrategy;
++import org.argouml.uml.profile.Profile;
++import org.argouml.uml.profile.ProfileModelLoader;
++import org.argouml.uml.profile.FileModelLoader;
++import org.argouml.uml.profile.ResourceModelLoader;
+ 
+ /**
+  * This class implements the abstract class Profile for use in modelling
+  * Java language projects.  Eventually, this class may be replaced by
+  * a configurable profile.
+  *
+- * TODO: (MVW) I see only little Java specific stuff here.
+- * Most of this should be moved to a ProfileUML.java file, which
+- * should be used by default.
+- *
+  * TODO: (MVW) Document the use of "argo.defaultModel" in
+  * the argo.user.properties file.
+  * 
+- * TODO: This is an i18n nightmare.  Tons of hardcoded strings and
+- * string concatentation.  Change to use message formatting. - tfm 20060226
+- *
+- * @author Curt Arnold
++ * @author Marcos Aurélio
+  */
+ public class ProfileJava extends Profile {
+-    /**
+-     * Logger.
+-     */
+-    private static final Logger LOG = Logger.getLogger(ProfileJava.class);
+ 
+-    private Object defaultModel;
+-    
+-    static final String DEFAULT_PROFILE = 
+-                            "/org/argouml/model/mdr/profiles/default-uml14.xmi";
+-    
+-    private String defaultModelFilename;
++    private FormatingStrategy formatingStrategy;
++    private ProfileModelLoader profileModelLoader;
++    private Object model;
+ 
+-    /**
+-     * The constructor.
+-     */
+     public ProfileJava() {
+-        // do nothing - profile loading deferred until needed
+-    }
+-
+-    /*
+-     * @see org.argouml.uml.Profile#formatElement(java.lang.Object,
+-     * java.lang.Object)
+-     */
+-    public String formatElement(Object element, Object namespace) {
+-	String value = null;
+-	if (element == null) {
+-	    value = "";
+-	} else {
+-	    Object elementNs = Model.getFacade().getNamespace(element);
+-	    //
+-	    //   if element is an AssociationEnd use
+-	    //      the namespace of containing association
+-	    //
+-	    if (Model.getFacade().isAAssociationEnd(element)) {
+-		Object assoc = Model.getFacade().getAssociation(element);
+-		if (assoc != null) {
+-		    elementNs = Model.getFacade().getNamespace(assoc);
+-		}
++	    formatingStrategy = new JavaFormatingStrategy();
++	    profileModelLoader = new ResourceModelLoader();
++	    model = profileModelLoader.loadModel("/org/argouml/model/mdr/profiles/default-uml14.xmi");
++	    
++	    if (model == null) {
++		model = Model.getModelManagementFactory().createModel();
+ 	    }
+-	    if (elementNs == namespace) {
+-		value = Model.getFacade().getName(element);
+-		if (value == null || value.length() == 0) {
+-		    value = defaultName(element, namespace);
+-		}
+-	    } else {
+-		StringBuffer buffer = new StringBuffer();
+-		String pathSep = getPathSeparator();
+-		buildPath(buffer, element, pathSep);
+-		value = buffer.toString();
+-	    }
+-	}
+-	return value;
+-    }
++    }    
+ 
+-    /**
+-     * @param assocEnd the given association end name
+-     * @param namespace the namespace
+-     * @return the default name for the given associationend
+-     */
+-    protected String defaultAssocEndName(Object assocEnd,
+-					 Object namespace) {
+-	String name = null;
+-	Object type = Model.getFacade().getType(assocEnd);
+-	if (type != null) {
+-	    name = formatElement(type, namespace);
+-	} else {
+-	    name = "unknown type";
+-	}
+-	Object mult = Model.getFacade().getMultiplicity(assocEnd);
+-	if (mult != null) {
+-	    StringBuffer buf = new StringBuffer(name);
+-	    buf.append("[");
+-	    buf.append(Integer.toString(Model.getFacade().getLower(mult)));
+-	    buf.append("..");
+-	    int upper = Model.getFacade().getUpper(mult);
+-	    if (upper >= 0) {
+-		buf.append(Integer.toString(upper));
+-	    } else {
+-		buf.append("*");
+-	    }
+-	    buf.append("]");
+-	    name = buf.toString();
+-	}
+-	return name;
++    @Override
++    public FormatingStrategy getFormatingStrategy() {
++	return formatingStrategy;
+     }
+ 
+-    /**
+-     * This function creates a default association name from its ends.
+-     *
+-     * @param assoc the given association
+-     * @param ns the namespace
+-     * @return the default association name
+-     */
+-    protected String defaultAssocName(Object assoc, Object ns) {
+-	StringBuffer buf = new StringBuffer();
+-	Iterator iter = Model.getFacade().getConnections(assoc).iterator();
+-	for (int i = 0; iter.hasNext(); i++) {
+-	    if (i != 0) {
+-		buf.append("-");
+-	    }
+-	    buf.append(defaultAssocEndName(iter.next(), ns));
+-	}
+-	return buf.toString();
++    @Override
++    public Object getModel() {
++	return model;
+     }
+ 
+-    /**
+-     * @param gen the given Generalization
+-     * @param namespace the namespace
+-     * @return the default generalization name
+-     */
+-    protected String defaultGeneralizationName(Object gen, Object namespace) {
+-	Object child = Model.getFacade().getChild(gen);
+-        Object parent = Model.getFacade().getParent(gen);
+-	StringBuffer buf = new StringBuffer();
+-	buf.append(formatElement(child, namespace));
+-	buf.append(" extends ");
+-	buf.append(formatElement(parent, namespace));
+-	return buf.toString();
++    @Override
++    public String getDisplayName() {
++	return "Java";
+     }
+-
+-    /**
+-     * @param element the given modelelement
+-     * @param namespace the namespace
+-     * @return a default name for this modelelement
+-     */
+-    protected String defaultName(Object element, Object namespace) {
+-	String name = null;
+-	if (Model.getFacade().isAAssociationEnd(element)) {
+-	    name = defaultAssocEndName(element, namespace);
+-	} else {
+-	    if (Model.getFacade().isAAssociation(element)) {
+-		name = defaultAssocName(element, namespace);
+-	    }
+-	    if (Model.getFacade().isAGeneralization(element)) {
+-		name = defaultGeneralizationName(element, namespace);
+-	    }
+-	}
+-	if (name == null) {
+-            name = "anon";
+-        }
+-	return name;
+-    }
+-
+-    /**
+-     * @return the path separator (currently ".")
+-     */
+-    protected String getPathSeparator() {
+-	return ".";
+-    }
+-
+-    /**
+-     * @param buffer (out) the buffer that will contain the path build
+-     * @param element the given modelelement
+-     * @param pathSep the path separator character(s)
+-     */
+-    private void buildPath(StringBuffer buffer, Object element, 
+-            String pathSep) {
+-        if (element != null) {
+-            Object parent = Model.getFacade().getNamespace(element);
+-	    if (parent != null && parent != element) {
+-		buildPath(buffer, parent, pathSep);
+-		buffer.append(pathSep);
+-	    }
+-	    String name = Model.getFacade().getName(element);
+-	    if (name == null || name.length() == 0) {
+-		name = defaultName(element, null);
+-	    }
+-	    buffer.append(name);
+-	}
+-    }
+-
+-    /**
+-     * @return the string that separates elements
+-     */
+-    protected String getElementSeparator() {
+-	return ", ";
+-    }
+-
+-    /**
+-     * @return the string that represents an empty collection
+-     */
+-    protected String getEmptyCollection() {
+-	return "[empty]";
+-    }
+-
+-    /*
+-     * @see org.argouml.uml.Profile#formatCollection(java.util.Iterator,
+-     * java.lang.Object)
+-     */
+-    public String formatCollection(Iterator iter, Object namespace) {
+-	String value = null;
+-	if (iter.hasNext()) {
+-	    StringBuffer buffer = new StringBuffer();
+-	    String elementSep = getElementSeparator();
+-	    Object obj = null;
+-	    for (int i = 0; iter.hasNext(); i++) {
+-		if (i > 0) {
+-		    buffer.append(elementSep);
+-		}
+-		obj = iter.next();
+-		if (Model.getFacade().isAModelElement(obj)) {
+-		    buffer.append(formatElement(obj, namespace));
+-		} else {
+-		    buffer.append(obj.toString());
+-		}
+-	    }
+-	    value = buffer.toString();
+-	} else {
+-	    value = getEmptyCollection();
+-	}
+-	return value;
+-    }
+-
+-    /*
+-     * @see org.argouml.uml.Profile#getProfileModel()
+-     */
+-    public Object getProfileModel() throws ProfileException {
+-        if (defaultModel == null) {
+-            defaultModel = loadProfileModel();
+-        }
+-        return defaultModel;
+-    }
+     
+-    /*
+-     * @see org.argouml.uml.Profile#setProfileModelFilename(java.lang.String)
+-     */
+-    public void setProfileModelFilename(String name) throws ProfileException {
+-        if (loadProfile(name) != null) {
+-            Configuration.setString(Argo.KEY_DEFAULT_MODEL, name);
+-        } else {
+-            throw new ProfileException("Failed to load profile " + name);
+-        }
+-    }
+-    
+-    /*
+-     * @see org.argouml.uml.Profile#getProfileModelFilename()
+-     */
+-    public String getProfileModelFilename() {
+-        if (defaultModelFilename == null) {
+-            // TODO: Can we remove the use of this property
+-            // and just use the config file setting? - tfm 20060227
+-            defaultModelFilename  = System.getProperty("argo.defaultModel",
+-                    Configuration.getString(Argo.KEY_DEFAULT_MODEL,
+-                            DEFAULT_PROFILE));            
+-        }
+-        return defaultModelFilename;
+-    }
+-
+-    /**
+-     * This function loads our profile or default Model and returns it as a
+-     * Model. Priority is the property "argo.defaultModel", followed by value
+-     * stored in the Configuration properties. If these are both null or the
+-     * profile fails to load, we fall back to our DEFAULT_PROFILE.
+-     * <p>
+-     * 
+-     * Because parts of ArgoUML will fail ungracefully otherwise, we always try
+-     * to return something, even if it's just an empty model.
+-     * 
+-     * @return the profile model object or null
+-     */
+-    public Object loadProfileModel() {
+-        Object profileModel = null;
+-        String modelFilename = getProfileModelFilename();
+-
+-        if (modelFilename != null) {
+-            profileModel = loadProfile(modelFilename);
+-            if (profileModel != null) {
+-                return profileModel;
+-            }
+-        }
+-
+-        if (!(DEFAULT_PROFILE.equals(modelFilename))) {
+-            LOG.warn("Falling back to default profile '" 
+-                    + DEFAULT_PROFILE + "'");
+-            profileModel = loadProfile(DEFAULT_PROFILE);
+-            if (profileModel != null) {
+-                defaultModelFilename = DEFAULT_PROFILE;
+-                return profileModel;
+-            }
+-        }
+-
+-        LOG.error("Failed to load any profile - returning empty model");
+-        defaultModelFilename = "";
+-        return Model.getModelManagementFactory().createModel();
+-    }
+-    
+-    private Object loadProfile(String modelFilename) {
+-        LOG.info("Loading profile '" + modelFilename + "'");
+-        InputStream is = null;
+-        //
+-        //  try to find a file with that name
+-        //
+-        try {
+-            File modelFile = new File(modelFilename);
+-            // TODO: This is in the wrong place.  It's not profile specific.
+-            // It needs to be moved to main XMI reading code. - tfm 20060326
+-            if (modelFilename.endsWith("zip")) {
+-                String filename = modelFile.getName();
+-                String extension =
+-                    filename.substring(
+-                            filename.indexOf('.'), filename.lastIndexOf('.'));
+-                String path = modelFile.getParent();
+-                // Add the path of the model to the search path, so we can
+-                // read dependent models
+-                if (path != null) {
+-                    System.setProperty("org.argouml.model.modules_search_path",
+-                            path);
+-                }
+-                try {
+-                    is = openZipStreamAt(modelFile.toURL(), extension);
+-                } catch (MalformedURLException e) {
+-                    LOG.error("Exception while loading profile '"
+-                            + modelFilename + "'", e);
+-                    return null;
+-                } catch (IOException e) {
+-                    LOG.error("Exception while loading profile '"
+-                            + modelFilename + "'", e);
+-                    return null;
+-                }
+-            } else {
+-                is = new FileInputStream(modelFile);
+-            }
+-        } catch (FileNotFoundException ex) {
+-            // No file found, try looking in the resources
+-            
+-            // Not really an error, but we want to maximize our logging
+-            // for debugging in a WebStart environment - tfm
+-            LOG.error("Failed to load profile from file '" + modelFilename
+-                    + "', attempting to load as resource");
+-
+-            // Note that the class that we run getClass() in needs to be
+-            // in the same ClassLoader as the profile XMI file.
+-            // If we run using Java Web Start then we have every ArgoUML
+-            // file in the same jar (i.e. the same ClassLoader).
+-            is = this.getClass().getResourceAsStream(modelFilename);
+-        }
+-        if (is != null) {
+-
+-            try {
+-                XmiReader xmiReader = Model.getXmiReader();
+-                InputSource inputSource = new InputSource(is);
+-                LOG.info("Loaded profile '" + modelFilename + "'");
+-                Collection elements = xmiReader.parse(inputSource, true);
+-                if (elements.size() != 1) {
+-                    LOG.error("Error loading profile '" + modelFilename
+-                            + "' expected 1 top level element" + " found "
+-                            + elements.size());
+-                    return null;
+-                }
+-                return elements.iterator().next();
+-            } catch (UmlException e) {
+-                LOG.error("Exception while loading profile '" 
+-                        + modelFilename + "'", e);
+-                return null;
+-            }
+-        }
+-        LOG.error("Profile '" + modelFilename + "' not found");
+-        return null;
+-    }
+-
+-    /**
+-     * Open a ZipInputStream to the first file found with a given extension.
+-     *
+-     * TODO: Remove since this is a duplicate of ZipFilePersister method
+-     * when we have refactored the Persister subsystem.
+-     *
+-     * @param url
+-     *            The URL of the zip file.
+-     * @param ext
+-     *            The required extension.
+-     * @return the zip stream positioned at the required location.
+-     * @throws IOException
+-     *             if there is a problem opening the file.
+-     */
+-    private ZipInputStream openZipStreamAt(URL url, String ext)
+-        throws IOException {
+-        ZipInputStream zis = new ZipInputStream(url.openStream());
+-        ZipEntry entry = zis.getNextEntry();
+-        while (entry != null && !entry.getName().endsWith(ext)) {
+-            entry = zis.getNextEntry();
+-        }
+-        return zis;
+-    }
+ }
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/java/JavaFormatingStrategy.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/java/JavaFormatingStrategy.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/java/JavaFormatingStrategy.java	(revision 0)
+@@ -0,0 +1,233 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile.java;
++
++import java.util.Iterator;
++
++import org.argouml.model.Model;
++import org.argouml.uml.profile.FormatingStrategy;
++
++/**
++ * The Formating Strategy based on Java naming conventions 
++ *
++ * @author Marcos Aurélio
++ */
++public class JavaFormatingStrategy implements FormatingStrategy {
++    	
++    /*
++     * @see org.argouml.uml.Profile#formatElement(java.lang.Object,
++     * java.lang.Object)
++     */
++    public String formatElement(Object element, Object namespace) {
++	String value = null;
++	if (element == null) {
++	    value = "";
++	} else {
++	    Object elementNs = Model.getFacade().getNamespace(element);
++	    //
++	    //   if element is an AssociationEnd use
++	    //      the namespace of containing association
++	    //
++	    if (Model.getFacade().isAAssociationEnd(element)) {
++		Object assoc = Model.getFacade().getAssociation(element);
++		if (assoc != null) {
++		    elementNs = Model.getFacade().getNamespace(assoc);
++		}
++	    }
++	    if (elementNs == namespace) {
++		value = Model.getFacade().getName(element);
++		if (value == null || value.length() == 0) {
++		    value = defaultName(element, namespace);
++		}
++	    } else {
++		StringBuffer buffer = new StringBuffer();
++		String pathSep = getPathSeparator();
++		buildPath(buffer, element, pathSep);
++		value = buffer.toString();
++	    }
++	}
++	return value;
++    }
++
++    /**
++     * @param assocEnd the given association end name
++     * @param namespace the namespace
++     * @return the default name for the given associationend
++     */
++    protected String defaultAssocEndName(Object assocEnd,
++					 Object namespace) {
++	String name = null;
++	Object type = Model.getFacade().getType(assocEnd);
++	if (type != null) {
++	    name = formatElement(type, namespace);
++	} else {
++	    name = "unknown type";
++	}
++	Object mult = Model.getFacade().getMultiplicity(assocEnd);
++	if (mult != null) {
++	    StringBuffer buf = new StringBuffer(name);
++	    buf.append("[");
++	    buf.append(Integer.toString(Model.getFacade().getLower(mult)));
++	    buf.append("..");
++	    int upper = Model.getFacade().getUpper(mult);
++	    if (upper >= 0) {
++		buf.append(Integer.toString(upper));
++	    } else {
++		buf.append("*");
++	    }
++	    buf.append("]");
++	    name = buf.toString();
++	}
++	return name;
++    }
++
++    /**
++     * This function creates a default association name from its ends.
++     *
++     * @param assoc the given association
++     * @param ns the namespace
++     * @return the default association name
++     */
++    protected String defaultAssocName(Object assoc, Object ns) {
++	StringBuffer buf = new StringBuffer();
++	Iterator iter = Model.getFacade().getConnections(assoc).iterator();
++	for (int i = 0; iter.hasNext(); i++) {
++	    if (i != 0) {
++		buf.append("-");
++	    }
++	    buf.append(defaultAssocEndName(iter.next(), ns));
++	}
++	return buf.toString();
++    }
++
++    /**
++     * @param gen the given Generalization
++     * @param namespace the namespace
++     * @return the default generalization name
++     */
++    protected String defaultGeneralizationName(Object gen, Object namespace) {
++	Object child = Model.getFacade().getChild(gen);
++        Object parent = Model.getFacade().getParent(gen);
++	StringBuffer buf = new StringBuffer();
++	buf.append(formatElement(child, namespace));
++	buf.append(" extends ");
++	buf.append(formatElement(parent, namespace));
++	return buf.toString();
++    }
++
++    /**
++     * @param element the given modelelement
++     * @param namespace the namespace
++     * @return a default name for this modelelement
++     */
++    protected String defaultName(Object element, Object namespace) {
++	String name = null;
++	if (Model.getFacade().isAAssociationEnd(element)) {
++	    name = defaultAssocEndName(element, namespace);
++	} else {
++	    if (Model.getFacade().isAAssociation(element)) {
++		name = defaultAssocName(element, namespace);
++	    }
++	    if (Model.getFacade().isAGeneralization(element)) {
++		name = defaultGeneralizationName(element, namespace);
++	    }
++	}
++	if (name == null) {
++            name = "anon";
++        }
++	return name;
++    }
++
++    /**
++     * @return the path separator (currently ".")
++     */
++    protected String getPathSeparator() {
++	return ".";
++    }
++
++    /**
++     * @param buffer (out) the buffer that will contain the path build
++     * @param element the given modelelement
++     * @param pathSep the path separator character(s)
++     */
++    private void buildPath(StringBuffer buffer, Object element, 
++            String pathSep) {
++        if (element != null) {
++            Object parent = Model.getFacade().getNamespace(element);
++	    if (parent != null && parent != element) {
++		buildPath(buffer, parent, pathSep);
++		buffer.append(pathSep);
++	    }
++	    String name = Model.getFacade().getName(element);
++	    if (name == null || name.length() == 0) {
++		name = defaultName(element, null);
++	    }
++	    buffer.append(name);
++	}
++    }
++
++    /**
++     * @return the string that separates elements
++     */
++    protected String getElementSeparator() {
++	return ", ";
++    }
++
++    /**
++     * @return the string that represents an empty collection
++     */
++    protected String getEmptyCollection() {
++	return "[empty]";
++    }
++
++    /*
++     * @see org.argouml.uml.Profile#formatCollection(java.util.Iterator,
++     * java.lang.Object)
++     */
++    public String formatCollection(Iterator iter, Object namespace) {
++	String value = null;
++	if (iter.hasNext()) {
++	    StringBuffer buffer = new StringBuffer();
++	    String elementSep = getElementSeparator();
++	    Object obj = null;
++	    for (int i = 0; iter.hasNext(); i++) {
++		if (i > 0) {
++		    buffer.append(elementSep);
++		}
++		obj = iter.next();
++		if (Model.getFacade().isAModelElement(obj)) {
++		    buffer.append(formatElement(obj, namespace));
++		} else {
++		    buffer.append(obj.toString());
++		}
++	    }
++	    value = buffer.toString();
++	} else {
++	    value = getEmptyCollection();
++	}
++	return value;
++    }
++
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/StreamModelLoader.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/StreamModelLoader.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/StreamModelLoader.java	(revision 0)
+@@ -0,0 +1,74 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++import java.io.InputStream;
++import java.util.Collection;
++
++import org.apache.log4j.Logger;
++import org.argouml.model.Model;
++import org.argouml.model.UmlException;
++import org.argouml.model.XmiReader;
++import org.xml.sax.InputSource;
++
++/**
++ * Loads models from a given InputStream
++ *
++ * @author Marcos Aurélio
++ */
++public abstract class StreamModelLoader implements ProfileModelLoader {
++    /**
++     * Logger.
++     */
++    private static final Logger LOG = Logger
++	    .getLogger(StreamModelLoader.class);
++
++    /**
++     * @see org.argouml.uml.profile.ProfileModelLoader#loadModel(java.lang.String)
++     */
++    public abstract Object loadModel(String path);
++
++    protected Object loadModel(InputStream is) {
++        if (is != null) {
++            try {
++                XmiReader xmiReader = Model.getXmiReader();
++                InputSource inputSource = new InputSource(is);
++                Collection elements = xmiReader.parse(inputSource, true);
++                if (elements.size() != 1) {
++                    LOG.error("Error loading profile "
++			    + "expected 1 top level element" + " found "
++			    + elements.size());
++                    return null;
++                }
++                return elements.iterator().next();
++            } catch (UmlException e) {
++                LOG.error("Exception while loading profile ", e);
++                return null;
++            }
++        }
++        LOG.error("Profile not found");
++        return null;	
++    }
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/FileModelLoader.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/FileModelLoader.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/FileModelLoader.java	(revision 0)
+@@ -0,0 +1,63 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.FileNotFoundException;
++import java.io.InputStream;
++
++import org.apache.log4j.Logger;
++
++/**
++ * An implementation for the ProfileModelLoader that loads profiles from file 
++ * resources.
++ *
++ * @author maurelio1234
++ */
++public class FileModelLoader extends StreamModelLoader {
++    /**
++     * Logger.
++     */
++    private static final Logger LOG = Logger
++	    .getLogger(FileModelLoader.class);
++
++    public Object loadModel(String modelFilename) {
++        LOG.info("Loading profile from file'" + modelFilename + "'");
++        InputStream is = null;
++        //
++        //  try to find a file with that name
++        //
++        try {
++            File modelFile = new File(modelFilename);
++            is = new FileInputStream(modelFile);
++            
++            return super.loadModel(is);
++        } catch (FileNotFoundException ex) {
++        }
++        return null;
++    }
++
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileConfiguration.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileConfiguration.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileConfiguration.java	(revision 0)
+@@ -0,0 +1,87 @@
++// $Id: Profile.java 11516 2006-11-25 04:30:15Z tfmorris $
++// Copyright (c) 1996-2006 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies.  This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason.  IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++
++package org.argouml.uml.profile;
++
++import java.util.Vector;
++
++import org.argouml.uml.profile.java.ProfileJava;
++/**
++ *   This class captures the configurable behavior of Argo.
++ *
++ *   @author Marcos Aurélio
++ */
++public class ProfileConfiguration {
++
++    private FormatingStrategy formatingStrategy;    
++    private Profile defaultProfile; 
++    private Vector profiles = new Vector();
++    private Vector profileModels = new Vector();
++    
++    public ProfileConfiguration() {
++	defaultProfile = new ProfileJava();
++
++	formatingStrategy = defaultProfile.getFormatingStrategy();
++	
++	addProfile(defaultProfile);	
++    }
++    
++    public FormatingStrategy getFormatingStrategy() {
++        return formatingStrategy;
++    }
++    
++    public void setFormatingStrategy(FormatingStrategy formatingStrategy) {
++        this.formatingStrategy = formatingStrategy;
++    }
++
++    public Vector getProfiles() {
++        return profiles;
++    }
++
++    public Profile getDefaultProfile() {
++        return defaultProfile;
++    }
++    
++    public void addProfile(Profile p) {
++	profiles.add(p);
++	profileModels.add(p.getModel());
++    }
++    
++    public void setDefaultProfile(Profile defaultProfile) {
++        this.defaultProfile = defaultProfile;
++    }
++    
++    public Vector getProfileModels() {
++        return profileModels;
++    }
++
++    public void removeProfile(Profile p) {
++	if (p != defaultProfile) {
++	    profiles.remove(p);
++	    profileModels.remove(p.getModel());
++	}
++    }
++    
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileModelLoader.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileModelLoader.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileModelLoader.java	(revision 0)
+@@ -0,0 +1,41 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++/**
++ * Objects implementing this class are responsible for loading profile models
++ *
++ * @author maurelio1234
++ */
++public interface ProfileModelLoader {
++    /**
++     * Tries to load a model from the specified path
++     * 
++     * @param path the path where the profile can be found. <b>
++     *             The expected string format is implementation specific! 
++     * @return the model object
++     */
++    Object loadModel(String path);  
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/FormatingStrategy.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/FormatingStrategy.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/FormatingStrategy.java	(revision 0)
+@@ -0,0 +1,54 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++import java.util.Iterator;
++
++/**
++ * Represents the formating strategy to be used when formating
++ * model element names
++ *
++ * @author Marcos Aurélio
++ */
++public interface FormatingStrategy {
++    /**
++     *    This method produces a string that represents the specific
++     *    model element in the context of the specified namespace.
++     *    @param element element to represent.
++     *    @param namespace context namespace (may be null).
++     *    @return a string representing the model element
++     */
++    public abstract String formatElement(Object element,
++					 Object namespace);
++    /**
++     *   This method produces a string the represents the collection
++     *   of model elements in the context of the specified namespace.
++     *   @param iter iterator over collection
++     *   @param namespace context namespace (may be null).
++     *   @return a string representing the collection
++     */
++    public abstract String formatCollection(Iterator iter,
++					    Object namespace);
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ZipModelLoader.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/ZipModelLoader.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/ZipModelLoader.java	(revision 0)
+@@ -0,0 +1,105 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++import java.io.File;
++import java.io.IOException;
++import java.io.InputStream;
++import java.net.MalformedURLException;
++import java.net.URL;
++import java.util.zip.ZipEntry;
++import java.util.zip.ZipInputStream;
++
++import org.apache.log4j.Logger;
++
++public class ZipModelLoader extends StreamModelLoader {
++    /**
++     * Logger.
++     */
++    private static final Logger LOG = Logger
++	    .getLogger(ZipModelLoader.class);
++
++    public Object loadModel(String modelFilename) {
++	LOG.info("Loading profile from ZIP '" + modelFilename + "'");
++
++	InputStream is = null;
++	File modelFile = new File(modelFilename);
++	// TODO: This is in the wrong place.  It's not profile specific.
++	// It needs to be moved to main XMI reading code. - tfm 20060326
++	if (modelFilename.endsWith("zip")) {
++	    String filename = modelFile.getName();
++	    String extension = filename.substring(filename.indexOf('.'),
++		    filename.lastIndexOf('.'));
++	    String path = modelFile.getParent();
++	    // Add the path of the model to the search path, so we can
++	    // read dependent models
++	    if (path != null) {
++		System.setProperty("org.argouml.model.modules_search_path",
++			path);
++	    }
++	    try {
++		is = openZipStreamAt(modelFile.toURL(), extension);
++	    } catch (MalformedURLException e) {
++		LOG.error("Exception while loading profile '" + modelFilename
++			+ "'", e);
++		return null;
++	    } catch (IOException e) {
++		LOG.error("Exception while loading profile '" + modelFilename
++			+ "'", e);
++		return null;
++	    }
++
++	    if (is != null) {
++		return super.loadModel(is);
++	    }
++	}
++	return null;
++    }
++
++    /**
++     * Open a ZipInputStream to the first file found with a given extension.
++     *
++     * TODO: Remove since this is a duplicate of ZipFilePersister method
++     * when we have refactored the Persister subsystem.
++     *
++     * @param url
++     *            The URL of the zip file.
++     * @param ext
++     *            The required extension.
++     * @return the zip stream positioned at the required location.
++     * @throws IOException
++     *             if there is a problem opening the file.
++     */
++    private ZipInputStream openZipStreamAt(URL url, String ext)
++	    throws IOException {
++	ZipInputStream zis = new ZipInputStream(url.openStream());
++	ZipEntry entry = zis.getNextEntry();
++	while (entry != null && !entry.getName().endsWith(ext)) {
++	    entry = zis.getNextEntry();
++	}
++	return zis;
++    }
++
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManager.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManager.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManager.java	(revision 0)
+@@ -0,0 +1,38 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++import java.util.Vector;
++
++/**
++ * Manages a set of registered profiles.
++ *
++ * @author Marcos Aurélio
++ */
++public interface ProfileManager {
++    void registerProfile(Profile p);
++    void removeProfile(Profile p);
++    Vector getRegisteredProfiles();
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManagerImpl.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManagerImpl.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManagerImpl.java	(revision 0)
+@@ -0,0 +1,62 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++import java.util.Vector;
++
++/**
++ * Default ProfileManager implementation
++ *
++ * @author Marcos Aurélio
++ */
++public class ProfileManagerImpl implements ProfileManager {
++
++    private static ProfileManager instance = null;
++    private Vector profiles = new Vector();
++    
++    private ProfileManagerImpl() {
++
++    }
++    
++    public static ProfileManager getInstance() {
++	if (instance == null) {
++	    instance = new ProfileManagerImpl();
++	}
++	return instance;
++    }
++    
++    public Vector getRegisteredProfiles() {
++	return profiles;
++    }
++
++    public void registerProfile(Profile p) {
++	profiles.add(p);
++    }
++
++    public void removeProfile(Profile p) {
++	profiles.remove(p);
++    }
++
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/profile/UserDefinedProfile.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/profile/UserDefinedProfile.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/uml/profile/UserDefinedProfile.java	(revision 0)
+@@ -0,0 +1,61 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.uml.profile;
++
++import java.io.File;
++
++/**
++ * Represents a profile defined by the user
++ *
++ * @author Marcos Aurélio
++ */
++public class UserDefinedProfile extends Profile {
++
++    private String displayName;
++    private File modelFile;
++    private ProfileModelLoader modelLoader;
++    
++    public UserDefinedProfile(File file, ProfileModelLoader loader) {
++	this.displayName = file.getName();
++	this.modelLoader = loader;
++	this.modelFile = file;
++    }
++    
++    @Override
++    public String getDisplayName() {
++	return displayName;
++    }
++
++    @Override
++    public FormatingStrategy getFormatingStrategy() {
++	return null;
++    }
++
++    @Override
++    public Object getModel() {
++	return modelLoader.loadModel(modelFile.getPath());
++    }
++
++}
+Index: D:/ArgoUML/argouml/org/argouml/uml/diagram/ui/StereotypeUtility.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/diagram/ui/StereotypeUtility.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/diagram/ui/StereotypeUtility.java	(working copy)
+@@ -91,7 +91,10 @@
+         });            
+         Collection models =
+             ProjectManager.getManager().getCurrentProject().getModels();
+-            
++
++        models.addAll(ProjectManager.getManager().getCurrentProject()
++		.getProfileConfiguration().getProfileModels());
++        
+         addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
+                 .getExtensionMechanismsHelper().getAllPossibleStereotypes(
+                         models, modelElement));
+Index: D:/ArgoUML/argouml/org/argouml/uml/ui/UMLComboBoxEntry.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/ui/UMLComboBoxEntry.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/ui/UMLComboBoxEntry.java	(working copy)
+@@ -28,7 +28,7 @@
+ 
+ import org.apache.log4j.Logger;
+ import org.argouml.model.Model;
+-import org.argouml.uml.Profile;
++import org.argouml.uml.profile.ProfileConfiguration;
+ 
+ /**
+  * A combobox entry. <p>
+@@ -52,7 +52,7 @@
+ 
+     /** longName is composed of an identifier and a name as in Class: String */
+     private String longName;
+-    private Profile profile;
++    private ProfileConfiguration profile;
+ 
+     /** display name will be the same as shortName unless there
+      *  is a name collision */
+@@ -71,11 +71,11 @@
+      * @param isPhantom true if this is a phantom element
+      */
+     public UMLComboBoxEntry(Object modelElement,
+-            Profile theProfile, boolean isPhantom) {
++            ProfileConfiguration theProfile, boolean isPhantom) {
+         element = modelElement;
+         if (modelElement != null) {
+             Object ns = Model.getFacade().getNamespace(modelElement);
+-            shortName = theProfile.formatElement(modelElement, ns);
++            shortName = theProfile.getFormatingStrategy().formatElement(modelElement, ns);
+         } else {
+             shortName = "";
+         }
+@@ -103,7 +103,7 @@
+     public void updateName() {
+         if (element != null) {
+             Object ns = Model.getFacade().getNamespace(element);
+-            shortName = profile.formatElement(element, ns);
++            shortName = profile.getFormatingStrategy().formatElement(element, ns);
+         }
+     }
+ 
+@@ -138,7 +138,7 @@
+     public String getLongName() {
+         if (longName == null) {
+             if (element != null) {
+-                longName = profile.formatElement(element, null);
++                longName = profile.getFormatingStrategy().formatElement(element, null);
+             }
+             else {
+                 longName = "(unspecified)"; // TODO: I18N
+@@ -294,7 +294,7 @@
+     public void nameChanged(Object modelElement) {
+         if (modelElement == element && element != null) {
+             Object ns = Model.getFacade().getNamespace(element);
+-            shortName = profile.formatElement(element, ns);
++            shortName = profile.getFormatingStrategy().formatElement(element, ns);
+             displayName = shortName;
+             longName = null;
+         }
+Index: D:/ArgoUML/argouml/org/argouml/uml/ui/PropPanel.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/ui/PropPanel.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/ui/PropPanel.java	(working copy)
+@@ -58,7 +58,7 @@
+ import org.argouml.ui.targetmanager.TargetEvent;
+ import org.argouml.ui.targetmanager.TargetListener;
+ import org.argouml.ui.targetmanager.TargettableModelView;
+-import org.argouml.uml.Profile;
++import org.argouml.uml.profile.ProfileConfiguration;
+ import org.tigris.gef.presentation.Fig;
+ import org.tigris.swidgets.GridLayout2;
+ import org.tigris.swidgets.LabelledLayout;
+@@ -439,8 +439,8 @@
+     /*
+      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
+      */
+-    public Profile getProfile() {
+-        return ProjectManager.getManager().getCurrentProject().getProfile();
++    public ProfileConfiguration getProfile() {
++        return ProjectManager.getManager().getCurrentProject().getProfileConfiguration();
+     }
+ 
+     /*
+@@ -454,14 +454,14 @@
+      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(java.lang.Object)
+      */
+     public String formatElement(/* MModelElement */Object element) {
+-        return getProfile().formatElement(element, getDisplayNamespace());
++        return getProfile().getFormatingStrategy().formatElement(element, getDisplayNamespace());
+     }
+ 
+     /*
+      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(java.lang.Object)
+      */
+     public String formatNamespace(/* MNamespace */Object namespace) {
+-        return getProfile().formatElement(namespace, null);
++        return getProfile().getFormatingStrategy().formatElement(namespace, null);
+     }
+ 
+     /*
+@@ -469,7 +469,7 @@
+      */
+     public String formatCollection(Iterator iter) {
+         Object namespace = getDisplayNamespace();
+-        return getProfile().formatCollection(iter, namespace);
++        return getProfile().getFormatingStrategy().formatCollection(iter, namespace);
+     }
+ 
+ 
+Index: D:/ArgoUML/argouml/org/argouml/uml/ui/UMLUserInterfaceContainer.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/ui/UMLUserInterfaceContainer.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/ui/UMLUserInterfaceContainer.java	(working copy)
+@@ -26,7 +26,7 @@
+ package org.argouml.uml.ui;
+ import java.util.Iterator;
+ 
+-import org.argouml.uml.Profile;
++import org.argouml.uml.profile.ProfileConfiguration;
+ 
+ /**
+  * Interface supported by any container of UML user interface components.
+@@ -53,7 +53,7 @@
+     /**
+      * @return the current profile, may not be null
+      */
+-    public Profile getProfile();
++    public ProfileConfiguration getProfile();
+ 
+     /**
+      * Formats the specified model element.  Typically, deferred to the
+Index: D:/ArgoUML/argouml/org/argouml/uml/ui/foundation/extension_mechanisms/PropPanelTaggedValue.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/ui/foundation/extension_mechanisms/PropPanelTaggedValue.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/ui/foundation/extension_mechanisms/PropPanelTaggedValue.java	(working copy)
+@@ -26,6 +26,8 @@
+ 
+ import java.awt.AWTEvent;
+ import java.awt.event.ActionEvent;
++import java.util.Collection;
++import java.util.Iterator;
+ 
+ import javax.swing.Box;
+ import javax.swing.BoxLayout;
+@@ -274,6 +276,15 @@
+             setElements(Model.getModelManagementHelper()
+                     .getAllModelElementsOfKindWithModel(model,
+                             Model.getMetaTypes().getTagDefinition()));
++            
++            Collection profileModels = p.getProfileConfiguration()
++		.getProfileModels();
++            Iterator it = profileModels.iterator();
++	    while (it.hasNext()) {
++		addAll(Model.getModelManagementHelper()
++			.getAllModelElementsOfKindWithModel(it.next(),
++				Model.getMetaTypes().getTagDefinition()));
++	    }            
+         }
+ 
+         /*
+Index: D:/ArgoUML/argouml/org/argouml/uml/ui/foundation/extension_mechanisms/UMLTagDefinitionComboBoxModel.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/ui/foundation/extension_mechanisms/UMLTagDefinitionComboBoxModel.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/ui/foundation/extension_mechanisms/UMLTagDefinitionComboBoxModel.java	(working copy)
+@@ -107,6 +107,7 @@
+         });
+         Collection stereotypes = Model.getFacade().getStereotypes(t);
+         Project project = ProjectManager.getManager().getCurrentProject();
++        
+         Collection models = project.getModels();
+         Iterator it = models.iterator();
+         while (it.hasNext()) {
+@@ -115,10 +116,22 @@
+                             it.next(),
+                             Model.getMetaTypes().getTagDefinition()));
+         }
++        
++        Collection profileModels = project.getProfileConfiguration()
++		.getProfileModels();
++        it = profileModels.iterator();
++        while (it.hasNext()) {
++            addAllUniqueModelElementsFrom(availableTagDefs, paths,
++                    Model.getModelManagementHelper().getAllModelElementsOfKind(
++                            it.next(),
++                            Model.getMetaTypes().getTagDefinition()));
++        }
++        
+         addAllUniqueModelElementsFrom(availableTagDefs, paths,
+                 Model.getModelManagementHelper().getAllModelElementsOfKind(
+                         project.getDefaultModel(),
+                         Model.getMetaTypes().getTagDefinition()));
++        
+         ArrayList notValids = new ArrayList();
+         it = availableTagDefs.iterator();
+         while (it.hasNext()) {
+Index: D:/ArgoUML/argouml/org/argouml/uml/ui/foundation/core/UMLStructuralFeatureTypeComboBoxModel.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/uml/ui/foundation/core/UMLStructuralFeatureTypeComboBoxModel.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/uml/ui/foundation/core/UMLStructuralFeatureTypeComboBoxModel.java	(working copy)
+@@ -26,6 +26,7 @@
+ 
+ import java.beans.PropertyChangeEvent;
+ import java.util.ArrayList;
++import java.util.Collection;
+ import java.util.Collections;
+ import java.util.Comparator;
+ import java.util.Iterator;
+@@ -100,6 +101,15 @@
+                             model, Model.getMetaTypes().getDataType()));
+         }
+ 
++        Collection profileModels = p.getProfileConfiguration()
++		.getProfileModels();
++        it = profileModels.iterator();
++        while (it.hasNext()) {
++            elements.addAll(Model.getModelManagementHelper()
++                    .getAllModelElementsOfKind(
++                            it.next(), Model.getMetaTypes().getDataType()));
++        }
++        
+         elements.addAll(Model.getModelManagementHelper()
+                 .getAllModelElementsOfKind(
+                         p.getDefaultModel(),
+Index: D:/ArgoUML/argouml/org/argouml/ui/ProfileSelectionTab.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/ui/ProfileSelectionTab.java	(revision 0)
++++ D:/ArgoUML/argouml/org/argouml/ui/ProfileSelectionTab.java	(revision 0)
+@@ -0,0 +1,329 @@
++// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// Copyright (c) 2007 The Regents of the University of California. All
++// Rights Reserved. Permission to use, copy, modify, and distribute this
++// software and its documentation without fee, and without a written
++// agreement is hereby granted, provided that the above copyright notice
++// and this paragraph appear in all copies. This software program and
++// documentation are copyrighted by The Regents of the University of
++// California. The software program and documentation are supplied "AS
++// IS", without any accompanying services from The Regents. The Regents
++// does not warrant that the operation of the program will be
++// uninterrupted or error-free. The end-user understands that the program
++// was developed for research purposes and is advised not to rely
++// exclusively on the program for any reason. IN NO EVENT SHALL THE
++// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
++// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
++// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
++// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
++// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
++// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
++// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
++// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
++// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
++
++package org.argouml.ui;
++
++import java.awt.BorderLayout;
++import java.awt.Dimension;
++import java.awt.FlowLayout;
++import java.awt.event.ActionEvent;
++import java.awt.event.ActionListener;
++import java.io.File;
++import java.util.Vector;
++
++import javax.swing.BoxLayout;
++import javax.swing.JButton;
++import javax.swing.JFileChooser;
++import javax.swing.JLabel;
++import javax.swing.JList;
++import javax.swing.JOptionPane;
++import javax.swing.JPanel;
++import javax.swing.ListModel;
++import javax.swing.event.ListDataEvent;
++import javax.swing.event.ListDataListener;
++import javax.swing.filechooser.FileFilter;
++
++import org.argouml.kernel.ProjectManager;
++import org.argouml.uml.profile.FileModelLoader;
++import org.argouml.uml.profile.Profile;
++import org.argouml.uml.profile.ProfileConfiguration;
++import org.argouml.uml.profile.ProfileManager;
++import org.argouml.uml.profile.ProfileManagerImpl;
++import org.argouml.uml.profile.UserDefinedProfile;
++
++/**
++ * The Tab where new profiles can be added and the registered
++ * ones can be activated or deactivated on current project
++ *
++ * @author Marcos Aurélio
++ */
++public class ProfileSelectionTab extends JPanel implements
++	GUISettingsTabInterface, ActionListener {
++
++    private JButton loadFromFile = new JButton("Load profile from file...");
++
++    private JButton unregisterProfile = new JButton(
++	    "Unregister Profile loaded from file");
++
++    private JButton addButton = new JButton(">>");
++
++    private JButton removeButton = new JButton("<<");
++
++    private JList availableList = new JList(new AvailableProfilesListModel());
++
++    private JList usedList = new JList(new UsedProfilesListModel());
++
++    private class AvailableProfilesListModel implements ListModel {
++	private ProfileManager profileManager = ProfileManagerImpl
++		.getInstance();
++
++	private Vector listeners = new Vector();
++
++	public void addListDataListener(ListDataListener arg0) {
++	    listeners.add(arg0);
++	}
++
++	public void fireListeners() {
++	    ListDataEvent evt = new ListDataEvent(this,
++		    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
++	    for (int i = 0; i < listeners.size(); ++i) {
++		((ListDataListener) listeners.elementAt(i))
++			.contentsChanged(evt);
++	    }
++	}
++
++	public Profile getProfileAt(int arg0) {
++	    ProfileConfiguration config = ProjectManager.getManager()
++		    .getCurrentProject().getProfileConfiguration();
++	    Vector registeredProfiles = profileManager.getRegisteredProfiles();
++	    int count = 0;
++	    for (int i = 0; i < registeredProfiles.size(); ++i) {
++		if (!config.getProfiles().contains(
++			registeredProfiles.elementAt(i))) {
++
++		    if (count == arg0) {
++			return ((Profile) registeredProfiles.elementAt(i));
++		    }
++		    ++count;
++		}
++	    }
++	    return null;
++	}
++
++	public Object getElementAt(int arg0) {
++	    Profile p = getProfileAt(arg0);
++	    if (p != null) {
++		return p.getDisplayName();
++	    } else {
++		return null;
++	    }
++	}
++
++	public int getSize() {
++	    ProfileConfiguration config = ProjectManager.getManager()
++		    .getCurrentProject().getProfileConfiguration();
++	    Vector registeredProfiles = profileManager.getRegisteredProfiles();
++	    int count = 0;
++	    for (int i = 0; i < registeredProfiles.size(); ++i) {
++		if (!config.getProfiles().contains(
++			registeredProfiles.elementAt(i))) {
++		    ++count;
++		}
++	    }
++	    return count;
++	}
++
++	public void removeListDataListener(ListDataListener arg0) {
++	    listeners.remove(arg0);
++	}
++    }
++
++    private class UsedProfilesListModel implements ListModel {
++	private Vector listeners = new Vector();
++
++	public void addListDataListener(ListDataListener arg0) {
++	    listeners.add(arg0);
++	}
++
++	public void fireListeners() {
++	    ListDataEvent evt = new ListDataEvent(this,
++		    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
++	    for (int i = 0; i < listeners.size(); ++i) {
++		((ListDataListener) listeners.elementAt(i))
++			.contentsChanged(evt);
++	    }
++	}
++
++	public Profile getProfileAt(int arg0) {
++	    ProfileConfiguration config = ProjectManager.getManager()
++		    .getCurrentProject().getProfileConfiguration();
++	    return ((Profile) config.getProfiles().elementAt(arg0));
++	}
++
++	public Object getElementAt(int arg0) {
++	    ProfileConfiguration config = ProjectManager.getManager()
++		    .getCurrentProject().getProfileConfiguration();
++	    return ((Profile) config.getProfiles().elementAt(arg0))
++		    .getDisplayName();
++	}
++
++	public int getSize() {
++	    ProfileConfiguration config = ProjectManager.getManager()
++		    .getCurrentProject().getProfileConfiguration();
++	    return config.getProfiles().size();
++	}
++
++	public void removeListDataListener(ListDataListener arg0) {
++	    listeners.remove(arg0);
++	}
++    }
++
++    public ProfileSelectionTab() {
++	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
++
++	JPanel configPanel = new JPanel();
++	configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.X_AXIS));
++
++	availableList.setPrototypeCellValue("12345678901234567890");
++	usedList.setPrototypeCellValue("12345678901234567890");
++
++	availableList.setMinimumSize(new Dimension(50, 50));
++	usedList.setMinimumSize(new Dimension(50, 50));
++
++	JPanel leftList = new JPanel();
++	leftList.setLayout(new BorderLayout());
++	leftList.add(new JLabel("Available Profiles:"), BorderLayout.NORTH);
++	leftList.add(availableList, BorderLayout.CENTER);
++	configPanel.add(leftList);
++
++	JPanel centerButtons = new JPanel();
++	centerButtons.setLayout(new BoxLayout(centerButtons, BoxLayout.Y_AXIS));
++	centerButtons.add(addButton);
++	centerButtons.add(removeButton);
++	configPanel.add(centerButtons);
++
++	JPanel rightList = new JPanel();
++	rightList.setLayout(new BorderLayout());
++	rightList.add(new JLabel("Active Profiles:"), BorderLayout.NORTH);
++	rightList.add(usedList, BorderLayout.CENTER);
++	configPanel.add(rightList);
++
++	addButton.addActionListener(this);
++	removeButton.addActionListener(this);
++
++	add(configPanel);
++
++	JPanel lffPanel = new JPanel();
++	lffPanel.setLayout(new FlowLayout());
++	lffPanel.add(loadFromFile);
++	lffPanel.add(unregisterProfile);
++
++	loadFromFile.addActionListener(this);
++	unregisterProfile.addActionListener(this);
++
++	add(lffPanel);
++    }
++
++    public void actionPerformed(ActionEvent arg0) {
++	if (arg0.getSource() == addButton) {
++	    AvailableProfilesListModel model = 
++		((AvailableProfilesListModel) availableList.getModel());
++	    Profile selected = model.getProfileAt(availableList
++		    .getSelectedIndex());
++	    ProjectManager.getManager().getCurrentProject()
++		    .getProfileConfiguration().addProfile(selected);
++	    model.fireListeners();
++	} else if (arg0.getSource() == removeButton) {
++	    UsedProfilesListModel model = ((UsedProfilesListModel) usedList
++		    .getModel());
++	    Profile selected = model.getProfileAt(usedList.getSelectedIndex());
++	    ProjectManager.getManager().getCurrentProject()
++		    .getProfileConfiguration().removeProfile(selected);
++	    model.fireListeners();
++	} else if (arg0.getSource() == unregisterProfile) {
++	    AvailableProfilesListModel model = 
++		((AvailableProfilesListModel) availableList
++		    .getModel());
++	    Profile selected = model.getProfileAt(availableList
++		    .getSelectedIndex());
++	    if (selected instanceof UserDefinedProfile) {
++		ProfileManagerImpl.getInstance().removeProfile(selected);
++		model.fireListeners();
++	    } else {
++		JOptionPane.showMessageDialog(this,
++			"Only user defined profiles can be removed");
++	    }
++	} else if (arg0.getSource() == loadFromFile) {
++	    JFileChooser fileChooser = new JFileChooser();
++	    fileChooser.setFileFilter(new FileFilter() {
++
++		public boolean accept(File file) {
++		    return file.isDirectory()
++			    || (file.isFile() 
++				    && (file.getName().endsWith(".xml") 
++					  || file.getName().endsWith(".xmi")));
++		}
++
++		public String getDescription() {
++		    return "XMI Files";
++		}
++
++	    });
++
++	    int ret = fileChooser.showOpenDialog(this);
++	    if (ret == JFileChooser.APPROVE_OPTION) {
++		File file = fileChooser.getSelectedFile();
++
++		Profile profile = new UserDefinedProfile(file,
++			new FileModelLoader());
++
++		if (profile.getModel() != null) {
++		    ProfileManagerImpl.getInstance().registerProfile(profile);
++
++		    ProjectManager.getManager().getCurrentProject()
++			    .getProfileConfiguration().addProfile(profile);
++
++		    UsedProfilesListModel model = 
++			((UsedProfilesListModel) usedList.getModel());
++		    model.fireListeners();
++		} else {
++		    JOptionPane.showMessageDialog(this,
++			    "Error opening profile!");
++		}
++	    }
++	}
++
++	availableList.validate();
++	usedList.validate();
++    }
++
++    public String getTabKey() {
++	return "tab.profiles";
++    }
++
++    public JPanel getTabPanel() {
++	return this;
++    }
++
++    public void handleResetToDefault() {
++	// TODO: Auto-generated method stub
++
++    }
++
++    public void handleSettingsTabCancel() {
++	// TODO: Auto-generated method stub
++
++    }
++
++    public void handleSettingsTabRefresh() {
++	// TODO: Auto-generated method stub
++
++    }
++
++    public void handleSettingsTabSave() {
++	// TODO: Auto-generated method stub
++
++    }
++
++}
+Index: D:/ArgoUML/argouml/org/argouml/ui/SettingsTabPreferences.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/ui/SettingsTabPreferences.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/ui/SettingsTabPreferences.java	(working copy)
+@@ -39,7 +39,7 @@
+ import org.argouml.configuration.Configuration;
+ import org.argouml.i18n.Translator;
+ import org.argouml.kernel.ProjectManager;
+-import org.argouml.uml.ProfileException;
++import org.argouml.uml.profile.ProfileException;
+ 
+ /**
+  * Settings tab panel for handling ArgoUML application related settings.
+@@ -121,8 +121,8 @@
+         chkStripDiagrams.setSelected(
+                 Configuration.getBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS,
+                                          false));
+-        defaultProfile.setText(ProjectManager.getManager().getCurrentProject()
+-                .getProfile().getProfileModelFilename());
++        defaultProfile.setText("PLEASE THIS IS JUST A DEMO VERSION");
++        // TODO fix that!
+     }
+ 
+     /*
+@@ -135,14 +135,15 @@
+ 				 chkReloadRecent.isSelected());
+         Configuration.setBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS,
+                  chkStripDiagrams.isSelected());
+-        try {
+-            ProjectManager.getManager().getCurrentProject().getProfile()
+-                    .setProfileModelFilename(defaultProfile.getText());
+-        } catch (ProfileException e) {
++//        try {
++//            ProjectManager.getManager().getCurrentProject().getProfile()
++//                    .setProfileModelFilename(defaultProfile.getText());
++            // TODO Ajeitar isso!
++//        } catch (ProfileException e) {
+             // shouldn't happen if profile was validated when selected
+-            JOptionPane.showMessageDialog(this, "Setting UML profile failed",
+-                    "Profile save error", JOptionPane.ERROR_MESSAGE);
+-        }
++//            JOptionPane.showMessageDialog(this, "Setting UML profile failed",
++//                    "Profile save error", JOptionPane.ERROR_MESSAGE);
++//        }
+     }
+ 
+     /*
+Index: D:/ArgoUML/argouml/org/argouml/ui/GUI.java
+===================================================================
+--- D:/ArgoUML/argouml/org/argouml/ui/GUI.java	(revision 12607)
++++ D:/ArgoUML/argouml/org/argouml/ui/GUI.java	(working copy)
+@@ -80,6 +80,7 @@
+         addProjectSettingsTab(new ProjectSettingsTabProperties());
+         addProjectSettingsTab(new SettingsTabNotation(
+                 GUI.SCOPE_PROJECT));
++        addProjectSettingsTab(new ProfileSelectionTab());
+     }
+ 
+     /**
+Index: D:/ArgoUML/argouml/ext/profile-javabeans.jar
+===================================================================
+Cannot display: file marked as a binary type.
+svn:mime-type = application/octet-stream
+
+Property changes on: D:\ArgoUML\argouml\ext\profile-javabeans.jar
+___________________________________________________________________
+Name: svn:mime-type
+   + application/octet-stream
+
+Index: D:/ArgoUML/argouml/.settings/org.eclipse.jdt.core.prefs
+===================================================================
+--- D:/ArgoUML/argouml/.settings/org.eclipse.jdt.core.prefs	(revision 12607)
++++ D:/ArgoUML/argouml/.settings/org.eclipse.jdt.core.prefs	(working copy)
+@@ -1,4 +1,4 @@
+-#Sun Apr 22 20:35:03 CEST 2007
++#Sat May 12 06:13:43 BRT 2007
+ eclipse.preferences.version=1
+ org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
+ org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
+Index: D:/ArgoUML/argouml/.settings/org.eclipse.jdt.ui.prefs
+===================================================================
+--- D:/ArgoUML/argouml/.settings/org.eclipse.jdt.ui.prefs	(revision 12607)
++++ D:/ArgoUML/argouml/.settings/org.eclipse.jdt.ui.prefs	(working copy)
+@@ -1,3 +1,3 @@
+-#Sun Apr 22 20:35:02 CEST 2007
++#Sat May 12 06:13:43 BRT 2007
+ eclipse.preferences.version=1
+ internal.default.compliance=default

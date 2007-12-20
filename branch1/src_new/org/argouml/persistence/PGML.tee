@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE TemplateSet [
+
+  <!ELEMENT TemplateSet (macro | template)* >
+
+  <!ELEMENT macro (#PCDATA)>
+
+  <!ATTLIST macro name ID #REQUIRED>
+
+  <!ELEMENT template (#PCDATA)>
+
+  <!ATTLIST template class CDATA #REQUIRED>
+
+]>
+
+<!-- This is PGML.tee, for GEF Diagrams to generate Precision Graphics -->
+
+<!-- Markup Language files.  "tee" = Template with Embedded Expressions. -->
+
+
+
+<TemplateSet>
+
+
+
+<macro name="FILL_AND_STROKE">
+
+<![CDATA[
+
+fill="<ocl>self.filled01</ocl>"
+
+fillcolor="<ocl>self.fillColor</ocl>"
+
+stroke="<ocl>self.lineWidth</ocl>"
+
+strokecolor="<ocl>self.lineColor</ocl>"
+visibility="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getVisibility(self)</ocl>"
+
+]]>
+
+</macro>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+
+
+<template class="org.tigris.gef.base.Diagram">
+
+<![CDATA[
+
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE pgml SYSTEM "pgml.dtd">
+
+<pgml description="<ocl>self.classAndModelID</ocl>"
+
+      name="<ocl>self.name</ocl>"
+
+>
+  <private>ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"</private>
+  <ocl>self.layer.contents</ocl>
+</pgml>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="java.awt.Rectangle">
+
+<![CDATA[
+
+x="<ocl>self.x.intValue</ocl>"
+
+y="<ocl>self.y.intValue</ocl>"
+
+width="<ocl>self.width.intValue</ocl>"
+
+height="<ocl>self.height.intValue</ocl>"
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="java.awt.Point">
+
+<![CDATA[
+
+<lineto x="<ocl>self.x.intValue</ocl>"
+
+        y="<ocl>self.y.intValue</ocl>" />
+
+]]>
+
+</template>
+
+<!-- luckily, points are only used in paths -->
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="java.awt.Color">
+
+<![CDATA[
+
+<ocl>org.tigris.gef.persistence.pgml.PgmlUtility.getColor(self)</ocl>
+
+]]>
+
+</template>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigRect">
+
+<![CDATA[
+
+<rectangle name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  <ocl>self.bounds</ocl>
+
+  FILL_AND_STROKE
+
+/>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigRRect">
+
+<![CDATA[
+
+<rectangle name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  <ocl>self.bounds</ocl>
+
+  FILL_AND_STROKE
+
+  rounding="<ocl>self.cornerRadius</ocl>"
+
+/>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigCircle">
+
+<![CDATA[
+
+<ellipse name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  x="<ocl>self.center.x.intValue</ocl>"
+
+  y="<ocl>self.center.y.intValue</ocl>"
+
+  rx="<ocl>self.halfWidth.intValue</ocl>"
+
+  ry="<ocl>self.halfHeight.intValue</ocl>"
+
+  FILL_AND_STROKE
+
+/>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigText">
+
+<![CDATA[
+
+<text name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  x="<ocl>self.x.intValue</ocl>"
+
+  y="<ocl>self.y.intValue</ocl>"
+
+  FILL_AND_STROKE
+
+  font="<ocl>self.fontFamily</ocl>"
+
+  textsize="<ocl>self.fontSize</ocl>"
+
+><ocl>self.text</ocl></text>
+
+]]>
+
+</template>
+
+
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigLine">
+
+<![CDATA[
+
+<path name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  description="<ocl>self.class.name</ocl>"
+
+  FILL_AND_STROKE
+
+>
+
+  <moveto x="<ocl>self.x1.intValue</ocl>"
+
+          y="<ocl>self.y1.intValue</ocl>" />
+
+  <lineto x="<ocl>self.x2.intValue</ocl>"
+
+          y="<ocl>self.y2.intValue</ocl>" />
+
+</path>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigPoly">
+
+<![CDATA[
+
+<path name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  description="<ocl>self.class.name</ocl>"
+
+  FILL_AND_STROKE
+
+>
+
+  <moveto x="<ocl>self.firstPoint.x.intValue</ocl>"
+
+          y="<ocl>self.firstPoint.y.intValue</ocl>" />
+
+  <ocl>self.points[1,*]</ocl>
+
+</path>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigSpline">
+
+<![CDATA[
+
+<path name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  description="<ocl>self.class.name</ocl>"
+
+  FILL_AND_STROKE
+
+>
+
+  <moveto x="<ocl>self.firstPoint.x.intValue</ocl>"
+
+          y="<ocl>self.firstPoint.y.intValue</ocl>" />
+
+  <ocl>self.points</ocl>
+
+</path>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigInk">
+
+<![CDATA[
+
+<path name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  description="<ocl>self.class.name</ocl>"
+
+  FILL_AND_STROKE
+
+>
+
+  <moveto x="<ocl>self.firstPoint.x.intValue</ocl>"
+
+          y="<ocl>self.firstPoint.y.intValue</ocl>" />
+
+  <ocl>self.points</ocl>
+
+</path>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<!-- image? -->
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigGroup">
+
+<![CDATA[
+
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+     description="<ocl>self.classNameAndBounds</ocl>"
+
+     href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
+     FILL_AND_STROKE
+
+>
+
+  <private>
+    enclosingFig="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getEnclosingId(self)</ocl>"
+  </private>
+
+  
+
+  <ocl>self.figs</ocl>
+
+</group>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.argouml.uml.diagram.ui.FigNodeModelElement">
+
+<![CDATA[
+
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+     description="<ocl>self.classNameAndBounds</ocl>"
+     href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
+     FILL_AND_STROKE
+>
+
+  <private>
+
+    ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"
+    enclosingFig="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getEnclosingId(self)</ocl>"
+
+  </private>
+
+  
+
+  <ocl>self.figs</ocl>
+
+</group>
+
+]]>
+
+</template>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigEdge">
+
+<![CDATA[
+
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+     description="<ocl>self.class.name</ocl>"
+
+     href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
+
+     stroke="<ocl>self.lineWidth</ocl>"
+
+     strokecolor="<ocl>self.lineColor</ocl>"
+
+>
+
+  <private>
+
+    sourcePortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourcePortFig)</ocl>"
+
+    destPortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destPortFig)</ocl>"
+
+    sourceFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourceFigNode)</ocl>"
+
+    destFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destFigNode)</ocl>"
+
+  </private>
+
+
+
+  <ocl>self.fig</ocl>
+
+</group>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.argouml.uml.diagram.static_structure.ui.FigEdgeNote">
+
+<![CDATA[
+
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+     description="<ocl>self.class.name</ocl>"
+
+     stroke="<ocl>self.lineWidth</ocl>"
+
+     strokecolor="<ocl>self.lineColor</ocl>"
+
+>
+
+  <private>
+
+    ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"
+    sourcePortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourcePortFig)</ocl>"
+
+    destPortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destPortFig)</ocl>"
+
+    sourceFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourceFigNode)</ocl>"
+
+    destFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destFigNode)</ocl>"
+
+  </private>
+
+
+
+  <ocl>self.fig</ocl>
+
+</group>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.argouml.uml.diagram.ui.FigEdgeModelElement">
+
+<![CDATA[
+
+<group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+     description="<ocl>self.class.name</ocl>"
+
+     href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
+
+     stroke="<ocl>self.lineWidth</ocl>"
+
+     strokecolor="<ocl>self.lineColor</ocl>"
+
+>
+
+  <private>
+
+    ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"
+    sourcePortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourcePortFig)</ocl>"
+
+    destPortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destPortFig)</ocl>"
+
+    sourceFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourceFigNode)</ocl>"
+
+    destFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destFigNode)</ocl>"
+
+  </private>
+
+
+
+  <ocl>self.fig</ocl>
+
+</group>
+
+]]>
+
+</template>
+
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.tigris.gef.presentation.FigCube">
+
+<![CDATA[
+
+<rectangle name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  <ocl>self.bounds</ocl>
+
+  FILL_AND_STROKE
+
+/>
+
+]]>
+
+</template>
+
+
+<template class="org.tigris.gef.presentation.Fig">
+
+<![CDATA[
+
+<rectangle name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
+
+  <ocl>self.bounds</ocl>
+
+  FILL_AND_STROKE
+
+/>
+
+]]>
+
+</template>
+
+</TemplateSet>
+

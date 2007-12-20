@@ -1,0 +1,6 @@
+#Wed Aug 29 16:56:58 EDT 2007
+eclipse.preferences.version=1
+enabled=true
+filenames.config=/argouml-core-tools/checkstyle/checkstyle_argouml.xml
+filenames.properties=/argouml-core-tools/checkstyle/checkstyle.properties
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true

@@ -1,0 +1,7 @@
+#Thu Feb 16 16:16:05 EST 2006
+/instance/org.eclipse.team.cvs.core/repositories/%pserver%anoncvs@cvs.tigris.org%%cvs/location=\:pserver\:anoncvs@cvs.tigris.org\:/cvs
+\!/=
+@org.eclipse.team.cvs.core=3.1.0
+/instance/org.eclipse.team.cvs.core/repositories/%pserver%anonymous@cvs.sourceforge.net%%cvsroot%andromda/location=\:pserver\:anonymous@cvs.sourceforge.net\:/cvsroot/andromda
+/instance/org.eclipse.team.cvs.core/repositories/%pserver%anonymous@cvs.sourceforge.net%%cvsroot%nsuml/location=\:pserver\:anonymous@cvs.sourceforge.net\:/cvsroot/nsuml
+file_export_version=3.0

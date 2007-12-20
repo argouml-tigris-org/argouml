@@ -1,0 +1,16 @@
+This directory contains the configuration for checkstyle. This 
+configuration is a reflection of the agreed coding styles described
+in the Standards for Coding in ArgoUML chapter in the Cookbook.
+
+
+Noted problems with the current version of checkstyle (Linus 2003-06-30):
+* Indentation
+  The indentation used is some contributed indentation checker and not the
+  real thing. Bugs found sofar:
+	static blocks has 8 indents for some statements and 4 for others.
+        inline classes (whatever they are called), checkstyle does not agree
+	with emacs. More investigation needed on what is right and what is 
+	wrong.
+  (Is this still true?  Checkstyle 3.3 appears to agree with Eclipse 3.1
+  on the correct indentation.  tfm 20051108)
+
