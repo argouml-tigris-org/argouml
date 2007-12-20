@@ -88,15 +88,12 @@ import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.IItemUID;
 import org.argouml.uml.diagram.PathContainer;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
@@ -2019,34 +2016,7 @@ public abstract class FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
      */
     public Project getProject() {
-        LayerPerspective layer = (LayerPerspective) getLayer();
-        if (layer == null) {
-            /* TODO: Without this, we fail to draw e.g. a Class.
-             * But is this a good solution? 
-             * Why is the Layer not set in the constructor? */
-            Editor editor = Globals.curEditor();
-            if (editor == null) {
-                // TODO: The above doesn't work reliably in a constructor.  We
-                // need a better way of getting default fig settings 
-                // for the owning project rather than using the 
-                // project manager singleton. - tfm
-                return ProjectManager.getManager().getCurrentProject();
-            }
-            Layer lay = editor.getLayerManager().getActiveLayer();
-            if (lay instanceof LayerPerspective) {
-                layer = (LayerPerspective) lay;
-            }
-        }
-        if (layer == null) {
-            return null;
-        }
-
-	GraphModel gm = layer.getGraphModel();
-        if (gm instanceof UMLMutableGraphSupport) {
-            return ((UMLMutableGraphSupport) gm).getProject();
-        } else {
-            return ProjectManager.getManager().getCurrentProject();
-        }
+        return ArgoFigUtil.getProject(this);
     }
     
     /**

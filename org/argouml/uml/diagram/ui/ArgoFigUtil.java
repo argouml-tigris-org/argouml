@@ -24,8 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.List;
-
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -34,42 +32,48 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.Fig;
 
 /**
- * A fig which contains other figs.  ArgoUMLs version of GEF's FigGroup.
+ * Static utility methods for use with ArgoFigs.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
-public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
-
-    public ArgoFigGroup() {
-        super();
-    }
-
-    public ArgoFigGroup(List arg0) {
-        super(arg0);
-    }
-
-    /*
-     * This optional method is not implemented.  It will throw an
-     * {@link UnsupportedOperationException} if used.  Figs are 
-     * added to a GraphModel which is, in turn, owned by a project.<p>
-     * 
-     * This method is identical to the one in FigNodeModelElement.
-     */
-    public void setProject(Project project) {
-        throw new UnsupportedOperationException();
-    }
+public class ArgoFigUtil {
     
-    /**
-     * This method is identical to the one in FigNodeModelElement.
-     * 
-     * @return the project 
-     * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
-     */
-    public Project getProject() {
-        return ArgoFigUtil.getProject(this);
+    public static Project getProject(ArgoFig fig) {
+        if (fig instanceof Fig) {
+            Fig f = (Fig) fig;
+            LayerPerspective layer = (LayerPerspective) f.getLayer();
+            if (layer == null) {
+                /* TODO: Without this, we fail to draw e.g. a Class.
+                 * But is this a good solution? 
+                 * Why is the Layer not set in the constructor? */
+                Editor editor = Globals.curEditor();
+                if (editor == null) {
+                    // TODO: The above doesn't work reliably in a constructor.  We
+                    // need a better way of getting default fig settings 
+                    // for the owning project rather than using the 
+                    // project manager singleton. - tfm
+                    return ProjectManager.getManager().getCurrentProject();
+                }
+                Layer lay = editor.getLayerManager().getActiveLayer();
+                if (lay instanceof LayerPerspective) {
+                    layer = (LayerPerspective) lay;
+                }
+            }
+            if (layer == null) {
+                return ProjectManager.getManager().getCurrentProject();
+            }
+            GraphModel gm = layer.getGraphModel();
+            if (gm instanceof UMLMutableGraphSupport) {
+                return ((UMLMutableGraphSupport) gm).getProject();
+            } else {
+                return ProjectManager.getManager().getCurrentProject();
+            }
+        }
+        return null;
     }
+
 
 }

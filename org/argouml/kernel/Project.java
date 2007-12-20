@@ -253,7 +253,9 @@ public interface Project {
      * If there isn't exactly one model, <code>null</code> is returned.
      *
      * @return the model.
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getModels()}.
      */
+    @Deprecated
     public Object getModel();
 
 

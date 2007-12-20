@@ -122,34 +122,7 @@ public class ArgoFigText extends FigText
     }
     
     public Project getProject() {
-        LayerPerspective layer = (LayerPerspective) getLayer();
-        if (layer == null) {
-            /* TODO: Without this, we fail to draw e.g. a Class.
-             * But is this a good solution? 
-             * Why is the Layer not set in the constructor? */
-            Editor editor = Globals.curEditor();
-            if (editor == null) {
-                /* TODO: The above doesn't work reliably in a constructor. 
-                * We need a better way of getting default fig settings 
-                * for the owning project rather than using the project 
-                * manager singleton. - tfm
-                */
-                return ProjectManager.getManager().getCurrentProject();
-            }
-            Layer lay = editor.getLayerManager().getActiveLayer();
-            if (lay instanceof LayerPerspective) {
-                layer = (LayerPerspective) lay;
-            }
-        }
-        if (layer == null) {
-            return null;
-        }
-        GraphModel gm = layer.getGraphModel();
-        if (gm instanceof UMLMutableGraphSupport) {
-            return ((UMLMutableGraphSupport) gm).getProject();
-        } else {
-            return ProjectManager.getManager().getCurrentProject();
-        }
+        return ArgoFigUtil.getProject(this);
     }
 
     /**
