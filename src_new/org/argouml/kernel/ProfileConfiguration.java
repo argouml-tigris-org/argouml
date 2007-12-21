@@ -81,20 +81,36 @@ public class ProfileConfiguration extends AbstractProjectMember {
      */
     public static final ConfigurationKey KEY_DEFAULT_STEREOTYPE_VIEW = 
         Configuration.makeKey("profiles", "stereotypeView");
-        
+    
     /**
-     * The default constructor for this class. Sets the Java profile as the 
-     * default one and its formating strategy as the default one.
+     * The default constructor for this class. Sets the default profiles as 
+     * given by {@link org.argouml.profile.ProfileManager} as the profiles of 
+     * the project.
      * 
      * @param project the project that contains this configuration
      */
     public ProfileConfiguration(Project project) {
-	super(EXTENSION, project);
-	
+        super(EXTENSION, project);
         for (Profile p : ProfileFacade.getManager().getDefaultProfiles()) {
             addProfile(p);
         }
 
+        updateStrategies();
+    }
+    
+    /**
+     * The constructor for pre-defined profile configurations, such as when a 
+     * project is read from a saved file.
+     * @param project the project that contains this configuration
+     * @param configuredProfiles the {@link Profile}s that will be the project 
+     *        profiles
+     */
+    public ProfileConfiguration(Project project, 
+            Collection<Profile> configuredProfiles) {
+        super(EXTENSION, project);
+        for (Profile profile : configuredProfiles) {
+            addProfile(profile);
+        }
         updateStrategies();
     }
     
@@ -369,6 +385,14 @@ public class ProfileConfiguration extends AbstractProjectMember {
         return null;
     }
 
+    /**
+     * Find all the model elements in the configured {@link Profile}s 
+     * of the given meta type.
+     * 
+     * @param metaType the meta type of the model elements to find
+     * @return a {@link Collection} containing the model elements that 
+     *         are of the given meta type
+     */
     @SuppressWarnings("unchecked")
     public Collection findByMetaType(Object metaType) {
         Set elements = new HashSet();

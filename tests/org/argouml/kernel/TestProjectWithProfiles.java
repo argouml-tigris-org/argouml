@@ -101,24 +101,28 @@ public class TestProjectWithProfiles extends TestCase {
      *   the UML profile for Java are consistent</li>
      * </ol>
      * 
-     * FIXME: this test causes an error when executed in Eclipse with other 
-     * tests, but, not when it is executed alone. See FIXME: fails here below.
+     * FIXME: fails in eclipse, but, passes in Ant build. Maybe its my launch 
+     * configuration that is broken...
      * 
      * @throws Exception when something goes wrong
      */
     public void testRemoveProfileWithModelThatRefersToProfile() 
         throws Exception {
+        // set UML Profile for Java as a default profile
         ProfileManager profileManager = ProfileFacade.getManager();
         Profile javaProfile = profileManager.getProfileForClass(
                 "org.argouml.profile.internal.ProfileJava");
         if (!profileManager.getDefaultProfiles().contains(javaProfile)) {
             profileManager.addToDefaultProfiles(javaProfile);
         }
+        // create a new project and assert that it has the UML profile for 
+        // Java as part of the project's profile configuration
         Project project = ProjectManager.getManager().makeEmptyProject();
         assertTrue(project.getProfileConfiguration().getProfiles().contains(
                 javaProfile));
-        
-        Object model = project.getModel();
+        // create a dependency from the project's model to the UML profile for 
+        // Java
+        Object model = project.getModels().iterator().next();
         assertNotNull(model);
         Object fooClass = Model.getCoreFactory().buildClass("Foo", model);
         Object javaListType = project.findType("List", false);
@@ -129,24 +133,18 @@ public class TestProjectWithProfiles extends TestCase {
                 getFacade().getOperations(fooClass).iterator().next());
         Object returnParam = getFacade().getParameter(barOperation, 0);
         assertNotNull(returnParam);
-        // TODO: duplicated consistency check
         Object returnParamType = getFacade().getType(returnParam);
-        assertEquals(getFacade().getName(javaListType), 
-                getFacade().getName(returnParamType));
-        assertEquals(getFacade().getNamespace(javaListType), 
-                getFacade().getNamespace(returnParamType));
-        
+        checkJavaListTypeExistsAndMatchesReturnParamType(project, 
+                returnParamType);
+        // remove the Java profile from the project's profile configuration
         project.getProfileConfiguration().removeProfile(javaProfile);
-        // TODO: duplicated consistency check
-        javaListType = project.findType("List", false);
-        assertNotNull(javaListType);
+        // assert that the project's model elements that had a dependency to 
+        // the UML profile for Java don't get inconsistent
         returnParamType = getFacade().getType(returnParam);
-        assertEquals(getFacade().getName(javaListType), 
-                getFacade().getName(returnParamType));
-        assertEquals(getFacade().getNamespace(javaListType), 
-                getFacade().getNamespace(returnParamType));
+        checkJavaListTypeExistsAndMatchesReturnParamType(project, 
+                returnParamType);
         assertNotNull(project.findType("Foo", false));
-        
+        // save the project into a new file
         File file = getFileInUsersTemporaryDirectory(
                 "testRemoveProfileWithModelThatRefersToProfile.zargo");
         AbstractFilePersister persister = 
@@ -154,25 +152,37 @@ public class TestProjectWithProfiles extends TestCase {
                     file.getAbsolutePath());
         project.setVersion(ApplicationVersion.getVersion());
         persister.save(project, file);
-        
+        // reopen the project and assert that the Java profile isn't part of 
+        // the profile configuration, including the fact that the type 
+        // java.util.List isn't found
         project = persister.doLoad(file);
         project.postLoad();
+        assertFalse(project.getProfileConfiguration().getProfiles().contains(
+                javaProfile));
+        assertNull(project.findType("List", false));
+        // assert that the project's model elements that had a dependency to 
+        // the UML profile for Java are consistent
         fooClass = project.findType("Foo", false);
-        // FIXME: fails here when executed with other tests in Eclipse
         assertNotNull(fooClass);
         barOperation = getFacade().getOperations(fooClass).iterator().next();
         returnParam = getFacade().getParameter(barOperation, 0);
         returnParamType = getFacade().getType(returnParam);
-        // TODO: duplicated consistency check
-        javaListType = project.findType("List", false);
+        // TODO: now this gets weird! AFAIK no special support for this, but, 
+        // you see that the information is in the model.
+        assertNotNull(returnParamType);
+        assertEquals("List", getFacade().getName(returnParamType));
+        assertEquals("util", getFacade().getName(
+                getFacade().getNamespace(returnParamType)));
+    }
+
+    private void checkJavaListTypeExistsAndMatchesReturnParamType(
+            Project project, Object returnParamType) {
+        Object javaListType = project.findType("List", false);
         assertNotNull(javaListType);
         assertEquals(getFacade().getName(javaListType), 
                 getFacade().getName(returnParamType));
-        String javaListTypeNamespaceName = 
-            getFacade().getName(getFacade().getNamespace(javaListType));
-        assertEquals(javaListTypeNamespaceName, 
-                getFacade().getName(
-                        getFacade().getNamespace(returnParamType)));
+        assertEquals(getFacade().getNamespace(javaListType), 
+                getFacade().getNamespace(returnParamType));
     }
 
     private static final String SYSPROPNAME_TMPDIR = "java.io.tmpdir";
@@ -184,17 +194,6 @@ public class TestProjectWithProfiles extends TestCase {
         File testCaseDir = new File(tmpDir, testCaseDirName);
         testCaseDir.mkdir();
         return new File(testCaseDir, fileName);
-    }
-    
-    /**
-     * TODO: implement.
-     * 
-     * TODO: document my intent.
-     */
-    public void xtestProfileConfiguration() {
-        // Profile Configuration Without A Default Profile 
-        // Shouldn't Get That Profile When Reopened
-        fail("TODO: I noticed that this is happening in manual test.");
     }
 
 }

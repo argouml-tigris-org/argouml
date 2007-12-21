@@ -26,7 +26,6 @@ package org.argouml.persistence;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,9 +34,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.xml.sax.InputSource;
 
@@ -64,58 +63,49 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
      * @see org.argouml.persistence.MemberFilePersister#getMainTag()
      */
     public String getMainTag() {
-	return "profile";
+        return "profile";
     }
 
     /*
      * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project, java.io.InputStream)
      */
     public void load(Project project, InputStream inputStream)
-	throws OpenException {
-        
-	try {
-	    ProfileConfiguration pc = new ProfileConfiguration(project);
+        throws OpenException {
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    inputStream));
 
-	    BufferedReader br = new BufferedReader(new InputStreamReader(
-		    inputStream));
+            String line = null;
+            while (true) {
+                line = br.readLine();
+                if (line.trim().equals("<profile>")) {
+                    break;
+                }
+            }
+            Collection<Profile> profiles = new ArrayList<Profile>();
+            while (true) {
+                line = br.readLine().trim();
+                if (line.equals("</profile>")) {
+                    break;
+                }
+                
+                Profile profile = null;
 
-	    String line = null;
-	    while (true) {
-		line = br.readLine();
-		if (line.trim().equals("<profile>")) {
-		    break;
-		}
-	    }
-
-	    while (true) {
-		line = br.readLine().trim();
-
-		if (line.equals("</profile>")) {
-		    break;
-		}
-
-		Profile profile = null;
-		List<Profile> profiles = 
-		    ProfileFacade.getManager().getRegisteredProfiles();
-
-		if (line.equals("<userDefined>")) {
+                if (line.equals("<userDefined>")) {
                     line = br.readLine().trim();
-		    String fileName = line.substring(line.indexOf(">") + 1,
+                    String fileName = line.substring(line.indexOf(">") + 1,
                             line.indexOf("</")).trim();
 
                     // consumes the <model> tag
                     br.readLine();
-                    
-		    File file = new File(fileName);
 
-		    StringBuffer xmi = new StringBuffer();
+                    StringBuffer xmi = new StringBuffer();
                     
                     while (true) {
                         line = br.readLine();
                         if (line == null || line.contains("</model>")) {
                             break;
                         }
-
                         xmi.append(line + "\n");
                     }
                     
@@ -123,35 +113,34 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                     profile = new UserDefinedProfile(fileName, model);
                     
                     // consumes the </userDefined>
-		    line = br.readLine().trim();		    
-		} else if (line.equals("<plugin>")) {
-		    String className = br.readLine().trim();
+                    line = br.readLine().trim();		    
+                } else if (line.equals("<plugin>")) {
+                    String className = br.readLine().trim();
+                    profile = ProfileFacade.getManager().getProfileForClass(
+                            className);
+                    line = br.readLine().trim();
+                }
 
-                    profile = ProfileFacade.getManager()
-                            .getProfileForClass(className);
-		    
-		    line = br.readLine().trim();
-		}
-
-		if (profile != null) {
-		    pc.addProfile(profile);
-		}
-	    }
-	    project.setProfileConfiguration(pc);
-	} catch (Exception e) {
-	    // LOG.error("Exception", e);
-	    throw new OpenException(e);
-	}
+                if (profile != null) {
+                    profiles.add(profile);
+                }
+            }
+            ProfileConfiguration pc = new ProfileConfiguration(project, 
+                    profiles);
+            project.setProfileConfiguration(pc);
+        } catch (Exception e) {
+            // LOG.error("Exception", e);
+            throw new OpenException(e);
+        }
     }
 
     /*
      * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.Writer, boolean)
      */
     public void save(ProjectMember member, Writer writer, boolean xmlFragment)
-	throws SaveException {
-	
+        throws SaveException {
         PrintWriter w = new PrintWriter(writer);
-	saveProjectMember(member, w);
+        saveProjectMember(member, w);
     }
 
     /*
