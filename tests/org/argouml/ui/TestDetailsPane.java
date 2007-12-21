@@ -28,6 +28,11 @@ import javax.swing.JPanel;
 
 import junit.framework.TestCase;
 
+import org.tigris.swidgets.Horizontal;
+
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.cognitive.checklist.ui.InitCheckListUI;
+import org.argouml.cognitive.ui.InitCognitiveUI;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
@@ -35,8 +40,8 @@ import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.uml.ui.TabProps;
-import org.tigris.swidgets.Horizontal;
 
 /**
  * @author jaap.branderhorst@xs4all.nl
@@ -58,6 +63,9 @@ public class TestDetailsPane extends TestCase {
 	super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        new InitUmlUI().init();
+        new InitCheckListUI().init();
+        new InitCognitiveUI().init();
     }
 
     /**
@@ -65,6 +73,15 @@ public class TestDetailsPane extends TestCase {
      */
     public void testTargetSet() {
         DetailsPane pane = new DetailsPane("South", Horizontal.getInstance());
+        for (AbstractArgoJPanel tab : new InitUmlUI().getDetailsTabs()) {
+            pane.addTab(tab, false);
+        }
+        for (AbstractArgoJPanel tab : new InitCheckListUI().getDetailsTabs()) {
+            pane.addTab(tab, false);
+        }        
+        for (AbstractArgoJPanel tab : new InitCognitiveUI().getDetailsTabs()) {
+            pane.addTab(tab, true);
+        }
         JPanel todoPane = pane.getTab(TabToDo.class);
         JPanel propertyPane = pane.getTab(TabProps.class);
 //        JPanel docPane = pane.getTab(TabDocumentation.class);

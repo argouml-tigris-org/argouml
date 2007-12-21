@@ -34,6 +34,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.cognitive.checklist.ui.InitCheckListUI;
+import org.argouml.cognitive.ui.InitCognitiveUI;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
@@ -46,6 +49,7 @@ import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
+import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.swidgets.Horizontal;
 
@@ -107,6 +111,15 @@ public class TestPropertyPanels extends TestCase {
         if (theDetailsPane == null) {
             theDetailsPane =
         	new DetailsPane("South", Horizontal.getInstance());
+            for (AbstractArgoJPanel tab : new InitUmlUI().getDetailsTabs()) {
+                theDetailsPane.addTab(tab, false);
+            }
+            for (AbstractArgoJPanel tab : new InitCheckListUI().getDetailsTabs()) {
+                theDetailsPane.addTab(tab, false);
+            }        
+            for (AbstractArgoJPanel tab : new InitCognitiveUI().getDetailsTabs()) {
+                theDetailsPane.addTab(tab, true);
+            }
         }
     }
 
