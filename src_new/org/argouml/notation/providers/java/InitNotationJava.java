@@ -27,6 +27,7 @@ package org.argouml.notation.providers.java;
 import java.util.Collections;
 import java.util.List;
 
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -75,6 +76,10 @@ public class InitNotationJava implements InitSubsystem {
     }
 
     public List<GUISettingsTabInterface> getSettingsTabs() {
+        return Collections.emptyList();
+    }
+
+    public List<AbstractArgoJPanel> getDetailsTabs() {
         return Collections.emptyList();
     }
 

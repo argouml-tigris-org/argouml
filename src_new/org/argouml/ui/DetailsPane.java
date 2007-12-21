@@ -44,6 +44,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.swingext.LeftArrowIcon;
@@ -209,7 +210,7 @@ public class DetailsPane
                 // TabJavaSrc | TabSrc,
                 new TabConstraints(), new TabStereotype(),
                 new TabTaggedValues(),
-                new org.argouml.cognitive.checklist.ui.TabChecklist(),
+//                new org.argouml.cognitive.checklist.ui.TabChecklist(),
                 // TabHistory,
                 // TabHash,
             }));
@@ -218,11 +219,36 @@ public class DetailsPane
     
     /**
      * Returns the JTabbedPane that contains all details panels.
-     *
+     * @deprecated by MVW, in V0.25.4. Will become package scope.
      * @return the JTabbedPane.
      */
     public JTabbedPane getTabs() {
         return topLevelTabbedPane;
+    }
+
+    /**
+     * @param p the panel to be added 
+     * @param atEnd true = add the panel at the end, 
+     *                  false = at the beginning
+     */
+    public void addTab(AbstractArgoJPanel p, boolean atEnd) {
+        Icon icon = null;
+        String title = Translator.localize(p.getTitle());
+        if (p instanceof TabToDoTarget) {
+            icon = leftArrowIcon;
+        } else if (p instanceof TabModelTarget) {
+            icon = upArrowIcon;
+        } else if (p instanceof TabFigTarget) {
+            icon = upArrowIcon;
+        }
+        if (atEnd) {
+            topLevelTabbedPane.addTab(title, icon, p); 
+            tabPanelList.add(p);
+        } else { 
+            topLevelTabbedPane.insertTab(title, icon, p, null, 0);
+            tabPanelList.add(0, p);
+        }
+
     }
 
     /**

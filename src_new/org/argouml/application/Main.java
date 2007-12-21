@@ -54,6 +54,7 @@ import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.checklist.ui.InitCheckListUI;
 import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
@@ -417,6 +418,7 @@ public class Main {
             SubsystemUtility.initSubsystem(new InitNotationUml());
             SubsystemUtility.initSubsystem(new InitNotationJava());
             SubsystemUtility.initSubsystem(new InitDiagramAppearanceUI());
+            SubsystemUtility.initSubsystem(new InitCheckListUI());
         }
         return pb;
     }

@@ -55,4 +55,10 @@ public interface InitSubsystem {
      * This is called at initialisation time - use it at will.
      */
     public void init();
+    
+    /**
+     * @return an ordered list of Tabs
+     * to be added to the DetailsPanel
+     */
+    public List<AbstractArgoJPanel> getDetailsTabs();
 }

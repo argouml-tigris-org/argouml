@@ -35,12 +35,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.StylePanel;
 import org.argouml.ui.TabFigTarget;
 import org.argouml.ui.targetmanager.TargetEvent;

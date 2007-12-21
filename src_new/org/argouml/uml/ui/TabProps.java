@@ -32,8 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.model.Model;
-import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;

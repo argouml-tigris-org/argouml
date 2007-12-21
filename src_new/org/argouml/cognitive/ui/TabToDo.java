@@ -33,10 +33,10 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Wizard;
 import org.argouml.configuration.Configuration;
-import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.TabToDoTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;

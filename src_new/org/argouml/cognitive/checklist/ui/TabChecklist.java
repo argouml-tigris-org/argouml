@@ -45,6 +45,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.checklist.CheckItem;
 import org.argouml.cognitive.checklist.CheckManager;
@@ -52,7 +53,6 @@ import org.argouml.cognitive.checklist.Checklist;
 import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.gef.presentation.Fig;

@@ -48,6 +48,7 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
 
@@ -118,6 +119,25 @@ public final class ModuleLoader2 {
 	return INSTANCE;
     }
 
+    /**
+     * @return a list of Details panel tabs
+     */
+    List<AbstractArgoJPanel> getDetailsTabs() {
+        List<AbstractArgoJPanel> result = new ArrayList<AbstractArgoJPanel>();
+        for (ModuleInterface module : getInstance().availableModules()) {
+            ModuleStatus status = moduleStatus.get(module);
+            if (status == null) {
+                continue;
+            }
+            if (status.isEnabled()) {
+                if (module instanceof DetailsTabProvider) {
+                    result.addAll(
+                            ((DetailsTabProvider) module).getDetailsTabs());
+                }
+            }
+        }
+        return Collections.emptyList();
+    }
     /**
      * Return a collection of all available modules.
      *

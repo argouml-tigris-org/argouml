@@ -47,6 +47,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ChildGenRelated;

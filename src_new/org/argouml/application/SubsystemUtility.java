@@ -1,4 +1,4 @@
-// $Id$
+// $Id: SubsystemUtility.java 13902 2007-12-11 07:53:28Z tfmorris $
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,9 +24,12 @@
 
 package org.argouml.application;
 
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
+import org.argouml.ui.DetailsPane;
 import org.argouml.ui.GUI;
+import org.argouml.ui.ProjectBrowser;
 
 /**
  * Utility class for subsystem management.
@@ -48,6 +51,10 @@ public class SubsystemUtility {
         }
         for (GUISettingsTabInterface tab : subsystem.getProjectSettingsTabs()) {
             GUI.getInstance().addProjectSettingsTab(tab);
+        }
+        for (AbstractArgoJPanel tab : subsystem.getDetailsTabs()) {
+            ((DetailsPane) ProjectBrowser.getInstance().getDetailsPane())
+                .addTab(tab, true);
         }
     }
 

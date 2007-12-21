@@ -62,6 +62,7 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -256,6 +257,8 @@ public final class ProjectBrowser
      * @param mainApplication
      *            flag indicating whether we are the top level application.
      *            False if we are providing components to another top level app.
+     * @param leftBottomPane 
+     *            the panel to fit in the left bottom corner
      */
     private ProjectBrowser(String applicationName, SplashScreen splash, 
              boolean mainApplication, JPanel leftBottomPane) {
@@ -341,14 +344,13 @@ public final class ProjectBrowser
     }
 
     /**
-     * Singleton retrieval method for the projectbrowser. Lazely instantiates
-     * the projectbrowser.
+     * Singleton retrieval method for the projectbrowser.
+     * Do not use this before makeInstance is called!
+     *  
      * @return the singleton instance of the projectbrowser
      */
     public static synchronized ProjectBrowser getInstance() {
-        if (theInstance == null) {
-            theInstance = new ProjectBrowser();
-        }
+        assert theInstance != null;
         return theInstance;
     }
 
@@ -363,6 +365,7 @@ public final class ProjectBrowser
      *            true to create a top level application, false if integrated
      *            with something else.
      * @param leftBottomPane panel to place in the bottom left corner of the GUI
+     * 
      * @return the singleton instance of the projectbrowser
      */
     public static ProjectBrowser makeInstance(SplashScreen splash,
@@ -382,8 +385,8 @@ public final class ProjectBrowser
 
     /**
      * Creates the panels in the working area.
-     * 
-     * @param splash true if we show the splashscreen during startup
+     *
+     * @param splash true if we show  the splashscreen during startup
      * @param leftBottomPane panel to be placed in the bottom left (southwest)
      *                corner of the UI.
      */

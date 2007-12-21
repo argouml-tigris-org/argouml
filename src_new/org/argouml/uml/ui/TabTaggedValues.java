@@ -46,11 +46,11 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.ui.AbstractArgoJPanel;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
