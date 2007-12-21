@@ -151,7 +151,7 @@ public class TestDependencies extends TestCase {
             {"org.argouml.cognitive", "org.argouml.ui"},
             {"org.argouml.cognitive.critics", "org.argouml.cognitive.ui"},
             {"org.argouml.ui", "org.argouml.cognitive.critics.ui"},
-//TODO:{"org.argouml.ui", "org.argouml.cognitive.ui"},
+//TODO:{"org.argouml.ui", "org.argouml.cognitive.ui"},//fails due to subpackages
 //TODO:{"org.argouml.cognitive", "org.argouml.cognitive.critics"},
             {"org.argouml.uml.diagram", "org.argouml.ui"},
             {"org.argouml.ui", "org.argouml.notation.ui"},
