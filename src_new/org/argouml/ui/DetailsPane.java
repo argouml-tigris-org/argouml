@@ -201,7 +201,7 @@ public class DetailsPane
                 // Special case for backward compatibility
                 || "detail".equalsIgnoreCase(direction)) {
             tabPanelList.addAll(Arrays.asList(new JPanel[] {
-                new org.argouml.cognitive.ui.TabToDo(),
+//                new org.argouml.cognitive.ui.TabToDo(),
                 new TabProps(),
                 new TabDocumentation(),
                 new TabStyle(),
@@ -236,6 +236,7 @@ public class DetailsPane
         String title = Translator.localize(p.getTitle());
         if (p instanceof TabToDoTarget) {
             icon = leftArrowIcon;
+            atEnd = false; //overrule the parameter!
         } else if (p instanceof TabModelTarget) {
             icon = upArrowIcon;
         } else if (p instanceof TabFigTarget) {
