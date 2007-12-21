@@ -39,7 +39,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**

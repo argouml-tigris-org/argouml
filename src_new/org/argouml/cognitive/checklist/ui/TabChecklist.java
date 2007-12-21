@@ -53,8 +53,8 @@ import org.argouml.cognitive.checklist.Checklist;
 import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.gef.presentation.Fig;
 
 /**

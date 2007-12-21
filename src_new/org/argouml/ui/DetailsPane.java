@@ -53,7 +53,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
-import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.swidgets.Orientable;
 import org.tigris.swidgets.Orientation;

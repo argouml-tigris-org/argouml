@@ -35,8 +35,8 @@ import javax.swing.event.DocumentListener;
 
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
+import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.ui.TabModelTarget;
 
 import org.tigris.gef.presentation.FigText;
 

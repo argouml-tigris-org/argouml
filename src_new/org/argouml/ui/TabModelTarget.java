@@ -22,9 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.ui;
 
-import org.argouml.ui.TabTarget;
 
 /**
  * Empty interface used to tag Tabbed panels that accept a Model Element Target.
