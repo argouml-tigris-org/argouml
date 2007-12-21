@@ -45,6 +45,7 @@ import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.TabDiagram;
 
 /**
  * The upper right pane in the ArgoUML user interface.  It may have several
@@ -64,7 +65,7 @@ public class MultiEditorPane
      * (previously stored in org/argouml/argo.ini)
      */
     private final JPanel[] tabInstances = new JPanel[] {
-        new org.argouml.uml.diagram.ui.TabDiagram(),
+        new TabDiagram(),
         // org.argouml.ui.TabTable
         // TabMetrics
         // TabJavaSrc | TabSrc
