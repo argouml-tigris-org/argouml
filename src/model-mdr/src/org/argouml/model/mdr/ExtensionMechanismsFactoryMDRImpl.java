@@ -209,14 +209,28 @@ class ExtensionMechanismsFactoryMDRImpl extends
     }
 
 
+    @Deprecated
     public TaggedValue buildTaggedValue(String tag, String value) {
-        TaggedValue tv = createTaggedValue();
-        TagDefinition td = getTagDefinition(tag);
-        tv.setType(td);
-        // TODO: Some CASE tools appear to manage only one
-        // dataValue. This is an array of String according to the
-        // UML 1.4 specs.
+        TaggedValue tv = buildTaggedValue(getTagDefinition(tag));
         tv.getDataValue().add(value);
+        return tv;
+    }
+
+    private TaggedValue buildTaggedValue(TagDefinition type) {
+        TaggedValue tv = createTaggedValue();
+        tv.setType(type);
+        return tv;
+    }
+    
+    public TaggedValue buildTaggedValue(Object type, String[] values) {
+        if (!(type instanceof TagDefinition)) {
+            throw new IllegalArgumentException(
+                    "TagDefinition required, received - " + type);
+        }
+        TaggedValue tv = buildTaggedValue((TagDefinition) type);
+        for (String value : values) {
+            tv.getDataValue().add(value);
+        }
         return tv;
     }
 
@@ -325,7 +339,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
 
     public TagDefinition buildTagDefinition(String name, Object owner, 
             Object namespace) {
-        return buildTagDefinition(name, owner, namespace, "String");
+        return buildTagDefinition(name, owner, namespace, null); // "Element");
     }
 
     public TagDefinition buildTagDefinition(String name, Object owner, 

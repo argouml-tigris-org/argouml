@@ -474,22 +474,18 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         }
     }
 
-
     public void setValueOfTag(Object handle, String value) {
+        setDataValues(handle, new String[] {value});
+    }
+    
+    public void setDataValues(Object handle, String[] values) {
         if (handle instanceof TaggedValue) {
             TaggedValue tv = (TaggedValue) handle;
-            // TODO: We currently only support a single dataValue
-            Collection dataValues = tv.getDataValue();
-            if (dataValues.size() > 1) {
-                LOG.error("Encountered TaggedValue with multiple dataValues "
-                        + handle);
-                LOG.error("DataValues being cleared = " + dataValues.toArray());
-            }
-            tv.getDataValue().clear();
-            tv.getDataValue().add(value);
+            Collection<String> dataValues = tv.getDataValue();
+            dataValues.clear();
+            Collections.addAll(dataValues, values);
         }
     }
-
 
     public void addTaggedValue(Object handle, Object taggedValue) {
         if (handle instanceof ModelElement

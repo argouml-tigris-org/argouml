@@ -538,8 +538,8 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
             return;
         }
         if (handle instanceof TaggedValue && value instanceof String) {
-            modelImpl.getExtensionMechanismsHelper().setValueOfTag(handle,
-                    (String) value);
+            modelImpl.getExtensionMechanismsHelper().setDataValues(handle,
+                    new String[] {(String) value});
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + ", value:"

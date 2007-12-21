@@ -2969,16 +2969,16 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void setTaggedValue(Object handle, String tag, String value) {
         if (handle instanceof ModelElement) {
             TaggedValue tv =
-                (TaggedValue) modelImpl.getFacade().
-                    getTaggedValue(handle, tag);
+                    (TaggedValue) modelImpl.getFacade().getTaggedValue(handle,
+                            tag);
             if (tv == null) {
                 tv =
                     (TaggedValue) modelImpl.getExtensionMechanismsFactory().
                         buildTaggedValue(tag, value);
                 ((ModelElement) handle).getTaggedValue().add(tv);
             } else {
-                modelImpl.getExtensionMechanismsHelper().setValueOfTag(tv,
-                        value);
+                modelImpl.getExtensionMechanismsHelper().setDataValues(tv,
+                        new String[] {value});
             }
             return;
         }
