@@ -26,7 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 
 /**
@@ -288,10 +287,15 @@ public interface CommonBehaviorHelper {
     void setTransition(Object handle, Object trans);
 
     /**
-     * Set the value of a given object.
-     *
+     * Set the value of an Argument or AttributeLink.
+     * <p>
+     * <em>NOTE:</em> This method used allow setting the dataValue of a
+     * TaggedValue. This usage is deprecated.
+     * 
      * @param handle the Object of which the value will be set
-     * @param value Object
+     * @param value the value to set. If handle is an Argument, the value must
+     *                be an Expression. If it's an AttributeLink, the value must
+     *                be an Instance.
      */
     void setValue(Object handle, Object value);
 

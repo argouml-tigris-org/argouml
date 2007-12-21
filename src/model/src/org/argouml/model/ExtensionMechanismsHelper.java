@@ -225,13 +225,28 @@ public interface ExtensionMechanismsHelper {
     void setType(Object handle, Object type);
 
     /**
-     * Sets a value of some taggedValue.
-     *
-     * @param handle is the tagged value
-     * @param value is the value
+     * Sets the dataValues of the given TaggedValue to a single String value.
+     * Provided for backward compatibility with UML 1.3. new uses should use
+     * setDataValues.
+     * 
+     * @param handle
+     *                is the tagged value
+     * @param value
+     *                is the value
+     * @deprecated for 0.25.5 by tfmorris. Use
+     *             {@link #setDataValues(Object, String[])}.
      */
+    @Deprecated
     void setValueOfTag(Object handle, String value);
 
+    /**
+     * Sets the dataValues of the given TaggedValue.
+     *
+     * @param handle is the tagged value
+     * @param values an array of String values
+     */
+    void setDataValues(Object handle, String[] values);
+    
     //additional support for tagged values
 
     /**

@@ -89,12 +89,24 @@ public interface ExtensionMechanismsFactory extends Factory {
 
     /**
      * Build an initialized instance of a UML TaggedValue.
-     *
+     * 
      * @param tag is the tag name (a String).
-     * @param value is the value (a String).
+     * @param value a String to use as the dataValue
+     * @return an initialized UML TaggedValue instance.
+     * @deprecated for 0.25.5 by tfmorris. Use
+     *             {@link #buildTaggedValue(Object, String[])}.
+     */
+    @Deprecated
+    Object buildTaggedValue(String tag, String value);
+    
+    /**
+     * Build an initialized instance of a UML TaggedValue.
+     *
+     * @param type TagDefinition which defines the type of the TaggedValue
+     * @param values is an array of Strings to be used as the dataValues.
      * @return an initialized UML TaggedValue instance.
      */
-    Object buildTaggedValue(String tag, String value);
+    Object buildTaggedValue(Object type, String[] values);
     
     /**
      * Copy tagged value collection from one model element to another. New

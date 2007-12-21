@@ -3352,7 +3352,7 @@ public interface Facade {
     boolean isATagDefinition(Object handle);
 
     /**
-     * Return the TagDefinitions for a StereoType.
+     * Return the TagDefinitions owned by the given Stereotype.
      *
      * @param handle Stereotype to fetch TagDefinitions for
      * @return collection of TagDefinitions

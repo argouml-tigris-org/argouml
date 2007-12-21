@@ -138,10 +138,15 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.setType(handle, type);
     }
 
+    @Deprecated
     public void setValueOfTag(Object handle, String value) {
         impl.setValueOfTag(handle, value);
     }
 
+    public void setDataValues(Object handle, String[] values) {
+        impl.setDataValues(handle, values);
+    }
+    
     public void addTaggedValue(Object handle, Object taggedValue) {
         impl.addTaggedValue(handle, taggedValue);
     }
