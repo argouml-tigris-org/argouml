@@ -40,6 +40,13 @@ import java.util.List;
 public interface InitSubsystem {
 
     /**
+     * This is called at initialisation time, 
+     * before the other operations in this interface are called.
+     * Use it at will.
+     */
+    public void init();
+    
+    /**
      * @return an ordered list of tab panels 
      * to be added to the settings dialog
      */
@@ -51,11 +58,6 @@ public interface InitSubsystem {
      */
     public List<GUISettingsTabInterface> getProjectSettingsTabs();
 
-    /**
-     * This is called at initialisation time - use it at will.
-     */
-    public void init();
-    
     /**
      * @return an ordered list of Tabs
      * to be added to the DetailsPanel
