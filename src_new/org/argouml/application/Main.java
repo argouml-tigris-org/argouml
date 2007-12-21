@@ -78,6 +78,7 @@ import org.argouml.ui.cmd.InitUiCmdSubsystem;
 import org.argouml.ui.cmd.PrintManager;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.reveng.java.JavaImport;
+import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.util.ArgoFrame;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
@@ -419,6 +420,7 @@ public class Main {
             SubsystemUtility.initSubsystem(new InitNotationUml());
             SubsystemUtility.initSubsystem(new InitNotationJava());
             SubsystemUtility.initSubsystem(new InitDiagramAppearanceUI());
+            SubsystemUtility.initSubsystem(new InitUmlUI());
             SubsystemUtility.initSubsystem(new InitCheckListUI());
             SubsystemUtility.initSubsystem(new InitCognitiveUI());
         }

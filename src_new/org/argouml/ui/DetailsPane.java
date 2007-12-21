@@ -32,7 +32,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,14 +53,8 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
-import org.argouml.uml.ui.TabConstraints;
-import org.argouml.uml.ui.TabDocumentation;
 import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.TabProps;
-import org.argouml.uml.ui.TabSrc;
-import org.argouml.uml.ui.TabStereotype;
-import org.argouml.uml.ui.TabStyle;
-import org.argouml.uml.ui.TabTaggedValues;
 import org.tigris.swidgets.Orientable;
 import org.tigris.swidgets.Orientation;
 
@@ -116,6 +109,8 @@ public class DetailsPane
     private EventListenerList listenerList = new EventListenerList();
     
     private Orientation orientation;
+    
+    private boolean hasTabs = false;
 
     /**
      * Adds a listener.
@@ -157,66 +152,30 @@ public class DetailsPane
         setFont(new Font("Dialog", Font.PLAIN, 10));
         add(topLevelTabbedPane, BorderLayout.CENTER);
 
-        for (JPanel t : tabPanelList) {
-            String titleKey = "tab";
-            if (t instanceof AbstractArgoJPanel) {
-                titleKey = ((AbstractArgoJPanel) t).getTitle();
-            }
-            String title = Translator.localize(titleKey);
-            if (t instanceof TabToDoTarget) {
-                topLevelTabbedPane.addTab(title, leftArrowIcon, t);
-            } else if (t instanceof TabModelTarget) {
-                topLevelTabbedPane.addTab(title, upArrowIcon, t);
-            } else if (t instanceof TabFigTarget) {
-                topLevelTabbedPane.addTab(title, upArrowIcon, t);
-            } else {
-                topLevelTabbedPane.addTab(title, t);
-            }
-        }
-
-        // set the tab that should be shown on first entrance
-        lastNonNullTab = -1;
-        Component[] tabs = topLevelTabbedPane.getComponents();
-        for (int i = 0; i < tabs.length; i++) {
-            // tabprops should be shown if loaded
-            if (tabs[i] instanceof TabProps) {
-                lastNonNullTab = i;
-                break;
-            }
-            // default if there is no tabprops if there is no tabtodo
-            // either, this will result in lastNonNullTab = -1;
-            if (tabs[i] instanceof TabToDoTarget) {
-                lastNonNullTab = i;
-            }
-        }
         setTarget(null, true);
         topLevelTabbedPane.addMouseListener(this);
         topLevelTabbedPane.addChangeListener(this);
     }
 
-    // TODO: Some parts of ArgoUML have preliminary support for multiple
-    // details panels, but we currently only support the default South (bottom) panel
-    private void loadTabs(String direction, Orientation orientation) {
+    /* TODO: Some parts of ArgoUML have preliminary support for multiple
+     * details panels, but we currently only support 
+     * the default South (bottom) panel
+     */
+    private void loadTabs(String direction, Orientation theOrientation) {
         if (Position.South.toString().equalsIgnoreCase(direction)
                 // Special case for backward compatibility
                 || "detail".equalsIgnoreCase(direction)) {
-            tabPanelList.addAll(Arrays.asList(new JPanel[] {
-//                new org.argouml.cognitive.ui.TabToDo(),
-                new TabProps(),
-                new TabDocumentation(),
-                new TabStyle(),
-                // TabDocs,
-                new TabSrc(),
-                // TabJavaSrc | TabSrc,
-                new TabConstraints(), new TabStereotype(),
-                new TabTaggedValues(),
-//                new org.argouml.cognitive.checklist.ui.TabChecklist(),
-                // TabHistory,
-                // TabHash,
-            }));
+            /* The south panel always has tabs - but they are 
+             * added (later) elsewhere.
+             */
+            hasTabs = true;
         } 
     }
     
+    boolean hasTabs() {
+        return hasTabs;
+    }
+
     /**
      * Returns the JTabbedPane that contains all details panels.
      * @deprecated by MVW, in V0.25.4. Will become package scope.

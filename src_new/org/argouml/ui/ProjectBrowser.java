@@ -993,7 +993,7 @@ public final class ProjectBrowser
                                         Orientation orientation) {
         DetailsPane detailsPane =
             new DetailsPane(compassPoint.toLowerCase(), orientation);
-        if (detailsPane.getTabCount() == 0) {
+        if (!detailsPane.hasTabs()) {
             return null;
         }
         return detailsPane;
