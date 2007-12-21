@@ -25,8 +25,10 @@
 package org.argouml.profile.init;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
 import org.argouml.profile.ProfileFacade;
@@ -49,6 +51,10 @@ public class InitProfileSubsystem implements InitSubsystem {
     public void init() {
         ProfileFacade.setManager(
                 new org.argouml.profile.internal.ProfileManagerImpl());
+    }
+
+    public List<AbstractArgoJPanel> getDetailsTabs() {
+        return Collections.emptyList();
     }
 
 }
