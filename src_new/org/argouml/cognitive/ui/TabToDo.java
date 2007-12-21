@@ -37,6 +37,7 @@ import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Wizard;
 import org.argouml.configuration.Configuration;
+import org.argouml.swingext.LeftArrowIcon;
 import org.argouml.ui.TabToDoTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -75,6 +76,8 @@ public class TabToDo extends AbstractArgoJPanel
      */
     public TabToDo() {
         super("tab.todo-item");
+        setIcon(new LeftArrowIcon());
+
         String position =
 	    Configuration.getString(Configuration.makeKey("layout",
 							  "tabtodo"));

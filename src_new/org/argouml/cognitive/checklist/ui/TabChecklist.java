@@ -52,6 +52,7 @@ import org.argouml.cognitive.checklist.CheckManager;
 import org.argouml.cognitive.checklist.Checklist;
 import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.model.Model;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -77,6 +78,7 @@ public class TabChecklist extends AbstractArgoJPanel
     public TabChecklist() {
 	super("tab.checklist");
 
+        setIcon(new UpArrowIcon());
 	tableModel = new TableModelChecklist(this);
 	table.setModel(tableModel);
 

@@ -55,14 +55,15 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
-import org.argouml.kernel.ProfileConfiguration;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Horizontal;
@@ -135,7 +136,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     public PropPanel(String label, ImageIcon icon, Orientation orientation) {
         super(Translator.localize(label));
         setOrientation(orientation);
-
+        setIcon(new UpArrowIcon());
+        
         LabelledLayout layout =
             new LabelledLayout(orientation == Vertical.getInstance());
         layout.setHgap(5);
@@ -178,6 +180,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public PropPanel(String label, ImageIcon icon) {
         this(label, icon, Horizontal.getInstance());
+        setIcon(new UpArrowIcon());
     }
 
     /*

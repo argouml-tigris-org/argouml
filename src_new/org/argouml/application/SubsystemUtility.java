@@ -30,6 +30,7 @@ import org.argouml.application.api.InitSubsystem;
 import org.argouml.ui.DetailsPane;
 import org.argouml.ui.GUI;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.TabToDoTarget;
 
 /**
  * Utility class for subsystem management.
@@ -53,8 +54,9 @@ public class SubsystemUtility {
             GUI.getInstance().addProjectSettingsTab(tab);
         }
         for (AbstractArgoJPanel tab : subsystem.getDetailsTabs()) {
+            /* All tabs are added at the end, except a TabToDoTarget: */
             ((DetailsPane) ProjectBrowser.getInstance().getDetailsPane())
-                .addTab(tab, true);
+                .addTab(tab, !(tab instanceof TabToDoTarget));
         }
     }
 

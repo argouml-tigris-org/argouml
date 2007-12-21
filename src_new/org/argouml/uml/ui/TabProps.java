@@ -34,6 +34,7 @@ import javax.swing.event.EventListenerList;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.model.Model;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -192,6 +193,7 @@ public class TabProps
      */
     public TabProps(String tabName, String panelClassBase) {
         super(tabName);
+        setIcon(new UpArrowIcon());
         TargetManager.getInstance().addTargetListener(this);
         setOrientation(Horizontal.getInstance());
         panelClassBaseName = panelClassBase;

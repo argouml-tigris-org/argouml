@@ -190,16 +190,8 @@ public class DetailsPane
      *                  false = at the beginning
      */
     public void addTab(AbstractArgoJPanel p, boolean atEnd) {
-        Icon icon = null;
+        Icon icon = p.getIcon();
         String title = Translator.localize(p.getTitle());
-        if (p instanceof TabToDoTarget) {
-            icon = leftArrowIcon;
-            atEnd = false; //overrule the parameter!
-        } else if (p instanceof TabModelTarget) {
-            icon = upArrowIcon;
-        } else if (p instanceof TabFigTarget) {
-            icon = upArrowIcon;
-        }
         if (atEnd) {
             topLevelTabbedPane.addTab(title, icon, p); 
             tabPanelList.add(p);

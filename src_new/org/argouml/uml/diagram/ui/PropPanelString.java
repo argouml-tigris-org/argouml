@@ -35,6 +35,7 @@ import javax.swing.event.DocumentListener;
 
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 
@@ -58,6 +59,7 @@ public class PropPanelString
      */
     public PropPanelString() {
 	super(Translator.localize("tab.string"));
+        setIcon(new UpArrowIcon());
 	GridBagLayout gb = new GridBagLayout();
 	setLayout(gb);
 	GridBagConstraints c = new GridBagConstraints();

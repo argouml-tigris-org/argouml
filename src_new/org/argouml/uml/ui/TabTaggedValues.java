@@ -51,6 +51,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -89,6 +90,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
      */
     public TabTaggedValues() {
         super("tab.tagged-values");
+        setIcon(new UpArrowIcon());
         buttonPanel = new ToolBar();
         buttonPanel.setName(getTitle());
         buttonPanel.setFloatable(false);

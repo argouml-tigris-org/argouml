@@ -37,6 +37,7 @@ import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.toolbar.ToolBarFactory;
@@ -82,6 +83,7 @@ public class TabText
      */
     public TabText(String title, boolean withToolbar) {
         super(title);
+        setIcon(new UpArrowIcon());
         setLayout(new BorderLayout());
         textArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         textArea.setTabSize(4);

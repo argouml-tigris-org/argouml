@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -50,6 +51,9 @@ import org.tigris.swidgets.Orientation;
  * TODO: Spawning of windows disabled in spawn()<p>
  *
  * Title: This JPanel keeps track of its own title.<p>
+ * 
+ * Icon: This JPanel keeps track of its own icon; i.e. an arrow pointing to
+ * the panel that it gives details of.<p>
  *
  * Orientation: This JPanel is Orientable.<p>
  *
@@ -70,6 +74,8 @@ public abstract class AbstractArgoJPanel extends JPanel
     private static final int OVERLAPP = 30;
 
     private String title = "untitled";
+    
+    private Icon icon = null;
 
     /**
      * if true, remove tab from parent JTabbedPane.
@@ -156,6 +162,20 @@ public abstract class AbstractArgoJPanel extends JPanel
      */
     public void setTitle(String t) {
         title = t;
+    }
+
+    /**
+     * @return the icon to be shown for this panel
+     */
+    public Icon getIcon() {
+        return icon;
+    }
+
+    /**
+     * @param icon this icon will be shown in front of the title
+     */
+    public void setIcon(Icon icon) {
+        this.icon = icon;
     }
 
     ////////////////////////////////////////////////////////////////

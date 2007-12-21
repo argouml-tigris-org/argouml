@@ -41,6 +41,7 @@ import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.model.Model;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.ocl.OCLUtil;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
@@ -87,6 +88,7 @@ public class TabConstraints extends AbstractArgoJPanel
     public TabConstraints() {
         super("tab.constraints");
 
+        setIcon(new UpArrowIcon());
         setLayout(new BorderLayout(0, 0));
 
         mOcleEditor = new OCLEditor();

@@ -41,6 +41,7 @@ import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.StylePanel;
 import org.argouml.ui.TabFigTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -130,6 +131,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
     public TabStyle(String tabName, String[] spn) {
         super(tabName);
         this.stylePanelNames = spn;
+        setIcon(new UpArrowIcon());
         setLayout(new BorderLayout());
     }
 
