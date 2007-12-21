@@ -38,7 +38,6 @@ import java.util.StringTokenizer;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.tigris.swidgets.Horizontal;
@@ -149,8 +148,12 @@ public class ConfigLoader {
             return null;
         }
         try {
-            lnr = new LineNumberReader(new InputStreamReader(is, 
-                    Argo.getEncoding()));
+            lnr = new LineNumberReader(new InputStreamReader(is,
+                    /* Hardcoded the encoding here, instead of using the 
+                     * function: Argo.getEncoding(), to prevent an unwanted 
+                     * dependency between packages. 
+                     * This code is only used by a deprecated method! */
+                    "UTF-8"));
         } catch (UnsupportedEncodingException ueExc) {
             lnr = new LineNumberReader(new InputStreamReader(is));
         }
