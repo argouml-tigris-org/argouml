@@ -86,6 +86,11 @@ class ExtensionMechanismsFactoryEUMLImpl implements
         // TODO Auto-generated method stub
         return null;
     }
+    
+    public Object buildTaggedValue(Object type, String[] value) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
     public Object copyStereotype(Object source, Object ns) {
         // TODO Auto-generated method stub

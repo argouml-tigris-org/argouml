@@ -185,5 +185,8 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         // TODO Auto-generated method stub
     }
 
+    public void setDataValues(Object handle, String[] value) {
+        // TODO Auto-generated method stub
+    }
 
 }
