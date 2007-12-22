@@ -8,6 +8,6 @@
 	<classpathentry exported="true" kind="lib" path="swidgets-0.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="toolbar-1.4.jar" sourcepath="/toolbar"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="gef-0.12.4M4.jar" sourcepath="/gef"/>
+	<classpathentry exported="true" kind="lib" path="gef-0.12.4BETA.jar" sourcepath="/gef"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
