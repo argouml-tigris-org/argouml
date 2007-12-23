@@ -57,7 +57,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.DiagramAppearance;
 
 /**
  * The Tab where new profiles can be added and the registered
@@ -130,15 +130,15 @@ public class ProjectSettingsTabProfile extends JPanel implements
                     switch (idx) {
                     case 0:
                         ps.setDefaultStereotypeView(
-                                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
+                                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
                         break;
                     case 1:
                         ps.setDefaultStereotypeView(
-                                FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON);
+                                DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON);
                         break;
                     case 2:
                         ps.setDefaultStereotypeView(
-                                FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
+                                DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
                         break;
                     }
                 }
@@ -403,13 +403,13 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 .getProjectSettings();
         
         switch (ps.getDefaultStereotypeViewValue()) {
-        case FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL:
+        case DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL:
             stereoField.setSelectedIndex(0);                
             break;
-        case FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON:
+        case DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON:
             stereoField.setSelectedIndex(1);                
             break;
-        case FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON:
+        case DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON:
             stereoField.setSelectedIndex(2);                
             break;
         }

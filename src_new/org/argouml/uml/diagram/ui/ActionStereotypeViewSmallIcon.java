@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
+import org.argouml.uml.diagram.DiagramAppearance;
+
 /**
  * When this action is triggered the selected node visualization changes into 
  * <code>SmallIcon</code> mode. At this mode, all the stereotypes that provide
@@ -39,6 +41,6 @@ public class ActionStereotypeViewSmallIcon extends ActionStereotypeView {
      */
     public ActionStereotypeViewSmallIcon(FigNodeModelElement node) {
 	super(node, "menu.popup.stereotype-view.small-icon",
-		FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
+		DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
     }
 }

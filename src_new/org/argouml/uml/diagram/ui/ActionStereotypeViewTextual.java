@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
+import org.argouml.uml.diagram.DiagramAppearance;
+
 /**
  * When this action is triggered the selected node visualization changes into 
  * <code>Textual</code> mode. This is the default mode for all nodes. The 
@@ -39,6 +41,6 @@ public class ActionStereotypeViewTextual extends ActionStereotypeView {
      */
     public ActionStereotypeViewTextual(FigNodeModelElement node) {
 	super(node, "menu.popup.stereotype-view.textual",
-		FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
+		DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
     }
 }

@@ -56,7 +56,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.DiagramAppearance;
 
 /**
  * The Tab containing the global settings for profiles
@@ -140,17 +140,17 @@ public class SettingsTabProfile extends JPanel implements
                     case 0:
                         Configuration.setInteger(
                             ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
-                            FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
+                            DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
                         break;
                     case 1:
                         Configuration.setInteger(
                             ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
-                            FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON);
+                            DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON);
                         break;
                     case 2:
                         Configuration.setInteger(
                             ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
-                            FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
+                            DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
                         break;
                     }
                 }
@@ -422,14 +422,14 @@ public class SettingsTabProfile extends JPanel implements
  
         switch (Configuration.getInteger(
                 ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
-                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL)) {
-        case FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL:
+                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL)) {
+        case DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL:
             stereoField.setSelectedIndex(0);                
             break;
-        case FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON:
+        case DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON:
             stereoField.setSelectedIndex(1);                
             break;
-        case FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON:
+        case DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON:
             stereoField.setSelectedIndex(2);                
             break;
         }        

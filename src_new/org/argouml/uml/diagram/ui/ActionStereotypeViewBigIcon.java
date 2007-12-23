@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
+import org.argouml.uml.diagram.DiagramAppearance;
+
 /**
  * When this action is triggered the selected node visualization changes into 
  * <code>BigIcon</code> mode. If the node has more than one applied stereotype
@@ -41,6 +43,6 @@ public class ActionStereotypeViewBigIcon extends ActionStereotypeView {
      */
     public ActionStereotypeViewBigIcon(FigNodeModelElement node) {
 	super(node, "menu.popup.stereotype-view.big-icon",
-		FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON);
+		DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON);
     }
 }

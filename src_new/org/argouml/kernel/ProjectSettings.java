@@ -38,7 +38,6 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramAppearance;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
@@ -130,7 +129,7 @@ public class ProjectSettings {
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
         defaultStereotypeView = Configuration.getInteger(
                 ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
-                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
+                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
 
         /*
          * Diagram appearance settings:

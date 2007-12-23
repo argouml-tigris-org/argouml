@@ -68,6 +68,35 @@ public final class DiagramAppearance implements PropertyChangeListener {
     private static final DiagramAppearance SINGLETON = new DiagramAppearance();
 
     /**
+     * Used for FigNodeModelElement#setStereotypeView(). 
+     * Represents the default view for 
+     * stereotypes applied to this node.
+     * 
+     * @see org.argouml.uml.diagram.ui.ActionStereotypeViewTextual
+     */
+    public static final int STEREOTYPE_VIEW_TEXTUAL = 0;
+
+    /**
+     * Used for FigNodeModelElement#setStereotypeView(). 
+     * Represents the view for stereotypes where the 
+     * default representation is replaced by a provided
+     * icon. 
+     * 
+     * @see org.argouml.uml.diagram.ui.ActionStereotypeViewBigIcon
+     */
+    public static final int STEREOTYPE_VIEW_BIG_ICON = 1;
+
+    /**
+     * Used for FigNodeModelElement#setStereotypeView(). 
+     * Represents the view for stereotypes where the 
+     * default view is adorned with a small version of the
+     * provided icon.
+     * 
+     * @see org.argouml.uml.diagram.ui.ActionStereotypeViewSmallIcon
+     */
+    public static final int STEREOTYPE_VIEW_SMALL_ICON = 2;
+
+    /**
      * The constructor.
      */
     private DiagramAppearance() {

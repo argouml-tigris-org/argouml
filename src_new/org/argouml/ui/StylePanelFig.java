@@ -45,6 +45,7 @@ import org.tigris.gef.ui.ColorRenderer;
 
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
+import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.util.ArgoFrame;
@@ -281,13 +282,13 @@ public class StylePanelFig
             FigNodeModelElement fig = (FigNodeModelElement) target;
             
             switch (fig.getStereotypeView()) {
-            case FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL:
+            case DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL:
                 stereoField.setSelectedIndex(0);                
                 break;
-            case FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON:
+            case DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON:
                 stereoField.setSelectedIndex(1);                
                 break;
-            case FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON:
+            case DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON:
                 stereoField.setSelectedIndex(2);                
                 break;
             }
@@ -507,15 +508,15 @@ public class StylePanelFig
                     switch (idx) {
                     case 0:
                         fig.setStereotypeView(
-                                FigNodeModelElement.STEREOTYPE_VIEW_TEXTUAL);
+                                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
                         break;
                     case 1:
                         fig.setStereotypeView(
-                                FigNodeModelElement.STEREOTYPE_VIEW_BIG_ICON);
+                                DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON);
                         break;
                     case 2:
                         fig.setStereotypeView(
-                                FigNodeModelElement.STEREOTYPE_VIEW_SMALL_ICON);
+                                DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
                         break;
                     }
                 }

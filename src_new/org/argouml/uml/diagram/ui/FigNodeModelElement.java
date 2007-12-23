@@ -86,6 +86,7 @@ import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.uml.diagram.IItemUID;
 import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.ui.ActionDeleteModelElements;
@@ -187,35 +188,6 @@ public abstract class FigNodeModelElement
      */
     protected static final int ACTIVE = 8;
 
-    /**
-     * Used for #setStereotypeView(). Represents the default view for 
-     * stereotypes applied to this node.
-     * 
-     * @see ActionStereotypeViewTextual
-     */
-    public static final int STEREOTYPE_VIEW_TEXTUAL = 0;
-
-    /**
-     * Used for #setStereotypeView(). Represents the view for 
-     * stereotypes where the default representation is replaced by a provided
-     * icon. 
-     * 
-     * @see ActionStereotypeViewBigIcon
-     */
-    public static final int STEREOTYPE_VIEW_BIG_ICON = 1;
-
-    /**
-     * Used for #setStereotypeView(). Represents the view for 
-     * stereotypes where the default view is adorned with a small version of the
-     * provided icon.
-     * 
-     * @see ActionStereotypeViewSmallIcon
-     */
-    public static final int STEREOTYPE_VIEW_SMALL_ICON = 2;
-    
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private Fig bigPort;
 
     /**
@@ -242,16 +214,16 @@ public abstract class FigNodeModelElement
      * <code>SmallIcon</code> mode.
      */
     private List<Fig> floatingStereotypes = new ArrayList<Fig>();
-    
+
     /**
-     * The current stereotype view
+     * The current stereotype view, defaults to "textual".
      * 
-     * @see #STEREOTYPE_VIEW_TEXTUAL
-     * @see #STEREOTYPE_VIEW_SMALL_ICON
-     * @see #STEREOTYPE_VIEW_BIG_ICON
+     * @see DiagramAppearance#STEREOTYPE_VIEW_TEXTUAL
+     * @see DiagramAppearance#STEREOTYPE_VIEW_SMALL_ICON
+     * @see DiagramAppearance#STEREOTYPE_VIEW_BIG_ICON
      */
-    private   int stereotypeView = STEREOTYPE_VIEW_TEXTUAL;   
-    
+    private int stereotypeView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;   
+
     /**
      * The width of the profile icons when viewed at the small icon mode.
      * The icon width is resized to <code>ICON_WIDTH</code> and the height is 
@@ -1577,10 +1549,10 @@ public abstract class FigNodeModelElement
 	Fig stereoFig = getStereotypeFig();
         if (stereoFig instanceof FigStereotypesCompartment) {
             ((FigStereotypesCompartment) stereoFig)
-                    .setHidingStereotypesWithIcon(practicalView == STEREOTYPE_VIEW_SMALL_ICON);
+                    .setHidingStereotypesWithIcon(practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
         }
 
-	if (practicalView == STEREOTYPE_VIEW_BIG_ICON) {
+	if (practicalView == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON) {
 	    
 	    if (stereos != null) {
 		Image replaceIcon = null;
@@ -1617,7 +1589,7 @@ public abstract class FigNodeModelElement
 		    
 		}
 	    }
-	} else if (practicalView == STEREOTYPE_VIEW_SMALL_ICON) {
+	} else if (practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
             int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
 
             Iterator it = stereos.iterator();
@@ -2052,13 +2024,13 @@ public abstract class FigNodeModelElement
         if (modelElement != null) {
             Collection stereos = Model.getFacade().getStereotypes(modelElement);
 
-            if (getStereotypeView() == STEREOTYPE_VIEW_BIG_ICON
+            if (getStereotypeView() == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON
                     && (stereos == null || stereos.size() != 1 ||
                             (stereos
                             .size() == 1 && getProject()
                             .getProfileConfiguration().getFigNodeStrategy()
                             .getIconForStereotype(stereos.iterator().next()) == null))) {
-                practicalView = STEREOTYPE_VIEW_TEXTUAL;
+                practicalView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;
             }
             return practicalView;
         } else {
@@ -2067,7 +2039,8 @@ public abstract class FigNodeModelElement
     }
     
     /**
-     * Sets the stereotype view
+     * Sets the stereotype view.
+     * 
      * @param s the stereotype view to be set
      */
     public void setStereotypeView(int s) {
@@ -2090,7 +2063,7 @@ public abstract class FigNodeModelElement
     protected void setBoundsImpl(final int x, final int y, final int w,
             final int h) {
 
-        if (getPracticalView() == STEREOTYPE_VIEW_BIG_ICON) {
+        if (getPracticalView() == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON) {
             if (stereotypeFigProfileIcon != null) {
                 stereotypeFigProfileIcon.setBounds(stereotypeFigProfileIcon
                         .getX(), stereotypeFigProfileIcon.getY(), w, h);
@@ -2099,7 +2072,7 @@ public abstract class FigNodeModelElement
             }
         } else {
 	    setStandardBounds(x, y, w, h);
-	    if (getStereotypeView() == STEREOTYPE_VIEW_SMALL_ICON) {
+	    if (getStereotypeView() == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
 	        updateSmallIcons(w);
 	    }
 	}
