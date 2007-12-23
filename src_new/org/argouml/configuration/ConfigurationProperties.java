@@ -86,9 +86,18 @@ class ConfigurationProperties extends ConfigurationHandler {
      * @return a generic path string.
      */
     public String getDefaultPath() {
-        return System.getProperty("user.home") + "/argo.user.properties";
+        return System.getProperty("user.home") + "/.argouml/argo.user.properties";
     }
 
+    /**
+     * Returns the default path for user properties (before 0.25.4)
+     * @return a generic path string
+     * @deprecated This should be removed on the next version after 0.26
+     */
+    @Deprecated
+    public String getOldDefaultPath() {
+        return System.getProperty("user.home") + "/argo.user.properties";
+    }
 
     /**
      * Load the configuration from a specified location.
@@ -108,7 +117,26 @@ class ConfigurationProperties extends ConfigurationHandler {
             }
             // Try to create an empty file.
             try {
-                file.createNewFile();
+                File parent = file.getParentFile();
+                // create the argouml dir if it doesn't exist
+                if (!parent.exists()) {
+                    parent.mkdir();
+                    LOG.info("New argouml home dir created as " + parent);
+                }
+                // This is done for compatibility with previous version: 
+                // Move the argo.user.properties
+                // written before 0.25.4 to the new location, if it exists.
+                // TODO: Remove this when the next major release is done.
+                File oldFile = new File(getOldDefaultPath());
+                if (oldFile.exists()) {
+                    oldFile.renameTo(file);
+                    propertyBundle.load(new FileInputStream(file));
+                    LOG.info("Configuration moved from " 
+                            + oldFile + " to " + file);
+                }
+                else {
+                    file.createNewFile();
+                }
                 if (file.exists() && file.isFile()) {
                     LOG.info("New configuration created as " + file);
                     // Pretend we loaded the file correctly
