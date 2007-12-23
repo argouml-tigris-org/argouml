@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
+import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.util.CheckMain;
 
@@ -101,7 +102,8 @@ public class GUITestActionOpenProject extends TestCase {
         CheckMain.doCommand(c);
 
         assertEquals(projectName,
-		ProjectManager.getManager().getCurrentProject().getBaseName());
+                PersistenceManager.getInstance().getProjectBaseName(
+                ProjectManager.getManager().getCurrentProject()));
     }
 }
 
