@@ -159,6 +159,7 @@ public class TestDependencies extends TestCase {
             {"org.argouml.moduleloader", "org.argouml.ui"},
             //{"org.argouml.uml.reveng", "org.argouml.ui"},
             //{"org.argouml.language.java.generator", "org.argouml.kernel"},
+            //{"org.argouml.kernel", "org.argouml.uml.diagram.ui"},//why does this fail?
         };
         for (int i = 0; i < dep.length; i++) {
             suite.addTest(new CheckNoDependency(jdepend, dep[i]));
