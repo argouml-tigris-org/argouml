@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,6 +66,21 @@ We now load all nodes and edges (unconnected)
 and then connect the edges post load.
 <!-- See issue 3645 -->
 </para>
+
+  <para>As illustrated in the figure below, the persistence subsystem 
+  depends on the kernel subsystem, 
+  and not vice versa.
+  </para>
+  <figure id="fig.persistence.1" float="1">
+    <title>Persistence subsystem dependencies.</title>
+
+    <screenshot><mediaobject>
+      <imageobject>
+        <imagedata format="PNG" align="center"
+                 fileref="images/cookbook/dependency-persistence.png"/>
+      </imageobject>
+    </mediaobject></screenshot>
+  </figure>
 
 </sect1>
 
