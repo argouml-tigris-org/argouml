@@ -27,6 +27,7 @@ package org.argouml.uml;
 import org.argouml.kernel.AbstractProjectMember;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
+import org.argouml.persistence.PersistenceManager;
 
 /**
  * @author Piotr Kaminski
@@ -46,7 +47,8 @@ public class ProjectMemberModel extends AbstractProjectMember {
      */
     public ProjectMemberModel(Object m, Project p) {
 
-        super(p.getBaseName() + FILE_EXT, p);
+        super(PersistenceManager.getInstance().getProjectBaseName(p)
+                + FILE_EXT, p);
 
         if (!Model.getFacade().isAModel(m))
             throw new IllegalArgumentException();

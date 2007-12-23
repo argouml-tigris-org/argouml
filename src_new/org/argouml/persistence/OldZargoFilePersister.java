@@ -134,7 +134,8 @@ class OldZargoFilePersister extends ZargoFilePersister {
 
             // Save the .argo entry
             ZipEntry zipEntry =
-                new ZipEntry(project.getBaseName()
+                new ZipEntry(PersistenceManager.getInstance()
+                            .getProjectBaseName(project)
                         + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
 

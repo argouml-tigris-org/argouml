@@ -155,7 +155,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     public ProjectImpl(URI theProjectUri) {
         this();
-        uri = PersistenceManager.getInstance().fixUriExtension(theProjectUri);
+        /* TODO: Why was this next line in the code so long? */
+//        uri = PersistenceManager.getInstance().fixUriExtension(theProjectUri);
         uri = theProjectUri;
     }
 
@@ -182,11 +183,13 @@ public class ProjectImpl implements java.io.Serializable, Project {
         addSearchPath("PROJECT_DIR");
     }
 
-
+    /*
+     * @deprecated by MVW in V0.25.4 - replaced by 
+     *     {@link PersistenceManager#getProjectBaseName(Project)}
+     *     Rationale: Remove dependency on persistence subsystem.
+     */
     public String getBaseName() {
-        String n = getName();
-        n = PersistenceManager.getInstance().getBaseName(n);
-        return n;
+        return PersistenceManager.getInstance().getProjectBaseName(this);
     }
 
 
@@ -198,41 +201,45 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return new File(uri).getName();
     }
 
-
+    /*
+     * @deprecated by MVW in V0.25.4 - replaced by 
+     *     {@link PersistenceManager#setProjectName(String, Project)}
+     *     Rationale: Remove dependency on persistence subsystem.
+     */
     public void setName(final String n)
         throws URISyntaxException {
-        String s = "";
-        if (getURI() != null) {
-            s = getURI().toString();
-        }
-        s = s.substring(0, s.lastIndexOf("/") + 1) + n;
-        setURI(new URI(s));
+        PersistenceManager.getInstance().setProjectName(n, this);
     }
 
 
     public URI getUri() {
         return uri;
     }
-    
+
 
     public URI getURI() {
         return uri;
     }
-    
 
+    /*
+     * @deprecated by MVW in V0.25.4 - replaced by 
+     *     {@link PersistenceManager#setProjectUri(URI, Project)}
+     *     Rationale: Remove dependency on persistence subsystem.
+     */
     public void setURI(URI theUri) {
-        if (theUri != null) {
-            theUri = PersistenceManager.getInstance().fixUriExtension(theUri);
-        }
+        PersistenceManager.getInstance().setProjectURI(theUri, this);
+    }
 
+    /**
+     * @param theUri the URI for the project
+     */
+    public void setUri(URI theUri) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Setting project URI from \"" + uri
                       + "\" to \"" + theUri + "\".");
         }
-
         uri = theUri;
     }
-
 
     public void setFile(final File file) {
         URI theProjectUri = file.toURI();

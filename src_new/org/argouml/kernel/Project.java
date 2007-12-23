@@ -58,6 +58,9 @@ public interface Project {
      * This is the name minus any valid file extension.
      *
      * @return The name (a String).
+     * @deprecated by MVW in V0.25.4 - replaced by 
+     *     {@link org.argouml.persistence.PersistenceManager#getProjectBaseName(Project)}
+     *     Rationale: Remove dependency on persistence subsystem.
      */
     public String getBaseName();
 
@@ -73,6 +76,9 @@ public interface Project {
      * @param n The new URI (as a String).
      * @throws URISyntaxException if the argument cannot be converted to
      *         an URI.
+     * @deprecated by MVW in V0.25.4 - replaced by 
+     *     {@link org.argouml.persistence.PersistenceManager#setProjectName(String, Project)}
+     *     Rationale: Remove dependency on persistence subsystem.
      */
     public void setName(final String n) throws URISyntaxException;
 
@@ -87,8 +93,21 @@ public interface Project {
      * Set the URI for this project.
      *
      * @param theUri The URI to set.
+     * @deprecated by MVW in V0.25.4 - replaced by 
+     *     {@link org.argouml.persistence.PersistenceManager#setProjectURI(URI, Project)}
+     *     Rationale: Remove dependency on persistence subsystem.
      */
     public void setURI(final URI theUri);
+
+    /**
+     * Set the URI for this project. <p>
+     * 
+     * Don't use this directly! Use instead:
+     * {@link org.argouml.persistence.PersistenceManager#setProjectURI(URI, Project)}
+     *
+     * @param theUri The URI to set.
+     */
+    public void setUri(final URI theUri);
 
     /**
      * Set the project file.

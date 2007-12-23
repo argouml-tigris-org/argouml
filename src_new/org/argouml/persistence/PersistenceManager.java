@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -285,6 +286,45 @@ public final class PersistenceManager {
         }
         int extLength = p.getExtension().length() + 1;
         return n.substring(0, n.length() - extLength);
+    }
+
+    /**
+     * @param p the project
+     * @return the basename of the project
+     */
+    public String getProjectBaseName(Project p) {
+        URI uri = p.getUri();
+        String name = Translator.localize("label.projectbrowser-title");
+        if (uri != null) {
+            name = new File(uri).getName();
+        }
+        return getBaseName(name);
+    }
+
+    /**
+     * @param n the new project name
+     * @param p the project that receives the name
+     * @throws URISyntaxException if the URI is malformed
+     */
+    public void setProjectName(final String n, Project p)
+        throws URISyntaxException {
+        String s = "";
+        if (p.getURI() != null) {
+            s = p.getURI().toString();
+        }
+        s = s.substring(0, s.lastIndexOf("/") + 1) + n;
+        setProjectURI(new URI(s), p);
+    }
+
+    /**
+     * @param theUri the URI for the project
+     * @param p the project that receives the URI
+     */
+    public void setProjectURI(URI theUri, Project p) {
+        if (theUri != null) {
+            theUri = fixUriExtension(theUri);
+        }
+        p.setUri(theUri);
     }
 
     /**
