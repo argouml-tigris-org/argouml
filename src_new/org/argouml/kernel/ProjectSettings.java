@@ -37,7 +37,7 @@ import org.argouml.configuration.ConfigurationKey;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.uml.diagram.ui.DiagramAppearance;
+import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;

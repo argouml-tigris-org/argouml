@@ -21,19 +21,24 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml.diagram;
 
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.UIManager;
+
 import org.apache.log4j.Logger;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
-import org.argouml.ui.LookAndFeelMgr;
 
 /**
  * Provides centralized methods dealing with diagram appearance.
+ * <p>
+ * These settings do not apply to the appearance of the ArgoUML application! <p>
+ * 
+ * In the MVC pattern, this is part of the Model.
  *
  * @stereotype singleton
  * @author Aleksandar
@@ -80,7 +85,9 @@ public final class DiagramAppearance implements PropertyChangeListener {
     }
 
     /*
-     * Called after the notation default property gets changed.
+     * Called after the diagram font gets changed. <p>
+     * 
+     * TODO: Do we need to do anything here?
      *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
@@ -101,7 +108,7 @@ public final class DiagramAppearance implements PropertyChangeListener {
         String fontName = Configuration
                 .getString(DiagramAppearance.KEY_FONT_NAME);
         if (fontName.equals("")) {
-            Font f = LookAndFeelMgr.getInstance().getStandardFont();
+            Font f = getStandardFont();
             fontName = f.getName();
 
             Configuration.setString(DiagramAppearance.KEY_FONT_NAME, f
@@ -111,5 +118,22 @@ public final class DiagramAppearance implements PropertyChangeListener {
         }
 
         return fontName;
+    }
+    
+    /**
+     * This is the same function as 
+     * LookAndFeelMgr.getInstance().getStandardFont();
+     * but used for a totally different puropose: here it determines 
+     * a default font when none is set. In the LookAndFeelMgr it
+     * determines the looks of the UI. 
+     * 
+     * @return the standard textfield font
+     */
+    private Font getStandardFont() {
+        Font font = UIManager.getDefaults().getFont("TextField.font");
+        if (font == null) {
+            font = (new javax.swing.JTextField()).getFont();
+        }
+        return font;
     }
 }

@@ -43,6 +43,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.ui.ArgoJFontChooser;
+import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.util.ArgoFrame;
 
 /**
