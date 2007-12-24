@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
@@ -370,5 +371,24 @@ public class FigStereotypesCompartment extends FigCompartment {
     public void setHidingStereotypesWithIcon(boolean hidingStereotypesWithIcon) {
         this.hidingStereotypesWithIcon = hidingStereotypesWithIcon;
         updateHiddenStereotypes();
+    }
+    
+    @Override
+    public Dimension getMinimumSize() {
+        // if there are no stereotypes, we return (0,0), preventing 
+        // double lines in the class (see issue 4939)
+        Dimension dim = null;
+        Object modelElement = getOwner();
+        
+        if (modelElement != null) {
+            Collection stereos = Model.getFacade().getStereotypes(modelElement);
+            if (stereos.size() > 0) {
+                dim = super.getMinimumSize();
+            }
+        }
+        if (dim == null) {
+            dim = new Dimension(0, 0);
+        }
+        return dim;
     }
 }
