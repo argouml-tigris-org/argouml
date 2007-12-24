@@ -47,6 +47,7 @@ import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.swingext.SpacerPanel;
+import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeListModel;
@@ -92,6 +93,7 @@ public class TabStereotype extends PropPanel {
         setOrientation((orientation
                 .equals("West") || orientation.equals("East")) ? Vertical
                 .getInstance() : Horizontal.getInstance());
+        setIcon(new UpArrowIcon());
         setLayout(new BorderLayout());
         remove(getTitleLabel()); // no title looks better
 

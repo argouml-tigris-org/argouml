@@ -28,6 +28,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -35,10 +36,8 @@ import javax.swing.event.DocumentListener;
 
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
-
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -59,7 +58,6 @@ public class PropPanelString
      */
     public PropPanelString() {
 	super(Translator.localize("tab.string"));
-        setIcon(new UpArrowIcon());
 	GridBagLayout gb = new GridBagLayout();
 	setLayout(gb);
 	GridBagConstraints c = new GridBagConstraints();

@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 
 import java.awt.Color;
 
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
@@ -33,6 +34,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.swingext.UpArrowIcon;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.LabelledLayout;
@@ -78,9 +80,11 @@ public class TabDocumentation extends PropPanel {
      * Construct new documentation tab
      */
     public TabDocumentation() {
-        super(Translator.localize("tab.documentation"), (orientation
-                .equals("West") || orientation.equals("East")) ? Vertical
-                .getInstance() : Horizontal.getInstance());
+        super(Translator.localize("tab.documentation"), (ImageIcon) null);
+        setOrientation((
+                orientation.equals("West") || orientation.equals("East"))
+                ? Vertical.getInstance() : Horizontal.getInstance());
+        setIcon(new UpArrowIcon());
 
         addField(Translator.localize("label.author"), new UMLTextField2(
                 new UMLModelElementTaggedValueDocument(Argo.AUTHOR_TAG)));
