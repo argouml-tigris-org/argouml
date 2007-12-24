@@ -322,7 +322,7 @@ public class Import extends ImportCommon implements ImportSettings {
 
             classOnly =
                 new JRadioButton(Translator.localize(
-                        "action.import-option-classfiers"));
+                        "action.import-option-classifiers"));
             detailButtonGroup.add(classOnly);
 
             classAndFeatures =
