@@ -27,60 +27,17 @@ package org.argouml.ui;
 import junit.framework.TestCase;
 
 import org.argouml.application.api.AbstractArgoJPanel;
-import org.argouml.model.InitializeModel;
-import org.argouml.uml.ui.TabConstraints;
-import org.argouml.uml.ui.TabDocumentation;
-import org.argouml.uml.ui.TabProps;
-import org.argouml.uml.ui.TabStereotype;
-import org.argouml.uml.ui.TabStyle;
-import org.argouml.uml.ui.TabTaggedValues;
 
 /**
+ * Tests for the TabText class.
  *
  * @author Michiel
  */
-public class TestTabs extends TestCase {
+public class TestTabText extends TestCase {
 
-    /*
-     * @see junit.framework.TestCase#setUp()
-     */
-    public void setUp() throws Exception {
-        super.setUp();
-        InitializeModel.initializeDefault();
-    }
-
-    public void testTabTextIcon() {
+    public void testIcon() {
         AbstractArgoJPanel tab = new TabText("test");
         assertTrue("TabText has no icon", tab.getIcon() != null);
     }
 
-    public void testTabDocumentationIcon() {
-        AbstractArgoJPanel tab = new TabDocumentation();
-        assertTrue("TabDocumentation has no icon", tab.getIcon() != null);
-    }
-
-    public void testTabStereotypeIcon() {
-        AbstractArgoJPanel tab = new TabStereotype();
-        assertTrue("TabStereotype has no icon", tab.getIcon() != null);
-    }
-
-    public void testTabConstraintsIcon() {
-        AbstractArgoJPanel tab = new TabConstraints();
-        assertTrue("TabConstraints has no icon", tab.getIcon() != null);
-    }
-
-    public void testTabPropsIcon() {
-        AbstractArgoJPanel tab = new TabProps();
-        assertTrue("TabProps has no icon", tab.getIcon() != null);
-    }
-
-    public void testTabStyleIcon() {
-        AbstractArgoJPanel tab = new TabStyle();
-        assertTrue("TabStyle has no icon", tab.getIcon() != null);
-    }
-
-    public void testTabTaggedValuesIcon() {
-        AbstractArgoJPanel tab = new TabTaggedValues();
-        assertTrue("TabTaggedValues has no icon", tab.getIcon() != null);
-    }
 }
