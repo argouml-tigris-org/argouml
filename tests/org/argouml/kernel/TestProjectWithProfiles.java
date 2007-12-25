@@ -101,9 +101,6 @@ public class TestProjectWithProfiles extends TestCase {
      *   the UML profile for Java are consistent</li>
      * </ol>
      * 
-     * FIXME: fails in eclipse, but, passes in Ant build. Maybe its my launch 
-     * configuration that is broken...
-     * 
      * @throws Exception when something goes wrong
      */
     public void testRemoveProfileWithModelThatRefersToProfile() 
@@ -122,7 +119,7 @@ public class TestProjectWithProfiles extends TestCase {
                 javaProfile));
         // create a dependency from the project's model to the UML profile for 
         // Java
-        Object model = project.getModels().iterator().next();
+        Object model = Model.getModelManagementFactory().getRootModel();
         assertNotNull(model);
         Object fooClass = Model.getCoreFactory().buildClass("Foo", model);
         Object javaListType = project.findType("List", false);
