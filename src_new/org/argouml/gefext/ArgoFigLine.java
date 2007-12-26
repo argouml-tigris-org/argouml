@@ -44,6 +44,10 @@ public class ArgoFigLine extends FigLine implements NotificationEmitter {
     private NotificationBroadcasterSupport notifier = 
         new NotificationBroadcasterSupport();
 
+    public ArgoFigLine() {
+        super();
+    }
+    
     public ArgoFigLine(int x1, int y1, int x2, int y2) {
         super(x1, y1, x2, y2);
     }
