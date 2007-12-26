@@ -44,6 +44,10 @@ public class ArgoFigInk extends FigInk implements NotificationEmitter {
     private NotificationBroadcasterSupport notifier = 
         new NotificationBroadcasterSupport();
 
+    public ArgoFigInk() {
+        
+    }
+    
     public ArgoFigInk(int x, int y) {
         super(x, y);
     }

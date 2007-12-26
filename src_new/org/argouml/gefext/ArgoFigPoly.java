@@ -44,6 +44,10 @@ public class ArgoFigPoly extends FigPoly implements NotificationEmitter {
     private NotificationBroadcasterSupport notifier = 
         new NotificationBroadcasterSupport();
 
+    public ArgoFigPoly () {
+        
+    }
+    
     public ArgoFigPoly(int x, int y) {
         super(x, y);
     }

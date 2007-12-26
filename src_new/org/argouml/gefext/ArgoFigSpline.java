@@ -44,6 +44,10 @@ public class ArgoFigSpline extends FigSpline implements NotificationEmitter {
     private NotificationBroadcasterSupport notifier = 
         new NotificationBroadcasterSupport();
 
+    public ArgoFigSpline() {
+    
+    }
+    
     public ArgoFigSpline(int x, int y) {
         super(x, y);
     }
