@@ -76,14 +76,22 @@ class XmiReferenceResolverImpl extends XmiContext {
         Logger.getLogger(XmiReferenceResolverImpl.class);
     
     private static final String PROFILE_RESOURCE_PATH = 
-        "/org/argouml/model/mdr/profiles/";
+        "/org/argouml/profile/profiles/";
     private static final String PROFILE_BASE_URL = 
         "http://argouml.org/profiles/uml14";
-    private static final String PROFILE_FILE = 
-        PROFILE_BASE_URL + "/" + "default-uml14.xmi";
+    private static final String PROFILE_FILE = "default-uml14.xmi";
+    private static final String PROFILE_URL = 
+        PROFILE_BASE_URL + PROFILE_FILE;
     
     private Map<String, Object> idToObjects = 
         Collections.synchronizedMap(new HashMap<String, Object>());
+    
+    /**
+     * Map of basic profile filename to the full URL that can be used to find
+     * it.
+     */
+    private Map<String, URL> profileFileMap =
+            Collections.synchronizedMap(new HashMap<String, URL>());
 
     /**
      * Map indexed by MOF ID.
@@ -149,6 +157,7 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @param object
      *            referenced object
      */
+    @Override
     public void register(String systemId, String xmiId, RefObject object) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Registering XMI ID '" + xmiId 
@@ -166,13 +175,13 @@ class XmiReferenceResolverImpl extends XmiContext {
                         + systemId, e);
                 baseUri = null;
             }
-            LOG.debug("Top system ID set to " + topSystemId);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Top system ID set to " + topSystemId);
+            }
         }
 
         if (profile) {
-            // TODO: Support multiple named profiles here
-            //systemId = PROFILE_DIR + "/" + <profilename>;
-            systemId = PROFILE_FILE;
+            systemId = PROFILE_BASE_URL + getSuffix(systemId);
         } else if (systemId == topSystemId) {
             systemId = null;
         } else if (reverseUrlMap.get(systemId) != null) {
@@ -274,6 +283,7 @@ class XmiReferenceResolverImpl extends XmiContext {
      * see @link org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      * @see org.netbeans.lib.jmi.xmi.XmiContext#toURL(java.lang.String)
      */
+    @Override
     public URL toURL(String systemId) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("attempting to resolve Xmi Href --> '" + systemId + "'");
@@ -318,8 +328,10 @@ class XmiReferenceResolverImpl extends XmiContext {
                     if (baseUri != null) {
                         relativeUri = baseUri.relativize(new URI(systemId))
                                 .toString();
-                        LOG.debug("       system ID " + systemId
-                                + "\n  relativized as " + relativeUri);
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("       system ID " + systemId
+                                    + "\n  relativized as " + relativeUri);
+                        }
                     } else {
                         relativeUri = systemId;
                     }
@@ -425,7 +437,7 @@ class XmiReferenceResolverImpl extends XmiContext {
         String modelName = systemId;
         if (systemId.startsWith(PROFILE_BASE_URL)) {
             modelName = PROFILE_RESOURCE_PATH
-                    + systemId.substring(PROFILE_BASE_URL.length() + 1);
+                    + systemId.substring(PROFILE_BASE_URL.length());
             // TODO: Look for profiles in user specified directory as well
         } else {
             int filenameIndex = systemId.lastIndexOf("/");
@@ -500,7 +512,7 @@ class XmiReferenceResolverImpl extends XmiContext {
             stream = null;
         }
         return url;
-    }    
+    }
 
     /////////////////////////////////////////////////////
     ////////// End AndroMDA Code //////////////////////
