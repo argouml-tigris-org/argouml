@@ -53,7 +53,7 @@ public class UserDefinedProfile extends Profile {
     }
 
     /**
-     * This constructor is used by the persitence subsystem
+     * This constructor is used by the persistence subsystem
      * when loading an user defined profile from a zargo file.
      * 
      * @param fileName the fake file name
