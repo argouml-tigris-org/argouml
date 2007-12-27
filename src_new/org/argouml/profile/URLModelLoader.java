@@ -24,46 +24,42 @@
 
 package org.argouml.profile;
 
+import java.net.URL;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiReader;
+import org.xml.sax.InputSource;
 
 /**
- * Loads models using the default ClassLoader or a provided one.
+ * Abstract ProfileModelLoader which loads models from a URL.
  *
- * @author maurelio1234
+ * @author Tom Morris
  */
-public class ResourceModelLoader extends URLModelLoader {
+public abstract class URLModelLoader implements ProfileModelLoader {
+
+    private static final Logger LOG = Logger.getLogger(URLModelLoader.class);
 
     /**
-     * Logger.
+     * @param url the url/system id to load
+     * @return the model
+     * @throws ProfileException if the XMIReader couldn't read the profile
      */
-    private static final Logger LOG = Logger
-            .getLogger(ResourceModelLoader.class);
-    
-    private Class clazz;
-    
-    /**
-     * The default constructor for this class. Loads resources from the same 
-     * ClassLoader that loaded this class.
-     */
-    public ResourceModelLoader() {
-        this.clazz = this.getClass();
+    public Collection loadModel(URL url)
+    throws ProfileException {
+        if (url == null) {
+            throw new ProfileException("Null profile URL");
+        }
+        try {
+            XmiReader xmiReader = Model.getXmiReader();
+            InputSource inputSource = new InputSource(url.toExternalForm());
+            Collection elements = xmiReader.parse(inputSource, true);
+            return elements;
+        } catch (UmlException e) {
+            LOG.error("Exception while loading profile ", e);
+            throw new ProfileException("Invalid XMI data!");
+        }
     }
-    
-    /**
-     * Loads resources from the ClassLoader that loaded the given class
-     * 
-     * @param c the reference class
-     */
-    public ResourceModelLoader(Class c) {
-        clazz = c;
-    }
-
-
-    public Collection loadModel(String path) throws ProfileException {
-        LOG.info("Loading profile from resource'" + path + "'");
-        return super.loadModel(clazz.getResource(path));
-    }
-
 }
