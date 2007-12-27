@@ -185,13 +185,15 @@ public class TestZargoFilePersister extends TestCase {
      * Test loading a project which contains external links to a profile.
      * 
      * @throws OpenException
+     *                 if there was an error opening the project
      * @throws InterruptedException
+     *                 if interrupted - should never occur in test environment
      */
     public void testLoadLinkedProfile() throws OpenException,
             InterruptedException {
      
         // Load a project which contains links to it
-        Project p = doLoad("/testmodels/uml14/LinkedProfile.zargo");
+        doLoad("/testmodels/uml14/LinkedProfile.zargo");
         
         // Make sure the contents match what we expect
         final Facade f = Model.getFacade();
@@ -205,8 +207,9 @@ public class TestZargoFilePersister extends TestCase {
                 Collection generalizations = f.getGeneralizations(element);
                 Object generalization = generalizations.iterator().next();
                 Object parent = f.getGeneral(generalization);
-                assertEquals("superclass has wrong name", "BigDecimal", f.getName(parent));
-                }
+                assertEquals("superclass has wrong name", "BigDecimal", 
+                        f.getName(parent));
+            }
         }
     }
 }
