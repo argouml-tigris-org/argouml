@@ -42,7 +42,8 @@ import org.argouml.profile.ResourceModelLoader;
  */
 public class ProfileUML extends Profile {
     
-    private static final String PROFILE_FILE = "/org/argouml/default-uml14.xmi";
+    private static final String PROFILE_FILE = 
+        PROFILE_DIR + "default-uml14.xmi";
 
     static final String NAME = "UML 1.4";
     
@@ -58,8 +59,7 @@ public class ProfileUML extends Profile {
     ProfileUML() throws ProfileException {
         formatingStrategy = new JavaFormatingStrategy();
         profileModelLoader = new ResourceModelLoader();
-        model = profileModelLoader
-                .loadModel(PROFILE_FILE);
+        model = profileModelLoader.loadModel(PROFILE_FILE);
 
         if (model == null) {
             model = new ArrayList();

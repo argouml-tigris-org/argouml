@@ -42,7 +42,10 @@ import org.argouml.profile.ResourceModelLoader;
  */
 public class ProfileJava extends Profile {
 
+    private static final String PROFILE_FILE = 
+        PROFILE_DIR + "default-java.xmi";
     static final String NAME = "Java";
+    
     private ProfileModelLoader profileModelLoader;
     private Collection model;
     
@@ -53,7 +56,7 @@ public class ProfileJava extends Profile {
     @SuppressWarnings("unchecked")
     ProfileJava(Profile uml) throws ProfileException {
         profileModelLoader = new ResourceModelLoader();
-        model = profileModelLoader.loadModel("/org/argouml/default-java.xmi");
+        model = profileModelLoader.loadModel(PROFILE_FILE);
 
         if (model == null) {
             model = new ArrayList();
