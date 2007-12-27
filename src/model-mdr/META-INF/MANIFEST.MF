@@ -4,8 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.argouml.core.model.mdr
 Bundle-Version: 0.25.3.qualifier
 Bundle-Localization: plugin
-Export-Package: org.argouml.model.mdr;uses:="junit.framework",
- org.argouml.model.mdr.profiles
+Export-Package: org.argouml.model.mdr;uses:="junit.framework"
 Bundle-Vendor: %pluginProvider
 Require-Bundle: org.argouml.core.model;visibility:=reexport,
  org.eclipse.core.runtime
