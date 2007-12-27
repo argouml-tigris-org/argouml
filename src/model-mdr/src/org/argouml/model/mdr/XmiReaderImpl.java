@@ -131,8 +131,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
     public Collection parse(InputSource inputSource, boolean profile)
         throws UmlException {
-
-        Collection<RefObject> newElements = Collections.EMPTY_LIST;
+        
+        Collection<RefObject> newElements = Collections.emptyList();
         RefPackage extent = modelPackage;
 
         try {
