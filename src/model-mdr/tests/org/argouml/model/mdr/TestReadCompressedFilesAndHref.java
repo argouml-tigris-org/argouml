@@ -51,9 +51,6 @@ public class TestReadCompressedFilesAndHref extends
 
     private String testModel = "tests/testmodels/MDASampleModel.xmi";
 
-    //Uncomment if you test the zipfilepersister
-    //private String testModelZip = "tests/testmodels/CarRentalSystem.xml.zip";
-
     public void testReadCompressedFileAndHref() {
         File mdaIsHere = new File (ANDROMDA_HOME);
         if (mdaIsHere.exists()) {
@@ -75,28 +72,6 @@ public class TestReadCompressedFilesAndHref extends
             assertTrue("model is loaded", true);
         }
     }
-
-    /* Commented out until the ZipFilePersister have been committed - notice that it works!
-     TODO: also adapt for Win32/generic, i use /tmp to store the saved file
-    public void testReadAndWriteCompressedFileAndHrefWithZargoFilePersisterAndZip() {
-        LOG.info("Begin testReadCompressedFileAndHrefWithZipFilePersisterAndZip()");
-        org.argouml.persistence.ProjectFilePersister persister = 
-            org.argouml.persistence.PersistenceManager.getInstance().
-                    getPersisterFromFileName(testModelZip);
-        try {
-            File file = new File(testModelZip);
-            LOG.info("File is "+file+", persister is "+persister);
-            Project p = persister.doLoad(file);
-            File saveFile = new File("/tmp/"+file.getName());
-            LOG.info("Saving file " + saveFile.getCanonicalPath() 
-                + ", persister is "+persister);
-            persister.save(p,saveFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Exception while loading model");
-        }
-        assertTrue("model is loaded",true);
-    }*/
 
     /*
      * @see org.argouml.model.mdr.AbstractMDRModelImplementationTestCase#setUp()
