@@ -316,8 +316,15 @@ public class FigStereotypesCompartment extends FigCompartment {
             LOG.warn("getProject() returned null");
             return null;
         }
-        return project.getProfileConfiguration().getFigNodeStrategy()
-                .getIconForStereotype(fs.getOwner());
+        Object owner = fs.getOwner();
+        if (owner == null) {
+            // keywords which look like a stereotype (e.g. <<interface>>) have
+            // no owner
+            return null;
+        } else {
+            return project.getProfileConfiguration().getFigNodeStrategy()
+                    .getIconForStereotype(owner);
+        }
     }
 
     /*
