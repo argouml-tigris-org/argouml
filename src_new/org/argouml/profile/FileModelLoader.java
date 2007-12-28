@@ -25,9 +25,7 @@
 package org.argouml.profile;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
@@ -37,23 +35,17 @@ import org.apache.log4j.Logger;
  *
  * @author maurelio1234
  */
-public class FileModelLoader extends StreamModelLoader {
+public class FileModelLoader extends URLModelLoader {
 
     private static final Logger LOG = Logger.getLogger(FileModelLoader.class);
 
     
     public Collection loadModel(String modelFilename) throws ProfileException {
         LOG.info("Loading profile from file'" + modelFilename + "'");
-        InputStream is = null;
-        //
-        //  try to find a file with that name
-        //
         try {
             File modelFile = new File(modelFilename);
-            is = new FileInputStream(modelFile);
-            
-            return super.loadModel(is);
-        } catch (FileNotFoundException ex) {
+            return super.loadModel(modelFile.toURI().toURL());
+        } catch (MalformedURLException e) {
             throw new ProfileException("Model file not found!");
         }
     }
