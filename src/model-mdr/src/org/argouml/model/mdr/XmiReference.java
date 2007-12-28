@@ -24,6 +24,12 @@
 
 package org.argouml.model.mdr;
 
+/**
+ * Reference to an XMI element.  Value object containing a tuple
+ * of the system ID (URI) and xmi.id within the given content.
+ * 
+ * @author Tom Morris
+ */
 class XmiReference {
     private final String systemId;
 
@@ -43,7 +49,8 @@ class XmiReference {
     }
 
     /**
-     * Get the system ID (typically a file name) for the given XMI reference.
+     * Get the system ID (typically a URI pointing to a file) for the given XMI
+     * reference.
      * 
      * @return the systemID value (string containing filename)
      */
