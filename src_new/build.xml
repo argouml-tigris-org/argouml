@@ -326,6 +326,8 @@ Property files to be searched:
           includes="*.xmi,README.txt"/>
     </copy>
 
+    <!-- The class that uses argo.ini was deprecated for 0.25.4.  It can be 
+         removed when that class is removed after the release of 0.26 -->
     <copy todir="${argo.build.classes}/org/argouml">
       <fileset dir="${argo.src.dir}/org/argouml"
           includes="*argo.ini"/>
