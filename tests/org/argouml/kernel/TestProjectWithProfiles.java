@@ -163,13 +163,10 @@ public class TestProjectWithProfiles extends TestCase {
         assertNotNull(fooClass);
         barOperation = getFacade().getOperations(fooClass).iterator().next();
         returnParam = getFacade().getParameter(barOperation, 0);
+        assertNotNull(returnParam);
+        // Return type was java.util.List from Java profile - should be gone
         returnParamType = getFacade().getType(returnParam);
-        // TODO: now this gets weird! AFAIK no special support for this, but, 
-        // you see that the information is in the model.
-        assertNotNull(returnParamType);
-        assertEquals("List", getFacade().getName(returnParamType));
-        assertEquals("util", getFacade().getName(
-                getFacade().getNamespace(returnParamType)));
+        assertNull(returnParamType);
     }
 
     private void checkJavaListTypeExistsAndMatchesReturnParamType(
