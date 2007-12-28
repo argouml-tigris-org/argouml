@@ -46,7 +46,12 @@ import org.tigris.swidgets.Orientation;
 /**
  * This class loads property panel tab classes specified by a configuration
  * file.
+ * 
+ * @deprecated for 0.25.4 by tfmorris. Callers should instantiate required
+ *             classes directly rather than allowing dependencies to be hidden
+ *             in argo.ini.
  */
+@Deprecated
 public class ConfigLoader {
 
     private static final Logger LOG = Logger.getLogger(ConfigLoader.class);
