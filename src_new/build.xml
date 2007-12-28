@@ -321,9 +321,14 @@ Property files to be searched:
         includes="**/**"/>
     </copy>
 
+    <copy todir="${argo.build.classes}/org/argouml/profile/profiles">
+      <fileset dir="${argo.src.dir}/org/argouml/profile/profiles"
+          includes="*.xmi,README.txt"/>
+    </copy>
+
     <copy todir="${argo.build.classes}/org/argouml">
       <fileset dir="${argo.src.dir}/org/argouml"
-          includes="*.xmi,argo.ini"/>
+          includes="*argo.ini"/>
     </copy>
 
     <!-- copy test files -->
