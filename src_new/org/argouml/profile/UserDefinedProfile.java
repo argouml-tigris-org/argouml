@@ -52,20 +52,7 @@ public class UserDefinedProfile extends Profile {
         this.fromZargo = false;
     }
 
-    /**
-     * This constructor is used by the persistence subsystem
-     * when loading an user defined profile from a zargo file.
-     * 
-     * @param fileName the fake file name
-     * @param theModel the model loaded from the zargo file
-     */
-    public UserDefinedProfile(String fileName, Collection<Object> theModel) {
-        this.displayName = fileName;
-        this.modelFile = new File(fileName);
-        this.model = theModel;
-        this.fromZargo = true;
-    }
-
+    
     /**
      * @return the string that should represent this profile in the GUI. An
      *         start (*) is placed on it if it comes from the currently opened

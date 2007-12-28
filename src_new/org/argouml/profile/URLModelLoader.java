@@ -47,8 +47,7 @@ public abstract class URLModelLoader implements ProfileModelLoader {
      * @return the model
      * @throws ProfileException if the XMIReader couldn't read the profile
      */
-    public Collection loadModel(URL url)
-    throws ProfileException {
+    public Collection loadModel(URL url) throws ProfileException {
         if (url == null) {
             throw new ProfileException("Null profile URL");
         }

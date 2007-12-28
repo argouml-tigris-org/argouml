@@ -26,6 +26,7 @@ package org.argouml.persistence;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,6 +42,7 @@ import java.util.Iterator;
 import org.xml.sax.InputSource;
 
 import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
@@ -49,7 +51,6 @@ import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
-import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.profile.UserDefinedProfile;
 
 /**
@@ -109,8 +110,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                         xmi.append(line + "\n");
                     }
                     
-                    Collection model = readModelXMI(xmi.toString());
-                    profile = new UserDefinedProfile(fileName, model);
+                    profile = new UserDefinedProfile(new File(xmi.toString()));
                     
                     // consumes the </userDefined>
                     line = br.readLine().trim();		    
