@@ -571,7 +571,7 @@ south: 	TabXXX
       or low-level subsystem. See <xref
       linkend="infrastructure_subsystems"></xref>. 
       It handles all configuration that is stored 
-      in the user's home directory 
+      in the ".argouml" directory under the user's home directory 
       in the file named "argo.user.properties".
     </para>
     <para>Not inside the scope of this package 

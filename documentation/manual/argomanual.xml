@@ -9379,6 +9379,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           adjusted in the <literal>Edit</literal> -&gt; <literal>
           Settings...</literal> menu. The list of files is stored in the 
           <filename>argo.user.properties</filename> file in the 
+          <filename>.argouml</filename> directory under the 
           user&apos;s home directory.</para>
 
         </sect2>
@@ -9719,9 +9720,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           	size and location is such a setting. Activating this menu
           	entry causes the information to be saved in the file
           	<literal>argo.user.properties</literal>.
-          	The location of this file is in the &quot;users home
-          	directory&quot;, which is defined as
-          	<literal>${user.home}</literal>
+          	The location of this file is in the <literal>.argouml</literal> directory
+          	under the &quot;users home directory&quot;, 
+          	which is defined as <literal>${user.home}</literal>
           	, and can be determined as described in
           	<xref linkend="s3.ref.menu.environment" />
           	.
@@ -9936,7 +9937,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para><literal>${user.home}</literal>. The user&apos;s 
                 home directory. Used for storing the <literal>
-                argo.user.properties</literal> file.</para>
+                argo.user.properties</literal> file, under the
+                <literal>.argouml</literal> directory.</para>
 
               </listitem>
 
