@@ -89,15 +89,15 @@ public class FindDialog extends ArgoDialog
     private JButton     clearTabs  =
 	new JButton(
             Translator.localize("dialog.find.button.clear-tabs"));
-    private JTabbedPane tabs = new JTabbedPane();
+//    private JTabbedPane tabs = new JTabbedPane();
 
     private JPanel nameLocTab = new JPanel();
 
-    private JPanel modifiedTab = new JPanel();
+//    private JPanel modifiedTab = new JPanel();
 
-    private JPanel tagValsTab = new JPanel();
+//    private JPanel tagValsTab = new JPanel();
 
-    private JPanel constraintsTab = new JPanel();
+//    private JPanel constraintsTab = new JPanel();
 
     private JComboBox elementName = new JComboBox();
 
@@ -136,31 +136,35 @@ public class FindDialog extends ArgoDialog
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         initNameLocTab();
-        tabs.addTab(Translator.localize("dialog.find.tab.name-and-location"),
-                nameLocTab);
+//        tabs.addTab(Translator.localize("dialog.find.tab.name-and-location"),
+//                nameLocTab);
 
-        initModifiedTab();
-        tabs.addTab(Translator.localize("dialog.find.tab.last-modified"),
-                modifiedTab);
-        tabs.setEnabledAt(1, false);
+        // penyaskito says: According to issue 2501, I have removed the tabs.
+//        initModifiedTab();
+//        tabs.addTab(Translator.localize("dialog.find.tab.last-modified"),
+//                modifiedTab);
+//        tabs.setEnabledAt(1, false);
 
-        initTagValsTab();
-        tabs.addTab(Translator.localize("dialog.find.tab.tagged-values"),
-                tagValsTab);
-        tabs.setEnabledAt(2, false);
+//        initTagValsTab();
+//        tabs.addTab(Translator.localize("dialog.find.tab.tagged-values"),
+//                tagValsTab);
+//        tabs.setEnabledAt(2, false);
 
-        initConstraintsTab();
-        tabs.addTab(Translator.localize("tab.constraints"),
-		     constraintsTab);
-        tabs.setEnabledAt(3, false);
+//        initConstraintsTab();
+//        tabs.addTab(Translator.localize("tab.constraints"),
+//		     constraintsTab);
+//        tabs.setEnabledAt(3, false);
 
-        tabs.setMinimumSize(new Dimension(300, 250));
+//        tabs.setMinimumSize(new Dimension(300, 250));
 
-        JPanel north = new JPanel();
-        north.setLayout(new BorderLayout());
-        north.add(tabs, BorderLayout.CENTER);
-        mainPanel.add(north, BorderLayout.NORTH);
+//        JPanel north = new JPanel();
+//        north.setLayout(new BorderLayout());
+//        north.add(tabs, BorderLayout.CENTER);
+        
+//        mainPanel.add(north, BorderLayout.NORTH);
 
+        mainPanel.add(nameLocTab, BorderLayout.NORTH);
+        
         initHelpTab();
         results.addTab(Translator.localize("dialog.find.tab.help"), help);
         mainPanel.add(results, BorderLayout.CENTER);
