@@ -98,13 +98,21 @@ public class TestXmiFilePersister extends TestCase {
      * 
      * @throws Exception when any of the activities fails
      */
-    public void testCreateSaveAndLoadYeldsCorrectModel() throws Exception {
+    public void testCreateSaveAndLoadYieldsCorrectModel() throws Exception {
         Project project = ProjectManager.getManager().makeEmptyProject();
         Object model = project.getModel();
         assertNotNull(model);
-        Model.getCoreFactory().buildClass("Foo", model);
+        Object classifier = Model.getCoreFactory().buildClass("Foo", model);
         assertNotNull(project.findType("Foo", false));
-        File file = new File("testCreateSaveAndLoadYeldsCorrectModel.xmi");
+        // TODO: We should really set up our own profile instead of depending
+        // on the default.
+        // This depends on the default profile configuration containing the
+        // type Integer to test properly.  Otherwise it will get created in
+        // the main project, defeating the purpose
+        Object intType = project.findType("Integer");
+        Object attribute = 
+            Model.getCoreFactory().buildAttribute2(classifier, intType);
+        File file = File.createTempFile("ArgoTestCreateSaveAndLoad", "xmi");
         XmiFilePersister persister = new XmiFilePersister();
         project.preSave();
         persister.save(project, file);
@@ -115,6 +123,7 @@ public class TestXmiFilePersister extends TestCase {
         persister = new XmiFilePersister();
         project = persister.doLoad(file);
         assertNotNull(project.findType("Foo", false));
+        file.delete();
     }
 
     /**
