@@ -3,6 +3,12 @@
 	<name>argouml</name>
 	<comment></comment>
 	<projects>
+		<project>argouml-core-lib</project>
+		<project>argouml-core-model</project>
+		<project>argouml-core-model-euml</project>
+		<project>argouml-core-model-mdr</project>
+		<project>argouml-core-tests</project>
+		<project>argouml-core-tools</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
