@@ -312,6 +312,39 @@ User of ArgoUML
 </para>
 
     </sect2>
+    <sect2 id="REQ15">
+      <title>
+        About enforcement of well-formedness rules from the UML standard.
+      </title>
+      <para>
+        REQ15 REVa
+      </para>
+      <para>
+        WFR = Well-Formedness Rule. This matter was discussed in
+        the dev list, in the thread following
+        "http://argouml.tigris.org/servlets/ReadMsg?list=dev&amp;msgNo=20622".
+      </para><para>
+        1. Critics shall warn for any WFR violations 
+        (a critic for every WFR would be ideal).
+      </para><para>
+        2. Generally, ArgoUML shall not enforce WFRs, except in certain cases.
+      </para><para>
+        3. In such cases (where we enforce a WFR) we shall
+      </para><para>
+        a. document this case, and
+      </para><para>
+        b. be consistent about it.
+      </para><para>
+        4. Even if a WFR is enforced, ArgoUML shall still be able 
+        to deal with a model that breaks it.
+        <emphasis>Rationale:</emphasis> 
+        since we can load a XMI that breaks the WFR.
+      </para>
+      <para>
+        <emphasis>Stakeholder:</emphasis>
+        User of ArgoUML
+      </para>
+    </sect2>
   </sect1>
 
   <sect1>

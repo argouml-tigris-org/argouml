@@ -55,7 +55,7 @@ responsibilities or functions of the subsystems.
 
       <tbody valign="top">
         <row>
-          <entry>2007-01-</entry>
+          <entry>2008-01-</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -64,6 +64,17 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2008-01-07</entry>
+          <entry>
+            Added requirement about enforcement of well-formedness rules.
+            (See <xref linkend="REQ15"/>).
+          </entry>
+          <entry>Michiel van der Wulp</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
