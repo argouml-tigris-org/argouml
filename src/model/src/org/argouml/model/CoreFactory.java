@@ -383,26 +383,26 @@ public interface CoreFactory extends Factory {
     Object buildAttribute2(Object type);
     
     /**
-     * Builds an attribute owned by some classifier cls. 
+     * Builds an attribute owned by a classifier. 
      *
-     * @param handle the given classifier
+     * @param classifier the classifier to own the new attribute
      * @param model the enclosing model
      * @param type the type
-     * @return the newly build attribute
+     * @return the newly built attribute
      * @deprecated for 0.25.2 by tfmorris - use the side effect free version
      * {@link #buildAttribute2(Object, Object)}
      */
     @Deprecated
-    Object buildAttribute(Object handle, Object model, Object type);
+    Object buildAttribute(Object classifier, Object model, Object type);
 
     /**
-     * Builds an attribute of the given type. <p>
+     * Builds an attribute of the given type owned by a classifier.
      *
-     * @param handle the given classifier
+     * @param classifier the classifier which will own the new attribute
      * @param type the type
      * @return the newly built attribute
      */
-    Object buildAttribute2(Object handle, Object type);
+    Object buildAttribute2(Object classifier, Object type);
     
     /**
      * Builds a default implementation for a class. The class is not owned by
