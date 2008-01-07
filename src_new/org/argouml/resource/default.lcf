@@ -6,7 +6,7 @@ log4j.rootLogger=WARN, DEFAULT
 log4j.category.org.argouml=WARN
 # 
 log4j.appender.DEFAULT=org.apache.log4j.RollingFileAppender
-log4j.appender.DEFAULT.File=argouml.log
+log4j.appender.DEFAULT.File=${user.home}/.argouml/argouml.log
 log4j.appender.DEFAULT.MaxFileSize=1MB
 log4j.appender.DEFAULT.MaxBackupIndex=1
 log4j.appender.DEFAULT.layout=org.apache.log4j.PatternLayout

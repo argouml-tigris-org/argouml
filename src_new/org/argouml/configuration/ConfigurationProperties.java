@@ -117,12 +117,6 @@ class ConfigurationProperties extends ConfigurationHandler {
             }
             // Try to create an empty file.
             try {
-                File parent = file.getParentFile();
-                // create the argouml dir if it doesn't exist
-                if (!parent.exists()) {
-                    parent.mkdir();
-                    LOG.info("New argouml home dir created as " + parent);
-                }
                 // This is done for compatibility with previous version: 
                 // Move the argo.user.properties
                 // written before 0.25.4 to the new location, if it exists.

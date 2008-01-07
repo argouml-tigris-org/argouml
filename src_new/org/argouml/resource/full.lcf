@@ -7,7 +7,7 @@ log4j.rootCategory=DEBUG, FULL
 log4j.category.org.argouml=DEBUG
 # 
 log4j.appender.FULL=org.apache.log4j.RollingFileAppender
-log4j.appender.FULL.File=${user.home}/argo_full.log
+log4j.appender.FULL.File=${user.home}/.argouml/argo_full.log
 log4j.appender.FULL.MaxBackupIndex=4
 log4j.appender.FULL.MaxFileSize=1000000
 log4j.appender.FULL.layout=org.apache.log4j.PatternLayout

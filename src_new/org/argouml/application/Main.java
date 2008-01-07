@@ -716,6 +716,19 @@ public class Main {
     }
 
     /**
+     * Create the .argouml directory if it doesn't exist. 
+     * This is done here because it must be done before 
+     * setting the log configuration.
+     */
+    static {
+        File argoDir = new File(System.getProperty("user.home") 
+                + File.separator + ".argouml");
+        if (!argoDir.exists()) {
+            argoDir.mkdir();
+        }
+    }
+    
+    /**
      * Install our security handlers,
      * and do basic initialization of log4j.
      *
