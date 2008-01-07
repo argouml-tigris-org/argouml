@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -96,10 +96,8 @@ import org.tigris.gef.util.Util;
  */
 public class Main {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(Main.class);
+    // initialized in static initializer block below
+    private static final Logger LOG;
 
     /**
      * The location of the default logging configuration (.lcf) file.
@@ -730,7 +728,7 @@ public class Main {
      * Refer to {@link java.awt.EventDispatchThread} for details.
      */
     static {
-
+ 
         /*  
          * Install the trap to "eat" SecurityExceptions.
          * 
@@ -753,9 +751,7 @@ public class Main {
          * {@link Argo} perform the initialization.
          */
 
-        // TODO: is it ok to do this in the static initializer if we
-        // are running in a Java Web Start environment? - tfm
-        // JWS property for logs is : 
+        // JavaWebStart properties for logs are : 
         // deployment.user.logdir & deployment.user.tmp
         if (System.getProperty("log4j.configuration") == null) {
             Properties props = new Properties();
@@ -788,8 +784,10 @@ public class Main {
         }
 
         // initLogging();
+        LOG = Logger.getLogger(Main.class);
     }
 
+    
     /**
      * Create and display a splash screen.
      * @return the splash screen
