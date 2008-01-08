@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -342,6 +342,7 @@ public final class ResourceLoaderWrapper {
         images.put("action.page-setup", "Page Setup...");
         images.put("action.paste", "Paste");
         images.put("action.print", "Print...");
+        images.put("action.properties", "Properties");
         images.put("action.remove-from-diagram", "Remove From Diagram");
         images.put("action.resolve-item", "Resolve Item...");
         images.put("action.save-project", "Save Project");
