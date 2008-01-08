@@ -24,13 +24,18 @@
 
 package org.argouml.kernel;
 
+import static org.argouml.model.Model.getCoreFactory;
+import static org.argouml.model.Model.getExtensionMechanismsHelper;
 import static org.argouml.model.Model.getFacade;
+import static org.argouml.model.Model.getModelManagementFactory;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.argouml.FileHelper;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
@@ -39,6 +44,8 @@ import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.ProfileManager;
+import org.argouml.profile.ProfileMother;
+import org.argouml.profile.UserDefinedProfile;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -50,6 +57,8 @@ import org.argouml.profile.init.InitProfileSubsystem;
  */
 public class TestProjectWithProfiles extends TestCase {
 
+    private File testCaseDir;
+
     /*
      * @see junit.framework.TestCase#setUp()
      */
@@ -60,13 +69,21 @@ public class TestProjectWithProfiles extends TestCase {
         new InitProfileSubsystem().init();
         
         if (ApplicationVersion.getVersion() == null) {
-            Class<?> argoVersionClass = 
+            Class argoVersionClass = 
                 Class.forName("org.argouml.application.ArgoVersion");
             Method initMethod = argoVersionClass.getDeclaredMethod("init");
             initMethod.setAccessible(true);
             initMethod.invoke(null);
             assertNotNull(ApplicationVersion.getVersion());
         }
+        String testCaseDirName = getClass().getPackage().getName();
+        testCaseDir = FileHelper.setUpDir4Test(testCaseDirName);
+    }
+    
+    @Override
+    protected void tearDown() throws Exception {
+        FileHelper.deleteDir(testCaseDir);
+        super.tearDown();
     }
 
     public void testCreatedProjectContainsProfileConfiguration() {
@@ -142,11 +159,9 @@ public class TestProjectWithProfiles extends TestCase {
                 returnParamType);
         assertNotNull(project.findType("Foo", false));
         // save the project into a new file
-        File file = getFileInUsersTemporaryDirectory(
+        File file = getFileInTestDir(
                 "testRemoveProfileWithModelThatRefersToProfile.zargo");
-        AbstractFilePersister persister = 
-            PersistenceManager.getInstance().getPersisterFromFileName(
-                    file.getAbsolutePath());
+        AbstractFilePersister persister = getProjectPersister(file);
         project.setVersion(ApplicationVersion.getVersion());
         persister.save(project, file);
         // reopen the project and assert that the Java profile isn't part of 
@@ -179,15 +194,82 @@ public class TestProjectWithProfiles extends TestCase {
                 getFacade().getNamespace(returnParamType));
     }
 
-    private static final String SYSPROPNAME_TMPDIR = "java.io.tmpdir";
-
-    private File getFileInUsersTemporaryDirectory(String fileName) {
-        String tmpDirName = System.getProperty(SYSPROPNAME_TMPDIR);
-        String testCaseDirName = getClass().getPackage().getName();
-        File tmpDir = new File(tmpDirName);
-        File testCaseDir = new File(tmpDir, testCaseDirName);
-        testCaseDir.mkdir();
+    private File getFileInTestDir(String fileName) {
         return new File(testCaseDir, fileName);
+    }
+    
+    /**
+     * WARNING: not a unit test, this is more like a functional test, where 
+     * several subsystems are tested.
+     * 
+     * This test does:
+     * <ol>
+     *   <li>setup a user defined profile</li>
+     *   <li>add it to the project configuration</li>
+     *   <li>create a dependency between the project's model and the user 
+     *   defined profile</li>
+     *   <li>save the project</li>
+     *   <li>load the project and assert that the model element that depends on 
+     *   the profile is consistent</li>
+     * </ol>
+     * 
+     * @throws Exception when things go wrong
+     */
+    public void testProjectWithUserDefinedProfilePersistency() 
+        throws Exception {
+        // setup a user defined profile
+        ProfileMother mother = new ProfileMother();
+        Object profileModel = mother.createSimpleProfileModel();
+        File userDefinedProfileFile = new File(testCaseDir, 
+                "testProjectWithUserDefinedProfilePersistency.xmi");
+        mother.saveProfileModel(profileModel, userDefinedProfileFile);
+        // add it to the project configuration
+        Profile userDefinedProfile = 
+            new UserDefinedProfile(userDefinedProfileFile);
+        ProfileManager profileManager = ProfileFacade.getManager();
+        profileManager.registerProfile(userDefinedProfile);
+        Project project = ProjectManager.getManager().makeEmptyProject();
+        project.getProfileConfiguration().addProfile(userDefinedProfile);
+        // create a dependency between the project's model and the user defined 
+        // profile
+        Object model = getModelManagementFactory().getRootModel();
+        Object fooClass = getCoreFactory().buildClass("Foo", model);
+        Collection stereotypes = getExtensionMechanismsHelper().getStereotypes(
+                project.getModels());
+        Object stStereotype = null;
+        for (Object stereotype : stereotypes) {
+            if (ProfileMother.STEREOTYPE_NAME_ST.equals(
+                    getFacade().getName(stereotype))) {
+                stStereotype = stereotype;
+                break;
+            }
+        }
+        Model.getCoreHelper().addStereotype(fooClass, stStereotype);
+        // save the project
+        File file = getFileInTestDir(
+            "testProjectWithUserDefinedProfilePersistency.zargo");
+        AbstractFilePersister persister = getProjectPersister(file);
+        project.setVersion(ApplicationVersion.getVersion());
+        persister.save(project, file);
+        // load the project
+        // FIXME: known failure here as documented in issue #4946
+        project = persister.doLoad(file);
+        project.postLoad();
+        // assert that the model element that depends on the profile is 
+        // consistent
+        fooClass = project.findType("Foo", false);
+        assertNotNull(fooClass);
+        Collection fooStereotypes = getFacade().getStereotypes(fooClass);
+        assertEquals(1, fooStereotypes.size());
+        assertEquals(ProfileMother.STEREOTYPE_NAME_ST, 
+                getFacade().getNamespace(fooStereotypes.iterator().next()));
+    }
+
+    private AbstractFilePersister getProjectPersister(File file) {
+        AbstractFilePersister persister = 
+            PersistenceManager.getInstance().getPersisterFromFileName(
+                    file.getAbsolutePath());
+        return persister;
     }
 
 }

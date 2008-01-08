@@ -46,7 +46,6 @@ public class TestProfileManager extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
-        super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
         mockProfile = new Profile() {

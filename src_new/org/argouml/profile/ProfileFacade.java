@@ -77,5 +77,12 @@ public class ProfileFacade {
     }
 
     private static ProfileManager manager;
+
+    /**
+     * @return true is subsystem is initialized or false otherwise
+     */
+    public static boolean isInitiated() {
+        return manager != null;
+    }
     
 }

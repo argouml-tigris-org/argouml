@@ -52,14 +52,14 @@ public class TestProfileManagerImpl extends TestCase {
 
     public void testProfileManagerImpl() {
         List<Profile> registeredProfiles = manager.getRegisteredProfiles();
-        assertEquals(2, registeredProfiles.size());
-        Set<String> profileNameSet = new HashSet<String>();
+        assertTrue(2 <= registeredProfiles.size());
+        Set<String> internalProfileNameSet = new HashSet<String>();
         for (Profile profile : registeredProfiles) {
-            assertTrue(profile.getDisplayName().equals(ProfileUML.NAME) 
-                    || profile.getDisplayName().equals(ProfileJava.NAME));
-            profileNameSet.add(profile.getDisplayName());
+            if (profile.getDisplayName().equals(ProfileUML.NAME) 
+                    || profile.getDisplayName().equals(ProfileJava.NAME))
+                internalProfileNameSet.add(profile.getDisplayName());
         }
-        assertEquals(2, profileNameSet.size());
+        assertEquals(2, internalProfileNameSet.size());
     }
     
     public void testRemoveProfileThatIsntDefault() {
