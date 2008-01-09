@@ -112,17 +112,26 @@ public class TestXmiFilePersister extends TestCase {
         Object intType = project.findType("Integer");
         Object attribute = 
             Model.getCoreFactory().buildAttribute2(classifier, intType);
+        Model.getCoreHelper().setName(attribute, "profileTypedAttribute");
         File file = File.createTempFile("ArgoTestCreateSaveAndLoad", "xmi");
         XmiFilePersister persister = new XmiFilePersister();
         project.preSave();
         persister.save(project, file);
         project.postSave();
+        
+        Model.getUmlFactory().delete(classifier);
 
         ProjectManager.getManager().makeEmptyProject();
         
         persister = new XmiFilePersister();
         project = persister.doLoad(file);
-        assertNotNull(project.findType("Foo", false));
+        Object loadedClass = project.findType("Foo", false);
+        assertNotNull(loadedClass);
+        Object att = Model.getFacade().getAttributes(loadedClass).get(0);
+        assertNotNull(att);
+        Object attType = Model.getFacade().getType(att);
+        assertNotNull(attType);
+        assertEquals("Integer", Model.getFacade().getName(attType));
         file.delete();
     }
 
