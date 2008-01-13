@@ -324,7 +324,8 @@ There is a workaround, though: Apple leaves the 1.3.1 java engine installed, but
 
 
 <DT><a name="win_link">Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
-<DD>The trick is to do things in two steps. First, open Windows Explorer and find a .zargo
+<DD>On <b>Windows XP</b>, (don't try this on Vista!) 
+the trick is to do things in two steps. First, open Windows Explorer and find a .zargo
 file, and then right-click on it. You should get the normal Windows menu, including an Open or Open With 
 option. At this point, give a description for the file like "ArgoUML Model", and tell Windows to use 
 Notepad to open the file. That's not what you want to do ultimately, but it does get Windows to
@@ -348,7 +349,19 @@ Substitute your path to your JavaW.exe and ArgoUML.jar files if they aren't
 located where specified above. Click OK, then click OK, then click OK (three buttons on
 three different levels of the dialog).
 <p>
-You can now double-click on your model and have ArgoUML instantly loaded.
+You can now double-click on your model and have ArgoUML instantly loaded.</p>
+<p>On <b>Windows Vista</b>, you do the following:</p>
+<p>1) Create a batch file "runargo.bat" in your ArgoUML directory which looks
+something like this:</p>
+<p>
+    @echo off</p><p>
+    cd "C:\ArgoUML"</p><p>
+    start javaw -cp "argouml.jar" org.argouml.application.Main %1 /B</p>
+<p>
+replacing "C:\ArgoUML" as appropriate.</p>
+<p>
+2) Associate your .zargo files with this batch file (just double-click a .zargo
+file and follow the instructions).</p>
 
 
 <DT><a name="unknownhostexception">Unix/Linux: 
