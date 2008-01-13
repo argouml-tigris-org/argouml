@@ -56,11 +56,11 @@ public class StartCritics implements Runnable {
         SubsystemUtility.initSubsystem(new InitJavaCritics());
         SubsystemUtility.initSubsystem(new InitPatternCritics());
         org.argouml.uml.cognitive.checklist.Init.init();
-        Project p = ProjectManager.getManager().getCurrentProject();
         // set the icon for this poster
         dsgr.setClarifier(ResourceLoaderWrapper.lookupIconResource("PostItD0"));
         dsgr.setDesignerName(Configuration.getString(Argo.KEY_USER_FULLNAME));
         Configuration.addListener(Argo.KEY_USER_FULLNAME, dsgr); //MVW
+        Project p = ProjectManager.getManager().getCurrentProject();
         dsgr.spawnCritiquer(p);
         dsgr.setChildGenerator(new ChildGenUML());
         for (Object model : p.getUserDefinedModelList()) {
