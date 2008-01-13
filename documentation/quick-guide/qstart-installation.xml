@@ -243,7 +243,7 @@ You can also set java settings which influence the behaviour of ArgoUML:
   </sect1>
   
   <sect1>
-    <title>Making .zargo-file clickable (on Windows)</title>
+    <title>Making .zargo-file clickable (on Windows XP)</title>
     <sect1info>
       <authorgroup>
         <author>
@@ -257,7 +257,7 @@ You can also set java settings which influence the behaviour of ArgoUML:
       <para>
 <!-- This is issue 4733 -->
 We have reports that this isn't working on Windows Vista.
-Please don't try it there.
+Please don't try it there - see the next chapter instead.
 </para>
     </warning>
     <para>
@@ -302,6 +302,33 @@ support filename extensions of more than 3 characters.
 </para>
   </sect1>
 
+  <sect1>
+    <title>Making .zargo-file clickable (on Windows Vista)</title>
+    <sect1info>
+      <authorgroup>
+        <author>
+          <firstname>Allan</firstname>
+          <surname>Todd</surname>
+        </author>
+      </authorgroup>
+    </sect1info>
+
+    <para>1) Create a batch file "runargo.bat" 
+      in your ArgoUML directory which looks
+      something like this:
+      <command>
+        @echo off</command>
+      <command>
+        cd "C:\ArgoUML"</command>
+      <command>
+        start javaw -cp "argouml.jar" org.argouml.application.Main %1 /B</command>
+      replacing "C:\ArgoUML" as appropriate.
+    </para>
+
+    <para>2) Associate your .zargo files with this batch file 
+      (just double-click a .zargo
+      file and follow the instructions).</para>
+  </sect1>
 </chapter>
 
 <!-- Local stuff for Emacs - please do not delete
