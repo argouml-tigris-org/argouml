@@ -288,9 +288,6 @@ To get it, call ant with target - docbook-xsl-get
     <property name="javahelp.xsl"
               value="../docbook-setup/create-javahelp.xsl"/>
 
-    <property name="imglist.xsl"
-              value="../docbook-setup/create-imglist.xsl"/>
-
 
     <!-- Copy and change 'antcall' task below for additional DocBook
          documents
@@ -357,38 +354,6 @@ To get it, call ant with target - docbook-xsl-get
       </filterset>
     </copy>
 
-    <!-- We copy the 'images' directory into our source directory.  (this is to
-         allow each output directory to be self-contained).  Of course it also
-         means that more space is used up by these multiple copies of the
-         images directory.
-
-         We try to determine what files image files are to be copied and copy
-         only those. -->
-
-    <echo message="Copying images for ${doc.prefix}.xml..."/>
-
-    <java classname="com.icl.saxon.StyleSheet"
-          fork="yes"
-	  taskname="saxon"
-          dir="${documentation.dir}/${doc.subdir}">
-      <classpath>
-        <path refid="saxon.classpath"/>
-      </classpath>
-      <arg value="${doc.prefix}-generated.xml"/>
-      <arg value="${imglist.xsl}"/>
-    </java>
-
-    <!-- Copy the image files to where we want them. Watch out for a nasty if
-         there are no images, so imglist.txt is empty. The entire documentation
-         tree would be copied in to the source directory! Quick fix is to
-         always have at least one file, "tip.png". --> 
-
-    <copy todir="${documentation.dir}/${doc.subdir}">
-      <fileset dir="${documentation.dir}"
-         includes="images/tip.png"
-         includesfile="${documentation.dir}/${doc.subdir}/imglist.txt"/>
-    </copy>
-
     <!-- Now invoke each of the targets. They will only do anything if their
          trigger (generate-XXX) has been set true earlier. -->
 
@@ -428,11 +393,6 @@ To get it, call ant with target - docbook-xsl-get
       <param name="target.hs"  value="${doc.subdir}.hs"/>
     </antcall>
 
-    <!-- Delete the redundant images directory and list from the source
-         directory  -->
-
-    <delete dir="${documentation.dir}/${doc.subdir}/images"/>
-    <delete file="${documentation.dir}/${doc.subdir}/imglist.txt" quiet="true"/>
     <delete file="${documentation.dir}/${doc.subdir}/${doc.prefix}-generated.xml"/>
   </target>
   
