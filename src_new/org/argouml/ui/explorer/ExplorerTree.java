@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -83,9 +83,13 @@ public class ExplorerTree
      */
     public ExplorerTree() {
         super();
+        
+        Project p = ProjectManager.getManager().getCurrentProject();
+        this.setModel(new ExplorerTreeModel(p, this));
 
-        this.setModel(new ExplorerTreeModel(ProjectManager.getManager()
-			                    .getCurrentProject(), this));
+        ProjectSettings ps = p.getProjectSettings();
+        setShowStereotype(ps.getShowStereotypesValue());
+
         this.addMouseListener(new ExplorerMouseListener(this));
         this.addTreeSelectionListener(new ExplorerTreeSelectionListener());
         this.addTreeWillExpandListener(new ExplorerTreeWillExpandListener());
