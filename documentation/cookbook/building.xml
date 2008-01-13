@@ -2688,7 +2688,7 @@ cd wherever
 svn co http://argoumlinstaller.tigris.org/svn/argoumlinstaller/trunk argoumlinstaller
 svn co http://argouml-downloads.tigris.org/svn/argouml-downloads/trunk argouml-downloads
 </programlisting>
-Note that the argouml-downloads checkout is large (almost 1.5 GB) and
+Note that the argouml-downloads checkout is large (over 2 GB) and
 will take a considerable time to check out so you'd better do this in
 advance.
 </para>
@@ -2896,57 +2896,57 @@ active.
         </orderedlist>
       </listitem>
 	  
-    </orderedlist>
-
-    <para>
-After this, the work continues with the installers.
+      <listitem>
+        <para>
+Run the installers.
 </para>
-    <para>
+        <para>
 This is what you do:
 </para>
 
-    <orderedlist>
-      <listitem>
-        <para>
+	<orderedlist>
+	  <listitem>
+	    <para>
 Create the zip files and the tgz files,
 copy the documentation,
 copy changed Java web start files and create new Java web start jnlp files.
 </para>
-        <para>
+            <para>
 This is done by the command
 <command>./official.sh</command>.
 </para>
-      </listitem>
+	  </listitem>
 
-      <listitem>
-        <para>
+	  <listitem>
+            <para>
 For Java Web Start,
 update the "Latest development" or perhaps the
 "Latest stable" files
 essentially with the contents of the newly created JNLP file.
 </para>
 
-        <para>
+            <para>
 These files are located in the 
 <filename class="directory">svn/argouml-downloads/www/jws</filename>-directory.
 </para>
-      </listitem>
+	  </listitem>
 
-      <listitem>
-        <para>
-Update the index file for the downloads project to point out the new release.
+	  <listitem>
+	    <para>
+Update the index files for the downloads project to point out the new release.
+The index.html is for the stable releases, the devrel.html for all releases.
 </para>
 
-        <para>
-It should point out the release at 
+            <para>
+They should point out the release at 
 <filename>/argouml-<replaceable>RELEASENAME</replaceable>/</filename>,
 the Java web start file at
 <filename>/jws/argouml-<replaceable>RELEASENAME</replaceable>.jnlp</filename>.
 </para>
-      </listitem>
+	  </listitem>
 
-      <listitem>
-        <para>
+	  <listitem>
+	    <para>
 Commit the release in the argouml-downloads project
 </para>
         <para>
@@ -2956,7 +2956,22 @@ cd ../argouml-downloads/www
 svn commit -m'The release <replaceable>RELEASENAME</replaceable>.'
 </programlisting>
 </para>
+	  </listitem>
+	</orderedlist>
       </listitem>
+
+      <listitem>
+        <para>
+Tag the argoumlinstaller directory.
+</para>
+        <para>
+The following commands will do it for you:
+<programlisting>
+svn copy http://argoumlinstaller.tigris.org/svn/argoumlinstaller/trunk http://argoumlinstaller.tigris.org/svn/argoumlinstaller/releases/VERSION_<replaceable>GIVEN_VERSION</replaceable> -m'Installer used for <replaceable>GIVEN_VERSION</replaceable>
+</programlisting>
+</para>
+      </listitem>
+
     </orderedlist>
 
     <sect2 id="release_process_test_failed">
