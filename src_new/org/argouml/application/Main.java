@@ -125,9 +125,6 @@ public class Main {
     
     private static String theTheme;
     
-    private static boolean preInitialized = false;
-    private static boolean initialized = false;
-    
     /**
      * The main entry point of ArgoUML.
      * @param args command line parameters
@@ -248,27 +245,23 @@ public class Main {
 
 
     private static void initPreinitialize() {
-        if (!preInitialized) {
-            preInitialized = true;
-            checkJVMVersion();
-            checkHostsFile();
+        checkJVMVersion();
+        checkHostsFile();
 
-            // Force the configuration to load
-            Configuration.load();
+        // Force the configuration to load
+        Configuration.load();
 
-            // Synchronize the startup directory
-            String directory = Argo.getDirectory();
-            org.tigris.gef.base.Globals.setLastDirectory(directory);
+        // Synchronize the startup directory
+        String directory = Argo.getDirectory();
+        org.tigris.gef.base.Globals.setLastDirectory(directory);
 
-            initVersion();
-            initTranslator();
+        initVersion();
+        initTranslator();
 
-            // then, print out some version info for debuggers...
-            org.argouml.util.Tools.logVersionInfo();
-            setSystemProperties();
-        }
+        // then, print out some version info for debuggers...
+        org.argouml.util.Tools.logVersionInfo();
+        setSystemProperties();
     }
-
     
    
     private static void initTranslator() {
@@ -383,45 +376,43 @@ public class Main {
             SplashScreen splash) {
         ProjectBrowser pb = null;
 
-        if (!initialized) {
-            initialized = true;
+        st.mark("initialize model subsystem");
+        initModel();
+        updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
 
-            st.mark("initialize model subsystem");
-            initModel();
-            updateProgress(splash, 5, "statusmsg.bar.model-subsystem");
+        st.mark("initialize the profile subsystem");
+        new InitProfileSubsystem().init();
 
-            st.mark("initialize the profile subsystem");
-            new InitProfileSubsystem().init();
+        // Initialize the Java code generator. (why so early? - tfm)
+        GeneratorJava.getInstance();
 
-            /*
-             * Initialize the module loader. At least the plug-ins that provide
-             * profiles need to be initialized before the project is loaded,
-             * because some of these profile may have been set as default
-             * profiles and need to be applied to the project as soon as it has
-             * been created or loaded. the first instance of a Project is needed
-             * during the gui initialization
-             */
-            st.mark("modules");
-            SubsystemUtility.initSubsystem(new InitModuleLoader());
+        // The reason the gui is initialized before the commands are run
+        // is that some of the commands will use the projectbrowser.
+        st.mark("initialize gui");
+        pb = initializeGUI(splash);
 
-            // Initialize the Java code generator. (why so early? - tfm)
-            GeneratorJava.getInstance();
+        st.mark("initialize subsystems");
+        SubsystemUtility.initSubsystem(new InitUiCmdSubsystem());
+        SubsystemUtility.initSubsystem(new InitNotationUI());
+        SubsystemUtility.initSubsystem(new InitNotation());
+        SubsystemUtility.initSubsystem(new InitNotationUml());
+        SubsystemUtility.initSubsystem(new InitNotationJava());
+        SubsystemUtility.initSubsystem(new InitDiagramAppearanceUI());
+        SubsystemUtility.initSubsystem(new InitUmlUI());
+        SubsystemUtility.initSubsystem(new InitCheckListUI());
+        SubsystemUtility.initSubsystem(new InitCognitiveUI());
 
-            // The reason the gui is initialized before the commands are run
-            // is that some of the commands will use the projectbrowser.
-            st.mark("initialize gui");
-            pb = initializeGUI(splash);
+        /*
+         * Initialize the module loader. At least the plug-ins that provide
+         * profiles need to be initialized before the project is loaded,
+         * because some of these profile may have been set as default
+         * profiles and need to be applied to the project as soon as it has
+         * been created or loaded. The first instance of a Project is needed
+         * during the GUI initialization.
+         */
+        st.mark("initialize modules");
+        SubsystemUtility.initSubsystem(new InitModuleLoader());
 
-            SubsystemUtility.initSubsystem(new InitUiCmdSubsystem());
-            SubsystemUtility.initSubsystem(new InitNotationUI());
-            SubsystemUtility.initSubsystem(new InitNotation());
-            SubsystemUtility.initSubsystem(new InitNotationUml());
-            SubsystemUtility.initSubsystem(new InitNotationJava());
-            SubsystemUtility.initSubsystem(new InitDiagramAppearanceUI());
-            SubsystemUtility.initSubsystem(new InitUmlUI());
-            SubsystemUtility.initSubsystem(new InitCheckListUI());
-            SubsystemUtility.initSubsystem(new InitCognitiveUI());
-        }
         return pb;
     }
 
@@ -635,9 +626,9 @@ public class Main {
      * @param list The commands, a list of strings.
      */
     public static void performCommands(List<String> list) {
-        initPreinitialize();
-        initializeSubsystems(new SimpleTimer(), null);
-        ArgoFrame.getInstance().setVisible(true);
+//        initPreinitialize();
+//        initializeSubsystems(new SimpleTimer(), null);
+//        ArgoFrame.getInstance().setVisible(true);
         performCommandsInternal(list);
     }
     
