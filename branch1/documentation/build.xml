@@ -383,11 +383,11 @@ To get it, call ant with target - docbook-xsl-get
          tree would be copied in to the source directory! Quick fix is to
          always have at least one file, "tip.png". --> 
 
-    <copy todir="${documentation.dir}/${doc.subdir}">
+    <!--<copy todir="${documentation.dir}/${doc.subdir}">
       <fileset dir="${documentation.dir}"
          includes="images/tip.png"
          includesfile="${documentation.dir}/${doc.subdir}/imglist.txt"/>
-    </copy>
+    </copy>-->
 
     <!-- Now invoke each of the targets. They will only do anything if their
          trigger (generate-XXX) has been set true earlier. -->
