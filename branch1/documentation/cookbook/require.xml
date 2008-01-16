@@ -1,428 +1,210 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+      // Copyright (c) 1996-2006 The Regents of the University of California. All
+      // Rights Reserved. Permission to use, copy, modify, and distribute this
+      // software and its documentation without fee, and without a written
+      // agreement is hereby granted, provided that the above copyright notice
+      // and this paragraph appear in all copies.  This software program and
+      // documentation are copyrighted by The Regents of the University of
+      // California. The software program and documentation are supplied "AS
+      // IS", without any accompanying services from The Regents. The Regents
+      // does not warrant that the operation of the program will be
+      // uninterrupted or error-free. The end-user understands that the program
+      // was developed for research purposes and is advised not to rely
+      // exclusively on the program for any reason.  IN NO EVENT SHALL THE
+      // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+      // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+      // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+      // THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+      // SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+      // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+      // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+      // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+      // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+      // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-  <chapter id="requirements">
-  <chapterinfo>
-    <authorgroup>
-      <author>
-        <firstname>Linus</firstname>
-        <surname>Tolke</surname>
-      </author>
-    </authorgroup>
-  </chapterinfo>
-  <title>ArgoUML requirements</title>
-
-  <para>
-This chapter contains a description on how ArgoUML should work
-and behave for the users.
-</para>
-
-  <para>
-These things might not be implemented yet and the solutions
-might not even be clear but it is a definition of the goal.
-</para>
-  <para>
-The fact that it is not implemented or doesn't work as stated here
-should be registered as a bug 
-in the bug registering tool.
-</para>
-  <para>
-Every requirement has
-a number (REQ1, REQ2, REQ3, ...) that never changes,
-a revision (REVa, REVb, REVc, ...) that changes when the requirement change,
-a text that is the requirement text to implement,
-a rationale that is the description of why the requirement is important,
-and a stakeholder, i.e. a person or group that the requirement is
-important to.
-</para>
-
-  <sect1>
-    <title>Requirements for Look and feel</title>
-    <para>
-This describes how the ArgoUML look and feel shall behave.
-</para>
-    <sect2 id="REQ1">
-      <title>
-When multiple visual components are showing the same model element
-they shall be updated in a consistent manner throughout the application.
-</title>
-      <para>
-REQ1 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-There is no way of telling where the user is looking while working with
-ArgoUML.
-For this reason he might be terribly confused if some other view that
-happens to show the same element is not showing the same thing.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML
-</para>
-    </sect2>
-
-    <sect2 id="REQ2">
-      <title>
-All views of a model element shall be updated
-as soon as the model element is updated.
-</title>
-      <para>
-REQ2 REVb
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-If a user makes an update of a part of the model,
-an immediate feedback in all other parts that are currently showing
-might help him to get it right.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML
-</para>
-    </sect2>
-
-    <sect2 id="REQ11">
-      <title>
-Editable views of the model should update the model
-on each keystroke and mouse click.
-</title>
-      <para>
-REQ11 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-If a user makes an update of a part of the model,
-an immediate feedback in all other parts that are currently showing
-might help him to get it right.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML
-</para>
-    </sect2>
-
-    <sect2 id="REQ12">
-      <title>
-Any text fields that require validation
-should not be editable directly from a view.
-</title>
-      <para>
-REQ12 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-If a text field requires validation there exists, by definition,
-a possibility that the text field is in an invalid state
-at any time during editing.
-Therefore the model cannot be updated until the field is completed 
-in a valid state or rejected.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML.
-TODO: Is this the correct stakeholder?
-</para>
-    </sect2>
-
-    <sect2 id="REQ13">
-      <title>
-With dialogs, the model is not updated until the dialog
-is accepted by the user
-with valid fields.
-</title>
-      <para>
-REQ13 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-It is a common feature of GUIs that a dialog displays
-a snapshot of its model at the time of creation and
-only updates that model on the user acceptance of the entire dialog.
-This is a familiar look and feel for users.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML.
-</para>
-    </sect2>
-
-    <sect2 id="REQ14">
-      <title>
-The user shall receive some visual feedback during
-the edit process of textual UML to indicate whether
-the text represents valid UML syntax.
-</title>
-      <para>
-REQ14 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-Writing anything in the correct syntax is complicated.
-Good compilers are helpful in pinpointing where the problem is
-(what line and what token is in error).
-The text fields in ArgoUML are
-not developed in the same way as source code and
-we have no compiler step to verify it all.
-Instead this validation needs to be done while editing meaning that
-the user needs all the help he can get, as quickly as possible, to
-get the syntax right.
-TODO: Is this the correct motivation for this?
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML.
-</para>
-    </sect2>
-
-    <sect2 id="REQ3">
-      <title>
-There shall be no indication of an exception on the screen or in the
-log if it has occured merely because of a user mistyping or not being
-aware of UML syntax.
-</title>
-      <para>
-REQ3 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-An exception in the log or on the screen is always the sign of a serious
-error in the application that should be reported as a DEFECT.
-If a mistyping generates such a problem the user might lose interest in
-ArgoUML as a tool because he percieves it as not working correctly.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML
-</para>
-    </sect2>
-
-    <sect2 id="REQ4">
-      <title>
-All text fields shall have context sensitive help.
-</title>
-      <para>
-As follows:
-<orderedlist>
-          <listitem>
-            <para>
-A tooltip that explains the data and format expected by the
-particular field.
-</para>
-            <para>
-This can be omitted when there is a header stating the data of
-the field and the format is obvious.
-</para>
-          </listitem>
-          <listitem>
-            <para>
-Pressing F1 or choosing help from the menu shall display a popup
-window explaining the data and format required by the current input
-field. 
-Input focus shall be left on the field during any user
-interaction with the popup (dragging, scrolling or closing).
-</para>
-          </listitem>
-        </orderedlist>
-</para>
-      <para>
-REQ4 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-Throughout a complex application like ArgoUML there are lots of text fields.
-Unless there is a possibility to always get this kind of help 
-the user might not be able to make out 
-what he is actually supposed to do in that field.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML
-</para>
-
-    </sect2>
-  </sect1>
-
-  <sect1>
-    <title>Requirements for UML</title>
-    <sect2 id="REQ5">
-      <title>
-ArgoUML shall be a correct implementation of the UML 1.4 model.
-</title>
-      <para>
-REQ5 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-The vision of ArgoUML is to provide a tool that helps people 
-work with an UML model.
-The UML model might later on be used in some other tool.
-If the implementation is not correct then ArgoUML will not be
-compatible with that other tool or the user will be confused.
-There might be a lot of tough decisions when it comes to 
-if it is ArgoUML or some other tool that deviates from the UML 1.4
-but there shall never be any doubt that the intention of ArgoUML
-is to implement UML correctly.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML
-</para>
-    </sect2>
-    <sect2 id="REQ6">
-      <title>
-ArgoUML shall implement everything in the UML 1.4 model.
-</title>
-      <para>
-REQ6 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-The ambition is to implement all of UML.
-This means that no matter how you use UML ArgoUML will always be
-a working tool.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML
-</para>
-
-    </sect2>
-  </sect1>
-
-  <sect1>
-    <title>Requirements on java and jvm</title>
-    <sect2 id="REQ7">
-      <title>Choice of JRE:
-ArgoUML will support any JRE compatible with a 
-Sun specification of any JRE from Sun that has not begun the Sun End of Life
-(EOL) process.
-</title>
-      <para>
-REQ7 REVb
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-The JREs and the adjoining libraries (especially swing) are always improving
-to include new features and new ideas.
-The developers of ArgoUML would like to use these new features.
-</para>
-      <para>
-Note: J2SE 1.3.1 begun its Sun End of Life (EOL) process
-on October 25, 2004.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-Developers of ArgoUML
-</para>
-    </sect2>
-
-    <sect2 id="REQ8">
-      <title>Download and start</title>
-      <para>
-It shall be possible to install ArgoUML locally on the machine
-and use without Internet connection.
-</para>
-      <para>
-REQ8 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-ArgoUML is an application that edits an UML model.
-There is no need to have any network defined while doing this.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML
-</para>
-    </sect2>
-
-    <sect2 id="REQ9">
-      <title>
-Console output: 
-Logging or tracing information shall not be written to the console
-or to any file unless explicitly turned on by the user.
-</title>
-      <para>
-REQ9 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-ArgoUML is an application that edits an UML model.
-Any information written to anywhere but the files that the user
-specifies the user won't know what to do with and
-it will be perceived as garbage generated by the ArgoUML application.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-User of ArgoUML
-</para>
-
-    </sect2>
-  </sect1>
-
-  <sect1>
-    <title>Requirements set up for the benefit of the development of ArgoUML</title>
-    <sect2 id="REQ10">
-      <title>
-Logging:
-The code shall contain entries logging important information
-for the purpose of helping Developers of ArgoUML in finding problems
-in ArgoUML itself.
-</title>
-      <para>
-REQ10 REVa
-</para>
-      <para>
-<emphasis>Rationale:</emphasis>
-When the developers are searching for some problem
-or when they ask any of the users to help them pinpoint some problem
-such logging messages are very helpful.
-</para>
-      <para>
-<emphasis>Stakeholder:</emphasis>
-Developers of ArgoUML
-</para>
-
-    </sect2>
-  </sect1>
-
-  </chapter>
-
-
+<chapter
+      xmlns="http://docbook.org/ns/docbook" 
+      version="5.0" 
+      xml:lang="en"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xml:id="requirements">
+      
+      <title>ArgoUML requirements</title>
+      
+      <info>
+            <authorgroup>
+                  <author>
+                        <personname><firstname>Linus</firstname>
+                              <surname>Tolke</surname></personname>
+                  </author>
+            </authorgroup>
+      </info>
+      
+      
+      
+      <para>This chapter contains a description on how ArgoUML should work and behave for the users. </para>
+      <para>These things might not be implemented yet and the solutions might not even be clear but it is a definition of the goal. </para>
+      <para>The fact that it is not implemented or doesn't work as stated here should be registered as a bug in the bug registering tool. </para>
+      <para>Every requirement has a number (REQ1, REQ2, REQ3, …) that never changes, a revision (REVa, REVb, REVc, …) that changes when the requirement change, a text that is the requirement text to implement, a rationale that is the description on why this is important, a stakeholder that is one of the stakeholders in the vision for who this is important. </para>
+      
+      <section>
+            <title>Requirements for Look and feel</title>
+            
+            <para>This describes how the ArgoUML look and feel shall behave. </para>
+            
+            <section xml:id="REQ1">
+                  <title> When multiple visual components are showing the same model element they shall be updated in a consistent manner throughout the application. </title>
+                  
+                  <para>REQ1 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> There is no way of telling where the user is looking while working with ArgoUML. For this reason he might be terribly confused if some other view that happens to show the same element is not showing the same thing. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML </para>
+            </section>
+            
+            <section xml:id="REQ2">
+                  <title> All views of a model element shall be update as soon as the model element is updated. </title>
+                  
+                  <para>REQ2 REVb </para>
+                  <para><emphasis>Rationale:</emphasis> If a user makes an update of a part of the model, an immediate feedback in all other parts that are currently showing might help him to get it right. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML </para>
+            </section>
+            
+            <section xml:id="REQ11">
+                  <title> Editable views of the model should update the model on each keystroke and mouse click. </title>
+                  
+                  <para>REQ11 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> If a user makes an update of a part of the model, an immediate feedback in all other parts that are currently showing might help him to get it right. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML </para>
+            </section>
+            
+            <section xml:id="REQ12">
+                  <title> Any text fields that require validation should not be editable directly from a view. </title>
+                  
+                  <para>REQ12 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> If a text field requires validation there exists, by definition, a possibility that the text field is in an invalid state at any time during editing. Therefore the model cannot be updated until the field is completed in a valid state or rejected. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML. TODO: Is this the correct stakeholder? </para>
+            </section>
+            
+            <section xml:id="REQ13">
+                  <title> With dialogs, the model is not updated until the dialog is accepted by the user with valid fields. </title>
+                  
+                  <para>REQ13 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> It is a common feature of GUIs that a dialog displays a snapshot of its model at the time of creation and only updates that model on the user acceptance of the entire dialog. This is a familiar look and feel for users. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML. </para>
+            </section>
+            
+            <section xml:id="REQ14">
+                  <title> The user shall receive some visual feedback during the edit process of textual UML to indicate whether the text represents valid UML syntax. </title>
+                  
+                  <para>REQ14 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> Writing a correct syntax of anything is complicated. Good compilers are helpful in pinpointing where the problem is (what line and what token is in error). The text fields in ArgoUML are not developed in the same way as source code and we have no compiler step to verify it all. Instead this validation needs to be done while editing meaning that the user needs all the help he can get to as quickly as possible, get the syntax right. TODO: Is this the correct motivation for this? </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML. </para>
+            </section>
+            
+            <section xml:id="REQ3">
+                  <title> There shall be no indication of an exception on the screen or in the log if it has occured merely because of a user mistyping or not being aware of UML syntax. </title>
+                  
+                  <para>REQ3 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> An exception in the log or on the screen is always the sign of a serious error in the application that should be reported as a DEFECT. If a mistyping generates such a problem the user might loose interest in ArgoUML as a tool because he percieves it as not working correctly. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML </para>
+            </section>
+            
+            <section xml:id="REQ4">
+                  <title> All text fields shall have context sensitive help. </title>
+                  
+                  <para>As follows: 
+                        <orderedlist>
+                              <listitem>
+                                    <para>A tooltip that explains the data and format expected by the particular field. </para>
+                                    <para>This can be omitted when there is a header stating the data of the field and the format is obvious. </para>
+                              </listitem>
+                              <listitem>
+                                    <para>Pressing F1 or choosing help from the menu shall display a popup window explaining for data and format required by the current input field. Input focus shall be left on the field during any user interaction with the popup (dragging, scrolling or closing). </para>
+                              </listitem>
+                        </orderedlist>
+                  </para>
+                  
+                  <para>REQ4 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> Throughout a complex application like ArgoUML there are lots of text fields. Unless there is a possibility to always get this kind of help the user might not be able to make out what he is actually supposed to do in that field. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML </para>
+            </section>
+      </section>
+      
+      <section>
+            <title>Requirements for UML</title>
+            
+            <section xml:id="REQ5">
+                  <title> ArgoUML shall be a correct implementation of the UML 1.4 model. </title>
+                  
+                  <para>REQ5 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> The vision of ArgoUML is to provide a tool that helps people work with an UML model. The UML model might later on be used in some other tool. If the implementation is not correct then ArgoUML will not be compatible with that other tool or the user will be confused. There might be a lot of tough decisions when it comes to if it is ArgoUML or some other tool that deviates from the UML 1.4 but there shall never be any doubt that the intention of ArgoUML is to implement UML correctly. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML </para>
+            </section>
+            
+            <section xml:id="REQ6">
+                  <title> ArgoUML shall implement everything in the UML 1.4 model. </title>
+                  
+                  <para>REQ6 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> The ambition is to implement all of UML. This means that no matter how you use UML ArgoUML will always be a working tool. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML </para>
+            </section>
+      </section>
+      
+      <section>
+            <title>Requirements on java and jvm</title>
+            
+            <section xml:id="REQ7">
+                  <title>Choice of JRE: ArgoUML will support any JRE compatible with a Sun specification of any JRE from Sun that has not begun the Sun End of Life (EOL) process. </title>
+                  
+                  <para>REQ7 REVb </para>
+                  <para><emphasis>Rationale:</emphasis> The JREs and the adjoining libraries (especially swing) are always improving to include new features and new ideas. The developers of ArgoUML would like to use these new features. </para>
+                  <para>Note: J2SE 1.3.1 begun its Sun End of Life (EOL) process on October 25, 2004. </para>
+                  <para><emphasis>Stakeholder:</emphasis> Developers of ArgoUML </para>
+            </section>
+            
+            <section xml:id="REQ8">
+                  <title>Download and start</title>
+                  
+                  <para>It shall be possible to install ArgoUML locally on the machine and use without Internet connection. </para>
+                  <para>REQ8 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> ArgoUML is an application that edits an UML model. There is no need to have any network defined while doing this. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML </para>
+            </section>
+            
+            <section xml:id="REQ9">
+                  <title> Console output: Logging or tracing information shall not be written to the console or to any file unless explicitly turned on by the user. </title>
+                  
+                  <para>REQ9 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> ArgoUML is an application that edits an UML model. Any information written to anywhere but the files that the user specifies the user won't know what to do with and it will be perceived as garbage generated by the ArgoUML application. </para>
+                  <para><emphasis>Stakeholder:</emphasis> User of ArgoUML </para>
+            </section>
+      </section>
+      
+      <section>
+            <title>Requirements set up for the benefit of the development of ArgoUML</title>
+            
+            <section xml:id="REQ10">
+                  <title> Logging: The code shall contain entries logging important information for the purpose of helping Developers of ArgoUML in finding problems in ArgoUML itself. </title>
+                  
+                  <para>REQ10 REVa </para>
+                  <para><emphasis>Rationale:</emphasis> When the developers are searching for some problem or when they ask any of the users to help them pinpoint some problem such logging messages are very helpful. </para>
+                  <para><emphasis>Stakeholder:</emphasis> Developers of ArgoUML </para>
+            </section>
+      </section>
+      
+</chapter>
 <!-- Local stuff for Emacs - please do not delete
-
-Local Variables:
-mode: xml
-sgml-doctype: "cookbook.xml"
-sgml-parent-document: ("cookbook.xml" "chapter" nil)
-sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
-  cookbook.xml"
-indent-tabs-mode: nil
-End:
-
+      
+      Local Variables:
+      mode: xml
+      sgml-doctype: "cookbook.xml"
+      sgml-parent-document: ("cookbook.xml" "chapter" nil)
+      sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+      cookbook.xml"
+      indent-tabs-mode: nil
+      End:
+      
 -->

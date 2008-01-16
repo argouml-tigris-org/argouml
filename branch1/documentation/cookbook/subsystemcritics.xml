@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
 // Copyright (c) 1996-2006 The Regents of the University of California. All
@@ -25,9 +25,17 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-<sect1 id="critics">
-  <title>Critics and other cognitive tools</title>
-  <indexterm>
+<section
+	xmlns="http://docbook.org/ns/docbook" 
+	version="5.0" 
+	xml:lang="en"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xml:id="critics">
+  
+	<title>Critics and other cognitive tools</title>
+ 
+	<indexterm>
     <primary>Critics</primary>
   </indexterm>
   <indexterm>
@@ -36,7 +44,7 @@
   <indexterm>
     <primary>Wizards</primary>
   </indexterm>
-  <para id="comp-critics-purpose">
+  <para xml:id="comp-critics-purpose">
 Purpose - to provide cognitive help for the User.
 This help is based on the current model that the User works with.
 </para>
@@ -44,7 +52,7 @@ This help is based on the current model that the User works with.
 The Critics are located in <classname>org.argouml.cognitive</classname>.
 </para>
   <para>
-The Critics is a Loadable subsystem. See <xref linkend="loadable_subsystems"></xref>.
+The Critics is a Loadable subsystem. See <xref xlink:href="loadable_subsystems" />.
 </para>
   <para>
 The Critics subsystem depends on the Model that it works against to take
@@ -141,11 +149,11 @@ are located in the package org.argouml.cognitive.ui.
 </para>
   </sect2>
 
-  <sect2 id="howdoi_critics">
-    <title>How do I ...?</title>
+  <sect2 xml:id="howdoi_critics">
+    <title>How do I …?</title>
     <para>
 <itemizedlist>
-        <listitem><para>...create a new critique?</para>
+        <listitem><para>…create a new critique?</para>
           <para>
 Currently the only way to add a new critique is to write a class that
 implements it so that is described here.
@@ -182,7 +190,7 @@ The String parameter is ignored.
 <command>addSupportedDecision(UMLDecision.dec<replaceable>AAAA</replaceable>);</command>
 where <replaceable>AAAA</replaceable> is the design issue category
 this critic falls into
-(examples include STORAGE, PATTERNS, METHODS).
+(examples include STORAGE, PATTERN METHODS).
 </para>
             </listitem>
             <listitem>
@@ -249,13 +257,13 @@ You need to add two keys for the head and description,
 which will be named respectively
 <constant>critics.<replaceable>CrXxxxxYyyyZzzz</replaceable>-head</constant>
 and
-<constant>critics.<replaceable>CrXxxxxYyyyZzzz</replaceable>-desc</constant>.
+<constant>critics<replaceable>CrXxxxxYyyyZzzz</replaceable>-desc</constant>.
 There are plenty of examples to look at there.
 Headlines shall be unique, see issue 618.
 The other files 
 for
 British English,
-Spanish, ...
+Spanish, …
 respectively)
 are the responsibility of the corresponding language team.
 Notify the language teams that there is work to be done.
@@ -266,7 +274,7 @@ of the class <classname>org.argouml.uml.cognitive.critics.Init</classname>,
 add two statements:
 <programlisting>
   private static Critic <replaceable>crXxxxxYyyyZzzz</replaceable> = new <replaceable>CrXxxxxYyyyZzzz</replaceable>();
-...
+…
   Agency.register(<replaceable>crXxxxxYyyyZzzz</replaceable>, <replaceable>DesignMaterialCls</replaceable>);
 </programlisting>
 If you want to add a critic to a design material 
@@ -288,7 +296,7 @@ named critics.<replaceable>CrXxxYyyyZzzz</replaceable>.
 </para>
         </listitem>
         <listitem>
-          <para>...write the test in a critique?</para>
+          <para>…write the test in a critique?</para>
           <para>
 The critiques tests are essentially a combination of conditions 
 that are to be fulfilled.
@@ -312,7 +320,7 @@ For commented examples to copy, look at
 <classname>org.argouml.uml.cognitive.critics.CrConstructorNeeded</classname>.
 </para>
         </listitem>
-        <listitem><para>...fix a critique?</para>
+        <listitem><para>…fix a critique?</para>
           <para>Locate the critique and insert some logging code. You should make sure 
 that you understand all the implications of changes, therefore it is a good idea
 to see what makes the critic nag in the first place. But rest assured: some of 
@@ -321,7 +329,7 @@ this is a procedure which is well worth digging into, since it gives you also
 some exposure to related UML elements.
 </para>
         </listitem>
-        <listitem><para>...change the text of a critique?</para>
+        <listitem><para>…change the text of a critique?</para>
           <para>
 The texts of the critics should be in the according localization files
 and resource bundles. Be careful: in some critics the text is still in
@@ -331,7 +339,7 @@ have any effect.
         </listitem>
 
         <listitem>
-          <para>...get my critic to trigger?</para>
+          <para>…get my critic to trigger?</para>
           <para>
 This is a suggested way to troubleshoot if the critic doesn't trigger.
 </para>
@@ -377,7 +385,7 @@ This method is incomplete and might not find all model elements!
       </imageobject>
     </mediaobject>
   </sect2>
-</sect1>
+</section>
 
 
 

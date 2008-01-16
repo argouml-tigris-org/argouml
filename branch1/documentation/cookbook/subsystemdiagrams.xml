@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
 // Copyright (c) 1996-2006 The Regents of the University of California. All
@@ -26,7 +26,14 @@
 -->
 
 
-<sect1 id="diagrams">
+<sect1
+	xmlns="http://docbook.org/ns/docbook" 
+	version="5.0" 
+	xml:lang="en"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xml:id="diagrams">
+	
   <title>Diagrams</title>
   <indexterm>
     <primary>Diagrams</primary>
@@ -40,13 +47,13 @@ Purpose - To present the diagrams to the user and allow the user to manipulate
 the diagrams through the view.
 </para>
   <para>
-The Diagrams are located in <classname>org.argouml.uml.diagram</classname>.
+The Diagrams are be located in <classname>org.argouml.uml.diagram</classname>.
 </para>
   <para>
-The Diagrams are a View subsystem. <xref linkend="view_control_subsystems"></xref>.
+The Diagrams is a View subsystem. <xref xlink:href="view_control_subsystems"></xref>.
 </para>
   <para>
-The Diagrams depend on the Model subsystem and the GUI.
+The Diagrams are depending on the Model subsystem and the GUI.
 </para>
 
   <para>
@@ -114,11 +121,11 @@ the <methodname>setTarget</methodname> method of the individual tabs and diagram
 that's how it's implemented at the moment.
 </para>
     <sect3>
-      <title>How do I ...?</title>
+      <title>How do I …?</title>
       <para>
 <itemizedlist>
           <listitem>
-            <para>...add a new tab to the <classname>MultiEditorPane</classname>?</para>
+            <para>…add a new tab to the <classname>MultiEditorPane</classname>?</para>
             <para>
 Create a new class that's a child of <classname>JPanel</classname> 
 and put the following 
@@ -133,7 +140,7 @@ multi:  <replaceable>fully classified name of new tab class</replaceable>
     </sect3>
   </sect2>
 
-  <sect2 id="howdoi_diagrams">
+  <sect2 xml:id="howdoi_diagrams">
     <title>How do I add a new element to a diagram?</title>
 
     <para>
@@ -155,7 +162,7 @@ and renderer
         <para>
 Create a new property panel class that will be displayed in
 the property tab window on the details pane.
-This is described in <xref linkend="propertypanels"></xref>.
+This is described in <xref xlink:href="propertypanels"></xref>.
 </para>
       </listitem>
     </orderedlist>
@@ -328,7 +335,7 @@ advice that the UML model has changed.
 </para>
     </sect3>
 
-    <sect3 id="howto_createnewfig_2">
+    <sect3 xml:id="howto_createnewfig_2">
       <title>Creating a new Fig (explanation 2)</title>
 
       <para>
@@ -339,10 +346,10 @@ you should make the Fig class.
         <orderedlist>
           <listitem>
             <para>
-Nodes that are Figs that are enclosed figures like 
+For nodes, that are Figs that are enclosed figures like 
 <classname>FigClass</classname>, 
 extend from <classname>FigNodeModelElement</classname>. 
-Edges that are lines like <classname>FigAssociation</classname>, 
+For edges, that are lines like <classname>FigAssociation</classname>, 
 extend from <classname>FigEdgeModelElement</classname>.
 The name of the Fig has to start with (yes indeed) Fig. 
 The rest of the name should be equal to the model element name.

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
 // Copyright (c) 1996-2007 The Regents of the University of California. All
@@ -25,698 +25,710 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-<preface id="changelog">
-  <title>Change Log</title>
-
-  <para>
-This will also be a log of major design decisions.
-A major design decision is a decision that changes
-responsibilities or functions of the subsystems.
-</para>
-
-  <table>
-    <title>Changes done</title>
-    <tgroup cols="3">
-      <colspec colnum="1" colname="When" colwidth="1*"/>
-      <colspec colnum="2" colname="What" colwidth="5*"/>
-      <colspec colnum="3" colname="Who" colwidth="1.5*"/>
-      <thead>
-        <row>
-          <entry>When</entry>
-          <entry>What</entry>
-          <entry>Who</entry>
-        </row>
-      </thead>
-      <!--
-      Fill with lines like this. Newest entry first.
-
-      Also add a link to the new text (if any).
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2007-01-</entry>
-          <entry>
-Change to XXX.
-(See <xref linkend="xxx"/>).
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-      -->
-
-      <tbody valign="top">
-        <row>
-          <entry>2007-01-16</entry>
-          <entry>
-Change to the definition of the subsystem.
-Added the responsibility for wellformedness rules.
-(See <xref linkend="comp-model-purpose"/>).
-            <note>
-              <title>Design decision - Bob Tarling 2007-02-16</title>
-              <para>
-The Model subsystem implements wellformedness rules.
-</para>
-            </note>
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2007-01-18</entry>
-          <entry>
-Added instructions on how to configure Subversion.
-(See <xref linkend="starting"/>).
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2007-01-07</entry>
-          <entry>
-Change to the process of verifying issues to allow the reporter to
-more freedom.
-(See <xref linkend="rolesofworkers"/>,
-<xref linkend="verify_resolved_fixed"/>,
-<xref linkend="verify_resolved_invalid"/>, and
-<xref linkend="close_verified_issue"/>).
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-12-30</entry>
-          <entry>
-Change how we handle problems in 
-the JRE and
-other SW not delivered with ArgoUML.
-(See <xref linkend="issues_dependencies"/>).
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-10-07</entry>
-          <entry>
-Removed mentions of CVS.
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-10-01</entry>
-          <entry>
-Change the description on how to check out and build with Eclipse
-to fit the Subversion set up (and Eclipse 3.2).
-(See <xref linkend="eclipse3"/>).
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-09-30</entry>
-          <entry>
-Change to describe the new release build mechanism based on subversion
-(See <xref linkend="release_process"/>).
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-09-12</entry>
-          <entry>
-Removed the manual tests.
-Removed the description on how to publish the documentation.
-Updated the download and build section for Subversion.
-(See <xref linkend="buildingandtools"/>).
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-07-14</entry>
-          <entry>
-Added a section on how to run all JUnit test cases from within Eclipse.
-(See <xref linkend="running-all-junit-from-within-eclipse"/>).
-          </entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-06-24</entry>
-          <entry>
-Added explanation on different kinds of releases and how we work with them.
-(See <xref linkend="proc-create-stable-releases"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-06-19</entry>
-          <entry>
-Added a description on how to run JUnit tests from within Eclipse.
-(See <xref linkend="eclipse-running-junit"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-05-28</entry>
-          <entry>
-Renamed subprojects to dependencies.
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-05-14</entry>
-          <entry>
-Split and moved the CVS chapter.
-One part goes into the Standards for coding chapter and
-one part goes into a newly created appendix.
-(See <xref linkend="groundrules"/>,
-and
-<xref linkend="repository-contents"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-05-14</entry>
-          <entry>
-Moved the Terminology into the Cookbook.
-(See <xref linkend="terminology"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-05-13</entry>
-          <entry>
-Change to the introduction to the ArgoUML project to reflect that
-there are several Tigris projects involved.
-(See <xref linkend="introduction"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-05-13</entry>
-          <entry>
-Moved the User Manual section from chapter 7 to chapter 10.
-(See <xref linkend="user-manual-plans"/>).
-Moved the rest of chapter 7 to appendix.
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-05-01</entry>
-          <entry>
-Removed old description on how to make releases.
-Added instructions on how to run the installers.
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2006-04-30</entry>
-          <entry>
-Change to the explanation on how to use Eclipse.
-(See <xref linkend="eclipse3"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-10-29</entry>
-          <entry>
-Change to the instructions on how to build ArgoUML to describe
-how it works with the argouml-mdr project.
-(See <xref linkend="buildingandtools"/> and
-<xref linkend="eclipse-checkout"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-07-22</entry>
-          <entry>
-Removed the /modules/junit.
-(See <xref linkend="release_process"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-07-19</entry>
-          <entry>
-Change to the descriptions of the Model, Diagrams, and Persistence subsystems
-(See <xref linkend="model"/>,
-<xref linkend="diagrams"/>, and
-<xref linkend="subsystem-persistence"/>).
-
-<note>
-              <title>Design decision - Bob Tarling 2005-07-14</title>
-              <para>
-The Diagrams subsystem does not store any data.
-All data it works on is stored in the Model subsystem.
-</para>
-            </note>
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-07-18</entry>
-          <entry>
-Change to the short list of subsystems and responsibilities.
-(See <xref linkend="inside_subsystems"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-06-18</entry>
-          <entry> Restructured: all main chapters are now in seperate files. No
-            content changes.
-          </entry>
-          <entry>Michiel van der Wulp</entry>
-        </row>
-      </tbody>
-      
-      
-      <tbody valign="top">
-        <row>
-          <entry>2005-06-15</entry>
-          <entry>
-Change to how internationalization is done. Subprojects.
-(See <xref linkend="internationalization"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-06-12</entry>
-          <entry>
-Change to the description on how to set up an Eclipse environment.
-(See <xref linkend="eclipse-checkout"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-06-11</entry>
-          <entry>
-Change to how to make an announcement.
-(See <xref linkend="release_process"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-05-23</entry>
-          <entry>
-Change to release building description.
-(See <xref linkend="release_process"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-05-06</entry>
-          <entry>
-Added instructions on how we work with sub-projects.
-(See <xref linkend="working-with-subproject"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-05-01</entry>
-          <entry>
-Change to the tools for releases.
-(See <xref linkend="release_process"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-04-29</entry>
-          <entry>
-Added a diagram explaining Explorer.
-(See <xref linkend="explorer-implementation-details"/>).
-</entry>
-          <entry>Michiel van der Wulp</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-03-10</entry>
-          <entry>
-Change to process for verifying issues.
-Any release after the one where the issue is fixed
-can be used for verifications.
-(See <xref linkend="verify_resolved_fixed"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-03-06</entry>
-          <entry>
-Change to description of how to build.
-<filename>src</filename> directory is now involved.
-(See <xref linkend="buildingandtools"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-03-01</entry>
-          <entry>
-Removed the modules component.
-(See <xref linkend="issuezilla_release_maintenance"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-02-01</entry>
-          <entry>
-Change to Model subsystem.
-(See <xref linkend="comp-model-purpose"/>,
-<xref linkend="diagrams"/>).
-Added the Persistence subsystem. More work is needed.
-(See <xref linkend="subsystem-persistence"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-01-30</entry>
-          <entry>
-Change to the description on how to use the Model subsystem,
-the ModelFacade does not exist anymore.
-(See <xref linkend="working-with-the-model"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-01-29</entry>
-          <entry>
-Change to Model subsystem chapter.
-Removed references to UmlEventPump and clearified how to remove
-elements using the UmlFactory.
-(See <xref linkend="pump-register-listener-for-type"/>
-and <xref linkend="working-with-the-model"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-01-26</entry>
-          <entry>
-Change to requirement of JDK version support.
-(See <xref linkend="REQ7"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2005-01-07</entry>
-          <entry>
-Added copyright notices to the files.
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-12-30</entry>
-          <entry>
-Change the default year in the copyright notices.
-Yes, I am a little early.
-(See <xref linkend="standards"/> and <xref linkend="eclipse3"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-11-01</entry>
-          <entry>
-Change to the way we generate documentation.
-The FILENAME.id files are no longer used.
-(See <xref linkend="generating_documentation"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-10-29</entry>
-          <entry>
-Change to the description on how to generate documentation.
-Better explanation of how it works.
-(See <xref linkend="generating_documentation"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-10-19</entry>
-          <entry>
-Change to How to Contribute.
-Changed some spelling errors in cookbook.in while at it.
-(See <xref linkend="contributing"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-10-11</entry>
-          <entry>
-Changes to description of module loader making the new module loader a fact.
-(See <xref linkend="moduleloader"/> and <xref linkend="modules_and_plugins"/>).
-
-<note>
-              <title>Design decision - Linus Tolke 2004-10-11</title>
-              <para>
-New imperative Module loader.
-</para>
-            </note>
-
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-09-17</entry>
-          <entry>
-Change to the description on how to extend ArgoUML.
-Now module loader described.
-(See <xref linkend="extending"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-09-16</entry>
-          <entry>
-Changed the meaning of RESOLVED/LATER.
-(See 
-<xref linkend="issuezilla_release_maintenance"/> 
-<xref linkend="reopen_remind_and_later"/> and
-<xref linkend="check_for_later"/> in
-<xref linkend="release_process"/>, and
-<xref linkend="issuezilla_resolutions"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-09-15</entry>
-          <entry>
-Change to design of new module loader.
-(See <xref linkend="design-module-loader"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-08-17</entry>
-          <entry>
-Deemphasized the layers and instead describe the subsystems in
-groups according to the MVC-pattern.
-(See <xref linkend="subsystems"/> and <xref linkend="inside_subsystems"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-08-17</entry>
-          <entry>
-Change to the definition of the priorities.
-Now they are defined in terms of how much release blocker they are.
-(See <xref linkend="issue_priorities"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-08-02</entry>
-          <entry>
-Added rationale for not using RESOLVED/REMIND or RESOLVED/LATER
-(See <xref linkend="issuezilla_resolutions"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-      <tbody valign="top">
-        <row>
-          <entry>2004-07-28</entry>
-          <entry>
-Reorganized the description on how to use Eclipse 3.
-Added instructions on how to use the Eclipse JUnit test runner.
-(See <xref linkend="eclipse3"/>).
-</entry>
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-
-      <tbody valign="top">
-        <row>
-          <!-- When -->
-          <entry>2004-07-25</entry>
-
-          <!-- What -->
-          <entry>
-Added this Change Log.
-(See <xref linkend="changelog"/>).
-<!-- This is a rather stupid reference but it is there more to set the
-     level than anything else.
- -->
-</entry>
-
-          <!-- Who -->
-          <entry>Linus Tolke</entry>
-        </row>
-      </tbody>
-
-    </tgroup>
-  </table>
+<preface 
+	xmlns="http://docbook.org/ns/docbook" 
+	version="5.0" 
+	xml:lang="en"
+	xml:id="changelog"
+	xmlns:xi="http://www.w3.org/2001/XInclude" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+
+	<title>Change Log</title>
+
+	<para>This will also be a log of major design decisions. A major design decision is a decision that changes responsibilities or functions of the subsystems. </para>
+
+	<revhistory>
+		<title>Changes done</title>
+
+		<revision>
+			<date>2007-01-16</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the definition of the subsystem. Added the responsibility for wellformedness rules. (See <xref xlink:href="#comp-model-purpose" />). (Design decision - Bob Tarling 2007-02-16 - The Model subsystem implements wellformedness rules) </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2007-01-18</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Added instructions on how to configure Subversion. (See <xref xlink:href="#starting" />). </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2007-01-07</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the process of verifying issues to allow the reporter to more freedom. (See <xref xlink:href="#rolesofworkers" />, <xref xlink:href="#verify_resolved_fixed" />, <xref xlink:href="#verify_resolved_invalid" />, and <xref xlink:href="#close_verified_issue" />). </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2006-12-30</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change how we handle problems in the JRE and other SW not delivered with ArgoUML. (See <xref xlink:href="#issues_dependencies" />). </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2006-10-07</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Removed mentions of CVS. </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-10-01</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change the description on how to check out and build with Eclipse to fit the Subversion set up (and Eclipse 3.2). (See <xref xlink:href="#eclipse3" />). </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2006-09-30</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to describe the new release build mechanism based on subversion (See <xref
+					xlink:href="#release_process" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-09-12</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Removed the manual tests. Removed the description on how to publish the documentation. Updated the download and build section for Subversion. (See <xref
+					xlink:href="#buildingandtools" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-07-14</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Added a section on how to run all JUnit test cases from within Eclipse. (See <xref
+xlink:href="#running-all-junit-from-within-eclipse" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-06-24</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Added explanation on different kinds of releases and how we work with them. (See <xref
+					xlink:href="#proc-create-stable-releases" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-06-19</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Added a description on how to run JUnit tests from within Eclipse. (See <xref
+					xlink:href="#eclipse-running-junit" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-05-28</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Renamed subprojects to dependencies. </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-05-14</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Split and moved the CVS chapter. One part goes into the Standards for coding chapter and one part goes into a newly created appendix. (See <xref xlink:href="#groundrules" />, and <xref xlink:href="#repository-contents" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-05-14</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Moved the Terminology into the Cookbook. (See <xref xlink:href="#terminology"
+				 />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-05-13</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the introduction to the ArgoUML project to reflect that there are several Tigris projects involved. (See <xref
+					xlink:href="#introduction" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-05-13</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Moved the User Manual section from chapter 7 to chapter 10. (See <xref
+					xlink:href="#user-manual-plans" />). Moved the rest of chapter 7 to appendix. </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-05-01</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Removed old description on how to make releases. Added instructions on how to run the installers. </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2006-04-30</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the explanation on how to use Eclipse. (See <xref xlink:href="#eclipse3" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-10-29</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the instructions on how to build ArgoUML to describe how it works with the argouml-mdr project. (See <xref
+					xlink:href="#buildingandtools" /> and <xref xlink:href="#eclipse-checkout" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-07-22</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Removed the /modules/junit. (See <xref xlink:href="#release_process" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-07-19</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark>
+				Change to the descriptions of the Model, Diagrams, and Persistence subsystems (See <xref xlink:href="#model" />, <xref xlink:href="#diagrams" />, and <xref xlink:href="#subsystem-persistence" />).
+				<remark>Design decision - Bob Tarling 2005-07-14 The Diagrams subsystem does not store any data. All data it works on is stored in the Model subsystem.</remark>
+			</revremark>
+			  
+		</revision>
+
+
+		<revision>
+			<date>2005-07-18</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the short list of subsystems and responsibilities. (See <xref xlink:href="#inside_subsystems" />). </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2005-06-18</date>
+			<author>
+				<personname>
+					<firstname>Michiel</firstname>
+					<surname>van der Wulp</surname>
+				</personname>
+			</author>
+			<revremark> Restructured: all main chapters are now in seperate files. No content changes. </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2005-06-15</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to how internationalization is done. Subprojects. (See <xref
+					xlink:href="#internationalization" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-06-12</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the description on how to set up an Eclipse environment. (See <xref
+					xlink:href="#eclipse-checkout" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-06-11</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to how to make an announcement. (See <xref xlink:href="#release_process"
+				 />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-05-23</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to release building description. (See <xref xlink:href="#release_process"
+				 />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-05-06</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Added instructions on how we work with sub-projects. (See <xref
+					xlink:href="#working-with-subproject" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-05-01</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the tools for releases. (See <xref xlink:href="#release_process" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-04-29</date>
+			<author>
+				<personname>
+					<firstname>Michiel</firstname>
+					<surname>van der Wulp</surname>
+				</personname>
+			</author>
+			<revremark> Added a diagram explaining Explorer. (See <xref
+					xlink:href="#explorer-implementation-details" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-03-10</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to process for verifying issues. Any release after the one where the issue is fixed can be used for verifications. (See <xref
+					xlink:href="#verify_resolved_fixed" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-03-06</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark>Change to description of how to build. /src directory is now involved. (See <xref xlink:href="#buildingandtools" />). </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2005-03-01</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Removed the modules component. (See <xref xlink:href="#issuezilla_release_maintenance" />). </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2005-02-01</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to Model subsystem. (See <xref xlink:href="#comp-model-purpose" />, <xref xlink:href="#diagrams" />). Added the Persistence subsystem. More work is needed. (See <xref xlink:href="#subsystem-persistence" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-01-30</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the description on how to use the Model subsystem, the ModelFacade does not exist anymore. (See <xref
+					xlink:href="#working-with-the-model" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-01-29</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to Model subsystem chapter. Removed references to UmlEventPump and clearified how to remove elements using the UmlFactory. (See <xref
+					xlink:href="#pump-register-listener-for-type" /> and <xref
+					xlink:href="#working-with-the-model" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-01-26</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to requirement of JDK version support. (See <xref xlink:href="#REQ7"
+				 />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2005-01-07</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Added copyright notices to the files. </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-12-30</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change the default year in the copyright notices. Yes, I am a little early. (See <xref
+					xlink:href="#standards" /> and <xref xlink:href="#eclipse3" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-11-01</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the way we generate documentation. The FILENAME.id files are no longer used. (See <xref
+					xlink:href="#generating_documentation" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-10-29</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the description on how to generate documentation. Better explanation of how it works. (See <xref
+					xlink:href="#generating_documentation" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-10-19</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to How to Contribute. Changed some spelling errors in cookbook.in while at it. (See <xref
+					xlink:href="#contributing" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-10-11</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark>
+				Changes to description of module loader making the new module loader a fact. (See <xref xlink:href="#moduleloader" /> and <xref xlink:href="#modules_and_plugins" />). 
+				<remark>
+					Design decision - Linus Tolke 2004-10-11 - New imperative Module loader. 
+				</remark>
+			</revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-09-17</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the description on how to extend ArgoUML. Now module loader described. (See <xref xlink:href="#extending" />). </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2004-09-16</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark>Changed the meaning of RESOLVED/LATER. (See <xref xlink:href="#issuezilla_release_maintenance" /> <xref xlink:href="#reopen_remind_and_later" /> and <xref xlink:href="#check_for_later" /> in <xref xlink:href="#release_process" />, and <xref xlink:href="#issuezilla_resolutions" />). </revremark>
+		</revision>
+
+
+		<revision>
+			<date>2004-09-15</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to design of new module loader. (See <xref
+					xlink:href="#design-module-loader" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-08-17</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Deemphasized the layers and instead describe the subsystems in groups according to the MVC-pattern. (See <xref
+					xlink:href="#subsystems" /> and <xref xlink:href="#inside_subsystems" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-08-17</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Change to the definition of the priorities. Now they are defined in terms of how much release blocker they are. (See <xref
+					xlink:href="#issue_priorities" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-08-02</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Added rationale for not using RESOLVED/REMIND or RESOLVED/LATER (See <xref
+					xlink:href="#issuezilla_resolutions" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-07-28</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<revremark> Reorganized the description on how to use Eclipse 3. Added instructions on how to use the Eclipse JUnit test runner. (See <xref
+					xlink:href="#eclipse3" />). </revremark>
+
+		</revision>
+
+
+		<revision>
+			<date>2004-07-25</date>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+			<!-- This is a rather stupid reference but it is there more to set the level than anything else. -->
+			<revremark> Added this Change Log. (See <xref xlink:href="#changelog" />).</revremark>
+		</revision>
+	</revhistory>
 </preface>
-
 <!-- Local stuff for Emacs - please do not delete
 
 Local Variables:

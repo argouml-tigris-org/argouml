@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
 // Copyright (c) 1996-2007 The Regents of the University of California. All
@@ -25,35 +25,35 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-<chapter id="standards">
-  <title>Standards for coding in ArgoUML</title>
-  <indexterm>
-    <primary>Coding Standards</primary>
-  </indexterm>
-  <indexterm>
-    <primary>Standards</primary>
-    <secondary>Coding</secondary>
-  </indexterm>
-  <sect1>
-    <title>When Writing Java Code</title>
+<chapter 
+	xmlns="http://docbook.org/ns/docbook" 
+	version="5.0" 
+	xml:lang="en" 
+	xml:id="standards"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:xlink="http://www.w3.org/1999/xlink">
 
-    <para>
-The coding style for ArgoUML is based on the 
-<ulink url="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html">
-Code Conventions for the Java Programming Language
-</ulink>.
-We have the following exceptions and comments:
-</para>
-    <itemizedlist>
-      <listitem>
-        <para>
-Each file starts with some header info:
-file, 
-version info, 
-copyright notice.
-Like this:
-<programlisting>
-// &dollar;Id&dollar;
+	<title>Standards for coding in ArgoUML</title>
+
+	<indexterm>
+		<primary>Coding Standards</primary>
+	</indexterm>
+	<indexterm>
+		<primary>Standards</primary>
+		<secondary>Coding</secondary>
+	</indexterm>
+	
+	<section>
+		<title>When Writing Java Code</title>
+
+		<para>The coding style for ArgoUML is based on the <uri xlink:href="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html">Code Conventions for the Java Programming Language</uri>. We have the following exceptions and comments: </para>
+		
+		<itemizedlist>
+			<listitem>
+				<para>Each file starts with some header info: file, version info, copyright notice. Like this:
+
+					<programlisting>
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -77,778 +77,313 @@ Like this:
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package <replaceable>whatever</replaceable>;
+package <package><replaceable>whatever</replaceable></package>;
 <replaceable>...</replaceable>
-</programlisting>
-</para>
-        <para>
-The file and version is maintained by subversion using keyword substitution.
-Remember to set the property "svn:keywords" to "Id" on all source files.
-The year in the copyright notice is maintained manually.
-</para>
-        <para>
-This differs from the Sun Code Conventions that 
-requires the initial comment to be a C-style comment.
-</para>
-        <para>
-This is checked by Checkstyle.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-All instance variables are private.
-</para>
-        <para>
-This is not required by the Sun Code Conventions but
-an additional requirement for ArgoUML.
-</para>
-        <para>
-This is checked by Checkstyle.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Use Javadoc for each class, instance variable, and
-methods that are not overriding or implementing a method
-from an interface or extended class.
-In general do not put comments in the body of a method. 
-If you are doing something complex enough to need a comment, consider
-breaking it out into its own private commented method.
-</para>
-        <para>
-If you are overriding or implementing a method and
-you want to describe specifics of the implementation,
-use the Javadoc and reference the overridden or implemented method.
-</para>
-        <para>
-This is not required by the Sun Code Conventions but
-an additional requirement for ArgoUML.
-</para>
-        <para>
-This is partly checked by Checkstyle.
-Checkstyle does currently only warn if a Javadoc comment is omitted for
-public, protected or default visibility variables.
-</para>
-      </listitem>
-      <listitem>
-        <para>
+					</programlisting>
+					
+				</para>
+				
+				<para>The file and version is maintained by subversion using keyword substitution. Remember to set the property "svn:keywords" to "Id" on all source files. The year in the copyright notice is maintained manually. </para>
+				<para>This differs from the Sun Code Conventions that requires the initial comment to be a C-style comment. </para>
+				<para>This is checked by Checkstyle. </para>
+			</listitem>
+			<listitem>
+				<para>All instance variables are private. </para>
+				<para>This is not required by the Sun Code Conventions but an additional requirement for ArgoUML. </para>
+				<para>This is checked by Checkstyle. </para>
+			</listitem>
+			<listitem>
+				<para>Use Javadoc for each class, instance variable, and methods that are not overriding or implementing a method from an interface or extended class. In general do not put comments in the body of a method. If you are doing something complex enough to need a comment, consider breaking it out into its own private commented method. </para>
+				<para>If you are overriding or implementing a method and you want to describe specifics of the implementation, use the Javadoc and reference the overridden or implemented method. </para>
+				<para>This is not required by the Sun Code Conventions but an additional requirement for ArgoUML. </para>
+				<para>This is partly checked by Checkstyle. Checkstyle does currently only warn if a Javadoc comment is omitted for a public, protected or default visibility variables. </para>
+			</listitem>
+			
+			<listitem>
+				<para>
 Indicate places of future modifications with 
 <programlisting>
 // TODO: reason and explanation
 </programlisting>
+					
 or if within a Javadoc or c-style comment
-<programlisting>
+
+					<programlisting>
 * TODO: reason and explanation
 </programlisting>
-</para>
-        <para>
-This differs from the Sun Code Conventions that 
-uses either XXX or FIXME depending on if it works or not.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Four spaces should be used as the unit of indentation.
-Tabs must be set exactly every 8 spaces (not 4) and represent 2 indents.
-</para>
-        <para>
-This is exactly as it is stated in the Sun Code Conventions.
-It is here just for emphasis.
-</para>
-        <para>
-This is checked by Checkstyle.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-If possible use lines shorter than 80 characters wide.
-</para>
-        <para>
-This is exactly as it is stated in the Sun Code Conventions.
-It is here just for the emphasis.
-</para>
-        <para>
-This is checked by Checkstyle.
-Checkstyle ignores three kinds of lines in this check because of the
-historical use of long class names and package names.
-These are lines that contain
-"@see <replaceable>some method name</replaceable>",
-"//&nbsp;&dollar;Id:<replaceable>whatever</replaceable>&dollar;", and
-import statements.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Open brace on same line (at end).
-Both for if/while/for and for class and functions definitions.
-</para>
-        <para>
-This is exactly as it is stated in the Sun Code Conventions.
-It is here just for the emphasis.
-</para>
-      </listitem>
+				</para>
+				
+				<para>This differs from the Sun Code Conventions that uses either XXX or FIXME depending on if it works or not. </para>
+			</listitem>
+			
+			<listitem>
+				<para>Four spaces should be used as the unit of indentation. Tabs must be set exactly every 8 spaces (not 4) and represent 2 indents. </para>
+				<para>This is exactly as it is stated in the Sun Code Conventions. It is here just for the emphasis. </para>
+				<para>This is checked by Checkstyle. </para>
+			</listitem>
+			
+			<listitem>
+				<para>If possible use lines shorter than 80 characters wide. </para>
+				<para>This is exactly as it is stated in the Sun Code Conventions. It is here just for the emphasis. </para>
+				<para>This is checked by Checkstyle. Checkstyle ignores three kinds of lines in this check because of the historical use of long class names and package names. These are lines that contain "@see <methodname><replaceable>some method name</replaceable></methodname>", "// $Id:<replaceable>whatever</replaceable>$", and import statements. </para>
+			</listitem>
+			
+			<listitem>
+				<para>Open brace on same line (at end). Both for if/while/for and for class and functions definitions. </para>
+				<para>This is exactly as it is stated in the Sun Code Conventions. It is here just for the emphasis. </para>
+			</listitem>
 
-      <listitem>
-        <para>
-Use deprecation when removing public and protected
-classes, 
-methods and
-attributes.
-</para>
-        <para>
-Whenever you have a public or protected method or attribute in a class or
-a public class 
-that you want to 
-remove, rename, move to a different package,
-change the signature in an incompatible way, or 
-reduce the visibility for
-you shall always deprecate it first.
-After the next stable release you (or someone else) can remove it.
-</para>
-        <para>
-In the future, when the subsystems are well defined and it is clear
-what public or protected 
-methods, attributes or classes 
-that are part of a certain subsystem's
-exported interface 
-we can allow an exception to this rule for 
-methods, attributes and classes 
-that are not.
-(See <xref linkend="subsystems_relationships"></xref>.)
-</para>
-        <para>
-Write deprecation statements like this:
-<programlisting>
-     * @deprecated by <replaceable>your name</replaceable> in <replaceable>the upcoming release</replaceable>. Use {@link <replaceable>whatever</replaceable>}
-     *             <replaceable>a complete explanation on what to do instead</replaceable>
-</programlisting>
-</para>
-        <para>
-This is not checked by Checkstyle.
-</para>
-        <para>
-Rationale:
-This is part of the "Do Simple Things"-development approach that we
-use in ArgoUML.
-ArgoUML is a big project with lots of legacy code that we do not know
-exactly how it works.
-Deprecation shows the intent between decision to remove a method and
-the point where it is actually removed 
-and this without breaking anything of the old code.
-There are also modules or plug ins that we might know nothing about that
-could be loaded by some user to run within ArgoUML to add functionality.
-It is for the modules and plug ins that we always save 
-deprecated methods to the next stable release.
-It makes it possible for the module developers to do work during the 
-unstable releases and release at the same time as ArgoUML releases its
-stable release.
-Failing to maintain API stability will discourage developers from 
-creating new modules for ArgoUML.
-</para>
-      </listitem>
+			<listitem>
+				<para>Use deprecation when removing public and protected classes, methods and attributes. </para>
+				<para>Whenever you have a public or protected method or attribute in a class or a public class that you want to remove, rename, move to a different package, change the signature in an incompatible way, or reduce the visibility for you shall always deprecate it first. After the next stable release you (or someone else) can remove it. </para>
+				<para>In the future, when the subsystems are well defined and it is clear what public or protected methods, attributes or classes that are part of a certain subsystem's exported interface we can allow an exception to this rule for methods, attributes and classes that are not. (See <xref linkend="subsystems_relationships" />.) </para>
+				<para>Write deprecation statements like this:
 
-      <listitem>
-        <para>
-Don't use deprecated methods or classes.
-</para>
-        <para>
-Rationale:
-Deprecation is an indication that a class is to be removed.
-We always want to build ArgoUML in a way that allows for future updates
-of everything.
-Using things that are on the way out already when doing the implementation
-is for this reason not allowed.
-</para>
-        <para>
-Rationale 2:
-If you feel like you really want to use a method that is deprecated instead
-of the replacement you should first convince the person responsible
-for doing the deprecation that he has made a mistake and upgrade ArgoUML
-to a version of that library without that method or class deprecated.
-If it is within ArgoUML discuss it with the person who actually did 
-the deprecation or in the development team.
-</para>
-        <para>
-Comment:
-<!-- What does this mean?  It makes no sense to me. - tfm -->
-There is an ongoing task (probably perpetually) to change
-the calls to deprecated methods and classes that
-have been deprecated after use in ArgoUML.
-This is a normal part of improving ArgoUML.
-If this work is too slow it makes it impossible to upgrade to new
-versions of different sub-tools. 
-This problem is seen by "the person responsible for sourcing of the sub-tool"
-when actually trying to upgrade the sub-tool.
-(See <xref linkend="issues_dependencies"></xref>.)
-</para>
-      </listitem>
+					<programlisting>
+     					* @deprecated by <replaceable>your name</replaceable> in <replaceable>the upcoming release</replaceable>. Use {@link <replaceable>whatever</replaceable>}
+    					* <replaceable>a complete explanation on what to do instead</replaceable>
+					</programlisting>
+				</para>
+				
+				<para>This is not checked by Checkstyle. </para>
+				
+				<note>
+					<title>Rationale</title>
+					
+					<para>This is part of the "Do Simple Things"-development approach that we use in ArgoUML.</para>
+					<para>ArgoUML is a big project with lots of legacy code that we do not know exactly how it works. Deprecation shows the intent between decision to remove a method and the point where it is actually removed and this without breaking anything of the old code.</para>
+					<para>There are also modules or plug ins that we might know nothing about that could be loaded by some user to run within ArgoUML to add functionality. It is for the modules and plug ins that we always save deprecated methods to the next stable release.</para>
+					<para>It makes it possible for the module developers to do work during the unstable releases and release at the same time as ArgoUML releases its stable release.</para>
+					<para>Failing to maintain API stability will discourage developers from creating new modules for ArgoUML.</para>
+				</note>
+			</listitem>
 
-      <listitem>
-        <para>
-Don't use very long package and class names.
-</para>
-        <para>
-To make the code readable,
-keep class names shorter than 25 chars, and
-have at most four levels of packages.
-</para>
-        <para>
-Historically in the ArgoUML design,
-a deep package structure was used.
-There are several places in the code where the package structure is
-mimicking the UML hierarchy of objects resulting in impossibly long
-package names like
-<classname>org.argouml.model.uml.behavioralelements.collaborations.<replaceable>class name</replaceable></classname>, and
-<classname>org.argouml.uml.ui.behavior.common_behavior.<replaceable>class name</replaceable></classname>.
-</para>
-        <para>
-While establishing the subsystems we use a two-level approach much
-like the rest of the Java world.
-For the subsystem API we always use:
-<classname>org.argouml.<replaceable>subsystem package name</replaceable></classname>
-i.e. the classes are in the subsystem's directory and all subsystems have
-package names that is a single level below <classname>org.argouml</classname>.
-If a subsystem is really complex or will be complex
-w.r.t. the amount of classes (meaning more than 50 files with classes),
-we create new packages with internal classes on a single level below
-the subsystem package.
-</para>
-        <para>
-This is the plan for the subsystems and new classes.
-Don't move old classes just yet!
-That would create more confusion that it would help.
-</para>
-      </listitem>
+			<listitem>
+				<para>Don't use deprecated methods or classes. </para>
+				<para>Rationale: Deprecation is an indication that a class is to be removed. We always want to build ArgoUML in a way that allows for future updates of everything. Using things that are on the way out already when doing the implementation is for this reason not allowed. </para>
+				<para>Rationale 2: If you feel like you really want to use a method that is deprecated instead of the replacement you should first convince the person responsible for doing the deprecation that he has made a mistake and upgrade ArgoUML to a version of that library without that method or class deprecated. If it is within ArgoUML discuss it with the person who actually did the deprecation or in the development team. </para>
+				<para>Comment: <!-- What does this mean? It makes no sense to me. - tfm --> There is an ongoing work (probably perpetually) to change the calls to deprecated methods and classes that has been deprecated after used in ArgoUML. This is a normal part of improving ArgoUML. If this work is too slow it makes it impossible to upgrade to new versions of different sub-tools. This problem is seen by "the person responsible for sourcing of the sub-tool" when actually trying to upgrade the sub-tool. (See <xref linkend="issues_dependencies" />.) </para>
+			</listitem>
 
-      <listitem>
-        <para>
-For everything else follow
-<ulink url="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html">
-Code Conventions for the Java Programming Language
-</ulink>
-(called Sun Code Conventions)!
-</para>
-      </listitem>
+			<listitem>
+				<para>Don't use very long package and class names. </para>
+				<para>To make the code readable, keep class names shorter than 25 chars, and have at most four levels of packages. </para>
+				<para>Historically in the ArgoUML design, a deep package structure has been used. There are several places in the code where the package structure is mimicking the UML hierarchy of objects resulting in impossibly long package names like <classname>org.argouml.model.uml.behavioralelements.collaborations.<replaceable>class name</replaceable></classname>, and <classname>org.argouml.uml.ui.behavior.common_behavior.<replaceable>class name</replaceable></classname>. </para>
+				<para>While establishing the subsystems we use a two-level approach much like the rest of the Java world. For the subsystem API we always use: <classname>org.argouml.<replaceable>subsystem package name</replaceable></classname> i.e. the classes are in the subsystem's directory and all subsystems have package names that is a single level below <classname>org.argouml</classname>. If a subsystem is really complex or will be complex w.r.t. the amount of classes (meaning more than 50 files with classes), we create new packages with internal classes on a single level below the subsystem package. </para>
+				<para>This is the plan for the subsystems and new classes. Don't move old classes just yet! That would create more confusion that it would help. </para>
+			</listitem>
 
-    </itemizedlist>
+			<listitem>
+				<para>For everything else follow <uri xlink:href="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html"> Code Conventions for the Java Programming Language </uri> (called Sun Code Conventions)! </para>
+			</listitem>
 
-    <para>
-Some of these rules are marked with a comment that they are 
-checked by a Checkstyle.
-Checkstyle is a tool available with the ArgoUML development environment
-preconfigured for these rules.
-The current configuration can be found in
-<filename>argouml/tools/checkstyle/checkstyle_argouml.xml</filename>.
-</para>
-    <para>
-To run Checkstyle run the command
-<command>build checkstyle</command> from the
-<filename class="directory">argouml/src_new</filename>
-directory.
-This requires you to have checked out the directories
-<filename class="directory">argouml/tools</filename>,
-<filename class="directory">argouml/tests</filename>, and
-<filename class="directory">argouml/src_new</filename>.
-</para>
-    <para>
-The last couple of Checkstyle results are also available in 
-the Xenofarm result.
-</para>
-    <para>
-Checkstyle will also check some of the rules from the
-Sun Code Conventions that are not stated here.
-Furthermore Checkstyle nags about when the order of modifiers does
-not conform to the suggestions in the
-Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3.
-</para>
-  </sect1>
+		</itemizedlist>
 
-  <sect1 id="groundrules">
-    <title>When Committing to the Repository</title>
-    <indexterm>
-      <primary>CVS</primary>
-      <secondary>standards</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>SVN</primary>
-      <secondary>standards</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Repository Committing</primary>
-    </indexterm>
-    <indexterm>
-      <primary>Committing to the Repository</primary>
-    </indexterm>
-    <indexterm>
-      <primary>Standards</primary>
-      <secondary>CVS</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Standards</primary>
-      <secondary>SVN</secondary>
-    </indexterm>
-    <para>
-The source code repository is a shared resource in the project.
-This means that once you commit your stuff it has the potential
-of getting in the way of everybody else's work in the project.
-For this reason special considerations are needed.
-This chapter describes what you should do to limit the risk
-of causing someone else problems.
-</para>
+		<para>Some of these rules are marked with a comment that they are checked by a Checkstyle. Checkstyle is a tool available with the ArgoUML development environment preconfigured for these rules. The current configuration can be found in <filename>argouml/tools/checkstyle/checkstyle_argouml.xml</filename>. </para>
+		<para>To run Checkstyle run the command <command>build checkstyle</command> from the <filename class="directory" >argouml/src_new</filename> directory. This requires you to have checked out the directories <filename class="directory">argouml/tools</filename>, <filename class="directory" >argouml/tests</filename>, and <filename class="directory" >argouml/src_new</filename>. </para>
+		<para>The last couple of Checkstyle result are also available in the Xenofarm result. </para>
+		<para>Checkstyle will also check some of the rules from the Sun Code Conventions that are not stated here. Furthermore Checkstyle nags about when the order of modifiers does not conform to the suggestions in the Java Language Specification, Section 8.1.1, 8.3.1, 8.4.3. </para>
+	</section>
 
-    <para>
-When you have done all the work, and all the testing and
-are about to commit something please do the following:
-      <orderedlist>
-        <listitem>
-          <para>
-Compile ArgoUML 
-(<command>build run</command> or <command>build package</command>).
-</para>
-          <para>
-This goes for all changes, even changes in comments.
-</para>
-        </listitem>
+	<section xml:id="groundrules">
+		
+		<title>When Committing to the Repository</title>
+		
+		<indexterm>
+			<primary>CVS</primary>
+			<secondary>standards</secondary>
+		</indexterm>
+		<indexterm>
+			<primary>SVN</primary>
+			<secondary>standards</secondary>
+		</indexterm>
+		<indexterm>
+			<primary>Repository Committing</primary>
+		</indexterm>
+		<indexterm>
+			<primary>Committing to the Repository</primary>
+		</indexterm>
+		<indexterm>
+			<primary>Standards</primary>
+			<secondary>CVS</secondary>
+		</indexterm>
+		<indexterm>
+			<primary>Standards</primary>
+			<secondary>SVN</secondary>
+		</indexterm>
+		
+		<para>The source code repository is a shared resource in the project. This means that once you commit your stuff it has the potential of getting in the way of everybody else's work in the project. For this reason special considerations are needed. This chapter describes the how you should do to limit the risk of causing someone else problems. </para>
+		<para>When you have done all the work, and all the testing and are about to commit something please do:
+     
+			<orderedlist>
+				<listitem>
+					<para>Compile ArgoUML (<command>build run</command> or <command>build package</command>). </para>
+					<para>This goes for all changes, even changes in comments. </para>
+				</listitem>
 
-        <listitem>
-          <para>
-If your changes include removing files make a clean compile.
-(<command>build clean</command> followed by
-<command>build run</command> or <command>build package</command>).
-</para>
-        </listitem>
+				<listitem>
+					<para>If your changes include removing files make a clean compile. (<command>build clean</command> followed by <command>build run</command> or <command>build package</command>). </para>
+				</listitem>
 
-        <listitem>
-          <para>
-If your changes include removing public or protected operations and
-attributes, make a clean compile
-(<command>build clean</command> followed by
-<command>build run</command> or <command>build package</command>).
-</para>
-          <para>
-The build mechanism does not yet have a reliable 
-dependency checker enabled so this is the best way to make sure.
-</para>
-        </listitem>
+				<listitem>
+					<para>If your changes include removing public or protected operations and attributes make a clean compile (<command>build clean</command> followed by <command>build run</command> or <command>build package</command>). </para>
+					<para>The build mechanism does not yet have reliable dependency checker enabled so this is the best way to make sure. </para>
+				</listitem>
 
-        <listitem>
-          <para>
-If your changes include adding abstract operations, make a clean compile
-(<command>build clean</command> followed by
-<command>build run</command> or <command>build package</command>).
-</para>
-          <para>
-The build mechanism does not yet have a reliable 
-dependency checker enabled so this is the best way to make sure.
-</para>
-        </listitem>
+				<listitem>
+					<para>If your changes include adding abstract operations make a clean compile (<command>build clean</command> followed by <command>build run</command> or <command>build package</command>). </para>
+					<para>The build mechanism does not yet have reliable dependency checker enabled so this is the best way to make sure. </para>
+				</listitem>
 
-        <listitem>
-          <para>
-If you have changed anything that has the potential to affect
-something in a totally different part of the code like internal
-data structure, handling of exceptions, 
-run all JUnit test cases
-and start the tool and do some more testing.
-</para>
-          <para>
-If in doubt, run all JUnit test cases.
-</para>
-        </listitem>
+				<listitem>
+					<para>If you have changed anything that has the potential of affecting something in a totally different part of the code like internal data structure, handling of exceptions, run all JUnit test cases and start the tool and do some more testing. </para>
+					<para>If in doubt, run all JUnit test cases. </para>
+				</listitem>
 
-        <listitem>
-          <para>
-Do a <command>svn status</command> in trunk to make sure that 
-you do not forget to commit a file and a
-<command>svn update</command> to make sure that no one 
-else has committed anything in the mean time.
-</para>
-          <para>
-Remember that if you do not commit all the files from trunk
-that <command>svn status</command> found (marked A, R, and M)
-in the same commit then you would better remove those file
-from the checked out copy, update to get the original version
-from the repository and start over with the compilation.
-</para>
-          <para>
-If someone else has updated a file 
-(<command>svn update</command> shown U, or R)
-please compile again.
-</para>
-        </listitem>
+				<listitem>
+					<para>Do a <command>svn status</command> in trunk to make sure that you do not forget to commit a file and a <command>svn update</command> to make sure that no one else has committed anything in the mean time. </para>
+					<para>Remember that if you do not commit all the files from trunk that <command>svn status</command> found (marked A, R, and M) in the same commit then you would better remove those file from the checked out copy, update to get the original version from the repository and start over with the compilation. </para>
+					<para>If someone else have updated a file (<command>svn update</command> shown U, or R) please compile again. </para>
+				</listitem>
 
-        <listitem>
-          <para>
-Commit all files that are included in a change at the same time.
-</para>
-          <para>
-This reduces the chance of anyone getting an inconsistent set of files
-by updating in the middle of your commit.
-</para>
-        </listitem>
+				<listitem>
+					<para>Commit all files that are included in a change at the same time. </para>
+					<para>This reduces the chance of anyone getting an inconsistent set of files by updating in the middle of your commit. </para>
+				</listitem>
 
-        <listitem>
-          <para>
-Commit often.
-</para>
-          <para>
-Remember that the repository is also a backup copy of your work.
-</para>
-          <para>
-If your change is so big and involves so many files that you would
-like to commit it for backup reasons but it doesn't compile or
-doesn't work or for some other reason should not confuse
-the trunk in the subversion repository, create a branch to work in.
-Then when your work is complete, you merge the branch into 
-trunk.
-</para>
-        </listitem>
-      </orderedlist>
-</para>
-    <para>
-<emphasis>Rationale:</emphasis>
-These ground rules are not intended to stop or hinder
-anyone's work.
-Remember that there might be several developers working with
-different agendas and different efficiency (slower or faster)
-and the commits are the melting point of this.
-</para>
-    <para>
-<emphasis>Perspective:</emphasis>
-If this will take you an extra two minutes before every commit
-remember that if you commit something that will not work this
-will take everyone else (guess 10 persons) the extra time of
-looking at the compilation error or see the tool crash (1 minute),
-wonder why (1 minute),
-search for the error in his own changes (3 minutes),
-search for the error somewhere else (1 minute),
-glance at the mailing list to see if someone else has noticed this 
-and send a mail (1 minute),
-wait for some response (1 hour wait),
-update (1 minute),
-compile (1 minute).
-This amounts to 10 hours wait and 1.5 hours extra work for
-all developers in the project.
-</para>
-  </sect1>
+				<listitem>
+					<para>Commit often. </para>
+					<para>Remember that the repository is also a backup copy of your work. </para>
+					<para>If your change is so big and involves so many files that you would like to commit it for backup reasons but it doesn't compile or doesn't work or for some other reason should not confuse the trunk in the subversion repository, create a branch to work in. Then when your work is complete, you merge the branch into trunk. </para>
+				</listitem>
+			</orderedlist>
+		</para>
+		
+		<para><emphasis>Rationale:</emphasis> These ground rules is for the purpose of not stopping or hindering the work for anyone. Remember that there might be several developers working with different agendas and different efficiency (slower or faster) and the commits is the melting point of this. </para>
+		<para><emphasis>Perspective:</emphasis> If this will take you an extra two minutes before every commit remember that if you commit something that will not work this will take everyone else (guess 10 persons) the extra time of looking at the compilation error or see the tool crash (1 minute), wonder why (1 minute), search for the error in his own changes (3 minutes), search for the error somewhere else (1 minute), glance at the mailing list to see if someone else has noticed this and send a mail (1 minute), wait for some response (1 hour wait), update (1 minute), compile (1 minute). This amounts to 10 hours wait and 1.5 hours extra work for all developers in the project. </para>
+	</section>
 
-  <sect1>
-    <title>When Using Branches</title>
-    <para>
-We use the following standards in ArgoUML:
-    </para>
-    <itemizedlist>
-      <listitem>
-        <para>
-Developers working on code, with an unspecified due date are requested
-to put the code into a branch if it is deemed useful that the code can
-be shared. Developer branches follow the scheme:
-<emphasis>work_<replaceable>explanation</replaceable>_<replaceable>owner</replaceable></emphasis>, where
-</para>
-        <itemizedlist>
-          <listitem>
-            <para>
-<replaceable>explanation</replaceable> is something like
-javahelp,
-propertypanel,
-cppcodegeneration,
-issue12345
-</para>
-          </listitem>
-          <listitem>
-            <para>
-<replaceable>owner</replaceable> is the uid for the
-developer that started the branch,
-e.g. tlach (Thierry Lach) or mkl (Markus Klink).
-</para>
-          </listitem>
-        </itemizedlist>
-      </listitem>
-    </itemizedlist>
+	<section>
+		<title>When Using Branches</title>
+		
+		<para>We use the following standards in ArgoUML: </para>
+		
+		<itemizedlist>
+			<listitem>
+				<para>Developers working on code, with an unspecified due date are requested to put the code into a branch if it is deemed useful that the code can be shared. Developer branches follow the scheme: <emphasis>work_<replaceable>explanation</replaceable>_<replaceable>owner</replaceable></emphasis>, where </para>
+				
+				<itemizedlist>
+					<listitem>
+						<para><replaceable>explanation</replaceable> is something like javahelp, propertypanel, cppcodegeneration, issue12345 </para>
+					</listitem>
+					
+					<listitem>
+						<para><replaceable>owner</replaceable> is the uid for the developer that started the branch, e.g. tlach (Thierry Lach) or mkl (Markus Klink). </para>
+					</listitem>
+				</itemizedlist>
+			</listitem>
+		</itemizedlist>
 
-    <para>
-Merging branches together is complex.
-Please use branches sparingly and announce your intentions on the mailing list.
-</para>
-  </sect1>
+		<para>Merging branches together is complex. Please use branches sparingly and announce your intentions on the mailing list. </para>
+	</section>
 
 
-  <sect1>
-    <title>When Working with the Build Process</title>
-    <para>
-For the <filename>build.xml</filename> files we use the following rules.
-    </para>
-    <itemizedlist>
-      <listitem>
-        <para>
-Be careful when downloading stuff.
-        </para>
-        <para>
-ArgoUML is supposed to be a self-contained development environment.
-Some times it is better to have things downloaded from the ant script
-instead of from the repository.
-In that case separate the download-targets from the target that does
-building so that it is easy for everyone to know when their 
-development machine is working against the Internet and when it is not.     
-        </para>
-      </listitem>
+	<section>
+		<title>When Working with the Build Process</title>
+		
+		<para>For the <filename>build.xml</filename> files we use the following rules. </para>
+		
+		<itemizedlist>
+			<listitem>
+				<para>Be careful when downloading stuff. </para>
+				<para>ArgoUML is supposed to be a self-contained development environment. Some times it is better to have things downloaded from the ant script instead of from the repository. In that case separate the download-targets from the target that does building so that it is easy for everyone to know when their development machine is working against the Internet and when it is not. </para>
+			</listitem>
 
-      <listitem>
-        <para>
-Public targets shall have descriptions.
-Non-public targets shall not have descriptions 
-(write xml comments or echos instead).
-        </para>
-      </listitem>
+			<listitem>
+				<para>Public targets shall have description. Non-public targets shall not have description (write xml comments or echos instead). </para>
+			</listitem>
 
-      <listitem>
-        <para>
-Use ant-built-ins for everything.
-        </para>
-        <para>
-ArgoUML is supposed to be a self-contains development environment.
-If you feel tempted to use other tools (perl, sed, nsgmls), don't!
-They are probably not present in all environments where we want to
-run a development environment.
-        </para>
-      </listitem>
-    </itemizedlist>
-  </sect1>
+			<listitem>
+				<para>Use ant-built-ins for everything. </para>
+				<para>ArgoUML is supposed to be a self-contains development environment. If you feel tempted to use other tools (perl, sed, nsgmls), don't! They are probably not present in all environments where we want to run a development environment. </para>
+			</listitem>
+		</itemizedlist>
+	</section>
 
-  <sect1>
-    <sect1info>
-      <author>
-        <firstname>Linus</firstname>
-        <surname>Tolke</surname>
-      </author>
-    </sect1info>
-    <title>When Considering Dependencies</title>
+	<section>
+		<title>When Considering Dependencies</title>
+		
+		<info>
+			<author>
+				<personname>
+					<firstname>Linus</firstname>
+					<surname>Tolke</surname>
+				</personname>
+			</author>
+		</info>
+		
+		<para>In the ArgoUML project we use several third-party libraries to solve parts of the problem for us. These libraries (referred to as dependencies below) are an important part of the ArgoUML tool and must be handled in a good way if ArgoUML is going to be successful. </para>
+		<para>Here is the list of things to check in the dependency and to discuss with yourself and maybe with the rest of the ArgoUML development team before considering to use it in the ArgoUML project. </para>
+		
+		<itemizedlist>
+			<listitem>
+				<para>License </para>
+				<para>We must be allowed to develop against, release with, distribute, and use the dependency indefinitely without monetary or other compensation. </para>
+				<para>Rationale: We have no money in the ArgoUML project, we don't want to have money in the ArgoUML project. We have no organization that can enter agreements and live up to them. We don't want to require our users to enter agreements to use ArgoUML. </para>
+			</listitem>
+			<listitem>
+				<para>Java version </para>
+				<para>The dependency must have a policy that matches the ArgoUML project policy on Java version requirements. </para>
+				<para>Rationale: The ambition for ArgoUML is to be a working tool for as many people as possible. Java is still under development and there are nice features available in future releases. In ArgoUML we have a plan for how to handle this. It is to always support two major releases of Java (currently Java5 and Java6). We cannot have a dependency that restricts us in this aspect. </para>
+			</listitem>
+			<listitem>
+				<para>Distribution </para>
+				<para>We require the dependency to make it possible for us to take the distribution, enter it in our repository and write rules to automate the use of the dependency while developing, releasing and running ArgoUML. This automated use must be able to run without relying on access to some server and without user intervention. </para>
+				<para>The API documentation of the dependency (assumed to be Javadoc) we can use from some web site belonging to that dependency. </para>
+				<para>Rationale: In the ArgoUML project we want to make it as easy as possible for our users to install ArgoUML. We also want to make it as easy as possible for our developers to get their development environment working and for the release manager to prepare the releases. </para>
+			</listitem>
+			<listitem>
+				<para>Road map </para>
+				<para>The project developing the dependency must have a plan that fits the ArgoUML plan for the future. </para>
+				<para>Rationale: If a dependency will soon go somewhere else i.e. stop doing what we require or stop supporting what we require, then we will soon have troubles with that dependency. </para>
+			</listitem>
+			<listitem>
+				<para>Working project </para>
+				<para>The project that develops the dependency should be a working project. Check that there is some person responsible for it, preferably with a team or organization backing him. Check that there is a plan for upcoming releases. Check that there is a way to report bugs and enhancement requests. </para>
+				<para>Rationale: We don't want to rely on a dependency where there is no chance of ever getting a bug that we encounter fixed. We are also part of an ever-evolving world. Soon we want the tool to do more for us. We should then be able to wish that and eventually get that included. </para>
+			</listitem>
+		</itemizedlist>
+		
+		<para>Notice that we should not and don't need to do this in a passive way. We should explain to the dependency team what we want and why. Especially for dependency that we have already in ArgoUML but also for dependencies that we consider taking in. This is to increase the likelihood that they will have us in mind when planning and evolving. </para>
+		<para>Here are the steps to go through and the recommended order once the decision is taken to use the dependency in ArgoUML: </para>
+		
+		<itemizedlist>
+			<listitem>
+				<para>Documentation</para>
+				<para>Describe in the Cookbook in the appropriate subsystem section in <xref linkend="inside_subsystems" /> what part of the problem that the dependency solves and how it is used in ArgoUML. </para>
+			</listitem>
+			<listitem>
+				<para>Javadoc </para>
+				<para>Enter the package list file in a special directory under <filename class="directory" >argouml/lib/javadocs</filename>. Update the list of links used when building the Javadoc. One place in <filename>default.properties</filename>, One or two places in <filename>build.xml</filename> (targets javadocs and javadocs-api). </para>
+				<para>Test by referencing some class from the dependency, building the Javadoc, and check that the link is working. </para>
+			</listitem>
+			<listitem>
+				<para>Repository </para>
+				<para>Assuming that the dependency is distributed in a set of jar files, add the jar files to the <filename class="directory" >lib</filename> directory in a versioned way together with the license file. Use filenames like: <filename><replaceable>dependency</replaceable>-<replaceable>version</replaceable>.jar</filename>, and <filename><replaceable>dependency</replaceable>.LICENSE.txt</filename>. </para>
+				<para>The plan is to have each subsystem in their own directory. If the dependency in question belongs to a subsystem that is moved to a separate directory you should put it in the <filename class="directory" >lib</filename> directory for that subsystem. See how the model-mdr dependencies are handled. </para>
+			</listitem>
+			<listitem>
+				<para>Building </para>
+				<para>Assuming that the dependency is distributed in a set of jar files, add the jar files to the list of files that are to be included when building ArgoUML. The files are to be copied to the argouml/build directory when performing the "package"-target. One place in <filename>default.properties</filename>, Four places in <filename>build.xml</filename> (targets init (tree places), prerequisites, package (two places), new target check.<replaceable>dependency</replaceable>), and One possibly place in <filename>AboutBox.java</filename> (Constructor). Notice especially that <filename>build.xml</filename> shall not contain any version information. Notice also that the text in <filename>AboutBox.java</filename> shall not contain anything that needs to be localized but just the dependency name, reference and possibly version. </para>
+				<para>This will take care of running tests, building releases, and building for the purpose of developing modules. </para>
+				<para>Check by having some class from the dependency loaded immediately when starting ArgoUML and start using <command>build run</command>. </para>
+			</listitem>
+		</itemizedlist>
 
-    <para>
-In the ArgoUML project we use several third-party libraries
-to solve parts of the problem for us.
-These libraries (referred to as dependencies below)
-are an important part of the ArgoUML tool and
-must be handled in a good way if ArgoUML is going to be successful.
-</para>
-
-    <para>
-Here is the list of things to check in the dependency
-and to discuss with yourself and maybe with the rest of the
-ArgoUML development team
-before considering it's use in the ArgoUML project.
-</para>
-    <itemizedlist>
-      <listitem>
-        <para>
-License
-</para>
-        <para>
-We must be allowed to
-develop against,
-release with,
-distribute, and
-use
-the dependency indefinitely
-without monetary or other compensation.
-</para>
-        <para>
-Rationale: 
-We have no money in the ArgoUML project,
-we don't want to have money in the ArgoUML project.
-We have no organization that can enter agreements and live up to them.
-We don't want to require our users to enter agreements to use ArgoUML.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Java version
-</para>
-        <para>
-The dependency must have a policy that is compatible with the ArgoUML project 
-policy on Java version requirements.
-</para>
-        <para>
-Rationale: 
-The ambition for ArgoUML is to be a working tool for
-as many people as possible.
-Java is still under development and there are nice features available in
-future releases.
-In ArgoUML we have a plan for how to handle this. It is to always support
-two major releases of Java (currently Java5 and Java6).
-We cannot have a dependency that restricts us in this aspect.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Distribution
-</para>
-        <para>
-We require the dependency to make it possible for us to take the distribution,
-enter it in our repository and write rules to automate
-the use of the dependency while developing, releasing and running ArgoUML.
-This automated use must be able to run without relying on access to some
-server and without user intervention.
-</para>
-        <para>
-The API documentation of the dependency (assumed to be Javadoc)
-we can use from some web site belonging to that dependency.
-</para>
-        <para>
-Rationale: 
-In the ArgoUML project we want to make it as easy as possible for our users
-to install ArgoUML.
-We also want to make it as easy as possible for our developers to get their
-development environment working and for the release manager to prepare
-the releases.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Road map
-</para>
-        <para>
-The project developing the dependency must have a plan that fits
-the ArgoUML plan for the future.
-</para>
-        <para>
-Rationale: 
-If a dependency will soon go somewhere else
-i.e. stop doing what we require or stop supporting what we require,
-then we will soon have troubles with that dependency.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Working project
-</para>
-        <para>
-The project that develops the dependency should be a working project.
-Check that there is some person responsible for it,
-preferably with a team or organization backing him.
-Check that there is a plan for upcoming releases.
-Check that there is a way to report bugs and enhancement requests.
-</para>
-        <para>
-Rationale:
-We don't want to rely on a dependency where there is no chance of ever
-getting a bug that we encounter fixed.
-We are also part of an ever-evolving world.
-Soon we want the tool to do more for us.
-We should then be able to wish that and eventually get that included.
-</para>
-      </listitem>
-    </itemizedlist>
-    <para>
-Notice that we should not and don't need to do this in a passive way.
-We should explain to the dependency team what we want and why.
-Especially for dependency that we have already in ArgoUML but also
-for dependencies that we consider taking in.
-This is to increase the likelihood that they will have us in mind when
-planning and evolving.
-</para>
-    <para>
-Here are the steps to go through and the recommended order
-once the decision is taken to use the dependency in ArgoUML:
-</para>
-    <itemizedlist>
-      <listitem>
-        <para>
-Documentation
-</para>
-        <para>
-Describe in the Cookbook in the appropriate subsystem section
-in <xref linkend="inside_subsystems"/>
-what part of the problem that the dependency solves and
-how it is used in ArgoUML.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Javadoc
-</para>
-        <para>
-Enter the package list file in a special directory under
-<filename class="directory">argouml/lib/javadocs</filename>.
-Update the list of links used when building the Javadoc.
-One place in <filename>default.properties</filename>,
-One or two places in <filename>build.xml</filename>
-(targets javadocs and javadocs-api).
-</para>
-        <para>
-Test by referencing some class from the dependency,
-building the Javadoc, and
-check that the link is working.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Repository
-</para>
-        <para>
-Assuming that the dependency is distributed in a set of jar files,
-add the jar files to the <filename class="directory">lib</filename> directory
-in a versioned way together with the license file.
-Use filenames like:
-<filename><replaceable>dependency</replaceable>-<replaceable>version</replaceable>.jar</filename>, and
-<filename><replaceable>dependency</replaceable>.LICENSE.txt</filename>.
-</para>
-        <para>
-The plan is to have each subsystem in their own directory.
-If the dependency in question belongs to a subsystem that is moved to a
-separate directory you should put it in
-the <filename class="directory">lib</filename> directory for that subsystem.
-See how the model-mdr dependencies are handled.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Building
-</para>
-        <para>
-Assuming that the dependency is distributed in a set of jar files,
-add the jar files to the list of files that are to be included
-when building ArgoUML.
-The files are to be copied to the argouml/build directory when
-performing the "package"-target.
-One place in <filename>default.properties</filename>,
-Four places in <filename>build.xml</filename>
-(targets init (tree places),
-prerequisites,
-package (two places),
-new target check.<replaceable>dependency</replaceable>), and
-one possible place in <filename>AboutBox.java</filename> (Constructor).
-Notice especially that <filename>build.xml</filename> shall not contain
-any version information.
-Notice also that the text in <filename>AboutBox.java</filename>
-shall not contain anything that needs to be localized but just
-the dependency name, reference and possibly version.
-</para>
-        <para>
-This will take care of
-running tests,
-building releases, and
-building for the purpose of developing modules.
-</para>
-        <para>
-Check by having some class from the dependency loaded immediately
-when starting ArgoUML and start using
-<command>build run</command>.
-</para>
-      </listitem>
-    </itemizedlist>
-
-    <para>
-See <xref linkend="issues_dependencies"></xref> for a discussion on 
-how to handle bugs found in a dependency and
-updates of the version of a dependency.
-</para>
-  </sect1>
+		<para>See <xref linkend="issues_dependencies" /> for a discussion on how to handle bugs found in dependency and updates of the version of a dependency. </para>
+	</section>
 
 </chapter>
-
-
-
 <!-- Local stuff for Emacs - please do not delete
 
 Local Variables:

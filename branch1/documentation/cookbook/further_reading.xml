@@ -1,120 +1,95 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+  // Copyright (c) 1996-2006 The Regents of the University of California. All
+  // Rights Reserved. Permission to use, copy, modify, and distribute this
+  // software and its documentation without fee, and without a written
+  // agreement is hereby granted, provided that the above copyright notice
+  // and this paragraph appear in all copies.  This software program and
+  // documentation are copyrighted by The Regents of the University of
+  // California. The software program and documentation are supplied "AS
+  // IS", without any accompanying services from The Regents. The Regents
+  // does not warrant that the operation of the program will be
+  // uninterrupted or error-free. The end-user understands that the program
+  // was developed for research purposes and is advised not to rely
+  // exclusively on the program for any reason.  IN NO EVENT SHALL THE
+  // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+  // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+  // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  // THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  // SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+  // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+  // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-<appendix id="further_reading">
+<appendix
+  xmlns="http://docbook.org/ns/docbook" 
+  version="5.0" 
+  xml:lang="en"
+  xml:id="further_reading"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  >
+  
   <title>Further Reading</title>
-  <sect1 id="robbins">
-    <title>Jason Robbins Dissertation</title> <indexterm>
+  
+  <section xml:id="robbins">
+    
+    <title>Jason Robbins Dissertation</title>
+    <indexterm>
       <primary>Jason Robbins</primary>
-      <secondary>Dissertation</secondary> </indexterm>
-    <para> Cognitive Support Features for Software Development Tools </para>
-    <para> The dissertation of Jason Robbins is a <emphasis>MUST
-      READ</emphasis> for everyone concerned about ArgoUML. Be careful though,
-      since it is based on an old version of ArgoUML, but many of the concepts remain
-      intact. </para>
-    <sect2>
+      <secondary>Dissertation</secondary>
+    </indexterm>
+    <para>Cognitive Support Features for Software Development Tools </para>
+    <para>The dissertation of Jason Robbins is a <emphasis>MUST READ</emphasis> for everyone concerned about ArgoUML. Be careful though, since it is based on an old version of ArgoUML, but many of the concepts remain intact. </para>
+    
+    <section>
       <title>Abstract</title>
-      <para> Software design is a cognitively challenging task. Most software
-        design tools provide support for editing, viewing, storing, sharing,
-        and transforming designs, but lack support for the essential and
-        difficult cognitive tasks facing designers. These cognitive tasks
-        include decision making, decision ordering, and task-specific design
-        understanding. To date, software design tools have not included
-        features that specifically address key cognitive needs of designers, in
-        part, because there has been no practical method for developing and
-        evaluating these features. </para>
-      <para> This dissertation contributes a practical description of several
-        cognitive theories relevant to software design, a method for devising
-        cognitive support features based on these theories, a basket of
-        cognitive support features that are demonstrated in the context of a
-        usable software design tool called ArgoUML, and a reusable
-        infrastructure for building similar features into other design tools.
-        ArgoUML is an object-oriented design tool that includes several novel
-        features that address the identified cognitive needs of software
-        designers. Each feature is explained with respect to the cognitive
-        theories that inspired it and the set of features is evaluated with a
-        combination of heuristic and empirical techniques. </para>
-    </sect2>
-    <sect2>
+      <para>Software design is a cognitively challenging task. Most software design tools provide support for editing, viewing, storing, sharing, and transforming designs, but lack support for the essential and difficult cognitive tasks facing designers. These cognitive tasks include decision making, decision ordering, and task-specific design understanding. To date, software design tools have not included features that specifically address key cognitive needs of designers, in part, because there has been no practical method for developing and evaluating these features. </para>
+      <para>This dissertation contributes a practical description of several cognitive theories relevant to software design, a method for devising cognitive support features based on these theories, a basket of cognitive support features that are demonstrated in the context of a usable software design tool called ArgoUML, and a reusable infrastructure for building similar features into other design tools. ArgoUML is an object-oriented design tool that includes several novel features that address the identified cognitive needs of software designers. Each feature is explained with respect to the cognitive theories that inspired it and the set of features is evaluated with a combination of heuristic and empirical techniques. </para>
+    </section>
+    
+    <section>
       <title>Where to find it</title>
-      <para>LINK: <ulink
-          url="http://argouml.tigris.org/docs/robbins_dissertation/">
-        Robbins Dissertation</ulink> </para>
-    </sect2>
-  </sect1>
-  <sect1 id="skinner">
-    <title>Martin Skinners Dissertation</title> <indexterm>
+      <para>LINK: <link xlink:href="http://argouml.tigris.org/docs/robbins_dissertation/" > Robbins Dissertation</link> </para>
+    </section>
+  </section>
+  
+  <section xml:id="skinner">
+    <title>Martin Skinners Dissertation</title>
+    
+    <indexterm>
       <primary>Martin Skinner</primary>
-      <secondary>Dissertation</secondary> </indexterm>
-    <para> Enhancing an UML Modeling Tool with Context-Based Constraints for
-      Components </para>
-    <sect2>
+      <secondary>Dissertation</secondary>
+    </indexterm>
+    
+    <para>Enhancing an UML Modeling Tool with Context-Based Constraints for Components </para>
+    
+    <section>
       <title>Abstract</title>
-      <para lang="de"> Noch vor der Erstellung eines detaillierten Entwurfs
-        hilft ein Spezifikationsmodell eines komponenten-basierten Systems
-        dabei, Probleme so früh im Entwicklungsprozess wie möglich zu
-        entdecken. Die Sprache CCL ('Component Constraint Language') wurde bei
-        CIS entwickelt und erlaubt den Entwickler 'Contextbased Constraints'
-        dem Spezifikationsmodell hinzuzufügen. Dadurch entsteht ein Modell,
-        das über die Beschreibung der statische Struktur des Systems
-        hinausgeht. Zur Zeit existiert allerdings kein Werkzeug, dass das
-        Komponentenspezifikationsmodell in den Entwicklungsprozess
-        integriert. Ziel dieser Diplomarbeit war der Entwurf eines solchen
-        Werkzeugs, um die Philosophie des Continuous Software Engineering
-        (CSE) zu unterstützten. </para>
-      <para> Before starting a detailed design, a specification model of the
-        component-based system assists the software developer in early problem
-        detection as soon as possible in the development process. The Component
-        Constraint Language (CCL) developed at CIS enables the developer to add
-        context-based constraints (CoCons) to a component specification
-        model. This produces a model which goes beyond the simple description of
-        the system's static structure. At this time, there is no tool to integrate
-        the component specification model into the development process. The
-        goal of this master's thesis was to design such a tool, thereby supporting
-        the Continuous Software Engineering (CSE) philosophy. </para>
-    </sect2>
-    <sect2>
+      <para xml:lang="de" > Noch vor der Erstellung eines detaillierten Entwurfs hilft ein Spezifikationsmodell eines komponenten-basierten Systems dabei, Probleme so frï¿½h im Entwicklungsprozess wie mï¿½glich zu entdecken. Die Sprache CCL ('Component Constraint Language') wurde bei CIS entwickelt und erlaubt den Entwickler 'Contextbased Constraints' dem Spezifikationsmodell hinzuzufï¿½gen. Dadurch entsteht ein Modell, das ï¿½ber die Beschreibung der statische Struktur des Systems hinausgeht. Zur Zeit existiert allerdings kein Werkzeug, dass das Komponentenspezifikationsmodell in den Entwicklungsprozess integriert. Ziel dieser Diplomarbeit war der Entwurf eines solchen Werkzeugs, um die Philosophie des Continuous Software Engineering (CSE) zu unterstï¿½tzten. </para>
+      <para>Before starting a detailed design, a specification model of the component-based system assists the software developer in early problem detection as soon as possible in the development process. The Component Constraint Language (CCL) developed at CIS enables the developer to add context-based constraints (CoCons) to a component specification model. This produces a model which goes beyond the simple description of the system's static structure. At this time, there is no tool to integrate the component specification model into the development process. The goal of this master's thesis was to design such a tool, thereby supporting the Continuous Software Engineering (CSE) philosophy. </para>
+    </section>
+    
+    <section>
       <title>Where to find it</title>
-      <para> LINK: <ulink
-          url="http://www.cocons.org/publications/CCL_plugin_for_ArgoUML.pdf">
-        Martin Skinners dissertation</ulink> </para>
-    </sect2>
-  </sect1>
+      <para>LINK: <link xlink:href="http://www.cocons.org/publications/CCL_plugin_for_ArgoUML.pdf" > Martin Skinners dissertation</link> </para>
+    </section>
+  </section>
 </appendix>
 
 <!-- Local stuff for Emacs - please do not delete
-
-Local Variables:
-mode: xml
-sgml-doctype: "cookbook.xml"
-sgml-parent-document: ("cookbook.xml" "chapter" nil)
-sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
-cookbook.xml"
-indent-tabs-mode: nil
-End:
-
+  
+  Local Variables:
+  mode: xml
+  sgml-doctype: "cookbook.xml"
+  sgml-parent-document: ("cookbook.xml" "chapter" nil)
+  sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+  indent-tabs-mode: nil
+  End:
+  
 -->

@@ -1,391 +1,199 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+  // Copyright (c) 1996-2006 The Regents of the University of California. All
+  // Rights Reserved. Permission to use, copy, modify, and distribute this
+  // software and its documentation without fee, and without a written
+  // agreement is hereby granted, provided that the above copyright notice
+  // and this paragraph appear in all copies.  This software program and
+  // documentation are copyrighted by The Regents of the University of
+  // California. The software program and documentation are supplied "AS
+  // IS", without any accompanying services from The Regents. The Regents
+  // does not warrant that the operation of the program will be
+  // uninterrupted or error-free. The end-user understands that the program
+  // was developed for research purposes and is advised not to rely
+  // exclusively on the program for any reason.  IN NO EVENT SHALL THE
+  // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+  // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+  // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  // THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  // SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+  // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+  // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-<chapter id="introduction">
+<chapter
+  xmlns="http://docbook.org/ns/docbook" 
+  version="5.0" 
+  xml:lang="en"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xml:id="introduction">
+  
   <title>Introduction</title>
-  <sect1 id="thanks">
+  
+  <section xml:id="thanks">
     <title>Thanks</title>
-    <para> We, the authors, would like to take the opportunity to thank everyone
-      involved in the creation of this documentation, and especially the people
-      behind setting up the DocBook environment. In particular thanks go out to
-      Alejandro Ramirez, Phillipe Vanpeperstraete and Andreas Rueckert. Thank
-      you! </para>
-  </sect1>
+    <para>We, the authors, would like to take the opportunity to thank everyone involved in the creation of this documentation, and especially the people behind setting up the DocBook environment. In particular thanks go out to Alejandro Ramirez, Phillipe Vanpeperstraete and Andreas Rueckert. Thank you! </para>
+  </section>
   
-  <sect1 id="project">
+  <section xml:id="project">
     <title>About the project</title>
-    <para>
-ArgoUML is an open source project, so it depends on people that
-volunteer to work on it.
-Especially in the area of development there is still
-so much to do!
-</para>
-    <para>
-This Cookbook is dedicated to everyone interested in taking
-part in the ArgoUML project as such and should help to transfer the knowledge
-from the old experts to them.
-Please feel free to discuss the ArgoUML project and this Cookbook on
-<ulink url="mailto:dev@argouml.tigris.org">dev mailing list</ulink>!
-</para>
-    <para>
-The ArgoUML project is hosted at Tigris.
-For best use of the Tigris platform,
-the ArgoUML project is spread over several Tigris projects
-with the argouml project as the top project.
-Each Tigris project has its own
-list of developers,
-source repository,
-issuezilla,
-web site,
-set of mailing lists, ...
-but they are released together.
-</para>
-  </sect1>
+    <para>ArgoUML is an open source project, so it depends on people that volunteer to work on it. Especially in the area of development there is still so much to do! </para>
+    <para>This Cookbook is dedicated to everyone interested in taking part in the ArgoUML project as such and should help to transfer the knowledge from the old experts to them. Please feel free to discuss the ArgoUML project and this Cookbook on <link
+      xlink:href="mailto:dev@argouml.tigris.org">dev mailing list</link>! </para>
+    <para>The ArgoUML project is hosted at Tigris. For best use of the Tigris platform, the ArgoUML project is spread over several Tigris projects with the argouml project as the top project. Each Tigris project has its own list of developers, source repository, issuezilla, web site, set of mailing lists, … but they are released together. </para>
+  </section>
   
-  <sect1 id="contributing">
+  <section xml:id="contributing">
     <title>How to contribute</title>
-    <para> You can help, there are big tasks and small tasks waiting for you.
-    </para>
-    <para> Here is a suggestion on how you could become part of the ArgoUML Project.
-      This could be perceived as a ladder to climb but remember that if so it is
-      firstly a ladder of levels of commitment and time spent by you. You get no
-      prize for climbing higher, you just get more responsibility in the project.
+    <para>You can help, there are big tasks and small tasks waiting for you. </para>
+    <para>Here is a suggestion on how you could become part of the ArgoUML Project. This could be perceived as a ladder to climb but remember that if so it is firstly a ladder of levels of commitment and time spent by you. You get no prize for climbing higher, you just get more responsibility in the project. 
       <orderedlist numeration="arabic">
         <listitem>
           <para>Use ArgoUML.</para>
         </listitem>
         <listitem>
-          <para>
-Report bugs &amp; suggest enhancements.
-</para>
-          <para>
-There are bugs in ArgoUML. When you use ArgoUML you might
-encounter them where you least expect it. To help, make sure they are
-known about i.e. that there exists an issue in Issuezilla describing
-the problem. You need to be a registered user at Tigris to report bugs
-but notice that to add further comments to the issue you also need to
-have gotten a Role in the ArgoUML project.
-</para>
-
-          <para>
-Like all good open-source projects,
-ArgoUML is evolving to meet the needs of its users.
-We can only do this if we know what users need,
-so please file enhancement requests.
-</para>
-    	
-          <para>
-To help the developers prioritise work on bugs and enhancements,
-vote for the ones that you really care about.
-</para>
-            
-          <para>
-You need to be a registered user at Tigris
-to report bugs and enhancements (and to vote for them)
-but notice that to add further comments to the issue you also need to
-have gotten a Role in the ArgoUML project.
-</para>
+          <para>Report bugs &amp; suggest enhancements. </para>
+          <para>There are bugs in ArgoUML. When you use ArgoUML you might encounter them where you least expect it. To help, make sure they are known about i.e. that there exists an issue in Issuezilla describing the problem. You need to be a registered user at Tigris to report bugs but notice that to add further comments to the issue you also need to have gotten a Role in the ArgoUML project. </para>
+          <para>Like all good open-source projects, ArgoUML is evolving to meet the needs of its users. We can only do this if we know what users need, so please file enhancement requests. </para>
+          <para>To help the developers prioritise work on bugs and enhancements, vote for the ones that you really care about. </para>
+          <para>You need to be a registered user at Tigris to report bugs and enhancements (and to vote for them) but notice that to add further comments to the issue you also need to have gotten a Role in the ArgoUML project. </para>
         </listitem>
-        
         <listitem>
-          <para>
-Subscribe to some of the users' mailing lists.
-</para>
-          <para>
-Discuss how you use ArgoUML in your project and how you promote
-ArgoUML in your organization.
-You can also help other users with their ArgoUML-related problems.
-</para>
-
-          <para>
-There is one users' mailing list for each language project
-(Spanish, Swedish, Chinese, ...)
-for the users that prefer to discuss ArgoUML using that language.
-These are not currently (May 2006) very active but the
-main list, the English-speaking list at users@argouml.tigris.org-list, is.
-</para>
-
-          <para>
-In some cases there are also users' mailing lists for the specific
-subproject, for discussing these specific features or uses of them
-(cpp, andromda, ...).
-Prefer those if your discussion is for that area.
-</para>
+          <para>Subscribe to some of the users' mailing lists. </para>
+          <para>Discuss how you use ArgoUML in your project and how you promote ArgoUML in your organization. You can also help other users with their ArgoUML-related problems. </para>
+          <para>There is one users' mailing list for each language project (Spanish, Swedish, Chinese, …) for the users that prefer to discuss ArgoUML using that language. These are not currently (May 2006) very active but the main list, the English-speaking list at users@argouml.tigris.org-list, is. </para>
+          <para>In some cases there are also users' mailing lists for the specific subproject, for discussing these specific features or uses of them (cpp, andromda, …). Prefer those if your discussion is for that area. </para>
         </listitem>
-        
         <listitem>
           <para>Apply for an Observer role.</para>
-          <para>
-This shows that you are committed to the project and also allows
-you to comment on issues.
-</para>
+          <para>This shows that you are committed to the project and also allows you to comment on issues. </para>
         </listitem>
         <listitem>
-          <para> Familiarize yourself with the project and how we work. </para>
-          <para> Suggestion on how to go about this:
-            <orderedlist numeration="loweralpha">
-              <listitem>
-                <para> Read through most of the User manual and install and run
-                  the latest version of ArgoUML. </para>
-              </listitem>
-              <listitem>
-                <para>Subscribe to the issues list.</para>
-                <para> You will get updates on all issues so you can monitor what
-                  we are doing in the project. (It could be a lot of mails. If it
-                  turns out you don't like watching issues in this way, you
-                  unsubscribe!) </para>
-              </listitem>
-              <listitem>
-                <para>
-Subscribe to the commits mailing list
-of the project that you are interested in.
-</para>
-                <para>
-You will get updates on all changes that are done to code,
-documentation, and the web site. (It could be a lot of large
-mails. If it turns out you don't like watching what is going on
-in the project in this way you unsubscribe.)
-</para>
-              </listitem>
-              <listitem>
-                <para>
-Read the process part of the Developers Cookbook
-at <xref linkend="processes"/>.
-</para>
-                <para> This will give you the idea of how the ArgoUML project
-                  attempts to release with good quality and especially how we
-                  use Issuezilla. </para>
-              </listitem>
-              <listitem>
-                <para>Get the Observer role granted.</para>
-
-                <para>
-You can apply for the Observer role in any or all of the argouml projects
-if you like.
-Choose the ones you are interested in.
-</para>
-
-                <para>
-From this point on you can comment on bugs yourself directly in Issuezilla.
-</para>
-
-                <para> You can also verify issues according to the verification
-                  process (see <xref linkend="verify_resolved_fixed"/>).
-</para>
-                <para> This will help you understand the terminology used in the
-                  project and also gives you an idea of the current quality of
-                  ArgoUML and what needs to be done in the future. </para>
-                <para> This is also a very low-commitment level task that could
-                  be completed in a couple of minutes (depending on your choice
-                  of issue). </para>
-              </listitem>
-              <listitem>
-                <para>Read the rest of the Developers Cookbook.</para>
-                <para> There is a lot of stuff discussed in here that is
-                  interesting for your understanding of the project and the
-                  code. </para>
-              </listitem>
-              <listitem>
-                <para>Check out the source from subversion and build.</para>
-              </listitem>
-            </orderedlist> </para>
-          
+          <para>Familiarize yourself with the project and how we work. </para>
+          <para>Suggestion on how to go about this: <orderedlist numeration="loweralpha">
+            <listitem>
+              <para>Read through most of the User manual and install and run the latest version of ArgoUML. </para>
+            </listitem>
+            <listitem>
+              <para>Subscribe to the issues list.</para>
+              <para>You will get updates on all issues so you can monitor what we are doing in the project. (It could be a lot of mails. If it turns out you don't like watching issues in this way, you unsubscribe!) </para>
+            </listitem>
+            <listitem>
+              <para>Subscribe to the commits mailing list of the project that you are interested in. </para>
+              <para>You will get updates on all changes that are done to code, documentation, and the web site. (It could be a lot of large mails. If it turns out you don't like watching what is going on in the project in this way you unsubscribe.) </para>
+            </listitem>
+            <listitem>
+              <para>Read the process part of the Developers Cookbook at <xref
+                xlink:href="processes" />. </para>
+              <para>This will give you the idea of how the ArgoUML project attempts to release with good quality and especially how we use Issuezilla. </para>
+            </listitem>
+            <listitem>
+              <para>Get the Observer role granted.</para>
+              <para>You can apply for the Observer role in any or all of the argouml projects if you like. Choose the ones you are interested in. </para>
+              <para>From this on you can comment on bugs yourself directly in Issuezilla. </para>
+              <para>You can also verify issues according to the verification process (see <xref
+                xlink:href="verify_resolved_fixed" />). </para>
+              <para>This will help you understand the terminology used in the project and also gives you an idea of the current quality of ArgoUML and what needs to be done in the future. </para>
+              <para>This is also a very low-commitment level task that could be completed in a couple of minutes (depending on your choice of issue). </para>
+            </listitem>
+            <listitem>
+              <para>Read the rest of the Developers Cookbook.</para>
+              <para>There is a lot of stuff discussed in here that is interesting for your understanding of the project and the code. </para>
+            </listitem>
+            <listitem>
+              <para>Check out the source from subversion and build.</para>
+            </listitem>
+          </orderedlist>
+          </para>
         </listitem>
-        
         <listitem>
-          <para>
-Subscribe to some of the dev mailing lists.
-</para>
-          <para>
-There is one dev mailing list for each project
-with the purpose of discussing the specifics for that project.
-Subscribe to as many of them as you'd like and take part.
-</para>
-
-          <para>
-The purpose of this is to see what the developers are discussing
-in the project.
-</para>
-
-          <para>
-Monitor the discussions and as soon as you see something
-discussed where you have an opinion, jump right in!
-</para>
+          <para>Subscribe to some of the dev mailing lists. </para>
+          <para>There is one dev mailing list for each project with the purpose of discussing the specifics for that project. Subscribe to as many of them as you'd like and take part. </para>
+          <para>The purpose of this is to see what the developers are discussing in the project. </para>
+          <para>Monitor the discussions and as soon as you see something discussed where you have an opinion, jump right in! </para>
         </listitem>
-        
         <listitem>
           <para>Familiarize yourself with the code.</para>
-          <para>For this a good knowledge of Java is more or less a prerequisite.
+          <para>For this a good knowledge of Java is more or less a prerequisite. </para>
+          <para>Suggestion on how to go about this: <orderedlist numeration="loweralpha">
+            <listitem>
+              <para>Take active part in the discussions on the dev-list. </para>
+            </listitem>
+            <listitem>
+              <para>Solve issues registered in Issuezilla or fix other things that you want to pursue. </para>
+            </listitem>
+            <listitem>
+              <para>Convince someone to commit your changes. </para>
+              <para>Establish a relationship with one developer of the project you want to work with. That developer will check that your code reaches the quality level that we strive for in the project and obeys the design. </para>
+            </listitem>
+            <listitem>
+              <para>Repeat. </para>
+              <para>This can go on until the developer helping you knows that you have good knowledge of the project quality and design and the main problem for you two is that sending, waiting, committing, updating et.c. is extra work. </para>
+            </listitem>
+          </orderedlist>
           </para>
-          <para> Suggestion on how to go about this:
-            <orderedlist numeration="loweralpha">
-              <listitem>
-                <para>
-Take active part in the discussions on the dev-list.
-</para>
-              </listitem>
-              <listitem>
-                <para>
-Solve issues registered in Issuezilla or fix other things that you
-want to pursue.
-</para>
-              </listitem>
-              <listitem>
-                <para>
-Convince someone to commit your changes.
-</para>
-                <para>
-Establish a relationship with one developer of the project you want
-to work with.
-That developer will check that your code reaches the quality level
-that we strive for in the project and obeys the design.
-</para>
-              </listitem>
-              <listitem>
-                <para> Repeat. </para>
-                <para>
-This can go on until the developer helping you knows that
-you have good knowledge of the project quality and
-design and
-the main problem for you two is that
-sending,
-waiting,
-committing,
-updating et.c.
-is extra work.
-</para>
-              </listitem>
-            </orderedlist>
-</para>
         </listitem>
         <listitem>
-          <para>
-Apply for a Developer role in the project where you want to contribute.
-</para>
-          <para>
-This allows you to do commits on your own and you can now increase
-the pace in which you are working while also increasing your
-responsibilities in the project.
-</para>
-          <para>
-This role is granted by the Project leader after he is convinced
-that you have learned enough about the project with regard to:
-</para>
+          <para>Apply for a Developer role in the project where you want to contribute. </para>
+          <para>This allows you to do commits on your own and you can now increase the pace in which you are working while also increasing your responsibilities in the project. </para>
+          <para>This role is granted by the Project leader after he is convinced that you have learned the enough about the project w.r.t.: </para>
           <itemizedlist>
             <listitem>
-              <para>
-Understanding and accepting the goals.
-</para>
+              <para>Understanding and accepting the goals. </para>
             </listitem>
             <listitem>
-              <para>
-Understanding where we are in the development process.
-</para>
+              <para>Understanding where we are in the development process. </para>
             </listitem>
             <listitem>
-              <para>
-Understanding the terminology used in the project.
-</para>
+              <para>Understanding the terminology used in the project. </para>
             </listitem>
             <listitem>
-              <para>
-Understanding how we use subversion in the project.
-</para>
+              <para>Understanding how we use subversion in the project. </para>
             </listitem>
             <listitem>
-              <para>
-Understanding the set of tools (ant, JUnit) and how to use them.
-</para>
+              <para>Understanding the set of tools (ant, JUnit) and how to use them. </para>
             </listitem>
           </itemizedlist>
         </listitem>
         <listitem>
           <para>Focus your work in a specific area.</para>
-          <para>
-Everybody has different interests and the best contribution is
-made when someone is allowed to pursue his own interests. Hopefully
-ArgoUML provides you with interesting challenges to your taste.
-</para>
+          <para>Everybody has different interests and the best contribution is made when someone is allowed to pursue his own interests. Hopefully ArgoUML provides you with interesting challenges to your taste. </para>
         </listitem>
         <listitem>
           <para>Accept responsibility for a specific area.</para>
         </listitem>
       </orderedlist>
-</para>
-  </sect1>
+    </para>
+  </section>
   
-  <sect1>
+  <section>
     <title>About this Cookbook</title>
-    <para> This document, the Cookbook for Developers of ArgoUML, is provided
-      with the hope of being helpful for the developers of ArgoUML when it comes to
-      learning and understanding how ArgoUML works in order to improve on its
-      functions and features.
-      It may also be of interest for persons that wish to analyze the ArgoUML
-      project for whatever purpose that may be. </para>
-    <sect2>
-      <title>In this Cookbook, you will find...</title>
-      <para>
-Information on how to compile ArgoUML.
-(<xref linkend="buildingandtools"/>)
-</para>
-
-      <para>
-Information on how different features of ArgoUML are implemented and
-how they are to be used.
-(<xref linkend="subsystems"/> and
-<xref linkend="inside_subsystems"/>)
-</para>
-
-      <para>
-Information on how you should write extensions to ArgoUML.
-(<xref linkend="extending"/>)
-</para>
-
-      <para>
-Information that you, as a developer of ArgoUML,
-need to know about how to contribute.
-(<xref linkend="standards"/>,
-<xref linkend="app.docstand"/> and
-<xref linkend="processes"/>)
-</para>
-      
-    </sect2>
-    <sect2>
-      <title>In this Cookbook, you will not find...</title>
-      <para> You will not find information on how to install and use ArgoUML.
-      </para>
-      <para> You will not find information on what UML is and if or how you should use
-        it in your project. </para>
-      <para> You will not find information on how to convince your project to use
-        ArgoUML as a modeling tool. </para>
-    </sect2>
-  </sect1>
+    <para>This document, the Cookbook for Developers of ArgoUML, is provided with the hopes of being helpful for the developers of ArgoUML when it comes to learning and understanding how ArgoUML work in order to improve on its functions and features. It can also be of interest for persons that wish to analyze the ArgoUML project for whatever purpose that may be. </para>
+    <section>
+      <title>In this Cookbook, you will find…</title>
+      <para>Information on how to compile ArgoUML. (<xref xlink:href="buildingandtools" />) </para>
+      <para>Information on how different features of ArgoUML are implemented and how they are to be used. (<xref
+        xlink:href="subsystems" /> and <xref xlink:href="inside_subsystems" />) </para>
+      <para>Information on how you should write extensions to ArgoUML. (<xref
+        xlink:href="extending" />) </para>
+      <para>Information that you, as a developer of ArgoUML, need to know about how to contribute. (<xref
+        xlink:href="standards" />, <xref xlink:href="app.docstand" /> and <xref
+          xlink:href="processes" />) </para>
+    </section>
+    <section>
+      <title>In this Cookbook, you will not find…</title>
+      <para>You will not find information on how to install and use ArgoUML. </para>
+      <para>You will not find information on what UML is and if or how you should use it in your project. </para>
+      <para>You will not find information on how to convince your project to use ArgoUML as a modeling tool. </para>
+    </section>
+  </section>
   
-  <sect1 id="mailing_lists">
+  <section xml:id="mailing_lists">
     <title>Mailing Lists</title>
     <indexterm>
       <primary>Mailing lists</primary>
@@ -393,11 +201,10 @@ need to know about how to contribute.
     <indexterm>
       <primary>Developers' Mailing List</primary>
     </indexterm>
-    <para> All developers <emphasis>MUST</emphasis> subscribe to the mailing
-      list for developers. Please find the details at: <ulink
-        url="http://argouml.tigris.org/servlets/ProjectMailingListList">
-      http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
-</para>
+    <para>All developers <emphasis>MUST</emphasis> subscribe to the mailing list for developers. Please find the details at: <link
+      xlink:href="http://argouml.tigris.org/servlets/ProjectMailingListList"
+      > http://argouml.tigris.org/servlets/ProjectMailingListList</link>
+    </para>
     <indexterm>
       <primary>Subversion</primary>
       <secondary>Mailing list</secondary>
@@ -410,25 +217,18 @@ need to know about how to contribute.
       <primary>Issues</primary>
       <secondary>Mailing list</secondary>
     </indexterm>
-    <para>
-It is also recommended to join the commits and issues mailing lists.
-Both give you a good idea of what is going on.
-Developers should also work with
-Issuezilla registering or fixing problems found by themselves and others.
-</para>
-  </sect1>
-  
+    <para>It is also recommended to join the commits and issues mailing lists. Both give you a good idea of what is going on. Developers should also work with Issuezilla registering or fixing problems found by themselves and others. </para>
+  </section>
 </chapter>
-
 <!-- Local stuff for Emacs - please do not delete
-
-Local Variables:
-mode: xml
-sgml-doctype: "cookbook.xml"
-sgml-parent-document: ("cookbook.xml" "chapter" nil)
-sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
-cookbook.xml"
-indent-tabs-mode: nil
-End:
-
+  
+  Local Variables:
+  mode: xml
+  sgml-doctype: "cookbook.xml"
+  sgml-parent-document: ("cookbook.xml" "chapter" nil)
+  sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  cookbook.xml"
+  indent-tabs-mode: nil
+  End:
+  
 -->

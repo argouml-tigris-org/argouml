@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
 // Copyright (c) 1996-2006 The Regents of the University of California. All
@@ -25,13 +25,20 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
-<sect1 id="logging">
+<sect1
+	xmlns="http://docbook.org/ns/docbook" 
+	version="5.0" 
+	xml:lang="en"
+	xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xml:id="logging">
+	
   <title>Logging</title>
   <indexterm>
     <primary>Logging</primary>
   </indexterm>
 
-  <para id="comp-logging-purpose">
+  <para xml:id="comp-logging-purpose">
 Purpose - to provide an api for debug log and trace messages.
 </para>
   <para>
@@ -54,7 +61,7 @@ Logging is currently implemented using log4j.
 </para>
   <para>
         <application>ArgoUML</application> uses the standard 
-        <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
+        <link xlink:href="http://jakarta.apache.org/log4j/">log4j</link>
         logging facility. The following sections deal with the current
         implementation in <application>ArgoUML</application>. By
         default, logging is turned off and only the version
@@ -118,13 +125,13 @@ This could be everything happening within the application.
     <para>
 For performance reasons, it is advised to do a check before 
 frequently passed DEBUG
-and INFO log4j messages (see <xref linkend="example.log4j.speed"/>).
+and INFO log4j messages (see <xref xlink:href="example.log4j.speed"/>).
 The purpose of this test is to avoid the creation of the argument.
     </para>
   </sect2>
     
   <sect2>
-    <title>How to Create Log Entries...</title>
+    <title>How to Create Log Entries…</title>
     <indexterm>
       <primary>LOG</primary>
     </indexterm>
@@ -146,27 +153,27 @@ like to print the usage message in <filename>Main.java</filename>.
       <orderedlist>
         <listitem><para>Import the org.apache.log4j.Logger class</para></listitem>
         <listitem><para>Get a Logger</para></listitem>
-        <listitem><para>Start Logging...</para></listitem>
+        <listitem><para>Start Logging…</para></listitem>
       </orderedlist>
     </para>
     <example>
       <title>For log4j version 1.2.x</title>
       <programlisting>
 import org.apache.log4j.Logger;
-...
+…
 public class <replaceable>theClass</replaceable> {
-...
+…
     private static final Logger LOG = 
         Logger.getLogger(<replaceable>theClass</replaceable>.class);
 
-...
+…
 
     public void anExample() {
         LOG.debug("This is a debug message.");
         LOG.info("This is a info message.");
         LOG.warn("This is a warning.");
         LOG.error("This is an error.");
-        LOG.fatal("This is fatal. The program stops now working...");
+        LOG.fatal("This is fatal. The program stops now working…");
     }
             </programlisting>
     </example>
@@ -194,7 +201,7 @@ Logger.
         temporary objects that would be created otherwise. Even if logging 
         is turned off for DEBUG and/or INFO level.
     </para>
-    <example id="example.log4j.speed">
+    <example xml:id="example.log4j.speed">
       <title>Improving on speed/performance</title>
       <programlisting>
     if (LOG.isDebugEnabled()) {
@@ -215,7 +222,7 @@ for every key the user presses).
     </warning>
     <para>
             For more information go to the log4j homepage at
-            <ulink url="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</ulink>.
+            <link xlink:href="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</link>.
     </para>
 
     <sect3>
@@ -233,7 +240,7 @@ The problem is instead explained by noticing
 the following log statement:
             <programlisting>
         int i;
-...
+…
         LOG.debug("Entry number: " + i + " is " + entry[i]);
             </programlisting>
 It is quite innocent looking isn't it?
@@ -259,7 +266,7 @@ stuck with the overhead of creating a <classname>StringBuffer</classname>
   </sect2>
     
   <sect2>
-    <title>How to Enable Logging...</title>
+    <title>How to Enable Logging…</title>
     <para>
             log4j uses the command line parameter
             <parameter>-Dlog4j.configuration = URL</parameter>
@@ -269,11 +276,11 @@ stuck with the overhead of creating a <classname>StringBuffer</classname>
     <example>
       <title>Various URLs</title>
       <programlisting>
-org/argouml/resource/<emphasis>filename.lcf</emphasis>              <co id="ex.url.package"/>
+org/argouml/resource/<emphasis>filename.lcf</emphasis>              <co xml:id="ex.url.package"/>
 
-http://localhost/shared/argouml/<emphasis>filename.lcf</emphasis>   <co id="ex.url.link"/>
+http://localhost/shared/argouml/<emphasis>filename.lcf</emphasis>   <co xml:id="ex.url.link"/>
 
-file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.url.file"/>
+file://home/username/<emphasis>filename.lcf</emphasis>              <co xml:id="ex.url.file"/>
             </programlisting>
       <calloutlist>
         <callout arearefs="ex.url.package"><para>
@@ -294,9 +301,9 @@ file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.u
       </calloutlist>
     </example>
     <sect3>
-      <title>...when running ArgoUML from the command line</title>
+      <title>…when running ArgoUML from the command line</title>
       <para>
-                There are currently two ways of running
+                There are currently two possibilities of running
                 <application>ArgoUML</application> from the command
                 line:
         <orderedlist>
@@ -349,7 +356,7 @@ Run <application>ArgoUML</application> using the ant script
     </sect3>
         
     <sect3>
-      <title>...when running ArgoUML from WebStart</title>
+      <title>…when running ArgoUML from WebStart</title>
       <para>
                 To view the console output, the WebStart user has to
                 set <parameter>Enable Java Console</parameter> in the
@@ -366,7 +373,7 @@ when running ArgoUML from Java Web Start.
     </sect3>
         
     <sect3>
-      <title>...when running ArgoUML from NetBeans</title>
+      <title>…when running ArgoUML from NetBeans</title>
       <para>
                 At the time of writing this paragraph, it is not possible to 
                 set the logging configuration file on a per project basis in
@@ -386,13 +393,13 @@ when running ArgoUML from Java Web Start.
   </sect2>
     
   <sect2>
-    <title>How to Customize Logging...</title>
+    <title>How to Customize Logging…</title>
     <para>
             There are some sample configuration files provided in 
             <parameter>org.argouml.resource</parameter>. Modify these according
             to your needs.
-            Or alternatively, you can try <ulink url="http://www.japhy.de/configLog4j">
-            configLog4j</ulink> to assist yourself in creating a log4j configuration file.
+            Or alternatively, you can try <link xlink:href="http://www.japhy.de/configLog4j">
+            configLog4j</link> to assist yourself in creating a log4j configuration file.
     </para>    
   </sect2>
     
@@ -401,12 +408,12 @@ when running ArgoUML from Java Web Start.
     <itemizedlist>
       <listitem><para>
                 The log4j project homepage at 
-                    <ulink url="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</ulink>
+                    <link xlink:href="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</link>
         </para>
       </listitem>
       <listitem><para>
                 The configlog4j homepage at
-                    <ulink url="http://www.japhy.de/configLog4j/">http://www.japhy.de/configLog4j</ulink>
+                    <link xlink:href="http://www.japhy.de/configLog4j/">http://www.japhy.de/configLog4j</link>
         </para>
       </listitem>
       <!-- TO DO
