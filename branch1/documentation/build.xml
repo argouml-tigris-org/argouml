@@ -679,4 +679,3 @@ To get it, call ant with target - docbook-xsl-get
     <delete file="${Name}-${argo.core.version}.tar.gz"/>
   </target>       
 </project>
-
