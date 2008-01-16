@@ -1,147 +1,70 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2005 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+  // Copyright (c) 1996-2005 The Regents of the University of California. All
+  // Rights Reserved. Permission to use, copy, modify, and distribute this
+  // software and its documentation without fee, and without a written
+  // agreement is hereby granted, provided that the above copyright notice
+  // and this paragraph appear in all copies.  This software program and
+  // documentation are copyrighted by The Regents of the University of
+  // California. The software program and documentation are supplied "AS
+  // IS", without any accompanying services from The Regents. The Regents
+  // does not warrant that the operation of the program will be
+  // uninterrupted or error-free. The end-user understands that the program
+  // was developed for research purposes and is advised not to rely
+  // exclusively on the program for any reason.  IN NO EVENT SHALL THE
+  // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+  // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+  // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  // THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  // SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+  // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+  // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
 
 
-<chapter id="running">
-	<title>ArgoUML Principles</title>
-	<para>
-    When ArgoUML starts, then it shows an empty class diagram
-    on which you can add various objects. ArgoUML works according the following
-    principles:
-  </para>
-
+<chapter 
+  xmlns="http://docbook.org/ns/docbook" 
+  version="5.0" 
+  xml:lang="en"
+  xml:id="running"
+  xmlns:xi="http://www.w3.org/2001/XInclude" 
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <title>ArgoUML Principles</title>
+  
+  <para>When ArgoUML starts, then it shows an empty class diagram on which you can add various objects. ArgoUML works according the following principles: </para>
+  
+  
   <section>
     <title>Project, Model and Diagram</title>
-    <para>
-      The file operations save and open handle one 
-      <literal>project</literal> at a
-      time. One <literal>project</literal> corresponds to a
-      <literal>model</literal> plus diagram information, 
-      i.e. everything you can edit within the ArgoUML window. 
-    </para>
-    <para>
-      The <literal>model</literal> may contain many
-      objects (ModelElements) which
-      form the complete UML description 
-      of the system you are describing.
-      All ModelElements might be present on a diagram, 
-      but this is not required. 
-      Hence, the <literal>model</literal> 
-      that is stored in ArgoUML is
-      independent of the contents of the diagrams. 
-      This may be explained by the possibility 
-      to generate programming code from the 
-      <literal>model</literal> - you 
-      do not need any diagrams for this.
-    </para>
-    <para>
-      A ArgoUML <literal>project</literal> also contains 
-      all diagram information, i.e.
-      the shapes (presentation) used 
-      to represent the various UML ModelElements, 
-      their location, color, etc. 
-      Some ModelElements appear on multiple diagrams, 
-      some on one or none.
-    </para>
-    <para>
-      Hence, saving and opening projects 
-      retains all this information. 
-      There is a way to only save the 
-      <literal>model</literal> information
-      though, which is by the menu 
-      "Tools" -> "Export as XMI...". 
-      This may be usefull e.g. 
-      when generating programming code 
-      with an external tool 
-      that understands XMI.
-    </para>
+    
+    <para>The file operations save and open handle one <literal>project</literal> at a time. One <literal>project</literal> corresponds to a <literal>model</literal> plus diagram information, i.e. everything you can edit within the ArgoUML window. </para>
+    <para>The <literal>model</literal> may contain many objects (ModelElements) which form the complete UML description of the system you are describing. All ModelElements might be present on a diagram, but this is not required. Hence, the <literal>model</literal> that is stored in ArgoUML is independent of the contents of the diagrams. This may be explained by the possibility to generate programming code from the <literal>model</literal> - you do not need any diagrams for this. </para>
+    <para>A ArgoUML <literal>project</literal> also contains all diagram information, i.e. the shapes (presentation) used to represent the various UML ModelElements, their location, color, etc. Some ModelElements appear on multiple diagrams, some on one or none. </para>
+    <para>Hence, saving and opening projects retains all this information. There is a way to only save the <literal>model</literal> information though, which is by the menu "Tools" -> "Export as XMI…". This may be usefull e.g. when generating programming code with an external tool that understands XMI. </para>
   </section>
-
+  
+  
   <section>
     <title>Objects</title>
-    <para>
-      Select objects by left-clicking on them.
-      The functionality of ArgoUML can be activated in the menu, 
-      in toolbars,
-      or in pop-up menus when right-clicking above an object.
-      Many of these functions work on the selected objects.
-    </para>
-    <para>
-      All diagrams have toolbars at the top which are used 
-      to create objects on the diagram.
-    </para>
-    <para>
-      Most objects can be added to a diagram and removed from a diagram without
-      deleting it from the <literal>model</literal>! 
-      Select an object on a diagram, and then the menu item 
-      "Edit" -> "Remove from Diagram" clears the object from the diagram, 
-      but the object remains intact in the model, 
-      which may be seen in the explorer, 
-      i.e. the tree structure at the left hand side.
-      Once removed, and item can be added back to the diagram 
-      (or any other diagram for that matter)
-      by selecting it in the explorer 
-      and selecting the item "Add to Diagram" 
-      in the right-click pop-up menu.
-    </para>
+    
+    <para>Select objects by left-clicking on them. The functionality of ArgoUML can be activated in the menu, in toolbars, or in pop-up menus when right-clicking above an object. Many of these functions work on the selected objects. </para>
+    <para>All diagrams have toolbars at the top which are used to create objects on the diagram. </para>
+    <para>Most objects can be added to a diagram and removed from a diagram without deleting it from the <literal>model</literal>! Select an object on a diagram, and then the menu item "Edit" -> "Remove from Diagram" clears the object from the diagram, but the object remains intact in the model, which may be seen in the explorer, i.e. the tree structure at the left hand side. Once removed, and item can be added back to the diagram (or any other diagram for that matter) by selecting it in the explorer and selecting the item "Add to Diagram" in the right-click pop-up menu. </para>
   </section>
-
-	<section>
-		<title>Overview of the window</title>
-		<para>
-      The top of the window contains a menu bar with commands available.
-      In the <literal>File</literal> menu you can store the project or 
-      open another project instead.
-    </para>
-		<para>
-      The upper left part of the ArgoUML window shows a tree model 
-      of diagrams and objects. 
-      This view can be adapted to your needs 
-      by filtering the objects that are shown, 
-      and the structure in which they are shown.
-    </para>
-		<para>
-      The upper right part of ArgoUML shows the current diagram (one at a time).
-      You can drag and drop the objects in the diagrams,
-      and you can use the quick-links 
-      that appear when hovering over a selected object 
-      to create new objects connected to the
-      already present objects.
-    </para>
-		<para>
-      The lower right part contains various details of the currently selected 
-      object: You select the object in one of the upper
-      levels and choose what details you want to examine using the
-      tabs.
-    </para>
-		<para>
-      The lower left part contains a list of all ToDo items for this
-      model.
-    </para>
-	</section>
-
+  
+  
+  <section>
+    <title>Overview of the window</title>
+    
+    <para>The top of the window contains a menu bar with commands available. In the <literal>File</literal> menu you can store the project or open another project instead. </para>
+    <para>The upper left part of the ArgoUML window shows a tree model of diagrams and objects. This view can be adapted to your needs by filtering the objects that are shown, and the structure in which they are shown. </para>
+    <para>The upper right part of ArgoUML shows the current diagram (one at a time). You can drag and drop the objects in the diagrams, and you can use the quick-links that appear when hovering over a selected object to create new objects connected to the already present objects. </para>
+    <para>The lower right part contains various details of the currently selected object: You select the object in one of the upper levels and choose what details you want to examine using the tabs. </para>
+    <para>The lower left part contains a list of all ToDo items for this model. </para>
+  </section>
 </chapter>

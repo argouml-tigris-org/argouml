@@ -1,96 +1,112 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2005 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+  // Copyright (c) 1996-2005 The Regents of the University of California. All
+  // Rights Reserved. Permission to use, copy, modify, and distribute this
+  // software and its documentation without fee, and without a written
+  // agreement is hereby granted, provided that the above copyright notice
+  // and this paragraph appear in all copies.  This software program and
+  // documentation are copyrighted by The Regents of the University of
+  // California. The software program and documentation are supplied "AS
+  // IS", without any accompanying services from The Regents. The Regents
+  // does not warrant that the operation of the program will be
+  // uninterrupted or error-free. The end-user understands that the program
+  // was developed for research purposes and is advised not to rely
+  // exclusively on the program for any reason.  IN NO EVENT SHALL THE
+  // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+  // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+  // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+  // THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+  // SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+  // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+  // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+  // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+  // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+  // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 -->
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "../docbook-setup/docbookx/docbookx.dtd" [
+<!DOCTYPE book [
 
-  <!-- ...................................................................... -->
-  <!-- Imported General Entity declarations ................................. -->
-  <!--                                                                        -->
-  <!-- Please look inside these files (below) for shortcuts to entering       -->
-  <!-- common information such as Author details, Argo/Tigris addresses etc.  -->
-  <!-- ...................................................................... -->
-  
-  <!ENTITY % author-entities SYSTEM "declare-authors.ent">
-  %author-entities;
+<!-- ...................................................................... -->
+<!-- Imported General Entity declarations ................................. -->
+<!--                                                                        -->
+<!-- Please look inside these files (below) for shortcuts to entering       -->
+<!-- common information such as Author details, Argo/Tigris addresses etc.  -->
+<!-- ...................................................................... -->
 
-  <!ENTITY % argo-entities SYSTEM "declare-argostuff.ent">
-  %argo-entities;
+<!ENTITY % author-entities SYSTEM "declare-authors.ent">
+%author-entities;
 
-  <!--
-      FILE INCLUDE MACROS
-  -->
-  <!ENTITY preface.xml SYSTEM "qstart-preface.xml">
-  <!ENTITY chapter-introduction.xml SYSTEM "qstart-introduction.xml">
-  <!ENTITY chapter-installation.xml SYSTEM "qstart-installation.xml">
-  <!ENTITY chapter-credits.xml SYSTEM "qstart-credits.xml">
-  <!ENTITY chapter-running.xml SYSTEM "qstart-running.xml">
-  
-  <!--   
-      TEXT SUBSTITUTION MACROS
-      
-      These macros should be used to include links to the web site, etc...
-      e.g. To include a link to the "ArgoUML project" use:
-          &argo-project-link;
-  -->
-  <!ENTITY document-title   'ArgoUML Quick Guide'>
-  <!ENTITY document-subtitle  'Get started with ArgoUML @VERSION@'>
+<!ENTITY % argo-entities SYSTEM "declare-argostuff.ent">
+%argo-entities;
+
+<!--
+FILE INCLUDE MACROS
+-->
+<!ENTITY preface.xml SYSTEM "qstart-preface.xml">
+<!ENTITY chapter-credits.xml SYSTEM "qstart-credits.xml">
 ]>
 
 
-<book>
-  <title>&document-title;</title>
-  <bookinfo>
-    <subtitle>&document-subtitle;</subtitle>
+<book 
+  xmlns="http://docbook.org/ns/docbook" 
+  version="5.0" 
+  xml:lang="en"
+  xmlns:xi="http://www.w3.org/2001/XInclude" 
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  >
+  
+  <title>ArgoUML Quick Guide</title>
+  <subtitle>Get started with ArgoUML @VERSION@</subtitle>
+  
+  <info>
     <authorgroup>
-      &author-kunle.odu;
-      &author-anthony.ogu;
       <author>
-        <firstname>Linus</firstname>
-        <surname>Tolke</surname>
+        <personname>
+          <firstname>Kunle</firstname>
+          <surname>Odutola</surname>
+        </personname>
+        <address><email>Kunle_Odutola&#64;hotmail.com</email></address>
       </author>
+      
       <author>
-        <firstname>Michiel</firstname>
-        <surname>van der Wulp</surname>
+        <personname>
+          <firstname>Anthony</firstname>
+          <surname>Oguntimehin</surname>
+        </personname>
+      </author>
+      
+      <author>
+        <personname>
+          <firstname>Linus</firstname>
+          <surname>Tolke</surname>
+        </personname>
+      </author>
+      
+      <author>
+        <personname>
+          <firstname>Michiel</firstname>
+          <surname>van der Wulp</surname>
+        </personname>
       </author>
     </authorgroup>
+    
     <copyright>
       <year>2001</year>
       <holder>Kunle Odutola</holder>
     </copyright>
+    
     <copyright>
       <year>2004-2005</year>
       <holder>Michiel van der Wulp</holder>
     </copyright>
+    
     <legalnotice>
       &open-content-license;
     </legalnotice>
-  </bookinfo>
-
-&chapter-introduction.xml;
-&chapter-installation.xml;
-&chapter-running.xml;
-
+  </info>
+  
+  <xi:include href="qstart-introduction.xml" />
+  <xi:include href="qstart-installation.xml" />
+  <xi:include href="qstart-running.xml" />
+  
 </book>
