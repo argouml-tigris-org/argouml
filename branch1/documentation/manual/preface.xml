@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preface
+    xmlns="http://docbook.org/ns/docbook" 
+    version="5.0" 
+    xml:lang="en"
+    xmlns:xi="http://www.w3.org/2001/XInclude" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    >
+    
+    <title>Preface</title>
+    
+    <indexterm>
+        <primary>Design</primary>
+    </indexterm>
+    
+    <para>Software design is a cognitively challenging task. Designers must manually enter designs, but the primary difficulty is decision-making rather than data-entry. If designers improved their decision-making capabilities, it would result in better designs.</para>
+    <para>Current CASE tools provide automation and graphical user interfaces that reduce the manual work of entering a design and transforming a design into code. They aid designers in decision-making mainly by providing visualization of design diagrams and simple syntactic checks. Also many CASE tools provide substantial benefits in the area of version control and concurrent design mechanisms. One area of design support that has been not been well supported is analysis of design decisions.</para>
+    <para>Current CASE tools are usable in that they provide a GUI that allows designers to access all the features provided by the tool. And they support the design process in that they allow the designer to enter diagrams in the style of popular design methodologies. But they typically do not provide process support to guide the designer through the design task. Instead, designers typically start with a blank page and must remember to cover every aspect of the design.</para>
+    <para>ArgoUML is a domain-oriented design environment that provides cognitive support of object-oriented design. ArgoUML provides some of the same automation features of a commercial CASE tool, but it focuses on features that support the cognitive needs of designers. These cognitive needs are described by three cognitive theories: 
+        <orderedlist>
+            <listitem>
+                <indexterm>
+                    <primary>Reflection-in-Action</primary>
+                </indexterm>
+                <para>reflection-in-action;</para>
+            </listitem>
+            <listitem>
+                <indexterm>
+                    <primary>Opportunistic Design</primary>
+                </indexterm>
+                <para>opportunistic design; and</para>
+            </listitem>
+            <listitem>
+                <indexterm>
+                    <primary>Comprehension</primary>
+                </indexterm>
+                <indexterm>
+                    <primary>Problem Solving</primary>
+                </indexterm>
+                <para>comprehension and problem solving.</para>
+            </listitem>
+        </orderedlist>
+    </para>
+    
+    <para>ArgoUML is based directly on the UML 1.4 specification. The core model repository is an implementation of the Java Metadata Interface (JMI) which directly supports MOF and uses the machine readable version of the UML 1.4 specification provided by the OMG.</para>
+    <para>Furthermore, it is our goal to provide comprehensive support <indexterm> <primary>XMI</primary> </indexterm> for OCL (the Object Constraint Language) and XMI (the XML Model Interchange format).</para>
+    <para>ArgoUML was originally developed by a small group of people as a research project. ArgoUML has many features that make it special, but it does not implement all the features that commercial CASE tools provide.</para>
+    <para>The current version (@VERSION@) of ArgoUML implements all the diagram types of the <link xlink:href="http://www.omg.org/cgi-bin/doc?formal/01-09-67" >UML 1.4 standard</link> (versions of ArgoUML prior to 0.20 implemented the <link xlink:href="http://www.omg.org/cgi-bin/doc?formal/00-03-01" >UML 1.3 standard</link>). It is written in Java and runs on every computer which provides a Java 2 platform of Java 1.4 or newer. It uses the open file formats <indexterm> <primary>XML</primary> </indexterm> <link xlink:href="http://www.omg.org/cgi-bin/doc?formal/02-01-01" >XMI</link> (XML Metadata Interchange format) (for model information) and <link xlink:href="http://www.w3.org/TR/1998/NOTE-PGML">PGML</link> (Precision Graphics Markup Language) (for graph information) for storage. When ArgoUML implements UML 2.0, PGML will be replaced by the UML Diagram Interchange specification.</para>
+    <para>This manual is the cumulative work of several people and has been evolving over several years. Connected to the release 0.10 of ArgoUML, Jeremy Bennett, wrote a lot of the new material that was added to the earlier versions by Alejandro Ramirez, Philippe Vanpeperstraete and Andreas Rueckert. He also added things from some of the other documents namely the developers cookbook by Markus Klink and Linus Tolke, the Quick Guide by Kunle Odutola, and the FAQ by Dennis Daniels. Connected to the release 0.14 changes were made by Linus Tolke, and by Michiel van der Wulp. These changes were mostly to adopt the manual to the new functions and appearance of ArgoUML version 0.14, and introduction of the index. The users and developers that have contributed by providing valuable input, such as review comments or observations while reading and using this manual are too many to name.</para>
+    <para>ArgoUML is available for free and can be used in commercial settings. For terms of use, see the license agreement presented when you download ArgoUML. We are providing the source code for ArgoUML for you to review, customize to your needs, and improve. Over time, we hope that ArgoUML will evolve into a powerful and useful tool for everyone to use.</para>
+    <para>This User Manual is aimed at the working designer, who wishes to make use of ArgoUML. The manual is presently written assuming familiarity with UML, but eventually it will support those new to UML.</para>
+    <para>The manual is written in DocBook/XML and available as both <indexterm> <primary>XML</primary> </indexterm> HTML and PDF. </para>
+    <para>The ArgoUML project welcomes those who want to get more involved. Look at the <link xlink:href="http://argouml.tigris.org/">project website</link> to find out more. </para>
+    <para>Tell us what you think about this User Manual! Your comments will help us improve things. See <xref xlink:href="s2.intro.user.feedback" /> . </para>
+</preface>

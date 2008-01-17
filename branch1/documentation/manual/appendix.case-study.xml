@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appendix
+    xmlns="http://docbook.org/ns/docbook" 
+    version="5.0" 
+    xml:lang="en"
+    xml:id="app.casestudy"
+    xmlns:xi="http://www.w3.org/2001/XInclude" 
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+    <title>Supplementary Material for the Case Study</title>
+    
+    <section>
+        <title>Introduction</title>
+        <para>The case study requires various material (mostly documents) that live alongside the design diagram</para>
+    </section>
+    
+    <section>
+        <title>Requirements Documents (To be written)</title>
+        
+        <remark>To be written…</remark>
+        
+        <section>
+            <title>Vision Document (To be written)</title>
+            
+            <remark>To be written…</remark>
+        </section>
+        
+        <section>
+            <title>Use Case Specifications (To be written)</title>
+            
+            <remark>To be written…</remark>
+            
+            <section>
+                <title>UC Specification 1 (To be written)</title>
+                
+                <remark>To be written…</remark>
+            </section>
+        </section>
+        
+        <section>
+            <title>Supplementary Requirements Specification (To be written)</title>
+            
+            <remark>To be written…</remark>
+        </section>
+    </section>
+</appendix>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter
+    xmlns="http://docbook.org/ns/docbook" 
+    version="5.0" 
+    xml:lang="en"
+    xmlns:xi="http://www.w3.org/2001/XInclude" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    >
+    
+    <title>Introduction</title>
+    
+    <section>
+        <title>Origins and Overview of ArgoUML</title>
+        
+        <section xml:id="s2.ooad">
+            <title>Object Oriented Analysis and Design</title>
+            
+            <indexterm>
+                <primary>Analysis</primary>
+            </indexterm>
+            <indexterm>
+                <primary>Design</primary>
+            </indexterm>
+            
+            <para>Over the past decade, Object Oriented Analysis and Design (OOA&amp;D) has become <emphasis>the</emphasis> dominant software development paradigm. With it has come a major shift in the thought processes of all involved in the software development life cycle.</para>
+            <para>Programming language support for objects began with Simula 67, but it was the emergence in the 1980&#039;s of hybrid languages, such as C++, Ada and Object Pascal that allowed OOA&amp;D to take off. These languages provided support for both OO and procedural programming. Object Oriented <emphasis>programming</emphasis> became mainstream.</para>
+            <para>An OO system is designed and implemented as a <emphasis>simulation</emphasis> of the real world using software artifacts. This premise is as powerful as it is simple. By using an OO approach to <emphasis>design</emphasis> a system can be designed and tested (or more correctly simulated) without having to actually build the system first.</para>
+            <para>It is the development during the 1990&#039;s of tools to support Object Oriented <emphasis>analysis</emphasis> and <emphasis>design</emphasis> that moved this approach into the mainstream. When coupled with the ability to design systems at a very high level, a tool based OOA&amp;D approach has enabled the implementation of more complex systems than previously possible.</para>
+            <para>The final driver that has propelled OOA&amp;D has been its suitability for modeling graphical user interfaces. The popularity of object based and object oriented graphical languages such as Visual Basic and Java reflect the effectiveness of this approach.</para>
+        </section>
+        
+        <section>
+            <title>The Development of ArgoUML</title>
+            
+            <para>During the 1980&#039;s a number of OOA&amp;D process methodologies and notations were developed by different research teams. It became clear there were many common themes and, during the 1990&#039;s, a unified approach for OOA&amp;D notation was developed under the auspices of the <link xlink:href="http://www.omg.org" >Object Management Group</link>. This standard became known as the Unified Modeling Language (UML), and is now the standard language for communicating OO concepts.</para>
+            <para>ArgoUML was conceived as a tool and environment for use in the analysis and design of object-oriented software systems. In this sense it is similar to many of the commercial CASE tools that are sold as tools for modeling software systems. ArgoUML has a number of very important distinctions from many of these tools.</para>
+            
+            <orderedlist>
+                <listitem>
+                    <para>It is free. </para>
+                </listitem>
+                <listitem>
+                    <para>ArgoUML draws on research in cognitive psychology to provide novel features that increase productivity by supporting the cognitive needs of object-oriented software designers and architects.</para>
+                </listitem>
+                <listitem>
+                    <para>ArgoUML supports open standards extensively - UML, XMI, SVG, OCL and others.</para>
+                </listitem>
+                <listitem>
+                    <para>ArgoUML is a 100% pure Java application. This allows ArgoUML to run on all platforms for which a reliable port of the Java2 platform is available.</para>
+                </listitem>
+                <listitem>
+                    <para>ArgoUML is an open source project. The availability of the source ensures that a new generation of software designers and researchers now have a proven framework from which they can drive the development and evolution of CASE tool technologies.</para>
+                </listitem>
+            </orderedlist>
+            <para>UML is the most prevalent OO modeling language and Java is one of the most productive OO development platforms. Jason Robbins and the rest of his research team at the University of California, Irvine leveraged these benefits in creating ArgoUML. The result is a solid development tool and environment for OO systems design. Further, it provides a test bed for the evolution of object oriented CASE tools development and research. </para>
+            <para>A first release of ArgoUML was available in 1998 and more than 100,000 downloads by mid-2001 show the impact that this project has made, being popular in educational and commercial fields.</para>
+        </section>
+        
+        <section>
+            <title>Finding Out More About the ArgoUML Project</title>
+            
+            <section>
+                <title>How ArgoUML is Developed</title>
+                
+                <indexterm>
+                    <primary>Jason Robbins</primary>
+                </indexterm>
+                <indexterm>
+                    <primary>Robbins, Jason</primary>
+                </indexterm>
+                <indexterm>
+                    <primary>Mailing lists</primary>
+                </indexterm>
+                <para>Jason Elliot Robbins founded the Argo Project and provided early project leadership. While Jason remains active in the project, he has handed off project leadership. The project continues to move forward strongly. There are more than 300 members on the developer mailing list (see <link xlink:href="http://argouml.tigris.org/servlets/ProjectMailingListList" > http://argouml.tigris.org/servlets/ProjectMailingListList</link>), with a couple of dozen of those forming the core development group.</para>
+                <para>The developer mailing list is the place where all the discussion on the latest tasks takes place, and developers discuss the directions the project should take. Although controversial at times, these discussions are always kept nice and friendly (no flame-wars and such), so newbies should not hesitate and participate in them. You&#039;ll always get a warm welcome there. </para>
+                
+                <indexterm>
+                    <primary>Contributing</primary>
+                    <secondary>to ArgoUML</secondary>
+                </indexterm>
+                <indexterm>
+                    <primary>Cookbook</primary>
+                </indexterm>
+                <indexterm>
+                    <primary>Developers&#039; Cookbook, The</primary>
+                </indexterm>
+                <indexterm>
+                    <primary>Developer Zone</primary>
+                </indexterm>
+                <para>If you want to learn how the project is run and how to contribute to it, go the the <link xlink:href="http://argouml.tigris.org/dev.html" >ArgoUML Web Site Developer Zone</link> and read through the documentation there. The Developers&#039; Cookbook was written specifically for this purpose. </para>
+            </section>
+            
+            
+            <section>
+                <title>More on Infrastructure</title>
+                
+                <indexterm>
+                    <primary>Mailing lists</primary>
+                </indexterm>
+                
+                <para>Besides the developer mailing list, there&#039;s also a mailing for users (see <link xlink:href="http://argouml.tigris.org/servlets/ProjectMailingListList" > The ArgoUML Mailing List List </link> ), where we can discuss problems from a user perspective. Developers also read this list, so highly qualified help will generally be provided. </para>
+                
+                <indexterm>
+                    <primary>FAQ</primary>
+                </indexterm>
+                
+                <para>Before posting to this list, you should take a look at the <link xlink:href="http://argouml.tigris.org/faqs/users.html" > user FAQ</link> maintained by Ewan R. Grantham.</para>
+                <para>More information on ArgoUML and other UML related topics is also available on the <link xlink:href="http://argouml.tigris.org" >ArgoUML website</link>, maintained by Linus Tolke.</para>
+            </section>
+        </section>
+    </section>
+    
+    <section>
+        <title>Scope of This User Manual</title>
+        
+        <section>
+            <title>Target Audience</title>
+            
+            <para>The current release of this document is aimed at experienced users of UML in OOA&amp;D (perhaps with other tools) who wish to transfer to ArgoUML.</para>
+            <para>Future releases will support designers who know OOA&amp;D, and wish to adopt UML notation within their development process.</para>
+            <para>A long term goal is to support i) those who are learning design and wish to start with an OOA&amp;D process that uses UML notation, and ii) people interested in modularized code design with a GUI.</para>
+        </section>
+        
+        <section>
+            <title>Scope</title>
+            
+            <para>The intention is that this document will provide a comprehensive guide, enabling designers to use ArgoUML to its full extent. It is in two parts.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>A tutorial manual, showing how to work with ArgoUML</para>
+                </listitem>
+                <listitem>
+                    <para>A complete reference manual, recording everything you can do with ArgoUML.</para>
+                </listitem>
+            </itemizedlist>
+            
+            <para>Version 0.22 of the document achieved the second of these. </para>
+            <para>In this guide there are some things you will not find, because they are covered elsewhere.</para>
+            
+            <itemizedlist>
+                <listitem>
+                    <para>Descriptions of how ArgoUML works on the inside.</para>
+                </listitem>
+                <listitem>
+                    <para>How to improve ArgoUML with new features and functions.</para>
+                </listitem>
+                <listitem>
+                    <para>A trouble shooting guide.</para>
+                </listitem>
+                <listitem>
+                    <para>A summary quick reference to using ArgoUML.</para>
+                </listitem>
+            </itemizedlist>
+            <para>These are covered in <link xlink:href="http://argouml-stats.tigris.org/documentation/defaulthtml/cookbook/" > the Developers Cookbook</link>, <link xlink:href="http://argouml.tigris.org/faqs/users.html" >the FAQ</link>, and <link xlink:href="http://argouml-stats.tigris.org/documentation/quick-guide-0.22/" > the Quick Guide</link>.</para>
+        </section>
+    </section>
+    
+    <section>
+        <title>Overview of the User Manual</title>
+        
+        <section>
+            <title>Tutorial Manual Structure</title>
+            
+            <para><xref xlink:href="ch.tut.uml" /> provides an overview of UML based OOA&amp;D, including a guide to getting ArgoUML up and running.</para>
+            <para><xref xlink:href="ch.tut.reqs" /> through <xref xlink:href="ch.tut.build" /> then step through each part of the design process from initial requirements capture through to final project build and deployment.</para>
+            <para>As each UML concept is encountered, its use is explained. Its use within ArgoUML is then described. Finally a case study is used to give examples of the concepts in use.</para>
+        </section>
+        
+        <section>
+            <title>Reference Manual Structure</title>
+            
+            <para><xref xlink:href="ch.ref.ui" /> is an overview of the user interface and provides a summary of the support for the various UML diagram types in ArgoUML. <xref xlink:href="ch.ref.menu" /> and <xref xlink:href="ch.ref.navpane" /> describe the menu bar, and each of the sub-windows of the user interface, known as <emphasis>Panes</emphasis>.</para>
+            <para><xref xlink:href="ch.ref.critics" /> gives details of all the cognitive critics within the system. Eventually ArgoUML will link directly to this manual when giving advice on critics.</para>
+            <para><xref xlink:href="ch.ref.entities" /> is an overview of the model elements (i.e. the UML entities that can be placed on diagrams) within ArgoUML. The following chapters ( <xref xlink:href="ch.ref.entusecase" /> through <xref xlink:href="ch.ref.entbuiltin" />) describe, the model elements that can be created through each ArgoUML diagram, and their properties, as well as some standard model elements provided with the system.</para>
+            <para>A complete <xref xlink:href="glossary" /> is provided. <xref xlink:href="app.casestudy" /> provides material to supplement the case study used throughout the document. <xref xlink:href="app.umlres" /> and <xref xlink:href="app.umlcase" /> identify background information on UML and UML CASE tools. <xref xlink:href="app.legal" /> is a copy of the GNU Free Documentation License.</para>
+            <para>A future ambition is to provide a comprehensive index.</para>
+        </section>
+        
+        <section xml:id="s2.intro.user.feedback">
+            <title>User Feedback</title>
+            
+            <indexterm>
+                <primary>Feedback</primary>
+            </indexterm>
+            <indexterm>
+                <primary>User Feedback</primary>
+            </indexterm>
+            <indexterm>
+                <primary>Contributing</primary>
+                <secondary>to the User Manual</secondary>
+            </indexterm>
+            
+            <para>Please tell us what you think about this User Manual. Your comments will help us make improvements. Email your thoughts to the <link xlink:href="mailto:users@argouml.tigris.org" > ArgoUML Users Mailing List</link>. In case you would like to add to the missing chapters you should contact the <link xlink:href="mailto:dev@argouml.tigris.org" >ArgoUML Developer Mailing List</link> to check whether anyone else is working on this part. You can subscribe to either of the mailing lists via the <link xlink:href="http://argouml.tigris.org">ArgoUML web site</link>.</para>
+        </section>
+    </section>
+    
+    <section>
+        <title>Assumptions</title>
+        
+        <para>This release of the manual assumes the reader is very familiar with UML already. This is reflected in the sparseness of the description of UML concepts in the tutorial.</para>
+        <para>The case study is described, but not yet fully realized throughout the tutorial. This will be achieved in future releases of the manual.</para>
+    </section>
+</chapter>

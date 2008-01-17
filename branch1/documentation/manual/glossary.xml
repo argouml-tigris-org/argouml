@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glossary 
+	xmlns="http://docbook.org/ns/docbook" 
+	version="5.0" 
+	xml:lang="en"
+	xml:id="glossary"
+	xmlns:xi="http://www.w3.org/2001/XInclude" 
+	xmlns:xlink="http://www.w3.org/1999/xlink">
+	
+	<title>Glossary</title>
+
+	<glossdiv>
+		<title>A</title>
+
+		<glossentry xml:id="gl.activitydiag">
+			<glossterm>Activity Diagram</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Activity Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Diagram</primary>
+					<secondary>Activity</secondary>
+				</indexterm>
+				<para>A UML diagram capturing the dynamic behavior of a system or sub-system. See <xref
+						xlink:href="s1.umlactivitydiags" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.action">
+			<glossterm>Action</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Action</primary>
+				</indexterm>
+				<para>Behavior associated with <emphasis>States</emphasis> or <emphasis>Transitions</emphasis> in <emphasis>State Diagram</emphasis>. These actions are invocations of <emphasis>Methods</emphasis> and appear on <emphasis>Sequence</emphasis> and <emphasis>Collaboration Diagrams</emphasis>.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.actor">
+			<glossterm>Actor</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Actor</primary>
+				</indexterm>
+				<para>A representation of an agent (animate or inanimate) on a <emphasis>Use Case Diagram</emphasis> external to the system being designed.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.analysis">
+			<glossterm>Analysis</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Analysis</primary>
+				</indexterm>
+				<para>Analysis is the process of taking the <quote>customer</quote> requirements and re-casting them in the language of, and from the perspective of, a putative solution.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.assocclass">
+			<glossterm>Association Class</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Association Class</primary>
+				</indexterm>
+				<para>A class that characterizes the association between two other classes.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.association">
+			<glossterm>Association</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Association</primary>
+				</indexterm>
+				<para>A relationship between two classes in a Class Diagram or between Use Cases or Use Cases and Actors in a Use Case Diagram.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.attribute">
+			<glossterm>Attribute (of a Class or Object)</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Attribute</primary>
+					<secondary>of a Class</secondary>
+				</indexterm>
+				<indexterm>
+					<primary>Attribute</primary>
+					<secondary>of an Object</secondary>
+				</indexterm>
+				<para>An attribute of a class or object is a specification of a data element encapsulated by that object.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>C</title>
+
+		<glossentry xml:id="gl.case">
+			<glossterm>CASE</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>CASE</primary>
+				</indexterm>
+				<para>Computer Aided Software Engineering.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.class">
+			<glossterm>Class</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Class</primary>
+				</indexterm>
+				<para>The encapsulation of the data associated with a model element (its <emphasis>attributes</emphasis>) and the actions associated with the model element (its <emphasis>methods</emphasis>).</para>
+				<para>A class specifies the characteristics of a model element. An <emphasis>object</emphasis> represents an instance of the model element.</para>
+				<para>Classes and objects in UML are represented on <emphasis>Activity Diagrams</emphasis>, <emphasis>Class Diagrams</emphasis>, <emphasis>Collaboration Diagrams</emphasis> and <emphasis>Sequence Diagrams</emphasis>.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.classdiag">
+			<glossterm>Class Diagram</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Class Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Diagram</primary>
+					<secondary>Class</secondary>
+				</indexterm>
+				<para>A UML Diagram showing the structural relationship between classes. See <xref
+						xlink:href="s1.umlclassdiags" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.collaboration">
+			<glossterm>Collaboration</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Collaboration</primary>
+				</indexterm>
+				<para>The process whereby several objects cooperate to provide some higher level behavior that is greater than the sum of the behaviors of the objects. </para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.collabdiag">
+			<glossterm>Collaboration Diagram</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Collaboration Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Diagram</primary>
+					<secondary>Collaboration</secondary>
+				</indexterm>
+				<para>A UML Diagram showing the dynamic behavior as messages are passed between objects. Equivalent to a <emphasis>Sequence Diagram</emphasis>. Which representation is appropriate depends on the problem under consideration.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.collaborator">
+			<glossterm>Collaborator</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Collaborator</primary>
+				</indexterm>
+				<para>An object that participates in a Collaboration. </para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.comprehension">
+			<glossterm>Comprehension and Problem Solving</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Comprehension</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Problem Solving</primary>
+				</indexterm>
+				<para>A design visualization theory within cognitive psychology. The theory notes that designers must bridge a gap between their mental model of the problem or situation and the formal model of a solution or system.</para>
+				<para>This theory suggests that programmers will benefit from:</para>
+				<orderedlist>
+					<listitem>
+						<para>Multiple representations such as program syntactic decomposition, state transitions, control flow, and data flow. These allow the programmer to better identify elements and relationships in the problem and solution and thus more readily create a mapping between their situation models and working system models.</para>
+					</listitem>
+					<listitem>
+						<para>Familiar aspects of a situation model, which improve designers&#039; abilities to formulate solutions.</para>
+					</listitem>
+				</orderedlist>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.conceptclassdiag">
+			<glossterm>Concept Class Diagram</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Concept Class Diagram</primary>
+				</indexterm>
+				<para>A Class Diagram constructed during the Analysis Phase to show the main structural components of the problem identified in the Requirements Phase. See <xref
+						xlink:href="ch.tut.analysis" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.critic">
+			<glossterm>Critic</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Critic</primary>
+				</indexterm>
+				<para>A process within ArgoUML that provides suggestions as to how the design might be improved. Suggestions are based on principles within three theories of cognitive psychology, <emphasis>reflection-in action</emphasis>, <emphasis>opportunistic design</emphasis> and <emphasis>comprehension and problem solving</emphasis>.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>E</title>
+
+		<glossentry xml:id="gl.extends">
+			<glossterm>Extend Relationship</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Extend Relationship</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Relationship</primary>
+					<secondary>Extend</secondary>
+				</indexterm>
+				<para>A relationship between two Use Cases, where the <emphasis>extended</emphasis> Use Case describes a special variant of the <emphasis>extending</emphasis> Use Case.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>G</title>
+
+		<glossentry xml:id="gl.generalization">
+			<glossterm>Generalization Relationship</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Generalization Relationship</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Relationship</primary>
+					<secondary>Generalization</secondary>
+				</indexterm>
+				<para>A relationship between one <emphasis>generalizing</emphasis> Use Cases and one or more <emphasis>generalized</emphasis> Use Cases, where the <emphasis>generalized</emphasis> Use Cases are particular examples of the <emphasis>generalizing</emphasis> Use Case.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.gui">
+			<glossterm>GUI</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>GUI</primary>
+				</indexterm>
+				<para>Graphical User Interface.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>H</title>
+
+		<glossentry xml:id="gl.hierstatediag">
+			<glossterm>Hierarchical Statechart Diagram</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Hierarchical Statechart Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Statechart Diagram, Hierarchical</primary>
+				</indexterm>
+				<para>A <emphasis>Statechart Diagram</emphasis> that contains subsidiary statechart diagrams within individual <emphasis>States</emphasis>.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>I</title>
+
+		<glossentry xml:id="gl.includes">
+			<glossterm>Include Relationship</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Include Relationship</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Relationship</primary>
+					<secondary>Include</secondary>
+				</indexterm>
+				<para>A relationship between two Use Cases, where the <emphasis>included</emphasis> Use Case describes part of the functionality of the <emphasis>including</emphasis> Use Case.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.iterative">
+			<glossterm>Iterative Design Process</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Iterative Design Process</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Design Process</primary>
+					<secondary>Iterative</secondary>
+				</indexterm>
+				<para>A design process where each all phases (requirements, analysis, design, build, test) are tackled partially in a series of iterations. See <xref
+						xlink:href="s2.proctypes" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>J</title>
+
+		<glossentry xml:id="gl.java">
+			<glossterm>Java</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Java</primary>
+				</indexterm>
+				<para>A fully object oriented programming language introduced by Sun Microsystems. More strongly typed than C++, it compiles to an interpreted code, the Java Virtual Machine (JVM). The JVM means that Java code should run on any machine that has implemented the JVM.</para>
+				<para>The most significant component of Java was integration of the JVM into web browsers, allowing code (Applets) to be download and run over the web.</para>
+				<para>ArgoUML is written in Java.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>M</title>
+
+		<glossentry xml:id="gl.mealy">
+			<glossterm>Mealy Machine</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Mealy Machine</primary>
+				</indexterm>
+				<para>A <emphasis>Statechart Diagram</emphasis> where actions are associated with <emphasis>States</emphasis>.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.method">
+			<glossterm>Method (of a Class or Object)</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Method</primary>
+					<secondary>of a Class</secondary>
+				</indexterm>
+				<indexterm>
+					<primary>Method</primary>
+					<secondary>of an Object</secondary>
+				</indexterm>
+				<indexterm>
+					<primary>Class Method</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Object Method</primary>
+				</indexterm>
+				<para>A method of a class or object is a specification of behavior encapsulated by that object.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.moore">
+			<glossterm>Moore Machine</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Moore Machine</primary>
+				</indexterm>
+				<para>A <emphasis>Statechart Diagram</emphasis> where actions are associated with <emphasis>Transitions</emphasis>.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>O</title>
+
+		<glossentry xml:id="gl.object">
+			<glossterm>Object</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Object</primary>
+				</indexterm>
+				<para>An instance of a <emphasis>Class</emphasis>.</para>
+				<para>Classes and objects in UML are represented on <emphasis>Activity Diagrams</emphasis>, <emphasis>Class Diagrams</emphasis>, <emphasis>Collaboration Diagrams</emphasis> and <emphasis>Sequence Diagrams</emphasis>.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.ocl">
+			<glossterm>OCL</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>OCL</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Object Constraint Language</primary>
+				</indexterm>
+				<para>Object Constraint Language. A language for describing constraints within UML.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.omg">
+			<glossterm>OMG</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>OMG</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Object Management Group</primary>
+				</indexterm>
+				<para>The Object Management Group. An international industry standardization body. Best known for CORBA and UML.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.ooad">
+			<glossterm>OOA&amp;D</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>OOA&amp;D</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Design</primary>
+					<secondary>Object Oriented</secondary>
+				</indexterm>
+				<indexterm>
+					<primary>Analysis</primary>
+					<secondary>Object Oriented</secondary>
+				</indexterm>
+				<para>Object Oriented Analysis and Design. An approach to software problem analysis and design based on objects, which encapsulate both data and code. See See <xref
+						xlink:href="s2.ooad" /> or any standard textbook on Software Engineering.</para>
+				<para>UML is a notation to support OOA&amp;D.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.oppdesign">
+			<glossterm>Opportunistic Design</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Opportunistic Design</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Design</primary>
+					<secondary>Opportunistic</secondary>
+				</indexterm>
+				<para>A theory within cognitive psychology suggesting that although designers plan and describe their work in an ordered, hierarchical fashion, in actuality, they choose successive tasks based on the criteria of cognitive cost. Simply stated, designers do not follow even their own plans in order, but choose steps that are mentally least expensive among alternatives.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>P</title>
+
+		<glossentry xml:id="gl.pane">
+			<glossterm>Pane</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Pane</primary>
+				</indexterm>
+				<para>A sub-window within the main window of the ArgoUML user interface.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>R</title>
+
+		<glossentry xml:id="gl.relusecase">
+			<glossterm>Realization Use Case</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Realization Use Case</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Use Case Realization</primary>
+				</indexterm>
+				<para>A <emphasis>Use Case</emphasis> where the <emphasis>Use Case Diagram</emphasis> and <emphasis>Use Case Specification</emphasis> are in the language of the solution domain, rather than the problem domain.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.reflection">
+			<glossterm>Reflection-in-Action</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Reflection-in-Action</primary>
+				</indexterm>
+				<para>A theory within cognitive psychology which observes that designers of complex systems do not conceive a design fully-formed. Instead, they must construct a partial design, evaluate, reflect on, and revise it, until they are ready to extend it further. As developers work hands-on with the design, their mental model of the problem situation improves, hence improving their design.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.requirements">
+			<glossterm>Requirement Capturing</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Requirement Capturing</primary>
+				</indexterm>
+				<para>Requirement capturing is the process of identifying what the <quote>customer</quote> wants from the proposed system. See <xref
+						xlink:href="ch.tut.reqs" /> for a fuller description.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.responsibility">
+			<glossterm>Responsibility</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Responsibility</primary>
+				</indexterm>
+				<para>S ome behavior for which an object is held accountable. A responsibility denotes the obligation of an object to provide a certain behavior. </para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>S</title>
+
+		<glossentry xml:id="gl.scenario">
+			<glossterm>Scenario</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Scenario</primary>
+				</indexterm>
+				<para>A specific sequence of actions that illustrates behavior. </para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.seqdiag">
+			<glossterm>Sequence Diagram</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Sequence Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Diagram</primary>
+					<secondary>Sequence</secondary>
+				</indexterm>
+				<para>A UML Diagram showing the dynamic behavior as messages are passed between objects. Equivalent to a <emphasis>Collaboration Diagram</emphasis>. Which representation is appropriate depends on the problem under consideration. See <xref
+						xlink:href="s1.umlseqdiags" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.sgml">
+			<glossterm>SGML</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>SGML</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Standard Graphical Markup Language</primary>
+				</indexterm>
+				<para>Standard Graphical Markup Language. Defined by ISO 8879:1986.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.simula67">
+			<glossterm>Simula&nbsp;67</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Simula&nbsp;67</primary>
+				</indexterm>
+				<para>A procedural programming language intended for simulation. Noted for its introduction of <emphasis>objects</emphasis> and <emphasis>coroutines</emphasis>.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.state">
+			<glossterm>State</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>State</primary>
+				</indexterm>
+				<para>Within a <emphasis>Statechart Diagram</emphasis> a one of the possible configurations of the machine.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.statediag">
+			<glossterm>Statechart Diagram</glossterm>
+
+			<glossdef>
+				<indexterm>
+					<primary>State Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Statechart Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Diagram</primary>
+					<secondary>State</secondary>
+				</indexterm>
+				<para>A UML Diagram showing the dynamic behavior of an active <emphasis>Object</emphasis>. See <xref
+						xlink:href="s1.umlstatediags" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.stereotype">
+			<glossterm>Stereotypes and Stereotyping</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Stereotype</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Stereotyping</primary>
+				</indexterm>
+				<para>Any model element within UML can be given a <emphasis>stereotype</emphasis> to indicate its association with a particular role in the design. A stereotype <literal> spqr</literal> is generally indicated with the notation <literal>&lt;&lt;spqr&gt;&gt;</literal>.</para>
+				<para>A stereotype defines a Namespace within the design. Examples of stereotypes are <literal> &lt;&lt;business&gt;&gt;</literal> and <literal> &lt;&lt;realization&gt;&gt;</literal> for Use Cases, used to distinguish between Use Cases at the requirements phase defined in terms of the problem domain, and Use Cases at the analysis phase defined in terms of the solution domain.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.supspec">
+			<glossterm>Supplementary Requirement Specification</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Supplementary Requirement Specification</primary>
+				</indexterm>
+				<para>The document capturing non-functional requirements that cannot be associated with Use Cases.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.svg">
+			<glossterm>SVG</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>SVG</primary>
+				</indexterm>
+				<para>Scalable Vector Graphics format. A standard representation of graphics diagrams that use vectors. ArgoUML can export diagrams in SVG.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.sysseqdiag">
+			<glossterm>System Sequence Diagram</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>System Sequence Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Diagram</primary>
+					<secondary>System Sequence</secondary>
+				</indexterm>
+				<para>A <emphasis>Sequence Diagram</emphasis> used in the <emphasis>Analysis</emphasis> Phase showing the dynamic behavior of the overall system. See <xref
+						xlink:href="ch.tut.analysis" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.sysstatediag">
+			<glossterm>System Statechart Diagram</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>System Statechart Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Diagram</primary>
+					<secondary>System State</secondary>
+				</indexterm>
+				<para>A <emphasis>Statechart Diagram</emphasis> used in the <emphasis>Analysis</emphasis> Phase showing the dynamic behavior of an active top level system objects. See <xref
+						xlink:href="ch.tut.analysis" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>T</title>
+
+		<glossentry xml:id="gl.todo">
+			<glossterm>To-Do List</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>To-Do List</primary>
+				</indexterm>
+				<para>A feature of ArgoUML allowing the user to record activities that are yet to be completed.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.transition">
+			<glossterm>Transition</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Transition</primary>
+				</indexterm>
+				<para>The change between <emphasis>States</emphasis> in a <emphasis>Statechart Diagram</emphasis>..</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>U</title>
+
+		<glossentry xml:id="gl.uml">
+			<glossterm>UML</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>UML</primary>
+				</indexterm>
+				<para>Universal Modeling Language. A graphical notation for OOA&amp;D processes, standardized by the OMG. ArgoUML supports UML 1.4. UML 2.0 is in the final stages of standardization and should be complete during 2006.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.usecase">
+			<glossterm>Use Case</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Use Case</primary>
+				</indexterm>
+				<para>A UML notation for capturing requirements of a system or sub-system. See <xref
+						xlink:href="s1.tut.req_process_output" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.usecasediag">
+			<glossterm>Use Case Diagram</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Use Case Diagram</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Diagram</primary>
+					<secondary>Use Case</secondary>
+				</indexterm>
+				<para>A UML diagram showing the relationships between Actors and Use Cases. See <xref
+						xlink:href="s1.tut.req_process_output" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.ucspec">
+			<glossterm>Use Case Specification</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Use Case Specification</primary>
+				</indexterm>
+				<para>The document capturing the detailed requirements behind a Use Case.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>V</title>
+
+		<glossentry xml:id="gl.vision">
+			<glossterm>Vision Document</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Vision Document</primary>
+				</indexterm>
+				<para>The top level document describing what the system being developed is to achieve.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>W</title>
+
+		<glossentry xml:id="gl.w3c">
+			<glossterm>W3C</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>W3C</primary>
+				</indexterm>
+				<para>The World Wide Web Consortium, <link xlink:href="http://www.w3c.org"
+						>www.w3c.org</link>. An international standardization body for all things to do with the World Wide Web.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.waterfall">
+			<glossterm>Waterfall Design Process</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>Waterfall Design Process</primary>
+				</indexterm>
+				<indexterm>
+					<primary>Design Process</primary>
+					<secondary>Waterfall</secondary>
+				</indexterm>
+				<para>A design process where each phase (requirements, analysis, design, build, test) is completed before the next starts. See <xref
+						xlink:href="s2.proctypes" /> for more information.</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+
+	<glossdiv>
+		<title>X</title>
+
+		<glossentry xml:id="gl.xmi">
+			<glossterm>XMI</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>XMI</primary>
+				</indexterm>
+				<para>XML Model Interchange format. A format for file storage of UML models. Currently incomplete, since it does not carry all graphical layout information, so must be supplemented by files carrying that information.</para>
+			</glossdef>
+		</glossentry>
+
+		<glossentry xml:id="gl.xml">
+			<glossterm>XML</glossterm>
+			<glossdef>
+				<indexterm>
+					<primary>XML</primary>
+				</indexterm>
+				<para>eXtensible Markup Language. A simplified derivative of SGML defined by W3C</para>
+			</glossdef>
+		</glossentry>
+	</glossdiv>
+</glossary>

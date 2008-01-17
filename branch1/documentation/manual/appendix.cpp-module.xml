@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appendix
+    xmlns="http://docbook.org/ns/docbook" 
+    version="5.0" 
+    xml:lang="en"
+    xmlns:xi="http://www.w3.org/2001/XInclude" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xml:id="app.cppmod">
+    
+    <title>The C++ Module</title>
+    
+    <para>The ArgoUML C++ Module (C++ module) provides C++ code generation functionalities and C++ notation within ArgoUML. It works the same way as the other languages&#039; modules.</para>
+    
+    <section>
+        <title>Modeling for C++</title>
+        
+        <para>The C++ programming language has constructs that aren&#039;t contained by default in UML. Examples are pointers, global functions and variables, references and operator overloading. To enable us to apply these constructs in our models and be capable of taking advantage of it for code generation and C++ notation in UML diagrams, the C++ module uses conventions in the use of the extension features of UML, tagged values and stereotypes.</para>
+        <para>Since UML and C++ are object oriented, there is an obvious correspondence between the UML model elements and C++ structural constructs, e.g, the UML <literal>Class</literal> is related to the C++ <literal>class</literal>. These obvious relations will not be described here, since it is assumed that an ArgoUML user that wants to model for C++ has basic knowledge of both C++ and UML.</para>
+        <para>The C++ module comes with a UML profile for C++, which defines <link linkend="s1.ref.stereotype"> <literal>Stereotypes</literal> </link> and <link linkend="s1.ref.tagdefinition"> <literal>Tagged Definitions</literal> </link> which enable the modeling of C++ specific constructs, such as pointers and references. It also includes <link linkend="s1.ref.datatype"> <literal>Data Types</literal> </link> that model the C++ built-in types, such as <literal>unsigned long int</literal>. </para>
+        <para>To have these constructs available in our model, we need to copy them into the model explicitly via the <literal>C++ Generator</literal> settings tab, within the <literal>Settings</literal> dialog, and use the button <literal>Copy the C++ Profile into the Model</literal>. </para>
+        <para>Tagged values are one of the main means by which we can define code generation behavior. They have a name - the tag - and a value, and are applied to model elements. For each of the possible Tagged values, the C++ profile contains a tag definition, which is contained in a stereotype, applicable to the models elements to which we can define a tagged value's value to specify specific behaviour. So, for instance, to define that the parameter <literal>x</literal> is a reference, you apply the stereotype <literal>cppParameter</literal> to it, them you add the tagged value <literal>reference</literal> with the value <literal>true</literal>. </para>
+        <para>The tagged values in use for the C++ module have two categories:</para>
+        
+        <itemizedlist>
+            <listitem>
+                <para>free format values - any <literal>String</literal> is valid, except the empty <literal>String</literal></para>
+            </listitem>
+            <listitem>
+                <para>formated values - the value must obey some restrictions, e.g., be one of <literal>true</literal> or <literal>false</literal> (abbreviated to <literal>true || false</literal>)</para>
+            </listitem>
+        </itemizedlist>
+        
+        <para>For <literal>Boolean</literal> tagged values, only the values &quot;<literal>true</literal>&quot; or &quot; <literal>false</literal>&quot; are applicable. If a <literal> Boolean</literal> tagged value does not exist or is invalid for one model element, a default value is assumed by the code generator. In the bellow documentation the default value is marked.</para>
+        <para>Free format tagged values are only significant if present and if the value isn&#039;t an empty <literal>String</literal>. When the value must follow some sort of format, that is explicitly stated. In this case, there is the chance that the value is invalid. If the value is invalid, no assumptions are made; the generator will trace the problem and ignore the tagged value.</para>
+        
+        <section>
+            <title><literal>Class</literal> tagged values</title>
+            
+            <para>To make the tag definitions applicable to a C++ class available we apply the <literal>cppClass</literal> stereotype to it. </para>
+            
+            <variablelist>
+                <varlistentry>
+                    <term>
+                        <literal>constructor</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>true</literal> - generates a default constructor for the <literal>class</literal>.</para>
+                        <para><literal>false</literal> (default) - no default constructor is generated, unless it is explicitly modeled with the <literal>&laquo;create&raquo;</literal> stereotype.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>header_incl</literal>
+                    </term>
+                    <listitem>
+                        <para>Name of the file to include in the header.</para>
+                        <note>
+                            <para>If we desire to have multiple headers included this way, just use multiple tagged values with <literal> header_incl</literal> as the tag.</para>
+                            <para>Other tagged values used for C++ modeling may also be used this way. This note won&#039;t be repeated in those cases.</para>
+                        </note>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>source_incl</literal>
+                    </term>
+                    <listitem>
+                        <para>Name of the file to include in the source ( <literal>.cpp</literal> file).</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>typedef_public</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>&lt;source type&gt; &lt;type_name&gt;</literal> - creates <literal> typedef</literal> line in the public area of the <literal> class</literal> with <literal>typedef &lt;source type&gt; &lt;type name&gt;</literal>.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>typedef_protected</literal>
+                    </term>
+                    <listitem>
+                        <para>Same as <literal>typedef_public</literal>, but, in <literal>protected</literal> area.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>typedef_private</literal>
+                    </term>
+                    <listitem>
+                        <para>Same as <literal>typedef_public</literal>, but, in the <literal>private</literal> area.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>typedef_global_header</literal>
+                    </term>
+                    <listitem>
+                        <para>Same as <literal>typedef_public</literal>, but, in the global area of the header.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>typedef_global_source</literal>
+                    </term>
+                    <listitem>
+                        <para>Same as <literal>typedef_global_source</literal>, but, in the source file.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>TemplatePath</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>Directory</literal> - will search in the specified directory for the template files &quot;header_template&quot; and &quot;cpp_template&quot; which are placed in top of the corresponding file. The following tags in the template file are replaced by model values: |FILENAME|, |DATE|, |YEAR|, |AUTHOR|, |EMAIL|. If no such tag is specified, the templates are searched in the subdirectory of the root directory for the code generation.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>email</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>name@domain.country</literal> - replaces the tag |EMAIL| of the template file.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>author</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>name</literal> - replaces the tag |AUTHOR| of the template file.</para>
+                        <note>
+                            <para>You may simply use the Author property in the documentation property panel.</para>
+                        </note>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
+        </section>
+        
+        <section>
+            <title><literal>Attribute</literal> tagged values</title>
+            <para>UML <literal>Attributes</literal> are mapped to <literal> class member variables</literal>. To make the tag definitions applicable to a C++ member variable available we apply the <literal>cppAttribute</literal> stereotype to it.</para>
+            <variablelist>
+                <varlistentry>
+                    <term>
+                        <literal>pointer</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>true</literal> - the type of the member variable will be a pointer to the attribute type.</para>
+                        <para>For example, if you have the UML <literal> Attribute</literal>: <literal>name: std::string</literal>, with the <literal> pointer</literal> tagged value set to true, the generated member variable would be: <literal>std::string* name;</literal></para>
+                        <para><literal>false</literal> (default) - no pointer modifier is applied.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>reference</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>true</literal> - the type of the member variable will be a reference to the attribute type.</para>
+                        <para><literal>false</literal> (default) - no reference modifier is applied.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>usage</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>header</literal> - will lead for class types to a pre-declaration in the header, and the include of the remote class header in the header of the generated class.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>MultiplicityType</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>list || slist || vector || map || stack || stringmap</literal> - will define a multiplicity as the corresponding STL container, if the <literal> Multiplicity</literal> range of the attribute is variable (for fixed size ranges this setting is ignored).</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>set</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>private || protected || public</literal> - creates a simple function to set the attribute by a function (call by reference is used for class-types, else call by value); place the function in the given visibility area.</para>
+                    </listitem>
+                </varlistentry>
+                <varlistentry>
+                    <term>
+                        <literal>get</literal>
+                    </term>
+                    <listitem>
+                        <para><literal>private || protected || public</literal> - as for <literal>set</literal>.</para>
+                    </listitem>
+                </varlistentry>
+            </variablelist>
+        </section>
+        
+        <section>
+            <title>
+                <literal>Parameters</literal>
+            </title>
+            <para>To make the tag definitions applicable to a C++ argument available we apply the <literal>cppParameter</literal> stereotype to it. </para>
+            <section>
+                <title>Variable passing semantics</title>
+                <para>If a <literal>Parameter</literal> for an <literal> Operation</literal> is marked as <literal>out</literal> or <literal>inout</literal> the variable will be passed by reference (default) or pointer (needs tagged value <literal> pointer</literal> - see above), otherwise by value.</para>
+                <para>Return values in UML are simply <literal> Parameters</literal> marked as <literal>return</literal>, therefore everything here applies to them, except where explicitly noted.</para>
+                <warning>
+                    <para>Note that UML allows multiple return values. This is possible to support in C++ as out parameters, but, currently the generator doesn&#039;t supports it.</para>
+                    <para>This problem is being handled in <link
+                        xlink:href="http://argouml.tigris.org/issues/show_bug.cgi?id=3553"
+                        > issue #3553 - handle multiple return parameters</link>.</para>
+                </warning>
+            </section>
+            <section>
+                <title><literal>Parameter</literal> tagged values</title>
+                <variablelist>
+                    <varlistentry>
+                        <term>
+                            <literal>pointer</literal>
+                        </term>
+                        <listitem>
+                            <para><literal>true || false</literal> (default) - same as for <literal>Attributes</literal>.</para>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>
+                            <literal>reference</literal>
+                        </term>
+                        <listitem>
+                            <para>ditto</para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
+            </section>
+        </section>
+        
+        <section>
+            <title>
+                <literal>Generalization</literal>
+            </title>
+            <para>To make the tag definitions applicable to a C++ generalization available we apply the <literal>cppGeneralization</literal> stereotype to it. </para>
+            <section>
+                <title><literal>Generalization</literal> tagged values</title>
+                <variablelist>
+                    <varlistentry>
+                        <term>
+                            <literal>cpp_virtual_inheritance</literal>
+                        </term>
+                        <listitem>
+                            <para><literal>true || false</literal> (default) - used to specify virtual inheritance.</para>
+                        </listitem>
+                    </varlistentry>
+                    <varlistentry>
+                        <term>
+                            <literal>cpp_inheritance_visibility</literal>
+                        </term>
+                        <listitem>
+                            <para><literal>public</literal> (default)<literal> || private || protected</literal> &ndash; use this to specify the inheritance visibility of the generalization.</para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
+            </section>
+        </section>
+        
+        <section>
+            <title>
+                <literal>Realization</literal>
+            </title>
+            <para>To make the tag definitions applicable to a C++ realization available we apply the <literal>cppRealization</literal> stereotype to it. </para>
+            <section>
+                <title><literal>Realization</literal> tagged values</title>
+                <variablelist>
+                    <varlistentry>
+                        <term>
+                            <literal>cpp_inheritance_visibility</literal>
+                        </term>
+                        <listitem>
+                            <para><literal>public</literal> (default)<literal> || private || protected</literal> &ndash; use this to specify the inheritance visibility of the generalization.</para>
+                        </listitem>
+                    </varlistentry>
+                </variablelist>
+            </section>
+        </section>
+        
+        <section>
+            <title>Preserved sections</title>
+            
+            <para>With each code generation, special comments around the member function definitions will be generated like this:</para>
+            <programlisting> function Testclass::Testclass() // section -64--88-0-40-76f2e8:ec37965ae0:-7fff begin { } // section -64--88-0-40-76f2e8:ec37965ae0:-7fff end </programlisting>
+            <para>All code you put within the &quot;begin&quot; and &quot;end&quot; lines will be preserved when you generate the code again. Please do not change anything within these lines because the sections are recognized by this comment syntax. As the curly braces are placed within the preserved area, attribute initializers are preserved on constructors.</para>
+            <para>This also works if you change Method Names after the generation.</para>
+            <programlisting> void newOperation(std::string test = &quot;fddsaffa&quot;) // section 603522:ec4c7ff768:-7ffc begin { } // section 603522:ec4c7ff768:-7ffc end </programlisting>
+            <para>If you delete an Operation in the model. The next time the class is generated, the lost code - i.e., the whole member function definition - will be added as comment to the end of the file.</para>
+        </section>
+    </section>
+</appendix>
