@@ -76,6 +76,14 @@
   <!-- Added by Jeremy Bennett for 1.49 XSL stylesheets -->
 
   <xsl:variable name="saxon.extensions" select="1"/>
+  
+  <!-- Added by Tony Rogers for DocBook 5 conversion -->
+  <xsl:template
+    match="xi:include | include"
+    xmlns:xi="http://www.w3.org/2001/XInclude">
+
+    <xsl:apply-templates select="document(attribute::href)" />
+    
+  </xsl:template>
 
 </xsl:stylesheet>
-
