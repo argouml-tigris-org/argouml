@@ -46,8 +46,8 @@
     <date>2001-11-10</date>
     
     <abstract>
-      <para>The purpose of this Cookbook is to help in coordinating and documenting the development of ArgoUML.</para>
-      <para>This version of the cookbook is loosely connected to the version @VERSION@ of ArgoUML.</para>
+      <para>The purpose of the Cookbook is to help in coordinating and documenting the development of ArgoUML.</para>
+      <para>This version of the Cookbook is loosely connected to the version @VERSION@ of ArgoUML.</para>
     </abstract>
     
     <authorgroup>
@@ -122,12 +122,12 @@
   
   <xi:include href="introduction.xml" />
   <xi:include href="building.xml" />
-  <xi:include href="requirements.xml" />
+  <xi:include href="require.xml" />
   <xi:include href="subsystems.xml" />
   <xi:include href="inside_subsystems.xml" />
   <xi:include href="extending.xml" />
-  <xi:include href="standards.xml" />
-  <xi:include href="documentation_standards.xml" />
+  <xi:include href="standard.xml" />
+  <xi:include href="documentationstandards.xml" />
   <xi:include href="process.xml" />
   
   <xi:include href="glossary.xml" />
