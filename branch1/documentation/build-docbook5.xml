@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    I created this buildfile to try and test the build process of 
+    the DocBook v5.0 documentation with simpler commands.
+    
+    Unfortunately, although I am pretty comfy with most XML, Ant is weird.
+    Ant is cool, and I prefer it to make...but weird.
+    
+    ~ Tony | "Zearin"
+    2008-JAN-18
+-->
+<project name="ArgoDocs" default="defaulthtml" basedir=".">
+    
+    <property 
+        name="saxon.jar.path" 
+        value="${argo.tools.lib}/saxonb9-0-0-2j/saxon9.jar" />
+    
+    <property file="build.properties" />
+    
+    
+    <target name="printablehtml">
+        
+        <!-- 
+            @see http://ant.apache.org/manual/CoreTasks/style.html 
+        -->
+        <xslt 
+            classpath="${saxon.jar.path}"  
+            basedir="." 
+            destdir="../build/documentation" 
+            style="docbook-setup/create-printable.xsl"
+            includes="*.xml"
+            force="yes"
+            ></xslt>
+        
+    </target>
+    
+</project>
