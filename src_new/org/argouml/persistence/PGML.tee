@@ -218,7 +218,8 @@ height="<ocl>self.height.intValue</ocl>"
   FILL_AND_STROKE
 
   font="<ocl>self.fontFamily</ocl>"
-
+  italic="<ocl>self.italic</ocl>"
+  bold="<ocl>self.bold</ocl>"
   textsize="<ocl>self.fontSize</ocl>"
   justification="<ocl>self.justificationByName</ocl>"
 ><ocl>self.text</ocl></text>

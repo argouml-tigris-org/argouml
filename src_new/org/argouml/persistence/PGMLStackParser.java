@@ -178,6 +178,14 @@ class PGMLStackParser
                 if (justification != null && !justification.equals("")) {
                     text.setJustificationByName(justification);
                 }
+                Boolean italic = Boolean.valueOf(attributes.getValue("italic"));
+                if (italic != null && !italic.equals("")) {
+                    text.setItalic(italic);
+                }
+                Boolean bold = Boolean.valueOf(attributes.getValue("bold"));
+                if (bold != null && !bold.equals("")) {
+                    text.setBold(bold);
+                }
 
                 return new FigTextHandler(this, text);
             }
