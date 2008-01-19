@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,14 +37,7 @@ import javax.management.NotificationListener;
 
 import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -58,10 +51,27 @@ public class ArgoFigText extends FigText
     private NotificationBroadcasterSupport notifier = 
         new NotificationBroadcasterSupport();
 
+    /**
+     * The constructor.
+     * 
+     * @param x initial location
+     * @param y initial location
+     * @param w initial width
+     * @param h initial height
+     */
     public ArgoFigText(int x, int y, int w, int h) {
         super(x, y, w, h);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param x initial location
+     * @param y initial location
+     * @param w initial width
+     * @param h initial height
+     * @param expandOnly true if this fig is supposed to grow only
+     */
     public ArgoFigText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
     }
