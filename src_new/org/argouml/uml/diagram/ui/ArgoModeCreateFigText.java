@@ -49,6 +49,6 @@ public class ArgoModeCreateFigText extends ModeCreateFigText {
      * event and the state of the parent Editor. 
      */
     public Fig createNewItem(MouseEvent e, int snapX, int snapY) {
-        return new ArgoFigText(snapX, snapY, 0, 0);
+        return new ArgoFigText(snapX, snapY, 0, 0, true);
     }
 }
