@@ -43,12 +43,70 @@ see the following sections.
     <title>Quick Start</title>
 
     <para>
-If you are using Eclipse 3.1 or later, see <xref linkend="eclipse3"></xref>
-for quick setup instructions.
+We use Eclipse as the suggested development environment when developing
+ArgoUML.
+Here is the recommended, step by step instruction to set up your
+Eclipse development environment:
+      <orderedlist>
+        <listitem>
+          <para>
+Download and install Eclipse for Java development (preferably Eclipse 3.something).
+This is if you don't already have it installed.
+See 
+<ulink url="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</ulink>.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Download and install Subclipse.
+This is if you don't already have it installed in your Eclipse.
+See <ulink url="http://subclipse.tigris.org/install.html"/>.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Download the Project Set File for the argouml project
+and save it on your file system.
+</para>
+          <para>
+The main file is called 
+<filename>argouml-core-projectset.psf</filename>
+and is available at
+<ulink url="http://argouml.tigris.org/source/browse/*checkout*/argouml/trunk/tools/eclipse/argouml-core-projectset.psf">http://argouml.tigris.org/source/browse/*checkout*/argouml/trunk/tools/eclipse/argouml-core-projectset.psf</ulink></para>
+        </listitem>
+
+        <listitem>
+          <para>
+In a new workspace, Import the Project Set File.
+The project will download several Eclipse projects
+and automatically build them.
+</para>
+
+          <para>
+If some fails to build, try to do refresh or clean.
+It should work but there has been reports of problems
+at first download.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Start argouml using ArgoUML configuration.
+</para>
+        </listitem>
+      </orderedlist>
 </para>
 
     <para>
-If you are using Windows, the follow commands will build ArgoUML from source and
+Details of this can be found at
+<xref linkend="eclipse3"></xref>.
+</para>
+
+    <para>
+If you want to work without Eclipse in Windows,
+the follow commands will build ArgoUML from source and
 run it.  If you using Unix/Linux, the comparable commands, modified slightly for
 your particular shell, should work.
 <programlisting>
@@ -68,6 +126,7 @@ That was the compact version for Windows + JDK.
 Modifying these steps slightly as appropriate for your shell should
 work on Unix/Linux systems as well. 
 </para>
+
     <para>
 If you don't understand these instructions or they don't work,
 please read the rest of 
@@ -1781,12 +1840,6 @@ and not the temporary file.
   </sect1>
 
   <sect1 id="eclipse3">
-    <sect1info>
-      <author>
-        <firstname>Linus</firstname>
-        <surname>Tolke</surname>
-      </author>
-    </sect1info>
     <title>Setting up Eclipse 3</title>
     <indexterm>
       <primary>Setting up Eclipse</primary>
@@ -1797,7 +1850,7 @@ and not the temporary file.
     </indexterm>
 
     <para>
-If you are running Eclipse 3.1 or 3.2
+If you are running Eclipse 3.2 or 3.3
 we have a prepared a recommended setup
 committed into our repository.
 This setup is slightly different than the ant setup 
