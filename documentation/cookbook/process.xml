@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1475,6 +1475,95 @@ commits his solution also in the main trunk if still applicable there.
 </para>
       </listitem>
     </itemizedlist>
+  </sect1>
+
+  <sect1 id="mailing-list-moderating">
+    <title>Moderation of a mailing list</title>
+
+    <para>
+When a mail is sent to one of the argouml mailing lists and
+it is not automatically approved, it is sent to the moderator
+for approval.
+</para>
+    <para>
+The moderator approves or rejects it by sending a mail to
+one of the mail addresses in the mail he receives.
+</para>
+    <para>
+If the moderator rejects the mail, a message can be sent to the
+original poster.
+</para>
+    <sidebar>
+      <para>
+Here is a suggestion of such a message that Linus Tolke uses on the
+argouml dev list:
+</para>
+      <para>
+%%% Start comment
+</para>
+      <para>
+Hello!
+</para>
+      <para>
+You have written a mail to the ArgoUML dev list.
+This mail was not automatically approved by the mailing list mechanism
+but instead sent to me, the moderator, for approval.
+Most likely, this is because you are not subscribed to the list or
+the from field of the sent mail was different from the mail address
+that is subscribed to the list so
+the list mechanism don't consider you as subscribed. 
+</para>
+      <para>
+As a moderator, I assume that this was a misstake.
+Either
+a misstake to send the mail to the list in the first place
+since the list don't accept mails from non-subscribers, or
+a misstake in using the incorrect from address.
+For this reason I have not approved you mail for the mailing list.
+If the misstake was that you had forgot to subscribe,
+please subscribe and resend the mail.
+If the misstake was that you used the incorrect from address,
+please resend the mail using the correct from address.
+</para>
+      <para>
+If this is not a misstake,
+I assume that this is because
+you are subscribed to the mailing list with one mail address and
+wants to (or has to) send mails using another.
+This is possible, however some special allowing is possible.
+If this is the case, please send me a mail at
+dev-owner@argouml.tigris.org explaining this and including your
+two mail addresses, and then send the mail immediately again.
+Then I will approve the mail and allow your mail address so
+that future postings will go through immediately.
+</para>
+      <para>
+There are two reasons for not allowing posts to the list
+without being a member.
+The first one is from a spam fighting perspecting.
+The ArgoUML mailing lists attract a fair amount of commercial messages and
+scams that we don't want to resend to all list members.
+The second one is that answers to your postings on the list
+are always sent back to the list.
+Unless you are a member you will miss it.
+
+For this reason,
+if you become a member on the list just to send a single mail,
+please linger on the list for a couple of weeks to receive any
+answers or follow-ups to your mail.
+</para>
+      <para>
+I hope that you accept the policy and the measure taken by me,
+the moderator and wish you welcome to the ArgoUML project and
+the dev mailing list for developers of ArgoUML.
+</para>
+      <para>
+        /Linus, moderator of the dev@argouml.tigris.org mailing list
+</para>
+      <para>
+%%% End comment
+</para>
+</sidebar>
   </sect1>
 
 </chapter>
