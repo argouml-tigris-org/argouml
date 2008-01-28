@@ -24,6 +24,8 @@
 
 package org.argouml.model.mdr;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 
@@ -293,10 +295,11 @@ public class TestMDRModelImplementation extends TestCase {
 
     /**
      * @throws UmlException If an error occur
+     * @throws FileNotFoundException If the file isn't found
      */
-    public void testGetXmiWriter() throws UmlException {
+    public void testGetXmiWriter() throws UmlException, FileNotFoundException {
         assertNotNull(modelImplementation.getXmiWriter(
-                null, (OutputStream) null, null));
+                "dummyModel", new FileOutputStream("dummy.txt"), null));
     }
 }
 

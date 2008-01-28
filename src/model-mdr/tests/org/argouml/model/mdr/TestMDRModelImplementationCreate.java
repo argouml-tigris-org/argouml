@@ -80,7 +80,7 @@ public class TestMDRModelImplementationCreate extends TestCase {
         assertEquals(m1, m);
         assertEquals(m2, m);
         XmiReader xmiReader = mi.getXmiReader();
-        String model = "ALittleBit.xmi";
+        String model = "tests/testmodels/test.xmi";//!"ALittleBit.xmi";
         File fileModel = new File(model);
         assertTrue(fileModel.exists());
         InputSource source = new InputSource(new FileInputStream(fileModel));
