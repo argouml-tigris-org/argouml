@@ -47,8 +47,10 @@ public class StylePanelFigText extends StylePanelFig {
 
     private static final Integer[] COMMON_SIZES = {
 	Integer.valueOf(8), Integer.valueOf(9),
-	Integer.valueOf(10), Integer.valueOf(12), Integer.valueOf(16), Integer.valueOf(18),
-	Integer.valueOf(24), Integer.valueOf(36), Integer.valueOf(48), Integer.valueOf(72),
+	Integer.valueOf(10), Integer.valueOf(12), 
+        Integer.valueOf(16), Integer.valueOf(18),
+	Integer.valueOf(24), Integer.valueOf(36), 
+        Integer.valueOf(48), Integer.valueOf(72),
 	Integer.valueOf(96),
     };
 
@@ -149,7 +151,7 @@ public class StylePanelFigText extends StylePanelFig {
         if (ft == null) {
             return;
         }
-        String fontName = ft.getFontFamily();
+        String fontName = ft.getFontFamily().toLowerCase();
         int size = ft.getFontSize();
         String styleName = STYLES[0];
 
