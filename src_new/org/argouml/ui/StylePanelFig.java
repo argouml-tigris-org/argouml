@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,9 +51,13 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.util.ArgoFrame;
 
 /**
- * The basic stylepanel which provides the boundaries box,
- * line and fill color information and the stereotype view combo box.
- *
+ * The basic stylepanel for a Fig which allows the user to see and adjust 
+ * the common attributes of a Fig: 
+ * the boundaries box,
+ * line and fill color information 
+ * and the stereotype view combo box. <p>
+ * 
+ * Shown to the user as the "Presentation" tab.
  */
 public class StylePanelFig
     extends StylePanel
@@ -429,14 +433,14 @@ public class StylePanelFig
      * box.
      *
      * @param field the combobox to enter a new color for
-     * @param title the title for the dialog box
+     * @param title the i18n key for the title for the dialog box
      * @param targetColor the initial Color set when the color-chooser is shown
      */
     protected void handleCustomColor(JComboBox field, String title,
             Color targetColor) {
         Color newColor =
             JColorChooser.showDialog(ArgoFrame.getInstance(),
-                title, targetColor);
+                    Translator.localize(title), targetColor);
         if (newColor != null) {
             field.insertItemAt(newColor, field.getItemCount() - 1);
             field.setSelectedItem(newColor);
@@ -487,13 +491,15 @@ public class StylePanelFig
                 && target != null) {
             if (src == fillField) {
                 if (e.getItem() == CUSTOM_ITEM) {
-                    handleCustomColor(fillField, "Custom Fill Color",
+                    handleCustomColor(fillField, 
+                            "label.stylepane.custom-fill-color",
                             target.getFillColor());
                 }
                 setTargetFill();
             } else if (src == lineField) {
                 if (e.getItem() == CUSTOM_ITEM) {
-                    handleCustomColor(lineField, "Custom Line Color",
+                    handleCustomColor(lineField, 
+                            "label.stylepane.custom-line-color",
                             target.getLineColor());
                 }
                 setTargetLine();
@@ -634,4 +640,11 @@ public class StylePanelFig
      * The UID.
      */
     private static final long serialVersionUID = -6232843473753751128L;
+
+    /**
+     * @return returns the translated name of the "Custom..." item.
+     */
+    protected static String getCustomItemName() {
+        return CUSTOM_ITEM;
+    }
 }

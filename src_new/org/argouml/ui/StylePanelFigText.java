@@ -30,6 +30,8 @@ import java.awt.event.ItemEvent;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import org.argouml.i18n.Translator;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.ui.ColorRenderer;
 
@@ -40,6 +42,9 @@ import org.tigris.gef.ui.ColorRenderer;
  */
 public class StylePanelFigText extends StylePanelFig {
 
+    /**
+     * TODO: These can not simply be translated...
+     */
     private static final String[] FONT_NAMES = {
 	"dialog", "serif", "sanserif",
 	"monospaced",
@@ -63,23 +68,28 @@ public class StylePanelFigText extends StylePanelFig {
 	"Left", "Right", "Center",
     };
 
-    private JLabel fontLabel = new JLabel("Font: ");
+    private JLabel fontLabel = new JLabel(
+            Translator.localize("label.stylepane.font") + ": ");
 
     private JComboBox fontField = new JComboBox(FONT_NAMES);
 
-    private JLabel sizeLabel = new JLabel("Size: ");
+    private JLabel sizeLabel = new JLabel(
+            Translator.localize("label.stylepane.size") + ": ");
 
     private JComboBox sizeField = new JComboBox(COMMON_SIZES);
 
-    private JLabel styleLabel = new JLabel("Style: ");
+    private JLabel styleLabel = new JLabel(
+            Translator.localize("label.stylepane.style") + ": ");
 
     private JComboBox styleField = new JComboBox(STYLES);
 
-    private JLabel justLabel = new JLabel("Justify: ");
+    private JLabel justLabel = new JLabel(
+            Translator.localize("label.stylepane.justify") + ": ");
 
     private JComboBox justField = new JComboBox(JUSTIFIES);
 
-    private JLabel textColorLabel = new JLabel("Text Color: ");
+    private JLabel textColorLabel = new JLabel(
+            Translator.localize("label.stylepane.text-color") + ": ");
 
     private JComboBox textColorField = new JComboBox();
 
@@ -136,7 +146,7 @@ public class StylePanelFigText extends StylePanelFig {
         textColorField.addItem(Color.green);
         textColorField.addItem(Color.orange);
         textColorField.addItem(Color.pink);
-        textColorField.addItem("Custom...");
+        textColorField.addItem(getCustomItemName());
 
     }
 
@@ -277,18 +287,27 @@ public class StylePanelFigText extends StylePanelFig {
      */
     public void itemStateChanged(ItemEvent e) {
         Object src = e.getSource();
-        if (src == fontField) {
-            setTargetFont();
-        } else if (src == sizeField) {
-            setTargetSize();
-        } else if (src == styleField) {
-            setTargetStyle();
-        } else if (src == justField) {
-            setTargetJustification();
-        } else if (src == textColorField) {
-            setTargetTextColor();
-        } else {
-            super.itemStateChanged(e);
+        Fig target = getPanelTarget();
+        if (e.getStateChange() == ItemEvent.SELECTED
+                && target instanceof FigText) {
+            if (src == fontField) {
+                setTargetFont();
+            } else if (src == sizeField) {
+                setTargetSize();
+            } else if (src == styleField) {
+                setTargetStyle();
+            } else if (src == justField) {
+                setTargetJustification();
+            } else if (src == textColorField) {
+                if (e.getItem() == getCustomItemName()) {
+                    handleCustomColor(textColorField, 
+                            "label.stylepane.custom-text-color",
+                            ((FigText) target).getTextColor());
+                }
+                setTargetTextColor();
+            } else {
+                super.itemStateChanged(e);
+            }
         }
     }
 
