@@ -68,6 +68,7 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.util.ColorFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -185,6 +186,12 @@ class PGMLStackParser
                 String bold = attributes.getValue("bold");
                 if (bold != null && !bold.equals("")) {
                     text.setBold(Boolean.valueOf(bold));
+                }
+
+                String textColor = attributes.getValue("textcolor");
+                if (textColor != null && !textColor.equals("")) {
+                    text.setTextColor(
+                            ColorFactory.getColor(textColor));
                 }
 
                 return new FigTextHandler(this, text);
