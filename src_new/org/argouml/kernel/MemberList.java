@@ -155,7 +155,7 @@ public class MemberList implements List<ProjectMember> {
                 return true;
             }
         }
-        LOG.warn("Failed to remove diagram " + d);
+        LOG.debug("Failed to remove diagram " + d);
         return false;
     }
 
