@@ -489,6 +489,10 @@ metamodel and the users model.  It includes services to
 serial/deserialize to/from XMI.
 </para>
 
+	  <para>
+This is included in the files
+jmi.jar, jmiutils.jar, mdrapi.jar, mof.jar, nbmdr.jar, openide-util.jar.
+</para>
         </listitem>
 
         <listitem>
@@ -532,16 +536,28 @@ antlrall, the run-time part of the ANTLR tool.
 </para>
         </listitem>
 
-
+	<listitem>
+	  <para>
+	    <indexterm>
+	      <primary>swidgets</primary>
+	    </indexterm>
+swidgets,
+a library providing the buttons used by ArgoUML.
+</para>
+          <para>
+See the project at
+<ulink url="http://swidgets.tigris.org/">Swidgets project</ulink>.
+</para>
+	</listitem>
 
 	<listitem>
 	  <para>
-MDR, 
-the Netbeans Meta Data Repository.
+toolbar,
+a library providing the toolbar functions used by ArgoUML.
 </para>
-	  <para>
-This is included in the files
-jmi.jar, jmiutils.jar, mdrapi.jar, mof.jar, nbmdr.jar, openide-util.jar.
+          <para>
+See the project at
+<ulink url="http://toolbar.tigris.org/">Toolbar project</ulink>.
 </para>
 	</listitem>
       </itemizedlist>
