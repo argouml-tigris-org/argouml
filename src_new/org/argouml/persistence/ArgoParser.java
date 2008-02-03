@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,7 @@ class ArgoParser extends SAXParserBase {
     private static final Logger LOG = Logger.getLogger(ArgoParser.class);
 
     private Project project;
-    
+
     private ProjectSettings ps;
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
@@ -75,7 +75,7 @@ class ArgoParser extends SAXParserBase {
         }
 
         preRead(theProject);
-        
+
         try {
             parse(source);
         } catch (SAXException e) {
@@ -83,7 +83,7 @@ class ArgoParser extends SAXParserBase {
             throw e;
         }
     }
-    
+
     /**
      * @param theProject the project to populate
      * @param reader the reader
@@ -98,7 +98,7 @@ class ArgoParser extends SAXParserBase {
         }
 
         preRead(theProject);
-        
+
         try {
             parse(reader);
         } catch (SAXException e) {
@@ -122,7 +122,7 @@ class ArgoParser extends SAXParserBase {
         LOG.error(projectName);
         PersistenceManager.getInstance().setLastLoadMessage(e.toString());
     }
-    
+
     /**
      * Get the project to which the URI is to be parsed.
      * @return the project
@@ -235,6 +235,9 @@ class ArgoParser extends SAXParserBase {
         case ArgoTokenTable.TOKEN_GENERATION_OUTPUT_DIR:
             handleGenerationOutputDir(e);
             break;
+        case ArgoTokenTable.TOKEN_SHOWASSOCIATIONNAMES:
+            handleShowAssociationNames(e);
+            break;
         default:
             if (DBG) {
                 LOG.warn("WARNING: unknown end tag:" + e.getName());
@@ -340,17 +343,17 @@ class ArgoParser extends SAXParserBase {
         String historyfile = e.getAttribute("name").trim();
         project.setHistoryFile(historyfile);
     }
-    
+
     /**
      * @param e the element
      */
     protected void handleNotationLanguage(XMLElement e) {
         String language = e.getText().trim();
         boolean success = ps.setNotationLanguage(language);
-        /* TODO: Here we should e.g. show the user a message that 
-         * the loaded project was using a Notation that is not 
-         * currently available and a fall back on the default Notation 
-         * was done. Maybe this can be implemented in the 
+        /* TODO: Here we should e.g. show the user a message that
+         * the loaded project was using a Notation that is not
+         * currently available and a fall back on the default Notation
+         * was done. Maybe this can be implemented in the
          * PersistenceManager? */
     }
 
@@ -452,6 +455,14 @@ class ArgoParser extends SAXParserBase {
     protected void handleGenerationOutputDir(XMLElement e) {
         String dsw = e.getText().trim();
         ps.setGenerationOutputDir(dsw);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleShowAssociationNames(XMLElement e) {
+        String showAssociationNames = e.getText().trim();
+        ps.setShowAssociationNames(showAssociationNames);
     }
 
     /**

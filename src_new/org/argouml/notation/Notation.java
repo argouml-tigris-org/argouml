@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -103,6 +103,13 @@ public final class Notation implements PropertyChangeListener {
         Configuration.makeKey("notation", "guillemots");
 
     /**
+     * Indicates if the user wants to see associaction names (public,
+     * private, protected or # + -).
+     */
+    public static final ConfigurationKey KEY_SHOW_ASSOCIATION_NAMES =
+        Configuration.makeKey("notation", "show", "associationnames");
+
+    /**
      * Indicates if the user wants to see visibility signs (public,
      * private, protected or # + -).
      */
@@ -158,6 +165,7 @@ public final class Notation implements PropertyChangeListener {
         Configuration.addListener(KEY_SHOW_TYPES, this);
         Configuration.addListener(KEY_SHOW_MULTIPLICITY, this);
         Configuration.addListener(KEY_SHOW_PROPERTIES, this);
+        Configuration.addListener(KEY_SHOW_ASSOCIATION_NAMES, this);
         Configuration.addListener(KEY_SHOW_VISIBILITY, this);
         Configuration.addListener(KEY_SHOW_INITIAL_VALUE, this);
     }
@@ -234,7 +242,7 @@ public final class Notation implements PropertyChangeListener {
 
     /**
      * Get list of available notations, of type NotationName.
-     * This returns an immutable list so that 
+     * This returns an immutable list so that
      * the implementation type isn't exposed in the API.
      *
      * @return list of available notations
@@ -242,13 +250,13 @@ public final class Notation implements PropertyChangeListener {
     public static List<NotationName> getAvailableNotations() {
         return NotationNameImpl.getAvailableNotations();
     }
-    
+
     /**
      * Remove a complete Notation language.
-     * This is to be used by plugins that implement their own notation, 
+     * This is to be used by plugins that implement their own notation,
      * and that are removed. <p>
      * This function fails if the given notation does not exist.
-     * 
+     *
      * @param theNotation the given NotationName
      * @return true if the Notation indeed is removed
      */

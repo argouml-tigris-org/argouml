@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,15 +44,15 @@ import org.argouml.notation.providers.AssociationNameNotation;
  * ie a string on the format:<pre>
  *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#] [name]
  * </pre>
- * 
+ *
  * @author Michiel
  */
 public class AssociationNameNotationUml extends AssociationNameNotation {
 
     /**
      * The constructor.
-     * 
-     * @param association the association modelelement 
+     *
+     * @param association the association modelelement
      * that we represent in textual form.
      */
     public AssociationNameNotationUml(Object association) {
@@ -88,6 +88,12 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
     public String toString(Object modelElement, Map args) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+
+        if (!ps.getShowAssociationNamesValue())
+            return "";
+
         String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
         if (isValue("fullyHandleStereotypes", args)) {
@@ -122,14 +128,14 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
                 first = false;
             }
         }
-        Project project = 
+        Project project =
             ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = project.getProjectSettings();
         return first ? "" : ps.getLeftGuillemot()
             + sb.toString()
             + ps.getRightGuillemot();
     }
-    
+
     /**
      * @param modelElement the UML element to generate for
      * @param args arguments that influence the generation

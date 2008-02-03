@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,9 +25,9 @@
 package org.argouml.persistence;
 
 
-/** 
+/**
  * These strings are saved in the final output in a zargo.
- * 
+ *
  * @author Jim Holt
  */
 
@@ -56,17 +56,19 @@ class ArgoTokenTable extends XMLTokenTableBase {
     private static final String STRING_NOTATIONLANGUAGE = "notationlanguage";
     private static final String STRING_SHOWBOLDNAMES = "showboldnames";
     private static final String STRING_USEGUILLEMOTS = "useguillemots";
+    private static final String STRING_SHOWASSOCIATIONNAMES
+        = "showassociationnames";
     private static final String STRING_SHOWVISIBILITY = "showvisibility";
     private static final String STRING_SHOWMULTIPLICITY = "showmultiplicity";
     private static final String STRING_SHOWINITIALVALUE = "showinitialvalue";
     private static final String STRING_SHOWPROPERTIES = "showproperties";
     private static final String STRING_SHOWTYPES = "showtypes";
     private static final String STRING_SHOWSTEREOTYPES = "showstereotypes";
-    private static final String STRING_DEFAULTSHADOWWIDTH 
+    private static final String STRING_DEFAULTSHADOWWIDTH
         = "defaultshadowwidth";
     private static final String STRING_FONTNAME = "fontname";
     private static final String STRING_FONTSIZE = "fontsize";
-    private static final String STRING_GENERATION_OUTPUT_DIR 
+    private static final String STRING_GENERATION_OUTPUT_DIR
         = "generationoutputdir";
 
     /** The token for argo. */
@@ -116,6 +118,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     public static final int    TOKEN_FONTSIZE           = 22;
     /** A token for Generation Settings. */
     public static final int    TOKEN_GENERATION_OUTPUT_DIR     = 23;
+    /** A token for Generation Settings. */
+    public static final int    TOKEN_SHOWASSOCIATIONNAMES     = 24;
 
     /** The token for undefined. */
     public static final int    TOKEN_UNDEFINED               = 99;
@@ -146,12 +150,14 @@ class ArgoTokenTable extends XMLTokenTableBase {
         addToken(STRING_SHOWPROPERTIES, Integer.valueOf(TOKEN_SHOWPROPERTIES));
         addToken(STRING_SHOWTYPES, Integer.valueOf(TOKEN_SHOWTYPES));
         addToken(STRING_SHOWSTEREOTYPES, Integer.valueOf(TOKEN_SHOWSTEREOTYPES));
-        addToken(STRING_DEFAULTSHADOWWIDTH, 
+        addToken(STRING_DEFAULTSHADOWWIDTH,
                 Integer.valueOf(TOKEN_DEFAULTSHADOWWIDTH));
         addToken(STRING_FONTNAME, Integer.valueOf(TOKEN_FONTNAME));
         addToken(STRING_FONTSIZE, Integer.valueOf(TOKEN_FONTSIZE));
-        addToken(STRING_GENERATION_OUTPUT_DIR, 
+        addToken(STRING_GENERATION_OUTPUT_DIR,
                 Integer.valueOf(TOKEN_GENERATION_OUTPUT_DIR));
+        addToken(STRING_SHOWASSOCIATIONNAMES,
+                Integer.valueOf(TOKEN_SHOWASSOCIATIONNAMES));
     }
 
 } /* end class ArgoTokenTable */

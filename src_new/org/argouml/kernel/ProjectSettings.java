@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,9 +43,9 @@ import org.tigris.gef.undo.UndoManager;
 
 /**
  * A datastructure for settings for a Project. <p>
- * 
+ *
  * Most getters return a string, since they are used by "argo.tee".
- * This is also the reason all these attributes 
+ * This is also the reason all these attributes
  * are not part of a Map or something. <p>
  *
  * TODO: The header comment is curently not used - this function
@@ -60,6 +60,7 @@ public class ProjectSettings {
     private String notationLanguage;
     private boolean showBoldNames;
     private boolean useGuillemots;
+    private boolean showAssociationNames;
     private boolean showVisibility;
     private boolean showMultiplicity;
     private boolean showInitialValue;
@@ -69,7 +70,7 @@ public class ProjectSettings {
     private boolean showSingularMultiplicities;
     private int defaultShadowWidth;
     private int defaultStereotypeView;
-    
+
     /* Diagram appearance settings with project scope: */
     private String fontName;
     private int fontSize;
@@ -78,7 +79,7 @@ public class ProjectSettings {
     private Font fontItalic;
     private Font fontBold;
     private Font fontBoldItalic;
-    
+
     /* Generation preferences: */
     private String headerComment =
         "Your copyright and other header comments";
@@ -86,22 +87,28 @@ public class ProjectSettings {
 
 
     /**
-     * Create a new set of project settings, 
+     * Create a new set of project settings,
      * based on the application defaults. <p>
-     * 
-     * The constructor is not public, since this 
+     *
+     * The constructor is not public, since this
      * class is only created from the Project..
      */
     ProjectSettings() {
         super();
-        
-        notationLanguage = 
+
+        notationLanguage =
             Notation.getConfiguredNotation().getConfigurationValue();
         NotationProviderFactory2.setCurrentLanguage(notationLanguage);
         showBoldNames = Configuration.getBoolean(
                 Notation.KEY_SHOW_BOLD_NAMES);
         useGuillemots = Configuration.getBoolean(
                 Notation.KEY_USE_GUILLEMOTS, false);
+        /*
+         * The next one defaults to TRUE, to stay compatible with older
+         * ArgoUML versions that did not have this setting:
+         */
+        showAssociationNames = Configuration.getBoolean(
+                Notation.KEY_SHOW_ASSOCIATION_NAMES, true);
         showVisibility = Configuration.getBoolean(
                 Notation.KEY_SHOW_VISIBILITY);
         showMultiplicity = Configuration.getBoolean(
@@ -119,12 +126,12 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_STEREOTYPES);
         /*
          * The next one defaults to TRUE, despite that this is
-         * NOT compatible with older ArgoUML versions 
-         * (before 0.24) that did 
+         * NOT compatible with older ArgoUML versions
+         * (before 0.24) that did
          * not have this setting - see issue 1395 for the rationale:
          */
         showSingularMultiplicities = Configuration.getBoolean(
-                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true); 
+                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true);
         defaultShadowWidth = Configuration.getInteger(
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
         defaultStereotypeView = Configuration.getInteger(
@@ -156,6 +163,7 @@ public class ProjectSettings {
         setNotationLanguage(getNotationLanguage());
         setShowBoldNames(getShowBoldNamesValue());
         setUseGuillemots(getUseGuillemotsValue());
+        setShowAssociationNames(getShowAssociationNamesValue());
         setShowVisibility(getShowVisibilityValue());
         setShowMultiplicity(getShowMultiplicityValue());
         setShowInitialValue(getShowInitialValueValue());
@@ -170,7 +178,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns the notation language.
      */
     public String getNotationLanguage() {
@@ -194,9 +202,9 @@ public class ProjectSettings {
             /* This Notation is not available! */
             return false;
         }
-        
+
         final String oldLanguage = notationLanguage;
-        
+
         Memento memento = new Memento() {
             private final ConfigurationKey key = Notation.KEY_DEFAULT_NOTATION;
 
@@ -219,7 +227,7 @@ public class ProjectSettings {
         ProjectManager.getManager().setSaveEnabled(true);
         return true;
     }
-    
+
     /**
      * @param nn the new notation language
      */
@@ -229,7 +237,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns "true" if we show bold names.
      */
     public String getShowBoldNames() {
@@ -278,7 +286,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns "true" if we show guillemots.
      */
     public String getUseGuillemots() {
@@ -342,7 +350,56 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
+     * @return Returns "true" if we show association names.
+     */
+    public String getShowAssociationNames() {
+        return Boolean.toString(showAssociationNames);
+    }
+
+    /**
+     * @return Returns <code>true</code> if we show association names.
+     */
+    public boolean getShowAssociationNamesValue() {
+        return showAssociationNames;
+    }
+
+    /**
+     * @param showem <code>true</code> if association names are to be shown.
+     */
+    public void setShowAssociationNames(String showem) {
+        setShowAssociationNames(Boolean.valueOf(showem).booleanValue());
+    }
+
+    /**
+     * @param showem <code>true</code> if association names are to be shown.
+     */
+    public void setShowAssociationNames(final boolean showem) {
+        if (showAssociationNames == showem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key = Notation.KEY_SHOW_ASSOCIATION_NAMES;
+
+            public void redo() {
+                showAssociationNames = showem;
+                fireNotationEvent(key, !showem, showem);
+            }
+
+            public void undo() {
+                showAssociationNames = !showem;
+                fireNotationEvent(key, showem, !showem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
+    }
+
+    /**
+     * Used by "argo.tee".
+     *
      * @return Returns "true" if we show visibilities.
      */
     public String getShowVisibility() {
@@ -391,7 +448,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns "true" if we show multiplicities.
      */
     public String getShowMultiplicity() {
@@ -440,7 +497,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns "true" if we show initial values.
      */
     public String getShowInitialValue() {
@@ -490,7 +547,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns "true" if we show properties.
      */
     public String getShowProperties() {
@@ -540,7 +597,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns "true" if we show types.
      */
     public String getShowTypes() {
@@ -590,7 +647,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns "true" if we show stereotypes.
      */
     public String getShowStereotypes() {
@@ -639,7 +696,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns "true" if we show "1" Multiplicities.
      */
     public String getShowSingularMultiplicities() {
@@ -689,7 +746,7 @@ public class ProjectSettings {
 
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns the shadow width.
      */
     public String getDefaultShadowWidth() {
@@ -738,37 +795,37 @@ public class ProjectSettings {
     public void setDefaultShadowWidth(String width) {
         setDefaultShadowWidth(Integer.parseInt(width));
     }
-    
+
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return Returns the default stereotype view
      */
     public String getDefaultStereotypeView() {
         return Integer.valueOf(defaultStereotypeView).toString();
     }
-    
+
     /**
      * @return Returns the default stereotype view
      */
     public int getDefaultStereotypeViewValue() {
         return defaultStereotypeView;
     }
-    
-    
+
+
     /**
      * Used by "argo.tee".
-     * 
+     *
      * @return the output directory name
      */
-    public String getGenerationOutputDir() { 
-        return generationOutputDir; 
+    public String getGenerationOutputDir() {
+        return generationOutputDir;
     }
 
     /**
      * @param od the output directory name
      */
-    public void setGenerationOutputDir(String od) { 
+    public void setGenerationOutputDir(String od) {
         generationOutputDir = od;
         Configuration.setString(Argo.KEY_MOST_RECENT_EXPORT_DIRECTORY, od);
     }
@@ -792,7 +849,7 @@ public class ProjectSettings {
         final int oldValue = defaultStereotypeView;
 
         Memento memento = new Memento() {
-            private final ConfigurationKey key = 
+            private final ConfigurationKey key =
                 ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW;
 
             public void redo() {
@@ -827,7 +884,7 @@ public class ProjectSettings {
      */
     private void fireNotationEvent(
             ConfigurationKey key, int oldValue, int newValue) {
-        fireNotationEvent(key, Integer.toString(oldValue), 
+        fireNotationEvent(key, Integer.toString(oldValue),
                 Integer.toString(newValue));
     }
 
@@ -840,7 +897,7 @@ public class ProjectSettings {
      */
     private void fireNotationEvent(ConfigurationKey key, boolean oldValue,
             boolean newValue) {
-        fireNotationEvent(key, Boolean.toString(oldValue), 
+        fireNotationEvent(key, Boolean.toString(oldValue),
                 Boolean.toString(newValue));
     }
 
@@ -859,7 +916,7 @@ public class ProjectSettings {
     }
 
     /**
-     * Convenience methods to fire diagram appearance 
+     * Convenience methods to fire diagram appearance
      * configuration change events.
      *
      * @param key the ConfigurationKey that is related to the change
@@ -874,7 +931,7 @@ public class ProjectSettings {
 
 
     /**
-     * Convenience methods to fire diagram appearance 
+     * Convenience methods to fire diagram appearance
      * configuration change events.
      *
      * @param key the ConfigurationKey that is related to the change
@@ -890,9 +947,9 @@ public class ProjectSettings {
 
     /**
      * Diagram font name. <p>
-     * 
+     *
      * Used by "argo.tee".
-     * 
+     *
      * @return diagram font name.
      */
     public String getFontName() {
@@ -914,9 +971,9 @@ public class ProjectSettings {
 
     /**
      * Diagram font size. <p>
-     * 
+     *
      * Used by "argo.tee".
-     * 
+     *
      * @return diagram font size.
      */
     public int getFontSize() {
@@ -940,14 +997,14 @@ public class ProjectSettings {
         fontPlain = new Font(fontName, Font.PLAIN, fontSize);
         fontItalic = new Font(fontName, Font.ITALIC, fontSize + 2);
         fontBold = new Font(fontName, Font.BOLD, fontSize + 2);
-        fontBoldItalic = new Font(fontName, 
+        fontBoldItalic = new Font(fontName,
                 Font.BOLD | Font.ITALIC, fontSize + 2);
     }
 
     /**
-     * Returns the Plain diagram font which corresponds 
+     * Returns the Plain diagram font which corresponds
      * to selected parameters.
-     * 
+     *
      * @return plain diagram font
      */
     public Font getFontPlain() {
@@ -955,9 +1012,9 @@ public class ProjectSettings {
     }
 
     /**
-     * Returns the Italic diagram font which corresponds 
+     * Returns the Italic diagram font which corresponds
      * to selected parameters.
-     * 
+     *
      * @return italic diagram font
      */
     public Font getFontItalic() {
@@ -965,9 +1022,9 @@ public class ProjectSettings {
     }
 
     /**
-     * Returns the Bold diagram font which corresponds 
+     * Returns the Bold diagram font which corresponds
      * to selected parameters.
-     * 
+     *
      * @return bold diagram font
      */
     public Font getFontBold() {
@@ -975,18 +1032,18 @@ public class ProjectSettings {
     }
 
     /**
-     * Returns the Bold-Italic diagram font which corresponds 
+     * Returns the Bold-Italic diagram font which corresponds
      * to selected parameters.
-     * 
+     *
      * @return bold-italic diagram font
      */
     public Font getFontBoldItalic() {
         return fontBoldItalic;
     }
-    
+
     /**
      * Utility function to convert a font style integer into a Font.
-     * 
+     *
      * @param fontStyle the style; see the predefined constants in Font
      * @return the Font that corresponds to the style
      */

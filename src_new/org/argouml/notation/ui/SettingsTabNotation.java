@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,24 +49,25 @@ import org.argouml.ui.ShadowComboBox;
 
 /**
  * Settings tab panel for handling Notation settings. <p>
- * 
+ *
  * It supports different scopes: application and project.
- * The former is stored in the properties file in the user-directory, 
+ * The former is stored in the properties file in the user-directory,
  * the latter in the project file (.zargo,...). <p>
- * 
- * This class is written in a way that supports 
+ *
+ * This class is written in a way that supports
  * adding more scopes easily.
  *
  * @author Thierry Lach
  * @since  0.9.4
  */
-public class SettingsTabNotation     
+public class SettingsTabNotation
     extends JPanel
     implements GUISettingsTabInterface {
 
     private JComboBox notationLanguage;
     private JCheckBox showBoldNames;
     private JCheckBox useGuillemots;
+    private JCheckBox showAssociationNames;
     private JCheckBox showVisibility;
     private JCheckBox showMultiplicity;
     private JCheckBox showInitialValue;
@@ -75,12 +76,12 @@ public class SettingsTabNotation
     private JCheckBox showStereotypes;
     private JCheckBox showSingularMultiplicities;
     private ShadowComboBox defaultShadowWidth;
-    
+
     private int scope;
 
     /**
      * The constructor.
-     * We currently support 2 scopes, but this class is written 
+     * We currently support 2 scopes, but this class is written
      * in a way to easily extend that.
      *
      * @param settingsScope the scope of the settings
@@ -125,6 +126,9 @@ public class SettingsTabNotation
         // Jaap Branderhorst
         // from here made visibility etc. configurable
 
+        showAssociationNames = createCheckBox("label.show-associationnames");
+        top.add(showAssociationNames, constraints);
+
         showVisibility = createCheckBox("label.show-visibility");
         top.add(showVisibility, constraints);
 
@@ -142,8 +146,8 @@ public class SettingsTabNotation
 
         showStereotypes = createCheckBox("label.show-stereotypes");
         top.add(showStereotypes, constraints);
-        
-        showSingularMultiplicities = 
+
+        showSingularMultiplicities =
             createCheckBox("label.show-singular-multiplicities");
         top.add(showSingularMultiplicities, constraints);
 
@@ -171,6 +175,8 @@ public class SettingsTabNotation
             useGuillemots.setSelected(getBoolean(
                     Notation.KEY_USE_GUILLEMOTS));
             notationLanguage.setSelectedItem(Notation.getConfiguredNotation());
+            showAssociationNames.setSelected(Configuration.getBoolean(
+                    Notation.KEY_SHOW_ASSOCIATION_NAMES, true));
             showVisibility.setSelected(getBoolean(
                     Notation.KEY_SHOW_VISIBILITY));
             showInitialValue.setSelected(getBoolean(
@@ -189,8 +195,8 @@ public class SettingsTabNotation
                     Notation.KEY_SHOW_STEREOTYPES));
             /*
              * The next one defaults to TRUE, despite that this is
-             * NOT compatible with older ArgoUML versions 
-             * (before 0.24) that did 
+             * NOT compatible with older ArgoUML versions
+             * (before 0.24) that did
              * not have this setting - see issue 1395 for the rationale:
              */
             showSingularMultiplicities.setSelected(Configuration.getBoolean(
@@ -206,6 +212,7 @@ public class SettingsTabNotation
                     ps.getNotationLanguage()));
             showBoldNames.setSelected(ps.getShowBoldNamesValue());
             useGuillemots.setSelected(ps.getUseGuillemotsValue());
+            showAssociationNames.setSelected(ps.getShowAssociationNamesValue());
             showVisibility.setSelected(ps.getShowVisibilityValue());
             showMultiplicity.setSelected(ps.getShowMultiplicityValue());
             showInitialValue.setSelected(ps.getShowInitialValueValue());
@@ -240,6 +247,8 @@ public class SettingsTabNotation
                     showBoldNames.isSelected());
             Configuration.setBoolean(Notation.KEY_USE_GUILLEMOTS,
                     useGuillemots.isSelected());
+            Configuration.setBoolean(Notation.KEY_SHOW_ASSOCIATION_NAMES,
+                    showAssociationNames.isSelected());
             Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY,
                     showVisibility.isSelected());
             Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY,
@@ -264,6 +273,7 @@ public class SettingsTabNotation
             if (nn != null) ps.setNotationLanguage(nn.getConfigurationValue());
             ps.setShowBoldNames(showBoldNames.isSelected());
             ps.setUseGuillemots(useGuillemots.isSelected());
+            ps.setShowAssociationNames(showAssociationNames.isSelected());
             ps.setShowVisibility(showVisibility.isSelected());
             ps.setShowMultiplicity(showMultiplicity.isSelected());
             ps.setShowInitialValue(showInitialValue.isSelected());
@@ -293,6 +303,8 @@ public class SettingsTabNotation
                     Notation.KEY_SHOW_BOLD_NAMES));
             useGuillemots.setSelected(getBoolean(
                     Notation.KEY_USE_GUILLEMOTS));
+            showAssociationNames.setSelected(Configuration.getBoolean(
+                    Notation.KEY_SHOW_ASSOCIATION_NAMES, true));
             showVisibility.setSelected(getBoolean(
                     Notation.KEY_SHOW_VISIBILITY));
             showMultiplicity.setSelected(getBoolean(
