@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -178,11 +178,11 @@ class XmiFilePersister extends AbstractFilePersister
         int size = project.getMembers().size();
         for (int i = 0; i < size; i++) {
             ProjectMember projectMember =
-                (ProjectMember) project.getMembers().get(i);
+                project.getMembers().get(i);
             if (projectMember.getType().equalsIgnoreCase(getExtension())) {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Saving member of type: "
-                            + ((ProjectMember) project.getMembers()
+                            + (project.getMembers()
                                     .get(i)).getType());
                 }
                 MemberFilePersister persister = new ModelMemberFilePersister();

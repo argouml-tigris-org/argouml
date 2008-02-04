@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2007 The Regents of the University of California. All
+// Copyright (c) 2004-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,19 +39,30 @@ import org.tigris.gef.base.Diagram;
 /**
  * List of ProjectMembers. <p>
  * 
- * The project members are grouped into 3 categories: 
- * model, diagrams and the todo item list. <p>
+ * The project members are grouped into 4 categories: 
+ * model, diagrams, the todo item list and the profile configuration. <p>
  *
  * The purpose of these categories is to make sure that members are read 
  * and written in the correct order. The model must be read before diagrams, 
- * diagrams must be read before todo items. <p>
+ * diagrams must be read before todo items. (Dixit Bob in issue 2979.)
+ * The profile configuration is written last. <p>
  *
  * This implementation supports only 1 model member, 
- * multiple diagram members, and one todo list member.
+ * multiple diagram members, one todo list member, 
+ * and one profile configuration. <p>
+ * 
+ * Comments by mvw: <p>
+ * This class should be reworked to be independent 
+ * of the org.argouml.uml package. That can be done by extending the 
+ * ProjectMember interface with functions returning the sorting order, 
+ * and if multiple entries of the same type are allowed. <p>
+ * 
+ * In preparation, this class is made simpler by deprecating 
+ * all operations that are not part of the List interface.
  * 
  * @author Bob Tarling
  */
-public class MemberList implements List<ProjectMember> {
+class MemberList implements List<ProjectMember> {
 
     /**
      * Logger.
@@ -84,7 +95,7 @@ public class MemberList implements List<ProjectMember> {
             setTodoList((AbstractProjectMember) member);
             return true;
         } else if (member instanceof ProfileConfiguration) {
-            setProfileConfiguration((AbstractProjectMember) member);
+            profileConfiguration = (AbstractProjectMember) member;
             return true;
         } else if (member instanceof ProjectMemberDiagram) {
             // otherwise add the diagram at the start
@@ -108,7 +119,7 @@ public class MemberList implements List<ProjectMember> {
             return true;
         } else if (profileConfiguration == member) {
             LOG.info("Removing profile configuration");
-            setProfileConfiguration(null);
+            profileConfiguration = null;
             return true;
         } else {
             final boolean removed = diagramMembers.remove(member);
@@ -207,7 +218,10 @@ public class MemberList implements List<ProjectMember> {
     /**
      * @param type the type of the member
      * @return the member of the project
+     * @deprecated by MVW in V0.25.2: no replacement needed since not used. 
+     * Rationale: this class should ONLY implement List, nothing more.
      */
+    @Deprecated
     public synchronized ProjectMember getMember(Class type) {
         if (type == ProjectMemberModel.class) {
             return model;
@@ -225,7 +239,10 @@ public class MemberList implements List<ProjectMember> {
     /**
      * @param type the type of the member
      * @return the member of the project
+     * @deprecated by MVW in V0.25.2: no replacement needed since not used. 
+     * Rationale: this class should ONLY implement List, nothing more.
      */
+    @Deprecated
     public synchronized List getMembers(Class type) {
         if (type == ProjectMemberModel.class) {
             List<ProjectMember> temp = new ArrayList<ProjectMember>(1);
@@ -303,23 +320,23 @@ public class MemberList implements List<ProjectMember> {
         throw new UnsupportedOperationException();
     }
 
-    public boolean containsAll(Collection<?> arg0) {
+    public boolean containsAll(Collection< ? > arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean addAll(Collection<? extends ProjectMember> arg0) {
+    public boolean addAll(Collection< ? extends ProjectMember> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean addAll(int arg0, Collection<? extends ProjectMember> arg1) {
+    public boolean addAll(int arg0, Collection< ? extends ProjectMember> arg1) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean removeAll(Collection<?> arg0) {
+    public boolean removeAll(Collection< ? > arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean retainAll(Collection<?> arg0) {
+    public boolean retainAll(Collection< ? > arg0) {
         throw new UnsupportedOperationException();
     }
 
@@ -347,10 +364,22 @@ public class MemberList implements List<ProjectMember> {
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * @return the project member
+     * @deprecated by MVW in V0.25.2: no replacement needed since not used. 
+     * Rationale: this class should ONLY implement List, nothing more.
+     */
+    @Deprecated
     public AbstractProjectMember getProfileConfiguration() {
         return profileConfiguration;
     }
 
+    /**
+     * @param profileConfig the new profile configuration
+     * @deprecated by MVW in V0.25.2: no replacement needed since not used. 
+     * Rationale: this class should ONLY implement List, nothing more.
+     */
+    @Deprecated
     public void setProfileConfiguration(AbstractProjectMember profileConfig) {
         profileConfiguration = profileConfig;
     }

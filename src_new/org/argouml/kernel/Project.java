@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,9 +59,11 @@ public interface Project {
      *
      * @return The name (a String).
      * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link org.argouml.persistence.PersistenceManager#getProjectBaseName(Project)}
+     *     {@link org.argouml.persistence.PersistenceManager
+     *     #getProjectBaseName(Project)}
      *     Rationale: Remove dependency on persistence subsystem.
      */
+    @Deprecated
     public String getBaseName();
 
     /**
@@ -77,9 +79,11 @@ public interface Project {
      * @throws URISyntaxException if the argument cannot be converted to
      *         an URI.
      * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link org.argouml.persistence.PersistenceManager#setProjectName(String, Project)}
+     *     {@link org.argouml.persistence.PersistenceManager
+     *     #setProjectName(String, Project)}
      *     Rationale: Remove dependency on persistence subsystem.
      */
+    @Deprecated
     public void setName(final String n) throws URISyntaxException;
 
     /**
@@ -94,16 +98,19 @@ public interface Project {
      *
      * @param theUri The URI to set.
      * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link org.argouml.persistence.PersistenceManager#setProjectURI(URI, Project)}
+     *     {@link org.argouml.persistence.PersistenceManager
+     *     #setProjectURI(URI, Project)}
      *     Rationale: Remove dependency on persistence subsystem.
      */
+    @Deprecated
     public void setURI(final URI theUri);
 
     /**
      * Set the URI for this project. <p>
      * 
      * Don't use this directly! Use instead:
-     * {@link org.argouml.persistence.PersistenceManager#setProjectURI(URI, Project)}
+     * {@link org.argouml.persistence.PersistenceManager
+     * #setProjectURI(URI, Project)}
      *
      * @param theUri The URI to set.
      */
@@ -151,7 +158,7 @@ public interface Project {
      *
      * @return all members.
      */
-    public MemberList getMembers();
+    public List<ProjectMember> getMembers();
 
     /**
      * Add a member: ArgoDiagram, a UML Model, or a ProjectMemberTodoList.

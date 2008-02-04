@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,13 +50,13 @@ import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.profile.Profile;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.profile.Profile;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -102,7 +102,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     // TODO: break into 3 main member types
     // model, diagram and other
-    private final MemberList members = new MemberList();
+    private final List<ProjectMember> members = new MemberList();
 
     private String historyFile;
 
@@ -274,7 +274,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    public MemberList getMembers() {
+    public List<ProjectMember> getMembers() {
         LOG.info("Getting the members there are " + members.size());
         return members;
     }
@@ -328,8 +328,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
         boolean memberFound = false;
         Object currentMember =
-            members.getMember(ProjectMemberModel.class);
-        if (currentMember != null) {
+            members.get(0);
+        if (currentMember instanceof ProjectMemberModel) {
             Object currentModel =
                 ((ProjectMemberModel) currentMember).getModel();
             if (currentModel == m) {
@@ -819,8 +819,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     /**
      * Empty the trash can and permanently delete all objects that it contains.
-     * 
-     * @see org.argouml.kernel.Project#emptyTrashCan()
      */
     public void emptyTrashCan() {
         trashcan.clear();
