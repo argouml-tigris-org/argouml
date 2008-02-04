@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2007 The Regents of the University of California. All
+// Copyright (c) 2002-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,11 +29,9 @@ import java.lang.reflect.Method;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.CommentEdge;
-import org.argouml.uml.UUIDHelper;
 
 /**
- * An instances of this class is supposed to be attached to an instance
+ * An instance of this class is supposed to be attached to an instance
  * of another class to uniquely identify it. It is intended that such
  * a tagging should be persistent over saving and loading, if applicable.<p>
  *
@@ -158,9 +156,8 @@ public class ItemUID {
      * @return	The ID of the object, or null.
      */
     protected static String readObjectID(Object obj) {
-        if (Model.getFacade().isAUMLElement(obj) 
-                || (obj instanceof CommentEdge)) {
-            return UUIDHelper.getUUID(obj);
+        if (Model.getFacade().isAUMLElement(obj)) {
+            return Model.getFacade().getUUID(obj);
         }
 
 	Object rv;
@@ -169,7 +166,28 @@ public class ItemUID {
 	    rv = m.invoke(obj, (Object[]) null);
 	} catch (NoSuchMethodException nsme) {
 	    // Apparently this object had no getItemUID
-	    return null;
+	    try {
+                // This is needed for a CommentEdge ...
+	        Method m = obj.getClass().getMethod("getUUID", (Class[]) null);
+	        rv = m.invoke(obj, (Object[]) null);
+                return (String) rv;
+	    } catch (NoSuchMethodException nsme2) {
+	        // Apparently this object had no getUUID
+	        return null;
+	    } catch (IllegalArgumentException iare) {
+	        LOG.error("getUUID for " + obj.getClass()
+	                + " takes strange parameter: ",
+	                iare);
+	        return null;
+	    } catch (IllegalAccessException iace) {
+	        // Apparently it had a getItemUID,
+	        // but we're not allowed to call it
+	        return null;
+	    } catch (InvocationTargetException tie) {
+	        LOG.error("getUUID for " + obj.getClass() + " threw: ",
+	                tie);
+	        return null;
+	    }
 	} catch (SecurityException se) {
 	    // Apparently it had a getItemUID,
 	    // but we're not allowed to call it
