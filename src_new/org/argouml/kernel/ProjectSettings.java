@@ -378,7 +378,8 @@ public class ProjectSettings {
         if (showAssociationNames == showem) return;
 
         Memento memento = new Memento() {
-            private final ConfigurationKey key = Notation.KEY_SHOW_ASSOCIATION_NAMES;
+            private final ConfigurationKey key = 
+                Notation.KEY_SHOW_ASSOCIATION_NAMES;
 
             public void redo() {
                 showAssociationNames = showem;
