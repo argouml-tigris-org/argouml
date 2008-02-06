@@ -191,14 +191,14 @@ public interface Project {
      * Get the author e-mail address.
      * Used by "argo.tee".
      *
-     * @return The author name.
+     * @return the author e-mail address
      */
     public String getAuthoremail();
 
     /**
      * Set the author e-mail address.
      *
-     * @param s The new author name.
+     * @param s the new author e-mail address
      */
     public void setAuthoremail(final String s);
 
