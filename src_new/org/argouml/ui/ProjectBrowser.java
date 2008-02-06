@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -974,11 +974,16 @@ public final class ProjectBrowser
             Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH,
                     northEastPane.getWidth());
         }
-        
-        Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
-        Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
-        Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, getY());
+
+        boolean maximized = getExtendedState() == MAXIMIZED_BOTH;
+        if (!maximized) {
+            Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
+            Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
+            Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
+            Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, getY());
+        }
+        Configuration.setBoolean(Argo.KEY_SCREEN_MAXIMIZED, 
+                maximized);
     }
 
     /**
