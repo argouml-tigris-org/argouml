@@ -188,7 +188,7 @@ public interface Project {
     public void setAuthorname(final String s);
 
     /**
-     * Get the author name.
+     * Get the author e-mail address.
      * Used by "argo.tee".
      *
      * @return The author name.
@@ -196,14 +196,16 @@ public interface Project {
     public String getAuthoremail();
 
     /**
-     * Set the author name.
+     * Set the author e-mail address.
      *
      * @param s The new author name.
      */
     public void setAuthoremail(final String s);
 
     /**
-     * Get the version.
+     * Get the version. 
+     * This is the ArgoUML version that last saved this project.
+     * This field is not editable by the user.
      * Used by "argo.tee".
      *
      * @return the version.
@@ -212,12 +214,15 @@ public interface Project {
 
     /**
      * Set the new version.
+     * This is the ArgoUML version that last saved this project.
+     * This field is not editable by the user.
      * @param s The new version.
      */
     public void setVersion(final String s);
 
     /**
      * Get the description.
+     * This is the description of the project, as entered by the user.
      * Used by "argo.tee".
      *
      * @return the description.
@@ -226,13 +231,16 @@ public interface Project {
 
     /**
      * Set a new description.
+     * This is the description of the project. 
+     * It is freely editable by the user.
      *
      * @param s The new description.
      */
     public void setDescription(final String s);
 
     /**
-     * Get the history file.
+     * Get the history file name.
+     * Not used.
      * Used by "argo.tee".
      *
      * @return The history file.
@@ -240,7 +248,7 @@ public interface Project {
     public String getHistoryFile();
 
     /**
-     * Set the history file.
+     * Set the history file name.
      *
      * @param s The new history file.
      */
