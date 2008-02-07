@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,7 +57,10 @@ public abstract class AbstractProjectMember implements ProjectMember {
 
     /**
      * In contrast to {@link #getZipName()} returns the member's
-     * name without the prepended name of the project.
+     * name without the prepended name of the project
+     * (but with the extension). <p>
+     * 
+     * TODO: This is not used anywhere - shall we remove it?
      *
      * @author Steffen Zschaler
      *
@@ -78,7 +81,7 @@ public abstract class AbstractProjectMember implements ProjectMember {
     /**
      * Returns a unique member's name for storage in a zipfile.
      * The project's base name is prepended followed by an
-     * underscore '_'. <p>
+     * underscore '_'. The extension is appended.<p>
      * 
      * Used by "argo.tee".
      *
