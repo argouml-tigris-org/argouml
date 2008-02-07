@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,9 +46,7 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
      * @param p the project
      */
     public ProjectMemberDiagram(ArgoDiagram d, Project p) {
-        super(null, p);
-        String s = Util.stripJunk(d.getName());
-        makeUniqueName(s);
+        super(Util.stripJunk(d.getName()), p);
         setDiagram(d);
     }
 
