@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2007 The Regents of the University of California. All
+// Copyright (c) 2004-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -67,7 +67,8 @@ public final class PersistenceManager {
         new PersistenceManager();
 
     private AbstractFilePersister defaultPersister;
-    private List otherPersisters = new ArrayList();
+    private List<AbstractFilePersister> otherPersisters = 
+        new ArrayList<AbstractFilePersister>();
     private UmlFilePersister quickViewDump;
     private XmiFilePersister xmiPersister;
     private XmiFilePersister xmlPersister;
@@ -146,10 +147,7 @@ public final class PersistenceManager {
         if (defaultPersister.isFileExtensionApplicable(name)) {
             return defaultPersister;
         }
-        Iterator iter = otherPersisters.iterator();
-        while (iter.hasNext()) {
-            AbstractFilePersister persister =
-                (AbstractFilePersister) iter.next();
+        for (AbstractFilePersister persister : otherPersisters) {
             if (persister.isFileExtensionApplicable(name)) {
                 return persister;
             }
@@ -167,9 +165,7 @@ public final class PersistenceManager {
         chooser.addChoosableFileFilter(defaultPersister);
         AbstractFilePersister defaultFileFilter = defaultPersister;
         
-        Iterator iter = otherPersisters.iterator();
-        while (iter.hasNext()) {
-            AbstractFilePersister fp = (AbstractFilePersister) iter.next();
+        for (AbstractFilePersister fp : otherPersisters) {
             if (fp.isSaveEnabled()
                     && !fp.equals(xmiPersister)
                     && !fp.equals(xmlPersister)) {
@@ -429,10 +425,20 @@ public final class PersistenceManager {
         lastLoadStatus = status;
     }
     
+    /**
+     * Sets the currently used persister for saving.
+     * 
+     * @param persister the persister
+     */
     public void setSavePersister(AbstractFilePersister persister) {
         savePersister = persister;
     }
     
+    /**
+     * Gets the currently used persister for saving.
+     * 
+     * @return the persister or null
+     */
     public AbstractFilePersister getSavePersister() {
         return savePersister;
     }
@@ -443,8 +449,8 @@ public final class PersistenceManager {
  * file type added to it.
  */
 class MultitypeFileFilter extends FileFilter {
-    private ArrayList filters;
-    private ArrayList extensions;
+    private ArrayList<FileFilter> filters;
+    private ArrayList<String> extensions;
     private String desc;
 
     /**
@@ -452,8 +458,8 @@ class MultitypeFileFilter extends FileFilter {
      */
     public MultitypeFileFilter() {
         super();
-        filters = new ArrayList();
-        extensions = new ArrayList();
+        filters = new ArrayList<FileFilter>();
+        extensions = new ArrayList<String>();
     }
 
     /**
@@ -479,7 +485,7 @@ class MultitypeFileFilter extends FileFilter {
      * 
      * @return collection of FileFilters
      */
-    public Collection getAll() {
+    public Collection<FileFilter> getAll() {
         return filters;
     }
 
@@ -488,10 +494,10 @@ class MultitypeFileFilter extends FileFilter {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean accept(File arg0) {
-        Iterator it = filters.iterator();
-        while (it.hasNext()) {
-            if (((FileFilter) it.next()).accept(arg0)) {
+        for (FileFilter ff : filters) {
+            if (ff.accept(arg0)) {
                 return true;
             }
         }
@@ -501,6 +507,7 @@ class MultitypeFileFilter extends FileFilter {
     /*
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
+    @Override
     public String getDescription() {
         Object[] s = {desc};
         return Translator.messageFormat("filechooser.all-types-desc", s);
