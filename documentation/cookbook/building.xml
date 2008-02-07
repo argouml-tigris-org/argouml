@@ -74,7 +74,7 @@ and save it on your file system.
 The main file is called 
 <filename>argouml-core-projectset.psf</filename>
 and is available at
-<ulink url="http://argouml.tigris.org/source/browse/*checkout*/argouml/trunk/tools/eclipse/argouml-core-projectset.psf">http://argouml.tigris.org/source/browse/*checkout*/argouml/trunk/tools/eclipse/argouml-core-projectset.psf</ulink></para>
+<ulink url="http://argouml.tigris.org/nonav/psf/argouml-core-projectset.psf">http://argouml.tigris.org/nonav/psf/argouml-core-projectset.psf</ulink></para>
         </listitem>
 
         <listitem>
@@ -1958,12 +1958,8 @@ Download the initial Team Project Set file and save it somewhere.
 </para>
           <para>
 Suggested by browsing to
-<filename>trunk/tools/eclipse</filename>
+<filename>trunk/www/psf</filename>
 and checking it out as a project.
-</para>
-          <para>
-This is only needed the first time and if you don't already 
-happen to have an updated checked out copy of argouml laying around.
 </para>
         </listitem>
 
