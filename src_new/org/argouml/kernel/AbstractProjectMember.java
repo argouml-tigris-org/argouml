@@ -24,6 +24,8 @@
 
 package org.argouml.kernel;
 
+import org.argouml.persistence.PersistenceManager;
+
 /**
  * A member of the project.
  *
@@ -87,7 +89,7 @@ public abstract class AbstractProjectMember implements ProjectMember {
 	    return null;
 	}
 
-        String s = project.getBaseName();
+        String s = PersistenceManager.getInstance().getProjectBaseName(project);
 
         if (uniqueName.length() > 0) {
             s += "_" + uniqueName;
@@ -114,8 +116,11 @@ public abstract class AbstractProjectMember implements ProjectMember {
             return;
         }
 
-        if (uniqueName.startsWith (project.getBaseName())) {
-            uniqueName = uniqueName.substring (project.getBaseName().length());
+        String pbn = 
+            PersistenceManager.getInstance().getProjectBaseName(project); 
+        if (uniqueName.startsWith (pbn)) {
+            uniqueName = uniqueName.substring (pbn.length());
+            /* Skip leading underscores: */
             int i = 0;
             for (; i < uniqueName.length(); i++) {
             	if (uniqueName.charAt(i) != '_') {
