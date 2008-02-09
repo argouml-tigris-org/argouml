@@ -2,10 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.argouml.core.model.euml2
-Bundle-Version: 0.25.3
+Bundle-Version: 0.25.5
 Bundle-Vendor: %pluginProvider
 Bundle-Localization: plugin
-Require-Bundle: org.argouml.core.model
+Require-Bundle: org.argouml.core.infra,
+ org.argouml.core.model
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: org.argouml.model.euml
 Eclipse-RegisterBuddy: org.argouml.core.lib
