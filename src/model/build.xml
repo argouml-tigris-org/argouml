@@ -24,14 +24,6 @@
     <property file="${local.build.properties}"/>
     <property file="${user.build.properties}"/>
 
-    <!-- Make sure argo.root.dir is set before loading default properties -->
-    <property name="argo.root.dir" value="../.."/>
-    <property file="${argo.src.dir}/default.properties"/>
-
-    <!-- These should already be set, but set some basics just in case -->
-    <property name="argo.build.dir" value="${argo.root.dir}/build"/>
-    <property name="argo.lib.dir" value="${argo.root.dir}/lib"/>
-    
     <property name="build.dir" value="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
       
@@ -48,11 +40,8 @@
   <target name="compile"
           depends="init"
           description="Compile the sources.">
-    <!-- create directories -->
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes}"/>
-
-<echo message="Compiling with debug=${debug}"/>
 
     <javac debug="${debug}"
            deprecation="${deprecation}"
@@ -71,18 +60,10 @@
   <!-- =================================================================== -->
   <target name="jar" depends="compile"
           description="Build the ${name}.jar file.">
-    <jar basedir="${build.classes}" excludes="*.txt,*.bat,*.xml,*.sh" includes="org/argouml/**" jarfile="${build.dir}/${name}.jar"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Install the jar file                                                -->
-  <!-- =================================================================== -->
-  <target name="install" depends="jar"
-          description="Copy the ${name}.jar file to the ArgoUML directory.">
-    <echo message="Copying ${name}.jar to ${argo.build.dir}"/>
-    <copy todir="${argo.build.dir}">
-      <fileset dir="${build.dir}" includes="${name}.jar"/>
-    </copy>
+    <jar basedir="${build.classes}"
+         excludes="*.txt,*.bat,*.xml,*.sh"
+	 includes="org/argouml/**"
+	 jarfile="${build.dir}/${name}.jar"/>
   </target>
 
   <!-- =================================================================== -->
@@ -91,8 +72,5 @@
   <target name="clean" depends="init"
           description="Clean out all built files.">
     <delete dir="${build.dir}" quiet="true"/>
-	<delete quiet="true">
-      <fileset dir="${build.dir}" includes="${name}.jar"/>
-    </delete>
   </target>
 </project>

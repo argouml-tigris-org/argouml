@@ -51,7 +51,7 @@ public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
     protected void init() {
         try {            
             PropertyConfigurator.configure(
-                    Thread.currentThread().getContextClassLoader().getResource(
+                    getClass().getClassLoader().getResource(
                             "org/argouml/resource/info_console.lcf")
             );
             System.setProperty(

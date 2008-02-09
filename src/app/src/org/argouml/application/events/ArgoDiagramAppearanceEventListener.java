@@ -1,16 +1,16 @@
-// $Id:$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,13 +22,22 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.cognitive;
+package org.argouml.application.events;
+import org.argouml.application.api.ArgoEventListener;
 
-/**
- * Interface to be implementable by figures which can be highlighted to
- * visually show where a problem identified by the Critic subsystem is located.
+/** 
+ * An interface that objects interested in ArgoDiagramAppearanceEvent
+ *  notifications must extend.
+ *
+ *  @author Aleksandar
  */
-public interface Highlightable {
-    void setHighlight(boolean b);
-    boolean getHighlight();
-} /* end interface Highlightable */
+
+public interface ArgoDiagramAppearanceEventListener extends ArgoEventListener {
+
+    /**
+     * Invoked when any aspect of the notation has been changed.
+     * @param e <code>ArgoNotationEvent</code> describing the change.
+     */
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e);
+}
+

@@ -4,11 +4,18 @@
 Build file for the MDR implementation of the Model subsystem.
 
 This is designed to work in two different environments:
-  - in a subdirectory of argouml, as stored in CVS
+  - in a subdirectory of argouml, as stored in the repository
     (ie argouml/src/model-mdr)
+    Used when compiling, running tests from the command line.
   - in a peer directory of argouml, as checked out for Eclipse
     (ie argouml-core-model-mdr)
-    
+    Used only to build the MDR specific things. Other Eclipse settings
+    take care of compiling, running tests.    
+
+Building this requires: 
+    infra
+    model
+
 -->
 
 <project default="compile" name="ArgoUML MDR Model subsystem">
@@ -20,7 +27,6 @@ This is designed to work in two different environments:
 
     <!-- argo.root.dir should be passed in to make sure it is correct -->
     <property name="argo.root.dir" value="../.."/>
-    <property name="argo.build.dir" value="${argo.root.dir}/build"/>
 
     <property name="build.dir" value="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
@@ -28,8 +34,6 @@ This is designed to work in two different environments:
 
     <property name="tests.classes" value="${build.dir}/tests/classes"/>
     <property name="tests.reports" value="${build.dir}/tests/reports"/>
-
-    <property name="lib.dir" value="lib" /> 
 
     <property name="debug" value="yes"/>
     <property name="deprecation" value="yes"/>
@@ -39,12 +43,12 @@ This is designed to work in two different environments:
     <property name="javainterfaces.jar" value="java-interfaces.jar"/>
 
     <property name="mdrant.jar" value="tools/lib/mdrant-patched.jar" /> 
-    <property name="mof.jar" value="${lib.dir}/mof.jar" /> 
-    <property name="jmi.jar" value="${lib.dir}/jmi.jar" /> 
-    <property name="mdrapi.jar" value="${lib.dir}/mdrapi.jar" /> 
-    <property name="nbmdr.jar" value="${lib.dir}/nbmdr.jar" /> 
-    <property name="jmiutils.jar" value="${lib.dir}/jmiutils.jar" /> 
-    <property name="openide-lookup.jar" value="${lib.dir}/openide-util.jar" /> 
+    <property name="mof.jar" value="lib/mof.jar" /> 
+    <property name="jmi.jar" value="lib/jmi.jar" /> 
+    <property name="mdrapi.jar" value="lib/mdrapi.jar" /> 
+    <property name="nbmdr.jar" value="lib/nbmdr.jar" /> 
+    <property name="jmiutils.jar" value="lib/jmiutils.jar" /> 
+    <property name="openide-lookup.jar" value="lib/openide-util.jar" /> 
         
     <path id="mdr.generate.classpath">
       <pathelement location="${mdrant.jar}" /> 
@@ -66,11 +70,14 @@ This is designed to work in two different environments:
     </path>
                 
     <path id="compile.classpath">
-      <pathelement location="${argo.build.dir}/log4j.jar"/>
-        <pathelement location="${argo.build.dir}/argouml-model.jar"/>
+      <fileset dir="../infra/build/">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="../model/build/">
+        <include name="*.jar"/>
+      </fileset>
       <path refid="mdr.compile.classpath"/>
     </path>
-
 
     <!-- Define a few places we can find Junit -->
     <path id="junit.classpath">
@@ -79,9 +86,14 @@ This is designed to work in two different environments:
       <pathelement location="${argo.root.dir}/tools/junit-3.8.2/junit.jar"/>
     </path>
 
-    <path id="run.classpath">
-      <fileset dir="${argo.build.dir}" includes="*.jar"/>
-      <path refid="mdr.run.classpath"/>
+    <path id="tests.compile.classpath">
+      <pathelement location="${build.classes}"/>
+      <path refid="compile.classpath"/>
+      <path refid="junit.classpath"/>
+    </path>
+
+    <path id="tests.run.classpath">
+      <path refid="tests.compile.classpath"/>
     </path>
 
     <property name="profile.file.dir" value="org/argouml/model/mdr/profiles"/>
@@ -209,39 +221,19 @@ This is designed to work in two different environments:
   	       	
   </target>
   
-  <!-- =================================================================== -->
-  <!-- Run from classes                                                    -->
-  <!-- =================================================================== -->
-  <target name="run" depends="compile"
-          description="Run ArgoUML with MDR model implementation.">
-    <java classname="org.argouml.application.Main"
-          fork="yes"
-          taskname="argouml"
-          maxmemory="500M">
-      <sysproperty key="log4j.configuration"
-                   value="org/argouml/resource/warn_console.lcf"/>
-      <!-- the following is redundant since it's the default, but leave for now -->
-      <sysproperty key="argouml.model.implementation"
-                   value="org.argouml.model.mdr.MDRModelImplementation"/>
-      <sysproperty key="org.netbeans.lib.jmi.Logger"
-                   value="0"/>
-      <classpath>
-        <pathelement location="${build.classes}"/>
-        <path refid="run.classpath"/>
-      </classpath>
-    </java>
+
+  <target name="create-dirs">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.classes}"/>
+    <mkdir dir="${build.javas}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
   <target name="compile"
-          depends="init,generate"
+          depends="init,create-dirs,generate"
           description="Compile the sources.">
-    <!-- create directories -->
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${build.classes}"/>
-
     <javac srcdir="src"
            destdir="${build.classes}"
            includes="org/argouml/**/*.java"
@@ -274,16 +266,8 @@ This is designed to work in two different environments:
          includes="org/argouml/**"
          manifest="src/manifest.mf"
          jarfile="${build.dir}/${result.jar}"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Install the jar file                                                -->
-  <!-- =================================================================== -->
-  <target name="install" depends="jar"
-          description="Copy the ${result.jar} file to the ArgoUML directory.">
-    <copy todir="${argo.build.dir}">
-      <fileset dir="${build.dir}" includes="*.jar"/>
-      <fileset dir="${lib.dir}" includes="*.jar"/>
+    <copy todir="${build.dir}">
+      <fileset dir="lib" includes="*.jar"/>
     </copy>
   </target>
 
@@ -306,14 +290,14 @@ This is designed to work in two different environments:
        >
        <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
        <classpath>
-         <path refid="junit.classpath"/>
-         <path>
-           <fileset dir="${argo.build.dir}">
-             <include name="*.jar"/>
-           </fileset>
-         </path>
+         <path refid="tests.compile.classpath"/>
        </classpath>
     </javac>
+    <copy todir="${tests.classes}">
+      <fileset dir="tests">
+        <include name="**/*.lcf"/>
+      </fileset>
+    </copy>
         
   </target>
 
@@ -357,10 +341,9 @@ This is designed to work in two different environments:
                    value="org/argouml/resource/info_console.lcf"/>
         <sysproperty key="argouml.model.implementation"
                    value="org.argouml.model.mdr.MDRModelImplementation"/>
-        <classpath>
+      <classpath>
         <pathelement location="${tests.classes}"/>
-        <path refid="junit.classpath"/>
-        <path refid="run.classpath"/>
+        <path refid="tests.run.classpath"/>
       </classpath>
       <formatter type="xml"/>
       <batchtest todir="${tests.reports}/junit/output">
@@ -377,13 +360,7 @@ This is designed to work in two different environments:
   <!-- =================================================================== -->
   <target name="clean" depends="init"
           description="Clean out all built files.">
-    <delete includeemptydirs="true">
-      <fileset dir="${build.dir}">
-    	<exclude name="**/.cvsignore"/>
-      	<exclude name="**/readme-build-java.txt"/>
-      	<exclude name="**/CVS/*"/>
-      </fileset>
-    </delete>
+    <delete dir="${build.dir}"/>
   </target>
         
 </project>
