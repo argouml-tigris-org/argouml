@@ -50,6 +50,12 @@ log4j directly.</warning>
 The Logging is a Layer 0 subsystem.
 </para>
   <para>
+From a strict subsystem point of view,
+the logging subsystem should be merged with the JRE subsystem.
+The problem is that the JRE subsystem is strange enough as it is
+with the fact that it doesn't exist in the source code.
+</para>
+  <para>
 Logging is currently implemented using log4j.
 </para>
   <para>

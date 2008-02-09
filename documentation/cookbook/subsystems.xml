@@ -215,7 +215,14 @@ depend on the API of subsystem Y but just the Facade of subsystem Y.
       and are not developed as part of ArgoUML.
     </para>
     <para>There is a very simple dependency structure: 
-      All ArgoUML packages may depend on them.
+      All ArgoUML subsystems may depend on them.
+    </para>
+    <para>
+      Not all imported libraries belong to this layer.
+      Some imported libraries that only affect parts of the system,
+      like the mdr libraries only affecting the model subsystem, and
+      the commons-io currently only affecting the C++ subsystem are part
+      of that subsystem instead.
     </para>
     <para>
       All these subsystems are started and initiated (if needed)
@@ -227,7 +234,12 @@ depend on the API of subsystem Y but just the Facade of subsystem Y.
       
       <listitem>
         <para>Logging - see <xref linkend="logging"></xref>. 
-          Location: <classname>org.apache.log4j</classname>
+        </para>
+      </listitem>
+
+      <listitem>
+        <para>JRE with utils. 
+          This includes all libraries that are part of the standard JRE.
         </para>
       </listitem>
 
@@ -238,11 +250,8 @@ depend on the API of subsystem Y but just the Facade of subsystem Y.
         and translators from grammatical descriptions.
         ArgoUML uses ANTLR to process Java source code.
         </para>
-      </listitem>
-
-      <listitem>
-        <para>JRE with utils. 
-          This includes all libraries that are part of the standard JRE.
+        <para>
+          Used by reverse engineering subsystems.
         </para>
       </listitem>
 
