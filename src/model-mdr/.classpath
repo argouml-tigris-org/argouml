@@ -2,12 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="tests"/>
-	<classpathentry kind="lib" path="lib/jmi.jar"/>
-	<classpathentry kind="lib" path="lib/jmiutils.jar"/>
-	<classpathentry kind="lib" path="lib/mdrapi.jar"/>
-	<classpathentry kind="lib" path="lib/mof.jar"/>
-	<classpathentry kind="lib" path="lib/nbmdr.jar"/>
-	<classpathentry kind="lib" path="lib/openide-util.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jmi.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jmiutils.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mdrapi.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mof.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/nbmdr.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/openide-util.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
 	<classpathentry kind="src" path="build/java"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
