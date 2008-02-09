@@ -31,7 +31,6 @@
     <!-- These should already be set, but set some basics just in case -->
     <property name="argo.build.dir" value="${argo.root.dir}/build"/>
     <property name="argo.lib.dir" value="${argo.root.dir}/lib"/>
-    <property name="log4j.jar.path" value="${argo.lib.dir}/log4j-1.2.6.jar"/>
     
     <property name="build.dir" value="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
@@ -41,14 +40,6 @@
     <property name="debug" value="yes"/>
     <property name="deprecation" value="yes"/>
     <property name="optimize" value="yes"/>
-
-    <path id="compile.classpath">
-      <pathelement location="${log4j.jar.path}"/>
-    </path>
-
-    <available classname="org.apache.log4j.Category"
-               classpathref="compile.classpath"
-               property="has.log4j"/>
   </target>
 
   <!-- =================================================================== -->
@@ -72,9 +63,6 @@
            source="1.5"
            target="1.5">
        <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
-       <classpath>
-	  <path refid="compile.classpath"/>
-       </classpath>
     </javac>
   </target>
 
