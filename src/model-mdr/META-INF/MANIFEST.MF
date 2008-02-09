@@ -2,12 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.argouml.core.model.mdr
-Bundle-Version: 0.25.3.qualifier
+Bundle-Version: 0.25.5
 Bundle-Localization: plugin
 Export-Package: org.argouml.model.mdr;uses:="junit.framework"
 Bundle-Vendor: %pluginProvider
 Require-Bundle: org.argouml.core.model;visibility:=reexport,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.argouml.core.infra
 Bundle-ClassPath: org.argouml.core.model.mdr.jar,
  lib/jmi.jar,
  lib/jmiutils.jar,
