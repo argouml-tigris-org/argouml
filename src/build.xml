@@ -157,6 +157,8 @@ Property files to be searched:
     <property file="${override.build.properties}"/>
     <property file="default.properties"/>
 
+    <property name="tests.reports" value="${argo.build.dir}/tests"/>
+
     <path id="java.tools.classpath">
       <pathelement path="${JAVA_HOME}/lib/tools.jar"/>
     </path>
@@ -314,16 +316,30 @@ Property files to be searched:
   <!-- Run tests in all subdirectories.                                    -->
   <!-- Order is important.                                                 -->
   <!-- =================================================================== -->
-  <target name="tests" 
+  <target name="tests"
           description="Run tests.">
 
     <!-- Build the subdirs in order. -->
-    <ant dir="infra" inheritAll="false"           target="tests"/>
-    <ant dir="model" inheritAll="false"           target="tests"/>
+    <!-- infra doesn't have tests. -->
+    <!-- model doesn't have tests. -->
     <ant dir="model-mdr" inheritAll="false"       target="tests"/>
 <!--    <ant dir="model-euml" inheritAll="false"      target="tests"/> -->
     <ant dir="app" inheritAll="false"             target="tests"/>
+
+    <ant target="tests-reports"/>
   </target>  
+
+  <target name="tests-reports" depends="init">
+    <mkdir dir="${tests.reports}"/>
+
+    <junitreport todir="${tests.reports}">
+      <fileset dir=".">
+        <include name="*/build/tests/reports/**/TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${tests.reports}/html"/>
+    </junitreport>
+  </target>
+
 
   <!-- =================================================================== -->
   <!-- Clean all subdirectories.                                           -->
