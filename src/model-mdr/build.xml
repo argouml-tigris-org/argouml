@@ -171,7 +171,6 @@ Building this requires:
   <target name="generate-internal" depends="init,generate-needed,generate-skipped" 
       unless="generate.notRequired">
     <!-- create directories -->
-    <mkdir dir="${build.dir}"/>
     <delete>
       <fileset dir="${build.javas}">
     	<exclude name="**/.cvsignore"/>
@@ -179,7 +178,6 @@ Building this requires:
       	<exclude name="**/CVS/*"/>
       </fileset>
     </delete>
-    <mkdir dir="${build.javas}"/>
 
     <!-- NOTE: The MDR task needs an absolute path for storageFile or it will
                put it in the caller's directory when called from argouml build
@@ -221,11 +219,8 @@ Building this requires:
   	       	
   </target>
   
-
   <target name="create-dirs">
-    <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes}"/>
-    <mkdir dir="${build.javas}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -360,7 +355,12 @@ Building this requires:
   <!-- =================================================================== -->
   <target name="clean" depends="init"
           description="Clean out all built files.">
-    <delete dir="${build.dir}"/>
+    <delete includeemptydirs="true">
+      <fileset dir="${build.dir}">
+      	<exclude name="**/readme-build-java.txt"/>
+      	<exclude name="**/.svn/*"/>
+      </fileset>
+    </delete>
   </target>
         
 </project>
