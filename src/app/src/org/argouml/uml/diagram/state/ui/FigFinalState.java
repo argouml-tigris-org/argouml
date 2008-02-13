@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
@@ -215,6 +216,25 @@ public class FigFinalState extends FigStateVertex {
     @Override
     public List getGravityPoints() {
         return getCircleGravityPoints();
+    }
+
+    /**
+     * Override setBounds to keep shapes looking right.
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setStandardBounds(int x, int y, int w, int h) {
+        if (getNameFig() == null) {
+            return;
+        }
+        Rectangle oldBounds = getBounds();
+
+        getBigPort().setBounds(x, y, w, h);
+        inCircle.setBounds(x + 5, y + 5, w - 10, h - 10);
+
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
     }
 
 }
