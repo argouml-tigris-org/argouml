@@ -40,10 +40,13 @@ What tools do I need to use this build file?
   <property file="build.properties"/>
   <property file="${user.home}/argouml.build.properties"/>
   <property file="${override.build.properties}"/>
+
   <!-- Fallback definition for argo.src.dir - won't override current value -->
-  <property name="argo.src.dir" value="${argo.root.dir}/src_new"/>
+  <property name="argo.src.dir" value="${argo.root.dir}/src/app/src"/>
+
+  <!-- We get the argouml version from the version in the app directory. -->
   <property file="${argo.src.dir}/default.properties"/>
-  <!-- our defaults depend on and don't override main props, so they go 2nd -->
+  <!-- Our defaults depend on and don't override main props, so they go 2nd -->
   <property file="default.properties"/>
 
   <property name="documentation.dir" value="${basedir}"/>
@@ -60,14 +63,10 @@ What tools do I need to use this build file?
   </path>
 
   <target name="init">
-    <tstamp>
-        <format property="year" pattern="yyyy"/>
-    </tstamp>
-
     <property name="Name"              value="ArgoUML-docs"/>
     <property name="name"              value="argouml-docs"/>
 
-    <echo message="--------------- ${Name} ${argo.core.version} [${year}] ------------"/>
+    <echo message="--------------- ${Name} ${argo.core.version} ------------"/>
     <echo message="Using ${ant.version}"/>
 
 
@@ -598,28 +597,6 @@ To get it, call ant with target - docbook-xsl-get
   
   
   <!-- =================================================================== -->
-  <!-- dist: Creates the distribution. This is just the defaulthtml in zip -->
-  <!--       and tar.gz versions                                           -->
-  <!-- =================================================================== -->
-
-  <target name="dist" depends="defaulthtml"
-          description="Build together a distribution of the chunked html.">
-
-    <echo message="Building distribution files from ${defaulthtml.dir}..."/>
-
-    <!-- The ZIP file -->
-
-    <zip zipfile="${Name}-${argo.core.version}.zip" basedir="${defaulthtml.dir}"/>
-
-    <!-- The tar.gz file -->
-
-    <tar tarfile="${Name}-${argo.core.version}.tar" basedir="${defaulthtml.dir}"/>
-    <gzip zipfile="${Name}-${argo.core.version}.tar.gz" src="${Name}-${argo.core.version}.tar"/>
-    <delete file="${Name}-${argo.core.version}.tar"/>
-  </target>
-
-
-  <!-- =================================================================== -->
   <!-- Cleans up generated stuff                                           -->
   <!-- =================================================================== -->
 
@@ -628,15 +605,5 @@ To get it, call ant with target - docbook-xsl-get
     <delete dir="${argo.docs.output.dir}"/>
   </target>
   
-
-  <!-- =================================================================== -->
-  <!-- Total cleanup                                                       -->
-  <!-- =================================================================== -->
-
-  <target name="total-clean" depends="clean">
-    <delete file="${Name}-${argo.core.version}.zip"/>
-    <delete file="${Name}-${argo.core.version}.tar"/>
-    <delete file="${Name}-${argo.core.version}.tar.gz"/>
-  </target>       
 </project>
 
