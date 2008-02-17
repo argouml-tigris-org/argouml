@@ -1,4 +1,5 @@
-#Sun Feb 17 15:55:29 CET 2008
+#Sun Feb 17 21:07:44 CET 2008
 filenames.properties=/argouml-core-tools/checkstyle/checkstyle.properties
 enabled=true
+file_filter=in\:\\.java$\nin\:\\.properties$\nex\:Java(Lexer|Recognizer|TokenTypes)\\.java$\n
 filenames.config=/argouml-core-tools/checkstyle/checkstyle_argouml.xml
