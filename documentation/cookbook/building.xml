@@ -1908,7 +1908,8 @@ instead workspace-specific settings.
 
         <listitem>
           <para>
-Compile time dependencies are set up on the Java Build Path.
+Compile time dependencies are set up using the PDE Tools.
+For this argouml projects containing java code are Plugin-projects.
 </para>
         </listitem>
 
@@ -1921,6 +1922,13 @@ Run time dependencies are set up in the Configurations.
         <listitem>
           <para>
 Configurations saved in the project where they "belong".
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Use as many of the build tools as possible from their
+Eclipse distributions.
 </para>
         </listitem>
 
@@ -2004,12 +2012,11 @@ Eclipse finds the Configurations that are also checked out.
 </para>
             </listitem>
           </orderedlist>
-        </listitem>
 
-        <listitem>
           <para>
-Select Project => Clean... => Clean all projects
-and wait for everything to build again.
+If this doesn't work, try to 
+select Project => Clean...
+and clean the projects that were not built properly.
 </para>
         </listitem>
 
@@ -2309,6 +2316,11 @@ Unnecessary declaration of thrown checked exception: Warning.
 
     <sect2 id="checkclipse">
       <title>Settings for Checkclipse</title>
+      <note>
+        <para>
+This description needs to be updated!
+</para>
+      </note>
       <para>
 Checkclipse is a plug in for Eclipse which needs to be installed separately.
 It enables style checking according the rules set for the ArgoUML project.
@@ -2598,6 +2610,23 @@ Run all the tests by pressing Debug or Run.
         </itemizedlist>
       </sect3>
     </sect2>
+
+    <sect2>
+      <title>How to extend the eclipse workspace with also the modules</title>
+      <note>
+        <para>
+Needs to be improved.
+</para>
+      </note>
+      <para>
+Set the workspace default file for ant to
+tools/eclipse/eclipse-ant.properties.
+</para>
+      <para>
+Import from the argouml-modules-projectset.psf files.
+</para>
+    </sect2>
+
   </sect1>
 
   <sect1>
