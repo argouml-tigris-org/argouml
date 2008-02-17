@@ -1870,7 +1870,7 @@ If you are running Eclipse 3.2 or 3.3
 we have a prepared a recommended setup
 committed into our repository.
 This setup is slightly different than the ant setup 
-with regard to the directory tree structure of the checked out copy
+with regard to the directory names of the checked out copy
 and some special magic is used in the ant scripts
 that is controlled from the special Eclipse configurations.
 </para>
@@ -1891,7 +1891,7 @@ please help in making them better by contacting the editor of the Cookbook.
     <sect2 id="eclipse-setup-summary">
       <title>Basic ideas of the set up</title>
       <para>
-This is a terse list of some ideas on the Eclipse set up.
+Here are the ideas gouverning the layout of the recommended Eclipse set up.
 </para>
 
       <itemizedlist>
@@ -1901,8 +1901,8 @@ This is a terse list of some ideas on the Eclipse set up.
 
         <listitem>
           <para>
-No project-specific settings (compiler, JRE, style),
-instead workspace-specific settings.
+Prefer workspace-specific settings to
+project-specific settings (compiler, JRE, style).
 </para>
         </listitem>
 
@@ -1965,23 +1965,69 @@ Then enter the following url
 Download the initial Team Project Set file and save it somewhere.
 </para>
           <para>
-Suggested by browsing to
-<filename>trunk/www/psf</filename>
-and checking it out as a project.
+This is done like this:
+            <orderedlist>
+              <listitem>
+                <para>File => New Project</para>
+              </listitem>
+              <listitem>
+                <para>SVN => Checkout Projects from SVN</para>
+              </listitem>
+              <listitem>
+                <para>Next</para>
+              </listitem>
+              <listitem>
+                <para>
+Choose the repository location
+http://argouml.tigris.org/svn/argouml
+</para>
+              </listitem>
+              <listitem>
+                <para>Next</para>
+              </listitem>
+              <listitem>
+                <para>
+Browse to <filename>trunk/www/psf</filename>.
+</para>
+              </listitem>
+              <listitem>
+                <para>Next</para>
+              </listitem>
+              <listitem>
+                <para>Check out as project in the workspace, name psf</para>
+              </listitem>
+              <listitem>
+                <para>Next</para>
+              </listitem>
+              <listitem>
+                <para>Use default workspace location</para>
+              </listitem>
+              <listitem>
+                <para>Finish</para>
+              </listitem>
+            </orderedlist>
 </para>
         </listitem>
 
         <listitem>
           <para>
-Do File => Import and select Team Project Set and press Next.
+Import the Team Project Set file for the core argouml project.
 </para>
-        </listitem>
-
-        <listitem>
           <para>
-Browse to the file
+This can be done in two ways.
+Either by
+File => Import, 
+select Team Project Set,
+press Next,
+browse to the file
 <filename>argouml-core-projectset.psf</filename>
+in the psf project,
 and press Finish.
+Or by right-clicking on
+the <filename>argouml-core-projectset.psf</filename>
+in the Eclipse explorer and selecting
+Import Project Set...
+from the popub-menu.
 </para>
 
           <para>
@@ -2025,7 +2071,7 @@ and clean the projects that were not built properly.
 Verify that you can start ArgoUML from the debugger within Eclipse. 
 You can do this by clicking on the little down-arrow close to the
 Debug icon in the tool bar,
-selecting Debug...,
+selecting Debug... or Run...,
 and finding ArgoUML in the list (under Java Application).
 </para>
         </listitem>
@@ -2052,11 +2098,9 @@ We suggest you to consider having ArgoUML work in an
 Eclipse Workspace separate from your other projects.
 </para>
 
-      <itemizedlist>
-        <listitem>
-          <para>
-Code conventions.
-</para>
+      <sect3>
+        <title>Code conventions</title>
+        <para>
           <orderedlist>
             <listitem>
               <para>
@@ -2070,21 +2114,21 @@ Then select Java => Code Style => Formatter.
             </listitem>
             <listitem>
               <para>
-For Eclipse 3.2 you do:
+For Eclipse 3.2 and later you do:
 Select Java Conventions [built-in].
-</para>
-            </listitem>
-            <listitem>
-              <para>
+                <footnote>
+                  <para>
 For Eclipse 3.1 you do:
 Select Import and give the file
 <filename>eclipse/eclipse-argo-formatter.xml</filename>
 located in the argouml-core-tools project that you just checked out.
 </para>
-              <para>
+                  <para>
 This takes care of the Eclipse-built-in bug
 (<ulink url="https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765"/>).
 </para>
+                </footnote>
+              </para>
             </listitem>
             <listitem>
               <para>
@@ -2097,12 +2141,12 @@ Press OK.
 This will give you Code Conventions exactly like the Sun Coding Style
 that we use in the ArgoUML project.
 </para>
-        </listitem>
+        </para>
+      </sect3>
 
-        <listitem>
-          <para>
-New file templates.
-</para>
+      <sect3>
+        <title>New file templates</title>
+        <para>
 
           <orderedlist>
             <listitem>
@@ -2134,8 +2178,8 @@ This will set up templates to be used when using the Eclipse functions
 for creating files, functions, types and Javadoc...
 </para>
 
-        </listitem>
-      </itemizedlist>
+        </para>
+      </sect3>
     </sect2>
 
     <sect2>
@@ -2198,7 +2242,7 @@ Suggested settings for these tabs
 Javadoc => Malformed Javadoc comments:
 Warning,
 Private,
-Check all reports.
+Check all "Report...".
 </para>
             </listitem>
             <listitem>
@@ -2253,14 +2297,14 @@ Possible accidental boolean assignment: Warning.
             <listitem>
               <para>
 Name shadowing and conflicts =>
-Local variable declaration hides another field or variable: Warning,
-check Include constructor or setter method parameters.
+Field declaration hides another field or variable: Warning.
 </para>
             </listitem>
             <listitem>
               <para>
 Name shadowing and conflicts =>
-Field declaration hides another field or variable: Warning.
+Local variable declaration hides another field or variable: Warning,
+check Include constructor or setter method parameters.
 </para>
             </listitem>
           </itemizedlist>
@@ -2280,16 +2324,19 @@ Suggested settings for these tabs
             <listitem>
               <para>
 Unnecessary code => Local variable is never read: Warning.
-</para>
+(This is default in Eclipse 3.3.)
+</para> 
             </listitem>
             <listitem>
               <para>
 Unnecessary code => Parameter is never read: Warning.
+uncheck Ignore parameters documented with '@param' tag.
 </para>
             </listitem>
             <listitem>
               <para>
 Unnecessary code => Unused or unread private members: Warning.
+(This is reformulated and default in Eclipse 3.3.)
 </para>
             </listitem>
             <listitem>
