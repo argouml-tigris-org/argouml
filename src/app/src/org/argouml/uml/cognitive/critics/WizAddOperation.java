@@ -73,12 +73,9 @@ public class WizAddOperation extends UMLWizard {
     /**
      * @param s the new instructions
      */
-    public void setInstructions(String s) { instructions = s; }
-
-    /**
-     * @param b
-     */
-    //public void setMustEdit(boolean b) { mustEdit = b; }
+    public void setInstructions(String s) {
+        instructions = s;
+    }
 
     /*
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)

@@ -56,17 +56,6 @@ public class FigPool extends FigNodeModelElement {
         setBounds(r);
     }
 
-    /**
-     * Constructor which hooks the Fig into an existing UML element.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     */
-//    public FigPool(GraphModel gm, Object node) {
-//        this(new Rectangle(10, 10, 160, 200));
-//        setOwner(node);
-//    }
-    
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#clone()
