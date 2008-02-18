@@ -78,8 +78,9 @@ public abstract class FigMessage
      * @param     me     a mouse event
      * @return           a collection of menu items
      *
-     * @see org.tigris.gef.ui.PopupGenerator2#getPopUpActions(java.awt.event.MouseEvent)
+     * @see org.tigris.gef.presentation.Fig#getPopUpActions(java.awt.event.MouseEvent)
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
 
@@ -232,6 +233,7 @@ public abstract class FigMessage
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
      */
+    @Override
     protected Object getSource() {
         Object owner = getOwner();
         if (owner == null) {
@@ -243,6 +245,7 @@ public abstract class FigMessage
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
      */
+    @Override
     protected Object getDestination() {
         Object owner = getOwner();
         if (owner == null) {
@@ -257,6 +260,7 @@ public abstract class FigMessage
      * 
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
      */
+    @Override
     protected void updateNameText() {
         super.updateNameText();
         textGroup.calcBounds();
@@ -267,6 +271,7 @@ public abstract class FigMessage
      * 
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
         super.updateStereotypeText();
         textGroup.calcBounds();
@@ -291,6 +296,7 @@ public abstract class FigMessage
      *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#determineFigNodes()
      */
+    @Override
     protected boolean determineFigNodes() {
         return true;
     }
@@ -298,6 +304,7 @@ public abstract class FigMessage
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionMessage(this);
     }

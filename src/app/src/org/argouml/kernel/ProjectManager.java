@@ -352,7 +352,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * We must add this to the UndoManager.
      *
      * @param command the command.
-     * @see org.argouml.model.ModelCommandCreationObserver#modelCommandCreated(org.argouml.model.ModelCommand)
+     * @see org.argouml.model.ModelCommandCreationObserver#execute(ModelCommand)
      */
     public Object execute(final ModelCommand command) {
         if (saveAction != null) {

@@ -823,7 +823,7 @@ public final class NotationUtilityUml {
         }
 
         /**
-         * Called by {@link ParserDisplay#setProperties(Object, Vector,
+         * Called by {@link ParserDisplay#setProperties(Object, java.util.Vector,
          * PropertySpecialString[])} while searching for an action to
          * invoke for a property. If it returns true, then setProperties
          * may assume that all required actions have been taken and stop

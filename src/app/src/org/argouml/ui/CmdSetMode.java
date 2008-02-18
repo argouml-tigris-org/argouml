@@ -37,7 +37,8 @@ import org.argouml.i18n.Translator;
  * Extends GEF CmdSetMode to add additional metadata such as tooltips.
  *
  * @author Jeremy Jones
- * @deprecated for 0.25.3 by tfmorris - use {@link ActionSetMode}
+ * @deprecated for 0.25.3 by tfmorris - use 
+ * {@link org.argouml.uml.diagram.ui.ActionSetMode}
  */
 
 @SuppressWarnings("deprecation")

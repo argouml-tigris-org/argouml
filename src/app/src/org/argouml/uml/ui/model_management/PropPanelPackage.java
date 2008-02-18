@@ -105,7 +105,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * @param orientation the orientation
      * @param icon the icon to show next to the title
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelPackage(String, ImageIcon)} and
+     *             {@link #PropPanelPackage(String, ImageIcon)} and
      *             setOrientation() after instantiation.
      */
     @Deprecated

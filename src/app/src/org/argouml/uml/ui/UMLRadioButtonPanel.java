@@ -197,7 +197,7 @@ public abstract class UMLRadioButtonPanel
      *            logically recognize the button.
      * @param thePropertySetName
      *            the name of the MEvent that is fired when the property that is
-     *            showns changes value.
+     *            given changes value.
      * @param setAction
      *            the action that should be registered with the buttons and
      *            that's executed when one of the buttons is pressed
@@ -205,7 +205,8 @@ public abstract class UMLRadioButtonPanel
      *            when true the buttons should be laid out horizontally.
      * @deprecated for 0.25.4 by tfmorris. Use List<String[]> form of
      *             constructor. See
-     *             {@link UMLParameterDirectionKindRadioButtonPanel} for an
+     *             {@link org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPanel}
+     *             for an
      *             example of a subclass which has been converted to the new
      *             form of constructor.
      */

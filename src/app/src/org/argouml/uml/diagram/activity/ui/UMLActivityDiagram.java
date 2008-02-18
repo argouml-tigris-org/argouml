@@ -280,7 +280,8 @@ public class UMLActivityDiagram extends UMLDiagram {
      * 
      * TODO: If this method is called by any of the Figs, it will introduce
      * a dependency cycle.  It would be much better if they could just
-     * use {@link ArgoDiagram#getOwner()} which does the same thing.
+     * use {@link org.argouml.uml.diagram.ArgoDiagram#getOwner()} which does
+     * the same thing.
      */
     public Object getStateMachine() {
         GraphModel gm = getGraphModel();
@@ -648,10 +649,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      * Once the diagram has loaded we build the previous/next links between
      * any swimlanes.
      */
+    @Override
     public void postLoad() {
 	FigPartition previous = null;
 
-	// Create a mpa of partions keyed by x co-ordinate
+	// Create a map of partitions keyed by x coordinate
 	HashMap map = new HashMap();
 	
 	Iterator it = new ArrayList(getLayer().getContents()).iterator();
@@ -662,7 +664,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    }
 	}
 	
-	// Sort the x co-ordinates into order
+	// Sort the x coordinates into order
 	List xList = new ArrayList(map.keySet());
         Collections.sort(xList);
 	

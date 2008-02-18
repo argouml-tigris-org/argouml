@@ -199,8 +199,7 @@ class ActionRemoveAction extends AbstractActionRemoveElement {
 class UMLActionSequenceActionList extends UMLMutableLinkedList {
 
     /**
-     * Constructor.
-     * @param dataModel the model
+     * Construct a default object with a new UMLActionSequenceActionListModel.
      */
     public UMLActionSequenceActionList() {
         super(new UMLActionSequenceActionListModel());

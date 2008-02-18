@@ -285,7 +285,6 @@ class ModelMemberFilePersister extends MemberFilePersister
     /**
      * Read an XMI file from the given URL.
      *
-     * @param p the project
      * @param url the URL
      * @param xmiExtensionParser the XmiExtensionParser
      * @throws OpenException when there is an IO error
@@ -311,7 +310,6 @@ class ModelMemberFilePersister extends MemberFilePersister
     /**
      * Read a XMI file from the given inputsource.
      * 
-     * @param p Project to which load the inputsource.
      * @param source The InputSource. The systemId of the input source should be
      *                set so that it can be used to resolve external references.
      * @throws OpenException If an error occur while reading the source

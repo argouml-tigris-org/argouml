@@ -56,7 +56,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
      * @param orientation
      *            the orientation of the panel
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelCompositeState(String, ImageIcon)} and
+     *             {@link #PropPanelSubmachineState(String, ImageIcon)} and
      *             setOrientation() after instantiation.
      */
     @Deprecated

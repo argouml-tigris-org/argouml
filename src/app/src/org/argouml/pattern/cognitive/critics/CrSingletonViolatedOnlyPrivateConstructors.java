@@ -49,8 +49,8 @@ import org.argouml.uml.cognitive.critics.CrUML;
  * </ol>
  *
  * This version includes an implementation for the second tests above!
- *
- * @see ArgoUML User Manual: Singleton Violated
+ * <p>
+ * *see ArgoUML User Manual: Singleton Violated
  *
  * @author jrobbins
  */

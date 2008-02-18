@@ -59,7 +59,7 @@ abstract class MemberFilePersister {
      * Load a project member from an InputStream.
      *
      * @param project the project to persist
-     * @param inputStream the inputStream to parse to load the member.
+     * @param url the URL to open and parse to load the member.
      * @throws OpenException on any parsing errors.
      */
     public abstract void load(Project project, URL url)

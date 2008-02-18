@@ -122,7 +122,7 @@ abstract class SAXParserBase extends DefaultHandler {
     }
     
     /**
-     * @param is the InputSource to read
+     * @param input the InputSource to read
      * @throws SAXException when parsing xml
      */
     public void parse(InputSource input) throws SAXException {

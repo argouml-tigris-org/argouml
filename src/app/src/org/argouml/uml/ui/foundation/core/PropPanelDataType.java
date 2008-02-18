@@ -58,7 +58,7 @@ public class PropPanelDataType extends PropPanelClassifier {
      * @param icon icon
      * @param orientation horizontal or vertical orientation
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelDataType(String, ImageIcon)} and
+     *             {@link #PropPanelDataType(String, ImageIcon)} and
      *             setOrientation() after instantiation.
      */
     @Deprecated

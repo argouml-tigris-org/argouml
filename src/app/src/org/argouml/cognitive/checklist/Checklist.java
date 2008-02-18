@@ -83,7 +83,7 @@ public class Checklist extends ArrayList<CheckItem> implements List<CheckItem>,
 
     /**
      * @param item the item to be removed
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #remove(CheckItem)}.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #remove(Object)}.
      */
     @Deprecated
     public void removeItem(CheckItem item) {

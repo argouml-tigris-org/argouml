@@ -60,7 +60,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      * @param icon the icon to be shown next to the name
      * @param orientation the orientation of the panel
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelNamespace(String, ImageIcon)} and
+     *             {@link #PropPanelNamespace(String, ImageIcon)} and
      *             setOrientation() after instantiation.
      */
     @Deprecated
@@ -75,7 +75,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      * @param title the name of the panel to be shown at the top
      * @param orientation the orientation of the panel
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelNamespace(String, ImageIcon)} and
+     *             {@link #PropPanelNamespace(String, ImageIcon)} and
      *             setOrientation() after instantiation.
      */
     @Deprecated

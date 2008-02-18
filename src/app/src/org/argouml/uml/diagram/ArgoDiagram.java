@@ -204,8 +204,11 @@ public interface ArgoDiagram {
      * deleted. So we need to deselect this diagram. 
      * There are other things to take care of, so all this is delegated to 
      * {@link org.argouml.kernel.Project#moveToTrash(Object)}.
+     * 
+     * @param evt A PropertyChangeEvent object describing the event source
+     * and the property that has changed.
      *
-     * {@inheritDoc}
+     * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt);
 
@@ -231,26 +234,26 @@ public interface ArgoDiagram {
     /**
      * @return an enumeration of the contents of the fig.
      * @deprecated for 0.25.4 by tfmorris. Use {@link #getFigIterator()}.
-     * @see Diagram#elements()
+     * @see org.tigris.gef.base.Diagram#elements()
      */
     @Deprecated
     public Enumeration elements();
     /**
      * @param listener
-     * @see Diagram#addVetoableChangeListener(VetoableChangeListener)
+     * @see org.tigris.gef.base.Diagram#addVetoableChangeListener(VetoableChangeListener)
      */
     public void addVetoableChangeListener(VetoableChangeListener listener);
 
     /**
      * @param listener
-     * @see Diagram#removeVetoableChangeListener(VetoableChangeListener)
+     * @see org.tigris.gef.base.Diagram#removeVetoableChangeListener(VetoableChangeListener)
      */
     public void removeVetoableChangeListener(VetoableChangeListener listener);
 
     /**
      * @param property
      * @param listener
-     * @see Diagram#addPropertyChangeListener(String, PropertyChangeListener)
+     * @see org.tigris.gef.base.Diagram#addPropertyChangeListener(String, PropertyChangeListener)
      */
     public void addPropertyChangeListener(String property,
             PropertyChangeListener listener);
@@ -258,64 +261,64 @@ public interface ArgoDiagram {
     /**
      * @param property
      * @param listener
-     * @see Diagram#removePropertyChangeListener(String, PropertyChangeListener)
+     * @see org.tigris.gef.base.Diagram#removePropertyChangeListener(String, PropertyChangeListener)
      */
     public void removePropertyChangeListener(String property,
             PropertyChangeListener listener);
     
     /**
      * @return the GEF graphmodel for this diagram
-     * @see Diagram#getGraphModel()
+     * @see org.tigris.gef.base.Diagram#getGraphModel()
      */
     public GraphModel getGraphModel();
     
     /**
      * @return the GEF LayerPerspective of this diagram
-     * @see Diagram#getLayer()
+     * @see org.tigris.gef.base.Diagram#getLayer()
      */
     public LayerPerspective getLayer();
     
     /**
      * @param figures list of Figures to check for in diagram
      * @return count of figures contained in this diagram
-     * @see Diagram#countContained(List)
+     * @see org.tigris.gef.base.Diagram#countContained(List)
      */
     public int countContained(List figures);
     
     /**
      * @param o The object which owns the fig
      * @return the corresponding fig
-     * @see Diagram#presentationFor(Object)
+     * @see org.tigris.gef.base.Diagram#presentationFor(Object)
      */
     public Fig presentationFor(Object o);
     
     /**
      * @param f Fig to be added
-     * @see Diagram#add(Fig)
+     * @see org.tigris.gef.base.Diagram#add(Fig)
      */
     public void add(Fig f);
     
     /**
      * @return the name of the diagram
-     * @see Diagram#getName()
+     * @see org.tigris.gef.base.Diagram#getName()
      */
     public String getName();
     
     /**
      * Perform any pre-save actions.
-     * @see Diagram#preSave()
+     * @see org.tigris.gef.base.Diagram#preSave()
      */
     public void preSave();
     
     /**
      * Perform any post-save actions.
-     * @see Diagram#postSave()
+     * @see org.tigris.gef.base.Diagram#postSave()
      */
     public void postSave();
     
     /**
      * Perform any post-load actions.
-     * @see Diagram#postLoad()
+     * @see org.tigris.gef.base.Diagram#postLoad()
      */
     public void postLoad();
     /////////////////// End GEF methods ////////////////////////

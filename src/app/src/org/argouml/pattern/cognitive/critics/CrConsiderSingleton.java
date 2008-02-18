@@ -36,8 +36,8 @@ import org.argouml.uml.cognitive.critics.CrUML;
  * A critic to detect when a class can never have more than one instance (of
  * itself of any subclasses), and thus whether it is suitable for declaration
  * as a Singleton (with stereotype &laquo;Singleton&raquo;.<p>
- *
- * @see the ArgoUML User Manual: Consider Using Singleton Pattern for Class
+ * <p>
+ * see the ArgoUML User Manual: Consider Using Singleton Pattern for Class
  *
  * @author jrobbins
  */

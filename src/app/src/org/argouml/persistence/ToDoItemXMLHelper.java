@@ -57,7 +57,7 @@ public class ToDoItemXMLHelper
      * Encodes the headline of this ToDoItem in an XML safe way and
      * returns the new String. The String can be regained by running the
      * returned String through
-     * {@link TodoParser#decode TodoParser::decode}.
+     * {@link TodoParser#decode}.
      *
      * @return	The encoded headline.
      */
@@ -70,7 +70,7 @@ public class ToDoItemXMLHelper
      * Encodes the priority of this ToDoItem in an XML safe way and
      * returns the new String. The String can be regained by running the
      * returned String through
-     * {@link TodoParser#decode TodoParser::decode} and comparing to the
+     * {@link TodoParser#decode(String)} and comparing to the
      * STRING_prio_* values in TodoTokenTable.
      *
      * @return	The encoded priority.
@@ -100,7 +100,7 @@ public class ToDoItemXMLHelper
      * Encodes the moreInfoURL of this ToDoItem in an XML safe way and
      * returns the new String. The String can be regained by running the
      * returned String through
-     * {@link TodoParser#decode TodoParser::decode}.
+     * {@link TodoParser#decode(String)}.
      *
      * @return	The encoded moreInfoURL.
      */
@@ -113,7 +113,7 @@ public class ToDoItemXMLHelper
      * Encodes the description of this ToDoItem in an XML safe way and
      * returns the new String. The String can be regained by running the
      * returned String through
-     * {@link TodoParser#decode TodoParser::decode}.
+     * {@link TodoParser#decode(String)}.
      *
      * @return	The encoded description.
      */

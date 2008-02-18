@@ -77,8 +77,7 @@ class XmiInputStream extends BufferedInputStream {
      * @param inputStream the input stream to wrap.
      * @param extParser the parser to call to read any
      *                           XMI.extension elements
-     * @param len the expected length of the input stream
-     * @param spacing the number of characers to read before
+     * @param spacing the number of characters to read before
      *        firing a progress event.
      * @param prgrssMgr the progress manager
      */

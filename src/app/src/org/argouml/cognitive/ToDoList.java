@@ -66,7 +66,7 @@ import org.argouml.i18n.Translator;
  *
  * This class is dependent on Designer.<p>
  *
- * @see Designer#nondisruptivelyWarn
+ * @see Designer#inform
  * @author Jason Robbins
  */
 public class ToDoList extends Observable implements Runnable,
