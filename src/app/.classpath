@@ -7,8 +7,7 @@
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gef-0.12.4BETA.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ocl-argo-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/swidgets-0.1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/swidgets-0.1.4.jar"/>
 	<classpathentry kind="lib" path="lib/toolbar-1.4.1-20071227.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model-mdr"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
