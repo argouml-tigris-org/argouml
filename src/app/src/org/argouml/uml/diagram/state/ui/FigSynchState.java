@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
@@ -99,6 +100,27 @@ public class FigSynchState extends FigStateVertex {
         this();
         setOwner(node);
     }
+    /**
+     * Override setStandardBounds to keep shapes looking right.
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setStandardBounds(int x, int y, int w, int h) {
+    	if (getNameFig() == null) {
+            return;
+        }
+        Rectangle oldBounds = getBounds();
+        
+        getBigPort().setBounds(x, y, WIDTH, HEIGHT);
+        head.setBounds(x, y, WIDTH, HEIGHT);
+        
+        bound.setBounds(x - 2, y + 2, 0, 0);
+        bound.calcBounds();
+        calcBounds(); 
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+    }
+
 
     /*
      * @see java.lang.Object#clone()

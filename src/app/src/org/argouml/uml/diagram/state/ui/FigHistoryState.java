@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
@@ -79,9 +80,30 @@ public abstract class FigHistoryState extends FigStateVertex {
         addFig(head);
         addFig(h);
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
+    /**
+     * Override setBounds to keep shapes looking right.
+     * {@inheritDoc}
+     */
+    @Override
+    protected void setStandardBounds(int x, int y, int w, int h) {        
+    	if (getNameFig() == null) {
+            return;
+        }
+        Rectangle oldBounds = getBounds();
+
+        getBigPort().setBounds(x, y, WIDTH, HEIGHT);
+        head.setBounds(x, y, WIDTH, HEIGHT);
+        this.h.setBounds(x, y, WIDTH - 10, HEIGHT - 10);
+        this.h.calcBounds();
+
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+    }
+    
     /**
      * This should return the text shown at the center of the history state.
      *
