@@ -50,10 +50,16 @@ Eclipse development environment:
       <orderedlist>
         <listitem>
           <para>
-Download and install Eclipse for Java development (preferably Eclipse 3.something).
+Download and install Eclipse.
 This is if you don't already have it installed.
 See 
 <ulink url="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</ulink>.
+</para>
+          <para>
+You need the
+Eclipse IDE for Java EE Developers,
+Eclipse for RCP/Plug-in Developers, or
+Eclipse Classic 3.3.1.1.
 </para>
         </listitem>
 
@@ -650,6 +656,11 @@ If you don't want to acquire a Tigris login to do this you can use the
     <indexterm>
       <primary>Ant</primary>
     </indexterm>
+    <note>
+    <para>
+This needs to be updated with the Eclipse-orientation.
+</para>
+    </note>
     <para>
 The standard ArgoUML build process is driven by Apache Ant, and it is highly recommend
 that you stick to that.
@@ -1872,16 +1883,27 @@ committed into our repository.
 This setup is slightly different than the ant setup 
 with regard to the directory names of the checked out copy
 and some special magic is used in the ant scripts
-that is controlled from the special Eclipse configurations.
+that are controlled from the special Eclipse configurations.
 </para>
     <para>
-The prepared setup includes settings for Checkstyle within Eclipse that
-will be enabled if you have the Checkclipse Eclipse plugin installed.
+For the recommended setup to work we make certain assumption on 
+what modules you have available in your Eclipse.
+The following are needed:
+      <itemizedlist>
+        <listitem><para>Subclipse</para></listitem>
+        <listitem><para>Ant</para></listitem>
+        <listitem><para>JUnit 3</para></listitem>
+        <listitem><para>PDE Tools</para></listitem>
+      </itemizedlist>
+The following is optional and the features will be enabled
+if available:
+      <itemizedlist>
+        <listitem><para>Checkstyle</para></listitem>
+      </itemizedlist>
 </para>
     <para>
-You need to have Subclipse installed in your Eclipse to retrieve
-the files from the repository.
-See <ulink url="http://subclipse.tigris.org/install.html"/>.
+Subclipse can be found at 
+<ulink url="http://subclipse.tigris.org/install.html"/>.
 </para>
     <para>
 If any of these instructions don't work or could be improved in some way,
@@ -1909,7 +1931,7 @@ project-specific settings (compiler, JRE, style).
         <listitem>
           <para>
 Compile time dependencies are set up using the PDE Tools.
-For this argouml projects containing java code are Plugin-projects.
+Projects containing java code are Plugin-projects.
 </para>
         </listitem>
 
@@ -2660,18 +2682,32 @@ Run all the tests by pressing Debug or Run.
     </sect2>
 
     <sect2>
-      <title>How to extend the eclipse workspace with also the modules</title>
-      <note>
-        <para>
-Needs to be improved.
-</para>
-      </note>
+      <title>How to work with the modules</title>
       <para>
+The Eclipse set up is prepared to handle work with some
+ArgoUML subprojects too in the same way.
+To work on these, or having them enabled in the workspace to spot
+incompatible changes you do the following:
+        <itemizedlist>
+          <listitem>
+            <para>
 Set the workspace default file for ant to
 tools/eclipse/eclipse-ant.properties.
 </para>
-      <para>
+            <para>
+Window => Preferences,
+Ant -> Runtime
+Properties
+and add a Global property file 
+<filename>${workspace_loc:/argouml-core-tools/eclipse/eclipse-ant.properties}</filename>.
+</para>
+          </listitem>
+          <listitem>
+            <para>
 Import from the argouml-modules-projectset.psf files.
+</para>
+          </listitem>
+        </itemizedlist>
 </para>
     </sect2>
 
