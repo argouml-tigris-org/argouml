@@ -555,7 +555,7 @@ public abstract class FigNodeModelElement
             Object ns = Model.getFacade().getNamespace(owner);
             if (ns != null) {
                 /* Only show the path item when there is an owning namespace. */
-                showMenu.add(new ActionSetPath(isPathVisible(), this));
+                showMenu.add(new ActionSetPath(isPathVisible()));
             }
         }
         return showMenu;

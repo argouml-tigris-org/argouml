@@ -24,12 +24,16 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.util.Iterator;
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.PathContainer;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.UndoableAction;
 
 
@@ -41,15 +45,22 @@ import org.tigris.gef.undo.UndoableAction;
 class ActionSetPath extends UndoableAction {
 
     private boolean isPathVisible;
-    private PathContainer myFig;
 
-    public ActionSetPath(boolean isVisible, PathContainer fig) {
+    /**
+     * Constructor.
+     *
+     * @param isVisible <tt>true</tt> if the path is visible.
+     */
+    public ActionSetPath(boolean isVisible) {
         super();
         isPathVisible = isVisible;
-        String name = Translator.localize(isVisible ? "menu.popup.hide.path" 
-                : "menu.popup.show.path"); 
+        String name;
+        if (isVisible) {
+            name = Translator.localize("menu.popup.hide.path");
+        } else {
+            name = Translator.localize("menu.popup.show.path");
+        }
         putValue(Action.NAME, name);
-        myFig = fig;
     }
 
     /**
@@ -58,7 +69,18 @@ class ActionSetPath extends UndoableAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        myFig.setPathVisible(!isPathVisible);
+
+        // enumerate all selected figures and update their path accordingly  
+        Iterator< ? > i =
+            Globals.curEditor().getSelectionManager().selections().iterator();
+        while (i.hasNext()) {
+            Selection sel = (Selection) i.next();
+            Fig       f   = sel.getContent();
+		        
+            if (f instanceof PathContainer) {
+        	((PathContainer) f).setPathVisible(!isPathVisible);
+            }
+        }
     }
     
 }
