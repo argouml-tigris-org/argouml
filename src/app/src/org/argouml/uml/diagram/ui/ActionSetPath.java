@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,17 +24,22 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.Iterator;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
 import org.argouml.uml.diagram.PathContainer;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.undo.UndoableAction;
 
 
 /**
@@ -43,6 +48,11 @@ import org.tigris.gef.undo.UndoableAction;
  * @author Michiel
  */
 class ActionSetPath extends UndoableAction {
+
+    private static final UndoableAction SHOW_PATH =
+        new ActionSetPath(false);
+    private static final UndoableAction HIDE_PATH =
+        new ActionSetPath(true);
 
     private boolean isPathVisible;
 
@@ -62,6 +72,52 @@ class ActionSetPath extends UndoableAction {
         }
         putValue(Action.NAME, name);
     }
+    
+    /**
+     * Static function to return the path show and/or hide actions 
+     * needed for the selected Figs.
+     * 
+     * @return Only returns the actions for the menu-items that make sense for
+     *         the current selection.
+     */
+    public static Collection<UndoableAction> getActions() {
+        Collection<UndoableAction> actions = new ArrayList<UndoableAction>();
+        Editor ce = Globals.curEditor();
+        List<Fig> figs = ce.getSelectionManager().getFigs();
+        for (Fig f : figs) {
+            if (f instanceof PathContainer) {
+                Object owner = f.getOwner();
+                if (Model.getFacade().isAModelElement(owner)) {
+                    Object ns = Model.getFacade().getNamespace(owner);
+                    if (ns != null) {
+                        /* Only show the path item when there is 
+                         * an owning namespace. */
+                        if (((PathContainer) f).isPathVisible()) {
+                            actions.add(HIDE_PATH);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        for (Fig f : figs) {
+            if (f instanceof PathContainer) {
+                Object owner = f.getOwner();
+                if (Model.getFacade().isAModelElement(owner)) {
+                    Object ns = Model.getFacade().getNamespace(owner);
+                    if (ns != null) {
+                        /* Only show the path item when there is 
+                         * an owning namespace. */
+                        if (!((PathContainer) f).isPathVisible()) {
+                            actions.add(SHOW_PATH);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return actions;
+    }
 
     /**
      * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
@@ -75,10 +131,10 @@ class ActionSetPath extends UndoableAction {
             Globals.curEditor().getSelectionManager().selections().iterator();
         while (i.hasNext()) {
             Selection sel = (Selection) i.next();
-            Fig       f   = sel.getContent();
+            Fig f = sel.getContent();
 		        
             if (f instanceof PathContainer) {
-        	((PathContainer) f).setPathVisible(!isPathVisible);
+                ((PathContainer) f).setPathVisible(!isPathVisible);
             }
         }
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -83,6 +83,7 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -550,13 +551,8 @@ public abstract class FigNodeModelElement
     protected ArgoJMenu buildShowPopUp() {
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
 
-        Object owner = getOwner();
-        if (Model.getFacade().isAModelElement(owner)) {
-            Object ns = Model.getFacade().getNamespace(owner);
-            if (ns != null) {
-                /* Only show the path item when there is an owning namespace. */
-                showMenu.add(new ActionSetPath(isPathVisible()));
-            }
+        for (UndoableAction ua : ActionSetPath.getActions()) {
+            showMenu.add(ua);
         }
         return showMenu;
     }
