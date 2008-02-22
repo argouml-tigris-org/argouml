@@ -309,6 +309,39 @@ Property files to be searched:
         <include name="*"/>
       </fileset>
     </copy>
+
+    <!-- The argouml.jar is copied again and again since it is modified below -->
+    <copy todir="${argo.build.dir}" overwrite="on">
+      <fileset dir="app/build">
+        <include name="argouml.jar"/>
+      </fileset>
+    </copy>
+
+    <!-- Update the manifest file. -->
+    <property name="manifest.update" value="mf.mf"/>
+    <exec executable="sh">
+      <arg value="-c"/>
+      <arg value="( cd ../build; echo Class-Path: &#042;.jar ext/&#042;.jar > ${manifest.update} )"/>
+    </exec>
+
+    <!--
+    <exec executable="sh">
+      <arg value="-c"/>
+      <arg value="( cd ../build; $JAVA_HOME/bin/jar ufm argouml.jar mf.mf )"/>
+    </exec>
+    -->
+
+    <jar update="true"
+         basedir="${argo.build.dir}"
+         includes="no-files"
+         manifest="${argo.build.dir}/${manifest.update}"
+         jarfile="${argo.build.dir}/argouml.jar"/>
+
+    <delete>
+      <fileset dir="${argo.build.dir}">
+        <include name="${manifest.update}"/>
+      </fileset>
+    </delete>
   </target>
 
 
@@ -330,6 +363,7 @@ Property files to be searched:
   </target>  
 
   <target name="tests-reports" depends="init">
+    <delete dir="${tests.reports}"/>
     <mkdir dir="${tests.reports}"/>
 
     <junitreport todir="${tests.reports}">
