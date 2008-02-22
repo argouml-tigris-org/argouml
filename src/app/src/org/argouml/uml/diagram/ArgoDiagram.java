@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -131,22 +131,33 @@ public interface ArgoDiagram {
     public String repair();
 
     /**
-     * Find the all Figs that visualise the given model element in
+     * Find all the Figs that visualise the given model element in
      * this layer, or null if there is none.
      * 
-     * TODO: once GEF includes this same method in Diagram then the can go
+     * TODO: once GEF includes this same method in Diagram then this can go
      * 
      * @see org.tigris.gef.base.Diagram#presentationsFor(java.lang.Object)
      */
     public List presentationsFor(Object obj);
 
-    // TODO: Move to GEF
+    /**
+     * Remove this diagram from existence.
+     * 
+     * TODO: Move to GEF
+     */
     public void remove();
 
+    /**
+     * Keeps track of the project that contains this diagram. 
+     * The Project determines many settings that reflect 
+     * the way the diagram is painted, such as font size.
+     * 
+     * @param p the project that contains this diagram
+     */
     public void setProject(Project p);
 
     /**
-     * Called when the user releases a dragged a FigNode.
+     * Called when the user releases a dragged FigNode.
      * 
      * @param enclosed the enclosed FigNode that was dragged into the encloser
      * @param oldEncloser the previous encloser
@@ -154,8 +165,6 @@ public interface ArgoDiagram {
      */
     public void encloserChanged(FigNode enclosed, FigNode oldEncloser,
             FigNode newEncloser);
-
-    // Do nothing, override in subclass.
 
     /**
      * This method shall return any UML modelelements
@@ -170,6 +179,11 @@ public interface ArgoDiagram {
     public Object getDependentElement();
 
     /**
+     * TODO: MVW: I am not completely sure of the following:<p>
+     * The "namespace" of the diagram is e.g. used when creating new elements
+     * that are shown on the diagram; they will have their namespace set
+     * according this. It is NOT necessarily equal to the "owner". 
+     * 
      * @return the namespace for the diagram
      */
     public Object getNamespace();
@@ -213,10 +227,13 @@ public interface ArgoDiagram {
     public void propertyChange(PropertyChangeEvent evt);
 
     /**
-     * The default implementation for diagrams that
-     * have the namespace as their owner.
+     * The owner of a diagram is the modelelement that is saved
+     * with the project in the pgml file, and binds it to the model. <p>
+     * 
+     * This value is shown in the diagram's properties panel
+     * as the "Home model".
      *
-     * @return the namespace
+     * @return the home model
      */
     public Object getOwner();
     
