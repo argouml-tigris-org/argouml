@@ -90,6 +90,73 @@ Developer Contact: Linus Tolke
 </p>
 </div>
 
+<div class="h3">
+<h3>eUML model subsystem</h3>
+
+<p style="font-weight: bold">Description:</p>
+<p>
+eUML is a <a href="http://argouml-stats.tigris.org/documentation/defaulthtml/cookbook/ch05.html#model">
+model subsystem</a> in ArgoUML, it's the alternative to the MDR model subsystem
+(the one used currently by ArgoUML, see the ArgoUML architecture in the 
+<a href="http://argouml-stats.tigris.org/documentation/defaulthtml/cookbook/">Cookbook</a>).
+eUML is implemented with the
+<a href="http://www.eclipse.org/modeling/mdt/?project=uml2">"Eclipse UML2"</a> project and
+in part using the <a href="http://www.eclipse.org/modeling/emf/">Eclipse Modeling Framework (EMF)</a>
+project, and supports
+<a href="http://www.omg.org/technology/documents/modeling_spec_catalog.htm#UML">UML 2.x</a> while
+the MDR model is implemented with the <a href="http://mdr.netbeans.org/">Metadata Repository (MDR)</a>
+Project and supports <a href="http://www.omg.org/spec/UML/1.4/">UML 1.4</a>.
+The eUML model and the MDR model are both implementing the ArgoUML interfaces from
+<a href="http://argouml-stats.tigris.org/nonav/reports-java5/javadocs-api/org/argouml/model/package-summary.html">
+org.argouml.model</a>.
+</p>
+<p>
+The eUML model is not finished:
+<ul>
+<li>It does not implement all the required interfaces from  org.argouml.model</li>
+<li>There is new functionality in UML 2 that needs additional interfaces in  org.argouml.model
+to be usable by ArgoUML's components</li>
+<li>There are places where UML2 elements are changed in behavior and semantics from the previous
+UML versions</li>
+</ul>
+</p>
+
+<p style="font-weight: bold">Improvement suggestions:</p>
+<p>
+Incrementally implement and improve the eUML model using the Eclipse UML2 and EMF projects.
+Incrementally means that the implemented stuff from the model subsystem should be done to implement some
+high level functionality in ArgoUML, eg: because you want to implement the possibility to create some
+state in an activity diagram you'll implement what it requires in the model subsystem, then you could
+test what you've done by testing that specific functionality in ArgoUML.
+</p>
+
+<p style="font-weight: bold">Requirements:</p>
+<ul>
+<li>Java SE</li>
+<li>Basic UML knowledge</li>
+<li>You will need to read the UML specification (the relevant parts of it), specifically the 
+<a href="http://www.omg.org/spec/UML/2.1.2/Superstructure/PDF/">Superstructure</a></li>
+<li>Basic <a href="http://www.eclipse.org/pde/">Eclipse PDE</a> knowledge - not really required, but desirable</li>
+</ul>
+
+<p style="font-weight: bold">More information:</p>
+<ul>
+<li><a href="http://argouml-stats.tigris.org/documentation/defaulthtml/cookbook/">ArgoUML Cookbook</a>
+(ArgoUML architecture & basic developers guide)</li>
+<li><a href="http://euml.wikispaces.com/">http://euml.wikispaces.com/</a>
+(eUML wiki describing the eUML model subsytem and its Eclipse UML2 dependencies)
+</li>
+<li><a href="http://safari.oreilly.com/0131425420">Eclipse Modeling Framework: A Developers Guide</a>
+(nice book about EMF, a few chapters are relevant for eUML)</li>
+<li><a href="news://news.eclipse.org/eclipse.modeling.mdt.uml2">news://news.eclipse.org/eclipse.modeling.mdt.uml2</a>
+(Eclipse UML2 newsgroup - the best place to get support & information about Eclipse UML2)</li>
+</ul>
+
+<p>
+Developer Contact: Bogdan Pistol (dev at argouml dot org)
+</p>
+</div>
+
 
 </div> <!-- h2 -->
 
