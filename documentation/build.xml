@@ -98,7 +98,6 @@ What tools do I need to use this build file?
   <!-- =================================================================== -->
 
   <target name="prepare" depends="init">
-    <mkdir dir="${argo.build.dir}"/>
     <mkdir dir="${argo.docs.output.dir}"/>
     <mkdir dir="${defaulthtml.dir}"/>
     <mkdir dir="${printablehtml.dir}"/>
