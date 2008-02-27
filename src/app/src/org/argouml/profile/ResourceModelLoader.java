@@ -60,10 +60,12 @@ public class ResourceModelLoader extends URLModelLoader {
         clazz = c;
     }
 
-
+    /*
+     * @see org.argouml.profile.ProfileModelLoader#loadModel(java.lang.String)
+     */
     public Collection loadModel(String path) throws ProfileException {
         LOG.info("Loading profile from resource'" + path + "'");
-        return super.loadModel(clazz.getResource(path));
+        return super.loadModel(clazz.getResource(path), path);
     }
 
 }

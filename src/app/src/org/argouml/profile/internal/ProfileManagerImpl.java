@@ -30,8 +30,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
+import org.argouml.model.Model;
+import org.argouml.model.UmlException;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileManager;
@@ -43,6 +46,9 @@ import org.argouml.profile.UserDefinedProfile;
  * @author Marcos Aurélio
  */
 public class ProfileManagerImpl implements ProfileManager {
+    
+    private static final Logger LOG = Logger.getLogger(
+            ProfileManagerImpl.class);
 
     private static final String DIRECTORY_SEPARATOR = "*";
 
@@ -229,6 +235,11 @@ public class ProfileManagerImpl implements ProfileManager {
         if (path != null && !searchDirectories.contains(path)) {
             searchDirectories.add(path);
             updateSearchDirectoriesConfiguration();
+            try {
+                Model.getXmiReader().addSearchPath(path);
+            } catch (UmlException e) {
+                LOG.error("Couldn't retrive XMI Reader from Model.", e);
+            }
         }
     }
 
@@ -242,6 +253,11 @@ public class ProfileManagerImpl implements ProfileManager {
         if (path != null) {
             searchDirectories.remove(path);
             updateSearchDirectoriesConfiguration();
+            try {
+                Model.getXmiReader().removeSearchPath(path);
+            } catch (UmlException e) {
+                LOG.error("Couldn't retrive XMI Reader from Model.", e);
+            }
         }
     }
 

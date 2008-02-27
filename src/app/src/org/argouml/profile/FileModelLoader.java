@@ -26,6 +26,7 @@ package org.argouml.profile;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
@@ -44,7 +45,8 @@ public class FileModelLoader extends URLModelLoader {
         LOG.info("Loading profile from file'" + modelFilename + "'");
         try {
             File modelFile = new File(modelFilename);
-            return super.loadModel(modelFile.toURI().toURL());
+            URL url = modelFile.toURI().toURL();
+            return super.loadModel(url, url.toString());
         } catch (MalformedURLException e) {
             throw new ProfileException("Model file not found!");
         }

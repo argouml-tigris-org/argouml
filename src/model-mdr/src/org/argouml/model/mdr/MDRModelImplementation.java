@@ -31,8 +31,10 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
@@ -178,6 +180,13 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     private Map<String, XmiReference> objectToId = 
         Collections.synchronizedMap(new HashMap<String, XmiReference>());
+    
+    /**
+     * Set of known public IDs of models that could be used to resolve URLs 
+     * from model element IDs.
+     */
+    private Set<String> publicIds = 
+        Collections.synchronizedSet(new HashSet<String>());
 
     /**
      * @return Returns the root UML Factory package for user model.
@@ -658,6 +667,10 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     protected Map<String, XmiReference> getObjectToId() {
         return objectToId;
+    }
+    
+    Set<String> getPublicIds() {
+        return publicIds;
     }
 
     public CommandStack getCommandStack() {

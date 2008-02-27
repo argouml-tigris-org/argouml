@@ -228,6 +228,7 @@ public class TestProjectWithProfiles extends TestCase {
             new UserDefinedProfile(userDefinedProfileFile);
         ProfileManager profileManager = ProfileFacade.getManager();
         profileManager.registerProfile(userDefinedProfile);
+        profileManager.addSearchPathDirectory(testCaseDir.getAbsolutePath());
         Project project = ProjectManager.getManager().makeEmptyProject();
         project.getProfileConfiguration().addProfile(userDefinedProfile);
         // create a dependency between the project's model and the user defined 

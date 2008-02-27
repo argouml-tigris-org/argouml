@@ -55,8 +55,8 @@ public class TestXmiFilePersister extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     public void setUp() throws Exception {
-	super.setUp();
-        InitializeModel.initializeDefault();
+        super.setUp();
+        InitializeModel.initializeMDR();
         new InitProfileSubsystem().init();
     }
 
@@ -68,12 +68,11 @@ public class TestXmiFilePersister extends TestCase {
      */
     public void testSave() throws Exception {
         Project p = ProjectManager.getManager().makeEmptyProject();
-        Object clazz = Model.getCoreFactory().buildClass(p.getModel());
-        Object returnType =
-            ProjectManager.getManager()
+        Object clazz = Model.getCoreFactory().buildClass(
+                Model.getModelManagementFactory().getRootModel());
+        Object returnType = ProjectManager.getManager()
             	.getCurrentProject().getDefaultReturnType();
-        Object oper =
-            Model.getCoreFactory().buildOperation(clazz, returnType);
+        Object oper = Model.getCoreFactory().buildOperation(clazz, returnType);
         Model.getCoreHelper().setType(
                 Model.getFacade().getParameter(oper, 0),
                 p.findType("String"));
@@ -100,7 +99,7 @@ public class TestXmiFilePersister extends TestCase {
      */
     public void testCreateSaveAndLoadYieldsCorrectModel() throws Exception {
         Project project = ProjectManager.getManager().makeEmptyProject();
-        Object model = project.getModel();
+        Object model = Model.getModelManagementFactory().getRootModel();
         assertNotNull(model);
         Object classifier = Model.getCoreFactory().buildClass("Foo", model);
         assertNotNull(project.findType("Foo", false));
@@ -109,11 +108,12 @@ public class TestXmiFilePersister extends TestCase {
         // This depends on the default profile configuration containing the
         // type Integer to test properly.  Otherwise it will get created in
         // the main project, defeating the purpose
-        Object intType = project.findType("Integer");
+        Object intType = project.findType("Integer", false);
+        assertNotNull(intType);
         Object attribute = 
             Model.getCoreFactory().buildAttribute2(classifier, intType);
         Model.getCoreHelper().setName(attribute, "profileTypedAttribute");
-        File file = File.createTempFile("ArgoTestCreateSaveAndLoad", "xmi");
+        File file = File.createTempFile("ArgoTestCreateSaveAndLoad", ".xmi");
         XmiFilePersister persister = new XmiFilePersister();
         project.preSave();
         persister.save(project, file);

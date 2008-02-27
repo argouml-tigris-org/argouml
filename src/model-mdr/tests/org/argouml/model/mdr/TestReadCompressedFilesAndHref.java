@@ -31,6 +31,7 @@ import javax.jmi.reflect.RefPackage;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
+
 /**
  * Test read models. 
  * TODO: Move this test into argouml base when we will want to read also zip 
@@ -55,14 +56,10 @@ public class TestReadCompressedFilesAndHref extends
         File mdaIsHere = new File (ANDROMDA_HOME);
         if (mdaIsHere.exists()) {
             LOG.info("Begin testReadCompressedFileAndHref()");        
-            //Remove the dependency to argouml base for the moment
-            // org.argouml.persistence.ProjectFilePersister persister =
-            //     org.argouml.persistence.PersistenceManager
-            //         .getInstance().getPersisterFromFileName(testModel);
             XmiReaderImpl reader = new XmiReaderImpl(modelImplementation,
                     (RefPackage) modelImplementation.getMofPackage());
+            reader.addSearchPath(ANDROMDA_HOME + "/andromda/xml.zips");
             try {
-                //persister.doLoad(new File(testModel));
                 reader.parse(
                         new InputSource(new FileInputStream(testModel)), false);
             } catch (Exception e) {
@@ -78,7 +75,5 @@ public class TestReadCompressedFilesAndHref extends
      */
     protected void setUp() throws Exception {
         super.setUp();
-        XmiReferenceResolverImpl.addModuleSearchPath(ANDROMDA_HOME
-                + "/andromda/xml.zips");
     }
 }

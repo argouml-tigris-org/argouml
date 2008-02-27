@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
@@ -79,19 +80,9 @@ class XmiReferenceResolverImpl extends XmiContext {
         "/org/argouml/profile/profiles/";
     private static final String PROFILE_BASE_URL = 
         "http://argouml.org/profiles/uml14";
-    private static final String PROFILE_FILE = "default-uml14.xmi";
-    private static final String PROFILE_URL = 
-        PROFILE_BASE_URL + PROFILE_FILE;
     
     private Map<String, Object> idToObjects = 
         Collections.synchronizedMap(new HashMap<String, Object>());
-    
-    /**
-     * Map of basic profile filename to the full URL that can be used to find
-     * it.
-     */
-    private Map<String, URL> profileFileMap =
-            Collections.synchronizedMap(new HashMap<String, URL>());
 
     /**
      * Map indexed by MOF ID.
@@ -114,7 +105,7 @@ class XmiReferenceResolverImpl extends XmiContext {
      * Copied from AndroMDA 3.1 by Ludo (rastaman).
      * see org.andromda.repositories.mdr.MDRXmiReferenceResolverContext
      */
-    private static List<String> modulesPath = new ArrayList<String>();
+    private List<String> modulesPath = new ArrayList<String>();
 
     /**
      * Module to URL map to cache things we've already found.
@@ -132,6 +123,10 @@ class XmiReferenceResolverImpl extends XmiContext {
     private Map<String, String> reverseUrlMap = new HashMap<String, String>();
     
     private boolean profile;
+
+    private Set<String> modelsPublicIds;
+
+    private String modelPublicId;
     
     /**
      * Constructor.
@@ -139,12 +134,15 @@ class XmiReferenceResolverImpl extends XmiContext {
      * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
      */
     XmiReferenceResolverImpl(RefPackage[] extents, XMIInputConfig config,
-            Map<String, XmiReference> objectToIdMap, List<String> searchDirs,
-            boolean isProfile) {
+            Map<String, XmiReference> objectToIdMap, Set<String> publicIds, 
+            List<String> searchDirs, boolean isProfile, String publicId) {
         super(extents, config);
         objectsToId = objectToIdMap;
         modulesPath = searchDirs;
         profile = isProfile;
+        modelsPublicIds = publicIds;
+        modelPublicId = publicId;
+        if (isProfile) modelsPublicIds.add(publicId);
     }
 
     /**
@@ -181,7 +179,12 @@ class XmiReferenceResolverImpl extends XmiContext {
         }
 
         if (profile) {
-            systemId = PROFILE_BASE_URL + getSuffix(systemId);
+            if (systemId.contains(PROFILE_RESOURCE_PATH))
+                systemId = PROFILE_BASE_URL + getSuffix(systemId);
+            else if (systemId.contains("file:/")) {
+                // user defined profile - systemId is OK
+            } else 
+                systemId = PROFILE_BASE_URL + modelPublicId;
         } else if (systemId == topSystemId) {
             systemId = null;
         } else if (reverseUrlMap.get(systemId) != null) {
@@ -246,36 +249,6 @@ class XmiReferenceResolverImpl extends XmiContext {
     /////////////////////////////////////////////////////
     ////////// Begin AndroMDA Code //////////////////////
     /////////////////////////////////////////////////////
-
-    /**
-     * Return the module search paths as a String array.
-     * @return String[] An array with all the module search paths
-     */
-    public static String[] getModuleSearchPath() {
-        return modulesPath.toArray(new String[modulesPath.size()]);
-    }
-    
-    /**
-     * Add a path to module search path. Can be used by modules to register new
-     * paths to metamodels facades / profiles.
-     * 
-     * @param path
-     *            The path to add to the module search paths
-     */
-    public static void addModuleSearchPath(String path) {
-        if (!modulesPath.contains(path)) {
-            modulesPath.add(path);
-        }
-    }
-    
-    /**
-     * Remove a path from the list of modules search paths.
-     * 
-     * @param path The path to remove
-     */
-    public static void removeModuleSearchPath(String path) {
-        modulesPath.remove(path);
-    }
 
     /**
      * Convert a System ID from an HREF (typically filespec-like) to a URL.
@@ -361,18 +334,15 @@ class XmiReferenceResolverImpl extends XmiContext {
      *         found)
      */
     private String findModuleURL(String moduleName) {
-        
-        String[] moduleSearchPath = getModuleSearchPath();
-        
-        if (moduleSearchPath == null || moduleSearchPath.length == 0) {
+        if (modulesPath == null) {
             return null;
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("findModuleURL: moduleSearchPath.length="
-                    + moduleSearchPath.length);
+            LOG.debug("findModuleURL: modulesPath.size() = " 
+                    + modulesPath.size());
         }
-        for (String moduleDirectory : moduleSearchPath) {
+        for (String moduleDirectory : modulesPath) {
             File candidate = new File(moduleDirectory, moduleName);
             if (LOG.isDebugEnabled())
                 LOG.debug("candidate '" + candidate.toString() + "' exists="
@@ -436,9 +406,12 @@ class XmiReferenceResolverImpl extends XmiContext {
         final String dot = ".";
         String modelName = systemId;
         if (systemId.startsWith(PROFILE_BASE_URL)) {
-            modelName = PROFILE_RESOURCE_PATH
-                    + systemId.substring(PROFILE_BASE_URL.length());
-            // TODO: Look for profiles in user specified directory as well
+            String publicId = systemId.substring(PROFILE_BASE_URL.length());
+            if (modelsPublicIds.contains(publicId)) {
+                modelName = publicId;
+            } else { 
+                modelName = PROFILE_RESOURCE_PATH + publicId;
+            }
         } else {
             int filenameIndex = systemId.lastIndexOf("/");
             if (filenameIndex > 0) {
@@ -463,7 +436,8 @@ class XmiReferenceResolverImpl extends XmiContext {
         if (modelUrl == null) {
             modelUrl = this.getClass().getResource(modelName);
         }
-        // TODO: Is this adequate for finding profiles in Java WebStart jars? - tfm
+        // TODO: Is this adequate for finding profiles in Java WebStart jars? 
+        //       - tfm
         if (modelUrl == null) {
             if (CLASSPATH_MODEL_SUFFIXES != null
                     && CLASSPATH_MODEL_SUFFIXES.length > 0) {
