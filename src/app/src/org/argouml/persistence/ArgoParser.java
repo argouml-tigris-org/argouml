@@ -238,6 +238,9 @@ class ArgoParser extends SAXParserBase {
         case ArgoTokenTable.TOKEN_SHOWASSOCIATIONNAMES:
             handleShowAssociationNames(e);
             break;
+        case ArgoTokenTable.TOKEN_ACTIVE_DIAGRAM:
+            handleActiveDiagram(e);
+            break;
         default:
             if (DBG) {
                 LOG.warn("WARNING: unknown end tag:" + e.getName());
@@ -463,6 +466,12 @@ class ArgoParser extends SAXParserBase {
     protected void handleShowAssociationNames(XMLElement e) {
         String showAssociationNames = e.getText().trim();
         ps.setShowAssociationNames(showAssociationNames);
+    }
+
+    protected void handleActiveDiagram(XMLElement e) {
+        /* At this stage during loading, the diagrams are 
+         * not created yet - so we have to store this name for later use. */
+        project.setSavedDiagramName(e.getText().trim());
     }
 
     /**

@@ -316,6 +316,8 @@ public interface ArgoDiagram {
     public void add(Fig f);
     
     /**
+     * Used by "argo.tee".
+     * 
      * @return the name of the diagram
      * @see org.tigris.gef.base.Diagram#getName()
      */

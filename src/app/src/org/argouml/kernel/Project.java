@@ -610,7 +610,11 @@ public interface Project {
     public void setVetoSupport(VetoableChangeSupport theVetoSupport);
 
     /**
-     * Get the current viewed diagram.
+     * Get the current viewed diagram. <p>
+     * 
+     * Used by "argo.tee" to save the name 
+     * of this diagram, so that the same diagram 
+     * can be initially shown when reloading this project..
      *
      * @return the current viewed diagram
      */
@@ -620,6 +624,12 @@ public interface Project {
      * @param theDiagram the ArgoDiagram
      */
     public void setActiveDiagram(final ArgoDiagram theDiagram);
+    
+    /**
+     * @param diagramName the name of the diagram to show 
+     * by default after loading
+     */
+    public void setSavedDiagramName(String diagramName);
 
     /**
      * Remove the project.

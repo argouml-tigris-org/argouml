@@ -69,6 +69,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     <fontsize><ocl>self.projectSettings.fontSize</ocl></fontsize>
     <defaultstereotypeview><ocl>self.projectSettings.defaultStereotypeView</ocl></defaultstereotypeview>
     <generationoutputdir><ocl>self.projectSettings.generationOutputDir</ocl></generationoutputdir>
+    <activediagram><ocl>self.activeDiagram.name</ocl></activediagram>
   </settings>
 
   <searchpath href="<ocl>self.searchPathList</ocl>" />

@@ -136,6 +136,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * The active diagram, pointer to a diagram in the list with diagrams.
      */
     private ArgoDiagram activeDiagram;
+    
+    /** The name of the diagram to show by default after loading a project. */
+    private String savedDiagramName;
 
     /**
      * Cache for the default model.
@@ -762,10 +765,19 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public Object getInitialTarget() {
+        if (savedDiagramName != null) {
+            /* Hence, a diagram name was saved in the project 
+             * that we are loading. So, we use this name 
+             * to retrieve any matching diagram. */
+            return getDiagram(savedDiagramName);
+        }
         if (diagrams.size() > 0) {
+            /* Use the first diagram. */
             return diagrams.get(0);
         }
         if (models.size() > 0) {
+            /* If there was no diagram at all, 
+             * then use the (first) UML model. */
             return models.iterator().next();
         }
         return null;
@@ -1093,7 +1105,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public void setActiveDiagram(final ArgoDiagram theDiagram) {
         activeDiagram = theDiagram;
     }
-
+    
+    public void setSavedDiagramName(String diagramName) {
+        savedDiagramName = diagramName;
+    }
 
     public void remove() {
         for (ArgoDiagram diagram : diagrams) {
@@ -1134,6 +1149,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         currentNamespace = null;
         vetoSupport = null;
         activeDiagram = null;
+        savedDiagramName = null;
 
         emptyTrashCan();
     }

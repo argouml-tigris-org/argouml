@@ -26,7 +26,7 @@ package org.argouml.persistence;
 
 
 /**
- * These strings are saved in the final output in a zargo.
+ * These strings are used in the final output in a zargo.
  *
  * @author Jim Holt
  */
@@ -42,6 +42,7 @@ class ArgoTokenTable extends XMLTokenTableBase {
 
     ////////////////////////////////////////////////////////////////
     // constants
+    /* These strings match the XML element names in the argo.tee exactly. */
     private static final String STRING_ARGO                   = "argo";
     private static final String STRING_AUTHORNAME            = "authorname";
     private static final String STRING_AUTHOREMAIL            = "authoremail";
@@ -70,6 +71,7 @@ class ArgoTokenTable extends XMLTokenTableBase {
     private static final String STRING_FONTSIZE = "fontsize";
     private static final String STRING_GENERATION_OUTPUT_DIR
         = "generationoutputdir";
+    private static final String STRING_ACTIVE_DIAGRAM = "activediagram";
 
     /** The token for argo. */
     public static final int    TOKEN_ARGO                    = 1;
@@ -120,6 +122,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     public static final int    TOKEN_GENERATION_OUTPUT_DIR     = 23;
     /** A token for Generation Settings. */
     public static final int    TOKEN_SHOWASSOCIATIONNAMES     = 24;
+    /** A token for the active diagram name **/
+    public static final int    TOKEN_ACTIVE_DIAGRAM     = 25;
 
     /** The token for undefined. */
     public static final int    TOKEN_UNDEFINED               = 99;
@@ -158,6 +162,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
                 Integer.valueOf(TOKEN_GENERATION_OUTPUT_DIR));
         addToken(STRING_SHOWASSOCIATIONNAMES,
                 Integer.valueOf(TOKEN_SHOWASSOCIATIONNAMES));
+        addToken(STRING_ACTIVE_DIAGRAM,
+                Integer.valueOf(TOKEN_ACTIVE_DIAGRAM));
     }
 
 } /* end class ArgoTokenTable */
