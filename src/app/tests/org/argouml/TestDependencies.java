@@ -64,7 +64,7 @@ public class TestDependencies extends TestCase {
         JDepend jdepend = new JDepend();
 
         try {
-	    jdepend.addDirectory("../argouml");
+	    jdepend.addDirectory("build-eclipse");
 	} catch (IOException e) {
 	    // Ignore if the directory does not exist.
 	    // This error will throw when running from the ant setup.
@@ -72,7 +72,7 @@ public class TestDependencies extends TestCase {
 	}
 
 	try {
-	    jdepend.addDirectory("../build/classes");
+	    jdepend.addDirectory("build/classes");
 	} catch (IOException e) {
 	    // Ignore if the directory does not exist.
 	    // This error will throw when running from the Eclipse setup.
