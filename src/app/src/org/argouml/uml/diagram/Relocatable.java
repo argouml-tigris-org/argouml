@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,6 +23,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.diagram;
+
+import java.util.Collection;
 
 /**
  * Interface which is used by the Explorer to determine if a diagram can
@@ -54,5 +56,17 @@ public interface Relocatable {
      * @return true if successful
      */
     boolean relocate(Object base);
+
+    /**
+     * Create a collection of candidate modelelements 
+     * to relocate this diagram to. 
+     * All candidates belong to a given namespace - e.g. the root Model.
+     * 
+     * @param root all returned candidates are contained in this namespace
+     * @return the collection of candidate modelelements 
+     * to which this diagram may be relocated
+     */
+    @SuppressWarnings("unchecked")
+    Collection getRelocationCandidates(Object root);
 
 }

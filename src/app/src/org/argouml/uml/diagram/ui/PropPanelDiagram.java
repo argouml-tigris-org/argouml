@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,28 +24,38 @@
 
 package org.argouml.uml.diagram.ui;
 
+import static org.argouml.model.Model.getModelManagementFactory;
+
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.Relocatable;
 import org.argouml.uml.ui.AbstractActionNavigate;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.PropPanel;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLSearchableComboBox;
 
 /**
  * This class represents the properties panel for a Diagram.
  *
  */
 public class PropPanelDiagram extends PropPanel {
+
+    private JComboBox homeModelSelector;
+    private UMLDiagramHomeModelComboBoxModel homeModelComboBoxModel =
+        new UMLDiagramHomeModelComboBoxModel();
 
     /**
      * Construct a property panel with a given name and icon.
@@ -58,10 +68,9 @@ public class PropPanelDiagram extends PropPanel {
 
         JTextField field = new JTextField();
         field.getDocument().addDocumentListener(new DiagramNameDocument(field));
-        addField(Translator.localize("label.name"), field);
+        addField("label.name", field);
 
-        addField(Translator.localize("label.home-model"), 
-                getSingleRowScroll(new UMLDiagramHomeModelListModel()));
+        addField("label.home-model", getHomeModelSelector());
 
         addAction(new ActionNavigateUpFromDiagram());
         addAction(ActionDeleteModelElements.getTargetFollower());
@@ -75,6 +84,99 @@ public class PropPanelDiagram extends PropPanel {
         this("Diagram", null);
     }
 
+    /**
+     * Returns the home-model selector. This is a component which allows the
+     * user to select a single item as the home-model, 
+     * i.e. the "owner" of the diagram.
+     *
+     * @return a component for selecting the home-model
+     */
+    protected JComponent getHomeModelSelector() {
+        if (homeModelSelector == null) {
+            homeModelSelector = new UMLSearchableComboBox(
+                    homeModelComboBoxModel,
+                    new ActionSetDiagramHomeModel(), true);
+        }
+        return new UMLComboBoxNavigator(
+                Translator.localize("label.namespace.navigate.tooltip"),
+                homeModelSelector);
+    }
+
+}
+
+class UMLDiagramHomeModelComboBoxModel extends UMLComboBoxModel2 {
+
+    public UMLDiagramHomeModelComboBoxModel() {
+        super(ArgoDiagram.NAMESPACE_KEY, false);
+    }
+
+    @Override
+    protected void buildModelList() {
+        Object t = getTarget();
+        removeAllElements();
+        if (t instanceof Relocatable) {
+            Relocatable diagram = (Relocatable) t;
+            for (Object obj : diagram.getRelocationCandidates(
+                    getModelManagementFactory().getRootModel())) {
+                if (diagram.isRelocationAllowed(obj)) {
+                    addElement(obj);
+                }
+            }
+        }
+        /* This should not be needed if the above is correct, 
+         * but let's be sure: */
+        addElement(getSelectedModelElement());
+    }
+
+    @Override
+    protected Object getSelectedModelElement() {
+        Object t = getTarget();
+        if (t instanceof ArgoDiagram) {
+            return ((ArgoDiagram) t).getOwner();
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean isValidElement(Object element) {
+        Object t = getTarget();
+        if (t instanceof Relocatable) {
+            return ((Relocatable) t).isRelocationAllowed(element);
+        }
+        return false;
+    }
+
+    /**
+     * @param evt
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        // TODO: Auto-generated method stub
+        super.propertyChange(evt);
+    }
+    
+}
+
+class ActionSetDiagramHomeModel extends UndoableAction {
+    protected ActionSetDiagramHomeModel() {
+        super();
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source instanceof UMLComboBox2) {
+            UMLComboBox2 box = (UMLComboBox2) source;
+            Object diagram = box.getTarget();
+            Object homeModel = box.getSelectedItem();
+            if (diagram instanceof Relocatable) {
+                Relocatable d = (Relocatable) diagram;
+                if (d.isRelocationAllowed(homeModel)) {
+                    d.relocate(homeModel);
+                }
+            }
+        }
+    }
 }
 
 class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
@@ -114,75 +216,5 @@ class ActionNavigateUpFromDiagram extends AbstractActionNavigate {
         if (destination != null) {
             TargetManager.getInstance().setTarget(destination);
         }
-    }
-}
-
-/**
- * The list model for the "homeModel" of a diagram.
- *
- * @author mvw@tigris.org
- */
-class UMLDiagramHomeModelListModel
-    extends DefaultListModel
-    implements TargetListener, PropertyChangeListener {
-
-    private static ArgoDiagram oldTarget = null;
-    /**
-     * Constructor for UMLCommentAnnotatedElementListModel.
-     */
-    public UMLDiagramHomeModelListModel() {
-        super();
-        setTarget(TargetManager.getInstance().getTarget());
-        TargetManager.getInstance().addTargetListener(this);
-    }
-
-    /*
-     * @see TargetListener#targetAdded(TargetEvent)
-     */
-    public void targetAdded(TargetEvent e) {
-        setTarget(e.getNewTarget());
-    }
-
-    /*
-     * @see TargetListener#targetRemoved(TargetEvent)
-     */
-    public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
-    }
-
-    /*
-     * @see TargetListener#targetSet(TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
-    }
-
-    private void setTarget(Object t) {
-        if (oldTarget != null) {
-            oldTarget.removePropertyChangeListener(
-                    ArgoDiagram.NAMESPACE_KEY, this);
-        }
-
-        ArgoDiagram target = null;
-        if (t instanceof ArgoDiagram) {
-            target = (ArgoDiagram) t;
-            oldTarget = target;
-            target.addPropertyChangeListener(
-                    ArgoDiagram.NAMESPACE_KEY, this);
-        }
-        removeAllElements();
-
-        Object ns = null;
-        if (target != null) {
-            ns = target.getOwner();
-        }
-        if (ns != null) {
-            addElement(ns);
-        }
-    }
-
-    public void propertyChange(PropertyChangeEvent evt) {
-        removeAllElements();
-        addElement(evt.getNewValue());
     }
 }

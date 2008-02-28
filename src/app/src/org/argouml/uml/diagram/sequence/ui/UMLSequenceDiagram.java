@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,8 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 import org.argouml.i18n.Translator;
@@ -175,17 +177,22 @@ public class UMLSequenceDiagram extends UMLDiagram {
 */
     }
 
-    
     @Override
     public boolean isRelocationAllowed(Object base)  {
     	return false;
-	/* TODO: We may return the following when the
+	/* TODO: We may return something useful when the
 	 * relocate() has been implemented.
 	 */
-//    	Model.getFacade().isAClassifier(base)
-//        	|| Model.getFacade().isAOperation(base);
     }
 
+    @SuppressWarnings("unchecked")
+    public Collection getRelocationCandidates(Object root) {
+        /* TODO: We may return something useful when the
+         * relocate() has been implemented. */
+        Collection c =  new HashSet();
+        c.add(getOwner());
+        return c;
+    }
 
     @Override
     public boolean relocate(Object base) {

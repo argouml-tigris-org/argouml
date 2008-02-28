@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -457,6 +457,13 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     public boolean isRelocationAllowed(Object base)  {
         return Model.getFacade().isAPackage(base);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection getRelocationCandidates(Object root) {
+        return 
+        Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(
+            root, Model.getMetaTypes().getPackage());
     }
 
     /*

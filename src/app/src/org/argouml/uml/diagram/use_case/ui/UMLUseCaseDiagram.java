@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,8 @@
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.HashSet;
 
 import javax.swing.Action;
 
@@ -50,6 +52,8 @@ import org.tigris.gef.presentation.FigNode;
  * Defines the toolbar, provides for its initialization and provides
  * constructors for a top level diagram and one within a defined
  * namespace.<p>
+ * 
+ * A use case diagram has as owner either a package or a classifier.
  */
 public class UMLUseCaseDiagram extends UMLDiagram {
 
@@ -438,6 +442,21 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         setNamespace(base);
         damage();
         return true;
+    }
+
+    /*
+     * Allow all Packages and Classifiers..
+     */
+    @SuppressWarnings("unchecked")
+    public Collection getRelocationCandidates(Object root) {
+        Collection c = new HashSet();
+        c.add(Model.getModelManagementHelper()
+                .getAllModelElementsOfKindWithModel(root, 
+                        Model.getMetaTypes().getPackage()));
+        c.add(Model.getModelManagementHelper()
+                .getAllModelElementsOfKindWithModel(root, 
+                        Model.getMetaTypes().getClassifier()));
+        return c;
     }
 
     public void encloserChanged(FigNode enclosed, 

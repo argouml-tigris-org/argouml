@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,8 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.HashSet;
 
 import javax.swing.Action;
 
@@ -701,6 +703,16 @@ public class UMLStateDiagram extends UMLDiagram {
     	 * relocate() has been implemented. */
 //    	Model.getStateMachinesHelper()
 //        	.isAddingStatemachineAllowed(base);
+    }
+
+    @SuppressWarnings("unchecked")
+    public Collection getRelocationCandidates(Object root) {
+        /* TODO: We may return something useful when the
+         * relocate() has been implemented, like 
+         * all StateMachines that are not ActivityGraphs. */
+        Collection c =  new HashSet();
+        c.add(getOwner());
+        return c;
     }
 
     /*

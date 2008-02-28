@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,7 +43,7 @@ import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
-import org.tigris.gef.base.Diagram;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -177,6 +177,17 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                     removeElement(o);
                 }
             }
+        }
+        else if (evt.getSource() instanceof ArgoDiagram
+                && evt.getPropertyName().equals(propertySetName)) {
+            /* This should not be necessary, but let's be sure: */
+            addElement(evt.getNewValue());
+            /* TODO: MVW: for this case, I have to move the 
+             * call to setSelectedItem() outside the "buildingModel", otherwise
+             * the combo does not update with the new selection. 
+             * Does the same not apply in the cases above? */
+            buildingModel = false;
+            setSelectedItem(evt.getNewValue());
         }
         buildingModel = false;
     }
@@ -336,14 +347,20 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         theNewTarget = theNewTarget instanceof Fig 
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
         if (Model.getFacade().isAModelElement(theNewTarget) 
-                || theNewTarget instanceof Diagram) {
+                || theNewTarget instanceof ArgoDiagram) {
+            
+            /* Remove old listeners: */
             if (Model.getFacade().isAModelElement(comboBoxTarget)) {
                 Model.getPump().removeModelEventListener(this, comboBoxTarget,
                         propertySetName);
                 // Allow listening to other elements:
                 removeOtherModelEventListeners(comboBoxTarget);
+            } else if (comboBoxTarget instanceof ArgoDiagram) {
+                ((ArgoDiagram) comboBoxTarget).removePropertyChangeListener(
+                        ArgoDiagram.NAMESPACE_KEY, this);
             }
 
+            /* Add new listeners: */
             if (Model.getFacade().isAModelElement(theNewTarget)) {
                 comboBoxTarget = theNewTarget;
                 Model.getPump().addModelEventListener(this, comboBoxTarget,
@@ -367,9 +384,20 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
-            } else {
+            } else if (theNewTarget instanceof ArgoDiagram) {
+                comboBoxTarget = theNewTarget;
+                ArgoDiagram diagram = (ArgoDiagram) theNewTarget;
+                diagram.addPropertyChangeListener(
+                        ArgoDiagram.NAMESPACE_KEY, this);
+                buildingModel = true;
+                buildModelList();
+                setSelectedItem(getSelectedModelElement());
+                buildingModel = false;
+                if (getSize() > 0) {
+                    fireIntervalAdded(this, 0, getSize() - 1);
+                }
+            } else { /*  MVW: This can never happen, isn't it? */
                 comboBoxTarget = null;
-                
                 removeAllElements();
             }
             if (getSelectedItem() != null && isClearable) {
