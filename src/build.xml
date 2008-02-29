@@ -164,55 +164,10 @@ Property files to be searched:
       <pathelement path="${JAVA_HOME}/lib/tools.jar"/>
     </path>
 
-    <path id="antlr.runtime.classpath">
-      <pathelement location="${antlrall.jar.path}"/>
-    </path>
-
-    <path id="argo.compile.classpath">
-      <pathelement location="${ocl-argo.jar.path}"/>
-      <pathelement location="${gef.jar.path}"/>
-      <pathelement location="${log4j.jar.path}"/>
-      <pathelement location="${swidgets.jar.path}"/>
-      <pathelement location="${toolbar.jar.path}"/>
-      <pathelement location="${commons-logging.jar.path}"/>
-      <path refid="antlr.runtime.classpath"/>
-      <pathelement location="${argo.build.dir}/argouml-model.jar"/>
-    </path>
-
-    <path id="argo.mdr.runtime.classpath">
-      <pathelement location="${argo.mdr.dir}/build/java-interfaces.jar"/>
-      <pathelement location="${argo.mdr.dir}/build/argouml-mdr.jar"/>
-      <pathelement location="${argo.mdr.dir}/lib/mof.jar"/>
-      <pathelement location="${argo.mdr.dir}/lib/jmi.jar"/>
-      <pathelement location="${argo.mdr.dir}/lib/mdrapi.jar"/>
-      <pathelement location="${argo.mdr.dir}/lib/nbmdr.jar"/>
-      <pathelement location="${argo.mdr.dir}/lib/jmiutils.jar"/>
-      <pathelement location="${argo.mdr.dir}/lib/openide-util.jar"/>
-    </path>
-
-    <path id="argo.euml.runtime.classpath">
-      <pathelement location="${argo.euml.dir}/build/argouml-euml.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.common_2.3.0.v200703080200.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.change_2.3.0.v200706262000.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore.xmi_2.3.0.v200703080200.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.ecore_2.3.0.v200703080200.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.edit_2.3.0.v200706262000.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.emf.mapping.ecore2xml_2.3.0.v200706262000.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common_1.3.0.v200703011358.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.common.edit_1.3.0.v200706251652.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml.resources_2.1.0.v200706251652.jar"/>
-      <pathelement location="${argo.euml.dir}/lib/org.eclipse.uml2.uml_2.1.0.v200703011358.jar"/>
-    </path>
-
-    <!-- This runtime classpath is used for tests and other things started
-         from this file.
-      -->
-    <path id="argo.runtime.classpath">
-      <path refid="argo.compile.classpath"/>
-      <!-- only one of the following will be used at a time -->
-      <!-- we put them together because there's little risk of crosstalk -->
-      <path refid="argo.mdr.runtime.classpath"/>
-      <path refid="argo.euml.runtime.classpath"/>
+    <path id="run.classpath">
+      <fileset dir="../build/">
+        <include name="*.jar"/>
+      </fileset>
     </path>
 
     <!-- In order to use ant optional tasks which use jars that are not -->
@@ -238,7 +193,6 @@ Property files to be searched:
     <!-- Set of properties with fixed paths that we pass to subtasks -->
     <propertyset id="absolute-properties" dynamic="false">
       <propertyref name="argo.root.dir" />
-      <propertyref name="argo.lib.dir" />
       <propertyref name="argo.tools.dir" />
       <propertyref name="argo.model.dir" />
       <propertyref name="argo.mdr.dir" />
@@ -272,9 +226,6 @@ Property files to be searched:
         <path refid="ant.optional.classpath"/>
       </classpath>
     </taskdef>
-
-    <taskdef resource="checkstyletask.properties"
-             classpath="${checkstyle.jar.path}"/>
   </target>
 
 
@@ -399,7 +350,6 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Prepares the Javadoc                                                -->
   <!-- =================================================================== -->
-  <!-- TODO: This target is not yet tested with the new structure. -->
   <target name="prepare-docs" depends="init, javadocs, javadocs-api"
           description="Build javadocs.">
   </target>
@@ -407,24 +357,24 @@ Property files to be searched:
   <target name="javadocs" depends="init">
     <mkdir dir="${argo.javadocs.dir}"/>
 
-    <javadoc author="${javadoc.author}" 
+    <javadoc author="${javadoc.author}"
              bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;25%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2006&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/dev.html&apos; target=&apos;_blank&apos;&gt;ArgoUML Developers' page&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
              destdir="${argo.javadocs.dir}"
              maxmemory="128M"
-             overview="org/argouml/overview-argo.html"
+             overview="app/src/org/argouml/overview-argo.html"
              packagenames="org.argouml.*"
              source="1.5"
              splitindex="${javadoc.splitindex}"
              use="${javadoc.use}"
              windowtitle="ArgoUML Javadoc for internal use">
       <sourcepath>
-        <pathelement location="${argo.src.dir}"/>
-        <pathelement location="${argo.src.dir}/../src/model/src"/>
-        <pathelement location="${argo.src.dir}/../src/model-mdr/src"/>
+        <pathelement location="app/src"/>
+        <pathelement location="model/src"/>
+        <pathelement location="model-mdr/src"/>
       </sourcepath>
 
       <classpath>
-        <path refid="argo.compile.classpath"/>
+        <path refid="run.classpath"/>
       </classpath>
 
       <!-- Links allow reference to external classes from within
@@ -448,13 +398,14 @@ Property files to be searched:
     </javadoc>
 
     <copy todir="${argo.javadocs.dir}/org/argouml/doc-files">
-      <fileset dir="${argo.src.dir}/org/argouml/doc-files" excludes="CVS/**" includes="**/**"/>
+      <fileset dir="app/src/org/argouml/doc-files">
+        <include name="*.gif"/>
+      </fileset>
     </copy>
 
   </target>
 
 
-  <!-- TODO: This target is not yet tested with the new structure. -->
   <target name="javadocs-api" depends="init">
     <mkdir dir="${argo.api.dir}"/>
 
@@ -465,7 +416,7 @@ Property files to be searched:
              bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;33%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2006&lt;/td&gt;&lt;td width=&apos;34%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;33%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
              destdir="${argo.api.dir}"
              maxmemory="128M"
-             overview="org/argouml/overview-api.html"
+             overview="app/src/org/argouml/overview-api.html"
              packagenames="org.argouml.model,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui,org.argouml.ui.explorer,org.argouml.ocl,org.argouml.moduleloader"
              source="1.5"
              private="false"
@@ -473,12 +424,12 @@ Property files to be searched:
              use="${javadoc.use}"
              windowtitle="ArgoUML Javadoc for ArgoUML Module Developers">
       <sourcepath>
-        <pathelement location="${argo.src.dir}"/>
-        <pathelement location="${argo.src.dir}/../src/model/src"/>
+        <pathelement location="app/src"/>
+        <pathelement location="model/src"/>
       </sourcepath>
 
       <classpath>
-        <path refid="argo.compile.classpath"/>
+        <path refid="run.classpath"/>
       </classpath>
 
       <!-- Links allow reference to external classes from within
@@ -502,9 +453,9 @@ Property files to be searched:
     </javadoc>
 
     <copy todir="${argo.api.dir}/org/argouml/doc-files">
-      <fileset dir="${argo.src.dir}/org/argouml/doc-files"
-               excludes="CVS/**"
-	       includes="**/**"/>
+      <fileset dir="app/src/org/argouml/doc-files">
+        <include name="*.gif"/>
+      </fileset>
     </copy>
 
   </target>
@@ -513,7 +464,6 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Run ArgoUML from compiled sources                                   -->
   <!-- =================================================================== -->
-  <!-- TODO: This target is not yet tested with the new structure. -->
   <target name="run" depends="package"
           description="Run the newly compiled ArgoUML.">
     <java classname="org.argouml.application.Main"
@@ -526,13 +476,11 @@ Property files to be searched:
         <enable/>
       </assertions>
       <classpath>
-        <pathelement location="${argo.build.classes}"/>
-        <path refid="argo.runtime.classpath"/>
+        <path refid="run.classpath"/>
       </classpath>
     </java>
   </target>
 
-  <!-- TODO: This target is not yet tested with the new structure. -->
   <target name="debug" depends="package"
           description="Run ArgoUML with debug level logging.">
     <java classname="org.argouml.application.Main"
@@ -545,13 +493,11 @@ Property files to be searched:
         <enable/>
       </assertions>
       <classpath>
-        <pathelement location="${argo.build.classes}"/>
-        <path refid="argo.runtime.classpath"/>
+        <path refid="run.classpath"/>
       </classpath>
     </java>
   </target>
 
-  <!-- TODO: This target is not yet tested with the new structure. -->
   <target name="info" depends="package"
           description="Run ArgoUML with info level logging.">
     <java classname="org.argouml.application.Main"
@@ -564,8 +510,7 @@ Property files to be searched:
         <enable/>
       </assertions>
       <classpath>
-        <pathelement location="${argo.build.classes}"/>
-        <path refid="argo.runtime.classpath"/>
+        <path refid="run.classpath"/>
       </classpath>
     </java>
   </target>
@@ -592,8 +537,7 @@ Property files to be searched:
         <enable/>
       </assertions>
       <classpath>
-        <pathelement location="${argo.build.classes}"/>
-        <path refid="argo.runtime.classpath"/>
+        <path refid="run.classpath"/>
       </classpath>
       <arg value="-batch"/>
     </java>
@@ -605,8 +549,7 @@ Property files to be searched:
         <enable/>
       </assertions>
       <classpath>
-        <pathelement location="${argo.build.classes}"/>
-        <path refid="argo.runtime.classpath"/>
+        <path refid="run.classpath"/>
       </classpath>
       <arg value="-nosplash"/>
       <arg value="-batch"/>
@@ -634,7 +577,7 @@ Property files to be searched:
         <pathelement location="${argo.build.classes}"/>
         <pathelement location="${junit.jar.path}"/>
         <pathelement location="${easymock.jar.path}"/>
-        <path refid="argo.runtime.classpath"/>
+        <path refid="run.classpath"/>
       </classpath>
     </java>
   </target>
@@ -703,57 +646,6 @@ For details see http://www.clarkware.com/software/JDepend.html.
   </target>
 
 
-  <!-- =================================================================== -->
-  <!-- Runs checkstyle to find style problems in ArgoUML.                  -->
-  <!-- =================================================================== -->
-  <!-- TODO: This target is not yet tested with the new structure. -->
-  <target name="checkstyle" 
-    description="Run Checkstyle on all sources (xml report)" 
-    depends="ant.optional.init">
-
-    <echo>
-	  Running checkstyle on ${source.dir}.
-    </echo>
-
-    <property name="checkstyle.reports.dir" value="${argo.tests.reports}/checkstyle"/>
-    <mkdir dir="${checkstyle.reports.dir}" />
-    <delete>
-      <fileset dir="${checkstyle.reports.dir}">
-        <include name="*.xml" />
-      </fileset>
-    </delete>
-
-    <checkstyle config="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml">
-      <property key="checkstyle.header.file" 
-        value="${argo.tools.dir}/checkstyle/java.header" />
-      <formatter type="xml" toFile="${checkstyle.reports.dir}/checkstyle-report.xml" />
-      <fileset dir="${argo.src.dir}/org" includes="**/*.java">
-        <exclude name="**/JavaLexer.java" />
-        <exclude name="**/JavaRecognizer.java" />
-        <exclude name="**/JavaTokenTypes.java" />
-      </fileset>
-    </checkstyle>
-
-    <!--
-      <fileset dir="${argo.model.dir}/src" includes="**/*.java"/>
-      <fileset dir="${argo.mdr.dir}/src" includes="**/*.java"/>
-      <fileset dir="${argo.tests.dir}" includes="**/*.java"/>
-      <fileset dir="../modules/classfile/src/org/argouml/uml/reveng/classfile">
-        <exclude name="ClassfileParser.java" />
-        <exclude name="ClassfileParserTokenTypes.java" />
-        <exclude name="ClassfileTokenTypes.java" />
-        <exclude name="ClassfileTreeParser.java" />
-      </fileset>
-      <fileset dir="../modules/cpp/src/org/argouml/language/cpp/reveng">
-        <exclude name="CPPLexer.java" />
-        <exclude name="CPPParser.java" />
-        <exclude name="STDCTokenTypes.java" />
-      </fileset>
-      -->
-
-  </target>
-
-
   <!-- TODO: This target is not yet tested with the new structure. -->
   <target name="pmd-init" depends="ant.optional.init">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpath="${pmd.jar.path}"/>
@@ -804,10 +696,6 @@ For details see http://www.clarkware.com/software/JDepend.html.
       out="${cpd.report.file}.html"/>
 
   </target>
-
-  <!-- Internal target to aggregate tasks for CruiseControl -->
-  <!-- TODO: This target is not yet tested with the new structure.  -->
-  <target name="cruisecontrol" depends="tests,checkstyle" />
 
   <!-- ################################################################### -->
   <!-- Section with temporary targets and experiments.                     -->
