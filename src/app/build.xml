@@ -453,7 +453,8 @@ Building this requires:
   <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
-  <target name="tests-dont-fail"
+  <target name="tests"
+          description="Run all tests that don't require any GUI components in headleass mode."
           depends="compile,junit-setup,junit-report-clean,
                    ant.optional.init">
 
@@ -487,8 +488,8 @@ Building this requires:
     <antcall target="junit-report-create"/>
   </target>
 
-  <target name="tests" depends="tests-dont-fail"
-          description="Run all tests that don't require any GUI components in headleass mode.">
+  <target name="tests-and-fail" depends="tests"
+          description="Run tests and fail if any test failed.">
     <fail message="JUnit tests failed." if="junit.failure"/>
   </target>
 
