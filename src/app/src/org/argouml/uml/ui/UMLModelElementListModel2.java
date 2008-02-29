@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2007 The Regents of the University of California. All
+// Copyright (c) 2002-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -108,12 +108,12 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      *
      * @param name the name of the event to listen to, which triggers us
      *             to update the list model from the UML data
-     * @param metaType the type of model element that the list model
+     * @param theMetaType the type of model element that the list model
      *                 is designed to contain.
      */
-    public UMLModelElementListModel2(String name, Object metaType) {
+    public UMLModelElementListModel2(String name, Object theMetaType) {
         super();
-        this.metaType = metaType;
+        this.metaType = theMetaType;
         eventName = name;
     }
     
@@ -122,19 +122,19 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      *
      * @param name the name of the event to listen to, which triggers us
      *             to update the list model from the UML data
-     * @param metaType the type of model element that the list model
+     * @param theMetaType the type of model element that the list model
      *                 is designed to contain.
-     * @param reverseDropConnection tells the JList to reverse the
+     * @param reverseTheDropConnection tells the JList to reverse the
      *              connection made and drop during dnd.
      */
     public UMLModelElementListModel2(
 	    String name, 
-	    Object metaType, 
-	    boolean reverseDropConnection) {
+	    Object theMetaType, 
+	    boolean reverseTheDropConnection) {
         super();
-        this.metaType = metaType;
+        this.metaType = theMetaType;
         eventName = name;
-        this.reverseDropConnection = reverseDropConnection;
+        this.reverseDropConnection = reverseTheDropConnection;
     }
     
     /**

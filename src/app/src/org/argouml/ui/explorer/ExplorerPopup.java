@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -558,18 +558,19 @@ public class ExplorerPopup extends JPopupMenu {
 	    Logger.getLogger(ActionCreateModelElement.class);
 	
 	public ActionCreateModelElement(
-		Object metaType, 
-		Object source, 
-		Object dest,
+		Object theMetaType, 
+		Object theSource, 
+		Object theDestination,
 		String relationshipDescr) {
 	    super(MessageFormat.format(
-		    relationshipDescr,
-		    new Object[] {
-			    DisplayTextTree.getModelElementDisplayName(source),
-			    DisplayTextTree.getModelElementDisplayName(dest)}));
-	    this.metaType = metaType;
-	    this.source = source;
-	    this.dest = dest;
+	        relationshipDescr,
+                new Object[] {
+                    DisplayTextTree.getModelElementDisplayName(theSource),
+                    DisplayTextTree.getModelElementDisplayName(
+                            theDestination)}));
+	    this.metaType = theMetaType;
+	    this.source = theSource;
+	    this.dest = theDestination;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -604,12 +605,12 @@ public class ExplorerPopup extends JPopupMenu {
 	    Logger.getLogger(ActionCreateModelElement.class);
 	
 	public ActionCreateAssociation(
-		Object metaType, 
-		List classifiers) {
+		Object theMetaType, 
+		List classifiersList) {
 	    super(menuLocalize("menu.popup.create") + " "
-		    + Model.getMetaTypes().getName(metaType));
-	    this.metaType = metaType;
-	    this.classifiers = classifiers;
+		    + Model.getMetaTypes().getName(theMetaType));
+	    this.metaType = theMetaType;
+	    this.classifiers = classifiersList;
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -653,12 +654,12 @@ public class ExplorerPopup extends JPopupMenu {
             Logger.getLogger(ActionCreateModelElement.class);
 
         public ActionCreateAssociationRole(
-                Object metaType, 
-                List classifierRoles) {
+                Object theMetaType, 
+                List classifierRolesList) {
             super(menuLocalize("menu.popup.create") + " "
-                    + Model.getMetaTypes().getName(metaType));
-            this.metaType = metaType;
-            this.classifierRoles = classifierRoles;
+                    + Model.getMetaTypes().getName(theMetaType));
+            this.metaType = theMetaType;
+            this.classifierRoles = classifierRolesList;
         }
 
         public void actionPerformed(ActionEvent e) {

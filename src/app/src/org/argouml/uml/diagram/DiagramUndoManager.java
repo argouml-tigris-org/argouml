@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -85,8 +85,8 @@ public class DiagramUndoManager extends UndoManager {
         
         private final Memento memento;
         
-        DiagramCommand(final Memento memento) {
-            this.memento = memento;
+        DiagramCommand(final Memento theMemento) {
+            this.memento = theMemento;
         }
 
         @Override

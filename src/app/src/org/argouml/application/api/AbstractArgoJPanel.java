@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -172,10 +172,10 @@ public abstract class AbstractArgoJPanel extends JPanel
     }
 
     /**
-     * @param icon this icon will be shown in front of the title
+     * @param theIcon this icon will be shown in front of the title
      */
-    public void setIcon(Icon icon) {
-        this.icon = icon;
+    public void setIcon(Icon theIcon) {
+        this.icon = theIcon;
     }
 
     ////////////////////////////////////////////////////////////////

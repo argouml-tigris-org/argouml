@@ -2020,12 +2020,15 @@ public abstract class FigNodeModelElement
         if (modelElement != null) {
             Collection stereos = Model.getFacade().getStereotypes(modelElement);
 
-            if (getStereotypeView() == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON
-                    && (stereos == null || stereos.size() != 1 ||
-                            (stereos
-                            .size() == 1 && getProject()
-                            .getProfileConfiguration().getFigNodeStrategy()
-                            .getIconForStereotype(stereos.iterator().next()) == null))) {
+            if (getStereotypeView() 
+                    == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON
+                    && (stereos == null 
+                            || stereos.size() != 1 
+                            ||  (stereos.size() == 1 
+                                    && getProject().getProfileConfiguration()
+                                    .getFigNodeStrategy().getIconForStereotype(
+                                            stereos.iterator().next()) 
+                                            == null))) {
                 practicalView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;
             }
             return practicalView;

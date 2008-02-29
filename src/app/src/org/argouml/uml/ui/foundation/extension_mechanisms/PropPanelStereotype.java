@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -255,7 +255,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
      *
      * @author Michiel
      */
-    class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement2{
+    class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement2 {
 
         @Override
         protected List getChoices() {

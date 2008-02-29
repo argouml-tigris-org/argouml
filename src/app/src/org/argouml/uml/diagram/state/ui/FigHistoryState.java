@@ -88,7 +88,8 @@ public abstract class FigHistoryState extends FigStateVertex {
      * {@inheritDoc}
      */
     @Override
-    protected void setStandardBounds(int x, int y, int w, int h) {        
+    protected void setStandardBounds(int x, int y, 
+            int width, int height) {        
     	if (getNameFig() == null) {
             return;
         }
