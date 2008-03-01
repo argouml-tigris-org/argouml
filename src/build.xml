@@ -350,11 +350,19 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Prepares the Javadoc                                                -->
   <!-- =================================================================== -->
-  <target name="prepare-docs" depends="init, javadocs, javadocs-api"
+  <target name="prepare-docs" depends="javadocs, javadocs-api"
           description="Build javadocs.">
   </target>
 
-  <target name="javadocs" depends="init">
+  <target name="init-javadoc">
+    <!-- javadoc properties -->
+    <property name="javadoc.use" value="true"/>
+    <property name="javadoc.splitindex" value="true"/>
+    <property name="javadoc.author" value="false"/>
+  </target>
+
+  <target name="javadocs" depends="init-javadoc, init, package">
+    <property name="argo.javadocs.dir" value="${argo.build.dir}/javadocs/"/>
     <mkdir dir="${argo.javadocs.dir}"/>
 
     <javadoc author="${javadoc.author}"
@@ -380,18 +388,17 @@ Property files to be searched:
       <!-- Links allow reference to external classes from within
            Argo javadocs
         -->
+      <link href="${log4j.javadoc.link}" offline="true"
+            packagelistLoc="${log4j.javadoc.packagelist}"/>
+
+      <link href="${jmi.javadoc.link}" offline="true"
+            packagelistLoc="${jmi.javadoc.packagelist}"/>
 
       <link href="${gef.javadoc.link}" offline="true"
             packagelistLoc="${gef.javadoc.packagelist}"/>
 
       <link href="${jdk.javadoc.link}" offline="true"
             packagelistLoc="${jdk.javadoc.packagelist}"/>
-
-      <link href="${log4j.javadoc.link}" offline="true"
-            packagelistLoc="${log4j.javadoc.packagelist}"/>
-
-      <link href="${jmi.javadoc.link}" offline="true"
-            packagelistLoc="${jmi.javadoc.packagelist}"/>
 
       <!-- Rest of the packages -->
 
@@ -406,7 +413,8 @@ Property files to be searched:
   </target>
 
 
-  <target name="javadocs-api" depends="init">
+  <target name="javadocs-api" depends="init-javadoc, init, package">
+    <property name="argo.api.dir" value="${argo.build.dir}/api/"/>
     <mkdir dir="${argo.api.dir}"/>
 
     <!-- The package name list shall be the list of all the main packages for
@@ -436,17 +444,17 @@ Property files to be searched:
            Argo javadocs
         -->
 
-      <link href="${gef.javadoc.link}" offline="true"
-            packagelistLoc="${gef.javadoc.packagelist}"/>
-
-      <link href="${jdk.javadoc.link}" offline="true"
-            packagelistLoc="${jdk.javadoc.packagelist}"/>
-
       <link href="${log4j.javadoc.link}" offline="true"
             packagelistLoc="${log4j.javadoc.packagelist}"/>
 
       <link href="${jmi.javadoc.link}" offline="true"
             packagelistLoc="${jmi.javadoc.packagelist}"/>
+
+      <link href="${gef.javadoc.link}" offline="true"
+            packagelistLoc="${gef.javadoc.packagelist}"/>
+
+      <link href="${jdk.javadoc.link}" offline="true"
+            packagelistLoc="${jdk.javadoc.packagelist}"/>
 
       <!-- Rest of the packages -->
 
