@@ -1901,10 +1901,79 @@ if available:
         <listitem><para>Checkstyle</para></listitem>
       </itemizedlist>
 </para>
-    <para>
-Subclipse can be found at 
+    
+    <sect2 id="eclipse-install-instructions">
+      <title>Eclipse installation instructions</title>
+      <para>
+These instructions are tested on Eclipse 3.3.1.1, downloading
+<application>Eclipse IDE for Java developers</application>.  
+Note that if you download 
+<application>Eclipse Classic</application>, you will not need to install the 
+PDE plugin (PDE is included in <application>Eclipse Classic</application>).
+</para>
+      <orderedlist>
+        <listitem>
+          <para>
+Download and install the latest Java Software Development Kit (JDK) from 
+sun.com:
+<ulink url="http:/java.sun.com/javase/downloads/" />
+</para>          
+        </listitem>
+        <listitem>
+          <para>
+Download and install the latest Eclipse IDE for Java Developers:
+<ulink url="http://www.eclipse.org/downloads/" />
+</para>          
+        </listitem>
+        <listitem>
+          <para>
+Download and install Subclipse from within Eclipse, see
 <ulink url="http://subclipse.tigris.org/install.html"/>.
 </para>
+        </listitem>
+        <listitem>
+          <para>Download and install the PDE tools from within Eclipse:</para>
+          <orderedlist>
+            <listitem>
+              <para>Help > Software Updates > Find and Install...</para>
+            </listitem>              
+            <listitem>
+              <para>
+Select 'Search for new features to install', click Next.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+Select 'The Eclipse Project Updates', click Finish.
+</para>
+            </listitem>
+            <listitem>
+              <para>Select a nearby mirror if asked.</para>
+            </listitem>
+            <listitem>
+              <para>
+Select The Eclipse Project > Eclipse SDK Eclipse 3.3.1.1 
+> Eclipse PDE Plug-in Developer Resources 3.3.2......., Next, Next, Install.
+</para>
+            </listitem>
+            <listitem>
+              <para>Restart Eclipse.</para>
+            </listitem>
+          </orderedlist>
+        </listitem>
+        <listitem>
+          <para>
+Download and install Checkstyle from within Eclipse, see
+<ulink url="http://eclipse-cs.sourceforge.net/" />.
+</para>
+        </listitem>
+        <listitem>
+          <para>Ant and JUnit3 are included in the above.</para>
+        </listitem>
+        
+      </orderedlist>
+        
+    </sect2>
     <para>
 If any of these instructions don't work or could be improved in some way,
 please help in making them better by contacting the editor of the Cookbook.
@@ -1913,7 +1982,7 @@ please help in making them better by contacting the editor of the Cookbook.
     <sect2 id="eclipse-setup-summary">
       <title>Basic ideas of the set up</title>
       <para>
-Here are the ideas gouverning the layout of the recommended Eclipse set up.
+Here are the ideas governing the layout of the recommended Eclipse set up.
 </para>
 
       <itemizedlist>
