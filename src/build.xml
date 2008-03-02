@@ -362,7 +362,6 @@ Property files to be searched:
   </target>
 
   <target name="javadocs" depends="init-javadoc, init, package">
-    <property name="argo.javadocs.dir" value="${argo.build.dir}/javadocs/"/>
     <mkdir dir="${argo.javadocs.dir}"/>
 
     <javadoc author="${javadoc.author}"
@@ -414,7 +413,6 @@ Property files to be searched:
 
 
   <target name="javadocs-api" depends="init-javadoc, init, package">
-    <property name="argo.api.dir" value="${argo.build.dir}/api/"/>
     <mkdir dir="${argo.api.dir}"/>
 
     <!-- The package name list shall be the list of all the main packages for
