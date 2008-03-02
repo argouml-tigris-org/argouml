@@ -1990,7 +1990,7 @@ Download the initial Team Project Set file and save it somewhere.
 This is done like this:
             <orderedlist>
               <listitem>
-                <para>File => New Project</para>
+                <para>File => New => Project...</para>
               </listitem>
               <listitem>
                 <para>SVN => Checkout Projects from SVN</para>
