@@ -2215,7 +2215,7 @@ Select Import and give the file
 located in the argouml-core-tools project that you just checked out.
 </para>
                   <para>
-This takes care of the Eclipse-built-in bug
+This takes care of the Java Conventions [built-in] Tab width bug
 (<ulink url="https://bugs.eclipse.org/bugs/show_bug.cgi?id=104765"/>).
 </para>
                 </footnote>
