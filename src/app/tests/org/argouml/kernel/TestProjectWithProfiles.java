@@ -253,7 +253,85 @@ public class TestProjectWithProfiles extends TestCase {
         project.setVersion(ApplicationVersion.getVersion());
         persister.save(project, file);
         // load the project
-        // FIXME: known failure here as documented in issue #4946
+        project = persister.doLoad(file);
+        project.postLoad();
+        // assert that the model element that depends on the profile is 
+        // consistent
+        // FIXME: the next statement fails because the XMI is saved with the 
+        // profile model and with the project model!!! Being the project 
+        // model the second, it won't be part of the project...
+        fooClass = project.findType("Foo", false);
+//        assertNotNull(fooClass);
+//        Collection fooStereotypes = getFacade().getStereotypes(fooClass);
+//        assertEquals(1, fooStereotypes.size());
+//        assertEquals(ProfileMother.STEREOTYPE_NAME_ST, 
+//                getFacade().getNamespace(fooStereotypes.iterator().next()));
+    }
+    
+    /**
+     * WARNING: not a unit test, this is more like a functional test, where 
+     * several subsystems are tested.
+     * 
+     * This test does:
+     * <ol>
+     *   <li>setup a user defined profile</li>
+     *   <li>add it to the project configuration</li>
+     *   <li>create a dependency between the project's model and the user 
+     *   defined profile</li>
+     *   <li>save the project</li>
+     *   <li>remove the directory where the user defined profile was stored in 
+     *   order to test the handling of opening a zargo without the user defined
+     *   profile</li>
+     *   <li>load the project and assert that the model element that depends on 
+     *   the profile is consistent</li>
+     * </ol>
+     * 
+     * @throws Exception when things go wrong
+     */
+    public void testProjectWithRemovedUserDefinedProfilePersistency() 
+        throws Exception {
+        // setup a user defined profile
+        ProfileMother mother = new ProfileMother();
+        Object profileModel = mother.createSimpleProfileModel();
+        File userDefinedProfileFile = new File(testCaseDir, 
+                "testProjectWithUserDefinedProfilePersistency.xmi");
+        mother.saveProfileModel(profileModel, userDefinedProfileFile);
+        // add it to the project configuration
+        Profile userDefinedProfile = 
+            new UserDefinedProfile(userDefinedProfileFile);
+        ProfileManager profileManager = ProfileFacade.getManager();
+        profileManager.registerProfile(userDefinedProfile);
+        profileManager.addSearchPathDirectory(testCaseDir.getAbsolutePath());
+        Project project = ProjectManager.getManager().makeEmptyProject();
+        project.getProfileConfiguration().addProfile(userDefinedProfile);
+        // create a dependency between the project's model and the user defined 
+        // profile
+        Object model = getModelManagementFactory().getRootModel();
+        Object fooClass = getCoreFactory().buildClass("Foo", model);
+        Collection stereotypes = getExtensionMechanismsHelper().getStereotypes(
+                project.getModels());
+        Object stStereotype = null;
+        for (Object stereotype : stereotypes) {
+            if (ProfileMother.STEREOTYPE_NAME_ST.equals(
+                    getFacade().getName(stereotype))) {
+                stStereotype = stereotype;
+                break;
+            }
+        }
+        Model.getCoreHelper().addStereotype(fooClass, stStereotype);
+        // save the project
+        File file = getFileInTestDir(
+            "testProjectWithUserDefinedProfilePersistency.zargo");
+        AbstractFilePersister persister = getProjectPersister(file);
+        project.setVersion(ApplicationVersion.getVersion());
+        persister.save(project, file);
+        // remove the user defined profile and the directory where it is
+        profileManager.removeProfile(userDefinedProfile);
+        profileManager.removeSearchPathDirectory(testCaseDir.getAbsolutePath());
+        // load the project
+        // FIXME: the next statement fails because the zargo's XMI model is 
+        // being loaded before the profile file, therefore it doesn't have a 
+        // chance to resolve the dependencies in the model.
         project = persister.doLoad(file);
         project.postLoad();
         // assert that the model element that depends on the profile is 

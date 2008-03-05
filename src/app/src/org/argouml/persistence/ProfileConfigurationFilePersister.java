@@ -26,12 +26,12 @@ package org.argouml.persistence;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
@@ -109,8 +109,25 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                         }
                         xmi.append(line + "\n");
                     }
-                    
-                    profile = new UserDefinedProfile(new File(xmi.toString()));
+                    for (Profile candidateProfile 
+                            : ProfileFacade.getManager().
+                                getRegisteredProfiles()) {
+                        if (candidateProfile instanceof UserDefinedProfile) {
+                            UserDefinedProfile userProfile = 
+                                (UserDefinedProfile) candidateProfile;
+                            if (userProfile.getDisplayName().equals(fileName)) {
+                                profile = userProfile;
+                                break;
+                            }
+                        }
+                    }
+                    if (profile == null) {
+                        // Use xmi as a fall back alternative when the 
+                        // file for the user defined profile isn't found by the 
+                        // profile manager.
+                        profile = new UserDefinedProfile(fileName, 
+                                new StringReader(xmi.toString()));
+                    }
                     
                     // consumes the </userDefined>
                     line = br.readLine().trim();		    

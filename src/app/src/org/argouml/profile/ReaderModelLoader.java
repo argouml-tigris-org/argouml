@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,32 +24,57 @@
 
 package org.argouml.profile;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.Reader;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiReader;
+import org.xml.sax.InputSource;
 
 /**
- * An implementation for the ProfileModelLoader that loads profiles from files.
  *
- * @author maurelio1234
+ * @author Luis Sergio Oliveira (euluis)
  */
-public class FileModelLoader extends URLModelLoader {
+public class ReaderModelLoader implements ProfileModelLoader {
 
-    private static final Logger LOG = Logger.getLogger(FileModelLoader.class);
+    private static final Logger LOG = Logger.getLogger(
+            ReaderModelLoader.class);
 
-    
-    public Collection loadModel(String modelFilename) throws ProfileException {
-        LOG.info("Loading profile from file'" + modelFilename + "'");
-        try {
-            File modelFile = new File(modelFilename);
-            URL url = modelFile.toURI().toURL();
-            return super.loadModel(url, modelFile.getName());
-        } catch (MalformedURLException e) {
-            throw new ProfileException("Model file not found!");
+    private Reader reader;
+
+    /**
+     * Create a ModelLoader that will load the model from the given reader.
+     * 
+     * @param theReader Reader from which the model will be loaded.
+     */
+    public ReaderModelLoader(Reader theReader) {
+        this.reader = theReader;
+    }
+
+    /**
+     * @param path
+     * @return
+     * @throws ProfileException
+     * @see org.argouml.profile.ProfileModelLoader#loadModel(java.lang.String)
+     */
+    @Override
+    public Collection loadModel(String path) throws ProfileException {
+        if (reader != null) {
+            try {
+                XmiReader xmiReader = Model.getXmiReader();
+                InputSource inputSource = new InputSource(reader);
+                inputSource.setSystemId(path);
+                Collection elements = xmiReader.parse(inputSource, true);
+                return elements;
+            } catch (UmlException e) {
+                LOG.error("Exception while loading profile ", e);
+                throw new ProfileException("Invalid XMI data!");
+            }
         }
+        LOG.error("Profile not found");
+        throw new ProfileException("Profile not found!");
     }
 
 }

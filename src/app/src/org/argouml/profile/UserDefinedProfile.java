@@ -25,6 +25,7 @@
 package org.argouml.profile;
 
 import java.io.File;
+import java.io.Reader;
 import java.util.Collection;
 
 /**
@@ -46,13 +47,21 @@ public class UserDefinedProfile extends Profile {
      * @throws ProfileException if the profile could not be loaded
      */
     public UserDefinedProfile(File file) throws ProfileException {
-        this.displayName = file.getName();
-        this.modelFile = file;
-        this.model = new FileModelLoader().loadModel(modelFile.getPath());
-        this.fromZargo = false;
+        displayName = file.getName();
+        modelFile = file;
+        model = new FileModelLoader().loadModel(modelFile.getPath());
+        fromZargo = false;
     }
 
     
+    public UserDefinedProfile(String fileName, Reader reader) 
+        throws ProfileException {
+        displayName = fileName;
+        model = new ReaderModelLoader(reader).loadModel(fileName);
+        fromZargo = true;
+    }
+
+
     /**
      * @return the string that should represent this profile in the GUI. An
      *         start (*) is placed on it if it comes from the currently opened

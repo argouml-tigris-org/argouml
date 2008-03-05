@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,31 +25,39 @@
 package org.argouml.profile;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
+import org.argouml.FileHelper;
+import org.argouml.model.InitializeModel;
+
+import junit.framework.TestCase;
 
 /**
- * An implementation for the ProfileModelLoader that loads profiles from files.
+ * Tests for the {@link ReaderModelLoader} class.
  *
- * @author maurelio1234
+ * @author Luis Sergio Oliveira (euluis)
  */
-public class FileModelLoader extends URLModelLoader {
-
-    private static final Logger LOG = Logger.getLogger(FileModelLoader.class);
-
-    
-    public Collection loadModel(String modelFilename) throws ProfileException {
-        LOG.info("Loading profile from file'" + modelFilename + "'");
-        try {
-            File modelFile = new File(modelFilename);
-            URL url = modelFile.toURI().toURL();
-            return super.loadModel(url, modelFile.getName());
-        } catch (MalformedURLException e) {
-            throw new ProfileException("Model file not found!");
-        }
+public class TestReaderModelLoader extends TestCase {
+    public void testCtor() {
+        Reader reader = new StringReader("dummy string");
+        new ReaderModelLoader(reader);
     }
-
+    
+    public void testLoad() throws IOException, ProfileException {
+        InitializeModel.initializeDefault();
+        ProfileMother mother = new ProfileMother();
+        Object model = mother.createSimpleProfileModel();
+        File testDir = FileHelper.setUpDir4Test(getClass());
+        File file = new File(testDir, "testSaveProfileModel.xmi");
+        mother.saveProfileModel(model, file);
+        Reader reader = new FileReader(file);
+        Collection models = new ReaderModelLoader(reader).
+            loadModel(file.getName());
+        assertNotNull(models);
+        assertTrue(models.size() >= 1);
+    }
 }
