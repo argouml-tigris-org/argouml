@@ -59,7 +59,6 @@ public class ReaderModelLoader implements ProfileModelLoader {
      * @throws ProfileException
      * @see org.argouml.profile.ProfileModelLoader#loadModel(java.lang.String)
      */
-    @Override
     public Collection loadModel(String path) throws ProfileException {
         if (reader != null) {
             try {
