@@ -80,6 +80,9 @@ class XmiReferenceResolverImpl extends XmiContext {
         "/org/argouml/profile/profiles/";
     private static final String PROFILE_BASE_URL = 
         "http://argouml.org/profiles/uml14";
+
+    private static final String USER_PROFILE_BASE_URL = 
+        "http://argouml.org/user-profiles/";
     
     private Map<String, Object> idToObjects = 
         Collections.synchronizedMap(new HashMap<String, Object>());
@@ -182,7 +185,8 @@ class XmiReferenceResolverImpl extends XmiContext {
             if (systemId.contains(PROFILE_RESOURCE_PATH))
                 systemId = PROFILE_BASE_URL + getSuffix(systemId);
             else if (systemId.contains("file:/")) {
-                // user defined profile - systemId is OK
+                // user defined profile - replace path with corresponding label
+                systemId = USER_PROFILE_BASE_URL + modelPublicId;
             } else 
                 systemId = PROFILE_BASE_URL + modelPublicId;
         } else if (systemId == topSystemId) {
@@ -273,7 +277,7 @@ class XmiReferenceResolverImpl extends XmiContext {
         // Several tries to construct a URL that really exists.
         if (modelUrl == null) {
             // If systemId is a valid URL, simply use it
-            modelUrl = this.getValidURL(fixupURL(systemId));
+            modelUrl = getValidURL(fixupURL(systemId));
             if (modelUrl == null) {
                 // Try to find suffix in module list.
                 String modelUrlAsString = findModuleURL(suffix);
@@ -283,7 +287,7 @@ class XmiReferenceResolverImpl extends XmiContext {
                 }
                 if (modelUrl == null) {
                     // search the classpath
-                    modelUrl = this.findModelUrlOnClasspath(systemId);
+                    modelUrl = findModelUrlOnClasspath(systemId);
                 }
                 if (modelUrl == null) {
                     // Give up and let superclass deal with it.
@@ -357,6 +361,13 @@ class XmiReferenceResolverImpl extends XmiContext {
 
                 return fixupURL(urlString);
             }
+        }
+        if (modelsPublicIds.contains(moduleName)) {
+            if (LOG.isDebugEnabled())
+                LOG.debug("Couldn't find user model (\"" + moduleName 
+                    + "\") in modulesPath, attempt " 
+                    + "to use a model stored within the zargo file.");
+            return moduleName;
         }
         return null;
     }
