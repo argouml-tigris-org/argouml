@@ -223,6 +223,10 @@ public class TestProjectWithProfiles extends TestCase {
         File userDefinedProfileFile = new File(testCaseDir, 
                 "testProjectWithUserDefinedProfilePersistency.xmi");
         mother.saveProfileModel(profileModel, userDefinedProfileFile);
+        // it is required to delete the profile model and load it as a pure 
+        // profile, else it will be saved by XmiWriter along with our project 
+        // model
+        Model.getUmlFactory().delete(profileModel);
         // add it to the project configuration
         Profile userDefinedProfile = 
             new UserDefinedProfile(userDefinedProfileFile);
@@ -257,15 +261,12 @@ public class TestProjectWithProfiles extends TestCase {
         project.postLoad();
         // assert that the model element that depends on the profile is 
         // consistent
-        // FIXME: the next statement fails because the XMI is saved with the 
-        // profile model and with the project model!!! Being the project 
-        // model the second, it won't be part of the project...
         fooClass = project.findType("Foo", false);
-//        assertNotNull(fooClass);
-//        Collection fooStereotypes = getFacade().getStereotypes(fooClass);
-//        assertEquals(1, fooStereotypes.size());
-//        assertEquals(ProfileMother.STEREOTYPE_NAME_ST, 
-//                getFacade().getNamespace(fooStereotypes.iterator().next()));
+        assertNotNull(fooClass);
+        Collection fooStereotypes = getFacade().getStereotypes(fooClass);
+        assertEquals(1, fooStereotypes.size());
+        assertEquals(ProfileMother.STEREOTYPE_NAME_ST, 
+                getFacade().getName(fooStereotypes.iterator().next()));
     }
     
     /**
