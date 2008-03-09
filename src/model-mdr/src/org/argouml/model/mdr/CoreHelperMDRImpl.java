@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1312,6 +1312,9 @@ class CoreHelperMDRImpl implements CoreHelper {
                             || modelElement instanceof UmlAssociation
                             || modelElement instanceof Generalization
                             || modelElement instanceof Dependency
+                            /* The next 2 needed for issue 2148: */
+                            || modelElement instanceof Extend
+                            || modelElement instanceof Include
                             || modelElement instanceof Constraint
                             || modelElement instanceof Collaboration
                             || modelElement instanceof StateMachine
