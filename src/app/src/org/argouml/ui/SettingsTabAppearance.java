@@ -108,11 +108,13 @@ class SettingsTabAppearance
 
         JLabel languageLabel =
             new JLabel(Translator.localize("label.language"));
-        Collection c = MyLocale.getLocales();
+        Collection<MyLocale> c = MyLocale.getLocales();
         language = new JComboBox(c.toArray());
         Object o = MyLocale.getDefault(c);
         if (o != null) {
             language.setSelectedItem(o);
+        } else {
+            language.setSelectedIndex(-1);
         }
         language.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -252,21 +254,17 @@ class MyLocale {
         return displayString.toString();
     }
 
-    static Collection getLocales() {
-        Iterator i = Arrays.asList(Translator.getLocales()).iterator();
-        Collection c = new ArrayList();
-        while (i.hasNext()) {
-            Locale locale = (Locale) i.next();
+    static Collection<MyLocale> getLocales() {
+        Collection<MyLocale> c = new ArrayList<MyLocale>();
+        for (Locale locale : Arrays.asList(Translator.getLocales())) {
             c.add(new MyLocale(locale));
         }
         return c;
     }
 
-    static MyLocale getDefault(Collection c) {
+    static MyLocale getDefault(Collection<MyLocale> c) {
         Locale locale = Locale.getDefault();
-        Iterator i = c.iterator();
-        while (i.hasNext()) {
-            MyLocale ml = (MyLocale) i.next();
+        for (MyLocale ml : c) {
             if (locale.equals(ml.getLocale())) {
                 return ml;
             }
