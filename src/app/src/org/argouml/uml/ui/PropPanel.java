@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -438,9 +438,19 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
                 }
             }
         }
+        if (container instanceof PropPanel) {
+            ((PropPanel) container).collectTargetListenerActions();
+        }
         return list;
     }
 
+    private void collectTargetListenerActions() {
+        for (Object obj : actions) {
+            if (obj instanceof TargetListener) {
+                listenerList.add(TargetListener.class, (TargetListener) obj);
+            }
+        }
+    }
     /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
