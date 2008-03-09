@@ -33,6 +33,8 @@ import java.awt.GridLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -439,18 +441,24 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
             }
         }
         if (container instanceof PropPanel) {
-            ((PropPanel) container).collectTargetListenerActions();
+            /* We presume that the container equals this PropPanel. */
+            for (TargetListener action : collectTargetListenerActions()) {
+                list.add(TargetListener.class, action);
+            }
         }
         return list;
     }
 
-    private void collectTargetListenerActions() {
+    private Collection<TargetListener> collectTargetListenerActions() {
+        Collection<TargetListener> set = new HashSet<TargetListener>();
         for (Object obj : actions) {
             if (obj instanceof TargetListener) {
-                listenerList.add(TargetListener.class, (TargetListener) obj);
+                set.add((TargetListener) obj);
             }
         }
+        return set;
     }
+
     /*
      * @see org.argouml.ui.TabTarget#getTarget()
      */
