@@ -34,6 +34,7 @@
 
 	<xsl:import href="docbook-xsl/html/chunk.xsl"/>
 	<xsl:import href="commonsettings.xsl"/>
+	<xsl:include href="titlepage-html.xsl"/>
 
 	<xsl:variable name="using.chunker" select="1"/>
 </xsl:stylesheet>

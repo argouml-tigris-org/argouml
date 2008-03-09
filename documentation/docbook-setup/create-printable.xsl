@@ -34,6 +34,7 @@
 
 	<xsl:import href="docbook-xsl/html/docbook.xsl"/>
 	<xsl:import href="commonsettings.xsl"/>
+	<xsl:include href="titlepage-html.xsl"/>
   
   <!-- Added by MVW -->
 

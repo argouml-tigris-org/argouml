@@ -72,6 +72,14 @@
   <bookinfo>
     <date>2001-11-10
     </date>
+    
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/argologo200x190_on_ffffff.png" 
+                format="PNG"/>
+      </imageobject>
+    </mediaobject>
+    
     <title>Cookbook for Developers of ArgoUML</title>
     <subtitle>An introduction to Developing ArgoUML</subtitle>
     <abstract>

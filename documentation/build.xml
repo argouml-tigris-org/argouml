@@ -286,7 +286,48 @@ To get it, call ant with target - docbook-xsl-get
     <property name="javahelp.xsl"
               value="../docbook-setup/create-javahelp.xsl"/>
 
+    <property name="titlepage-template.xsl"
+              value="docbook-setup/docbook-xsl/template/titlepage.xsl"/>
 
+    <property name="titlepage-html.spec.xml"
+              value="docbook-setup/titlepage-html.spec.xml"/>
+
+    <property name="titlepage-html.xsl"
+              value="docbook-setup/titlepage-html.xsl"/>
+
+    <property name="titlepage-pdf.spec.xml"
+              value="docbook-setup/titlepage-pdf.spec.xml"/>
+
+    <property name="titlepage-pdf.xsl"
+              value="docbook-setup/titlepage-pdf.xsl"/>
+
+    <!-- Generate custom titlepage stylesheets -->
+    <echo message="Generating custom HTML titlepage XSL template"/>
+    <java classname="com.icl.saxon.StyleSheet"
+          fork="yes"
+      taskname="saxon"
+          dir="${documentation.dir}">
+      <classpath>
+        <path refid="saxon.classpath"/>
+      </classpath>
+      <arg line="-o '${titlepage-html.xsl}'"/>
+      <arg value="${titlepage-html.spec.xml}"/>
+      <arg value="${titlepage-template.xsl}"/>
+    </java>
+
+    <echo message="Generating custom PDF titlepage XSL template"/>
+    <java classname="com.icl.saxon.StyleSheet"
+          fork="yes"
+      taskname="saxon"
+          dir="${documentation.dir}">
+      <classpath>
+        <path refid="saxon.classpath"/>
+      </classpath>
+      <arg line="-o '${titlepage-pdf.xsl}'"/>
+      <arg value="${titlepage-pdf.spec.xml}"/>
+      <arg value="${titlepage-template.xsl}"/>
+    </java>
+    
     <!-- Copy and change 'antcall' task below for additional DocBook
          documents
 
@@ -321,6 +362,9 @@ To get it, call ant with target - docbook-xsl-get
       <!-- DocBook filename without xml extension   -->
       <param name="doc.prefix"  value="argomanual"/>
     </antcall>
+
+    <delete file="${documentation.dir}/${titlepage-html.xsl}"/>
+    <delete file="${documentation.dir}/${titlepage-pdf.xsl}"/>
 
   </target>
   

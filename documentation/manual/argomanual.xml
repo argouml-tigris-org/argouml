@@ -33,6 +33,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
   <bookinfo>
 
     <date>5/17/2002</date>
+
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/argologo200x190_on_ffffff.png" 
+                format="PNG"/>
+      </imageobject>
+    </mediaobject>
+    
     <title>ArgoUML User Manual</title>
 
     <subtitle>A tutorial and reference description</subtitle>

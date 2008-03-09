@@ -34,6 +34,7 @@
 
 	<xsl:import href="docbook-xsl/fo/docbook.xsl"/>
 	<xsl:import href="commonsettings.xsl"/>
+	<xsl:include href="titlepage-pdf.xsl"/>
 
         <!-- Added by Jeremy Bennett for 1.49 XSL stylesheets -->
 

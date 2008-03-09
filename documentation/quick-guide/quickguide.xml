@@ -63,6 +63,14 @@
 <book>
   <title>&document-title;</title>
   <bookinfo>
+
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="images/argologo200x190_on_ffffff.png" 
+                format="PNG"/>
+      </imageobject>
+    </mediaobject>
+    
     <subtitle>&document-subtitle;</subtitle>
     <authorgroup>
       &author-kunle.odu;
