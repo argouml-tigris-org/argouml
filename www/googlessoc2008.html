@@ -284,6 +284,56 @@ Developer contact: Michiel van der Wulp.
 
 
 
+<div class="h3">
+<h3>Support of parameterized classes (templates)</h3>
+<p>
+In UML, parameterized classes are used to model parameterized types. 
+This is somewhat similar to Java and C# generics and C++ templates.
+ArgoUML doesn't support yet the modeling of parameterized classes and this is 
+causing it to be less useful for modeling in these languages.
+</p>
+<p>
+This project would implement the GUI support for modeling parameterized 
+classes, since these are already supported in the model sub-system.
+It will require working in the several presentation elements of the ArgoUML 
+GUI, such as the explorer pane, the class diagram and the properties panel.
+Potentially interesting is the correct display of the parameterized classes 
+and of the bound elements (classes that are defined by defining actual types 
+for the parameterized class' parameters).
+</p>
+
+<p>
+More details on suggestion:
+</p>
+  <ul>
+    <li>This project is 
+    <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=1446">issue 
+    #1446</a>.</li>
+    <li>The model sub-system support for parameterized classes are available 
+    via the interfaces <code>CoreFactory</code> and <code>CoreHelper</code> 
+    of the package <code>org.argouml.model</code>.
+    <li>In the context of some work made previously to support the notation 
+    of UML templates - the dashed rectangle in the upper right-hand corner 
+    of the class symbol - it was considered interesting to explore this in the 
+    scope of the <a href="http://gef.tigris.org/">GEF project</a>. 
+    See <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=3802">issue 
+    #3802</a> for some reasoning and ideas related to this.</li>
+    <li>A big part of this project is Java Swing work on top of GEF and 
+    ArgoUML GUI classes.</li> 
+    <li>The proposal mentor will work in parallel ensuring that the code 
+    generation modules will also support generics or templates.
+    </li>
+  </ul>
+
+
+<p>
+Developer Contact: <a href="http://argonauts-life.blogspot.com">Luís Sérgio 
+Oliveira</a> (user euluis in tigris)
+</p>
+</div>
+
+
+
 <!-- END of proposals -->
 </div> <!-- h2 -->
 
