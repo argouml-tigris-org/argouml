@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,15 +33,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseEvent;
 import java.util.Enumeration;
 
+import javax.swing.AbstractAction;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -94,14 +100,45 @@ public class ZoomSliderButton extends PopupButton {
      * The text field which shows the current zoom magnification value.
      */
     private JTextField          currentValue = null;
+    
+    /**
+     * Used to enable/disable the popup button.
+     */
+    private boolean             popupButtonIsActive = true;
+    
+    /**
+     * Indicates whether the popupmenu is showing or not.
+     */
+    private boolean             popupMenuIsShowing = false;
+    
+    /**
+     * Indicates whether the mouse is over the popup button or not.
+     */
+    private boolean             mouseIsOverPopupButton = false;
 
     /**
      * Constructs a new ZoomSliderButton.
      */
     public ZoomSliderButton() {
         super();
+        setAction( new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                /* If action comes in with *no* modifiers, it is a pure
+                 * keyboard event (e.g. spacebar), so do it.  Anything else
+                 * is probably a mouse event, so ignore it. Mouse events are
+                 * dealt with by mousePressed() instead (see bottom of page).
+                 */ 
+                if (e.getModifiers() == 0) {
+                    showPopup();
+                }
+            }
+        });
 
         Icon icon = ResourceLoaderWrapper.lookupIcon(RESOURCE_NAME);
+
+        MyMouseListener myMouseListener = new MyMouseListener();
+        addMouseMotionListener(myMouseListener);
+        addMouseListener(myMouseListener);
 
         setIcon(icon);
         setToolTipText(Translator.localize("button.zoom"));
@@ -188,8 +225,13 @@ public class ZoomSliderButton extends PopupButton {
             slider.setValue((int) (ed.getScale() * 100d));
         }
 
-        super.showPopup();
-
+        if ( popupButtonIsActive ) {
+            super.showPopup();
+            JPopupMenu pm = (JPopupMenu) this.getPopupComponent().getParent();
+            PopupMenuListener pml = new MyPopupMenuListener();
+            pm.addPopupMenuListener(pml);
+            popupMenuIsShowing = true;
+        }
         slider.requestFocus();
     }
 
@@ -238,5 +280,71 @@ public class ZoomSliderButton extends PopupButton {
      */
     private void updateCurrentValueLabel() {
         currentValue.setText(String.valueOf(slider.getValue()) + '%');
+    }
+    
+    private class MyPopupMenuListener extends AbstractAction implements
+        PopupMenuListener {
+
+	/**
+         * Empty method to satisfy interface.
+         */
+	public void actionPerformed(ActionEvent e) {
+        }
+
+        /**
+         * Method gets fired when the popup dies.
+         * Conditionally re-enable the button depending on where the pointer 
+         * is.
+         */
+        public void popupMenuCanceled(PopupMenuEvent e) {
+            if (mouseIsOverPopupButton) {
+                popupButtonIsActive = false;
+            } else {
+                popupButtonIsActive = true;
+            }
+            popupMenuIsShowing = false;
+        }
+
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        }
+
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        }
+
+    };
+
+    private class MyMouseListener extends MouseInputAdapter {
+
+        /**
+         * Keeps track of mouseover status. 
+         */
+        public void mouseEntered(MouseEvent me) {
+            mouseIsOverPopupButton = true;
+        }
+        
+        /**
+         * Keeps track of mouseover status, and renables button if necessary.
+         */
+        public void mouseExited(MouseEvent me) {
+            mouseIsOverPopupButton = false;
+            if (!popupButtonIsActive && !popupMenuIsShowing)
+            {
+                popupButtonIsActive = true;
+            }
+        }
+
+        /**
+         * Catch the down stroke of mouse click to make the popup appear a tiny
+         * bit earlier.
+         */
+        public void mousePressed(MouseEvent me) {
+            if (popupButtonIsActive) {
+                showPopup();
+            }
+            else if ( !popupMenuIsShowing )
+            {
+                popupButtonIsActive = true;
+            }
+        }
     }
 }
