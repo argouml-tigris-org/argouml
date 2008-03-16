@@ -176,6 +176,17 @@ public class FigAssociation extends FigEdgeModelElement {
         destMult.setOwner(dest);
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
+     */
+    @Override
+    protected void renderingChanged() {
+        /* This fixes issue 4987: */
+        srcMult.update();
+        destMult.update();
+        super.renderingChanged();
+    }
+
     @Override
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
@@ -495,6 +506,15 @@ class FigMultiplicity extends FigSingleLineText
         assert getOwner() != null;
         setText(notationProvider.toString(getOwner(), null));
         damage();
+    }
+    
+    protected void update() {
+        Object owner = getOwner();
+        if (Model.getFacade().isAAssociationEnd(owner)) {
+            /* If we have an owner, then we also have
+             * a notation provider, so it is safe to call the following: */
+            setText();
+        }
     }
     
     protected void textEdited() {
