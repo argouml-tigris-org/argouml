@@ -161,6 +161,53 @@ Developer Contact: Bogdan Pistol
 
 
 <div class="h3">
+<h3>ArgoUML and uml 2 compliance level 0</h3>
+<p>
+<a href="#amof1">UML 2[1]</a> defines several compliance levels for uml-tools.
+To fulfill the
+compliance level 0, mainly classes and class-diagrams of uml 2.x must be
+supported. these will be introduced to argouml by integrating a
+meta-model-repository: <a href="#amof3">amof2[3]</a>.
+</p>
+
+<dl>
+<dt>1st step: basic integration</dt>
+<dd>
+Amof2 has to be integrated into argouml's tool-library and the
+build-mechanisms.
+</dd>
+
+<dt>2nd step: amof2 interface</dt>
+<dd>
+ArgoUML supports already two model-repositories. this is possible due to
+an abstraction layer. the api from amof2 must be wrapped by this layer.
+</dd>
+
+<dt>3rd step: gui binding</dt>
+<dd>
+The needed ui-objects for creating, editing and deleting the level 0
+objects already exist, as argouml supports their uml 1.4 siblings which
+should be mostly the same on this basic level.
+</dd>
+
+<dt>4th step: persistence</dt>
+<dd>
+Amof2 understands xmi but can't persist files by itself. argouml's xmi
+export and import interface must be connected to the xmi-reader and
+-writer from amof2. also the file-format of argouml must be enabled to
+save the xmi-data from the amof2-repository
+</dd>
+</dl>
+
+<ul>
+<li><a name="amof1">[1]</a> <a href="http://www.omg.org/spec/UML/2.1.2/">http://www.omg.org/spec/UML/2.1.2/</a></li>
+<li><a name="amof2">[2]</a> <a href="http://www.omg.org/spec/MOF/2.0">http://www.omg.org/spec/MOF/2.0</a></li>
+<li><a name="amof3">[3]</a> <a href="http://www2.informatik.hu-berlin.de/sam/meta-tools/aMOF2.0forJava/index.html">http://www2.informatik.hu-berlin.de/sam/meta-tools/aMOF2.0forJava/index.html</a></li>
+</ul>
+</div>
+
+
+<div class="h3">
 <h3>Executable UML</h3>
 <p>
 Make the Executable UML profile work in ArgoUML.
