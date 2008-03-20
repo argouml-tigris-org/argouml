@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>More ideas on how to incorporate the Eclipse plug-in handler</title>
+  </head>
+  <body>
+    <div class="h1">
+    <h1>More ideas on how to incorporate the Eclipse plug-in handler</title></h1>
+    <ul>
+      <li>
+It should be a plugin itself, maybe internal in ArgoUML.
+        <ul>
+          <li>
+It will be used in the stand-alone version of Argouml, and
+downloaded by default with the package.
+          </li>
+          <li>
+It shouldn't be downloaded when using the Eclipse framework (or
+at least it should be disabled). In this case, the updater of Eclipse
+should be used.
+          </li>
+        </ul>
+      </li>
+      <li>
+For the reason above, the plugin repository must be compatible with
+the Eclipse updates system.
+      </li>
+      <li>
+It should be able of updating argouml itself.
+      </li>
+      <li>
+It should be strict about the plugins' compatibility with the
+current argouml version.
+      </li>
+      <li>
+It should mimetize the Synaptic UI (or not, but I think that this is
+a great software with a similar focus).
+      </li>
+      <li>
+It should require to accept the plugin licenses before downloading anything.
+      </li>
+      <li>
+It should support Restricted and open repositories, as in Debian.
+Maybe stable and experimental ones too.
+      </li>
+      <li>
+The user should be able to add new repositories, the system
+shouldn't work only with the argouml-downloads one.
+      </li>
+      <li>
+Notify when a new argouml release is not compatible with installed
+plugins (if there are compatible versions of the plugins, download
+them too).
+      </li>
+      <li>
+Atomic installation. If the installation fails, the system mustn't be damaged.
+      </li>
+      <li>
+The UI should have a checkbox "Show only compatible updates".
+Obvious behaviour.
+      </li>
+      <li>
+The UI should have a checkbox  "Show all versions of modules".
+Obvious behaviour.
+      </li>
+      <li>
+Search functionality for searching into the plugins database.
+      </li>
+    </ul>
+    </div>
+  </body>
+</html>
