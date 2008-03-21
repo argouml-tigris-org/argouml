@@ -179,24 +179,23 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
     @Override
     public boolean isRelocationAllowed(Object base)  {
-    	return false;
-	/* TODO: We may return something useful when the
-	 * relocate() has been implemented.
-	 */
+    	return Model.getFacade().isACollaboration(base);
     }
 
     @SuppressWarnings("unchecked")
     public Collection getRelocationCandidates(Object root) {
-        /* TODO: We may return something useful when the
-         * relocate() has been implemented. */
-        Collection c =  new HashSet();
-        c.add(getOwner());
-        return c;
+        return 
+        Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(
+            root, Model.getMetaTypes().getCollaboration());
     }
 
     @Override
     public boolean relocate(Object base) {
-        return false;
+        ((SequenceDiagramGraphModel) getGraphModel())
+	    	.setCollaboration(base);
+        setNamespace(base);
+        damage();
+        return true;
     }
 
     public void encloserChanged(FigNode enclosed, 
