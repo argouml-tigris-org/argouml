@@ -140,7 +140,6 @@ test what you've done by testing that specific functionality in ArgoUML.
 <li>Basic UML knowledge</li>
 <li>You will need to read the UML specification (the relevant parts of it), specifically the 
 <a href="http://www.omg.org/spec/UML/2.1.2/Superstructure/PDF/">Superstructure</a></li>
-<li>Basic <a href="http://www.eclipse.org/pde/">Eclipse PDE</a> knowledge - not really required, but desirable</li>
 </ul>
 
 <p style="font-weight: bold">More information:</p>
@@ -378,11 +377,78 @@ More details on suggestion:
 
 
 <p>
-Developer Contact: <a href="http://argonauts-life.blogspot.com">Luís Sérgio 
+Developer Contact: <a href="http://argonauts-life.blogspot.com">Luï¿½s Sï¿½rgio 
 Oliveira</a> (user euluis in tigris)
 </p>
 </div>
 
+
+<div class="h3">
+<h3>ArgoEclipse project</h3>
+
+<p style="font-weight: bold">Description:</p>
+<p>
+<a href="http://argoeclipse.tigris.org/">ArgoEclipse</a> is a project that integrates ArgoUML within the
+<a href="http://www.eclipse.org/">Eclipse IDE</a>.
+ArgoUML's main panels (implemented in Swing): the explorer pane (top left), the diagram pane (top right),
+the to do list pane (bottom left) and the properties pane (bottom right) are integrated in Eclipse's 
+<a href="http://www.eclipse.org/swt/">Standard Widget Toolkit (SWT)</a> and included in the Eclipse views, editors and dialogs
+using the <a href="http://help.eclipse.org/help32/index.jsp?topic=/org.eclipse.platform.doc.isv/reference/api/org/eclipse/swt/awt/SWT_AWT.html">SWT_AWT</a>
+bridge (that makes possible Swing integration into SWT).
+<br/>
+The Eclipse IDE can host ArgoEclipse as its plugin along with other plugins, but ArgoEclipse can also be used as a standalone 
+<a href="http://wiki.eclipse.org/index.php/Rich_Client_Platform">Rich Client Product (RCP)</a> application.
+<br/>
+ArgoEclipse uses mainly ArgoUML's Swing code as is and sparsely reimplements some Swing dialogs using SWT.
+
+<p style="font-weight: bold">Improvement suggestions:</p>
+<p>
+The suggestions marked with (*) are harder to accomplish.
+<ul>
+<li>Reimplement the Swing dialog windows from ArgoUML using SWT/JFace</li>
+<li>Extend the org.eclipse.ui.PreferencesPages extension point and reimplement ArgoUML's settings</li>
+<li>Headless build for the plugin and the RCP application using <a href="http://www.eclipse.org/articles/Article-PDE-Automation/automation.html">PDE tools</a></li>
+<li>Reimplement the explorer, todo and properties panes of ArgoUML in SWT/JFace or/and redesign their appearence</li>
+<li>Add the ability to parse Eclipse Java projects and generate a UML model in ArgoEclipse
+(ArgoUML is able to parse Java files from a filesystem location)</li>
+<li>Hook the editors/views to the standard global actions (print, delete, select all, undo, redo, etc)</li>
+<li>Add action bar contributions when the editor is opened: menu contributions, coolbar contributions with ArgoUML's actions
+that should be available in that context</li>
+<li>(*) Add support for the ability to drag UML elements from the explorer pane and drop them on the diagram editor</li>
+<li>(*) Use the <a href="http://www.eclipse.org/gef/">Eclipse Graphical Editing Framework (GEF)</a>
+to start the reimplementation of the diagram editor</li>
+<li>(*) Implement the support for multiple diagram editors</li>
+</ul>
+</p>
+
+<p style="font-weight: bold">Requirements:</p>
+<ul>
+<li>Basic UML knowledge</li>
+<li>Java SE</li>
+<li>Eclipse Plugin Development Environment (PDE)</li>
+<li>Standard Widget Toolkit (SWT) / JFace</li>
+<li>Apache Ant scripts (this is required only if you want to include the headless build suggestion)</li>
+<li>Graphical Editing Framework (GEF) (this is required only if you want to include the reimplementation of the diagram editor with GEF suggestion)</li>
+</ul>
+
+<p style="font-weight: bold">More information:</p>
+<ul>
+<li><a href="http://argoeclipse.tigris.org/">ArgoEclipse project site</a></li>
+<li><a href="http://argouml-stats.tigris.org/documentation/defaulthtml/cookbook/">ArgoUML Cookbook</a>
+(ArgoUML architecture & basic developers guide)</li>
+<li><a href="http://www.eclipse.org/swt/docs.php">SWT documentation</a></li>
+<li><a href="http://wiki.eclipse.org/GEF_Developer_FAQ">GEF FAQ</a></li>
+<li><a href="http://safari.oreilly.com/0321205758">Contributing to Eclipse: Principles, Patterns, and Plug-Ins by Erich Gamma and Kent Beck</a>
+(PDE information, plugins and RCP)</li>
+<li><a href="http://www.amazon.com/Eclipse-Rich-Client-Platform/dp/B00142N2ZI/ref=dp_kinw_strp_1">Eclipse Rich Client Platform: Designing, Coding,
+and Packaging Java(TM) Applications by Jeff McAffer and Jean-Michel Lemieux</a></li>
+<li><a href="http://www.amazon.com/Definitive-Guide-SWT-JFACE/dp/1590593251">The Definitive Guide to SWT and JFACE by Robert Harris and Rob Warner</a></li>
+</ul>
+
+<p>
+Developer Contact: Bogdan Pistol
+</p>
+</div>
 
 
 <!-- END of proposals -->
