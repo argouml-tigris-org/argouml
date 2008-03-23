@@ -164,7 +164,7 @@ Developer Contact: Bogdan Pistol
 
 
 <div class="h3">
-<h3>ArgoUML and uml 2 compliance level 0</h3>
+<h3>ArgoUML and UML 2 compliance level 0</h3>
 <p>
 <a href="#amof1">UML 2[1]</a> defines several compliance levels for uml-tools.
 To fulfill the
@@ -172,7 +172,15 @@ compliance level 0, mainly classes and class-diagrams of uml 2.x must be
 supported. these will be introduced to argouml by integrating a
 meta-model-repository: <a href="#amof3">amof2[3]</a>.
 </p>
-
+<p>
+amof2 will be used to load uml's metamodel and then act as the model repository
+for ArgoUML. it stores the instances of the metamodel the user creates(classes,
+associations, etc).  </p>
+<p>
+to be able to handle any mof-compliant metamodel and make it available to
+ArgoUML would raise many possibilities for creating and using
+<a href="#amof4">domain-specific languages[4]</a>. also it can be the base
+for introducing <a href="#amof5">UML Diagram Interchange[5]</a> to ArgoUML, because it's also a mof-compliant specification.</p>
 <dl>
 <dt>1st step: basic integration</dt>
 <dd>
@@ -206,6 +214,8 @@ save the xmi-data from the amof2-repository
 <li><a name="amof1">[1]</a> <a href="http://www.omg.org/spec/UML/2.1.2/">http://www.omg.org/spec/UML/2.1.2/</a></li>
 <li><a name="amof2">[2]</a> <a href="http://www.omg.org/spec/MOF/2.0">http://www.omg.org/spec/MOF/2.0</a></li>
 <li><a name="amof3">[3]</a> <a href="http://www2.informatik.hu-berlin.de/sam/meta-tools/aMOF2.0forJava/index.html">http://www2.informatik.hu-berlin.de/sam/meta-tools/aMOF2.0forJava/index.html</a></li>
+<li><a name="amof4">[4]</a> <a href="http://www.omg.org/technology/documents/domain_spec_catalog.htm">http://www.omg.org/technology/documents/domain_spec_catalog.htm</a></li>
+<li><a name="amof5">[5]</a> <a href="http://www.omg.org/cgi-bin/doc?ptc/2003-09-01">http://www.omg.org/cgi-bin/doc?ptc/2003-09-01</a></li>
 </ul>
 </div>
 
