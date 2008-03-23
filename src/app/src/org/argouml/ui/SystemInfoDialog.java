@@ -150,33 +150,33 @@ public class SystemInfoDialog extends ArgoDialog {
      */
     public static String getInfo() {
         StringBuffer s = new StringBuffer();
-        s.append("ArgoUML version       : ");
+        s.append(Translator.localize("dialog.systeminfo.argoumlversion"));
         s.append(ApplicationVersion.getVersion() + "\n");
-        s.append("Java Version          : ");
+        s.append(Translator.localize("dialog.systeminfo.javaversion"));
         s.append(System.getProperty("java.version", "") + "\n");
-        s.append("Java Vendor           : ");
+        s.append(Translator.localize("dialog.systeminfo.javavendor"));
         s.append(System.getProperty("java.vendor", "") + "\n");
-        s.append("Java Vendor URL       : ");
+        s.append(Translator.localize("dialog.systeminfo.url-javavendor"));
         s.append(System.getProperty("java.vendor.url", "") + "\n");
-        s.append("Java Home Directory   : ");
+        s.append(Translator.localize("dialog.systeminfo.java-home-directory"));
         s.append(System.getProperty("java.home", "") + "\n");
-        s.append("Java Classpath                : ");
+        s.append(Translator.localize("dialog.systeminfo.java-classpath"));
         s.append(System.getProperty("java.class.path", "") + "\n");
-        s.append("Operation System      : ");
+        s.append(Translator.localize("dialog.systeminfo.operating-system"));
         s.append(System.getProperty("os.name", ""));
-        s.append(", Version ");
+        s.append(Translator.localize("dialog.systeminfo.operating-systemversion"));
         s.append(System.getProperty("os.version", "") + "\n");
-        s.append("Architecture          : ");
+        s.append(Translator.localize("dialog.systeminfo.architecture"));
         s.append(System.getProperty("os.arch", "") + "\n");
-        s.append("User Name             : ");
+        s.append(Translator.localize("dialog.systeminfo.user-name"));
         s.append(System.getProperty("user.name", "") + "\n");
-        s.append("User Home Directory   : ");
+        s.append(Translator.localize("dialog.systeminfo.user-home-directory"));
         s.append(System.getProperty("user.home", "") + "\n");
-        s.append("Current Directory     : ");
+        s.append(Translator.localize("dialog.systeminfo.current-directory"));
         s.append(System.getProperty("user.dir", "") + "\n");
-        s.append("JVM Total Memory      : ");
+        s.append(Translator.localize("dialog.systeminfo.jvm-total-memory"));
         s.append(String.valueOf(Runtime.getRuntime().totalMemory()) + "\n");
-        s.append("JVM Free Memory       : ");
+        s.append(Translator.localize("dialog.systeminfo.jvm-free-memory"));
         s.append(String.valueOf(Runtime.getRuntime().freeMemory()) + "\n");
         return s.toString();
     }
