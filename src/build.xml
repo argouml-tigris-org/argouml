@@ -305,10 +305,20 @@ Property files to be searched:
           description="Run tests.">
 
     <!-- Build the subdirs in order. -->
+
     <!-- infra doesn't have tests. -->
+    <ant dir="infra" inheritAll="false"           target="jar"/>
+
     <!-- model doesn't have tests. -->
+    <ant dir="model" inheritAll="false"           target="jar"/>
+
     <ant dir="model-mdr" inheritAll="false"       target="tests"/>
+
 <!--    <ant dir="model-euml" inheritAll="false"      target="tests"/> -->
+
+
+    <ant dir="model-mdr" inheritAll="false"       target="jar"/>
+
     <ant dir="app" inheritAll="false"             target="tests"/>
 
     <ant target="tests-reports"/>
