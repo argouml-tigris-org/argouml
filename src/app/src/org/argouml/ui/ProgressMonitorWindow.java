@@ -38,8 +38,8 @@ import org.argouml.util.ArgoFrame;
  * Manages a ProgressMonitor dialog.
  * 
  * NOTE: Users of this class should use the type of the interface
- * org.argouml.swingext.ProgressMonitor wherever possible to
- * maintain GUI independance.
+ * {@link org.argouml.taskmgmt.ProgressMonitor} wherever possible to
+ * maintain GUI independence.
  * 
  * @author andrea_nironi@tigris.org
  */

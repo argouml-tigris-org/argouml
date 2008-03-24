@@ -567,7 +567,7 @@ public class ToDoList extends Observable implements Runnable,
 
     /**
      * @param off the offender
-     * @return the todo tems for this offender
+     * @return the todo items for this offender
      * @deprecated for 0.25.4 by tfmorris. Use
      *             {@link #elementListForOffender(Object)}.
      */
@@ -578,7 +578,7 @@ public class ToDoList extends Observable implements Runnable,
 
     /**
      * @param off the offender
-     * @return the todo tems for this offender
+     * @return the todo items for this offender
      */
     public List<ToDoItem> elementListForOffender(Object off) {
         if (off == recentOffender) {

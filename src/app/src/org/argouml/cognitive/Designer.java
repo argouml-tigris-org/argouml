@@ -247,7 +247,9 @@ public final class Designer
     /**
      * @return the designer singleton
      */
-    public static Designer theDesigner() { return theDesignerSingleton; }
+    public static Designer theDesigner() {
+        return theDesignerSingleton;
+    }
 
 
     ////////////////////////////////////////////////////////////////
@@ -767,7 +769,7 @@ public final class Designer
     }
 
     /**
-     * Reply the designers personal preferneces.
+     * Reply the designers personal preferences.
      * Currently not used (?).
      *
      * @return the preferences
@@ -802,7 +804,9 @@ public final class Designer
      * @param goal the given goal
      * @return true if this goal is desired
      */
-    public boolean hasGoal(String goal) { return goals.hasGoal(goal); }
+    public boolean hasGoal(String goal) {
+        return goals.hasGoal(goal);
+    }
 
     /**
      * @param goal the given goal
@@ -815,29 +819,39 @@ public final class Designer
     /**
      * @param goal the goal I (me, the designer) desire
      */
-    public void startDesiring(String goal) { goals.startDesiring(goal); }
+    public void startDesiring(String goal) {
+        goals.startDesiring(goal);
+    }
 
     /**
      * @param goal the goal that is not desired any more
      */
-    public void stopDesiring(String goal) { goals.stopDesiring(goal); }
+    public void stopDesiring(String goal) {
+        goals.stopDesiring(goal);
+    }
 
     /*
      * @see org.argouml.cognitive.Poster#snooze()
      */
-    public void snooze() { /* do nothing */ }
+    public void snooze() { 
+        /* do nothing */
+    }
 
     /*
      * @see org.argouml.cognitive.Poster#unsnooze()
      */
-    public void unsnooze() { /* do nothing */ }
+    public void unsnooze() { 
+        /* do nothing */
+    }
 
     /**
      * Reply the Agency object that is helping this Designer.
      * 
      * @return my agency
      */
-    public Agency getAgency() { return agency; }
+    public Agency getAgency() {
+        return agency;
+    }
 
     ////////////////////////////////////////////////////////////////
     // user interface
@@ -876,6 +890,7 @@ public final class Designer
      *
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         //TODO: This should be the name of the designer that created
         //      the todoitem, not the current username!

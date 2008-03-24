@@ -122,9 +122,4 @@ public class StatusBar extends JPanel implements Runnable, IStatusBar {
 	repaint();
     }
 
-
-    //   public boolean isOptimizedDrawingEnabled() {
-    //     return false;
-    //   }
-
 }
