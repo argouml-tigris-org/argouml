@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2006 The Regents of the University of California. All
+// Copyright (c) 2002-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EventObject;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -71,11 +70,11 @@ public class TargetEvent extends EventObject {
 
     /**
      * Constructs a new TargetEvent.
-     *
-     * @param source The source that fired the TargetEvent, will
-     * allways be the TargetManager
+     * 
+     * @param source The source that fired the TargetEvent, will always be the
+     *                TargetManager
      * @param tEName The name of the TargetEvent, can be TARGET_SET,
-     * TARGET_REMOVED or TARGET_ADDED
+     *                TARGET_REMOVED or TARGET_ADDED
      * @param oldTargets The old targets before the change took place
      * @param newTargets The new targets after the change took place
      */
@@ -128,9 +127,7 @@ public class TargetEvent extends EventObject {
         List removedTargets = new ArrayList();
         List oldTargets = Arrays.asList(theOldTargets);
         List newTargets = Arrays.asList(theNewTargets);
-        Iterator it = oldTargets.iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
+        for (Object o : oldTargets) {
             if (!newTargets.contains(o)) {
                 removedTargets.add(o);
             }
@@ -154,9 +151,7 @@ public class TargetEvent extends EventObject {
         List addedTargets = new ArrayList();
         List oldTargets = Arrays.asList(theOldTargets);
         List newTargets = Arrays.asList(theNewTargets);
-        Iterator it = newTargets.iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
+        for (Object o : newTargets) {
             if (!oldTargets.contains(o)) {
                 addedTargets.add(o);
             }
