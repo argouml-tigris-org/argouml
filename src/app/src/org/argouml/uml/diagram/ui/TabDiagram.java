@@ -185,11 +185,10 @@ public class TabDiagram
         if (target != null) {
             target.removePropertyChangeListener("remove", this);
         }
-        
         newTarget.addPropertyChangeListener("remove", this);
 
         setToolBar(newTarget.getJToolBar());
-
+        
         // NOTE: This listener needs to always be active 
         // even if this tab isn't visible
         graph.removeGraphSelectionListener(this);
@@ -271,7 +270,7 @@ public class TabDiagram
              * != null && !Globals.clipBoard.isEmpty());
              */
             // the old selection
-            Collection currentSelection =
+            List currentSelection =
                 TargetManager.getInstance().getTargets();
 
             List removedTargets = new ArrayList(currentSelection);
@@ -290,8 +289,8 @@ public class TabDiagram
                 // Optimize for the normal case to minimize target changes
                 TargetManager.getInstance().setTarget(addedTargets.get(0));
             } else {
-                for (Object o : removedTargets) {
-                    TargetManager.getInstance().removeTarget(o);
+            for (Object o : removedTargets) {
+                TargetManager.getInstance().removeTarget(o);
                 }
                 for (Object o : addedTargets) {
                     TargetManager.getInstance().addTarget(o);
@@ -397,6 +396,8 @@ public class TabDiagram
             }
         }
 
+        // This checks the order in addition to the contents
+        // Is that really what we want here? - tfm 20070603
 	if (!figList.equals(graph.selectedFigs())) {
             graph.deselectAll();
             graph.select(new Vector<Fig>(figList));
