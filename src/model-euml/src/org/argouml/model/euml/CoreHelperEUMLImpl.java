@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007,2008 The ArgoUML Project
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -529,10 +529,16 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, DataType.class);
     }
 
+    
     public Collection getAllInterfaces(Object ns) {
         return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, Interface.class);
     }
 
+    public Collection getAllMetaDatatypeNames() {
+        // TODO: not implemented
+        return Collections.emptySet();
+    }
+    
     public Collection getAllMetatypeNames() {
         Collection result = new ArrayList();
         for (Field f : UMLPackage.Literals.class.getDeclaredFields()) {
@@ -551,6 +557,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
+    
     public Collection getAllNodes(Object ns) {
         return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, Node.class);
     }
