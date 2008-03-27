@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,6 +73,13 @@ public interface XmiReader {
 
     
     /**
+     * Get the map of external IDs to UML elements. For earlier versions of
+     * ArgoUML, the id was the xmi.uuid, but currently it is the xmi.id. These
+     * are unique within a given XMI file, but no attempt is made to make them
+     * globally unique. They are, however, guaranteed to remain stable across
+     * load/save cycles, so they can be used for external cross-references (e.g.
+     * from the PGML diagram files).
+     * 
      * @return the map
      */
     Map<String, Object> getXMIUUIDToObjectMap();
