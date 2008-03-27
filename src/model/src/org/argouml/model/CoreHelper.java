@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1436,8 +1436,7 @@ public interface CoreHelper {
     void setEnumerationLiterals(Object enumeration, List literals);
     
     /**
-     * Returns names of all metatypes in metamodel, including datatypes
-     * and primitive types.
+     * Returns names of all metatypes in metamodel.
      * 
      * TODO: This method rightly belongs in a separate interface dealing
      * with instances of MOF types as opposed to UML types like all the
@@ -1447,4 +1446,15 @@ public interface CoreHelper {
      */
     Collection<String> getAllMetatypeNames();
 
+    /**
+     * Returns names of all metamodel value elements including datatypes,
+     * enumerations, and primitive types.
+     * 
+     * TODO: This method rightly belongs in a separate interface dealing
+     * with instances of MOF types as opposed to UML types like all the
+     * rest of the methods here do.
+     * 
+     * @return Collection containing Strings with names of all metatypes
+     */
+    Collection<String> getAllMetaDatatypeNames();
 }
