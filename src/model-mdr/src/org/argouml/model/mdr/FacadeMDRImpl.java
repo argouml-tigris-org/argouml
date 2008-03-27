@@ -1108,10 +1108,10 @@ class FacadeMDRImpl implements Facade {
     public boolean isPrimaryObject(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                Collection c = ((ModelElement) handle).getTaggedValue();
-                for (Iterator i = c.iterator(); i.hasNext();) {
-                    TaggedValue tv = (TaggedValue) i.next();
-                    if (GENERATED_TAG.equals(tv.getType().getTagType())) {
+                for (TaggedValue tv : ((ModelElement) handle).getTaggedValue()) {
+                    TagDefinition type = tv.getType();
+                    if (type != null 
+                            && GENERATED_TAG.equals(type.getTagType())) {
                         return false;
                     }
                 }
