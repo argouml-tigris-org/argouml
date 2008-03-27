@@ -1973,11 +1973,11 @@ Download and install Checkstyle from within Eclipse, see
         
       </orderedlist>
         
-    </sect2>
-    <para>
+      <para>
 If any of these instructions don't work or could be improved in some way,
 please help in making them better by contacting the editor of the Cookbook.
 </para>
+    </sect2>
 
     <sect2 id="eclipse-setup-summary">
       <title>Basic ideas of the set up</title>
@@ -1988,6 +1988,14 @@ Here are the ideas governing the layout of the recommended Eclipse set up.
       <itemizedlist>
         <listitem>
           <para>Argouml in its own workspace</para>
+
+          <sidebar>
+            <para>
+This recommendation was based on the assumption that we could rely on
+the workspace-specific settings (see next item).
+If no workspace-specific settings are relied on this is not important.
+</para>
+          </sidebar>
         </listitem>
 
         <listitem>
@@ -1995,6 +2003,15 @@ Here are the ideas governing the layout of the recommended Eclipse set up.
 Prefer workspace-specific settings to
 project-specific settings (compiler, JRE, style).
 </para>
+
+          <sidebar>
+            <para>
+This is not such a good idea after all because the workspace-specific
+settings are not saved automatically in the repository so this is
+error-prone.
+We should change this to project-oriented settings.
+</para>
+          </sidebar>
         </listitem>
 
         <listitem>
@@ -2021,6 +2038,23 @@ Configurations saved in the project where they "belong".
 Use as many of the build tools as possible from their
 Eclipse distributions.
 </para>
+
+          <sidebar>
+            <para>
+Installing tools is always complicated and a risk in the project.
+On the other hand, maintaining our own set of tools is also complicated.
+As Eclipse delivers an infrastructure where the installation
+of tools is simple the strain on every ArgoUML developer is small
+and the Eclipse integration project of the tool project will deal
+with all OS and platform issues.
+</para>
+
+            <para>
+Eclipse also has a infrastructure for handling tools that are used
+but not installed so developers forgetting to install one or several
+tools can still do basic things.
+</para>
+          </sidebar>
         </listitem>
 
       </itemizedlist>
@@ -2172,6 +2206,14 @@ and finding ArgoUML in the list (under Java Application).
 
     <sect2>
       <title>Eclipse to help with the ArgoUML coding style</title>
+
+      <note>
+        <para>
+With the change to project specific settings this need not be
+done by every developer.
+</para>
+      </note>
+
       <para>
 This instruction is to set up Eclipse to work according to
 the ArgoUML Coding standards.
@@ -2188,7 +2230,6 @@ only the ArgoUML projects and that is possible although not explained here.
 We suggest you to consider having ArgoUML work in an
 Eclipse Workspace separate from your other projects.
 </para>
-
       <sect3>
         <title>Code conventions</title>
         <para>
@@ -2275,6 +2316,14 @@ for creating files, functions, types and Javadoc...
 
     <sect2>
       <title>Eclipse to automatically find problems in the code</title>
+
+      <note>
+        <para>
+With the change to project specific settings this need not be
+done by every developer.
+</para>
+      </note>
+
       <para>
 This instruction is to set up Eclipse to automatically find 
 what, in the ArgoUML project, could be considered problems in the code.
