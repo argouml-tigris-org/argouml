@@ -3158,6 +3158,12 @@ class CoreHelperMDRImpl implements CoreHelper {
                 LOG.error("Found duplicate class " + name + " in metamodel");
             }
         }
+        return names;
+    }
+    
+    public Collection<String> getAllMetaDatatypeNames() {
+        Set<String> names = new HashSet<String>();
+        // Returns nothing
         for (Object element : modelImpl.getModelPackage().getDataType()
                 .refAllOfClass()) {
             String name = ((javax.jmi.model.DataType) element).getName();
@@ -3167,7 +3173,20 @@ class CoreHelperMDRImpl implements CoreHelper {
                 LOG.error("Found duplicate datatype " + name + " in metamodel");
             }
         }
-        // String, Integer, Long, Float, Double, etc
+        // ScopeKind, VisibilityKind, PseudostateKind, etc
+        // Doesn't include Boolean though, despite what UML 1.4 spec says
+        for (Object element : modelImpl.getModelPackage().getEnumerationType()
+                .refAllOfClass()) {
+            String name = ((javax.jmi.model.EnumerationType) element).getName();
+            if (names.add(name)) {
+                LOG.debug(" EnumerationType " + name);
+            } else {
+                LOG.error("Found duplicate EnumerationType " + name 
+                        + " in metamodel");
+            }
+        }
+
+        // Boolean, String, Integer, Long, Float, Double, etc
         for (Object element : modelImpl.getModelPackage().getPrimitiveType()
                 .refAllOfClass()) {
             String name = ((javax.jmi.model.PrimitiveType) element).getName();
@@ -3178,6 +3197,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                         + " in metamodel");
             }
         }
+
         return names;
     }
     
