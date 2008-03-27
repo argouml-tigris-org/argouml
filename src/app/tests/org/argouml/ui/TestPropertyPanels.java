@@ -147,7 +147,7 @@ public class TestPropertyPanels extends TestCase {
         (new InitProfileSubsystem()).init();
 
 
-        // constains instances of each modelelement
+        // contains instances of each modelelement
         // used for testing so that we only use each modelelement
         // once
         HashMap<Class, Object> meMap = new HashMap<Class, Object>();
