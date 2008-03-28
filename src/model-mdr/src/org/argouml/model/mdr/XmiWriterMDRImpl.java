@@ -29,7 +29,6 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 
 import javax.jmi.reflect.RefObject;
@@ -172,7 +171,7 @@ class XmiWriterMDRImpl implements XmiWriter {
                     RefObject obj = (RefObject) it.next();
                     // Find top level objects which aren't part of profile
                     if (obj.refImmediateComposite() == null ) {
-                            elements.add(obj);
+                        elements.add(obj);
                     }
                 }
                 LOG.info("Saving " + elements.size() 

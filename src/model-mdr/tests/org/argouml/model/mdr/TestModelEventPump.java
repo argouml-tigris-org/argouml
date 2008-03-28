@@ -35,7 +35,7 @@ import junit.framework.TestCase;
  */
 public class TestModelEventPump extends TestCase {
 
-    private Registry<String> registry ;
+    private Registry<String> registry;
     
     /*
      * @see junit.framework.TestCase#setUp()

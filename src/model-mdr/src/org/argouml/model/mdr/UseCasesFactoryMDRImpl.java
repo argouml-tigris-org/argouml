@@ -137,7 +137,7 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                         + "part of the base " + "usecase");
             }
         } else {
-            point = (ExtensionPoint) buildExtensionPoint(base);
+            point = buildExtensionPoint(base);
         }
         Extend extend = createExtend();
         extend.setBase(base);

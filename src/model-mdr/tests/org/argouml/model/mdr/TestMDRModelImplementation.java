@@ -26,7 +26,6 @@ package org.argouml.model.mdr;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 import junit.framework.TestCase;
 

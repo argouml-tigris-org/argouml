@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import javax.jmi.reflect.InvalidObjectException;
 
@@ -339,7 +338,7 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 }
             }
             for (Object context : c) {
-                    addContext(handle, context);
+                addContext(handle, context);
             }
             return;
         }
@@ -424,7 +423,7 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
                 }
             }
             for (Object reception : c) {
-                    addReception(handle, reception);
+                addReception(handle, reception);
             }
             return;
         }
