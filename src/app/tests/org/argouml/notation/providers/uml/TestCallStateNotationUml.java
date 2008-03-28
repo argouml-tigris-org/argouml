@@ -169,9 +169,10 @@ public class TestCallStateNotationUml extends TestCase {
         Object op = Model.getFacade().getOperation(entry);
         assertNotNull("Operation not linked to entry action", op);
         String name = Model.getFacade().getName(op);
-        assertEquals("Operation name incorrect" ,"myOperB", name);
+        assertEquals("Operation name incorrect", "myOperB", name);
         String notationStr = notation.toString(aCallState, null);
-        assertEquals("Notation not correctly generated", "myOperB\n(ClassB)", notationStr);
+        assertEquals("Notation not correctly generated", "myOperB\n(ClassB)",
+                notationStr);
     }
     
     /**

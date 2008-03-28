@@ -286,7 +286,7 @@ public class TabResults
                 return;
             }
 	    sel = results.get(row);
-	    d = (Diagram) diagrams.get(row);
+	    d = diagrams.get(row);
 	} else if (src == relatedTable) {
 	    int row = relatedTable.getSelectionModel().getMinSelectionIndex();
 	    if (row < 0) {

@@ -85,16 +85,16 @@ public class TestStandardCM extends TestCase {
 	critic.snooze();
 	
 	// verify isRelevant returns true
-	assertTrue("NotSnoozedCM.isRelevant(Critic, Designer) is incorrect " +
-			"when critic snoozed",
+	assertTrue("NotSnoozedCM.isRelevant(Critic, Designer) is incorrect "
+                + "when critic snoozed",
 		!cm.isRelevant(critic, Designer.theDesigner()));
 	
 	// unsnooze the critic to verify the critic is not relevant
 	critic.unsnooze();
 	
 	// verify isRelevant is true
-	assertTrue("NotSnoozedCM.isRelevant(Critic, Designer) is incorrect " +
-			"when critic not snoozed",
+	assertTrue("NotSnoozedCM.isRelevant(Critic, Designer) is incorrect "
+                + "when critic not snoozed",
 		cm.isRelevant(critic, Designer.theDesigner()));
     }
 
@@ -107,8 +107,8 @@ public class TestStandardCM extends TestCase {
 	DesignGoalsCM cm = new DesignGoalsCM();
 	
 	// DesignGoalsCM checks if the critic isRelevantToGoals of the Designer
-	// this value is always true for the Critic base class so DesignerGoalsCM
-	// should always return true in this condition
+	// this value is always true for the Critic base class so 
+	// DesignerGoal should always return true in this condition
 	assertTrue("DesignGoalsCM.isRelevant(Critic, Designer) is incorrect",
 		cm.isRelevant(critic, Designer.theDesigner()));	
     }
@@ -125,8 +125,8 @@ public class TestStandardCM extends TestCase {
 	// any decisions that have a priority > 0 and less than the
 	// priority of the critic.  By default the critic has no
 	// decisions so isRelevant should return false.
-	assertTrue("CurDecisionCM.isRelevant(Critic, Designer) is incorrect " +
-			"when critic has 0 decisions",
+	assertTrue("CurDecisionCM.isRelevant(Critic, Designer) is incorrect "
+                + "when critic has 0 decisions",
 		!cm.isRelevant(critic, Designer.theDesigner()));
 	
 	// add a decision but set the critic priority to 0 so isRelevant
@@ -135,22 +135,25 @@ public class TestStandardCM extends TestCase {
 	critic.addSupportedDecision(Decision.UNSPEC);
 	
 	// verify isRelevant is still false
-	assertTrue("CurDecisionCM.isRelevant(Critic, Designer) is " +
-			"incorrect with one decision and critic has priority 0",
-		!cm.isRelevant(critic, Designer.theDesigner()));
-	
-	// update the priority of the critic to be the same priority as the decision
-	critic.setPriority(Decision.UNSPEC.getPriority());
-	
-	// isRelevant should now be true
-	assertTrue("CurDecisionCM.isRelevant(Critic, Designer) is incorrect with " +
-			"one decision and priority has equal priority",
-		cm.isRelevant(critic, Designer.theDesigner()));
-	
-	critic.setPriority(Decision.UNSPEC.getPriority()+1);
-	// isRelevant should still be true
-	assertTrue("CurDecisionCM.isRelevant(Critic, Designer) is incorrect with one " +
-			"decision and priority has greater priority",
-		cm.isRelevant(critic, Designer.theDesigner()));
+        assertTrue("CurDecisionCM.isRelevant(Critic, Designer) is "
+                + "incorrect with one decision and critic has priority 0", 
+                !cm.isRelevant(critic, Designer.theDesigner()));
+
+        // update the priority of the critic to be the same priority as the
+        // decision
+        critic.setPriority(Decision.UNSPEC.getPriority());
+
+        // isRelevant should now be true
+        assertTrue(
+                "CurDecisionCM.isRelevant(Critic, Designer) is incorrect with "
+                        + "one decision and priority has equal priority", 
+                        cm.isRelevant(critic, Designer.theDesigner()));
+
+        critic.setPriority(Decision.UNSPEC.getPriority() + 1);
+        // isRelevant should still be true
+        assertTrue(
+                "CurDecisionCM.isRelevant(Critic, Designer) is incorrect with"
+                        + " one decision and priority has greater priority", 
+                        cm.isRelevant(critic, Designer.theDesigner()));
     }
- }
+}

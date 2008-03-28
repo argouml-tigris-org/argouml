@@ -302,9 +302,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 
     /**
      * Utility method to construct a DefaultListModel from a List
-     *
-     * @param vec
-     *            the given list
+     * 
+     * @param list the given list
      * @return DefaultListModel
      */
     protected DefaultListModel constructListModel(List list) {
@@ -368,8 +367,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * Returns the choices a user can make.
      *
      * @return Vector
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSelectedChoicesList()}.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSelectedChoicesList()}
      */
+    @Deprecated
     public Vector getChoices() {
         Vector result = new Vector();
         getChoicesListInternal(result);
@@ -398,8 +398,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * Returns the selected elements in the selected list
      *
      * @return Vector
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSelectedChoicesList()}.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSelectedChoicesList()}
      */
+    @Deprecated
     public Vector getSelectedChoices() {
         Vector result = new Vector();
         getSelectedChoicesInternal(result);
@@ -422,6 +423,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * @return Vector
      * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSelectedList()}.
      */
+    @Deprecated
     public Vector getSelected() {
         // TODO: Because we return our internal data directly, we can't copy
         // it from a List to a Vector and keep the same semantics

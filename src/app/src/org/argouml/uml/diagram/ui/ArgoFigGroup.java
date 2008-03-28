@@ -27,13 +27,6 @@ package org.argouml.uml.diagram.ui;
 import java.util.List;
 
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigGroup;
 
 /**

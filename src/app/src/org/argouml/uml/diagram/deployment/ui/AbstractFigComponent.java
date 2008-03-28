@@ -186,38 +186,38 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
     @Override
     protected void setStandardBounds(int x, int y, int w,
             int h) {
-                if (getNameFig() == null) {
-                    return;
-                }
-            
-                Rectangle oldBounds = getBounds();
-                getBigPort().setBounds(x + BX, y, w - BX, h);
-                cover.setBounds(x + BX, y, w - BX, h);
-            
-                Dimension stereoDim = getStereotypeFig().getMinimumSize();
-                Dimension nameDim = getNameFig().getMinimumSize();
-                
-                int halfHeight = FINGER_HEIGHT / 2;
-                upperRect.setBounds(x, y + h / 3 - halfHeight, FINGER_WIDTH,
-                        FINGER_HEIGHT);
-                lowerRect.setBounds(x, y + 2 * h / 3 - halfHeight, FINGER_WIDTH,
-                        FINGER_HEIGHT);
-            
-                getStereotypeFig().setBounds(x + FINGER_WIDTH + 1,
-                        y + 1,
-                        w - FINGER_WIDTH - 2,
-                        stereoDim.height);
-                getNameFig().setBounds(x + FINGER_WIDTH + 1,
-                        y + stereoDim.height - OVERLAP + 1,
-                        w - FINGER_WIDTH - 2,
-                        nameDim.height);
-                _x = x;
-                _y = y;
-                _w = w;
-                _h = h;
-                firePropChange("bounds", oldBounds, getBounds());
-                updateEdges();
-            }
+        if (getNameFig() == null) {
+            return;
+        }
+
+        Rectangle oldBounds = getBounds();
+        getBigPort().setBounds(x + BX, y, w - BX, h);
+        cover.setBounds(x + BX, y, w - BX, h);
+
+        Dimension stereoDim = getStereotypeFig().getMinimumSize();
+        Dimension nameDim = getNameFig().getMinimumSize();
+
+        int halfHeight = FINGER_HEIGHT / 2;
+        upperRect.setBounds(x, y + h / 3 - halfHeight, FINGER_WIDTH,
+                FINGER_HEIGHT);
+        lowerRect.setBounds(x, y + 2 * h / 3 - halfHeight, FINGER_WIDTH,
+                FINGER_HEIGHT);
+
+        getStereotypeFig().setBounds(x + FINGER_WIDTH + 1,
+                y + 1,
+                w - FINGER_WIDTH - 2,
+                stereoDim.height);
+        getNameFig().setBounds(x + FINGER_WIDTH + 1,
+                y + stereoDim.height - OVERLAP + 1,
+                w - FINGER_WIDTH - 2,
+                nameDim.height);
+        _x = x;
+        _y = y;
+        _w = w;
+        _h = h;
+        firePropChange("bounds", oldBounds, getBounds());
+        updateEdges();
+    }
 
     @Override
     public void setEnclosingFig(Fig encloser) {

@@ -195,6 +195,7 @@ public class ZoomSliderButton extends PopupButton {
             }
         });
         currentValue.addFocusListener(new FocusAdapter() {
+            @Override
             public void focusLost(FocusEvent e) {
                 handleTextEntry();
             }
@@ -215,6 +216,7 @@ public class ZoomSliderButton extends PopupButton {
     /**
      * Update the slider value every time the popup is shown.
      */
+    @Override
     protected void showPopup() {
         if (slider == null) {
             createPopupComponent();
@@ -311,13 +313,14 @@ public class ZoomSliderButton extends PopupButton {
         public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
         }
 
-    };
+    }
 
     private class MyMouseListener extends MouseInputAdapter {
 
         /**
          * Keeps track of mouseover status. 
          */
+        @Override
         public void mouseEntered(MouseEvent me) {
             mouseIsOverPopupButton = true;
         }
@@ -325,6 +328,7 @@ public class ZoomSliderButton extends PopupButton {
         /**
          * Keeps track of mouseover status, and renables button if necessary.
          */
+        @Override
         public void mouseExited(MouseEvent me) {
             mouseIsOverPopupButton = false;
             if (!popupButtonIsActive && !popupMenuIsShowing)
@@ -337,6 +341,7 @@ public class ZoomSliderButton extends PopupButton {
          * Catch the down stroke of mouse click to make the popup appear a tiny
          * bit earlier.
          */
+        @Override
         public void mousePressed(MouseEvent me) {
             if (popupButtonIsActive) {
                 showPopup();

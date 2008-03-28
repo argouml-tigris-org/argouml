@@ -65,17 +65,18 @@ public class TestGoal extends TestCase {
 	assertTrue("GoalModel not initilized with UnspecifiedGoal",
 		goalModel.hasGoal(unspecifiedGoal.getName()));
 	
-	// update the priority of the unspecified goal so we can verify it was updated
-	goalModel.setGoalPriority(unspecifiedGoal.getName(),
-		unspecifiedGoal.getPriority()+1);
+	// change priority of unspecified goal so we can verify it was updated
+        goalModel.setGoalPriority(unspecifiedGoal.getName(), unspecifiedGoal
+                .getPriority() + 1);
 	
 	// first verify that the set goal priority did not add an extra goal
 	assertTrue("GoalModel.setGoalPriority added an extra Goal",
 		goalModel.getGoalList().size() == 1);
 	
-	// check that the model correctly updates a goals priority
-	assertTrue("GoalModel not correctly updating goal priority",
-		goalModel.getGoalList().get(0).getPriority() == unspecifiedGoal.getPriority()+1);
+	// check that the model correctly updates a goal's priority
+        assertTrue("GoalModel not correctly updating goal priority", goalModel
+                .getGoalList().get(0).getPriority() == unspecifiedGoal
+                .getPriority() + 1);
 	
 	// test the removal of a goal
 	goalModel.removeGoal(unspecifiedGoal);
@@ -84,8 +85,8 @@ public class TestGoal extends TestCase {
 	assertTrue("GoalModel.removeGoal(goalName) failed",
 		goalModel.getGoalList().size() == 0);
 	
-	// start desiring a goal which should add a goal and bump the size to one
-	goalModel.startDesiring(unspecifiedGoal.getName());
+	// start desiring a goal which should add a goal and bump the size to 1
+        goalModel.startDesiring(unspecifiedGoal.getName());
 	
 	// number of goals should now be 1
 	assertTrue("GoalModel.startDesiring did not add a Goal",

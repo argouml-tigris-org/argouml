@@ -28,7 +28,7 @@ import org.argouml.model.Model;
 
 public class TestCrTooManyAssoc extends AbstractTestCrTooMany {
 
-    Object dm2;
+    private Object dm2;
 
     public TestCrTooManyAssoc(String arg0) {
         super(arg0);

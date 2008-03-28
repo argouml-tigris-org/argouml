@@ -114,7 +114,7 @@ public class ActionAddConcurrentRegion extends UndoableAction {
             Fig encloser = null;
             encloser = f;
             if (!(gm instanceof MutableGraphModel)) {
-                  return;
+                return;
             }
 
             StateDiagramGraphModel mgm = (StateDiagramGraphModel) gm;

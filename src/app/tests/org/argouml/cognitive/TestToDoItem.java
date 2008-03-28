@@ -26,10 +26,6 @@ package org.argouml.cognitive;
 
 import junit.framework.TestCase;
 
-
-import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.Critic;
-
 /**
  * Testing the creation of a ToDoItem.
  */
@@ -57,19 +53,22 @@ public class TestToDoItem extends TestCase {
         critic.setHeadline(headline);
                 
         // initialize new ToDoItem
-        ToDoItem item = new ToDoItem(critic, headline, priority, description, moreInfo);
-                
+        ToDoItem item = new ToDoItem(critic, headline, priority, description,
+                moreInfo);
+
         // test that properties were correctly initialized by the constructor
-        assertTrue("ToDoItem.getHeadline() incorrect after initialized constructor",
-                   headline == item.getHeadline());
-        assertTrue("ToDoItem.getDescription() incorrect after initialized by constructor",
-                   description == item.getDescription());
-        assertTrue("ToDoItem.getPriority() incorrect after initialized by constructor",
-                   priority == item.getPriority());
-        assertTrue("ToDoItem.getMoreInfoURL() incorrect after initialized by constructor",
-                   moreInfo == item.getMoreInfoURL());
-        assertTrue("((Critic)ToDoItem.getPoster()).getHeadline() incorrect after initialized by constructor",
-                   headline == ((Critic)item.getPoster()).getHeadline());
+        assertTrue("ToDoItem.getHeadline() incorrect after initialized"
+                + " constructor", headline == item.getHeadline());
+        assertTrue("ToDoItem.getDescription() incorrect after initialized by"
+                + " constructor", description == item.getDescription());
+        assertTrue("ToDoItem.getPriority() incorrect after initialized by"
+                + " constructor", priority == item.getPriority());
+        assertTrue("ToDoItem.getMoreInfoURL() incorrect after initialized by"
+                + " constructor", moreInfo == item.getMoreInfoURL());
+        assertTrue(
+                "((Critic)ToDoItem.getPoster()).getHeadline() incorrect after "
+                        + "initialized by constructor",
+                headline == ((Critic) item.getPoster()).getHeadline());
                 
         // reset the values to a different value
         priority = ToDoItem.LOW_PRIORITY;
@@ -84,13 +83,19 @@ public class TestToDoItem extends TestCase {
         item.setMoreInfoURL(moreInfo);          
                 
         // test that properties were correctly set by the setters
-        assertTrue("ToDoItem.getHeadline() incorrect after ToDoItem.setHeadline()",
-                   headline == item.getHeadline());
-        assertTrue("ToDoItem.getDescription() incorrect after ToDoItem.setDescription()",
-                   description == item.getDescription());
-        assertTrue("ToDoItem.getPriority() incorrect after ToDoItem.setPriority()",
-                   priority == item.getPriority());
-        assertTrue("ToDoItem.getMoreInfoURL() incorrect after ToDoItem.setMoreInfoURL()",
-                   moreInfo == item.getMoreInfoURL());
+        assertTrue(
+                "ToDoItem.getHeadline() incorrect after ToDoItem.setHeadline()",
+                headline == item.getHeadline());
+        assertTrue(
+                "ToDoItem.getDescription() incorrect after "
+                + "ToDoItem.setDescription()",
+                description == item.getDescription());
+        assertTrue(
+                "ToDoItem.getPriority() incorrect after ToDoItem.setPriority()",
+                priority == item.getPriority());
+        assertTrue(
+                "ToDoItem.getMoreInfoURL() incorrect after "
+                + "ToDoItem.setMoreInfoURL()",
+                moreInfo == item.getMoreInfoURL());
     }
 }

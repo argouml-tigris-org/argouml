@@ -51,7 +51,6 @@ import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
-import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.tigris.gef.undo.UndoableAction;
 
 /**

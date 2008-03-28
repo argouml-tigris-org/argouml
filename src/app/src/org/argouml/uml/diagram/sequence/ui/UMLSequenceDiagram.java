@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.sequence.ui;
 
 import java.beans.PropertyVetoException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Hashtable;
 
 import org.argouml.i18n.Translator;

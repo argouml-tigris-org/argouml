@@ -33,7 +33,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Vector;
 
@@ -289,8 +288,8 @@ public class TabDiagram
                 // Optimize for the normal case to minimize target changes
                 TargetManager.getInstance().setTarget(addedTargets.get(0));
             } else {
-            for (Object o : removedTargets) {
-                TargetManager.getInstance().removeTarget(o);
+                for (Object o : removedTargets) {
+                    TargetManager.getInstance().removeTarget(o);
                 }
                 for (Object o : addedTargets) {
                     TargetManager.getInstance().addTarget(o);
