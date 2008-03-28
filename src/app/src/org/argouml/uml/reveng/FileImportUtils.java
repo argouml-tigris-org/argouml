@@ -1,5 +1,5 @@
 // $Id: FileImportSupport.java 11168 2006-09-14 20:35:24Z andrea_nironi $
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,7 +53,8 @@ public  class FileImportUtils {
      * @deprecated for 0.25.4 by tfmorris - use 
      * {@link #getList(File, boolean, SuffixFilter[], ProgressMonitor)}
      */
-    public static List getList(File file, boolean recurse,
+    @Deprecated
+    public static List<File> getList(File file, boolean recurse,
             SuffixFilter[] filters) {
         return getList(file, recurse, filters, null);
     }
@@ -77,10 +78,10 @@ public  class FileImportUtils {
      *            of time required to get the files is non-deterministic).
      * @return a list of files to be imported
      */
-    public static List getList(File file, boolean recurse,
+    public static List<File> getList(File file, boolean recurse,
             SuffixFilter[] filters, ProgressMonitor monitor) {
         if (file == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         
 	List<File> results = new ArrayList<File>();

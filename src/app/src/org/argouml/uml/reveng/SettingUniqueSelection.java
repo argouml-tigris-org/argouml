@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,7 @@
 
 package org.argouml.uml.reveng;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -40,7 +40,7 @@ class SettingUniqueSelection extends Setting implements
     /**
      * The list of String options
      */
-    private List options;
+    private List<String> options;
     
     /**
      * Default selection is UNDEFINED
@@ -61,7 +61,8 @@ class SettingUniqueSelection extends Setting implements
      * @param defaultVariant
      *            the default selection or UNDEFINED_SELECTION
      */
-    SettingUniqueSelection(String label, List variants, int defaultVariant) {
+    SettingUniqueSelection(String label, List<String> variants,
+            int defaultVariant) {
         super(label);
         options = variants;
         if (isOption(defaultVariant)) {
@@ -96,8 +97,8 @@ class SettingUniqueSelection extends Setting implements
      * 
      * @see org.argouml.uml.reveng.SettingsTypes.UniqueSelection#getOptions()
      */
-    public List getOptions() {
-        return new ArrayList(options);
+    public List<String> getOptions() {
+        return Collections.unmodifiableList(options);
     }
 
     /*

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -167,11 +167,10 @@ public final class ImportClassLoader extends URLClassLoader {
             return;
 	}
 
-        List urls = new ArrayList(); //getURLs();
-        for (int i = 0; i < this.getURLs().length; i++) {
-
-            if (!url.equals(getURLs()[i])) {
-                urls.add(getURLs()[i]);
+        List<URL> urls = new ArrayList<URL>();
+        for (URL u : getURLs()) {
+            if (!url.equals(u)) {
+                urls.add(u);
             }
         }
 
@@ -212,7 +211,7 @@ public final class ImportClassLoader extends URLClassLoader {
      */
     public static URL[] getURLs(String path) {
 
-        java.util.List urlList = new ArrayList();
+        java.util.List<URL> urlList = new ArrayList<URL>();
 
         StringTokenizer st = new StringTokenizer(path, ";");
         while (st.hasMoreTokens()) {
@@ -228,7 +227,7 @@ public final class ImportClassLoader extends URLClassLoader {
 
         URL[] urls = new URL[urlList.size()];
         for (int i = 0; i < urls.length; i++) {
-            urls[i] = (URL) urlList.get(i);
+            urls[i] = urlList.get(i);
         }
 
         return urls;
@@ -264,6 +263,7 @@ public final class ImportClassLoader extends URLClassLoader {
 				this.toString());
     }
 
+    @Override
     public String toString() {
 
         URL[] urls = this.getURLs();
@@ -280,12 +280,3 @@ public final class ImportClassLoader extends URLClassLoader {
     }
 }
 
-// try{
-//  ImportClassLoader loader = ImportClassLoader.getInstance();
-//  // add paths...
-//  loader.addFile(new File("/opt/hibernate/hibernate-2.1/lib/odmg.jar"));
-//
-//    Class clazz = loader.loadClass("org.odmg.ODMGException");
-//   Object db = clazz.newInstance();
-//    cat.info("loaded class ok");
-//  }catch(Exception e){cat.warn("error loading class: "+e.toString());}

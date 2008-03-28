@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,14 +56,17 @@ public interface SettingsTypes {
      */
     interface UniqueSelection extends Setting {
 
+        /**
+         * Selection is undefined.
+         */
         public int UNDEFINED_SELECTION = -1;
 
         /**
-         * Returns the available options from wich the user can pick one.
+         * Returns the available options from which the user can pick one.
          * 
          * @return a list with Strings that identinfies the options
          */
-        List getOptions();
+        List<String> getOptions();
 
         /**
          * This is the default selected option, if the user doesn't choose other
@@ -86,7 +89,7 @@ public interface SettingsTypes {
          * @return true if was successful or false if the selection is out of
          *         bounds
          */
-        boolean setSelection(int seletion);
+        boolean setSelection(int selection);
     }
     
     /**
