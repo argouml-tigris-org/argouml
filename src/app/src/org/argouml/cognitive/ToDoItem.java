@@ -103,23 +103,22 @@ public class ToDoItem implements Serializable, WizardItem {
     private String theMoreInfoURL;
 
     /**
-     * Which part of the design this issue affects.<p>
-     *
-     * Each member is either a model element, a {@link Fig}, or
-     * a {@link Diagram}. TODO: Because there is not a common
-     * supertype for these three types, we can't type this list.
-     * We should introduce a common supertype/interface. - tfm <p>
-     *
-     * This is set by the constructor and cannot change.<p>
-     * 
-     * TODO: Offenders need to be more strongly typed. - tfm 20070630
+     * The part of the design this issue affects.
+     * <p>
+     * Each member is either a model element, a {@link Fig}, or a
+     * {@link Diagram}.
+     * <p>
+     * TODO: Offenders need to be more strongly typed. Because there is not a
+     * common supertype for these three types, we can't type this list. We
+     * should introduce a common supertype/interface. - tfm 20070630
+     * <p>
+     * This is set by the constructor and cannot change.
+     * <p>
      */
     private ListSet theOffenders;
 
     private Wizard theWizard;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
     /**
      * The constructor.
      *

@@ -60,18 +60,27 @@ public abstract class AbstractActionAddModelElement2 extends UndoableAction {
                 Translator.localize("menu.popup.add-modelelement"));
     }
 
+    /**
+     * Construct a named action to add a model element to some list.
+     * @param name name for action
+     */
     public AbstractActionAddModelElement2(String name) {
         super(name);
     }
 
+    /**
+     * Construct an action to add a model element to some list with the
+     * given name and icon.
+     * @param name name for action
+     * @param icon icon for action
+     */
     public AbstractActionAddModelElement2(String name, Icon icon) {
         super(name, icon);
     }
     
 
     /*
-     * @see
-     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @Override
     public void actionPerformed(ActionEvent e) {

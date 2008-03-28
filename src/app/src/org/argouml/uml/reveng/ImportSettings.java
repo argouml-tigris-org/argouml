@@ -72,16 +72,16 @@ public interface ImportSettings {
     public boolean isDatatypeSelected();
 
     /**
-     * TODO: This should be removed when diagram updating removed from the importers
-     * (as it should be). - tfm 20061129
+     * TODO: This should be removed when diagram updating removed from the 
+     * importers (as it should be). - tfm 20061129
      * @return true if the user has request diagrams to be created for packages
      *         contained in the imported source code.
      */
     public boolean isCreateDiagramsSelected();
     
     /**
-     * TODO: This should be removed when diagram updating removed from the importers
-     * (as it should be). - tfm 20061129
+     * TODO: This should be removed when diagram updating removed from the 
+     * importers (as it should be). - tfm 20061129
      * @return true, if user has requested that new figures placed in diagrams
      *         should be minimized so they don't show internal compartments.
      */

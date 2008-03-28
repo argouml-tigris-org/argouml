@@ -138,7 +138,7 @@ public class TestFigClonable extends TestCase {
 
 
     /**
-     * Try to clone {@link FigTransistion}.
+     * Try to clone {@link FigTransition}.
      */
     public void testTransitionClonable() {
 	FigTransition fig = new FigTransition();

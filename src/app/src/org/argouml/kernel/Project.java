@@ -528,9 +528,10 @@ public interface Project {
      * 
      * @return the Package which is the root
      * @deprecated for 0.25.4 by tfmorris - use {@link #getRoots()} to
-     *             packages/model elements which are at the top level. TODO: We
-     *             probably need a getDefaultNamespace() method or something
-     *             similar to replace some uses of this.
+     *             packages/model elements which are at the top level.
+     *             <p>
+     *             TODO: We probably need a getDefaultNamespace() method or
+     *             something similar to replace some uses of this.
      */
     @Deprecated
     public Object getRoot();

@@ -208,12 +208,15 @@ public class PropPanelPackage extends PropPanelNamespace  {
 
 /**
  * NOTE: This class almost, but not quite, implements the interfaces defined in
- * {@link org.argouml.uml.ui.AbstractActionAddModelElement}. The difference is
+ * {@link org.argouml.uml.ui.AbstractActionAddModelElement2}. The difference is
  * that the doIt(), getChoices(), and getSelected() methods here accept an extra
  * argument containing the target.
  */
 class ActionDialogElementImport extends UndoableAction {
 
+    /**
+     * Construct an Action which brings up the Add Element Import dialog.
+     */
     public ActionDialogElementImport() {
         super();
         putValue(Action.SMALL_ICON, 

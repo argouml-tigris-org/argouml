@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,6 +36,11 @@ public class Setting implements SettingsTypes.Setting {
      */
     private String label;
 
+    /**
+     * Construct a new Setting with the given label text.
+     * 
+     * @param labelText string to use as the label
+     */
     public Setting(String labelText) {
         super();
         label = labelText;
