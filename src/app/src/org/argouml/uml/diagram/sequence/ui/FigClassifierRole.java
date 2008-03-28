@@ -102,7 +102,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /**
      * The filled box for the object box (object fig without lifeline).
      */
-    FigHead headFig;
+    private FigHead headFig;
 
     /**
      * The lifeline (dashed line under the object box to which activations are
@@ -745,13 +745,6 @@ public class FigClassifierRole extends FigNodeModelElement
         return headFig.getFillColor();
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    @Override
-    public boolean getFilled() {
-        return headFig.isFilled();
-    }
 
     @Override
     public boolean isFilled() {
@@ -1267,6 +1260,13 @@ public class FigClassifierRole extends FigNodeModelElement
                 other.setHeight(height);
             }
         }
+    }
+
+    /**
+     * @return the fig which forms the top box of the composite fig
+     */
+    FigHead getHeadFig() {
+        return headFig;
     }
 
     /**

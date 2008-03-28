@@ -63,6 +63,7 @@ class FigHead extends ArgoFigGroup {
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
 
         int h = FigClassifierRole.MIN_HEAD_HEIGHT;
@@ -74,12 +75,11 @@ class FigHead extends ArgoFigGroup {
                     FigClassifierRole.MIN_HEAD_HEIGHT);
         }
 
-        List figs = layer.getContents();
-        for (Iterator i = figs.iterator(); i.hasNext();) {
-            Object o = i.next();
-            if (o instanceof FigClassifierRole) {
-                FigClassifierRole other = (FigClassifierRole) o;
-                int otherHeight = other.headFig.getMinimumHeight();
+        List<Fig> figs = layer.getContents();
+        for (Fig f : figs) {
+            if (f instanceof FigClassifierRole) {
+                FigClassifierRole other = (FigClassifierRole) f;
+                int otherHeight = other.getHeadFig().getMinimumHeight();
                 if (otherHeight > h) {
                     h = otherHeight;
                 }
