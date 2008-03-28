@@ -25,7 +25,6 @@
 package org.argouml.persistence;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,15 +38,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.xml.sax.InputSource;
-
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
-import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
@@ -214,24 +210,19 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 	}
     }
 
-    private void printModelXMI(PrintWriter w, Object model) throws UmlException {
-        StringWriter myWriter = new StringWriter();
-        XmiWriter xmiWriter = Model.getXmiWriter(model, myWriter, ApplicationVersion
-                .getVersion()
-                + "(" + UmlFilePersister.PERSISTENCE_VERSION + ")");
-        xmiWriter.write();
+    private void printModelXMI(PrintWriter w, Object model) 
+        throws UmlException {
         
+        StringWriter myWriter = new StringWriter();
+        XmiWriter xmiWriter = Model.getXmiWriter(model, myWriter,
+                ApplicationVersion.getVersion() + "("
+                        + UmlFilePersister.PERSISTENCE_VERSION + ")");
+        xmiWriter.write();
+
         myWriter.flush();
         w.println("" + myWriter.toString());
     }
 
-    private Collection readModelXMI(String xmi) throws UmlException {
-        XmiReader xmiReader = Model.getXmiReader();
-        InputSource inputSource = 
-            new InputSource(new ByteArrayInputStream(xmi.getBytes()));
-        Collection elements = xmiReader.parse(inputSource, true);
-        return elements;
-    }
 
     @Override
     public void load(Project project, URL url) throws OpenException {

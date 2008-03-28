@@ -73,8 +73,8 @@ class AttributeCodePiece extends NamedCodePiece {
                 cpText = cpText.substring(0, cpText.indexOf('\n')).trim();
             }
 	    attributeDef.add(cp);
-	    int pos = 0;
-	    if ((pos = cpText.indexOf('[')) != -1) {
+	    int pos = cpText.indexOf('[');
+	    if (pos != -1) {
 		attributeNames.add(cpText.substring(0, pos));
 	    } else {
 		attributeNames.add(cpText);

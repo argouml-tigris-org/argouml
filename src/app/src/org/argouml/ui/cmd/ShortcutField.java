@@ -93,7 +93,8 @@ public class ShortcutField extends JTextField {
             } 
             
             private String toString(KeyEvent ke) { 
-                int keyCode = currentKeyCode = ke.getKeyCode(); 
+                currentKeyCode = ke.getKeyCode(); 
+                int keyCode = currentKeyCode; 
                 String modifText = 
                     KeyEventUtils.getModifiersText(ke.getModifiers());
                 

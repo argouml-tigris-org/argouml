@@ -130,9 +130,5 @@ public class HeapMonitor extends JComponent implements ActionListener {
                 });
         setToolTipText(tip);
     }
-
-    private void gc() {
-        Runtime.getRuntime().gc();
-    }
     
 }
