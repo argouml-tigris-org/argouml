@@ -151,6 +151,9 @@ public final class FigInspectorPanel
     }
     
     private String getDescr(Fig f) {
+        if (f == null) {
+            return null;
+        }
         String className = f.getClass().getName();
         String descr = className.substring(className.lastIndexOf(".") + 1);
         descr +=
@@ -166,7 +169,7 @@ public final class FigInspectorPanel
         if (!f.isVisible()) {
             descr += " - INVISIBLE";
         }
-        if (f.getFilled()) {
+        if (f.isFilled()) {
             descr += " - FILLED";
         }
         descr += " - lay=" + f.getLayer() + " - grp=" + f.getGroup();
