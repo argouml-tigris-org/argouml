@@ -43,6 +43,7 @@ import org.tigris.gef.ocl.ExpansionException;
  * @stereotype singleton
  * @deprecated for 0.25.2 by tfmorris - use {@link OCLEvaluator}
  */
+@Deprecated
 public class CriticOclEvaluator {
 
     private static final CriticOclEvaluator INSTANCE =

@@ -52,6 +52,7 @@ public class UMLComboBox2
      * replaced by {@link #UMLComboBox2(UMLComboBoxModel2, Action, boolean)}
      * @param arg0 the ComboBoxModel
      */
+    @Deprecated
     protected UMLComboBox2(UMLComboBoxModel2 arg0) {
         super(arg0);
         setFont(LookAndFeelMgr.getInstance().getStandardFont());

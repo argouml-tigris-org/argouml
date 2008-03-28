@@ -45,6 +45,7 @@ import org.argouml.profile.Profile;
  *  @deprecated in 0.25.1 by Bob Tarling. This class is never instantiated 
  *  by ArgoUML.
  */
+@Deprecated
 public class UMLComboBoxEntry implements Comparable {
     
     private static final Logger LOG = Logger.getLogger(UMLComboBoxEntry.class);

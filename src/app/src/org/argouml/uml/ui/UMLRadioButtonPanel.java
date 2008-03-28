@@ -167,6 +167,7 @@ public abstract class UMLRadioButtonPanel
      * @deprecated for 0.25.4 by tfmorris. Use List<String[]> form of
      *             constructor.
      */
+    @Deprecated
     public UMLRadioButtonPanel(
 			       boolean isDoubleBuffered,
 			       String title,
@@ -210,6 +211,7 @@ public abstract class UMLRadioButtonPanel
      *             example of a subclass which has been converted to the new
      *             form of constructor.
      */
+    @Deprecated
     public UMLRadioButtonPanel(String title,
 			       Map<String, String> labeltextsActioncommands,
 			       String thePropertySetName,

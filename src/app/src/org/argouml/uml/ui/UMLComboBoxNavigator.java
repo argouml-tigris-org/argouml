@@ -69,6 +69,7 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
      * @param box
      *            Associated combo box
      */
+    @Deprecated
     public UMLComboBoxNavigator(UMLUserInterfaceContainer container,
             String tooltip, JComboBox box) {
         this(tooltip, box);

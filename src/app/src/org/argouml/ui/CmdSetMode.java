@@ -40,7 +40,7 @@ import org.argouml.i18n.Translator;
  * @deprecated for 0.25.3 by tfmorris - use 
  * {@link org.argouml.uml.diagram.ui.ActionSetMode}
  */
-
+@Deprecated
 @SuppressWarnings("deprecation")
 public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 

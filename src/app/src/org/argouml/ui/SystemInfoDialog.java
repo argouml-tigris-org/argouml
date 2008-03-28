@@ -75,6 +75,7 @@ public class SystemInfoDialog extends ArgoDialog {
      * @deprecated for 0.25.1 by tfmorris - 
      * use {@link #SystemInfoDialog(boolean)}
      */
+    @Deprecated
     public SystemInfoDialog(Frame owner, boolean modal) {
         this(modal);
     }

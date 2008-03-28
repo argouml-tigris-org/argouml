@@ -172,6 +172,7 @@ public class ClassdiagramLayouter implements Layouter {
          * @return Returns the nodes.
          * @deprecated for 0.25.1 by tfmorris - use {@link #getNodeList()}
          */
+        @Deprecated
         public Vector<ClassdiagramNode> getNodes() {
             return new Vector<ClassdiagramNode>(nodes);
         }

@@ -130,6 +130,7 @@ public class ExceptionDialog extends JDialog implements ActionListener {
      * @deprecated by tfmorris for 0.24, use 
      * {@link #ExceptionDialog(Frame, String, String, String)}
      */
+    @Deprecated
     public ExceptionDialog(Frame f, String message) {
         this(f, Translator.localize("dialog.exception.title"), 
                 Translator.localize("dialog.exception.message"), 

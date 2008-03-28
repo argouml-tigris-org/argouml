@@ -180,6 +180,7 @@ public class DetailsPane
      * @deprecated by MVW, in V0.25.4. Will become package scope.
      * @return the JTabbedPane.
      */
+    @Deprecated
     public JTabbedPane getTabs() {
         return topLevelTabbedPane;
     }

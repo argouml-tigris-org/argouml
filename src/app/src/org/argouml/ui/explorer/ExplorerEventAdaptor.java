@@ -101,6 +101,7 @@ public final class ExplorerEventAdaptor
      * inform the Explorer of changes should send events.
      * @deprecated by mvw in V0.25.4. Use events instead.
      */
+    @Deprecated
     public void structureChanged() {
         if (treeModel == null) {
             return;

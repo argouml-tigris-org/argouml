@@ -107,6 +107,7 @@ class XmiInputStream extends BufferedInputStream {
      *        {@link #XmiInputStream(InputStream, XmiExtensionParser,
      *        long, ProgressMgr)} that doesn't specify length
      */
+    @Deprecated
     public XmiInputStream(
             InputStream inputStream,
             XmiExtensionParser extParser,

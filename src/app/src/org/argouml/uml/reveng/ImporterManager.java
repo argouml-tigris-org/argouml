@@ -70,6 +70,7 @@ public final class ImporterManager {
      * @deprecated Use {@link #addImporter(ImportInterface)} instead. 
      * (0.25.3 tfm)
      */
+    @Deprecated
     public void addimporter(ImportInterface importer) {
         addImporter(importer);
     }

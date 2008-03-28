@@ -34,6 +34,7 @@ import org.tigris.gef.presentation.Fig;
  * @deprecated for 0.25.2 by tfmorris - use {@link SelectionNodeClarifiers2} for
  *             new implementations
  */
+@Deprecated
 public class SelectionNodeClarifiers extends SelectionNodeClarifiers2 {
     
 

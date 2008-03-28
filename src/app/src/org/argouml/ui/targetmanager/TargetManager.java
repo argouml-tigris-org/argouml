@@ -884,11 +884,13 @@ public final class TargetManager {
      * Get the Action class for creating and adding a new EnumerationLiteral for
      * the single selected target (or its owner).
      * 
-     * @deprecated by tfmorris for 0.25.3 - use 
-     * new {@link org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral}()
-     * - This was only introduced in 0.24, so it can be removed quickly.
+     * @deprecated by tfmorris for 0.25.3 - use new
+     * {@link org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral}()
+     *             This was only introduced in 0.24, so it can be removed
+     *             quickly.
      * @return null
      */
+    @Deprecated
     public Action getAddEnumerationLiteralAction() {
         return null;
     }
