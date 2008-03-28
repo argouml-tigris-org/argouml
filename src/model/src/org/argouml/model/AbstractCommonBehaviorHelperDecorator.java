@@ -26,7 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * An abstract Decorator for the {@link CommonBehaviorHelper}.
