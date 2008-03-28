@@ -27,7 +27,6 @@
 package org.argouml.model.euml;
 
 import org.argouml.model.ChangeableKind;
-import org.argouml.model.NotImplementedException;
 
 /**
  * Eclipse UML2 implementation for ChangeableKind.

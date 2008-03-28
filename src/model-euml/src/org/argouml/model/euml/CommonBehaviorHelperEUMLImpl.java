@@ -28,7 +28,6 @@ package org.argouml.model.euml;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 import org.argouml.model.CommonBehaviorHelper;
 

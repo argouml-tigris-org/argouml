@@ -29,7 +29,6 @@ package org.argouml.model.euml;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,7 +44,6 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
-import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.Notification;
@@ -54,7 +52,6 @@ import org.eclipse.emf.common.notify.impl.NotificationImpl;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * The implementation of the ModelEventPump for eUML.
@@ -485,35 +482,35 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             
             Map<String, List<String>> map = new HashMap<String, List<String>>();
             
-            for (Iterator listIt = listenerList.iterator(); 
-                    listIt.hasNext();) {
-                Listener listener = (Listener)listIt.next();
+            for (Iterator listIt = listenerList.iterator(); listIt.hasNext();) {
+                Listener listener = (Listener) listIt.next();
 
-                if (listener.getProperties() != null){
-                    for (String eventName : listener.getProperties()){
-                        if (!map.containsKey(eventName)){
+                if (listener.getProperties() != null) {
+                    for (String eventName : listener.getProperties()) {
+                        if (!map.containsKey(eventName)) {
                             map.put(eventName, new LinkedList<String>());
                         }
-                        map.get(eventName).add(listener.getListener().getClass().getName());
+                        map.get(eventName).add(
+                                listener.getListener().getClass().getName());
                     }
-                }
-                else {
-                    if (!map.containsKey("")){
+                } else {
+                    if (!map.containsKey("")) {
                         map.put("", new LinkedList<String>());
                     }
-                    map.get("").add(listener.getListener().getClass().getName());
-                }                
+                    map.get("")
+                            .add(listener.getListener().getClass().getName());
+                }
             }
             for (Map.Entry o : map.entrySet()) {
-                modelElementNode.add((String)o.getKey());    
-                modelElementNode.add((List<String>)o.getValue());
-            }                        
+                modelElementNode.add((String) o.getKey());
+                modelElementNode.add((List<String>) o.getValue());
+            }
         }
         return info;
     }
        
-    private List newDebugNode(String name) {
-        List list = new ArrayList();
+    private List<String> newDebugNode(String name) {
+        List<String> list = new ArrayList<String>();
         list.add(name);
         return list;
     }
