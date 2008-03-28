@@ -215,7 +215,7 @@ public abstract class FigNodeModelElement
      * <code>SmallIcon</code> mode.
      */
     private List<Fig> floatingStereotypes = new ArrayList<Fig>();
-
+    
     /**
      * The current stereotype view, defaults to "textual".
      * 
@@ -224,7 +224,7 @@ public abstract class FigNodeModelElement
      * @see DiagramAppearance#STEREOTYPE_VIEW_BIG_ICON
      */
     private int stereotypeView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;   
-
+    
     /**
      * The width of the profile icons when viewed at the small icon mode.
      * The icon width is resized to <code>ICON_WIDTH</code> and the height is 
@@ -241,7 +241,7 @@ public abstract class FigNodeModelElement
      * @see FigProfileIcon
      */
     private FigText originalNameFig;
-
+    
     /**
      * EnclosedFigs are the Figs that are enclosed by this figure. Say that
      * it is a Package then these are the Classes, Interfaces, Packages etc
@@ -502,9 +502,8 @@ public abstract class FigNodeModelElement
 
         /* Check if multiple items are selected: */
         if (TargetManager.getInstance().getTargets().size() == 1) {
-            ToDoList list = Designer.theDesigner().getToDoList();
-            List<ToDoItem> items =
-                    (List<ToDoItem>) list.elementsForOffender(getOwner()).clone();
+            ToDoList tdList = Designer.theDesigner().getToDoList();
+            List<ToDoItem> items = tdList.elementListForOffender(getOwner());
             if (items != null && items.size() > 0) {
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
                 ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
@@ -758,8 +757,8 @@ public abstract class FigNodeModelElement
     public void paintClarifiers(Graphics g) {
         int iconX = getX();
         int iconY = getY() - 10;
-        ToDoList list = Designer.theDesigner().getToDoList();
-        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        ToDoList tdList = Designer.theDesigner().getToDoList();
+        List<ToDoItem> items = tdList.elementListForOffender(getOwner());
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
@@ -771,7 +770,7 @@ public abstract class FigNodeModelElement
                 iconX += icon.getIconWidth();
             }
         }
-        items = list.elementsForOffender(this);
+        items = tdList.elementListForOffender(this);
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
@@ -792,8 +791,8 @@ public abstract class FigNodeModelElement
      */
     public ToDoItem hitClarifier(int x, int y) {
         int iconX = getX();
-        ToDoList list = Designer.theDesigner().getToDoList();
-        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        ToDoList tdList = Designer.theDesigner().getToDoList();
+        List<ToDoItem> items = tdList.elementListForOffender(getOwner());
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
@@ -815,7 +814,7 @@ public abstract class FigNodeModelElement
                 }
             }
         }
-        items = list.elementsForOffender(this);
+        items = tdList.elementListForOffender(this);
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             int width = icon.getIconWidth();
@@ -1328,7 +1327,7 @@ public abstract class FigNodeModelElement
                 Project p = getProject();
                 if (p != null) {
                     updateFont();
-                    }
+                }
                 updateBounds();
             }
         }
@@ -1525,17 +1524,17 @@ public abstract class FigNodeModelElement
 
 	    this.removeFig(stereotypeFigProfileIcon);
 	    stereotypeFigProfileIcon = null;
-    }
-
+	}
+	
 	if (originalNameFig != null) {
 	    this.setNameFig(originalNameFig);
 	    originalNameFig = null;
 	}
 	
 	for (Fig icon : floatingStereotypes) {
-		this.removeFig(icon);
-	    }
-	    floatingStereotypes.clear();
+            this.removeFig(icon);
+        }
+        floatingStereotypes.clear();
 	
 	
 	int practicalView = getPracticalView();
@@ -1544,8 +1543,10 @@ public abstract class FigNodeModelElement
 	 
 	Fig stereoFig = getStereotypeFig();
         if (stereoFig instanceof FigStereotypesCompartment) {
+            boolean hiding = 
+                practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON;
             ((FigStereotypesCompartment) stereoFig)
-                    .setHidingStereotypesWithIcon(practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
+                    .setHidingStereotypesWithIcon(hiding);
         }
 
 	if (practicalView == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON) {
@@ -1611,6 +1612,7 @@ public abstract class FigNodeModelElement
             updateSmallIcons(this.getWidth());
         }
 
+        // TODO: This is a redundant invocation
 	updateStereotypeText();
 	
         damage();
@@ -1725,6 +1727,7 @@ public abstract class FigNodeModelElement
      * @deprecated by MVW in V0.25.4. Use ProjectSettings instead.
      * @return the diagram font
      */
+    @Deprecated
     public Font getLabelFont() {
         return getProject().getProjectSettings().getFontPlain();
     }
@@ -1733,6 +1736,7 @@ public abstract class FigNodeModelElement
      * @deprecated by MVW in V0.25.4. Use ProjectSettings instead.
      * @return the italic diagram font
      */
+    @Deprecated
     public Font getItalicLabelFont() {
         return getProject().getProjectSettings().getFontItalic();
     }
@@ -2115,16 +2119,16 @@ public abstract class FigNodeModelElement
 //      calcBounds(); // Don't do this! Causes e.g. FigActor to not center properly.
         updateBounds();
         damage();
-}
+    }
 
-/**
+    /**
      * This function should, for all FigTexts, 
      * recalculate the font-style (plain, bold, italic, bold/italic),
      * and apply it by calling FigText.setFont(). <p>
- *
+     * 
      * If the "deepUpdateFont" function does not 
      * work for a subclass, then override this method.
- */
+     */
     protected void updateFont() {
         int style = getNameFigFontStyle();
         Font f = getProject().getProjectSettings().getFont(style);
@@ -2150,9 +2154,9 @@ public abstract class FigNodeModelElement
          */
         if (p != null) {
             ProjectSettings ps = p.getProjectSettings();
-        showBoldName = ps.getShowBoldNamesValue();
+            showBoldName = ps.getShowBoldNamesValue();
         }
-
+        
         return showBoldName ? Font.BOLD : Font.PLAIN;
     }
 
@@ -2181,4 +2185,3 @@ public abstract class FigNodeModelElement
         }
     }
 }
-    

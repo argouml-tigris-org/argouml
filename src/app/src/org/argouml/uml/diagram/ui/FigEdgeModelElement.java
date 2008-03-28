@@ -288,8 +288,7 @@ public abstract class FigEdgeModelElement
         boolean ms = TargetManager.getInstance().getTargets().size() > 1;
         if (!ms) {
             ToDoList list = Designer.theDesigner().getToDoList();
-            List<ToDoItem> items =
-                (List<ToDoItem>) list.elementsForOffender(getOwner()).clone();
+            List<ToDoItem> items = list.elementListForOffender(getOwner());
             if (items != null && items.size() > 0) {
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
                 ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
@@ -352,8 +351,8 @@ public abstract class FigEdgeModelElement
     protected void paintClarifiers(Graphics g) {
         int iconPos = 25, gap = 1, xOff = -4, yOff = -4;
         Point p = new Point();
-        ToDoList list = Designer.theDesigner().getToDoList();
-        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        ToDoList tdList = Designer.theDesigner().getToDoList();
+        List<ToDoItem> items = tdList.elementListForOffender(getOwner());
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
@@ -366,7 +365,7 @@ public abstract class FigEdgeModelElement
                 iconPos += icon.getIconWidth() + gap;
             }
         }
-        items = list.elementsForOffender(this);
+        items = tdList.elementListForOffender(this);
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
@@ -409,8 +408,8 @@ public abstract class FigEdgeModelElement
     public ToDoItem hitClarifier(int x, int y) {
         int iconPos = 25, xOff = -4, yOff = -4;
         Point p = new Point();
-        ToDoList list = Designer.theDesigner().getToDoList();
-        List<ToDoItem> items = list.elementsForOffender(getOwner());
+        ToDoList tdList = Designer.theDesigner().getToDoList();
+        List<ToDoItem> items = tdList.elementListForOffender(getOwner());
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             stuffPointAlongPerimeter(iconPos, p);
@@ -432,7 +431,7 @@ public abstract class FigEdgeModelElement
                     return item;
             }
         }
-        items = list.elementsForOffender(this);
+        items = tdList.elementListForOffender(this);
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
             stuffPointAlongPerimeter(iconPos, p);
@@ -458,9 +457,9 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Return a {@link SelectionRerouteEdge} object that manages selection
-     * and rerouting of the edge.
-     *
+     * @return a {@link SelectionRerouteEdge} object that manages selection and
+     *         rerouting of the edge.
+     * 
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     @Override
@@ -621,6 +620,7 @@ public abstract class FigEdgeModelElement
      * @return a i18 key that represents a help string
      *         giving an explanation to the user of the syntax
      */
+    @Deprecated
     protected String getParsingHelp() {
 	return notationProviderName.getParsingHelp();
     }
@@ -863,6 +863,8 @@ public abstract class FigEdgeModelElement
         }
         initNotationProviders(owner);
         updateListeners(null, owner);
+        // TODO: The following is redundant.  It's done when setLayer is 
+        // called after initialization complete
         renderingChanged();
     }
 
@@ -1235,6 +1237,7 @@ public abstract class FigEdgeModelElement
      * @deprecated
      * @return Returns the plain font.
      */
+    @Deprecated
     public Font getLabelFont() {
         return getProject().getProjectSettings().getFontPlain();
     }
@@ -1243,6 +1246,7 @@ public abstract class FigEdgeModelElement
      * @deprecated
      * @return Returns the italic font.
      */
+    @Deprecated
     public Font getItalicLabelFont() {
         return getProject().getProjectSettings().getFontItalic();
     }
