@@ -114,8 +114,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
         if (editor != null && !getEnclosedFigs().isEmpty()) {
             LayerDiagram lay =
                 ((LayerDiagram) editor.getLayerManager().getActiveLayer());
-            for (int i = 0; i < getEnclosedFigs().size(); i++) {
-                Fig f = ((Fig) getEnclosedFigs().elementAt(i));
+            for (Fig f : getEnclosedFigs()) {
                 lay.bringInFrontOf(f, this);
                 if (f instanceof FigNode) {
                     FigNode fn = (FigNode) f;
