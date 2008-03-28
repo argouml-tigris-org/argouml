@@ -39,33 +39,31 @@ import javax.swing.event.EventListenerList;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 
-
 /**
- * Implements a list of ToDoItem's.<p>
- *
- * It spawns a "sweeper" thread that periodically goes through the list
- * and eliminates ToDoItem's that are no longer valid.<p>
- *
- * One difficulty designers face is keeping track of all
- * the myriad details of their task. It is all too
- * easy to skip a step in the design process,
- * leave part of the design unspecified, or make
- * a mistake that requires revision. ArgoUML provides
- * the designer with a "to do" list user interface
- * that presents action items in an organized form.
- * These items can be suggestions from critics,
- * reminders to finish steps in the process model,
- * or personal notes entered by the designer.
- * The choice control at the top of the "to do"
- * list pane allow the designer to organize
- * items in different ways: by priority,
- * by decision supported, by offending design
- * element, etc.<p>
- *
- * Items are shown under all applicable headings.<p>
- *
- * This class is dependent on Designer.<p>
- *
+ * Implements a list of ToDoItem's.
+ * <p>
+ * 
+ * It spawns a "sweeper" thread that periodically goes through the list and
+ * eliminates ToDoItem's that are no longer valid.
+ * <p>
+ * 
+ * One difficulty designers face is keeping track of all the myriad details of
+ * their task. It is all too easy to skip a step in the design process, leave
+ * part of the design unspecified, or make a mistake that requires revision.
+ * ArgoUML provides the designer with a "to do" list user interface that
+ * presents action items in an organized form. These items can be suggestions
+ * from critics, reminders to finish steps in the process model, or personal
+ * notes entered by the designer. The choice control at the top of the "to do"
+ * list pane allow the designer to organize items in different ways: by
+ * priority, by decision supported, by offending design element, etc.
+ * <p>
+ * 
+ * Items are shown under all applicable headings.
+ * <p>
+ * 
+ * This class is dependent on Designer.
+ * <p>
+ * 
  * @see Designer#inform
  * @author Jason Robbins
  */
@@ -75,18 +73,11 @@ public class ToDoList extends Observable implements Runnable,
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(ToDoList.class);
-    
+
     /**
      * Number of seconds thread should sleep between passes
      */
     private static final int SLEEP_SECONDS = 3;
-
-    // TODO: Offenders need to be more strongly typed. - tfm 20070630
-    private static Object recentOffender;
-    private static List<ToDoItem> recentOffenderItems;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     /**
      * Pending ToDoItems for the designer to consider.
@@ -94,9 +85,9 @@ public class ToDoList extends Observable implements Runnable,
     private List<ToDoItem> items;
 
     /**
-     * These are computed when needed.
-     * TODO: Offenders need to be more strongly typed. - tfm 20070630
+     * These are computed when needed. 
      */
+    // TODO: Offenders need to be more strongly typed. - tfm 20070630
     private ListSet allOffenders;
 
     /**
@@ -105,16 +96,15 @@ public class ToDoList extends Observable implements Runnable,
     private ListSet<Poster> allPosters;
 
     /**
-     * ToDoItems that the designer has explicitly indicated that (s)he
-     * considers resolved.<p>
-     *
+     * ToDoItems that the designer has explicitly indicated that (s)he considers
+     * resolved.
+     * <p>
      * TODO: generalize into a design rationale logging facility.
      */
     private LinkedHashSet<ResolvedCritic> resolvedItems;
 
     /**
-     * A Thread that keeps checking if the items on the list are
-     * still valid.
+     * A Thread that keeps checking if the items on the list are still valid.
      */
     private Thread validityChecker;
 
@@ -126,6 +116,7 @@ public class ToDoList extends Observable implements Runnable,
     private EventListenerList listenerList;
 
     private static int longestToDoList;
+
     private static int numNotValid;
 
     /**
@@ -134,23 +125,21 @@ public class ToDoList extends Observable implements Runnable,
      */
     private boolean isPaused;
 
-
     /**
      * Creates a new todolist. The only ToDoList is owned by the Designer.
      */
     ToDoList() {
 
-	items = new ArrayList<ToDoItem>(100);
-	resolvedItems = new LinkedHashSet<ResolvedCritic>(100);
-	listenerList = new EventListenerList();
-	longestToDoList = 0;
-	numNotValid = 0;
-	recentOffenderItems = new ArrayList<ToDoItem>();
+        items = new ArrayList<ToDoItem>(100);
+        resolvedItems = new LinkedHashSet<ResolvedCritic>(100);
+        listenerList = new EventListenerList();
+        longestToDoList = 0;
+        numNotValid = 0;
     }
 
     /**
      * Start a Thread to delete old items from the ToDoList.
-     *
+     * 
      * @param d the designer
      */
     public synchronized void spawnValidityChecker(Designer d) {
@@ -182,18 +171,18 @@ public class ToDoList extends Observable implements Runnable,
             forceValidityCheck(removes);
             removes.clear();
             try {
-		Thread.sleep(SLEEP_SECONDS * 1000);
-	    } catch (InterruptedException ignore) {
+                Thread.sleep(SLEEP_SECONDS * 1000);
+            } catch (InterruptedException ignore) {
                 LOG.error("InterruptedException!!!", ignore);
             }
         }
     }
 
     /**
-     * Check each ToDoItem on the list to see if it is still valid.  If
-     * not, then remove that item.  This is called automatically by the
-     * ValidityCheckingThread, and it can be called by the user
-     * pressing a button via forceValidityCheck().
+     * Check each ToDoItem on the list to see if it is still valid. If not, then
+     * remove that item. This is called automatically by the
+     * ValidityCheckingThread, and it can be called by the user pressing a
+     * button via forceValidityCheck().
      */
     public void forceValidityCheck() {
         List<ToDoItem> removes = new ArrayList<ToDoItem>();
@@ -201,25 +190,26 @@ public class ToDoList extends Observable implements Runnable,
     }
 
     /**
-     * Check each ToDoItem on the list to see if it is still valid.  If
-     * not, then remove that item.  This is called automatically by the
-     * ValidityCheckingThread, and it can be called by the user
-     * pressing a button via forceValidityCheck(). <p>
-     *
+     * Check each ToDoItem on the list to see if it is still valid. If not, then
+     * remove that item. This is called automatically by the
+     * ValidityCheckingThread, and it can be called by the user pressing a
+     * button via forceValidityCheck().
+     * <p>
+     * 
      * <em>Warning: Fragile code!</em> No method that this method calls can
      * synchronized the Designer, otherwise there will be deadlock.
-     *
+     * 
      * @param removes the items removed
      */
     protected synchronized void forceValidityCheck(List<ToDoItem> removes) {
         for (ToDoItem item : items) {
             boolean valid;
             try {
-		valid = item.stillValid(designer);
-	    } catch (Exception ex) {
+                valid = item.stillValid(designer);
+            } catch (Exception ex) {
                 valid = false;
-                StringBuffer buf =
-                    new StringBuffer("Exception raised in to do list cleaning");
+                StringBuffer buf = new StringBuffer(
+                        "Exception raised in to do list cleaning");
                 buf.append("\n");
                 buf.append(item.toString());
                 LOG.error(buf.toString(), ex);
@@ -232,15 +222,14 @@ public class ToDoList extends Observable implements Runnable,
 
         for (ToDoItem item : removes) {
             removeE(item);
-//            History.TheHistory.addItemResolution(item, "no longer valid");
-            //((ToDoItem)item).resolve("no longer valid");
-            //notifyObservers("removeElement", item);
+            // History.TheHistory.addItemResolution(item, "no longer valid");
+            // ((ToDoItem)item).resolve("no longer valid");
+            // notifyObservers("removeElement", item);
         }
         recomputeAllOffenders();
         recomputeAllPosters();
         fireToDoItemsRemoved(removes);
     }
-
 
     /**
      * Pause.
@@ -265,17 +254,17 @@ public class ToDoList extends Observable implements Runnable,
 
     /**
      * sets the pause state.
-     *
+     * 
      * @param paused if set to false, calls resume() also to start working
      */
     public void setPaused(boolean paused) {
         isPaused = paused;
         if (!isPaused) {
             resume();
-	}
+        }
     }
 
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // Notifications and Updates
 
     /**
@@ -332,8 +321,7 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @return the set of offenders
      * 
-     * TODO: The return value needs to be more strongly 
-     * typed. - tfm - 20070630
+     * TODO: The return value needs to be more strongly typed. - tfm - 20070630
      */
     public ListSet getOffenders() {
         // Extra care to be taken since allOffenders can be reset while
@@ -353,7 +341,7 @@ public class ToDoList extends Observable implements Runnable,
     private void addOffenders(ListSet newoffs) {
         if (allOffenders != null) {
             allOffenders.addAll(newoffs);
-	}
+        }
     }
 
     /**
@@ -376,12 +364,12 @@ public class ToDoList extends Observable implements Runnable,
     private void addPosters(Poster newp) {
         if (allPosters != null) {
             allPosters.add(newp);
-	}
+        }
     }
 
     /**
      * @return the decisions
-     * @deprecated by tfmorris for 0.25.4.  Use {@link #getDecisionList()}.
+     * @deprecated by tfmorris for 0.25.4. Use {@link #getDecisionList()}.
      */
     @Deprecated
     public static Vector getDecisions() {
@@ -394,7 +382,7 @@ public class ToDoList extends Observable implements Runnable,
     public static List<Decision> getDecisionList() {
         return new ArrayList<Decision>();
     }
-    
+
     /**
      * @return the goals
      * @deprecated for 0.25.4 by tfmorris. Use {@link #getGoalList()}.
@@ -410,7 +398,7 @@ public class ToDoList extends Observable implements Runnable,
     public static List<Goal> getGoalList() {
         return new ArrayList<Goal>();
     }
-    
+
     /*
      * TODO: needs documenting, why synchronized?
      */
@@ -418,17 +406,15 @@ public class ToDoList extends Observable implements Runnable,
         /* remove any identical items already on the list */
         if (items.contains(item)) {
             return;
-	}
+        }
 
         if (item.getPoster() instanceof Critic) {
             ResolvedCritic rc;
             try {
-                rc =
-		    new ResolvedCritic((Critic) item.getPoster(),
-				       item.getOffenders(),
-				       false);
+                rc = new ResolvedCritic((Critic) item.getPoster(), item
+                        .getOffenders(), false);
                 Iterator<ResolvedCritic> elems = resolvedItems.iterator();
-                //cat.debug("Checking for inhibitors " + rc);
+                // cat.debug("Checking for inhibitors " + rc);
                 while (elems.hasNext()) {
                     if (elems.next().equals(rc)) {
                         LOG.debug("ToDoItem not added because it was resolved");
@@ -443,10 +429,10 @@ public class ToDoList extends Observable implements Runnable,
         longestToDoList = Math.max(longestToDoList, items.size());
         addOffenders(item.getOffenders());
         addPosters(item.getPoster());
-//        if (item.getPoster() instanceof Designer)
-//            History.TheHistory.addItem(item, "note: ");
-//        else
-//            History.TheHistory.addItemCritique(item);
+        // if (item.getPoster() instanceof Designer)
+        // History.TheHistory.addItem(item, "note: ");
+        // else
+        // History.TheHistory.addItemCritique(item);
         notifyObservers("addElement", item);
         fireToDoItemAdded(item);
     }
@@ -457,7 +443,6 @@ public class ToDoList extends Observable implements Runnable,
     public synchronized void addElement(ToDoItem item) {
         addE(item);
     }
-
 
     /**
      * @param list the todo items to be removed
@@ -473,8 +458,8 @@ public class ToDoList extends Observable implements Runnable,
 
     /**
      * @param item the todo item to be removed
-     * @return <code>true</code> if the argument was a component of this
-     *          list; <code>false</code> otherwise
+     * @return <code>true</code> if the argument was a component of this list;
+     *         <code>false</code> otherwise
      */
     private synchronized boolean removeE(ToDoItem item) {
         boolean res = items.remove(item);
@@ -483,8 +468,8 @@ public class ToDoList extends Observable implements Runnable,
 
     /**
      * @param item the todo item to be removed
-     * @return <code>true</code> if the argument was a component of this
-     *          list; <code>false</code> otherwise
+     * @return <code>true</code> if the argument was a component of this list;
+     *         <code>false</code> otherwise
      */
     public boolean removeElement(ToDoItem item) {
         boolean res = removeE(item);
@@ -497,8 +482,8 @@ public class ToDoList extends Observable implements Runnable,
 
     /**
      * @param item the todo item to be resolved
-     * @return <code>true</code> if the argument was a component of this
-     *          list; <code>false</code> otherwise
+     * @return <code>true</code> if the argument was a component of this list;
+     *         <code>false</code> otherwise
      */
     public boolean resolve(ToDoItem item) {
         boolean res = removeE(item);
@@ -509,28 +494,27 @@ public class ToDoList extends Observable implements Runnable,
     /**
      * @param item the todo item
      * @param reason the reason TODO: Use it!
-     * @return <code>true</code> if the argument was a component of this
-     *          list; <code>false</code> otherwise
+     * @return <code>true</code> if the argument was a component of this list;
+     *         <code>false</code> otherwise
      * @throws UnresolvableException unable to resolve
      */
     public boolean explicitlyResolve(ToDoItem item, String reason)
-	throws UnresolvableException {
+        throws UnresolvableException {
 
         if (item.getPoster() instanceof Designer) {
             boolean res = resolve(item);
-//            History.TheHistory.addItemResolution(item, reason);
+            // History.TheHistory.addItemResolution(item, reason);
             return res;
         }
 
         if (!(item.getPoster() instanceof Critic)) {
             throw new UnresolvableException(Translator.localize(
-                    "misc.todo-unresolvable", 
-                    new Object[]{item.getPoster().getClass()}));
-	}
+                    "misc.todo-unresolvable", new Object[] {item.getPoster()
+                            .getClass()}));
+        }
 
-        ResolvedCritic rc =
-	    new ResolvedCritic((Critic) item.getPoster(),
-			       item.getOffenders());
+        ResolvedCritic rc = new ResolvedCritic((Critic) item.getPoster(), item
+                .getOffenders());
         boolean res = resolve(item);
         if (res) {
             res = addResolvedCritic(rc);
@@ -540,10 +524,10 @@ public class ToDoList extends Observable implements Runnable,
 
     /**
      * Add the given resolved critic to the list of resolved critics.
-     *
+     * 
      * @param rc the resolved critic
-     * @return <code>true</code> if successfully added;
-     *         <code>false</code> otherwise
+     * @return <code>true</code> if successfully added; <code>false</code>
+     *         otherwise
      */
     public boolean addResolvedCritic(ResolvedCritic rc) {
         return resolvedItems.add(rc);
@@ -557,7 +541,7 @@ public class ToDoList extends Observable implements Runnable,
         List<ToDoItem> oldItems = new ArrayList<ToDoItem>(items);
         for (ToDoItem tdi : oldItems) {
             removeE(tdi);
-	}
+        }
 
         recomputeAllOffenders();
         recomputeAllPosters();
@@ -577,25 +561,28 @@ public class ToDoList extends Observable implements Runnable,
     }
 
     /**
-     * @param off the offender
-     * @return the todo items for this offender
+     * @param offender the offender
+     * @return A List of todo items for this offender.
+     *         <p>
+     *         Note: the previous implementation returned an internal static
+     *         (global) list which could be modified at any point, requiring the
+     *         caller to copy the list before using it (negating the value of
+     *         caching the static copy). The current implementation returns a
+     *         private copy which will not change, so callers don't need to copy
+     *         it.
      */
-    public List<ToDoItem> elementListForOffender(Object off) {
-        if (off == recentOffender) {
-            return recentOffenderItems;
-        }
-        recentOffender = off;
-        recentOffenderItems.clear();
+    public List<ToDoItem> elementListForOffender(Object offender) {
+        List<ToDoItem> offenderItems = new ArrayList<ToDoItem>();
         synchronized (items) {
             for (ToDoItem item : items) {
-                if (item.getOffenders().contains(off)) {
-                    recentOffenderItems.add(item);
+                if (item.getOffenders().contains(offender)) {
+                    offenderItems.add(item);
                 }
             }
         }
-        return recentOffenderItems;
+        return offenderItems;
     }
-    
+
     /**
      * @return the number of todo items
      */
@@ -605,7 +592,7 @@ public class ToDoList extends Observable implements Runnable,
 
     /**
      * @return the todo items
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #iterator()}.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #iterator()}.
      */
     @Deprecated
     public Enumeration<ToDoItem> elements() {
@@ -618,11 +605,11 @@ public class ToDoList extends Observable implements Runnable,
     public Iterator<ToDoItem> iterator() {
         return items.iterator();
     }
-    
+
     /**
      * @param index an index into the todo items list
      * @return the item at the index
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #get(int)}.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #get(int)}.
      */
     @Deprecated
     public ToDoItem elementAt(int index) {
@@ -632,7 +619,7 @@ public class ToDoList extends Observable implements Runnable,
     public ToDoItem get(int index) {
         return items.get(index);
     }
-    
+
     /**
      * Re-compute all offenders.
      */
@@ -647,8 +634,7 @@ public class ToDoList extends Observable implements Runnable,
         allPosters = null;
     }
 
-
-    ////////////////////////////////////////////////////////////////
+    // //////////////////////////////////////////////////////////////
     // event related stuff
 
     /**
@@ -666,14 +652,13 @@ public class ToDoList extends Observable implements Runnable,
     }
 
     /**
-     * Notify all listeners that have registered interest for
-     * notification on this event type.  The event instance
-     * is lazily created using the parameters passed into
-     * the fire method.
+     * Notify all listeners that have registered interest for notification on
+     * this event type. The event instance is lazily created using the
+     * parameters passed into the fire method.
+     * 
      * @see EventListenerList
      */
     protected void fireToDoListChanged() {
-        recentOffender = null;
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
@@ -683,8 +668,8 @@ public class ToDoList extends Observable implements Runnable,
             if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) {
-		    e = new ToDoListEvent();
-		}
+                    e = new ToDoListEvent();
+                }
                 ((ToDoListListener) listeners[i + 1]).toDoListChanged(e);
             }
         }
@@ -724,7 +709,6 @@ public class ToDoList extends Observable implements Runnable,
      * @param theItems the todo items
      */
     protected void fireToDoItemsAdded(List<ToDoItem> theItems) {
-        recentOffender = null;
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
@@ -734,8 +718,8 @@ public class ToDoList extends Observable implements Runnable,
             if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) {
-		    e = new ToDoListEvent(theItems);
-		}
+                    e = new ToDoListEvent(theItems);
+                }
                 ((ToDoListListener) listeners[i + 1]).toDoItemsAdded(e);
             }
         }
@@ -754,7 +738,6 @@ public class ToDoList extends Observable implements Runnable,
      * @param theItems the todo items
      */
     protected void fireToDoItemsRemoved(List<ToDoItem> theItems) {
-        recentOffender = null;
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
@@ -764,13 +747,12 @@ public class ToDoList extends Observable implements Runnable,
             if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) {
-		    e = new ToDoListEvent(theItems);
-		}
+                    e = new ToDoListEvent(theItems);
+                }
                 ((ToDoListListener) listeners[i + 1]).toDoItemsRemoved(e);
             }
         }
     }
-
 
     @Override
     public String toString() {
