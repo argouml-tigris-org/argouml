@@ -192,14 +192,6 @@ public class FigStubState extends FigStateVertex {
         referenceFig.setFilled(f);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    @Override
-    public boolean getFilled() {
-        return referenceFig.isFilled();
-    }
-
     @Override
     public boolean isFilled() {
         return referenceFig.isFilled();

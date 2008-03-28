@@ -39,21 +39,13 @@ import org.tigris.gef.presentation.FigRect;
  */
 public class FigJoinState extends FigStateVertex {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     private static final int X = 10;
     private static final int Y = 10;
     private static final int WIDTH = 80;
     private static final int HEIGHT = 7;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private FigRect head;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The main constructor.
@@ -66,7 +58,7 @@ public class FigJoinState extends FigStateVertex {
         addFig(getBigPort());
         addFig(head);
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
     /**
@@ -83,6 +75,7 @@ public class FigJoinState extends FigStateVertex {
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigJoinState figClone = (FigJoinState) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -91,12 +84,10 @@ public class FigJoinState extends FigStateVertex {
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
-
     /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         if (w > h) {
@@ -115,6 +106,7 @@ public class FigJoinState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
@@ -122,6 +114,7 @@ public class FigJoinState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return head.getLineColor();
     }
@@ -129,6 +122,7 @@ public class FigJoinState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
@@ -136,6 +130,7 @@ public class FigJoinState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return head.getFillColor();
     }
@@ -144,20 +139,21 @@ public class FigJoinState extends FigStateVertex {
      * Ignored - figure has fixed rendering
      * @param f ignored
      */
+    @Override
     public void setFilled(boolean f) {
         // ignored
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    public boolean getFilled() {
+
+    @Override
+    public boolean isFilled() {
         return true;
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
@@ -165,16 +161,15 @@ public class FigJoinState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return head.getLineWidth();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Event handlers
-
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
         // ignored
     }
@@ -184,4 +179,4 @@ public class FigJoinState extends FigStateVertex {
      */
     static final long serialVersionUID = 2075803883819230367L;
 
-} /* end class FigJoinState */
+}

@@ -111,11 +111,6 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
         cover.setLineWidth(w);
     }
 
-    @Override
-    @Deprecated
-    public boolean getFilled() {
-        return cover.isFilled();
-    }
 
     @Override
     public boolean isFilled() {
@@ -146,29 +141,28 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
     }
 
     @Override
-    protected void setStandardBounds(int x, int y, int w,
-            int h) {
-                if (getNameFig() == null) {
-                    return;
-                }
-                Rectangle oldBounds = getBounds();
-                getBigPort().setBounds(x, y, w, h);
-                cover.setBounds(x, y + DEPTH, w - DEPTH, h - DEPTH);
-            
-                Dimension stereoDim = getStereotypeFig().getMinimumSize();
-                Dimension nameDim = getNameFig().getMinimumSize();
-                getNameFig().setBounds(
-                        x + 4, y + DEPTH + stereoDim.height + 1,
-                        w - DEPTH - 8, nameDim.height);
-                getStereotypeFig().setBounds(x + 1, y + DEPTH + 1,
-                        w - DEPTH - 2, stereoDim.height);
-                _x = x;
-                _y = y;
-                _w = w;
-                _h = h;
-                firePropChange("bounds", oldBounds, getBounds());
-                updateEdges();
-            }
+    protected void setStandardBounds(int x, int y, int w, int h) {
+        if (getNameFig() == null) {
+            return;
+        }
+        Rectangle oldBounds = getBounds();
+        getBigPort().setBounds(x, y, w, h);
+        cover.setBounds(x, y + DEPTH, w - DEPTH, h - DEPTH);
+
+        Dimension stereoDim = getStereotypeFig().getMinimumSize();
+        Dimension nameDim = getNameFig().getMinimumSize();
+        getNameFig().setBounds(
+                x + 4, y + DEPTH + stereoDim.height + 1,
+                w - DEPTH - 8, nameDim.height);
+        getStereotypeFig().setBounds(x + 1, y + DEPTH + 1,
+                w - DEPTH - 2, stereoDim.height);
+        _x = x;
+        _y = y;
+        _w = w;
+        _h = h;
+        firePropChange("bounds", oldBounds, getBounds());
+        updateEdges();
+    }
 
     @Override
     protected void updateStereotypeText() {

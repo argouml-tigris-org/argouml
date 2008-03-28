@@ -110,14 +110,6 @@ public class FigPool extends FigNodeModelElement {
         getBigPort().setFilled(f);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    @Override
-    public boolean getFilled() {
-        return getBigPort().isFilled();
-    }
-
     @Override
     public boolean isFilled() {
         return getBigPort().isFilled();

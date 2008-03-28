@@ -161,14 +161,6 @@ public class FigPartition extends FigNodeModelElement {
         getNameFig().setFilled(f);
         super.setFilled(f);
     }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    @Override
-    public boolean getFilled() {
-        return getBigPort().isFilled();
-    }
     
     @Override
     public boolean isFilled() {

@@ -46,22 +46,14 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigSynchState extends FigStateVertex {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     private static final int X = 10;
     private static final int Y = 10;
     private static final int WIDTH = 25;
     private static final int HEIGHT = 25;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private FigText bound;
     private FigCircle head;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
@@ -125,6 +117,7 @@ public class FigSynchState extends FigStateVertex {
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigSynchState figClone = (FigSynchState) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -134,14 +127,13 @@ public class FigSynchState extends FigStateVertex {
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
 
     /**
      * Synch states are fixed size.
      *
      * @return false
      */
+    @Override
     public boolean isResizable() {
         return false;
     }
@@ -149,6 +141,7 @@ public class FigSynchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
@@ -156,6 +149,7 @@ public class FigSynchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return head.getLineColor();
     }
@@ -163,6 +157,7 @@ public class FigSynchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
@@ -170,6 +165,7 @@ public class FigSynchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return head.getFillColor();
     }
@@ -177,20 +173,20 @@ public class FigSynchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         // ignored
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    public boolean getFilled() {
+    @Override
+    public boolean isFilled() {
         return true;
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
@@ -198,16 +194,15 @@ public class FigSynchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return head.getLineWidth();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // event processing
-
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee.getPropertyName().equals("bound")) {
@@ -230,6 +225,7 @@ public class FigSynchState extends FigStateVertex {
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
     }
 
@@ -243,4 +239,4 @@ public class FigSynchState extends FigStateVertex {
         bound.setFont(f);
     }
 
-} /* end class FigSynchState */
+}

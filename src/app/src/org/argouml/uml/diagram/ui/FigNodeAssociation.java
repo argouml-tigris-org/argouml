@@ -217,10 +217,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
     public void setFilled(boolean f) {
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    public boolean getFilled() {
+    public boolean isFilled() {
         return true;
     }
 

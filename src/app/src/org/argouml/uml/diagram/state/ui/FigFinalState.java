@@ -170,11 +170,9 @@ public class FigFinalState extends FigStateVertex {
         // ignored - rendering is fixed
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
+    
     @Override
-    public boolean getFilled() {
+    public boolean isFilled() {
         return true;
     }
 

@@ -46,9 +46,6 @@ import org.tigris.gef.presentation.FigText;
 
 public class FigSubmachineState extends FigState {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private FigRect cover;
     private FigLine divider;
     private FigLine divider2;
@@ -57,8 +54,6 @@ public class FigSubmachineState extends FigState {
     private FigLine circle1tocircle2;
     private FigText include;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
@@ -141,6 +136,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @Override
     public void setOwner(Object node) {
         super.setOwner(node);
         updateInclude();
@@ -149,6 +145,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigSubmachineState figClone = (FigSubmachineState) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -162,12 +159,10 @@ public class FigSubmachineState extends FigState {
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         Dimension internalDim = getInternal().getMinimumSize();
@@ -188,6 +183,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
+    @Override
     public boolean getUseTrapRect() {
         return true;
     }
@@ -197,6 +193,7 @@ public class FigSubmachineState extends FigState {
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
@@ -252,12 +249,10 @@ public class FigSubmachineState extends FigState {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-    ////////////////////////////////////////////////////////////////
-    // fig accessors
-
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         cover.setLineColor(col);
         divider.setLineColor(col);
@@ -270,6 +265,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return cover.getLineColor();
     }
@@ -277,6 +273,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         cover.setFillColor(col);
     }
@@ -284,6 +281,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return cover.getFillColor();
     }
@@ -297,13 +295,6 @@ public class FigSubmachineState extends FigState {
         getBigPort().setFilled(f);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    @Override
-    public boolean getFilled() {
-        return cover.isFilled();
-    }
 
     @Override
     public boolean isFilled() {
@@ -313,6 +304,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         cover.setLineWidth(w);
         divider.setLineWidth(w);
@@ -322,6 +314,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return cover.getLineWidth();
     }
@@ -364,6 +357,7 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         super.updateListeners(oldOwner, newOwner);
         if (newOwner != null) {
@@ -427,4 +421,4 @@ public class FigSubmachineState extends FigState {
         return 0;
     }
 
-} /* end class FigSubmachineState */
+}

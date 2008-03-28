@@ -238,9 +238,10 @@ public class FigEdgeNote
      */
     public void postLoad() {
         super.postLoad();
-        CommentEdge o = (CommentEdge) getOwner();
-        o.setDestination(getDestFigNode().getOwner());
-        o.setSource(getSourceFigNode().getOwner());
+        // TODO: Why is a Fig modifying the underlying model?!?!
+//        CommentEdge o = (CommentEdge) getOwner();
+//        o.setDestination(getDestFigNode().getOwner());
+//        o.setSource(getSourceFigNode().getOwner());
     }
     
     /**

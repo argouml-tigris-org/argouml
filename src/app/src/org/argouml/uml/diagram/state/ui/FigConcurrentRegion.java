@@ -406,13 +406,6 @@ public class FigConcurrentRegion extends FigState
         getBigPort().setFilled(f);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    @Override
-    public boolean getFilled() {
-        return cover.isFilled();
-    }
 
     @Override
     public boolean isFilled() {

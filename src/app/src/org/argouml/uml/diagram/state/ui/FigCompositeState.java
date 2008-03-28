@@ -298,12 +298,6 @@ public class FigCompositeState extends FigState {
         getBigPort().setFilled(f);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    public boolean getFilled() {
-        return cover.isFilled();
-    }
 
     @Override
     public boolean isFilled() {

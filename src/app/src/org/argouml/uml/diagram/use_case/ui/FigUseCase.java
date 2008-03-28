@@ -808,11 +808,6 @@ public class FigUseCase extends FigNodeModelElement
      *          <code>false</code> if not.
      */
     @Override
-    public boolean getFilled() {
-        return cover.isFilled();
-    }
-
-    @Override
     public boolean isFilled() {
         return cover.isFilled();
     }

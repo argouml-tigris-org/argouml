@@ -274,14 +274,7 @@ public class FigPackage extends FigNodeModelElement
         body.setFilled(f);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    @Override
-    public boolean getFilled() {
-        return body.isFilled();
-    }
-
+    
     @Override
     public boolean isFilled() {
         return body.isFilled();

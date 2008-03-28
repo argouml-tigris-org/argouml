@@ -191,11 +191,10 @@ public class CompartmentFigText extends FigSingleLineText {
     }
 
     /**
-     * Override for correct graphical behaviour.<p>
-     *
      * @return  Current fill status&mdash;always <code>true</code>.
      */
-    public boolean getFilled() {
+    @Override
+    public boolean isFilled() {
         return false;
     }
 

@@ -90,9 +90,6 @@ public class FigComment
 
     private boolean readyToEdit = true;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     // The figure that holds the text of the note.
     private FigText bodyTextFig;
 
@@ -109,9 +106,6 @@ public class FigComment
      * defined.<p>
      */
     private boolean newlyCreated;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The main constructor used for file loading.
@@ -188,9 +182,11 @@ public class FigComment
      *
      * @return The default text for this figure.
      */
+    @Override
     public String placeString() {
         String placeString = retrieveBody();
         if (placeString == null) {
+            // TODO: I18N
             placeString = "new note";
         }
         return placeString;
@@ -201,6 +197,7 @@ public class FigComment
      *
      * @return The cloned figure.
      */
+    @Override
     public Object clone() {
         FigComment figClone = (FigComment) super.clone();
         Iterator thisIter = this.getFigs().iterator();
@@ -246,6 +243,7 @@ public class FigComment
      *
      * {@inheritDoc}
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
         if (!readyToEdit) {
             if (Model.getFacade().isAModelElement(getOwner())) {
@@ -275,6 +273,7 @@ public class FigComment
     /*
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void vetoableChange(PropertyChangeEvent pce) {
         Object src = pce.getSource();
         if (src == getOwner()) {
@@ -290,6 +289,7 @@ public class FigComment
     /*
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         // update any text, colors, fonts, etc.
         renderingChanged();
@@ -300,6 +300,7 @@ public class FigComment
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
@@ -322,6 +323,7 @@ public class FigComment
     /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
+    @Override
     public void keyPressed(KeyEvent ke) {
         // Not used, do nothing.
     }
@@ -329,6 +331,7 @@ public class FigComment
     /*
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
+    @Override
     public void keyReleased(KeyEvent ke) {
         // Not used, do nothing.
     }
@@ -336,6 +339,7 @@ public class FigComment
     /*
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
+    @Override
     public void keyTyped(KeyEvent ke) {
         if (Character.isISOControl(ke.getKeyChar())) {
             return;
@@ -373,6 +377,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionComment(this);
     }
@@ -380,6 +385,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         // The text element has no border, so the line color doesn't matter.
         outlineFig.setLineColor(col);
@@ -389,6 +395,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return outlineFig.getLineColor();
     }
@@ -396,6 +403,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         outlineFig.setFillColor(col);
         urCorner.setFillColor(col);
@@ -404,6 +412,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return outlineFig.getFillColor();
     }
@@ -418,14 +427,6 @@ public class FigComment
         urCorner.setFilled(f);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    @Override
-    public boolean getFilled() {
-        return outlineFig.isFilled();
-    }
-
     @Override
     public boolean isFilled() {
         return outlineFig.isFilled();
@@ -434,6 +435,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         bodyTextFig.setLineWidth(0); // Make a seamless integration of the text
         // in the note figure.
@@ -444,6 +446,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return outlineFig.getLineWidth();
     }
@@ -454,6 +457,7 @@ public class FigComment
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEdited(FigText ft) {
         if (ft == bodyTextFig) {
             storeBody(ft.getText());
@@ -463,6 +467,7 @@ public class FigComment
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
      */
+    @Override
     protected void textEditStarted(FigText ft) {
         showHelp("parsing.help.comment");
     }
@@ -470,6 +475,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig encloser) {
         super.setEnclosingFig(encloser);
     }
@@ -502,6 +508,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
+    @Override
     public boolean getUseTrapRect() {
         return true;
     }
@@ -510,6 +517,7 @@ public class FigComment
      * Always returns null as the FigComment does not display its name.
      * @return null
      */
+    @Override
     public Rectangle getNameBounds() {
         return null;
     }
@@ -519,6 +527,7 @@ public class FigComment
      *
      * @return The minimum size for the note figure.
      */
+    @Override
     public Dimension getMinimumSize() {
 
         // Get the size of the text field.
@@ -544,6 +553,7 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int px, int py, int w, int h) {
         if (bodyTextFig == null) {
             return;
@@ -588,6 +598,7 @@ public class FigComment
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
      */
+    @Override
     protected void updateBounds() {
         Rectangle bbox = getBounds();
         Dimension minSize = getMinimumSize();
@@ -602,6 +613,7 @@ public class FigComment
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected final void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
 
@@ -641,6 +653,7 @@ public class FigComment
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
         Object me = getOwner();
 
@@ -694,7 +707,8 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
-    public Point getClosestPoint(Point anotherPt) {
+    @Override
+   public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
         int[] xs = {
             r.x, r.x + r.width - dogear, r.x + r.width,
@@ -717,4 +731,4 @@ public class FigComment
      * The UID.
      */
     private static final long serialVersionUID = 7242542877839921267L;
-} /* end class FigComment */
+}

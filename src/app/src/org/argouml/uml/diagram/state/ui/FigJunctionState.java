@@ -62,7 +62,7 @@ public class FigJunctionState extends FigStateVertex {
         addFig(getBigPort());
         addFig(head);
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
     /**
@@ -79,6 +79,7 @@ public class FigJunctionState extends FigStateVertex {
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
 	FigJunctionState figClone = (FigJunctionState) super.clone();
 	Iterator it = figClone.getFigs().iterator();
@@ -87,18 +88,20 @@ public class FigJunctionState extends FigStateVertex {
 	return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accesors
 
     /**
      * Initial states are fixed size.
      * @return false
      */
-    public boolean isResizable() { return false; }
+    @Override
+    public boolean isResizable() {
+        return false;
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
@@ -106,6 +109,7 @@ public class FigJunctionState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return head.getLineColor();
     }
@@ -113,6 +117,7 @@ public class FigJunctionState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
@@ -120,6 +125,7 @@ public class FigJunctionState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return head.getFillColor();
     }
@@ -127,19 +133,19 @@ public class FigJunctionState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getFilled()
-     */
-    public boolean getFilled() {
+    @Override
+    public boolean isFilled() {
         return true;
     }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
@@ -147,21 +153,21 @@ public class FigJunctionState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return head.getLineWidth();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Event handlers
-
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent me) { }
 
     /*
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
+    @Override
     public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
         int[] xs = {r.x + r.width / 2,
@@ -203,11 +209,9 @@ public class FigJunctionState extends FigStateVertex {
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }
-
-
-    
+   
     /**
      * The UID.
      */
     private static final long serialVersionUID = -5845934640541945686L;
-} /* end class FigJunctionState */
+}
