@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.util.Iterator;
 
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRect;
 
 /**
