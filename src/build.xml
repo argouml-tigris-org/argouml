@@ -16,7 +16,7 @@ if on a MS Windows system, or
 	./build.sh -p
 if on a *nix system, to get a list of available build targets
 and the name of the default target which will be used if none
-is specified (currently 'compile').
+is specified (currently 'package').
 
 Executing build.bat/build.sh will use the version of Ant from
 the ArgoUML CVS repository.  You can use 
@@ -69,7 +69,7 @@ order. The subdir/build.xml files are used by the Eclipse setup.
 
   -->
 
-<project basedir="." default="compile" name="argouml">
+<project basedir="." default="package" name="argouml">
 
   <!-- =================================================================== -->
   <!-- Global initialization                                               -->
