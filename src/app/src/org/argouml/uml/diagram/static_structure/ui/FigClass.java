@@ -693,9 +693,7 @@ public class FigClass extends FigClassifierBox
             Collection c = new ArrayList(
                     Model.getFacade().getStereotypes(newOwner));
             // and its features
-            Iterator it = Model.getFacade().getFeatures(newOwner).iterator();
-            while (it.hasNext()) {
-                Object feat = it.next();
+            for (Object feat : Model.getFacade().getFeatures(newOwner)) {
                 c.add(feat);
                 // and the stereotypes of its features
                 c.addAll(new ArrayList(Model.getFacade().getStereotypes(feat)));
@@ -704,18 +702,9 @@ public class FigClass extends FigClassifierBox
                     c.addAll(Model.getFacade().getParameters(feat));
                 }
             }
-            Iterator it2 = c.iterator();
-            while (it2.hasNext()) {
-                addElementListener(it2.next());
-            }
-            if (isPathVisible()) {
-                c = Model.getModelManagementHelper()
-                    .getAllSurroundingNamespaces(newOwner);
-                Iterator itpv = c.iterator();
-                while (itpv.hasNext()) {
-                    addElementListener(itpv.next(), 
-                            new String[] {"name", "namespace", "ownedElement"});
-                }
+            // And now add listeners to them all:
+            for (Object obj : c) {
+                addElementListener(obj);
             }
         }
     }
