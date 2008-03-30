@@ -185,9 +185,8 @@ public class FigSignal extends FigClassifierBox {
             Collection c = new ArrayList(
                     Model.getFacade().getStereotypes(newOwner));
             // And now add listeners to them all:
-            Iterator it2 = c.iterator();
-            while (it2.hasNext()) {
-                addElementListener(it2.next());
+            for (Object obj : c) {
+                addElementListener(obj);
             }
         }
     }
