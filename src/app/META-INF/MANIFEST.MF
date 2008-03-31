@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ArgoUML Rest of all subsystems
+Bundle-Name: %pluginName
+Bundle-Vendor: %pluginProvider
 Bundle-SymbolicName: org.argouml.app
 Bundle-Version: 0.25.5
 Export-Package: Acme,
@@ -162,4 +163,14 @@ Export-Package: Acme,
  tudresden.ocl.parser.node,
  tudresden.ocl.parser.parser
 Require-Bundle: org.argouml.core.infra,
- org.argouml.core.model
+ org.argouml.core.model,
+ org.argouml.core.model.mdr,
+ org.argouml.core.model.euml
+Eclipse-RegisterBuddy: org.argouml.core.infra
+Bundle-ClassPath: lib/antlrall-2.7.2.jar,
+ lib/commons-logging-1.0.2.jar,
+ lib/gef-0.12.4BETA.jar,
+ lib/ocl-argo-1.1.jar,
+ lib/swidgets-0.1.4.jar,
+ lib/toolbar-1.4.1-20071227.jar,
+ .
