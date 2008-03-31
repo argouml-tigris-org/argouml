@@ -34,6 +34,8 @@ import org.argouml.application.api.InitSubsystem;
 
 
 /**
+ * Initializer class for the checklist ui subsystem.
+ * It only adds a details tab.
  *
  * @author Michiel
  */
