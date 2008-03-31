@@ -24,11 +24,10 @@
 
 package org.argouml.profile;
 
-import org.argouml.application.api.InitSubsystem;
+import junit.framework.TestCase;
+
 import org.argouml.model.InitializeModel;
 import org.argouml.profile.init.InitProfileSubsystem;
-
-import junit.framework.TestCase;
 
 /**
  * Test cases for the initialization of the profile subsystem.
@@ -37,7 +36,7 @@ import junit.framework.TestCase;
  */
 public class TestSubsystemInit extends TestCase {
     
-    private InitSubsystem initSubsystem;
+    private InitProfileSubsystem initSubsystem;
 
     @Override
     protected void setUp() throws Exception {
@@ -53,13 +52,5 @@ public class TestSubsystemInit extends TestCase {
         } catch (RuntimeException e) { }
         initSubsystem.init();
         assertNotNull(ProfileFacade.getManager());
-    }
-    
-    public void testSettingsTabsEmpty() {
-        assertEquals(0, initSubsystem.getSettingsTabs().size());
-    }
-    
-    public void testProjectSettingsTabsEmpty() {
-        assertEquals(0, initSubsystem.getProjectSettingsTabs().size());
     }
 }
