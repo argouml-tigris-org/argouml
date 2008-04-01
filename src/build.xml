@@ -271,17 +271,13 @@ Property files to be searched:
 
     <!-- Update the manifest file. -->
     <property name="manifest.update" value="mf.mf"/>
-    <exec executable="sh">
-      <arg value="-c"/>
-      <arg value="( cd ../build; echo Class-Path: &#042;.jar ext/&#042;.jar > ${manifest.update} )"/>
-    </exec>
-
-    <!--
-    <exec executable="sh">
-      <arg value="-c"/>
-      <arg value="( cd ../build; $JAVA_HOME/bin/jar ufm argouml.jar mf.mf )"/>
-    </exec>
-    -->
+    <fileset dir="${argo.build.dir}" id="classpath.jars" >
+        <include name="**.jar" />
+    </fileset>
+    <pathconvert pathsep=" " property="cp" refid="classpath.jars" >
+        <mapper type="flatten"/>
+    </pathconvert>
+    <echo message="Classpath: ${cp} ext/*.jar" file="${argo.build.dir}/${manifest.update}" />
 
     <jar update="true"
          basedir="${argo.build.dir}"
