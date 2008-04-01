@@ -34,7 +34,10 @@ import org.argouml.model.XmiReader;
 import org.xml.sax.InputSource;
 
 /**
- *
+ * TODO: this doesn't need a full ProfileReference since it uses the 
+ * reader handed in the constructor. It doesn't make much sense to make 
+ * its callers init the path to some name which it doesn't need... 
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
 public class ReaderModelLoader implements ProfileModelLoader {
@@ -53,18 +56,37 @@ public class ReaderModelLoader implements ProfileModelLoader {
         this.reader = theReader;
     }
 
-    /**
-     * @param path
-     * @return
-     * @throws ProfileException
-     * @see org.argouml.profile.ProfileModelLoader#loadModel(java.lang.String)
+    /* @see ProfileModelLoader#loadModel(String)
      */
+    @Deprecated
     public Collection loadModel(String path) throws ProfileException {
         if (reader != null) {
             try {
                 XmiReader xmiReader = Model.getXmiReader();
                 InputSource inputSource = new InputSource(reader);
                 inputSource.setSystemId(path);
+                Collection elements = xmiReader.parse(inputSource, true);
+                return elements;
+            } catch (UmlException e) {
+                LOG.error("Exception while loading profile ", e);
+                throw new ProfileException("Invalid XMI data!");
+            }
+        }
+        LOG.error("Profile not found");
+        throw new ProfileException("Profile not found!");
+    }
+
+    /* @see ProfileModelLoader#loadModel(ProfileReference)
+     */
+    public Collection loadModel(ProfileReference reference) 
+        throws ProfileException {
+        if (reader != null) {
+            try {
+                XmiReader xmiReader = Model.getXmiReader();
+                InputSource inputSource = new InputSource(reader);
+                inputSource.setSystemId(reference.getPath());
+                inputSource.setPublicId(
+                        reference.getPublicReference().toString());
                 Collection elements = xmiReader.parse(inputSource, true);
                 return elements;
             } catch (UmlException e) {

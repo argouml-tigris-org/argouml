@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
@@ -75,14 +74,6 @@ class XmiReferenceResolverImpl extends XmiContext {
 
     private static final Logger LOG =
         Logger.getLogger(XmiReferenceResolverImpl.class);
-    
-    private static final String PROFILE_RESOURCE_PATH = 
-        "/org/argouml/profile/profiles/";
-    private static final String PROFILE_BASE_URL = 
-        "http://argouml.org/profiles/uml14";
-
-    private static final String USER_PROFILE_BASE_URL = 
-        "http://argouml.org/user-profiles/";
     
     private Map<String, Object> idToObjects = 
         Collections.synchronizedMap(new HashMap<String, Object>());
@@ -127,25 +118,36 @@ class XmiReferenceResolverImpl extends XmiContext {
     
     private boolean profile;
 
-    private Set<String> modelsPublicIds;
+    private Map<String, String> public2SystemIds;
 
     private String modelPublicId;
     
     /**
      * Constructor.
+     * @param systemId 
      * @see org.netbeans.lib.jmi.xmi.XmiContext#XmiContext(javax.jmi.reflect.RefPackage[], org.netbeans.api.xmi.XMIInputConfig)
      * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
      */
     XmiReferenceResolverImpl(RefPackage[] extents, XMIInputConfig config,
-            Map<String, XmiReference> objectToIdMap, Set<String> publicIds, 
-            List<String> searchDirs, boolean isProfile, String publicId) {
+            Map<String, XmiReference> objectToIdMap, 
+            Map<String, String> publicIds, List<String> searchDirs, 
+            boolean isProfile, String publicId, String systemId) {
         super(extents, config);
         objectsToId = objectToIdMap;
         modulesPath = searchDirs;
         profile = isProfile;
-        modelsPublicIds = publicIds;
+        public2SystemIds = publicIds;
         modelPublicId = publicId;
-        if (isProfile) modelsPublicIds.add(publicId);
+        if (isProfile) {
+            if (public2SystemIds.containsKey(modelPublicId)) {
+                LOG.warn("Either an already loaded profile is being re-read " 
+                    + "or a profile with the same publicId is being loaded! " 
+                    + "publicId = \"" + publicId + "\"; existing systemId = \""
+                    + public2SystemIds.get(publicId) + "\"; new systemId = \"" 
+                    + systemId + "\".");
+            }
+            public2SystemIds.put(publicId, systemId);
+        }
     }
 
     /**
@@ -182,13 +184,7 @@ class XmiReferenceResolverImpl extends XmiContext {
         }
 
         if (profile) {
-            if (systemId.contains(PROFILE_RESOURCE_PATH))
-                systemId = PROFILE_BASE_URL + getSuffix(systemId);
-            else if (systemId.contains("file:/")) {
-                // user defined profile - replace path with corresponding label
-                systemId = USER_PROFILE_BASE_URL + modelPublicId;
-            } else 
-                systemId = PROFILE_BASE_URL + modelPublicId;
+            systemId = modelPublicId;
         } else if (systemId == topSystemId) {
             systemId = null;
         } else if (reverseUrlMap.get(systemId) != null) {
@@ -276,8 +272,15 @@ class XmiReferenceResolverImpl extends XmiContext {
 
         // Several tries to construct a URL that really exists.
         if (modelUrl == null) {
-            // If systemId is a valid URL, simply use it
-            modelUrl = getValidURL(fixupURL(systemId));
+            if (public2SystemIds.containsKey(systemId)) {
+                // If systemId is publicId previously mapped from a systemId, 
+                // try to use the systemId.
+                modelUrl = getValidURL(public2SystemIds.get(systemId));
+            }
+            if (modelUrl == null) {
+                // If systemId is a valid URL, simply use it.
+                modelUrl = getValidURL(fixupURL(systemId));
+            }
             if (modelUrl == null) {
                 // Try to find suffix in module list.
                 String modelUrlAsString = findModuleURL(suffix);
@@ -362,7 +365,7 @@ class XmiReferenceResolverImpl extends XmiContext {
                 return fixupURL(urlString);
             }
         }
-        if (modelsPublicIds.contains(moduleName)) {
+        if (public2SystemIds.containsKey(moduleName)) {
             if (LOG.isDebugEnabled())
                 LOG.debug("Couldn't find user model (\"" + moduleName 
                     + "\") in modulesPath, attempt " 
@@ -416,13 +419,8 @@ class XmiReferenceResolverImpl extends XmiContext {
     private URL findModelUrlOnClasspath(String systemId) {
         final String dot = ".";
         String modelName = systemId;
-        if (systemId.startsWith(PROFILE_BASE_URL)) {
-            String publicId = systemId.substring(PROFILE_BASE_URL.length());
-            if (modelsPublicIds.contains(publicId)) {
-                modelName = publicId;
-            } else { 
-                modelName = PROFILE_RESOURCE_PATH + publicId;
-            }
+        if (public2SystemIds.containsKey(systemId)) {
+            modelName = public2SystemIds.get(systemId);
         } else {
             int filenameIndex = systemId.lastIndexOf("/");
             if (filenameIndex > 0) {

@@ -40,13 +40,31 @@ public class FileModelLoader extends URLModelLoader {
 
     private static final Logger LOG = Logger.getLogger(FileModelLoader.class);
 
-    
+    @Deprecated
     public Collection loadModel(String modelFilename) throws ProfileException {
         LOG.info("Loading profile from file'" + modelFilename + "'");
         try {
             File modelFile = new File(modelFilename);
             URL url = modelFile.toURI().toURL();
-            return super.loadModel(url, modelFile.getName());
+            URL url2 = null;
+            try {
+                url2 = new URL(modelFile.getName());
+            } catch (MalformedURLException e) {
+                LOG.error("Exception", e);
+            }
+            return super.loadModel(url, url2);
+        } catch (MalformedURLException e) {
+            throw new ProfileException("Model file not found!");
+        }
+    }
+
+    public Collection loadModel(ProfileReference reference) 
+        throws ProfileException {
+        LOG.info("Loading profile from file'" + reference.getPath() + "'");
+        try {
+            File modelFile = new File(reference.getPath());
+            URL url = modelFile.toURI().toURL();
+            return super.loadModel(url, reference.getPublicReference());
         } catch (MalformedURLException e) {
             throw new ProfileException("Model file not found!");
         }

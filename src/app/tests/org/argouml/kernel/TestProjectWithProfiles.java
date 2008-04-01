@@ -181,7 +181,11 @@ public class TestProjectWithProfiles extends TestCase {
         assertNotNull(returnParam);
         // Return type was java.util.List from Java profile - should be gone
         returnParamType = getFacade().getType(returnParam);
-        assertNull(returnParamType);
+        // TODO: with new reference resolving scheme, the model sub-system will
+        // cache the systemId of the profile, open it and resolve the profile 
+        // on its own. Thus, the java.util.List will be found and the return 
+        // value will be present again...
+        assertNotNull(returnParamType);
     }
 
     private void checkJavaListTypeExistsAndMatchesReturnParamType(
@@ -330,14 +334,18 @@ public class TestProjectWithProfiles extends TestCase {
         profileManager.removeProfile(userDefinedProfile);
         profileManager.removeSearchPathDirectory(testCaseDir.getAbsolutePath());
         // load the project
-        // FIXME: the next statement fails because the zargo's XMI model is 
-        // being loaded before the profile file, therefore it doesn't have a 
-        // chance to resolve the dependencies in the model.
+        // TODO: the following now does not throw since we the nre reference 
+        // resolving scheme, the model sub-system caches the system ID 
+        // references and resolves it on its own without the help of the 
+        // project.
         project = persister.doLoad(file);
         project.postLoad();
         // assert that the model element that depends on the profile is 
         // consistent
         fooClass = project.findType("Foo", false);
+        // FIXME: this will fail because the project does not have knowledge 
+        // of the loaded profile and doesn't include it on the models to 
+        // search for the type.
         assertNotNull(fooClass);
         Collection fooStereotypes = getFacade().getStereotypes(fooClass);
         assertEquals(1, fooStereotypes.size());

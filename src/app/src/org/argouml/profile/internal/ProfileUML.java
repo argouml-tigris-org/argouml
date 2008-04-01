@@ -24,15 +24,18 @@
 
 package org.argouml.profile.internal;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.argouml.model.Model;
+import org.argouml.profile.CoreProfileReference;
 import org.argouml.profile.DefaultTypeStrategy;
 import org.argouml.profile.FormatingStrategy;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileModelLoader;
+import org.argouml.profile.ProfileReference;
 import org.argouml.profile.ResourceModelLoader;
 
 /**
@@ -42,8 +45,7 @@ import org.argouml.profile.ResourceModelLoader;
  */
 public class ProfileUML extends Profile {
     
-    private static final String PROFILE_FILE = 
-        PROFILE_DIR + "default-uml14.xmi";
+    private static final String PROFILE_FILE = "default-uml14.xmi";
 
     static final String NAME = "UML 1.4";
     
@@ -59,7 +61,14 @@ public class ProfileUML extends Profile {
     ProfileUML() throws ProfileException {
         formatingStrategy = new JavaFormatingStrategy();
         profileModelLoader = new ResourceModelLoader();
-        model = profileModelLoader.loadModel(PROFILE_FILE);
+        ProfileReference profileReference = null;
+        try {
+            profileReference = new CoreProfileReference(PROFILE_FILE);
+        } catch (MalformedURLException e) {
+            throw new ProfileException(
+                "Exception while creating profile reference.", e);
+        }
+        model = profileModelLoader.loadModel(profileReference);
 
         if (model == null) {
             model = new ArrayList();

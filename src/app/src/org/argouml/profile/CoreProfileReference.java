@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,68 +24,37 @@
 
 package org.argouml.profile;
 
-import org.easymock.MockControl;
-
-import junit.framework.TestCase;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
+ * This class provides the base referencing and URL for ArgoUML core profiles.
  *
  * @author Luis Sergio Oliveira (euluis)
  */
-public class TestProfileFacade extends TestCase {
-
-    private MockControl managerCtrl;
-    private ProfileManager manager;
-
-    /* 
-     * @see junit.framework.TestCase#setUp()
-     */
-    @Override
-    protected void setUp() throws Exception {
-        managerCtrl = MockControl.createControl(
-                ProfileManager.class);
-        manager = (ProfileManager) managerCtrl.getMock();
-        ProfileFacade.setManager(manager);
-    }
+public class CoreProfileReference extends ProfileReference {
     
-    @Override
-    protected void tearDown() throws Exception {
-        ProfileFacade.reset();
-        super.tearDown();
-    }
-
-    /**
-     * Test {@link ProfileFacade#getManager()} before initialization.
-     */
-    public void testGetManagerBeforeInitialisationThrows() {
-        ProfileFacade.reset();
-        try {
-            ProfileFacade.getManager();
-            fail("Should throw RuntimeException!");
-        } catch (RuntimeException e) {
-            // expected
-        }
-    }
+    static final String PROFILES_RESOURCE_PATH = 
+        "/org/argouml/profile/profiles/";
     
-    /**
-     * Test {@link ProfileFacade#register(Profile)}.
-     */
-    public void testRegister() {
-        manager.registerProfile(null);
-        managerCtrl.replay();
-        
-        ProfileFacade.register(null);
-        managerCtrl.verify();
-    }
+    static final String PROFILES_BASE_URL = 
+        "http://argouml.org/profiles/uml14/";
 
     /**
-     * Test {@link ProfileFacade#remove(Profile)}.
+     * Constructor, which builds a ProfileReference for ArgoUML core profiles 
+     * by: 
+     * <li>prefixing the fileName with {@link #PROFILES_RESOURCE_PATH} and 
+     * using this as the path;</li>
+     * <li>and prefixing the fileName with {@link #PROFILES_BASE_URL} and 
+     * using this as the publicReference.</li>
+     * 
+     * @param fileName the profile file name.
+     * @throws MalformedURLException if the built URL is incorrect.
      */
-    public void testRemove() {
-        manager.removeProfile(null);
-        managerCtrl.replay();
-        
-        ProfileFacade.remove((Profile) null);
-        managerCtrl.verify();
+    public CoreProfileReference(String fileName) throws MalformedURLException {
+        super(PROFILES_RESOURCE_PATH + fileName, 
+            new URL(PROFILES_BASE_URL + fileName));
+        assert fileName != null 
+            : "null isn't acceptable as the profile file name.";
     }
 }

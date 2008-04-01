@@ -41,6 +41,20 @@ public interface ProfileModelLoader {
      * @return the set of defined packages
      * @throws ProfileException if the profile could not be loaded for some
      *                 reason
+     * @deprecated for 0.25.5 by euluis. 
+     * Use {@link #loadModel(ProfileReference)} instead.
      */
+    @Deprecated
     Collection loadModel(String path) throws ProfileException;  
+    
+    /**
+     * Load a model from the specified path.
+     * 
+     * @param reference the reference to the profile file, which contains the 
+     * path where the profile file can be found.
+     * @return the set of defined packages.
+     * @throws ProfileException if the profile could not be loaded for some
+     * reason.
+     */
+    Collection loadModel(ProfileReference reference) throws ProfileException;  
 }

@@ -26,6 +26,7 @@ package org.argouml.profile;
 
 import java.io.File;
 import java.io.Reader;
+import java.net.MalformedURLException;
 import java.util.Collection;
 
 /**
@@ -49,15 +50,39 @@ public class UserDefinedProfile extends Profile {
     public UserDefinedProfile(File file) throws ProfileException {
         displayName = file.getName();
         modelFile = file;
-        model = new FileModelLoader().loadModel(modelFile.getPath());
+        ProfileReference reference = null;
+        try {
+            reference = new UserProfileReference(file.getPath());
+        } catch (MalformedURLException e) {
+            throw new ProfileException(
+                "Failed to create the ProfileReference.", e);
+        }
+        model = new FileModelLoader().loadModel(reference);
         fromZargo = false;
     }
 
     
+    /**
+     * A constructor that takes a file name and a reader, being the reader the 
+     * input method to get the profile model.
+     * 
+     * @param fileName name of the profile model file.
+     * @param reader a reader opened from where the profile model will be 
+     * loaded. 
+     * @throws ProfileException if something goes wrong in initializing the 
+     * profile.
+     */
     public UserDefinedProfile(String fileName, Reader reader) 
         throws ProfileException {
         displayName = fileName;
-        model = new ReaderModelLoader(reader).loadModel(fileName);
+        ProfileReference reference = null;
+        try {
+            reference = new UserProfileReference(fileName);
+        } catch (MalformedURLException e) {
+            throw new ProfileException(
+                "Failed to create the ProfileReference.", e);
+        }
+        model = new ReaderModelLoader(reader).loadModel(reference);
         fromZargo = true;
     }
 

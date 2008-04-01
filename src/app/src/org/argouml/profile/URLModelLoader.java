@@ -45,12 +45,11 @@ public abstract class URLModelLoader implements ProfileModelLoader {
     /**
      * @param url the url/system id to load
      * @param publicId the publicId for which the model will be known - must be 
-     *        equal in different machines in order to be possible to load the 
-     *        model
+     * equal in different machines in order to be possible to load the model.
      * @return the model
      * @throws ProfileException if the XMIReader couldn't read the profile
      */
-    public Collection loadModel(URL url, String publicId) 
+    public Collection loadModel(URL url, URL publicId) 
         throws ProfileException {
         if (url == null) {
             throw new ProfileException("Null profile URL");
@@ -58,7 +57,7 @@ public abstract class URLModelLoader implements ProfileModelLoader {
         try {
             XmiReader xmiReader = Model.getXmiReader();
             InputSource inputSource = new InputSource(url.toExternalForm());
-            inputSource.setPublicId(publicId);
+            inputSource.setPublicId(publicId.toString());
             Collection elements = xmiReader.parse(inputSource, true);
             return elements;
         } catch (UmlException e) {

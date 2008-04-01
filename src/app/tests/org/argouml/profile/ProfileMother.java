@@ -64,6 +64,12 @@ public class ProfileMother {
      */
     public static final String STEREOTYPE_NAME_ST = "st";
 
+    /**
+     * Create a simple profile model with a class named "foo" and with a 
+     * stereotype named "st".
+     * 
+     * @return the profile model.
+     */
     public Object createSimpleProfileModel() {
         Object model = getModelManagementFactory().createModel();
         Object profileStereotype = getProfileStereotype();
@@ -108,6 +114,13 @@ public class ProfileMother {
         return umlProfileModel;
     }
 
+    /**
+     * Save the profile model into the given file.
+     * 
+     * @param model the profile model.
+     * @param file the file into which to save the profile model.
+     * @throws IOException if IO goes wrong.
+     */
     public void saveProfileModel(Object model, File file) throws IOException {
         FileOutputStream fileOut = new FileOutputStream(file);
         try {

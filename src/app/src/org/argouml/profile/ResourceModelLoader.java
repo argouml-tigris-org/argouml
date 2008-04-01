@@ -24,6 +24,8 @@
 
 package org.argouml.profile;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
@@ -63,9 +65,23 @@ public class ResourceModelLoader extends URLModelLoader {
     /*
      * @see org.argouml.profile.ProfileModelLoader#loadModel(java.lang.String)
      */
+    @Deprecated
     public Collection loadModel(String path) throws ProfileException {
         LOG.info("Loading profile from resource'" + path + "'");
-        return super.loadModel(clazz.getResource(path), path);
+        URL url = null;
+        try {
+            url = new URL(path);
+        } catch (MalformedURLException e) {
+            LOG.error("Exception", e);
+        }
+        return super.loadModel(clazz.getResource(path), url);
+    }
+    
+    public Collection loadModel(ProfileReference reference) 
+        throws ProfileException {
+        LOG.info("Loading profile from resource'" + reference.getPath() + "'");
+        return super.loadModel(clazz.getResource(reference.getPath()), 
+            reference.getPublicReference());
     }
 
 }

@@ -42,11 +42,20 @@ import junit.framework.TestCase;
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestReaderModelLoader extends TestCase {
+    /**
+     * Test the constructor.
+     */
     public void testCtor() {
         Reader reader = new StringReader("dummy string");
         new ReaderModelLoader(reader);
     }
     
+    /**
+     * Test {@link ReaderModelLoader#loadModel(ProfileReference)}.
+     * 
+     * @throws IOException upon IO errors.
+     * @throws ProfileException upon problems with profiles.
+     */
     public void testLoad() throws IOException, ProfileException {
         InitializeModel.initializeDefault();
         ProfileMother mother = new ProfileMother();
@@ -55,8 +64,10 @@ public class TestReaderModelLoader extends TestCase {
         File file = new File(testDir, "testSaveProfileModel.xmi");
         mother.saveProfileModel(model, file);
         Reader reader = new FileReader(file);
+        ProfileReference profileReference = new UserProfileReference(
+            file.getAbsolutePath());
         Collection models = new ReaderModelLoader(reader).
-            loadModel(file.getName());
+            loadModel(profileReference);
         assertNotNull(models);
         assertTrue(models.size() >= 1);
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,68 +24,43 @@
 
 package org.argouml.profile;
 
-import org.easymock.MockControl;
-
-import junit.framework.TestCase;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
+ * This class provides the base URL for user defined profiles.
  *
  * @author Luis Sergio Oliveira (euluis)
  */
-public class TestProfileFacade extends TestCase {
+public class UserProfileReference extends ProfileReference {
 
-    private MockControl managerCtrl;
-    private ProfileManager manager;
+    static final String DEFAULT_USER_PROFILE_BASE_URL = 
+        "http://argouml.org/user-profiles/";
 
-    /* 
-     * @see junit.framework.TestCase#setUp()
+    /**
+     * Constructor that simply delegates to super.
+     * 
+     * @param thePath see thePath documentation in 
+     * {@link ProfileReference#ProfileReference(String, URL)}.
+     * @param publicReference see publicReference documentation in 
+     * {@link ProfileReference#ProfileReference(String, URL)}.
      */
-    @Override
-    protected void setUp() throws Exception {
-        managerCtrl = MockControl.createControl(
-                ProfileManager.class);
-        manager = (ProfileManager) managerCtrl.getMock();
-        ProfileFacade.setManager(manager);
-    }
-    
-    @Override
-    protected void tearDown() throws Exception {
-        ProfileFacade.reset();
-        super.tearDown();
+    public UserProfileReference(String thePath, URL publicReference) {
+        super(thePath, publicReference);
     }
 
     /**
-     * Test {@link ProfileFacade#getManager()} before initialization.
+     * Constructor, which builds a ProfileReference for a user defined profile 
+     * by prefixing the fileName with {@link #DEFAULT_USER_PROFILE_BASE_URL} 
+     * and using this as the publicReference.
+     * 
+     * @param path the profile absolute file name.
+     * @throws MalformedURLException if the built URL is incorrect.
      */
-    public void testGetManagerBeforeInitialisationThrows() {
-        ProfileFacade.reset();
-        try {
-            ProfileFacade.getManager();
-            fail("Should throw RuntimeException!");
-        } catch (RuntimeException e) {
-            // expected
-        }
-    }
-    
-    /**
-     * Test {@link ProfileFacade#register(Profile)}.
-     */
-    public void testRegister() {
-        manager.registerProfile(null);
-        managerCtrl.replay();
-        
-        ProfileFacade.register(null);
-        managerCtrl.verify();
+    public UserProfileReference(String path) throws MalformedURLException {
+        super(path, 
+            new URL(DEFAULT_USER_PROFILE_BASE_URL + new File(path).getName()));
     }
 
-    /**
-     * Test {@link ProfileFacade#remove(Profile)}.
-     */
-    public void testRemove() {
-        manager.removeProfile(null);
-        managerCtrl.replay();
-        
-        ProfileFacade.remove((Profile) null);
-        managerCtrl.verify();
-    }
 }

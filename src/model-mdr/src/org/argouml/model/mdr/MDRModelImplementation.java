@@ -185,8 +185,8 @@ public class MDRModelImplementation implements ModelImplementation {
      * Set of known public IDs of models that could be used to resolve URLs 
      * from model element IDs.
      */
-    private Set<String> publicIds = 
-        Collections.synchronizedSet(new HashSet<String>());
+    private Map<String, String> public2SystemIds = 
+        Collections.synchronizedMap(new HashMap<String, String>());
 
     /**
      * @return Returns the root UML Factory package for user model.
@@ -669,8 +669,8 @@ public class MDRModelImplementation implements ModelImplementation {
         return objectToId;
     }
     
-    Set<String> getPublicIds() {
-        return publicIds;
+    Map<String, String> getPublic2SystemIds() {
+        return public2SystemIds;
     }
 
     public CommandStack getCommandStack() {

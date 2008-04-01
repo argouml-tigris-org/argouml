@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,68 +24,53 @@
 
 package org.argouml.profile;
 
-import org.easymock.MockControl;
-
-import junit.framework.TestCase;
+import java.io.File;
+import java.net.URL;
 
 /**
- *
+ * Support for the profile reference which internally to Argo implies having 
+ * both a public profile reference and the path to the profile file. 
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
-public class TestProfileFacade extends TestCase {
+public class ProfileReference {
 
-    private MockControl managerCtrl;
-    private ProfileManager manager;
+    private String path;
+    private URL url;
 
-    /* 
-     * @see junit.framework.TestCase#setUp()
+    /**
+     * Constructor. Note that this checks if the file name in path and in 
+     * publicReference are the same.
+     * 
+     * @param thePath the system path to the profile file.
+     * @param publicReference see {@link #getPublicReference()}.
      */
-    @Override
-    protected void setUp() throws Exception {
-        managerCtrl = MockControl.createControl(
-                ProfileManager.class);
-        manager = (ProfileManager) managerCtrl.getMock();
-        ProfileFacade.setManager(manager);
-    }
-    
-    @Override
-    protected void tearDown() throws Exception {
-        ProfileFacade.reset();
-        super.tearDown();
+    public ProfileReference(String thePath, URL publicReference) {
+        File file = new File(thePath);
+        File fileFromPublicReference = new File(publicReference.getPath());
+        assert file.getName().equals(fileFromPublicReference.getName()) 
+            : "File name in path and in publicReference are different.";
+        path = thePath;
+        url = publicReference;
     }
 
     /**
-     * Test {@link ProfileFacade#getManager()} before initialization.
+     * @return the path to the profile, being in principle this path the 
+     * system path to the profile file.
      */
-    public void testGetManagerBeforeInitialisationThrows() {
-        ProfileFacade.reset();
-        try {
-            ProfileFacade.getManager();
-            fail("Should throw RuntimeException!");
-        } catch (RuntimeException e) {
-            // expected
-        }
-    }
-    
-    /**
-     * Test {@link ProfileFacade#register(Profile)}.
-     */
-    public void testRegister() {
-        manager.registerProfile(null);
-        managerCtrl.replay();
-        
-        ProfileFacade.register(null);
-        managerCtrl.verify();
+    public String getPath() {
+        return path;
     }
 
     /**
-     * Test {@link ProfileFacade#remove(Profile)}.
+     * @return the public reference by which the profile will 
+     * be known in models that depend on it. I.e., this reference will prefix 
+     * the IDs of the profile model elements referred in the XMI of models 
+     * that depend on the profile for which the constructed ProfileReference 
+     * is used.
      */
-    public void testRemove() {
-        manager.removeProfile(null);
-        managerCtrl.replay();
-        
-        ProfileFacade.remove((Profile) null);
-        managerCtrl.verify();
+    public URL getPublicReference() {
+        return url;
     }
+
 }

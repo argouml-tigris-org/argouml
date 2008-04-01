@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,68 +24,60 @@
 
 package org.argouml.profile;
 
-import org.easymock.MockControl;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import junit.framework.TestCase;
 
 /**
- *
+ * Unit tests of the {@link CoreProfileReference} class.
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
-public class TestProfileFacade extends TestCase {
-
-    private MockControl managerCtrl;
-    private ProfileManager manager;
-
-    /* 
-     * @see junit.framework.TestCase#setUp()
+public class TestCoreProfileReference extends TestCase {
+    
+    /**
+     * Tests {@link CoreProfileReference#CoreProfileReference(String)}.
+     * 
+     * @throws MalformedURLException if the built URL is incorrect.
      */
-    @Override
-    protected void setUp() throws Exception {
-        managerCtrl = MockControl.createControl(
-                ProfileManager.class);
-        manager = (ProfileManager) managerCtrl.getMock();
-        ProfileFacade.setManager(manager);
+    public void testCtorHappyPath() throws MalformedURLException {
+        String fileName = "profileName.xmi";
+        ProfileReference reference = new CoreProfileReference(fileName);
+        assertEquals(CoreProfileReference.PROFILES_RESOURCE_PATH + fileName, 
+            reference.getPath());
+        assertEquals(
+            new URL(CoreProfileReference.PROFILES_BASE_URL + fileName), 
+            reference.getPublicReference());
     }
     
-    @Override
-    protected void tearDown() throws Exception {
-        ProfileFacade.reset();
-        super.tearDown();
-    }
-
     /**
-     * Test {@link ProfileFacade#getManager()} before initialization.
+     * Tests that the constructor checks for empty file name.
+     * 
+     * @throws MalformedURLException if the built URL is incorrect.
      */
-    public void testGetManagerBeforeInitialisationThrows() {
-        ProfileFacade.reset();
+    public void testCtorFailsWhenFileNameIsEmpty() 
+        throws MalformedURLException {
         try {
-            ProfileFacade.getManager();
-            fail("Should throw RuntimeException!");
-        } catch (RuntimeException e) {
+            new CoreProfileReference("");
+            fail("Expecting AssertionError due to empty file name.");
+        } catch (AssertionError e) {
             // expected
         }
     }
     
     /**
-     * Test {@link ProfileFacade#register(Profile)}.
+     * Tests that the constructor checks for null file name.
+     * 
+     * @throws MalformedURLException if the built URL is incorrect.
      */
-    public void testRegister() {
-        manager.registerProfile(null);
-        managerCtrl.replay();
-        
-        ProfileFacade.register(null);
-        managerCtrl.verify();
-    }
-
-    /**
-     * Test {@link ProfileFacade#remove(Profile)}.
-     */
-    public void testRemove() {
-        manager.removeProfile(null);
-        managerCtrl.replay();
-        
-        ProfileFacade.remove((Profile) null);
-        managerCtrl.verify();
+    public void testCtorFailsWhenFileNameIsNull() 
+        throws MalformedURLException {
+        try {
+            new CoreProfileReference(null);
+            fail("Expecting AssertionError due to null file name.");
+        } catch (AssertionError e) {
+            // expected
+        }
     }
 }

@@ -144,8 +144,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
             resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
                     config, modelImpl.getObjectToId(), 
-                    modelImpl.getPublicIds(), searchDirs, profile, 
-                    inputSource.getPublicId());
+                    modelImpl.getPublic2SystemIds(), searchDirs, profile, 
+                    inputSource.getPublicId(), inputSource.getSystemId());
             config.setReferenceResolver(resolver);
             
             XMIReader xmiReader =
