@@ -30,7 +30,7 @@ package org.argouml.uml.reveng.java;
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
-class ParameterDeclaration {
+public class ParameterDeclaration {
 
     private final short modifiers;
     private final String type;
@@ -46,7 +46,7 @@ class ParameterDeclaration {
      *                notation brackets
      * @param name the name of the parameter
      */
-    ParameterDeclaration(final short modifiers, final String type,
+    public ParameterDeclaration(final short modifiers, final String type,
             final String name) {
         this.modifiers = modifiers;
         this.type = type;
