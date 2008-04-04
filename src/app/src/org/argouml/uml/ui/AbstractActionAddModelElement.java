@@ -40,6 +40,7 @@ import org.argouml.i18n.Translator;
  * @deprecated for 0.25.4 by tfmorris. Use
  *             {@link AbstractActionAddModelElement2}.
  */
+@Deprecated
 public abstract class AbstractActionAddModelElement extends
         AbstractActionAddModelElement2 {
 
@@ -47,7 +48,7 @@ public abstract class AbstractActionAddModelElement extends
      * Construct an action to add a model element to some list.
      * 
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link AbstractActionAddModelElement2#AbstractActionAddModelElement2()}.
+     * {@link AbstractActionAddModelElement2#AbstractActionAddModelElement2()}.
      */
     @Deprecated
     protected AbstractActionAddModelElement() {

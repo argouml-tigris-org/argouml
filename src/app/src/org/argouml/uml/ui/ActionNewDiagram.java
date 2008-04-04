@@ -94,6 +94,7 @@ public abstract class ActionNewDiagram extends UndoableAction {
      * @deprecated by MVW in V0.25.3. Replaced by 
      * createCollaboration(Object namespace)
      */
+    @Deprecated
     protected static Object createCollaboration() {
         Project p = ProjectManager.getManager().getCurrentProject();
         Object namespace = p.getRoot(); // the root model

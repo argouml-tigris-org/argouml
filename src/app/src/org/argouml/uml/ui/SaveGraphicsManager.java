@@ -306,6 +306,7 @@ public final class SaveGraphicsManager {
      * @deprecated for 0.25.3 by tfmorris - use
      *             {@link #getSaveActionBySuffix(String)}
      */
+    @Deprecated
     @SuppressWarnings("deprecation")
     public CmdSaveGraphics getSaveCommandBySuffix(String suffix) {
         CmdSaveGraphics cmd = null;
