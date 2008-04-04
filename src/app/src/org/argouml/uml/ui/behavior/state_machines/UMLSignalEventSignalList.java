@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JPopupMenu;
 
-import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewSignal;
@@ -43,9 +42,9 @@ class UMLSignalEventSignalList extends UMLMutableLinkedList {
      * Constructor for UMLTransitionTriggerList.
      * @param dataModel the model
      */
-    public UMLSignalEventSignalList(
-        UMLModelElementListModel2 dataModel) {
-        super(dataModel, (AbstractActionAddModelElement) null, null, null, true);
+    public UMLSignalEventSignalList(UMLModelElementListModel2 dataModel) {
+        super(dataModel, (AbstractActionAddModelElement2) null, null, null,
+                true);
         setDelete(false);
         setDeleteAction(null);
     }
