@@ -4,7 +4,7 @@
 	<classpathentry kind="src" output="build-eclipse-tests" path="tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry exported="true" kind="lib" path="lib/antlrall-2.7.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/gef-0.12.4BETA.jar" sourcepath="/gef/src"/>
 	<classpathentry exported="true" kind="lib" path="lib/ocl-argo-1.1.jar"/>

@@ -50,7 +50,7 @@ Building this requires:
     </path>
 
     <path id="antlr.run.classpath">
-      <pathelement location="lib/antlrall-2.7.2.jar"/>
+      <pathelement location="lib/antlr-2.7.7.jar"/>
     </path>
 
     <path id="src.compile.classpath">
