@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,16 +53,21 @@ import org.argouml.uml.reveng.ImportSettings;
  * withdrawn in March, 2004, so it obviously provides no guidance for
  * more recent language features such as Java 5.
  *
+ * TODO: This really needs a more sophisticated symbol table facility.  It
+ * currently uses the model repository as its symbol table which makes it
+ * easy to merge into an existing model, but it also sometimes requires 
+ * guessing about what a symbol represents (e.g. interface, class, or package)
+ * so that the name can instantiated in a concrete form. - tfm 20070911
+ * 
  * @author Marcus Andersson
  */
 public class Modeller {
 
-    private static final String JAVA_PACKAGE = "java.lang";
-    
-    /**
-     * Logger.<p>
-     */
     private static final Logger LOG = Logger.getLogger(Modeller.class);
+
+    private static final String JAVA_PACKAGE = "java.lang";
+    private static final List<String> EMPTY_STRING_LIST = 
+        Collections.emptyList();
 
     /**
      * Current working model.
@@ -142,6 +147,12 @@ public class Modeller {
      * as just simple Objects.
      */
     private Collection<Object> newElements;
+
+    /**
+     * Flag to control generation of artificial names for associations.  If
+     * true, generate names of form "From->To".  If false, set name to null.
+     */
+    private boolean generateNames = true;
     
 
     /**
@@ -360,7 +371,7 @@ public class Modeller {
                             classifierName, mPackage);
                     newElements.add(mClassifier);
                 } else {
-                    warnClassifierNotFound(classifierName, e,
+                    warnClassifierNotFound(classifierName,
                             "an imported classifier");
                 }
             }
@@ -415,15 +426,23 @@ public class Modeller {
     }
     
     private String makeFromToName(Object from, Object to) {
-        return makeFromToName(
-                Model.getFacade().getName(from), 
-                Model.getFacade().getName(to));
+        if (!generateNames ) {
+            return null;
+        } else {
+            return makeFromToName(
+                    Model.getFacade().getName(from), 
+                    Model.getFacade().getName(to));
+        }
     }
     
     private String makeFromToName(String from, String to) {
-        // NOTE: This isn't localized, but I'm not sure it can be
-        // without other side effects - tfm - 20070410
-        return from + " -> " + to;
+        if (!generateNames) {
+            return null;
+        } else {
+            // TODO: This isn't localized, but I'm not sure it can be
+            // without other side effects - tfm - 20070410
+            return from + " -> " + to;
+        }
     }
     
     /**
@@ -444,21 +463,22 @@ public class Modeller {
                          String superclassName,
                          List<String> interfaces,
                          String javadoc) {
-        addClass(name, modifiers, Collections.EMPTY_LIST, superclassName,
+        addClass(name, modifiers, EMPTY_STRING_LIST, superclassName,
                 interfaces, javadoc, false);
     }
 
     /**
      * Called from the parser when a class declaration is found.
-     *
+     * 
      * @param name The name of the class.
-     * @param modifiers A sequence of class modifiers.
-     * @param superclassName Zero or one string with the name of the
-     *        superclass. Can be fully qualified or
-     *        just a simple class name.
+     * @param modifiers A bitmask of class modifiers.
+     * @param typeParameters List of strings containing names of types for
+     *                parameters
+     * @param superclassName Zero or one string with the name of the superclass.
+     *                Can be fully qualified or just a simple class name.
      * @param interfaces Zero or more strings with the names of implemented
-     *        interfaces. Can be fully qualified or just a
-     *        simple interface name.
+     *                interfaces. Can be fully qualified or just a simple
+     *                interface name.
      * @param javadoc The javadoc comment. null or "" if no comment available.
      * @param forceIt Force addition by creating all that's missing.
      */
@@ -512,7 +532,7 @@ public class Modeller {
                     newElements.add(parentClass);
 	            getGeneralization(currentPackage, parentClass, mClass);
 	        } else {
-	            warnClassifierNotFound(superclassName, e,
+	            warnClassifierNotFound(superclassName,
 	                    "a generalization");
 	        }
 	    }
@@ -546,17 +566,18 @@ public class Modeller {
             if (Model.getFacade().isAInterface(mClassifier)) {
                 interfaces.add(type);
             }
+
             addClass(name,
 		     (short) 0,
-                     Collections.EMPTY_LIST,
+                     EMPTY_STRING_LIST,
 		     Model.getFacade().isAClass(mClassifier) ? type : null,
 		     interfaces,
 		     "",
                      forceIt);
         } catch (ClassifierNotFoundException e) {
             // Must add it anyway, or the class popping will mismatch.
-            addClass(name, (short) 0, Collections.EMPTY_LIST, null,
-                    Collections.EMPTY_LIST, "", forceIt);
+            addClass(name, (short) 0, EMPTY_STRING_LIST, null,
+                    EMPTY_STRING_LIST, "", forceIt);
             LOG.info("Modeller.java: an anonymous class was created "
 		     + "although it could not be found in the classpath.");
         }
@@ -583,7 +604,7 @@ public class Modeller {
                              short modifiers,
                              List<String> interfaces,
                              String javadoc) {
-        addInterface(name, modifiers, Collections.EMPTY_LIST, interfaces,
+        addInterface(name, modifiers, EMPTY_STRING_LIST, interfaces,
                 javadoc, false);
     }
     
@@ -642,7 +663,7 @@ public class Modeller {
                     getGeneralization(currentPackage, parentInterface,
                             mInterface);
                 } else {
-                    warnClassifierNotFound(interfaceName, e, 
+                    warnClassifierNotFound(interfaceName, 
                             "a generalization");
                 }
             }
@@ -668,7 +689,7 @@ public class Modeller {
         Object mClass =
             addClassifier(Model.getCoreFactory().createClass(),
                           name, modifiers, javadoc, 
-                          Collections.EMPTY_LIST); // no type params for now
+                          EMPTY_STRING_LIST); // no type params for now
         
         Model.getCoreHelper().addStereotype(
                 mClass,
@@ -731,7 +752,7 @@ public class Modeller {
                                     classifierName, mPackage);
                     newElements.add(mInterface);
                 } else {
-                    warnClassifierNotFound(interfaceName, e,
+                    warnClassifierNotFound(interfaceName,
                             "an abstraction");
                 }
             }
@@ -836,6 +857,7 @@ public class Modeller {
        @param name Name of the classifier.
        @param modifiers String of modifiers.
        @param javadoc The javadoc comment. null or "" if no comment available.
+       @param typeParameters List of types for parameters (not implemented)
        @return The newly created/found classifier.
     */
     private Object addClassifier(Object newClassifier,
@@ -982,7 +1004,7 @@ public class Modeller {
                                 String name,
                                 List<ParameterDeclaration> parameters,
                                 String javadoc) {
-        return addOperation(modifiers, Collections.EMPTY_LIST, returnType, name,
+        return addOperation(modifiers, EMPTY_STRING_LIST, returnType, name,
                 parameters, javadoc, false);
     }
     
@@ -1035,9 +1057,9 @@ public class Modeller {
 
         Collection c = new ArrayList(Model.getFacade()
                 .getParameters(mOperation));
-    for (Object parameter : c) {
-	    Model.getCoreHelper().removeParameter(mOperation, parameter);
-	}
+        for (Object parameter : c) {
+            Model.getCoreHelper().removeParameter(mOperation, parameter);
+        }
 
 	Object mParameter;
 	String typeName;
@@ -1068,7 +1090,7 @@ public class Modeller {
                             classifierName, mPackage);
                     newElements.add(mClassifier);
                 } else {
-                    warnClassifierNotFound(returnType, e,
+                    warnClassifierNotFound(returnType,
                             "operation return type");
                 }
             }
@@ -1106,7 +1128,7 @@ public class Modeller {
                             classifierName, mPackage);
                     newElements.add(mClassifier);
                 } else {
-                    warnClassifierNotFound(typeName, e,
+                    warnClassifierNotFound(typeName,
                             "operation params");
                 }
             }
@@ -1159,14 +1181,11 @@ public class Modeller {
      * reflected accurately in the model.
      * 
      * @param name
-     *            name of the classifiere which wasn't found
-     * @param e
-     *            the exception -
+     *            name of the classifier which wasn't found
      * @param operation -
      *            a string indicating what type of operation was being attempted
      */
-    private void warnClassifierNotFound(String name, Throwable e,
-            String operation) {
+    private void warnClassifierNotFound(String name, String operation) {
         logError("Modeller.java: a classifier (" + name
                 + ") that was in the source "
                 + "file could not be generated in the model ", operation);
@@ -1283,7 +1302,7 @@ public class Modeller {
                                     classifierName, mPackage);
                     newElements.add(mClassifier);
                 } else {
-                    warnClassifierNotFound(typeSpec, e, "an attribute");
+                    warnClassifierNotFound(typeSpec, "an attribute");
                 }
             }
             if (mClassifier == null) {
@@ -1591,6 +1610,14 @@ public class Modeller {
         return mAssociationEnd;
     }
 
+    /**
+     * Build a unidirectional association between two Classifiers.
+     * 
+     * @param name name of the association
+     * @param sourceClassifier source classifier (end which is non-navigable)
+     * @param destClassifier destination classifier (end which is navigable)
+     * @return newly created Association
+     */
     public static Object buildDirectedAssociation(
 	    String name,
 	    Object sourceClassifier, 
@@ -1688,9 +1715,8 @@ public class Modeller {
     private Object getTaggedValue(Object element, String name) {
         Object tv = Model.getFacade().getTaggedValue(element, name);
         if (tv == null) {
-            tv =
-                    Model.getExtensionMechanismsFactory().buildTaggedValue(
-                            name, "");
+            tv = Model.getExtensionMechanismsFactory().buildTaggedValue(name,
+                    "");
             Model.getExtensionMechanismsHelper().addTaggedValue(element, tv);
         }
         return tv;
@@ -1726,7 +1752,7 @@ public class Modeller {
         }
         String pkgName = name.substring(0, lastDot);
         return pkgName;
-        
+
         // TODO: Fix handling of inner classes along the lines of the following...
         
         // If the last element begins with an uppercase character, assume
@@ -1734,7 +1760,8 @@ public class Modeller {
         // would be to defer until we can disambiguate, but this should be
         // better than what we have now for the more common case of inner
         // classes.
-//        if (Character.isUpperCase(getRelativePackageName(pkgName).charAt(0))) {
+//        if (Character.isUpperCase(
+//                getRelativePackageName(pkgName).charAt(0))) {
 //            return getPackageName(pkgName);
 //        } else {
 //            return pkgName;
@@ -2163,5 +2190,17 @@ public class Modeller {
      */
     public Collection getNewElements() {
         return newElements;
+    }
+
+    /**
+     * Set flag that controls name generation.  Artificial names are generated
+     * by default for historical reasons, but in most cases they are just
+     * clutter.
+     * 
+     * @param generateNamesFlag true to generate artificial names of the form
+     *                "From->To" for Associations, Dependencies, etc.
+     */
+    public void setGenerateNames(boolean generateNamesFlag) {
+        generateNames = generateNamesFlag;
     }
 }
