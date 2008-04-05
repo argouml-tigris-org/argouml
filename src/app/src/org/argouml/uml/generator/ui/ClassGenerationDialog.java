@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -98,20 +97,20 @@ public class ClassGenerationDialog
     /**
      * Constructor.
      *
-     * @param nodes The nodes to generate.
+     * @param nodes The UML elements, typically classifiers, to generate.
      */
-    public ClassGenerationDialog(List nodes) {
+    public ClassGenerationDialog(List<Object> nodes) {
         this(nodes, false);
     }
 
     /**
      * Constructor.
      *
-     * @param nodes The nodes to generate.
+     * @param nodes The UML elements, typically classifiers, to generate.
      * @param inModel <code>true</code> if the path is in the model.
      *        TODO: Correct?
      */
-    public ClassGenerationDialog(List nodes, boolean inModel) {
+    public ClassGenerationDialog(List<Object> nodes, boolean inModel) {
         super(
             Translator.localize("dialog.title.generate-classes"),
             Dialog.OK_CANCEL_OPTION,
@@ -175,7 +174,8 @@ public class ClassGenerationDialog
         contentPanel.add(centerPanel, BorderLayout.CENTER);
 
         // Output Directory
-        outputDirectoryComboBox = new JComboBox(getClasspathEntries().toArray());
+        outputDirectoryComboBox =
+                new JComboBox(getClasspathEntries().toArray());
 
         JButton browseButton = new JButton();
         nameButton(browseButton, "button.browse");
@@ -264,7 +264,7 @@ public class ClassGenerationDialog
                 GeneratorManager.getInstance().getLanguages());
     }
 
-    private static Collection getClasspathEntries() {
+    private static Collection<String> getClasspathEntries() {
         String classpath = System.getProperty("java.class.path");
         Collection<String> entries = new TreeSet<String>();
 
@@ -306,17 +306,17 @@ public class ClassGenerationDialog
                 Set nodes = classTableModel.getChecked(language);
 
                 if (!isPathInModel) {
-                    Collection files =
-                        generator.generateFiles(nodes, path, false);
-                    for (Iterator fit = files.iterator(); fit.hasNext();) {
+                    Collection<String> files =
+                            generator.generateFiles(nodes, path, false);
+                    for (String filename : files) {
                         fileNames[i].add(path + CodeGenerator.FILE_SEPARATOR
-                                + fit.next());
+                                + filename);
                     }
                 } else {
                     // classify nodes by base path
-                    Map nodesPerPath = new HashMap();
-                    for (Iterator iter = nodes.iterator(); iter.hasNext();) {
-                        Object node = iter.next();
+                    Map<String, Set<Object>> nodesPerPath =
+                            new HashMap<String, Set<Object>>();
+                    for (Object node : nodes) {
                         if (!Model.getFacade().isAClassifier(node)) {
                             continue;
                         }
@@ -340,9 +340,9 @@ public class ClassGenerationDialog
                                     path.substring(0, path.length()
                                         - fileSep.length());
                             }
-                            Set np = (Set) nodesPerPath.get(path);
+                            Set<Object> np = nodesPerPath.get(path);
                             if (np == null) {
-                                np = new HashSet();
+                                np = new HashSet<Object>();
                                 nodesPerPath.put(path, np);
                             }
                             np.add(node);
@@ -351,19 +351,17 @@ public class ClassGenerationDialog
                     } // end for (all nodes)
 
                     // generate the files
-                    Iterator nit = nodesPerPath.entrySet().iterator();
-                    while (nit.hasNext()) {
-                        Map.Entry entry = (Map.Entry) nit.next();
+                    for (Map.Entry entry : nodesPerPath.entrySet()) {
                         String basepath = (String) entry.getKey();
                         Set nodeColl = (Set) entry.getValue();
                         // TODO: the last argument (recursive flag) should be a
                         // selectable option
-                        Collection files =
+                        Collection<String> files =
                             generator.generateFiles(nodeColl, basepath, false);
-                        for (Iterator fit = files.iterator(); fit.hasNext();) {
+                        for (String filename : files) {
                             fileNames[i].add(basepath
                                     + CodeGenerator.FILE_SEPARATOR
-                                    + fit.next());
+                                    + filename);
                         }
                     }
                 } // end if (!isPathInModel) .. else
@@ -434,8 +432,19 @@ public class ClassGenerationDialog
 
     class TableModelClassChecks extends AbstractTableModel {
 
-        private List classes;
-        private Set[] checked;
+        /**
+         * List of all possible UML elements for which to generate code. The
+         * Object typed objects are actually UML Elements, but we don't have a
+         * visible type for that.
+         */
+        private List<Object> classes;
+
+        /**
+         * Array of sets of UML elements that the user has selected.  One set
+         * per language.  The Object typed objects are actually UML Elements,
+         * but we don't have a visible type for that.
+         */
+        private Set<Object>[] checked;
 
         /**
          * Constructor.
@@ -443,29 +452,21 @@ public class ClassGenerationDialog
         public TableModelClassChecks() {
         }
 
-        ////////////////
-        // accessors
-        public void setTarget(List nodes) {
+
+        /**
+         * Set the target.
+         * 
+         * @param nodes list of classes
+         */
+        public void setTarget(List<Object> nodes) {
             classes = nodes;
             checked = new Set[getLanguagesCount()];
             for (int j = 0; j < getLanguagesCount(); j++) {
                 // Doesn't really matter what set we use.
-                checked[j] = new HashSet();
+                checked[j] = new HashSet<Object>();
             }
 
-            int size = classes.size();
-            for (int i = 0; i < size; i++) {
-                Object cls = classes.get(i);
-                String name = Model.getFacade().getName(cls);
-                // Jaap B. in older versions of argouml (before
-                // 0.14alpha1) names were not initialized correctly.  this
-                // is a patch for that.
-                if (name == null || name.length() == 0) {
-                    // TODO: This is modifying the user's model - bad! - tfm
-                    Model.getCoreHelper().setName(cls, "");
-                    // continue;
-                }
-
+            for (Object cls : classes) {
                 for (int j = 0; j < getLanguagesCount(); j++) {
                     if (isSupposedToBeGeneratedAsLanguage(
                             languages.get(j), cls)) {
@@ -506,10 +507,15 @@ public class ClassGenerationDialog
             return languages.size();
         }
 
-        public Set getChecked(Language lang) {
+        /**
+         * Return the set of elements which are selected for the given language.
+         * @param lang the language
+         * @return a set of UML elements
+         */
+        public Set<Object> getChecked(Language lang) {
             int index = languages.indexOf(lang);
             if (index == -1) {
-                return Collections.EMPTY_SET;
+                return Collections.emptySet();
             }
             return checked[index];
         }
@@ -519,8 +525,8 @@ public class ClassGenerationDialog
          *
          * @return The union of all languages as a {@link Set}.
          */
-        public Set getChecked() {
-            Set union = new HashSet();
+        public Set<Object> getChecked() {
+            Set<Object> union = new HashSet<Object>();
             for (int i = 0; i < getLanguagesCount(); i++) {
                 union.addAll(checked[i]);
             }

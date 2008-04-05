@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,7 +52,7 @@ public interface CodeGenerator {
      * @return A collection of {@link SourceUnit} objects. The collection
      *         may be empty if no file is generated.
      */
-    Collection generate(Collection elements, boolean deps);
+    Collection<SourceUnit> generate(Collection elements, boolean deps);
 
     /**
      * Generate files for the specified classifiers.
@@ -63,7 +63,8 @@ public interface CodeGenerator {
      * @return The filenames (with relative path) as a collection of Strings.
      * The collection may be empty if no file will be generated.
      */
-    Collection generateFiles(Collection elements, String path, boolean deps);
+    Collection<String> generateFiles(Collection elements, String path, 
+            boolean deps);
 
     /**
      * Returns a list of files that will be generated from the specified
@@ -74,5 +75,5 @@ public interface CodeGenerator {
      * @return The filenames (with relative path) as a collection of Strings.
      * The collection may be empty if no file will be generated.
      */
-    Collection generateFileList(Collection elements, boolean deps);
+    Collection<String> generateFileList(Collection elements, boolean deps);
 }
