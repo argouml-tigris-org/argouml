@@ -164,7 +164,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
         multiSelectAllowed = multiselectAllowed;
         if (theChoices == null) {
             throw new IllegalArgumentException(
-                    "There should allways be choices in UMLAddDialog");
+                    "There should always be choices in UMLAddDialog");
         }
         if (exclusive && preselected != null && !preselected.isEmpty()) {
             theChoices.removeAll(preselected);
