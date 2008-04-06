@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,7 @@ public class ProgressMonitorWindow implements
         org.argouml.taskmgmt.ProgressMonitor {
     
     private ProgressMonitor pbar;
-    
+
     /**
      * initializes a ProgressMonitor
      * 
@@ -55,11 +55,11 @@ public class ProgressMonitorWindow implements
      * @param title     the (internationalized) title of the ProgressMonitor
      */
     public ProgressMonitorWindow(JFrame parent, String title) {
-        this.pbar = new ProgressMonitor(parent, 
+        pbar = new ProgressMonitor(parent, 
                 title,
                 null, 0, 100);
-        this.pbar.setMillisToDecideToPopup(250);       
-        this.pbar.setMillisToPopup(500);
+        pbar.setMillisToDecideToPopup(250);       
+        pbar.setMillisToPopup(500);
         parent.repaint();
         updateProgress(5);
         
@@ -71,7 +71,7 @@ public class ProgressMonitorWindow implements
      */
     public void progress(final ProgressEvent event) {
         final int progress = (int) event.getPosition();
-        if (this.pbar != null) {
+        if (pbar != null) {
             // File load/save gets done on a background thread, so we'll 
             // probably have to queue this to the Swing event thread
             if (!SwingUtilities.isEventDispatchThread()) {
@@ -91,7 +91,7 @@ public class ProgressMonitorWindow implements
      * @see org.argouml.application.api.ProgressMonitor#updateProgress(int)
      */
     public void updateProgress(final int progress) {
-        if (this.pbar != null) {
+        if (pbar != null) {
             pbar.setProgress(progress);
             Object[] args = new Object[] {String.valueOf(progress)};
             pbar.setNote(Translator.localize("dialog.progress.note", args));
@@ -103,15 +103,21 @@ public class ProgressMonitorWindow implements
      * @see org.argouml.application.api.ProgressMonitor#isCanceled()
      */
     public boolean isCanceled() {
-        return this.pbar != null && this.pbar.isCanceled();
+        return (pbar != null) && pbar.isCanceled();
     }
 
     /*
      * @see org.argouml.application.api.ProgressMonitor#close()
      */
     public void close() {
-        this.pbar.close();
-        this.pbar = null;
+        // Queue to event thread to prevent race during close
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                pbar.close();
+                pbar = null; 
+            }
+        });
+
     }
     
     // these settings are needed to make the ProgressMonitor pop up early
