@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -329,8 +329,10 @@ public final class ArgoEventPump {
 					(ArgoNotationEventListener) listener);
                 }
             }
-            if (event.getEventType() >= ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT
-                    && event.getEventType() < ArgoEventTypes.LAST_DIAGRAM_APPEARANCE_EVENT) {
+            if (event.getEventType() >= ArgoEventTypes
+                            .ANY_DIAGRAM_APPEARANCE_EVENT
+                    && event.getEventType() < ArgoEventTypes
+                            .LAST_DIAGRAM_APPEARANCE_EVENT) {
                 if (listener instanceof ArgoDiagramAppearanceEventListener) {
                     handleFireDiagramAppearanceEvent(
                             (ArgoDiagramAppearanceEvent) event,
@@ -352,14 +354,16 @@ public final class ArgoEventPump {
                 }
             }
             if (event.getEventType() >= ArgoEventTypes.ANY_STATUS_EVENT
-                    && event.getEventType() < ArgoEventTypes.LAST_STATUS_EVENT) {
+                    && event.getEventType() < ArgoEventTypes
+                            .LAST_STATUS_EVENT) {
                 if (listener instanceof ArgoStatusEventListener) {
                     handleFireStatusEvent((ArgoStatusEvent) event,
                             (ArgoStatusEventListener) listener);
                 }
             }
             if (event.getEventType() >= ArgoEventTypes.ANY_PROFILE_EVENT
-                    && event.getEventType() < ArgoEventTypes.LAST_PROFILE_EVENT) {
+                    && event.getEventType() < ArgoEventTypes
+                            .LAST_PROFILE_EVENT) {
                 if (listener instanceof ArgoProfileEventListener) {
                     handleFireProfileEvent((ArgoProfileEvent) event,
                             (ArgoProfileEventListener) listener);
@@ -390,8 +394,8 @@ public final class ArgoEventPump {
             if (pair.getEventType() == ArgoEventTypes.ANY_EVENT) {
                 handleFireEvent(event, pair.getListener());
             } else if (
-                (pair.getEventType() >= event.getEventStartRange())
-                    && (pair.getEventType() <= event.getEventEndRange())) {
+                    pair.getEventType() == event.getEventStartRange()
+                    || pair.getEventType() == event.getEventType()) {
                 handleFireEvent(event, pair.getListener());
             }
         }
