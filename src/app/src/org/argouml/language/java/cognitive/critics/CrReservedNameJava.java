@@ -52,74 +52,106 @@ public class CrReservedNameJava extends CrReservedName {
 
         List<String> javaReserved = new ArrayList<String>();
 
-        javaReserved.add("public");
-        javaReserved.add("private");
-        javaReserved.add("protected");
+        // The following are in the same order they appear in java.g
+        
+        // package definition and imports start everything off
         javaReserved.add("package");
         javaReserved.add("import");
-        javaReserved.add("java");
-        javaReserved.add("class");
-        javaReserved.add("interface");
+
         javaReserved.add("extends");
-        javaReserved.add("implements");
-        javaReserved.add("native");
-        javaReserved.add("boolean");
+        javaReserved.add("super");
+        
+        // primitive data types
         javaReserved.add("void");
-        javaReserved.add("int");
+        javaReserved.add("boolean");
+        javaReserved.add("byte");
         javaReserved.add("char");
+        javaReserved.add("short");
+        javaReserved.add("int");
         javaReserved.add("float");
         javaReserved.add("long");
-        javaReserved.add("short");
-        javaReserved.add("byte");
         javaReserved.add("double");
-        javaReserved.add("String");
-        javaReserved.add("Vector");
-        javaReserved.add("Hashtable");
-        javaReserved.add("Properties");
-
-        javaReserved.add("null");
-        javaReserved.add("true");
-        javaReserved.add("false");
-        javaReserved.add("rest");
-        javaReserved.add("operator");
-        javaReserved.add("inner");
-        javaReserved.add("outer");
-        javaReserved.add("this");
-        javaReserved.add("super");
-        javaReserved.add("byvalue");
-        javaReserved.add("cast");
-        javaReserved.add("const");
-        javaReserved.add("future");
-        javaReserved.add("generic");
-        javaReserved.add("goto");
-        javaReserved.add("throws");
-        javaReserved.add("try");
-        javaReserved.add("catch");
-        javaReserved.add("finally");
-        javaReserved.add("new");
-
-        javaReserved.add("synchronized");
+        
+        javaReserved.add("interface");
+        
+        // modifiers
+        javaReserved.add("private");
+        javaReserved.add("public");
+        javaReserved.add("protected");
         javaReserved.add("static");
+        javaReserved.add("transient");
         javaReserved.add("final");
         javaReserved.add("abstract");
-        javaReserved.add("for");
+        javaReserved.add("native");
+        javaReserved.add("threadsafe");        
+        javaReserved.add("synchronized");
+        javaReserved.add("const");
+        javaReserved.add("volatile");
+        javaReserved.add("strictfp");
+
+        javaReserved.add("class");
+        javaReserved.add("extends");
+        javaReserved.add("implements");        
+        
+        javaReserved.add("enum");
+        
+        javaReserved.add("this");
+        // super already handled
+        
+        javaReserved.add("new");
+        javaReserved.add("throws");
+
         javaReserved.add("if");
         javaReserved.add("else");
+        javaReserved.add("for");
         javaReserved.add("while");
-        javaReserved.add("return");
-        javaReserved.add("continue");
-        javaReserved.add("break");
         javaReserved.add("do");
-        javaReserved.add("until");
+        javaReserved.add("break");
+        javaReserved.add("continue");
+        javaReserved.add("return");
         javaReserved.add("switch");
         javaReserved.add("case");
         javaReserved.add("default");
-        javaReserved.add("instanceof");
-        javaReserved.add("var");
-        javaReserved.add("volatile");
-        javaReserved.add("transient");
 
+        javaReserved.add("try");
+        javaReserved.add("catch");
+        javaReserved.add("finally");
+        javaReserved.add("throw");
+        
         javaReserved.add("assert");
+
+        javaReserved.add("instanceof");
+
+        javaReserved.add("true");
+        javaReserved.add("false");
+        javaReserved.add("null");
+
+        // new already handled
+
+        ////////////// end of Java grammar keywords //////////////////
+        
+        // Some common java.* classes that we've historically checked for
+        // TODO: We should probably check for all or none
+        javaReserved.add("String");
+        javaReserved.add("Vector");
+        javaReserved.add("Hashtable");
+        javaReserved.add("Properties");        
+
+        // The rest of these aren't reserved Java words, but they were 
+        // historically things that were checked for.  Disabled for now to
+        // minimize false alarms - tfm 20080506
+//        javaReserved.add("java");
+//        javaReserved.add("until");
+//        javaReserved.add("var");        
+//        javaReserved.add("rest");
+//        javaReserved.add("operator");
+//        javaReserved.add("inner");
+//        javaReserved.add("outer");
+//        javaReserved.add("byvalue");
+//        javaReserved.add("cast");
+//        javaReserved.add("future");
+//        javaReserved.add("generic");
+//        javaReserved.add("goto");
 
         return javaReserved;
     }
