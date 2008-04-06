@@ -74,7 +74,7 @@ public class ZoomSliderButton extends PopupButton {
      * Font used for the slider tick labels and for the current magnification
      * value label.
      */
-    private static final Font   LABEL_FONT = new Font("Dialog", Font.PLAIN, 10);
+    private static final Font LABEL_FONT = new Font("Dialog", Font.PLAIN, 10);
 
     /**
      * The minimum zoom slider value (as percentage).
@@ -82,39 +82,39 @@ public class ZoomSliderButton extends PopupButton {
     public static final int MINIMUM_ZOOM = 25;
 
     /**
-     * The minimum zoom slider value (as percentage).
+     * The maximum zoom slider value (as percentage).
      */
     public static final int MAXIMUM_ZOOM = 300;
 
     /**
      * The preferred height of the slider component.
      */
-    private static final int    SLIDER_HEIGHT = 250;
+    private static final int SLIDER_HEIGHT = 250;
 
     /**
      * The slider component.
      */
-    private JSlider             slider = null;
+    private JSlider slider = null;
 
     /**
      * The text field which shows the current zoom magnification value.
      */
-    private JTextField          currentValue = null;
-    
+    private JTextField currentValue = null;
+
     /**
      * Used to enable/disable the popup button.
      */
-    private boolean             popupButtonIsActive = true;
-    
+    private boolean popupButtonIsActive = true;
+
     /**
      * Indicates whether the popupmenu is showing or not.
      */
-    private boolean             popupMenuIsShowing = false;
-    
+    private boolean popupMenuIsShowing = false;
+
     /**
      * Indicates whether the mouse is over the popup button or not.
      */
-    private boolean             mouseIsOverPopupButton = false;
+    private boolean mouseIsOverPopupButton = false;
 
     /**
      * Constructs a new ZoomSliderButton.
