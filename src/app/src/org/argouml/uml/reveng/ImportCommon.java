@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -91,7 +92,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      */
     private DiagramInterface diagramInterface;
 
-    private File selectedFile;
+    private File[] selectedFiles;
 
     protected ImportCommon() {
         super();
@@ -172,23 +173,25 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     }
 
     /**
-     * Get the files. For old style modules, this asks the module for the list.
-     * For new style modules we generate it ourselves based on their specified
+     * Get the files.  We generate it based on their specified
      * file suffixes.
      * @param monitor progress monitor which can be used to cancel long running 
      * request
      * @return the list of files to be imported
      */
-    protected List getFileList(ProgressMonitor monitor) {
-        List files;
-        files =
+    protected List<File> getFileList(ProgressMonitor monitor) {
+        List<File> files = Arrays.asList(getSelectedFiles());
+        if (files.size() == 1) {
+            File file = files.get(0);
+            files =
                 FileImportUtils.getList(
-                        getSelectedFile(), isDescendSelected(), currentModule
-                                .getSuffixFilters(), monitor);
-        if (getSelectedFile().isDirectory()) {
-            setSrcPath(getSelectedFile().getAbsolutePath());
-        } else {
-            setSrcPath(null);
+                        file, isDescendSelected(), currentModule
+                        .getSuffixFilters(), monitor);
+            if (file.isDirectory()) {
+                setSrcPath(file.getAbsolutePath());
+            } else {
+                setSrcPath(null);
+            }
         }
 
 
@@ -197,7 +200,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
             Object model =
                 ProjectManager.getManager().getCurrentProject().getModel();
             for (int i = files.size() - 1; i >= 0; i--) {
-                File f = (File) files.get(i);
+                File f = files.get(i);
                 String fn = f.getAbsolutePath();
                 String lm = String.valueOf(f.lastModified());
                 if (lm.equals(
@@ -272,14 +275,33 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         return modules;
     }
 
+    /**
+     * @param file the selected file
+     * @deprecated for 0.25.5 by tfmorris. Use 
+     * {@link #setSelectedFiles(File[])}.
+     */
+    @Deprecated
     protected void setSelectedFile(File file) {
-        selectedFile = file;
+        selectedFiles = new File[] {file};
     }
 
+    /**
+     * @return the first selected file.
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSelectedFiles()}.
+     */
+    @Deprecated
     protected File getSelectedFile() {
-        return selectedFile;
+        return selectedFiles[0];
     }
 
+    protected void setSelectedFiles(final File[] files) {
+        selectedFiles = files;
+    }
+
+    protected File[] getSelectedFiles() {
+        return Arrays.copyOf(selectedFiles, selectedFiles.length);
+    }
+    
     protected void setCurrentModule(ImportInterface module) {
         currentModule = module;
     }
@@ -292,8 +314,9 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * Returns the possible languages in which the user can import the sources.
      * @return a list of Strings with the names of the languages available
      */
-    public List getLanguages() {
-        return Collections.unmodifiableList(new ArrayList(modules.keySet()));
+    public List<String> getLanguages() {
+        return Collections.unmodifiableList(
+                new ArrayList<String>(modules.keySet()));
     }
 
     /**

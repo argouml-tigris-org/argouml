@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,6 +66,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.taskmgmt.ProgressEvent;
 import org.argouml.taskmgmt.ProgressMonitor;
+import org.argouml.uml.reveng.java.JavaImport;
 import org.argouml.util.SuffixFilter;
 import org.argouml.util.UIUtils;
 import org.tigris.gef.base.Globals;
@@ -92,8 +93,6 @@ import org.tigris.swidgets.GridLayout2;
  * @author Andreas Rueckert a_rueckert@gmx.net
  */
 public class Import extends ImportCommon implements ImportSettings {
-
-    private static final String SEPARATOR = "/";
 
     private JComponent configPanel;
 
@@ -128,7 +127,6 @@ public class Import extends ImportCommon implements ImportSettings {
     private StringBuffer problems = new StringBuffer();
     
     private Frame myFrame;
-
 
 
     /**
@@ -554,15 +552,26 @@ public class Import extends ImportCommon implements ImportSettings {
 
         private Import theImport;
 
-        /*
+        /**
+         * Constructs a new ImportFileChooser opened to the given directory.
+         * 
+         * @param imp the import manager
+         * @param currentDirectoryPath the directory path
          * @see javax.swing.JFileChooser#JFileChooser(String)
          */
         public ImportFileChooser(Import imp, String currentDirectoryPath) {
             super(currentDirectoryPath);
             theImport = imp;
+            initChooser();
         }
 
-        /*
+        /**
+         * Constructs a JFileChooser using the given current directory path and
+         * FileSystemView.
+         * 
+         * @param imp the import manager
+         * @param currentDirectoryPath the directory path
+         * @param fsv the file system view
          * @see javax.swing.JFileChooser#JFileChooser(String, FileSystemView)
          */
         public ImportFileChooser(
@@ -571,17 +580,26 @@ public class Import extends ImportCommon implements ImportSettings {
                 FileSystemView fsv) {
             super(currentDirectoryPath, fsv);
             theImport = imp;
+            initChooser();
         }
 
-        /*
+        /**
+         * Constructs a new default ImportFileChooser.
+         * 
+         * @param imp the import manager
          * @see javax.swing.JFileChooser#JFileChooser()
          */
         public ImportFileChooser(Import imp) {
             super();
             theImport = imp;
+            initChooser();
         }
 
-        /*
+        /**
+         * Constructs a JFileChooser using the given FileSystemView.
+         * 
+         * @param imp the import manager
+         * @param fsv the file system view
          * @see javax.swing.JFileChooser#JFileChooser(FileSystemView)
          */
         public ImportFileChooser(
@@ -589,32 +607,51 @@ public class Import extends ImportCommon implements ImportSettings {
                 FileSystemView fsv) {
             super(fsv);
             theImport = imp;
+            initChooser();
         }
 
+
+        private void initChooser() {
+            setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            setMultiSelectionEnabled(true);
+            setSelectedFile(getCurrentDirectory());
+        }
+        
         /*
          * @see javax.swing.JFileChooser#approveSelection()
          */
+        @Override
         public void approveSelection() {
-            theImport.setSelectedFile(getSelectedFile());
-            if (getSelectedFile() != null) {
-                String path = getSelectedFile().getParent();
-                String filename =
-                        path + SEPARATOR + getSelectedFile().getName();
-                Globals.setLastDirectory(path);
-                if (filename != null) {
-                    theImport.disposeDialog();
-                    // TODO: This is only relevant for Java import
-                    // move out of normal control flow.  The OK button of this
-                    // dialog transfers to Import.doFile
-                    new ImportClasspathDialog(theImport);
-                    return;
+            File[] files = getSelectedFiles();
+            File dir = getCurrentDirectory();
+            if (files.length == 0) {
+                files = new File[] {dir};
+            }
+            if (files.length == 1) {
+                File file = files[0];
+                if (file != null && file.isDirectory()) {
+                    dir = file;
+                } else {
+                    dir = file.getParentFile();
                 }
             }
+            theImport.setSelectedFiles(files);
+            Globals.setLastDirectory(dir.getPath());
+            theImport.disposeDialog();
+            
+            if (theImport.getCurrentModule() instanceof JavaImport) {
+                // The OK button of this
+                // dialog transfers to Import.doFile
+                new ImportClasspathDialog(theImport);
+            } else {
+                theImport.doFile();
+            } 
         }
 
         /*
          * @see javax.swing.JFileChooser#cancelSelection()
          */
+        @Override
         public void cancelSelection() {
             theImport.disposeDialog();
         }
@@ -739,7 +776,7 @@ public class Import extends ImportCommon implements ImportSettings {
                 String message) {
             // TODO: Create an error dialog or panel in our progress dialog
             // for now we just use our old style separate error dialog
-            JDialog problemsDialog = new ProblemsDialog(message);
+            JDialog problemsDialog = new ProblemsDialog(getFrame(), message);
             problemsDialog.setTitle(title);
             problemsDialog.setVisible(true);
             // TODO: Only needed while we have a separate problem dialog
@@ -799,15 +836,15 @@ public class Import extends ImportCommon implements ImportSettings {
         /**
          * The constructor.
          */
-        public ProblemsDialog() {
-            this(problems.toString());
+        ProblemsDialog() {
+            this(getFrame(), problems.toString());
         }
 
         /**
          * The constructor.
          */
-        public ProblemsDialog(String errors) {
-            super();
+        ProblemsDialog(Frame frame, String errors) {
+            super(frame);
             setResizable(true);
             setModal(true);
             setTitle(Translator.localize("dialog.title.import-problems"));
@@ -855,7 +892,7 @@ public class Import extends ImportCommon implements ImportSettings {
             disposeDialog();
         }
 
-        public void disposeDialog() {
+        private void disposeDialog() {
             setVisible(false);
             dispose();
         }
