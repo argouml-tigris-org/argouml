@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -618,12 +618,15 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_ADJUST_PAGE_BREAKS, null,
                 new AdjustPageBreaksAction());
         putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());
+
         putDefaultShortcut(ACTION_ZOOM_IN, KeyStroke.getKeyStroke(
-                KeyEvent.VK_PLUS, DEFAULT_MASK), new ZoomAction(
+                KeyEvent.VK_PLUS, DEFAULT_MASK), new ZoomActionProxy(
                         (1.0) / (GenericArgoMenuBar.ZOOM_FACTOR)));
+
         putDefaultShortcut(ACTION_ZOOM_OUT, KeyStroke.getKeyStroke(
-                KeyEvent.VK_MINUS, DEFAULT_MASK), new ZoomAction(
+                KeyEvent.VK_MINUS, DEFAULT_MASK), new ZoomActionProxy(
                         GenericArgoMenuBar.ZOOM_FACTOR));
+
         putDefaultShortcut(ACTION_FIND, KeyStroke.getKeyStroke(KeyEvent.VK_F3,
                 0), new ActionFind());
 

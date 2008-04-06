@@ -1,5 +1,5 @@
 // $Id:GenericArgoMenuBar.java 13104 2007-07-21 18:29:31Z mvw $
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -86,7 +86,6 @@ import org.tigris.gef.base.DistributeAction;
 import org.tigris.gef.base.ReorderAction;
 import org.tigris.gef.base.SelectAllAction;
 import org.tigris.gef.base.SelectInvertAction;
-import org.tigris.gef.base.ZoomAction;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**
@@ -555,16 +554,17 @@ public class GenericArgoMenuBar extends JMenuBar implements
         JMenu zoom = (JMenu) view.add(new JMenu(menuLocalize("Zoom")));
         setMnemonic(zoom, "Zoom");
 
-        ZoomAction zoomOutAction = new ZoomAction(ZOOM_FACTOR);
+        ZoomActionProxy zoomOutAction = new ZoomActionProxy(ZOOM_FACTOR);
         JMenuItem zoomOut = zoom.add(zoomOutAction);
         setMnemonic(zoomOut, "Zoom Out");
         ShortcutMgr.assignAccelerator(zoomOut, ShortcutMgr.ACTION_ZOOM_OUT);
 
-        JMenuItem zoomReset = zoom.add(new ZoomAction(0.0));
+        JMenuItem zoomReset = zoom.add(new ZoomActionProxy(0.0));
         setMnemonic(zoomReset, "Zoom Reset");
         ShortcutMgr.assignAccelerator(zoomReset, ShortcutMgr.ACTION_ZOOM_RESET);
 
-        ZoomAction zoomInAction = new ZoomAction((1.0) / (ZOOM_FACTOR));
+        ZoomActionProxy zoomInAction = 
+            new ZoomActionProxy((1.0) / (ZOOM_FACTOR));
         JMenuItem zoomIn = zoom.add(zoomInAction);
         setMnemonic(zoomIn, "Zoom In");
         ShortcutMgr.assignAccelerator(zoomIn, ShortcutMgr.ACTION_ZOOM_IN);

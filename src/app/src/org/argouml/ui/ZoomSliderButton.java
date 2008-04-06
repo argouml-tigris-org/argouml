@@ -77,14 +77,14 @@ public class ZoomSliderButton extends PopupButton {
     private static final Font   LABEL_FONT = new Font("Dialog", Font.PLAIN, 10);
 
     /**
-     * The minimum zoom magnification slider value.
+     * The minimum zoom slider value (as percentage).
      */
-    private static final int    MINIMUM_ZOOM = 0;
+    public static final int MINIMUM_ZOOM = 25;
 
     /**
-     * The maximum zoom magnification slider value.
+     * The minimum zoom slider value (as percentage).
      */
-    private static final int    MAXIMUM_ZOOM = 500;
+    public static final int MAXIMUM_ZOOM = 300;
 
     /**
      * The preferred height of the slider component.
@@ -121,7 +121,7 @@ public class ZoomSliderButton extends PopupButton {
      */
     public ZoomSliderButton() {
         super();
-        setAction( new AbstractAction() {
+        setAction(new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 /* If action comes in with *no* modifiers, it is a pure
                  * keyboard event (e.g. spacebar), so do it.  Anything else
@@ -155,8 +155,8 @@ public class ZoomSliderButton extends PopupButton {
                     MAXIMUM_ZOOM,
                     MINIMUM_ZOOM);
         slider.setInverted(true);
-        slider.setMajorTickSpacing(MAXIMUM_ZOOM / 10);
-        slider.setMinorTickSpacing(MAXIMUM_ZOOM / 20);
+        slider.setMajorTickSpacing(25);
+        slider.setMinorTickSpacing(5);
         slider.setPaintTicks(true);
         slider.setPaintTrack(true);
         int sliderBaseWidth = slider.getPreferredSize().width;
