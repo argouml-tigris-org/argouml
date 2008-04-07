@@ -37,7 +37,7 @@ import org.xml.sax.InputSource;
  * TODO: this doesn't need a full ProfileReference since it uses the 
  * reader handed in the constructor. It doesn't make much sense to make 
  * its callers init the path to some name which it doesn't need... 
- * 
+ *
  * @author Luis Sergio Oliveira (euluis)
  */
 public class ReaderModelLoader implements ProfileModelLoader {
@@ -56,10 +56,13 @@ public class ReaderModelLoader implements ProfileModelLoader {
         this.reader = theReader;
     }
 
-    /* @see ProfileModelLoader#loadModel(String)
+    /* 
+     * @see ProfileModelLoader#loadModel(String)
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
-    public Collection loadModel(String path) throws ProfileException {
+    @Override
+    public Collection loadModel(final String path) throws ProfileException {
         if (reader != null) {
             try {
                 XmiReader xmiReader = Model.getXmiReader();
@@ -76,8 +79,10 @@ public class ReaderModelLoader implements ProfileModelLoader {
         throw new ProfileException("Profile not found!");
     }
 
-    /* @see ProfileModelLoader#loadModel(ProfileReference)
+    /* 
+     * @see ProfileModelLoader#loadModel(ProfileReference)
      */
+    @Override
     public Collection loadModel(ProfileReference reference) 
         throws ProfileException {
         if (reader != null) {
