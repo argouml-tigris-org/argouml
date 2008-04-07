@@ -163,11 +163,11 @@ the newly created model element are setup correctly.
       This method determines the type of element to copy, 
       and then dispatches the call to the appropriate method 
       of a Factory that is named 
-      similar to <methodname>copyClass</methodname>.
+      in a similar way to <methodname>copyClass</methodname>.
       </para>
 
       <para>
-      The responsability of the <methodname>copyModelElement</methodname>
+      The responsibility of the <methodname>copyModelElement</methodname>
       method is to create the new element 
       (with <methodname>createModelElement</methodname>)
       and set the containment.
@@ -238,11 +238,11 @@ so don't!
     <title>The model event pump</title>
     <sect3>
       <title>Introduction</title>
-      <para>
-Late 2002, the ArgoUML community decided for the introduction of a clean
-interface between the NSUML model and the rest of ArgoUML.
-This interface consists of three parts:
-<orderedlist>
+      <para>In late 2002, the existing NSUML model implementation was 
+      encapsulated with a new interface to separate it from the main ArgoUML
+      application.
+      This interface consists of three parts:
+      <orderedlist>
           <listitem>
             <para>
 The model factories, responsible for creation and deletion of model elements
@@ -285,7 +285,7 @@ The model event pump is the gateway between the model elements and the
 rest of ArgoUML.
 Events fired by the model elements are caught by the pump and then
 'pumped' to those listeners interested in them.
-The main advantage of this model is that the registration of listeners
+The main advantage of this strategy is that the registration of listeners
 is concentrated in one place (see picture *).
 This makes it easier to change the interface between the model and the
 rest of ArgoUML.
@@ -313,19 +313,12 @@ In this respect the pump works as a filter.
 </para>
 
       <para>
-The model event pump will replace all other event mechanisms for model
-events in the future.
-These mechanisms (like UMLChangeDispatch and ThirdPartyEventlisteners
-for those who are interested) are DEPRECATED.
-Do not use them therefore and do not use classes that use them.
+The model event pump replaces all other event mechanisms for model
+events.
 </para>
     </sect3>
     <sect3>
       <title>Public API</title>
-      <para>
-You might wonder: how does this all work?
-Well, very simple in fact.
-</para>
       <para>
 A model event (from now on a Event) has a name that uniquely
 identifies the type of the event.
@@ -337,13 +330,17 @@ In fact, there is even a 1-1 relationship between the type of Event
 and the property changed in the model.
 
 Therefore most listeners that need Events are only interested in one
-type of Event since they are only interested in the status of 1
+type of Event since they are only interested in the status of one
 property.
 </para>
       <para>
-TODO: What thread will I receive my event in? 
-What locks will be held by the Model while I receive my event i.e.
-is there something I cannot do from the event thread?
+      You can not make any assumptions about the thread on which the
+      event will be delivered.  In the MDR implementation, events are
+      delivered on the MDR event dispatching thread which is guaranteed
+      to be different than the Swing/AWT event dispatching thread, so
+      you must not call any non-thread-safe Swing methods (ie most of them).
+      
+TODO: is there something I cannot do from the event thread?
 </para>
       <para>
 In the case described above (the most common one) you only have to
@@ -369,11 +366,13 @@ How do I register a listener for a certain type event
         <para>
 This is really very simple. Use the model
 <programlisting>
-addModelEventListener(PropertyChangeListener listener, Object modelelement, String eventName)
+addModelEventListener(PropertyChangeListener listener, Object modelelement, 
+    String eventName)
 </programlisting>
 like this:
 <programlisting>
-Model.getPump().addModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
+Model.getPump().addModelEventListener(this, modelelementIAmInterestedIn, 
+    "IamInterestedInThisEventnameType");
 </programlisting>
 Now your object this gets only the <classname>Events</classname>
 fired by modelElementIAmInterestedIn that have the name
@@ -409,7 +408,7 @@ This works with the method:
 <programlisting>
 addModelEventListener(PropertyChangeListener listener, Object modelelement)
 </programlisting>
-As you can see no names of events you can register for here.
+As you can see, there are no names of events.
 </para>
         <para>
 Furthermore, you can add a listener that is interested in several
@@ -422,7 +421,8 @@ more than once.
 
 It works via:
 <programlisting>
-addModelEventListener(PropertyChangeListener listener, Object modelelement, String[] eventNames)
+addModelEventListener(PropertyChangeListener listener, Object modelelement, 
+    String[] eventNames)
 </programlisting>
 </para>
         <para>
@@ -479,10 +479,10 @@ propertyChanged(MElementEvent event) {
 </para>
           <para>
 This will cause the things that need to be done for event type 1 to be
-fired when event type 2 do arrive.
+fired when event type 2 happens.
 </para>
           <para>
-This still happens at a lot of places in the code of ArgoUML, most
+This still happens in a lot of places in the code of ArgoUML, most
 notably in the modelChanged method of the children of
 FigEdgeModelElement.
 </para>
