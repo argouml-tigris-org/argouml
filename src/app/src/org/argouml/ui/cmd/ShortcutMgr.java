@@ -42,6 +42,10 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.critics.ui.ActionOpenCritics;
+import org.argouml.cognitive.ui.ActionAutoCritique;
+import org.argouml.cognitive.ui.ActionOpenDecisions;
+import org.argouml.cognitive.ui.ActionOpenGoals;
 import org.argouml.configuration.Configuration;
 import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;

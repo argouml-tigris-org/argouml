@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,30 +22,29 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.cmd;
+package org.argouml.cognitive.critics.ui;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.argouml.cognitive.ui.GoalsDialog;
 import org.argouml.i18n.Translator;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 
 /**
- * Action to open the Goals dialog.
+ * Action to open the Browse Critics dialog.
  */
-class ActionOpenGoals extends UndoableAction {
+public class ActionOpenCritics extends UndoableAction {
 
     /**
      * The constructor.
      */
-    public ActionOpenGoals() {
-        super(Translator.localize("action.design-goals"), null);
+    public ActionOpenCritics() {
+        super(Translator.localize("action.browse-critics"), null);
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
-                Translator.localize("action.design-goals"));
+                Translator.localize("action.browse-critics"));
     }
 
     /*
@@ -53,8 +52,10 @@ class ActionOpenGoals extends UndoableAction {
      */
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-	GoalsDialog d = new GoalsDialog();
-	d.setVisible(true);
+	CriticBrowserDialog dialog = 
+            new CriticBrowserDialog();
+	dialog.setVisible(true);
     }
-} /* end class ActionOpenGoals */
+
+} /* end class ActionOpenCritics */
 

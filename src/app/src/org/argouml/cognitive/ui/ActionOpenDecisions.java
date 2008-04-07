@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,19 +22,24 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.cmd;
+package org.argouml.cognitive.ui;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.argouml.cognitive.ui.DesignIssuesDialog;
 import org.argouml.i18n.Translator;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 
 
-class ActionOpenDecisions extends UndoableAction {
+/**
+ * Action to open the dialog to set the priorities for decisions. 
+ * These will be evaluated against the critics, 
+ * so that the user will only see todo items which match
+ * the priorities for a certain decision.
+ */
+public class ActionOpenDecisions extends UndoableAction {
 
     /**
      * The constructor.
