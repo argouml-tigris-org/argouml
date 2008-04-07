@@ -121,7 +121,7 @@ public class UMLStateDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) {
             // nothing we can do about veto, so just ignore it
         }
-        // TODO: All super constrcutors should take a GraphModel
+        // TODO: All super constructors should take a GraphModel
         setGraphModel(createGraphModel());
     }
 
@@ -179,26 +179,26 @@ public class UMLStateDiagram extends UMLDiagram {
                 "No StateMachine given to create a Statechart diagram");
         }
         
-        Object namespace = Model.getFacade().getNamespace(machine);
-        if (namespace != null) {
-            return namespace;
+        Object ns = Model.getFacade().getNamespace(machine);
+        if (ns != null) {
+            return ns;
         }
         
         Object context = Model.getFacade().getContext(machine);
         if (Model.getFacade().isAClassifier(context)) {
-            namespace = context;
+            ns = context;
         } else if (Model.getFacade().isABehavioralFeature(context)) {
-            namespace = Model.getFacade().getNamespace( // or just the owner?
+            ns = Model.getFacade().getNamespace( // or just the owner?
                     Model.getFacade().getOwner(context));
         }
-        if (namespace == null) {
-            namespace = getProject().getRoot();
+        if (ns == null) {
+            ns = getProject().getRoots().iterator().next();
         }
-        if (namespace == null || !Model.getFacade().isANamespace(namespace)) {
+        if (ns == null || !Model.getFacade().isANamespace(ns)) {
             throw new IllegalStateException(
                     "Can not deduce a Namespace from a StateMachine");
         }
-        return namespace;
+        return ns;
     }
 
     /**
