@@ -332,11 +332,10 @@ public class UmlFilePersister extends AbstractFilePersister {
         return doLoad(file, file, progressMgr);
     }
 
-    /*
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
-     */
-    public Project doLoad(File originalFile, File file, ProgressMgr progressMgr)
-        throws OpenException, InterruptedException {
+
+    protected Project doLoad(File originalFile, File file,
+            ProgressMgr progressMgr) throws OpenException, 
+            InterruptedException {
 
         XmlInputStream inputStream = null;
         try {
@@ -429,7 +428,7 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     protected boolean checkVersion(int fileVersion, String releaseVersion)
-            throws OpenException, VersionException {
+        throws OpenException, VersionException {
         // If we're trying to load a file from a future version
         // complain and refuse.
         if (fileVersion > PERSISTENCE_VERSION) {
@@ -539,7 +538,8 @@ public class UmlFilePersister extends AbstractFilePersister {
      * @throws OpenException on any error
      */
     protected int getPersistenceVersion(InputStream inputStream)
-            throws OpenException {
+        throws OpenException {
+        
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(inputStream, 
@@ -606,7 +606,8 @@ public class UmlFilePersister extends AbstractFilePersister {
      * @throws OpenException on any error
      */
     protected String getReleaseVersion(InputStream inputStream)
-            throws OpenException {
+        throws OpenException {
+
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(inputStream, 
@@ -736,11 +737,25 @@ public class UmlFilePersister extends AbstractFilePersister {
         private final Pattern pattern = Pattern.compile(
                 "\\s*<\\?xml.*\\?>\\s*(<!DOCTYPE.*>\\s*)?");
 
+        /**
+         * Construct a filtered output stream using the given character set 
+         * name.
+         * 
+         * @param outputStream source output stream to filter
+         * @param charsetName name of character set to use for encoding
+         */
         public XmlFilterOutputStream(OutputStream outputStream,
                 String charsetName) {
             this(outputStream, Charset.forName(charsetName));
         }
 
+        /**
+         * Construct a filtered output stream using the given character set 
+         * name.
+         * 
+         * @param outputStream source output stream to filter
+         * @param charset character set to use for encoding
+         */
         public XmlFilterOutputStream(OutputStream outputStream, 
                 Charset charset) {
             super(outputStream);
@@ -750,6 +765,9 @@ public class UmlFilePersister extends AbstractFilePersister {
             startEntry();
         }  
         
+        /**
+         * Reset processing for the beginning of an entry.
+         */
         public void startEntry() {
             headerProcessed = false;
             resetBuffers();
