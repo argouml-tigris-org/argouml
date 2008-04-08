@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model-mdr"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-tools"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-app"/>
+	<classpathentry kind="src" path="/argouml-core-infra"/>
+	<classpathentry kind="lib" path="/argouml-app/lib/toolbar-1.4.1-20071227.jar" sourcepath="/toolbar/src"/>
+	<classpathentry kind="lib" path="/argouml-core-infra/lib/log4j-1.2.6.jar"/>
+	<classpathentry kind="output" path="build-eclipse"/>
+</classpath>
