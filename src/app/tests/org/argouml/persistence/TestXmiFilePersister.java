@@ -25,6 +25,7 @@
 package org.argouml.persistence;
 
 import java.io.File;
+import java.net.URL;
 
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
@@ -149,5 +150,24 @@ public class TestXmiFilePersister extends TestCase {
         ProjectManager.getManager().makeEmptyProject();
 
         persister.doLoad(file);
+    }
+
+    /**
+     * Test loading a UML1.3 XMI file.
+     * 
+     * @throws Exception if loading project fails
+     */
+    public void testLoadProject13() throws Exception {
+        String filename = "/testmodels/uml13/Alittlebitofeverything.xmi";
+        URL url = TestZargoFilePersister.class.getResource(filename);
+        assertTrue("Unintended failure: resource to be tested is not found: "
+                + filename + ", converted to URL: " + url, url != null);
+        String name = url.getFile();
+
+        XmiFilePersister persister = new XmiFilePersister();
+
+        ProjectManager.getManager().makeEmptyProject();
+
+        persister.doLoad(new File(name));
     }
 }
