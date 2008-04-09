@@ -28,11 +28,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -187,6 +189,8 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     private Map<String, String> public2SystemIds = 
         Collections.synchronizedMap(new HashMap<String, String>());
+
+    private List<String> searchDirs = new ArrayList<String>();
 
     /**
      * @return Returns the root UML Factory package for user model.
@@ -675,6 +679,18 @@ public class MDRModelImplementation implements ModelImplementation {
 
     public CommandStack getCommandStack() {
         return new DefaultCommandStack();
+    }
+
+    void addSearchPath(String path) {
+        searchDirs.add(path);
+    }
+
+    void removeSearchPath(String path) {
+        searchDirs.remove(path);
+    }
+
+    List<String> getSearchPath() {
+        return searchDirs;
     }
 
 }

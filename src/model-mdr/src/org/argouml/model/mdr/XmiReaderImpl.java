@@ -110,8 +110,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      */
     private int ignoredElementCount;
 
-    private static List<String> searchDirs = new ArrayList<String>();
-
     /**
      * Constructor for XMIReader.
      * @param parentModelImplementation The ModelImplementation
@@ -144,7 +142,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
             resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
                     config, modelImpl.getObjectToId(), 
-                    modelImpl.getPublic2SystemIds(), searchDirs, profile, 
+                    modelImpl.getPublic2SystemIds(), modelImpl.getSearchPath(), 
+                    profile, 
                     inputSource.getPublicId(), inputSource.getSystemId());
             config.setReferenceResolver(resolver);
             
@@ -566,17 +565,16 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
         return "XMI";
     }
 
-
     public void addSearchPath(String path) {
-        searchDirs.add(path);
+        modelImpl.addSearchPath(path);
     }
 
     public void removeSearchPath(String path) {
-        searchDirs.remove(path);
+        modelImpl.removeSearchPath(path);
     }
 
     public List<String> getSearchPath() {
-        return searchDirs;
+        return modelImpl.getSearchPath();
     }
 
 }
