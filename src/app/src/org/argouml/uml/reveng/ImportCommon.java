@@ -299,7 +299,11 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     }
 
     protected File[] getSelectedFiles() {
-        return Arrays.copyOf(selectedFiles, selectedFiles.length);
+	File[] copy = new File[selectedFiles.length];
+	for (int i = 0; i < selectedFiles.length; i++)
+	    copy[i] = selectedFiles[i];
+	return copy;
+        //return Arrays.copyOf(selectedFiles, selectedFiles.length);
     }
     
     protected void setCurrentModule(ImportInterface module) {

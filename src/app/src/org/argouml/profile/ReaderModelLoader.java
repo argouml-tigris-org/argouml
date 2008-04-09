@@ -61,7 +61,6 @@ public class ReaderModelLoader implements ProfileModelLoader {
      */
     @SuppressWarnings("deprecation")
     @Deprecated
-    @Override
     public Collection loadModel(final String path) throws ProfileException {
         if (reader != null) {
             try {
@@ -82,7 +81,6 @@ public class ReaderModelLoader implements ProfileModelLoader {
     /* 
      * @see ProfileModelLoader#loadModel(ProfileReference)
      */
-    @Override
     public Collection loadModel(ProfileReference reference) 
         throws ProfileException {
         if (reader != null) {
