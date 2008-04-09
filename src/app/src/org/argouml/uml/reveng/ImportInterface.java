@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -101,16 +101,16 @@ public interface ImportInterface extends ModuleInterface {
      *             if an error occurs, this will contain the nested exception
      *             that was originally thrown
      */
-    Collection parseFiles(Project p, final Collection files,
+    Collection parseFiles(Project p, final Collection<File> files,
             ImportSettings settings, ProgressMonitor monitor)
         throws ImportException;
 
     /**
      * Returns a list with objects that represent settings for this import.
-     * These objects implement the ImportTypes.* interfaces.
+     * These objects implement the SettingsTypes.* interfaces.
      * <p>
      * The caller must determine what interface an object is implementing
-     * iterating the interfaces ImportTypes.*
+     * iterating the interfaces SettingsTypes.*
      * <p>
      * This is done this way to eliminate the need to use GUI elements. The
      * settings can easily be mapped into any GUI elements, this way we are
@@ -118,7 +118,7 @@ public interface ImportInterface extends ModuleInterface {
      * 
      * @return the list of settings that are required by this particular import
      */
-    List getImportSettings();
+    List<SettingsTypes.Setting> getImportSettings();
     
     
     /**
@@ -127,6 +127,12 @@ public interface ImportInterface extends ModuleInterface {
      */
     public class ImportException extends Exception {
 
+        /**
+         * Construct an ImportException with a wrapped Throwable.
+         * 
+         * @param message message indicating error that occurred
+         * @param cause the wrapped Exception
+         */
         public ImportException(String message, Throwable cause) {
             super("Import Exception : " + message, cause);
         }

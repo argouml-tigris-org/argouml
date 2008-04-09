@@ -507,7 +507,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         monitor.setMaximumProgress(MAX_PROGRESS_PREPARE + MAX_PROGRESS_IMPORT);
         int progress = 0;
         monitor.updateSubTask(Translator.localize("dialog.import.preImport"));
-        List files = getFileList(monitor);
+        List<File> files = getFileList(monitor);
         progress += MAX_PROGRESS_PREPARE;
         monitor.updateProgress(progress);
         if (files.size() == 0) {
@@ -538,8 +538,8 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * @param progress the actual progress until now
      * @throws ImportException exception thrown my import module
      */
-    private void doImportInternal(List filesLeft, final ProgressMonitor monitor,
-            int progress) {
+    private void doImportInternal(List<File> filesLeft,
+            final ProgressMonitor monitor, int progress) {
         Project project =  ProjectManager.getManager().getCurrentProject();
         initCurrentDiagram();
         final StringBuffer problems = new StringBuffer();
