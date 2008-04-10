@@ -86,6 +86,10 @@ public class TestProjectWithProfiles extends TestCase {
         super.tearDown();
     }
 
+    /**
+     * Basic test that a new project contains a {@link ProfileConfiguration} 
+     * and that this contains at least the UML profile.
+     */
     public void testCreatedProjectContainsProfileConfiguration() {
         Project project = ProjectManager.getManager().makeEmptyProject();
         ProfileConfiguration profileConfiguration = 
@@ -287,6 +291,8 @@ public class TestProjectWithProfiles extends TestCase {
      *   <li>remove the directory where the user defined profile was stored in 
      *   order to test the handling of opening a zargo without the user defined
      *   profile</li>
+     *   <li>initialize the model and profile subsystems to simulate a fresh 
+     *   ArgoUML session</li>
      *   <li>load the project and assert that the model element that depends on 
      *   the profile is consistent</li>
      * </ol>
@@ -333,10 +339,14 @@ public class TestProjectWithProfiles extends TestCase {
         // remove the user defined profile and the directory where it is
         profileManager.removeProfile(userDefinedProfile);
         profileManager.removeSearchPathDirectory(testCaseDir.getAbsolutePath());
+        // initialize the model and profile subsystems to simulate a fresh 
+        // ArgoUML session
+        InitializeModel.initializeMDR();
+        new InitProfileSubsystem().init();
         // load the project
-        // TODO: the following now does not throw since we the nre reference 
-        // resolving scheme, the model sub-system caches the system ID 
-        // references and resolves it on its own without the help of the 
+        // TODO: the following now does not throw since we implemented the 
+        // reference resolving scheme, the model sub-system caches the system 
+        // ID references and resolves it on its own without the help of the 
         // project.
         project = persister.doLoad(file);
         project.postLoad();
