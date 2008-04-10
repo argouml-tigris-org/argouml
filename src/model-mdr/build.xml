@@ -292,6 +292,9 @@ Building this requires:
       <fileset dir="tests">
         <include name="**/*.lcf"/>
       </fileset>
+      <fileset dir="tests">
+        <include name="testmodels/*.xmi"/>
+      </fileset>
     </copy>
         
   </target>
