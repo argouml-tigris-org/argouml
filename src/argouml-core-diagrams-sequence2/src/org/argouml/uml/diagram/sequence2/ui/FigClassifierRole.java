@@ -137,7 +137,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(PropertyChangeEvent mee) {
+    protected void modelChanged(final PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee instanceof AddAssociationEvent
                 || mee instanceof RemoveAssociationEvent
@@ -146,12 +146,13 @@ public class FigClassifierRole extends FigNodeModelElement {
                 public void run() {
                     renderingChanged();
                     updateListeners(getOwner(), getOwner());
+                    notationProvider.updateListener(
+                	    FigClassifierRole.this, getOwner(), mee);
                     damage();
                 }
             };
 
             SwingUtilities.invokeLater(doWorkRunnable);
-            notationProvider.updateListener(this, getOwner(), mee);
         }
     }
 
