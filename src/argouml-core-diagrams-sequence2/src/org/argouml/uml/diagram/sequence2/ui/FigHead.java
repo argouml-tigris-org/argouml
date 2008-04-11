@@ -89,13 +89,7 @@ class FigHead extends FigGroup {
 
     @Override
     public Dimension getMinimumSize() {
-        Dimension d = null;
-        int minWidth = stereotypeFig.getMinimumSize().width;
-        if (minWidth < nameFig.getWidth()) {
-            minWidth = nameFig.getWidth();
-        }
-        d = new Dimension(minWidth, getMinimumHeight());
-        return d;
+        return new Dimension(getMinimumWidth(), getMinimumHeight());
     }
     
     int getMinimumHeight() {
@@ -104,6 +98,17 @@ class FigHead extends FigGroup {
         if (h < DEFAULT_HEIGHT)
             h = DEFAULT_HEIGHT;
         return h;
+    }
+    
+    int getMinimumWidth() {
+        int minWidth = 50;
+        if (minWidth < stereotypeFig.getMinimumSize().width) {
+            minWidth = stereotypeFig.getMinimumSize().width;
+        }
+        if (minWidth < nameFig.getMinimumSize().width) {
+            minWidth = nameFig.getMinimumSize().width;
+        }
+        return minWidth;
     }
     
     @Override
