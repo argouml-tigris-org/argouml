@@ -30,7 +30,6 @@ import org.argouml.uml.diagram.sequence2.SequenceDiagramGraphModel;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Mode;
-import org.tigris.gef.graph.GraphFactory;
 import org.tigris.gef.graph.GraphModel;
 
 /**

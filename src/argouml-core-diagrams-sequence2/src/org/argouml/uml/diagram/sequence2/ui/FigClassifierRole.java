@@ -142,17 +142,16 @@ public class FigClassifierRole extends FigNodeModelElement {
         if (mee instanceof AddAssociationEvent
                 || mee instanceof RemoveAssociationEvent
                 || mee instanceof AttributeChangeEvent) {
-            Runnable doWorkRunnable= new Runnable(){
-                public void run(){
-
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
                     renderingChanged();
                     updateListeners(getOwner(), getOwner());
-
                     damage();
-                }};
+                }
+            };
 
-                SwingUtilities.invokeLater(doWorkRunnable);
-                notationProvider.updateListener(this, getOwner(), mee);
+            SwingUtilities.invokeLater(doWorkRunnable);
+            notationProvider.updateListener(this, getOwner(), mee);
         }
     }
 

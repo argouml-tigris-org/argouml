@@ -37,7 +37,6 @@ import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigSpline;
 
 /**
  * The Fig that represents a message between two classifier roles.

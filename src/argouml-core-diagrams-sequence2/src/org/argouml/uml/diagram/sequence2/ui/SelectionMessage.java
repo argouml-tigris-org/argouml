@@ -60,10 +60,6 @@ public class SelectionMessage extends SelectionRerouteEdge {
         }
     }       
     
-    /**
-     * @param me
-     * @see org.argouml.uml.diagram.ui.SelectionRerouteEdge#mousePressed(java.awt.event.MouseEvent)
-     */
     @Override
     public void mousePressed(MouseEvent me) {
 	FigMessage message = (FigMessage) getContent(); 
@@ -73,10 +69,6 @@ public class SelectionMessage extends SelectionRerouteEdge {
 	me.consume();
     }
 
-    /**
-     * @param me
-     * @see org.argouml.uml.diagram.ui.SelectionRerouteEdge#mouseDragged(java.awt.event.MouseEvent)
-     */
     @Override
     public void mouseDragged(MouseEvent me) {
 	FigMessage message = (FigMessage) getContent(); 
