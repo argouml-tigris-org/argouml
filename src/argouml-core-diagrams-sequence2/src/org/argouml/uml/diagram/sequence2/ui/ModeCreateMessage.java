@@ -128,6 +128,10 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
                     returnEdge.convertToArc();
                 }
                 
+                // FIXME #5005: The message is added, 
+                // it doesn't need to be added again. 
+                // The problem here is that the diagram
+                // isn't damaged, and btw the edge ends' X are wrong.
                 layer.add(returnEdge);
             }
         }
