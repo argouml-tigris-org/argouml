@@ -32,6 +32,8 @@ import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -135,15 +137,22 @@ public class FigClassifierRole extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected synchronized void modelChanged(PropertyChangeEvent mee) {
+    protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee instanceof AddAssociationEvent
-        		|| mee instanceof RemoveAssociationEvent
+                || mee instanceof RemoveAssociationEvent
                 || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
-            notationProvider.updateListener(this, getOwner(), mee);
-            damage();
+            Runnable doWorkRunnable= new Runnable(){
+                public void run(){
+
+                    renderingChanged();
+                    updateListeners(getOwner(), getOwner());
+
+                    damage();
+                }};
+
+                SwingUtilities.invokeLater(doWorkRunnable);
+                notationProvider.updateListener(this, getOwner(), mee);
         }
     }
 
