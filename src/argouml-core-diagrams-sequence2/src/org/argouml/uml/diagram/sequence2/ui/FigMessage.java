@@ -78,30 +78,33 @@ public class FigMessage extends FigEdgeModelElement {
     @Override
     public void setOwner(Object owner) {       
         super.setOwner(owner);
-        Object action = getAction();
-        if (Model.getFacade().isAReturnAction(action)) {
-            arrowHead = new ArrowHeadGreater();
-            getFig().setDashed(true);
-        }
-        else if (Model.getFacade().isADestroyAction(action)) {
-            arrowHead = new ArrowHeadGreater();
-            getFig().setDashed(true);
-        }
-        else if (Model.getFacade().isACreateAction(action)) {
-            arrowHead = new ArrowHeadTriangle();
-            // dashed it's false by default.
-        }
-        else if (Model.getFacade().isACallAction(action)) {
-            arrowHead = new ArrowHeadTriangle();
-            // dashed it's false by default.
-        }
-        else {     
-            String message = "The owner must be a message with an "
-                + "action - got a " + owner.getClass().getName();
-            LOG.error(message);
-            throw new IllegalArgumentException(message);
-        }
-        setDestArrowHead(arrowHead);
+        updateArrow();
+    }
+
+    /**
+     * Updates the arrow head and the arrow line according
+     * to the action type..
+     */
+    private void updateArrow() {
+	Object action = getAction();
+	if (Model.getFacade().isAReturnAction(action)) {
+	    arrowHead = new ArrowHeadGreater();
+	    getFig().setDashed(true);
+	}
+	else if (Model.getFacade().isADestroyAction(action)) {
+	    arrowHead = new ArrowHeadGreater();
+	    getFig().setDashed(true);
+	}
+	else if (Model.getFacade().isACreateAction(action)) {
+	    arrowHead = new ArrowHeadTriangle();
+	    // dashed it's false by default.
+	}
+	else if (Model.getFacade().isACallAction(action)) {
+	    arrowHead = new ArrowHeadTriangle();
+	    // dashed it's false by default.
+	}
+
+	setDestArrowHead(arrowHead);
     }
 
     /**
@@ -135,14 +138,7 @@ public class FigMessage extends FigEdgeModelElement {
      */
     public void setFig(Fig f) {        
         super.setFig(f);
-        Object action = getAction();
-        if (Model.getFacade().isAReturnAction(action)) {
-            getFig().setDashed(true);
-        }
-        else if (Model.getFacade().isADestroyAction(action)) {
-            getFig().setDashed(true);
-        }
-        // in other cases there isn't a dashed line, default is false.
+        updateArrow();
     }
     
     int getFinalY() {
