@@ -112,26 +112,21 @@ Details of this can be found at
 
     <para>
 If you want to work without Eclipse in Windows,
-the follow commands will build ArgoUML from source and
-run it.  If you using Unix/Linux, the comparable commands, modified slightly for
-your particular shell, should work.
+the following commands will build ArgoUML from source and
+run it.  If you are using Unix/Linux, the equivalent commands for
+your particular shell should work.
 <programlisting>
-C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/src_new http://argouml.tigris.org/svn/argouml/trunk/tools http://argouml.tigris.org/svn/argouml/trunk/lib http://argouml.tigris.org/svn/argouml/trunk/tests argouml --username guest
+C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/tools argouml --username guest
 Password:  (give empty password if prompted)
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
-C:\Work&gt;cd argouml\src_new
-C:\Work\argouml\src_new&gt;build run
+C:\Work&gt;cd argouml\src
+C:\Work\argouml\src&gt;build run
 </programlisting>
 A newly compiled ArgoUML will open in a new window.
 </para>
     <note>
       <para>JDK Java5 or later is required</para>
     </note>
-    <para>
-That was the compact version for Windows + JDK.
-Modifying these steps slightly as appropriate for your shell should
-work on Unix/Linux systems as well. 
-</para>
 
     <para>
 If you don't understand these instructions or they don't work,
@@ -220,8 +215,8 @@ DocBook XSL style sheets.
 </para>
 
           <para>
-There exists rules in the
-<filename>argouml/documentation/build.xml</filename>
+Rules exist in the file
+<filename>argouml/argouml-documentation/documentation/build.xml</filename>
 for downloading this correctly.
 </para>
         </listitem>
@@ -404,7 +399,10 @@ Which tools are part of the ArgoUML development environment?
       </indexterm>
       <para>
 These tools are provided by the development environment that you
-get when you check out from the repository.
+get when you do a command line check-out, or when you import the 
+<filename>argouml-command-line-build.psf</filename> Eclipse Team Project Set 
+file, see 
+<ulink url="http://argouml.tigris.org/psf/">http://argouml.tigris.org/psf/</ulink>.
 </para>
       <itemizedlist>
         <listitem>
@@ -448,8 +446,11 @@ JDepend, for examining the code.
       </itemizedlist>
       <para>
 For building the documentation from DocBook format, 
-these tools are also provided with the development environment that
-you get when you check out from the repository.
+the following tools are also provided with the command-line check-out 
+development environment or when you import the 
+<filename>argouml-doc-projectset.psf</filename> Eclipse Team Project Set 
+file, see 
+<ulink url="http://argouml.tigris.org/psf/">http://argouml.tigris.org/psf/</ulink>.
 </para>
       <itemizedlist>
         <listitem>
@@ -466,7 +467,7 @@ fop for generating PDF versions of the DocBook format.
 </para>
           <para>
 To build a PDF file with the pictures included you need Jimi
-that is downloaded separately.
+which is downloaded separately.
 See 
 <xref linkend="download-jimi" endterm="download-jimi-name"/>.
 </para>
@@ -572,7 +573,9 @@ See the project at
   </sect1>
 
   <sect1 id="checkout">
-    <title id="checkout_term">Download from the Subversion repository</title>
+    <title id="checkout_term">Downloading from the Subversion repository</title>
+    <!-- 
+    I think this is meaningless now since we don't use CVS (Dave T 10/4/2008). 
     <indexterm>
       <primary>CVS</primary>
       <secondary>checking out from</secondary>
@@ -580,6 +583,7 @@ See the project at
     <indexterm>
       <primary>Checking out from CVS</primary>
     </indexterm>
+     -->
     <indexterm>
       <primary>Subversion</primary>
       <secondary>checking out from</secondary>
@@ -588,62 +592,51 @@ See the project at
       <primary>Checking out from Subversion</primary>
     </indexterm>
 
+    <note>
+      <para>
+If you are using Eclipse, please use the Team Project Set files to
+check-out ArgoUML, see 
+<xref linkend="eclipse-checkout"/>      
+      </para>
+    </note>
     <para>
-The easiest thing to do now, is
-just check out the whole
-<parameter>argouml</parameter> project.
-For this use the Subversion URL
+The easiest thing to do is to check out the whole 
+<parameter>argouml</parameter> project from
 <filename>http://argouml.tigris.org/svn/argouml/trunk</filename>.
-</para>
+This includes the source code, tools, documentation and web-site, i.e. :
+<programlisting>
+svn checkout http://argouml.tigris.org/svn/argouml/trunk argouml --username guest
+</programlisting>
+    </para>
     <para>
-If you want to limit the download size,
-by not checking out the images in the
-<filename class="directory">argouml/documentation</filename>
-and
-<filename class="directory">argouml/www</filename>
-the repository directories you need to check out to work with ArgoUML are
-<filename class="directory">argouml/lib</filename>,
-<filename class="directory">argouml/tools</filename>,
-<filename class="directory">argouml/src_new</filename>,
-<filename class="directory">argouml/src</filename>,
-and
-<filename class="directory">argouml/tests</filename>.
-These are located at the subversion URLs
-<filename>http://argouml.tigris.org/svn/argouml/trunk/lib</filename>,
-<filename>http://argouml.tigris.org/svn/argouml/trunk/tools</filename>,
-<filename>http://argouml.tigris.org/svn/argouml/trunk/src_new</filename>,
-<filename>http://argouml.tigris.org/svn/argouml/trunk/src</filename>,
-and
-<filename>http://argouml.tigris.org/svn/argouml/trunk/tests</filename>
-respectively.
-</para>
+If you only want to build argouml, and don't want anything else, you
+can just download the source code and the tools:
+<programlisting>
+svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/tools argouml --username guest
+</programlisting>
+    </para>
     <para>
-If you just want to build the documentation you check out the directories
-<filename class="directory">argouml/tools</filename>
-and
-<filename class="directory">argouml/documentation</filename>.
-These are located at the subversion URLs
-<filename>http://argouml.tigris.org/svn/argouml/trunk/tools</filename>
-and
-<filename>http://argouml.tigris.org/svn/argouml/trunk/documentation</filename>
-respectively.
+If you just want to build the documentation you can just check out the
+documentation xml files and the tools:
+<programlisting>
+svn checkout http://argouml.tigris.org/svn/argouml/trunk/documentation http://argouml.tigris.org/svn/argouml/trunk/tools argouml --username guest
+</programlisting>
 For the documentation you will also need the file
 <filename>default.properties</filename>
 from 
-<filename>http://argouml.tigris.org/svn/argouml/trunk/src_new/default.properties</filename>.
-</para>
+<filename>http://argouml.tigris.org/svn/argouml/trunk/src/argouml-app/default.properties</filename>.
+    </para>
     <para>
-If you want to work with the web site you check out 
-the directory
-<parameter>argouml/www</parameter>.
-This is located at the subversion URLs
-<filename>http://argouml.tigris.org/svn/argouml/trunk/www</filename>.
-</para>
+If you only want to work with the web site, just check out the 
+<filename>www</filename> directory:
+<programlisting>
+svn checkout http://argouml.tigris.org/svn/argouml/trunk/www argouml/www --username guest
+</programlisting>
+    </para>
 
     <para>
-If you don't want to acquire a Tigris login to do this you can use the
-"guest" account with an empty password.
-</para>
+When using the "guest" account, use an empty password.
+    </para>
   </sect1>
 
 
@@ -662,13 +655,9 @@ This needs to be updated with the Eclipse-orientation.
 </para>
     </note>
     <para>
-The standard ArgoUML build process is driven by Apache Ant, and it is highly recommend
-that you stick to that.
-Some developers use the integrated build tools of Eclipse and NetBeans, but always
-make sure that your work compiles with the standard Ant build process.
-There are also some Java files generated by magic scripts in Ant that
-you need to create before opening with the IDE.
-</para>
+When building from the command line, the build process is driven by Apache Ant
+using the ant distribution provided in the <filename>tools</filename> directory.
+    </para>
     <para>
 Ant is a tool written in Java developed for Apache that reads an XML-file
 with rules telling what to compile to what result and what files to include
@@ -678,12 +667,14 @@ in what jar-file.
       <primary><filename>build.xml</filename></primary>
     </indexterm>
     <para>
-The rule file is named <filename>build.xml</filename>.
-There is one of those in every separate build directory
-(<filename class="directory">argouml/src_new</filename>,
-<filename class="directory">argouml/src/<replaceable>whatever</replaceable></filename>,
-<filename class="directory">argouml/documentation</filename>, and
-<filename class="directory">argouml/modules/<replaceable>whatever</replaceable></filename>).
+The rule file is named <filename>build.xml</filename>, and there is one in 
+each mini-project directory:
+(<filename class="directory">argouml/src/argouml-app</filename>,
+<filename class="directory">argouml/src/argouml-core-infra</filename>,
+<filename class="directory">argouml/src/argouml-core-model</filename>,
+<filename class="directory">argouml/src/argouml-core-model-euml</filename>,
+<filename class="directory">argouml/src/argouml-core-model-mdr</filename>, and
+<filename class="directory">argouml/documentation</filename>).
 </para>
 
     <sect2>
@@ -695,19 +686,26 @@ There is one of those in every separate build directory
       <para>
 For your convenience the ant tool of the correct version is present in the
 source repository of ArgoUML in the file
-<filename class="libraryfile">argouml/tools/ant-1.6.2/lib/ant.jar</filename>.
+<filename class="libraryfile">argouml/tools/apache-ant-X.X.X/lib/ant.jar</filename>.
 </para>
       <para>
 It is possible to start ant with the command
-<command>../tools/ant-1.6.2/bin/ant <replaceable>arg</replaceable></command>
+<command>../tools/apache-ant-<replaceable>X.X.X</replaceable>/bin/ant <replaceable>arg</replaceable></command>
 and in the modules
 <command>
-../../tools/ant-1.6.2/bin/ant <replaceable>arg</replaceable>
+../../tools/apache-ant-<replaceable>X.X.X</replaceable>/bin/ant <replaceable>arg</replaceable>
 </command>.
 On windows the command
-<command>..\tools\ant-1.6.2\bin\ant <replaceable>arg</replaceable></command>
+<command>..\tools\apache-ant-<replaceable>X.X.X</replaceable>\bin\ant <replaceable>arg</replaceable></command>
 runs the program <filename>ant.bat</filename>.
 </para>
+      
+      <note>
+        <para>
+Some of the build.&lt;sh|bat&gt; files have been removed in the repository 
+restructuring, (issue #4625).
+        </para>
+      </note>         
       <para>
 To keep you from having to write this and keeping track if you are
 working with a module or not
