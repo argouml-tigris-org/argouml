@@ -63,9 +63,9 @@ public class SimpleTimer {
     }
 
     /**
-     * Returns a string of formatted distances.
+     * Returns an enumeration of formatted distances.
      *
-     * @return a string representing the results
+     * @return an enumeration representing the results
      */
     public Enumeration result() {
 	mark();
