@@ -67,13 +67,14 @@ public class FigMessagePort extends ArgoFigGroup {
      * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
      */
     public void addFig(Fig toAdd) {
-        if (toAdd instanceof FigLine) {
-            if (getFigs().size() == 0) {
-                toAdd.setVisible(false);
-                super.addFig(toAdd);
-            }
+        if (!(toAdd instanceof FigLine)) {
+            throw new IllegalArgumentException("Unexpect Fig " + toAdd);
+        }
+        if (getFigs().size() == 0) {
+            toAdd.setVisible(false);
+            super.addFig(toAdd);
         } else {
-            LOG.error("Unexpect Fig " + toAdd);
+            // is this an error condition also?
         }
     }
 
