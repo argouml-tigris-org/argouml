@@ -358,8 +358,10 @@ public class SettingsTabNotation
     /*
      * @see javax.swing.JComponent#setVisible(boolean)
      */
-    public void setVisible(boolean arg0) {
-        super.setVisible(arg0);
-        if (arg0) handleSettingsTabRefresh();
+    public void setVisible(boolean visible) {
+        super.setVisible(visible);
+        if (visible) {
+            handleSettingsTabRefresh();
+        }
     }
 }
