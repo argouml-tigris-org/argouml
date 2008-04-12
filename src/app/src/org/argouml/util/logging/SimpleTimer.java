@@ -79,7 +79,7 @@ public class SimpleTimer {
      *
      * @author Linus Tolke
      */
-    class SimpleTimerEnumeration implements Enumeration {
+    class SimpleTimerEnumeration implements Enumeration<String> {
         /**
          * Keep track of where we are in the list.
          */
@@ -95,7 +95,7 @@ public class SimpleTimer {
         /*
          * @see java.util.Enumeration#nextElement()
          */
-        public Object nextElement() {
+        public String nextElement() {
             StringBuffer res = new StringBuffer();
             synchronized (points) {
                 if (count < points.size()) {
@@ -107,14 +107,11 @@ public class SimpleTimer {
                     res.append("                            ");
                     res.append("                            ");
                     res.setLength(60);
-    		    res
-                            .append((((Long) points.get(count)).longValue() - ((Long) points
-                                    .get(count - 1)).longValue()));
+    		    res.append(points.get(count) - points.get(count - 1));
                 } else if (count == points.size()) {
                     res.append("Total                      ");
                     res.setLength(18);
-                    res.append((((Long) points.get(points.size() - 1))
-                            .longValue() - ((Long) points.get(0)).longValue()));
+                    res.append(points.get(points.size() - 1) - (points.get(0)));
                 }
             }
             count++;
