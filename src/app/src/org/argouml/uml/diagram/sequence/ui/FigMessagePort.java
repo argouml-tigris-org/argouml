@@ -28,6 +28,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.Fig;
@@ -41,6 +42,8 @@ import org.tigris.gef.presentation.FigLine;
 public class FigMessagePort extends ArgoFigGroup {
 
     private static final long serialVersionUID = -7805833566723101923L;
+    
+    private static final Logger LOG = Logger.getLogger(FigMessagePort.class);
     
     private MessageNode node;
 
@@ -64,9 +67,13 @@ public class FigMessagePort extends ArgoFigGroup {
      * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
      */
     public void addFig(Fig toAdd) {
-        if (toAdd instanceof FigLine && getFigs().size() == 0) {
-            toAdd.setVisible(false);
-            super.addFig(toAdd);
+        if (toAdd instanceof FigLine) {
+            if (getFigs().size() == 0) {
+                toAdd.setVisible(false);
+                super.addFig(toAdd);
+            }
+        } else {
+            LOG.error("Unexpect Fig " + toAdd);
         }
     }
 
