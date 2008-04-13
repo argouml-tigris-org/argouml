@@ -33,6 +33,7 @@ import org.argouml.uml.diagram.sequence2.SequenceDiagramGraphModel;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.presentation.FigEdge;
 
 /**
  * Mode to create a link between two figclassifierroles. 
@@ -67,73 +68,74 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             LOG.debug("ModeCreateMessage created without editor.");
         }
     }
+    
     @Override
-    public void mouseReleased(MouseEvent me) {
-        // the parent will create the message
-        super.mouseReleased(me);
-        
+    public void endAttached(FigEdge fe) {
+        super.endAttached(fe);
         final SequenceDiagramGraphModel gm =
             (SequenceDiagramGraphModel) getEditor().getGraphModel();
         
-        final Object edge = getNewEdge();
-        if (Model.getFacade().isAMessage(edge)) {
-            final Object action = Model.getFacade().getAction(edge);
-            if (Model.getFacade().isACallAction(action)) {
-                
-                // we need to create a ModeCreateMessage for adding
-                // a new message                
+        Object message = fe.getOwner();
+        FigClassifierRole dcr = (FigClassifierRole) fe.getDestFigNode();
+        FigClassifierRole scr = (FigClassifierRole) fe.getSourceFigNode();
+        
+        final Object action = Model.getFacade().getAction(message);
+        if (Model.getFacade().isACallAction(action)) {
+            
+            // we need to create a ModeCreateMessage for adding
+            // a new message                
 //                ModeManager modeManager = editor.getModeManager();
 //                ModeCreateMessage mode = new ModeCreateMessage(editor);
 //                mode.getArgs().put("action", 
 //                        Model.getMetaTypes().getReturnAction());               
 //                modeManager.push(mode);
 
-                // get the source of the return message
-                final Object returnMessageSource =
-                	Model.getFacade().getReceiver(edge);
-                // get the dest of the return message
-                final Object returnMessageDest =
-                	Model.getFacade().getSender(edge);
-                
-                // create the return message modelelement with the interaction
-                // and the collaboration
-                final Object returnMessage = gm.connect(
-                		returnMessageSource,
-                        returnMessageDest, 
-                        Model.getMetaTypes().getMessage(),
-                        Model.getMetaTypes().getReturnAction());
-                
-                final Layer layer = editor.getLayerManager().getActiveLayer();
-                
-                final FigMessage callEdge = (FigMessage)
-                    layer.presentationFor(edge);
-                
-                final FigMessage returnEdge = new FigMessage(returnMessage);
+            // get the source of the return message
+            final Object returnMessageSource =
+                Model.getFacade().getReceiver(message);
+            // get the dest of the return message
+            final Object returnMessageDest =
+                Model.getFacade().getSender(message);
+            
+            // create the return message modelelement with the interaction
+            // and the collaboration
+            final Object returnMessage = gm.connect(
+                    returnMessageSource,
+                    returnMessageDest, 
+                    Model.getMetaTypes().getMessage(),
+                    Model.getMetaTypes().getReturnAction());
+            
+            final Layer layer = editor.getLayerManager().getActiveLayer();
+            
+            final FigMessage returnEdge = new FigMessage(returnMessage);
 
-                returnEdge.setSourcePortFig(callEdge.getDestPortFig());
-                returnEdge.setSourceFigNode(callEdge.getDestFigNode());
-                returnEdge.setDestPortFig(callEdge.getSourcePortFig());
-                returnEdge.setDestFigNode(callEdge.getSourceFigNode());
-                
-                final Point[] points = returnEdge.getPoints();
-                for (int i=0; i < points.length; ++i) {
-                    // TODO: this shouldn't be hardcoded
-                    // 20 is the height of the spline
-                    // 50 is the default activation height
-                    points[i].y = callEdge.getY() + 50 + 20;
-                }
-                returnEdge.setPoints(points);
-                               
-                if (returnEdge.isSelfMessage()) {
-                    returnEdge.convertToArc();
-                }
-                
-                // FIXME #5005: The message is added, 
-                // it doesn't need to be added again. 
-                // The problem here is that the diagram
-                // isn't damaged, and btw the edge ends' X are wrong.
-                layer.add(returnEdge);
+            returnEdge.setSourcePortFig(fe.getDestPortFig());
+            returnEdge.setSourceFigNode(dcr);
+            returnEdge.setDestPortFig(fe.getSourcePortFig());
+            returnEdge.setDestFigNode(scr);
+            
+            final Point[] points = returnEdge.getPoints();
+            for (int i=0; i < points.length; ++i) {
+                // TODO: this shouldn't be hardcoded
+                // 20 is the height of the spline
+                // 50 is the default activation height
+                points[i].y = fe.getY() + 50 + 20;
             }
+            returnEdge.setPoints(points);
+                           
+            if (returnEdge.isSelfMessage()) {
+                returnEdge.convertToArc();
+            }
+            
+            // FIXME #5005: The message is added, 
+            // it doesn't need to be added again. 
+            // The problem here is that the diagram
+            // isn't damaged, and btw the edge ends' X are wrong.
+            layer.add(returnEdge);
         }
+        dcr.createActivations();
+        dcr.renderingChanged();
+        scr.createActivations();
+        scr.renderingChanged();
     }
 }
