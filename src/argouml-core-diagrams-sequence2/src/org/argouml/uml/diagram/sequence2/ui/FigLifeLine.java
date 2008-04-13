@@ -212,8 +212,8 @@ class FigLifeLine extends FigGroup {
         final FigClassifierRole cr =
             (FigClassifierRole) getGroup();                
         for (FigMessage message : messages) {
-            if (message.getDestFigNode().equals(cr)
-                    && !message.getSourceFigNode().equals(cr)
+            if (cr.equals(message.getDestFigNode())
+                    && !cr.equals(message.getSourceFigNode())
                     && Model.getFacade().isACallAction(message.getAction())) {
                 found = true;
                 break;
@@ -228,8 +228,8 @@ class FigLifeLine extends FigGroup {
             (FigClassifierRole) getGroup();                
         for (FigMessage message : messages) {
             Object action = message.getAction();
-            if (message.getSourceFigNode().equals(cr)                    
-                    && !message.getDestFigNode().equals(cr)
+            if (cr.equals(message.getSourceFigNode())                    
+                    && !cr.equals(message.getDestFigNode())
                     && Model.getFacade().isADestroyAction(action)) {
                 found = true;
                 break;
