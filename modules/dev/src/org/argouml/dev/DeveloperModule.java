@@ -29,8 +29,11 @@ import javax.swing.JMenu;
 import javax.swing.JTabbedPane;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.dev.figinspector.FigInspectorPanel;
+import org.argouml.dev.test.TestPanel;
 import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.ui.DetailsPane;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.undo.UndoManager;
 
@@ -84,6 +87,10 @@ public final class DeveloperModule implements ModuleInterface {
 
         ProjectBrowser.getInstance().addPanel(devPanel, 
                 ProjectBrowser.Position.East);
+        
+        AbstractArgoJPanel testPanel = TestPanel.getInstance();
+        DetailsPane dp = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
+        dp.addTab(testPanel, true);
 
         return true;
     }
