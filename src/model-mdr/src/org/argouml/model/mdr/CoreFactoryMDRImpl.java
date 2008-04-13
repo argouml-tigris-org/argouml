@@ -461,15 +461,13 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         AggregationKind agg2 = (AggregationKind) aggregationKind2;
 
         Namespace ns1 = from.getNamespace();
-        Namespace ns2 = to.getNamespace();
-        if (ns1 == null || ns2 == null) {
-            throw new IllegalArgumentException("one of "
-                    + "the classifiers does not " + "belong to a namespace");
+        if (ns1 == null) {
+            throw new IllegalArgumentException("The from "
+                    + "classifiers does not " + "belong to a namespace");
         }
         UmlAssociation assoc = createAssociation();
         assoc.setName("");
-        assoc.setNamespace((Namespace) modelImpl.getCoreHelper().
-                getFirstSharedNamespace(ns1, ns2));
+        assoc.setNamespace(ns1);
 
         boolean nav1 = true;
         boolean nav2 = true;
@@ -1700,6 +1698,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *            is the namespace.
      */
     void deleteNamespace(Object elem) {
+        LOG.info("Deleting namespace " + elem);
         if (!(elem instanceof Namespace)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
@@ -1710,6 +1709,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // additional elements that need to be deleted as a result.
         ownedElements.addAll(((Namespace) elem).getOwnedElement());
         for (ModelElement element : ownedElements) {
+            LOG.info("Deleting " + element);
             modelImpl.getUmlFactory().delete(element);
         }
     }
