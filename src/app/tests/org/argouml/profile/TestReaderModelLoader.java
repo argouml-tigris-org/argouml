@@ -29,6 +29,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URL;
 import java.util.Collection;
 
 import org.argouml.FileHelper;
@@ -65,7 +67,7 @@ public class TestReaderModelLoader extends TestCase {
         mother.saveProfileModel(model, file);
         Reader reader = new FileReader(file);
         ProfileReference profileReference = new UserProfileReference(
-            file.getAbsolutePath());
+            file.toURL().toExternalForm());
         Collection models = new ReaderModelLoader(reader).
             loadModel(profileReference);
         assertNotNull(models);
