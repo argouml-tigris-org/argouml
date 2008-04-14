@@ -258,8 +258,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
     class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement2 {
 
         @Override
-        protected List getChoices() {
-            return metaClasses;
+        protected List<String> getChoices() {
+            return Collections.unmodifiableList(metaClasses);
         }
 
         @Override
@@ -268,10 +268,10 @@ public class PropPanelStereotype extends PropPanelModelElement {
         }
 
         @Override
-        protected List getSelected() {
-            List result = new ArrayList();
+        protected List<String> getSelected() {
+            List<String> result = new ArrayList<String>();
             if (Model.getFacade().isAStereotype(getTarget())) {
-                Collection bases = 
+                Collection<String> bases = 
                     Model.getFacade().getBaseClasses(getTarget());
                 result.addAll(bases);
             }
