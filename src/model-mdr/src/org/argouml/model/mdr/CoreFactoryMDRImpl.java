@@ -1720,7 +1720,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // additional elements that need to be deleted as a result.
         ownedElements.addAll(((Namespace) elem).getOwnedElement());
         for (ModelElement element : ownedElements) {
-            LOG.debug("Deleting " + element);
+            LOG.debug("Deleting ownedElement " + element);
             modelImpl.getUmlFactory().delete(element);
         }
     }
