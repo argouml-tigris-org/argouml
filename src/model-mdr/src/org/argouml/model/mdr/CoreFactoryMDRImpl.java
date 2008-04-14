@@ -438,11 +438,11 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         
         // We'll put the association in the namespace of whichever end
-        // is navigable.  If they both are, we'll use the namepace of c1.
+        // is not navigable.  If they both are, we'll use the namepace of c1.
         Namespace ns = null;
-        if (nav1) {
+        if (nav2) {
             ns = ns1;
-        } else if (nav2) {
+        } else if (nav1) {
             ns = ns2;
         } else {
             throw new IllegalArgumentException(
