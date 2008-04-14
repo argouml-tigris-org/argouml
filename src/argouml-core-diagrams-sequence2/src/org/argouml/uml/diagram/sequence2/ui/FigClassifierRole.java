@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,24 +27,17 @@ package org.argouml.uml.diagram.sequence2.ui;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.AddAssociationEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * The Fig that represents a Classifier Role
@@ -57,23 +50,6 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     private static final Logger LOG =
         Logger.getLogger(FigClassifierRole.class);
-
-    /**
-     * The NotationProvider for the ClassifierRole. <p>
-     * 
-     * The syntax is for UML is:
-     * <pre>
-     * baselist := [base] [, base]*
-     * classifierRole := [name] [/ role] [: baselist]
-     * </pre></p>
-     * 
-     * The <code>name</code> is the Instance name, not used currently.
-     * See ClassifierRoleNotationUml for details.<p>
-     *
-     * This syntax is compatible with the UML 1.4 specification.
-     * 
-     */
-    private NotationProvider notationProvider;
 
     /**
      * This is an empty rectangle needed to keep the size of the CR.
@@ -120,62 +96,24 @@ public class FigClassifierRole extends FigNodeModelElement {
         setOwner(node);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
-     */
-    protected void initNotationProviders(Object own) {
-        super.initNotationProviders(own);
-        if (Model.getFacade().isAClassifierRole(own)) {
-            notationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_CLASSIFIERROLE, own);
-        }
-    }
-    
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    protected void modelChanged(final PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AddAssociationEvent
-                || mee instanceof RemoveAssociationEvent
-                || mee instanceof AttributeChangeEvent) {
-            notationProvider.updateListener(this, getOwner(), mee);
-        }
-    }
-
     /**
-     * Called after text has been edited directly on the screen.<p>
+     * The NotationProvider for the ClassifierRole. <p>
+     * 
+     * The syntax is for UML is:
+     * <pre>
+     * baselist := [base] [, base]*
+     * classifierRole := [name] [/ role] [: baselist]
+     * </pre></p>
+     * 
+     * The <code>name</code> is the Instance name, not used currently.
+     * See ClassifierRoleNotationUml for details.<p>
      *
-     * @param ft  The text that was edited.
-     * @throws PropertyVetoException by the parser
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     * This syntax is compatible with the UML 1.4 specification.
+     * 
      */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == getNameFig()) {
-            notationProvider.parse(getOwner(), ft.getText());
-            ft.setText(notationProvider.toString(getOwner(), null));
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp(notationProvider.getParsingHelp());
-        }
-    }
-
-    /**
-     * Adjust the fig in the light of some change to the model.<p>
-     *
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
-    protected void updateNameText() {
-        if (notationProvider != null) {
-            getNameFig().setText(notationProvider.toString(getOwner(), null));
-        }
+    @Override
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_CLASSIFIERROLE;
     }
 
     protected void setBoundsImpl(final int x, final int y,
