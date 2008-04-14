@@ -242,7 +242,7 @@ class ActionDialogElementImport extends UndoableAction {
                         isExclusive());
             int result = dialog.showDialog(ArgoFrame.getInstance());
             if (result == JOptionPane.OK_OPTION) {
-                doIt(target, dialog.getSelectedList());
+                doIt(target, dialog.getSelected());
             }
         }
     }

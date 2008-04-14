@@ -91,7 +91,7 @@ public abstract class AbstractActionAddModelElement2 extends UndoableAction {
                              isExclusive());
         int result = dialog.showDialog(ArgoFrame.getInstance());
         if (result == JOptionPane.OK_OPTION) {
-            doIt(dialog.getSelectedList());
+            doIt(dialog.getSelected());
         }
     }
     

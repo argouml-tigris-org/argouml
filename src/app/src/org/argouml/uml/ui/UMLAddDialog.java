@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,9 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.swing.AbstractListModel;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -49,43 +49,30 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.util.SortedListModel;
 
 /**
- * UMLAddDialog allows the user to do a multiple select from a list of choices
- * in a separate dialog. The dialog has two possible uses:
+ * UMLAddDialog is a modal dialog which allows the user to do a multiple select
+ * from a list of choices. The dialog has two possible uses:
  * <ol>
  * <li>As dialog as described above with a custom cellrenderer or a default
  * cellrenderer.
  * <li>As dialog with a UMLCellRenderer. Cells in the choices list and selected
  * list are presented with their name instead of their toString function.
  * </ol>
+ * <p>
+ * <em>NOTE:</em> An incompatible change to the API contract was made between
+ * 0.24 and 0.26.  A number of internal methods which had public visibility
+ * were made private.
  */
 public class UMLAddDialog extends JPanel implements ActionListener {
-
-    /**
-     * The choices a user has
-     */
-    private List choices = null;
-
-    /**
-     * The preselected choices
-     */
-    private List preSelected = null;
-
-    /**
-     * The selected choices.
-     * TODO: This should be switched to a List when {@link #getSelected()}
-     * is removed.  It needs to remain a Vector for now to preserve the 
-     * semantics of {@link #getSelected()} because it returns the Vector
-     * itself, not a copy.
-     */
-    private Vector selected = null;
 
     /**
      * The GUI list for the choices
@@ -117,6 +104,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      */
     private int returnValue;
 
+    private boolean exclusive;
+
     /**
      * Constructs a UMLAddDialog with a UMLListCellRenderer. Modelelements are
      * represented with their names in the choices list and the selected list.
@@ -129,15 +118,16 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      *            The title of the dialog
      * @param multiselectAllowed
      *            True if the user may select multiple choices
-     * @param exclusive
+     * @param isExclusive
      *            True if choices in the selected list may not appear in the
      *            choices list. If true preselected choices are removed from the
      *            choices list.
      */
-    public UMLAddDialog(List theChoices, List preselected, String theTitle,
-            boolean multiselectAllowed, boolean exclusive) {
+    public UMLAddDialog(final List theChoices, final List preselected,
+            final String theTitle, final boolean multiselectAllowed,
+            final boolean isExclusive) {
         this(theChoices, preselected, theTitle, new UMLListCellRenderer2(true),
-                multiselectAllowed, exclusive);
+                multiselectAllowed, isExclusive);
     }
 
     /**
@@ -153,32 +143,28 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      *            The cellrenderer of the choices list and the selected list
      * @param multiselectAllowed
      *            True if the user may select multiple choices
-     * @param exclusive
+     * @param isExclusive
      *            True if choices in the selected list may not appear in the
      *            choices list. If true preselected choices are removed from the
      *            choices list.
      */
-    public UMLAddDialog(List theChoices, List preselected, String theTitle,
-            ListCellRenderer renderer, boolean multiselectAllowed,
-            boolean exclusive) {
+    public UMLAddDialog(final List theChoices, final List preselected,
+            final String theTitle, final ListCellRenderer renderer,
+            final boolean multiselectAllowed, final boolean isExclusive) {
         multiSelectAllowed = multiselectAllowed;
         if (theChoices == null) {
             throw new IllegalArgumentException(
                     "There should always be choices in UMLAddDialog");
         }
-        if (exclusive && preselected != null && !preselected.isEmpty()) {
-            theChoices.removeAll(preselected);
+        exclusive = isExclusive;
+        List choices = new ArrayList(theChoices);
+        if (isExclusive && preselected != null && !preselected.isEmpty()) {
+            choices.removeAll(preselected);
         }
-        choices = theChoices;
-        preSelected = preselected;
-        selected = new Vector();
         if (theTitle != null) {
             title = theTitle;
         } else {
             title = "";
-        }
-        if (preselected != null) {
-            selected.addAll(preselected);
         }
 
         setLayout(new BorderLayout());
@@ -187,7 +173,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
         JPanel panelChoices = new JPanel(new BorderLayout());
         JPanel panelSelected = new JPanel(new BorderLayout());
 
-        choicesList = new JList(constructListModel(theChoices));
+        choicesList = new JList(constructListModel(choices));
         choicesList.setMinimumSize(new Dimension(150, 300));
         if (renderer != null) {
             choicesList.setCellRenderer(renderer);
@@ -216,7 +202,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
         buttonBox.add(Box.createRigidArea(new Dimension(0, 5)));
         buttonBox.add(removeButton);
 
-        selectedList = new JList(constructListModel(selected));
+        selectedList = new JList(constructListModel(preselected));
         selectedList.setMinimumSize(new Dimension(150, 300));
         if (renderer != null) {
             selectedList.setCellRenderer(renderer);
@@ -279,18 +265,18 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * Updates the add and remove button (sets enabled/disabled). Called
      * whenever the model is changed.
      */
-    public void update() {
-        if (choices.size() == 0) {
+    private void update() {
+        if (choicesList.getModel().getSize() == 0) {
             addButton.setEnabled(false);
         } else {
             addButton.setEnabled(true);
         }
-        if (selected.size() == 0) {
+        if (selectedList.getModel().getSize() == 0) {
             removeButton.setEnabled(false);
         } else {
             removeButton.setEnabled(true);
         }
-        if (selected.size() > 1 && !multiSelectAllowed) {
+        if (selectedList.getModel().getSize() > 1 && !multiSelectAllowed) {
             addButton.setEnabled(false);
             okButton.setEnabled(false);
         }
@@ -306,10 +292,10 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * @param list the given list
      * @return DefaultListModel
      */
-    protected DefaultListModel constructListModel(List list) {
-        DefaultListModel model = new DefaultListModel();
-        for (Object o : list) {
-            model.addElement(o);
+    protected AbstractListModel constructListModel(List list) {
+        SortedListModel model = new SortedListModel();
+        if (list != null) {
+            model.addAll(list);
         }
         return model;
     }
@@ -353,135 +339,77 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 
     /**
-     * Return the choices a user can make.
-     *
+     * Returns the choices a user can make.
      * @return List of choices
      */
-    public List getChoicesList() {
+    private List getChoices() {
         List result = new ArrayList();
-        getChoicesListInternal(result);
-        return result;
-    }
-    
-    /**
-     * Returns the choices a user can make.
-     *
-     * @return Vector
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSelectedChoicesList()}
-     */
-    @Deprecated
-    public Vector getChoices() {
-        Vector result = new Vector();
-        getChoicesListInternal(result);
-        return result;
-    }
-
-    private void getChoicesListInternal(List result) {
         for (int index : choicesList.getSelectedIndices()) {
-            result.add(choices.get(index));
+            result.add(choicesList.getModel().getElementAt(index));
         }
-    }
-
-
-    /**
-     * Returns the selected elements in the selected list
-     *
-     * @return List of elements
-     */
-    public List getSelectedChoicesList() {
-        List result = new ArrayList();
-        getSelectedChoicesInternal(result);
         return result;
     }
     
     /**
      * Returns the selected elements in the selected list
-     *
-     * @return Vector
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSelectedChoicesList()}
-     */
-    @Deprecated
-    public Vector getSelectedChoices() {
-        Vector result = new Vector();
-        getSelectedChoicesInternal(result);
-        return result;
-    }
-
-    private void getSelectedChoicesInternal(List result) {
-        if (selectedList != null && selected != null) {
-            for (int index : selectedList.getSelectedIndices()) {
-                result.add(selected.get(index));
-            }
-        }
-    }
-
-    
-    /**
-     * Returns the by the user selected elements. This method should be called
-     * if the selected choices are to be known.
-     *
-     * @return Vector
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSelectedList()}.
-     */
-    @Deprecated
-    public Vector getSelected() {
-        // TODO: Because we return our internal data directly, we can't copy
-        // it from a List to a Vector and keep the same semantics
-        // return new Vector(selected);
-        return selected;
-    }
-
-    /**
-     * Returns the by the user selected elements. This method should be called
-     * if the selected choices are to be known.
      *
      * @return List
      */
-    public List getSelectedList() {
-        return selected;
+    private List getSelectedChoices() {
+        List result = new ArrayList();
+        for (int index : selectedList.getSelectedIndices()) {
+            result.add(selectedList.getModel().getElementAt(index));
+        }
+        return result;
     }
 
     /**
-     * Adds the selected elements in the choices list to the selected list.
-     * Updates the GUI too.
+     * Returns the elements of the right-hand "selected" list.  Note
+     * that these are not the elements selected (ie highlighted) in the
+     * Swing sense, but rather the entire contents of the list containing
+     * the user selections.
+     *
+     * @return a Vector of selected elements.
      */
-    public void addSelection() {
-        List theChoices = getChoicesList();
-        choices.removeAll(theChoices);
-        for (int i = 0; i < theChoices.size(); i++) {
-            ((DefaultListModel) choicesList.getModel())
-                    .removeElement(theChoices.get(i));
+    public Vector getSelected() {
+        Vector result = new Vector();
+        ListModel list = selectedList.getModel();
+        for (int i = 0; i < list.getSize(); i++) {
+            result.add(list.getElementAt(i));
         }
-        selected.addAll(theChoices);
-        for (int i = 0; i < theChoices.size(); i++) {
-            ((DefaultListModel) selectedList.getModel()).addElement(theChoices
-                    .get(i));
+        return result;
+    }
+    
+    /**
+     * Adds the selected elements in the choices list to the selected list.
+     * 
+     */
+    private void addSelection() {
+        List theChoices = getChoices();
+        if (exclusive) {
+            ((SortedListModel) choicesList.getModel()).removeAll(theChoices);
         }
+        ((SortedListModel) selectedList.getModel()).addAll(theChoices);
+
     }
 
     /**
      * Removes the selected elements in the selected list and adds them to the
-     * choices list. Updates the GUI too.
+     * choices list. The GUI will be updated by the ListModel listeners.
      */
-    public void removeSelection() {
-        List theChoices = getSelectedChoicesList();
-        selected.removeAll(theChoices);
-        for (int i = 0; i < theChoices.size(); i++) {
-            ((DefaultListModel) selectedList.getModel())
-                    .removeElement(theChoices.get(i));
-        }
-        choices.addAll(theChoices);
-        for (int i = 0; i < theChoices.size(); i++) {
-            ((DefaultListModel) choicesList.getModel()).addElement(theChoices
-                    .get(i));
+    private void removeSelection() {
+        List theChoices = getSelectedChoices();
+        ((SortedListModel) selectedList.getModel()).removeAll(theChoices);
+        if (exclusive) {
+            ((SortedListModel) choicesList.getModel()).addAll(theChoices);
         }
     }
 
     /**
-     * Called when the okbutton is pressed. Closes this dialog and sets the
-     * returnvalue to JOptionPane.OK_OPTION.
+     * Called when the OK button is pressed. Closes this dialog and sets the
+     * return value to JOptionPane.OK_OPTION.
      */
-    public void ok() {
+    private void ok() {
         if (dialog != null) {
             dialog.setVisible(false);
             returnValue = JOptionPane.OK_OPTION;
@@ -490,15 +418,10 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 
     /**
      * Called when the cancel button is pressed. Closes this dialog and sets the
-     * returnvalue to JOptionPane.CANCEL_OPTION. Resets the selected list to the
-     * originally preselection if there is one. Otherwise the selected list is
-     * emptied.
+     * returnvalue to JOptionPane.CANCEL_OPTION. The state of any selections
+     * is indeterminate after cancel is called.
      */
-    public void cancel() {
-        selected.clear();
-        if (preSelected != null) {
-            selected.addAll(preSelected);
-        }
+    private void cancel() {
         if (dialog != null) {
             dialog.setVisible(false);
             returnValue = JOptionPane.CANCEL_OPTION;
