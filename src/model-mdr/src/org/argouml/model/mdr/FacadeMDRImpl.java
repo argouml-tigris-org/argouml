@@ -199,7 +199,7 @@ class FacadeMDRImpl implements Facade {
     private MDRModelImplementation modelImpl;
 
     // Shorthand notation for convenience
-    static final javax.jmi.model.AggregationKindEnum MOF_COMPOSITE =
+    private static final javax.jmi.model.AggregationKindEnum MOF_COMPOSITE =
         javax.jmi.model.AggregationKindEnum.COMPOSITE;
 
     /**
@@ -930,10 +930,7 @@ class FacadeMDRImpl implements Facade {
                 return illegalArgumentBoolean(handle);
             }
             
-            Object stereo = null;
-            Iterator iter = getStereotypes(operation).iterator();
-            while (iter.hasNext()) {
-                stereo = iter.next();
+            for (Object stereo : getStereotypes(operation)) {
                 if (modelImpl.getExtensionMechanismsHelper()
                         .isStereotypeInh(stereo, "create", 
                                 "BehavioralFeature")) {
@@ -1108,7 +1105,8 @@ class FacadeMDRImpl implements Facade {
     public boolean isPrimaryObject(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                for (TaggedValue tv : ((ModelElement) handle).getTaggedValue()) {
+                for (TaggedValue tv 
+                        : ((ModelElement) handle).getTaggedValue()) {
                     TagDefinition type = tv.getType();
                     if (type != null 
                             && GENERATED_TAG.equals(type.getTagType())) {
@@ -1332,7 +1330,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getBaseClasses(Object handle) {
+    public Collection<String> getBaseClasses(Object handle) {
         try {
             if (isAStereotype(handle)) {
                 return ((Stereotype) handle).getBaseClass();
@@ -1366,7 +1364,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getBases(Object handle) {
+    public Collection<Classifier> getBases(Object handle) {
         try {
             if (handle instanceof ClassifierRole) {
                 return ((ClassifierRole) handle).getBase();
@@ -1489,7 +1487,7 @@ class FacadeMDRImpl implements Facade {
     }
     
 
-    public Collection getChildren(Object handle) {
+    public Collection<GeneralizableElement> getChildren(Object handle) {
         try {
             return modelImpl.getCoreHelper().getChildren(handle);
         } catch (InvalidObjectException e) {
@@ -1529,7 +1527,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getClassifiers(Object handle) {
+    public Collection<Classifier> getClassifiers(Object handle) {
         try {
             if (handle instanceof Instance) {
                 return ((Instance) handle).getClassifier();
@@ -1560,7 +1558,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getClients(Object handle) {
+    public Collection<ModelElement> getClients(Object handle) {
         try {
             if (isADependency(handle)) {
                 return ((Dependency) handle).getClient();
@@ -1666,7 +1664,7 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    public Collection getElementImports(Object handle) {
+    public Collection<ElementImport> getElementImports(Object handle) {
         try {
             if (handle instanceof UmlPackage) {
                 return ((UmlPackage) handle).getElementImport();
@@ -1806,7 +1804,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getExtensionPoints(Object handle) {
+    public Collection<ExtensionPoint> getExtensionPoints(Object handle) {
         try {
             if (handle instanceof UseCase) {
                 return ((UseCase) handle).getExtensionPoint();
@@ -1854,7 +1852,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getGeneralizations(Object handle) {
+    public Collection<Generalization> getGeneralizations(Object handle) {
         try {
             if (handle instanceof GeneralizableElement) {
                 return ((GeneralizableElement) handle).getGeneralization();
@@ -1927,7 +1925,7 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    public Collection getIncludes(Object handle) {
+    public Collection<Include> getIncludes(Object handle) {
         try {
             if (handle instanceof UseCase) {
                 return ((UseCase) handle).getInclude();
@@ -2019,7 +2017,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getInStates(Object handle) {
+    public Collection<State> getInStates(Object handle) {
         try {
             if (handle instanceof ClassifierInState) {
                 return ((ClassifierInState) handle).getInState();
@@ -2043,7 +2041,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getInteractions(Object handle) {
+    public Collection<Interaction> getInteractions(Object handle) {
         try {
             if (handle instanceof Collaboration) {
                 return ((Collaboration) handle).getInteraction();
@@ -2055,7 +2053,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getInternalTransitions(Object handle) {
+    public Collection<Transition> getInternalTransitions(Object handle) {
         try {
             if (handle instanceof State) {
                 return ((State) handle).getInternalTransition();
@@ -2067,7 +2065,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getMessages(Object handle) {
+    public Collection<Message> getMessages(Object handle) {
         try {
             if (isAInteraction(handle)) {
                 return ((Interaction) handle).getMessage();
@@ -2229,7 +2227,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getComments(Object handle) {
+    public Collection<Comment> getComments(Object handle) {
         try {
             if (handle instanceof ModelElement) {
                 return ((ModelElement) handle).getComment();
@@ -2241,7 +2239,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getAnnotatedElements(Object handle) {
+    public Collection<ModelElement> getAnnotatedElements(Object handle) {
         try {
             if (handle instanceof Comment) {
                 return ((Comment) handle).getAnnotatedElement();
@@ -2308,7 +2306,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getConstrainingElements(Object handle) {
+    public Collection<ModelElement> getConstrainingElements(Object handle) {
         try {
             if (handle instanceof Collaboration) {
                 return ((Collaboration) handle).getConstrainingElement();
@@ -2320,7 +2318,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public List getConstrainedElements(Object handle) {
+    public List<ModelElement> getConstrainedElements(Object handle) {
         try {
             if (handle instanceof Constraint) {
                 return ((Constraint) handle).getConstrainedElement();
@@ -2332,7 +2330,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getConstraints(Object handle) {
+    public Collection<Constraint> getConstraints(Object handle) {
         try {
             if (handle instanceof ModelElement) {
                 return ((ModelElement) handle).getConstraint();
@@ -2500,7 +2498,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getContents(Object handle) {
+    public Collection<ModelElement> getContents(Object handle) {
         try {
             if (handle instanceof Partition) {
                 return ((Partition) handle).getContents();
@@ -2566,7 +2564,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getDeferrableEvents(Object handle) {
+    public Collection<Event> getDeferrableEvents(Object handle) {
         try {
             if (handle instanceof State) {
                 return ((State) handle).getDeferrableEvent();
@@ -2578,7 +2576,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getDeploymentLocations(Object handle) {
+    public Collection<Node> getDeploymentLocations(Object handle) {
         try {
             if (handle instanceof Component) {
                 return ((Component) handle).getDeploymentLocation();
@@ -2589,7 +2587,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-    public Collection getDeployedComponents(Object handle) {
+    public Collection<Component> getDeployedComponents(Object handle) {
         try {
             if (handle instanceof Node) {
                 return ((Node) handle).getDeployedComponent();
@@ -2800,8 +2798,9 @@ class FacadeMDRImpl implements Facade {
     public Object getNextEnd(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
-                List assocEnds = (((AssociationEnd) handle).getAssociation())
-                        .getConnection();
+                List<AssociationEnd> assocEnds =
+                        (((AssociationEnd) handle).getAssociation())
+                                .getConnection();
                 int index = assocEnds.indexOf(handle);
                 if (index == -1 || assocEnds.size() < 2) {
                     return null; // shouldn't happen
@@ -2858,23 +2857,23 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getOtherAssociationEnds(Object handle) {
+    public Collection<AssociationEnd> getOtherAssociationEnds(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
                 UmlAssociation a = ((AssociationEnd) handle).getAssociation();
 
                 if (a == null) {
-                    return Collections.EMPTY_LIST;
+                    return Collections.emptyList();
                 }
 
-                Collection allEnds = a.getConnection();
+                Collection<AssociationEnd> allEnds = a.getConnection();
                 if (allEnds == null) {
-                    return Collections.EMPTY_LIST;
+                    return Collections.emptyList();
                 }
 
                 // TODO: An Iterator filter would be nice here instead of the
                 // mucking around with the Collection.
-                allEnds = new ArrayList(allEnds);
+                allEnds = new ArrayList<AssociationEnd>(allEnds);
                 allEnds.remove(handle);
                 return allEnds;
             }
@@ -2886,23 +2885,23 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getOtherLinkEnds(Object handle) {
+    public Collection<LinkEnd> getOtherLinkEnds(Object handle) {
         try {
             if (handle instanceof LinkEnd) {
                 Link link = ((LinkEnd) handle).getLink();
 
                 if (link == null) {
-                    return Collections.EMPTY_LIST;
+                    return Collections.emptyList();
                 }
 
-                Collection allEnds = link.getConnection();
+                Collection<LinkEnd> allEnds = link.getConnection();
                 if (allEnds == null) {
-                    return Collections.EMPTY_LIST;
+                    return Collections.emptyList();
                 }
 
                 // TODO: An Iterator filter would be nice here instead of the
                 // mucking around with the Collection.
-                allEnds = new ArrayList(allEnds);
+                allEnds = new ArrayList<LinkEnd>(allEnds);
                 allEnds.remove(handle);
                 return allEnds;
             }
@@ -2913,7 +2912,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getOwnedElements(Object handle) {
+    public Collection<ModelElement> getOwnedElements(Object handle) {
         if (!(handle instanceof Namespace)) {
             return illegalArgumentCollection(handle);
         }
@@ -2962,7 +2961,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getPowertypeRanges(Object handle) {
+    public Collection<Generalization> getPowertypeRanges(Object handle) {
         try {
             if (handle instanceof Classifier) {
                 return ((Classifier) handle).getPowertypeRange();
@@ -2974,7 +2973,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getPredecessors(Object handle) {
+    public Collection<Message> getPredecessors(Object handle) {
         try {
             if (handle instanceof Message) {
                 return ((Message) handle).getPredecessor();
@@ -2986,7 +2985,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public List getQualifiers(Object handle) {
+    public List<Attribute> getQualifiers(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
                 return ((AssociationEnd) handle).getQualifier();
@@ -3062,7 +3061,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public List getParametersList(Object handle) {
+    public List<Parameter> getParametersList(Object handle) {
         try {
             if (handle instanceof BehavioralFeature) {
                 return ((BehavioralFeature) handle).getParameter();
@@ -3214,7 +3213,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getResidentElements(Object handle) {
+    public Collection<ElementResidence> getResidentElements(Object handle) {
         try {
             if (handle instanceof Component) {
                 return ((Component) handle).getResidentElement();
@@ -3263,7 +3262,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getSources(Object handle) {
+    public Collection<ModelElement> getSources(Object handle) {
         try {
             if (handle instanceof Flow) {
                 return ((Flow) handle).getSource();
