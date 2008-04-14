@@ -24,6 +24,8 @@
 
 package org.argouml.kernel;
 
+import java.io.File;
+import java.net.URL;
 import java.util.Collection;
 
 import junit.framework.TestCase;
@@ -31,11 +33,17 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.java.InitNotationJava;
+import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.persistence.AbstractFilePersister;
+import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 
 
 /**
@@ -63,6 +71,36 @@ public class TestProject extends TestCase {
                 Model.getFacade().getName(p.getModel()));
         // maybe next test is going to change in future
         assertEquals(p.getRoot(), p.getModel());
+    }
+
+    /**
+     * Test remove() function. This is called when a new project is created to
+     * remove the old project. We confirm here that the users model has been
+     * emptied and that no none 'Model' model elements are at root.
+     * @throws Exception
+     */
+    public void testRemove() throws Exception {
+        String name = "/testmodels/uml14/Alittlebitofeverything.zargo";
+        URL url = TestProject.class.getResource(name);
+        AbstractFilePersister persister =
+            PersistenceManager.getInstance().getPersisterFromFileName(name);
+        String filename = url.getFile();
+        Project p = persister.doLoad(new File(filename));
+        
+        p.remove();
+        
+        for (Object root : Model.getFacade().getRootElements()) {
+            assertTrue(
+                    "All roots should be a Model",
+                    Model.getFacade().isAModel(root));
+            System.out.println(Model.getFacade().getName(root) + " "
+                    + Model.getFacade().getOwnedElements(root).size());
+            if (Model.getFacade().getName(root).equals("untitledModel")) {
+                assertEquals(
+                        "All root models should be empty", 0, 
+                        Model.getFacade().getOwnedElements(root).size());
+            }
+        }
     }
 
     /**
@@ -474,6 +512,10 @@ public class TestProject extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         ProjectManager.getManager().setCurrentProject(null);
-        new InitProfileSubsystem().init();
+        (new InitNotation()).init();
+        (new InitNotationUml()).init();
+        (new InitNotationJava()).init();
+        (new InitDiagramAppearanceUI()).init();
+        (new InitProfileSubsystem()).init();
     }
 }
