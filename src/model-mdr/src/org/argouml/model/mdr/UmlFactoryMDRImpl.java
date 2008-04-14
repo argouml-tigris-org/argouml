@@ -202,8 +202,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * <li>The 1st column is the connecting element.
      * <li>The 2nd column is the "from" element type.
      * <li>The 3rd column is the "to" element type.
-     * <li>The 3rd column is optional, if not given then it is assumed to be
-     * the same as the "to" element.
+     * The 3rd column is optional, if not given then it is assumed to be
+     * the same as the "from" element.
      * <li>The existence of a 4th column indicates that the connection is valid
      * in one direction only.
      * </ul>
@@ -211,6 +211,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * knows how to create, so not all legal connections are included. Probably
      * should be split into two pieces: 1) legal UML (here) and 2) supported (in
      * ArgoUML application someplace) - tfm - 20060325<p>
+     * See also issue 3863.<p>
      *
      * Most of these are subtypes of Relationship which includes Association,
      * Dependency, Flow, Generalization, Extend, and Include. Dependency
