@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -436,10 +436,21 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("one of "
                     + "the classifiers does not " + "belong to a namespace");
         }
+        
+        // We'll put the association in the namespace of whichever end
+        // is navigable.  If they both are, we'll use the namepace of c1.
+        Namespace ns = null;
+        if (nav1) {
+            ns = ns1;
+        } else if (nav2) {
+            ns = ns2;
+        } else {
+            throw new IllegalArgumentException(
+                    "At least one end must be navigable");
+        }
         UmlAssociation assoc = createAssociation();
         assoc.setName("");
-        assoc.setNamespace((Namespace) modelImpl.getCoreHelper().
-                getFirstSharedNamespace(ns1, ns2));
+        assoc.setNamespace(ns);
         buildAssociationEnd(assoc, null, c1, null, null,
                 nav1, null, agg1, null, null, null);
         buildAssociationEnd(assoc, null, c2, null, null, 
@@ -1698,7 +1709,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *            is the namespace.
      */
     void deleteNamespace(Object elem) {
-        LOG.info("Deleting namespace " + elem);
+        LOG.debug("Deleting namespace " + elem);
         if (!(elem instanceof Namespace)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
@@ -1709,7 +1720,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // additional elements that need to be deleted as a result.
         ownedElements.addAll(((Namespace) elem).getOwnedElement());
         for (ModelElement element : ownedElements) {
-            LOG.info("Deleting " + element);
+            LOG.debug("Deleting " + element);
             modelImpl.getUmlFactory().delete(element);
         }
     }
