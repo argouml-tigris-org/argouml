@@ -194,12 +194,12 @@ public interface StateMachinesFactory extends Factory {
     Object buildStubState(Object compositeState);
 
     /**
-     * Builds a compositestate initalized as a non-concurrent
-     * composite state.  The compositestate will be a subvertix of the
-     * given compositestate.
+     * Build a CompositeState initalized as a non-concurrent
+     * composite state.  The CompositeState will be a subvertex of the
+     * given CompositeState.
      *
      * @param compositeState the given compositestate
-     * @return MSynchState the newly build synchstate
+     * @return the newly built CompositeState
      * @see #buildCompositeStateOnStateMachine(Object)
      */
     Object buildCompositeState(Object compositeState);
