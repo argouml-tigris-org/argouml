@@ -105,8 +105,6 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
                     Model.getMetaTypes().getMessage(),
                     Model.getMetaTypes().getReturnAction());
             
-            final Layer layer = editor.getLayerManager().getActiveLayer();
-            
             final FigMessage returnEdge = new FigMessage(returnMessage);
 
             returnEdge.setSourcePortFig(fe.getDestPortFig());
@@ -131,11 +129,14 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             // it doesn't need to be added again. 
             // The problem here is that the diagram
             // isn't damaged, and btw the edge ends' X are wrong.
+            final Layer layer = editor.getLayerManager().getActiveLayer();
             layer.add(returnEdge);
         }
         dcr.createActivations();
         dcr.renderingChanged();
-        scr.createActivations();
-        scr.renderingChanged();
+        if (dcr != scr) {
+            scr.createActivations();
+            scr.renderingChanged();
+        }
     }
 }
