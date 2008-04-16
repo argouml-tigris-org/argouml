@@ -293,7 +293,7 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
-        nameFig = new FigNameWithAbstract(10, 10, 90, 21, true);
+        nameFig = new FigNameWithAbstractAndBold(10, 10, 90, 21, true);
         nameFig.setLineWidth(1);
         nameFig.setFilled(true);
         nameFig.setText(placeString());

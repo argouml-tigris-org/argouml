@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,17 +26,22 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Font;
 
-import org.argouml.model.Model;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectSettings;
+
 
 /**
- * A FigSingleLineText that represents the name of a modelelement,
- * which handles italic font if the element is abstract. <p>
+ * A FigSingleLineText that represents the name of 
+ * a node type of modelelement,
+ * which handles cases where the projectsettings 
+ * indicate that the node name should be in bold. <p>
  * 
- * For the italics to work, the owner of this FigText needs to be set!
+ * Since this Fig follows the setting "Show name of NODES in bold font",
+ * it would be wise to use it for nodes only. See issue 5013.
  *
  * @author Michiel
  */
-class FigNameWithAbstract extends FigSingleLineText {
+class FigNameWithAbstractAndBold extends FigNameWithAbstract {
 
     /**
      * @param x location x
@@ -45,17 +50,21 @@ class FigNameWithAbstract extends FigSingleLineText {
      * @param h height
      * @param expandOnly impacts behavior
      */
-    public FigNameWithAbstract(int x, int y, int w, int h, boolean expandOnly) {
+    public FigNameWithAbstractAndBold(int x, int y, int w, int h,
+            boolean expandOnly) {
         super(x, y, w, h, expandOnly);
     }
 
     @Override
     protected int getFigFontStyle() {
-        int style = 0;
-        if (getOwner() != null) {
-            style = Model.getFacade().isAbstract(getOwner()) 
-                ? Font.ITALIC : Font.PLAIN;
+        boolean showBoldName = false;
+        Project p = getProject();
+        if (p != null) {
+            ProjectSettings ps = p.getProjectSettings();
+            showBoldName = ps.getShowBoldNamesValue();
         }
-        return super.getFigFontStyle() | style;
+        int boldStyle =  showBoldName ? Font.BOLD : Font.PLAIN;
+
+        return super.getFigFontStyle() | boldStyle;
     }
 }
