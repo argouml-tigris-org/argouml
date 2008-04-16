@@ -37,7 +37,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
-import org.argouml.uml.diagram.ui.FigMultiLineText;
+import org.argouml.uml.diagram.ui.FigMultiLineTextWithBold;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
@@ -79,7 +79,8 @@ public class FigActionState extends FigStateVertex {
         cover.setCornerRadius(getHeight() / 2);
 
         // overrule the single-line namefig created by the parent
-        setNameFig(new FigMultiLineText(10 + PADDING, 10, 90 - PADDING * 2, 25,
+        setNameFig(new FigMultiLineTextWithBold(10 + PADDING, 10, 
+                90 - PADDING * 2, 25,
                 true));
         getNameFig().setText(placeString());
         getNameFig().setBotMargin(7); // make space for the clarifier
