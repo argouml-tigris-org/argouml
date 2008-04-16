@@ -32,7 +32,7 @@ import java.util.List;
 import org.argouml.model.CommonBehaviorHelper;
 
 /**
- * Eclipse UML2 implementatoin of CommonBehaviorHelper.
+ * Eclipse UML2 implementation of CommonBehaviorHelper.
  */
 class CommonBehaviorHelperEUMLImpl implements CommonBehaviorHelper {
 
