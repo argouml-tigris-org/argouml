@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -116,6 +116,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() {
         (new InitProfileSubsystem()).init();
         (new InitNotation()).init();
@@ -409,11 +410,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Object ns =
             ProjectManager.getManager().getCurrentProject().getModel();
 
-        Iterator it =
-            Model.getExtensionMechanismsHelper()
-                .getStereotypes(ns).iterator();
-        while (it.hasNext()) {
-            Object s =  it.next();
+        for (Object s 
+                : Model.getExtensionMechanismsHelper().getStereotypes(ns)) {
             if (name.equals(Model.getFacade().getName(s))) {
                 return;
             }
@@ -983,13 +981,13 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         }
 
         Collection stereos = Model.getFacade().getStereotypes(feature);
-        List<Object> stereoNames = new ArrayList<Object>();
-        for (Iterator i = stereos.iterator(); i.hasNext();) {
-            stereoNames.add(Model.getFacade().getName(i.next()));
+        List<String> stereoNames = new ArrayList<String>();
+        for (Object stereo : stereos) {
+            stereoNames.add(Model.getFacade().getName(stereo));
         }
         boolean stereosMatch = true;
-        for (int i = 0; i < val.length; i++) {
-            if (!stereoNames.contains(val[i])) {
+        for (String v : val) {
+            if (!stereoNames.contains(v)) {
                 stereosMatch = false;
             }
         }
