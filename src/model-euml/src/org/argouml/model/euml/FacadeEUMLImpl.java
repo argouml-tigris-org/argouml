@@ -1,5 +1,5 @@
 //$Id$
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007, 2008 The ArgoUML Project
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -284,7 +284,7 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    public Collection<String> getBaseClasses(Object handle) {
+    public Collection getBaseClasses(Object handle) {
         throw new NotYetImplementedException();
 
     }
@@ -766,6 +766,14 @@ class FacadeEUMLImpl implements Facade {
         if (!(handle instanceof Element)) {
             throw new IllegalArgumentException();
         }
+        return ((Element) handle).getModel();
+    }
+    
+    public Object getRoot(Object handle) {
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
+        // TODO: Does this do what we need? - tfm
         return ((Element) handle).getModel();
     }
 
