@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,8 +48,11 @@ import antlr.TokenStreamException;
  * setUp method need not be changed).<p>
  */
 public class TestJavaImportClass extends TestCase {
-    /*
-     * @see junit.framework.TestCase#TestCase(String)
+    
+    /**
+     * Construct a test case with the given name to test import of a Java class.
+     * 
+     * @param str name of the test case
      */
     public TestJavaImportClass(String str) {
         super(str);
@@ -147,6 +150,11 @@ public class TestJavaImportClass extends TestCase {
             }
         }
         assertNotNull("No import found.", permission);
+        assertTrue("isAPackageImport returned false for import/Permission", 
+                Model.getFacade().isAPackageImport(permission));
+        assertEquals("getPackageImport() found different result than "
+                + "getClientDependencies", permission, Model.getCoreHelper()
+                .getPackageImports(component).iterator().next());
         assertEquals("The import name is wrong.",
             "TestClass.java -> Observer",
             Model.getFacade().getName(permission));
