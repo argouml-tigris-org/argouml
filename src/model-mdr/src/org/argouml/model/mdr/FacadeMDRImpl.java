@@ -2155,6 +2155,22 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
+    public Object getRoot(final Object handle) {
+        Object result = handle;
+        try {
+            if (!isAUMLElement(handle)) {
+                return illegalArgumentObject(handle);
+            }
+            Object container = getModelElementContainer(handle);
+            while (container != null) {
+                result = container;
+                container = getModelElementContainer(result);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        return result;
+    }
 
     public Collection getRootElements() {
         Collection elements = new ArrayList();
@@ -3911,6 +3927,28 @@ class FacadeMDRImpl implements Facade {
                 return ((Expression) handle).getBody();
             }
             if (handle instanceof ElementResidence) {
+                return "";
+            }
+            if (handle instanceof TemplateParameter) {
+                // TODO: Do we want to construct an artificial name here?
+                StringBuffer result = new StringBuffer();
+                ModelElement template =
+                        ((TemplateParameter) handle).getTemplate();
+                if (template != null) {
+                    String name = template.getName();
+                    if (name != null) {
+                        result.append(name);
+                    }
+                }
+                result.append(":");
+                ModelElement parameter =
+                        ((TemplateParameter) handle).getParameter();
+                if (parameter != null) {
+                    String name = parameter.getName();
+                    if (name != null) {
+                        result.append(name);
+                    }
+                }
                 return "";
             }
             // TODO: What other non-ModelElement types do we need to handle here?
