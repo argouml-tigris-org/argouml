@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeModel;
@@ -92,9 +93,6 @@ public class ToDoPane extends JPanel
      */
     private static final Logger LOG = Logger.getLogger(ToDoPane.class);
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     private static final int WARN_THRESHOLD = 50;
     private static final int ALARM_THRESHOLD = 100;
     private static final Color WARN_COLOR = Color.yellow;
@@ -103,9 +101,6 @@ public class ToDoPane extends JPanel
     private static int clicksInToDoPane;
     private static int dblClicksInToDoPane;
     private static int toDoPerspectivesChanged;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private JTree tree;
     private JComboBox combo;
@@ -120,14 +115,14 @@ public class ToDoPane extends JPanel
     private JLabel countLabel;
     private Object lastSel;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
-     * The constructor.
+     * Construct the ToDoPane.
      *
-     * @param splash if true, then we have to show progress in the splash
+     * @param splash if not null, then we have to show progress in the splash
      */
+    // TODO: This should take a ProgressMonitor or something more generic
+    // (or nothing at all since it doesn't do that much work)
     public ToDoPane(SplashScreen splash) {
 
         setLayout(new BorderLayout());
@@ -172,8 +167,6 @@ public class ToDoPane extends JPanel
         setPreferredSize(preferredSize);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * @param r the root
@@ -186,10 +179,12 @@ public class ToDoPane extends JPanel
     /**
      * @return the root
      */
-    public ToDoList getRoot() { return root; }
+    public ToDoList getRoot() {
+        return root;
+    }
 
     /**
-     * @return the perspectives treemodels
+     * @return the perspective's treemodels
      * @deprecated for 0.25.4 by tfmorris.  Use {@link #getPerspectiveList()}.
      */
     @Deprecated
@@ -232,7 +227,9 @@ public class ToDoPane extends JPanel
     /**
      * @return the current perspectives
      */
-    public ToDoPerspective getCurPerspective() { return curPerspective; }
+    public ToDoPerspective getCurPerspective() {
+        return curPerspective;
+    }
 
     /**
      * @param per the current perspective
@@ -363,56 +360,90 @@ public class ToDoPane extends JPanel
     ////////////////////////////////////////////////////////////////
     // ToDoListListener implementation
 
+    /**
+     * Invoke a task on the Swing thread. If we are running on the Swing thread,
+     * this happens immediately. Otherwise the task is queued for later
+     * execution using SwingUtilities.invokeLater.
+     * <p>
+     * This is necessary because event notification of ToDoListener events is
+     * likely to be coming from the ToDo Validity Checker thread running in the
+     * background.
+     * 
+     * @param task a Runnable task who's run() method will be invoked
+     */
+    private void swingInvoke(Runnable task) {
+        if (SwingUtilities.isEventDispatchThread()) {
+            task.run();
+        } else {
+            SwingUtilities.invokeLater(task);
+        }
+    }
+    
     /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
      */
-    public void toDoItemsChanged(ToDoListEvent tde) {
-        if (curPerspective instanceof ToDoListListener) {
-            ((ToDoListListener) curPerspective).toDoItemsChanged(tde);
-	}
+    public void toDoItemsChanged(final ToDoListEvent tde) {
+        swingInvoke(new Runnable() {
+            public void run() {
+                if (curPerspective instanceof ToDoListListener) {
+                    ((ToDoListListener) curPerspective).toDoItemsChanged(tde);
+                }
+            }
+        });
     }
+
 
     /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
      */
-    public void toDoItemsAdded(ToDoListEvent tde) {
-        if (curPerspective instanceof ToDoListListener) {
-            ((ToDoListListener) curPerspective).toDoItemsAdded(tde);
-	}
-        List<ToDoItem> items = tde.getToDoItemList();
-        for (ToDoItem todo : items) {
-            if (todo.getPriority() >= ToDoItem.INTERRUPTIVE_PRIORITY) {
-                // keep nagging until the user solves the problem:
-                // This seems a nice way to nag:
-                selectItem(todo);
-                break; // Only interrupt for one todoitem
+    public void toDoItemsAdded(final ToDoListEvent tde) {
+        swingInvoke(new Runnable() {
+            public void run() {
+                if (curPerspective instanceof ToDoListListener) {
+                    ((ToDoListListener) curPerspective).toDoItemsAdded(tde);
+                }
+                List<ToDoItem> items = tde.getToDoItemList();
+                for (ToDoItem todo : items) {
+                    if (todo.getPriority() 
+                            >= ToDoItem.INTERRUPTIVE_PRIORITY) {
+                        // keep nagging until the user solves the problem:
+                        // This seems a nice way to nag:
+                        selectItem(todo);
+                        break; // Only interrupt for one todoitem
+                    }
+                }
+                updateCountLabel();
             }
-        }
-        updateCountLabel();
+        });
     }
     
     /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
      */
-    public void toDoItemsRemoved(ToDoListEvent tde) {
-        if (curPerspective instanceof ToDoListListener) {
-            ((ToDoListListener) curPerspective).toDoItemsRemoved(tde);
-	}
-        updateCountLabel();
+    public void toDoItemsRemoved(final ToDoListEvent tde) {
+        swingInvoke(new Runnable() {
+            public void run() {
+                if (curPerspective instanceof ToDoListListener) {
+                    ((ToDoListListener) curPerspective).toDoItemsRemoved(tde);
+                }
+                updateCountLabel();
+            }
+        });
     }
 
     /*
      * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
      */
-    public void toDoListChanged(ToDoListEvent tde) {
-        if (curPerspective instanceof ToDoListListener) {
-            ((ToDoListListener) curPerspective).toDoListChanged(tde);
-	}
-        updateCountLabel();
+    public void toDoListChanged(final ToDoListEvent tde) {
+        swingInvoke(new Runnable() {
+            public void run() {
+                if (curPerspective instanceof ToDoListListener) {
+                    ((ToDoListListener) curPerspective).toDoListChanged(tde);
+                }
+                updateCountLabel();
+            }
+        });
     }
-
-    ////////////////////////////////////////////////////////////////
-    // other methods
 
     /* TODO: Indicate the direction! */
     private static String formatCountLabel(int size) {
@@ -452,7 +483,7 @@ public class ToDoPane extends JPanel
         ToDoPerspective tm = (ToDoPerspective) combo.getSelectedItem();
         curPerspective = tm;
         if (curPerspective == null) {
-	    tree.setVisible(false);
+            tree.setVisible(false);
 	} else {
             LOG.debug("ToDoPane setting tree model");
             curPerspective.setRoot(root);
