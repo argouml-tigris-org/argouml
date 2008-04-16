@@ -1433,7 +1433,13 @@ class CoreHelperMDRImpl implements CoreHelper {
     private boolean isValidNamespace(UmlAssociation assoc, Namespace ns) {
         List<Namespace> namespaces = new ArrayList<Namespace>();
         for (AssociationEnd end : assoc.getConnection()) {
-            namespaces.add(end.getParticipant().getNamespace());
+            Classifier participant = end.getParticipant();
+            if (participant != null) {
+                Namespace namespace = participant.getNamespace();
+                if (namespace != null) {
+                    namespaces.add(namespace);
+                }
+            }
         }
         if (namespaces.size() < 2) {
             return false;
@@ -1442,6 +1448,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         Namespace ns2 = namespaces.get(1);
         // TODO: This is incorrect.  AssociationEnds must be
         // visible from Association's namespace, not vice versa. - tfm
+        // This is also assuming a binary association
         if (ns == getFirstSharedNamespace(ns1, ns2)) {
             return true;
         }
