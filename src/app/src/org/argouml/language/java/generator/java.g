@@ -1269,6 +1269,8 @@ VOCAB
 // if it's a literal or really an identifer
 IDENT
 	options {testLiterals=true;}
+	//	:	('a'..'z'|'A'..'Z'|'_'|'$') ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'$')*
+// Original grammar extended to support multinational characters
 	:	('a'..'z'|'A'..'Z'|'_'|'$'|'\u0080'..'\uFFFE') ('a'..'z'|'A'..'Z'|'_'|'0'..'9'|'$'|'\u0080'..'\uFFFE')*
 	;
 
