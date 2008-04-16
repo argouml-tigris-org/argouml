@@ -23,8 +23,16 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.util;
-import java.util.*;
-import junit.framework.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.Set;
+
+import junit.framework.Assert;
 
 /**
  *   This class is the base class of tests that tests
@@ -145,15 +153,15 @@ public class CheckResourceBundle {
     };
 
     /**
-     * Returns a Vector of Locales modified from list of supported languages.
+     * Returns a List of Locales modified from list of supported languages.
      * Lift up the current locales (actually copying them to the start).
      * This means that it is possible to control what language you are
      * interested in using the -Duser.language=bla and -Duser.country=bla
      * Otherwise it would be a pain to use this since it only reports one
      * error.
      */
-    private static final Vector getModifiedSupportedLanguages() {
-	Vector<Locale> el = new Vector<Locale>();
+    private static final List<Locale> getModifiedSupportedLanguages() {
+	List<Locale> el = new ArrayList<Locale>();
 
 	if (System.getProperty("user.language") != null
 	    && System.getProperty("user.country") != null
@@ -183,9 +191,8 @@ public class CheckResourceBundle {
 	    el.add(new Locale(System.getProperty("user.language"),
 			      "", ""));
 
-	Vector<Locale> v = new Vector<Locale>();
-	for (Enumeration ele = el.elements(); ele.hasMoreElements(); ) {
-	    Locale elel = (Locale) ele.nextElement();
+	List<Locale> v = new ArrayList<Locale>();
+	for (Locale elel : el) {
 	    for (int j = 0; j < SUPPORTEDLANGUAGES.length; j++) {
 		if (SUPPORTEDLANGUAGES[j] == null)
 		    continue;
@@ -231,10 +238,9 @@ public class CheckResourceBundle {
 
 	// Check the localized parts.
 
-	Vector v = getModifiedSupportedLanguages();
+	List<Locale> v = getModifiedSupportedLanguages();
 
-	for (Enumeration en = v.elements(); en.hasMoreElements(); ) {
-	    Locale l = (Locale) en.nextElement();
+	for (Locale l : v) {
 
 	    ResourceBundle locb = ResourceBundle.getBundle(bname, l);
 
