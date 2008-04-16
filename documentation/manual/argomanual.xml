@@ -3,7 +3,7 @@
 "../docbook-setup/docbookx/docbookx.dtd">
 <!-- $Id$ -->
 <!--
-Copyright (c) 1996-2007 The Regents of the University of California. All
+Copyright (c) 1996-2008 The Regents of the University of California. All
 Rights Reserved. Permission to use, copy, modify, and distribute this
 software and its documentation without fee, and without a written
 agreement is hereby granted, provided that the above copyright notice
@@ -8069,6 +8069,18 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <listitem>
 
             <para><guiicon><inlinemediaobject><imageobject>
+            <imagedata align="center" fileref="images/icons/properties.gif"
+             format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+            <literal>Project Properties</literal> 
+            See for a full description
+            <xref linkend="s2.ref.menu_properties"/>.
+            </para>
+
+          </listitem>
+
+          <listitem>
+
+            <para><guiicon><inlinemediaobject><imageobject>
             <imagedata align="center" fileref="images/icons/print.gif"
              format="GIF"/></imageobject></inlinemediaobject></guiicon> 
             <literal>Print</literal> See for a full description 
@@ -8135,6 +8147,43 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para><guiicon><inlinemediaobject><imageobject>
             <imagedata align="center"
+             fileref="images/icons/delete_from_model.gif"
+             format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+            <literal>Delete From Model</literal> See for a full 
+            description 
+            <xref linkend="s2.menu_edit_delete_from_model"/>.</para>
+
+          </listitem>
+
+          <listitem>
+
+            <para><guiicon><inlinemediaobject><imageobject>
+            <imagedata align="center"
+             fileref="images/icons/configure_perspectives.gif"
+             format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+            <literal>Configure Perspectives</literal> See for a full 
+            description 
+            <xref linkend="s2.menu_edit_configure_perspectives"/>.</para>
+
+          </listitem>
+
+          <listitem>
+
+            <para><guiicon><inlinemediaobject><imageobject>
+            <imagedata align="center"
+             fileref="images/icons/settings.gif"
+             format="GIF"/></imageobject></inlinemediaobject></guiicon> 
+            <literal>Settings</literal> See for a full 
+            description 
+            <xref linkend="s2.ref.menu_settings"/>.</para>
+
+          </listitem>
+
+<!-- 
+          <listitem>
+
+            <para><guiicon><inlinemediaobject><imageobject>
+            <imagedata align="center"
              fileref="images/icons/navigate_back.gif"
              format="GIF"/></imageobject></inlinemediaobject></guiicon> 
             <literal>Navigate Back</literal> See for a full description 
@@ -8152,7 +8201,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             description <xref linkend="s2.ref.menu_select"/>.</para>
 
           </listitem>
-
+ -->
+ 
         </itemizedlist>
 
       </section>
@@ -8257,9 +8307,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Enter</keycap> activates the changed value. When the 
                 &quot;knob&quot; has the focus, pressing <keycap>
                 PageUp</keycap>/<keycap>PageDown</keycap> 
-                increases/decreases the percentage by 50. Pressing 
-                <keycap>Home</keycap> sets the percentage to 500%, and 
-                <keycap>End</keycap> sets it to 0%.</para>
+                increases/decreases the percentage by some amount. Pressing 
+                <keycap>Home</keycap> sets the percentage to 300%, and 
+                <keycap>End</keycap> sets it to 25%.</para>
 
               </listitem>
 
@@ -9659,7 +9709,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
-        <sect2>
+        <sect2 id="s2.menu_edit_delete_from_model">
 
           <title><guiicon><inlinemediaobject><imageobject>
           <imagedata align="center"
@@ -9692,7 +9742,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
-		<sect2>
+		<sect2 id="s2.menu_edit_configure_perspectives">
 		
 		<title><guiicon><inlinemediaobject><imageobject>
           <imagedata align="center"
