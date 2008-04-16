@@ -284,7 +284,7 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    public Collection getBaseClasses(Object handle) {
+    public Collection<String> getBaseClasses(Object handle) {
         throw new NotYetImplementedException();
 
     }
