@@ -2055,8 +2055,22 @@ public interface Facade {
      * @param handle
      *                to the model element.
      * @return model for the model element.
+     * @deprecated for 0.25.4 by tfmorris. Use one of {@link #getRoot(Object)}
+     *             or ... (do we need another method which implements the old,
+     *             as-implemented semantics)
      */
     Object getModel(Object handle);
+    
+    /**
+     * Get the top level containing element, i.e. the element which has no
+     * owner.  For well-formed models, this will typically be a UML Package,
+     * often a Model.
+     * 
+     * @param handle
+     *                to the model element.
+     * @return the top level element.
+     */
+    Object getRoot(Object handle);
     
     /**
      * Return a collection of all Elements which have no owner (ie top level

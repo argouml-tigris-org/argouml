@@ -37,15 +37,24 @@ public interface ModelManagementFactory extends Factory {
 
     /**
      * Sets the root model of the project.
-     *
-     * @param rootModel the new root model.
+     * 
+     * @param rootModel
+     *                the new root model.
+     * @deprecated for 0.25.4 by tfmorris. There may be multiple top level
+     *             packages which make up the model and the model subsystem also
+     *             needs to be able to deal with more than one project at a
+     *             time, so the concept of a single root model needs to be
+     *             dropped.
      */
     void setRootModel(Object rootModel);
 
     /**
      * Gets the root model of the project.
-     *
+     * 
      * @return the current root model.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link Facade#getRootElements()}
+     *             for now, but that may need enhancement/change to accommodate
+     *             multiple projects.
      */
     Object getRootModel();
 
