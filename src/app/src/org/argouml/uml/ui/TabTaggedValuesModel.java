@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -120,6 +120,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
     /*
      * @see javax.swing.table.TableModel#getColumnClass(int)
      */
+    @Override
     public Class getColumnClass(int c) {
         if (c == 0) {
             return (Class) Model.getMetaTypes().getTagDefinition();
@@ -134,6 +135,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
     /*
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
+    @Override
     public boolean isCellEditable(int row, int col) {
         return true;
     }
@@ -216,9 +218,10 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         } else {
             Object tv = getFromCollection(tvs, rowIndex);
             if (columnIndex == 0) {
-                Model.getExtensionMechanismsHelper().setTag(tv, aValue);
+                Model.getExtensionMechanismsHelper().setType(tv, aValue);
             } else if (columnIndex == 1) {
-                Model.getCommonBehaviorHelper().setValue(tv, aValue);
+                Model.getExtensionMechanismsHelper().setDataValues(tv,
+                        new String[] {(String) aValue });
             }
             fireTableChanged(
                     new TableModelEvent(this, rowIndex, rowIndex, columnIndex));
@@ -234,7 +237,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      */
     public void addRow(Object[] values) {
         Object tagType = values[0];
-        Object tagValue = values[1];
+        String tagValue = (String) values[1];
         
         if (tagType == null) {
             tagType = "";
@@ -250,8 +253,9 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         // need it to have an owner for the following method calls
         Model.getExtensionMechanismsHelper().addTaggedValue(target, tv);
 
-        Model.getExtensionMechanismsHelper().setTag(tv, tagType);
-        Model.getCommonBehaviorHelper().setValue(tv, tagValue);
+        Model.getExtensionMechanismsHelper().setType(tv, tagType);
+        Model.getExtensionMechanismsHelper().setDataValues(tv,
+                new String[] {tagValue});
 
         // Since we aren't sure of ordering, fire event for whole table
         fireTableChanged(new TableModelEvent(this));
