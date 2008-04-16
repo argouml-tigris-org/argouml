@@ -1551,7 +1551,7 @@ public interface Facade {
      * @param handle the stereotype
      * @return collection containing all applicable baseclasses
      */
-    Collection getBaseClasses(Object handle);
+    Collection<String> getBaseClasses(Object handle);
 
     /**
      * Return the base of a ModelElement. The element may be one of the
