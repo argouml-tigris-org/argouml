@@ -24,9 +24,6 @@
 
 package org.argouml.model;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import junit.framework.TestCase;
 
 /**
@@ -46,6 +43,7 @@ public class TestUmlFactory extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() {
         InitializeModel.initializeDefault();
     }
@@ -53,9 +51,10 @@ public class TestUmlFactory extends TestCase {
     /**
      * Check that a 
      * Testing Core elements.
-     * @throws Exception
+     * @throws IllegalModelElementConnectionException if buildConnection fails
      */
-    public void testBuildConnection() throws Exception {
+    public void testBuildConnection()
+        throws IllegalModelElementConnectionException {
         Object class1 = (Model.getUmlFactory().buildNode(
                 Model.getMetaTypes().getUMLClass()));
         Object package1 = (Model.getUmlFactory().buildNode(
@@ -74,7 +73,7 @@ public class TestUmlFactory extends TestCase {
                 class2, Model.getAggregationKind().getNone(),
                 true, null);
         
-        // The association should have sane namespace as from class
+        // The association should have same namespace as from class
         assertSame(package1, Model.getFacade().getNamespace(assoc));
         
         // Only one end should be navigable
