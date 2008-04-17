@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2007 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,8 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * Tests for the state machines in an ActivityGraph.
@@ -36,8 +38,9 @@ import junit.framework.TestCase;
  */
 public class TestActivityGraphStateMachine extends TestCase {
 
-
-
+    private static final Logger LOG = 
+        Logger.getLogger(TestActivityGraphStateMachine.class);
+    
     /**
      * The constructor.
      *
@@ -48,9 +51,7 @@ public class TestActivityGraphStateMachine extends TestCase {
         InitializeModel.initializeDefault();
     }
 
-    /*
-     * @see junit.framework.TestCase#setUp()
-     */
+    @Override
     public void setUp() throws Exception {
 	super.setUp();
     }
@@ -74,20 +75,28 @@ public class TestActivityGraphStateMachine extends TestCase {
         // Build an activity graph with a single action state 
         // the way the GUI would
         Object model = Model.getModelManagementFactory().createModel();
+        LOG.debug("Created model "  + model);
         Object activityGraph = Model.getActivityGraphsFactory()
                 .buildActivityGraph(model);
-        Object top = Model.getStateMachinesFactory()
-                .buildCompositeStateOnStateMachine(activityGraph);
+        LOG.debug("Created activity graph "  + activityGraph);
+        Object top = Model.getFacade().getTop(activityGraph);
+        assertNotNull("Activity graph got created without a top state", top);
+        LOG.debug("top state "  + top);
+
         Object actionState = Model.getActivityGraphsFactory()
                 .createActionState();
-        Model.getStateMachinesHelper().addSubvertex(top, actionState);
+        LOG.debug("Created action state "  + top);
+        Model.getStateMachinesHelper().setContainer(actionState, top);
+
+        Collection subs = Model.getFacade().getSubvertices(top);
+        assertEquals("setContainer didn't work", actionState, 
+                subs.iterator().next());
 
         Collection roots = Model.getFacade().getRootElements();
         assertEquals("More than one root element", 1, roots.size());
         assertEquals("Wrong root element", model, roots.iterator().next());
         
         // Delete the model and make sure everything inside goes with it
-
         Model.getUmlFactory().delete(model);
         Collection theDregs = Model.getFacade().getRootElements();
         assertTrue("Failed to delete all elements from an activity graph",
