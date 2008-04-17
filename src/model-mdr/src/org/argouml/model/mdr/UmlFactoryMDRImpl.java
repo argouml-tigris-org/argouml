@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -177,12 +177,13 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     /**
      * The instance that we are deleting.
      */
-    private Set elementsToBeDeleted = new HashSet();
+    private Set<RefObject> elementsToBeDeleted = new HashSet<RefObject>();
 
     /**
      * Ordered list of elements to be deleted.
      */
-    private List elementsInDeletionOrder = new ArrayList();
+    private List<RefObject> elementsInDeletionOrder = 
+        new ArrayList<RefObject>();
 
     /**
      * The top object is the first object given to the UmlFactory when calling
@@ -665,7 +666,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             if (top == null) {
                 top = elem;
             }
-            elementsToBeDeleted.add(elem);
+            elementsToBeDeleted.add((RefObject) elem);
         }
 
         if (LOG.isDebugEnabled()) {
@@ -675,9 +676,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             LOG.debug("Deleting " + elem);
         }
 
-        // Begin a write transaction - we'll do a bunch of reads first
+        // Begin a transaction - we'll do a bunch of reads first
         // to collect a set of elements to delete - then delete them all
-        modelImpl.getRepository().beginTrans(true);
+        modelImpl.getRepository().beginTrans(false);
         try {
             // TODO: Encountering a deleted object during
             // any part of this traversal will
@@ -789,7 +790,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             // Our wrapped version of the same error
             LOG.error("Encountered deleted object during delete of " + elem);
         } finally {
-            // Commit our transacation
+            // end our transaction
             modelImpl.getRepository().endTrans();
         }
 
@@ -803,17 +804,20 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             try {
                 Object container = ((RefObject) elem).refImmediateComposite();
                 if (container == null
-                        || !elementsToBeDeleted.contains(container)) {
-                    elementsInDeletionOrder.add(elem);
+                        || !elementsToBeDeleted.contains(container)
+                        // For some reason StateMachine.top doesn't get deleted
+                        // even though it should because it's a composite
+                        // see issue 4948
+                        || (container instanceof StateMachine 
+                                && elem instanceof StateVertex)) {
+                    elementsInDeletionOrder.add((RefObject) elem);
                 }
             } catch (InvalidObjectException e) {
                 LOG.warn("Object already deleted " + elem);
             }
 
             if (elem == top) {
-                Iterator itDelete = elementsInDeletionOrder.iterator();
-                while (itDelete.hasNext()) {
-                    RefObject o = ((RefObject) itDelete.next());
+                for (RefObject o : elementsInDeletionOrder) {
                     try {
                         o.refDelete();
                     } catch (InvalidObjectException e) {
@@ -824,9 +828,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 top = null;
                 elementsInDeletionOrder.clear();
                 if (!elementsToBeDeleted.isEmpty()) {
-                    LOG.debug("**Skipped deleting (a 2nd time?) "
+                    LOG.debug("**Skipped deleting "
                             + elementsToBeDeleted.size()
-                            + " elements");
+                            + " elements (probably in a deleted container");
                     elementsToBeDeleted.clear();
                 }
             }
