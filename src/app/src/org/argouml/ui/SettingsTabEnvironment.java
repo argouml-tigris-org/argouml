@@ -27,7 +27,6 @@ package org.argouml.ui;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -137,6 +136,11 @@ class SettingsTabEnvironment extends JPanel
 
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 	add(top, BorderLayout.NORTH);
+	
+	JPanel bottom = new JPanel();
+	bottom.add(new JLabel(
+	    Translator.localize("label.graphics-export-resolution.warning")));
+	add(bottom, BorderLayout.SOUTH);
     }
 
     /*
@@ -160,9 +164,7 @@ class SettingsTabEnvironment extends JPanel
         int defaultResolution =
             Configuration.getInteger(
                 SaveGraphicsManager.KEY_GRAPHICS_RESOLUTION, 1);
-        Iterator i = theResolutions.iterator();
-        while (i.hasNext()) {
-            GResolution gr = (GResolution) i.next();
+        for (GResolution gr : theResolutions) {
             if (defaultResolution == gr.getResolution()) {
                 fieldGraphicsResolution.setSelectedItem(gr);
                 break;
