@@ -442,10 +442,11 @@ public interface CoreHelper {
 
 
     /**
-     * Return the packageImport (Permission with <<import>> or <<access>>
-     * stereotype in UML 1.4) between a supplier Package and
-     * a client Namespace, if any.
-     *
+     * Return the packageImport (Permission with
+     * <code>&lt;&lt;import&gt;&gt;</code> or
+     * <code>&lt;&lt;access&gt;&gt;</code> stereotype in UML 1.4) between a
+     * supplier Package and a client Namespace, if any.
+     * 
      * @param supplier a Package
      * @param client a Namespace
      * @return the import or null
@@ -454,9 +455,11 @@ public interface CoreHelper {
 
 
     /**
-     * Return all packageImports (Permissions with <<import>> or <<access>>
-     * stereotype in UML 1.4) that this Namespace is a client of.
-     *
+     * Return all packageImports (Permissions with
+     * <code>&lt;&lt;import&gt;&gt;</code> or
+     * <code>&lt;&lt;access&gt;&gt;</code> stereotype in UML 1.4) that this
+     * Namespace is a client of.
+     * 
      * @param client a Namespace
      * @return Collection of imports
      */
@@ -477,7 +480,7 @@ public interface CoreHelper {
      * namespace.<p>
      *
      * @param element a ModelElement
-     * @param namespace a MNamespace
+     * @param namespace a Namespace
      * @return boolean
      */
     boolean isValidNamespace(Object element, Object namespace);
@@ -838,7 +841,7 @@ public interface CoreHelper {
     /**
      * Add a TemplateArgument to the given object.
      *
-     * @param handle The object that will get the TemplateArgumnet
+     * @param handle The object that will get the TemplateArgument
      * @param argument Object that will be added
      */
     void addTemplateArgument(Object handle, Object argument);
