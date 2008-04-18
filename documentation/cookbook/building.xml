@@ -700,12 +700,6 @@ On windows the command
 runs the program <filename>ant.bat</filename>.
 </para>
       
-      <note>
-        <para>
-Some of the build.&lt;sh|bat&gt; files have been removed in the repository 
-restructuring, (issue #4625).
-        </para>
-      </note>         
       <para>
 To keep you from having to write this and keeping track if you are
 working with a module or not
@@ -715,6 +709,12 @@ Windows) that are called <filename>build.sh</filename> and
 of the directories that contain a <filename>build.xml</filename> file.
 These two scripts run the equivalence of the above paths.
 </para>
+      <note>
+        <para>
+Some of the build.&lt;sh|bat&gt; files have been removed in the repository 
+restructuring, (issue #4625).
+        </para>
+      </note>         
       <para>
 By setting JAVA_HOME to different values you can at different times
 build with different versions of JDK and Java.
@@ -757,7 +757,7 @@ csh-style shells like csh and tcsh you will instead have to write
 Change the current directory to the directory you are building
 </para>
             <para>
-<command>cd <replaceable>/your/checked/out/copy/of/argouml/src_new</replaceable></command>
+<command>cd <replaceable>/your/checked/out/copy/of/argouml/src</replaceable></command>
 </para>
           </listitem>
           <listitem>
@@ -883,12 +883,12 @@ you can see what files are searched for properties.
 </para>
         <para>
 Don't change the
-<filename class="libraryfile">argouml/src_new/default.properties</filename>
+<filename class="libraryfile">trunk/src/argouml-app/default.properties</filename>
 file (unless you are working with updating the development environment
 itself).
 Instead create one of the other files locally on you machine.
 The properties in these files have precedence over the properties in
-<filename class="libraryfile">argouml/src_new/default.properties</filename>.
+<filename class="libraryfile">trunk/src/argouml-app/default.properties</filename>.
 </para>
         <para>
 Remember that if you do this, you have modified your development
@@ -919,7 +919,7 @@ you do just before you commit.
         <para>
 By running Ant again using <command>build prepare-docs</command>
 the Javadoc documentation is generated and put into
-<filename class="directory">argouml/build/javadocs</filename>.
+<filename class="directory">trunk/src/build/javadocs</filename>.
 </para>
       </sect3>
       <sect3>
@@ -935,7 +935,7 @@ If you want to run ArgoUML with modules enabled the
                   <para>Build ArgoUML, the package</para>
                   <para>
 This is done with <command>ant package</command>
-in the <filename class="directory">argouml/src_new</filename>-directory.
+in the <filename class="directory">trunk/src/argouml-build</filename> directory.
 </para>
                 </listitem>
                 <listitem>
@@ -944,8 +944,8 @@ in the <filename class="directory">argouml/src_new</filename>-directory.
 This is done with <command>ant run</command>-command 
 in the 
 <filename class="directory">
-argouml/modules/<replaceable>whatever</replaceable>
-</filename>-directory.
+trunk/modules/<replaceable>whatever</replaceable>
+</filename> directory.
 </para>
                 </listitem>
               </orderedlist>
@@ -957,7 +957,7 @@ argouml/modules/<replaceable>whatever</replaceable>
                   <para>Build ArgoUML, the package</para>
                   <para>
 This is done with <command>ant package</command>
-in the <filename class="directory">argouml/src_new</filename>-directory.
+in the <filename class="directory">trunk/src/argouml-build</filename> directory.
 </para>
                 </listitem>
                 <listitem>
@@ -966,15 +966,15 @@ in the <filename class="directory">argouml/src_new</filename>-directory.
 This is done with <command>ant install</command>-command
 in each of the 
 <filename class="directory">
-argouml/modules/<replaceable>whatever</replaceable>
-</filename>-directories.
+trunk/modules/<replaceable>whatever</replaceable>
+</filename> directories.
 </para>
                 </listitem>
                 <listitem>
                   <para>Start ArgoUML</para>
                   <para>
 This is done with <command>ant run</command>
-in the <filename class="directory">argouml/src_new</filename>-directory.
+in the <filename class="directory">trunk/src/argouml-build</filename> directory.
 </para>
                 </listitem>
               </orderedlist>
@@ -1017,7 +1017,7 @@ you have ant installed, and
 the subproject in question does not require any of the ArgoUML tools to build.
 </para>
       <para>
-If you don't understand this or it doesn't work read the rest of 
+If you don't understand this or it doesn't work, read the rest of 
 the chapter that describes why and how in more detail.
 </para>
 
@@ -1316,7 +1316,7 @@ code changes before even starting ArgoUML.
     <para>
 The JUnit test cases reside in a separate directory and
 run from ant targets in
-<filename>src_new/build.xml</filename>.
+<filename>trunk/src/argouml-build/build.xml</filename>.
 They are never distributed with ArgoUML; they are merely a tool for
 developers.
 </para>
@@ -1340,7 +1340,7 @@ By running the command
 <command>build tests guitests</command>
 or
 <command>build alltests</command>
-in <filename>src_new</filename>
+in <filename>trunk/src/argouml-build</filename>
 these test cases are run, each in its own JVM.
 </para>
     <para>
@@ -1389,7 +1389,7 @@ The name of the test case class starts with "Test" (i.e. Capital T, then
 small e, s and t) or 
 "GUITest" (i.e. Capital G, U, I, T then small e, s, t).
 The reason for this is that the special targets in
-<filename>src_new/build.xml</filename>
+<filename>trunk/src/argouml-build/build.xml</filename>
 search for test case classes with these names.
 If you write a test case class that does not comply to this rule, you still
 can run the test cases in this class manually 
@@ -1441,18 +1441,18 @@ and it inherits <classname>TestCase</classname>
 An ArgoUML class
 <classname>org.argouml.<replaceable>x.y</replaceable>.<replaceable>z</replaceable></classname>
 stored in the file
-<filename class="directory">src_new/org/argouml/<replaceable>x/y</replaceable>/<replaceable>z</replaceable>.java</filename>
+<filename class="directory">trunk/src/argouml-app/src/org/argouml/<replaceable>x/y</replaceable>/<replaceable>z</replaceable>.java</filename>
 has its JUnit test case class called
 <classname>org.argouml.<replaceable>x.y</replaceable>.Test<replaceable>z</replaceable></classname>
 stored in the file
-<filename class="directory">tests/org/argouml/<replaceable>x/y</replaceable>/Test<replaceable>z</replaceable>.java</filename>
+<filename class="directory">trunk/src/argouml-app/tests/org/argouml/<replaceable>x/y</replaceable>/Test<replaceable>z</replaceable>.java</filename>
 containing all the Unit Test Cases for that class
 that don't need the GUI components to run.
 Tests that 
 do need GUI components to run should be part of a class named
 <classname>org.argouml.<replaceable>x.y</replaceable>.GUITest<replaceable>z</replaceable></classname>
 stored in the file
-<filename class="directory">tests/org/argouml/<replaceable>x/y</replaceable>/GUITest<replaceable>z</replaceable>.java</filename>
+<filename class="directory">trunk/src/argouml-app/tests/org/argouml/<replaceable>x/y</replaceable>/GUITest<replaceable>z</replaceable>.java</filename>
 </para>
         <para>
 If, for convenience reasons, you would like to split the tests of a single
@@ -1732,8 +1732,9 @@ This describes how to generate the documentation for ArgoUML.
     <para>
 If you are in a hurry, here's the quick version:
 <programlisting>
-C:\Work&gt;svn checkout -N http://argouml.tigris.org/svn/argouml/trunk/src_new argouml/src_new
-C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/documentation http://argouml.tigris.org/svn/argouml/trunk/tools
+C:\Work&gt;svn checkout -N http://argouml.tigris.org/svn/argouml/trunk/src/argouml-build argouml/src/argouml-app
+C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/documentation argouml/documentation
+c:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/tools argouml/tools
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml\documentation
 C:\Work\argouml\documentation&gt;build docbook-xsl-get   (first time only)
@@ -1757,31 +1758,30 @@ respectively.
       </indexterm>
       <para>
 To build the documentation, you will need to check out the whole
-<filename class="directory">argouml/documentation</filename> directory.
+<filename class="directory">trunk/documentation</filename> directory.
 as well as the 
-<filename class="directory">argouml/tools</filename> directory
+<filename class="directory">trunk/tools</filename> directory
 which contains the tools needed (Ant, FOP, Saxon, etc) and the file 
-<filename>argouml/src_new/default.properties</filename>
+<filename>trunk/src/argouml-app/default.properties</filename>
 which contains the current version and other project-wide settings.
 None of the other ArgoUML source directories are needed if you are just
 building the documentation.
 </para>
 
       <para>
-The subdirectories of
-<filename class="directory">argouml/documentation</filename>,
-<filename class="directory">cookbook</filename>,
-<filename class="directory">manual</filename>, and
-<filename class="directory">quick-guide</filename>
+The subdirectories 
+<filename class="directory">trunk/documentation/cookbook</filename>,
+<filename class="directory">trunk/documentation/manual</filename>, and
+<filename class="directory">trunk/documentation/quick-guide</filename>
 each contain one of the three books.
 The subdirectory
-<filename class="directory">docbook-setup</filename>
+<filename class="directory">trunk/documentation/docbook-setup</filename>
 contains two things. 
 It contains the configuration files that control how the generation is done.
 It contains the XSL rules for all the generation.
 The subdirectory
-<filename class="directory">images</filename>
-contains all the required pictures for all the books.
+<filename class="directory">trunk/documentation/xxx/images</filename>
+contains the required pictures for each book.
 </para>
       <para>
 There are separate build targets available for each output format,
@@ -1803,7 +1803,7 @@ skip-argomanual=true
 
 </para>
       <para>
-When, in the <filename class="directory">documentation</filename> directory,
+When, in the <filename class="directory">trunk/documentation</filename> directory,
 you run <command>./build.sh defaulthtml</command> or one of the other targets
 that builds the documentation,
 all books are built.
@@ -1876,13 +1876,67 @@ and not the temporary file.
 
     <para>
 If you are running Eclipse 3.2 or 3.3
-we have a prepared a recommended setup
-committed into our repository.
-This setup is slightly different than the ant setup 
-with regard to the directory names of the checked out copy
-and some special magic is used in the ant scripts
-that are controlled from the special Eclipse configurations.
+we have prepared a recommended setup configured through Eclipse Team Project 
+Set .psf files available at the developer zone web site:
+<ulink url="http://argouml.tigris.org/psf/">http://argouml.tigris.org/psf/</ulink>.
 </para>
+   <para>
+The directory structure of an Eclipse check-out of the main source code now 
+mirrors the svn repository structure (since 20 April 2008).  
+The 
+<filename>argouml-core-projectset.psf</filename>
+project 
+set contains a small subset of the full repository.  It only contains the
+files and directories needed to build argouml using Eclipse.  It is possible 
+to extend the core project set by importing the 
+<filename>argouml-command-line-build.psf</filename> file
+into an existing workspace.  This will add the necessary tools to build
+argouml from the command line; this build can then be run without opening 
+Eclipse.  Alternatively, you could achieve the same result by checking-out 
+<filename class="directory">trunk/</filename> on the command line, and 
+using Eclipse to edit the files (not requiring any .psf files).
+</para>
+
+<para>
+In the Eclipse setup, the only difference is that the documentation and 
+tools directories are in a slightly different location relative to the main
+source code.  This all (should) be taken care of automatically by the
+build scripts.
+</para>
+
+<programlisting>
+In summary:
+
+SVN repository structure:
+trunk/src/argouml-app/
+trunk/src/argouml-build/
+trunk/src/argouml-core-infra/
+trunk/src/argouml-core-model/
+trunk/src/argouml-core-model-euml/
+trunk/src/argouml-core-model-mdr/
+trunk/tools/
+trunk/documentation/
+
+Command line check-out structure:
+workingdir/src/argouml-app/
+workingdir/src/argouml-build/
+workingdir/src/argouml-core-infra/
+workingdir/src/argouml-core-model/
+workingdir/src/argouml-core-model-euml/
+workingdir/src/argouml-core-model-mdr/
+workingdir/tools/
+workingdir/documentation/
+
+Eclipse .psf check-out structure:
+EclipseWorkspace/argouml-app/
+EclipseWorkspace/argouml-build/ (optional)
+EclipseWorkspace/argouml-core-infra/
+EclipseWorkspace/argouml-core-model/
+EclipseWorkspace/argouml-core-model-euml/
+EclipseWorkspace/argouml-core-model-mdr/
+EclipseWorkspace/argouml-core-tools/ 
+EclipseWorkspace/argouml-documentation/ (optional)
+</programlisting>
     <para>
 For the recommended setup to work we make certain assumption on 
 what modules you have available in your Eclipse.
@@ -2048,7 +2102,7 @@ with all OS and platform issues.
 </para>
 
             <para>
-Eclipse also has a infrastructure for handling tools that are used
+Eclipse also has an infrastructure for handling tools that are used
 but not installed so developers forgetting to install one or several
 tools can still do basic things.
 </para>
