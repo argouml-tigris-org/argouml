@@ -24,6 +24,10 @@
 
 package org.argouml.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 import junit.framework.TestCase;
 
 /**
@@ -64,5 +68,43 @@ public class TestStateMachinesHelper extends TestCase {
 	CheckUMLModelHelper.isValidStereoType(
 		      Model.getStateMachinesFactory(),
 		      TestStateMachinesFactory.getTestableModelElements());
+    }
+    
+    public void testCompositeStates() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object classifier = Model.getCoreFactory().buildClass(model);
+        Object machine = Model.getStateMachinesFactory().buildStateMachine(classifier);
+        Object composite = Model.getStateMachinesFactory().createCompositeState();
+        Object state1 = Model.getStateMachinesFactory().createCompositeState();
+        Object state2 = Model.getStateMachinesFactory().createCompositeState();
+        
+        Model.getStateMachinesHelper().addSubvertex(composite, state1);
+        Model.getStateMachinesHelper().addSubvertex(composite, state2);
+        assertEquals("Wrong number of subvertices ", 2, 
+                Model.getFacade().getSubvertices(composite).size());
+        Model.getStateMachinesHelper().removeSubvertex(composite, state1);
+        assertEquals("Wrong number of subvertices ", 1, 
+                Model.getFacade().getSubvertices(composite).size());
+        Model.getStateMachinesHelper().setSubvertices(composite, 
+                Collections.emptySet());
+        assertEquals("Wrong number of subvertices ", 0, 
+                Model.getFacade().getSubvertices(composite).size());
+        Collection subs = new ArrayList();
+        subs.add(state1);
+        subs.add(state2);
+        Model.getStateMachinesHelper().setSubvertices(composite, subs);
+        assertEquals("Wrong number of subvertices ", 2, 
+                Model.getFacade().getSubvertices(composite).size());
+
+        Object event = Model.getStateMachinesFactory().createCallEvent();
+        Model.getStateMachinesHelper().addDeferrableEvent(composite, event);
+
+        Collection events = Model.getFacade().getDeferrableEvents(composite);
+        assertEquals("Wrong number of deferrable events", 1, events.size());
+        assertTrue("deferable events doesn't contain our event", events
+                .contains(event));
+
+        Model.getUmlFactory().delete(model);
+
     }
 }
