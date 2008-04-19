@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.argouml.model.NotImplementedException;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.MetaTypes;
@@ -218,6 +219,11 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
 
         return connection;
     }
+    
+    public Object buildNode(Object elementType, Object container) {
+        
+        throw new NotImplementedException();
+    }
 
     public Object buildNode(Object elementType) {
         Object o = null;
@@ -373,6 +379,11 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             }
         }
         return false;
+    }
+    
+    public boolean isContainmentValid(Object metaType, Object container) {
+        
+        throw new NotImplementedException();
     }
     
     /**
