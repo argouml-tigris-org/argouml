@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -122,20 +121,21 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
         if (Model.getFacade().isACallEvent(target)) {
             Object ns = Model.getFacade().getNamespace(target);
             if (Model.getFacade().isANamespace(ns)) {
-                Collection c =
+                Collection classifiers =
                     Model.getModelManagementHelper().getAllModelElementsOfKind(
                             ns,
                             Model.getMetaTypes().getClassifier());
-                Iterator i = c.iterator();
-                while (i.hasNext()) {
-                    ops.addAll(Model.getFacade().getOperations(i.next()));
+                for (Object classifier : classifiers) {
+                    ops.addAll(Model.getFacade().getOperations(classifier));
                 }
-                c = Model.getModelManagementHelper().getAllImportedElements(ns);
-                i = c.iterator();
-                while (i.hasNext()) {
-                    Object obj = i.next();
-                    if (Model.getFacade().isAClassifier(obj)) {
-                        ops.addAll(Model.getFacade().getOperations(obj));
+                
+                // TODO: getAllModelElementsOfKind should probably do this
+                // processing of imported elements automatically
+                for (Object importedElem : Model.getModelManagementHelper()
+                        .getAllImportedElements(ns)) {
+                    if (Model.getFacade().isAClassifier(importedElem)) {
+                        ops.addAll(Model.getFacade()
+                                .getOperations(importedElem));
                     }
                 }
             }
