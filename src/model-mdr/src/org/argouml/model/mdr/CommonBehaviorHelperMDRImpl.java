@@ -199,7 +199,8 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     }
 
 
-    public void addActualArgument(Object handle, int position, Object argument) {
+    public void addActualArgument(Object handle, int position, 
+            Object argument) {
         if (handle instanceof Action && argument instanceof Argument) {
             try {
                 ((Action) handle).getActualArgument().add(position,
@@ -248,10 +249,7 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     private void addReception(Object handle, Object rec) {
         if (handle instanceof Signal
                 && rec instanceof Reception) {
-            modelImpl.getUmlPackage().getCommonBehavior().
-                    getASignalReception().add(
-                            (Signal) handle,
-                            (Reception) rec);
+            ((Reception) rec).setSignal((Signal) handle);
             return;
         }
     }
