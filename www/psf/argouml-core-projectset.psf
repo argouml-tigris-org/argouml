@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <psf version="2.0">
 <provider id="org.tigris.subversion.subclipse.core.svnnature">
-<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/app,argouml-app"/>
-<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/infra,argouml-core-infra"/>
-<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/model,argouml-core-model"/>
-<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/model-euml,argouml-core-model-euml"/>
-<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/model-mdr,argouml-core-model-mdr"/>
+<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-app,argouml-app"/>
+<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-infra,argouml-core-infra"/>
+<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-model,argouml-core-model"/>
+<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-model-euml,argouml-core-model-euml"/>
+<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-model-mdr,argouml-core-model-mdr"/>
 <project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/tools,argouml-core-tools"/>
 </provider>
 </psf>
