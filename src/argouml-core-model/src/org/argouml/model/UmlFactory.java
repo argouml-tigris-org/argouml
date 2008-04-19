@@ -53,7 +53,7 @@ public interface UmlFactory {
     Object buildConnection(Object connectionType, Object fromElement,
             Object fromStyle, Object toElement, Object toStyle,
             Object unidirectional, Object namespace)
-    	throws IllegalModelElementConnectionException;
+        throws IllegalModelElementConnectionException;
 
     /**
      * Creates a UML model element of the given type.
@@ -67,6 +67,17 @@ public interface UmlFactory {
      * @return the model element
      */
     Object buildNode(Object elementType);
+    
+    /**
+     * Creates a UML model element of the given type and adds 
+     * it to the passed in container.
+     * 
+     * @param elementType the type of model element to build
+     * @param container the model element that will contain the 
+     * newly built model element
+     * @return the model element
+     */
+    Object buildNode(Object elementType, Object container);
 
     /**
      * Checks if some type of UML model element is valid to
@@ -112,6 +123,16 @@ public interface UmlFactory {
      */
     boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement, boolean checkWFR);
+    
+    /**
+     * Checks if the given type of UML model element is valid to be
+     * contained within the passed in container model element. 
+     * 
+     * @param metaType the UML object type to be tested
+     * @param container the UML object that is the container
+     * @return true if valid
+     */
+    boolean isContainmentValid(Object metaType, Object container);
     
     /**
      * Delete a model element. This will do a a 'cascading deletes' 
