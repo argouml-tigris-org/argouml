@@ -39,9 +39,7 @@ import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * The Fig that represents a message between two classifier roles.
- * TODO: In the future, it should be a message between only one classifier role 
- * (recursion in sequence diagrams)
+ * The Fig that represents a message between classifier roles.
  * @author penyaskito
  */
 public class FigMessage extends FigEdgeModelElement {
