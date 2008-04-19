@@ -25,6 +25,10 @@
 // $header$
 package org.argouml.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 import junit.framework.TestCase;
 
 /**
@@ -42,9 +46,11 @@ public class TestCollaborationsHelper extends TestCase {
 	super(arg0);
     }
     
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+//        new InitProfileSubsystem().init();   
     }
 
     /**
@@ -63,5 +69,149 @@ public class TestCollaborationsHelper extends TestCase {
 	CheckUMLModelHelper.isValidStereoType(
 		      Model.getCollaborationsFactory(),
 		      TestCollaborationsFactory.getAllModelElements());
+    }
+    
+    /**
+     * Test allAvailableFeatures and allAvailableContents including
+     * inheritance from generalizations.
+     */
+    public void testAllAvailable() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object collab = 
+            Model.getCollaborationsFactory().buildCollaboration(model);
+        Object class1 = Model.getCoreFactory().buildClass(model);
+        Object class2 = Model.getCoreFactory().buildClass(model);
+        Object intType = Model.getCoreFactory().buildDataType("int", model);
+        Object attr = Model.getCoreFactory().buildAttribute2(class2, intType);
+        Object class3 = Model.getCoreFactory().buildClass(model);
+        Object op = Model.getCoreFactory().buildOperation(class3, intType);
+        Object class4 = Model.getCoreFactory().buildClass(class3);
+        
+        Object role1 =
+            Model.getCollaborationsFactory().buildClassifierRole(collab);
+        Model.getCollaborationsHelper().addBase(role1, class1);
+        Object role2 =
+            Model.getCollaborationsFactory().buildClassifierRole(collab);
+        Model.getCollaborationsHelper().addBase(role2, class2);
+        Object role3 =
+            Model.getCollaborationsFactory().buildClassifierRole(collab);
+        Model.getCollaborationsHelper().addBase(role3, class3);
+        Object gen = Model.getCoreFactory().buildGeneralization(role3, role2);
+        
+        assertEquals("Didn't find all classifier roles", 3, 
+                Model.getCollaborationsHelper()
+                .getAllClassifierRoles(collab).size());
+   
+        Collection features = 
+            Model.getCollaborationsHelper().allAvailableFeatures(role1);
+        assertEquals("Wrong number of features", 0, features.size());
+        features = 
+            Model.getCollaborationsHelper().allAvailableFeatures(role2);
+        assertEquals("Wrong number of features", 1, features.size());
+        features = 
+            Model.getCollaborationsHelper().allAvailableFeatures(role3);
+        assertEquals("Wrong number of features", 2, features.size());
+        assertTrue("Didn't find expected attribute", features.contains(attr));
+        assertTrue("Didn't find expected operation", features.contains(op));
+        assertFalse("Found unexpected nested class in features", 
+                features.contains(class4));
+        
+        Collection contents = 
+            Model.getCollaborationsHelper().allAvailableContents(role3);
+        assertEquals("Wrong number of elements in contents", 1, 
+                contents.size());
+        assertTrue("Didn't find expected nested class", 
+                contents.contains(class4));
+
+        Model.getUmlFactory().delete(model);
+    }
+
+    /**
+     * Test various forms of addBase/setBase for ClassifierRole.
+     */
+    public void testAddBases() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object collab = 
+            Model.getCollaborationsFactory().buildCollaboration(model);
+        Object class1 = Model.getCoreFactory().buildClass(model);
+        Object class2 = Model.getCoreFactory().buildClass(model);
+
+        Object assoc = Model.getCoreFactory().buildAssociation(class1, class2);
+
+        Object role1 =
+            Model.getCollaborationsFactory().buildClassifierRole(collab);
+        Object role2 =
+            Model.getCollaborationsFactory().buildClassifierRole(collab);
+        Model.getCollaborationsHelper().addBase(role1, class1);
+        try {
+            Model.getCollaborationsHelper().addBase(role2, class1);
+            fail("addBase for second unnamed classifier role didn't fail");
+        } catch (IllegalArgumentException e) {
+            // expected case
+        }
+        Model.getCoreHelper().setName(role1, "role1");
+        Model.getCoreHelper().setName(role2, "role2");
+        // This should work now that they both have names
+        Model.getCollaborationsHelper().addBase(role2, class1);
+
+        Model.getCollaborationsHelper().setBases(role2, Collections.emptySet());
+        assertEquals("Wrong number of bases", 0, Model.getFacade().getBases(
+                role2).size());
+        Collection bases = new ArrayList();
+        bases.add(class1);
+        bases.add(class2);
+        Model.getCollaborationsHelper().setBases(role2, bases);
+        Collection fetchedBases = Model.getFacade().getBases(role2);
+        assertEquals("Wrong number of bases", 2, fetchedBases.size());
+        assertTrue("Didn't find expected base", fetchedBases.contains(class1));
+        assertTrue("Didn't find expected base", fetchedBases.contains(class2));
+        Model.getCollaborationsHelper().removeBase(role2, class1);
+        fetchedBases = Model.getFacade().getBases(role2);
+        assertEquals("Wrong number of bases", 1, fetchedBases.size());
+        assertFalse("Base wasn't removed", fetchedBases.contains(class1));
+        Model.getUmlFactory().delete(model);
+    }
+    
+    /**
+     * Test AssociationRoles.
+     */
+    public void testAssociationRole() {
+
+        Object model = Model.getModelManagementFactory().createModel();
+        Object collab = 
+            Model.getCollaborationsFactory().buildCollaboration(model);
+        Object class1 = Model.getCoreFactory().buildClass(model);
+        Object class2 = Model.getCoreFactory().buildClass(model);
+        Object assoc1 = Model.getCoreFactory().buildAssociation(class1, class2);
+        Object assoc2 = Model.getCoreFactory().buildAssociation(class1, class2);
+
+
+        Object role1 =
+            Model.getCollaborationsFactory().buildClassifierRole(collab);
+        assertNotNull(role1);
+        assertEquals("found wrong number of possible bases", 2, Model
+                .getCollaborationsHelper().getAllPossibleBases(role1).size());
+        Model.getCollaborationsHelper().addBase(role1, class1);
+
+        Object role2 =
+            Model.getCollaborationsFactory().buildClassifierRole(collab);
+        Model.getCollaborationsHelper().addBase(role2, class2);
+      
+        assertEquals("Found wrong number of possible association roles", 2,
+                Model.getCollaborationsHelper().getAllPossibleAssociationRoles(
+                        role1).size());
+        Object assocRole =
+            Model.getCollaborationsFactory().buildAssociationRole(role1, role2);
+        assertNotNull(assocRole);
+        
+        assertEquals("getAssocationRole returned wrong result", assocRole,
+                Model.getCollaborationsHelper()
+                        .getAssociationRole(role1, role2));
+
+        assertEquals("Didn't find connected classifier role", 1, Model
+                .getCollaborationsHelper().getClassifierRoles(role1).size());
+
+        
+        Model.getUmlFactory().delete(model);
     }
 }
