@@ -92,6 +92,7 @@ import org.omg.uml.foundation.core.Constraint;
 import org.omg.uml.foundation.core.CorePackage;
 import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
+import org.omg.uml.foundation.core.Element;
 import org.omg.uml.foundation.core.ElementResidence;
 import org.omg.uml.foundation.core.Enumeration;
 import org.omg.uml.foundation.core.EnumerationLiteral;
@@ -383,15 +384,45 @@ class CoreHelperMDRImpl implements CoreHelper {
         if (!(generalizableElement instanceof GeneralizableElement)) {
             throw new IllegalArgumentException();
         }
-        Collection<Generalization> gc = 
-            ((GeneralizableElement) generalizableElement).getGeneralization();
+        try {
+            return getParents((GeneralizableElement) generalizableElement);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+    }
+    
+    /**
+     * Return the parents of a GeneralizableElement
+     * @param ge generalizable element
+     * @return parents of all generalizations
+     */
+    static Collection<GeneralizableElement> getParents(
+            GeneralizableElement ge) {
         Set<GeneralizableElement> result = new HashSet<GeneralizableElement>();
-        for (Generalization g : gc) {
+        for (Generalization g : ge.getGeneralization()) {
             result.add(g.getParent());
         }
         return result;
     }
 
+    /**
+     * Return the parents of a GeneralizableElement and parents of those parents
+     * all the way up the hierarchy.
+     * 
+     * @param ge generalizable element
+     * @return parents of all generalizations
+     */
+    static Collection<GeneralizableElement> getAllParents(
+            GeneralizableElement ge) {
+        Collection<GeneralizableElement> result = 
+            new HashSet<GeneralizableElement>();
+        for (GeneralizableElement parent : getParents(ge)) {
+            result.add(parent);
+            result.addAll(getAllParents(parent));
+        }
+        return result;
+    }
+    
     public List<Parameter> getReturnParameters(Object operation) {
         List<Parameter> returnParams = new ArrayList<Parameter>();
         try {
@@ -885,6 +916,7 @@ class CoreHelperMDRImpl implements CoreHelper {
 
 
     @SuppressWarnings("deprecation")
+    @Deprecated
     public Collection getAllContents(Object clazz) {
         if (clazz == null) {
             return Collections.EMPTY_SET;
@@ -898,7 +930,7 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public Collection<Attribute> getAllAttributes(Object clazz) {
         if (clazz == null) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         if (!(clazz instanceof Classifier)) {
             throw new IllegalArgumentException();
@@ -925,19 +957,26 @@ class CoreHelperMDRImpl implements CoreHelper {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
-
-        List<ModelElement> list = new ArrayList<ModelElement>();
         try {
-            for (ModelElement element : ((Namespace) ns).getOwnedElement()) {
-                if (element.getVisibility()
-                        .equals(VisibilityKindEnum.VK_PUBLIC)) {
-                    list.add(element);
-                }
-            }
+            return getAllVisibleElements((Namespace) ns);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return list;
+    }
+    
+    /**
+     * Get all publicly visible elements in a namespace.
+     * @param ns the namespace
+     * @return all owned elements with a visibility of VK_PUBLIC
+     */
+    static Collection<ModelElement> getAllVisibleElements(Namespace ns) {
+        Collection<ModelElement> result = new ArrayList<ModelElement>();
+        for (ModelElement element : ns.getOwnedElement()) {
+            if (VisibilityKindEnum.VK_PUBLIC.equals(element.getVisibility())) {
+                result.add(element);
+            }
+        }
+        return result;
     }
 
 
@@ -1125,9 +1164,7 @@ class CoreHelperMDRImpl implements CoreHelper {
             for (Dependency dependency : ((ModelElement) client)
                     .getClientDependency()) {
                 if (dependency instanceof Permission
-                        && Model.getExtensionMechanismsHelper().hasStereotype(
-                                dependency,
-                                ModelManagementHelper.IMPORT_STEREOTYPE)) {
+                        && hasImportStereotype((Permission) dependency)) {
                     result.add((Permission) dependency);
                 }
             }
@@ -1135,6 +1172,26 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new InvalidElementException(e);
         }
         return result;
+    }
+    
+    /**
+     * Return true if the given Permission has any of our acceptable
+     * import stereotypes <code>import</code> or <code>access</code>.
+     * <p>
+     * NOTE: We don't currently consider the <code>friend</code> stereotype.
+     * 
+     * @param permission Permission to test
+     * @return true if this is an import permission
+     */
+    private boolean hasImportStereotype(Permission permission) {
+        return (Model.getExtensionMechanismsHelper().hasStereotype(permission,
+                ModelManagementHelper.IMPORT_STEREOTYPE)
+                || Model.getExtensionMechanismsHelper().hasStereotype(
+                        permission, ModelManagementHelper.ACCESS_STEREOTYPE)
+                        // TODO: Do we want to <<friend>> stereotypes too?
+//                        || Model.getExtensionMechanismsHelper().hasStereotype(
+//                        permission, ModelManagementHelper.FRIEND_STEREOTYPE)
+                        );
     }
     
     public Permission getPackageImport(Object supplier, Object client) {
@@ -1200,11 +1257,13 @@ class CoreHelperMDRImpl implements CoreHelper {
             if (modelElement == ns) {
                 return false;
             }
-            if (modelElement instanceof Namespace
-                    && modelElement
-                            == getFirstSharedNamespace(modelElement, ns)) {
-                return false;
-            }
+            // TODO: Is this checking for circular containment?  If so, it's
+            // done implicitly by MDR - tfm 20080514
+//            if (modelElement instanceof Namespace
+//                    && modelElement
+//                            == getFirstSharedNamespace(modelElement, ns)) {
+//                return false;
+//            }
             if (ns instanceof Interface
                     || ns instanceof Actor
                     || ns instanceof DataType
@@ -1296,10 +1355,9 @@ class CoreHelperMDRImpl implements CoreHelper {
                     return false;
                 }
             } else if (ns instanceof UmlPackage) {
-                boolean profilePackage = false; // not yet implemented
                 // A Profile is a special package having the <<profile>>
                 // stereotype which can only contain the following types
-                if (profilePackage) {
+                if (isProfilePackage(ns)) {
                     if (!(modelElement instanceof Stereotype
                             || modelElement instanceof Constraint
                             || modelElement instanceof TagDefinition
@@ -1373,6 +1431,11 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
+    private boolean isProfilePackage(Namespace ns) {
+        // A Profile is a special package having the <<profile>> stereotype
+        return Model.getFacade().isStereotype(ns, "profile");
+    }
+
     /**
      * The base of a AssociationRole or ClassifierRole should be contained in
      * the given Namespace. If no base is set (yet), then allow any namespace.
@@ -1402,15 +1465,26 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
     private boolean isValidNamespace(Generalization gen, Namespace ns) {
-        if (gen.getParent() == null || gen.getChild() == null) {
-            return true;
-        }
-        Namespace ns1 = gen.getParent().getNamespace();
-        Namespace ns2 = gen.getChild().getNamespace();
-        if (ns == getFirstSharedNamespace(ns1, ns2)) {
-            return true;
-        }
-        return false;
+        // TODO: Implement following WFR for GeneralizableElements
+        // [4] The parent must be included in the Namespace of the 
+        //     GeneralizableElement.
+        //       self.generalization->forAll(g |
+        //           self.namespace.allContents->includes(g.parent) )
+        return ModelManagementHelperMDRImpl.getContents(ns).contains(
+                gen.getParent());
+        
+        
+        // These old checks don't appear to be supported by the
+        // UML 1.4 spec. - tfm 20080514
+//      if (gen.getParent() == null || gen.getChild() == null) {
+//      return true;
+//  }
+//        Namespace ns1 = gen.getParent().getNamespace();
+//        Namespace ns2 = gen.getChild().getNamespace();
+//        if (ns == getFirstSharedNamespace(ns1, ns2)) {
+//            return true;
+//        }
+//        return false;
     }
 
     private boolean isValidNamespace(StructuralFeature struc, Namespace ns) {
@@ -1431,63 +1505,145 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
     private boolean isValidNamespace(UmlAssociation assoc, Namespace ns) {
-        List<Namespace> namespaces = new ArrayList<Namespace>();
         for (AssociationEnd end : assoc.getConnection()) {
-            Classifier participant = end.getParticipant();
-            if (participant != null) {
-                Namespace namespace = participant.getNamespace();
-                if (namespace != null) {
-                    namespaces.add(namespace);
-                }
+            if (!isVisible(end.getParticipant(), ns)) {
+                return false;
             }
         }
-        if (namespaces.size() < 2) {
+        return true;
+    }
+    
+    /**
+     * Return true if the given element is visible from this namespace.
+     * <blockquote>The OCL that this is intended to check is this:
+     * self.allConnections->forAll(r | self.namespace.allContents->includes
+        (r.participant) ) or
+        self.allConnections->forAll(r | self.namespace.allContents->excludes
+        (r.participant) implies
+        self.namespace.clientDependency->exists (d |
+        d.oclIsTypeOf(Permission) and
+        d.stereotype.name = 'access' and
+        d.supplier.oclAsType(Namespace).ownedElement->select (e |
+        e.elementOwnership.visibility =
+        #public)->includes (r.participant) or
+        d.supplier.oclAsType(GeneralizableElement).
+        allParents.oclAsType(Namespace).ownedElement->select (e |
+        e. elementOwnership.visibility =
+        #public)->includes (r.participant) or
+        d.supplier.oclAsType(Package).allImportedElements->select (e |
+        e. elementImport.visibility =
+        #public) ->includes (r.participant) ) )
+        </blockquote>
+     * <p>
+     * NOTE: This is very similar to the logic in 
+     * {@link ModelManagementHelperMDRImpl#getAllImportedElements(Object)}
+     * which returns a collection of imported elements.  Here we quit as soon
+     * as we find the element that we're testing for (and we don't deal with 
+     * the <code>friend</code> or <code>access</code> stereotypes.
+     * 
+     * @param ns
+     *                The namespace to check visibility from
+     * @param element
+     *                the element to check for visibility
+     * @return Return true if the given element is visible from this namespace.
+     */
+    private boolean isVisible(ModelElement element, Namespace ns) {
+        if (ns == null || element == null) {
             return false;
         }
-        Namespace ns1 = namespaces.get(0);
-        Namespace ns2 = namespaces.get(1);
-        // TODO: This is incorrect.  AssociationEnds must be
-        // visible from Association's namespace, not vice versa. - tfm
-        // This is also assuming a binary association
-        if (ns == getFirstSharedNamespace(ns1, ns2)) {
+
+        //  self.allConnections->forAll(r 
+        // | self.namespace.allContents->includes(r.participant) )
+        Collection nsAllContents = 
+            modelImpl.getModelManagementHelper().getAllContents(ns);
+        if (nsAllContents.contains(element)) {
             return true;
         }
+        // or
+        //      self.allConnections->forAll(
+        //              r | self.namespace.allContents->excludes
+        //      (r.participant) implies
+        //      self.namespace.clientDependency->exists (d |
+        //      d.oclIsTypeOf(Permission) and
+        //      d.stereotype.name = 'access' and
+        
+        // TODO: this actually returns permissions with stereotypes
+        // of both <<access>> and <<import>> when the spec calls for
+        // only the former, but that seems to give different semantics
+        // to the way package imports work.  Review to see which is wrong.
+        Collection<Permission> permissions = getPackageImports(ns);
+        for (Permission imp : permissions) {
+            Collection<ModelElement> suppliers = imp.getSupplier();
+            for (ModelElement me : suppliers) {
+                //  d.supplier.oclAsType(Namespace).ownedElement->select (e |
+                //  e.elementOwnership.visibility =
+                //  #public)->includes (r.participant) or
+                if (me instanceof Namespace
+                        && isVisiblyOwned(element, (Namespace) me)) {
+                    return true;
+                }
+                //  d.supplier.oclAsType(GeneralizableElement).
+                //  allParents.oclAsType(Namespace).ownedElement->select (e |
+                //              e. elementOwnership.visibility =
+                //                      #public)->includes (r.participant) or
+                if (me instanceof GeneralizableElement) {
+                    Collection<GeneralizableElement> allParents = 
+                        getAllParents((GeneralizableElement) me);
+                    for (GeneralizableElement parent : allParents) {
+                        if (parent instanceof Namespace
+                                && isVisiblyOwned(element, 
+                                        (Namespace) parent)) {
+                            return true;
+                        }
+                    }
+                }
+                //  d.supplier.oclAsType(Package).allImportedElements->select (
+                //                  e | e. elementImport.visibility =
+                //                      #public) ->includes (r.participant) ) )
+                if (me instanceof UmlPackage) {
+                    Collection<ElementImport> imports =
+                            ((UmlPackage) me).getElementImport();
+                    for (ElementImport ei : imports) {
+                        if (element.equals(ei.getImportedElement())
+                                && VisibilityKindEnum.VK_PUBLIC.equals(ei
+                                        .getVisibility())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }       
         return false;
     }
-
+    
+    /**
+     * Returns true if ModelElement is owned by the given Namespace and it is
+     * publicly visible.
+     * 
+     * @param me ModelElement
+     * @param ns Namespace
+     * @return true if ModelElement is owned by the given Namespace and it is
+     *         publicly visible.
+     */
+    private boolean isVisiblyOwned(ModelElement me, Namespace ns) {
+        return ((Namespace) ns).getOwnedElement().contains(me)
+                && VisibilityKindEnum.VK_PUBLIC.equals(((ModelElement) me)
+                        .getVisibility());
+    }
+    
     private boolean isValidNamespace(
             GeneralizableElement generalizableElement,
             Namespace namespace) {
         
         CorePackage corePackage = modelImpl.getUmlPackage().getCore();
-        Collection<Generalization> generalizations =
-            corePackage.getAChildGeneralization().
-                getGeneralization(generalizableElement); 
+        Collection<Generalization> generalizations = 
+            generalizableElement.getGeneralization();
         
         for (Generalization generalization : generalizations) {
-            /* TODO: Fix the following problem, as described in issue 3772:
-             * Both implementations for valid namespace check whether
-             * the parents are owned by the namespace. This is invalid.
-             * The constraint
-             * [4] The parent must be included in the Namespace
-             * of the GeneralizableElement.self.generalization->forAll(g |
-             * self.namespace.allContents->includes(g.parent) )
-             * only asks that they are included,
-             * that is there can also be an elementimport
-             * at work somewhere. (same as in java - you can also use
-             * an import and then generalize, without the classes being
-             * required to be located in the same package).
-             * Symptom of this problem:
-             * Load the project attached to issue 3772. Select the "class1".
-             * The UMLModelElementNamespaceComboBoxModel gives
-             * a warning. Then add an import permission.
-             * The warning should not be given anymore. - mvw 20060408
-             */
-            // The following will do it when called method is implemented:
-//            if(!modelImpl.getModelManagementHelper().getAllContents(ns)
-//                    .contains(gen2.getParent())) {
+            // TODO: Fix the following problem, as described in issue 3772:
             GeneralizableElement parent = generalization.getParent();
-            if (!namespace.getOwnedElement().contains(parent)) {
+            if (!modelImpl.getModelManagementHelper().getAllContents(namespace)
+                    .contains(parent)) {
                 LOG.debug(parent.getName() + " is the ancestor of "
                         + generalizableElement.getName()
                         + ". It is not in the same namespace "
@@ -2174,8 +2330,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                 return;
             }
             if (handle instanceof Classifier) {
-                modelImpl.getUmlPackage().getCore().getATypedParameterType().
-                        add((Parameter) parameter, (Classifier) handle);
+                ((Parameter) parameter).setType((Classifier) handle);
                 return;
             }
         }
