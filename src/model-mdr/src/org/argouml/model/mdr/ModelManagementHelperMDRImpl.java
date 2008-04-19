@@ -46,6 +46,7 @@ import org.omg.uml.behavioralelements.collaborations.Collaboration;
 import org.omg.uml.behavioralelements.commonbehavior.Instance;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Dependency;
 import org.omg.uml.foundation.core.GeneralizableElement;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
@@ -204,7 +205,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             // without the qualifying package names - true for UML 1.4
             if (name.equals(elem.getName())) {
                 List names = elem.getQualifiedName();
-                // TODO: Generalize to handle more than one level of package
+                // Although this only handles one level of package, it is
                 // OK for UML 1.4 because of clustering
                 RefPackage pkg = modelImpl.getUmlPackage().refPackage(
                         (String) names.get(0));
@@ -231,16 +232,14 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
 
     /*
      * Check whether model element is contained in given namespace/container.
-     * TODO: Investigate a faster way to do this
      */
     private boolean contained(Object container, Object candidate) {
-        Object current = 
-            modelImpl.getFacade().getModelElementContainer(candidate);
+        Object current = ((RefObject) candidate).refImmediateComposite();
         while (current != null) {
             if (container.equals(current)) {
                 return true;
             }
-            current = modelImpl.getFacade().getModelElementContainer(current);
+            current = ((RefObject) current).refImmediateComposite();
         }
         return false;
     }
@@ -394,9 +393,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             if (((ModelElement) root).getName().equals(fullPath.get(0))) {
                 element = root;
                 if (root instanceof Namespace && fullPath.size() > 1) {
-                    element = modelImpl.getModelManagementHelper().
-                    getElement(fullPath.subList(1, fullPath.size()), 
-                            root);
+                    element =
+                            modelImpl.getModelManagementHelper().getElement(
+                                    fullPath.subList(1, fullPath.size()), root);
                 }
                 if (element != null) {
                     break;
@@ -554,68 +553,96 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
     public Collection<ModelElement> getContents(Object modelelement) {
-        Set<ModelElement> results = new HashSet<ModelElement>();
-        if (modelelement == null) {
-            return results;
-        }
-
-        /*
-         * For a Package: <pre>
-         * [1] The operation contents results in a Set containing 
-         * the ModelElements owned by or imported by the Package.
-         * contents : Set(ModelElement)
-         * contents = self.ownedElement->union(self.importedElement)
-         * </pre>
-         * For a Subsystem: <pre>
-         * [2] The operation contents results in a Set containing 
-         * the ModelElements owned by or imported by the Subsystem.
-         *   contents : Set(ModelElement)
-         *   contents = self.ownedElement->union(self.importedElement)
-         * </pre>
-         */
         if (modelelement instanceof UmlPackage) {
-            Collection<ElementImport> c = 
-                ((UmlPackage) modelelement).getElementImport();
-            for (ElementImport ei : c) {
-                results.add(ei.getImportedElement());
-            }
+            return getContents((UmlPackage) modelelement);
+        } else if (modelelement instanceof Namespace) {
+            return getContents((Namespace) modelelement);
+        } else if (modelelement instanceof Instance) {
+            return getContents((Instance) modelelement);
+        } else if (modelelement == null) {
+            // This is silly, but for backward compatibility
+            return Collections.emptySet();
         }
+        throw new IllegalArgumentException("Unsupported element type " 
+                + modelelement);
+    }
 
-        /*
-         * For a Namespace: <pre>
-         * [1] The operation contents results in a Set containing 
-         * all ModelElements contained by the Namespace.
-         * contents : Set(ModelElement)
-         * contents = self.ownedElement -> union(self.namespace, contents)
-         * </pre> 
-         */
-        if (modelelement instanceof Namespace) {
-            results.addAll(((Namespace) modelelement).getOwnedElement());
-            Namespace ns = ((Namespace) modelelement).getNamespace();
-            if (ns != null) {
-                results.addAll(getContents(ns));
-            }
+    /**
+     * Get the contents of a Package.
+     * <p>
+     * For a Package: <pre>
+     * [1] The operation contents results in a Set containing 
+     * the ModelElements owned by or imported by the Package.
+     * contents : Set(ModelElement)
+     * contents = self.ownedElement->union(self.importedElement)
+     * </pre>
+     * For a Subsystem (subtype of Package): <pre>
+     * [2] The operation contents results in a Set containing 
+     * the ModelElements owned by or imported by the Subsystem.
+     *   contents : Set(ModelElement)
+     *   contents = self.ownedElement->union(self.importedElement)
+     * </pre>
+     * @param pkg package to get contents of
+     * @return all owned plus imported elements
+     */
+    static Collection<ModelElement> getContents(UmlPackage pkg) {
+        Collection<ModelElement> results = new ArrayList<ModelElement>();
+        Collection<ElementImport> c = pkg.getElementImport();
+        for (ElementImport ei : c) {
+            results.add(ei.getImportedElement());
         }
-
-        /*
-         * For a Instance: <pre>
-         * [5] The operation contents results in a Set containing all 
-         * ModelElements contained by the Instance.
-         *   contents: Set(ModelElement);
-         *   contents = self.ownedInstance->union(self.ownedLink)
-         * </pre>
-         */
-        if (modelelement instanceof Instance) {
-            results.addAll(((Instance) modelelement).getOwnedInstance());
-            results.addAll(((Instance) modelelement).getOwnedLink());
-        }
-
+        results.addAll(getContents((Namespace) pkg));
         return results;
     }
 
-
-    public Collection getAllImportedElements(Object pack) {
-        Collection c = new ArrayList();
+    /**
+     * Get the contents of a Namespace (which includes the contents of
+     * all owning namespaces).
+     * <p>
+     * For a Namespace: <pre>
+     * [1] The operation contents results in a Set containing 
+     * all ModelElements contained by the Namespace.
+     * contents : Set(ModelElement)
+     * contents = self.ownedElement -> union(self.namespace, contents)
+     * </pre> 
+     * @param namespace Namespace to get contents of
+     * @return contents of namespace and all containing namespaces
+     */
+    static Collection<ModelElement> getContents(Namespace namespace) {
+        Collection<ModelElement> results = new ArrayList<ModelElement>();
+        results.addAll(namespace.getOwnedElement());
+        Namespace owner = namespace.getNamespace();
+        if (owner != null) {
+            results.addAll(getContents(owner));
+        }
+        // TODO: Should we handle <<access>> and <<import>> here?
+        return results;
+    }
+    
+    /**
+     * Return the contents of an Instance.
+     * For a Instance: <pre>
+     * [5] The operation contents results in a Set containing all 
+     * ModelElements contained by the Instance.
+     *   contents: Set(ModelElement);
+     *   contents = self.ownedInstance->union(self.ownedLink)
+     * </pre>
+     * @param instance the instance
+     * @return a collection containing all owned instances and links
+     */
+    static Collection<ModelElement> getContents(Instance instance) {
+        Collection<ModelElement> results = new ArrayList<ModelElement>();
+        results.addAll(instance.getOwnedInstance());
+        results.addAll(instance.getOwnedLink());
+        return results;
+    }
+    
+    public Collection<ModelElement> getAllImportedElements(Object pack) {
+        if (!(pack instanceof Namespace)) {
+            return Collections.emptyList();
+        }
+        Namespace ns = ((Namespace) pack);
+        Collection<ModelElement> ret = new ArrayList<ModelElement>();
         try {
             /* TODO: This is not according the contract for this function, but
              * it is used in several places, and I (MVW) presume that 
@@ -623,37 +650,24 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
              * This part (1) is about drawing an <<import>> permission
              * between packages.
              * The part (2) below is about ModelManagement.ElementImport. */
-            Collection deps = modelImpl.getFacade().getClientDependencies(pack);
-            Iterator i = deps.iterator();
-            while (i.hasNext()) {
-                Object dep = i.next();
+            Collection<Dependency> deps = ns.getClientDependency();
+            for (Dependency dep : deps) {
                 if (dep instanceof Permission) {
                     if (modelImpl.getExtensionMechanismsHelper()
                             .hasStereotype(dep, FRIEND_STEREOTYPE)) {
-                        Collection mes = modelImpl.getFacade()
-                                .getSuppliers(dep);
-                        Iterator mei = mes.iterator();
-                        while (mei.hasNext()) {
-                            Object o = mei.next();
-                            if (modelImpl.getFacade().isANamespace(o)) {
-                                Collection v = 
-                                    modelImpl.getFacade().getOwnedElements(o);
-                                c.addAll(v);
+                        for (ModelElement o : dep.getSupplier()) {
+                            if (o instanceof Namespace) {
+                                ret.addAll(((Namespace) o).getOwnedElement());
                             }
                         }
                     } else if (modelImpl.getExtensionMechanismsHelper()
                             .hasStereotype(dep, IMPORT_STEREOTYPE)
                             || modelImpl.getExtensionMechanismsHelper()
                                     .hasStereotype(dep, ACCESS_STEREOTYPE)) {
-                        Collection mes = modelImpl.getFacade()
-                                .getSuppliers(dep);
-                        Iterator mei = mes.iterator();
-                        while (mei.hasNext()) {
-                            Object o = mei.next();
-                            if (modelImpl.getFacade().isANamespace(o)) {
-                                Collection v = modelImpl.getCoreHelper()
-                                        .getAllVisibleElements(o);
-                                c.addAll(v);
+                        for (ModelElement o : dep.getSupplier()) {
+                            if (o instanceof Namespace) {
+                                ret.addAll(CoreHelperMDRImpl
+                                        .getAllVisibleElements((Namespace) o));
                             }
                         }
                     }
@@ -661,12 +675,12 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             }
             /* TODO: This is the 2nd part of this method: */
             Collection imports = modelImpl.getFacade()
-                    .getImportedElements(pack);
-            c.addAll(imports);
+                    .getImportedElements(ns);
+            ret.addAll(imports);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return c;
+        return ret;
     }
 
 
@@ -675,107 +689,112 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         if (pack == null) {
             return results;
         }
-        
-        /*
-         * For a Namespace:
-         * <pre>
-         * [2] The operation allContents results in a Set containing 
-         * all ModelElements contained by the Namespace.
-         *   allContents : Set(ModelElement);
-         *   allContents = self.contents
-         * where
-         *   contents = self.ownedElement -> union(self.namespace, contents)
-         * </pre><p>
-         */
-        if (pack instanceof Namespace) {
-            results.addAll(getContents(pack));
-        }
-        
-        /*
-         * For a Classifier:
-         * <pre>
-         * [10] The operation allContents returns a Set containing 
-         * all ModelElements contained in the Classifier together
-         * with the contents inherited from its parents.
-         *   allContents : Set(ModelElement);
-         *   allContents = self.contents->union(
-         *       self.parent.allContents->select(e |
-         *            e.elementOwnership.visibility = #public or
-         *            e.elementOwnership.visibility = #protected))
-         * where parent is defined for GeneralizableElement as:
-         * [1] The operation parent returns a Set containing all direct parents
-         *   parent : Set(GeneralizableElement);
-         *   parent = self.generalization.parent
-         * </pre><p>
-         */
 
-        /*
-         * For a Package:
-         * <pre>
-         * [3]  The operation allContents results in a Set containing 
-         * the ModelElements owned by or imported 
-         * by the Package or one of its ancestors.
-         *   allContents : Set(ModelElement);
-         *   allContents = self.contents->union(
-         *     self.parent.allContents->select(e |
-         *          e.elementOwnership.visibility = #public or
-         *          e.elementOwnership.visibility = #protected))
-         *          
-         * where the required operations are defined as :
-         * 
-         * [1] The operation contents results in a Set containing the 
-         * ModelElements owned by or imported by the Package.
-         *   contents : Set(ModelElement)
-         *   contents = self.ownedElement->union(self.importedElement)
-         * [2] The operation allImportedElements results in a Set containing
-         * the ModelElements imported by the Package or one of its parents.
-         *   allImportedElements : Set(ModelElement)
-         *   allImportedElements = self.importedElement->union(
-         *     self.parent.oclAsType(Package).allImportedElements->select( re |
-         *                         re.elementImport.visibility = #public or
-         *                         re.elementImport.visibility = #protected))
-         * </pre>
-         */
-
-        if (pack instanceof Classifier || pack instanceof Package) {
-            Collection<GeneralizableElement> ges = 
-                modelImpl.getCoreHelper().getParents(pack);
-            Collection<ModelElement> allContents = new HashSet<ModelElement>();
-            for (GeneralizableElement ge : ges) {
-                allContents.addAll(getAllContents(ge));
+        try {
+            /*
+             * For a Namespace:
+             * <pre>
+             * [2] The operation allContents results in a Set containing 
+             * all ModelElements contained by the Namespace.
+             *   allContents : Set(ModelElement);
+             *   allContents = self.contents
+             * where
+             *   contents = self.ownedElement -> union(self.namespace, contents)
+             * </pre><p>
+             */
+            if (pack instanceof Namespace) {
+                results.addAll(getContents(pack));
             }
-            for (ModelElement element : allContents) {
-                if (element.getVisibility()
-                        .equals(VisibilityKindEnum.VK_PUBLIC)
-                        || element.getVisibility().equals(
-                                VisibilityKindEnum.VK_PROTECTED)) {
-                    results.add(element);
+
+            /*
+             * For a Classifier:
+             * <pre>
+             * [10] The operation allContents returns a Set containing 
+             * all ModelElements contained in the Classifier together
+             * with the contents inherited from its parents.
+             *   allContents : Set(ModelElement);
+             *   allContents = self.contents->union(
+             *       self.parent.allContents->select(e |
+             *            e.elementOwnership.visibility = #public or
+             *            e.elementOwnership.visibility = #protected))
+             * where parent is defined for GeneralizableElement as:
+             * [1] The operation parent returns a Set containing all direct 
+             * parents
+             *   parent : Set(GeneralizableElement);
+             *   parent = self.generalization.parent
+             * </pre><p>
+             */
+
+            /*
+             * For a Package:
+             * <pre>
+             * [3]  The operation allContents results in a Set containing 
+             * the ModelElements owned by or imported 
+             * by the Package or one of its ancestors.
+             *   allContents : Set(ModelElement);
+             *   allContents = self.contents->union(
+             *     self.parent.allContents->select(e |
+             *          e.elementOwnership.visibility = #public or
+             *          e.elementOwnership.visibility = #protected))
+             *          
+             * where the required operations are defined as :
+             * 
+             * [1] The operation contents results in a Set containing the 
+             * ModelElements owned by or imported by the Package.
+             *   contents : Set(ModelElement)
+             *   contents = self.ownedElement->union(self.importedElement)
+             * [2] The operation allImportedElements results in a Set containing
+             * the ModelElements imported by the Package or one of its parents.
+             *   allImportedElements : Set(ModelElement)
+             *   allImportedElements = self.importedElement->union(
+             *     self.parent.oclAsType(Package).allImportedElements->select( 
+             *                   re | re.elementImport.visibility = #public or
+             *                        re.elementImport.visibility = #protected))
+             * </pre>
+             */
+
+            if (pack instanceof Classifier || pack instanceof UmlPackage) {
+                Collection<GeneralizableElement> ges = 
+                    CoreHelperMDRImpl.getParents((GeneralizableElement) pack);
+                Collection<ModelElement> allContents = 
+                    new HashSet<ModelElement>();
+                for (GeneralizableElement ge : ges) {
+                    allContents.addAll(getAllContents(ge));
+                }
+                for (ModelElement element : allContents) {
+                    if (VisibilityKindEnum.VK_PUBLIC.equals(element
+                            .getVisibility())
+                            || VisibilityKindEnum.VK_PROTECTED.equals(element
+                                    .getVisibility())) {
+                        results.add(element);
+                    }
                 }
             }
-        }
-        
-        
-        /*
-         * For a Collaboration:
-         * <pre>
-         * [1 ] The operation allContents results in the set of 
-         * all ModelElements contained in the Collaboration
-         * together with those contained in the parents 
-         * except those that have been specialized.
-         *   allContents : Set(ModelElement);
-         *   allContents = self.contents->union (
-         *                       self.parent.allContents->reject ( e |
-         *                       self.contents.name->include (e.name) ))
-         *                       
-         *  parent here is the GeneralizableElement definition
-         * </pre>
-         */
-        if (pack instanceof Collaboration) {
-            // TODO: Not implemented
-            throw new RuntimeException("Not implement - getAllContents for: "
-                    + pack);
-        }
 
+
+            /*
+             * For a Collaboration:
+             * <pre>
+             * [1 ] The operation allContents results in the set of 
+             * all ModelElements contained in the Collaboration
+             * together with those contained in the parents 
+             * except those that have been specialized.
+             *   allContents : Set(ModelElement);
+             *   allContents = self.contents->union (
+             *                       self.parent.allContents->reject ( e |
+             *                       self.contents.name->include (e.name) ))
+             *                       
+             *  parent here is the GeneralizableElement definition
+             * </pre>
+             */
+            if (pack instanceof Collaboration) {
+                // TODO: Not implemented
+                throw new RuntimeException(
+                        "Not implemented - getAllContents for: " + pack);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
         return results;
 
     }
