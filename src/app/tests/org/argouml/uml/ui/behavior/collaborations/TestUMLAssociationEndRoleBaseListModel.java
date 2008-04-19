@@ -25,11 +25,10 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
@@ -110,9 +109,8 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
         Collection connections = Model.getFacade().getConnections(baseAssoc);
         Model.getUmlFactory().delete(baseAssoc);
 
-        Iterator iter = connections.iterator();
-        while (iter.hasNext()) {
-            Model.getUmlFactory().delete(iter.next());
+        for (Object connection : connections) {
+            Model.getUmlFactory().delete(connection);
         }
         connections = null;
 
@@ -128,16 +126,16 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
         Model.getCollaborationsHelper().setBase(elem, baseEnd);
         Model.getPump().flushModelEvents();
         assertEquals(1, model.getSize());
-        assertEquals(baseEnd, model.getElementAt(0));
+        assertEquals(baseEnd, model.get(0));
     }
 
     /**
      * Testing that we have an empty model to begin with.
      */
     public void testEmpty() {
-        assertEquals(0, model.getSize());
+        assertEquals(0, model.size());
         try {
-            model.getElementAt(0);
+            model.get(0);
             fail();
         } catch (ArrayIndexOutOfBoundsException ex) {
             // This is what we expect.
