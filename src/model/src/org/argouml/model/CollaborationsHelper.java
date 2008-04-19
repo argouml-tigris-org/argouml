@@ -295,10 +295,10 @@ public interface CollaborationsHelper {
     /**
      * Set the context of an interaction.
      *
-     * @param handle The element.
-     * @param col The context to set.
+     * @param interaction The interaction.
+     * @param context The collaboration to set as the context.
      */
-    void setContext(Object handle, Object col);
+    void setContext(Object interaction, Object context);
 
     /**
      * Set the successors of a message.
@@ -309,7 +309,7 @@ public interface CollaborationsHelper {
     void setSuccessors(Object handle, Collection messages);
 
     /**
-     * Set the collection of predecessing messages.
+     * Set the collection of predecessor messages.
      *
      * @param handle Message
      * @param predecessors Collection of Messages
@@ -341,7 +341,7 @@ public interface CollaborationsHelper {
     void setSender(Object handle, Object sender);
 
     /**
-     * Additionnal support for interactions.
+     * Remove an Interaction from a Collaboration.
      *
      * @param collab The collaboration.
      * @param interaction The interaction.
