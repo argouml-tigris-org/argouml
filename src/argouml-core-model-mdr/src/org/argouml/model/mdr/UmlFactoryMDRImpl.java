@@ -173,6 +173,13 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * builds this from the data in the VALID_CONNECTIONS array
      */
     private Map validConnectionMap = new HashMap();
+    
+    /**
+     * A map of the valid model elements that are valid to be contained 
+     * by other model elements.
+     */
+    private HashMap<Object, Object[]> validContainmentMap = 
+        new HashMap<Object, Object[]>();
 
     /**
      * The instance that we are deleting.
@@ -259,6 +266,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         metaTypes = modelImpl.getMetaTypes();
 
         buildValidConnectionMap();
+        
+        buildValidContainmentMap();
     }
 
     private void buildValidConnectionMap() {
@@ -288,7 +297,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 modeElementPair[1] = VALID_CONNECTIONS[i][2];
                 validItems.add(modeElementPair);
                 // If the array hasn't been flagged to indicate otherwise
-                // swap elements the elemnts and add again.
+                // swap elements the elements and add again.
                 if (VALID_CONNECTIONS[i].length < 4) {
                     Object[] reversedModeElementPair = new Class[2];
                     reversedModeElementPair[0] = VALID_CONNECTIONS[i][2];
@@ -298,8 +307,94 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
         }
     }
+    
+    /**
+     * Initializes the validContainmentMap based on the rules for 
+     * valid containment of elements.
+     * 
+     * @author Scott Roberts
+     */
+    private void buildValidContainmentMap() {
+       
+        validContainmentMap.clear();
+        
+        // specifies valid elements for a Model to contain 
+        validContainmentMap.put(metaTypes.getModel(), 
+            new Object[] {
+                metaTypes.getPackage(), metaTypes.getActor(), 
+                metaTypes.getUseCase(), metaTypes.getUMLClass(), 
+                metaTypes.getInterface(), metaTypes.getComponent(), 
+                metaTypes.getComponentInstance(), metaTypes.getNode(), 
+                metaTypes.getNodeInstance(), metaTypes.getStereotype(),
+                metaTypes.getEnumeration(), metaTypes.getDataType(),
+                metaTypes.getException(), metaTypes.getSignal()
+            });
 
-
+        // specifies valid elements for a Package to contain
+        validContainmentMap.put(metaTypes.getPackage(), 
+            new Object[] {
+                metaTypes.getPackage(), metaTypes.getActor(), 
+                metaTypes.getUseCase(), metaTypes.getUMLClass(), 
+                metaTypes.getInterface(), metaTypes.getComponent(), 
+                metaTypes.getNode(), metaTypes.getStereotype(),
+                metaTypes.getEnumeration(), metaTypes.getDataType(),
+                metaTypes.getException(), metaTypes.getSignal()
+            });
+                
+        // specifies valid elements for a class to contain
+        validContainmentMap.put(metaTypes.getUMLClass(), 
+            new Object[] { 
+                metaTypes.getAttribute(), metaTypes.getOperation(), 
+                metaTypes.getUMLClass(), metaTypes.getReception(), 
+                metaTypes.getStereotype() 
+            });
+        
+        // specifies valid elements for an Interface to contain
+        validContainmentMap.put(metaTypes.getInterface(), 
+                new Object[] { 
+                    metaTypes.getOperation(), metaTypes.getReception(), 
+                    metaTypes.getStereotype() 
+                });
+        
+        // specifies valid elements for an Actor to contain
+        validContainmentMap.put(metaTypes.getActor(), 
+            new Object[] { 
+                metaTypes.getReception(), metaTypes.getStereotype() 
+            });
+        
+        // specifies valid elements for a Use Case to contain
+        validContainmentMap.put(metaTypes.getUseCase(), 
+            new Object[] { 
+                metaTypes.getExtensionPoint(), metaTypes.getAttribute(), 
+                metaTypes.getOperation(), metaTypes.getReception(), 
+                metaTypes.getStereotype() 
+            });
+        
+        // specifies valid elements for a Component to contain
+        validContainmentMap.put(metaTypes.getComponent(), 
+            new Object[] { 
+                metaTypes.getReception(), metaTypes.getStereotype() 
+            });
+        
+        // specifies valid elements for a Node to contain
+        validContainmentMap.put(metaTypes.getNode(), 
+                new Object[] { 
+                    metaTypes.getReception(), metaTypes.getStereotype() 
+                });
+        
+        // specifies valid elements for a Enumeration to contain
+        validContainmentMap.put(metaTypes.getEnumeration(), 
+                new Object[] { 
+                    metaTypes.getEnumerationLiteral(), metaTypes.getOperation() 
+                });
+        
+        // specifies valid elements for a DataType to contain
+        validContainmentMap.put(metaTypes.getDataType(), 
+                new Object[] { 
+                    metaTypes.getOperation() 
+                });
+    }
+        
     public Object buildConnection(Object elementType, Object fromElement,
             Object fromStyle, Object toElement, Object toStyle,
             Object unidirectional, Object namespace)
@@ -459,7 +554,45 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 + elementType);
     }
 
-
+    public Object buildNode(Object elementType, Object container) {
+        
+        Object element = null;
+        
+        // if this is a feature get the owner of that feature
+        if (this.modelImpl.getFacade().isAFeature(container)) {
+            container = this.modelImpl.getFacade().getOwner(container);
+        }
+        
+        // supports implementation of some special elements not 
+        // supported by buildNode
+        if (elementType == this.metaTypes.getAttribute()) {
+            element = getCore().buildAttribute2(container, null);   
+        } else if (elementType == this.metaTypes.getOperation()) {
+            element = getCore().buildOperation(container, null);
+        } else if (elementType == this.metaTypes.getReception()) {
+            element = this.modelImpl.getCommonBehaviorFactory().
+                createReception();
+            
+            this.modelImpl.getCoreHelper().addOwnedElement(container, element);
+        } else if (elementType == this.metaTypes.getEnumerationLiteral()) {
+            element = getCore().buildEnumerationLiteral(null, container);
+        } else if (elementType == this.metaTypes.getExtensionPoint()) {
+            element = this.modelImpl.getUseCasesFactory().
+                buildExtensionPoint(container);            
+        } else {
+            // build all other elements using existing buildNode
+            element = buildNode(elementType);
+            
+            if (container instanceof Namespace && element instanceof Namespace)
+                ((Namespace) element).setNamespace(
+                        ((Namespace) container).getNamespace());
+            
+            this.modelImpl.getCoreHelper().addOwnedElement(container, element);
+        }
+        
+        return element;
+    }
+    
     public boolean isConnectionType(Object connectionType) {
         // If our map has any entries for this type, it's a connection type
         return (validConnectionMap.get(connectionType) != null);
@@ -497,6 +630,28 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 }
             }
         }
+        return false;
+    }
+    
+    public boolean isContainmentValid(Object metaType, Object container) {
+        
+        // find the passed in container in validContainmentMap
+        for (Object containerType : validContainmentMap.keySet()) {
+            
+            if (((Class) containerType).isInstance(container))
+            {   // determine if metaType is a valid element for container
+                Object[] validElements = validContainmentMap.get(containerType);
+                
+                for (int eIter = 0; eIter < validElements.length; ++eIter) {
+                    
+                    if (metaType == validElements[eIter])
+                        return true;
+                }
+                
+                break;
+            }
+        }
+        
         return false;
     }
     
