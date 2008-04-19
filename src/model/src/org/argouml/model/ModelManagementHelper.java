@@ -50,7 +50,8 @@ public interface ModelManagementHelper {
     String ACCESS_STEREOTYPE = "access";
     
     /**
-     * Returns all subsystems found in this namespace and in its children.
+     * Returns all subsystems found in this namespace and in its containing
+     * namespaces.
      *
      * @param ns is the namespace
      * @return Collection
@@ -58,7 +59,8 @@ public interface ModelManagementHelper {
     Collection getAllSubSystems(Object ns);
 
     /**
-     * Returns all namespaces found in this namespace and in its children
+     * Returns all namespaces found in this namespace and in its containing
+     * namespaces.
      *
      * @param ns namespace to process
      * @return Collection of all namespaces found
@@ -76,26 +78,26 @@ public interface ModelManagementHelper {
     Collection getAllModelElementsOfKindWithModel(Object model, Object type);
 
     /**
-     * Returns all modelelements found in this namespace and its children
-     * that are of some class kind.<p>
+     * Returns all modelelements found in this namespace and its containing
+     * namespaces that are of some class kind.<p>
      *
-     * @param nsa is the namespace
+     * @param namespace is the namespace
      * @param type is the class kind
      * @return Collection
      */
-    Collection getAllModelElementsOfKind(Object nsa, Object type);
+    Collection getAllModelElementsOfKind(Object namespace, Object type);
 
     /**
      * helper method for {@link #getAllModelElementsOfKind(Object, Object)}.
      *
-     * @param nsa
+     * @param namespace
      *            namespace.
      * @param kind
      *            name of class to find (without implementation-specific
      *            additions)
      * @return a Collection.
      */
-    Collection getAllModelElementsOfKind(Object nsa, String kind);
+    Collection getAllModelElementsOfKind(Object namespace, String kind);
 
     /**
      * Returns all surrounding namespaces of some namespace ns. See section
@@ -123,8 +125,9 @@ public interface ModelManagementHelper {
     Collection getAllPossibleImports(Object pack);
 
     /**
-     * Get the modelelement with the given path, starting at the root of repository.
-     *
+     * Get the modelelement with the given path, starting at the root of
+     * repository.
+     * 
      * @param path the given path
      * @return the modelelement looked for, or null if not found
      */
@@ -132,10 +135,10 @@ public interface ModelManagementHelper {
     
     /**
      * Get the modelelement a given path below a given root-namespace.
-     *
+     * 
      * @param path the given path
-     * @param theRootNamespace the given namespace to start from.  If null, start
-     * from the root (equivalent to {@link #getElement(List)}.
+     * @param theRootNamespace the given namespace to start from. If null, start
+     *                from the root (equivalent to {@link #getElement(List)}.
      * @return the modelelement looked for, or null if not found
      */
     Object getElement(List<String> path, Object theRootNamespace);
@@ -260,7 +263,7 @@ public interface ModelManagementHelper {
 
     /**
      * Checks if a child for some ownership relationship (as in a
-     * namespace A is owned by a namespace B) is allready in the
+     * namespace A is owned by a namespace B) is already in the
      * ownerhship relation.
      *
      * @param parent The current leaf for the ownership relation
@@ -409,7 +412,7 @@ public interface ModelManagementHelper {
      *        self.contents.name->include (e.name) ))
      * </pre>
      *
-     * @param namespace the ns to get the contents from
+     * @param namespace the namespace to get the contents from
      * @return a collection of modelelements
      */
     Collection getAllContents(Object namespace);

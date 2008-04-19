@@ -36,40 +36,40 @@ public interface CollaborationsHelper {
      * Returns all classifierroles found in this namespace and in its children.
      *
      * @return Collection collection of all classifierroles
-     * @param ns the namespace
+     * @param namespace the namespace
      */
-    Collection getAllClassifierRoles(Object ns);
+    Collection getAllClassifierRoles(Object namespace);
 
     /**
      * Returns all associations the bases of the classifierrole has,
      * thereby forming the set of associationroles the classifierrole
      * can use. UML Spec 1.3 section 2.10.3.3.
      *
-     * @param role the classifierrole
+     * @param classifierRole the classifierrole
      * @return Collection the set of associationroles the classifierrole
      * can use
      */
-    Collection getAllPossibleAssociationRoles(Object role);
+    Collection getAllPossibleAssociationRoles(Object classifierRole);
 
     /**
      * Returns all classifierroles associated via associationroles to some
      * classifierrole role.
      *
-     * @param role the classifierrole
+     * @param classifierRole the classifierrole
      * @return Collection all classifierroles associated via associationroles
      * to the given classifierrole role
      */
-    Collection getClassifierRoles(Object role);
+    Collection getClassifierRoles(Object classifierRole);
 
     /**
      * Returns the first found associationrole between two
      * classifierroles.<p>
      *
-     * @param afrom the first classifierrole
-     * @param ato the second classifierrole
+     * @param fromRole the first classifierrole
+     * @param toRole the second classifierrole
      * @return MAssociationRole the association between them, or null if none
      */
-    Object getAssociationRole(Object afrom, Object ato);
+    Object getAssociationRole(Object fromRole, Object toRole);
 
     /**
      * Returns all possible activators for some message mes. The
@@ -77,10 +77,10 @@ public interface CollaborationsHelper {
      * the given message that are not part of the predecessors of the
      * message and that are not equal to the given message.<p>
      *
-     * @param ames the message
+     * @param message the message
      * @return Collection all possible activators for the given message
      */
-    Collection getAllPossibleActivators(Object ames);
+    Collection getAllPossibleActivators(Object message);
 
     /**
      * Returns true if the given message has the message activator
@@ -108,10 +108,10 @@ public interface CollaborationsHelper {
      * messages (defined by the predecessor) has a different
      * activator.<p>
      *
-     * @param ames the given message
-     * @param anactivator the given activator or null.
+     * @param message the given message
+     * @param activator the given activator or null.
      */
-    void setActivator(Object ames, Object anactivator);
+    void setActivator(Object message, Object activator);
 
     /**
      * Returns all possible predecessors for some message, taking into account
@@ -129,19 +129,19 @@ public interface CollaborationsHelper {
      * according to the wellformednessrules of section 2.10.3 of the UML 1.3
      * spec.
      *
-     * @param arole the given classifierrole
-     * @param abase the base to be added
+     * @param classifierRole the given classifierrole
+     * @param baseClassifier the base to be added
      */
-    void addBase(Object arole, Object abase);
+    void addBase(Object classifierRole, Object baseClassifier);
 
     /**
      * Sets the bases of the given classifierrole to the given
      * collection bases.<p>
      *
-     * @param role the given classifierrole
+     * @param classifierRole the given classifierrole
      * @param bases the given collection of bases
      */
-    void setBases(Object role, Collection bases);
+    void setBases(Object classifierRole, Collection bases);
 
     /**
      * Returns all available features for a given classifierrole as
@@ -149,10 +149,10 @@ public interface CollaborationsHelper {
      * the standard getAvailableFeatures method on ClassifierRole
      * since this is derived information.<p>
      *
-     * @param arole the given classifierrole
+     * @param classifierRole the given classifierrole
      * @return Collection all available features
      */
-    Collection allAvailableFeatures(Object arole);
+    Collection allAvailableFeatures(Object classifierRole);
 
     /**
      * Returns all available contents for a given classifierrole as
@@ -160,10 +160,10 @@ public interface CollaborationsHelper {
      * the standard getAvailableContents method on ClassifierRole
      * since this is derived information.
      *
-     * @param arole the given classifierrole
+     * @param classifierRole the given classifierrole
      * @return Collection all available contents
      */
-    Collection allAvailableContents(Object arole);
+    Collection allAvailableContents(Object classifierRole);
 
     /**
      * Returns all possible bases for the given element
@@ -188,10 +188,10 @@ public interface CollaborationsHelper {
      * To set the base(s) of a ClassifierRole use
      * {@link #setBases(Object, Collection)}.
      *
-     * @param arole The given role.
-     * @param abase The base to set (or <code>null</code> to clear).
+     * @param classifierRole The given role.
+     * @param baseClassifier The base to set (or <code>null</code> to clear).
      */
-    void setBase(Object arole, Object abase);
+    void setBase(Object classifierRole, Object baseClassifier);
 
     /**
      * Returns true if a collaboration may be added to the given context. To
@@ -206,10 +206,10 @@ public interface CollaborationsHelper {
     /**
      * This method removes a classifier from a classifier role.
      *
-     * @param handle is the classifier role
-     * @param c is the classifier
+     * @param classifierRole is the classifier role
+     * @param baseClassifier is the classifier
      */
-    void removeBase(Object handle, Object c);
+    void removeBase(Object classifierRole, Object baseClassifier);
 
     /**
      * Remove a constraining element.
@@ -232,9 +232,9 @@ public interface CollaborationsHelper {
      * Removes a successor message.
      * 
      * @param handle the Message that needs to loose a successor
-     * @param mess the Message that is removed
+     * @param message the Message that is removed
      */
-    void removeSuccessor(Object handle, Object mess);
+    void removeSuccessor(Object handle, Object message);
     
     /**
      * Removes a predecessor message.
@@ -264,17 +264,17 @@ public interface CollaborationsHelper {
      * Add a message to an interaction or association role.
      *
      * @param handle The interaction or association role.
-     * @param elem The message.
+     * @param message The message.
      */
-    void addMessage(Object handle, Object elem);
+    void addMessage(Object handle, Object message);
 
     /**
      * Add Message to a predecessor Message.
      * 
-     * @param handle predecessor Message
-     * @param mess Message to be added
+     * @param predecessor predecessor Message
+     * @param message Message to be added
      */
-    void addSuccessor(Object handle, Object mess);
+    void addSuccessor(Object predecessor, Object message);
 
     /**
      * Adds a predecessor to a message.
