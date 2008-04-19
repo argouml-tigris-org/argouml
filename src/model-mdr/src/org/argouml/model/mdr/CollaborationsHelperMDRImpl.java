@@ -55,6 +55,7 @@ import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.core.UmlAssociation;
+import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
  * Helper class for UML BehavioralElements::Collaborations Package.
@@ -114,12 +115,10 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
         try {
             if (role.getBase().isEmpty()) {
-                return Collections.EMPTY_LIST;
+                return Collections.emptyList();
             }
-            Iterator it = role.getBase().iterator();
             Set associations = new HashSet();
-            while (it.hasNext()) {
-                Classifier base = (Classifier) it.next();
+            for (Classifier base : role.getBase()) {
                 associations.addAll(
                         modelImpl.getCoreHelper().getAssociations(base));
             }
@@ -132,7 +131,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
     public Collection<Classifier> getClassifierRoles(Object role) {
         if (role == null) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
 
         if (!(role instanceof ClassifierRole)) {
@@ -141,17 +140,13 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
         List<Classifier> roles = new ArrayList<Classifier>();
         try {
-            Collection associationEnds = 
+            Collection<AssociationEnd> associationEnds = 
                 Model.getFacade().getAssociationEnds(role);
             if (!associationEnds.isEmpty()) {
-                Iterator it = associationEnds.iterator();
-                while (it.hasNext()) {
-                    AssociationEnd end = (AssociationEnd) it.next();
+                for (AssociationEnd end : associationEnds) {
                     if (end instanceof AssociationEndRole) {
                         UmlAssociation assoc = end.getAssociation();
-                        Iterator it2 = assoc.getConnection().iterator();
-                        while (it2.hasNext()) {
-                            AssociationEnd end2 = (AssociationEnd) it2.next();
+                        for (AssociationEnd end2 : assoc.getConnection()) {
                             Classifier classifier = end2.getParticipant();
                             if (classifier != role
                                     && classifier instanceof ClassifierRole) {
@@ -176,14 +171,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         ClassifierRole to = (ClassifierRole) ato;
 
         try {
-            Iterator it = Model.getFacade().getAssociationEnds(from).iterator();
-            while (it.hasNext()) {
-                AssociationEnd end = (AssociationEnd) it.next();
+            Collection<AssociationEnd> ends = 
+                Model.getFacade().getAssociationEnds(from);
+            for (AssociationEnd end : ends) {
                 if (end instanceof AssociationEndRole) {
                     UmlAssociation assoc = end.getAssociation();
-                    Iterator it2 = assoc.getConnection().iterator();
-                    while (it2.hasNext()) {
-                        AssociationEnd end2 = (AssociationEnd) it2.next();
+                    for (AssociationEnd end2 : assoc.getConnection()) {
                         Classifier classifier = end2.getParticipant();
                         if (classifier == to) {
                             return assoc;
@@ -290,17 +283,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         listToChange.addAll(predecessors);
         listToChange.add(mes);
         Interaction inter = mes.getInteraction();
-        Collection<Message> allMessages = inter.getMessage();
-        Iterator<Message> it = allMessages.iterator();
-        while (it.hasNext()) {
-            Message mes2 = it.next();
+        for (Message mes2 : inter.getMessage()) {
             if (mes2.getPredecessor().contains(mes)) {
                 listToChange.add(mes2);
             }
         }
-        it = listToChange.iterator();
-        while (it.hasNext()) {
-            Message mes2 = it.next();
+        for (Message mes2 : listToChange) {
             mes2.setActivator(activator);
         }
 
@@ -340,24 +328,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             throw new IllegalArgumentException("In addBase: either the role "
                     + "or the base is null");
         }
-        // wellformednessrule: if the role does not have a name, the role shall
-        // be the only one with the particular base
-        if (modelImpl.getFacade().getName(role) == null
-                || modelImpl.getFacade().getName(role).equals("")) {
-
-            Collaboration collab = (Collaboration) role.getNamespace();
-            ModelManagementHelper mmHelper = 
-                modelImpl.getModelManagementHelper();
-            Collection roles = mmHelper.getAllModelElementsOfKind(collab,
-                    ClassifierRole.class);
-            Iterator it = roles.iterator();
-            while (it.hasNext()) {
-                if (((ClassifierRole) it.next()).getBase().contains(base)) {
-                    throw new IllegalArgumentException("In addBase: base is "
-                            + "already part of " + "another role and "
-                            + "role does not have " + "a name");
-                }
-            }
+        // TODO: This check probably belongs in a critic instead of here since
+        // the rule can be violated later if the names are cleared
+        if (!isNamedOrUnique(role, base)) {
+            throw new IllegalArgumentException("In addBase: base is "
+                    + "already part of " + "another role and "
+                    + "role does not have " + "a name");
         }
         role.getBase().add(base);
         if (modelImpl.getFacade().getBases(role).size() == 1) {
@@ -366,27 +342,82 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             role.getAvailableFeature().clear();
             role.getAvailableFeature().addAll(base.getFeature());
         } else {
-            Iterator it = base.getOwnedElement().iterator();
-            while (it.hasNext()) {
-                ModelElement elem = (ModelElement) it.next();
+            for (ModelElement elem : base.getOwnedElement()) {
                 if (!role.getAvailableContents().contains(elem)) {
-                    // TODO: I'm not sure what this is supposed to be doing,
-                    // but it looks suspicious - tfm - 20070806
-                    role.getAvailableContents().add((ModelElement) it.next());
+                    role.getAvailableContents().add(elem);
                 }
             }
-            it = base.getFeature().iterator();
-            while (it.hasNext()) {
-                Feature feature = (Feature) it.next();
+            for (Feature feature : base.getFeature()) {
                 if (!role.getAvailableFeature().contains(feature)) {
-                    // TODO: I'm not sure what this is supposed to be doing,
-                    // but it looks suspicious - tfm - 20070806
-                    role.getAvailableFeature().add((Feature) it.next());
+                    role.getAvailableFeature().add(feature);
                 }
             }
         }
     }
 
+    // Collaboration UML 1.4 section WFR 2.10.3.4 #3
+    //    [3] If a ClassifierRole or an AssociationRole does not have a name, 
+    //    then it should be the only one with a particular base.
+    
+    //    self.allContents->forAll ( p |
+    //      (p.oclIsKindOf (ClassifierRole) implies
+    //        p.name = '' implies
+    //          self.allContents->forAll ( q |
+    //            q.oclIsKindOf(ClassifierRole) implies
+    //              (p.oclAsType(ClassifierRole).base =
+    //                q.oclAsType(ClassifierRole).base implies
+    //                  p = q) ) )
+    //    and
+    //    [see below for AssociationRole]
+    //    )
+    private boolean isNamedOrUnique(ClassifierRole role, Classifier base) {
+        Collection<ClassifierRole> roles =
+                modelImpl.getUmlPackage().getCollaborations()
+                        .getAClassifierRoleBase().getClassifierRole(base);
+        if (roles.isEmpty()) {
+            return true;
+        }
+        if (role.getName() == null || role.getName().equals("")) {
+            return false;
+        }
+        for (ClassifierRole cr : roles) {
+            if (cr.getName() == null | cr.getName().equals("")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Collaboration WFR UML 1.4 section 2.10.3.4 #3
+    //    [3] If a ClassifierRole or an AssociationRole does not have a name, 
+    //    then it should be the only one with a particular base.
+    // [...]
+    //    and
+    //      (p.oclIsKindOf (AssociationRole) implies
+    //        p.name = '' implies
+    //          self.allContents->forAll ( q |
+    //            q.oclIsKindOf(AssociationRole) implies
+    //              (p.oclAsType(AssociationRole).base =
+    //                q.oclAsType(AssociationRole).base implies
+    //                  p = q) ) )
+    //    )
+    private boolean isNamedOrUnique(AssociationRole role, UmlAssociation base) {
+        Collection<AssociationRole> roles =
+                modelImpl.getUmlPackage().getCollaborations()
+                        .getABaseAssociationRole().getAssociationRole(base);
+        if (roles.isEmpty()) {
+            return true;
+        }
+        if (role.getName() == null || role.getName().equals("")) {
+            return false;
+        }
+        for (AssociationRole ar : roles) {
+            if (ar.getName() == null | ar.getName().equals("")) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public void setBases(Object role, Collection bases) {
         if (role == null || bases == null) {
@@ -403,10 +434,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             try {
                 List<Feature> returnList = new ArrayList<Feature>();
                 ClassifierRole role = (ClassifierRole) arole;
-                Iterator it = 
-                    Model.getFacade().getGeneralizations(arole).iterator();
-                while (it.hasNext()) {
-                    Object genElem = it.next();
+                for (ModelElement genElem 
+                        : CoreHelperMDRImpl.getAllParents(role)) {
                     if (genElem instanceof ClassifierRole) {
                         returnList.addAll(allAvailableFeatures(genElem));
                     }
@@ -429,18 +458,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             if (arole instanceof ClassifierRole) {
                 List returnList = new ArrayList();
                 ClassifierRole role = (ClassifierRole) arole;
-                Iterator it = 
-                    Model.getFacade().getGeneralizations(role).iterator();
-                while (it.hasNext()) {
-                    Object genElem = it.next();
+                for (ModelElement genElem 
+                        : CoreHelperMDRImpl.getAllParents(role)) {
                     if (genElem instanceof ClassifierRole) {
                         returnList.addAll(allAvailableContents(genElem));
                     }
                 }
-                it = role.getBase().iterator();
-                while (it.hasNext()) {
-                    returnList.addAll(
-                            ((Classifier) it.next()).getOwnedElement());
+                for (Classifier baseClassifier : role.getBase()) {
+                    returnList.addAll(baseClassifier.getOwnedElement());
                 }
                 return returnList;
             }
@@ -478,14 +503,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * @return Collection all possible bases
      */
     private Collection getAllPossibleBases(AssociationRole role) {
-        Set ret = new HashSet();
+        Set<UmlAssociation> ret = new HashSet<UmlAssociation>();
         if (role == null || role.getNamespace() == null) {
             return ret;
         }
 
         // find the bases of the connected classifierroles so that we can see
         // what associations are between them. If there are bases then the
-        // assocations between those bases form the possible bases. Otherwise
+        // associations between those bases form the possible bases. Otherwise
         // the bases are formed by all associations in the namespace of the
         // collaboration
         Iterator it = role.getConnection().iterator();
@@ -516,33 +541,37 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 }
             }
         }
-        // if there is no name, the base may not be base for another
-        // associationrole
-        if (role.getName() == null || role.getName().equals("")) {
-            List listToRemove = new ArrayList();
-            it = ret.iterator();
-            while (it.hasNext()) {
-                UmlAssociation assoc = (UmlAssociation) it.next();
-                Collection associationRoles = Model.getFacade().
-                    getAssociationRoles(assoc);
-                if (!associationRoles.isEmpty()) {
-                    Iterator it2 = associationRoles.iterator();
-                    while (it2.hasNext()) {
-                        AssociationRole role2 = (AssociationRole) it2.next();
-                        if (role2.getNamespace() == role.getNamespace()) {
-                            listToRemove.add(assoc);
-                        }
+        // An Association can only have a single unnamed ClassifierRole, so
+        Collection<UmlAssociation> listToRemove = new ArrayList<UmlAssociation>();
+        for (UmlAssociation association : ret) {
+            Collection<AssociationRole> associationRoles =
+                    modelImpl.getUmlPackage().getCollaborations()
+                            .getABaseAssociationRole().getAssociationRole(
+                                    association);
+            if (associationRoles.isEmpty()) {
+                continue;
+            }
+            // if we are unnamed eliminate all classifiers which are already 
+            // the base of some role
+            if (role.getName() == null || role.getName().equals("")) {
+                listToRemove.add(association);
+            } else {
+                // eliminate Classifiers which already have an unnamed role
+                for (AssociationRole ar : associationRoles) {
+                    if (ar.getName() == null || ar.getName().equals("")) {
+                        listToRemove.add(association);
                     }
                 }
             }
-            ret.removeAll(listToRemove);
         }
+        ret.removeAll(listToRemove);
+
         return ret;
     }
 
     /**
      * Returns all possible bases for some classifierrole taking into account
-     * the wellformednessrules as defined in section 2.10.3 of the UML 1.3 spec.
+     * the wellformednessrules as defined in section 2.10.3 of the UML 1.4 spec.
      * <p>
      * 
      * @param role
@@ -553,48 +582,56 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         if (role == null || modelImpl.getFacade().getNamespace(role) == null) {
             return Collections.EMPTY_SET;
         }
-        Collaboration coll = (Collaboration) role.getNamespace();
-        Namespace ns = coll.getNamespace();
+        Collaboration collaboration = (Collaboration) role.getNamespace();
+        Namespace ns = collaboration.getNamespace();
         ModelManagementHelper mmh = modelImpl.getModelManagementHelper();
-        Collection returnList = mmh.getAllModelElementsOfKind(ns,
+        Collection<Classifier> returnList = mmh.getAllModelElementsOfKind(ns,
                 Classifier.class);
+        // WFR 2.10.3.3 #4
         returnList.removeAll(mmh.getAllModelElementsOfKind(ns,
                 ClassifierRole.class));
 
-        if (modelImpl.getFacade().getName(role) == null
-                || modelImpl.getFacade().getName(role).equals("")) {
-
-            List listToRemove = new ArrayList();
-            Iterator it = returnList.iterator();
-            while (it.hasNext()) {
-                Classifier clazz = (Classifier) it.next();
-                Collection classifierRoles = modelImpl.getUmlPackage().
-                    getCollaborations().getAClassifierRoleBase().
-                        getClassifierRole(clazz);
-                if (!classifierRoles.isEmpty()) {
-                    Iterator it2 = classifierRoles.iterator();
-                    while (it2.hasNext()) {
-                        ClassifierRole role2 = (ClassifierRole) it2.next();
-                        if (role2.getNamespace() == coll) {
-                            listToRemove.add(clazz);
-                        }
+        // A Classifier can only have a single unnamed ClassifierRole, so
+        // TODO: This probably belongs in a critic instead of here
+        Collection<Classifier> listToRemove = new ArrayList<Classifier>();
+        for (Classifier classifier : returnList) {
+            Collection<ClassifierRole> classifierRoles =
+                    modelImpl.getUmlPackage().getCollaborations()
+                            .getAClassifierRoleBase().getClassifierRole(
+                                    classifier);
+            if (classifierRoles.isEmpty()) {
+                continue;
+            }
+            // if we are unnamed eliminate all classifiers which are already 
+            // the base of some role
+            if (role.getName() == null || role.getName().equals("")) {
+                listToRemove.add(classifier);
+            } else {
+                // eliminate Classifiers which already have an unnamed role
+                for (ClassifierRole cr : classifierRoles) {
+                    if (cr.getName() == null || cr.getName().equals("")) {
+                        listToRemove.add(classifier);
                     }
                 }
             }
-            returnList.removeAll(listToRemove);
         }
+        returnList.removeAll(listToRemove);
 
         /* We need to verify that ns is a Package,
          * if not - find its parent package! 
          * Otherwise this causes an exception when creating 
          * a sequence diagram for a ClassifierRole.*/
-        if (!modelImpl.getFacade().isAPackage(ns)) {
-            while (modelImpl.getFacade().isANamespace(ns)) {
+        if (!(ns instanceof UmlPackage)) {
+            while (ns != null) {
                 ns = ns.getNamespace();
-                if (modelImpl.getFacade().isAPackage(ns)) break;
+                if (ns instanceof UmlPackage) {
+                    break;
+                }
             }
         }
         // now get all classifiers imported from other packages
+        // TODO: This should probably happen automatically in 
+        // getAllModelElementsOfKind() - tfm
         if (modelImpl.getFacade().isAPackage(ns)) {
             returnList.addAll(getAllImportedClassifiers(ns));
         }
@@ -618,7 +655,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     private Collection<Classifier> filterClassifiers(Collection in) {
         Collection<Classifier> out = new ArrayList<Classifier>();
         for (Object o : in) {
-            if (o instanceof Classifier) 
+            if (o instanceof Classifier && !(o instanceof ClassifierRole)) 
                 out.add((Classifier) o);
         }
         return out;
@@ -806,9 +843,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
     public void addSuccessor(Object handle, Object mess) {
         if (handle instanceof Message && mess instanceof Message) {
-            modelImpl.getUmlPackage().getCollaborations().
-                getAPredecessorSuccessor().add((Message) handle,
-                            (Message) mess);
+            ((Message) mess).getPredecessor().add((Message) handle);
             return;
         }
 
@@ -857,15 +892,13 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 Model.getFacade().getSuccessors(handle);
             if (!currentMessages.isEmpty()) {
                 Collection successors = new ArrayList(currentMessages);
-                Iterator toRemove = successors.iterator();
-                while (toRemove.hasNext()) {
-                    removeSuccessor(handle, toRemove.next());
+                for (Object msg : successors) {
+                    removeSuccessor(handle, msg);
                 }
             }
-            Iterator toAdd = messages.iterator();
-            while (toAdd.hasNext())
-                addSuccessor(handle, toAdd.next());
-    
+            for (Object msg : messages) {
+                addSuccessor(handle, msg);
+            }
             return;
         }
 
@@ -929,10 +962,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         try {
             if (collab instanceof Collaboration
                     && interaction instanceof Interaction) {
-                modelImpl.getUmlPackage().getCollaborations()
-                        .getAContextInteraction().remove(
-                                (Collaboration) collab,
-                                (Interaction) interaction);
+                ((Collaboration) collab).getInteraction().remove(interaction);
                 return;
             }
         } catch (InvalidObjectException e) {
