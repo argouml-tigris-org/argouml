@@ -214,4 +214,31 @@ public class TestCollaborationsHelper extends TestCase {
         
         Model.getUmlFactory().delete(model);
     }
+    
+    /**
+     * Test methods for Interactions.
+     */
+    public void testInteractions() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object collab = 
+            Model.getCollaborationsFactory().buildCollaboration(model);
+        Object interaction = Model.getCollaborationsFactory()
+                .createInteraction();
+        Model.getCollaborationsHelper().setContext(interaction, collab);
+
+        Model.getCollaborationsFactory().buildInteraction(collab);
+        assertEquals(2, Model.getFacade().getInteractions(collab).size());
+        assertTrue(Model.getFacade().getInteractions(collab).contains(
+                interaction));
+        
+        Object msg1 = Model.getCollaborationsFactory().createMessage();
+        assertNotNull(msg1);
+        Model.getCollaborationsHelper().addMessage(interaction, msg1);
+        assertTrue(Model.getFacade().getMessages(interaction).contains(msg1));
+        
+        Model.getCollaborationsHelper().removeInteraction(collab,
+                interaction);
+        assertEquals(1, Model.getFacade().getInteractions(collab).size());
+
+    }
 }
