@@ -37,6 +37,8 @@ goto EOF
 :endfail
 echo.
 echo Build failed
+:: Wait for keypress so that error messages can be read.
+:: (Helps if user double clicked this .bat file)
 pause
 endlocal
 
