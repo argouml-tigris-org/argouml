@@ -109,6 +109,18 @@ class PGMLStackParser
             "org.argouml.uml.diagram.state.ui.FigSimpleState");
         addTranslation("org.argouml.uml.diagram.ui.FigCommentPort",
             "org.argouml.uml.diagram.ui.FigEdgePort");
+        addTranslation("org.tigris.gef.presentation.FigText",
+                "org.argouml.uml.diagram.ui.ArgoFigText");
+        addTranslation("org.tigris.gef.presentation.FigLine",
+                "org.argouml.gefext.ArgoFigLine");
+        addTranslation("org.tigris.gef.presentation.FigPoly",
+                "org.argouml.gefext.ArgoFigPoly");
+        addTranslation("org.tigris.gef.presentation.FigCircle",
+                "org.argouml.gefext.ArgoFigCircle");
+        addTranslation("org.tigris.gef.presentation.FigRect",
+                "org.argouml.gefext.ArgoFigRect");
+        addTranslation("org.tigris.gef.presentation.FigRRect",
+                "org.argouml.gefext.ArgoFigRRect");
         // Convert class reference to a string name when the class is removed
         addTranslation(
                 FigMNodeInstance.class.getName(),
@@ -128,7 +140,6 @@ class PGMLStackParser
         throws SAXException {
 
         String href = attributes.getValue("href");
-        Object elementInstance = null;
         Object owner = null;
         
         if (href != null) {
@@ -154,118 +165,6 @@ class PGMLStackParser
             return new PrivateHandler(this, (Container) container);
         }
         
-        if (qname.equals("text")) {
-            if (elementInstance == null) {
-                elementInstance = new ArgoFigText(0, 0, 100, 100, true);
-            }
-            if (elementInstance instanceof FigText) {
-                FigText text = (FigText) elementInstance;
-                setAttrs(text, attributes);
-                if (container instanceof Container) {
-                    ((Container) container).addObject(text);
-                }
-                String font = attributes.getValue("font");
-                if (font != null && !font.equals("")) {
-                    text.setFontFamily(font);
-                }
-
-                String textsize = attributes.getValue("textsize");
-                if (textsize != null && !textsize.equals("")) {
-                    int textsizeInt = Integer.parseInt(textsize);
-                    text.setFontSize(textsizeInt);
-                }
-
-                String justification = attributes.getValue("justification");
-                if (justification != null && !justification.equals("")) {
-                    text.setJustificationByName(justification);
-                }
-                String italic = attributes.getValue("italic");
-                if (italic != null && !italic.equals("")) {
-                    text.setItalic(Boolean.valueOf(italic));
-                }
-                String bold = attributes.getValue("bold");
-                if (bold != null && !bold.equals("")) {
-                    text.setBold(Boolean.valueOf(bold));
-                }
-
-                String textColor = attributes.getValue("textcolor");
-                if (textColor != null && !textColor.equals("")) {
-                    text.setTextColor(
-                            ColorFactory.getColor(textColor));
-                }
-
-                return new FigTextHandler(this, text);
-            }
-        }
-        
-        if (qname.equals("path") || qname.equals("line")) {
-            if (elementInstance == null) {
-                elementInstance = new ArgoFigPoly();
-            }
-            if (elementInstance instanceof FigLine) {
-                setAttrs((Fig) elementInstance, attributes);
-                if (container instanceof Container) {
-                    ((Container) container).addObject(elementInstance);
-                }
-                return new FigLineHandler(this, (FigLine) elementInstance);
-            }
-            if (elementInstance instanceof FigPoly) {
-                setAttrs((Fig) elementInstance, attributes);
-                if (container instanceof Container) {
-                    ((Container) container).addObject(elementInstance);
-                }
-                return new FigPolyHandler(this, (FigPoly) elementInstance);
-            }
-        }
-
-        if (qname.equals("rectangle")) {
-            String cornerRadius = attributes.getValue("rounding");
-            int rInt = -1;
-            if (cornerRadius != null && cornerRadius.length() > 0) {
-                rInt = Integer.parseInt(cornerRadius);
-            }
-            if (elementInstance == null) {
-                if (rInt >= 0) {
-                    elementInstance = new ArgoFigRRect(0, 0, 80, 80);
-                } else {
-                    elementInstance = new ArgoFigRect(0, 0, 80, 80);
-                }
-            }
-            if (elementInstance instanceof FigRRect && rInt >= 0) {
-                ((FigRRect) elementInstance).setCornerRadius(rInt);
-            }
-            if (elementInstance instanceof Fig) {
-                setAttrs((Fig) elementInstance, attributes);
-                if (container instanceof Container) {
-                    ((Container) container).addObject(elementInstance);
-                }
-                return null;
-            }
-        }
-
-        if (qname.equals("ellipse")) {
-            if (elementInstance == null) {
-                elementInstance = new ArgoFigCircle(0, 0, 50, 50);
-            }
-            if (elementInstance instanceof FigCircle) {
-                FigCircle f = (FigCircle) elementInstance;
-                setAttrs(f, attributes);
-                String rx = attributes.getValue("rx");
-                String ry = attributes.getValue("ry");
-                int rxInt =
-                    (rx == null || rx.equals("")) ? 10 : Integer.parseInt(rx);
-                int ryInt =
-                    (ry == null || ry.equals("")) ? 10 : Integer.parseInt(ry);
-                f.setBounds(f.getX() - rxInt, 
-                        f.getY() - ryInt, rxInt * 2, ryInt * 2);
-                if (container instanceof Container) {
-                    ((Container) container).addObject(elementInstance);
-                }
-
-                return null;
-            }
-        }
-
         DefaultHandler handler =
             super.getHandler(stack, container, uri, localname, qname,
                     attributes);
