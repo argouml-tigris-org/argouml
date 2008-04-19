@@ -203,8 +203,10 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     public CompositeState buildCompositeStateOnStateMachine(
             Object statemachine) {
         if (statemachine instanceof StateMachine) {
+            StateMachine sm = (StateMachine) statemachine;
             CompositeState state = createCompositeState();
-            state.setStateMachine((StateMachine) statemachine);
+            state.setStateMachine(sm);
+            assert state.equals(sm.getTop());
             state.setName("top");
             return state;
         }
@@ -226,8 +228,8 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 BehavioralFeature feature = (BehavioralFeature) context;
                 machine.setNamespace(feature.getOwner());
             }
-            Object top = buildCompositeStateOnStateMachine(machine);
-            machine.setTop((State) top);
+            State top = buildCompositeStateOnStateMachine(machine);
+            machine.setTop(top);
             return machine;
         }
         throw new IllegalArgumentException("In buildStateMachine: "
@@ -568,16 +570,17 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof StateMachine)) {
             throw new IllegalArgumentException();
         }
-
+        StateMachine stateMachine = (StateMachine) elem;
+        
         // This code is probably unnecessary since the top is
         // associated by composition
-        State top = (State) Model.getFacade().getTop(elem);
+        State top = stateMachine.getTop();
         if (top != null) {
             modelImpl.getUmlFactory().delete(top);
         }
         
         modelImpl.getUmlHelper().deleteCollection(
-                ((StateMachine) elem).getSubmachineState());
+                stateMachine.getSubmachineState());
     }
 
     /**
