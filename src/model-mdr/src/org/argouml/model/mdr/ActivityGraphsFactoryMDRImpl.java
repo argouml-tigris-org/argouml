@@ -120,9 +120,9 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public SubactivityState createSubactivityState() {
-        SubactivityState mySubactivityState = modelImpl.getUmlPackage().
-            getActivityGraphs().getSubactivityState().
-                createSubactivityState();
+        SubactivityState mySubactivityState =
+                modelImpl.getUmlPackage().getActivityGraphs()
+                        .getSubactivityState().createSubactivityState();
         super.initialize(mySubactivityState);
         return mySubactivityState;
     }
@@ -138,9 +138,10 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 myActivityGraph.setNamespace(((BehavioralFeature) theContext).
                         getOwner());
             }
-            Object top = modelImpl.getStateMachinesFactory().
-                buildCompositeStateOnStateMachine(myActivityGraph);
-            myActivityGraph.setTop((State) top);
+            State top =
+                    (CompositeState) modelImpl.getStateMachinesFactory()
+                            .buildCompositeStateOnStateMachine(myActivityGraph);
+            myActivityGraph.setTop(top);
             return myActivityGraph;
         }
         throw new IllegalArgumentException(
@@ -200,6 +201,8 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof ActivityGraph)) {
             throw new IllegalArgumentException();
         }
+        // Partitions are composite elements and will get deleted implicitly
+        // Partition contents don't need to be deleted or checked
     }
 
     /**
