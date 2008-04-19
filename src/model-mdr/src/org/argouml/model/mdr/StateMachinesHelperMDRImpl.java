@@ -306,9 +306,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public void addSubvertex(Object handle, Object subvertex) {
         if (handle instanceof CompositeState
                 && subvertex instanceof StateVertex) {
-            modelImpl.getUmlPackage().getStateMachines().
-                    getAContainerSubvertex().add((CompositeState) handle,
-                            (StateVertex) subvertex);
+            ((StateVertex) subvertex).setContainer((CompositeState) handle);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
@@ -516,16 +514,8 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
 
     public void setSubvertices(Object handle, Collection subvertices) {
         if (handle instanceof CompositeState) {
-            Collection vertices = Model.getFacade().getSubvertices(handle);
-            if (!vertices.isEmpty()) {
-                Collection verts = new ArrayList(vertices);
-                for (Object vertex : verts) {
-                    removeSubvertex(handle, vertex);
-                }
-            }
-            for (Object vertex : subvertices) {
-                addSubvertex(handle, vertex);
-            }
+            ((CompositeState) handle).getSubvertex().clear();
+            ((CompositeState) handle).getSubvertex().addAll(subvertices);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
@@ -650,9 +640,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
 
     public void addDeferrableEvent(Object state, Object deferrableEvent) {
         if (state instanceof State && deferrableEvent instanceof Event) {
-            modelImpl.getUmlPackage().getStateMachines()
-                    .getAStateDeferrableEvent().add((State) state,
-                            (Event) deferrableEvent);
+            ((State) state).getDeferrableEvent().add((Event) deferrableEvent);
             return;
         }
         throw new IllegalArgumentException("handle: " + state + " or evt: "
@@ -663,9 +651,7 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public void removeDeferrableEvent(Object state, Object deferrableEvent) {
         try {
             if (state instanceof State && deferrableEvent instanceof Event) {
-                modelImpl.getUmlPackage().getStateMachines()
-                        .getAStateDeferrableEvent().remove((State) state,
-                                (Event) deferrableEvent);
+                ((State) state).getDeferrableEvent().remove(deferrableEvent);
                 return;
             }
         } catch (InvalidObjectException e) {
