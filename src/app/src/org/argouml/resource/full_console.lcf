@@ -8,7 +8,7 @@ log4j.category.org.argouml=DEBUG
 log4j.category.org.argouml.application.security=INFO
 log4j.category.org.argouml.cognitive=WARN
 log4j.category.org.argouml.uml.cognitive=WARN
-log4j.category.org.argouml.model.mdr=WARN
+log4j.category.org.argouml.model.mdr=INFO
 #
 log4j.appender.FULL=org.apache.log4j.ConsoleAppender
 log4j.appender.FULL.layout=org.apache.log4j.PatternLayout
