@@ -186,10 +186,9 @@ public class TestCoreHelper extends TestCase {
                 ch.getFirstSharedNamespace(a, c));
         assertEquals("Got wrong namespace for first shared", a, 
                 ch.getFirstSharedNamespace(b, c));
-        // The following test fails with the current implementation
-//        assertNull("getFirstSharedNamespace didn't return null"
-//                + " when none shared",
-//                ch.getFirstSharedNamespace(g, a));
+        assertNull("getFirstSharedNamespace didn't return null"
+                + " when none shared", 
+                ch.getFirstSharedNamespace(g, a));
         
         // Try changing namespace of element and make sure results track
         assertEquals("Got wrong namespace for first shared", c, 
