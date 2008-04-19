@@ -70,10 +70,10 @@ Building this requires:
     </path>
                 
     <path id="compile.classpath">
-      <fileset dir="../infra/build/">
+      <fileset dir="../argouml-core-infra/build/">
         <include name="*.jar"/>
       </fileset>
-      <fileset dir="../model/build/">
+      <fileset dir="../argouml-core-model/build/">
         <include name="*.jar"/>
       </fileset>
       <path refid="mdr.compile.classpath"/>

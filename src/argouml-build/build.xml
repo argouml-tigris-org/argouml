@@ -63,13 +63,13 @@ subdir/build.xml.
 Paths are resolved by specifying every jar in subdir/build to avoid
 maintaining name changes of jars throughout the build.xml-files.
 
-This files is not used by the Eclipse setup. When building in Eclipse,
+This file is not used by the Eclipse setup. When building in Eclipse,
 the project dependencies are used and Eclipse will take care of the
 order. The subdir/build.xml files are used by the Eclipse setup.
 
   -->
 
-<project basedir="." default="package" name="argouml">
+<project basedir=".." default="package" name="argouml">
 
   <!-- =================================================================== -->
   <!-- Global initialization                                               -->
@@ -146,7 +146,8 @@ Property files to be searched:
       <format pattern="yyyy" property="year"/>
     </tstamp>
 
-    <property name="local.build.properties" value="build.properties"/>
+    <property name="local.build.properties" 
+              value="argouml-build/build.properties"/>
     <property name="user.build.properties" 
               value="${user.home}/argouml.build.properties"/>
     <property file="${local.build.properties}"/>
@@ -154,9 +155,9 @@ Property files to be searched:
 
     <!-- we really need an absolute path for argo.root.dir -->
     <!-- if it is set in a property file before now, it must be absolute -->
-    <property name="argo.root.dir" value="${basedir}/.." />
+    <property name="argo.root.dir" value="${basedir}" />
     <property file="${override.build.properties}"/>
-    <property file="default.properties"/>
+    <property file="argouml-build/default.properties"/>
 
     <property name="tests.reports" value="${argo.build.dir}/tests"/>
 
@@ -165,7 +166,7 @@ Property files to be searched:
     </path>
 
     <path id="run.classpath">
-      <fileset dir="../build/">
+      <fileset dir="build/">
         <include name="*.jar"/>
       </fileset>
     </path>
@@ -237,34 +238,34 @@ Property files to be searched:
           description="Prepare all jar files, both built and just delivered.">
 
     <!-- Build the subdirs in order. -->
-    <ant dir="infra" inheritAll="false"           target="jar"/>
-    <ant dir="model" inheritAll="false"           target="jar"/>
-    <ant dir="model-mdr" inheritAll="false"       target="jar"/>
+    <ant dir="argouml-core-infra" inheritAll="false"           target="jar"/>
+    <ant dir="argouml-core-model" inheritAll="false"           target="jar"/>
+    <ant dir="argouml-core-model-mdr" inheritAll="false"       target="jar"/>
 <!--    <ant dir="model-euml" inheritAll="false"      target="jar"/> -->
-    <ant dir="app" inheritAll="false"             target="jar"/>
+    <ant dir="argouml-app" inheritAll="false"                  target="jar"/>
 
     <!-- Copy everything to the build directory -->
     <mkdir dir="${argo.build.dir}"/>
 
     <copy todir="${argo.build.dir}">
-      <fileset dir="infra/build">
+      <fileset dir="argouml-core-infra/build">
         <include name="*"/>
       </fileset>
-      <fileset dir="model/build">
+      <fileset dir="argouml-core-model/build">
         <include name="*"/>
       </fileset>
-      <fileset dir="model-mdr/build">
+      <fileset dir="argouml-core-model-mdr/build">
         <include name="*"/>
       </fileset>
       <!-- model-euml Not currently included -->
-      <fileset dir="app/build">
+      <fileset dir="argouml-app/build">
         <include name="*"/>
       </fileset>
     </copy>
 
     <!-- The argouml.jar is copied again and again since it is modified below -->
     <copy todir="${argo.build.dir}" overwrite="on">
-      <fileset dir="app/build">
+      <fileset dir="argouml-app/build">
         <include name="argouml.jar"/>
       </fileset>
     </copy>
@@ -303,19 +304,19 @@ Property files to be searched:
     <!-- Build the subdirs in order. -->
 
     <!-- infra doesn't have tests. -->
-    <ant dir="infra" inheritAll="false"           target="jar"/>
+    <ant dir="argouml-core-infra" inheritAll="false"        target="jar"/>
 
     <!-- model doesn't have tests. -->
-    <ant dir="model" inheritAll="false"           target="jar"/>
+    <ant dir="argouml-core-model" inheritAll="false"        target="jar"/>
 
-    <ant dir="model-mdr" inheritAll="false"       target="tests"/>
+    <ant dir="argouml-core-model-mdr" inheritAll="false"    target="tests"/>
 
 <!--    <ant dir="model-euml" inheritAll="false"      target="tests"/> -->
 
 
-    <ant dir="model-mdr" inheritAll="false"       target="jar"/>
+    <ant dir="argouml-core-model-mdr" inheritAll="false"    target="jar"/>
 
-    <ant dir="app" inheritAll="false"             target="tests"/>
+    <ant dir="argouml-app" inheritAll="false"               target="tests"/>
 
     <ant target="tests-reports"/>
   </target>  
@@ -343,11 +344,11 @@ Property files to be searched:
     <delete dir="${argo.build.dir}"/>
 
     <!-- Build the subdirs in opposite order. -->
-    <ant dir="app" inheritAll="false"             target="clean"/>
-    <ant dir="model-euml" inheritAll="false"      target="clean"/>
-    <ant dir="model-mdr" inheritAll="false"       target="clean"/>
-    <ant dir="model" inheritAll="false"           target="clean"/>
-    <ant dir="infra" inheritAll="false"           target="clean"/>
+    <ant dir="argouml-app" inheritAll="false"              target="clean"/>
+    <ant dir="argouml-core-model-euml" inheritAll="false"  target="clean"/>
+    <ant dir="argouml-core-model-mdr" inheritAll="false"   target="clean"/>
+    <ant dir="argouml-core-model" inheritAll="false"       target="clean"/>
+    <ant dir="argouml-core-infra" inheritAll="false"       target="clean"/>
 
   </target>
 
@@ -381,9 +382,9 @@ Property files to be searched:
              use="${javadoc.use}"
              windowtitle="ArgoUML Javadoc for internal use">
       <sourcepath>
-        <pathelement location="app/src"/>
-        <pathelement location="model/src"/>
-        <pathelement location="model-mdr/src"/>
+        <pathelement location="argouml-app/src"/>
+        <pathelement location="argouml-core-model/src"/>
+        <pathelement location="argouml-core-model-mdr/src"/>
       </sourcepath>
 
       <classpath>

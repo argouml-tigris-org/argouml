@@ -1,17 +1,11 @@
 @echo off
 
 rem
-rem build.bat always calls the version of ant distributed with ArgoUML
+rem A skeleton script to call the real build script at 
+rem ./argouml-build/build.bat
 rem
 
 setlocal
-set ANT_HOME=..\tools\apache-ant-1.7.0
-
-:: Convert relative path to absolute
-pushd "%ANT_HOME%"
-set ANT_HOME=%CD%
-popd
-
-call "%ANT_HOME%\bin\ant" %1 %2 %3 %4 %5 %6 %7 %8 %9
-
+cd argouml-build
+build.bat %1 %2 %3 %4 %5 %6 %7 %8 %9
 endlocal

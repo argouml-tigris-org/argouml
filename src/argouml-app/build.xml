@@ -57,10 +57,10 @@ Building this requires:
       <fileset dir="lib">
         <include name="*.jar"/>
       </fileset>
-      <fileset dir="../infra/build/">
+      <fileset dir="../argouml-core-infra/build/">
         <include name="*.jar"/>
       </fileset>
-      <fileset dir="../model/build/">
+      <fileset dir="../argouml-core-model/build/">
         <include name="*.jar"/>
       </fileset>
     </path>
@@ -72,10 +72,10 @@ Building this requires:
       <path refid="src.compile.classpath"/>
       <!-- only one of the following will be used at a time -->
       <!-- we put them together because there's little risk of crosstalk -->
-      <fileset dir="../model-mdr/build/">
+      <fileset dir="../argouml-core-model-mdr/build/">
         <include name="*.jar"/>
       </fileset>
-      <fileset dir="../model-euml/build/">
+      <fileset dir="../argouml-core-model-euml/build/">
         <include name="*.jar"/>
       </fileset>
     </path>
@@ -90,7 +90,7 @@ Building this requires:
 
     <path id="tests.run.classpath">
       <path refid="tests.compile.classpath"/>
-      <fileset dir="../model-mdr/build/">
+      <fileset dir="../argouml-core-model-mdr/build/">
         <include name="*.jar"/>
       </fileset>
     </path>
@@ -465,7 +465,7 @@ Building this requires:
            haltonfailure="false"
            maxmemory="48M" printsummary="${junit.printsummary}">
       <sysproperty key="test.model.uml" 
-            value="../model-mdr/src/org/argouml/model/mdr/mof/01-02-15.xml"/>
+            value="../argouml-core-model-mdr/src/org/argouml/model/mdr/mof/01-02-15.xml"/>
       <sysproperty key="argouml.model.implementation" 
             value="${test.model.implementation}"/>
       <sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
