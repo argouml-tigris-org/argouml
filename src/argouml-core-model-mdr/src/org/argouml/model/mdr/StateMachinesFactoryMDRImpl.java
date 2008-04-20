@@ -204,14 +204,12 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             Object statemachine) {
         if (statemachine instanceof StateMachine) {
             StateMachine sm = (StateMachine) statemachine;
-            CompositeState state = createCompositeState();
-            state.setStateMachine(sm);
-            // TODO: This throws an assertion in both sequence diagram
-            // implementation. We need to investigate correctness of this
-            // assertion and/or correctness of sequence diagram code.
-            //assert state.equals(sm.getTop());
-            state.setName("top");
-            return state;
+            CompositeState top = createCompositeState();
+            top.setStateMachine(sm);
+            top.setName("top");
+            sm.setTop(top);
+            assert top.equals(sm.getTop());
+            return top;
         }
         throw new IllegalArgumentException("statemachine");
     }
@@ -232,6 +230,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 machine.setNamespace(feature.getOwner());
             }
             State top = buildCompositeStateOnStateMachine(machine);
+            top.setName("top");
             machine.setTop(top);
             return machine;
         }
