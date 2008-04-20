@@ -76,6 +76,7 @@ import org.omg.uml.behavioralelements.commonbehavior.Signal;
 import org.omg.uml.behavioralelements.commonbehavior.Stimulus;
 import org.omg.uml.behavioralelements.commonbehavior.SubsystemInstance;
 import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
+import org.omg.uml.behavioralelements.commonbehavior.UmlException;
 import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
 import org.omg.uml.behavioralelements.statemachines.CompositeState;
 import org.omg.uml.behavioralelements.statemachines.FinalState;
@@ -111,6 +112,7 @@ import org.omg.uml.foundation.core.Dependency;
 import org.omg.uml.foundation.core.Element;
 import org.omg.uml.foundation.core.ElementResidence;
 import org.omg.uml.foundation.core.Enumeration;
+import org.omg.uml.foundation.core.EnumerationLiteral;
 import org.omg.uml.foundation.core.Feature;
 import org.omg.uml.foundation.core.Flow;
 import org.omg.uml.foundation.core.GeneralizableElement;
@@ -178,8 +180,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * A map of the valid model elements that are valid to be contained 
      * by other model elements.
      */
-    private HashMap<Object, Object[]> validContainmentMap = 
-        new HashMap<Object, Object[]>();
+    private HashMap<Class<?>, Class<?>[]> validContainmentMap = 
+        new HashMap<Class<?>, Class<?>[]>();
 
     /**
      * The instance that we are deleting.
@@ -316,81 +318,77 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     private void buildValidContainmentMap() {
        
         validContainmentMap.clear();
+
+        validContainmentMap.put(ModelElement.class, 
+                new Class<?>[] {
+                    Stereotype.class
+                });
         
         // specifies valid elements for a Model to contain 
-        validContainmentMap.put(metaTypes.getModel(), 
-            new Object[] {
-                metaTypes.getPackage(), metaTypes.getActor(), 
-                metaTypes.getUseCase(), metaTypes.getUMLClass(), 
-                metaTypes.getInterface(), metaTypes.getComponent(), 
-                metaTypes.getComponentInstance(), metaTypes.getNode(), 
-                metaTypes.getNodeInstance(), metaTypes.getStereotype(),
-                metaTypes.getEnumeration(), metaTypes.getDataType(),
-                metaTypes.getException(), metaTypes.getSignal()
+        validContainmentMap.put(org.omg.uml.modelmanagement.Model.class,
+            new Class<?>[] {
+                ComponentInstance.class, NodeInstance.class
             });
 
         // specifies valid elements for a Package to contain
-        validContainmentMap.put(metaTypes.getPackage(), 
-            new Object[] {
-                metaTypes.getPackage(), metaTypes.getActor(), 
-                metaTypes.getUseCase(), metaTypes.getUMLClass(), 
-                metaTypes.getInterface(), metaTypes.getComponent(), 
-                metaTypes.getNode(), metaTypes.getStereotype(),
-                metaTypes.getEnumeration(), metaTypes.getDataType(),
-                metaTypes.getException(), metaTypes.getSignal()
+        validContainmentMap.put(UmlPackage.class, 
+            new Class<?>[] {
+                UmlPackage.class, Actor.class,
+                UseCase.class, UmlClass.class,
+                Interface.class, Component.class,
+                Node.class,
+                Enumeration.class, DataType.class,
+                Exception.class, Signal.class
             });
                 
         // specifies valid elements for a class to contain
-        validContainmentMap.put(metaTypes.getUMLClass(), 
-            new Object[] { 
-                metaTypes.getAttribute(), metaTypes.getOperation(), 
-                metaTypes.getUMLClass(), metaTypes.getReception(), 
-                metaTypes.getStereotype() 
+        validContainmentMap.put(UmlClass.class, 
+            new Class<?>[] { 
+                Attribute.class, Operation.class,
+                UmlClass.class, Reception.class
             });
         
         // specifies valid elements for an Interface to contain
-        validContainmentMap.put(metaTypes.getInterface(), 
-                new Object[] { 
-                    metaTypes.getOperation(), metaTypes.getReception(), 
-                    metaTypes.getStereotype() 
+        validContainmentMap.put(Interface.class, 
+                new Class<?>[] { 
+                    Operation.class, Reception.class
                 });
         
         // specifies valid elements for an Actor to contain
-        validContainmentMap.put(metaTypes.getActor(), 
-            new Object[] { 
-                metaTypes.getReception(), metaTypes.getStereotype() 
+        validContainmentMap.put(Actor.class, 
+            new Class<?>[] { 
+                Reception.class
             });
         
         // specifies valid elements for a Use Case to contain
-        validContainmentMap.put(metaTypes.getUseCase(), 
-            new Object[] { 
-                metaTypes.getExtensionPoint(), metaTypes.getAttribute(), 
-                metaTypes.getOperation(), metaTypes.getReception(), 
-                metaTypes.getStereotype() 
+        validContainmentMap.put(UseCase.class, 
+            new Class<?>[] { 
+                ExtensionPoint.class, Attribute.class, 
+                Operation.class, Reception.class
             });
         
         // specifies valid elements for a Component to contain
-        validContainmentMap.put(metaTypes.getComponent(), 
-            new Object[] { 
-                metaTypes.getReception(), metaTypes.getStereotype() 
+        validContainmentMap.put(Component.class, 
+            new Class<?>[] { 
+                Reception.class
             });
         
         // specifies valid elements for a Node to contain
-        validContainmentMap.put(metaTypes.getNode(), 
-                new Object[] { 
-                    metaTypes.getReception(), metaTypes.getStereotype() 
+        validContainmentMap.put(Node.class, 
+                new Class<?>[] { 
+                    Reception.class
                 });
         
         // specifies valid elements for a Enumeration to contain
-        validContainmentMap.put(metaTypes.getEnumeration(), 
-                new Object[] { 
-                    metaTypes.getEnumerationLiteral(), metaTypes.getOperation() 
+        validContainmentMap.put(Enumeration.class, 
+                new Class<?>[] { 
+                    EnumerationLiteral.class, Operation.class 
                 });
         
         // specifies valid elements for a DataType to contain
-        validContainmentMap.put(metaTypes.getDataType(), 
-                new Object[] { 
-                    metaTypes.getOperation() 
+        validContainmentMap.put(DataType.class, 
+                new Class<?>[] { 
+                    Operation.class 
                 });
     }
         
@@ -633,19 +631,18 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public boolean isContainmentValid(Object metaType, Object container) {
         
         // find the passed in container in validContainmentMap
-        for (Object containerType : validContainmentMap.keySet()) {
+        for (Class<?> containerType : validContainmentMap.keySet()) {
             
-            if (((Class<?>) containerType).isInstance(container))
-            {   // determine if metaType is a valid element for container
-                Object[] validElements = validContainmentMap.get(containerType);
+            if (containerType.isInstance(container)) {
+                // determine if metaType is a valid element for container
+                Class<?>[] validElements = validContainmentMap.get(containerType);
                 
                 for (int eIter = 0; eIter < validElements.length; ++eIter) {
                     
-                    if (metaType == validElements[eIter])
+                    if (metaType == validElements[eIter]) {
                         return true;
+                    }
                 }
-                
-                break;
             }
         }
         
