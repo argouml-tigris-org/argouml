@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -70,7 +72,6 @@ import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.argouml.model.NotImplementedException;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.MutableGraphModel;
 
@@ -364,7 +365,7 @@ public class ExplorerPopup extends JPopupMenu {
      */
     private void initMenuCreateModelElements() {
         List targets = TargetManager.getInstance().getTargets();
-        List<JMenuItem> menuItems = new ArrayList<JMenuItem>();
+        Set<JMenuItem> menuItems = new TreeSet<JMenuItem>();
         if (targets.size() >= 2) {
             // Check to see if all targets are classifiers
             // before adding an option to create an association between
@@ -380,7 +381,7 @@ public class ExplorerPopup extends JPopupMenu {
                 }
             }
             if (classifierRolesOnly) {
-                menuItems.add(new JMenuItem(new ActionCreateAssociationRole(
+                menuItems.add(new OrderedMenuItem(new ActionCreateAssociationRole(
                         Model.getMetaTypes().getAssociationRole(), 
                         targets)));
             } else if (!classifierRoleFound) {
@@ -392,9 +393,10 @@ public class ExplorerPopup extends JPopupMenu {
                     }
                 }
                 if (classifiersOnly) {
-                    menuItems.add(new JMenuItem(new ActionCreateAssociation(
-                        Model.getMetaTypes().getAssociation(), 
-                        targets)));
+                    menuItems.add(new OrderedMenuItem(
+                            new ActionCreateAssociation(
+                                    Model.getMetaTypes().getAssociation(), 
+                                    targets)));
                 }
             }
         }
@@ -437,47 +439,42 @@ public class ExplorerPopup extends JPopupMenu {
             for (int iter = 0; iter < MODEL_ELEMENT_MENUITEMS.length; 
                 iter += 2) {
                 
-                try {
-                    // test if this element can be contained by the target
-                    if (Model.getUmlFactory().isContainmentValid(
-                            MODEL_ELEMENT_MENUITEMS[iter], target))
-                    {
-                        // this element can be contained add a menu item 
-                        // that allows the user to take that action
-                        menuItems.add(new JMenuItem(
-                                new ActionCreateContainedElement(
-                                        MODEL_ELEMENT_MENUITEMS[iter],
-                                        target, 
-                                        (String) 
-                                        MODEL_ELEMENT_MENUITEMS[iter + 1]
-                                )));
-                    }
-                } catch (NotImplementedException e1) {
-                    
+                // test if this element can be contained by the target
+                if (Model.getUmlFactory().isContainmentValid(
+                        MODEL_ELEMENT_MENUITEMS[iter], target)) {
+                    // this element can be contained add a menu item 
+                    // that allows the user to take that action
+                    menuItems.add(new OrderedMenuItem(
+                            new ActionCreateContainedElement(
+                                    MODEL_ELEMENT_MENUITEMS[iter],
+                                    target, 
+                                    (String) 
+                                    MODEL_ELEMENT_MENUITEMS[iter + 1]
+                            )));
                 }
             }    
         }
         
         if (menuItems.size() == 1) {
-            add(menuItems.get(0));
+            add(menuItems.iterator().next());
         } else if (menuItems.size() > 1) {
             JMenu menu =
                 new JMenu(menuLocalize("menu.popup.create-model-element"));
             add(menu);
-            for (Iterator it = menuItems.iterator(); it.hasNext(); ) {
-                menu.add((JMenuItem) it.next());
+            for (JMenuItem item : menuItems) {
+                menu.add(item);
             }
         }
     }
     
     private void addCreateModelElementAction(
-                Collection<JMenuItem> menuItems,
+                Set<JMenuItem> menuItems,
                 Object metaType,
                 String relationshipDescr) {
         List targets = TargetManager.getInstance().getTargets();
         Object source = targets.get(0);
         Object dest = targets.get(1);
-        JMenu subMenu = new JMenu(
+        JMenu subMenu = new OrderedMenu(
                 menuLocalize("menu.popup.create") + " "
                 + Model.getMetaTypes().getName(metaType));
         buildDirectionalCreateMenuItem(
@@ -615,6 +612,60 @@ public class ExplorerPopup extends JPopupMenu {
             return gm.canAddNode(object);
         }
     } /* end class ActionAddExistingRelatedNode */
+    
+    /**
+     * A JMenuItem that will order by display name
+     *
+     * @author Bob Tarling
+     */
+    private class OrderedMenuItem extends JMenuItem implements Comparable {
+        
+        /**
+         * Instantiate OrderedMenuItem
+         * @param action
+         */
+        public OrderedMenuItem(Action action) {
+            super(action);
+        }
+
+        /**
+         * Instantiate OrderedMenuItem
+         * @param name
+         */
+        public OrderedMenuItem(String name) {
+            super(name);
+            setName(name);
+        }
+
+        public int compareTo(Object o) {
+            JMenuItem other = (JMenuItem)o;
+            return toString().compareTo(other.toString());
+        }
+    }
+        
+    /**
+     * A JMenuItem that will order by display name
+     *
+     * @author Bob Tarling
+     */
+    private class OrderedMenu extends JMenu implements Comparable {
+        
+        /**
+         * Instantiate OrderedMenu
+         * @param name
+         */
+        public OrderedMenu(String name) {
+            super(name);
+        }
+
+        public int compareTo(Object o) {
+            JMenuItem other = (JMenuItem)o;
+            return toString().compareTo(other.toString());
+        }
+    }
+        
+    
+    
     
     /**
      * An action to create a relation between 2 model elements.
