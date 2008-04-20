@@ -130,6 +130,9 @@ public class FigClassifierRole extends FigNodeModelElement {
         headFig.setBounds(x, y + offset, ww, headFig.getMinimumHeight());
         lifeLineFig.setBounds(x, y + offset + headFig.getHeight(),
                 ww, h - offset - headFig.getHeight());
+        // TODO: We don't need to create all activations here, just resize
+        // the last one. I think the setBounds method of FigLifeLine (called
+        // above) should manage that and the following line can go.
         createActivations();
         // set bounds of big box
         getBigPort().setBounds(x, y, ww, h);
