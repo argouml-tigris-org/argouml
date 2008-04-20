@@ -27,7 +27,6 @@ package org.argouml.model.mdr;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -172,7 +171,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * A map of valid connections keyed by the connection type. The constructor
      * builds this from the data in the VALID_CONNECTIONS array
      */
-    private Map validConnectionMap = new HashMap();
+    private Map<Class<?>, List<Class<?>[]>> validConnectionMap =
+        new HashMap<Class<?>, List<Class<?>[]>>();
     
     /**
      * A map of the valid model elements that are valid to be contained 
@@ -230,7 +230,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     // TODO: This should be built by reflection from the metamodel - tfm
     //       Update for UML 1.4 metamodel if not replaced by reflection
-    private static final Object[][] VALID_CONNECTIONS = {
+    private static final Class<?>[][] VALID_CONNECTIONS = {
         {Generalization.class,   GeneralizableElement.class, },
         {Dependency.class,       ModelElement.class, },
         // Although Usage & Permission are Dependencies, they need to
@@ -274,32 +274,31 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // A list of valid connections between elements, the
         // connection type first and then the elements to be connected
 
-        Object connection = null;
         for (int i = 0; i < VALID_CONNECTIONS.length; ++i) {
-            connection = VALID_CONNECTIONS[i][0];
-            List validItems = (ArrayList) validConnectionMap.get(connection);
+            final Class<?> connection = VALID_CONNECTIONS[i][0];
+            List<Class<?>[]> validItems = validConnectionMap.get(connection);
             if (validItems == null) {
-                validItems = new ArrayList();
+                validItems = new ArrayList<Class<?>[]>();
                 validConnectionMap.put(connection, validItems);
             }
             if (VALID_CONNECTIONS[i].length < 3) {
                 // If there isn't a 3rd column then this represents a connection
                 // of elements of the same type.
-                Object[] modeElementPair = new Class[2];
+                Class<?>[] modeElementPair = new Class[2];
                 modeElementPair[0] = VALID_CONNECTIONS[i][1];
                 modeElementPair[1] = VALID_CONNECTIONS[i][1];
                 validItems.add(modeElementPair);
             } else {
                 // If there is a 3rd column then this represents a connection
                 // of between 2 different types of element.
-                Object[] modeElementPair = new Class[2];
+                Class<?>[] modeElementPair = new Class[2];
                 modeElementPair[0] = VALID_CONNECTIONS[i][1];
                 modeElementPair[1] = VALID_CONNECTIONS[i][2];
                 validItems.add(modeElementPair);
                 // If the array hasn't been flagged to indicate otherwise
                 // swap elements the elements and add again.
                 if (VALID_CONNECTIONS[i].length < 4) {
-                    Object[] reversedModeElementPair = new Class[2];
+                    Class<?>[] reversedModeElementPair = new Class[2];
                     reversedModeElementPair[0] = VALID_CONNECTIONS[i][2];
                     reversedModeElementPair[1] = VALID_CONNECTIONS[i][1];
                     validItems.add(reversedModeElementPair);
@@ -609,20 +608,18 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     public boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement, boolean checkWFR) {
         // Get the list of valid model item pairs for the given connection type
-        List validItems = (ArrayList) validConnectionMap.get(connectionType);
+        List<Class<?>[]> validItems = validConnectionMap.get(connectionType);
         if (validItems == null) {
             return false;
         }
         // See if there's a pair in this list that match the given
         // model elements
-        Iterator it = validItems.iterator();
-        while (it.hasNext()) {
-            Class[] modeElementPair = (Class[]) it.next();
+        for (Class<?>[] modeElementPair : validItems) {
             if (modeElementPair[0].isInstance(fromElement)
-                && modeElementPair[1].isInstance(toElement)) {
+                    && modeElementPair[1].isInstance(toElement)) {
                 if (checkWFR) {
                     return isConnectionWellformed(
-                            (Class) connectionType,
+                            (Class<?>) connectionType,
                             (ModelElement) fromElement,
                             (ModelElement) toElement);
                 } else {
@@ -638,7 +635,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // find the passed in container in validContainmentMap
         for (Object containerType : validContainmentMap.keySet()) {
             
-            if (((Class) containerType).isInstance(container))
+            if (((Class<?>) containerType).isInstance(container))
             {   // determine if metaType is a valid element for container
                 Object[] validElements = validContainmentMap.get(containerType);
                 
@@ -664,7 +661,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @return true if the connection satisfies the wellformedness rules
      */
     private boolean isConnectionWellformed(
-            Class connectionType,
+            Class<?> connectionType,
             ModelElement fromElement,
             ModelElement toElement) {
         
