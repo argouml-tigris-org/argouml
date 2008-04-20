@@ -313,12 +313,13 @@ Property files to be searched:
 
 <!--    <ant dir="model-euml" inheritAll="false"      target="tests"/> -->
 
-
+<!-- why is this called twice? 
+Can't we use a single target with dependencies? tfm -->
     <ant dir="argouml-core-model-mdr" inheritAll="false"    target="jar"/>
 
     <ant dir="argouml-app" inheritAll="false"               target="tests"/>
 
-    <ant target="tests-reports"/>
+    <ant dir="argouml-build" target="tests-reports"/>
   </target>  
 
   <target name="tests-reports" depends="init">
