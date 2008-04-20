@@ -319,7 +319,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
        
         validContainmentMap.clear();
 
-        validContainmentMap.put(ModelElement.class, 
+        validContainmentMap.put(ModelElement.class,
                 new Class<?>[] {
                     Stereotype.class
                 });
@@ -338,7 +338,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 Interface.class, Component.class,
                 Node.class,
                 Enumeration.class, DataType.class,
-                Exception.class, Signal.class
+                UmlException.class, Signal.class
             });
                 
         // specifies valid elements for a class to contain
@@ -356,22 +356,22 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         
         // specifies valid elements for an Actor to contain
         validContainmentMap.put(Actor.class, 
-            new Class<?>[] { 
-                Reception.class
-            });
+                new Class<?>[] { 
+                    Reception.class
+                });
         
         // specifies valid elements for a Use Case to contain
         validContainmentMap.put(UseCase.class, 
-            new Class<?>[] { 
-                ExtensionPoint.class, Attribute.class, 
-                Operation.class, Reception.class
-            });
+                new Class<?>[] { 
+                    ExtensionPoint.class, Attribute.class, 
+                    Operation.class, Reception.class
+                });
         
         // specifies valid elements for a Component to contain
         validContainmentMap.put(Component.class, 
-            new Class<?>[] { 
-                Reception.class
-            });
+                new Class<?>[] { 
+                    Reception.class
+                });
         
         // specifies valid elements for a Node to contain
         validContainmentMap.put(Node.class, 
@@ -389,6 +389,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         validContainmentMap.put(DataType.class, 
                 new Class<?>[] { 
                     Operation.class 
+                });
+        
+        // specifies valid elements for a Attribute to contain
+        validContainmentMap.put(Operation.class, 
+                new Class<?>[] { 
+                    Parameter.class
                 });
     }
         
