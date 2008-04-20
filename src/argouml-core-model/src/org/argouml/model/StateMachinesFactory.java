@@ -129,6 +129,8 @@ public interface StateMachinesFactory extends Factory {
 
     /**
      * Builds a compositestate as top for some statemachine.<p>
+     * TODO: Confusing name: this method should better
+     * be named buildTopStateOnStateMachine.
      *
      * @param statemachine The given statemachine
      * @return MCompositeState The newly build top state
