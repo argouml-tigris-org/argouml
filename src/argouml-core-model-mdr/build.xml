@@ -26,7 +26,8 @@ Building this requires:
     <tstamp/>
 
     <!-- argo.root.dir should be passed in to make sure it is correct -->
-    <property name="argo.root.dir" value="../.."/>
+    <!-- but it isn't if we are called property inheritance turned off -->
+    <property name="argo.root.dir" value="${basedir}/.."/>
 
     <property name="build.dir" value="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
@@ -49,7 +50,12 @@ Building this requires:
     <property name="nbmdr.jar" value="lib/nbmdr.jar" /> 
     <property name="jmiutils.jar" value="lib/jmiutils.jar" /> 
     <property name="openide-lookup.jar" value="lib/openide-util.jar" /> 
-        
+  	
+    <!-- Do we want to read user build properties here? -->
+
+    <!-- Read default build properties file (after we've set our props) -->
+    <property file="${argo.root.dir}/argouml-build/default.properties"/>
+  	
     <path id="mdr.generate.classpath">
       <pathelement location="${mdrant.jar}" /> 
       <pathelement location="${nbmdr.jar}" /> 
