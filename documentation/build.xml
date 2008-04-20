@@ -40,9 +40,9 @@ What tools do I need to use this build file?
   <property file="build.properties"/>
   <property file="${user.home}/argouml.build.properties"/>
   <property file="${override.build.properties}"/>
-
+	<property name="argo.build.dir" value="${basedir}/build"/>
   <!-- Fallback definition for argo.src.dir - won't override current value -->
-  <property name="argo.src.dir" value="${argo.root.dir}/src/app/src"/>
+  <property name="argo.src.dir" value="${argo.root.dir}/src/argouml-app/src"/>
 
   <!-- We get the argouml version from the version in the app directory. -->
   <property file="${argo.src.dir}/default.properties"/>

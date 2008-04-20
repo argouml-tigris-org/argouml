@@ -6,7 +6,7 @@
 #
  
 # Always use the ant that comes with ArgoUML
-ANT_HOME=../tools/apache-ant-1.7.0
+ANT_HOME=../argouml-core-tools/apache-ant-1.7.0
 
 echo ANT_HOME is: $ANT_HOME
 echo
