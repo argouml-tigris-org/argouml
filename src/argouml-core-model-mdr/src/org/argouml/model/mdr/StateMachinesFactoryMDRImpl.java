@@ -230,8 +230,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 machine.setNamespace(feature.getOwner());
             }
             State top = buildCompositeStateOnStateMachine(machine);
-            top.setName("top");
-            machine.setTop(top);
+            assert top.equals(machine.getTop());
             return machine;
         }
         throw new IllegalArgumentException("In buildStateMachine: "
