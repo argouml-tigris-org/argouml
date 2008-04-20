@@ -60,7 +60,6 @@ import org.argouml.profile.Profile;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.profile.ProfileException;
 import org.argouml.uml.ui.ActionActivityDiagram;
-import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
 import org.argouml.uml.ui.ActionDeleteModelElements;
@@ -70,6 +69,8 @@ import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.argouml.model.NotImplementedException;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.MutableGraphModel;
 
@@ -83,6 +84,54 @@ public class ExplorerPopup extends JPopupMenu {
 
     private JMenu createDiagrams = 
         new JMenu(menuLocalize("menu.popup.create-diagram"));
+    
+    private final Logger LOG =
+        Logger.getLogger(ExplorerPopup.class);
+    
+    /**
+     * Array of model elements and corresponding il8n tag 
+     * that are presented on the Create Model Elements menu.
+     */
+    private static final Object[] MODEL_ELEMENT_MENUITEMS = 
+        new Object[] {
+            Model.getMetaTypes().getPackage(), 
+            "button.new-package",
+            Model.getMetaTypes().getActor(), 
+            "button.new-actor",
+            Model.getMetaTypes().getUseCase(), 
+            "button.new-usecase",
+            Model.getMetaTypes().getExtensionPoint(), 
+            "button.new-extension-point",
+            Model.getMetaTypes().getUMLClass(), 
+            "button.new-class",
+            Model.getMetaTypes().getInterface(), 
+            "button.new-interface",
+            Model.getMetaTypes().getAttribute(), 
+            "button.new-attribute",
+            Model.getMetaTypes().getOperation(), 
+            "button.new-operation",
+            Model.getMetaTypes().getDataType(),
+            "button.new-datatype",
+            Model.getMetaTypes().getEnumeration(),
+            "button.new-enumeration",
+            Model.getMetaTypes().getEnumerationLiteral(),
+            "button.new-enumeration-literal",
+            Model.getMetaTypes().getSignal(),
+            "button.new-signal",
+            Model.getMetaTypes().getException(),
+            "button.new-exception",
+            Model.getMetaTypes().getComponent(), 
+            "button.new-component",
+            Model.getMetaTypes().getComponentInstance(), 
+            "button.new-componentinstance",
+            Model.getMetaTypes().getNode(), 
+            "button.new-node",
+            Model.getMetaTypes().getNodeInstance(), 
+            "button.new-nodeinstance",
+            Model.getMetaTypes().getReception(), 
+            "button.new-reception",             
+            Model.getMetaTypes().getStereotype(), 
+            "button.new-stereotype" };
 
     /**
      * Creates a new instance of ExplorerPopup.
@@ -109,7 +158,7 @@ public class ExplorerPopup extends JPopupMenu {
             if (!Model.getFacade().isAUMLElement(element)
                     // profile elements are NOT model elements
                     || isRelatedToProfiles(currentProject, element)) {
-        	modelElementsOnly = false;
+                modelElementsOnly = false;
             }
         }
 
@@ -239,11 +288,6 @@ public class ExplorerPopup extends JPopupMenu {
                 if (Model.getFacade().isAOperation(selectedItem)) {
                     this.add(new ActionRESequenceDiagram());
                 }
-
-                if (packageSelected
-                        || Model.getFacade().isAModel(selectedItem)) {
-                    this.add(new ActionAddPackage());
-                }
             }
 
             if (selectedItem != projectModel) {
@@ -319,26 +363,26 @@ public class ExplorerPopup extends JPopupMenu {
      *
      */
     private void initMenuCreateModelElements() {
-	List targets = TargetManager.getInstance().getTargets();
+        List targets = TargetManager.getInstance().getTargets();
         List<JMenuItem> menuItems = new ArrayList<JMenuItem>();
-	if (targets.size() >= 2) {
-	    // Check to see if all targets are classifiers
-	    // before adding an option to create an association between
-	    // them all
-	    boolean classifierRoleFound = false;
-	    boolean classifierRolesOnly = true;
-	    for (Iterator it = targets.iterator();
-	            it.hasNext() && classifierRolesOnly; ) {
-		if (Model.getFacade().isAClassifierRole(it.next())) {
-		    classifierRoleFound = true;
-		} else {
-		    classifierRolesOnly = false;
-		}
-	    }
+        if (targets.size() >= 2) {
+            // Check to see if all targets are classifiers
+            // before adding an option to create an association between
+            // them all
+            boolean classifierRoleFound = false;
+            boolean classifierRolesOnly = true;
+            for (Iterator it = targets.iterator();
+                    it.hasNext() && classifierRolesOnly; ) {
+                if (Model.getFacade().isAClassifierRole(it.next())) {
+                    classifierRoleFound = true;
+                } else {
+                    classifierRolesOnly = false;
+                }
+            }
             if (classifierRolesOnly) {
                 menuItems.add(new JMenuItem(new ActionCreateAssociationRole(
-                	Model.getMetaTypes().getAssociationRole(), 
-                	targets)));
+                        Model.getMetaTypes().getAssociationRole(), 
+                        targets)));
             } else if (!classifierRoleFound) {
                 boolean classifiersOnly = true;
                 for (Iterator it = targets.iterator();
@@ -349,71 +393,100 @@ public class ExplorerPopup extends JPopupMenu {
                 }
                 if (classifiersOnly) {
                     menuItems.add(new JMenuItem(new ActionCreateAssociation(
-                    	Model.getMetaTypes().getAssociation(), 
-                    	targets)));
+                        Model.getMetaTypes().getAssociation(), 
+                        targets)));
                 }
             }
-	}
-	if (targets.size() == 2) {
+        }
+        if (targets.size() == 2) {
             addCreateModelElementAction(
-        	    menuItems,
-        	    Model.getMetaTypes().getDependency(),
-        	    " " + menuLocalize("menu.popup.depends-on") + " ");
+                    menuItems,
+                    Model.getMetaTypes().getDependency(),
+                    " " + menuLocalize("menu.popup.depends-on") + " ");
             
             addCreateModelElementAction(
-        	    menuItems,
-        	    Model.getMetaTypes().getGeneralization(),
-        	    " " + menuLocalize("menu.popup.generalizes") + " ");
+                    menuItems,
+                    Model.getMetaTypes().getGeneralization(),
+                    " " + menuLocalize("menu.popup.generalizes") + " ");
             addCreateModelElementAction(
-        	    menuItems,
-        	    Model.getMetaTypes().getInclude(),
-        	    " " + menuLocalize("menu.popup.includes") + " ");
+                    menuItems,
+                    Model.getMetaTypes().getInclude(),
+                    " " + menuLocalize("menu.popup.includes") + " ");
             addCreateModelElementAction(
-        	    menuItems,
-        	    Model.getMetaTypes().getExtend(),
-        	    " " + menuLocalize("menu.popup.extends") + " ");
+                    menuItems,
+                    Model.getMetaTypes().getExtend(),
+                    " " + menuLocalize("menu.popup.extends") + " ");
             addCreateModelElementAction(
-        	    menuItems,
-        	    Model.getMetaTypes().getPackageImport(),
-        	    " " + menuLocalize("menu.popup.has-permission-on") + " ");
+                    menuItems,
+                    Model.getMetaTypes().getPackageImport(),
+                    " " + menuLocalize("menu.popup.has-permission-on") + " ");
             addCreateModelElementAction(
-        	    menuItems,
-        	    Model.getMetaTypes().getUsage(),
-        	    " " + menuLocalize("menu.popup.uses") + " ");
+                    menuItems,
+                    Model.getMetaTypes().getUsage(),
+                    " " + menuLocalize("menu.popup.uses") + " ");
             addCreateModelElementAction(
-        	    menuItems,
-        	    Model.getMetaTypes().getAbstraction(),
-        	    " " + menuLocalize("menu.popup.realizes") + " ");
-	}
-	if (menuItems.size() == 1) {
-	    add(menuItems.get(0));
-	} else if (menuItems.size() > 1) {
-	    JMenu menu =
-		new JMenu(menuLocalize("menu.popup.create-model-element"));
-	    add(menu);
-	    for (Iterator it = menuItems.iterator(); it.hasNext(); ) {
+                    menuItems,
+                    Model.getMetaTypes().getAbstraction(),
+                    " " + menuLocalize("menu.popup.realizes") + " ");
+        } else if (targets.size() == 1) {
+            
+            Object target = targets.get(0);
+
+            // iterate through all possible model elements to determine which  
+            // are valid to be contained by the selected target
+            for (int iter = 0; iter < MODEL_ELEMENT_MENUITEMS.length; 
+                iter += 2) {
+                
+                try {
+                    // test if this element can be contained by the target
+                    if (Model.getUmlFactory().isContainmentValid(
+                            MODEL_ELEMENT_MENUITEMS[iter], target))
+                    {
+                        // this element can be contained add a menu item 
+                        // that allows the user to take that action
+                        menuItems.add(new JMenuItem(
+                                new ActionCreateContainedElement(
+                                        MODEL_ELEMENT_MENUITEMS[iter],
+                                        target, 
+                                        (String) 
+                                        MODEL_ELEMENT_MENUITEMS[iter + 1]
+                                )));
+                    }
+                } catch (NotImplementedException e1) {
+                    
+                }
+            }    
+        }
+        
+        if (menuItems.size() == 1) {
+            add(menuItems.get(0));
+        } else if (menuItems.size() > 1) {
+            JMenu menu =
+                new JMenu(menuLocalize("menu.popup.create-model-element"));
+            add(menu);
+            for (Iterator it = menuItems.iterator(); it.hasNext(); ) {
                 menu.add((JMenuItem) it.next());
-	    }
-	}
+            }
+        }
     }
     
     private void addCreateModelElementAction(
-	        Collection<JMenuItem> menuItems,
-		Object metaType,
-		String relationshipDescr) {
-	List targets = TargetManager.getInstance().getTargets();
-	Object source = targets.get(0);
-	Object dest = targets.get(1);
+                Collection<JMenuItem> menuItems,
+                Object metaType,
+                String relationshipDescr) {
+        List targets = TargetManager.getInstance().getTargets();
+        Object source = targets.get(0);
+        Object dest = targets.get(1);
         JMenu subMenu = new JMenu(
-        	menuLocalize("menu.popup.create") + " "
-        	+ Model.getMetaTypes().getName(metaType));
+                menuLocalize("menu.popup.create") + " "
+                + Model.getMetaTypes().getName(metaType));
         buildDirectionalCreateMenuItem(
             metaType, dest, source, relationshipDescr, subMenu);
         buildDirectionalCreateMenuItem(
             metaType, source, dest, relationshipDescr, subMenu);
-	if (subMenu.getMenuComponents().length > 0) {
+        if (subMenu.getMenuComponents().length > 0) {
             menuItems.add(subMenu);
-	}
+        }
     }
     
     /**
@@ -428,23 +501,23 @@ public class ExplorerPopup extends JPopupMenu {
      * @param menu The menu to which the menu item should be added
      */
     private void buildDirectionalCreateMenuItem(
-	    Object metaType, 
-	    Object source, 
-	    Object dest, 
-	    String relationshipDescr,
-	    JMenu menu) {
-	if (Model.getUmlFactory().isConnectionValid(
-		    metaType, source, dest, true)) {
-	    JMenuItem menuItem = new JMenuItem(
-		    new ActionCreateModelElement(
-			    metaType, 
-			    source, 
-			    dest, 
-			    relationshipDescr));
+            Object metaType, 
+            Object source, 
+            Object dest, 
+            String relationshipDescr,
+            JMenu menu) {
+        if (Model.getUmlFactory().isConnectionValid(
+                    metaType, source, dest, true)) {
+            JMenuItem menuItem = new JMenuItem(
+                    new ActionCreateModelElement(
+                            metaType, 
+                            source, 
+                            dest, 
+                            relationshipDescr));
             if (menuItem != null) {
                 menu.add(menuItem);
             }
-	}
+        }
     }
 
 
@@ -549,46 +622,46 @@ public class ExplorerPopup extends JPopupMenu {
      * @author Bob Tarling
      */
     private class ActionCreateModelElement extends AbstractAction {
-	
-	private Object metaType; 
-	private Object source; 
-	private Object dest;
-	
-	private final Logger LOG =
-	    Logger.getLogger(ActionCreateModelElement.class);
-	
-	public ActionCreateModelElement(
-		Object theMetaType, 
-		Object theSource, 
-		Object theDestination,
-		String relationshipDescr) {
-	    super(MessageFormat.format(
-	        relationshipDescr,
+        
+        private Object metaType; 
+        private Object source; 
+        private Object dest;
+        
+        private final Logger LOG =
+            Logger.getLogger(ActionCreateModelElement.class);
+        
+        public ActionCreateModelElement(
+                Object theMetaType, 
+                Object theSource, 
+                Object theDestination,
+                String relationshipDescr) {
+            super(MessageFormat.format(
+                relationshipDescr,
                 new Object[] {
                     DisplayTextTree.getModelElementDisplayName(theSource),
                     DisplayTextTree.getModelElementDisplayName(
                             theDestination)}));
-	    this.metaType = theMetaType;
-	    this.source = theSource;
-	    this.dest = theDestination;
-	}
+            this.metaType = theMetaType;
+            this.source = theSource;
+            this.dest = theDestination;
+        }
 
-	public void actionPerformed(ActionEvent e) {
-	    Object rootModel = 
+        public void actionPerformed(ActionEvent e) {
+            Object rootModel = 
                 ProjectManager.getManager().getCurrentProject().getModel();
             try {
-		Model.getUmlFactory().buildConnection(
-		    metaType,
-		    source,
-		    null,
-		    dest,
-		    null,
-		    null,
-		    rootModel);
-	    } catch (IllegalModelElementConnectionException e1) {
-		LOG.error("Exception", e1);
-	    }
-	}
+                Model.getUmlFactory().buildConnection(
+                    metaType,
+                    source,
+                    null,
+                    dest,
+                    null,
+                    null,
+                    rootModel);
+            } catch (IllegalModelElementConnectionException e1) {
+                LOG.error("Exception", e1);
+            }
+        }
     }
     
     /**
@@ -597,46 +670,46 @@ public class ExplorerPopup extends JPopupMenu {
      * @author Bob Tarling
      */
     private class ActionCreateAssociation extends AbstractAction {
-	
-	private Object metaType; 
-	private List classifiers;
-	
-	private final Logger LOG =
-	    Logger.getLogger(ActionCreateModelElement.class);
-	
-	public ActionCreateAssociation(
-		Object theMetaType, 
-		List classifiersList) {
-	    super(menuLocalize("menu.popup.create") + " "
-		    + Model.getMetaTypes().getName(theMetaType));
-	    this.metaType = theMetaType;
-	    this.classifiers = classifiersList;
-	}
+        
+        private Object metaType; 
+        private List classifiers;
+        
+        private final Logger LOG =
+            Logger.getLogger(ActionCreateModelElement.class);
+        
+        public ActionCreateAssociation(
+                Object theMetaType, 
+                List classifiersList) {
+            super(menuLocalize("menu.popup.create") + " "
+                    + Model.getMetaTypes().getName(theMetaType));
+            this.metaType = theMetaType;
+            this.classifiers = classifiersList;
+        }
 
-	public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent e) {
             try {
-		Object newElement = Model.getUmlFactory().buildConnection(
-		    metaType,
-		    classifiers.get(0),
-		    null,
-		    classifiers.get(1),
-		    null,
-		    null,
-		    null);
-		for (int i = 2; i < classifiers.size(); ++i) {
+                Object newElement = Model.getUmlFactory().buildConnection(
+                    metaType,
+                    classifiers.get(0),
+                    null,
+                    classifiers.get(1),
+                    null,
+                    null,
+                    null);
+                for (int i = 2; i < classifiers.size(); ++i) {
                     Model.getUmlFactory().buildConnection(
-			    Model.getMetaTypes().getAssociationEnd(),
-			    newElement,
-			    null,
-			    classifiers.get(i),
-			    null,
-			    null,
-			    null);
-		}
-	    } catch (IllegalModelElementConnectionException e1) {
-		LOG.error("Exception", e1);
-	    }
-	}
+                            Model.getMetaTypes().getAssociationEnd(),
+                            newElement,
+                            null,
+                            classifiers.get(i),
+                            null,
+                            null,
+                            null);
+                }
+            } catch (IllegalModelElementConnectionException e1) {
+                LOG.error("Exception", e1);
+            }
+        }
     }
     
     
@@ -685,6 +758,43 @@ public class ExplorerPopup extends JPopupMenu {
             } catch (IllegalModelElementConnectionException e1) {
                 LOG.error("Exception", e1);
             }
+        }
+    }
+
+    /**
+     * An action to create a model element to be contained by the 
+     * target model element.
+     *
+     * @author Scott Roberts
+     */
+    private class ActionCreateContainedElement
+                extends AbstractActionNewModelElement {
+
+        private Object metaType; 
+
+        /**
+         * Construct the action.
+         * 
+         * @param theMetaType the element to be created
+         * @param target the container that will own the new element
+         * @param menuDescr the description for the menu item label.
+         */
+        public ActionCreateContainedElement(
+                Object theMetaType, 
+                Object target,
+                String menuDescr) {
+            super(menuDescr);
+            
+            metaType = theMetaType;
+            
+            setTarget(target);
+        }
+
+        public void actionPerformed(ActionEvent e) {            
+            Object newElement = Model.getUmlFactory().buildNode(metaType, 
+                    getTarget());
+                
+            TargetManager.getInstance().setTarget(newElement);                
         }
     }
     
