@@ -38,6 +38,7 @@ Building this requires:
     <property name="argo.root.dir" value="${basedir}/.." />
     <property file="${override.build.properties}"/>
     <property file="default.properties"/>
+    <property file="${argo.root.dir}/argouml-build/default.properties"/>
 
     <property name="build.dir" value="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
@@ -85,6 +86,10 @@ Building this requires:
       <pathelement location="../../tools/junit-3.8.2/junit.jar"/>
       <pathelement location="../../tools/lib/easymock12.jar"/>
       <pathelement location="../../tools/jdepend-2.9/lib/jdepend-2.9.jar"/>
+    <!-- Not sure if this will work for the single tree checkout, so we'll leave the old versions for now - tfm -->
+      <pathelement location="${argo.tools.dir}/junit-3.8.2/junit.jar"/>
+      <pathelement location="${argo.tools.dir}/lib/easymock12.jar"/>
+      <pathelement location="${argo.tools.dir}/jdepend-2.9/lib/jdepend-2.9.jar"/>
       <path refid="src.compile.classpath"/>
     </path>
 
