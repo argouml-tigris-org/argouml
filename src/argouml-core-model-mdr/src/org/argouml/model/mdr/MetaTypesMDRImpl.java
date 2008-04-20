@@ -124,9 +124,9 @@ import org.omg.uml.modelmanagement.UmlPackage;
 final class MetaTypesMDRImpl implements MetaTypes {
 
     public String getName(Object modelElement) {
-        Class clazz;
+        Class<?> clazz;
         if (modelElement instanceof Class) {
-            clazz = (Class) modelElement;
+            clazz = (Class<?>) modelElement;
         } else {
             clazz = modelElement.getClass();
         }
