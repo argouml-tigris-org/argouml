@@ -93,8 +93,7 @@ public class ReaderModelLoader implements ProfileModelLoader {
                 Collection elements = xmiReader.parse(inputSource, true);
                 return elements;
             } catch (UmlException e) {
-                LOG.error("Exception while loading profile ", e);
-                throw new ProfileException("Invalid XMI data!");
+                throw new ProfileException("Invalid XMI data!", e);
             }
         }
         LOG.error("Profile not found");
