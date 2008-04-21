@@ -89,7 +89,8 @@ Building this requires:
     <path id="junit.classpath">
       <pathelement location="${junit.jar.path}"/>
       <pathelement location="${argo.tools.dir}/junit-3.8.2/junit.jar"/>
-      <pathelement location="${argo.root.dir}/tools/junit-3.8.2/junit.jar"/>
+      <!-- root used to be the argouml dir, but now its argouml/src -->
+      <pathelement location="${argo.root.dir}/../tools/junit-3.8.2/junit.jar"/>
     </path>
 
     <path id="tests.compile.classpath">
