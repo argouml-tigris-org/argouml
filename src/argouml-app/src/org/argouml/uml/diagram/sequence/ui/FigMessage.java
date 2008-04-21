@@ -33,6 +33,7 @@ import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
 import org.argouml.uml.ui.ActionRESequenceDiagram;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
@@ -226,7 +227,12 @@ public abstract class FigMessage
                 && ((FigMessagePort) getSourcePortFig()).getNode() != null
                 && ((FigMessagePort) getDestPortFig()).getNode() != null) {
             ((SequenceDiagramLayer) getLayer()).updateActivations();
-            Globals.curEditor().damageAll();
+            Editor editor = Globals.curEditor();
+            if (editor != null) {
+                // We only need to check null so that junit test passes.
+                // nasty but SD implementation should die anyway.
+                Globals.curEditor().damageAll();
+            }
         }
     }
 
