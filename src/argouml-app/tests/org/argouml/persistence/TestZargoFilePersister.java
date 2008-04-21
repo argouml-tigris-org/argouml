@@ -136,6 +136,7 @@ public class TestZargoFilePersister extends TestCase {
      */
     public void testDoLoadUml14() throws Exception {
         doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
+        doLoad("/testmodels/uml14/SequenceDiagram.zargo");
     }
 
     /**
