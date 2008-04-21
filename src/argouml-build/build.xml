@@ -278,7 +278,7 @@ Property files to be searched:
     <pathconvert pathsep=" " property="cp" refid="classpath.jars" >
         <mapper type="flatten"/>
     </pathconvert>
-    <echo message="Classpath: ${cp} ext/*.jar" file="${argo.build.dir}/${manifest.update}" />
+    <echo message="Class-Path: ${cp} ext/*.jar" file="${argo.build.dir}/${manifest.update}" />
 
     <jar update="true"
          basedir="${argo.build.dir}"
