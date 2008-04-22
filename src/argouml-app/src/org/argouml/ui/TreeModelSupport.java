@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,6 @@ package org.argouml.ui;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreePath;
 
 /**
  * Helper class for tree models that provides tree event handling.<p>
@@ -52,7 +51,7 @@ public class TreeModelSupport extends PerspectiveSupport {
     // ---------------- listener management ----------------
 
     /**
-     * Listener management.
+     * Add a TreeModelListener to the list of listeners.
      *
      * @param l the listener to be added
      */
@@ -61,7 +60,7 @@ public class TreeModelSupport extends PerspectiveSupport {
     }
 
     /**
-     * Listener management.
+     * Remove a TreeModelListener from the list of listeners..
      *
      * @param l the listener to be removed
      */
@@ -72,17 +71,34 @@ public class TreeModelSupport extends PerspectiveSupport {
     // --------------- tree nodes -------------------------
 
     /**
-     * Notify all listeners that have registered interest for
-     * notification on this event type.  The event instance
-     * is lazily created using the parameters passed into
-     * the fire method.
-     * @see EventListenerList
+     * Notify all listeners that a node (or a set of siblings) has changed in
+     * some way. The node(s) have not changed locations in the tree or altered
+     * their children arrays, but other attributes have changed and may affect
+     * presentation. 
+     * <p>
+     * To indicate the root has changed, childIndices and children will be null.
+     * <p>
+     * <em>NOTE:</em> This is a Swing method which must be invoked on the
+     * Swing/AWT event thread.
+     * 
+     * @param source the Object responsible for generating the event (typically
+     *                the creator of the event object passes this for its value)
+     * @param path an array of Object identifying the path to the parent of the
+     *                modified item(s), where the first element of the array is
+     *                the Object stored at the root node and the last element is
+     *                the Object stored at the parent node
+     * @param childIndices an array of int that specifies the index values of
+     *                the removed items. The indices must be in sorted order,
+     *                from lowest to highest
+     * @param children an array of Object containing the inserted, removed, or
+     *                changed objects
+     * @see TreeModelListener#treeNodesChanged(TreeModelEvent)
      */
     protected void fireTreeNodesChanged(
-					Object source,
-					Object[] path,
-					int[] childIndices,
-					Object[] children) {
+					final Object source,
+					final Object[] path,
+					final int[] childIndices,
+					final Object[] children) {
 
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
@@ -105,11 +121,25 @@ public class TreeModelSupport extends PerspectiveSupport {
     }
 
     /**
-     * Notify all listeners that have registered interest for
-     * notification on this event type.  The event instance
+     * Notify all listeners a node has been inserted.  The event instance
      * is lazily created using the parameters passed into
      * the fire method.
-     * @see EventListenerList
+     * <p>
+     * <em>NOTE:</em> This is a Swing method which must be invoked on the
+     * Swing/AWT event thread.
+     * 
+     * @param source the Object responsible for generating the event (typically
+     *                the creator of the event object passes this for its value)
+     * @param path an array of Object identifying the path to the parent of the
+     *                modified item(s), where the first element of the array is
+     *                the Object stored at the root node and the last element is
+     *                the Object stored at the parent node
+     * @param childIndices an array of int that specifies the index values of
+     *                the removed items. The indices must be in sorted order,
+     *                from lowest to highest
+     * @param children an array of Object containing the inserted, removed, or
+     *                changed objects
+     * @see TreeModelListener#treeNodesChanged(TreeModelEvent)
      */
     protected void fireTreeNodesInserted(
 					 Object source,
@@ -138,10 +168,26 @@ public class TreeModelSupport extends PerspectiveSupport {
     }
 
     /**
-     * Notify all listeners that have registered interest for
-     * notification on this event type.  The event instance
-     * is lazily created using the parameters passed into
-     * the fire method.
+     * Notify all listeners that nodes have been removed from the tree. Note
+     * that if a subtree is removed from the tree, this method may only be
+     * invoked once for the root of the removed subtree, not once for each
+     * individual set of siblings removed.
+     * <p>
+     * <em>NOTE:</em> This is a Swing method which must be invoked on the
+     * Swing/AWT event thread.
+     * 
+     * @param source the Object responsible for generating the event (typically
+     *                the creator of the event object passes this for its value)
+     * @param path an array of Object identifying the path to the parent of the
+     *                modified item(s), where the first element of the array is
+     *                the Object stored at the root node and the last element is
+     *                the Object stored at the parent node
+     * @param childIndices an array of int that specifies the index values of
+     *                the removed items. The indices must be in sorted order,
+     *                from lowest to highest
+     * @param children an array of Object containing the inserted, removed, or
+     *                changed objects
+     * @see TreeModelListener#treeNodesChanged(TreeModelEvent)
      * @see EventListenerList
      */
     protected void fireTreeNodesRemoved(
@@ -173,46 +219,66 @@ public class TreeModelSupport extends PerspectiveSupport {
     // ------------- tree structure -----------------
 
     /**
-     * @see #fireTreeStructureChanged(Object, Object[], int[], Object[])
-     */
-    public void fireTreeStructureChanged() {
-    }
-
-    /**
-     * @see #fireTreeStructureChanged(Object, Object[], int[], Object[])
-     *
-     * @param path
-     */
-    public void fireTreeStructureChanged(TreePath path) {
-    }
-
-
-    /**
-     * Notify all listeners that have registered interest for
-     * notification on this event type.  The event instance
-     * is lazily created using the parameters passed into
-     * the fire method.
-     * @see EventListenerList
+     * Notify all listeners that the tree has drastically changed
+     * structure from a given node down. If the path returned by e.getPath() is
+     * of length one and the first element does not identify the current root
+     * node the first element should become the new root of the tree.
+     * <p>
+     * <em>NOTE:</em> This is a Swing method which must be invoked on the 
+     * Swing/AWT event thread.
+     * 
+     * @param path an array of Object identifying the path to the parent of the
+     *                modified item(s), where the first element of the array is
+     *                the Object stored at the root node and the last element is
+     *                the Object stored at the parent node
+     * @see TreeModelListener#treeStructureChanged(TreeModelEvent)
      */
     protected void fireTreeStructureChanged(Object[] path) {
-
-	fireTreeStructureChanged(this, path);
+        fireTreeStructureChanged(this, path);
     }
 
     /**
-     * @see #fireTreeStructureChanged(Object, Object[], int[], Object[])
-     *
+     * Notify all listeners that the tree has drastically changed
+     * structure from a given node down. If the path returned by e.getPath() is
+     * of length one and the first element does not identify the current root
+     * node the first element should become the new root of the tree.
+     * <p>
+     * <em>NOTE:</em> This is a Swing method which must be invoked on the 
+     * Swing/AWT event thread.
+     * 
+     * @param source the Object responsible for generating the event (typically
+     *                the creator of the event object passes this for its value)
+     * @param path an array of Object identifying the path to the parent of the
+     *                modified item(s), where the first element of the array is
+     *                the Object stored at the root node and the last element is
+     *                the Object stored at the parent node
+     * @see TreeModelListener#treeStructureChanged(TreeModelEvent)
      */
     protected void fireTreeStructureChanged(Object source, Object[] path) {
         fireTreeStructureChanged(source, path, null, null);
     }
 
     /**
-     * Notify all listeners that have registered interest for
-     * notification on this event type.  The event instance
-     * is lazily created using the parameters passed into
-     * the fire method.
-     * @see EventListenerList
+     * Notify all listeners that the tree has drastically changed structure from
+     * a given node down. If the path returned by e.getPath() is of length one
+     * and the first element does not identify the current root node the first
+     * element should become the new root of the tree.
+     * <p>
+     * <em>NOTE:</em> This is a Swing method which must be invoked on the
+     * Swing/AWT event thread.
+     * 
+     * @param source the Object responsible for generating the event (typically
+     *                the creator of the event object passes this for its value)
+     * @param path an array of Object identifying the path to the parent of the
+     *                modified item(s), where the first element of the array is
+     *                the Object stored at the root node and the last element is
+     *                the Object stored at the parent node
+     * @param childIndices an array of int that specifies the index values of
+     *                the removed items. The indices must be in sorted order,
+     *                from lowest to highest
+     * @param children an array of Object containing the inserted, removed, or
+     *                changed objects
+     * @see TreeModelListener#treeStructureChanged(TreeModelEvent)
      */
     public void fireTreeStructureChanged(
 					 Object source,
