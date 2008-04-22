@@ -37,6 +37,7 @@ import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.persistence.AbstractFilePersister;
+import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -77,9 +78,11 @@ public class TestProject extends TestCase {
      * Test remove() function. This is called when a new project is created to
      * remove the old project. We confirm here that the users model has been
      * emptied and that no none 'Model' model elements are at root.
-     * @throws Exception
+     * 
+     * @throws InterruptedException if there the project load was interrupted
+     * @throws OpenException if there was an error during project load
      */
-    public void testRemove() throws Exception {
+    public void testRemove() throws OpenException, InterruptedException {
         String name = "/testmodels/uml14/Alittlebitofeverything.zargo";
         URL url = TestProject.class.getResource(name);
         AbstractFilePersister persister =
@@ -95,7 +98,7 @@ public class TestProject extends TestCase {
                     Model.getFacade().isAModel(root));
             System.out.println(Model.getFacade().getName(root) + " "
                     + Model.getFacade().getOwnedElements(root).size());
-            if (Model.getFacade().getName(root).equals("untitledModel")) {
+            if ("untitledModel".equals(Model.getFacade().getName(root))) {
                 assertEquals(
                         "All root models should be empty", 0, 
                         Model.getFacade().getOwnedElements(root).size());
