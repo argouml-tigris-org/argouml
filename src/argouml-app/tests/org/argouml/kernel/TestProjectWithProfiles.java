@@ -30,6 +30,7 @@ import static org.argouml.model.Model.getFacade;
 import static org.argouml.model.Model.getModelManagementFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
@@ -226,15 +227,8 @@ public class TestProjectWithProfiles extends TestCase {
     public void testProjectWithUserDefinedProfilePersistency() 
         throws Exception {
         // setup a user defined profile
-        ProfileMother mother = new ProfileMother();
-        Object profileModel = mother.createSimpleProfileModel();
-        File userDefinedProfileFile = new File(testCaseDir, 
-                "testProjectWithUserDefinedProfilePersistency.xmi");
-        mother.saveProfileModel(profileModel, userDefinedProfileFile);
-        // it is required to delete the profile model and load it as a pure 
-        // profile, else it will be saved by XmiWriter along with our project 
-        // model
-        Model.getUmlFactory().delete(profileModel);
+        File userDefinedProfileFile = createUserProfileFile(testCaseDir,
+            "testProjectWithUserDefinedProfilePersistency-TestUserProfile.xmi");
         // add it to the project configuration
         Profile userDefinedProfile = 
             new UserDefinedProfile(userDefinedProfileFile);
@@ -276,6 +270,7 @@ public class TestProjectWithProfiles extends TestCase {
         assertEquals(ProfileMother.STEREOTYPE_NAME_ST, 
                 getFacade().getName(fooStereotypes.iterator().next()));
     }
+
     
     /**
      * WARNING: not a unit test, this is more like a functional test, where 
@@ -301,12 +296,8 @@ public class TestProjectWithProfiles extends TestCase {
      */
     public void testProjectWithRemovedUserDefinedProfilePersistency() 
         throws Exception {
-        // setup a user defined profile
-        ProfileMother mother = new ProfileMother();
-        Object profileModel = mother.createSimpleProfileModel();
-        File userDefinedProfileFile = new File(testCaseDir, 
-                "testProjectWithUserDefinedProfilePersistency.xmi");
-        mother.saveProfileModel(profileModel, userDefinedProfileFile);
+        File userDefinedProfileFile = createUserProfileFile(testCaseDir,
+            "testProjectWithRemovedUserDefinedProfile-TestUserProfile.xmi");
         // add it to the project configuration
         Profile userDefinedProfile = 
             new UserDefinedProfile(userDefinedProfileFile);
@@ -348,19 +339,17 @@ public class TestProjectWithProfiles extends TestCase {
         // reference resolving scheme, the model sub-system caches the system 
         // ID references and resolves it on its own without the help of the 
         // project.
+        // ?? tfm - what needs to be done to resolve this todo?? - tfm
         project = persister.doLoad(file);
         project.postLoad();
         // assert that the model element that depends on the profile is 
         // consistent
         fooClass = project.findType("Foo", false);
-        // FIXME: this will fail because the project does not have knowledge 
-        // of the loaded profile and doesn't include it on the models to 
-        // search for the type.
         assertNotNull(fooClass);
         Collection fooStereotypes = getFacade().getStereotypes(fooClass);
         assertEquals(1, fooStereotypes.size());
         assertEquals(ProfileMother.STEREOTYPE_NAME_ST, 
-                getFacade().getNamespace(fooStereotypes.iterator().next()));
+                getFacade().getName(fooStereotypes.iterator().next()));
     }
 
     private AbstractFilePersister getProjectPersister(File file) {
@@ -368,6 +357,19 @@ public class TestProjectWithProfiles extends TestCase {
             PersistenceManager.getInstance().getPersisterFromFileName(
                     file.getAbsolutePath());
         return persister;
+    }
+    
+
+    private File createUserProfileFile(File directory, String filename)
+        throws IOException {
+        ProfileMother mother = new ProfileMother();
+        Object profileModel = mother.createSimpleProfileModel();
+        Model.getCoreHelper().setName(profileModel, "TestUserProfile");
+        File userDefinedProfileFile = new File(directory, filename);
+        mother.saveProfileModel(profileModel, userDefinedProfileFile);
+        // Clean up after ourselves by deleting profile model
+        Model.getUmlFactory().delete(profileModel);
+        return userDefinedProfileFile;
     }
 
 }
