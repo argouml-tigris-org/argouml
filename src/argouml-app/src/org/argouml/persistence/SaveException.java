@@ -35,7 +35,7 @@ package org.argouml.persistence;
  * to some medium.
  * @author Bob Tarling
  */
-class SaveException extends PersistenceException {
+public class SaveException extends PersistenceException {
     /**
      * The constructor.
      *
