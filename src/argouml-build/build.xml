@@ -382,6 +382,7 @@ Can't we use a single target with dependencies? tfm -->
              splitindex="${javadoc.splitindex}"
              use="${javadoc.use}"
              windowtitle="ArgoUML Javadoc for internal use">
+      <tag name="stereotype"/>
       <sourcepath>
         <pathelement location="argouml-app/src"/>
         <pathelement location="argouml-core-model/src"/>
