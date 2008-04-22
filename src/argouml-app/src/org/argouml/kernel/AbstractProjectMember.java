@@ -32,14 +32,8 @@ import org.argouml.persistence.PersistenceManager;
  */
 public abstract class AbstractProjectMember implements ProjectMember {
 
-    ////////////////////////////////////////////////////////////////
-    // instance varables
-
     private String uniqueName;
     private Project project = null;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
@@ -157,9 +151,6 @@ public abstract class AbstractProjectMember implements ProjectMember {
         return "." + getType();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // actions
-
     /**
      * Remove this member from its project.
      */
@@ -167,4 +158,8 @@ public abstract class AbstractProjectMember implements ProjectMember {
         uniqueName = null;
         project = null;
     }
-} /* end class ProjectMember */
+    
+    public String toString() {
+        return getZipName();
+    }
+}
