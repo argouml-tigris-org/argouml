@@ -57,7 +57,7 @@ public class ToDoItemXMLHelper
      * Encodes the headline of this ToDoItem in an XML safe way and
      * returns the new String. The String can be regained by running the
      * returned String through
-     * {@link TodoParser#decode}.
+     * {@link TodoParser#decode(String)}.
      *
      * @return	The encoded headline.
      */

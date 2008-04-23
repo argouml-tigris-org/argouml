@@ -171,7 +171,7 @@ public final class ExplorerEventAdaptor
      *
      * @since ARGO0.11.2
      *
-     * {@inheritDoc}
+     * @see PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(java.beans.PropertyChangeEvent pce) {
         if (treeModel == null) {

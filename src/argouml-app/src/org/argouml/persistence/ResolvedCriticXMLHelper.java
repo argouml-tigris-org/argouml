@@ -61,8 +61,7 @@ public class ResolvedCriticXMLHelper {
     /**
      * Encodes the critic of this ResolvedCritic in an XML safe way and
      * returns the new String. The String can be regained by running the
-     * returned String through
-     * {@link TodoParser#decode TodoParser::decode}.
+     * returned String through {@link TodoParser#decode(String)}.
      *
      * @return	The encoded critic.
      */

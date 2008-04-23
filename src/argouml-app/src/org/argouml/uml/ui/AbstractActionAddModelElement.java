@@ -86,7 +86,7 @@ public abstract class AbstractActionAddModelElement extends
      * UMLAddDialog.
      * @param selected The choices the user has selected in the UMLAddDialog
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link AbstractActionAddModelElement2#doIt(java.util.List)}.
+     *        {@link AbstractActionAddModelElement2#doIt(java.util.Collection)}.
      */
     @Deprecated
     protected abstract void doIt(Vector selected);

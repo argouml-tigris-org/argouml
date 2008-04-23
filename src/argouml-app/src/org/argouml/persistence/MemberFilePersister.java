@@ -125,7 +125,6 @@ abstract class MemberFilePersister {
      * Send an existing file of XML to the PrintWriter.
      * @param writer the PrintWriter.
      * @param file the File
-     * @param indent How far to indent in the writer.
      * @throws SaveException on any errors.
      */
     protected void addXmlFileToWriter(PrintWriter writer, File file)

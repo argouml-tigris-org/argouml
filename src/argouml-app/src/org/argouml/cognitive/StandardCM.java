@@ -105,7 +105,7 @@ abstract class CompositeCM implements ControlMech {
 
     /**
      * @return Returns the ControlMechs.
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getControlMechs}.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getMechList()}.
      */
     @Deprecated
     protected Vector<ControlMech> getMechs() {

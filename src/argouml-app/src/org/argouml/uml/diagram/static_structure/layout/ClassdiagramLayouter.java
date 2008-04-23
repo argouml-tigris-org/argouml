@@ -55,7 +55,7 @@ import org.tigris.gef.presentation.Fig;
  * <li>Ascending name of model object
  * </ol>
  *
- * @see ClassdiagramNode#compareTo
+ * @see ClassdiagramNode#compareTo(Object)
  *
  */
 public class ClassdiagramLayouter implements Layouter {
