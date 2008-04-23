@@ -12457,6 +12457,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <para>Button&nbsp;2 Click over any selected model element in the main 
         area of the explorer will cause a pop-up menu to appear.</para>
+        
+        <para>The presence of all these menu entries depends on the 
+          selected element(s), 
+          and other circumstances. 
+          E.g. the "Create ModelElement" submenu is not present 
+          on modelelements that are 
+          part of a non-editable profile element.</para>
 
         <sect2>
           <title>Create Diagram</title>
@@ -12465,6 +12472,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             of submenus, one for each diagram type. </para>
           <para>The namespace of the new diagram 
             will be based on the selected modelelement.</para>
+        </sect2>
+
+        <sect2>
+          <title>Create ModelElement</title>
+          
+          <!-- Added thanks to issue 1009. -->
+          <para>This entry on the pop-up menu opens a choice
+            of submenus, one for each model element. </para>
+          <para>The new model element 
+            will be composed by the selected modelelement.</para>
+          <para>Selecting multiple elements leads to different menu items, 
+            e.g. selecting 2 classes 
+            allows the creation of several kinds of relationships.</para>
         </sect2>
 
         <sect2>
