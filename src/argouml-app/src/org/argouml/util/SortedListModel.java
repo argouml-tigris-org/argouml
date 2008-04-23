@@ -242,8 +242,8 @@ public class SortedListModel extends AbstractListModel implements List
     /**
      * Unimplemented optional operation.
      * 
-     * @param c
-     * @return
+     * @param c unimplemented
+     * @return unimplemented
      * @see java.util.List#retainAll(java.util.Collection)
      */
     public boolean retainAll(Collection c) {

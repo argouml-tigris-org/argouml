@@ -66,7 +66,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
      * @param icon icon
      * @param orientation orientation
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelElement(String, ImageIcon)} and
+     *             {@link #PropPanelFeature(String, ImageIcon)} and
      *             setOrientation() after instantiation.
      */
     @Deprecated
@@ -81,7 +81,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
      * @param name the name to be shown at the top of the panel
      * @param orientation the orientation of the panel
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelElement(String, ImageIcon)} and
+     *             {@link #PropPanelFeature(String, ImageIcon)} and
      *             setOrientation() after instantiation.
      */
     @Deprecated
