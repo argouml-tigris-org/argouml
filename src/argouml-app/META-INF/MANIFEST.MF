@@ -168,9 +168,7 @@ Export-Package: Acme,
  tudresden.ocl.parser.node,
  tudresden.ocl.parser.parser
 Require-Bundle: org.argouml.core.infra,
- org.argouml.core.model,
- org.argouml.core.model.mdr,
- org.argouml.core.model.euml
+ org.argouml.core.model
 Eclipse-RegisterBuddy: org.argouml.core.infra
 Bundle-ClassPath: lib/antlr-2.7.7.jar,
  lib/commons-logging-1.0.2.jar,
