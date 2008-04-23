@@ -1345,7 +1345,7 @@ class CoreHelperMDRImpl implements CoreHelper {
                  * spec is more restrictive - "[4] A Collaboration may only
                  * contain ClassifierRoles and AssociationRoles, the
                  * Generalizations and the Constraints between them, and
-                 * Actions used in the Collaboration’s Interactions."
+                 * Actions used in the Collaboration's Interactions."
                  */
                 if (!(modelElement instanceof ClassifierRole
                         || modelElement instanceof AssociationRole
