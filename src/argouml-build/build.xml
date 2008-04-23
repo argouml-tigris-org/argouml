@@ -376,7 +376,7 @@ Can't we use a single target with dependencies? tfm -->
              bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;25%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2006&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/dev.html&apos; target=&apos;_blank&apos;&gt;ArgoUML Developers' page&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
              destdir="${argo.javadocs.dir}"
              maxmemory="128M"
-             overview="app/src/org/argouml/overview-argo.html"
+             overview="argouml-app/src/org/argouml/overview-argo.html"
              packagenames="org.argouml.*"
              source="1.5"
              splitindex="${javadoc.splitindex}"
@@ -431,13 +431,14 @@ Can't we use a single target with dependencies? tfm -->
              bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;33%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2006&lt;/td&gt;&lt;td width=&apos;34%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;33%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
              destdir="${argo.api.dir}"
              maxmemory="128M"
-             overview="app/src/org/argouml/overview-api.html"
+             overview="argouml-app/src/org/argouml/overview-api.html"
              packagenames="org.argouml.model,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui,org.argouml.ui.explorer,org.argouml.ocl,org.argouml.moduleloader"
              source="1.5"
              private="false"
              splitindex="${javadoc.splitindex}"
              use="${javadoc.use}"
              windowtitle="ArgoUML Javadoc for ArgoUML Module Developers">
+      <tag name="stereotype"/>
       <sourcepath>
         <pathelement location="app/src"/>
         <pathelement location="model/src"/>
