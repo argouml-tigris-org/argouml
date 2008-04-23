@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2007 The Regents of the University of California. All
+// Copyright (c) 2002-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,7 @@ package org.argouml.ui.targetmanager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -44,10 +45,7 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 
 /**
- * @author gebruiker
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
+ * Test the TargetManager.
  */
 public class TestTargetManager extends TestCase {
 
@@ -722,6 +720,102 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().removeTarget(list.get(0));
 	assertEquals(1, listener.counter);
+    }
+    
+    /**
+     * Test the generation of events, 
+     * and if there are not too many of them. <p>
+     * See issue 2093.
+     */
+    public void testEvents() {
+
+        class MyListener implements TargetListener {
+            int countAdd = 0;
+            int countRemove = 0;
+            int countSet = 0;
+
+            public void targetAdded(TargetEvent e) {
+                countAdd++;
+            }
+
+            public void targetRemoved(TargetEvent e) {
+                countRemove++;
+            }
+
+            public void targetSet(TargetEvent e) {
+                countSet++;
+            }
+
+            public void resetCounts() {
+                countAdd = 0;
+                countRemove = 0;
+                countSet = 0;
+            }
+        }
+
+        MyListener listener = new MyListener();
+        TargetManager.getInstance().addTargetListener(listener);
+
+        // The target list is empty, re-emptying it again 
+        // should not generate any events:
+        TargetManager.getInstance().setTargets(Collections.EMPTY_SET);
+        assertTrue(listener.countAdd == 0);
+        assertTrue(listener.countRemove == 0);
+        assertTrue(listener.countSet == 0);
+        
+        // Setting one target should generate one event:
+        Object target1 = new Object();
+        TargetManager.getInstance().setTarget(target1);
+        assertTrue(1 == TargetManager.getInstance().getTargets().size());
+        assertTrue(listener.countAdd == 0);
+        assertTrue(listener.countRemove == 0);
+        assertTrue(listener.countSet == 1);
+        listener.resetCounts();
+        // set same target again should not generate new events:
+        TargetManager.getInstance().setTarget(target1);
+        assertTrue(1 == TargetManager.getInstance().getTargets().size());
+        assertTrue(listener.countAdd == 0);
+        assertTrue(listener.countRemove == 0);
+        assertTrue(listener.countSet == 0);
+    
+        Object target2 = new Object();
+        TargetManager.getInstance().addTarget(target2);
+        assertTrue(2 == TargetManager.getInstance().getTargets().size());
+        assertTrue(listener.countAdd == 1);
+        assertTrue(listener.countRemove == 0);
+        assertTrue(listener.countSet == 0);
+        listener.resetCounts();
+        // adding same target again should not generate new events:
+        TargetManager.getInstance().addTarget(target2);
+        assertTrue(2 == TargetManager.getInstance().getTargets().size());
+        assertTrue(listener.countAdd == 0);
+        assertTrue(listener.countRemove == 0);
+        assertTrue(listener.countSet == 0);
+    
+         // adding same targets list again should not generate new events:
+        Collection<Object> s = new ArrayList<Object>();
+        s.add(target2); //reverse order
+        s.add(target1);
+        TargetManager.getInstance().setTargets(s);
+        assertTrue(2 == TargetManager.getInstance().getTargets().size());
+        assertTrue(listener.countAdd == 0);
+        assertTrue(listener.countRemove == 0);
+        assertTrue(listener.countSet == 0);
+        
+        //testing with subset of targets
+        Object target3 = new Object();
+        TargetManager.getInstance().addTarget(target3);
+        assertTrue(3 == TargetManager.getInstance().getTargets().size());
+        assertTrue(listener.countAdd == 1);
+        assertTrue(listener.countRemove == 0);
+        assertTrue(listener.countSet == 0);
+        listener.resetCounts();
+        // now remove one target by setting subset:
+        TargetManager.getInstance().setTargets(s);
+        assertTrue(2 == TargetManager.getInstance().getTargets().size());
+        assertTrue(listener.countAdd == 0);
+        assertTrue(listener.countRemove == 0);
+        assertTrue(listener.countSet == 1);
     }
 
     /**
