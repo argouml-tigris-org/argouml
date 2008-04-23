@@ -413,7 +413,7 @@ Can't we use a single target with dependencies? tfm -->
     </javadoc>
 
     <copy todir="${argo.javadocs.dir}/org/argouml/doc-files">
-      <fileset dir="app/src/org/argouml/doc-files">
+      <fileset dir="argouml-app/src/org/argouml/doc-files">
         <include name="*.gif"/>
       </fileset>
     </copy>
@@ -440,8 +440,8 @@ Can't we use a single target with dependencies? tfm -->
              windowtitle="ArgoUML Javadoc for ArgoUML Module Developers">
       <tag name="stereotype"/>
       <sourcepath>
-        <pathelement location="app/src"/>
-        <pathelement location="model/src"/>
+        <pathelement location="argouml-app/src"/>
+        <pathelement location="argouml-core-model/src"/>
       </sourcepath>
 
       <classpath>
@@ -469,7 +469,7 @@ Can't we use a single target with dependencies? tfm -->
     </javadoc>
 
     <copy todir="${argo.api.dir}/org/argouml/doc-files">
-      <fileset dir="app/src/org/argouml/doc-files">
+      <fileset dir="argouml-app/src/org/argouml/doc-files">
         <include name="*.gif"/>
       </fileset>
     </copy>
