@@ -78,6 +78,7 @@ import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
@@ -912,9 +913,9 @@ public abstract class FigNodeModelElement
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void propertyChange(PropertyChangeEvent pve) {
-        Object src = pve.getSource();
-        String pName = pve.getPropertyName();
+    public void propertyChange(final PropertyChangeEvent pve) {
+        final Object src = pve.getSource();
+        final String pName = pve.getPropertyName();
         if (pve instanceof DeleteInstanceEvent && src == getOwner()) {
             removeFromDiagram();
             return;
@@ -926,35 +927,87 @@ public abstract class FigNodeModelElement
                 //parse the text that was edited
                 textEdited((FigText) src);
                 // resize the FigNode to accomodate the new text
-                Rectangle bbox = getBounds();
-                Dimension minSize = getMinimumSize();
+                final Rectangle bbox = getBounds();
+                final Dimension minSize = getMinimumSize();
                 bbox.width = Math.max(bbox.width, minSize.width);
                 bbox.height = Math.max(bbox.height, minSize.height);
                 setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
                 endTrans();
             } catch (PropertyVetoException ex) {
                 LOG.error("could not parse the text entered. "
-			  + "PropertyVetoException",
-			  ex);
+                        + "PropertyVetoException",
+                        ex);
             }
         } else if (pName.equals("editing")
-                        && Boolean.TRUE.equals(pve.getNewValue())) {
+                && Boolean.TRUE.equals(pve.getNewValue())) {
             textEditStarted((FigText) src);
         } else {
             super.propertyChange(pve);
         }
         if (Model.getFacade().isAUMLElement(src)) {
+            final UmlChangeEvent event = (UmlChangeEvent) pve;
             /* If the source of the event is an UML object,
              * e.g. the owner of this Fig (but not always only the owner
              * is shown, e.g. for a class, also its attributes are shown),
              * then the UML model has been changed.
              */
-            // We catch the exception here so it is handled for all subclasses
-            try {
-                modelChanged(pve);
-            } catch (InvalidElementException e) {
-                LOG.debug("modelChanged method accessed deleted element ", e);
+            final Object owner = getOwner();
+            if (owner == null) {
+                // TODO: Should this not be an assert?
+                return;
             }
+            try {
+                modelChanged(event);
+            }
+            catch (InvalidElementException e) {
+                LOG.debug("modelChanged method accessed deleted element ", e);            
+            }
+            if (event.getSource() == owner 
+                    && "stereotype".equals(event.getPropertyName())) {
+                stereotypeChanged(event);            
+            }
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    try {
+                        updateLayout(event);
+                    }
+                    catch (InvalidElementException e) {
+                        LOG.debug("modelChanged method accessed deleted element ", e);
+                    }
+                }  
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
+        }
+    }
+
+    /**
+     * Called by propertyChanged when it detects that a stereotype
+     * has been added or removed. On removal the FigNode removes its
+     * listener to that stereotype. When a new stereotype is detected
+     * we add a listener.
+     * TODO: Bob says: In my opinion we shouldn't be doing this here.
+     * FigStereotype should always be listening to change of its
+     * owners name.
+     * FigStereotypesCompartment should always be listening for add
+     * or remove of Stereotypes to its owner.
+     * Those classes will need to pass some event to the FigNode on
+     * the AWT thread only if a change results in a change of size
+     * that requires a redraw.
+     * <p>NOTE: Runs at the Model (MDR) Thread </p>
+     * @param event the UmlChangeEvent that caused the change
+     */
+    private void stereotypeChanged(final UmlChangeEvent event) {
+        final Object owner = getOwner();
+        assert owner != null;
+        try {          
+            if (event.getOldValue() != null) {
+                removeElementListener(event.getOldValue());
+            }
+            if (event.getNewValue() != null) {
+                addElementListener(event.getNewValue(), "name");
+            }
+        } catch (InvalidElementException e) {
+            LOG.debug("stereotypeChanged method accessed deleted element ", e);
         }
     }
 
@@ -1103,58 +1156,73 @@ public abstract class FigNodeModelElement
         nameFig.keyTyped(ke);
     }
 
+    /**
+     * This is a template method called by the ArgoUML framework as the result
+     * of a change to a model element. Do not call this method directly
+     * yourself.
+     * <p>Override this in any subclasses in order to change what model
+     * elements the FigNode is listening to as a result of change to the model.</p>
+     * <p>This method is guaranteed by the framework to be running on the same
+     * thread as the model subsystem.</p>
+     * TODO: Lets refactor this at some time to take UmlChangeEvent argument
+     *
+     * @param event the UmlChangeEvent that caused the change
+     */
+    protected void modelChanged(PropertyChangeEvent event) {
+        if (event instanceof AssociationChangeEvent 
+                || event instanceof AttributeChangeEvent) {
+            if (notationProviderName != null) {
+                notationProviderName.updateListener(this, getOwner(), event);
+            }
+            updateListeners(getOwner(), getOwner());
+        }
+    }    
+    
     ////////////////////////////////////////////////////////////////
     // internal methods
-
+    
     /**
-      * This is called after any part of the UML ModelElement has
-     * changed. This method automatically updates the stereotype rendering, 
-     * and updates all listeners for the stereotypes.
-     * Updating the listeners for the name notation is delegated 
-     * to the notation provider for the name.
-     * Subclasses should override and update other parts. <p>
-     *
-     * For e.g. a Package, if the visibility is changed 
+     * This is a template method called by the ArgoUML framework as the result
+     * of a change to a model element. Do not call this method directly
+     * yourself.
+     * <p>Override this in any subclasses in order to restructure the FigNode
+     * due to change of any model element that this FigNode is listening to.</p>
+     * <p>This method automatically updates the stereotype rendering.</p>
+     * <p>The default behavior is to update the name and stereotype text.</p>
+     * <p>For e.g. a Package, if the visibility is changed 
      * via the properties panel, then
      * the display of it on the diagram has to follow the change.
-     * This is not handled here, but by the notationProviderName.
+     * This is not handled here, but by the notationProviderName.</p>
+     * <p>This method is guaranteed by the framework to be running on the 
+     * Swing/AWT thread.</p>
      *
-     * @param mee the ModelElementEvent that caused the change
+     * @param event the UmlChangeEvent that caused the change
      */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        if (mee == null) {
-            throw new IllegalArgumentException("event may never be null "
-                           + "with modelchanged");
-        }
-        Object owner = getOwner();
-        // If the element has been deleted, the caller will
-        // receive an InvalidElementException that it must handle.
+    protected void updateLayout(UmlChangeEvent event) {
+        assert event != null;
+        final Object owner = getOwner();
+        assert owner != null;
         if (owner == null) {
             return;
         }
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
+        boolean needDamage = false;
+        if (event instanceof AssociationChangeEvent 
+                || event instanceof AttributeChangeEvent) {
             if (notationProviderName != null) {
-                notationProviderName.updateListener(this, getOwner(), mee);
                 updateNameText();
             }
-            updateListeners(getOwner(), getOwner());
-            damage();
+            needDamage = true;
         }
-        if ((mee.getSource() == owner
-                && mee.getPropertyName().equals("stereotype"))) {
-            if (mee.getOldValue() != null) {
-                removeElementListener(mee.getOldValue());
-            }
-            if (mee.getNewValue() != null) {
-                addElementListener(mee.getNewValue(), "name");
-            }
+        if (event.getSource() == owner
+                && "stereotype".equals(event.getPropertyName())) {
             updateStereotypeText();
             updateStereotypeIcon();
+            needDamage = true;
+        }
+        if (needDamage) {
             damage();
         }
     }
-
 
     /**
      * Create a new model element contained in the fig owner.
