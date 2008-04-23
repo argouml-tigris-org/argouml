@@ -849,7 +849,7 @@ public interface Facade {
      *                candidate
      * @return true if handle is an Permission
      * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. Use
-     *             {@link #isAPackageImport()}
+     *             {@link #isAPackageImport(Object)}.
      * 
      */
     boolean isAPermission(Object handle);
@@ -1241,11 +1241,10 @@ public interface Facade {
     /**
      * Recognizer for Attributes and Features with classifier scope.
      * 
-     * @param handle
-     *            candidate
+     * @param handle candidate
      * @return true if handle has classifier scope.
-     * @deprecated for 0.25.4 by tfmorris - use {@link #isStatic()} which has
-     *             the same semantics, but is compatible with the UML 2.x
+     * @deprecated for 0.25.4 by tfmorris - use {@link #isStatic(Object)} which
+     *             has the same semantics, but is compatible with the UML 2.x
      *             naming.
      */
     @Deprecated

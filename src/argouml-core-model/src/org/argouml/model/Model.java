@@ -521,7 +521,7 @@ public final class Model {
     /**
      * Allows an external system to register itself to recieve mementos
      * created by the model implementation.
-     * @see {@link ModelMemento}
+     * @see ModelMemento
      *
      * @param observer the interested party
      * @deprecated use setModelCommandCreationObserver
@@ -534,7 +534,7 @@ public final class Model {
     /**
      * Allows an external system to register itself to receive commands
      * created by the model implementation.
-     * @see {@link ModelCommand}
+     * @see ModelCommand
      *
      * @param observer the interested party
      */
