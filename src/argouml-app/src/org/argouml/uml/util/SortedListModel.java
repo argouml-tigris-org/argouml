@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.util;
+package org.argouml.uml.util;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -31,7 +31,6 @@ import java.util.TreeSet;
 
 import javax.swing.AbstractListModel;
 
-import org.argouml.uml.util.PathComparator;
 
 
 /**

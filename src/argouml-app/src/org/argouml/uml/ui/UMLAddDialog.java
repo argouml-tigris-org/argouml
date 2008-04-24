@@ -56,7 +56,7 @@ import javax.swing.WindowConstants;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.util.SortedListModel;
+import org.argouml.uml.util.SortedListModel;
 
 /**
  * UMLAddDialog is a modal dialog which allows the user to do a multiple select
