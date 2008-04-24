@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,6 +46,7 @@ import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.PropPanelDiagram;
 import org.argouml.uml.diagram.ui.PropPanelString;
 import org.argouml.uml.diagram.ui.PropPanelUMLActivityDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLClassDiagram;
@@ -54,6 +55,7 @@ import org.argouml.uml.diagram.ui.PropPanelUMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLStateDiagram;
 import org.argouml.uml.diagram.ui.PropPanelUMLUseCaseDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.ui.behavior.activity_graphs.PropPanelActionState;
 import org.argouml.uml.ui.behavior.activity_graphs.PropPanelActivityGraph;
@@ -68,6 +70,7 @@ import org.argouml.uml.ui.behavior.collaborations.PropPanelClassifierRole;
 import org.argouml.uml.ui.behavior.collaborations.PropPanelCollaboration;
 import org.argouml.uml.ui.behavior.collaborations.PropPanelInteraction;
 import org.argouml.uml.ui.behavior.collaborations.PropPanelMessage;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelAction;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelActionSequence;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelArgument;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelCallAction;
@@ -95,6 +98,7 @@ import org.argouml.uml.ui.behavior.state_machines.PropPanelPseudostate;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSignalEvent;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSimpleState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelStateVertex;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelStubState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSubmachineState;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelSynchState;
@@ -111,6 +115,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelAssociationClass;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
 import org.argouml.uml.ui.foundation.core.PropPanelAttribute;
 import org.argouml.uml.ui.foundation.core.PropPanelClass;
+import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.uml.ui.foundation.core.PropPanelComment;
 import org.argouml.uml.ui.foundation.core.PropPanelComponent;
 import org.argouml.uml.ui.foundation.core.PropPanelConstraint;
@@ -123,10 +128,12 @@ import org.argouml.uml.ui.foundation.core.PropPanelFlow;
 import org.argouml.uml.ui.foundation.core.PropPanelGeneralization;
 import org.argouml.uml.ui.foundation.core.PropPanelInterface;
 import org.argouml.uml.ui.foundation.core.PropPanelMethod;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.core.PropPanelNode;
 import org.argouml.uml.ui.foundation.core.PropPanelOperation;
 import org.argouml.uml.ui.foundation.core.PropPanelParameter;
 import org.argouml.uml.ui.foundation.core.PropPanelPermission;
+import org.argouml.uml.ui.foundation.core.PropPanelRelationship;
 import org.argouml.uml.ui.foundation.core.PropPanelUsage;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelTagDefinition;
@@ -164,7 +171,8 @@ public class TabProps
 
     private boolean shouldBeEnabled = false;
     private JPanel blankPanel = new JPanel();
-    private Hashtable<Class, TabModelTarget> panels = new Hashtable<Class, TabModelTarget>();
+    private Hashtable<Class, TabModelTarget> panels = 
+        new Hashtable<Class, TabModelTarget>();
     private JPanel lastPanel;
     private String panelClassBaseName = "";
 
@@ -194,6 +202,8 @@ public class TabProps
     public TabProps(String tabName, String panelClassBase) {
         super(tabName);
         setIcon(new UpArrowIcon());
+        // TODO: This should be managed by the DetailsPane TargetListener - tfm
+        // remove the following line
         TargetManager.getInstance().addTargetListener(this);
         setOrientation(Horizontal.getInstance());
         panelClassBaseName = panelClassBase;
@@ -253,10 +263,11 @@ public class TabProps
      * @param t the new target
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
+    @Deprecated
     public void setTarget(Object t) {
         // targets ought to be UML objects or diagrams
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (!(t == null || Model.getFacade().isAUMLElement(t)
+        if (!(t == null || Model.getFacade().isAUMLElement(t) 
                 || t instanceof ArgoDiagram)) {
             return;
         }
@@ -267,6 +278,12 @@ public class TabProps
                 removeTargetListener((TargetListener) lastPanel);
             }
         }
+  
+        // TODO: No need to do anything if we're not visible      
+//        if (!isVisible()) {
+//            return;
+//        }
+        
         target = t;
         if (t == null) {
             add(blankPanel, BorderLayout.CENTER);
@@ -337,201 +354,23 @@ public class TabProps
     }
 
     /**
-     * A factory method to create a PropPanel for a particular model
-     * element.
+     * A factory method to create a PropPanel for a particular target (Diagram,
+     * UML Element or GEF Fig).
      *
-     * @param modelElement The model element
+     * @param targetObject the target object
      * @return A new prop panel to display any model element of the given type
      */
-    private TabModelTarget createPropPanel(Object modelElement) {
-
+    private TabModelTarget createPropPanel(Object targetObject) {
 	TabModelTarget propPanel = null;
 
-
-	
-        // Create prop panels for diagrams
-        if (modelElement instanceof UMLActivityDiagram) {
-            propPanel = new PropPanelUMLActivityDiagram();
-        } else if (modelElement instanceof UMLClassDiagram) {
-            propPanel = new PropPanelUMLClassDiagram();
-        } else if (modelElement instanceof UMLCollaborationDiagram) {
-            propPanel = new PropPanelUMLCollaborationDiagram();
-        } else if (modelElement instanceof UMLDeploymentDiagram) {
-            propPanel = new PropPanelUMLDeploymentDiagram();
-        } else if (modelElement instanceof UMLSequenceDiagram) {
-            propPanel = new PropPanelUMLSequenceDiagram();
-        } else if (modelElement instanceof UMLStateDiagram) {
-            propPanel = new PropPanelUMLStateDiagram();
-        } else if (modelElement instanceof UMLUseCaseDiagram) {
-            propPanel = new PropPanelUMLUseCaseDiagram();
-        }
-            // TODO: This needs to be in type hierarchy order to work properly
-            // and create the most specific property panel properly
-            
-        else if (Model.getFacade().isASubmachineState(modelElement)) {
-            propPanel = new PropPanelSubmachineState();
-        } else if (Model.getFacade().isASubactivityState(modelElement)) {
-            propPanel = new PropPanelSubactivityState();
-        } else if (Model.getFacade().isAAbstraction(modelElement)) {
-            propPanel = new PropPanelAbstraction();
-        } else if (Model.getFacade().isACallState(modelElement)) {
-            propPanel = new PropPanelCallState();
-        } else if (Model.getFacade().isAActionSequence(modelElement)) {
-            propPanel = new PropPanelActionSequence();
-        } else if (Model.getFacade().isAActionState(modelElement)) {
-            propPanel = new PropPanelActionState();
-        } else if (Model.getFacade().isAActivityGraph(modelElement)) {
-            propPanel = new PropPanelActivityGraph();
-        } else if (Model.getFacade().isAActor(modelElement)) {
-            propPanel = new PropPanelActor();
-        } else if (Model.getFacade().isAArgument(modelElement)) {
-            propPanel = new PropPanelArgument();
-        } else if (Model.getFacade().isAAssociationClass(modelElement)) {
-            propPanel = new PropPanelAssociationClass();
-        } else if (Model.getFacade().isAAssociationRole(modelElement)) {
-            propPanel = new PropPanelAssociationRole();
-        } else if (Model.getFacade().isAAssociation(modelElement)) {
-            propPanel = new PropPanelAssociation();
-        } else if (Model.getFacade().isAAssociationEndRole(modelElement)) {
-            propPanel = new PropPanelAssociationEndRole();
-        } else if (Model.getFacade().isAAssociationEnd(modelElement)) {
-            propPanel = new PropPanelAssociationEnd();
-        } else if (Model.getFacade().isAAttribute(modelElement)) {
-            propPanel = new PropPanelAttribute();
-        } else if (Model.getFacade().isACallAction(modelElement)) {
-            propPanel = new PropPanelCallAction();
-        } else if (Model.getFacade().isAClassifierInState(modelElement)) {
-            propPanel = new PropPanelClassifierInState();
-        } else if (Model.getFacade().isAClass(modelElement)) {
-            propPanel = new PropPanelClass();
-        } else if (Model.getFacade().isAClassifierRole(modelElement)) {
-            propPanel = new PropPanelClassifierRole();
-        } else if (Model.getFacade().isACollaboration(modelElement)) {
-            propPanel = new PropPanelCollaboration();
-        } else if (Model.getFacade().isAComment(modelElement)) {
-            propPanel = new PropPanelComment();
-        } else if (Model.getFacade().isAComponent(modelElement)) {
-            propPanel = new PropPanelComponent();
-        } else if (Model.getFacade().isAComponentInstance(modelElement)) {
-            propPanel = new PropPanelComponentInstance();
-        } else if (Model.getFacade().isACompositeState(modelElement)) {
-            propPanel = new PropPanelCompositeState();
-        } else if (Model.getFacade().isAConstraint(modelElement)) {
-            propPanel = new PropPanelConstraint();
-        } else if (Model.getFacade().isACreateAction(modelElement)) {
-            propPanel = new PropPanelCreateAction();
-        } else if (Model.getFacade().isAEnumeration(modelElement)) {
-            propPanel = new PropPanelEnumeration();
-        } else if (Model.getFacade().isADataType(modelElement)) {
-            propPanel = new PropPanelDataType();
-        } else if (Model.getFacade().isADestroyAction(modelElement)) {
-            propPanel = new PropPanelDestroyAction();
-        } else if (Model.getFacade().isAEnumerationLiteral(modelElement)) {
-            propPanel = new PropPanelEnumerationLiteral();
-        } else if (Model.getFacade().isAElementImport(modelElement)) {
-            propPanel = new PropPanelElementImport();
-        } else if (Model.getFacade().isAElementResidence(modelElement)) {
-            propPanel = new PropPanelElementResidence();
-        } else if (Model.getFacade().isAExtend(modelElement)) {
-            propPanel = new PropPanelExtend();
-        } else if (Model.getFacade().isAException(modelElement)) {
-            propPanel = new PropPanelException();
-        } else if (Model.getFacade().isAExtensionPoint(modelElement)) {
-            propPanel = new PropPanelExtensionPoint();
-        } else if (Model.getFacade().isAFinalState(modelElement)) {
-            propPanel = new PropPanelFinalState();
-        } else if (Model.getFacade().isAFlow(modelElement)) {
-            propPanel = new PropPanelFlow();
-        } else if (Model.getFacade().isAGeneralization(modelElement)) {
-            propPanel = new PropPanelGeneralization();
-        } else if (Model.getFacade().isAGuard(modelElement)) {
-            propPanel = new PropPanelGuard();
-        } else if (Model.getFacade().isAInclude(modelElement)) {
-            propPanel = new PropPanelInclude();
-        } else if (Model.getFacade().isAInteraction(modelElement)) {
-            propPanel = new PropPanelInteraction();
-        } else if (Model.getFacade().isAInterface(modelElement)) {
-            propPanel = new PropPanelInterface();
-        } else if (Model.getFacade().isALink(modelElement)) {
-            propPanel = new PropPanelLink();
-        } else if (Model.getFacade().isALinkEnd(modelElement)) {
-            propPanel = new PropPanelLinkEnd();
-        } else if (Model.getFacade().isAMessage(modelElement)) {
-            propPanel = new PropPanelMessage();
-        } else if (Model.getFacade().isAMethod(modelElement)) {
-            propPanel = new PropPanelMethod();
-        } else if (Model.getFacade().isAModel(modelElement)) {
-            propPanel = new PropPanelModel();
-        } else if (Model.getFacade().isANode(modelElement)) {
-            propPanel = new PropPanelNode();
-        } else if (Model.getFacade().isANodeInstance(modelElement)) {
-            propPanel = new PropPanelNodeInstance();
-        } else if (Model.getFacade().isAObject(modelElement)) {
-            propPanel = new PropPanelObject();
-        } else if (Model.getFacade().isAObjectFlowState(modelElement)) {
-            propPanel = new PropPanelObjectFlowState();
-        } else if (Model.getFacade().isAOperation(modelElement)) {
-            propPanel = new PropPanelOperation();
-        } else if (Model.getFacade().isAPackage(modelElement)) {
-            propPanel = new PropPanelPackage();
-        } else if (Model.getFacade().isAParameter(modelElement)) {
-            propPanel = new PropPanelParameter();
-        } else if (Model.getFacade().isAPartition(modelElement)) {
-            propPanel = new PropPanelPartition();
-        } else if (Model.getFacade().isAPackageImport(modelElement)) {
-            propPanel = new PropPanelPermission();
-        } else if (Model.getFacade().isAPseudostate(modelElement)) {
-            propPanel = new PropPanelPseudostate();
-        } else if (Model.getFacade().isAReception(modelElement)) {
-            propPanel = new PropPanelReception();
-        } else if (Model.getFacade().isAReturnAction(modelElement)) {
-            propPanel = new PropPanelReturnAction();
-        } else if (Model.getFacade().isASendAction(modelElement)) {
-            propPanel = new PropPanelSendAction();
-        } else if (Model.getFacade().isASignal(modelElement)) {
-            propPanel = new PropPanelSignal();
-        } else if (Model.getFacade().isASimpleState(modelElement)) {
-            propPanel = new PropPanelSimpleState();
-        } else if (Model.getFacade().isAStateMachine(modelElement)) {
-            propPanel = new PropPanelStateMachine();
-        } else if (Model.getFacade().isAStereotype(modelElement)) {
-            propPanel = new PropPanelStereotype();
-        } else if (Model.getFacade().isAStimulus(modelElement)) {
-            propPanel = new PropPanelStimulus();
-        } else if (Model.getFacade().isAStubState(modelElement)) {
-            propPanel = new PropPanelStubState();
-        } else if (Model.getFacade().isASubsystem(modelElement)) {
-            propPanel = new PropPanelSubsystem();
-        } else if (Model.getFacade().isASynchState(modelElement)) {
-            propPanel = new PropPanelSynchState();
-        } else if (Model.getFacade().isATaggedValue(modelElement)) {
-            propPanel = new PropPanelTaggedValue();
-        } else if (Model.getFacade().isATagDefinition(modelElement)) {
-            propPanel = new PropPanelTagDefinition();
-        } else if (Model.getFacade().isATerminateAction(modelElement)) {
-            propPanel = new PropPanelTerminateAction();
-        } else if (Model.getFacade().isATransition(modelElement)) {
-            propPanel = new PropPanelTransition();
-        } else if (Model.getFacade().isAUninterpretedAction(modelElement)) {
-            propPanel = new PropPanelUninterpretedAction();
-        } else if (Model.getFacade().isAUsage(modelElement)) {
-            propPanel = new PropPanelUsage();
-        } else if (Model.getFacade().isAUseCase(modelElement)) {
-            propPanel = new PropPanelUseCase();
-        } else if (Model.getFacade().isACallEvent(modelElement)) {
-            propPanel = new PropPanelCallEvent();
-        } else if (Model.getFacade().isAChangeEvent(modelElement)) {
-            propPanel = new PropPanelChangeEvent();
-        } else if (Model.getFacade().isASignalEvent(modelElement)) {
-            propPanel = new PropPanelSignalEvent();
-        } else if (Model.getFacade().isATimeEvent(modelElement)) {
-            propPanel = new PropPanelTimeEvent();
-        } else if (Model.getFacade().isADependency(modelElement)) {
-            propPanel = new PropPanelDependency();
-        } else if (modelElement instanceof FigText) {
+	if (targetObject instanceof UMLDiagram) {
+            propPanel = getDiagramPropPanel((UMLDiagram) targetObject);
+        } else if (Model.getFacade().isAElement(targetObject)) {
+            propPanel = getElementPropPanel(targetObject);
+        } else if (targetObject instanceof FigText) {
             propPanel = new PropPanelString();
         }
-        
+
         if (propPanel instanceof Orientable) {
             ((Orientable) propPanel).setOrientation(getOrientation());
         }
@@ -544,6 +383,242 @@ public class TabProps
         return propPanel;
     }
 
+    // Create prop panels for diagrams
+    private PropPanelDiagram getDiagramPropPanel(UMLDiagram diagram) {
+        if (diagram instanceof UMLActivityDiagram) {
+            return new PropPanelUMLActivityDiagram();
+        } else if (diagram instanceof UMLClassDiagram) {
+            return new PropPanelUMLClassDiagram();
+        } else if (diagram instanceof UMLCollaborationDiagram) {
+            return new PropPanelUMLCollaborationDiagram();
+        } else if (diagram instanceof UMLDeploymentDiagram) {
+            return new PropPanelUMLDeploymentDiagram();
+        } else if (diagram instanceof UMLSequenceDiagram) {
+            return new PropPanelUMLSequenceDiagram();
+        } else if (diagram instanceof UMLStateDiagram) {
+            return new PropPanelUMLStateDiagram();
+        } else if (diagram instanceof UMLUseCaseDiagram) {
+            return new PropPanelUMLUseCaseDiagram();
+        }
+        throw new IllegalArgumentException("Unsupported diagram type");
+    }
+
+    
+    private PropPanelModelElement getElementPropPanel(Object element) {
+        if (Model.getFacade().isAClassifier(element)) {
+            return getClassifierPropPanel(element);
+        } else if (Model.getFacade().isARelationship(element)) {
+            return getRelationshipPropPanel(element);
+        } else if (Model.getFacade().isAStateVertex(element)) {
+            return getStateVertexPropPanel(element);
+        } else if (Model.getFacade().isAActionSequence(element)) {
+            // This is not a subtype of PropPanelAction, so it must come first
+            return new PropPanelActionSequence();
+        } else if (Model.getFacade().isAAction(element)) {
+            return getActionPropPanel(element);
+            // TODO: This needs to be in type hierarchy order to work properly
+            // and create the most specific property panel properly.  Everything
+            // which has been factored out of this method has been reviewed.
+            // Anything below this point still needs to be review - tfm
+        } else if (Model.getFacade().isAActivityGraph(element)) {
+            return new PropPanelActivityGraph();
+        } else if (Model.getFacade().isAArgument(element)) {
+            return new PropPanelArgument();
+        } else if (Model.getFacade().isAAssociationEndRole(element)) {
+            return new PropPanelAssociationEndRole();
+        } else if (Model.getFacade().isAAssociationEnd(element)) {
+            return new PropPanelAssociationEnd();
+        } else if (Model.getFacade().isAAttribute(element)) {
+            return new PropPanelAttribute();
+        } else if (Model.getFacade().isACollaboration(element)) {
+            return new PropPanelCollaboration();
+        } else if (Model.getFacade().isAComment(element)) {
+            return new PropPanelComment();
+        } else if (Model.getFacade().isAComponentInstance(element)) {
+            return new PropPanelComponentInstance();
+        } else if (Model.getFacade().isAConstraint(element)) {
+            return new PropPanelConstraint();
+        } else if (Model.getFacade().isAEnumerationLiteral(element)) {
+            return new PropPanelEnumerationLiteral();
+        } else if (Model.getFacade().isAElementImport(element)) {
+            return new PropPanelElementImport();
+        } else if (Model.getFacade().isAElementResidence(element)) {
+            return new PropPanelElementResidence();
+        } else if (Model.getFacade().isAExtensionPoint(element)) {
+            return new PropPanelExtensionPoint();
+        } else if (Model.getFacade().isAGuard(element)) {
+            return new PropPanelGuard();
+        } else if (Model.getFacade().isAInteraction(element)) {
+            return new PropPanelInteraction();
+        } else if (Model.getFacade().isALink(element)) {
+            return new PropPanelLink();
+        } else if (Model.getFacade().isALinkEnd(element)) {
+            return new PropPanelLinkEnd();
+        } else if (Model.getFacade().isAMessage(element)) {
+            return new PropPanelMessage();
+        } else if (Model.getFacade().isAMethod(element)) {
+            return new PropPanelMethod();
+        } else if (Model.getFacade().isAModel(element)) {
+            return new PropPanelModel();
+        } else if (Model.getFacade().isANodeInstance(element)) {
+            return new PropPanelNodeInstance();
+        } else if (Model.getFacade().isAObject(element)) {
+            return new PropPanelObject();
+        } else if (Model.getFacade().isAOperation(element)) {
+            return new PropPanelOperation();
+        } else if (Model.getFacade().isAPackage(element)) {
+            return new PropPanelPackage();
+        } else if (Model.getFacade().isAParameter(element)) {
+            return new PropPanelParameter();
+        } else if (Model.getFacade().isAPartition(element)) {
+            return new PropPanelPartition();
+        } else if (Model.getFacade().isAReception(element)) {
+            return new PropPanelReception();
+        } else if (Model.getFacade().isAStateMachine(element)) {
+            return new PropPanelStateMachine();
+        } else if (Model.getFacade().isAStereotype(element)) {
+            return new PropPanelStereotype();
+        } else if (Model.getFacade().isAStimulus(element)) {
+            return new PropPanelStimulus();
+        } else if (Model.getFacade().isASubsystem(element)) {
+            return new PropPanelSubsystem();
+        } else if (Model.getFacade().isATaggedValue(element)) {
+            return new PropPanelTaggedValue();
+        } else if (Model.getFacade().isATagDefinition(element)) {
+            return new PropPanelTagDefinition();
+        } else if (Model.getFacade().isATransition(element)) {
+            return new PropPanelTransition();
+        } else if (Model.getFacade().isACallEvent(element)) {
+            return new PropPanelCallEvent();
+        } else if (Model.getFacade().isAChangeEvent(element)) {
+            return new PropPanelChangeEvent();
+        } else if (Model.getFacade().isASignalEvent(element)) {
+            return new PropPanelSignalEvent();
+        } else if (Model.getFacade().isATimeEvent(element)) {
+            return new PropPanelTimeEvent();
+        } else if (Model.getFacade().isADependency(element)) {
+            return new PropPanelDependency();
+        }
+        throw new IllegalArgumentException("Unsupported Element type");
+    }
+    
+    private PropPanelClassifier getClassifierPropPanel(Object element) {
+        if (Model.getFacade().isAActor(element)) {
+            return new PropPanelActor();
+        } else if (Model.getFacade().isAAssociationClass(element)) {
+            return new PropPanelAssociationClass();
+        } else if (Model.getFacade().isAClass(element)) {
+            return new PropPanelClass();
+        } else if (Model.getFacade().isAClassifierInState(element)) {
+            return new PropPanelClassifierInState();
+        } else if (Model.getFacade().isAClassifierRole(element)) {
+            return new PropPanelClassifierRole();
+        } else if (Model.getFacade().isAComponent(element)) {
+            return new PropPanelComponent();
+        } else if (Model.getFacade().isADataType(element)) {
+            if (Model.getFacade().isAEnumeration(element)) {
+                return new PropPanelEnumeration();
+            } else {
+                return new PropPanelDataType();
+            }
+        } else if (Model.getFacade().isAInterface(element)) {
+            return new PropPanelInterface();
+        } else if (Model.getFacade().isANode(element)) {
+            return new PropPanelNode();
+        } else if (Model.getFacade().isASignal(element)) {
+            if (Model.getFacade().isAException(element)) {
+                return new PropPanelException();
+            } else {
+                return new PropPanelSignal();
+            }
+        } else if (Model.getFacade().isAUseCase(element)) {
+            return new PropPanelUseCase();
+        }
+        throw new IllegalArgumentException("Unsupported Element type");
+    }
+
+    private PropPanelRelationship getRelationshipPropPanel(Object element) {
+        if (Model.getFacade().isAAssociation(element)) {
+            if (Model.getFacade().isAAssociationRole(element)) {
+                return new PropPanelAssociationRole();
+            } else {
+                return new PropPanelAssociation();
+            }
+        } else if (Model.getFacade().isADependency(element)) {
+            if (Model.getFacade().isAAbstraction(element)) {
+                return new PropPanelAbstraction();
+            } else if (Model.getFacade().isAPackageImport(element)) {
+                return new PropPanelPermission();
+            } else if (Model.getFacade().isAUsage(element)) {
+                return new PropPanelUsage();
+            } else {
+                return new PropPanelDependency();
+            }
+        } else if (Model.getFacade().isAExtend(element)) {
+            return new PropPanelExtend();
+        } else if (Model.getFacade().isAFlow(element)) {
+            return new PropPanelFlow();
+        } else if (Model.getFacade().isAGeneralization(element)) {
+            return new PropPanelGeneralization();
+        } else if (Model.getFacade().isAInclude(element)) {
+            return new PropPanelInclude();
+        }
+        throw new IllegalArgumentException("Unsupported Relationship type");
+    }
+
+    private PropPanelAction getActionPropPanel(Object action) {
+        if (Model.getFacade().isACallAction(action)) {
+            return new PropPanelCallAction();
+        } else if (Model.getFacade().isACreateAction(action)) {
+            return new PropPanelCreateAction();
+        } else if (Model.getFacade().isADestroyAction(action)) {
+            return new PropPanelDestroyAction();
+        } else if (Model.getFacade().isAReturnAction(action)) {
+            return new PropPanelReturnAction();
+        } else if (Model.getFacade().isASendAction(action)) {
+            return new PropPanelSendAction();
+        } else if (Model.getFacade().isATerminateAction(action)) {
+            return new PropPanelTerminateAction();
+        } else if (Model.getFacade().isAUninterpretedAction(action)) {
+            return new PropPanelUninterpretedAction();
+        }
+        throw new IllegalArgumentException("Unsupported Action type");
+    }
+    
+    private PropPanelStateVertex getStateVertexPropPanel(Object element) {
+        if (Model.getFacade().isAState(element)) {
+            if (Model.getFacade().isAActionState(element)) {
+                return new PropPanelActionState();
+            } else if (Model.getFacade().isACallState(element)) {
+                return new PropPanelCallState();
+            } else if (Model.getFacade().isACompositeState(element)) {
+                if (Model.getFacade().isASubmachineState(element)) {
+                    if (Model.getFacade().isASubactivityState(element)) {
+                        return new PropPanelSubactivityState();
+                    } else {
+                        return new PropPanelSubmachineState();
+                    }
+                } else {
+                    return new PropPanelCompositeState();
+                }
+            } else if (Model.getFacade().isAFinalState(element)) {
+                return new PropPanelFinalState();
+            } else if (Model.getFacade().isAObjectFlowState(element)) {
+                return new PropPanelObjectFlowState();
+            } else if (Model.getFacade().isASimpleState(element)) {
+                return new PropPanelSimpleState();
+            }
+        } else if (Model.getFacade().isAPseudostate(element)) {
+            return new PropPanelPseudostate();
+        } else if (Model.getFacade().isAStubState(element)) {
+            return new PropPanelStubState();
+        } else if (Model.getFacade().isASynchState(element)) {
+            return new PropPanelSynchState();
+        }
+        throw new IllegalArgumentException("Unsupported State type");
+    }
+
+    
     /**
      * @return the name
      */
@@ -561,6 +636,7 @@ public class TabProps
      * @return the target
      * @see org.argouml.ui.TabTarget#getTarget()
      */
+    @Deprecated
     public Object getTarget() {
         return target;
     }
