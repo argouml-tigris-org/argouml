@@ -287,10 +287,10 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 
     /**
-     * Utility method to construct a DefaultListModel from a List
+     * Utility method to construct a AbstractListModel from a List
      * 
      * @param list the given list
-     * @return DefaultListModel
+     * @return AbstractListModel
      */
     protected AbstractListModel constructListModel(List list) {
         SortedListModel model = new SortedListModel();
