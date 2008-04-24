@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,12 @@ import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
  * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1 Semantics.
- * OMG document ad/97-08-04.
+ * OMG document ad/97-08-04. <p>
+ * 
+ * Names of contained elements in a namespace (i.e. the design material) 
+ * must be unique. 
+ * This condition does not apply to names of Generalizations, 
+ * or elements without name.
  */
 public class CrNameConflict extends CrUML {
 
