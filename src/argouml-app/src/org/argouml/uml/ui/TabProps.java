@@ -237,13 +237,13 @@ public class TabProps
      * be displayed in the detatils pane whenever an element
      * of the given metaclass is selected.
      *
-     * @param c the metaclass whose details show be displayed
+     * @param clazz the metaclass whose details show be displayed
      *          in the property panel p
-     * @param p an instance of the property panel for the metaclass m
+     * @param panel an instance of the property panel for the metaclass m
      *
      */
-    public void addPanel(Class c, PropPanel p) {
-        panels.put(c, p);
+    public void addPanel(Class clazz, PropPanel panel) {
+        panels.put(clazz, panel);
     }
 
 
@@ -260,15 +260,15 @@ public class TabProps
      *         the visibility of this method will change in the future,
      *         replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
      *
-     * @param t the new target
+     * @param target the new target
      * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     @Deprecated
-    public void setTarget(Object t) {
+    public void setTarget(Object target) {
         // targets ought to be UML objects or diagrams
-        t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (!(t == null || Model.getFacade().isAUMLElement(t) 
-                || t instanceof ArgoDiagram)) {
+        target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
+        if (!(target == null || Model.getFacade().isAUMLElement(target) 
+                || target instanceof ArgoDiagram)) {
             return;
         }
 
@@ -284,15 +284,15 @@ public class TabProps
 //            return;
 //        }
         
-        target = t;
-        if (t == null) {
+        this.target = target;
+        if (target == null) {
             add(blankPanel, BorderLayout.CENTER);
             shouldBeEnabled = false;
             lastPanel = blankPanel;
         } else {
             shouldBeEnabled = true;
             TabModelTarget newPanel = null;
-            newPanel = findPanelFor(t);
+            newPanel = findPanelFor(target);
             if (newPanel != null) {
                 addTargetListener(newPanel);
             }
@@ -326,27 +326,27 @@ public class TabProps
         // TODO: No test coverage for this or createPropPanel? - tfm
         
         /* 1st attempt: get a panel that we created before: */
-        TabModelTarget p = panels.get(trgt.getClass());
-        if (p != null) {
+        TabModelTarget panel = panels.get(trgt.getClass());
+        if (panel != null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Getting prop panel for: " + trgt.getClass().getName()
-                        + ", " + "found (in cache?) " + p);
+                        + ", " + "found (in cache?) " + panel);
             }
-            return p;
+            return panel;
         }
 
         /* 2nd attempt: If we didn't find the panel then
          * use the factory to create a new one
 	 */
-        p = createPropPanel(trgt);
-        if (p != null) {
-            LOG.debug("Factory created " + p.getClass().getName()
+        panel = createPropPanel(trgt);
+        if (panel != null) {
+            LOG.debug("Factory created " + panel.getClass().getName()
                     + " for " + trgt.getClass().getName());
-            panels.put(trgt.getClass(), p);
-            if (p instanceof PropPanel) {
-        	((PropPanel) p).buildToolbar();
+            panels.put(trgt.getClass(), panel);
+            if (panel instanceof PropPanel) {
+        	((PropPanel) panel).buildToolbar();
             }
-            return p;
+            return panel;
         }
 
         LOG.error("Failed to create a prop panel for : " + trgt);
@@ -648,28 +648,24 @@ public class TabProps
      * If the target given is a Fig, a check is made if the fig
      * has an owning modelelement and occurs on
      * the current diagram. If so, that modelelement is the target.
-     * @param t the target
+     * @param target the target
      * @return true if property panel should be enabled
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(Object)
      */
-    public boolean shouldBeEnabled(Object t) {
-        t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if ((t instanceof Diagram || Model.getFacade().isAUMLElement(t))
-                && findPanelFor(t) != null) {
-            shouldBeEnabled = true;
-        } else {
-            shouldBeEnabled = false;
+    public boolean shouldBeEnabled(Object target) {
+        if (target instanceof Fig) {
+            target = ((Fig) target).getOwner();
         }
-
-        return shouldBeEnabled;
+        return ((target instanceof Diagram || Model.getFacade().isAUMLElement(target))
+                && findPanelFor(target) != null);
     }
 
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetAdded(TargetEvent e) {
+    public void targetAdded(TargetEvent targetEvent) {
         setTarget(TargetManager.getInstance().getSingleTarget());
-        fireTargetAdded(e);
+        fireTargetAdded(targetEvent);
         if (listenerList.getListenerCount() > 0) {
             validate();
             repaint();
@@ -680,9 +676,9 @@ public class TabProps
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetRemoved(TargetEvent e) {
+    public void targetRemoved(TargetEvent targetEvent) {
         setTarget(TargetManager.getInstance().getSingleTarget());
-        fireTargetRemoved(e);
+        fireTargetRemoved(targetEvent);
         validate();
         repaint();
     }
@@ -690,9 +686,9 @@ public class TabProps
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetSet(TargetEvent e) {
+    public void targetSet(TargetEvent targetEvent) {
         setTarget(TargetManager.getInstance().getSingleTarget());
-        fireTargetSet(e);
+        fireTargetSet(targetEvent);
         validate();
         repaint();
     }
