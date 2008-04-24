@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,6 +41,16 @@ import org.argouml.model.Model;
  */
 public class PathComparator implements Comparator {
 
+    private Collator collator;
+    
+    /**
+     * Construct a PathComparator.
+     */
+    public PathComparator() {
+        collator = Collator.getInstance();
+        collator.setStrength(Collator.PRIMARY);
+    }
+    
     /**
      * Compare two UML elements names, ignoring case, using names from the path
      * as tie breakers.
@@ -54,28 +64,44 @@ public class PathComparator implements Comparator {
         if (o1.equals(o2)) {
             return 0;
         }
-        // Elements are collated first by name and then by 
-        // their enclosing path to distinguish them
-        List<String> path1 = Model.getModelManagementHelper().getPathList(o1);
-        Collections.reverse(path1);
-        List<String> path2 = Model.getModelManagementHelper().getPathList(o2);
-        Collections.reverse(path2);
-        return compareStringLists(path1, path2);
+        // Elements are collated first by name hoping for a quick solution
+        String name1, name2;
+        try {
+            name1 = Model.getFacade().getName(o1);
+            name2 = Model.getFacade().getName(o2);
+        } catch (IllegalArgumentException e) {
+            throw new ClassCastException("Model element required");
+        }
+        int comparison = collator.compare(name1, name2);
+        if (comparison != 0) {
+            return comparison;
+        } else {
+            // and then by their enclosing path to fully distinguish them
+            return comparePaths(o1, o2);
+        }
+        
     }
 
     /*
-     * Compare two lists of strings using a primary strength text collator. 
+     * Compare path of two elements in reverse order (inner to outer)
+     * using a primary strength text collator. 
      * This will collate e, E, é, É together, but not eliminate non-identical
      * strings which collate in the same place.
      * 
      * @return equivalent of list1.compareTo(list2)
      */
-    private int compareStringLists(List<String> list1, List<String> list2) {
-        Collator collator = Collator.getInstance();
-        collator.setStrength(Collator.PRIMARY);
-        Iterator<String> i2 = list2.iterator();
-        Iterator<String> i1 = list1.iterator();
-        boolean caseDiffers = false;
+    private int comparePaths(Object o1, Object o2) {
+
+        List<String> path1 = 
+            Model.getModelManagementHelper().getPathList(o1);
+        Collections.reverse(path1);
+        List<String> path2 = 
+            Model.getModelManagementHelper().getPathList(o2);
+        Collections.reverse(path2);
+        
+        Iterator<String> i2 = path2.iterator();
+        Iterator<String> i1 = path1.iterator();
+        int caseSensitiveComparison = 0;
         while (i2.hasNext()) {
             String name2 = i2.next();
             if (!i1.hasNext()) {
@@ -89,23 +115,28 @@ public class PathComparator implements Comparator {
             if (comparison != 0) {
                 return comparison;
             }
-            caseDiffers = caseDiffers | !(name1.equals(name2));
+            // Keep track of first non-equal comparison to use in case the
+            // case-insensitive comparisons all end up equal
+            if (caseSensitiveComparison == 0) {
+                caseSensitiveComparison = name1.compareTo(name2);
+            }
         }
         if (i2.hasNext()) {
             return 1;
         }
         // If the strings differed only in non-primary characteristics at
-        // some point (case, accent, etc) pick an arbitrary collating order.
-        // We don't call them equal to keep them from being merged in the list.
-        if (caseDiffers) {
-            return 1;
+        // some point (case, accent, etc) pick an arbitrary, but stable, 
+        // collating order.
+        if (caseSensitiveComparison != 0) {
+            return caseSensitiveComparison;
         }
         // It's illegal in UML to have multiple elements in a namespace with
         // the same name, but if it happens, keep them distinct so the user
-        // has a chance of catching the error.  Pick an arbitrary collating 
-        // order.
-        // Note: this may make the collating order unstable.
-        return 1;
+        // has a chance of catching the error.  Pick an arbitrary, but stable,
+        // collating order.
+        // We don't call them equal because otherwise one will get eliminated
+        // from the TreeSet where this comparator is used.
+        return o1.toString().compareTo(o2.toString());
     }
 }
 
