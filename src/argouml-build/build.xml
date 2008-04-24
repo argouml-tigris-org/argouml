@@ -70,7 +70,7 @@ order. The subdir/build.xml files are used by the Eclipse setup.
   -->
 
 <project basedir=".." default="package" name="argouml">
-
+  
   <!-- =================================================================== -->
   <!-- Global initialization                                               -->
   <!-- =================================================================== -->
@@ -241,7 +241,9 @@ Property files to be searched:
     <ant dir="argouml-core-infra" inheritAll="false"           target="jar"/>
     <ant dir="argouml-core-model" inheritAll="false"           target="jar"/>
     <ant dir="argouml-core-model-mdr" inheritAll="false"       target="jar"/>
-<!--    <ant dir="model-euml" inheritAll="false"      target="jar"/> -->
+<!--
+    <ant dir="argouml-core-model-euml" inheritAll="false"      target="jar"/>
+-->
     <ant dir="argouml-app" inheritAll="false"                  target="jar"/>
 
     <!-- Copy everything to the build directory -->
@@ -604,6 +606,26 @@ Can't we use a single target with dependencies? tfm -->
   <!-- Section with static analysis things.                                -->
   <!-- ################################################################### -->
 
+          
+  <!-- ================================= 
+          target: checkstyle              
+       ================================= -->
+    <target name="checkstyle" depends="init" 
+      description="--> Run Checkstyle on sources">
+      
+    <taskdef resource="checkstyletask.properties"
+               classpath="${argo.tools.dir}/checkstyle-4.3/checkstyle-all-4.3.jar"/>
+        
+    <checkstyle config="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml" 
+      properties="${argo.tools.dir}/checkstyle/checkstyle-ant.properties"> 
+      <fileset dir="${argo.root.dir}/argouml-app/src" includes="**/*.java"
+        excludes="**/JavaRecognizer.java **/JavaLexer.java **/JavaTokenTypes.java"/>
+      <formatter type="plain"/>
+      <formatter type="xml" toFile="${argo.build.dir}/checkstyle_errors.xml"/>
+    </checkstyle>
+      
+    </target>
+
   <!-- =================================================================== -->
   <!-- Perform JDepend to find about the structure in ArgoUML.             -->
   <!-- =================================================================== -->
@@ -623,7 +645,7 @@ Cyclic - If the package contains a dependency cycle
 For details see http://www.clarkware.com/software/JDepend.html.
     </echo>
     <java classname="jdepend.swingui.JDepend" failonerror="true" fork="true">
-      <arg value="."/>
+      <arg value="${argo.root.dir}/argouml-app/src/org"/>
       <classpath>
         <path refid="ant.optional.classpath"/>
       </classpath>
@@ -684,7 +706,8 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <ruleset>basic</ruleset>
       <formatter type="html" toFile="${pmd.reports.dir}/pmd-report.html" 
         linkPrefix="http://pmd.sourceforge.net/xref/"/>
-      <fileset dir="${argo.src.dir}/org" includes="**/*.java">
+      <!-- TODO: Need other parts of source tree here -->
+      <fileset dir="${argo.root.dir}/argouml-app/src/org" includes="**/*.java">
         <exclude name="**/JavaLexer.java"/>
         <exclude name="**/JavaRecognizer.java"/>
         <exclude name="**/JavaTokenTypes.java"/>
@@ -700,7 +723,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
     <delete file="${cpd.report.file}.*"/>
     <cpd minimumTokenCount="100" outputFile="${cpd.report.file}.xml" 
       format="xml" encoding="UTF-8">
-      <fileset dir="${argo.src.dir}">
+      <fileset dir="${argo.root.dir}/argouml-app/src">
         <include name="**/*.java"/>
         <exclude name="**/JavaLexer.java"/>
         <exclude name="**/JavaRecognizer.java"/>
@@ -740,7 +763,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- TODO: This target is not yet tested with the new structure. 
   depends="compile"
   -->
-  <target name="classycle" 
+  <target name="classycle" depends="init"
         description="Analyze sources for cyclic dependencies using Classcycle">
     <echo>
   Running classcyle on ${source.dir}.
@@ -767,3 +790,4 @@ For details see http://www.clarkware.com/software/JDepend.html.
 
 </project>
 <!-- End of file -->
+
