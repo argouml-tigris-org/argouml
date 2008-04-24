@@ -17136,6 +17136,17 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </sect2>
 
+        <sect2 id="critics.CrNameConflict">
+
+          <title>Name conflict in a namespace</title>
+
+          <para>The namespace (e.g. package) concerned 
+          contains a class or interface specified that has 
+          the same name as another (in the same namespace), 
+          which is bad design and will prevent valid code generation.</para>
+
+        </sect2>
+
         <sect2 id="critics.CrDisambigClassName">
 
           <title>Choose a Unique Name for a model element (Classes and 
