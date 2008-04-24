@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 /**
  * The properties panel for a Generalization.
  */
-public class PropPanelGeneralization extends PropPanelModelElement {
+public class PropPanelGeneralization extends PropPanelRelationship {
 
     /**
      * The serial version.

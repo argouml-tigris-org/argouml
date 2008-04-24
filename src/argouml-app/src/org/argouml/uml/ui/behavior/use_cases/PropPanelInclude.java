@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,19 +29,15 @@ import javax.swing.JList;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.PropPanelRelationship;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 
 /**
  * Builds the property panel for an Include relationship.<p>
  *
- * This is a type of Relationship, but, since Relationship has no
- * semantic meaning of its own, we derive directly from
- * PropPanelModelElement (as other children of Relationship do).<p>
- *
  * @author Jeremy Bennett
  */
-public class PropPanelInclude extends PropPanelModelElement {
+public class PropPanelInclude extends PropPanelRelationship {
 
     /**
      * The serial version.
