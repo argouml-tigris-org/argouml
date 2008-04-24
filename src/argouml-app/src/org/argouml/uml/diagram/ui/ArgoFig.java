@@ -28,8 +28,8 @@ import org.argouml.kernel.Project;
 
 /**
  * An interface that all ArgoUML Figs are required to interface. It provides a
- * single place to specify behaviors that we want all Figs to have since with
- * don't have access to the GEF class hiearchy (and it's made up of concrete
+ * single place to specify behaviors that we want all Figs to have since we
+ * don't have access to the GEF class hierarchy (and it is made up of concrete
  * classes instead of interfaces.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
@@ -40,9 +40,9 @@ public interface ArgoFig {
     /**
      * Set the owning project for this Fig.
      * 
-     * @param p the project
+     * @param project the project
      */
-    public void setProject(Project p);
+    public void setProject(Project project);
 
     /**
      * Get the owning project for this fig.
