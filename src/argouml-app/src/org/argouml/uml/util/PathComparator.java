@@ -53,7 +53,8 @@ public class PathComparator implements Comparator {
     
     /**
      * Compare two UML elements names, ignoring case, using names from the path
-     * as tie breakers.
+     * as tie breakers.  As a convenience, we also compare simple strings using
+     * the same primary strength collator.
      * 
      * @param o1 first model element
      * @param o2 second model element
@@ -61,8 +62,20 @@ public class PathComparator implements Comparator {
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     public int compare(Object o1, Object o2) {
+        if (o1 == null) {
+            if (o2 == null) {
+                return 0;
+            }
+            return -1;
+        }
+        if (o2 == null) {
+            return 1;
+        }
         if (o1.equals(o2)) {
             return 0;
+        }
+        if (o1 instanceof String && o2 instanceof String) {
+            return collator.compare((String) o1, (String) o2);
         }
         // Elements are collated first by name hoping for a quick solution
         String name1, name2;
@@ -70,16 +83,16 @@ public class PathComparator implements Comparator {
             name1 = Model.getFacade().getName(o1);
             name2 = Model.getFacade().getName(o2);
         } catch (IllegalArgumentException e) {
-            throw new ClassCastException("Model element required");
+            throw new ClassCastException("Model element or String required");
         }
-        int comparison = collator.compare(name1, name2);
-        if (comparison != 0) {
-            return comparison;
-        } else {
-            // and then by their enclosing path to fully distinguish them
-            return comparePaths(o1, o2);
+        if (name1 != null && name2 != null) {
+            int comparison = collator.compare(name1, name2);
+            if (comparison != 0) {
+                return comparison;
+            }
         }
-        
+        // and then by their enclosing path to fully distinguish them
+        return comparePaths(o1, o2);
     }
 
     /*
@@ -108,17 +121,35 @@ public class PathComparator implements Comparator {
                 return -1;
             }
             String name1 = i1.next();
+            int comparison;
             if (name1 == null) {
-                return -1;
+                if (name2 == null) {
+                    comparison = 0; 
+                } else {
+                    comparison = -1;
+                }
+            } else if (name2 == null) {
+                comparison = 1;
+            } else {
+                comparison = collator.compare(name1, name2);
             }
-            int comparison = collator.compare(name1, name2);
             if (comparison != 0) {
                 return comparison;
             }
             // Keep track of first non-equal comparison to use in case the
             // case-insensitive comparisons all end up equal
             if (caseSensitiveComparison == 0) {
-                caseSensitiveComparison = name1.compareTo(name2);
+                if (name1 == null) {
+                    if (name2 == null) {
+                        caseSensitiveComparison = 0;
+                    } else {
+                        caseSensitiveComparison = -1;
+                    }
+                } else if (name2 == null) {
+                    caseSensitiveComparison = 1;
+                } else {
+                    caseSensitiveComparison = name1.compareTo(name2);
+                }
             }
         }
         if (i2.hasNext()) {

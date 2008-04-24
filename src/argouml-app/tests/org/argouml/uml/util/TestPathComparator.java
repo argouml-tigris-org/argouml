@@ -54,7 +54,11 @@ public class TestPathComparator extends TestCase {
         Object root = Model.getModelManagementFactory().createModel();
         setName(root, "rootModel");
         Object unnamed1 = Model.getCoreFactory().buildClass(root);
+        // Name is set to the empty string (yuck!) by default - fix it
+        setName(unnamed1, null);
+        
         Object unnamed2 = Model.getCoreFactory().buildClass(root);
+        setName(unnamed2, null);
         Object a = Model.getCoreFactory().buildClass("a", root);
         Object a1 = Model.getCoreFactory().buildClass("a", root);
         Object b = Model.getCoreFactory().buildClass("b", root);
@@ -64,6 +68,16 @@ public class TestPathComparator extends TestCase {
         Object ba = Model.getCoreFactory().buildClass("b", a);    
         Object bc = Model.getCoreFactory().buildClass("b", c);    
         
+        assertEquals("Two nulls should be equal", 0, comp.compare(null, null));
+        
+        assertEquals("Null should be less than anything", -1, 
+                comp.compare(null, ""));
+        assertEquals("Null should be less than anything", 1, 
+                comp.compare("", null));
+        
+        assertEquals("Simple string compare failed", comp.compare("a","b"),
+                "a".compareTo("b"));
+
         assertFalse("Two different unnamed elements should not be equal", 
                 comp.compare(unnamed1, unnamed2) == 0);
         assertEquals("Unnamed elements should collate before named", -1, 
