@@ -98,7 +98,12 @@ Building this requires:
       <fileset dir="../argouml-core-model-mdr/build/">
         <include name="*.jar"/>
       </fileset>
+      <fileset dir="${argo.tools.dir}/cobertura-1.9/">
+        <include name="cobertura.jar"/>
+        <include name="lib/*.jar"/>
+      </fileset>
     </path>
+
 
     <!-- In order to use ant optional tasks which use jars that are not -->
     <!-- copied into ANT_HOME/lib, we must declare the tasks ourselves. -->
@@ -112,6 +117,18 @@ Building this requires:
               value="${argo.build.version}-${DSTAMP}-${TSTAMP}"/>
 
     <property name="version.package" value="org/argouml/application"/>
+
+    <property name="cobertura.dir" value="${argo.tools.dir}/cobertura-1.9" />
+
+    <path id="cobertura.classpath">
+        <fileset dir="${cobertura.dir}">
+            <include name="cobertura.jar" />
+            <include name="lib/**/*.jar" />
+        </fileset>
+    </path>
+
+    <taskdef classpathref="cobertura.classpath" resource="tasks.properties" />  
+
   </target>
 
   <!-- =================================================================== -->
@@ -429,13 +446,87 @@ Building this requires:
         <path refid="tests.compile.classpath"/>
       </classpath>
     </javac>
+
+  </target>
+  <!-- - - - - - - - - - - - - - - - - - 
+          target: cobertura-instrument                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="coverage-instrument" depends="compile" 
+      if="test.coverage">
+      <cobertura-instrument todir="${build.dir}/instrumented">
+        <fileset dir="${build.classes}">
+            <include name="**/*.class" />
+            <exclude name="**/JavaLexer.class **/JavaRecognizer.class **/JavaTokenTypes.class" />
+        </fileset>
+      </cobertura-instrument>
+    </target>
+
+  <!-- run immediately before JUnit tests to make sure instrumented files are gone-->
+  <target name="coverage-clean" depends="compile" unless="test.coverage">
+    <mkdir dir="${build.dir}/instrumented"/>
+    <delete>
+      <fileset dir="{$build.dir}/instrumented">
+        <include name="*"/>
+      </fileset>
+    </delete>
+  </target>
+  
+  <target name="coverage-report-clean" depends="init" if="test.coverage">
+    <mkdir dir="${tests.reports}"/>
+    <mkdir dir="${tests.reports}/coverage"/>
+    <mkdir dir="${tests.reports}/coverage/html"/>
+    <mkdir dir="${tests.reports}/coverage/xml"/>
+    <delete>
+      <fileset dir="${tests.reports}/coverage">
+        <include name="*.xml *.html"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="coverage-report-xml" depends="init" if="test.coverage">
+    <cobertura-report format="xml" datafile="${tests.reports}/cobertura.ser" 
+      destdir="${tests.reports}/coverage/xml" >
+        <fileset dir="src">
+            <include name="**/*.java" />
+        </fileset>
+    </cobertura-report>
+  </target>
+  
+  <target name="coverage-report-html" depends="init"
+      description="create HTML coverage report (default is XML)">
+    <cobertura-report format="html" datafile="${tests.reports}/cobertura.ser" 
+      destdir="${tests.reports}/coverage/html" >
+        <fileset dir="src">
+            <include name="**/*.java" />
+        </fileset>
+    </cobertura-report>
   </target>
 
   <!-- =================================================================== -->
   <!-- Prepare for the junit tests.                                        -->
   <!-- =================================================================== -->
-  <target name="junit-setup" depends="compile-tests"/>
+  <target name="junit-setup" depends="junit-classpath,compile-tests"/>
+  
+  <target name="junit-classpath" 
+    depends="init, junit-classpath-coverage, junit-classpath-nocoverage"/>
+  
+  <target name="junit-classpath-coverage" if="test.coverage" >
+    <path id="tests.all.classpath">
+      <pathelement location="${build.dir}/instrumented"/>
+      <pathelement location="${build.classes}"/>
+      <pathelement location="${tests.classes}"/>
+      <path refid="tests.run.classpath"/>
+    </path>
+  </target>
 
+  <target name="junit-classpath-nocoverage" unless="test.coverage" >
+    <path id="tests.all.classpath">
+      <pathelement location="${build.classes}"/>
+      <pathelement location="${tests.classes}"/>
+      <path refid="tests.run.classpath"/>
+    </path>
+  </target>
+  
   <target name="junit-report-clean">
     <mkdir dir="${tests.reports}"/>
     <mkdir dir="${tests.reports}/html"/>
@@ -447,26 +538,39 @@ Building this requires:
     </delete>
   </target>
 
-  <target name="junit-report-create">
+  <target name="junit-report-create" depends="init">
     <junitreport todir="${tests.reports}">
       <fileset dir="${tests.reports}">
         <include name="TEST-*.xml"/>
       </fileset>
       <report format="frames" todir="${tests.reports}/html"/>
     </junitreport>
-
   </target>
+
+
 
   <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
+  <target name="tests-with-coverage" 
+      description="Run tests target while recording test coverage using Cobertura">
+    <property name="test.coverage" value="true"/>
+    <antcall target="coverage-report-clean"/>
+    <antcall target="coverage-instrument"/>
+    <antcall target="tests"/>
+    <antcall target="coverage-report-xml"/>
+
+  </target>
+  
   <target name="tests"
           description="Run all tests that don't require any GUI components in headleass mode."
           depends="compile,junit-setup,junit-report-clean,
-                   ant.optional.init">
+                   ant.optional.init" >
+
+    <delete file="${tests.reports}/cobertura.ser" />
 
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
-           fork="yes" dir="${basedir}" forkmode="perTest"
+           fork="yes"  dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
            maxmemory="48M" printsummary="${junit.printsummary}">
       <sysproperty key="test.model.uml" 
@@ -476,14 +580,12 @@ Building this requires:
       <sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
       <sysproperty key="java.awt.headless" value="true"/>
       <sysproperty key="argouml.tests.dir" value="tests"/>
+      <sysproperty key="net.sourceforge.cobertura.datafile"
+                    file="${tests.reports}/cobertura.ser" />
       <assertions>
         <enable/>
       </assertions>
-      <classpath>
-        <pathelement location="${build.classes}"/>
-        <pathelement location="${tests.classes}"/>
-        <path refid="tests.run.classpath"/>
-      </classpath>
+      <classpath refid="tests.all.classpath"/>
       <formatter type="xml"/>
       <batchtest todir="${tests.reports}">
         <fileset dir="tests">
@@ -518,11 +620,7 @@ Building this requires:
       <assertions>
         <enable/>
       </assertions>
-      <classpath>
-        <pathelement location="${build.classes}"/>
-        <pathelement location="${tests.classes}"/>
-        <path refid="tests.run.classpath"/>
-      </classpath>
+      <classpath path="tests.all.classpath"/>
       <formatter type="xml"/>
       <batchtest todir="${tests.reports}">
         <fileset dir="tests">
@@ -604,3 +702,4 @@ Building this requires:
 
 </project>
 <!-- End of file -->
+
