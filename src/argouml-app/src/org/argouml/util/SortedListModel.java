@@ -24,26 +24,28 @@
 
 package org.argouml.util;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.AbstractListModel;
 
+import org.argouml.uml.util.PathComparator;
+
 
 /**
- * A ListModel which keeps the list in sorted order.
+ * A ListModel which keeps the list in sorted order. Many, but not all, of the
+ * methods from the java.util.List are implemented. Those which are obey its
+ * contract.
  * <p>
  * This is a low performance implementation designed for use with small lists
- * (such as typically appear in the GUI). It will resort the entire list after
- * each addition.
+ * (such as typically appear in the GUI). It does a linear search of the 
+ * set for any indexed operations (e.g. getElementAt(int)).
  */
-public class SortedListModel extends AbstractListModel implements List
-{
-    private List delegate = new ArrayList();
+public class SortedListModel extends AbstractListModel implements Collection {
+    
+    private Set delegate = new TreeSet(new PathComparator());
 
     /**
      * Returns the number of components in this list.
@@ -75,16 +77,62 @@ public class SortedListModel extends AbstractListModel implements List
      * @see #get(int)
      */
     public Object getElementAt(int index) {
-        return delegate.get(index);
+        Object result = null;
+        // TODO: If this turns out to be a performance bottleneck, we can 
+        // probably optimize the common case by caching our iterator and current
+        // position, assuming that the next request will be for a greater index
+        Iterator it = delegate.iterator();
+        while (index >= 0) {
+            if (it.hasNext()) {
+                result = it.next();
+            } else {
+                throw new ArrayIndexOutOfBoundsException();
+            }
+            index--;
+        }
+        return result;
     }
 
+    /**
+     * Returns the component at the specified index.
+     * @param      index   an index into this list
+     * @return     the component at the specified index
+     * @exception  ArrayIndexOutOfBoundsException  if the <code>index</code> 
+     *             is negative or greater than the current size of this 
+     *             list
+     */
     public Object get(int index) {
-        return delegate.get(index);
+        return getElementAt(index);
     }
-
+    
+    /**
+     * @param o object to search for
+     * @return index of object or -1 if not found
+     * @see java.util.List#indexOf(Object)
+     */
+    public int indexOf(Object o) {
+        int index = 0;
+        Iterator it = delegate.iterator();
+        if (o == null) {
+            while (it.hasNext()) {
+                if (o == it.next()) {
+                    return index;
+                }
+                index++;
+            }            
+        } else {
+            while (it.hasNext()) {
+                if (o.equals(it.next())) {
+                    return index;
+                }
+                index++;
+            }
+        }
+        return -1;
+    }
 
     public int size() {
-        return delegate.size();
+        return getSize();
     }
 
 
@@ -93,90 +141,25 @@ public class SortedListModel extends AbstractListModel implements List
     }
 
 
-
     public boolean contains(Object elem) {
         return delegate.contains(elem);
     }
 
 
-    public int indexOf(Object elem) {
-        return delegate.indexOf(elem);
-    }
-
-    public int lastIndexOf(Object elem) {
-        return delegate.lastIndexOf(elem);
-    }
-
-
     public boolean add(Object obj) {
         boolean status = delegate.add(obj);
-        Collections.sort(delegate);
-        fireContentsChanged(this, 0, delegate.size() - 1);
+        int index = indexOf(obj);
+        fireIntervalAdded(this, index, index);
         return status;
     }
     
-
-    /**
-     * Add an element to the ListModel. Note: Although this accepts an index
-     * parameter for compatibility with the List API, the ordering of the list
-     * is determined by its contents, so the index is effectively ignored.
-     * 
-     * @param index ignored
-     * @param element element to be added
-     * @see java.util.List#add(int, java.lang.Object)
-     */
-    public void add(int index, Object element) {
-        delegate.add(index, element);
-        Collections.sort(delegate);
-        fireContentsChanged(this, 0, delegate.size() - 1);
-    }
-
-
-    /**
-     * Remove the element at the given index and add the new element in
-     * sorted order.
-     * 
-     * @param index index of element to be removed
-     * @param element new element to be added
-     * @return the element that was removed
-     * @see java.util.List#set(int, java.lang.Object)
-     */
-    public Object set(int index, Object element) {
-        Object oldValue = delegate.set(index, element);
-        Collections.sort(delegate);
-        fireContentsChanged(this, 0, delegate.size() - 1);
-        return oldValue;
-    }
     
     public boolean addAll(Collection c) {
         boolean status = delegate.addAll(c);
-        Collections.sort(delegate);
         fireContentsChanged(this, 0, delegate.size() - 1);
         return status;
     }
 
-    /**
-     * Add the collection of elements to the ListModel. Note: Although this
-     * accepts an index parameter for compatibility with the List API, the
-     * ordering of the list is determined by its contents, so the index is
-     * effectively ignored.
-     * 
-     * @param index ignored
-     * @param c collection of elements to be added
-     * @see java.util.List#add(int, java.lang.Object)
-     */
-    public boolean addAll(int index, Collection c) {
-        boolean status = delegate.addAll(index, c);
-        Collections.sort(delegate);
-        fireContentsChanged(this, 0, delegate.size() - 1);
-        return status;
-    }
-
-    public Object remove(int index) {
-        Object oldValue = delegate.remove(index);
-        fireIntervalRemoved(this, index, index);
-        return oldValue;
-    }
     
     public boolean remove(Object obj) {
         int index = indexOf(obj);
@@ -210,9 +193,6 @@ public class SortedListModel extends AbstractListModel implements List
     }
 
 
-
-
-
     public void clear() {
         int index1 = delegate.size() - 1;
         delegate.clear();
@@ -220,8 +200,6 @@ public class SortedListModel extends AbstractListModel implements List
             fireIntervalRemoved(this, 0, index1);
         }
     }
-
-
 
     public boolean containsAll(Collection c) {
         return delegate.containsAll(c);
@@ -231,29 +209,13 @@ public class SortedListModel extends AbstractListModel implements List
         return delegate.iterator();
     }
 
-    public ListIterator listIterator() {
-        return delegate.listIterator();
-    }
-
-    public ListIterator listIterator(int index) {
-        return delegate.listIterator(index);
-    }
-
-    /**
-     * Unimplemented optional operation.
-     * 
-     * @param c unimplemented
-     * @return unimplemented
-     * @see java.util.List#retainAll(java.util.Collection)
-     */
     public boolean retainAll(Collection c) {
-        throw new UnsupportedOperationException();
+        int size = delegate.size();
+        boolean status =  delegate.retainAll(c);
+        // TODO: is this the right range here?
+        fireContentsChanged(this, 0, size - 1);
+        return status;
     }
-
-    public List subList(int fromIndex, int toIndex) {
-        return delegate.subList(fromIndex, toIndex);
-    }
-
 
 }
 
