@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +35,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.util.PathComparator;
 
 /**
  * A model for tagdefinitions.
@@ -93,30 +93,8 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
 
     private Collection getApplicableTagDefinitions(Object t) {
         Set<List<String>> paths = new HashSet<List<String>>();
-        Set<Object> availableTagDefs = new TreeSet<Object>(
-                new Comparator<Object>() {
-                    public int compare(Object o1, Object o2) {
-                        try {
-                            String name1 = Model.getFacade().getName(o1);
-                            String name2 = Model.getFacade().getName(o2);
-                            name1 = (name1 != null ? name1 : "");
-                            name2 = (name2 != null ? name2 : "");
-                            int result = name1.compareTo(name2);
-                            if (result == 0) {
-                                // Don't return equals based on name only
-                                if (o1.equals(o2)) {
-                                    return 0;
-                                } else {
-                                    return 1;
-                                }
-                            } else {
-                                return result;
-                            }
-                        } catch (Exception e) {
-                            throw new ClassCastException(e.getMessage());
-                        }
-                    }
-                });
+        Set<Object> availableTagDefs = 
+            new TreeSet<Object>(new PathComparator());
         Collection stereotypes = Model.getFacade().getStereotypes(t);
         Project project = ProjectManager.getManager().getCurrentProject();
         for (Object model : project.getModels()) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.uml;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -38,6 +37,7 @@ import javax.swing.Action;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.util.PathComparator;
 import org.argouml.util.MyTokenizer;
 
 /**
@@ -78,28 +78,8 @@ public class StereotypeUtility {
      */
     public static Set<Object> getAvailableStereotypes(Object modelElement) {
         Set<List> paths = new HashSet<List>();
-        Set<Object> availableStereotypes = new TreeSet<Object>(
-                new Comparator<Object>() {
-                    public int compare(Object o1, Object o2) {
-                        try {
-                            if (o1.equals(o2)) {
-                                return 0;
-                            }
-                            String name1 = Model.getFacade().getName(o1);
-                            String name2 = Model.getFacade().getName(o2);
-                            name1 = (name1 != null ? name1 : "");
-                            name2 = (name2 != null ? name2 : "");
-                            int nameCompare = name1.compareTo(name2);
-                            if (nameCompare == 0) {
-                                return 1;
-                            } else {
-                                return nameCompare;
-                            }
-                        } catch (Exception e) {
-                            throw new ClassCastException(e.getMessage());
-                        }
-                    }
-                });
+        Set<Object> availableStereotypes = 
+            new TreeSet<Object>(new PathComparator());
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
         
