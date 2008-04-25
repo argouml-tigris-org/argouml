@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
 /**
- * This class represents a Partition or Swimlane for Activity diagrams.
+ * This class represents a Pool of Swimlanes for Activity diagrams.
  *
  * @author mkl
  */
