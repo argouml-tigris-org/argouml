@@ -85,8 +85,8 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
      */
     public boolean isValidStereoType(Object theModelElement,
             Object theStereotype) {
-                return isValidStereotype(theModelElement, theStereotype);
-            }
+        return isValidStereotype(theModelElement, theStereotype);
+    }
 
     public boolean isValidStereotype(Object theModelElement,
             Object theStereotype) {
