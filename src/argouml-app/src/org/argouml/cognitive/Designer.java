@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,11 +55,15 @@ import org.tigris.gef.util.EnumerationEmpty;
  *
  * Currently (almost) everything is hardcoded. What can be configurable??<p>
  *
- * The ToDoList is dependent on this class.<p>
+ * The ToDoList is dependent on this class, 
+ * i.e. each designer has its ToDoList.<p>
+ * 
+ * Each designer has his own Agency, 
+ * which is the only class that knows all the critics.<p>
  *
  * This class listens to property changes from ...?<p>
  *
- * A Designer can as well create ToDO Items, such as critics do. Hence he
+ * A designer can create ToDo Items, just like the critics. Hence the designer
  * implements the Poster interface.<p>
  *
  * TODO: There is a strong dependency cycle between Agency and Designer.  They

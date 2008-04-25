@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.cognitive;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
 
@@ -40,8 +39,16 @@ import java.util.Vector;
  * </ul>
  *
  * implying that a critic is relevant if and if only it is enabled, not snoozed,
- * applicable to the current goals and relevant decisions to be supported.
- *
+ * applicable to the current goals and relevant decisions to be supported.<p>
+ * 
+ * Mech is short for Mechanism. 
+ * A Control Mechanism is a structured way 
+ * to calculate a single condition from multiple different unrelated ones. 
+ * In the case of a StandardCM, 
+ * the single condition holds if we are enabled, 
+ * and not snoozed, 
+ * and fulfill designgoals, 
+ * and the designer is interested in these decisions.
  */
 public class StandardCM extends AndCM {
 
@@ -133,9 +140,7 @@ class AndCM extends CompositeCM {
      * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
      */
     public boolean isRelevant(Critic c, Designer d) {
-        Enumeration cur = getMechs().elements();
-        while (cur.hasMoreElements()) {
-            ControlMech cm = (ControlMech) cur.nextElement();
+        for (ControlMech cm : getMechList()) {
             if (!cm.isRelevant(c, d)) {
                 return false;
             }
@@ -149,9 +154,7 @@ class OrCM extends CompositeCM {
      * @see org.argouml.cognitive.critics.ControlMech#isRelevant(org.argouml.cognitive.critics.Critic, org.argouml.cognitive.Designer)
      */
     public boolean isRelevant(Critic c, Designer d) {
-        Enumeration cur = getMechs().elements();
-        while (cur.hasMoreElements()) {
-            ControlMech cm = (ControlMech) cur.nextElement();
+        for (ControlMech cm : getMechList()) {
             if (cm.isRelevant(c, d)) {
                 return true;
             }

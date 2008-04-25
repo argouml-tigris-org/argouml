@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -362,11 +362,14 @@ public class Agency extends Observable { //implements java.io.Serialization
      * Compute which critics should be active (i.e., they can be
      * applied by applyAllCritics) for a given Designer. <p>
      *
-     * TODO: I am setting global data, the
+     * Note: I am setting global data, i.e. the
      * isEnabled bit in each critic, based on the needs of one designer.
      * I don't really support more than one Designer.
+     * Which is why each designer 
+     * (if we would support more than one designer) 
+     * has his own Agency.
      *
-     * TODO: should loop over simpler vector of critics, not CompoundCritics
+     * TODO: should loop over simpler list of critics, not CompoundCritics
      *
      * @param d the designer
      */

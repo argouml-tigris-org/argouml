@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -112,7 +112,8 @@ public class ToDoItem implements Serializable, WizardItem {
      * common supertype for these three types, we can't type this list. We
      * should introduce a common supertype/interface. - tfm 20070630
      * <p>
-     * This is set by the constructor and cannot change.
+     * The list of offenders is set once (e.g. by the constructor)
+     * and cannot change.
      * <p>
      */
     private ListSet theOffenders;
