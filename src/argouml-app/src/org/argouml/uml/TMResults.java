@@ -161,7 +161,7 @@ public class TMResults extends AbstractTableModel {
         if (Model.getFacade().isAModelElement(rowObj)) {
             Diagram d = null;
             if (diagrams != null) {
-                d = (Diagram) diagrams.get(row);
+                d = diagrams.get(row);
             }
             switch (col) {
 	    case 0 : // the name of this type of ModelElement

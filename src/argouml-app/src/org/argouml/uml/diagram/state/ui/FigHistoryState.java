@@ -213,7 +213,7 @@ public abstract class FigHistoryState extends FigStateVertex {
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     @Override
-   public void mouseClicked(MouseEvent me) {
+    public void mouseClicked(MouseEvent me) {
         // ignored
     }
 

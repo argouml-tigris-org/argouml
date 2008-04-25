@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.uml.diagram.ui.ArgoFigGroup;

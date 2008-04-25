@@ -708,7 +708,7 @@ public class FigComment
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
     @Override
-   public Point getClosestPoint(Point anotherPt) {
+    public Point getClosestPoint(Point anotherPt) {
         Rectangle r = getBounds();
         int[] xs = {
             r.x, r.x + r.width - dogear, r.x + r.width,

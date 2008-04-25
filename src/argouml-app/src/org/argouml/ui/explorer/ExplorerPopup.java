@@ -86,7 +86,7 @@ public class ExplorerPopup extends JPopupMenu {
     private JMenu createDiagrams = 
         new JMenu(menuLocalize("menu.popup.create-diagram"));
     
-    private final Logger LOG =
+    private static final Logger LOG =
         Logger.getLogger(ExplorerPopup.class);
     
     /**
@@ -381,9 +381,10 @@ public class ExplorerPopup extends JPopupMenu {
                 }
             }
             if (classifierRolesOnly) {
-                menuItems.add(new OrderedMenuItem(new ActionCreateAssociationRole(
-                        Model.getMetaTypes().getAssociationRole(), 
-                        targets)));
+                menuItems.add(new OrderedMenuItem(
+                        new ActionCreateAssociationRole(
+                                Model.getMetaTypes().getAssociationRole(), 
+                                targets)));
             } else if (!classifierRoleFound) {
                 boolean classifiersOnly = true;
                 for (Iterator it = targets.iterator();
@@ -449,8 +450,7 @@ public class ExplorerPopup extends JPopupMenu {
                                     MODEL_ELEMENT_MENUITEMS[iter],
                                     target, 
                                     (String) 
-                                    MODEL_ELEMENT_MENUITEMS[iter + 1]
-                            )));
+                                    MODEL_ELEMENT_MENUITEMS[iter + 1])));
                 }
             }    
         }
@@ -638,7 +638,7 @@ public class ExplorerPopup extends JPopupMenu {
         }
 
         public int compareTo(Object o) {
-            JMenuItem other = (JMenuItem)o;
+            JMenuItem other = (JMenuItem) o;
             return toString().compareTo(other.toString());
         }
     }
@@ -659,7 +659,7 @@ public class ExplorerPopup extends JPopupMenu {
         }
 
         public int compareTo(Object o) {
-            JMenuItem other = (JMenuItem)o;
+            JMenuItem other = (JMenuItem) o;
             return toString().compareTo(other.toString());
         }
     }
@@ -677,10 +677,7 @@ public class ExplorerPopup extends JPopupMenu {
         private Object metaType; 
         private Object source; 
         private Object dest;
-        
-        private final Logger LOG =
-            Logger.getLogger(ActionCreateModelElement.class);
-        
+
         public ActionCreateModelElement(
                 Object theMetaType, 
                 Object theSource, 
@@ -724,10 +721,7 @@ public class ExplorerPopup extends JPopupMenu {
         
         private Object metaType; 
         private List classifiers;
-        
-        private final Logger LOG =
-            Logger.getLogger(ActionCreateModelElement.class);
-        
+
         public ActionCreateAssociation(
                 Object theMetaType, 
                 List classifiersList) {
@@ -773,9 +767,6 @@ public class ExplorerPopup extends JPopupMenu {
 
         private Object metaType; 
         private List classifierRoles;
-
-        private final Logger LOG =
-            Logger.getLogger(ActionCreateModelElement.class);
 
         public ActionCreateAssociationRole(
                 Object theMetaType, 

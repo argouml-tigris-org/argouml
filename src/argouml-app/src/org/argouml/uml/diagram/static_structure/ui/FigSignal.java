@@ -30,7 +30,6 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.AssociationChangeEvent;

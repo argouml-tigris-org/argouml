@@ -27,8 +27,6 @@ package org.argouml.cognitive;
 import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
-import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ToDoList;
 
 /**
  * Testing the creation of a ToDoItemList.
@@ -40,8 +38,8 @@ public class TestToDoItemList extends TestCase {
      *
      * @param name the name of the test.
      */
-    public TestToDoItemList(String arg0) {
-        super(arg0);
+    public TestToDoItemList(String name) {
+        super(name);
     }
 
     /*
@@ -69,7 +67,8 @@ public class TestToDoItemList extends TestCase {
         String moreInfo = "http://argouml.tigris.org/test";
         Critic critic = new Critic();
         critic.setHeadline(headline);           
-        ToDoItem item = new ToDoItem(critic, headline, priority, description, moreInfo);
+        ToDoItem item = new ToDoItem(critic, headline, priority, description,
+                moreInfo);
         
         // initialize the ToDoList
         ToDoList list = new ToDoList();
@@ -79,17 +78,19 @@ public class TestToDoItemList extends TestCase {
                 
         // redundantly add item again which should be ignored
         list.addElement(item);
-                
+
         // size should be 1 since addition of second item would have been ignored
-        assertTrue("ToDoList.size() is incorrect", list.size() == 1);           
-                
+        assertTrue("ToDoList.size() is incorrect", list.size() == 1);
+
         // retrieve item
-        assertTrue("ToDoItem.get(0) did not return correct item", list.size() > 0 && list.get(0) == item);
-                
+        assertTrue("ToDoItem.get(0) did not return correct item",
+                list.size() > 0 && list.get(0) == item);
+
         // remove item
-        assertTrue("ToDoItem.removeElement(item) failed to remove item", list.removeElement(item));
-                
+        assertTrue("ToDoItem.removeElement(item) failed to remove item", list
+                .removeElement(item));
+
         // size should be 0 since item was removed
-        assertTrue("ToDoList.size() is incorrect", list.size() == 0);           
+        assertTrue("ToDoList.size() is incorrect", list.size() == 0);
     }
 }

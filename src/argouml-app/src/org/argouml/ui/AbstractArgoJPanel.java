@@ -36,8 +36,8 @@ package org.argouml.ui;
  *             after 0.28 is released using the current numbering scheme).
  */
 @Deprecated
-public abstract class AbstractArgoJPanel
-extends org.argouml.application.api.AbstractArgoJPanel {
+public abstract class AbstractArgoJPanel extends
+        org.argouml.application.api.AbstractArgoJPanel {
     /**
      * The constructor.
      *
