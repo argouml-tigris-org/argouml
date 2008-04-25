@@ -104,8 +104,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         
         // Create a new TagDefinition if none found
         Object rootModel = modelImpl.getModelManagementFactory().getRootModel();
-        TagDefinition td = (TagDefinition) buildTagDefinition(tagName, null,
-                rootModel);
+        TagDefinition td = buildTagDefinition(tagName, null, rootModel);
 
         super.initialize(td);
         return td;

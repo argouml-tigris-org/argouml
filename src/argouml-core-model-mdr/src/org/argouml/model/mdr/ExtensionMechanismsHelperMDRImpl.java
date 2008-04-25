@@ -261,7 +261,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         if ("core".equals(packageName)) {
             packageName = "Core"; // optimization for frequent case
         } else {
-            packageName = (String) packageMap.get(packageName);
+            packageName = packageMap.get(packageName);
             if (packageName == null) {
                 throw new IllegalArgumentException("Invalid class" + clazz);
             }
@@ -295,8 +295,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      */
     public boolean isValidStereoType(Object theModelElement,
             Object theStereotype) {
-                return isValidStereotype(theModelElement, theStereotype);
-            }
+        return isValidStereotype(theModelElement, theStereotype);
+    }
 
 
     public boolean isValidStereotype(Object theModelElement,

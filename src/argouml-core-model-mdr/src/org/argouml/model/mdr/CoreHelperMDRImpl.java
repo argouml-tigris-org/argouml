@@ -92,7 +92,6 @@ import org.omg.uml.foundation.core.Constraint;
 import org.omg.uml.foundation.core.CorePackage;
 import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
-import org.omg.uml.foundation.core.Element;
 import org.omg.uml.foundation.core.ElementResidence;
 import org.omg.uml.foundation.core.Enumeration;
 import org.omg.uml.foundation.core.EnumerationLiteral;
@@ -1626,9 +1625,8 @@ class CoreHelperMDRImpl implements CoreHelper {
      *         publicly visible.
      */
     private boolean isVisiblyOwned(ModelElement me, Namespace ns) {
-        return ((Namespace) ns).getOwnedElement().contains(me)
-                && VisibilityKindEnum.VK_PUBLIC.equals(((ModelElement) me)
-                        .getVisibility());
+        return ns.getOwnedElement().contains(me)
+                && VisibilityKindEnum.VK_PUBLIC.equals(me.getVisibility());
     }
     
     private boolean isValidNamespace(

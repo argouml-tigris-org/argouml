@@ -346,7 +346,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * @return newly created Signal
      */
     private Signal buildSignalInt(Object element) {
-        Signal signal = (Signal) createSignal();
+        Signal signal = createSignal();
         Namespace ns = ((ModelElement) element).getNamespace();
         signal.setNamespace(ns);
         return signal;

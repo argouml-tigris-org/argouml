@@ -25,7 +25,6 @@
 package org.argouml.model.mdr;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
 import org.omg.uml.behavioralelements.statemachines.CallEvent;
 import org.omg.uml.behavioralelements.statemachines.ChangeEvent;
