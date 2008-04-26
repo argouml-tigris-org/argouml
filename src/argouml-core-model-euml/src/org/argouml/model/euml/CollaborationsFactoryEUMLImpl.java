@@ -51,67 +51,69 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     }
 
     public Object buildActivator(Object owner, Object interaction) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildAssociationEndRole(Object atype) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildAssociationRole(Object from, Object to) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
-    public Object buildAssociationRole(Object from, Object agg1, Object to, Object agg2, Boolean unidirectional) {
-        // TODO Auto-generated method stub
+    public Object buildAssociationRole(Object from, Object agg1, Object to,
+            Object agg2, Boolean unidirectional) {
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildAssociationRole(Object link) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildClassifierRole(Object collaboration) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildCollaboration(Object handle) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
-    public Object buildCollaboration(Object namespace, Object representedElement) {
-        // TODO Auto-generated method stub
+    public Object buildCollaboration(Object namespace, 
+            Object representedElement) {
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildInteraction(Object handle) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildMessage(Object acollab, Object arole) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object createAssociationEndRole() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object createAssociationRole() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object createClassifierRole() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
@@ -120,7 +122,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     }
 
     public Object createCollaborationInstanceSet() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
@@ -129,7 +131,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     }
 
     public Object createInteractionInstanceSet() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 

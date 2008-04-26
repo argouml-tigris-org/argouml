@@ -54,47 +54,47 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
     }
 
     public boolean equalsCHOICEKind(Object kind) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public boolean equalsDeepHistoryKind(Object kind) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public boolean equalsFORKKind(Object kind) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public boolean equalsINITIALKind(Object kind) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public boolean equalsJOINKind(Object kind) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public boolean equalsJUNCTIONKind(Object kind) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public boolean equalsShallowHistoryKind(Object kind) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public String getBody(Object handle) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public String getLanguage(Object handle) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
@@ -114,12 +114,12 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
     }
     
     public Object setBody(Object handle, String body) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object setLanguage(Object handle, String language) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 

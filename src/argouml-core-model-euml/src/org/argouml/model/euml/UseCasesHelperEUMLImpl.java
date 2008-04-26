@@ -182,16 +182,16 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
     }
 
     public Collection getSpecificationPath(Object ausecase) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public void removeExtend(Object elem, Object extend) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void removeExtensionPoint(Object elem, Object ep) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void removeInclude(final Object usecase, final Object include) {
@@ -231,11 +231,11 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
     }
 
     public void setBase(Object extend, Object base) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setCondition(Object handle, Object booleanExpression) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setExtension(Object handle, Object ext) {
@@ -280,15 +280,15 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
     }
 
     public void setIncludes(Object handle, Collection includes) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setLocation(Object handle, String loc) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setUseCase(Object elem, Object usecase) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
 }

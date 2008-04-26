@@ -345,7 +345,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     }
 
     public boolean isConnectionType(Object connectionType) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 

@@ -53,28 +53,28 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public void addBaseClass(Object handle, Object baseClass) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         
     }
 
     public void addCopyStereotype(Object modelElement, Object stereotype) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         
     }
 
     public void addExtendedElement(Object handle, Object extendedElement) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         
     }
 
     public void addTaggedValue(Object handle, Object taggedValue) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         
     }
 
     public Collection getAllPossibleStereotypes(Collection models,
             Object modelElement) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return Collections.EMPTY_LIST;
     }
 
@@ -96,22 +96,22 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     
     
     public Object getStereotype(Object ns, Object stereo) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object getStereotype(Collection models, Object stereo) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Collection getStereotypes(Object ns) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Collection getStereotypes(Collection models) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
@@ -123,17 +123,17 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public boolean hasStereotype(Object handle, String name) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public boolean isStereotype(Object object, String name, String base) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public boolean isStereotypeInh(Object object, String name, String base) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
@@ -148,45 +148,45 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     public boolean isValidStereotype(Object theModelElement,
             Object theStereotype) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public void removeBaseClass(Object handle, Object baseClass) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void removeTaggedValue(Object handle, Object taggedValue) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setIcon(Object handle, Object icon) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     @Deprecated
     public void setTag(Object handle, Object tag) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setTaggedValue(Object handle, Collection taggedValues) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setTagType(Object handle, String tagType) {
-        // TODO Auto-generated method stub        
+        // TODO: Auto-generated method stub        
     }
     
     public void setType(Object handle, Object type) {
-        // TODO Auto-generated method stub        
+        // TODO: Auto-generated method stub        
     }
 
     public void setValueOfTag(Object handle, String value) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setDataValues(Object handle, String[] value) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
 }

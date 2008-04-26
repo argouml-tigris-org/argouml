@@ -240,7 +240,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addElementResidence(Object handle, Object residence) {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is it removed from UML2 ?
         throw new NotYetImplementedException();
     }
 
@@ -459,12 +459,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addTemplateArgument(Object handle, int index, Object argument) {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is it removed from UML2 ?
         throw new NotYetImplementedException();
     }
 
     public void addTemplateArgument(Object handle, Object argument) {
-        // TODO Is it removed from UML2 ?
+        // TODO: Is it removed from UML2 ?
         throw new NotYetImplementedException();
     }
 
@@ -1243,7 +1243,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((Property) handle).setAggregation((AggregationKind) aggregationKind);
+                ((Property) handle)
+                        .setAggregation((AggregationKind) aggregationKind);
             }
         };
         editingDomain.getCommandStack().execute(

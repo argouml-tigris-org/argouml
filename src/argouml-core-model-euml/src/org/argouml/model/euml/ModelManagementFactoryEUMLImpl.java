@@ -101,7 +101,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     }
 
     public Object copyPackage(Object source, Object ns) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 

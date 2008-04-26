@@ -56,54 +56,54 @@ class ExtensionMechanismsFactoryEUMLImpl implements
 
     public Object buildStereotype(Object theModelElementObject, Object theName,
             Object theNamespaceObject) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildStereotype(Object theModelElementObject, String theName,
             Object model, Collection models) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildStereotype(String text, Object ns) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildTagDefinition(String name, Object stereotype, Object ns) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
     
     public Object buildTagDefinition(String name, Object stereotype, 
             Object namespace, String tagType) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object buildTaggedValue(String tag, String value) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
     
     public Object buildTaggedValue(Object type, String[] value) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object copyStereotype(Object source, Object ns) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object copyTagDefinition(Object aTd, Object aNs) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public void copyTaggedValues(Object source, Object target) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 
@@ -112,12 +112,12 @@ class ExtensionMechanismsFactoryEUMLImpl implements
     }
 
     public Object createTagDefinition() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object createTaggedValue() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 

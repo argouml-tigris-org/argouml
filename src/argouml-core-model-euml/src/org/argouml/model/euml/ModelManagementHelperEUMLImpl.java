@@ -64,7 +64,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
 
     @SuppressWarnings("deprecation")
     public boolean corresponds(Object obj1, Object obj2) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
@@ -104,7 +104,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllImportedElements(Object pack) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
@@ -171,12 +171,12 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllPossibleImports(Object pack) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Collection getAllSubSystems(Object ns) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
@@ -206,13 +206,13 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Object getCorrespondingElement(Object elem, Object model) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
     public Object getCorrespondingElement(Object elem, Object model,
             boolean canCreate) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
 
@@ -221,7 +221,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Object getElement(List<String> path, Object theRootNamespace) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return null;
     }
     
@@ -240,24 +240,24 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
     
     public boolean isCyclicOwnership(Object parent, Object child) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         return false;
     }
 
     public void removeImportedElement(Object handle, Object me) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setAlias(Object handle, String alias) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setImportedElements(Object pack, Collection imports) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
     public void setSpecification(Object handle, boolean isSpecification) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
     }
 
 }

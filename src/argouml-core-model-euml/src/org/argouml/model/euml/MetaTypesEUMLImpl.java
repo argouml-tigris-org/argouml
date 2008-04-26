@@ -110,7 +110,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getActionExpression() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
@@ -172,7 +172,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getBooleanExpression() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
@@ -229,7 +229,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getCreateAction() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
@@ -242,7 +242,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getDestroyAction() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
     
@@ -259,7 +259,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getEvent() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
@@ -291,7 +291,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getGuard() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
@@ -320,7 +320,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getMessage() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
@@ -426,7 +426,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getReturnAction() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
@@ -436,7 +436,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getSendAction() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
@@ -467,7 +467,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getStimulus() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
@@ -510,7 +510,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
     
     public Object getTerminateAction() {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
     }
 
