@@ -76,6 +76,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       <year>2005</year>
       <year>2006</year>
       <year>2007</year>
+      <year>2008</year>
       <holder>Michiel van der Wulp</holder>
     </copyright>
     <copyright><year>2003</year><holder>Linus Tolke</holder></copyright>
@@ -192,7 +193,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     standard</ulink> (versions of ArgoUML prior to 0.20 implemented the
     <ulink url="http://www.omg.org/cgi-bin/doc?formal/00-03-01">UML&nbsp;1.3 
     standard</ulink>). It is written in Java and runs on every computer 
-    which provides a Java 2 platform of Java 1.4 or newer. It uses the 
+    which provides a Java platform version 5 or newer. It uses the 
     open file formats 
     <indexterm><primary>XML</primary></indexterm>
     <ulink url="http://www.omg.org/cgi-bin/doc?formal/02-01-01">
@@ -353,7 +354,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>ArgoUML is a 100% pure Java application. This allows 
             ArgoUML to run on all platforms for which a reliable port 
-            of the Java2 platform is available.</para>
+            of the Java platform is available.</para>
 
           </listitem>
 
@@ -1535,6 +1536,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 or scripted.
                 It is an open standard created by the World Wide Web Consortium.
                 The use of SVG on the web is in its infancy.
+                <!-- Is all this still up to date? -->
                 There is a great deal of inertia due to the long-time use of pure
                 raster formats and other formats like Macromedia Flash or Java
                 applets, but also browser support is still uneven, with native
@@ -1661,17 +1663,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <title>System Requirements</title>
 
             <para>Since ArgoUML is written in 100% pure Java, it should 
-            run on any machine with Java installed. Java, version 1.4
+            run on any machine with Java installed. Java version 5
             or later is needed. You may have this in place, but if not 
-            it can be downloaded free from 
+            the latest version can be downloaded free from 
             <ulink url="http://www.java.com">www.java.com</ulink>. Note 
             that you only need the Java Runtime Environment (JRE), 
             there is no need to download the whole Java Development Kit 
             (JDK).</para>
 
             <para>ArgoUML needs a reasonable amount of computing 
-            resource. A PC with 200MHz processor, 64Mb RAM and 10Mb of 
-            space available on a harddisk should be adequate. Download 
+            resource. 
+            Any PC which is able to run an operating system with 
+            a graphical user interface will suffice. 
+            Download 
             the code from Download section of the project website 
             <ulink url="http://argouml.tigris.org">
             argouml.tigris.org</ulink>. Choose the version that suits 
@@ -1903,7 +1907,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>
               Wrong JRE.
               The most common issue is not having a new enough
-              Java Runtime Environment (it must be 1.4 or  later).
+              Java Runtime Environment (it must be version 5 or  later).
             </para>
 
               </listitem>

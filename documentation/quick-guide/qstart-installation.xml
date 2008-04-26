@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2005, 2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,7 @@ Minimum system requirements:
             		    </para>
 					</listitem>
 					<listitem>
-						<para>10MB of free disk storage space on your hard disk.
+						<para>15MB of free disk storage space on your hard disk.
                         </para>
 					</listitem>
 					<listitem>
@@ -48,8 +48,8 @@ Minimum system requirements:
 					</listitem>
 					<listitem>
 						<para>
-              Java 2 JRE or JDK version 1.4 or higher.
-            </para>
+                            Java JRE or JDK version 5 or higher.
+                        </para>
 					</listitem>
 				</itemizedlist>
 			</para>
@@ -113,7 +113,7 @@ version of ArgoUML cannot change during the course of your project.
 					<orderedlist>
 						<listitem>
 							<para>
-Make sure that you have a Java 2 JRE installed.
+Make sure that you have a recent Java JRE installed.
 </para>
 						</listitem>
 						<listitem>
@@ -206,8 +206,6 @@ Options include:
   -big            use big fonts
   -huge           use huge fonts
   -nosplash       don't display logo at startup
-  -noedem         don't report usage statistics
-  -nopreload      don't preload common classes
   -norecentfile   don't reload last saved file
   -command <arg>  command to perform on startup
   -batch          don't start GUI
@@ -286,7 +284,7 @@ then get a dialog that has a line for entering in the application action
 which will have a line for using Notepad to open the file. Replace that line
 with:
 <command>
-"C:\Program Files\Java\j2re1.4.0_01\bin\javaw.exe" -jar "c:\ArgoUML\argouml.jar" "%L"
+"C:\Program Files\Java\j2re1.6.0_05\bin\javaw.exe" -jar "c:\ArgoUML\argouml.jar" "%L"
 </command>
 </para>
     <para>
