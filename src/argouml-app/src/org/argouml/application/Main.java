@@ -581,7 +581,7 @@ public class Main {
      */
     private static void checkJVMVersion() {
         // check if we are using a supported java version
-        if (JavaRuntimeUtility.isJreSupported()) {
+        if (!JavaRuntimeUtility.isJreSupported()) {
 
 	    System.err.println("You are using Java " + 
 	            JavaRuntimeUtility.getJreVersion() + 
