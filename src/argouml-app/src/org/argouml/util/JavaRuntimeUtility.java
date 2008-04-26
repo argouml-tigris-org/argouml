@@ -56,4 +56,12 @@ public class JavaRuntimeUtility {
         String javaVersion = System.getProperty("java.version", "");
         return (javaVersion.startsWith("1.5"));
     }
+    
+    /**
+     * Get the JRE version described in system properties
+     * @return the JRE version
+     */
+    public static String getJreVersion() {
+        return System.getProperty("java.version", "");
+    }
 }

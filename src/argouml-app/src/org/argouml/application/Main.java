@@ -81,6 +81,7 @@ import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.reveng.java.JavaImport;
 import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.util.ArgoFrame;
+import org.argouml.util.JavaRuntimeUtility;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
@@ -580,16 +581,12 @@ public class Main {
      */
     private static void checkJVMVersion() {
         // check if we are using a supported java version
-        String javaVersion = System.getProperty("java.version", "");
-        // exit if unsupported java version.
-        if (javaVersion.startsWith("1.4") 
-                || javaVersion.startsWith("1.3")
-                || javaVersion.startsWith("1.2")
-                || javaVersion.startsWith("1.1")) {
+        if (JavaRuntimeUtility.isJreSupported()) {
 
-	    System.err.println("You are using Java " + javaVersion + ", "
-			       + "Please use Java 5 (aka 1.5) or later" 
-                               + " with ArgoUML");
+	    System.err.println("You are using Java " + 
+	            JavaRuntimeUtility.getJreVersion() + 
+	            ", Please use Java 5 (aka 1.5) or later"
+	            + " with ArgoUML");
 	    System.exit(0);
         }
     }
