@@ -76,7 +76,7 @@ class CompositeCodePiece extends CodePiece {
 	int prevEnd = cp.getEndPosition();
 	int prevLine = cp.getEndLine();
 
-	while(i.hasNext()) {
+	while (i.hasNext()) {
 	    cp = i.next();
 	    int spaces = cp.getStartPosition() - prevEnd;
 	    if (prevLine != cp.getStartLine()) {

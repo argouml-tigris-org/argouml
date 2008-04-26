@@ -75,7 +75,7 @@ public class TestPathComparator extends TestCase {
         assertEquals("Null should be less than anything", 1, 
                 comp.compare("", null));
         
-        assertEquals("Simple string compare failed", comp.compare("a","b"),
+        assertEquals("Simple string compare failed", comp.compare("a", "b"),
                 "a".compareTo("b"));
 
         assertFalse("Two different unnamed elements should not be equal", 
@@ -85,7 +85,7 @@ public class TestPathComparator extends TestCase {
         assertEquals("Unnamed elements should collate before named", 1, 
                 comp.compare(a, unnamed1));
 
-        assertFalse("Two different elements with same name should not be equal", 
+        assertFalse("Two different elements with same name should not be equal",
                 comp.compare(a, a1) == 0);
 
         assertEquals("Comparison not stable for elements with same name", 
