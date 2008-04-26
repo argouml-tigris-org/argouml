@@ -332,7 +332,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         // specifies valid elements for a Package to contain
         validContainmentMap.put(UmlPackage.class, 
-            new Class<?>[] {
+            new Class<?>[] { 
                 UmlPackage.class, Actor.class,
                 UseCase.class, UmlClass.class,
                 Interface.class, Component.class,
