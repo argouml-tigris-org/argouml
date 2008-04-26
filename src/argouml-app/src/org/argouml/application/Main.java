@@ -557,6 +557,10 @@ public class Main {
         System.err.println("  -command <arg>  command to perform on startup");
         System.err.println("  -batch          don't start GUI");
         System.err.println("  -locale <arg>   set the locale (e.g. 'en_GB')");
+        /* TODO: The Quickguide also mentions:
+         *   -open <arg>     open given file on startup
+         *   -print <arg>    print given file on startup (and exit)
+         * Why are these gone? */
         System.err.println("");
         System.err.println("You can also set java settings which influence "
 			   + "the behaviour of ArgoUML:");
