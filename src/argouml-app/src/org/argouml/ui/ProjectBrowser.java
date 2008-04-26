@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ComponentAdapter;
@@ -40,6 +41,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -291,17 +294,13 @@ public final class ProjectBrowser
             // allows me to ask "Do you want to save first?"
             setDefaultCloseOperation(ProjectBrowser.DO_NOTHING_ON_CLOSE);
             addWindowListener(new WindowCloser());
-            ImageIcon argoImage =
-                ResourceLoaderWrapper.lookupIconResource("ArgoIcon");
-            this.setIconImage(argoImage.getImage());
-        //
+            
+            setApplicationIcon();
 
-        // adds this as listener to projectmanager so it gets updated when the
-        // project changes
+            // Add listener for project changes
             ProjectManager.getManager().addPropertyChangeListener(this);
 
-            // adds this as listener to TargetManager so gets notified
-            // when the active diagram changes
+            // add listener to get notified when active diagram changes
             TargetManager.getInstance().addTargetListener(this);
 
             // Add a listener to focus changes.
@@ -341,6 +340,45 @@ public final class ProjectBrowser
         }
         ArgoEventPump.addListener(ArgoEventTypes.ANY_HELP_EVENT, 
                 new HelpListener(getStatusBar()));
+    }
+
+    private void setApplicationIcon() {
+        ImageIcon argoImage16x16 =
+            ResourceLoaderWrapper.lookupIconResource("ArgoIcon16x16");
+        ImageIcon argoImage32x32 =
+            ResourceLoaderWrapper.lookupIconResource("ArgoIcon32x32");
+        List<Image> argoImages = new ArrayList<Image>(2);
+        argoImages.add(argoImage16x16.getImage());
+        argoImages.add(argoImage32x32.getImage());
+        
+        // JREs pre 1.6.0 cannot handle multiple images using 
+        // setIconImages(), so use reflection to conditionally make the 
+        // call to this.setIconImages().
+        // TODO: We can remove all of this reflection code when we go to 
+        // Java 1.6 as a minimum JRE version, see issue 4989.
+        Method m = null;
+        try {
+            // java.awt.Window.setIconImages is new in Java 6, so may not exist
+            // check for it using reflection on current instance
+            m = getClass().getMethod("setIconImages", List.class);
+            m.invoke(this, argoImages);
+        }
+        catch (NoSuchMethodException x) {
+            m = null;
+        } catch (InvocationTargetException e) {
+            m = null;
+        } catch (IllegalArgumentException e) {
+            m = null;
+        } catch (IllegalAccessException e) {
+            m = null;
+        }
+        
+        // If we couldn't run setIconImages() for whatever reason 
+        // (probably JRE < 1.6.0), do it the old way 
+        // using javax.swing.JFrame.setIconImage, and accept the blurry icon 
+        if (null == m) {
+            setIconImage(argoImage16x16.getImage());
+        }
     }
 
     /**
