@@ -37,7 +37,17 @@ Building this requires:
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}/.." />
     <property file="${override.build.properties}"/>
+
+    <!-- Try to figure out where our tools directory is. Done after overrides
+    are loaded so user can override, but before defaults -->
+    <property name="tool.test.file" value="checkstyle/java.header"/>
+    <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}" 
+    	type="dir" property="argo.tools.dir" value="${argo.root.dir}/argouml-core-tools"/>
+    <available file="../../tools/${tool.test.file}" 
+    	type="dir" property="argo.tools.dir" value="../../tools"/>
+
     <property file="default.properties"/>
+
     <property file="${argo.root.dir}/argouml-build/default.properties"/>
 
     <property name="build.dir" value="build"/>
@@ -83,10 +93,6 @@ Building this requires:
 
     <path id="tests.compile.classpath">
       <pathelement location="${build.classes}"/>
-      <pathelement location="../../tools/junit-3.8.2/junit.jar"/>
-      <pathelement location="../../tools/lib/easymock12.jar"/>
-      <pathelement location="../../tools/jdepend-2.9/lib/jdepend-2.9.jar"/>
-    <!-- Not sure if this will work for the single tree checkout, so we'll leave the old versions for now - tfm -->
       <pathelement location="${argo.tools.dir}/junit-3.8.2/junit.jar"/>
       <pathelement location="${argo.tools.dir}/lib/easymock12.jar"/>
       <pathelement location="${argo.tools.dir}/jdepend-2.9/lib/jdepend-2.9.jar"/>
