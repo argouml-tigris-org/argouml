@@ -510,7 +510,6 @@ Building this requires:
     depends="init, junit-classpath-coverage, junit-classpath-nocoverage"/>
   
   <target name="junit-classpath-coverage" if="test.coverage" >
-  	<echo message="test.coverage = ${test.coverage}"/>
     <path id="tests.all.classpath">
       <pathelement location="${build.dir}/instrumented"/>
       <pathelement location="${build.classes}"/>
@@ -521,7 +520,6 @@ Building this requires:
   </target>
 
   <target name="junit-classpath-nocoverage" unless="test.coverage" >
-        <echo message="test.coverage = ${test.coverage}"/>
     <path id="tests.all.classpath">
       <pathelement location="${build.classes}"/>
       <pathelement location="${tests.classes}"/>
