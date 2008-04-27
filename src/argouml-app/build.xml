@@ -42,9 +42,9 @@ Building this requires:
     are loaded so user can override, but before defaults -->
     <property name="tool.test.file" value="checkstyle/java.header"/>
     <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}" 
-    	type="dir" property="argo.tools.dir" value="${argo.root.dir}/argouml-core-tools"/>
+    	type="file" property="argo.tools.dir" value="${argo.root.dir}/argouml-core-tools"/>
     <available file="../../tools/${tool.test.file}" 
-    	type="dir" property="argo.tools.dir" value="../../tools"/>
+    	type="file" property="argo.tools.dir" value="../../tools"/>
 
     <property file="default.properties"/>
 
