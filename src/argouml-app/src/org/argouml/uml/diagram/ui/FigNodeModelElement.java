@@ -696,6 +696,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * Add a Fig that is enclosed by this figure.
+     * 
      * @param fig The fig to be added
      */
     public void addEnclosedFig(Fig fig) {
@@ -703,6 +705,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
+     * Removes the given Fig from the list of enclosed Figs.
+     * 
      * @param fig The Fig to be removed
      */
     public void removeEnclosedFig(Fig fig) {
