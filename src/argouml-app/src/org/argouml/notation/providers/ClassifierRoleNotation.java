@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,7 +51,8 @@ public abstract class ClassifierRoleNotation extends NotationProvider {
     }
 
     @Override
-    public void initialiseListener(PropertyChangeListener listener, Object modelElement) {
+    public void initialiseListener(PropertyChangeListener listener, 
+            Object modelElement) {
         super.initialiseListener(listener, modelElement);
         Collection classifiers = Model.getFacade().getBases(modelElement);
         for (Object c : classifiers) {
