@@ -100,10 +100,6 @@ Building this requires:
       <fileset dir="../argouml-core-model-mdr/build/">
         <include name="*.jar"/>
       </fileset>
-      <fileset dir="${argo.tools.dir}/cobertura-1.9/">
-        <include name="cobertura.jar"/>
-        <include name="lib/*.jar"/>
-      </fileset>
     </path>
 
     <!-- In order to use ant optional tasks which use jars that are not -->
@@ -119,7 +115,6 @@ Building this requires:
 
     <property name="version.package" value="org/argouml/application"/>
 
-    
     <path id="cobertura.classpath">
       <fileset dir="${cobertura.dir}">
         <include name="cobertura.jar" />
@@ -515,15 +510,18 @@ Building this requires:
     depends="init, junit-classpath-coverage, junit-classpath-nocoverage"/>
   
   <target name="junit-classpath-coverage" if="test.coverage" >
+  	<echo message="test.coverage = ${test.coverage}"/>
     <path id="tests.all.classpath">
       <pathelement location="${build.dir}/instrumented"/>
       <pathelement location="${build.classes}"/>
       <pathelement location="${tests.classes}"/>
       <path refid="tests.run.classpath"/>
+      <path refid="cobertura.classpath"/>
     </path>
   </target>
 
   <target name="junit-classpath-nocoverage" unless="test.coverage" >
+        <echo message="test.coverage = ${test.coverage}"/>
     <path id="tests.all.classpath">
       <pathelement location="${build.classes}"/>
       <pathelement location="${tests.classes}"/>
