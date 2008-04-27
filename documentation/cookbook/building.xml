@@ -135,6 +135,179 @@ the chapter for more detailed instructions on how to build ArgoUML.
 </para>
   </sect1>
 
+  <sect1 id="source-layout">
+    <title>Source layout</title>
+    <para>
+The development environment (source layout) of ArgoUML exists in two flavors:
+<itemizedlist>
+        <listitem>
+          <para>The repository layout.</para>
+        </listitem>
+
+        <listitem>
+          <para>The Eclipse layout.</para>
+        </listitem>
+      </itemizedlist>
+</para>
+
+    <para>
+The repository layout is used 
+by the nightly build,
+when building releases, and
+when doing development that is not done within Eclipse.
+This is the traditional layout and the checkout procedure is described in
+<xref linkend="checkout"></xref>.
+</para>
+
+    <para>
+The Eclipse layout is used when doing development within Eclipse.
+This was created to fit with Eclipse way of organizing projects.
+The checkout procedure is described in 
+<xref linkend="eclipse-checkout"/> and controlled by Eclipse psf files.
+</para>
+
+    <para>
+The table below show how the code is organized in the different layouts.
+
+      <table>
+        <title>Layout differences</title>
+        <tgroup cols="3">
+          <tbody>
+            <row>
+              <entry>Code</entry>
+              <entry>Repository location</entry>
+              <entry>The repository layout</entry>
+              <entry>The Eclipse layout</entry>
+            </row>
+
+            <row>
+              <entry>Subsystems</entry>
+              <entry>
+<literallayout>http://argouml.tigris.org/svn/argouml/
+trunk/src/<replaceable>SUBSYSTEM-NAME</replaceable></literallayout>
+</entry>
+              <entry><replaceable>WORK</replaceable>/argouml/src/<replaceable>SUBSYSTEM-NAME</replaceable></entry>
+              <entry><replaceable>WORKSPACE</replaceable>/<replaceable>SUBSYSTEM-NAME</replaceable></entry>
+            </row>
+
+            <row>
+              <entry>Integration scripts for the core application</entry>
+              <entry>
+<literallayout>http://argouml.tigris.org/svn/argouml/
+trunk/src/argouml-build/*</literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argouml/src/argouml-build/*</entry>
+              <entry><replaceable>WORKSPACE</replaceable>/argouml-build/* (optional)</entry>
+            </row>
+
+            <row>
+              <entry>Subsystems that are separate projects</entry>
+              <entry>
+<literallayout>http://<replaceable>PROJECT-NAME</replaceable>.tigris.org/svn/<replaceable>PROJECT-NAME</replaceable>/
+trunk</literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/<replaceable>PROJECT-NAME</replaceable></entry>
+              <entry><replaceable>WORKSPACE</replaceable>/<replaceable>PROJECT-NAME</replaceable></entry>
+            </row>
+
+            <row>
+              <entry>Integration result</entry>
+              <entry>N/A</entry>
+              <entry><replaceable>WORK</replaceable>/argouml/build or <replaceable>WORK</replaceable>/argouml/src/build?</entry>
+              <entry>N/A</entry>
+            </row>
+
+            <row>
+              <entry>
+Tools used for building and testing.
+This is the tools common to several subsystems.
+</entry>
+              <entry>
+<literallayout>http://argouml.tigris.org/svn/argouml/
+trunk/tools</literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argouml/tools</entry>
+              <entry><replaceable>WORKSPACE</replaceable>/argouml-tools</entry>
+            </row>
+
+            <row>
+              <entry>Tools used for release generation</entry>
+              <entry>
+<literallayout>http://argoumlinstaller.tigris.org/
+svn/argoumlinstaller/
+trunk/*</literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argoumlinstaller/</entry>
+              <entry>N/A</entry>
+            </row>
+
+            <row>
+              <entry>Tools used for static checks</entry>
+              <entry>
+<literallayout>http://argouml-gen.tigris.org/svn/argouml-gen/
+trunk/tools</literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argouml-gen/tools</entry>
+              <entry>N/A ???</entry>
+            </row>
+
+            <row>
+              <entry>Documentation source</entry>
+              <entry>
+<literallayout>http://argouml.tigris.org/svn/argouml/
+trunk/documentation</literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argouml/documentation</entry>
+              <entry><replaceable>WORKSPACE</replaceable>/argouml-documentation</entry>
+            </row>
+
+
+            <row>
+              <entry>Eclipse psf files</entry>
+              <entry>
+<literallayout>http://argouml.tigris.org/svn/argouml/
+trunk/www/psf</literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argouml/www/psf (not used)</entry>
+              <entry><replaceable>WORKSPACE</replaceable>/psf</entry>
+            </row>
+
+            <row>
+              <entry>Eclipse templates (to use in the workspace or import into each project)</entry>
+              <entry>
+<literallayout>http://argouml.tigris.org/svn/argouml/
+trunk/tools/eclipse</literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argouml/tools/eclipse (not used)</entry>
+              <entry><replaceable>WORKSPACE</replaceable>/argouml-core-tools/eclipse</entry>
+            </row>
+
+
+            <row>
+              <entry>Tools used for static checks</entry>
+              <entry>
+<literallayout>http://argouml-gen.tigris.org/svn/argouml-gen/
+trunk/tools</literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argouml-gen/tools</entry>
+              <entry>N/A ???</entry>
+            </row>
+
+            <row>
+              <entry>Src of released subsystem from core project</entry>
+              <entry>
+<literallayout>http://argouml.tigris.org/svn/argouml/
+releases/<replaceable>RELEASE-TAG</replaceable>/src/<replaceable>SUBSYSTEM-NAME</replaceable></literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argoumlinstaller/build/<replaceable>RELEASE-TAG</replaceable>/argouml/src/<replaceable>SUBSYSTEM-NAME</replaceable></entry>
+              <entry>N/A or <replaceable>WORKSPACE</replaceable>/<replaceable>SUBSYSTEM-NAME</replaceable> (if switched to)</entry>
+            </row>
+
+            <row>
+              <entry>Src of released subsystem from other project</entry>
+              <entry>
+<literallayout>http://<replaceable>PROJECT-NAME</replaceable>.tigris.org/svn/<replaceable>PROJECT-NAME</replaceable>/
+releases/<replaceable>RELEASE-TAG</replaceable></literallayout></entry>
+              <entry><replaceable>WORK</replaceable>/argoumlinstaller/build/<replaceable>RELEASE-TAG</replaceable>/<replaceable>PROJECT-NAME</replaceable>/</entry>
+              <entry>N/A or <replaceable>WORKSPACE</replaceable>/<replaceable>PROJECT-NAME</replaceable> (if switched to)</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+</para>
+  </sect1>
+
+
   <sect1 id="starting">
     <title>Preparations</title>
     <para>
