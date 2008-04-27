@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,6 +60,9 @@ public class AttributeNotationUml extends AttributeNotation {
     private static final AttributeNotationUml INSTANCE =
             new AttributeNotationUml();
     
+    /**
+     * @return the singleton
+     */
     public static final AttributeNotationUml getInstance() {
     	return INSTANCE;
     }
@@ -189,7 +192,7 @@ public class AttributeNotationUml extends AttributeNotation {
      * <li>If only one of visibility and name is given, then it is assumed to
      * be the name and the visibility is left unchanged.
      * <li>Type and initial value can be given in any order.
-     * <li>Properties can be given between any element on the form<pre>
+     * <li>Properties can be given between any element in the form<pre>
      *      {[name] [= [value]] [, ...]}
      * </pre>
      * <li>Multiplicity can be given between any element except after the
@@ -218,7 +221,6 @@ public class AttributeNotationUml extends AttributeNotation {
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      */
-    // TODO: This method is WAY too long.  Split it up.
     protected void parseAttribute(
             String text,
             Object attribute) throws ParseException {
@@ -422,47 +424,32 @@ public class AttributeNotationUml extends AttributeNotation {
                     + " type: " + type + " value: " + value 
                     + " stereo: " + stereotype
                     + " mult: " + multiplicity);
-        }
-        if (properties != null && LOG.isDebugEnabled()) {
-            for (int i = 0; i + 1 < properties.size(); i += 2) {
-                LOG.debug("\tProperty [name: " + properties.get(i) + " = "
-                        + properties.get(i + 1) + "]");
+            if (properties != null) {
+                for (int i = 0; i + 1 < properties.size(); i += 2) {
+                    LOG.debug("\tProperty [name: " + properties.get(i) + " = "
+                            + properties.get(i + 1) + "]");
+                }
             }
         }
 
-        if (visibility != null) {
-            Model.getCoreHelper().setVisibility(attribute,
-                    NotationUtilityUml.getVisibility(visibility.trim()));
-        }
+        dealWithVisibility(attribute, visibility);
+        dealWithName(attribute, name);
+        dealWithType(attribute, type);
+        dealWithValue(attribute, value);
+        dealWithMultiplicity(attribute, multiplicity, multindex);
+        dealWithProperties(attribute, properties);
+        StereotypeUtility.dealWithStereotypes(attribute, stereotype, true);
+    }
 
-        if (name != null) {
-            Model.getCoreHelper().setName(attribute, name.trim());
-        } else if (Model.getFacade().getName(attribute) == null
-                || "".equals(Model.getFacade().getName(attribute))) {
-            Model.getCoreHelper().setName(attribute, "anonymous");
+    private void dealWithProperties(Object attribute, List<String> properties) {
+        if (properties != null) {
+            NotationUtilityUml.setProperties(attribute, properties,
+                    NotationUtilityUml.attributeSpecialStrings);
         }
+    }
 
-        if (type != null) {
-            Object ow = Model.getFacade().getOwner(attribute);
-            Object ns = null;
-            if (ow != null && Model.getFacade().getNamespace(ow) != null) {
-                ns = Model.getFacade().getNamespace(ow);
-            } else {
-                ns = Model.getFacade().getModel(attribute);
-            }
-            Model.getCoreHelper().setType(attribute, 
-                    NotationUtilityUml.getType(type.trim(), ns));
-        }
-
-        if (value != null) {
-            Project project = 
-                ProjectManager.getManager().getCurrentProject();
-            ProjectSettings ps = project.getProjectSettings();
-            Object initExpr = Model.getDataTypesFactory().createExpression(
-                    ps.getNotationLanguage(), value.toString().trim());
-            Model.getCoreHelper().setInitialValue(attribute, initExpr);
-        }
-
+    private void dealWithMultiplicity(Object attribute,
+            StringBuilder multiplicity, int multindex) throws ParseException {
         if (multiplicity != null) {
             try {
                 Model.getCoreHelper().setMultiplicity(attribute,
@@ -476,13 +463,47 @@ public class AttributeNotationUml extends AttributeNotation {
                         multindex);
             }
         }
+    }
 
-        if (properties != null) {
-            NotationUtilityUml.setProperties(attribute, properties,
-                    NotationUtilityUml.attributeSpecialStrings);
+    private void dealWithValue(Object attribute, StringBuilder value) {
+        if (value != null) {
+            Project project = 
+                ProjectManager.getManager().getCurrentProject();
+            ProjectSettings ps = project.getProjectSettings();
+            Object initExpr = Model.getDataTypesFactory().createExpression(
+                    ps.getNotationLanguage(), value.toString().trim());
+            Model.getCoreHelper().setInitialValue(attribute, initExpr);
         }
+    }
 
-        StereotypeUtility.dealWithStereotypes(attribute, stereotype, true);
+    private void dealWithType(Object attribute, String type) {
+        if (type != null) {
+            Object ow = Model.getFacade().getOwner(attribute);
+            Object ns = null;
+            if (ow != null && Model.getFacade().getNamespace(ow) != null) {
+                ns = Model.getFacade().getNamespace(ow);
+            } else {
+                ns = Model.getFacade().getModel(attribute);
+            }
+            Model.getCoreHelper().setType(attribute, 
+                    NotationUtilityUml.getType(type.trim(), ns));
+        }
+    }
+
+    private void dealWithName(Object attribute, String name) {
+        if (name != null) {
+            Model.getCoreHelper().setName(attribute, name.trim());
+        } else if (Model.getFacade().getName(attribute) == null
+                || "".equals(Model.getFacade().getName(attribute))) {
+            Model.getCoreHelper().setName(attribute, "anonymous");
+        }
+    }
+
+    private void dealWithVisibility(Object attribute, String visibility) {
+        if (visibility != null) {
+            Model.getCoreHelper().setVisibility(attribute,
+                    NotationUtilityUml.getVisibility(visibility.trim()));
+        }
     }
 
     /*
