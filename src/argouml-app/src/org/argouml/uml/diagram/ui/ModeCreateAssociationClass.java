@@ -51,6 +51,7 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
 
     private static final int DISTANCE = 80;
     
+    @Override
     protected void endAttached(FigEdge fe) {
         Layer lay = editor.getLayerManager().getActiveLayer();
         FigAssociationClass thisFig =
@@ -87,6 +88,8 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
             (MutableGraphModel) editor.getGraphModel();
         mutableGraphModel.addNode(thisFig.getOwner());
 
+        // TODO: This can't depend on ProjectBrowser.  It needs to get
+        // the current drawing area from the Diagram subsystem or GEF
         Rectangle drawingArea =
             ProjectBrowser.getInstance()
                 .getEditorPane().getBounds();

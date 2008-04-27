@@ -254,6 +254,8 @@ public class WizStep extends JPanel
     protected void updateTabToDo() {
 	TabToDo ttd =
 	    (TabToDo) ProjectBrowser.getInstance().getTab(TabToDo.class);
+	// TODO: TabToDo should listen for an event that this fires so that we
+	// can decouple from the ProjectBrowser.
 	JPanel ws = getWizard().getCurrentPanel();
 	if (ws instanceof WizStep) {
 	    ((WizStep) ws).setTarget(target);

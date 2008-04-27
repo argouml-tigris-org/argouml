@@ -166,16 +166,11 @@ public final class ProjectBrowser
     private static boolean isMainApplication;
 
 
-    ////////////////////////////////////////////////////////////////
-    // class variables
-
     /**
      * Member attribute to contain the singleton.
      */
     private static ProjectBrowser theInstance;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private String appName = "ProjectBrowser";
 
@@ -305,41 +300,45 @@ public final class ProjectBrowser
 
             // Add a listener to focus changes.
             // Rationale: reset the undo manager to start a new chain.
-            KeyboardFocusManager kfm =
-                KeyboardFocusManager.getCurrentKeyboardFocusManager();
-            kfm.addPropertyChangeListener(new PropertyChangeListener() {
-                private Object obj;
-
-                /*
-                 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-                 */
-                public void propertyChange(PropertyChangeEvent evt) {
-                    if ("focusOwner".equals(evt.getPropertyName())
-                            && (evt.getNewValue() != null)
-                        /* We get many many events (why?), so let's filter: */
-                            && (obj != evt.getNewValue())) {
-                        obj = evt.getNewValue();
-                        // TODO: Bob says -
-                        // We're looking at focus change to
-                        // flag the start of an interaction. This
-                        // is to detect when focus is gained in a prop
-                        // panel field on the assumption edting of that
-                        // field is about to start.
-                        // Not a good assumption. We Need to see if we can get
-                        // rid of this.
-                        Project p = 
-                            ProjectManager.getManager().getCurrentProject();
-                        p.getUndoManager().startInteraction("Focus");
-                        /* This next line is ideal for debugging the taborder
-                         * (focus traversal), see e.g. issue 1849.
-                         */
-//                      System.out.println("Focus changed " + obj);
-                    }
-                }
-            });
+            addKeyboardFocusListener();
         }
         ArgoEventPump.addListener(ArgoEventTypes.ANY_HELP_EVENT, 
                 new HelpListener(getStatusBar()));
+    }
+
+    private void addKeyboardFocusListener() {
+        KeyboardFocusManager kfm =
+            KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kfm.addPropertyChangeListener(new PropertyChangeListener() {
+            private Object obj;
+
+            /*
+             * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+             */
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("focusOwner".equals(evt.getPropertyName())
+                        && (evt.getNewValue() != null)
+                    /* We get many many events (why?), so let's filter: */
+                        && (obj != evt.getNewValue())) {
+                    obj = evt.getNewValue();
+                    // TODO: Bob says -
+                    // We're looking at focus change to
+                    // flag the start of an interaction. This
+                    // is to detect when focus is gained in a prop
+                    // panel field on the assumption editing of that
+                    // field is about to start.
+                    // Not a good assumption. We Need to see if we can get
+                    // rid of this.
+                    Project p = 
+                        ProjectManager.getManager().getCurrentProject();
+                    p.getUndoManager().startInteraction("Focus");
+                    /* This next line is ideal for debugging the taborder
+                     * (focus traversal), see e.g. issue 1849.
+                     */
+//                      System.out.println("Focus changed " + obj);
+                }
+            }
+        });
     }
 
     private void setApplicationIcon() {
@@ -798,16 +797,18 @@ public final class ProjectBrowser
 
     /**
      * Get the tab page containing the properties.
-     *
+     * 
      * @return the TabProps tabpage
+     * @deprecated for 0.25.5 by tfmorris. No one should need to manipulate the
+     *             properties tab directly. The only place this is currently
+     *             used is in a test.
      */
+    @Deprecated
     public TabProps getTabProps() {
         // In theory there can be multiple details pane (work in
         // progress). It must first be determined which details
         // page contains the properties tab. Bob Tarling 7 Dec 2002
-        Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
+        for (DetailsPane detailsPane : detailsPanesByCompassPoint.values()) {
             TabProps tabProps = detailsPane.getTabProps();
             if (tabProps != null) {
                 return tabProps;
@@ -818,17 +819,21 @@ public final class ProjectBrowser
 
     /**
      * Get the tab page instance of the given class.
-     *
+     * 
      * @param tabClass the given class
      * @return the tabpage
+     * @deprecated by for 0.25.5 by tfmorris. Tabs should register themselves
+     *             with whoever they need to communicate with in a distributed
+     *             fashion rather than relying on a central registry. Currently
+     *             the only place this is used is to communicate between WizStep
+     *             and TabToDo in the Cognitive subsystem.
      */
+    @Deprecated
     public AbstractArgoJPanel getTab(Class tabClass) {
         // In theory there can be multiple details pane (work in
         // progress). It must first be determined which details
         // page contains the properties tab. Bob Tarling 7 Dec 2002
-        Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
+        for (DetailsPane detailsPane : detailsPanesByCompassPoint.values())  {
             AbstractArgoJPanel tab = detailsPane.getTab(tabClass);
             if (tab != null) {
                 return tab;
@@ -848,6 +853,7 @@ public final class ProjectBrowser
     /*
      * @see javax.swing.JFrame#getJMenuBar()
      */
+    @Override
     public JMenuBar getJMenuBar() {
         return menuBar;
     }
@@ -877,11 +883,14 @@ public final class ProjectBrowser
      * Find the tabpage with the given label and make it the front tab.
      *
      * @param tabName The tabpage label
+     * @deprecated for 0.25.5 by tfmorris. This is unused by ArgoUML. If there
+     *             are clients that require this functionality, it should be
+     *             delegated to some place more appropriate like a details
+     *             pane manager.
      */
+    @Deprecated
     public void selectTabNamed(String tabName) {
-        Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane) it.next();
+        for (DetailsPane detailsPane : detailsPanesByCompassPoint.values()) {
             if (detailsPane.selectTabNamed(Translator.localize(tabName))) {
                 return;
             }
@@ -891,12 +900,15 @@ public final class ProjectBrowser
 
 
     /**
-     * Given a list of targets, displays the corresponding diagram.
-     * This method jumps to the diagram showing the targets,
-     * and scrolls to make it visible.
-     *
+     * Given a list of targets, displays the corresponding diagram. This method
+     * jumps to the diagram showing the targets, and scrolls to make it visible.
+     * 
      * @param targets Collection of targets to show
+     * @deprecated for 0.25.5 by tfmorris. This is unused by ArgoUML. If there
+     *             are clients that require this functionality, it should be
+     *             moved some place more appropriate like the Diagram subsystem.
      */
+    @Deprecated
     public void jumpToDiagramShowing(Collection targets) {
 
         if (targets == null || targets.size() == 0) {

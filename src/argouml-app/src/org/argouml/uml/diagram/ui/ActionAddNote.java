@@ -79,12 +79,11 @@ public class ActionAddNote extends UndoableAction {
                 .lookupIconResource("New Note"));
     }
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
 
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae); //update all tools' enabled status
         Collection targets = TargetManager.getInstance().getModelTargets();
@@ -176,6 +175,9 @@ public class ActionAddNote extends UndoableAction {
             // TODO: We need a better algorithm.
             point.x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
             point.y = elemFig.getY();
+            // TODO: This can't depend on ProjectBrowser.  It needs to get
+            // the current drawing area from the Diagram subsystem or GEF
+            // better yet, it should just tell the Diagram to place it
             Rectangle drawingArea =
                 ProjectBrowser.getInstance().getEditorPane().getBounds();
             if (point.x + noteFig.getWidth() > drawingArea.getX()) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2007 The Regents of the University of California. All
+// Copyright (c) 2002-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,9 +62,7 @@ public class GUITestProjectBrowser extends TestCase {
         super(arg0);
     }
 
-    /*
-     * @see junit.framework.TestCase#setUp()
-     */
+    @Override
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
@@ -82,8 +80,9 @@ public class GUITestProjectBrowser extends TestCase {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	assertNotNull(pb.getLocale());
 	assertNotNull(pb.getAppName());
-	assertNotNull(pb.getTabProps());
-	assertNotNull(pb.getStatusBar());
+	// ProjectBrowser exposes functionality, not components.
+//	assertNotNull(pb.getTabProps());
+//	assertNotNull(pb.getStatusBar());
 	assertNotNull(pb.getJMenuBar());
 	assertNotNull(pb.getEditorPane());
 	assertNotNull(pb.getTodoPane());
@@ -100,7 +99,7 @@ public class GUITestProjectBrowser extends TestCase {
     }
 
     /**
-     * Test the existance of public static members.
+     * Test the existence of public static members.
      */
     public void compileTestPublicStaticMembers() {
 	Integer.valueOf(ProjectBrowser.DEFAULT_COMPONENTWIDTH
@@ -108,7 +107,7 @@ public class GUITestProjectBrowser extends TestCase {
     }
 
     /**
-     * Test the existance of public members.
+     * Test the existence of public members.
      */
     public void compileTestPublicMembers() {
 	assertNotNull(ProjectBrowser.getInstance().getDefaultFont());
