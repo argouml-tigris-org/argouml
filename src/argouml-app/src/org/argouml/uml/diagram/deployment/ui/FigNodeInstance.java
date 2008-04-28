@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,20 +24,15 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.awt.Rectangle;
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML NodeInstance in a diagram.<p>
@@ -45,10 +40,6 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler@informatik.uni-hamburg.de
  */
 public class FigNodeInstance extends AbstractFigNode {
-
-
-    
-    private NotationProvider notationProvider;
 
     /**
      * Main constructor - used for file loading.
@@ -66,19 +57,12 @@ public class FigNodeInstance extends AbstractFigNode {
      */
     public FigNodeInstance(GraphModel gm, Object node) {
         super(gm, node);
+        getNameFig().setUnderline(true);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
-     */
     @Override
-    protected void initNotationProviders(Object own) {
-        super.initNotationProviders(own);
-        if (Model.getFacade().isANodeInstance(own)) {
-            notationProvider = 
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_NODEINSTANCE, own);
-        }
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_NODEINSTANCE;
     }
 
     @Override
@@ -132,9 +116,7 @@ public class FigNodeInstance extends AbstractFigNode {
         if (getLayer() != null) {
             // elementOrdering(figures);
             Collection contents = new ArrayList(getLayer().getContents());
-            Iterator it = contents.iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
+            for (Object o : contents) {
                 if (o instanceof FigEdgeModelElement) {
                     FigEdgeModelElement figedge = (FigEdgeModelElement) o;
                     figedge.getLayer().bringToFront(figedge);
@@ -143,28 +125,7 @@ public class FigNodeInstance extends AbstractFigNode {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == getNameFig()) {
-            notationProvider.parse(getOwner(), ft.getText());
-            ft.setText(notationProvider.toString(getOwner(), null));
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp(notationProvider.getParsingHelp());
-        }
-    }
-
-    /*
+     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
     @Override
@@ -176,18 +137,6 @@ public class FigNodeInstance extends AbstractFigNode {
                 addElementListener(classifier, "name");
             }
         }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
-    @Override
-    protected void updateNameText() {
-        if (isReadyToEdit()) {
-            getNameFig().setText(notationProvider.toString(getOwner(), null));
-        }
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
     }
 
 }

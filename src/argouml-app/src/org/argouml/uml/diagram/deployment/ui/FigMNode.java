@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML Node in a diagram.
@@ -53,6 +54,12 @@ public class FigMNode extends AbstractFigNode {
         super(gm, node);
     }
 
+    @Override
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-node");
+        }
+    }
 
     /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)

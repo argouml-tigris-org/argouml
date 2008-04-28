@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,6 +35,8 @@ import org.argouml.model.Model;
 import org.argouml.notation.providers.NodeInstanceNotation;
 
 /**
+ * Notation for a NodeInstance.
+ * 
  * @author Michiel
  */
 public class NodeInstanceNotationUml extends NodeInstanceNotation {
@@ -49,7 +51,11 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
     }
 
     /**
-     * Parse a line of the form: "name : base-node".
+     * Parse a line of the form: "name : base-node". 
+     * <p>
+     * The base-node part is a comma separated list of Nodes. <p>
+     * 
+     * Note that stereotypes are not supported.
      *
      * {@inheritDoc}
      */
@@ -76,7 +82,7 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
 
         tokenizer = new StringTokenizer(bases, ",");
 
-        List classifiers = new ArrayList();
+        List<Object> classifiers = new ArrayList<Object>();
         Object ns = Model.getFacade().getNamespace(modelElement);
         if (ns != null) {
             while (tokenizer.hasMoreElements()) {

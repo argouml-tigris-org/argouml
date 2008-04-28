@@ -231,13 +231,6 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
     }
 
     @Override
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-node");
-        }
-    }
-
-    @Override
     public boolean getUseTrapRect() {
         return true;
     }
