@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,9 +25,17 @@
 package org.argouml.uml.diagram.deployment.ui;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML Component in a diagram.
@@ -52,6 +60,58 @@ public class FigComponent extends AbstractFigComponent {
         super(gm, node);
     }
 
+    @Override
+    protected void textEditStarted(FigText ft) {
+        if (ft == getNameFig()) {
+            showHelp("parsing.help.fig-component");
+        }
+    }
+
+    @Override
+    public Selection makeSelection() {
+        return new SelectionComponent(this);
+    }
+
+    @Override
+    public void setEnclosingFig(Fig encloser) {
+
+        Object comp = getOwner();
+        if (encloser != null
+                && (Model.getFacade().isANode(encloser.getOwner()) 
+                        || Model.getFacade().isAComponent(encloser.getOwner()))
+                && getOwner() != null) {
+            if (Model.getFacade().isANode(encloser.getOwner())) {
+                Object node = encloser.getOwner();
+                if (!Model.getFacade().getDeploymentLocations(comp).contains(
+                        node)) {
+                    Model.getCoreHelper().addDeploymentLocation(comp, node);
+                }
+            }
+            super.setEnclosingFig(encloser);
+
+            if (getLayer() != null) {
+                // elementOrdering(figures);
+                List contents = new ArrayList(getLayer().getContents());
+                Iterator it = contents.iterator();
+                while (it.hasNext()) {
+                    Object o = it.next();
+                    if (o instanceof FigEdgeModelElement) {
+                        FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+                        figedge.getLayer().bringToFront(figedge);
+                    }
+                }
+            }
+        } else if (encloser == null && getEnclosingFig() != null) {
+            Object encloserOwner = getEnclosingFig().getOwner();
+            if (Model.getFacade().isANode(encloserOwner)
+                    && (Model.getFacade().getDeploymentLocations(comp)
+                            .contains(encloserOwner))) {
+                Model.getCoreHelper().removeDeploymentLocation(comp,
+                        encloserOwner);
+            }
+            super.setEnclosingFig(encloser);
+        }
+    }
 
     /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)

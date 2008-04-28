@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -36,11 +35,8 @@ import java.util.List;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -59,23 +55,28 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
      * left edge of the main rectangle. Originally named BIGPORT_X (which
      * explains what BX stands for).
      */
-    protected static final int BX = 10;
-    protected static final int FINGER_HEIGHT = BX;
-    protected static final int FINGER_WIDTH = BX * 2;
+    private static final int BX = 10;
+    private static final int FINGER_HEIGHT = BX;
+    private static final int FINGER_WIDTH = BX * 2;
     private static final int OVERLAP = 0;
-    protected static final int DEFAULT_WIDTH = 120;
-    protected static final int DEFAULT_HEIGHT = 80;
-    protected FigRect cover;
-    protected FigRect upperRect;
-    protected FigRect lowerRect;
+    private static final int DEFAULT_WIDTH = 120;
+    private static final int DEFAULT_HEIGHT = 80;
+    private FigRect cover;
+    private FigRect upperRect;
+    private FigRect lowerRect;
 
+    /**
+     * The constructor.
+     */
     public AbstractFigComponent() {
         super();
         cover = new FigRect(BX, 10, DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.black,
                 Color.white);
-        upperRect = new FigRect(0, 2 * FINGER_HEIGHT, FINGER_WIDTH, FINGER_HEIGHT,
+        upperRect = new FigRect(0, 2 * FINGER_HEIGHT, 
+                FINGER_WIDTH, FINGER_HEIGHT,
                 Color.black, Color.white);
-        lowerRect = new FigRect(0, 5 * FINGER_HEIGHT, FINGER_WIDTH, FINGER_HEIGHT,
+        lowerRect = new FigRect(0, 5 * FINGER_HEIGHT, 
+                FINGER_WIDTH, FINGER_HEIGHT,
                 Color.black, Color.white);
 
         getNameFig().setLineWidth(0);
@@ -99,16 +100,11 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
     public AbstractFigComponent(GraphModel gm, Object node) {
         this();
         setOwner(node);
-        if (Model.getFacade().isAClassifier(node)
-                && (Model.getFacade().getName(node) != null)) {
-            getNameFig().setText(Model.getFacade().getName(node));
-        }
-        updateBounds();
     }
 
     @Override
     public Object clone() {
-        FigComponent figClone = (FigComponent) super.clone();
+        AbstractFigComponent figClone = (AbstractFigComponent) super.clone();
         Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.cover = (FigRect) it.next();
@@ -133,12 +129,8 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
 
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+        super.updateListeners(oldOwner, newOwner);
         if (newOwner != null) {
-            // add the listeners to the newOwner
-            addElementListener(newOwner);
             Collection c = Model.getFacade().getStereotypes(newOwner);
             Iterator i = c.iterator();
             while (i.hasNext()) {
@@ -146,13 +138,6 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
                 addElementListener(st, "name");
             }
         }
-    }
-
-    /**
-     * @param b switch underline on or off
-     */
-    public void setUnderline(boolean b) {
-        getNameFig().setUnderline(b);
     }
 
     @Override
@@ -164,11 +149,6 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
         getNameFig().setLineWidth(0);
         upperRect.setLineColor(c);
         lowerRect.setLineColor(c);
-    }
-
-    @Override
-    public Selection makeSelection() {
-        return new SelectionComponent(this);
     }
 
     @Override
@@ -219,47 +199,6 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
         updateEdges();
     }
 
-    @Override
-    public void setEnclosingFig(Fig encloser) {
-
-        Object comp = getOwner();
-        if (encloser != null
-                && (Model.getFacade().isANode(encloser.getOwner()) 
-                        || Model.getFacade().isAComponent(encloser.getOwner()))
-                && getOwner() != null) {
-            if (Model.getFacade().isANode(encloser.getOwner())) {
-                Object node = encloser.getOwner();
-                if (!Model.getFacade().getDeploymentLocations(comp).contains(
-                        node)) {
-                    Model.getCoreHelper().addDeploymentLocation(comp, node);
-                }
-            }
-            super.setEnclosingFig(encloser);
-
-            if (getLayer() != null) {
-                // elementOrdering(figures);
-                List contents = new ArrayList(getLayer().getContents());
-                Iterator it = contents.iterator();
-                while (it.hasNext()) {
-                    Object o = it.next();
-                    if (o instanceof FigEdgeModelElement) {
-                        FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-                        figedge.getLayer().bringToFront(figedge);
-                    }
-                }
-            }
-        } else if (encloser == null && getEnclosingFig() != null) {
-            Object encloserOwner = getEnclosingFig().getOwner();
-            if (Model.getFacade().isANode(encloserOwner)
-                    && (Model.getFacade().getDeploymentLocations(comp)
-                            .contains(encloserOwner))) {
-                Model.getCoreHelper().removeDeploymentLocation(comp,
-                        encloserOwner);
-            }
-            super.setEnclosingFig(encloser);
-        }
-    }
-
     /**
      * TODO: This is not used anywhere. Can we remove it?
      * 
@@ -284,18 +223,6 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
     @Override
     public boolean getUseTrapRect() {
         return true;
-    }
-
-    @Override
-    protected void updateStereotypeText() {
-        getStereotypeFig().setOwner(getOwner());
-    }
-
-    @Override
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-component");
-        }
     }
 
     @Override

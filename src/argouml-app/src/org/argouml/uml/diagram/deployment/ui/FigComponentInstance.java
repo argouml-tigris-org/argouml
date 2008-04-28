@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,15 +25,12 @@
 package org.argouml.uml.diagram.deployment.ui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Editor;
@@ -41,7 +38,6 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML ComponentInstance in a diagram.
@@ -49,8 +45,6 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler
  */
 public class FigComponentInstance extends AbstractFigComponent {
-
-    private NotationProvider notationProvider;
 
     /**
      * Construct a default ComponentInstance figure.
@@ -68,19 +62,12 @@ public class FigComponentInstance extends AbstractFigComponent {
      */
     public FigComponentInstance(GraphModel gm, Object node) {
         super(gm, node);
+        getNameFig().setUnderline(true);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
-     */
     @Override
-    protected void initNotationProviders(Object own) {
-        super.initNotationProviders(own);
-        if (Model.getFacade().isAComponentInstance(own)) {
-            notationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_COMPONENTINSTANCE, own);
-        }
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_COMPONENTINSTANCE;
     }
 
     /*
@@ -107,7 +94,6 @@ public class FigComponentInstance extends AbstractFigComponent {
         }
     }
 
-   
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
@@ -196,48 +182,6 @@ public class FigComponentInstance extends AbstractFigComponent {
                 super.setEnclosingFig(encloser);
             }
         }
-    }
-
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == getNameFig()) {
-            notationProvider.parse(getOwner(), ft.getText());
-            ft.setText(notationProvider.toString(getOwner(), null));
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp(notationProvider.getParsingHelp());
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
-     */
-    @Override
-    protected void updateStereotypeText() {
-        getStereotypeFig().setOwner(getOwner());
-    }
-    
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
-    @Override
-    protected void updateNameText() {
-        if (isReadyToEdit()) {
-            getNameFig().setText(notationProvider.toString(getOwner(), null));
-        }
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
     }
 
 }
