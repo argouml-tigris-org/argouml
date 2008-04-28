@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,6 +47,12 @@ import org.tigris.gef.presentation.FigCube;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
+/**
+ * Introduce abstract superclass for FigMNode & FigNodeInstance 
+ * so that we can do proper inheritance.
+ *
+ * @author Tom Morris
+ */
 public abstract class AbstractFigNode extends FigNodeModelElement {
 
     /**
@@ -57,19 +63,24 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
      * break if they don't match.
      */
     protected static final int DEPTH = 20;
-    protected FigCube cover;
-    protected int x = 10;
-    protected int y = 10;
-    protected int width = 200;
-    protected int height = 180;
+    private FigCube cover;
+    private static final int DEFAULT_X = 10;
+    private static final int DEFAULT_Y = 10;
+    private static final int DEFAULT_WIDTH = 200;
+    private static final int DEFAULT_HEIGHT = 180;
 
+    /**
+     * Constructor.
+     */
     public AbstractFigNode() {
         super();
-        setBigPort(new CubePortFigRect(x, y - DEPTH, width + DEPTH, height
-                + DEPTH, DEPTH));
+        setBigPort(new CubePortFigRect(DEFAULT_X, DEFAULT_Y - DEPTH, 
+                DEFAULT_WIDTH + DEPTH, 
+                DEFAULT_HEIGHT + DEPTH, DEPTH));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
-        cover = new FigCube(x, y, width, height, Color.black, Color.white);
+        cover = new FigCube(DEFAULT_X, DEFAULT_Y, 
+                DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.black, Color.white);
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
@@ -81,6 +92,12 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
         addFig(getNameFig());
     }
     
+    /**
+     * Constructor.
+     * 
+     * @param gm the graphmodel
+     * @param node the UML element
+     */
     public AbstractFigNode(GraphModel gm, Object node) {
         this();
         setOwner(node);
@@ -90,9 +107,23 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
         }
     }
 
+    /**
+     * Construct a figure at a specific position for a given model element. <p>
+     * 
+     * The Layer (which has a 1..1 relation to the Diagram)
+     * is not yet set in this stage of the creation of the Fig.
+     * 
+     * @param element ModelElement associated with figure
+     * @param x horizontal location
+     * @param y vertical location
+     */
+    public AbstractFigNode(Object element, int x, int y) {
+        super(element, x, y);
+    }
+
     @Override
     public Object clone() {
-        FigMNode figClone = (FigMNode) super.clone();
+        AbstractFigNode figClone = (AbstractFigNode) super.clone();
         Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.cover = (FigCube) it.next();
@@ -186,19 +217,14 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
         if (getLayer() != null) {
             // elementOrdering(figures);
             Collection contents = getLayer().getContents();
-            Collection bringToFrontList = new ArrayList();
-            Iterator it = contents.iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
+            Collection<FigEdgeModelElement> bringToFrontList = 
+                new ArrayList<FigEdgeModelElement>();
+            for (Object o : contents) {
                 if (o instanceof FigEdgeModelElement) {
-                    bringToFrontList.add(o);
-    
+                    bringToFrontList.add((FigEdgeModelElement) o);
                 }
             }
-            Iterator bringToFrontIter = bringToFrontList.iterator();
-            while (bringToFrontIter.hasNext()) {
-                FigEdgeModelElement figEdge =
-                        (FigEdgeModelElement) bringToFrontIter.next();
+            for (FigEdgeModelElement figEdge : bringToFrontList) {
                 figEdge.getLayer().bringToFront(figEdge);
             }
         }
@@ -267,10 +293,6 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
         };
         Point p = Geometry.ptClosestTo(xs, ys, 7, anotherPt);
         return p;
-    }
-
-    public AbstractFigNode(Object element, int x, int y) {
-        super(element, x, y);
     }
 
 }
