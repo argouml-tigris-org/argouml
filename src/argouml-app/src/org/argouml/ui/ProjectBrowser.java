@@ -99,6 +99,7 @@ import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.TabProps;
 import org.argouml.util.ArgoFrame;
+import org.argouml.util.JavaRuntimeUtility;
 import org.argouml.util.ThreadUtils;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -289,7 +290,7 @@ public final class ProjectBrowser
             // allows me to ask "Do you want to save first?"
             setDefaultCloseOperation(ProjectBrowser.DO_NOTHING_ON_CLOSE);
             addWindowListener(new WindowCloser());
-            
+
             setApplicationIcon();
 
             // Add listener for project changes
@@ -307,39 +308,39 @@ public final class ProjectBrowser
     }
 
     private void addKeyboardFocusListener() {
-        KeyboardFocusManager kfm =
-            KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        kfm.addPropertyChangeListener(new PropertyChangeListener() {
-            private Object obj;
+            KeyboardFocusManager kfm =
+                KeyboardFocusManager.getCurrentKeyboardFocusManager();
+            kfm.addPropertyChangeListener(new PropertyChangeListener() {
+                private Object obj;
 
-            /*
-             * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-             */
-            public void propertyChange(PropertyChangeEvent evt) {
-                if ("focusOwner".equals(evt.getPropertyName())
-                        && (evt.getNewValue() != null)
-                    /* We get many many events (why?), so let's filter: */
-                        && (obj != evt.getNewValue())) {
-                    obj = evt.getNewValue();
-                    // TODO: Bob says -
-                    // We're looking at focus change to
-                    // flag the start of an interaction. This
-                    // is to detect when focus is gained in a prop
+                /*
+                 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+                 */
+                public void propertyChange(PropertyChangeEvent evt) {
+                    if ("focusOwner".equals(evt.getPropertyName())
+                            && (evt.getNewValue() != null)
+                        /* We get many many events (why?), so let's filter: */
+                            && (obj != evt.getNewValue())) {
+                        obj = evt.getNewValue();
+                        // TODO: Bob says -
+                        // We're looking at focus change to
+                        // flag the start of an interaction. This
+                        // is to detect when focus is gained in a prop
                     // panel field on the assumption editing of that
-                    // field is about to start.
-                    // Not a good assumption. We Need to see if we can get
-                    // rid of this.
-                    Project p = 
-                        ProjectManager.getManager().getCurrentProject();
-                    p.getUndoManager().startInteraction("Focus");
-                    /* This next line is ideal for debugging the taborder
-                     * (focus traversal), see e.g. issue 1849.
-                     */
+                        // field is about to start.
+                        // Not a good assumption. We Need to see if we can get
+                        // rid of this.
+                        Project p = 
+                            ProjectManager.getManager().getCurrentProject();
+                        p.getUndoManager().startInteraction("Focus");
+                        /* This next line is ideal for debugging the taborder
+                         * (focus traversal), see e.g. issue 1849.
+                         */
 //                      System.out.println("Focus changed " + obj);
+                    }
                 }
-            }
-        });
-    }
+            });
+        }
 
     private void setApplicationIcon() {
         ImageIcon argoImage16x16 =
@@ -355,28 +356,29 @@ public final class ProjectBrowser
         // call to this.setIconImages().
         // TODO: We can remove all of this reflection code when we go to 
         // Java 1.6 as a minimum JRE version, see issue 4989.
-        Method m = null;
-        try {
-            // java.awt.Window.setIconImages is new in Java 6, so may not exist
-            // check for it using reflection on current instance
-            m = getClass().getMethod("setIconImages", List.class);
-            m.invoke(this, argoImages);
-        }
-        catch (NoSuchMethodException x) {
-            m = null;
-        } catch (InvocationTargetException e) {
-            m = null;
-        } catch (IllegalArgumentException e) {
-            m = null;
-        } catch (IllegalAccessException e) {
-            m = null;
-        }
-        
-        // If we couldn't run setIconImages() for whatever reason 
-        // (probably JRE < 1.6.0), do it the old way 
-        // using javax.swing.JFrame.setIconImage, and accept the blurry icon 
-        if (null == m) {
+        if (JavaRuntimeUtility.isJre5())
+        {
+            // With JRE < 1.6.0, do it the old way using 
+            // javax.swing.JFrame.setIconImage, and accept the blurry icon 
             setIconImage(argoImage16x16.getImage());
+        }
+        else
+        {
+            Method m;
+            try {
+                // java.awt.Window.setIconImages is new in Java 6.
+                // check for it using reflection on current instance
+                m = getClass().getMethod("setIconImages", List.class);
+                m.invoke(this, argoImages);
+            } catch (InvocationTargetException e) {
+                LOG.error("Exception", e);
+            } catch (NoSuchMethodException e) {
+                LOG.error("Exception", e);
+            } catch (IllegalArgumentException e) {
+                LOG.error("Exception", e);
+            } catch (IllegalAccessException e) {
+                LOG.error("Exception", e);
+            }
         }
     }
 
@@ -797,7 +799,7 @@ public final class ProjectBrowser
 
     /**
      * Get the tab page containing the properties.
-     * 
+     *
      * @return the TabProps tabpage
      * @deprecated for 0.25.5 by tfmorris. No one should need to manipulate the
      *             properties tab directly. The only place this is currently
@@ -819,7 +821,7 @@ public final class ProjectBrowser
 
     /**
      * Get the tab page instance of the given class.
-     * 
+     *
      * @param tabClass the given class
      * @return the tabpage
      * @deprecated by for 0.25.5 by tfmorris. Tabs should register themselves
@@ -902,7 +904,7 @@ public final class ProjectBrowser
     /**
      * Given a list of targets, displays the corresponding diagram. This method
      * jumps to the diagram showing the targets, and scrolls to make it visible.
-     * 
+     *
      * @param targets Collection of targets to show
      * @deprecated for 0.25.5 by tfmorris. This is unused by ArgoUML. If there
      *             are clients that require this functionality, it should be
