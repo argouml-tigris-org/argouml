@@ -171,7 +171,7 @@ The table below show how the code is organized in the different layouts.
 
       <table>
         <title>Layout differences</title>
-        <tgroup cols="3">
+        <tgroup cols="4">
           <tbody>
             <row>
               <entry>Code</entry>
