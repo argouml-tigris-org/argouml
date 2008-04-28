@@ -356,14 +356,11 @@ public final class ProjectBrowser
         // call to this.setIconImages().
         // TODO: We can remove all of this reflection code when we go to 
         // Java 1.6 as a minimum JRE version, see issue 4989.
-        if (JavaRuntimeUtility.isJre5())
-        {
+        if (JavaRuntimeUtility.isJre5()) {
             // With JRE < 1.6.0, do it the old way using 
             // javax.swing.JFrame.setIconImage, and accept the blurry icon 
             setIconImage(argoImage16x16.getImage());
-        }
-        else
-        {
+        } else {
             Method m;
             try {
                 // java.awt.Window.setIconImages is new in Java 6.
