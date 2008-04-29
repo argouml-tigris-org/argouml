@@ -89,7 +89,8 @@ public final class DeveloperModule implements ModuleInterface {
                 ProjectBrowser.Position.East);
         
         AbstractArgoJPanel testPanel = TestPanel.getInstance();
-        DetailsPane dp = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
+        DetailsPane dp =
+                (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
         dp.addTab(testPanel, true);
 
         return true;

@@ -24,29 +24,11 @@
 
 package org.argouml.dev.test;
 
-import java.awt.BorderLayout;
-import java.util.Vector;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.argouml.application.api.AbstractArgoJPanel;
-import org.argouml.dev.MessageNodeBuilder;
-import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.event.GraphSelectionEvent;
-import org.tigris.gef.event.GraphSelectionListener;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
-import org.tigris.gef.presentation.FigGroup;
-import org.tigris.gef.presentation.FigText;
 
 /**
- * The fig inspector listens for selection of a single fig.
- * It presents the composite structure of the selected Fig
- * in the dev panel.
+ * Empty panel for testing.
+ * 
  * @author Bob Tarling
  */
 public final class TestPanel
