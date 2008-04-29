@@ -237,7 +237,7 @@ Building this requires:
         <include name="java.g"/>
       </srcfiles>
     </uptodate>
-    <antcall target="generate-parser-re"/>
+    <antcall target="generate-parser-cg"/>
 
   </target>
 
