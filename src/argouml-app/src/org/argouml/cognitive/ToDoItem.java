@@ -30,10 +30,7 @@ import javax.swing.Icon;
 
 import org.argouml.cognitive.critics.Wizard;
 import org.argouml.cognitive.critics.WizardItem;
-import org.argouml.model.Model;
 import org.argouml.util.CollectionUtil;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * This class defines the feedback items that can be placed on the
@@ -179,17 +176,11 @@ public class ToDoItem implements Serializable, WizardItem {
         theWizard = c.makeWizard(this);
     }
 
-    //TODO: The cognitive system should not be aware of any other
-    // system. Find a better way to do this.
-    private void checkArgument(Object dm) {
-        if (!Model.getFacade().isAUMLElement(dm)
-                && !(dm instanceof Fig)
-                && !(dm instanceof Diagram)) {
-
-            throw new IllegalArgumentException(
-                    "The offender must be a model element, "
-                    + "a Fig or a Diagram");
-        }
+    /**
+     * Override in subclass to validate the offender is an expected type.
+     * @param dm the offender (why dm?)
+     */
+    protected void checkArgument(Object dm) {
     }
 
     /**
@@ -334,14 +325,10 @@ public class ToDoItem implements Serializable, WizardItem {
      * TODO: Offenders need to be more strongly typed. - tfm 20070630
      */
     public ListSet getOffenders() {
+        // TODO: should not be using assert here but I don't want to change to
+        // IllegalStateException at lead up to a release as I don't know how
+        // much testing is done with assert on.
         assert theOffenders != null;
-        // TODO: The cognitive system should not be aware of any other
-        // system. Find a better way to do this. We should not use
-        // assert on public methods.
-        assert theOffenders.size() <= 0
-        	|| Model.getFacade().isAUMLElement(theOffenders.get(0))
-        	|| theOffenders.get(0) instanceof Fig
-        	|| theOffenders.get(0) instanceof Diagram;
         return theOffenders;
     }
 

@@ -41,7 +41,10 @@ import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.ui.ProjectActions;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.Fig;
 
 
 /**
@@ -170,4 +173,30 @@ public class UMLToDoItem extends ToDoItem {
             }
         }
     }
+    
+    @Override
+    public ListSet getOffenders() {
+        final ListSet offenders = getOffenders();
+        // TODO: should not be using assert here but I don't want to change to
+        // IllegalStateException at lead up to a release as I don't know how
+        // much testing is done with assert on.
+        assert offenders.size() <= 0
+        || Model.getFacade().isAUMLElement(offenders.get(0))
+        || offenders.get(0) instanceof Fig
+        || offenders.get(0) instanceof Diagram;
+        return offenders;
+    }
+    
+    @Override
+    protected void checkArgument(Object dm) {
+        if (!Model.getFacade().isAUMLElement(dm)
+                && !(dm instanceof Fig)
+                && !(dm instanceof Diagram)) {
+
+            throw new IllegalArgumentException(
+                    "The offender must be a model element, "
+                    + "a Fig or a Diagram");
+        }
+    }
+
 }
