@@ -99,8 +99,6 @@ Building this requires:
       <path refid="src.compile.classpath"/>
     </path>
 
-    <property name="cobertura.dir" value="${argo.tools.dir}/cobertura-1.9" />
-
     <path id="tests.run.classpath">
       <path refid="tests.compile.classpath"/>
       <fileset dir="../argouml-core-model-mdr/build/">
@@ -121,6 +119,8 @@ Building this requires:
 
     <property name="version.package" value="org/argouml/application"/>
 
+    <property name="cobertura.dir" value="${argo.tools.dir}/cobertura-1.9" />
+    <property name="cobertura.datafile" value="${build.dir}/cobertura.ser" />
     <path id="cobertura.classpath">
       <fileset dir="${cobertura.dir}">
         <include name="cobertura.jar" />
@@ -223,25 +223,25 @@ Building this requires:
           description="Generate the antlr parsers.">
     <echo message="Generate parsers"/>
 
-    <uptodate property="parser1.is.current"
+    <uptodate property="parser.re.is.current"
               targetfile="src/org/argouml/uml/reveng/java/JavaTokenTypes.txt">
       <srcfiles dir="src/org/argouml/uml/reveng/java">
         <include name="java.g"/>
       </srcfiles>
     </uptodate>
-    <antcall target="generateparser1"/>
+    <antcall target="generate-parser-re"/>
 
-    <uptodate property="parser2.is.current"
+    <uptodate property="parser.cg.is.current"
               targetfile="src/org/argouml/language/java/generator/JavaTokenTypes.txt">
       <srcfiles dir="src/org/argouml/language/java/generator">
         <include name="java.g"/>
       </srcfiles>
     </uptodate>
-    <antcall target="generateparser2"/>
+    <antcall target="generate-parser-re"/>
 
   </target>
 
-  <target name="generateparser1" unless="parser1.is.current" depends="init">
+  <target name="generate-parser-re" unless="parser.re.is.current" depends="init">
     <delete>
       <fileset dir="src/org/argouml/uml/reveng/java">
         <include name="JavaTokenTypes.txt"/>
@@ -259,7 +259,7 @@ Building this requires:
     </java>
   </target>
 
-  <target name="generateparser2" unless="parser2.is.current" depends="init">
+  <target name="generate-parser-cg" unless="parser.cg.is.current" depends="init">
     <delete>
       <fileset dir="src/org/argouml/language/java/generator">
         <include name="JavaTokenTypes.txt"/>
@@ -384,6 +384,7 @@ Building this requires:
     <delete file="src/${version.package}/ArgoVersion.java"/>
 
     <antcall target="cleanparser"/>
+    <antcall target="coverage-clean"/>
   </target>
 
 
@@ -458,7 +459,10 @@ Building this requires:
          - - - - - - - - - - - - - - - - - -->
     <target name="coverage-instrument" depends="init-coverage,compile" 
         if="test.coverage">
-      <cobertura-instrument todir="${build.dir}/instrumented">
+
+      <delete file="${cobertura.datafile}" />
+
+      <cobertura-instrument todir="${build.dir}/instrumented" datafile="${cobertura.datafile}">
         <fileset dir="${build.classes}">
             <include name="**/*.class" />
             <exclude name="**/JavaLexer.class **/JavaRecognizer.class **/JavaTokenTypes.class" />
@@ -467,16 +471,20 @@ Building this requires:
     </target>
 
   <!-- run immediately before JUnit tests to make sure instrumented files are gone-->
-  <target name="coverage-clean" depends="compile" unless="test.coverage">
+  <target name="coverage-clean" depends="init-coverage" unless="test.coverage">
     <mkdir dir="${build.dir}/instrumented"/>
     <delete>
-      <fileset dir="{$build.dir}/instrumented">
+      <fileset dir="${build.dir}/instrumented">
         <include name="*"/>
       </fileset>
     </delete>
+
+    <mkdir dir="${tests.reports}"/>
+    <delete file="${cobertura.datafile}" />
+
   </target>
   
-  <target name="coverage-report-clean" depends="init" if="test.coverage">
+  <target name="coverage-report-clean" depends="init-coverage" if="test.coverage">
     <mkdir dir="${tests.reports}"/>
     <mkdir dir="${tests.reports}/coverage"/>
     <mkdir dir="${tests.reports}/coverage/html"/>
@@ -489,7 +497,7 @@ Building this requires:
   </target>
 
   <target name="coverage-report-xml" depends="init-coverage" if="test.coverage">
-    <cobertura-report format="xml" datafile="${tests.reports}/cobertura.ser" 
+    <cobertura-report format="xml" datafile="${cobertura.datafile}" 
       destdir="${tests.reports}/coverage/xml" >
         <fileset dir="src">
             <include name="**/*.java" />
@@ -499,7 +507,7 @@ Building this requires:
   
   <target name="coverage-report-html" depends="init-coverage"
       description="create HTML coverage report (default is XML)">
-    <cobertura-report format="html" datafile="${tests.reports}/cobertura.ser" 
+    <cobertura-report format="html" datafile="${cobertura.datafile}" 
       destdir="${tests.reports}/coverage/html" >
         <fileset dir="src">
             <include name="**/*.java" />
@@ -571,8 +579,6 @@ Building this requires:
           depends="compile,junit-setup,junit-report-clean,
                    ant.optional.init" >
 
-    <delete file="${tests.reports}/cobertura.ser" />
-
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
            fork="yes"  dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
@@ -585,7 +591,7 @@ Building this requires:
       <sysproperty key="java.awt.headless" value="true"/>
       <sysproperty key="argouml.tests.dir" value="tests"/>
       <sysproperty key="net.sourceforge.cobertura.datafile"
-                    file="${tests.reports}/cobertura.ser" />
+                    file="${cobertura.datafile}" />
       <assertions>
         <enable/>
       </assertions>
