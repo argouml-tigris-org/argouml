@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -326,6 +326,8 @@ class ZargoFilePersister extends UmlFilePersister {
             
             progressMgr.nextPhase();
             
+            copyMember(file, "profile", encoding, writer);
+            
             copyXmi(file, encoding, writer);
 
             copyDiagrams(file, encoding, writer);
@@ -334,8 +336,6 @@ class ZargoFilePersister extends UmlFilePersister {
             // any model elements or figs that the todo items refer to
             // will exist before creating critics.
             copyMember(file, "todo", encoding, writer);
-            
-            copyMember(file, "profile", encoding, writer);
             
             progressMgr.nextPhase();
             
@@ -400,7 +400,7 @@ class ZargoFilePersister extends UmlFilePersister {
                     writer.println("<member type='todo' name='.todo' />");
                 }
                 if (containsProfile) {
-            	String type = ProfileConfiguration.EXTENSION;
+                    String type = ProfileConfiguration.EXTENSION;
                     writer.println("<member type='" + type + "' name='."
                             + type + "' />");
                 }

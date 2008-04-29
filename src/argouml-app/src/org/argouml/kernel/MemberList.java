@@ -39,19 +39,25 @@ import org.tigris.gef.base.Diagram;
 /**
  * List of ProjectMembers. <p>
  * 
- * The project members are grouped into 4 categories: 
+ * <p>The project members are grouped into 4 categories: 
  * model, diagrams, the todo item list and the profile configuration. <p>
  *
- * The purpose of these categories is to make sure that members are read 
- * and written in the correct order. The model must be read before diagrams, 
- * diagrams must be read before todo items. (Dixit Bob in issue 2979.)
- * The profile configuration is written last. <p>
- *
- * This implementation supports only 1 model member, 
- * multiple diagram members, one todo list member, 
- * and one profile configuration. <p>
+ * <p>The purpose of these categories is to make sure that members are read 
+ * and written in the correct order. 
  * 
- * Comments by mvw: <p>
+ * <p>When reading the todo items it will fail if the diagrams elements or model
+ * elements have not yet been read that they refer to. When reading diagrams
+ * that will fail if the model elements don't yet exist that they refer to.
+ * When loading the model that may fail if the correct profile has not been
+ * loaded.
+ * 
+ * <p>Hence, the save (and therefore load) order is profile, model, diagrams,
+ * todo items.
+ *
+ * <p>This implementation supports only one profile configuration, one model
+ * member, multiple diagram members, one todo list member.
+ * 
+ * <p>Comments by mvw: <p>
  * This class should be reworked to be independent 
  * of the org.argouml.uml package. That can be done by extending the 
  * ProjectMember interface with functions returning the sorting order, 
@@ -131,29 +137,33 @@ class MemberList implements List<ProjectMember> {
     }
 
     public synchronized Iterator<ProjectMember> iterator() {
-        return buildTempList().iterator();
+        return buildOrderedMemberList().iterator();
     }
 
     public synchronized ListIterator<ProjectMember> listIterator() {
-        return buildTempList().listIterator();
+        return buildOrderedMemberList().listIterator();
     }
 
     public synchronized ListIterator<ProjectMember> listIterator(int arg0) {
-        return buildTempList().listIterator(arg0);
+        return buildOrderedMemberList().listIterator(arg0);
     }
 
-    private List<ProjectMember> buildTempList() {
+    /**
+     * @return the list of members in the order that they need to be written 
+     *         out in.
+     */
+    private List<ProjectMember> buildOrderedMemberList() {
         List<ProjectMember> temp = 
             new ArrayList<ProjectMember>(size());
+        if (profileConfiguration != null) {
+            temp.add(profileConfiguration);
+        }
         if (model != null) {
             temp.add(model);
         }
         temp.addAll(diagramMembers);
         if (todoList != null) {
             temp.add(todoList);
-        }
-        if (profileConfiguration != null) {
-            temp.add(profileConfiguration);
         }
         return temp;
     }

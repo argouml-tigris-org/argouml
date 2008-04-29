@@ -51,7 +51,7 @@ class ArgoParser extends SAXParserBase {
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
 
-    private List memberList = new ArrayList();
+    private List<String> memberList = new ArrayList<String>();
 
     /**
      * The constructor.
@@ -326,14 +326,7 @@ class ArgoParser extends SAXParserBase {
             throw new SAXException("XML element is null");
         }
         String type = e.getAttribute("type");
-        // The members list dictates the order in which the
-        // members are loaded. So make sure that XMI is at the top
-        // and others below.
-        if (type.equals("xmi")) {
-            memberList.add(0, type);
-        } else {
-            memberList.add(type);
-        }
+        memberList.add(type);
     }
 
     /**
@@ -478,7 +471,7 @@ class ArgoParser extends SAXParserBase {
      * Get the number of diagram members read.
      * @return the number of diagram members read.
      */
-    public List getMemberList() {
+    public List<String> getMemberList() {
         return memberList;
     }
 }

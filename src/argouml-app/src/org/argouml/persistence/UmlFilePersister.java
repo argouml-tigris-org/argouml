@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -261,48 +261,23 @@ public class UmlFilePersister extends AbstractFilePersister {
             }
             writer.flush();
 
-            // Write out XMI section first
-            int size = project.getMembers().size();
-            for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = project.getMembers().get(i);
-                if (projectMember.getType().equalsIgnoreCase("xmi")) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member of type: "
-                              + project.getMembers().get(i).getType());
-                    }
-                    MemberFilePersister persister
-                        = getMemberFilePersister(projectMember);
-                    filteredStream.startEntry();
-                    persister.save(projectMember, filteredStream);
-                    try {
-                        filteredStream.flush();
-                    } catch (IOException e) {
-                        throw new SaveException(e);
-                    }
-                }
-            }
-
             if (progressMgr != null) {
                 progressMgr.nextPhase();
             }
 
-            // Write out all non-XMI sections
-            for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = project.getMembers().get(i);
-                if (!projectMember.getType().equalsIgnoreCase("xmi")) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member of type: "
-                              + project.getMembers().get(i).getType());
-                    }
-                    MemberFilePersister persister
-                        = getMemberFilePersister(projectMember);
-                    filteredStream.startEntry();
-                    persister.save(projectMember, filteredStream);
-                    try {
-                        filteredStream.flush();
-                    } catch (IOException e) {
-                        throw new SaveException(e);
-                    }
+            // Note we assume members are ordered correctly already
+            for (ProjectMember projectMember : project.getMembers()) {
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Saving member : " + projectMember);
+                }
+                MemberFilePersister persister
+                    = getMemberFilePersister(projectMember);
+                filteredStream.startEntry();
+                persister.save(projectMember, filteredStream);
+                try {
+                    filteredStream.flush();
+                } catch (IOException e) {
+                    throw new SaveException(e);
                 }
             }
 
