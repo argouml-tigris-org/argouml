@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,7 +41,10 @@ import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.persistence.AbstractFilePersister;
+import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.persistence.SaveException;
+import org.argouml.persistence.XmiReferenceException;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.ProfileManager;
@@ -122,11 +125,12 @@ public class TestProjectWithProfiles extends TestCase {
      *   <li>assert that the project's model elements that had a dependency to 
      *   the UML profile for Java are consistent</li>
      * </ol>
-     * 
-     * @throws Exception when something goes wrong
+     * @throws OpenException if there was an error during a project load
+     * @throws SaveException if there was an error during a project save
+     * @throws InterruptedException if save or load was interrupted
      */
-    public void testRemoveProfileWithModelThatRefersToProfile() 
-        throws Exception {
+    public void testRemoveProfileWithModelThatRefersToProfile()
+        throws OpenException, SaveException, InterruptedException {
         // set UML Profile for Java as a default profile
         ProfileManager profileManager = ProfileFacade.getManager();
         Profile javaProfile = profileManager.getProfileForClass(
@@ -334,22 +338,12 @@ public class TestProjectWithProfiles extends TestCase {
         // ArgoUML session
         InitializeModel.initializeMDR();
         new InitProfileSubsystem().init();
-        // load the project
-        // TODO: the following now does not throw since we implemented the 
-        // reference resolving scheme, the model sub-system caches the system 
-        // ID references and resolves it on its own without the help of the 
-        // project.
-        // ?? tfm - what needs to be done to resolve this todo?? - tfm
-        project = persister.doLoad(file);
-        project.postLoad();
-        // assert that the model element that depends on the profile is 
-        // consistent
-        fooClass = project.findType("Foo", false);
-        assertNotNull(fooClass);
-        Collection fooStereotypes = getFacade().getStereotypes(fooClass);
-        assertEquals(1, fooStereotypes.size());
-        assertEquals(ProfileMother.STEREOTYPE_NAME_ST, 
-                getFacade().getName(fooStereotypes.iterator().next()));
+        try {
+            project = persister.doLoad(file);
+            fail("Failed to throw exception for missing user defined profile");
+        } catch (XmiReferenceException e) {
+            // success
+        }
     }
 
     private AbstractFilePersister getProjectPersister(File file) {
