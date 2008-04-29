@@ -2288,12 +2288,12 @@ tools can still do basic things.
     <sect2 id="eclipse-checkout">
       <title>Checking out through Eclipse</title>
       <para>
-This instruction is if you want to use Eclipse to download the source
-and it takes you up to where you can start ArgoUML from the source.
+This instruction is for downloading the ArgoUML source through Eclipse.
 </para>
 
       <para>
-We have Eclipse Team Project Set files prepared to make the set up automatic.
+Eclipse uses Team Project Set (<filename>.psf</filename>) files to 
+automatically control the check-out from the SVN repository.
 </para>
 
       <para>
@@ -2303,82 +2303,93 @@ Do the following.
       <orderedlist>
         <listitem>
           <para>
-Change to the SVN Repository Explorer perspective and select 
-Add SVN Repository.
-Then enter the following url
-<command>http://argouml.tigris.org/svn/argouml</command>.
+Go to the Team Project Set files download page: 
+<ulink url="http://argouml.tigris.org/psf/" />
 </para>
         </listitem>
 
         <listitem>
-          <para>
-Download the initial Team Project Set file and save it somewhere.
+          <orderedlist>
+            <listitem>
+              <para>
+On Windows systems (quicker way):
+</para>            
+              <orderedlist>
+                <listitem>
+                  <para>
+Copy the link location of <filename>argouml-core-projectset.psf</filename> 
+(copy shortcut/copy link location).
 </para>
-          <para>
-This is done like this:
-            <orderedlist>
-              <listitem>
-                <para>File => New => Project...</para>
-              </listitem>
-              <listitem>
-                <para>SVN => Checkout Projects from SVN</para>
-              </listitem>
-              <listitem>
-                <para>Next</para>
-              </listitem>
-              <listitem>
-                <para>
-Choose the repository location
-http://argouml.tigris.org/svn/argouml
+                </listitem>
+                <listitem>
+                  <para>
+Open Eclipse
 </para>
-              </listitem>
-              <listitem>
-                <para>Next</para>
-              </listitem>
-              <listitem>
-                <para>
-Browse to <filename>trunk/www/psf</filename>.
+                </listitem>
+                <listitem>
+                  <para>
+File &gt; Import... &gt; Team Project Set &gt; Next.
 </para>
-              </listitem>
-              <listitem>
-                <para>Next</para>
-              </listitem>
-              <listitem>
-                <para>Check out as project in the workspace, name psf</para>
-              </listitem>
-              <listitem>
-                <para>Next</para>
-              </listitem>
-              <listitem>
-                <para>Use default workspace location</para>
-              </listitem>
-              <listitem>
-                <para>Finish</para>
-              </listitem>
-            </orderedlist>
+                </listitem>
+                <listitem>
+                  <para>
+File name: click 'Browse...'
 </para>
-        </listitem>
-
-        <listitem>
-          <para>
-Import the Team Project Set file for the core argouml project.
+                </listitem>
+                <listitem>
+                  <para>
+Right-click &gt; paste, or &lt;ctrl&gt;-v.  Press &lt;enter&gt;.  After a 
+short delay, the filename updates with the <filename>.psf</filename> that's
+just been downloaded.
 </para>
-          <para>
-This can be done in two ways.
-Either by
-File => Import, 
-select Team Project Set,
-press Next,
-browse to the file
-<filename>argouml-core-projectset.psf</filename>
-in the psf project,
-and press Finish.
-Or by right-clicking on
-the <filename>argouml-core-projectset.psf</filename>
-in the Eclipse explorer and selecting
-Import Project Set...
-from the popub-menu.
+                </listitem>             
+                <listitem>
+                  <para>
+Click Finish.
 </para>
+                </listitem>     
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>
+On any other system:
+</para>
+              <orderedlist>
+                <listitem>
+                  <para>
+Download the <filename>argouml-core-projectset.psf</filename> Team Project 
+Set file and save it somewhere.
+</para>
+                </listitem>
+                <listitem>
+                  <para>
+Open Eclipse
+</para>
+                </listitem>
+                  <listitem>
+                    <para>
+File &gt; Import... &gt; Team Project Set &gt; Next.
+</para>
+                </listitem>
+                <listitem>
+                  <para>
+File name: click 'Browse...'
+</para>
+                </listitem>
+                <listitem>
+                  <para>
+Navigate to the <filename>.psf</filename> file you just saved and 
+press &lt;enter&gt;.
+</para>
+                </listitem>
+                <listitem>
+                  <para>
+Click Finish.
+</para>
+                </listitem>
+              </orderedlist>
+            </listitem>
+          </orderedlist>
 
           <para>
 Now everything is automatic even though it takes a while. What happens is:
@@ -2519,7 +2530,7 @@ Then select Java => Code Style => Code Templates.
             <listitem>
               <para>
 Select Import and give the file
-<filename>eclipse/eclipse-argo-codetemplates.xml</filename>
+<filename>EclipseWorkspace/argouml-core-tools/eclipse/eclipse-argo-codetemplates.xml</filename>
 located in the argouml-core-tools project that you just checked out.
 </para>
             </listitem>
