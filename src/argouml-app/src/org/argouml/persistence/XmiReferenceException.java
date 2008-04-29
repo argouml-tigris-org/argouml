@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,30 +25,21 @@
 package org.argouml.persistence;
 
 /**
- * Exception indicating some type of error reading an XMI file.
+ * Exception indicating a problem with an external reference (HREF) in the XMI
+ * file. 
  * 
  * @author Tom Morris
  */
-public class XmiFormatException extends OpenException {
+public class XmiReferenceException extends XmiFormatException {
 
     /**
-     * Construct an XmiFormatException with a nested cause.
+     * Construct an XmiReferenceException for the given reference
      * 
-     * @param message the message
-     * @param cause the underlying error cause
+     * @param href the reference that caused the error
+     * @param cause the nested exception if available
      */
-    public XmiFormatException(String message, Throwable cause) {
-        super(message, cause);
+    public XmiReferenceException(String href, Throwable cause) {
+        super(href, cause);
     }
-    
-    /**
-     * Construct an XmiFormatException with a nested cause.
-     * 
-     * @param cause the underlying error cause
-     */
-    public XmiFormatException(Throwable cause) {
-        super(cause);
-    }
-
 
 }

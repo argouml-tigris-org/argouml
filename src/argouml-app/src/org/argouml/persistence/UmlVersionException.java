@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ public class UmlVersionException extends XmiFormatException {
      * @param cause what caused the exception
      */
     public UmlVersionException(String message, Throwable cause) {
-        super(cause);
+        super(message, cause);
     }
 
 }
