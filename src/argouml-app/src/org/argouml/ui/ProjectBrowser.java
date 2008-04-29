@@ -308,48 +308,43 @@ public final class ProjectBrowser
     }
 
     private void addKeyboardFocusListener() {
-            KeyboardFocusManager kfm =
-                KeyboardFocusManager.getCurrentKeyboardFocusManager();
-            kfm.addPropertyChangeListener(new PropertyChangeListener() {
-                private Object obj;
+        KeyboardFocusManager kfm =
+            KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kfm.addPropertyChangeListener(new PropertyChangeListener() {
+            private Object obj;
 
-                /*
-                 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-                 */
-                public void propertyChange(PropertyChangeEvent evt) {
-                    if ("focusOwner".equals(evt.getPropertyName())
-                            && (evt.getNewValue() != null)
-                        /* We get many many events (why?), so let's filter: */
-                            && (obj != evt.getNewValue())) {
-                        obj = evt.getNewValue();
-                        // TODO: Bob says -
-                        // We're looking at focus change to
-                        // flag the start of an interaction. This
-                        // is to detect when focus is gained in a prop
-                    // panel field on the assumption editing of that
-                        // field is about to start.
-                        // Not a good assumption. We Need to see if we can get
-                        // rid of this.
-                        Project p = 
-                            ProjectManager.getManager().getCurrentProject();
-                        p.getUndoManager().startInteraction("Focus");
-                        /* This next line is ideal for debugging the taborder
-                         * (focus traversal), see e.g. issue 1849.
-                         */
+            /*
+             * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+             */
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("focusOwner".equals(evt.getPropertyName())
+                        && (evt.getNewValue() != null)
+                    /* We get many many events (why?), so let's filter: */
+                        && (obj != evt.getNewValue())) {
+                    obj = evt.getNewValue();
+                    // TODO: Bob says -
+                    // We're looking at focus change to
+                    // flag the start of an interaction. This
+                    // is to detect when focus is gained in a prop
+                // panel field on the assumption editing of that
+                    // field is about to start.
+                    // Not a good assumption. We Need to see if we can get
+                    // rid of this.
+                    Project p = 
+                        ProjectManager.getManager().getCurrentProject();
+                    p.getUndoManager().startInteraction("Focus");
+                    /* This next line is ideal for debugging the taborder
+                     * (focus traversal), see e.g. issue 1849.
+                     */
 //                      System.out.println("Focus changed " + obj);
-                    }
                 }
-            });
-        }
+            }
+        });
+    }
 
     private void setApplicationIcon() {
-        ImageIcon argoImage16x16 =
+        final ImageIcon argoImage16x16 =
             ResourceLoaderWrapper.lookupIconResource("ArgoIcon16x16");
-        ImageIcon argoImage32x32 =
-            ResourceLoaderWrapper.lookupIconResource("ArgoIcon32x32");
-        List<Image> argoImages = new ArrayList<Image>(2);
-        argoImages.add(argoImage16x16.getImage());
-        argoImages.add(argoImage32x32.getImage());
         
         // JREs pre 1.6.0 cannot handle multiple images using 
         // setIconImages(), so use reflection to conditionally make the 
@@ -361,11 +356,16 @@ public final class ProjectBrowser
             // javax.swing.JFrame.setIconImage, and accept the blurry icon 
             setIconImage(argoImage16x16.getImage());
         } else {
-            Method m;
+            final ImageIcon argoImage32x32 =
+                ResourceLoaderWrapper.lookupIconResource("ArgoIcon32x32");
+            final List<Image> argoImages = new ArrayList<Image>(2);
+            argoImages.add(argoImage16x16.getImage());
+            argoImages.add(argoImage32x32.getImage());
             try {
                 // java.awt.Window.setIconImages is new in Java 6.
                 // check for it using reflection on current instance
-                m = getClass().getMethod("setIconImages", List.class);
+                final Method m = 
+                    getClass().getMethod("setIconImages", List.class);
                 m.invoke(this, argoImages);
             } catch (InvocationTargetException e) {
                 LOG.error("Exception", e);
