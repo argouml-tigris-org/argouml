@@ -25,20 +25,24 @@
 package org.argouml.persistence;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.configuration.Configuration;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
@@ -47,6 +51,7 @@ import org.argouml.model.UmlException;
 import org.argouml.model.XmiWriter;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
+import org.argouml.profile.ProfileManager;
 import org.argouml.profile.UserDefinedProfile;
 
 /**
@@ -55,6 +60,9 @@ import org.argouml.profile.UserDefinedProfile;
  * @author maurelio1234
  */
 public class ProfileConfigurationFilePersister extends MemberFilePersister {
+    
+    private static final Logger LOG = 
+        Logger.getLogger(ProfileConfigurationFilePersister.class);
 
     /*
      * @see org.argouml.persistence.MemberFilePersister#getMainTag()
@@ -105,24 +113,20 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                         }
                         xmi.append(line + "\n");
                     }
-                    for (Profile candidateProfile 
-                            : ProfileFacade.getManager().
-                                getRegisteredProfiles()) {
-                        if (candidateProfile instanceof UserDefinedProfile) {
-                            UserDefinedProfile userProfile = 
-                                (UserDefinedProfile) candidateProfile;
-                            if (userProfile.getDisplayName().equals(fileName)) {
-                                profile = userProfile;
-                                break;
-                            }
-                        }
-                    }
+                    ProfileManager profileManager = ProfileFacade.getManager();
+                    profile = getMatchingUserDefinedProfile(fileName, 
+                        profileManager);
                     if (profile == null) {
-                        // Use xmi as a fall back alternative when the 
-                        // file for the user defined profile isn't found by the 
+                        throw new XmiReferenceException("Profile: " + fileName,
+                                null);
+                        // Use xmi as a fall back alternative when the
+                        // file for the user defined profile isn't found by the
                         // profile manager.
-                        profile = new UserDefinedProfile(fileName, 
-                                new StringReader(xmi.toString()));
+//                        profile = new UserDefinedProfile(fileName,
+//                                new StringReader(xmi.toString()));
+//                        profile = createUserProfileDefinition(fileName, xmi,
+//                                profileManager);
+
                     }
                     
                     // consumes the </userDefined>
@@ -142,9 +146,80 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                     profiles);
             project.setProfileConfiguration(pc);
         } catch (Exception e) {
-            // LOG.error("Exception", e);
+            if (e instanceof OpenException) {
+                throw (OpenException) e;
+            }
             throw new OpenException(e);
         }
+    }
+
+    /**
+     * Create a user defined profile from the current project using the backup
+     * XMI file from the current project.  Currently unused.
+     * <p>
+     * <em>NOTE:</em> This has the side effect of permanently registering the
+     * profile which may not be what the user wants.
+     * 
+     * @param fileName name of original XMI file that the author of the project
+     *                used when creating the UserDefinedProfile.
+     * @param contents the contents of the XMI file.
+     * @return the new profile
+     * @throws IOException on any i/o error
+     */
+    private Profile createUserProfileDefinition(String fileName,
+            StringBuffer contents, ProfileManager profileManager)
+        throws IOException {
+
+
+        Profile profile;
+        File profilesDirectory = getProfilesDirectory(profileManager);
+        File profileFile = new File(profilesDirectory, fileName);
+        FileWriter writer = new FileWriter(profileFile);
+        writer.write(contents.toString());
+        writer.close();
+        LOG.info("Wrote user defined profile \"" + profileFile
+                + "\", with size " + contents.length() + ".");
+        if (isSomeProfileDirectoryConfigured(profileManager))
+            profileManager.refreshRegisteredProfiles();
+        else
+            profileManager.addSearchPathDirectory(profilesDirectory
+                    .getAbsolutePath());
+        profile = getMatchingUserDefinedProfile(fileName, profileManager);
+        assert profile != null : "Profile should be found now.";
+        return profile;
+    }
+
+    private Profile getMatchingUserDefinedProfile(String fileName, 
+            ProfileManager profileManager) {
+        for (Profile candidateProfile 
+            : profileManager.getRegisteredProfiles()) {
+            if (candidateProfile instanceof UserDefinedProfile) {
+                UserDefinedProfile userProfile = 
+                    (UserDefinedProfile) candidateProfile;
+                if (userProfile.getDisplayName().equals(fileName)) {
+                    return userProfile;
+                }
+            }
+        }
+        return null;
+    }
+
+    private File getProfilesDirectory(ProfileManager profileManager) {
+        if (isSomeProfileDirectoryConfigured(profileManager)) {
+            List<String> directories = 
+                profileManager.getSearchPathDirectories();
+            return new File(directories.get(0));
+        } else {
+            File userSettingsFile = new File(
+                Configuration.getFactory().getConfigurationHandler().
+                    getDefaultPath());
+            return userSettingsFile.getParentFile();
+        }
+    }
+
+    private boolean isSomeProfileDirectoryConfigured(
+            ProfileManager profileManager) {
+        return profileManager.getSearchPathDirectories().size() > 0;
     }
 
     /*
