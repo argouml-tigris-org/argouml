@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.sequence2.ui;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
@@ -44,12 +43,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public class FigMessage extends FigEdgeModelElement {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(FigMessage.class);
-    
     private static final long serialVersionUID = -2961220746360335159L;
     private FigTextGroup textGroup; 
     
@@ -214,7 +207,10 @@ public class FigMessage extends FigEdgeModelElement {
     /**
      * The default behaviour from FigEdgeModelElement is not correct
      * here. See issue 5005. TODO: We must determine what to do here but for
-     * now doing nothing is better.
+     * now doing nothing is better. I'm not sure why the super method would
+     * not work as I would expect that to do nothing if the ends are already
+     * correct.
+     * @return true at all times for now
      */
     @Override
     protected boolean determineFigNodes() {
