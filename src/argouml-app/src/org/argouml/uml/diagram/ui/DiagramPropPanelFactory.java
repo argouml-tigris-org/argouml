@@ -40,8 +40,6 @@ import org.argouml.uml.ui.PropPanelFactory;
  * TODO: This class should be split up, to have a different
  * factory for each package. 
  * That would solve the current wrong package dependencies.
- * However, the statement added by Bob to return PropPanelDiagram
- * needs a different solution then - or can it be removed?
  *
  * @author Michiel
  */
@@ -63,10 +61,6 @@ class DiagramPropPanelFactory implements PropPanelFactory {
                 return new PropPanelUMLStateDiagram();
             } else if (object instanceof UMLUseCaseDiagram) {
                 return new PropPanelUMLUseCaseDiagram();
-            } else {
-                // If we get here then presumably a plugin has provided a
-                // different diagram type. For now lets show something.
-                return new PropPanelDiagram();
             }
         }
         return null;
