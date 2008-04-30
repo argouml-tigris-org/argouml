@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,8 +28,6 @@ import javax.swing.JPanel;
 
 import junit.framework.TestCase;
 
-import org.tigris.swidgets.Horizontal;
-
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.cognitive.checklist.ui.InitCheckListUI;
 import org.argouml.cognitive.ui.InitCognitiveUI;
@@ -40,8 +38,10 @@ import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.uml.ui.TabProps;
+import org.tigris.swidgets.Horizontal;
 
 /**
  * @author jaap.branderhorst@xs4all.nl
@@ -66,6 +66,7 @@ public class TestDetailsPane extends TestCase {
         new InitUmlUI().init();
         new InitCheckListUI().init();
         new InitCognitiveUI().init();
+        new InitDiagramAppearanceUI().init();
     }
 
     /**
