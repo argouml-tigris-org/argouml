@@ -58,7 +58,6 @@ import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Highlightable;
-import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ui.ActionGoToCritique;
@@ -81,8 +80,9 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
-import org.argouml.uml.diagram.IItemUID;
 import org.argouml.uml.ui.ActionDeleteModelElements;
+import org.argouml.util.IItemUID;
+import org.argouml.util.ItemUID;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
@@ -290,6 +290,10 @@ public abstract class FigEdgeModelElement
             ToDoList list = Designer.theDesigner().getToDoList();
             List<ToDoItem> items = list.elementListForOffender(getOwner());
             if (items != null && items.size() > 0) {
+                // TODO: This creates a dependency on the Critics subsystem.
+                // We need a generic way for modules (including our internal
+                // subsystems) to request addition of actions to the popup
+                // menu. - tfm 20080430
                 ArgoJMenu critiques = new ArgoJMenu("menu.popup.critiques");
                 ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
                 if (itemUnderMouse != null) {

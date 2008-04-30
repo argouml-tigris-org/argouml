@@ -22,9 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram;
+package org.argouml.util;
 
-import org.argouml.cognitive.ItemUID;
 
 /**
  * Interface for objects which implement the getItemUID/setItemUID methods. It

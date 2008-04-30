@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.Project;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.DeleteInstanceEvent;
@@ -43,6 +42,8 @@ import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.util.EnumerationIterator;
+import org.argouml.util.IItemUID;
+import org.argouml.util.ItemUID;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.graph.MutableGraphSupport;

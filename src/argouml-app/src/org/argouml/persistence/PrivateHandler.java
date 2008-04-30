@@ -26,8 +26,8 @@ package org.argouml.persistence;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.ItemUID;
-import org.argouml.uml.diagram.IItemUID;
+import org.argouml.util.IItemUID;
+import org.argouml.util.ItemUID;
 import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigEdgeHandler;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;

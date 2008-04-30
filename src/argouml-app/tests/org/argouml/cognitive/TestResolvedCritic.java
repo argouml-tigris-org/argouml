@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.util.ItemUID;
 
 /**
  * Test the ResolvedCritic class.

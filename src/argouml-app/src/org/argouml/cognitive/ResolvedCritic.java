@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.util.ItemUID;
 
 // TODO: Maybe the exception strings should be internationalized
 

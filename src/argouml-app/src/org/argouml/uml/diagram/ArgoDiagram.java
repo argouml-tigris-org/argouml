@@ -32,8 +32,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.Project;
+import org.argouml.util.ItemUID;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;

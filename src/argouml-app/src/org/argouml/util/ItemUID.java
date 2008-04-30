@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.cognitive;
+package org.argouml.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -69,9 +69,6 @@ import org.argouml.model.Model;
  * I find a bit unaesthetic. So far, not enough to write it (though it is not
  * much work).
  * 
- * TODO: This class seems to expect arguments to be guaranteed to implement
- * some specific method. So why doesn't it expect an interface to ensure that?
- *
  * @author Michael Stockman
  */
 public class ItemUID {
@@ -164,6 +161,9 @@ public class ItemUID {
             return Model.getFacade().getUUID(obj);
         }
 
+        if (obj instanceof IItemUID) {
+            return ((IItemUID) obj).getItemUID().toString();
+        }
 	Object rv;
 	try {
 	    Method m = obj.getClass().getMethod("getItemUID", (Class[]) null);
@@ -242,6 +242,12 @@ public class ItemUID {
     protected static String createObjectID(Object obj) {
 	if (Model.getFacade().isAUMLElement(obj)) {
 	    return null;
+	}
+	
+	if (obj instanceof IItemUID) {
+	    ItemUID uid = new ItemUID();
+	    ((IItemUID) obj).setItemUID(uid);
+	    return uid.toString();
 	}
 
 	Class[] params = new Class[1];
