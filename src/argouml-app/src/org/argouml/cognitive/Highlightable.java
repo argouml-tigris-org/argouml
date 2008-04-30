@@ -24,11 +24,23 @@
 
 package org.argouml.cognitive;
 
+// TODO: This probably belongs with the Diagram subsystem
 /**
- * Interface to be implementable by figures which can be highlighted to
- * visually show where a problem identified by the Critic subsystem is located.
+ * Interface to be implementable by figures which can be highlighted to visually
+ * identify them.
+ * 
+ * @author Bob Tarling
  */
 public interface Highlightable {
-    void setHighlight(boolean b);
+    
+    /**
+     * Set the highlighted state.
+     * @param highlighted true to highlight the fig
+     */
+    void setHighlight(boolean highlighted);
+
+    /**
+     * @return the current highlight state
+     */
     boolean getHighlight();
-} /* end interface Highlightable */
+}
