@@ -67,6 +67,7 @@ import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.taskmgmt.ProgressEvent;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.uml.reveng.java.JavaImport;
+import org.argouml.uml.reveng.ui.ImportStatusScreen;
 import org.argouml.util.SuffixFilter;
 import org.argouml.util.UIUtils;
 import org.tigris.gef.base.Globals;
@@ -123,8 +124,6 @@ public class Import extends ImportCommon implements ImportSettings {
     private JDialog dialog;
 
     private ImportStatusScreen iss;
-
-    private StringBuffer problems = new StringBuffer();
     
     private Frame myFrame;
 
@@ -437,7 +436,7 @@ public class Import extends ImportCommon implements ImportSettings {
      * parser methods depending on the type of the file.<p>
      */
     public void doFile() {
-        iss = new ImportStatusScreen("Importing", "Splash");
+        iss = new ImportStatusScreen(myFrame, "Importing", "Splash");
         Thread t = new Thread(new Runnable() {
             public void run() {
                 doImport(iss);
@@ -658,259 +657,12 @@ public class Import extends ImportCommon implements ImportSettings {
 
     }
 
-
-    /**
-     * A window that shows the progress bar and a cancel button.
-     * As a convenience to callers which may be executing on a thread other
-     * than the Swing event thread, all methods use SwingUtilities.invokeLater()
-     * to make sure that Swing calls happen on the appropriate thread.
-     *
-     * TODO: React on the close button as if the Cancel button was pressed.
-     * 
-     * TODO: Refactor to use a common progress dialog.  There's really no reason
-     * to have our own specific implementation - tfm - 20070201
-     */
-    class ImportStatusScreen extends JDialog implements ProgressMonitor {
-
-        private JButton cancelButton;
-
-        private JLabel progressLabel;
-
-        private JProgressBar progress;
-
-        private boolean cancelled = false;
-
-        /**
-         * The constructor.
-         *
-         * @param title
-         * @param iconName
-         */
-        public ImportStatusScreen(String title, String iconName) {
-            super(myFrame, true);
-            if (title != null) {
-                setTitle(title);
-            }
-            Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-            getContentPane().setLayout(new BorderLayout(4, 4));
-
-            // Parsing file x of z.
-            JPanel topPanel = new JPanel();
-            progressLabel = new JLabel();
-            progressLabel.setPreferredSize(new Dimension(400, 20));
-            progressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-            topPanel.add(progressLabel);
-            getContentPane().add(topPanel, BorderLayout.NORTH);
-
-            // progress bar
-            progress = new JProgressBar();
-            progress.setPreferredSize(new Dimension(350, 20));
-            getContentPane().add(progress, BorderLayout.CENTER);
-
-            // stop button
-            cancelButton = new JButton(Translator.localize("button.cancel"));
-            JPanel bottomPanel = new JPanel();
-            bottomPanel.add(cancelButton);
-            getContentPane().add(bottomPanel, BorderLayout.SOUTH);
-            cancelButton.addActionListener(new ActionListener() {
-
-                public void actionPerformed(ActionEvent e) {
-                    cancelled = true;
-
-                }
-
-            });
-
-            pack();
-            Dimension contentPaneSize = getContentPane().getPreferredSize();
-            setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
-                    scrSize.height / 2 - contentPaneSize.height / 2);
-            setResizable(false);
-        }
-
-        public void setMaximumProgress(final int i) {
-            SwingUtilities.invokeLater(new Runnable () {
-                public void run() {
-                    progress.setMaximum(i);
-                    setVisible(true);
-                }
-            });
-        }
-
-        public void updateProgress(final int i) {
-            SwingUtilities.invokeLater(new Runnable () {
-                public void run() {
-                    progress.setValue(i);
-                }
-            });
-        }
-
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = -1336242911879462274L;
-
-        /*
-         * @see org.argouml.application.api.ProgressMonitor#close()
-         */
-        public void close() {
-            SwingUtilities.invokeLater(new Runnable () {
-                public void run() {
-                    setVisible(false);
-                    dispose();
-                }
-            });
-        }
-
-        /*
-         * @see org.argouml.application.api.ProgressMonitor#isCanceled()
-         */
-        public boolean isCanceled() {
-            return cancelled;
-        }
-
-        /*
-         * @see org.argouml.application.api.ProgressMonitor#notifyMessage(java.lang.String, java.lang.String, java.lang.String)
-         */
-        public void notifyMessage(String title, String introduction,
-                String message) {
-            // TODO: Create an error dialog or panel in our progress dialog
-            // for now we just use our old style separate error dialog
-            JDialog problemsDialog = new ProblemsDialog(getFrame(), message);
-            problemsDialog.setTitle(title);
-            problemsDialog.setVisible(true);
-            // TODO: Only needed while we have a separate problem dialog
-            // (see above)
-            setVisible(false);
-            dispose();
-        }
-
-        /*
-         * @see org.argouml.application.api.ProgressMonitor#notifyNullAction()
-         */
-        public void notifyNullAction() {
-            String msg = Translator.localize("label.import.empty");
-            notifyMessage(msg, msg, msg);
-        }
-
-        /*
-         * @see org.argouml.application.api.ProgressMonitor#updateMainTask(java.lang.String)
-         */
-        public void updateMainTask(final String name) {
-            SwingUtilities.invokeLater(new Runnable () {
-                public void run() {
-                    setTitle(name);
-                }
-            });
-        }
-
-        /*
-         * @see org.argouml.application.api.ProgressMonitor#updateSubTask(java.lang.String)
-         */
-        public void updateSubTask(final String action) {
-            SwingUtilities.invokeLater(new Runnable () {
-                public void run() {
-                    progressLabel.setText(action);
-                }
-            });
-        }
-
-        /*
-         * @see org.argouml.persistence.ProgressListener#progress(org.argouml.persistence.ProgressEvent)
-         */
-        public void progress(ProgressEvent event) throws InterruptedException {
-            // ignored
-        }
-
-    }
-
-
-    /**
-     * A window that shows the problems occured during import.
-     */
-    class ProblemsDialog extends JDialog implements ActionListener {
-
-        private JButton closeButton;
-        private JLabel northLabel;
-
-        /**
-         * The constructor.
-         */
-        ProblemsDialog() {
-            this(getFrame(), problems.toString());
-        }
-
-        /**
-         * The constructor.
-         */
-        ProblemsDialog(Frame frame, String errors) {
-            super(frame);
-            setResizable(true);
-            setModal(true);
-            setTitle(Translator.localize("dialog.title.import-problems"));
-
-            Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-            getContentPane().setLayout(new BorderLayout(0, 0));
-
-            // the introducing label
-            northLabel =
-                new JLabel(Translator.localize("label.import-problems"));
-            getContentPane().add(northLabel, BorderLayout.NORTH);
-
-            // the text box containing the problem messages
-            JEditorPane textArea = new JEditorPane();
-            textArea.setText(errors);
-            JPanel centerPanel = new JPanel(new BorderLayout());
-            centerPanel.add(new JScrollPane(textArea));
-            centerPanel.setPreferredSize(new Dimension(600, 200));
-            getContentPane().add(centerPanel);
-
-            // close button
-            closeButton = new JButton(Translator.localize("button.close"));
-            JPanel bottomPanel = new JPanel();
-            bottomPanel.add(closeButton);
-            getContentPane().add(bottomPanel, BorderLayout.SOUTH);
-
-            // listeners
-            closeButton.addActionListener(this);
-            addWindowListener(new WindowAdapter() {
-                public void windowClosing(WindowEvent evt) {
-                    disposeDialog();
-                }
-            });
-
-            pack();
-            Dimension contentPaneSize = getContentPane().getSize();
-            setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
-                    scrSize.height / 2 - contentPaneSize.height / 2);
-        }
-
-        /*
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            disposeDialog();
-        }
-
-        private void disposeDialog() {
-            setVisible(false);
-            dispose();
-        }
-
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = -9221358976863603143L;
-    }
-
     /**
      * @return Returns the Frame.
      */
     public Frame getFrame() {
         return myFrame;
     }
-
-
 }
 
 /**
@@ -1112,10 +864,8 @@ class ImportClasspathDialog extends JDialog {
         }
     }
 
-
     /**
      * The UID.
      */
     private static final long serialVersionUID = -8684620532717336574L;
 }
-

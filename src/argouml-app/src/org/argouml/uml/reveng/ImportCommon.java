@@ -50,6 +50,7 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.reveng.ImportInterface.ImportException;
+import org.argouml.uml.reveng.ui.ImportStatusScreen;
 import org.tigris.gef.base.Globals;
 
 /**
@@ -502,7 +503,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      *            a ProgressMonitor to both receive progress updates and to be
      *            polled for user requests to cancel.
      */
-    protected void doImport(ProgressMonitor monitor) {
+    protected void doImport(ImportStatusScreen monitor) {
         // Roughly equivalent to and derived from old Import.doFile()
         monitor.setMaximumProgress(MAX_PROGRESS_PREPARE + MAX_PROGRESS_IMPORT);
         int progress = 0;
