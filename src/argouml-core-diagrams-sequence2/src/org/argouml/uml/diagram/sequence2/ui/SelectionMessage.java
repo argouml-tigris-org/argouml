@@ -66,7 +66,6 @@ public class SelectionMessage extends SelectionRerouteEdge {
 	if (!message.isSelfMessage()) {
 	    super.mousePressed(me);
 	}
-	me.consume();
     }
 
     @Override
@@ -79,8 +78,6 @@ public class SelectionMessage extends SelectionRerouteEdge {
 	    super.mouseDragged(me);
 	}
 	handleMovement();
-	me.consume();
-	
     }
 
     @Override
