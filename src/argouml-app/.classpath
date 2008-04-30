@@ -6,7 +6,7 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry exported="true" kind="lib" path="lib/antlr-2.7.7.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.0.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gef-0.12.4BETA2.jar" sourcepath="/gef/src"/>
+	<classpathentry exported="true" kind="lib" path="lib/gef-0.12.4BETA3.jar" sourcepath="/gef/src"/>
 	<classpathentry exported="true" kind="lib" path="lib/ocl-argo-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/swidgets-0.1.4.jar" sourcepath="/swidgets/src"/>
 	<classpathentry exported="true" kind="lib" path="lib/toolbar-1.4.1-20071227.jar" sourcepath="/toolbar/src"/>
