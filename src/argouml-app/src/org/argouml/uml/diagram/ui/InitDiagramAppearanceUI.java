@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,11 +43,9 @@ import org.argouml.uml.ui.PropPanelFactoryManager;
 public class InitDiagramAppearanceUI implements InitSubsystem {
 
     public void init() {
+        /* Set up the property panels for diagrams: */
         PropPanelFactory diagramFactory = new DiagramPropPanelFactory();
         PropPanelFactoryManager.addPropPanelFactory(diagramFactory);
-        
-        PropPanelFactory elementFactory = new ElementPropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(elementFactory);
     }
 
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {

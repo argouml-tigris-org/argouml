@@ -22,11 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml.ui;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.PropPanel;
-import org.argouml.uml.ui.PropPanelFactory;
 import org.argouml.uml.ui.behavior.activity_graphs.PropPanelActionState;
 import org.argouml.uml.ui.behavior.activity_graphs.PropPanelActivityGraph;
 import org.argouml.uml.ui.behavior.activity_graphs.PropPanelCallState;
@@ -121,7 +119,7 @@ import org.argouml.uml.ui.model_management.PropPanelSubsystem;
  *
  * @author Michiel
  */
-public class ElementPropPanelFactory implements PropPanelFactory {
+class ElementPropPanelFactory implements PropPanelFactory {
 
     public PropPanel createPropPanel(Object element) {
         if (Model.getFacade().isAElement(element)) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,13 +33,16 @@ import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
 
 /**
+ * Initialise this subsystem.
  *
  * @author Michiel
  */
 public class InitUmlUI implements InitSubsystem {
 
     public void init() {
-        // Do nothing
+        /* Set up the property panels for UML elements: */
+        PropPanelFactory elementFactory = new ElementPropPanelFactory();
+        PropPanelFactoryManager.addPropPanelFactory(elementFactory);
     }
 
     public List<AbstractArgoJPanel> getDetailsTabs() {
