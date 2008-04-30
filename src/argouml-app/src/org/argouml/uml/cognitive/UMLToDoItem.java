@@ -176,7 +176,7 @@ public class UMLToDoItem extends ToDoItem {
     
     @Override
     public ListSet getOffenders() {
-        final ListSet offenders = getOffenders();
+        final ListSet offenders = super.getOffenders();
         // TODO: should not be using assert here but I don't want to change to
         // IllegalStateException at lead up to a release as I don't know how
         // much testing is done with assert on.
