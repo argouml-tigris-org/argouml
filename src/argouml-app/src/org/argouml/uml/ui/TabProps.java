@@ -399,8 +399,15 @@ public class TabProps
             return new PropPanelUMLStateDiagram();
         } else if (diagram instanceof UMLUseCaseDiagram) {
             return new PropPanelUMLUseCaseDiagram();
+        } else {
+            // If we get here then presumably a plugin has provided a
+            // different diagram type. For now lets show something.
+            // TODO: It would be useful to be able to provide a
+            // PropPanelFactory from a plugin which can be called here
+            // in order to provide something more specific that the plugin
+            // requires.
+            return new PropPanelDiagram();
         }
-        throw new IllegalArgumentException("Unsupported diagram type");
     }
 
     
