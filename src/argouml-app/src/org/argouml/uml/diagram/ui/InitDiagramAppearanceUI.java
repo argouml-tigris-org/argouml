@@ -32,6 +32,8 @@ import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
+import org.argouml.uml.ui.PropPanelFactory;
+import org.argouml.uml.ui.PropPanelFactoryManager;
 
 /**
  * Initialise this subsystem.
@@ -41,7 +43,11 @@ import org.argouml.application.api.InitSubsystem;
 public class InitDiagramAppearanceUI implements InitSubsystem {
 
     public void init() {
-
+        PropPanelFactory diagramFactory = new DiagramPropPanelFactory();
+        PropPanelFactoryManager.addPropPanelFactory(diagramFactory);
+        
+        PropPanelFactory elementFactory = new ElementPropPanelFactory();
+        PropPanelFactoryManager.addPropPanelFactory(elementFactory);
     }
 
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {
@@ -61,5 +67,6 @@ public class InitDiagramAppearanceUI implements InitSubsystem {
     public List<AbstractArgoJPanel> getDetailsTabs() {
         return Collections.emptyList();
     }
+
 
 }
