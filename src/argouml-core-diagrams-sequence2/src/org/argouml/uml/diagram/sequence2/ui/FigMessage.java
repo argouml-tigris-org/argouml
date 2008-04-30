@@ -211,6 +211,13 @@ public class FigMessage extends FigEdgeModelElement {
     	super.deleteFromModel();
     }
 
-    
-
+    /**
+     * The default behaviour from FigEdgeModelElement is not correct
+     * here. See issue 5005. TODO: We must determine what to do here but for
+     * now doing nothing is better.
+     */
+    @Override
+    protected boolean determineFigNodes() {
+        return true;
+    }
 }
