@@ -70,7 +70,7 @@ public class UMLToDoItem extends ToDoItem {
      * @param offs the offenders
      */
     public UMLToDoItem(Poster poster, String h, int p, String d, String m,
-    ListSet offs) {
+            ListSet offs) {
         super(poster, h, p, d, m, offs);
     }
 
@@ -181,9 +181,9 @@ public class UMLToDoItem extends ToDoItem {
         // IllegalStateException at lead up to a release as I don't know how
         // much testing is done with assert on.
         assert offenders.size() <= 0
-        || Model.getFacade().isAUMLElement(offenders.get(0))
-        || offenders.get(0) instanceof Fig
-        || offenders.get(0) instanceof Diagram;
+                || Model.getFacade().isAUMLElement(offenders.get(0))
+                || offenders.get(0) instanceof Fig
+                || offenders.get(0) instanceof Diagram;
         return offenders;
     }
     

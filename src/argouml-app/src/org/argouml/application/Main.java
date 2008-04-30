@@ -583,10 +583,10 @@ public class Main {
         // check if we are using a supported java version
         if (!JavaRuntimeUtility.isJreSupported()) {
 
-	    System.err.println("You are using Java " + 
-	            JavaRuntimeUtility.getJreVersion() + 
-	            ", Please use Java 5 (aka 1.5) or later"
-	            + " with ArgoUML");
+	    System.err.println("You are using Java "
+                    + JavaRuntimeUtility.getJreVersion()
+                    + ", Please use Java 5 (aka 1.5) or later"
+                    + " with ArgoUML");
 	    System.exit(0);
         }
     }
