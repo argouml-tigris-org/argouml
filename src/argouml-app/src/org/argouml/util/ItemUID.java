@@ -162,16 +162,22 @@ public class ItemUID {
         }
 
         if (obj instanceof IItemUID) {
-            return ((IItemUID) obj).getItemUID().toString();
+            final ItemUID itemUid = ((IItemUID) obj).getItemUID();
+            return (itemUid == null ? null : itemUid.toString());
         }
 	Object rv;
 	try {
+	    // TODO: We shouldn't need this reflection any more once we have
+	    // convinced ourselves that everything with a getItemUID method
+	    // is implementing IItemUID
 	    Method m = obj.getClass().getMethod("getItemUID", (Class[]) null);
 	    rv = m.invoke(obj, (Object[]) null);
 	} catch (NoSuchMethodException nsme) {
 	    // Apparently this object had no getItemUID
 	    try {
                 // This is needed for a CommentEdge ...
+                // TODO: Why doesn't CommentEdge implement IItemUID and be
+	        // handled with the mechanism above.
 	        Method m = obj.getClass().getMethod("getUUID", (Class[]) null);
 	        rv = m.invoke(obj, (Object[]) null);
                 return (String) rv;
@@ -254,6 +260,9 @@ public class ItemUID {
 	Object[] mparam;
 	params[0] = MYCLASS;
 	try {
+            // TODO: We shouldn't need this reflection any more once we have
+            // convinced ourselves that everything with a setItemUID method
+            // is implementing IItemUID
 	    Method m = obj.getClass().getMethod("setItemUID", params);
 	    mparam = new Object[1];
 	    mparam[0] = new ItemUID();
