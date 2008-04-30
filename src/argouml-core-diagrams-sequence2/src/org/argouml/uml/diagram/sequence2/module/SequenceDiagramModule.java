@@ -29,9 +29,11 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.proppanel.sequence2.SequenceDiagramPropPanelFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.uml.diagram.sequence2.ActionSequenceDiagram;
+import org.argouml.uml.ui.PropPanelFactoryManager;
 
 /**
  * The Sequence Diagram Module description.
@@ -51,6 +53,8 @@ public class SequenceDiagramModule implements ModuleInterface {
 
     private JMenu menuSequence;
 
+    private SequenceDiagramPropPanelFactory propPanelFactory;
+        
     /**
      * This is creatable from the module loader.
      */
@@ -70,6 +74,10 @@ public class SequenceDiagramModule implements ModuleInterface {
                 .getJMenuBar()).getCreateDiagramToolbar();
         toolbar.add(newSequence);
         toolbar.updateUI();
+        
+        propPanelFactory =
+            new SequenceDiagramPropPanelFactory();
+        PropPanelFactoryManager.addPropPanelFactory(propPanelFactory);
 
         LOG.info("SequenceDiagram Module enabled.");
         return true;
@@ -87,6 +95,8 @@ public class SequenceDiagramModule implements ModuleInterface {
         // remove the last one...
         toolbar.remove(toolbar.getComponentCount() - 1);
         toolbar.updateUI();
+
+        PropPanelFactoryManager.removePropPanelFactory(propPanelFactory);
 
         LOG.info("SequenceDiagram Module disabled.");
         return true;
