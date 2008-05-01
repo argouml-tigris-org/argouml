@@ -98,7 +98,21 @@ public class TestActionStateNotationUml extends TestCase {
         ActionStateNotationUml notation = 
             new ActionStateNotationUml(aActionState);
         String notationStr = notation.toString(aActionState, null);
-        assertEquals("Notation not correctly generated", "", notationStr);
+        assertEquals("Notation not correctly generated "
+        		+ "(for absent entry-action)", "", notationStr);
+    }
+    
+    /**
+     * Test if the string for an absent expression is correct.
+     */
+    public void testStringGenerationNoScript() {
+        aUninterpretedAction = Model.getCommonBehaviorFactory()
+            .buildUninterpretedAction(aActionState);
+        ActionStateNotationUml notation = 
+            new ActionStateNotationUml(aActionState);
+        String notationStr = notation.toString(aActionState, null);
+        assertEquals("Notation not correctly generated "
+        		+ "(for absent script)", "", notationStr);
     }
 
     /**
