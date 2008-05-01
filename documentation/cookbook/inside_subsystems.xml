@@ -370,8 +370,8 @@
 
     <para>Other subsystems that supply their own user interface, 
       may be split into 2 packages, e.g.
-      <classname>org.argouml.some-subsystem</classname> and
-      <classname>org.argouml.some-subsystem.ui</classname>.
+      <classname>org.argouml.some-package</classname> and
+      <classname>org.argouml.some-package.ui</classname>.
       In such case the following figure indicates
       the allowed dependencies:
     </para>
@@ -384,7 +384,16 @@
         </imageobject>
       </mediaobject>
     </para>
-    
+
+    <para>
+      The presence of the dependency between 
+      <classname>org.argouml.ui</classname> and the 
+      <classname>org.argouml.some-package</classname>
+      is less desired, since it prevents decoupling of the 
+      "some-package" as a separate subsystem.
+      Some future optimalisation should remove this dependency.
+    </para>
+
     <sect2 id="targetmanager">
       <title>The TargetManager</title>
       <para> Located in
