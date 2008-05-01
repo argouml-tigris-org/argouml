@@ -163,6 +163,9 @@ public final class FigInspectorPanel
                 " fill=[" + f.getFillColor().getRed() + ","
                         + f.getFillColor().getGreen() + ","
                         + f.getFillColor().getBlue() + "]";
+        if (f.getOwner() != null) {
+            descr += " - owner=" + f.getOwner();
+        }
         if (f instanceof FigText) {
             descr += " \"" + ((FigText) f).getText() + "\"";
         }
