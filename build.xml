@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$
+
+Build file to proxy the argoumlstandard ant targets.
+-->
+
+<project basedir="." default="jar" name="argouml">
+  <!-- =================================================================== -->
+  <!-- Initialization target                                               -->
+  <!-- =================================================================== -->
+  <target name="init">
+    <property name="build.dir" value="build"/>
+
+    <path id="run.classpath">
+      <fileset dir="${build.dir}" includes="*.jar"/>
+    </path>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run from classes                                                    -->
+  <!-- =================================================================== -->
+  <target name="run" depends="install"
+          description="Run with this module.">
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          taskname="argouml"
+     	  maxmemory="500M">
+        <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/error_console.lcf"/>
+        <classpath>
+	  <path refid="run.classpath"/>
+        </classpath>
+    </java>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the jar file                                                -->
+  <!-- =================================================================== -->
+  <target name="jar" depends="init"
+          description="Build and copies files.">
+    <!--
+      This is how Linus Tolke would like to write this command:
+    <ant dir="src/argouml-build" inheritAll="false"    target="package"/>
+      The corrected statement below works also with
+      src/argouml-build/build.xml that has basedir="..".
+     -->
+    <ant dir="src" antfile="argouml-build/build.xml" inheritAll="false" target="package"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Make sure the files are in build                                    -->
+  <!-- =================================================================== -->
+  <target name="install" depends="init, jar"
+          description="">
+    <mkdir dir="${build.dir}"/>
+    <copy todir="${build.dir}" includeEmptyDirs="false">
+      <fileset dir="src/argouml-core-infra/build">
+        <include name="*"/>
+      </fileset>
+      <fileset dir="src/argouml-core-model/build">
+        <include name="*"/>
+      </fileset>
+      <fileset dir="src/argouml-core-model-mdr/build">
+        <include name="*"/>
+      </fileset>
+      <fileset dir="src/argouml-app/build">
+        <include name="*"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean" depends="init"
+          description="Clean out all built files.">
+    <delete dir="${build.dir}" quiet="true"/>
+    <!-- see above!
+    <ant dir="src/argouml-build" inheritAll="false"    target="clean"/>
+     -->
+    <ant dir="src" antfile="argouml-build/build.xml" inheritAll="false" target="clean"/>
+  </target>
+</project>
