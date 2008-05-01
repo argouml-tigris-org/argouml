@@ -29,8 +29,12 @@ import javax.swing.JMenuItem;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
-import org.argouml.uml.ui.ActionReopenProject;
+//import org.argouml.uml.ui.ActionReopenProject;
 import java.io.File;
+
+// TODO: This class is part of a dependency cycle with ProjectBrowser and
+// GenericArgoMenuBar, but should  be fixed if project open/close is moved
+// out of ProjectBrowser.
 
 /**
  * Menu extension for last recently used files menu.<p>
@@ -96,8 +100,8 @@ public class LastRecentlyUsedMenuList {
         // the text is used by the event handler for opening the project
         File f = new File(filename);
         //JMenuItem item = _fileMenu.add(new ActionReopenProject(filename));
-        JMenuItem item =
-            fileMenu.insert(new ActionReopenProject(filename), addAt);
+//        JMenuItem item =
+//            fileMenu.insert(new ActionReopenProject(filename), addAt);
 
         // set maximum length of menu entry
         String entryName = f.getName();
@@ -106,10 +110,11 @@ public class LastRecentlyUsedMenuList {
         }
 
         // text is short, tooltip is long
-        item.setText(entryName);
-        item.setToolTipText(filename);
-
-        return item;
+//        item.setText(entryName);
+//        item.setToolTipText(filename);
+//
+//        return item;
+        return null;
     }
 
     /**
@@ -175,11 +180,11 @@ public class LastRecentlyUsedMenuList {
         // real file names, not action names !
 
         String[] tempNames = new String[maxCount];
-        for (int i = 0; i < lruCount; i++) {
-            ActionReopenProject action =
-                (ActionReopenProject) menuItems[i].getAction();
-            tempNames[i] = action.getFilename();
-        }
+//        for (int i = 0; i < lruCount; i++) {
+//            ActionReopenProject action =
+//                (ActionReopenProject) menuItems[i].getAction();
+//            tempNames[i] = action.getFilename();
+//        }
 
         // delete all existing entries
         for (int i = 0; i < lruCount; i++) {
@@ -205,10 +210,10 @@ public class LastRecentlyUsedMenuList {
         lruCount = j;
 
         // and store configuration props
-        for (int k = 0; k < lruCount; k++) {
-            ActionReopenProject action =
-                (ActionReopenProject) menuItems[k].getAction();
-            Configuration.setString(confKeys[k], action.getFilename());
-        }
+//        for (int k = 0; k < lruCount; k++) {
+//            ActionReopenProject action =
+//                (ActionReopenProject) menuItems[k].getAction();
+//            Configuration.setString(confKeys[k], action.getFilename());
+//        }
     }
 }
