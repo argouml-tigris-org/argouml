@@ -24,8 +24,9 @@
 
 package org.argouml.proppanel.sequence2;
 
+import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.sequence2.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.ui.PropPanelUMLSequenceDiagram;
+import org.argouml.uml.diagram.ui.PropPanelDiagram;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelFactory;
 
@@ -41,5 +42,23 @@ public class SequenceDiagramPropPanelFactory implements PropPanelFactory {
             return new PropPanelUMLSequenceDiagram();
         }
         return null;
+    }
+
+    /**
+     * The properties panel for a sequence diagram.
+     *
+     * @author jaap.branderhorst@xs4all.nl
+     * @since Jan 3, 2003
+     */
+    class PropPanelUMLSequenceDiagram extends PropPanelDiagram {
+
+        /**
+         * Constructor for PropPanelUMLSequenceDiagram.
+         */
+        public PropPanelUMLSequenceDiagram() {
+            super(Translator.localize("label.sequence-diagram"),
+                    lookupIcon("SequenceDiagram"));
+        }
+
     }
 }
