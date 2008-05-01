@@ -148,6 +148,8 @@ public class FigConcurrentRegion extends FigState
         popUpActions.remove(
                 ProjectActions.getInstance().getRemoveFromDiagramAction());
         popUpActions.add(new JSeparator());
+        // TODO: There's a cyclic dependency between FigConcurrentRegion and
+        // the actions ActionAddConcurrentRegion and ActionDeleteConcurrentRegion
         popUpActions.addElement(
                 new ActionAddConcurrentRegion());
         popUpActions.addElement(

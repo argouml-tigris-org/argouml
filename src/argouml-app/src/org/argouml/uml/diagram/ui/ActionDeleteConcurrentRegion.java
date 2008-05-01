@@ -43,6 +43,8 @@ import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.UndoableAction;
 
+//TODO: There is a cyclic dependency between this class and FigConcurrentRegion
+
 /**
  * Delete a concurrent region of a concurrent composite state
  *

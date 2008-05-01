@@ -49,6 +49,8 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.UndoableAction;
 
+//TODO: There is a cyclic dependency between this class and FigConcurrentRegion
+
 /**
  * Add a concurrent region to a concurrent composite state
  *
