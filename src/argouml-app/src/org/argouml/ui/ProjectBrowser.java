@@ -1706,27 +1706,7 @@ public final class ProjectBrowser
             } finally {
 
         	try {
-                    if (!PersistenceManager.getInstance().getLastLoadStatus()) {
-                        project = oldProject;
-                        success = false;
-                        // TODO: This seems entirely redundant
-                        // for now I've made the message more generic, but it
-                        // should be removed at a convenient time - tfm
-                        reportError(
-                                pmw,
-                                "Problem loading the project "
-                                + file.getName()
-                                + "\n"
-                                + "Error message:\n"
-                                + PersistenceManager.getInstance()
-                                    .getLastLoadMessage()
-                                + "\n"
-                                + "Some (or all) information may be missing "
-                                + "from the project.\n"
-                                + "Please report this problem at "
-                                + "http://argouml.tigris.org\n",
-                                showUI);
-                    } else if (oldProject != null) {
+                    if (oldProject != null) {
                         // if p equals oldProject there was an exception and we
                         // do not have to gc (garbage collect) the old project
                         if (project != null && !project.equals(oldProject)) {

@@ -122,10 +122,7 @@ class ModelMemberFilePersister extends MemberFilePersister
             readModels(source);
             mmodel = getCurModel();
         } catch (OpenException e) {
-            PersistenceManager.getInstance().setLastLoadStatus(false);
-            PersistenceManager.getInstance().setLastLoadMessage(
-                    "UmlException parsing XMI.");
-            LOG.error("UmlException caught", e);
+             LOG.error("UmlException caught", e);
             throw e;
         }
         // This should probably be inside xmiReader.parse
@@ -240,9 +237,11 @@ class ModelMemberFilePersister extends MemberFilePersister
     protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
         MemberFilePersister persister = null;
         if (pm instanceof ProjectMemberDiagram) {
-            persister =
+            persister = 
                 PersistenceManager.getInstance()
                     .getDiagramMemberFilePersister();
+            // TODO: Cyclic dependency with PersistenceManager, use instead
+//          persister = new DiagramMemberFilePersister();
         } else if (pm instanceof ProfileConfiguration) {
             persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {

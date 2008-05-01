@@ -133,6 +133,8 @@ class OldZargoFilePersister extends ZargoFilePersister {
                 new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
 
             // Save the .argo entry
+            // TODO: Cyclic dependency with PersistenceManager
+            // move PersistenceManager..getProjectBaseName() someplace else
             ZipEntry zipEntry =
                 new ZipEntry(PersistenceManager.getInstance()
                             .getProjectBaseName(project)

@@ -322,9 +322,12 @@ class XmiFilePersister extends AbstractFilePersister
         for (String pgml : pgmlStrings) {
             LOG.info("Parsing pgml " + pgml.length());
             InputStream inputStream = new ByteArrayInputStream(pgml.getBytes());
-            MemberFilePersister persister =
+            MemberFilePersister persister = 
+            // TODO: Cyclic dependency between PersistanceManager and here
                 PersistenceManager.getInstance()
                         .getDiagramMemberFilePersister();
+            // possibly use the following instead
+//            MemberFilePersister persister = new DiagramMemberFilePersister();
             persister.load(project, inputStream);
         }
         if (todoString != null) {

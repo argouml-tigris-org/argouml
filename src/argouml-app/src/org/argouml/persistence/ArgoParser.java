@@ -108,8 +108,6 @@ class ArgoParser extends SAXParserBase {
     }
 
     private void preRead(Project theProject) {
-        PersistenceManager.getInstance().setLastLoadMessage("OK");
-        PersistenceManager.getInstance().setLastLoadStatus(true);
         LOG.info("=======================================");
         LOG.info("== READING PROJECT " + theProject);
         project = theProject;
@@ -117,10 +115,8 @@ class ArgoParser extends SAXParserBase {
     }
 
     private void logError(String projectName, SAXException e) {
-        PersistenceManager.getInstance().setLastLoadStatus(false);
         LOG.error("Exception reading project================");
         LOG.error(projectName);
-        PersistenceManager.getInstance().setLastLoadMessage(e.toString());
     }
 
     /**
@@ -252,6 +248,7 @@ class ArgoParser extends SAXParserBase {
     /*
      * @see org.argouml.persistence.SAXParserBase#isElementOfInterest(String)
      */
+    @Override
     protected boolean isElementOfInterest(String name) {
         return tokens.contains(name);
     }

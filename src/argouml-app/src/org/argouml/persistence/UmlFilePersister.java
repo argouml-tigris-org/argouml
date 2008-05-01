@@ -63,6 +63,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectMember;
@@ -70,7 +71,6 @@ import org.argouml.model.UmlException;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.util.ThreadUtils;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
@@ -643,9 +643,11 @@ public class UmlFilePersister extends AbstractFilePersister {
     protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
         MemberFilePersister persister = null;
         if (pm instanceof ProjectMemberDiagram) {
-            persister =
-		PersistenceManager.getInstance()
-		        .getDiagramMemberFilePersister();
+            // TODO: Cyclic dependency between PersistanceManager and here
+            PersistenceManager.getInstance()
+                    .getDiagramMemberFilePersister();
+        // use the following instead
+//        persister = new DiagramMemberFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
             persister = new TodoListMemberFilePersister();
         } else if (pm instanceof ProfileConfiguration) {
@@ -665,9 +667,12 @@ public class UmlFilePersister extends AbstractFilePersister {
     protected MemberFilePersister getMemberFilePersister(String tag) {
         MemberFilePersister persister = null;
         if (tag.equals("pgml")) {
-            persister =
+            persister = 
+            // TODO: Cyclic dependency between PersistanceManager and here
 		PersistenceManager.getInstance()
                         .getDiagramMemberFilePersister();
+            // use the following instead
+//            persister = new DiagramMemberFilePersister();
         } else if (tag.equals("todo")) {
             persister = new TodoListMemberFilePersister();
         } else if (tag.equals("profile")) {

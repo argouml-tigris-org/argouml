@@ -111,8 +111,6 @@ public class TestZargoFilePersister extends TestCase {
         ZargoFilePersister persister = new ZargoFilePersister();
         String name = url.getFile();
         Project p = persister.doLoad(new File(name));
-        assertTrue("Load Status for " + filename + ".",
-               PersistenceManager.getInstance().getLastLoadStatus());
         return p;
     }
 
@@ -184,14 +182,12 @@ public class TestZargoFilePersister extends TestCase {
             file = new File("/testmodels/Garbage.zargo");
             ZargoFilePersister persister = new ZargoFilePersister();
             persister.doLoad(file);
-            assertTrue("Load Status",
-                    !PersistenceManager.getInstance().getLastLoadStatus());
+            fail("Load didn't throw an exception");
         } catch (OpenException io) {
             // This is the normal case.
             loaded = false;
         } catch (InterruptedException iExc) {
-            // This should not happen!
-            loaded = false;
+            fail("Got an unexpected InterruptedException during load");
         }
         assertTrue("No exception was thrown.", !loaded);
     }

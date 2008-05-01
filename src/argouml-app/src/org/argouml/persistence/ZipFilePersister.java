@@ -193,9 +193,12 @@ class ZipFilePersister extends XmiFilePersister {
     protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
         MemberFilePersister persister = null;
         if (pm instanceof ProjectMemberDiagram) {
-            persister =
+            persister = 
+            // TODO: Cyclic dependency between PersistanceManager and here
                 PersistenceManager.getInstance()
                     .getDiagramMemberFilePersister();
+            // possibly use the following instead
+//            persister = new DiagramMemberFilePersister();
         } else if (pm instanceof ProfileConfiguration) {
             persister = new ProfileConfigurationFilePersister();
         } else if (pm instanceof ProjectMemberTodoList) {
@@ -278,6 +281,7 @@ class ZipFilePersister extends XmiFilePersister {
      * 
      * @see org.argouml.persistence.AbstractFilePersister#hasAnIcon()
      */
+    @Override
     public boolean hasAnIcon() {
         return false;
     }
