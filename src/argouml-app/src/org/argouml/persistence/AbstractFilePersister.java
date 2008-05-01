@@ -29,13 +29,21 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.event.EventListenerList;
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.log4j.Logger;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
 import org.argouml.taskmgmt.ProgressEvent;
 import org.argouml.taskmgmt.ProgressListener;
+import org.argouml.uml.ProjectMemberModel;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.util.ThreadUtils;
 
 /**
@@ -45,7 +53,41 @@ import org.argouml.util.ThreadUtils;
  */
 public abstract class AbstractFilePersister extends FileFilter
         implements ProjectFilePersister {
+
+    private static final Logger LOG = 
+        Logger.getLogger(AbstractFilePersister.class);
+
+    /**
+     * Map of persisters by target class
+     */
+    private static Map<Class, Class<? extends MemberFilePersister>> persistersByClass = 
+        new HashMap<Class, Class<? extends MemberFilePersister>>();
+
+    /**
+     * Map of persisters by tag / file extension
+     */
+    private static Map<String, Class<? extends MemberFilePersister>> persistersByTag = 
+        new HashMap<String, Class<? extends MemberFilePersister>>();
+
+    static {
+        registerPersister(ProjectMemberDiagram.class, "pgml",
+                DiagramMemberFilePersister.class);
+        registerPersister(ProfileConfiguration.class, "profile",
+                ProfileConfigurationFilePersister.class);
+        registerPersister(ProjectMemberTodoList.class, "todo",
+                TodoListMemberFilePersister.class);
+        registerPersister(ProjectMemberModel.class, "xmi",
+                ModelMemberFilePersister.class);
+    }
+    
     private EventListenerList listenerList = new EventListenerList();
+    
+    private static boolean registerPersister(Class target, String tag,
+            Class<? extends MemberFilePersister> persister) {
+        persistersByClass.put(target, persister);
+        persistersByTag.put(tag, persister);
+        return true;
+    }
 
     /**
      * Create a temporary copy of the existing file.
@@ -296,6 +338,63 @@ public abstract class AbstractFilePersister extends FileFilter
      * @return true if the persister is associated to an icon 
      */
     public abstract boolean hasAnIcon();
+
+    
+    /**
+     * Get a MemberFilePersister based on a given ProjectMember.
+     *
+     * @param pm the project member
+     * @return the persister
+     */
+    protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
+        Class<? extends MemberFilePersister> persister = null;
+        if (persistersByClass.containsKey(pm)) {
+            persister = persistersByClass.get(pm);
+        } else {
+            /*
+             * TODO: Not sure we need to do this, but just to be safe for now.
+             */       
+            for (Class clazz : persistersByClass.keySet()) {
+                if (clazz.isAssignableFrom(pm.getClass())) {
+                    persister = persistersByClass.get(clazz);
+                    break;
+                }
+            }
+        }
+        if (persister != null) {
+            return newPersister(persister);
+        }
+        return null;
+    }
+
+
+    /**
+     * Get a MemberFilePersister based on a given tag.
+     *
+     * @param tag The tag.
+     * @return the persister
+     */
+    protected MemberFilePersister getMemberFilePersister(String tag) {
+        Class<? extends MemberFilePersister> persister = 
+            persistersByTag.get(tag);
+        if (persister != null) {
+            return newPersister(persister);
+        }
+        return null;
+    }
+
+    private static MemberFilePersister newPersister(
+            Class<? extends MemberFilePersister> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (InstantiationException e) {
+            LOG.error("Exception instantiating file persister " + clazz, e);
+            return null;
+        } catch (IllegalAccessException e) {
+            LOG.error("Exception instantiating file persister " + clazz, e);
+            return null;
+        }
+    }
     
     // TODO: Document 
     class ProgressMgr implements ProgressListener {

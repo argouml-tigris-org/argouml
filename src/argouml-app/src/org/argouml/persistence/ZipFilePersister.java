@@ -43,10 +43,6 @@ import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
-import org.argouml.uml.ProjectMemberModel;
-import org.argouml.uml.cognitive.ProjectMemberTodoList;
-import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.kernel.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -182,31 +178,6 @@ class ZipFilePersister extends XmiFilePersister {
         } catch (IOException ex) {
             LOG.error("Failed to close save output writer", ex);
         }
-    }
-
-    /**
-     * Get a MemberFilePersister based on a given ProjectMember.
-     *
-     * @param pm the project member
-     * @return the persister
-     */
-    protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
-        MemberFilePersister persister = null;
-        if (pm instanceof ProjectMemberDiagram) {
-            persister = 
-            // TODO: Cyclic dependency between PersistanceManager and here
-                PersistenceManager.getInstance()
-                    .getDiagramMemberFilePersister();
-            // possibly use the following instead
-//            persister = new DiagramMemberFilePersister();
-        } else if (pm instanceof ProfileConfiguration) {
-            persister = new ProfileConfigurationFilePersister();
-        } else if (pm instanceof ProjectMemberTodoList) {
-            persister = new TodoListMemberFilePersister();
-        } else if (pm instanceof ProjectMemberModel) {
-            persister = new ModelMemberFilePersister();
-        }
-        return persister;
     }
 
     /*
