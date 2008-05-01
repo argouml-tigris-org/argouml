@@ -28,10 +28,6 @@
     </module>
 
     <module name="GenericIllegalRegexp">
-      <property name="format" value="TODO "/>
-    </module>
-
-    <module name="GenericIllegalRegexp">
       <property name="format" value="[Nn]eeds?-?more-?work"/>
     </module>
 
