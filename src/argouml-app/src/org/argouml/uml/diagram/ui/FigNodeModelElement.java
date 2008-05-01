@@ -521,14 +521,14 @@ public abstract class FigNodeModelElement
             }
 
             // Add stereotypes submenu
-            Action[] stereoActions =
+            final Action[] stereoActions =
                 StereotypeUtility.getApplyStereotypeActions(getOwner());
             if (stereoActions != null) {
                 popUpActions.add(0, new JSeparator());
-                ArgoJMenu stereotypes =
+                final ArgoJMenu stereotypes =
                     new ArgoJMenu("menu.popup.apply-stereotypes");
-                for (int i = 0; i < stereoActions.length; ++i) {
-                    stereotypes.addCheckItem(stereoActions[i]);
+                for (Action action : stereoActions) {
+                    stereotypes.addCheckItem(action);
                 }
                 popUpActions.add(0, stereotypes);
             }
@@ -725,6 +725,7 @@ public abstract class FigNodeModelElement
      * figs that are inside of this fig.
      *
      * @param figures in the new order
+     * @deprecated in 0.25.5 This method is never used
      */
     public void elementOrdering(List<Fig> figures) {
         int size = figures.size();
@@ -2012,16 +2013,15 @@ public abstract class FigNodeModelElement
      * @see #addElementListener(Object, String)
      */
     protected void removeAllElementListeners() {
-        for (Iterator iter = listeners.iterator(); iter.hasNext();) {
-            Object[] l = (Object[]) iter.next();
-            Object property = l[1];
+        for (Object[] listener : listeners) {
+            Object property = listener[1];
             if (property == null) {
-                Model.getPump().removeModelEventListener(this, l[0]);
+                Model.getPump().removeModelEventListener(this, listener[0]);
             } else if (property instanceof String[]) {
-                Model.getPump().removeModelEventListener(this, l[0],
+                Model.getPump().removeModelEventListener(this, listener[0],
                         (String[]) property);
             } else if (property instanceof String) {
-                Model.getPump().removeModelEventListener(this, l[0],
+                Model.getPump().removeModelEventListener(this, listener[0],
                         (String) property);
             } else {
                 throw new RuntimeException(
@@ -2069,7 +2069,7 @@ public abstract class FigNodeModelElement
     }
 
     
-        /**
+    /**
      * @return current stereotype view
      */
     public int getStereotypeView() {
