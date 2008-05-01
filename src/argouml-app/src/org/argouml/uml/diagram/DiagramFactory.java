@@ -51,6 +51,7 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 
 /**
 * Provide a factory method to create different UML diagrams.
+* 
 * @author Bob Tarling
 */
 public final class DiagramFactory {
@@ -76,9 +77,6 @@ public final class DiagramFactory {
     public enum DiagramType {
         Class, UseCase, State, Deployment, Collaboration, Activity, Sequence
     }
-
-
-    
    
     private List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
 
@@ -105,6 +103,9 @@ public final class DiagramFactory {
      * @return the list of diagrams
      */
     public List<ArgoDiagram> getDiagram() {
+        // TODO: This list is currently unused in ArgoUML.  Since it's session
+        // wide, it's not clear what value it has since we'll usually want
+        // diagrams per project. - tfm
         return diagrams;
     }
 
