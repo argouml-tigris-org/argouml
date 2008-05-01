@@ -106,6 +106,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigPartition figClone = (FigPartition) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -122,6 +123,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         rightLine.setLineColor(col);
         leftLine.setLineColor(col);
@@ -133,6 +135,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return rightLine.getLineColor();
     }
@@ -140,6 +143,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         getBigPort().setFillColor(col);
         getNameFig().setFillColor(col);
@@ -148,6 +152,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return getBigPort().getFillColor();
     }
@@ -179,6 +184,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return rightLine.getLineWidth();
     }
@@ -186,6 +192,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
+    @Override
     public String placeString() {
 	// TODO: i18n
         return "new Swimlane";
@@ -194,6 +201,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         int w = nameDim.width;
@@ -209,6 +217,7 @@ public class FigPartition extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
 	
         if (getNameFig() == null) {
@@ -231,6 +240,7 @@ public class FigPartition extends FigNodeModelElement {
         updateEdges();
     }
     
+    @Override
     public Selection makeSelection() {
 	return new SelectionPartition(this);
     }
@@ -241,7 +251,8 @@ public class FigPartition extends FigNodeModelElement {
      */
     public void appendToPool() {
 	List partitions = getPartitions(getLayer());
-	
+        // TODO: There is a cyclic dependency between FigPartition and
+        // UMLActivityDiagram which needs to be removed. - tfm
         UMLActivityDiagram diagram = 
             (UMLActivityDiagram) getProject().getActiveDiagram();
         Object machine = diagram.getStateMachine();
@@ -277,6 +288,7 @@ public class FigPartition extends FigNodeModelElement {
 	}
     }
     
+    @Override
     public void removeFromDiagramImpl() {
 	int width = getWidth();
 	FigPool figPool = getFigPool();
@@ -312,9 +324,7 @@ public class FigPartition extends FigNodeModelElement {
     // in the pool are within the bounds of this Fig
     // and translate those.
     private void translateWithContents(int dx) {
-	Iterator it = getFigPool().getEnclosedFigs().iterator();
-	while (it.hasNext()) {
-	    Fig f = (Fig) it.next();
+        for (Fig f : getFigPool().getEnclosedFigs()) {
             f.setX(f.getX() + dx);
 	}
 	setX(getX() + dx);
@@ -325,14 +335,12 @@ public class FigPartition extends FigNodeModelElement {
      * Get all the partitions on the same layer as this FigPartition
      * @return th partitions
      */
-    private List getPartitions(Layer layer) {
-        final List partitions = new ArrayList();
+    private List<FigPartition> getPartitions(Layer layer) {
+        final List<FigPartition> partitions = new ArrayList<FigPartition>();
         
-        Iterator it = layer.getContents().iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
+        for (Object o : layer.getContents()) {
             if (o instanceof FigPartition) {
-                partitions.add(o);
+                partitions.add((FigPartition) o);
             }
         }
         
@@ -375,6 +383,7 @@ public class FigPartition extends FigNodeModelElement {
      * When dragging this partition drag all other partitions with it.
      * @return all the partitions to drag togther.
      */
+    @Override
     public List getDragDependencies() {
 	List dependents = getPartitions(getLayer());
 	dependents.add(getFigPool());
@@ -486,6 +495,7 @@ public class FigPartition extends FigNodeModelElement {
         
         /** Paint the handles at the four corners and midway along each edge
          * of the bounding box.  */
+        @Override
         public void paint(Graphics g) {
             final Fig fig = getContent();
             if (getContent().isResizable()) {
@@ -638,7 +648,7 @@ public class FigPartition extends FigNodeModelElement {
         	int width, 
         	int height) {
             
-            final List partitions = getPartitions(getLayer());
+            final List<FigPartition> partitions = getPartitions(getLayer());
             
             int newNeighbourWidth = 0;
             if (neighbour != null) {
@@ -651,9 +661,7 @@ public class FigPartition extends FigNodeModelElement {
             
             int lowX = 0;
             int totalWidth = 0;
-            Iterator it = partitions.iterator();
-            while (it.hasNext()) {
-        	Fig f = (Fig) it.next();
+            for (Fig f : partitions) {
         	if (f == getContent()) {
                     f.setHandleBox(x, y, width, height);
         	} else if (f == neighbour && f == previousPartition) {
