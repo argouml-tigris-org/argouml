@@ -175,11 +175,13 @@ public class ActionAddNote extends UndoableAction {
             // TODO: We need a better algorithm.
             point.x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
             point.y = elemFig.getY();
-            // TODO: This can't depend on ProjectBrowser.  It needs to get
-            // the current drawing area from the Diagram subsystem or GEF
-            // better yet, it should just tell the Diagram to place it
+            // TODO: This can't depend on ProjectBrowser.  Alternate below
             Rectangle drawingArea =
                 ProjectBrowser.getInstance().getEditorPane().getBounds();
+            // Perhaps something like the following would work instead
+//            Rectangle drawingArea =
+//                Globals.curEditor().getJComponent().getVisibleRect();
+            
             if (point.x + noteFig.getWidth() > drawingArea.getX()) {
                 point.x = elemFig.getX() - noteFig.getWidth() - DISTANCE;
 

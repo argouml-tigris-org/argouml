@@ -93,6 +93,10 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
         Rectangle drawingArea =
             ProjectBrowser.getInstance()
                 .getEditorPane().getBounds();
+        // Perhaps something like the following would workd.  If not, then 
+        // traverse up the component hierarchy to a MultEditorPane
+//        Rectangle drawingArea = 
+//            Globals.curEditor().getJComponent().getVisibleRect();
         
         thisFig.makeEdgePort();
         FigEdgePort tee = thisFig.getEdgePort();
