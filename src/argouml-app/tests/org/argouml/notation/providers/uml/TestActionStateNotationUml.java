@@ -133,6 +133,10 @@ public class TestActionStateNotationUml extends TestCase {
         String notationStr = notation.toString(aActionState, null);
         assertEquals("Notation not correctly generated", "testRoundTrip",
                 notationStr);
+        
+        notation.parse(aActionState, "otherExpression");
+        assertEquals("Entry Action not reused", entry, 
+                Model.getFacade().getEntry(aActionState));
     }
 
     /**
