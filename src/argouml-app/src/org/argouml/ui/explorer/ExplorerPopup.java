@@ -853,7 +853,7 @@ public class ExplorerPopup extends JPopupMenu {
                 try {
                     models = profile.getProfilePackages();
                     for (Object model : models) {
-                        if ((Model.getFacade().getModel(selectedItem)
+                        if ((Model.getFacade().getRoot(selectedItem)
                                 .equals(model))) {
                             found = true;
                             break;
