@@ -50,14 +50,16 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.reveng.ImportInterface.ImportException;
-import org.argouml.uml.reveng.ui.ImportStatusScreen;
 import org.tigris.gef.base.Globals;
 
 /**
  * Source language import class - GUI independent superclass.
- *
+ * <p>
  * Specific Swing and SWT/Eclipse importers will extend this class.
- *
+ * <p>
+ * <em>NOTE:</em>Any change to the public API here must be tested in both Swing
+ * (standalone ArgoUML) and Eclipse (ArgoEclipse) environments.
+ * 
  * @author Tom Morris
  */
 public abstract class ImportCommon implements ImportSettingsInternal {
@@ -503,7 +505,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      *            a ProgressMonitor to both receive progress updates and to be
      *            polled for user requests to cancel.
      */
-    protected void doImport(ImportStatusScreen monitor) {
+    protected void doImport(ProgressMonitor monitor) {
         // Roughly equivalent to and derived from old Import.doFile()
         monitor.setMaximumProgress(MAX_PROGRESS_PREPARE + MAX_PROGRESS_IMPORT);
         int progress = 0;
