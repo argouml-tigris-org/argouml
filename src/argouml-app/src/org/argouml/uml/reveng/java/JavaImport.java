@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -102,7 +104,22 @@ public class JavaImport implements ImportInterface {
             }
             Object file = it.next();
             if (file instanceof File) {
-                parseFile(p, (File) file, settings, pass);
+                try {
+                    parseFile(p, (File) file, settings, pass);
+                } catch (ImportException e) {
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new java.io.PrintWriter(sw);
+                    e.printStackTrace(pw);
+                    monitor.notifyMessage(
+                        Translator.localize(
+                            "dialog.title.import-problems"), //$NON-NLS-1$
+                            Translator.localize(
+                            "label.import-problems"),        //$NON-NLS-1$
+                            sw.toString());
+                    if (monitor.isCanceled()) {
+                        break;
+                    }
+                }
                 monitor.updateProgress(count++);
                 monitor.updateSubTask(Translator.localize(
                         "dialog.import.parsingAction",
@@ -183,9 +200,10 @@ public class JavaImport implements ImportInterface {
                 LOG.error(e.getClass().getName()
                         + errorString, e);
                 throw new ImportException(errorString, e);
+            } finally {
+                newElements.addAll(modeller.getNewElements());
+                in.close();
             }
-            newElements.addAll(modeller.getNewElements());
-            in.close();
         } catch (IOException e) {
             throw new ImportException(buildErrorString(f), e);
         }

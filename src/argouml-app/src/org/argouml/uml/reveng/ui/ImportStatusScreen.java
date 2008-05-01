@@ -156,13 +156,16 @@ public class ImportStatusScreen extends JDialog implements ProgressMonitor {
             String message) {
         // TODO: Create an error dialog or panel in our progress dialog
         // for now we just use our old style separate error dialog
-        JDialog problemsDialog = new ProblemsDialog(parentFrame, message);
+        ProblemsDialog problemsDialog = new ProblemsDialog(parentFrame, message);
         problemsDialog.setTitle(title);
         problemsDialog.setVisible(true);
+        cancelled = problemsDialog.isAborted();
         // TODO: Only needed while we have a separate problem dialog
         // (see above)
-        setVisible(false);
-        dispose();
+        if (cancelled) {
+            setVisible(false);
+            dispose();
+        }
     }
 
     /*

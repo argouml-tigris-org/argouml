@@ -74,6 +74,7 @@ class ProblemsDialog extends JDialog implements ActionListener {
     private JButton abortButton;
     private JButton continueButton;
     private JLabel northLabel;
+    private boolean aborted = false;
 
     /**
      * The constructor.
@@ -107,6 +108,7 @@ class ProblemsDialog extends JDialog implements ActionListener {
         bottomPanel.add(continueButton);
         bottomPanel.add(abortButton);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+        continueButton.requestFocusInWindow();
 
         // listeners
         continueButton.addActionListener(this);
@@ -127,7 +129,18 @@ class ProblemsDialog extends JDialog implements ActionListener {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource().equals(abortButton)) {
+            aborted = true;
+        }
         disposeDialog();
+    }
+
+    /**
+     * Returns whether the Abort button was pressed.
+     * @return aborted
+     */
+    public boolean isAborted() {
+        return aborted;
     }
 
     private void disposeDialog() {
