@@ -25,14 +25,15 @@
 package org.argouml.uml.diagram.sequence2.ui;
 
 import java.awt.Point;
-import java.awt.event.MouseEvent;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.sequence2.SequenceDiagramGraphModel;
 import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 
 /**
@@ -87,7 +88,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
 //                ModeManager modeManager = editor.getModeManager();
 //                ModeCreateMessage mode = new ModeCreateMessage(editor);
 //                mode.getArgs().put("action", 
-//                        Model.getMetaTypes().getReturnAction());               
+//                        Model.getMetaTypes().getReturnAction()); 
 //                modeManager.push(mode);
 
             // get the source of the return message
@@ -105,7 +106,18 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
                     Model.getMetaTypes().getMessage(),
                     Model.getMetaTypes().getReturnAction());
             
-            final FigMessage returnEdge = new FigMessage(returnMessage);
+            final LayerPerspective layer = 
+                (LayerPerspective) editor.getLayerManager().getActiveLayer();
+            
+            FigMessage returnEdge = null;
+
+            List<Fig> figs = layer.getContents();
+            for (Fig fig : figs) {
+                if (fig.getOwner() == returnMessage) {
+                    returnEdge = (FigMessage) fig;
+                    break;
+                }
+            }
 
             returnEdge.setSourcePortFig(fe.getDestPortFig());
             returnEdge.setSourceFigNode(dcr);
@@ -124,13 +136,6 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             if (returnEdge.isSelfMessage()) {
                 returnEdge.convertToArc();
             }
-            
-            // FIXME #5005: The message is added, 
-            // it doesn't need to be added again. 
-            // The problem here is that the diagram
-            // isn't damaged, and btw the edge ends' X are wrong.
-            final Layer layer = editor.getLayerManager().getActiveLayer();
-            layer.add(returnEdge);
         }
         dcr.createActivations();
         dcr.renderingChanged();
