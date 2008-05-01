@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,12 +51,9 @@ import org.argouml.model.XmiException;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
 import org.argouml.uml.ProjectMemberModel;
-import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.DiagramFactory.DiagramType;
-import org.argouml.kernel.ProfileConfiguration;
 import org.xml.sax.InputSource;
 
 /**
@@ -228,28 +225,6 @@ class ModelMemberFilePersister extends MemberFilePersister
 
     }
     
-    /**
-     * Get a MemberFilePersister based on a given ProjectMember.
-     *
-     * @param pm the project member
-     * @return the persister
-     */
-    protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
-        MemberFilePersister persister = null;
-        if (pm instanceof ProjectMemberDiagram) {
-            persister = 
-                PersistenceManager.getInstance()
-                    .getDiagramMemberFilePersister();
-            // TODO: Cyclic dependency with PersistenceManager, use instead
-//          persister = new DiagramMemberFilePersister();
-        } else if (pm instanceof ProfileConfiguration) {
-            persister = new ProfileConfigurationFilePersister();
-        } else if (pm instanceof ProjectMemberTodoList) {
-            persister = new TodoListMemberFilePersister();
-        }
-        return persister;
-    }
-
     public void parse(String label, String xmiExtensionString) {
         LOG.info("Parsing an extension for " + label);
     }
@@ -259,8 +234,6 @@ class ModelMemberFilePersister extends MemberFilePersister
 
     private Collection elementsRead;
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * @return the current model
