@@ -660,6 +660,8 @@ public class ShortcutMgr {
                 KeyEvent.VK_F7, 0), new ActionGenerateAll());
 
         // critique menu
+        // TODO: This dependency should be inverted with the Critics subsystem
+        // registering its desired shortcuts with us - tfm
         putDefaultShortcut(ACTION_AUTO_CRITIQUE, null, 
                 new ActionAutoCritique());
         putDefaultShortcut(ACTION_OPEN_DECISIONS, null,
@@ -667,7 +669,7 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_OPEN_GOALS, null, new ActionOpenGoals());
         putDefaultShortcut(ACTION_OPEN_CRITICS, null, new ActionOpenCritics());
 
-        // critique menu
+        // help menu
         putDefaultShortcut(ACTION_SYSTEM_INFORMATION, null,
                 new ActionSystemInfo());
         putDefaultShortcut(ACTION_ABOUT_ARGOUML, null, 
