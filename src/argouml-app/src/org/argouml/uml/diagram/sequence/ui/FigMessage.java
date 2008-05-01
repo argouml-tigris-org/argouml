@@ -88,6 +88,8 @@ public abstract class FigMessage
         // the menu item for RE a sequence into the diagram is offered always,
         // because a check (e.g. does a operation with a body exist) would be
         // too expensive
+        // TODO: There is a cyclic dependency between ActionRESequenceDiagram
+        // and FigMessage
         popUpActions.add(popUpActions.size() - getPopupAddOffset(),
                 new ActionRESequenceDiagram(this));
 
@@ -299,7 +301,8 @@ public abstract class FigMessage
 
     /**
      * This won't work, so this implementation does nothing.
-     *
+     * 
+     * {@inheritDoc}
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#determineFigNodes()
      */
     @Override

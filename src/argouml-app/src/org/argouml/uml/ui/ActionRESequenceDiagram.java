@@ -41,9 +41,6 @@ import org.argouml.uml.reveng.ui.RESequenceDiagramDialog;
  */
 public class ActionRESequenceDiagram extends AbstractAction {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * The constructor. If a figure is given, then it is invoked inside of a
      * sequence diagram, so it will work with this diagram. If figure is null,
@@ -63,9 +60,6 @@ public class ActionRESequenceDiagram extends AbstractAction {
         this(null);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -84,6 +78,8 @@ public class ActionRESequenceDiagram extends AbstractAction {
                 // it is highly desirable that the message action
                 // already knows it's operation
                 RESequenceDiagramDialog dialog =
+                    // TODO: There is a cyclic dependency between 
+                    // ActionRESequenceDiagram and FigMessage
                     new RESequenceDiagramDialog(op, (FigMessage) messageFig);
                 dialog.setVisible(true);
             } else {
@@ -115,6 +111,8 @@ public class ActionRESequenceDiagram extends AbstractAction {
                     while (iter != null && iter.hasNext()) {
                         op = iter.next();
                         if (opName.equals(Model.getFacade().getName(op))) {
+                            // TODO: There is a cyclic dependency between 
+                            // ActionRESequenceDiagram and FigMessage
                             RESequenceDiagramDialog dialog =
                                 new RESequenceDiagramDialog(op,
                                         (FigMessage) messageFig);
@@ -124,15 +122,13 @@ public class ActionRESequenceDiagram extends AbstractAction {
                     }
                 }
             }
-            // Model.getCoreHelper().setName(
-            //     ((FigEdgeModelElement) messageFig).getOwner(),
-            //     "Hello World");
         }
     }
 
     /*
      * @see javax.swing.Action#isEnabled()
      */
+    @Override
     public boolean isEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
         return Model.getFacade().isAOperation(target)
@@ -145,4 +141,4 @@ public class ActionRESequenceDiagram extends AbstractAction {
      * The UID.
      */
     private static final long serialVersionUID = 2915509413708666273L;
-} /* end class ActionRESequenceDiagram */
+} 
