@@ -16,6 +16,7 @@
     <module name="DoubleCheckedLocking"/>
 
     <module name="EmptyBlock">
+        <property name="option" value="text"/>
       <!-- All except catch and for. -->
       <property name="tokens" value="LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_TRY,LITERAL_WHILE,STATIC_INIT"/>
     </module>
