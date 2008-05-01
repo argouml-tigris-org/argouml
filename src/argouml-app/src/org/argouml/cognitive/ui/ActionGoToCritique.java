@@ -60,9 +60,11 @@ public class ActionGoToCritique extends UndoableAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-    	super.actionPerformed(ae);
-	((ToDoPane) ProjectBrowser.getInstance().getTodoPane())
-            .selectItem(item);
+        super.actionPerformed(ae);
+        // TODO: ProjectBrowser doesn't need to mediate this conversation
+        // Use an event listener in the ToDoPane to communicate instead. - tfm
+        ((ToDoPane) ProjectBrowser.getInstance().getTodoPane())
+                .selectItem(item);
     }
 
 } /* end class ActionGoToCritique */

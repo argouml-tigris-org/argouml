@@ -252,10 +252,10 @@ public class WizStep extends JPanel
      * Set the target and make visible.
      */
     protected void updateTabToDo() {
+        // TODO: TabToDo should listen for an event that this fires so that we
+        // can decouple from the ProjectBrowser. - tfm
 	TabToDo ttd =
 	    (TabToDo) ProjectBrowser.getInstance().getTab(TabToDo.class);
-	// TODO: TabToDo should listen for an event that this fires so that we
-	// can decouple from the ProjectBrowser.
 	JPanel ws = getWizard().getCurrentPanel();
 	if (ws instanceof WizStep) {
 	    ((WizStep) ws).setTarget(target);
@@ -312,7 +312,6 @@ public class WizStep extends JPanel
      */
     public void targetAdded(TargetEvent e) {
 	setTarget(e.getNewTarget());
-
     }
 
     /*
@@ -322,7 +321,6 @@ public class WizStep extends JPanel
 	// how to handle empty target lists?
 	// probably the wizstep should only show an empty pane in that case
 	setTarget(e.getNewTarget());
-
     }
 
     /*

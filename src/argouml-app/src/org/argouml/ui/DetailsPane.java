@@ -208,7 +208,10 @@ public class DetailsPane
      * 
      * @param item the selected todo item
      * @return true if todo tab is really selected.
+     * @deprecated for 0.25.5 by tfmorris. Send an event that TabToDoTargets
+     *             listen to.
      */
+    @Deprecated
     public boolean setToDoItem(Object item) {
         enableTabs(item);
         for (JPanel t : tabPanelList) {
@@ -291,11 +294,9 @@ public class DetailsPane
             if (!tabSelected) {
                 JPanel tab = tabPanelList.get(0);
                 if (!(tab instanceof TabToDoTarget)) {
-                    Iterator it = tabPanelList.iterator();
-                    while (it.hasNext()) {
-                        Object o = it.next();
-                        if (o instanceof TabToDoTarget) {
-                            tab = (JPanel) o;
+                    for (JPanel panel : tabPanelList) {
+                        if (panel instanceof TabToDoTarget) {
+                            tab = panel;
                             break;
                         }
                     }

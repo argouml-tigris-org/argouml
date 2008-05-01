@@ -101,6 +101,9 @@ public class TabToDo extends AbstractArgoJPanel
         setTarget(null);
         
         addComponentListener(this);
+        
+        // TODO: Register listener for target ToDo item changes
+        // and for new showStep() requests
     }
 
     /**
@@ -158,6 +161,9 @@ public class TabToDo extends AbstractArgoJPanel
         if (isVisible()) {
             setTargetInternal(item);
         }
+        
+        // Request that we be made visible if we're not?
+        // topLevelTabbedPane.setSelectedComponent(t);
     }
 
     private void setTargetInternal(Object item) {

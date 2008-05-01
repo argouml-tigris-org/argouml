@@ -297,7 +297,7 @@ public class ToDoPane extends JPanel
     public void valueChanged(TreeSelectionEvent e) {
         LOG.debug("ToDoPane valueChanged");
         //TODO: should fire its own event and ProjectBrowser
-        //should register a listener
+        //should register a listener - tfm
         Object sel = getSelectedObject();
         ProjectBrowser.getInstance().setToDoItem(sel);
         LOG.debug("lastselection: " + lastSel);

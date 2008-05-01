@@ -267,6 +267,7 @@ public final class ProjectBrowser
         
         getContentPane().setFont(defaultFont);
         
+        // TODO: This causes a cyclic depencency with ActionSaveProject
         saveAction = new ActionSaveProject();
         ProjectManager.getManager().setSaveAction(saveAction);
 
@@ -290,7 +291,7 @@ public final class ProjectBrowser
             // allows me to ask "Do you want to save first?"
             setDefaultCloseOperation(ProjectBrowser.DO_NOTHING_ON_CLOSE);
             addWindowListener(new WindowCloser());
-
+            
             setApplicationIcon();
 
             // Add listener for project changes
@@ -326,7 +327,7 @@ public final class ProjectBrowser
                     // We're looking at focus change to
                     // flag the start of an interaction. This
                     // is to detect when focus is gained in a prop
-                // panel field on the assumption editing of that
+                    // panel field on the assumption editing of that
                     // field is about to start.
                     // Not a good assumption. We Need to see if we can get
                     // rid of this.
@@ -361,21 +362,21 @@ public final class ProjectBrowser
             final List<Image> argoImages = new ArrayList<Image>(2);
             argoImages.add(argoImage16x16.getImage());
             argoImages.add(argoImage32x32.getImage());
-            try {
+        try {
                 // java.awt.Window.setIconImages is new in Java 6.
-                // check for it using reflection on current instance
+            // check for it using reflection on current instance
                 final Method m = 
                     getClass().getMethod("setIconImages", List.class);
-                m.invoke(this, argoImages);
-            } catch (InvocationTargetException e) {
+            m.invoke(this, argoImages);
+        } catch (InvocationTargetException e) {
                 LOG.error("Exception", e);
             } catch (NoSuchMethodException e) {
                 LOG.error("Exception", e);
-            } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
                 LOG.error("Exception", e);
-            } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
                 LOG.error("Exception", e);
-            }
+        }
         }
     }
 
@@ -778,12 +779,12 @@ public final class ProjectBrowser
 
     /**
      * Select the tab page containing the todo item.
-     *
-     * TODO: should introduce an instance variable to go straight to
-     * the correct tab instead of trying all
-     *
+     * 
      * @param o the todo item to select
+     * @deprecated for 0.25.5 by tfmorris. Send an event that the
+     *             DetailsPane/TabToDo will be listening for.
      */
+    @Deprecated
     public void setToDoItem(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while (it.hasNext()) {
@@ -796,7 +797,7 @@ public final class ProjectBrowser
 
     /**
      * Get the tab page containing the properties.
-     *
+     * 
      * @return the TabProps tabpage
      * @deprecated for 0.25.5 by tfmorris. No one should need to manipulate the
      *             properties tab directly. The only place this is currently
@@ -818,7 +819,7 @@ public final class ProjectBrowser
 
     /**
      * Get the tab page instance of the given class.
-     *
+     * 
      * @param tabClass the given class
      * @return the tabpage
      * @deprecated by for 0.25.5 by tfmorris. Tabs should register themselves
@@ -901,7 +902,7 @@ public final class ProjectBrowser
     /**
      * Given a list of targets, displays the corresponding diagram. This method
      * jumps to the diagram showing the targets, and scrolls to make it visible.
-     *
+     * 
      * @param targets Collection of targets to show
      * @deprecated for 0.25.5 by tfmorris. This is unused by ArgoUML. If there
      *             are clients that require this functionality, it should be
