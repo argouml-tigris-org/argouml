@@ -35,6 +35,7 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigPoly;
 
 /**
  * Mode to create a link between two figclassifierroles. 
@@ -83,14 +84,6 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
         final Object action = Model.getFacade().getAction(message);
         if (Model.getFacade().isACallAction(action)) {
             
-            // we need to create a ModeCreateMessage for adding
-            // a new message                
-//                ModeManager modeManager = editor.getModeManager();
-//                ModeCreateMessage mode = new ModeCreateMessage(editor);
-//                mode.getArgs().put("action", 
-//                        Model.getMetaTypes().getReturnAction()); 
-//                modeManager.push(mode);
-
             // get the source of the return message
             final Object returnMessageSource =
                 Model.getFacade().getReceiver(message);
@@ -125,7 +118,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             returnEdge.setDestFigNode(scr);
             
             final Point[] points = returnEdge.getPoints();
-            for (int i=0; i < points.length; ++i) {
+            for (int i = 0; i < points.length; ++i) {
                 // TODO: this shouldn't be hardcoded
                 // 20 is the height of the spline
                 // 50 is the default activation height
@@ -136,6 +129,14 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             if (returnEdge.isSelfMessage()) {
                 returnEdge.convertToArc();
             }
+            
+            // Mark the contain FigPoly as complete.
+            // TODO: I think more work is needed in GEF to either do this
+            // automatically when both ends are set or at the very least
+            // Give a setComplete method on FigPolyEdge that calls its
+            // contained poly
+            FigPoly poly = (FigPoly) returnEdge.getFig();
+            poly.setComplete(true);
         }
         dcr.createActivations();
         dcr.renderingChanged();
