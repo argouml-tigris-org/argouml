@@ -82,8 +82,10 @@ public class SelectionMessage extends SelectionRerouteEdge {
 
     @Override
     public void dragHandle(int x, int y, int w, int h, Handle handle) {
-        super.dragHandle(x, y, w, h, handle);
-        handleMovement();
+        FigMessage message = (FigMessage) getContent(); 
+        if (!message.isSelfMessage()) {
+            super.dragHandle(x, y, w, h, handle);
+        }
     }
     
     private void handleMovement() {
