@@ -367,19 +367,16 @@ public abstract class FigNodeModelElement
      * which child figs of the clone represent the name, stereotype and port.
      * <p>
      * 
-     * The clone function is used by Copy/Paste operations.
-     * 
      * @see java.lang.Object#clone()
      * @return the cloned figure
      */
     @Override
     public Object clone() {
-        FigNodeModelElement clone = (FigNodeModelElement) super.clone();
-        Iterator thisIter = this.getFigs().iterator();
-        Iterator cloneIter = clone.getFigs().iterator();
-        while (thisIter.hasNext()) {
-            Fig thisFig = (Fig) thisIter.next();
-            Fig cloneFig = (Fig) cloneIter.next();
+        final FigNodeModelElement clone = (FigNodeModelElement) super.clone();
+        
+        final Iterator cloneIter = clone.getFigs().iterator();
+        for (Object thisFig : getFigs()) {
+            final Fig cloneFig = (Fig) cloneIter.next();
             if (thisFig == getBigPort()) {
                 clone.setBigPort(cloneFig);
             }
@@ -387,14 +384,12 @@ public abstract class FigNodeModelElement
                 clone.nameFig = (FigSingleLineText) thisFig;
             }
             if (thisFig == stereotypeFig) {
-                clone.stereotypeFig = thisFig;
+                clone.stereotypeFig = (Fig) thisFig;
             }
         }
         return clone;
     }
 // TODO: _enclosedFigs, _encloser and _eventSenders may also need to be cloned
-
-
 
     /**
      * Default Reply text to be shown while placing node in diagram.
@@ -964,23 +959,27 @@ public abstract class FigNodeModelElement
                 // TODO: Should this not be an assert?
                 return;
             }
+            
             try {
                 modelChanged(event);
+            } catch (InvalidElementException e) {
+                LOG.debug("modelChanged method accessed deleted element ", e);
             }
-            catch (InvalidElementException e) {
-                LOG.debug("modelChanged method accessed deleted element ", e);            
-            }
+            
             if (event.getSource() == owner 
                     && "stereotype".equals(event.getPropertyName())) {
                 stereotypeChanged(event);            
             }
+            
             Runnable doWorkRunnable = new Runnable() {
                 public void run() {
                     try {
                         updateLayout(event);
                     }
                     catch (InvalidElementException e) {
-                        LOG.debug("modelChanged method accessed deleted element ", e);
+                        LOG.debug(
+                                "updateLayout method accessed deleted element ",
+                                e);
                     }
                 }  
             };
@@ -1254,10 +1253,8 @@ public abstract class FigNodeModelElement
         if (o == null || o == getOwner()) {
             return true;
         }
-        Iterator it = getFigs().iterator();
-        while (it.hasNext()) {
-            Fig fig = (Fig) it.next();
-            if (isPartlyOwner(fig, o)) {
+        for (Object fig : getFigs()) {
+            if (isPartlyOwner((Fig) fig, o)) {
                 return true;
             }
         }
@@ -1277,10 +1274,8 @@ public abstract class FigNodeModelElement
             return true;
         }
         if (fig instanceof FigGroup) {
-            Iterator it = ((FigGroup) fig).getFigs().iterator();
-            while (it.hasNext()) {
-                Fig fig2 = (Fig) it.next();
-                if (isPartlyOwner(fig2, o)) {
+            for (Object fig2 : ((FigGroup) fig).getFigs()) {
+                if (isPartlyOwner((Fig) fig2, o)) {
                     return true;
                 }
             }
@@ -1297,9 +1292,8 @@ public abstract class FigNodeModelElement
         if (own != null) {
             getProject().moveToTrash(own);
         }
-        Iterator it = getFigs().iterator();
-        while (it.hasNext()) {
-            ((Fig) it.next()).deleteFromModel();
+        for (Object fig : getFigs()) {
+            ((Fig) fig).deleteFromModel();
         }
         super.deleteFromModel();
     }
@@ -1592,9 +1586,7 @@ public abstract class FigNodeModelElement
 	}
 
 	if (stereotypeFigProfileIcon != null) {
-	    Iterator it = getFigs().iterator();
-	    while (it.hasNext()) {
-		Object fig = it.next();
+	    for (Object fig : getFigs()) {
 		((Fig) fig).setVisible(fig != stereotypeFigProfileIcon);
 	    }
 
@@ -1632,6 +1624,7 @@ public abstract class FigNodeModelElement
 
 		if (stereos.size() == 1) {
 		    Object stereo = stereos.iterator().next();
+		    // TODO: Should we not use getProject here?
 		    replaceIcon = ProjectManager.getManager()
 			    .getCurrentProject().getProfileConfiguration()
 			    .getFigNodeStrategy().getIconForStereotype(stereo);
@@ -1644,30 +1637,30 @@ public abstract class FigNodeModelElement
 
 		    stereotypeFigProfileIcon.setLocation(getBigPort()
 			    .getLocation());
-		    this.addFig(stereotypeFigProfileIcon);
+		    addFig(stereotypeFigProfileIcon);
 
 		    originalNameFig = this.getNameFig();
-		    this.setNameFig(stereotypeFigProfileIcon.getLabelFig());
+		    final FigText labelFig =
+		        stereotypeFigProfileIcon.getLabelFig();
+		    setNameFig(labelFig);
 
-		    stereotypeFigProfileIcon.getLabelFig().addPropertyChangeListener(this);
+		    labelFig.addPropertyChangeListener(this);
 		    
 		    getBigPort().
 		    	setBounds(stereotypeFigProfileIcon.getBounds());
 		 
-		    Iterator it = getFigs().iterator();
-		    while (it.hasNext()) {
-			Object fig = it.next();
+		    for (Object fig : getFigs()) {
 			((Fig) fig).setVisible(fig == stereotypeFigProfileIcon);
 		    }
 		    
 		}
 	    }
-	} else if (practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
+	} else if (practicalView
+	        == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
             int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
 
-            Iterator it = stereos.iterator();
-            while (it.hasNext()) {
-                Object stereo = it.next();
+            for (Object stereo : stereos) {
+                // TODO: Should we not use getProject here?
                 Image icon = ProjectManager.getManager().getCurrentProject()
                         .getProfileConfiguration().getFigNodeStrategy()
                         .getIconForStereotype(stereo);
@@ -1774,9 +1767,7 @@ public abstract class FigNodeModelElement
     public void postLoad() {
         ArgoEventPump.removeListener(this);
         ArgoEventPump.addListener(this);
-        Iterator it = getFigs().iterator();
-        while (it.hasNext()) {
-            Fig fig = (Fig) it.next();
+        for (Object fig : getFigs()) {
             if (fig instanceof ArgoEventListener) {
                 // cannot do the adding of listeners recursive since
                 // some are not children of FigNodeModelELement or
@@ -2093,7 +2084,7 @@ public abstract class FigNodeModelElement
      * 
      * @return current practical stereotype view
      */
-    public int getPracticalView() {               
+    private int getPracticalView() {               
 	int practicalView = getStereotypeView();
         Object modelElement = getOwner();
 
@@ -2151,7 +2142,8 @@ public abstract class FigNodeModelElement
             }
         } else {
 	    setStandardBounds(x, y, w, h);
-	    if (getStereotypeView() == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
+	    if (getStereotypeView()
+	            == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
 	        updateSmallIcons(w);
 	    }
 	}
@@ -2160,9 +2152,7 @@ public abstract class FigNodeModelElement
     private void updateSmallIcons(int wid) {
         int i = this.getX() + wid - ICON_WIDTH - 2;
 
-        Iterator it = floatingStereotypes.iterator();
-        while (it.hasNext()) {
-            FigImage ficon = (FigImage) it.next();
+        for (Fig ficon : floatingStereotypes) {
             ficon.setLocation(i, this.getBigPort().getY() + 2);
             i -= ICON_WIDTH - 2;
         }
@@ -2192,7 +2182,6 @@ public abstract class FigNodeModelElement
      */
     public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
         updateFont();
-//      calcBounds(); // Don't do this! Causes e.g. FigActor to not center properly.
         updateBounds();
         damage();
     }
