@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,9 +29,9 @@ import java.net.URL;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
@@ -41,10 +41,17 @@ import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.InitDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.InitSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.InitStateDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
+import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
 
 
 /**
@@ -519,6 +526,13 @@ public class TestProject extends TestCase {
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();
         (new InitDiagramAppearanceUI()).init();
+        (new InitActivityDiagram()).init();
+        (new InitCollaborationDiagram()).init();
+        (new InitDeploymentDiagram()).init();
+        (new InitSequenceDiagram()).init();
+        (new InitStateDiagram()).init();
+        (new InitClassDiagram()).init();
+        (new InitUseCaseDiagram()).init();
         (new InitProfileSubsystem()).init();
     }
 }

@@ -22,48 +22,24 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml.diagram.state.ui;
 
-import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
-import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelFactory;
 
 /**
- * This factory creates the right PropPanelDiagram for a given UMLDiagram.
- * 
- * TODO: This class should be split up, to have a different
- * factory for each package. 
- * That would solve the current wrong package dependencies.
+ * This factory creates the right PropPanelDiagram for a given 
+ * statechart diagram.
  *
  * @author Michiel
  */
-class DiagramPropPanelFactory implements PropPanelFactory {
+public class StateDiagramPropPanelFactory implements PropPanelFactory {
 
     public PropPanel createPropPanel(Object object) {
-        if (object instanceof UMLDiagram) {
-            if (object instanceof UMLActivityDiagram) {
-                return new PropPanelUMLActivityDiagram();
-            } else if (object instanceof UMLClassDiagram) {
-                return new PropPanelUMLClassDiagram();
-            } else if (object instanceof UMLCollaborationDiagram) {
-                return new PropPanelUMLCollaborationDiagram();
-            } else if (object instanceof UMLDeploymentDiagram) {
-                return new PropPanelUMLDeploymentDiagram();
-            } else if (object instanceof UMLSequenceDiagram) {
-                return new PropPanelUMLSequenceDiagram();
-            } else if (object instanceof UMLStateDiagram) {
-                return new PropPanelUMLStateDiagram();
-            } else if (object instanceof UMLUseCaseDiagram) {
-                return new PropPanelUMLUseCaseDiagram();
-            }
+        if (object instanceof UMLStateDiagram) {
+            return new PropPanelUMLStateDiagram();
         }
         return null;
     }
-    
+
 }

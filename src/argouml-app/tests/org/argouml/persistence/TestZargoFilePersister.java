@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,14 @@ import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.InitDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.InitSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.InitStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
+import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
 
 /**
  * Testcase to load projects without exception.
@@ -54,6 +61,13 @@ public class TestZargoFilePersister extends TestCase {
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();
         (new InitDiagramAppearanceUI()).init();
+        (new InitActivityDiagram()).init();
+        (new InitCollaborationDiagram()).init();
+        (new InitDeploymentDiagram()).init();
+        (new InitSequenceDiagram()).init();
+        (new InitStateDiagram()).init();
+        (new InitClassDiagram()).init();
+        (new InitUseCaseDiagram()).init();
         (new InitProfileSubsystem()).init();
     }
 

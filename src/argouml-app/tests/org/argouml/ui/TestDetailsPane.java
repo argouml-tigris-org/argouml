@@ -37,8 +37,15 @@ import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.InitDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.InitSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.InitStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
+import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
 import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.swidgets.Horizontal;
@@ -67,6 +74,13 @@ public class TestDetailsPane extends TestCase {
         new InitCheckListUI().init();
         new InitCognitiveUI().init();
         new InitDiagramAppearanceUI().init();
+        (new InitActivityDiagram()).init();
+        (new InitCollaborationDiagram()).init();
+        (new InitDeploymentDiagram()).init();
+        (new InitSequenceDiagram()).init();
+        (new InitStateDiagram()).init();
+        (new InitClassDiagram()).init();
+        (new InitUseCaseDiagram()).init();
     }
 
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,45 +22,23 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml.diagram.sequence.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.argouml.application.api.AbstractArgoJPanel;
-import org.argouml.application.api.Argo;
-import org.argouml.application.api.GUISettingsTabInterface;
-import org.argouml.application.api.InitSubsystem;
+import org.argouml.uml.ui.PropPanel;
+import org.argouml.uml.ui.PropPanelFactory;
 
 /**
- * Initialise this subsystem.
+ * This factory creates the right PropPanelDiagram for a given Sequence diagram.
  *
- * @author Aleksandar
+ * @author Michiel
  */
-public class InitDiagramAppearanceUI implements InitSubsystem {
+public class SequenceDiagramPropPanelFactory implements PropPanelFactory {
 
-    public void init() {
-        // Do nothing.
+    public PropPanel createPropPanel(Object object) {
+        if (object instanceof UMLSequenceDiagram) {
+            return new PropPanelUMLSequenceDiagram();
+        }
+        return null;
     }
-
-    public List<GUISettingsTabInterface> getProjectSettingsTabs() {
-        List<GUISettingsTabInterface> result =
-            new ArrayList<GUISettingsTabInterface>();
-        result.add(new SettingsTabDiagramAppearance(Argo.SCOPE_PROJECT));
-        return result;
-    }
-
-    public List<GUISettingsTabInterface> getSettingsTabs() {
-        List<GUISettingsTabInterface> result =
-            new ArrayList<GUISettingsTabInterface>();
-        result.add(new SettingsTabDiagramAppearance(Argo.SCOPE_APPLICATION));
-        return result;
-    }
-
-    public List<AbstractArgoJPanel> getDetailsTabs() {
-        return Collections.emptyList();
-    }
-
 
 }

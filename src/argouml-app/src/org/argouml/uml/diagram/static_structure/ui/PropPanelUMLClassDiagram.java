@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies. This software program and
+// and this paragraph appear in all copies.  This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,32 +22,23 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.diagram.static_structure.ui;
+
+import org.argouml.i18n.Translator;
+import org.argouml.uml.diagram.ui.PropPanelDiagram;
 
 /**
- * Interface for a factory of proppanels, 
- * which are created based on a given object.
- *
- * @author Michiel
+ * @author jaap.branderhorst@xs4all.nl
+ * @since Jan 3, 2003
  */
-public interface PropPanelFactory {
+class PropPanelUMLClassDiagram extends PropPanelDiagram {
 
     /**
-     * This method shall test the type of the given object,
-     * and if recognised, create a new instance of a PropPanel. <p>
-     * 
-     * If the object type is not something this factory 
-     * knows how to deal with, then null shall be returned
-     * (do NOT throw an exception). <p>
-     * 
-     * If the given object falls within a class of objects 
-     * that this factory is the exclusive factory for,
-     * then it is allowed to throw an exception if 
-     * the object is invalid/unknown. However,
-     * be careful not to break the possibility to extend ArgoUML.  
-     *  
-     * @param object the object to create a new PropPanel for
-     * @return the new proppanel or null
+     * Constructor for PropPanelUMLClassDiagram.
      */
-    PropPanel createPropPanel(Object object);
+    public PropPanelUMLClassDiagram() {
+        super(Translator.localize("label.class-diagram"),
+                lookupIcon("ClassDiagram"));
+    }
+
 }
