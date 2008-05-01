@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,10 +28,23 @@ import java.awt.event.MouseEvent;
 import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.graph.GraphFactory;
 
-public class ModePlacePackage extends ModePlace {
+/**
+ * A mode to place a new Partition on the diagram.
+ *
+ * @author Bobtarling
+ */
+public class ModePlacePartition extends ModePlace {
+    private Object machine;
     
-    public ModePlacePackage(GraphFactory gf, String instructions) {
+    /**
+     * @param gf the command to create the node
+     * @param instructions help text
+     * @param activityGraph the UML element that contains the Partition
+     */
+    public ModePlacePartition(GraphFactory gf, String instructions, 
+            Object activityGraph) {
 	super(gf, instructions);
+	machine = activityGraph;
     }
     
     @Override
@@ -44,6 +57,6 @@ public class ModePlacePackage extends ModePlace {
         
         super.mouseReleased(me);
         
-        fig.appendToPool();
+        fig.appendToPool(machine);
     }
 }

@@ -443,7 +443,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     protected Action getActionSwimlane() {
         if (actionSwimlane == null) {
             actionSwimlane =
-                new ActionCreatePartition();
+                new ActionCreatePartition(getStateMachine());
         }
         return actionSwimlane;
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,19 +28,27 @@ import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.tigris.gef.base.Mode;
 
+/**
+ * The Action to create a Partition on the diagram.
+ */
 public class ActionCreatePartition extends CmdCreateNode {
+
+    private Object machine;
 
     /**
      * Constructor
+     *
+     * @param activityGraph the UML element that contains the Partition
      */
-    public ActionCreatePartition() {
+    public ActionCreatePartition(Object activityGraph) {
         super(Model.getMetaTypes().getPartition(),
       	  "button.new-partition");
+        machine = activityGraph;
     }
 
     @Override
     protected Mode createMode(String instructions) {
-        return new ModePlacePackage(this, instructions);
+        return new ModePlacePartition(this, instructions, machine);
     }
 
 }

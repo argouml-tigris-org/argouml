@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -248,16 +248,14 @@ public class FigPartition extends FigNodeModelElement {
     /**
      * On post placement look to see if there are any other
      * FigPartitions. If so place to the right and resize height.
+     *
+     * @param activityGraph the UML ActivityGraph element 
+     * that contains the Partition 
      */
-    public void appendToPool() {
+    public void appendToPool(Object activityGraph) {
 	List partitions = getPartitions(getLayer());
-        // TODO: There is a cyclic dependency between FigPartition and
-        // UMLActivityDiagram which needs to be removed. - tfm
-        UMLActivityDiagram diagram = 
-            (UMLActivityDiagram) getProject().getActiveDiagram();
-        Object machine = diagram.getStateMachine();
         Model.getCoreHelper().setModelElementContainer(
-                getOwner(), machine);
+                getOwner(), activityGraph);
 	
 	if (partitions.size() == 1) {
 	    FigPool fp = new FigPool(getBounds());
@@ -412,6 +410,8 @@ public class FigPartition extends FigNodeModelElement {
         
         /**
          * Construct a new SelectionPartition for the given partition
+         *
+         * @param f the Fig
          */
         public SelectionPartition(FigPartition f) {
             super(f);
