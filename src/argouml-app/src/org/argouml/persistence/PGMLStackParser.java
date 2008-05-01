@@ -42,8 +42,6 @@ import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.diagram.StereotypeContainer;
 import org.argouml.uml.diagram.VisibilityContainer;
 import org.argouml.uml.diagram.activity.ui.FigPool;
-import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
-import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigEdgePort;
 import org.tigris.gef.base.Diagram;
@@ -58,6 +56,8 @@ import org.tigris.gef.presentation.FigNode;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+// TODO: Move to Diagram subsystem?
 
 /**
  * The PGML Parser. <p>
@@ -107,10 +107,9 @@ class PGMLStackParser
                 "org.argouml.gefext.ArgoFigRect");
         addTranslation("org.tigris.gef.presentation.FigRRect",
                 "org.argouml.gefext.ArgoFigRRect");
-        // Convert class reference to a string name when the class is removed
         addTranslation(
-                FigMNodeInstance.class.getName(),
-                FigNodeInstance.class.getName());
+                "org.argouml.uml.diagram.deployment.ui.FigMNodeInstance",
+                "org.argouml.uml.diagram.deployment.ui.FigNodeInstance");
     }
 
     /*
@@ -473,6 +472,9 @@ class PGMLStackParser
 	
 	Fig f = null;
 	
+	// TODO: This low level parser shouldn't have a dependency on a specific
+	// activity diagram fig.  Whatever is special about FigPool needs to
+	// be represented by a core interface that we can look for. - tfm
         if (className.equals(FigPool.class.getName())) {
             f = new FigPool(bounds);
         } else {
