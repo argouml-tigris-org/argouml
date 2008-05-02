@@ -498,6 +498,10 @@ public abstract class FigNodeModelElement
 
         /* Check if multiple items are selected: */
         if (TargetManager.getInstance().getTargets().size() == 1) {
+            
+            // TODO: Having Critics actions here introduces an unnecessary
+            // dependency on the Critics subsystem.  Have it register its
+            // desired actions using an extension mechanism - tfm
             ToDoList tdList = Designer.theDesigner().getToDoList();
             List<ToDoItem> items = tdList.elementListForOffender(getOwner());
             if (items != null && items.size() > 0) {
@@ -537,6 +541,9 @@ public abstract class FigNodeModelElement
             ArgoJMenu stereotypesView =
                 new ArgoJMenu("menu.popup.stereotype-view");
             
+            // TODO: There are cyclic dependencies between ActionStereotypeView*
+            // and FigNodeModelElement.  Register these actions opaquely since
+            // we don't what they are. - tfm
             stereotypesView.addRadioItem(new ActionStereotypeViewTextual(this));
             stereotypesView.addRadioItem(new ActionStereotypeViewBigIcon(this));
             stereotypesView.addRadioItem(new ActionStereotypeViewSmallIcon(this));
@@ -760,6 +767,7 @@ public abstract class FigNodeModelElement
      * @see org.argouml.uml.cognitive.critics.ClAttributeCompartment
      */
     public void paintClarifiers(Graphics g) {
+        // TODO: Generalize extension and remove critic specific stuff
         int iconX = getX();
         int iconY = getY() - 10;
         ToDoList tdList = Designer.theDesigner().getToDoList();
@@ -794,7 +802,8 @@ public abstract class FigNodeModelElement
      * @param y the y of the hit
      * @return the todo item of which the clarifier has been hit
      */
-    public ToDoItem hitClarifier(int x, int y) {
+    protected ToDoItem hitClarifier(int x, int y) {
+        // TODO: ToDoItem stuff should be made an opaque extension
         int iconX = getX();
         ToDoList tdList = Designer.theDesigner().getToDoList();
         List<ToDoItem> items = tdList.elementListForOffender(getOwner());
@@ -849,6 +858,7 @@ public abstract class FigNodeModelElement
      */
     @Override
     public String getTipString(MouseEvent me) {
+        // TODO: Generalize extension and remove critic specific code
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
         if (item != null
