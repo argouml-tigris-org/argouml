@@ -321,9 +321,9 @@ Can't we use a single target with dependencies? tfm -->
 
     <ant dir="argouml-app" inheritAll="false"               target="tests"/>
 
-    <ant dir="argouml-build" target="tests-reports"/>
+    <antcall target="tests-reports"/>
   </target>  
-
+  
   <target name="tests-reports" depends="init">
     <delete dir="${tests.reports}"/>
     <mkdir dir="${tests.reports}"/>
