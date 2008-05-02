@@ -148,7 +148,9 @@ public class ActionDeleteModelElements extends UndoableAction {
                     }
                     // TODO: This introduces a dependency between the core
                     // and a specific diagram subsystem which causes a cyclic
-                    // dependency - see issue 5051           
+                    // dependency - see issue 5051
+                    // and besides, this will fail if the concurrent region
+                    // is not the first target selected.
                     if (Model.getFacade().isAConcurrentRegion(target)) {
                         new ActionDeleteConcurrentRegion()
                             .actionPerformed(ae);

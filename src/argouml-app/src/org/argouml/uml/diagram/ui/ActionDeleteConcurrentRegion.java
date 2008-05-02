@@ -47,6 +47,9 @@ import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Delete a concurrent region of a concurrent composite state
+ * TODO: Pretty much everything done in this action does not belong here.
+ * It either belongs in the model subsystem or the Figs should be listening
+ * for change to the model and acting accordingly.
  *
  * @author pepargouml@yahoo.es
  */
@@ -84,63 +87,74 @@ public class ActionDeleteConcurrentRegion extends UndoableAction {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
+        final Fig f = TargetManager.getInstance().getFigTarget();
+        if (!Model.getFacade().isAConcurrentRegion(f.getOwner())) {
+            // This will never be true if called from the proppanel
+            // If called from ActionDeleteModelElement then this
+            // is very dodgy as this class assumes only when target
+            // selected and ActionDeleteModelElement assumes multiple.
+            return;
+        }
+        
         super.actionPerformed(ae);
 
         /*
          * Actions to delete a region. We assume the only figs enclosed in a
          * concurrent composite state are concurrent region figs.
          */
-        Fig f = TargetManager.getInstance().getFigTarget();
 
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        if (Model.getFacade().isAConcurrentRegion(f.getOwner())) {
-            Fig encloser = f.getEnclosingFig();
+        Fig encloser = f.getEnclosingFig();
 
-            List<Fig> nodesInside = ((List<Fig>) encloser.getEnclosedFigs().clone());
-            int index = nodesInside.indexOf(f);
-            Rectangle r = f.getBounds();
-            Rectangle encBound = encloser.getBounds();
-            if (Model.getFacade().isAConcurrentRegion(f.getOwner())) {
-        	p.moveToTrash(f.getOwner());
+        List<Fig> nodesInside =
+            ((List<Fig>) encloser.getEnclosedFigs().clone());
+        int index = nodesInside.indexOf(f);
+        Rectangle r = f.getBounds();
+        Rectangle encBound = encloser.getBounds();
+        
+        p.moveToTrash(f.getOwner());
+
+        int height = 0;
+
+        // Adjust the position of the remaining nodes
+        // FigCompositeState should be listening for delete events
+        // of its children and act accordingly.
+        if (index < nodesInside.size() - 1) {
+            Rectangle rFig = nodesInside.get(index + 1).getBounds();
+            height = rFig.y - r.y;
+            for (int i = ++index; i < nodesInside.size();  i++) {
+                ((FigNodeModelElement) nodesInside.get(i)).displace(0, -height);
             }
+        } else {
+            height = r.height + 4;
+        }
 
-            int height = 0;
+        ((FigCompositeState) encloser).setBounds(encBound.height - height);
+        ((FigConcurrentRegion) (encloser.getEnclosedFigs())
+    	    .elementAt(0)).setLineColor(Color.white);
 
-            // Adjust the position of the remaining nodes
-            if (index < nodesInside.size() - 1) {
-        	Rectangle rFig = nodesInside.get(index + 1).getBounds();
-        	height = rFig.y - r.y;
-        	for (int i = ++index; i < nodesInside.size();  i++) {
-        	    ((FigNodeModelElement) nodesInside.get(i))
-        	    .displace(0, -height);
-        	}
-            } else {
-        	height = r.height + 4;
+        // When only one concurrent region remains it must be erased and
+        // the composite state set to non-concurrent
+
+        // TODO: The model subsystem should detect that there is only
+        // one concurrent region remaining and so delete it.
+        // As mentioned above, FigCompositeState should be listening
+        // for delete events of its children and act accordingly.
+        if ((encloser.getEnclosedFigs()).size() == 1) {
+            final Fig firstEnclosed =
+                ((Fig) encloser.getEnclosedFigs().elementAt(0));
+            nodesInside = firstEnclosed.getEnclosedFigs();
+            Model.getStateMachinesHelper().setConcurrent(
+            	encloser.getOwner(), false);
+            if (!nodesInside.isEmpty()) {
+                for (int i = 0; i < nodesInside.size(); i++) {
+                    FigStateVertex curFig =
+                        (FigStateVertex) nodesInside.get(i);
+                    curFig.setEnclosingFig(encloser);
+                }
             }
-
-            ((FigCompositeState) encloser).setBounds(encBound.height - height);
-            ((FigConcurrentRegion) (encloser.getEnclosedFigs())
-        	    .elementAt(0)).setLineColor(Color.white);
-
-            // When only one concurrent region remains it must be erased and
-            // the composite state set to non-concurrent
-
-            if ((encloser.getEnclosedFigs()).size() == 1) {
-        	f = ((Fig) encloser.getEnclosedFigs().elementAt(0));
-        	nodesInside = f.getEnclosedFigs();
-        	Model.getStateMachinesHelper().setConcurrent(
-        		encloser.getOwner(), false);
-        	if (!nodesInside.isEmpty()) {
-        	    for (int i = 0; i < nodesInside.size(); i++) {
-        		FigStateVertex curFig =
-        		    (FigStateVertex) nodesInside.get(i);
-        		curFig.setEnclosingFig(encloser);
-        	    }
-        	}
-        	p.moveToTrash(f.getOwner());
-
-            }
+            p.moveToTrash(firstEnclosed.getOwner());
         }
     }
 }
