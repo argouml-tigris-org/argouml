@@ -112,7 +112,7 @@ abstract class MemberFilePersister {
      *     XML file (ie part of .uml)
      * @throws SaveException if the save fails
      * @deprecated for 0.25.4 by tfmorris. Use 
-     * {@link #save(ProjectMember, OutputStream, boolean)}.
+     * {@link #save(ProjectMember, OutputStream)}.
      */
     @Deprecated
     public abstract void save(

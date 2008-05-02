@@ -225,6 +225,9 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
     /*
      * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.Writer, boolean)
      */
+    @Override
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public void save(ProjectMember member, Writer writer, boolean xmlFragment)
         throws SaveException {
         PrintWriter w = new PrintWriter(writer);

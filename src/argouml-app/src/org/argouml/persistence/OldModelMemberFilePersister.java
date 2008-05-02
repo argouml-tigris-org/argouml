@@ -43,12 +43,11 @@ class OldModelMemberFilePersister extends ModelMemberFilePersister
     /**
      * Save the project model to XMI.
      *
-     * @see org.argouml.persistence.MemberFilePersister#save(
-     *         org.argouml.kernel.ProjectMember, java.io.Writer,
-     *         boolean)
+     * {@inheritDoc}
      */
     @Deprecated
     @Override
+    @SuppressWarnings("deprecation")    
     public void save(ProjectMember member, Writer w, boolean xmlFragment)
     	throws SaveException {
 

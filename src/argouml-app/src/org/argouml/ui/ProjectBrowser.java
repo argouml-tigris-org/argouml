@@ -362,21 +362,21 @@ public final class ProjectBrowser
             final List<Image> argoImages = new ArrayList<Image>(2);
             argoImages.add(argoImage16x16.getImage());
             argoImages.add(argoImage32x32.getImage());
-        try {
+            try {
                 // java.awt.Window.setIconImages is new in Java 6.
-            // check for it using reflection on current instance
+                // check for it using reflection on current instance
                 final Method m = 
                     getClass().getMethod("setIconImages", List.class);
-            m.invoke(this, argoImages);
-        } catch (InvocationTargetException e) {
+                m.invoke(this, argoImages);
+            } catch (InvocationTargetException e) {
                 LOG.error("Exception", e);
             } catch (NoSuchMethodException e) {
                 LOG.error("Exception", e);
-        } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException e) {
                 LOG.error("Exception", e);
-        } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException e) {
                 LOG.error("Exception", e);
-        }
+            }
         }
     }
 

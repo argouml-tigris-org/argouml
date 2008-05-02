@@ -63,7 +63,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectMember;
@@ -214,6 +213,7 @@ public class UmlFilePersister extends AbstractFilePersister {
      * 
      * {@inheritDoc}
      */
+    @Override
     public boolean isSaveEnabled() {
         return true;
     }

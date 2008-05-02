@@ -97,8 +97,10 @@ class TodoListMemberFilePersister extends MemberFilePersister {
 
 
     @Deprecated
+    @SuppressWarnings("deprecation")
+    @Override
     public void save(ProjectMember member, Writer writer, boolean xmlFragment)
-    	throws SaveException {
+        throws SaveException {
 
         LOG.info("Saving todo list");
 
@@ -157,8 +159,8 @@ class TodoListMemberFilePersister extends MemberFilePersister {
         PrintWriter pw = new PrintWriter(outStream);
         try {
             Designer.disableCritiquing();
-            // WARNING: The GEF implementation of the OutputStream version of this
-            // method doesn't work - tfm - 20070531
+            // WARNING: The GEF implementation of the OutputStream version of 
+            // this method doesn't work - tfm - 20070531
             expander.expand(pw, member);
         } catch (ExpansionException e) {
             throw new SaveException(e);

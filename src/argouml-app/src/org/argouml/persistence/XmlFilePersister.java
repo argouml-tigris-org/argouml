@@ -35,6 +35,7 @@ class XmlFilePersister extends XmiFilePersister {
     /*
      * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
+    @Override
     public String getExtension() {
         return "xml";
     }
@@ -44,6 +45,7 @@ class XmlFilePersister extends XmiFilePersister {
      * 
      * @see org.argouml.persistence.AbstractFilePersister#hasAnIcon()
      */
+    @Override
     public boolean hasAnIcon() {
         return false;
     }

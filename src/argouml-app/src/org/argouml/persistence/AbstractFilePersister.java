@@ -60,13 +60,15 @@ public abstract class AbstractFilePersister extends FileFilter
     /**
      * Map of persisters by target class
      */
-    private static Map<Class, Class<? extends MemberFilePersister>> persistersByClass = 
+    private static Map<Class, Class<? extends MemberFilePersister>> 
+    persistersByClass = 
         new HashMap<Class, Class<? extends MemberFilePersister>>();
 
     /**
      * Map of persisters by tag / file extension
      */
-    private static Map<String, Class<? extends MemberFilePersister>> persistersByTag = 
+    private static Map<String, Class<? extends MemberFilePersister>> 
+    persistersByTag = 
         new HashMap<String, Class<? extends MemberFilePersister>>();
 
     static {

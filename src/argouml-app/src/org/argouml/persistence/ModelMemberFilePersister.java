@@ -119,7 +119,7 @@ class ModelMemberFilePersister extends MemberFilePersister
             readModels(source);
             mmodel = getCurModel();
         } catch (OpenException e) {
-             LOG.error("UmlException caught", e);
+            LOG.error("UmlException caught", e);
             throw e;
         }
         // This should probably be inside xmiReader.parse
@@ -150,12 +150,11 @@ class ModelMemberFilePersister extends MemberFilePersister
     /**
      * Save the project model to XMI.
      *
-     * @see org.argouml.persistence.MemberFilePersister#save(
-     *         org.argouml.kernel.ProjectMember, java.io.Writer,
-     *         java.lang.Integer)
+     * {@inheritDoc}
      */
     @Deprecated
     @Override
+    @SuppressWarnings("deprecation")
     public void save(ProjectMember member, Writer w, boolean xmlFragment)
     	throws SaveException {
 
