@@ -90,7 +90,8 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
      * @param feme the given Fig
      */
     public SelectionRerouteEdge(FigEdgeModelElement feme) {
-
+        // TODO: There is a cyclic dependency between SelectionRerouteEdge
+        // and FigEdgeModelElement
         super(feme);
 
         // set it to an invalid number by default
@@ -220,6 +221,8 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
 
         editor.getSelectionManager().deselect(getContent());
         armed = false;
+        // TODO: There is a cyclic dependency between SelectionRerouteEdge
+        // and FigEdgeModelElement
         FigEdgeModelElement figEdge = (FigEdgeModelElement) getContent();
         figEdge.determineFigNodes();
         figEdge.computeRoute();
