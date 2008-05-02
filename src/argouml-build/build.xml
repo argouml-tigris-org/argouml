@@ -763,11 +763,9 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- TODO: This target is not yet tested with the new structure. 
   depends="compile"
   -->
-  <target name="classycle" depends="init"
+  <target name="classycle" depends="init,package"
         description="Analyze sources for cyclic dependencies using Classcycle">
-    <echo>
-  Running classcyle on ${source.dir}.
-  </echo>
+    <echo message="Running classcyle on ${argo.build.dir}." />
     <property name="classycle.output" value="${argo.build.dir}/classycle"/>
     <property name="classycle.dir" value="${argo.tools.dir}/Classycle"/>
     <mkdir dir="${classycle.output}"/>
@@ -778,7 +776,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <arg value="-excludingClasses=java.*,javax.*"/>
       <arg value="-xmlFile=${classycle.output}/argouml-classcycles.xml"/>
       <arg value="-title=ArgoUML-${argo.build.version}"/>
-      <arg value="${argo.build.classes}"/>
+      <arg value="${argo.build.dir}/argouml.jar"/>
     </java>
     <copy todir="${classycle.output}">
       <fileset dir="${classycle.dir}">
