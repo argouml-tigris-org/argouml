@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
@@ -42,7 +41,6 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ocl.OCLUtil;
-import org.argouml.uml.reveng.DiagramInterface;
 import org.argouml.uml.reveng.ImportCommon;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
@@ -74,11 +72,6 @@ public class Modeller {
      */
     private Object model;
 
-    // TODO: This can be removed when we are sure there are no external users
-    // of the functionality.  Diagram creation has moved to ImportCommon where
-    // a single implementation is shared by all importers. - tfm 20061209
-    private DiagramInterface diagram;
-
     /**
      * Current import settings.
      */
@@ -88,14 +81,6 @@ public class Modeller {
      * The package which the currentClassifier belongs to.
      */
     private Object currentPackage;
-
-    /**
-     * Last package name used in addPackage().
-     * It is null for classes which are not packaged.
-     * Used in popClassifier() to create diagram for that
-     * package.
-     */
-    private String currentPackageName;
 
     /**
      * Keeps the data that varies during parsing.
@@ -254,23 +239,14 @@ public class Modeller {
      * @param name The name of the package.
      */
     public void addPackage(String name) {
-	// Add a package figure for this package to the owner's class
-	// diagram, if it's not in the diagram yet. I do this for all
-	// the class diagrams up to the top level, since I need
-	// diagrams for all the packages.
+        // We used to add diagrams to the project here for each package
+        // but diagram creation is handled in the common code for all
+        // reverse engineering modules now
+        
+	// Find the top level package
 	String ownerPackageName, currentName = name;
         ownerPackageName = getPackageName(currentName);
 	while (!"".equals(ownerPackageName)) {
-	    if (diagram != null
-	            && importSession != null
-	            && importSession.isCreateDiagramsSelected()
-	            && diagram.isDiagramInProject(ownerPackageName)) {
-
-	        diagram.selectClassDiagram(getPackage(ownerPackageName),
-	                ownerPackageName);
-	        diagram.addPackage(getPackage(currentName));
-
-	    }
 	    currentName = ownerPackageName;
             ownerPackageName = getPackageName(currentName);
 	}
@@ -288,14 +264,10 @@ public class Modeller {
 
 	// Find or create a Package model element for this package.
 	mPackage = getPackage(name);
-        currentPackageName = name;
 
 	// Set the current package for the following source code.
 	currentPackage = mPackage;
 	parseState.addPackageContext(mPackage);
-
-        // Delay diagram creation until any classifier (class or
-        // interface) will be found
 
         //set the namespace of the component
         // check to see if there is already a component defined:
@@ -949,31 +921,6 @@ public class Modeller {
        Called from the parser when a classifier is completely parsed.
     */
     public void popClassifier() {
-        // now create diagram if it doesn't exists in project
-	if (diagram != null 
-                && importSession != null 
-                && importSession.isCreateDiagramsSelected()) {
-
-	    if (currentPackageName != null) {
-	        diagram.selectClassDiagram(currentPackage,
-	                currentPackageName);
-	    }
-	    // The class is in a source file
-	    // with no package declaration
-	    else {
-	        // create new diagram in root for classifier without package
-	        diagram.createRootClassDiagram();
-	    }
-	    // add the current classifier to the diagram.
-	    Object classifier = parseState.getClassifier();
-	    if (Model.getFacade().isAInterface(classifier)) {
-	        diagram.addInterface(classifier,
-	                importSession.isMinimizeFigsSelected());
-	    } else if (Model.getFacade().isAClass(classifier)) {
-	        diagram.addClass(classifier,
-	                importSession.isMinimizeFigsSelected());
-	    }
-	}
 
         // Remove operations and attributes not in source
         parseState.removeObsoleteFeatures();
