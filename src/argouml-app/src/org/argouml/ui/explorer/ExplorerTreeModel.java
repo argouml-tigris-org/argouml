@@ -443,7 +443,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
             // require doing the updates in a different thread than the
             // event delivery thread to prevent deadlocks, so for right now
             // we protect ourselves with try/catch blocks.
-            Collection children = null;
+            Collection children = Collections.emptySet();
             try {
                 children = rule.getChildren(modelElement);
             } catch (InvalidElementException e) {
