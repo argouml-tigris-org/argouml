@@ -267,16 +267,17 @@ public interface Project {
     public Vector getUserDefinedModels();
     
     /**
-     * Returns all models defined by the user. I.e. this does not return the
-     * default model but all other models.
+     * Returns all models defined by the user. I.e. this does not return any
+     * profile packages but all other top level Packages (usually Models).
      *
      * @return A List of all user defined models.
      */
     public List getUserDefinedModelList();
 
     /**
-     * Returns all models, including the default model (default.xmi).
-     *
+     * Returns all top level Packages (e.g. Models), including the profile
+     * packages.
+     * 
      * @return A Collection containing all models.
      */
     public Collection getModels();
@@ -480,44 +481,50 @@ public interface Project {
     public boolean isInTrash(Object obj);
 
     /**
+     * This method is unsupported and will thrown an UnsupportedOperationException.
+     * The profile subsystem has change completely for ArgoUML 0.26 and 
+     * code which called this method must be revised to use the new Profile
+     * subsystem.  See {@link ProfileConfiguration} and {@link Profile}.
+     * Set the given model as the current profile.
      * @param theDefaultModel a uml model
-     * @deprecated for 0.25.4 by tfmorris. Use 
-     *          {@link #setProfiles(Collection)}.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link ProfileConfiguration}.
      */
     @Deprecated
     public void setDefaultModel(final Object theDefaultModel);
 
-    /**
-     * @param packages
-     *                a Collection of packages containing profiles.
-     * @deprecated by maurelio1234 for 0.25.4. Use
-     *             {@link #getProfileConfiguration()} instead.
-     */
-    @Deprecated
-    public void setProfiles(final Collection packages);
 
     /**
-     * Get the default model.
-     *
-     * @return A model.
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getProfiles()}.
+     * Get the profile (also known as default model).
+     * <p>
+     * <em>NOTE:</em>The profile or default model handling has changed
+     * <em>significantly</em> since 0.24. In addition to now supporting
+     * multiple profiles, hierarchical profiles and a number of other features,
+     * profile elements are now referenced directly rather than being copied
+     * into the user model as they were in 0.24 and earlier versions.
+     * 
+     * @return the first profile package in the search order (typically the
+     *         standard UML model without any of the Java additions which were
+     *         present in ArgoUML 0.24 and earlier.  Equivalent to 
+     *         getProfile().getProfilePackages().get(0) where getProfile is
+     *         equivalent to getProfileConfiguration().getProfiles().get(0)
+     * 
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #getProfileConfiguration()} followed by methods from
+     *             {@link ProfileConfiguration} such as
+     *             {@link ProfileConfiguration#getProfiles()}.
      */
     @Deprecated
     public Object getDefaultModel();
 
-    /**
-     * Get the collection of profile packages.
-     * 
-     * @return collection of Packages containing profiles.
-     * @deprecated by maurelio1234 for 0.25.4. Use
-     *             {@link #getProfileConfiguration()} instead.
-     */
-    @Deprecated
-    public Object getProfiles();
 
     /**
      * Find a type by name in the default model.
-     *
+     * <p>
+     * <em>NOTE:</em>The behavior of this method changed after version 0.24.
+     * Earlier versions copied the type from the profile or default model into
+     * the user model.  The type is now returned directly and HREFs are used
+     * to link to it when the model is written out.
+     * 
      * @param name the name.
      * @return the type.
      */
@@ -650,9 +657,16 @@ public interface Project {
     public void setPersistenceVersion(int pv);
 
     /**
-     * @return Returns the profile.
-     * @deprecated for 0.25.4 by maurelio1234. Use {@link #getProfiles()}
-     *             instead.
+     * Get the default profile. For backward compatibility only.  Typically it
+     * will return the UML standard profile which is a subset of the combined
+     * UML 1.4 plus Java plus ArgoUML profile which was the default with
+     * ArgoUML 0.24 and earlier.
+     * 
+     * @return Returns the first profile in the search order. Equivalent to
+     *         getProfileConfiguration().getProfiles().get(0).
+     * @deprecated for 0.25.4 by maurelio1234. Use
+     *             {@link #getProfileConfiguration()} and
+     *             {@link ProfileConfiguration#getProfiles()} instead.
      */
     @Deprecated
     public Profile getProfile();
