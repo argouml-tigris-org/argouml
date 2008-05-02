@@ -26,8 +26,6 @@ package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.beans.VetoableChangeSupport;
 import java.io.File;
 import java.net.URI;
@@ -51,6 +49,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
@@ -691,11 +690,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         // send indeterminate new value instead of making copy of vector
 	d.setProject(this);
         diagrams.add(d);
-        
-        // TODO: Remove this next line after GEF 0.12.4M4 
-        // is replaced by a newer one - it fixes a GEF bug 
-        // when removing a diagram:
-        d.addVetoableChangeListener(new Vcl());
 
         d.addPropertyChangeListener("name", new NamePCL());
         setSaveEnabled(true);
@@ -725,7 +719,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * @param d the ArgoDiagram
      */
     protected void removeDiagram(ArgoDiagram d) {
-        d.removeVetoableChangeListener(new Vcl());
         diagrams.remove(d);
         /* Remove the dependent
          * modelelements, such as the statemachine
@@ -736,19 +729,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
             moveToTrash(o);
         }
     }
-
-    /**
-     * TODO: Remove this class after GEF 0.12.4M4 is replaced by a newer one
-     *
-     * @author Michiel
-     */
-    private class Vcl implements VetoableChangeListener {
-        public void vetoableChange(PropertyChangeEvent evt)
-            throws PropertyVetoException {
-            //
-        }
-    }
-
 
     public int getPresentationCountFor(Object me) {
 
@@ -915,74 +895,46 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     @SuppressWarnings("deprecation")
     public void setDefaultModel(final Object theDefaultModel) {
-        // TODO: Marcus Aurelio deprecated this, but also changed the
-        // implementation to just throw an exception.  If it's no longer
-        // functional, we probably need to just remove it altogether.
-        throw new UnsupportedOperationException();
-//        if (!Model.getFacade().isAModel(theDefaultModel)) {
-//            throw new IllegalArgumentException(
-//                    "The default model must be a Model type. Received a "
-//                    + theDefaultModel.getClass().getName());
-//        }
-//
-//        profilePackages.clear();
-//        profilePackages.add(theDefaultModel);
-//        defaultModelTypeCache = new HashMap<String, Object>();
-    }
-
-    @Deprecated
-    public void setProfiles(final Collection packages) {
-        // TODO: Marcus Aurelio deprecated this, but also changed the
-        // implementation to just throw an exception.  If it's no longer
-        // functional, we probably need to just remove it altogether.
-        throw new UnsupportedOperationException();
-//        for (Object pkg : packages) {
-//            if (!Model.getFacade().isAPackage(pkg)) {
-//                throw new IllegalArgumentException(
-//                        "Profiles must be of type Package. Received a "
-//                                + pkg.getClass().getName());
-//            }
-//        }
-//
-//        profilePackages.clear();
-//        profilePackages.addAll(packages);
-//        defaultModelTypeCache = new HashMap<String, Object>();
+        // We could attempt to create a profile with the model and add it
+        // to the configuration, but the chances of it working anything like
+        // the user expects are almost nil, so we'll just punt.
+        throw new UnsupportedOperationException(
+                "Old style profiles not supported."
+                        + "Please see the documentation for "
+                        + "ProfileConfiguration");
     }
 
 
     @SuppressWarnings("deprecation")
     public Object getDefaultModel() {
-        // TODO: Marcus Aurelio deprecated this, but also changed the
-        // implementation to just throw an exception.  If it's no longer
-        // functional, we probably need to just remove it altogether.
-        throw new UnsupportedOperationException();
+
+        // Do our best to return something which looks vaguely like old code
+        // might have expected.  Hopefully no one is using this...
+        
+        Collection profilePackages;
+        try {
+            profilePackages = getProfile().getProfilePackages();
+        } catch (ProfileException e) {
+            LOG.error("Failed to get profile", e);
+            return null;
+        }
+        
         // First priority is Model for best backward compatibility
-//        for (Object pkg : profilePackages) {
-//            if (Model.getFacade().isAModel(pkg)) {
-//                return pkg;
-//                            }
-//        }
-//        // then a Package
-//        for (Object pkg : profilePackages) {
-//            if (Model.getFacade().isAPackage(pkg)) {
-//                return pkg;
-//            }
-//        }
-//        // if all else fails, just the first element
-//        return profilePackages.iterator().next();
+        for (Object pkg : profilePackages) {
+            if (Model.getFacade().isAModel(pkg)) {
+                return pkg;
+            }
+        }
+        // then a Package
+        for (Object pkg : profilePackages) {
+            if (Model.getFacade().isAPackage(pkg)) {
+                return pkg;
+            }
+        }
+        // if all else fails, just the first element
+        return profilePackages.iterator().next();
     }
-
     
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public Collection getProfiles() {
-        throw new UnsupportedOperationException();
-        // TODO: Marcus Aurelio deprecated this, but also changed the
-        // implementation to just throw an exception.  If it's no longer
-        // functional, we probably need to just remove it altogether.
-//        return profilePackages;
-    }
-
     public Object findTypeInDefaultModel(String name) {
         if (defaultModelTypeCache.containsKey(name)) {
             return defaultModelTypeCache.get(name);
@@ -996,12 +948,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     @SuppressWarnings("deprecation")
+    @Deprecated
     public final Object getRoot() {
         return root;
     }
 
 
     @SuppressWarnings("deprecation")
+    @Deprecated
     public void setRoot(final Object theRoot) {
 
         if (theRoot == null) {
@@ -1027,7 +981,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         roots.add(theRoot);
     }
 
-    
+
     public final Collection getRoots() {
         return Collections.unmodifiableCollection(roots);
     }
@@ -1065,6 +1019,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     @SuppressWarnings("deprecation")
+    @Deprecated
     public Vector<String> getSearchpath() {
         return new Vector(searchpath);
     }
@@ -1076,6 +1031,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     @SuppressWarnings("deprecation")
+    @Deprecated
     public void setSearchpath(final Vector<String> theSearchpath) {
         searchpath.clear();
         searchpath.addAll(theSearchpath);
@@ -1100,6 +1056,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public ArgoDiagram getActiveDiagram() {
         return activeDiagram;
     }
+
 
 
     public void setActiveDiagram(final ArgoDiagram theDiagram) {
@@ -1168,11 +1125,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     @SuppressWarnings("deprecation")
     @Deprecated
     public Profile getProfile() {
-        throw new UnsupportedOperationException();
-        // TODO: Marcus Aurelio deprecated this, but also changed the
-        // implementation to just throw an exception.  If it's no longer
-        // functional, we probably need to just remove it altogether.
-//        return profile;
+        return getProfileConfiguration().getProfiles().get(0);
     }
 
 
