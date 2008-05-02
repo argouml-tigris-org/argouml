@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.tigris.gef.graph.GraphModel;
@@ -322,21 +323,18 @@ public class FigCompositeState extends FigState {
     ////////////////////////////////////////////////////////////////
     // event processing
 
-    /*
-     * Update the text labels.
-     *
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-
-        if (mee.getPropertyName().equals("isConcurrent")) {
+    @Override 
+    protected void updateLayout(UmlChangeEvent event) {
+        if (event.getPropertyName().equals("isConcurrent")) {
             // TODO: this should split the composite state into two
-            // regions. This must be implemented
+            // regions. This must be implemented. 
+            // Bob says - But it appears to me that there is no way to change
+            // isConcurrent of an existing CompositeState so do we
+            // really need to do this and do we need to redraw everything?
             renderingChanged();
         }
-
     }
+
 
     /*
      * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
