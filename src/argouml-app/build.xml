@@ -199,7 +199,7 @@ Building this requires:
 
     <copy todir="${build.classes}/org/argouml/profile/profiles">
       <fileset dir="src/org/argouml/profile/profiles"
-          includes="*.xmi,README.txt"/>
+          includes="**/*.xmi,**/README.txt"/>
     </copy>
 
     <!-- The class that uses argo.ini was deprecated for 0.25.4.  It can be 
