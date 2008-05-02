@@ -560,7 +560,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
             addFiguresToDiagrams(newElements);
         }
 
-        // TODO: Skip layout if problems during import?
+        // Do layout even if problems occurred during import
         if (isDiagramLayoutSelected()) {
             // TODO: Monitor is getting dismissed before layout is complete
             monitor.updateMainTask(
