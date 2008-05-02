@@ -41,11 +41,6 @@ import org.argouml.model.Model;
  */
 public abstract class Profile {
     
-    /**
-     * Base directory/resource path to use for searching for profiles
-     */
-    public static final String PROFILE_DIR = "/org/argouml/profile/profiles/";
-    
     private Set<Profile> importedProfiles  = new HashSet<Profile>();
     private Set<Profile> importingProfiles = new HashSet<Profile>();
         

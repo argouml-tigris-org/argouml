@@ -1,13 +1,25 @@
 <?xml version = '1.0' encoding = 'UTF-8' ?>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Aug 13 17:12:31 BRT 2007'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Fri May 02 13:16:12 EDT 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>PRE-0.25.4(5) revised on $Date: 2007-05-12 03:08:08 -0300 $ </XMI.exporterVersion>
+      <XMI.exporterVersion>PRE-0.25.5(5) revised on $Date: 2007-05-12 02:08:08 -0400 (Sat, 12 May 2007) $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
     <UML:Model xmi.id = '.:000000000000087A' name = 'UML Profile for Java' isSpecification = 'false'
       isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
+      <UML:ModelElement.stereotype>
+        <UML:Stereotype xmi.idref = '-64--88-1-3--3c483fe3:119aa9cff00:-8000:00000000000007A3'/>
+      </UML:ModelElement.stereotype>
+      <UML:ModelElement.taggedValue>
+        <UML:TaggedValue xmi.id = '-64--88-1-3--3c483fe3:119aa9cff00:-8000:00000000000007A4'
+          isSpecification = 'false'>
+          <UML:TaggedValue.dataValue>This profile contains common Java classes and datatypes which are not contained in the UML Standard Elements profile.  It only includes the basics, but may be easily extended to include anything else which is useful.</UML:TaggedValue.dataValue>
+          <UML:TaggedValue.type>
+            <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/default-uml14.xmi#.:000000000000087C'/>
+          </UML:TaggedValue.type>
+        </UML:TaggedValue>
+      </UML:ModelElement.taggedValue>
       <UML:Namespace.ownedElement>
         <UML:Package xmi.id = '.:0000000000000869' name = 'java' isSpecification = 'false'
           isRoot = 'false' isLeaf = 'false' isAbstract = 'false'>
@@ -94,6 +106,11 @@
           isRoot = 'false' isLeaf = 'false' isAbstract = 'false'/>
         <UML:DataType xmi.id = '.:0000000000000873' name = 'boolean' isSpecification = 'false'
           isRoot = 'false' isLeaf = 'false' isAbstract = 'false'/>
+        <UML:Stereotype xmi.id = '-64--88-1-3--3c483fe3:119aa9cff00:-8000:00000000000007A3'
+          name = 'profile' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'>
+          <UML:Stereotype.baseClass>Model</UML:Stereotype.baseClass>
+        </UML:Stereotype>
       </UML:Namespace.ownedElement>
     </UML:Model>
   </XMI.content>

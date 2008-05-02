@@ -8,6 +8,10 @@ PROFILES
        deprecated.
 - default-uml14-uml20-subset.xmi - subset of standard model elements
        from UML 1.4 spec which are also in UML 2.0 spec.
+       
+- default-java.xmi - Java profile items which were split out from old ArgoUML
+       default profile which contained both UML and Java items.  Currently
+       only contains very basic types.
 
 - andromda-profile-31.xmi - Modeling profile for standard AndroMDA 3.1 cartridges
 - andromda-profile-32-noextensions.xmi - Modeling profile for standard 
