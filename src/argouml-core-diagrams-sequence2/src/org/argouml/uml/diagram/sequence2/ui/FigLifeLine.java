@@ -256,12 +256,13 @@ class FigLifeLine extends FigGroup {
     
     @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        Rectangle oldBounds = getBounds();
+        final Rectangle oldBounds = getBounds();
         
         rectFig.setBounds(x, y, w, h);
         lineFig.setBounds(x + w / 2, y, 
                 w, h);
     
+        // we don't recalculate activations, just move them
         for (FigActivation act : activations) {
             removeFig(act);
             act.setX(lineFig.getX() - FigActivation.DEFAULT_WIDTH / 2);
