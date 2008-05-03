@@ -244,9 +244,7 @@ public class AboutBox extends ArgoDialog {
         buf.append("+ Linus Tolke\n");
         buf.append("+ Lukasz Gromanowski\n");
         buf.append("+ Marcos Aurelio\n");
-        buf.append("+ Marcus Aurelio\n");
         buf.append("+ Michiel van der Wulp\n");
-        buf.append("+ penyaskito\n");
         buf.append("+ Scott Roberts\n");
         buf.append("+ Sérgio Adriano Fernandes Lopes\n");
         buf.append("+ Thomas Neustupny\n");
@@ -262,18 +260,11 @@ public class AboutBox extends ArgoDialog {
         buf.append("\n");
         
         buf.append("+ Andrea Nironi\n");
-        buf.append("+ Bob Tarling\n");
         buf.append("+ Hans Fredrik Nordhaug\n");
-        buf.append("+ Harald Braun\n");
         buf.append("+ Jan Magne Andersen\n");
-        buf.append("+ Linus Tolke\n");
-        buf.append("+ Luis Sergio Oliveira\n");
         buf.append("+ Markus Klink\n");
-        buf.append("+ Michiel van der Wulp\n");
         buf.append("+ Sergio Agostinho\n");
         buf.append("+ Stewart Munoz\n");
-        buf.append("+ Thomas Neustupny\n");
-        buf.append("+ Tom Morris (tfmorris@gmail.com)\n");
 
         buf.append("\n");
 
