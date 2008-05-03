@@ -40,6 +40,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ProjectActions;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
@@ -479,46 +480,40 @@ public class FigConcurrentRegion extends FigState
     /////////////////////////////////////////////////////////////////////////
     // event handlers - MouseListener and MouseMotionListener implementation
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        final Object trCollection = mee.getNewValue();
-        final String eName = mee.getPropertyName();
-        final Object owner = getOwner();
+    protected void updateLayout(UmlChangeEvent event) {
+        super.updateLayout(event);
+        final String eName = event.getPropertyName();
         /*
          * A Concurrent region cannot have incoming or outgoing transitions so
          * incoming or outgoing transitions are redirected to its concurrent
          * composite state container.
          */
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Object tr = null;
-                // TODO: Is this comparison correct?
-                // Where is the string created?
+        // TODO: This comparison is very suspect, it should use equals
+        // method. The code within the block is in fact never executed.
+        // I hesitate to change this now as it will trigger code has never been
+        // used before and am not aware of any problems that it usage may
+        // introduce.
+        // I do think that we need to be able to find a different way to
+        // implement the intent here which seems to be to correct edge drawings
+        // that should actually not be allowed - Bob
+        if (eName == "incoming" || eName == "outgoing") {
+            final Object owner = getOwner();
+            final Collection transactions = (Collection) event.getNewValue();
+            if (!transactions.isEmpty()) {
+                final Object transition = transactions.iterator().next();
                 if (eName == "incoming") {
-                    if (!((Collection) trCollection).isEmpty()) {
-                        tr = ((Collection) trCollection).iterator().next();
-                    }
-                    if (tr != null
-                            && Model.getFacade().isATransition(tr)) {
-                        Model.getCommonBehaviorHelper().setTarget(tr,
+                    if (Model.getFacade().isATransition(transition)) {
+                        Model.getCommonBehaviorHelper().setTarget(transition,
                                 Model.getFacade().getContainer(owner));
                     }
-                } else if (eName == "outgoing") {
-                    if (!((Collection) trCollection).isEmpty()) {
-                        tr = ((Collection) trCollection).iterator().next();
-                    }
-                    if (tr != null
-                            && Model.getFacade().isATransition(tr))
-                    {
-                        Model.getStateMachinesHelper().setSource(tr,
+                } else {
+                    if (Model.getFacade().isATransition(transition)) {
+                        Model.getStateMachinesHelper().setSource(transition,
                                 Model.getFacade().getContainer(owner));
                     }
                 }
             }
-        });
+        }
     }
 
     /*
