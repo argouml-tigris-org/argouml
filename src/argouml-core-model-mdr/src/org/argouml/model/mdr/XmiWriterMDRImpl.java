@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -84,7 +84,7 @@ class XmiWriterMDRImpl implements XmiWriter {
      * except for the profile model(s), ignoring the model specified by the 
      * caller.
      */
-    private static final boolean WRITE_ALL = false;
+    private static final boolean WRITE_ALL = true;
 
     /*
      * Private constructor for common work needed by both public
