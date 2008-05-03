@@ -84,7 +84,7 @@ class XmiWriterMDRImpl implements XmiWriter {
      * except for the profile model(s), ignoring the model specified by the 
      * caller.
      */
-    private static final boolean WRITE_ALL = true;
+    private static final boolean WRITE_ALL = false;
 
     /*
      * Private constructor for common work needed by both public
@@ -166,12 +166,16 @@ class XmiWriterMDRImpl implements XmiWriter {
                 LOG.info("Saving model '" + ((Model) model).getName() + "'");
             } else {
                 UmlPackage pkg = modelImpl.getUmlPackage();
+                // Make sure user model is first
+                elements.add(model);
                 for (Iterator it = pkg.getCore().getElement().refAllOfType()
                         .iterator(); it.hasNext();) {
                     RefObject obj = (RefObject) it.next();
                     // Find top level objects which aren't part of profile
                     if (obj.refImmediateComposite() == null ) {
-                        elements.add(obj);
+                        if (!elements.contains(obj)) {
+                            elements.add(obj);
+                        }
                     }
                 }
                 LOG.info("Saving " + elements.size() 
