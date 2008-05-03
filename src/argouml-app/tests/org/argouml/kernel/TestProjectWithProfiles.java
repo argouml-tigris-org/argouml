@@ -244,7 +244,10 @@ public class TestProjectWithProfiles extends TestCase {
         // create a dependency between the project's model and the user defined 
         // profile
         Object model = getModelManagementFactory().getRootModel();
-        Object fooClass = getCoreFactory().buildClass("Foo", model);
+        Model.getCoreHelper().setName(model, 
+                "testProjectWithUserDefinedProfilePersistency-model");
+        Object fooClass = getCoreFactory().buildClass(
+                "testProjectWithUserDefinedProfilePersistency-class", model);
         Collection stereotypes = getExtensionMechanismsHelper().getStereotypes(
                 project.getModels());
         Object stStereotype = null;
@@ -255,7 +258,10 @@ public class TestProjectWithProfiles extends TestCase {
                 break;
             }
         }
+        assertNotNull("Didn't find stereotype", stStereotype);
         Model.getCoreHelper().addStereotype(fooClass, stStereotype);
+        assertEquals("Setting stereotype didn't work", 1, 
+                getFacade().getStereotypes(fooClass).size());
         // save the project
         File file = getFileInTestDir(
             "testProjectWithUserDefinedProfilePersistency.zargo");
@@ -267,7 +273,8 @@ public class TestProjectWithProfiles extends TestCase {
         project.postLoad();
         // assert that the model element that depends on the profile is 
         // consistent
-        fooClass = project.findType("Foo", false);
+        fooClass = project.findType(
+                "testProjectWithUserDefinedProfilePersistency-class", false);
         assertNotNull(fooClass);
         Collection fooStereotypes = getFacade().getStereotypes(fooClass);
         assertEquals(1, fooStereotypes.size());
