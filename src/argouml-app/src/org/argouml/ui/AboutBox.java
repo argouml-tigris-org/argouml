@@ -205,10 +205,12 @@ public class AboutBox extends ArgoDialog {
 
         buf.append("+ UML Model, Diagrams, GUI, Persistence: Bob Tarling\n");
 	buf.append("+ MDR Implementation: Tom Morris\n");
-        buf.append("+ Sequence Diagrams: Michael A. MacDonald\n");
+        buf.append("+ Sequence Diagrams: Christian López Espínola\n");
         buf.append("+ C++: Luis Sergio Oliveira\n");
         buf.append("+ Csharp: Jan Magne Andersen\n");
         buf.append("+ PHP 4/5: Kai Schroeder\n");
+        buf.append("+ SQL: Kai Drahmann\n");
+        buf.append("+ Code Generation/Reverse Engineering: Thomas Neustupny\n");
         buf.append("+ Cognitive support: Markus Klink\n");
         buf.append("+ User Manual: Michiel van der Wulp (mvw@tigris.org)\n");
         buf.append("+ Localization French: Jean-Hugues de Raigniac\n");
@@ -226,10 +228,39 @@ public class AboutBox extends ArgoDialog {
         buf.append(Translator.messageFormat(
                 "aboutbox.contrib-developers-for-release",
                 new Object[] {
-                    "0.24",
+                    "0.26",
                 }));
         buf.append("\n");
 
+        buf.append("+ Aleksandar\n");
+        buf.append("+ Alexandre da Silva\n");
+        buf.append("+ Bob Tarling\n");
+        buf.append("+ Bogdan Szanto\n");
+        buf.append("+ Bogdan Pistol\n");
+        buf.append("+ Christian López Espínola\n");
+        buf.append("+ Dave Thompson\n");
+        buf.append("+ Harald Braun\n");
+        buf.append("+ Luis Sergio Oliveira\n");
+        buf.append("+ Linus Tolke\n");
+        buf.append("+ Lukasz Gromanowski\n");
+        buf.append("+ Marcos Aurelio\n");
+        buf.append("+ Marcus Aurelio\n");
+        buf.append("+ Michiel van der Wulp\n");
+        buf.append("+ penyaskito\n");
+        buf.append("+ Scott Roberts\n");
+        buf.append("+ Sérgio Adriano Fernandes Lopes\n");
+        buf.append("+ Thomas Neustupny\n");
+        buf.append("+ Tom Morris\n");
+        
+        buf.append("\n");
+
+        buf.append(Translator.messageFormat(
+                "aboutbox.contrib-developers-for-release",
+                new Object[] {
+                    "0.24",
+                }));
+        buf.append("\n");
+        
         buf.append("+ Andrea Nironi\n");
         buf.append("+ Bob Tarling\n");
         buf.append("+ Hans Fredrik Nordhaug\n");
