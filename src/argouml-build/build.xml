@@ -69,7 +69,7 @@ order. The subdir/build.xml files are used by the Eclipse setup.
 
   -->
 
-<project basedir=".." default="package" name="argouml">
+<project basedir="." default="package" name="argouml">
   
   <!-- =================================================================== -->
   <!-- Global initialization                                               -->
@@ -147,7 +147,7 @@ Property files to be searched:
     </tstamp>
 
     <property name="local.build.properties" 
-              value="argouml-build/build.properties"/>
+              value="build.properties"/>
     <property name="user.build.properties" 
               value="${user.home}/argouml.build.properties"/>
     <property file="${local.build.properties}"/>
@@ -157,7 +157,7 @@ Property files to be searched:
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}" />
     <property file="${override.build.properties}"/>
-    <property file="argouml-build/default.properties"/>
+    <property file="default.properties"/>
 
     <property name="tests.reports" value="${argo.build.dir}/tests"/>
 
@@ -238,36 +238,36 @@ Property files to be searched:
           description="Prepare all jar files, both built and just delivered.">
 
     <!-- Build the subdirs in order. -->
-    <ant dir="argouml-core-infra" inheritAll="false"           target="jar"/>
-    <ant dir="argouml-core-model" inheritAll="false"           target="jar"/>
-    <ant dir="argouml-core-model-mdr" inheritAll="false"       target="jar"/>
+    <ant dir="../argouml-core-infra" inheritAll="false"           target="jar"/>
+    <ant dir="../argouml-core-model" inheritAll="false"           target="jar"/>
+    <ant dir="../argouml-core-model-mdr" inheritAll="false"       target="jar"/>
 <!--
     <ant dir="argouml-core-model-euml" inheritAll="false"      target="jar"/>
 -->
-    <ant dir="argouml-app" inheritAll="false"                  target="jar"/>
+    <ant dir="../argouml-app" inheritAll="false"                  target="jar"/>
 
     <!-- Copy everything to the build directory -->
     <mkdir dir="${argo.build.dir}"/>
 
     <copy todir="${argo.build.dir}">
-      <fileset dir="argouml-core-infra/build">
+      <fileset dir="../argouml-core-infra/build">
         <include name="*"/>
       </fileset>
-      <fileset dir="argouml-core-model/build">
+      <fileset dir="../argouml-core-model/build">
         <include name="*"/>
       </fileset>
-      <fileset dir="argouml-core-model-mdr/build">
+      <fileset dir="../argouml-core-model-mdr/build">
         <include name="*"/>
       </fileset>
       <!-- model-euml Not currently included -->
-      <fileset dir="argouml-app/build">
+      <fileset dir="../argouml-app/build">
         <include name="*"/>
       </fileset>
     </copy>
 
     <!-- The argouml.jar is copied again and again since it is modified below -->
     <copy todir="${argo.build.dir}" overwrite="on">
-      <fileset dir="argouml-app/build">
+      <fileset dir="../argouml-app/build">
         <include name="argouml.jar"/>
       </fileset>
     </copy>
@@ -306,20 +306,20 @@ Property files to be searched:
     <!-- Build the subdirs in order. -->
 
     <!-- infra doesn't have tests. -->
-    <ant dir="argouml-core-infra" inheritAll="false"        target="jar"/>
+    <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
 
     <!-- model doesn't have tests. -->
-    <ant dir="argouml-core-model" inheritAll="false"        target="jar"/>
+    <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
 
-    <ant dir="argouml-core-model-mdr" inheritAll="false"    target="tests"/>
+    <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="tests"/>
 
 <!--    <ant dir="model-euml" inheritAll="false"      target="tests"/> -->
 
 <!-- why is this called twice? 
 Can't we use a single target with dependencies? tfm -->
-    <ant dir="argouml-core-model-mdr" inheritAll="false"    target="jar"/>
+    <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="jar"/>
 
-    <ant dir="argouml-app" inheritAll="false"               target="tests"/>
+    <ant dir="../argouml-app" inheritAll="false"               target="tests"/>
 
     <antcall target="tests-reports"/>
   </target>  
@@ -347,11 +347,11 @@ Can't we use a single target with dependencies? tfm -->
     <delete dir="${argo.build.dir}"/>
 
     <!-- Build the subdirs in opposite order. -->
-    <ant dir="argouml-app" inheritAll="false"              target="clean"/>
-    <ant dir="argouml-core-model-euml" inheritAll="false"  target="clean"/>
-    <ant dir="argouml-core-model-mdr" inheritAll="false"   target="clean"/>
-    <ant dir="argouml-core-model" inheritAll="false"       target="clean"/>
-    <ant dir="argouml-core-infra" inheritAll="false"       target="clean"/>
+    <ant dir="../argouml-app" inheritAll="false"              target="clean"/>
+    <ant dir="../argouml-core-model-euml" inheritAll="false"  target="clean"/>
+    <ant dir="../argouml-core-model-mdr" inheritAll="false"   target="clean"/>
+    <ant dir="../argouml-core-model" inheritAll="false"       target="clean"/>
+    <ant dir="../argouml-core-infra" inheritAll="false"       target="clean"/>
 
   </target>
 
