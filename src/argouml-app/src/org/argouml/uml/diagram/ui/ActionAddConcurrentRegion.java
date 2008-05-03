@@ -96,10 +96,10 @@ public class ActionAddConcurrentRegion extends UndoableAction {
         super.actionPerformed(ae);
         try {
             /*Here the actions to divide a region*/
-            Fig f = TargetManager.getInstance().getFigTarget();
+            FigNodeModelElement f = (FigNodeModelElement) TargetManager.getInstance().getFigTarget();
 
             if (Model.getFacade().isAConcurrentRegion(f.getOwner())) {
-                f = f.getEnclosingFig();
+                f = (FigNodeModelElement) f.getEnclosingFig();
             }
 
             List<Fig> nodesInside;
@@ -113,8 +113,7 @@ public class ActionAddConcurrentRegion extends UndoableAction {
             Rectangle rName =
                 ((FigNodeModelElement) f).getNameFig().getBounds();
             Rectangle rFig = f.getBounds();
-            Fig encloser = null;
-            encloser = f;
+            final FigCompositeState figCompositeState = (FigCompositeState) f;
             if (!(gm instanceof MutableGraphModel)) {
                 return;
             }
@@ -132,7 +131,7 @@ public class ActionAddConcurrentRegion extends UndoableAction {
                                             rFig.height - rName.height - 10);
 
                 region.setLocation(f.getX() + 3, f.getY() + rName.height + 5);
-                region.setEnclosingFig(encloser);
+                region.setEnclosingFig(figCompositeState);
                 region.setLayer(lay);
                 lay.add(region);
 
@@ -147,6 +146,7 @@ public class ActionAddConcurrentRegion extends UndoableAction {
                         FigStateVertex curFig =
                             (FigStateVertex) nodesInside.get(i);
                         curFig.setEnclosingFig(region);
+                        region.addEnclosedFig(curFig);
                         curFig.redrawEnclosedFigs();
                     }
                 }
@@ -160,8 +160,9 @@ public class ActionAddConcurrentRegion extends UndoableAction {
 
             regionNew.setLocation(f.getX() + 3, f.getY() + rFig.height - 1);
 
-            ((FigCompositeState) f).setBounds(rFig.height + 130);
-            regionNew.setEnclosingFig(encloser);
+            figCompositeState.setBounds(rFig.height + 130);
+            regionNew.setEnclosingFig(figCompositeState);
+            figCompositeState.addEnclosedFig(regionNew);
             regionNew.setLayer(lay);
             lay.add(regionNew);
             editor.getSelectionManager().select(f);
