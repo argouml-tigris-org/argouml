@@ -38,13 +38,7 @@ Build file to proxy the argoumlstandard ant targets.
   <!-- =================================================================== -->
   <target name="jar" depends="init"
           description="Build and copies files.">
-    <!--
-      This is how Linus Tolke would like to write this command:
     <ant dir="src/argouml-build" inheritAll="false"    target="package"/>
-      The corrected statement below works also with
-      src/argouml-build/build.xml that has basedir="..".
-     -->
-    <ant dir="src" antfile="argouml-build/build.xml" inheritAll="false" target="package"/>
   </target>
 
   <!-- =================================================================== -->
@@ -54,16 +48,7 @@ Build file to proxy the argoumlstandard ant targets.
           description="">
     <mkdir dir="${build.dir}"/>
     <copy todir="${build.dir}" includeEmptyDirs="false">
-      <fileset dir="src/argouml-core-infra/build">
-        <include name="*"/>
-      </fileset>
-      <fileset dir="src/argouml-core-model/build">
-        <include name="*"/>
-      </fileset>
-      <fileset dir="src/argouml-core-model-mdr/build">
-        <include name="*"/>
-      </fileset>
-      <fileset dir="src/argouml-app/build">
+      <fileset dir="src/argouml-build/build">
         <include name="*"/>
       </fileset>
     </copy>
@@ -75,9 +60,6 @@ Build file to proxy the argoumlstandard ant targets.
   <target name="clean" depends="init"
           description="Clean out all built files.">
     <delete dir="${build.dir}" quiet="true"/>
-    <!-- see above!
     <ant dir="src/argouml-build" inheritAll="false"    target="clean"/>
-     -->
-    <ant dir="src" antfile="argouml-build/build.xml" inheritAll="false" target="clean"/>
   </target>
 </project>
