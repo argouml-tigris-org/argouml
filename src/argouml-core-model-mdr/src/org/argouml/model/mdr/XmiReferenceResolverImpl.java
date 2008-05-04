@@ -43,6 +43,7 @@ import javax.jmi.reflect.RefPackage;
 import org.apache.log4j.Logger;
 import org.netbeans.api.xmi.XMIInputConfig;
 import org.netbeans.lib.jmi.xmi.XmiContext;
+import org.omg.uml.foundation.core.ModelElement;
 
 /**
  * Custom resolver to use with XMI reader.
@@ -161,7 +162,8 @@ class XmiReferenceResolverImpl extends XmiContext {
      *            referenced object
      */
     @Override
-    public void register(String systemId, String xmiId, RefObject object) {
+    public void register(final String systemId, final String xmiId, 
+            final RefObject object) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Registering XMI ID '" + xmiId 
                     + "' in system ID '" + systemId 
@@ -183,18 +185,19 @@ class XmiReferenceResolverImpl extends XmiContext {
             }
         }
 
-        if (profile) {
-            systemId = modelPublicId;
-        } else if (systemId == topSystemId) {
-            systemId = null;
+        String resolvedSystemId = systemId;
+        if (profile && systemId.equals(topSystemId)) {
+            resolvedSystemId = modelPublicId;
+        } else if (systemId.equals(topSystemId)) {
+            resolvedSystemId = null;
         } else if (reverseUrlMap.get(systemId) != null) {
-            systemId = reverseUrlMap.get(systemId);
+            resolvedSystemId = reverseUrlMap.get(systemId);
         } else {
             LOG.debug("Unable to map systemId - " + systemId);
         }
         
         String key;
-        if (systemId == null || "".equals(systemId)) {
+        if (resolvedSystemId == null || "".equals(resolvedSystemId)) {
             // No # here because PGML parser needs bare UUID/xmi.id
             key = xmiId;            
         } else {
@@ -203,15 +206,18 @@ class XmiReferenceResolverImpl extends XmiContext {
 
         if (!idToObjects.containsKey(key) 
                 && !objectsToId.containsKey(object.refMofId())) {
-            super.register(systemId, xmiId, object);
+            super.register(resolvedSystemId, xmiId, object);
             idToObjects.put(key, object);
             objectsToId.put(object.refMofId(),
-                    new XmiReference(systemId, xmiId));
+                    new XmiReference(resolvedSystemId, xmiId));
         } else {
             if (idToObjects.containsKey(key) 
                     && idToObjects.get(key) != object) {
+                ((ModelElement) idToObjects.get(key)).getName();
                 LOG.error("Collision - multiple elements with same xmi.id : "
                         + xmiId);
+                throw new IllegalStateException(
+                        "Multiple elements with same xmi.id");
             }
             if (objectsToId.containsKey(object.refMofId())) {
                 // For now just skip registering this and ignore the request, 
