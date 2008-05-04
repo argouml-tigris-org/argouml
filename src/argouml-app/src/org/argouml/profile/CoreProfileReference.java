@@ -56,5 +56,7 @@ public class CoreProfileReference extends ProfileReference {
             new URL(PROFILES_BASE_URL + fileName));
         assert fileName != null 
             : "null isn't acceptable as the profile file name.";
+        assert !"".equals(fileName)
+        : "the empty string isn't acceptable as the profile file name.";
     }
 }

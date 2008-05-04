@@ -60,6 +60,8 @@ public class TestCoreProfileReference extends TestCase {
         throws MalformedURLException {
         try {
             new CoreProfileReference("");
+            // TODO: This requires that the tests be run with assertions
+            // enabled which isn't guaranteed in all environments.
             fail("Expecting AssertionError due to empty file name.");
         } catch (AssertionError e) {
             // expected
@@ -75,6 +77,8 @@ public class TestCoreProfileReference extends TestCase {
         throws MalformedURLException {
         try {
             new CoreProfileReference(null);
+            // TODO: This requires that the tests be run with assertions
+            // enabled which isn't guaranteed in all environments.
             fail("Expecting AssertionError due to null file name.");
         } catch (AssertionError e) {
             // expected
