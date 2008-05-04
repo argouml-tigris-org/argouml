@@ -157,6 +157,15 @@ Property files to be searched:
     <!-- if it is set in a property file before now, it must be absolute -->
     <property name="argo.root.dir" value="${basedir}" />
     <property file="${override.build.properties}"/>
+
+    <!-- Try to figure out where our tools directory is. Done after overrides
+    are loaded so user can override, but before defaults
+    Thanks Tom for this magic! -->
+    <available file="../argouml-core-tools" type="dir"
+               property="argo.tools.dir" value="../argouml-core-tools"/>
+    <available file="../../tools" type="dir"
+               property="argo.tools.dir" value="../../tools"/>
+
     <property file="default.properties"/>
 
     <property name="tests.reports" value="${argo.build.dir}/tests"/>
@@ -190,16 +199,6 @@ Property files to be searched:
     <!-- If it is not set, it defaults to argo.bin.dir, and               -->
     <!-- "build install"  will not do anything.                           -->
     <property name="developer.bin.dir" value="${argo.bin.dir}"/>
-
-    <!-- Set of properties with fixed paths that we pass to subtasks -->
-    <propertyset id="absolute-properties" dynamic="false">
-      <propertyref name="argo.root.dir" />
-      <propertyref name="argo.tools.dir" />
-      <propertyref name="argo.model.dir" />
-      <propertyref name="argo.mdr.dir" />
-      <propertyref name="argo.euml.dir" />
-    </propertyset>
-
   </target>
 
   <!-- =================================================================== -->
@@ -622,8 +621,8 @@ Can't we use a single target with dependencies? tfm -->
   <!-- ================================= 
           target: checkstyle              
        ================================= -->
-    <target name="checkstyle" depends="init" 
-      description="--> Run Checkstyle on sources">
+  <target name="checkstyle" depends="init" 
+          description="Run Checkstyle on sources">
       
     <taskdef resource="checkstyletask.properties"
                classpath="${argo.tools.dir}/checkstyle-4.3/checkstyle-all-4.3.jar"/>
@@ -636,7 +635,7 @@ Can't we use a single target with dependencies? tfm -->
       <formatter type="xml" toFile="${argo.build.dir}/checkstyle_errors.xml"/>
     </checkstyle>
       
-    </target>
+  </target>
 
   <!-- =================================================================== -->
   <!-- Perform JDepend to find about the structure in ArgoUML.             -->
