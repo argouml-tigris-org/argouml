@@ -2401,7 +2401,7 @@ Files are downloaded from the Tigris SVN server and put into Eclipse
 projects.
 </para>
               <para>
-It is around 30Meg that is downloaded so beware if you are on a slow
+It is around 45MB that is downloaded so beware if you are on a slow
 connection.
 </para>
             </listitem>
