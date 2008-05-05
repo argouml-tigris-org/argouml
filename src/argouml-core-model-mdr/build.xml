@@ -53,6 +53,14 @@ Building this requires:
   	
     <!-- Do we want to read user build properties here? -->
 
+    <!-- Try to figure out where our tools directory is. Done after overrides
+    are loaded so user can override, but before defaults -->
+    <property name="tool.test.file" value="checkstyle/java.header"/>
+    <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}" 
+        type="file" property="argo.tools.dir" value="${argo.root.dir}/argouml-core-tools"/>
+    <available file="../../tools/${tool.test.file}" 
+        type="file" property="argo.tools.dir" value="../../tools"/>
+  	
     <!-- Read default build properties file (after we've set our props) -->
     <property file="${argo.root.dir}/argouml-build/default.properties"/>
   	
@@ -85,12 +93,10 @@ Building this requires:
       <path refid="mdr.compile.classpath"/>
     </path>
 
-    <!-- Define a few places we can find Junit -->
+    <!-- Define a couple places we can find Junit -->
     <path id="junit.classpath">
       <pathelement location="${junit.jar.path}"/>
       <pathelement location="${argo.tools.dir}/junit-3.8.2/junit.jar"/>
-      <!-- root used to be the argouml dir, but now its argouml/src -->
-      <pathelement location="${argo.root.dir}/../tools/junit-3.8.2/junit.jar"/>
     </path>
 
     <path id="tests.compile.classpath">
