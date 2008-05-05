@@ -1403,12 +1403,12 @@ public class Modeller {
     }
 
     /**
-       Find a package in the model. If it does not exist, a new
-       package is created.
-
-       @param name The name of the package.
-       @return The package found or created.
-    */
+     * Find a package in the model. If it does not exist, a new package is
+     * created.
+     * 
+     * @param name The name of the package.
+     * @return The package found or created.
+     */
     private Object getPackage(String name) {
 	Object mPackage = searchPackageInModel(name);
 	if (mPackage == null) {
@@ -1416,7 +1416,6 @@ public class Modeller {
 		Model.getModelManagementFactory()
 		    .buildPackage(getRelativePackageName(name), name);
             newElements.add(mPackage);
-            // TODO: This is redundant - tfm
 	    Model.getCoreHelper().setNamespace(mPackage, model);
 
 	    // Find the owner for this package.
@@ -1687,32 +1686,27 @@ public class Modeller {
     }
 
     /**
-       Get the package name from a fully specified classifier name.
-
-       @param name A fully specified classifier name.
-       @return The package name.
-    */
+     * Get the package name from a fully specified classifier name.
+     * 
+     * @param name A fully specified classifier name.
+     * @return The package name.
+     */
     private String getPackageName(String name) {
         int lastDot = name.lastIndexOf('.');
         if (lastDot == -1) {
             return "";
         }
         String pkgName = name.substring(0, lastDot);
-        return pkgName;
 
-        // TODO: Fix handling of inner classes along the lines of the following...
-        
         // If the last element begins with an uppercase character, assume
-        // that we've really got a class, not a package.  A better strategy
-        // would be to defer until we can disambiguate, but this should be
-        // better than what we have now for the more common case of inner
-        // classes.
-//        if (Character.isUpperCase(
-//                getRelativePackageName(pkgName).charAt(0))) {
-//            return getPackageName(pkgName);
-//        } else {
-//            return pkgName;
-//        }
+        // that we've really got a class, not a package.  
+        // TODO: A better strategy would be to defer until we can disambiguate
+        if (Character.isUpperCase(
+                getRelativePackageName(pkgName).charAt(0))) {
+            return getPackageName(pkgName);
+        } else {
+            return pkgName;
+        }
     }
 
     /**
@@ -1728,15 +1722,20 @@ public class Modeller {
 	// Since the relative package name corresponds
 	// to the classifier name of a fully qualified
 	// classifier, we simply use this method.
+
+        // TODO: This won't correctly identify the package for an inner class
+        // e.g. package.Foo.Bar, but getPackageName() makes an attempt to
+        // guess correctly
+        
 	return getClassifierName(packageName);
     }
 
     /**
-       Get the classifier name from a fully specified classifier name.
-
-       @param name A fully specified classifier name.
-       @return The classifier name.
-    */
+     * Get the classifier name from a fully specified classifier name.
+     * 
+     * @param name A fully specified classifier name.
+     * @return The classifier name.
+     */
     private String getClassifierName(String name) {
 	int lastDot = name.lastIndexOf('.');
 	if (lastDot == -1) {
