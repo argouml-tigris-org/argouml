@@ -130,15 +130,23 @@ final class ModelManagementFactoryMDRImpl extends
         return myUmlPackage;
     }
 
-
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public Object buildPackage(String name, String uuid) {
         UmlPackage pkg = createPackage();
         pkg.setName(name);
-        // TODO: not sure who added below message.  Needs resolution. - tfm
-        LOG.warn("UUID [" + uuid + "] ignored - what to do with it?");
+        // We could throw an exception if uuid is not null, but since the
+        // Javadoc technically says that it is only used if the element doesn't
+        // already have one set, we're going to assume we can ignore it.
         return pkg;
     }
 
+    public Object buildPackage(String name) {
+        UmlPackage pkg = createPackage();
+        pkg.setName(name);
+        return pkg;
+    }
+    
 
     public Object createSubsystem() {
         Subsystem mySubsystem =
