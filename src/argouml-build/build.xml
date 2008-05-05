@@ -155,16 +155,16 @@ Property files to be searched:
 
     <!-- we really need an absolute path for argo.root.dir -->
     <!-- if it is set in a property file before now, it must be absolute -->
-    <property name="argo.root.dir" value="${basedir}" />
+    <property name="argo.root.dir" value="${basedir}/.." />
     <property file="${override.build.properties}"/>
 
     <!-- Try to figure out where our tools directory is. Done after overrides
-    are loaded so user can override, but before defaults
-    Thanks Tom for this magic! -->
-    <available file="../argouml-core-tools" type="dir"
-               property="argo.tools.dir" value="../argouml-core-tools"/>
-    <available file="../../tools" type="dir"
-               property="argo.tools.dir" value="../../tools"/>
+    are loaded so user can override, but before defaults -->
+    <property name="tool.test.file" value="checkstyle/java.header"/>
+    <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}" 
+        type="file" property="argo.tools.dir" value="${argo.root.dir}/argouml-core-tools"/>
+    <available file="../../tools/${tool.test.file}" 
+        type="file" property="argo.tools.dir" value="../../tools"/>
 
     <property file="default.properties"/>
 
@@ -623,13 +623,14 @@ Can't we use a single target with dependencies? tfm -->
        ================================= -->
   <target name="checkstyle" depends="init" 
           description="Run Checkstyle on sources">
-      
+    <echo message="argo.tools.dir = ${argo.tools.dir}" />
     <taskdef resource="checkstyletask.properties"
                classpath="${argo.tools.dir}/checkstyle-4.3/checkstyle-all-4.3.jar"/>
         
     <checkstyle config="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml" 
       properties="${argo.tools.dir}/checkstyle/checkstyle-ant.properties"> 
-      <fileset dir="${argo.root.dir}/argouml-app/src" includes="**/*.java"
+      <fileset dir="${argo.root.dir}" 
+      	includes="argouml-app/src/**/*.java argouml-core-*/src/**/*.java"
         excludes="**/JavaRecognizer.java **/JavaLexer.java **/JavaTokenTypes.java"/>
       <formatter type="plain"/>
       <formatter type="xml" toFile="${argo.build.dir}/checkstyle_errors.xml"/>
