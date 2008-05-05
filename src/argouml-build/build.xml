@@ -627,13 +627,15 @@ Can't we use a single target with dependencies? tfm -->
     <taskdef resource="checkstyletask.properties"
                classpath="${argo.tools.dir}/checkstyle-4.3/checkstyle-all-4.3.jar"/>
         
-    <checkstyle config="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml" 
-      properties="${argo.tools.dir}/checkstyle/checkstyle-ant.properties"> 
-      <fileset dir="${argo.root.dir}" 
+    <checkstyle config="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml" >
+    	<fileset dir="${argo.root.dir}" 
       	includes="argouml-app/src/**/*.java argouml-core-*/src/**/*.java"
         excludes="**/JavaRecognizer.java **/JavaLexer.java **/JavaTokenTypes.java"/>
       <formatter type="plain"/>
       <formatter type="xml" toFile="${argo.build.dir}/checkstyle_errors.xml"/>
+      <property key="checkstyle.header.file" file="${argo.tools.dir}/checkstyle/java.header"/>
+      <property key="basedir" value="${argo.root.dir}"/>
+
     </checkstyle>
       
   </target>
