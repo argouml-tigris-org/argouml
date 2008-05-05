@@ -120,9 +120,9 @@ public class GUITestProjectBrowser extends TestCase {
     public void testSetTarget() {
         Project p = ProjectManager.getManager().getCurrentProject();
 	Object package1 =
-	    Model.getModelManagementFactory().buildPackage("test1", null);
+	    Model.getModelManagementFactory().buildPackage("test1");
 	Object package2 =
-	    Model.getModelManagementFactory().buildPackage("test2", null);
+	    Model.getModelManagementFactory().buildPackage("test2");
 	UMLClassDiagram diagram1 = new UMLClassDiagram(package1);
 	UMLClassDiagram diagram2 = new UMLClassDiagram(package2);
         p.addMember(diagram1);
@@ -151,9 +151,9 @@ public class GUITestProjectBrowser extends TestCase {
         TargetManager tm = TargetManager.getInstance();
 
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         Object package2 =
-            Model.getModelManagementFactory().buildPackage("test2", null);
+            Model.getModelManagementFactory().buildPackage("test2");
         UMLClassDiagram diagram1 = new UMLClassDiagram(package1);
         UMLClassDiagram diagram2 = new UMLClassDiagram(package2);
         try {

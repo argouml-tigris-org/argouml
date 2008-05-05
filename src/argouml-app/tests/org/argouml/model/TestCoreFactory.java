@@ -576,11 +576,11 @@ public class TestCoreFactory extends TestCase {
     public void testBuildAssociation() {
         Object model = Model.getModelManagementFactory().createModel();
         Object packA = Model.getModelManagementFactory().buildPackage(
-                "package-a", "111");
+                "package-a");
         Object packB = Model.getModelManagementFactory().buildPackage(
-                "package-b", "222");
+                "package-b");
         Object packC = Model.getModelManagementFactory().buildPackage(
-                "package-c", "222");
+                "package-c");
 
         Model.getCoreHelper().setNamespace(packA, model);
         Model.getCoreHelper().setNamespace(packB, packA);

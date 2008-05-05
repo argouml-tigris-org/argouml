@@ -46,8 +46,8 @@ public class TestCrAssocNameConflict extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
-        ns1 = Model.getModelManagementFactory().buildPackage("P1", null);
-        ns2 = Model.getModelManagementFactory().buildPackage("P2", null);
+        ns1 = Model.getModelManagementFactory().buildPackage("P1");
+        ns2 = Model.getModelManagementFactory().buildPackage("P2");
         c1 = Model.getCoreFactory().buildClass("A", ns1);
         c2 = Model.getCoreFactory().buildClass("A", ns1);
         c3 = Model.getCoreFactory().buildClass("B", ns1);

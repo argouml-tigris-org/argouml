@@ -120,7 +120,7 @@ public class TestProject extends TestCase {
         Project p = ProjectManager.getManager().getCurrentProject();
         // test with a class in a package
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         Model.getCoreHelper().setNamespace(package1, p.getRoot());
         Object cls1 = Model.getCoreFactory().buildClass(package1);
         Object cls2 = Model.getCoreFactory().buildClass(package1);
@@ -198,10 +198,10 @@ public class TestProject extends TestCase {
 
         // test with a class and class diagram
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         assertNotNull(package1);
         Object package2 =
-            Model.getModelManagementFactory().buildPackage("test2", null);
+            Model.getModelManagementFactory().buildPackage("test2");
 
         UMLClassDiagram cDiag = new UMLClassDiagram(package2);
         p.addMember(cDiag);
@@ -227,7 +227,7 @@ public class TestProject extends TestCase {
 
         // test with a class and class diagram
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
 
@@ -266,7 +266,7 @@ public class TestProject extends TestCase {
 
         // test with a class and class diagram
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
 
@@ -318,7 +318,7 @@ public class TestProject extends TestCase {
 
         // test with a class and class diagram
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
         p.moveToTrash(package1);
@@ -342,7 +342,7 @@ public class TestProject extends TestCase {
 
         // test with a class and class diagram
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
 
@@ -381,7 +381,7 @@ public class TestProject extends TestCase {
 
         // test with a class and class diagram
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
         Object voidType = p.getDefaultReturnType();
@@ -429,7 +429,7 @@ public class TestProject extends TestCase {
 
         // test with a package and a class and activity diagram
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
         // build the Activity Diagram
@@ -468,10 +468,10 @@ public class TestProject extends TestCase {
 
         // test with a package and a class and activity diagram
         Object package1 =
-            Model.getModelManagementFactory().buildPackage("test1", null);
+            Model.getModelManagementFactory().buildPackage("test1");
         Model.getCoreHelper().setNamespace(package1, p.getModel());
         Object package2 =
-            Model.getModelManagementFactory().buildPackage("test2", null);
+            Model.getModelManagementFactory().buildPackage("test2");
         Model.getCoreHelper().setNamespace(package2, package1);
 
         // build the Activity Diagram

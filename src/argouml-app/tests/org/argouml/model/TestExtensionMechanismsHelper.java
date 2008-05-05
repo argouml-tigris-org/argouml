@@ -69,8 +69,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
 
         model = Model.getModelManagementFactory().createModel();
         pack =
-            Model.getModelManagementFactory().buildPackage("pack",
-                UUIDManager.getInstance().getNewUUID());
+            Model.getModelManagementFactory().buildPackage("pack");
         Model.getCoreHelper().setNamespace(pack, model);
 
         theClass = Model.getCoreFactory().buildClass("TheClass", pack);
@@ -100,9 +99,9 @@ public class TestExtensionMechanismsHelper extends TestCase {
      * where the model element is, is applicable to the model element.
      */
     public void testGetAllPossibleStereotypesStereotypeInContainingPackage() {
-        Object subpack =
+        Object subpack = 
             Model.getModelManagementFactory().buildPackage(
-                "subpack", UUIDManager.getInstance().getNewUUID());
+                "subpack");
         Model.getCoreHelper().setNamespace(subpack, pack);
         theClass =
             Model.getCoreFactory().buildClass("TheClassInSubpack", subpack);

@@ -53,7 +53,7 @@ public class TestCrNoAssociations extends TestCase {
         InitializeModel.initializeDefault();
         critic = new CrNoAssociations();
        
-        ns = Model.getModelManagementFactory().buildPackage("Test", null);
+        ns = Model.getModelManagementFactory().buildPackage("Test");
         useCase1 = Model.getUseCasesFactory().createUseCase();
         Model.getCoreHelper().setName(useCase1, "A");
         Model.getCoreHelper().setNamespace(useCase1, ns);

@@ -717,7 +717,7 @@ public class RESequenceDiagramDialog
                         // must be a package
                         element =
                             Model.getModelManagementFactory()
-                                .buildPackage(s, type.substring(0, pos));
+                                .buildPackage(s);
                     } else {
                         // must be a classifier, let's assume a class
                         element = Model.getCoreFactory().buildClass(s);

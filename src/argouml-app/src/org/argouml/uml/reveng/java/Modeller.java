@@ -1414,8 +1414,10 @@ public class Modeller {
 	if (mPackage == null) {
 	    mPackage =
 		Model.getModelManagementFactory()
-		    .buildPackage(getRelativePackageName(name), name);
+		    .buildPackage(getRelativePackageName(name));
             newElements.add(mPackage);
+            
+            // TODO: This is redundant with addOwnedElement code below - tfm
 	    Model.getCoreHelper().setNamespace(mPackage, model);
 
 	    // Find the owner for this package.
