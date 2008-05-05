@@ -84,6 +84,7 @@ public abstract class AbstractFilePersister extends FileFilter
     
     private EventListenerList listenerList = new EventListenerList();
     
+    // This can be made public to allow others to extend their own persisters
     private static boolean registerPersister(Class target, String tag,
             Class<? extends MemberFilePersister> persister) {
         persistersByClass.put(target, persister);
