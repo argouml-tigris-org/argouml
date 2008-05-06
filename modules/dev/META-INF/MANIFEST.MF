@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.argouml.module.dev
+Bundle-Version: 0.25.5
+Bundle-ClassPath: argouml-module-dev.jar,
+ lib/mdrapi.jar
+Export-Package: org.argouml.dev,
+ org.argouml.dev.figinspector,
+ org.argouml.dev.test
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Localization: plugin
+Bundle-Vendor: %pluginProvider
+Require-Bundle: org.argouml.app,
+ org.argouml.core.model,
+ org.argouml.core.model.mdr,
+ org.argouml.core.infra
