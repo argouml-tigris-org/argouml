@@ -24,12 +24,22 @@
 
 package org.argouml.model;
 
+
 /**
  * Exception for problems with XMI files.
  * 
  * @author Tom Morris
  */
 public class XmiException extends UmlException {
+    
+
+    private String publicId;
+
+    private String systemId;
+
+    private int lineNumber;
+
+    private int columnNumber;
 
     /**
      * Construct an XmiException with the given message.
@@ -57,6 +67,117 @@ public class XmiException extends UmlException {
      */
     public XmiException(Throwable c) {
         super(c);
+    }
+    
+    /**
+     * Create a new SAXParseException.
+     *
+     * @param message The error or warning message.
+     * @param publicId The public identifier of the entity that generated
+     *                 the error or warning.
+     * @param systemId The system identifier of the entity that generated
+     *                 the error or warning.
+     * @param lineNumber The line number of the end of the text that
+     *                   caused the error or warning.
+     * @param columnNumber The column number of the end of the text that
+     *                     cause the error or warning.
+     */
+    public XmiException(String message, String publicId, String systemId,
+            int lineNumber, int columnNumber) {
+        super(message);
+        init(publicId, systemId, lineNumber, columnNumber);
+    }
+    
+    
+    /**
+     * Create a new SAXParseException with an embedded exception.
+     * 
+     * @param message The error or warning message, or null to use the message
+     *                from the embedded exception.
+     * @param publicId The public identifier of the entity that generated the
+     *                error or warning.
+     * @param systemId The system identifier of the entity that generated the
+     *                error or warning.
+     * @param lineNumber The line number of the end of the text that caused the
+     *                error or warning.
+     * @param columnNumber The column number of the end of the text that cause
+     *                the error or warning.
+     * @param e Another exception to embed in this one.
+     */
+    public XmiException(String message, String publicId, String systemId,
+            int lineNumber, int columnNumber, Exception e) {
+        super(message, e);
+        init(publicId, systemId, lineNumber, columnNumber);
+    }
+
+
+    /**
+     * Internal initialization method.
+     * 
+     * @param publicId The public identifier of the entity which generated the
+     *                exception, or null.
+     * @param systemId The system identifier of the entity which generated the
+     *                exception, or null.
+     * @param lineNumber The line number of the error, or -1.
+     * @param columnNumber The column number of the error, or -1.
+     */
+    private void init(String publicId, String systemId, int lineNumber,
+            int columnNumber) {
+        this.publicId = publicId;
+        this.systemId = systemId;
+        this.lineNumber = lineNumber;
+        this.columnNumber = columnNumber;
+    }
+    
+    
+    /**
+     * Get the public identifier of the entity where the exception occurred.
+     * 
+     * @return A string containing the public identifier, or null if none is
+     *         available.
+     */
+    public String getPublicId() {
+        return this.publicId;
+    }
+    
+    
+    /**
+     * Get the system identifier of the entity where the exception occurred.
+     * <p>
+     * If the system identifier is a URL, it will have been resolved fully.
+     * </p>
+     * 
+     * @return A string containing the system identifier, or null if none is
+     *         available.
+     */
+    public String getSystemId() {
+        return this.systemId;
+    }
+    
+    
+    /**
+     * The line number of the end of the text where the exception occurred.
+     *
+     * <p>The first line is line 1.</p>
+     *
+     * @return An integer representing the line number, or -1
+     *         if none is available.
+     */
+    public int getLineNumber() {
+        return this.lineNumber;
+    }
+    
+    
+    /**
+     * The column number of the end of the text where the exception occurred.
+     *
+     * <p>The first column in a line is position 1.</p>
+     *
+     * @return An integer representing the column number, or -1
+     *         if none is available.
+     */
+    public int getColumnNumber() {
+        return this.columnNumber;
     }
 
 
