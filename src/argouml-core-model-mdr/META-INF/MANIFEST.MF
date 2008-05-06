@@ -65,3 +65,4 @@ Bundle-ClassPath: org.argouml.core.model.mdr.jar,
  lib/nbmdr.jar,
  lib/openide-util.jar
 Eclipse-RegisterBuddy: org.argouml.core.infra, org.argouml.core.model
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
