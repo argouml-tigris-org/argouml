@@ -177,3 +177,4 @@ Bundle-ClassPath: lib/antlr-2.7.7.jar,
  lib/swidgets-0.1.4.jar,
  lib/toolbar-1.4.1-20071227.jar,
  .
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
