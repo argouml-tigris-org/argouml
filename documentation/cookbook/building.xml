@@ -301,6 +301,14 @@ releases/<replaceable>RELEASE-TAG</replaceable></literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argoumlinstaller/build/<replaceable>RELEASE-TAG</replaceable>/<replaceable>PROJECT-NAME</replaceable>/</entry>
               <entry>N/A or <replaceable>WORKSPACE</replaceable>/<replaceable>PROJECT-NAME</replaceable> (if switched to)</entry>
             </row>
+
+            <row>
+              <entry>argo.root.dir</entry>
+              <entry>N/A</entry>
+              <entry><replaceable>WORK</replaceable>/argouml</entry>
+              <entry><replaceable>WORKSPACE</replaceable></entry>
+            </row>
+
           </tbody>
         </tgroup>
       </table>
