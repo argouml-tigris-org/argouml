@@ -40,14 +40,14 @@ import org.argouml.profile.init.InitProfileSubsystem;
  * @since 0.20
  * @version 0.00
  */
-public class TestProfileJava extends TestCase {
-    
+public class TestProfileDefault extends TestCase {
+
     /**
      * The constructor.
      *
      * @param name the name of the test.
      */
-    public TestProfileJava(String name) {
+    public TestProfileDefault(String name) {
         super(name);
     }
     
@@ -62,14 +62,17 @@ public class TestProfileJava extends TestCase {
     }
 
     /**
-     * Test whether we can load default model (profile).
+     * Test whether we can load default profile.
      */
     public void testLoadProfileModel() {
+        // TODO: This depends on the profile configuration of the user running
+        // the test.  It needs to be made independent of that.
         ProfileConfiguration config = ProjectManager.getManager()
                 .getCurrentProject().getProfileConfiguration();
         assertNotNull("Can't load profile configuration", config);
         Collection stereos = config.findAllStereotypesForModelElement(Model
                 .getCoreFactory().createClass());
-        assertTrue("No stereotypes found in default profiles", stereos.size() > 0);
+        assertTrue("No stereotypes found in default profiles", 
+                stereos.size() > 0);
     }
 }
