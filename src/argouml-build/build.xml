@@ -155,14 +155,15 @@ Property files to be searched:
 
     <!-- we really need an absolute path for argo.root.dir -->
     <!-- if it is set in a property file before now, it must be absolute -->
-    <property name="argo.root.dir" value="${basedir}/.." />
+    <!-- "root" is a misnomer here, since it now points to argouml-build -->
+    <property name="argo.root.dir" value="${basedir}" />
     <property file="${override.build.properties}"/>
 
-    <!-- Try to figure out where our tools directory is. Done after overrides
-    are loaded so user can override, but before defaults -->
+    <!-- Try to figure out where our tools directory is. NOTE: Unlike normal 
+         property handling, <available> will override existing property defs -->
     <property name="tool.test.file" value="checkstyle/java.header"/>
-    <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}" 
-        type="file" property="argo.tools.dir" value="${argo.root.dir}/argouml-core-tools"/>
+    <available file="../argouml-core-tools/${tool.test.file}" 
+        type="file" property="argo.tools.dir" value="../argouml-core-tools"/>
     <available file="../../tools/${tool.test.file}" 
         type="file" property="argo.tools.dir" value="../../tools"/>
 
@@ -621,20 +622,18 @@ Can't we use a single target with dependencies? tfm -->
   <!-- ================================= 
           target: checkstyle              
        ================================= -->
-  <target name="checkstyle" depends="init" 
+  <target name="checkstyle" depends="init,static-check-init" 
           description="Run Checkstyle on sources">
-    <echo message="argo.tools.dir = ${argo.tools.dir}" />
+    <mkdir dir="${argo.build.dir}"/>
     <taskdef resource="checkstyletask.properties"
                classpath="${argo.tools.dir}/checkstyle-4.3/checkstyle-all-4.3.jar"/>
-        
+  	
     <checkstyle config="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml" >
-    	<fileset dir="${argo.root.dir}" 
-      	includes="argouml-app/src/**/*.java argouml-core-*/src/**/*.java"
-        excludes="**/JavaRecognizer.java **/JavaLexer.java **/JavaTokenTypes.java"/>
+      <fileset refid="java-sources"/>
       <formatter type="plain"/>
       <formatter type="xml" toFile="${argo.build.dir}/checkstyle_errors.xml"/>
       <property key="checkstyle.header.file" file="${argo.tools.dir}/checkstyle/java.header"/>
-      <property key="basedir" value="${argo.root.dir}"/>
+      <property key="basedir" value=".."/>
 
     </checkstyle>
       
@@ -659,7 +658,7 @@ Cyclic - If the package contains a dependency cycle
 For details see http://www.clarkware.com/software/JDepend.html.
     </echo>
     <java classname="jdepend.swingui.JDepend" failonerror="true" fork="true">
-      <arg value="${argo.root.dir}/argouml-app/src/org"/>
+      <arg value="../argouml-app/src/org"/>
       <classpath>
         <path refid="ant.optional.classpath"/>
       </classpath>
@@ -670,9 +669,12 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <!-- Perform javasrc to find about the structure in ArgoUML.             -->
   <!-- =================================================================== -->
-  <!-- TODO: This target is not yet tested with the new structure. -->
+  <!-- TODO: This target is broken because it depends on an ANTLR definition which has been removed. -->
   <target name="javasrc" depends="init"
           description="Run javasrc on the source.">
+  	
+    <property name="javasrc.jar.path" location="${argo.tools.dir}/lib/javasrc-2001-beta.jar" />
+
     <java classname="javasrc.app.Pass1" failonerror="true" fork="true">
       <sysproperty key="recursive" value="yes"/>
       <sysproperty key="title" value="JavaSrc for ArgoUML"/>
@@ -697,16 +699,24 @@ For details see http://www.clarkware.com/software/JDepend.html.
     </java>
   </target>
 
+  <target name="static-check-init">
+    <fileset id="java-sources" dir=".." 
+  	includes="argouml-app/src/**/*.java argouml-core-*/src/**/*.java">
+      <exclude name="**/JavaLexer.java"/>
+      <exclude name="**/JavaRecognizer.java"/>
+      <exclude name="**/JavaTokenTypes.java"/>
+    </fileset>
+  </target>
 
-  <!-- TODO: This target is not yet tested with the new structure. -->
-  <target name="pmd-init" depends="ant.optional.init">
+
+  <target name="pmd-init" depends="ant.optional.init, static-check-init">
     <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpath="${pmd.jar.path}"/>
     <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpath="${pmd.jar.path}"/>
     <property name="pmd.reports.dir" value="${argo.tests.reports}/pmd"/>
     <mkdir dir="${pmd.reports.dir}"/>
   </target>
 
-  <!-- TODO: This target is not yet tested with the new structure. -->
+
   <target name="pmd" depends="pmd-init">
 
     <delete>
@@ -715,21 +725,19 @@ For details see http://www.clarkware.com/software/JDepend.html.
       </fileset>
     </delete>
 
+   <!-- The formatter accepts a link prefix like this:
+        linkPrefix="http://argouml.tigris.org/source/browse/argouml/trunk/src/"
+        but it will look for things with an extension of .html instead of .java
+        -->
     <pmd shortFilenames="true">
       <ruleset>rulesets/favorites.xml</ruleset>
       <ruleset>basic</ruleset>
-      <formatter type="html" toFile="${pmd.reports.dir}/pmd-report.html" 
-        linkPrefix="http://pmd.sourceforge.net/xref/"/>
-      <!-- TODO: Need other parts of source tree here -->
-      <fileset dir="${argo.root.dir}/argouml-app/src/org" includes="**/*.java">
-        <exclude name="**/JavaLexer.java"/>
-        <exclude name="**/JavaRecognizer.java"/>
-        <exclude name="**/JavaTokenTypes.java"/>
-      </fileset>
+      <formatter type="html" toFile="${pmd.reports.dir}/pmd-report.html"/>
+      <fileset refid="java-sources"/>
     </pmd>
   </target>
 
-  <!-- TODO: This target is not yet tested with the new structure. -->
+
   <target name="cpd" depends="pmd-init">
     <property name="cpd.report.file" value="${pmd.reports.dir}/cpd-report"/>
     
@@ -737,12 +745,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
     <delete file="${cpd.report.file}.*"/>
     <cpd minimumTokenCount="100" outputFile="${cpd.report.file}.xml" 
       format="xml" encoding="UTF-8">
-      <fileset dir="${argo.root.dir}/argouml-app/src">
-        <include name="**/*.java"/>
-        <exclude name="**/JavaLexer.java"/>
-        <exclude name="**/JavaRecognizer.java"/>
-        <exclude name="**/JavaTokenTypes.java"/>
-      </fileset>
+        <fileset refid="java-sources"/>
     </cpd>
     
     <xslt in="${cpd.report.file}.xml" style="${pmd.xslt.path}/cpdhtml.xslt" 
@@ -774,9 +777,6 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <!-- Runs Classycle to find cyclic dependencies in ArgoUML.              -->
   <!-- =================================================================== -->
-  <!-- TODO: This target is not yet tested with the new structure. 
-  depends="compile"
-  -->
   <target name="classycle" depends="init,package"
         description="Analyze sources for cyclic dependencies using Classcycle">
     <echo message="Running classcyle on ${argo.build.dir}." />
