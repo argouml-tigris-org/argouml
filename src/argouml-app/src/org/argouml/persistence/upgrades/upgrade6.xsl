@@ -41,6 +41,13 @@
 
 	<xsl:template match='member[position() > 1]'>
 	</xsl:template>
+	
+	<!-- Remove any left over references to a tee_ prefixed Fig id issue 5075 -->
+ 	<xsl:template match='/uml/pgml/group[./@description="org.argouml.uml.diagram.ui.FigEdgeAssociationClass"]/private'>
+	   <private>
+		<xsl:value-of select="substring-before(.,'sourcePortFig=&quot;tee_')" />
+	   </private>
+	</xsl:template>
     
 <!-- 
 Anything not touched by the fixes above must be copied over unchanged
