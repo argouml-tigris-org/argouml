@@ -27,19 +27,23 @@ package org.argouml.uml.generator;
 import java.util.Collection;
 
 /**
- * Defines the methods to generate source code from the model.
- * Each class providing code generation functionality should implement
- * this.
- * Replaces the FileGenerator interface.
+ * Defines the methods to generate source code from the model. Each class
+ * providing code generation functionality must implement this to be recognized
+ * by ArgoUML as a code generator.
+ * <p>
+ * TODO: A GUI-independent mechanism to pass settings to the code generator is
+ * needed similar to what we have for reverse engineering.  See
+ * {@link org.argouml.uml.reveng.ImportInterface#getImportSettings()} and
+ * {@link org.argouml.uml.reveng.SettingsTypes}
+ * 
+ * @since 0.20 when it replaced the FileGenerator interface.
  */
 public interface CodeGenerator {
+    
     /**
-     * The file seperator for this operating system.
+     * The file separator for this operating system.
      */
     String FILE_SEPARATOR = System.getProperty("file.separator");
-
-    // FIXME: maybe convert all Collections of modelelements
-    // into Sets, because they shall not contain duplicate elements.
 
     /**
      * Generate code for the specified classifiers. If generation of
@@ -56,12 +60,13 @@ public interface CodeGenerator {
 
     /**
      * Generate files for the specified classifiers.
+     * 
      * @see #generate(Collection, boolean)
      * @param elements the UML model elements to generate code for.
      * @param path The source base path.
      * @param deps Recursively generate dependency files too.
      * @return The filenames (with relative path) as a collection of Strings.
-     * The collection may be empty if no file will be generated.
+     *         The collection may be empty if no file will be generated.
      */
     Collection<String> generateFiles(Collection elements, String path, 
             boolean deps);
@@ -69,11 +74,12 @@ public interface CodeGenerator {
     /**
      * Returns a list of files that will be generated from the specified
      * modelelements.
+     * 
      * @see #generate(Collection, boolean)
      * @param elements the UML model elements to generate code for.
      * @param deps Recursively generate dependency files too.
      * @return The filenames (with relative path) as a collection of Strings.
-     * The collection may be empty if no file will be generated.
+     *         The collection may be empty if no file will be generated.
      */
     Collection<String> generateFileList(Collection elements, boolean deps);
 }
