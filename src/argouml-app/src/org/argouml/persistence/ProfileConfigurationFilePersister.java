@@ -269,7 +269,10 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                                 + "</filename>");
                         w.println("\t\t\t<model>");
 
-                        printModelXMI(w, uprofile.getModel());
+                        final Collection profilePackages = 
+                            uprofile.getProfilePackages();
+                        final Object model = profilePackages.iterator().next();
+                        printModelXMI(w, model);
 
                         w.println("\t\t\t</model>");
                         w.println("\t\t</userDefined>");

@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
@@ -44,6 +45,7 @@ import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFileView;
 import org.argouml.persistence.UmlFilePersister;
 import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
 import org.argouml.util.ArgoFrame;
 
 /**
@@ -75,19 +77,25 @@ public class ActionExportProfileXMI extends AbstractAction {
      * @param arg0
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void actionPerformed(ActionEvent arg0) {        
-        Object model = selectedProfile.getModel();
-        if (model != null) {
-            File destiny = getTargetFile();
-            if (destiny != null) {
-                try {
+    public void actionPerformed(ActionEvent arg0) {
+        try {
+            final Collection profilePackages = 
+                selectedProfile.getProfilePackages();
+            final Object model = profilePackages.iterator().next();
+            
+            if (model != null) {
+                File destiny = getTargetFile();
+                if (destiny != null) {
                     saveModel(destiny, model);
-                } catch (IOException e) {
-                    LOG.error("Exception", e);
-                } catch (UmlException e) {
-                    LOG.error("Exception", e);
                 }
             }
+        } catch (ProfileException e) {
+            // TODO: We should be giving the user more direct feedback
+            LOG.error("Exception", e);
+        } catch (IOException e) {
+            LOG.error("Exception", e);
+        } catch (UmlException e) {
+            LOG.error("Exception", e);
         }
     }
 
