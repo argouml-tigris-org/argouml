@@ -172,14 +172,17 @@ The table below show how the code is organized in the different layouts.
       <table>
         <title>Layout differences</title>
         <tgroup cols="4">
-          <tbody>
+
+          <thead>
             <row>
               <entry>Code</entry>
               <entry>Repository location</entry>
               <entry>The repository layout</entry>
               <entry>The Eclipse layout</entry>
             </row>
+          </thead>
 
+          <tbody>
             <row>
               <entry>Subsystems</entry>
               <entry>
@@ -301,17 +304,324 @@ releases/<replaceable>RELEASE-TAG</replaceable></literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argoumlinstaller/build/<replaceable>RELEASE-TAG</replaceable>/<replaceable>PROJECT-NAME</replaceable>/</entry>
               <entry>N/A or <replaceable>WORKSPACE</replaceable>/<replaceable>PROJECT-NAME</replaceable> (if switched to)</entry>
             </row>
-
-            <row>
-              <entry>argo.root.dir</entry>
-              <entry>N/A</entry>
-              <entry><replaceable>WORK</replaceable>/argouml</entry>
-              <entry><replaceable>WORKSPACE</replaceable></entry>
-            </row>
-
           </tbody>
         </tgroup>
       </table>
+</para>
+
+    <para>
+To handle the two layouts the following guidelines for writing
+ant scripts apply:
+<itemizedlist>
+        <listitem>
+          <para>
+The same build.xml file is used, both for building from ant in
+the repository layout and in the Eclipse layout.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+In 
+<filename>argouml/src/<replaceable>subsystem</replaceable>/build.xml</filename>
+use 
+<filename>../<replaceable>subsystem</replaceable>/build/<replaceable>name</replaceable></filename>
+to refer to files needed to compile and run tests.
+</para>
+
+          <para>
+Only references to subsystems depended on are allowed.
+</para>
+          <itemizedlist>
+            <listitem>
+              <para>
+argouml-core-model-mdr and argouml-core-model-euml depend on
+     argouml-core-infra and argouml-core-model and no other.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+argouml-app should in the orthodox world depend only on
+argouml-core-infra and argouml-core-model.
+It depends also on argouml-core-model-mdr but only for running tests
+but that is because the tests are integration-level tests instead of tests
+for that subsystem.
+</para>
+            </listitem>
+            <listitem>
+              <para>
+argouml-core-diagrams-sequence2 and all other diagrams subsystems depend
+on argouml-core-infra, argouml-core-model, and argouml-app.
+</para>
+            </listitem>
+          </itemizedlist>
+        </listitem>
+
+        <listitem>
+          <para>
+The "jar" target in 
+<filename>argouml/src/<replaceable>subsystem</replaceable>/build.xml</filename>
+compiles the code,
+creates the directory
+<filename>build</filename> within
+<filename><replaceable>subsystem</replaceable></filename>, and
+copies all exported jars there.
+</para>
+          <para>
+Since this build depends on jars in depended on subsystems,
+the target should first run the "jar" target in those subsystems.
+</para>
+          <para>
+Also jars that are not generated but provided by the subsystem are copied.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+In the repository layout, the "package" target in
+<filename>argouml/src/argouml-build/build.xml</filename>
+compiles all subsystems,
+creates the directory
+<filename>build</filename> in
+<filename>argouml/src/argouml-build</filename>
+and copies all exported jars from all subsystems there.
+</para>
+          <para>
+The copying only copies files and not directories.
+For that reason make sure everything that is exported is in files
+and everything that is not exported in directories.
+</para>
+          <para>
+Especially generated java files,
+the class files as results of the compilation of source and tests,
+test results, 
+javadoc report, and
+other generated reports
+shall be generated in directories to avoid being included in the release.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+In the Eclipse layout, the "package" target in
+<filename>argouml-build/build.xml</filename> (same as above)
+compiles all subsystems,
+creates the directory
+<filename>../argouml/build</filename>
+and copies all exported jars from all subsystems there.
+</para>
+          <para>
+For this reason no Eclipse project shall be name "argouml".
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+For Modules that are developed in separate Tigris projects
+in the 
+<filename>argouml-<replaceable>name</replaceable>/build.xml</filename> file
+use 
+<filename>../argouml/build/<replaceable>name</replaceable></filename>
+to refer to files needed to compile and run tests.
+</para>
+
+          <para>
+Only references to subsystems depended on are allowed.
+</para>
+          <para>
+Modules should probably depend on
+argouml-core-infra,
+argouml-core-model, and
+argouml-app
+and not anything else.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+The "jar" target in 
+<filename>argouml-<replaceable>name</replaceable>/build.xml</filename>
+compiles the code,
+creates the directory
+<filename>argouml-<replaceable>name</replaceable>/build</filename>, and
+copies all exported jars there.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+The "install" target in 
+<filename>argouml-<replaceable>name</replaceable>/build.xml</filename>
+performs the "jar" target and
+copies all jars needed by the deployed application to
+<filename>../argouml/build/ext</filename>.
+</para>
+          <para>
+The release script includes the files from there.
+</para>
+        </listitem>
+
+        <listitem>
+          <para> 
+For the listed purposes, use the paths listed in the table,
+in all subsystems and modules.
+
+<table>
+              <title>Created things</title>
+
+              <tgroup cols="2">
+                <thead>
+                  <row>
+                    <entry>What</entry>
+                    <entry>Where (under ./build)</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>
+Result of the compilation of
+src/<replaceable>tree</replaceable> and
+build/java/<replaceable>tree</replaceable>
+</entry>
+                    <entry>classes/<replaceable>tree</replaceable></entry>
+                  </row>
+
+                  <row>
+                    <entry>
+Result of the compilation of
+tests/<replaceable>tree</replaceable>
+</entry>
+                    <entry>
+tests/classes/<replaceable>tree</replaceable>
+</entry>
+                  </row>
+
+                  <row>
+                    <entry>Generated java code</entry>
+                    <entry>java/<replaceable>tree</replaceable></entry>
+                  </row>
+
+                  <row>
+                    <entry>XML result from tests</entry>
+                    <entry>
+tests/reports/junit/output/<replaceable>XML-files</replaceable>
+</entry>
+                  </row>
+
+                  <row>
+                    <entry>HTML result from tests</entry>
+                    <entry>
+tests/reports/junit/output/html/<replaceable>HTML-files</replaceable>
+</entry>
+                  </row>
+
+                  <row>
+                    <entry>Complete javadoc report</entry>
+                    <entry>javadocs</entry>
+                  </row>
+
+                  <row>
+                    <entry>Javadoc report exported functions only</entry>
+                    <entry>api</entry>
+                  </row>
+
+                  <row>
+                    <entry>
+Instrumented classes from build/classes/<replaceable>tree</replaceable>
+</entry>
+                    <entry>
+instrumented/<replaceable>tree</replaceable>
+</entry>
+                  </row>
+
+                </tbody>
+              </tgroup>
+            </table>
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Tools that reside in the tools directory are referenced using the property
+argo.tools.dir.
+Like this: ${argo.tools.dir}/<replaceable>path to the file</replaceable>
+</para>
+          <para>
+The tools in question are the tools
+used for build and testing that are common to several subsystems.
+</para>
+        </listitem>
+
+        <listitem>
+          <para>
+Every build.xml file that uses tools from the tools directory
+shall set the argo.tools.dir property.
+</para>
+          <para>
+This is done by testing for the existance of the 
+<filename><replaceable>candidate-dir</replaceable>/checkstyle/java.header</filename>
+file and the result should be set to:
+<itemizedlist>
+              <listitem>
+                <para>
+<filename>../../tools</filename> for subsystems in the repository layout.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+<filename>../argouml-core-tools</filename> for subsystems in the Eclipse layout.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+<filename>../../tools</filename> for argouml-build in the repository layout.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+<filename>../argouml-core-tools</filename> for argouml-build in the Eclipse layout.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+<filename>../tools</filename> for documentation in the repository layout.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+<filename>../argouml-core-tools</filename> for documentation in the Eclipse layout.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+<filename>../argouml/tools</filename> for other Tigris projects in the repository layout.
+</para>
+              </listitem>
+              <listitem>
+                <para>
+<filename>../argouml-core-tools</filename> for other Tigris projects in the Eclipse layout.
+</para>
+              </listitem>
+            </itemizedlist>
+</para>
+
+          <sidebar>
+            <para>
+The reason for setting this explicitly everywhere is to reduce
+the amount of dependencies to a certain file or files and 
+removes need to have that file available to calculate the paths.
+</para>
+            <para>
+If the location of the tools directory will every change,
+there will be a major problem updating all projects.
+</para>
+          </sidebar>
+        </listitem>
+      </itemizedlist>
 </para>
   </sect1>
 
