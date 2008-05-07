@@ -74,7 +74,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
   <searchpath href="<ocl>self.searchPathList</ocl>" />
 
-  <ocl>self.members</ocl>
+  <members>
+    <ocl>self.members</ocl>
+  </members>
 
   <historyfile name="<ocl>self.historyFile</ocl>" />
 

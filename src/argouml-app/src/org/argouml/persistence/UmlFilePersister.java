@@ -87,7 +87,7 @@ public class UmlFilePersister extends AbstractFilePersister {
      * This controls conversion of old persistence version files to be
      * converted to the current one, keeping ArgoUML backwards compatible.
      */
-    public static final int PERSISTENCE_VERSION = 5;
+    public static final int PERSISTENCE_VERSION = 6;
     
     /**
      * The TOTAL_PHASES_LOAD constant is the number of phases used by the load
