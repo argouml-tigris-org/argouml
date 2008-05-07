@@ -27,7 +27,8 @@ package org.argouml.uml.generator;
 import javax.swing.Icon;
 
 /**
- * Encapsulates a language name and other properties.
+ * Encapsulates a programming language name and other properties.
+ * 
  * @author Daniele Tamino
  */
 public class Language {
@@ -37,6 +38,8 @@ public class Language {
     private Icon icon;
 
     /**
+     * Construct a language instance with all its properties.
+     * 
      * @param theName The name of the language.
      * @param theTitle A string representing the language for display.
      * @param theIcon An icon for the language.
@@ -53,6 +56,7 @@ public class Language {
 
     /**
      * Creates a language with no icon.
+     * 
      * @param theName The name of the language.
      * @param theTitle A string representing the language for display.
      */
@@ -62,6 +66,7 @@ public class Language {
 
     /**
      * Creates a language with title equal to the name.
+     * 
      * @param theName The name of the language.
      * @param theIcon An icon for the language.
      */
@@ -71,6 +76,7 @@ public class Language {
 
     /**
      * Creates a language with title equal to the name and no icon.
+     * 
      * @param theName The name of the language.
      */
     public Language(String theName) {
@@ -106,8 +112,8 @@ public class Language {
     }
 
     /**
-     * @return Returns the title, which should be a string representing
-     * the language, in a form suitable for display.
+     * @return Returns the title, which should be a string representing the
+     *         language, in a form suitable for display.
      */
     public String getTitle() {
         return title;
@@ -115,15 +121,12 @@ public class Language {
 
     /**
      * @param theTitle A string representing the language, in a form suitable
-     * for display.
+     *                for display.
      */
     public void setTitle(String theTitle) {
         this.title = theTitle;
     }
 
-    /*
-     * @see java.lang.Object#toString()
-     */
     public String toString() {
         String tit = getTitle();
         return tit == null ? "(no name)" : tit;
