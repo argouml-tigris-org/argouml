@@ -73,9 +73,10 @@ class PGMLStackParser
     private static final Logger LOG =
         Logger.getLogger(PGMLStackParser.class);
 
-    private List figEdges = new ArrayList(50);
+    private List<EdgeData> figEdges = new ArrayList<EdgeData>(50);
     
-    private LinkedHashMap modelElementsByFigEdge = new LinkedHashMap(50);
+    private LinkedHashMap<FigEdge, Object> modelElementsByFigEdge =
+        new LinkedHashMap<FigEdge, Object>(50);
     
     /**
      * Constructor.
@@ -193,7 +194,7 @@ class PGMLStackParser
                     st.nextToken();
                 }
 
-                Map attributeMap = interpretStyle(st);
+                Map<String, String> attributeMap = interpretStyle(st);
                 setStyleAttributes(group, attributeMap);
             }
         }
@@ -218,7 +219,7 @@ class PGMLStackParser
             if (f.getOwner() != modelElement) {
                 // Assign nodes immediately but edges later. See issue 4310.
                 if (f instanceof FigEdge) {
-                    modelElementsByFigEdge.put(f, modelElement);
+                    modelElementsByFigEdge.put((FigEdge) f, modelElement);
                 } else {
                     f.setOwner(modelElement);
                 }
@@ -241,8 +242,8 @@ class PGMLStackParser
      * @param st The StrinkTokenizer positioned at the first style identifier
      * @return a map of attributes
      */
-    private Map interpretStyle(StringTokenizer st) {
-        Map map = new HashMap();
+    private Map<String, String> interpretStyle(StringTokenizer st) {
+        Map<String, String> map = new HashMap<String, String>();
         String name;
         String value;
         while (st.hasMoreElements()) {
@@ -267,14 +268,11 @@ class PGMLStackParser
      * @param fig the fig to style.
      * @param attributeMap a map of name value pairs
      */
-    private void setStyleAttributes(Fig fig, Map attributeMap) {
-        String name;
-        String value;
-        Iterator it = attributeMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            name = (String) entry.getKey();
-            value = (String) entry.getValue();
+    private void setStyleAttributes(Fig fig, Map<String, String> attributeMap) {
+        
+        for (Map.Entry<String, String> entry : attributeMap.entrySet()) {
+            final String name = entry.getKey();
+            final String value = entry.getValue();
 
             if ("operationsVisible".equals(name)) {
                 ((OperationsCompartmentContainer) fig)
@@ -319,6 +317,8 @@ class PGMLStackParser
             EdgeData edgeData = (EdgeData) it.next();
             FigEdge edge = edgeData.getFigEdge();
             
+            LOG.info("Setting model element for " + edge);
+            
             Object modelElement = modelElementsByFigEdge.get(edge);
             if (modelElement != null) {
                 edge.setOwner(modelElement);
@@ -329,15 +329,18 @@ class PGMLStackParser
             EdgeData edgeData = (EdgeData) it.next();
             FigEdge edge = edgeData.getFigEdge();
             
+            LOG.info("Connecting nodes for " + edge);
+
+            
             Fig sourcePortFig = null;
             Fig destPortFig = null;
             FigNode sourceFigNode = null;
             FigNode destFigNode = null;
             
-            sourcePortFig = findFig(edgeData.getSourcePortFig());
-            destPortFig = findFig(edgeData.getDestPortFig());
-            sourceFigNode = getFigNode(edgeData.getSourceFigNode());
-            destFigNode = getFigNode(edgeData.getDestFigNode());
+            sourcePortFig = findFig(edgeData.getSourcePortFigId());
+            destPortFig = findFig(edgeData.getDestPortFigId());
+            sourceFigNode = getFigNode(edgeData.getSourceFigNodeId());
+            destFigNode = getFigNode(edgeData.getDestFigNodeId());
             
             if (sourcePortFig == null && sourceFigNode != null) {
                 sourcePortFig = getPortFig(sourceFigNode);
@@ -367,17 +370,32 @@ class PGMLStackParser
         // sure that annotations and the edge port is positioned correctly
         // Only do this after all edges are connected as compute route
         // requires all edges to be connected to nodes.
-        for (Iterator it = d.getLayer().getContentsEdgesOnly().iterator();
-                it.hasNext(); ) {
-            ((FigEdge) it.next()).computeRouteImpl();
+        // TODO: It would be nice not to have to do this and restore annotation
+        // positions instead.
+        for (Object edge : d.getLayer().getContentsEdgesOnly()) {
+            FigEdge figEdge = (FigEdge) edge;
+            LOG.info("Computing route for for " + edge);
+            figEdge.computeRouteImpl();
         }
     }
     
     // TODO: Move to GEF
-    public void addFigEdge(FigEdge figEdge, String sourcePortFig, 
-            String destPortFig, String sourceFigNode, String destFigNode) {
-        figEdges.add(new EdgeData(figEdge, sourcePortFig, destPortFig, 
-                sourceFigNode, destFigNode));
+    /**
+     * Store data of a FigEdge together with the id's of nodes to connect to
+     * @param figEdge The FigEdge
+     * @param sourcePortFigId The id of the source port
+     * @param destPortFigId The id of the destination port
+     * @param sourceFigNodeId The id of the source node
+     * @param destFigNodeId The id of the destination node
+     */
+    public void addFigEdge(
+            final FigEdge figEdge,
+            final String sourcePortFigId, 
+            final String destPortFigId, 
+            final String sourceFigNodeId, 
+            final String destFigNodeId) {
+        figEdges.add(new EdgeData(figEdge, sourcePortFigId, destPortFigId, 
+                sourceFigNodeId, destFigNodeId));
     }
     
     // TODO: Move to GEF
@@ -433,36 +451,74 @@ class PGMLStackParser
     }
     
     // TODO: Move to GEF
+    
+    /**
+     * The data from an edge extracted from the PGML before we can guarantee
+     * all the nodes have been constructed. This stores the FigEdge and the
+     * id's of the nodes to connect to later.
+     * If the nodes are not known then the ports are returned instead.
+     */
     private class EdgeData {
-        private FigEdge figEdge;
-        private String sourcePortFig;
-        private String destPortFig;
-        private String sourceFigNode;
-        private String destFigNode;
+        private final FigEdge figEdge;
+        private final String sourcePortFigId;
+        private final String destPortFigId;
+        private final String sourceFigNodeId;
+        private final String destFigNodeId;
         
-        public EdgeData(FigEdge edge, String sourcePort, 
-                String destPort, String sourceNode, String destNode) {
+        /**
+         * Constructor
+         * @param edge The FigEdge
+         * @param sourcePortId The id of the source port
+         * @param destPortId The id of the destination port
+         * @param sourceNodeId The id of the source node
+         * @param destNodeId The id of the destination node
+         */
+        public EdgeData(FigEdge edge, String sourcePortId, 
+                String destPortId, String sourceNodeId, String destNodeId) {
             this.figEdge = edge;
-            this.sourcePortFig = sourcePort;
-            this.destPortFig = destPort;
-            this.sourceFigNode = sourceNode;
-            this.destFigNode = destNode;
+            this.sourcePortFigId = sourcePortId;
+            this.destPortFigId = destPortId;
+            this.sourceFigNodeId =
+                sourceNodeId != null ? sourceNodeId : sourcePortId;
+            this.destFigNodeId = 
+                destNodeId != null ? destNodeId : destPortId;
         }
         
-        public String getDestFigNode() {
-            return destFigNode;
+        /**
+         * Get the id of the destination FigNode
+         * @return the id
+         */
+        public String getDestFigNodeId() {
+            return destFigNodeId;
         }
-        public String getDestPortFig() {
-            return destPortFig;
+        
+        /**
+         * Get the id of the destination port
+         * @return the id
+         */
+        public String getDestPortFigId() {
+            return destPortFigId;
         }
+        /**
+         * Get the FigEdge
+         * @return the FigEdge
+         */
         public FigEdge getFigEdge() {
             return figEdge;
         }
-        public String getSourceFigNode() {
-            return sourceFigNode;
+        /**
+         * Get the id of the source FigNode
+         * @return the id
+         */
+        public String getSourceFigNodeId() {
+            return sourceFigNodeId;
         }
-        public String getSourcePortFig() {
-            return sourcePortFig;
+        /**
+         * Get the id of the source port
+         * @return the id
+         */
+        public String getSourcePortFigId() {
+            return sourcePortFigId;
         }
     }
 
