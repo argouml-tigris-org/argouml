@@ -208,7 +208,7 @@ class PGMLStackParser
 
         setCommonAttrs(f, attrList);
 
-        String href = attrList.getValue("href");
+        final String href = attrList.getValue("href");
         if (href != null && !href.equals("")) {
             Object modelElement = findOwner(href);
             if (modelElement == null) {
@@ -329,9 +329,6 @@ class PGMLStackParser
             EdgeData edgeData = (EdgeData) it.next();
             FigEdge edge = edgeData.getFigEdge();
             
-            LOG.info("Connecting nodes for " + edge);
-
-            
             Fig sourcePortFig = null;
             Fig destPortFig = null;
             FigNode sourceFigNode = null;
@@ -341,6 +338,14 @@ class PGMLStackParser
             destPortFig = findFig(edgeData.getDestPortFigId());
             sourceFigNode = getFigNode(edgeData.getSourceFigNodeId());
             destFigNode = getFigNode(edgeData.getDestFigNodeId());
+            
+            if (sourceFigNode instanceof FigEdgePort) {
+                sourcePortFig = sourceFigNode;
+            }
+            
+            if (destFigNode instanceof FigEdgePort) {
+                destPortFig = destFigNode;
+            }
             
             if (sourcePortFig == null && sourceFigNode != null) {
                 sourcePortFig = getPortFig(sourceFigNode);
@@ -374,7 +379,6 @@ class PGMLStackParser
         // positions instead.
         for (Object edge : d.getLayer().getContentsEdgesOnly()) {
             FigEdge figEdge = (FigEdge) edge;
-            LOG.info("Computing route for for " + edge);
             figEdge.computeRouteImpl();
         }
     }
@@ -408,29 +412,30 @@ class PGMLStackParser
      *              if the figId supplied is not of a FigNode
      */
     private FigNode getFigNode(String figId) throws IllegalStateException {
-        if (figId.indexOf('.') < 0) {
+        if (figId.contains(".")) {
+            // If the id does not look like a top-level Fig then we can assume
+            // that this is an id of a FigEdgePort inside some FigEdge.
+            // So extract the FigEdgePort from the FigEdge and return that as
+            // the FigNode.
+            figId = figId.substring(0, figId.indexOf('.'));
+            FigEdgeModelElement edge = (FigEdgeModelElement) findFig(figId);
+            if (edge == null) {
+                throw new IllegalStateException(
+                        "Can't find a FigNode with id " + figId);
+            }
+            edge.makeEdgePort();
+            return edge.getEdgePort();
+        } else {
             // If there is no dot then this must be a top level Fig and can be
             // assumed to be a FigNode.
             Fig f = findFig(figId);
             if (f instanceof FigNode) {
                 return (FigNode) f;
             } else {
-        	LOG.error("FigID " + figId + " is not a node, edge ignored");
+                LOG.error("FigID " + figId + " is not a node, edge ignored");
                 return null;
             }
         }
-        // If the id does not look like a top-level Fig then we can assume that
-        // this is an id of a FigEdgePort inside some FigEdge.
-        // So extract the FigEdgePort from the FigEdge and return that as
-        // the FigNode.
-        figId = figId.substring(0, figId.indexOf('.'));
-        FigEdgeModelElement edge = (FigEdgeModelElement) findFig(figId);
-        if (edge == null) {
-            throw new IllegalStateException(
-                    "Can't find a FigNode with id " + figId);
-        }
-        edge.makeEdgePort();
-        return edge.getEdgePort();
     }
     
 
