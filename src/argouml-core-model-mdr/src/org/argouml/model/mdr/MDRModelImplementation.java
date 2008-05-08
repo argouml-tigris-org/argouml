@@ -48,7 +48,6 @@ import org.argouml.model.AggregationKind;
 import org.argouml.model.ChangeableKind;
 import org.argouml.model.CollaborationsFactory;
 import org.argouml.model.CollaborationsHelper;
-import org.argouml.model.CommandStack;
 import org.argouml.model.CommonBehaviorFactory;
 import org.argouml.model.CommonBehaviorHelper;
 import org.argouml.model.ConcurrencyKind;
@@ -56,7 +55,6 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.DataTypesFactory;
 import org.argouml.model.DataTypesHelper;
-import org.argouml.model.DefaultCommandStack;
 import org.argouml.model.DiagramInterchangeModel;
 import org.argouml.model.DirectionKind;
 import org.argouml.model.ExtensionMechanismsFactory;
@@ -673,10 +671,6 @@ public class MDRModelImplementation implements ModelImplementation {
     
     Map<String, String> getPublic2SystemIds() {
         return public2SystemIds;
-    }
-
-    public CommandStack getCommandStack() {
-        return new DefaultCommandStack();
     }
 
     void addSearchPath(String path) {
