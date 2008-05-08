@@ -107,11 +107,6 @@ public class TestUseCasesFactory extends TestCase {
                    Model.getFacade().getExtensionPoints(base).contains(point));
         Object extend = Model.getUseCasesFactory()
             	.buildExtend(base, extension, point);
-        // The following method is unused by ArgoUML and has been
-        // deprecated.
-//        assertTrue("extend not added to base", 
-//                   Model.getUseCasesHelper()
-//                   .getExtendingUseCases(base).contains(extend));
         assertTrue("extend not added to extension",
 		   Model.getFacade().getExtends(extension).contains(extend));
         assertTrue("extend not added to correct extensionpoint",
