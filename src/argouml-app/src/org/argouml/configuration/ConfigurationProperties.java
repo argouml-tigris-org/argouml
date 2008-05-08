@@ -86,7 +86,8 @@ class ConfigurationProperties extends ConfigurationHandler {
      * @return a generic path string.
      */
     public String getDefaultPath() {
-        return System.getProperty("user.home") + "/.argouml/argo.user.properties";
+        return System.getProperty("user.home") 
+            + "/.argouml/argo.user.properties";
     }
 
     /**

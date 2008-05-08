@@ -557,8 +557,9 @@ public class FindDialog extends ArgoDialog
     
     /**
      * Clear the tabs.
-     * @deprecated for 0.25.4 by tfmorris.  The visibility of this will be reduced
-     * in the future.  Use {@link #reset()}.
+     * 
+     * @deprecated for 0.25.4 by tfmorris. The visibility of this will be
+     *             reduced in the future. Use {@link #reset()}.
      */
     @Deprecated
     public void doClearTabs() {

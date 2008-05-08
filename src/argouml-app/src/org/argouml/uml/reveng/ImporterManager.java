@@ -64,11 +64,11 @@ public final class ImporterManager {
     }
 
     /**
-     * Register a new source language importer. 
-     *
+     * Register a new source language importer.
+     * 
      * @param importer The ImportInterface object to register.
-     * @deprecated Use {@link #addImporter(ImportInterface)} instead. 
-     * (0.25.3 tfm)
+     * @deprecated for 0.25.3 by tfmorris. Use
+     *             {@link #addImporter(ImportInterface)} instead.
      */
     @Deprecated
     public void addimporter(ImportInterface importer) {

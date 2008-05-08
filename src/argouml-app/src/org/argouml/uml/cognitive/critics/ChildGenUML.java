@@ -62,6 +62,7 @@ public class ChildGenUML implements ChildGenerator {
     /**
      * Reply a java.util.Enumeration of the children of the given Object
      * 
+     * @param o the object to return the children of
      * @return an enumeration of the children of the given Object
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      * @deprecated for 0.25.4 by tfmorris. Only for use with legacy GEF

@@ -297,7 +297,7 @@ public class ToDoList extends Observable implements Runnable,
 
     /**
      * @return the todo items
-     * @deprecated for 0.25.4 by tfmorris
+     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getToDoItemList()}.
      */
     @Deprecated
     public Vector<ToDoItem> getToDoItems() {

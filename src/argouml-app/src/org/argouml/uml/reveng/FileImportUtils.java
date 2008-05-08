@@ -50,8 +50,8 @@ public  class FileImportUtils {
      * @param recurse if true, descend directory tree recursively
      * @param filters array of file suffixes to match for filtering
      * @return a list of files to be imported
-     * @deprecated for 0.25.4 by tfmorris - use 
-     * {@link #getList(File, boolean, SuffixFilter[], ProgressMonitor)}
+     * @deprecated for 0.25.4 by tfmorris.  Use 
+     *         {@link #getList(File, boolean, SuffixFilter[], ProgressMonitor)}.
      */
     @Deprecated
     public static List<File> getList(File file, boolean recurse,

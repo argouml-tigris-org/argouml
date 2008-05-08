@@ -281,7 +281,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     /**
      * @param file the selected file
      * @deprecated for 0.25.5 by tfmorris. Use 
-     * {@link #setSelectedFiles(File[])}.
+     *             {@link #setSelectedFiles(File[])}.
      */
     @Deprecated
     protected void setSelectedFile(File file) {

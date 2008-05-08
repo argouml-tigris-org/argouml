@@ -190,6 +190,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
      *     {@link PersistenceManager#getProjectBaseName(Project)}
      *     Rationale: Remove dependency on persistence subsystem.
      */
+    @Deprecated
     public String getBaseName() {
         return PersistenceManager.getInstance().getProjectBaseName(this);
     }
@@ -208,6 +209,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
      *     {@link PersistenceManager#setProjectName(String, Project)}
      *     Rationale: Remove dependency on persistence subsystem.
      */
+    @Deprecated
     public void setName(final String n)
         throws URISyntaxException {
         PersistenceManager.getInstance().setProjectName(n, this);
@@ -228,6 +230,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
      *     {@link PersistenceManager#setProjectUri(URI, Project)}
      *     Rationale: Remove dependency on persistence subsystem.
      */
+    @Deprecated
     public void setURI(URI theUri) {
         PersistenceManager.getInstance().setProjectURI(theUri, this);
     }

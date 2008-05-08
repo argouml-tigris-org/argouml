@@ -47,12 +47,12 @@ import org.argouml.uml.cognitive.UMLDecision;
 public class CrNavFromInterface extends CrUML {
 
     /**
-     * Constructor for the critic.<p>
-     *
-     * Sets up the resource name, which will allow headline and description
-     * to found for the current locale (replaces deprecated setHeadline and sd
-     * methods). Provides a design issue category (RELATIONSHIPS) and knowledge
-     * type (SYNTAX). Adds trigger "end_navigable".<p>
+     * Constructor for the critic.
+     * <p>
+     * Sets up the resource name, which will allow headline and description to
+     * found for the current locale. Provides a design issue category
+     * (RELATIONSHIPS) and knowledge type (SYNTAX). Adds trigger
+     * "end_navigable".
      */
     public CrNavFromInterface() {
         setupHeadAndDesc();

@@ -33,6 +33,7 @@ package org.argouml.uml.diagram.ui;
  * as Derivation, Refinement, or Trace.
  * TODO: Bob says - looks like this should be deprecated with FigAbstraction
  * used instead. Make sure any persistence impact is addressed first.
+ * @deprecated for 0.25.5 by tfmorris.  Use {@link FigAbstraction}.
  */
 public class FigRealization extends FigAbstraction {
     /**

@@ -84,8 +84,7 @@ public class GoListToPosterToItem extends AbstractGoList {
     /**
      * @param parent the parent object to check for offspring
      * @return the children
-     * @deprecated for 0.25.4 by tfmorris. Use 
-     * {@link #getChildrenList(Object)}.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getChildrenList(Object)}.
      */
     @Deprecated
     public Vector getChildren(Object parent) {

@@ -481,11 +481,13 @@ public interface Project {
     public boolean isInTrash(Object obj);
 
     /**
-     * This method is unsupported and will thrown an UnsupportedOperationException.
-     * The profile subsystem has change completely for ArgoUML 0.26 and 
-     * code which called this method must be revised to use the new Profile
-     * subsystem.  See {@link ProfileConfiguration} and {@link Profile}.
-     * Set the given model as the current profile.
+     * This method is unsupported and will thrown an
+     * UnsupportedOperationException. The profile subsystem has change
+     * completely for ArgoUML 0.26 and code which called this method must be
+     * revised to use the new Profile subsystem. See
+     * {@link ProfileConfiguration} and {@link Profile}. Set the given model as
+     * the current profile.
+     * 
      * @param theDefaultModel a uml model
      * @deprecated for 0.25.4 by tfmorris. Use {@link ProfileConfiguration}.
      */

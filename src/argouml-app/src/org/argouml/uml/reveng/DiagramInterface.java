@@ -128,7 +128,7 @@ public class DiagramInterface {
      * 
      * @return The list of modified diagrams.
      * @deprecated for 0.25.4 by tfmorris. Use 
-     * {@link #getModifiedDiagramList()}.
+     *             {@link #getModifiedDiagramList()}.
      */
     @Deprecated
     public Vector<ArgoDiagram> getModifiedDiagrams() {

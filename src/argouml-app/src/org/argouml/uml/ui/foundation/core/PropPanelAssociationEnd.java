@@ -121,11 +121,12 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     /**
      * Constructs the proppanel including initializing all scrollpanes, panels
      * etc. but excluding placing them on the proppanel itself.
+     * 
      * @param name name/title of the property panel
      * @param orientation orientation of the panel
      * @see org.argouml.uml.ui.PropPanel#PropPanel(String, Orientation)
-     * @deprecated for 0.25.4 by tfmorris.  Use setOrientation after
-     * instantiation to select orientation.
+     * @deprecated for 0.25.4 by tfmorris. Use setOrientation after
+     *             instantiation to select orientation.
      */
     @Deprecated
     protected PropPanelAssociationEnd(String name, Orientation orientation) {

@@ -63,8 +63,8 @@ public class ConfigLoader {
 
     /**
      * @return the orientation
-     * @deprecated for 0.25.4 by tfmorris.  Use this.getOrientation() on the
-     * parent component who's orientation you want to match.
+     * @deprecated for 0.25.4 by tfmorris. Use this.getOrientation() on the
+     *             parent component who's orientation you want to match.
      */
     @Deprecated
     public static Orientation getTabPropsOrientation() {
@@ -79,9 +79,9 @@ public class ConfigLoader {
      * @param tabs List in which to return the tabs that were loaded.
      * @param panelName the panel name
      * @param orientation the orientation (Horizontal or Vertical)
-     * @deprecated for 0.25.4 by tfmorris.  Callers should instantiate 
-     * required classes directly rather than allowing dependencies to be 
-     * hidden in argo.ini.
+     * @deprecated for 0.25.4 by tfmorris. Callers should instantiate required
+     *             classes directly rather than allowing dependencies to be
+     *             hidden in argo.ini.
      */
     @Deprecated
     public static void loadTabs(List tabs, String panelName,

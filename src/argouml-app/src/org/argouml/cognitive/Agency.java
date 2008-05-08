@@ -274,8 +274,8 @@ public class Agency extends Observable { //implements java.io.Serialization
      *
      * @param clazz the design material
      * @return the critics
-     * @deprecated for 0.25.4 by tfmorris - use 
-     * {@link #criticListForSpecificClass(Class)}.
+     * @deprecated for 0.25.4 by tfmorris.  Use 
+     *             {@link #criticListForSpecificClass(Class)}.
      */
     @Deprecated
     protected static Vector<Critic> criticsForSpecificClass(Class clazz) {

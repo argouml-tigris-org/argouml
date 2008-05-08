@@ -361,7 +361,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      * Get the uplinks of this node.
      * 
      * @return The uplinks of this node.
-     * @deprecated for 0.25.4 by tfmorris - use {@link #getUpNodes()}
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #getUpNodes()}.
      */
     @Deprecated
     public Vector<ClassdiagramNode> getUplinks() {

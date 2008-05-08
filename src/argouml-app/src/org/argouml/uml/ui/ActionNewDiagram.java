@@ -91,8 +91,8 @@ public abstract class ActionNewDiagram extends UndoableAction {
      * Utility function to create a collaboration.
      * 
      * @return a new collaboration
-     * @deprecated by MVW in V0.25.3. Replaced by 
-     * createCollaboration(Object namespace)
+     * @deprecated by MVW in V0.25.3. Replaced by createCollaboration(Object
+     *             namespace)
      */
     @Deprecated
     protected static Object createCollaboration() {

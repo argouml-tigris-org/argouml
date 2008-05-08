@@ -72,8 +72,8 @@ public class SystemInfoDialog extends ArgoDialog {
      *
      * @param owner - ignored - for backward compatibility only
      * @param modal true if the dialog is modal
-     * @deprecated for 0.25.1 by tfmorris - 
-     * use {@link #SystemInfoDialog(boolean)}
+     * @deprecated for 0.25.1 by tfmorris.  Use 
+     *             {@link #SystemInfoDialog(boolean)}
      */
     @Deprecated
     public SystemInfoDialog(Frame owner, boolean modal) {
@@ -165,7 +165,8 @@ public class SystemInfoDialog extends ArgoDialog {
         s.append(System.getProperty("java.class.path", "") + "\n");
         s.append(Translator.localize("dialog.systeminfo.operating-system"));
         s.append(System.getProperty("os.name", ""));
-        s.append(Translator.localize("dialog.systeminfo.operating-systemversion"));
+        s.append(Translator.localize(
+                "dialog.systeminfo.operating-systemversion"));
         s.append(System.getProperty("os.version", "") + "\n");
         s.append(Translator.localize("dialog.systeminfo.architecture"));
         s.append(System.getProperty("os.arch", "") + "\n");

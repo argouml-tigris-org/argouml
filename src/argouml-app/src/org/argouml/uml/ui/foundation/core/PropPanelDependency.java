@@ -98,6 +98,8 @@ public class PropPanelDependency extends PropPanelRelationship {
     /**
      * Constructor that should be used by subclasses to initialize the
      * attributes a dependency has.
+     * {@inheritDoc}
+     * 
      * @see org.argouml.uml.ui.PropPanel#PropPanel(String, ImageIcon)
      */
     protected PropPanelDependency(String name, ImageIcon icon) {

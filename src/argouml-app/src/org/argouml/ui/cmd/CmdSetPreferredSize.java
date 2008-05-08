@@ -67,8 +67,7 @@ public class CmdSetPreferredSize extends Cmd {
     
     /**
      * Constructor for the command.
-     * @deprecated by MVW in V0.25.3. 
-     * Use the constructor without params instead.
+     * @deprecated by MVW in V0.25.3. Use {@link #CmdSetPreferredSize()}.
      *
      * @param theMode one of the defined constants
      */
