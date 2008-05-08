@@ -119,7 +119,8 @@ class XmiWriterMDRImpl implements XmiWriter {
      *            The writer to write to
      * @param version the ArgoUML version
      * @throws IllegalArgumentException if no writer provided
-     * @deprecated for 0.25.4 by tfmorris.  Use other constructor.
+     * @deprecated for 0.25.4 by tfmorris.  Use 
+     * {@link #XmiWriterMDRImpl(MDRModelImplementation, Object, OutputStream, String)}.
      */
     public XmiWriterMDRImpl(MDRModelImplementation theParent, Object theModel,
             Writer theWriter, String version) {
@@ -189,7 +190,8 @@ class XmiWriterMDRImpl implements XmiWriter {
                 stream = oStream;
             }
 
-            xmiWriter.write(stream, "file:///ThisIsADummyName.xmi", elements, XMI_VERSION);
+            xmiWriter.write(stream, "file:///ThisIsADummyName.xmi", elements,
+                    XMI_VERSION);
         } catch (IOException e) {
             throw new UmlException(e);
         }
@@ -204,7 +206,7 @@ class XmiWriterMDRImpl implements XmiWriter {
      * @author lmaitre
      * @deprecated for 0.25.4 by tfmorris
      */
-    public class WriterOuputStream extends OutputStream {
+    private class WriterOuputStream extends OutputStream {
 
         private Writer myWriter;
         private boolean inTag = false;

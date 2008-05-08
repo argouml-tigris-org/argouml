@@ -290,9 +290,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
-     * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
-     */
+    @Deprecated
     public boolean isValidStereoType(Object theModelElement,
             Object theStereotype) {
         return isValidStereotype(theModelElement, theStereotype);
@@ -439,40 +437,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + icon);
     }
 
-    
-    @SuppressWarnings("deprecation")
-    public void setTag(Object handle, Object tag) {
-        if (handle instanceof TaggedValue) {
-            TaggedValue tv = (TaggedValue) handle;
-            if (tag instanceof TagDefinition) {
-                tv.setType((TagDefinition) tag);
-            } else {
-                // TODO: Remove old UML 1.3 code
-                //preserve old behavior
-                TagDefinition td = tv.getType();
-                if (tag == null) {
-                    tag = "";
-                }
-                if (td == null) {
-                    td =
-                        ((ExtensionMechanismsFactoryMDRImpl) modelImpl
-                            .getExtensionMechanismsFactory())
-                            .getTagDefinition(tag.toString());
-                    Object model = modelImpl.getFacade().getModel(handle);
-                    if (!modelImpl.getFacade().isAModel(model)) {
-                        model = modelImpl.getModelManagementFactory()
-                                .getRootModel();
-                    }
-                    tv.setType(td);
-                } else {
-                    // TODO: This is going to change the name of the
-                    // existing TagDefinition, essentially redefining it,
-                    // which is probably not what we want to do - tfm
-                    td.setName(tag.toString());
-                }
-            }
-        }
-    }
 
     public void setValueOfTag(Object handle, String value) {
         setDataValues(handle, new String[] {value});
@@ -560,9 +524,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    /**
-     * @deprecated Use {@link #hasStereotype(Object,String)} instead
-     */
     @Deprecated
     public boolean hasStereoType(Object handle, String name) {
         return hasStereotype(handle, name);
