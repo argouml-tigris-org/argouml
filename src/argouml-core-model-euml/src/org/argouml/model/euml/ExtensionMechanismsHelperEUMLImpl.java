@@ -164,11 +164,6 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         // TODO: Auto-generated method stub
     }
 
-    @Deprecated
-    public void setTag(Object handle, Object tag) {
-        // TODO: Auto-generated method stub
-    }
-
     public void setTaggedValue(Object handle, Collection taggedValues) {
         // TODO: Auto-generated method stub
     }
