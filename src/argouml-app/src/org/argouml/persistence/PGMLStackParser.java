@@ -313,9 +313,8 @@ class PGMLStackParser
      * @param d the Diagram
      */
     private void attachEdges(Diagram d) {
-        for (Iterator it = figEdges.iterator(); it.hasNext(); ) {
-            EdgeData edgeData = (EdgeData) it.next();
-            FigEdge edge = edgeData.getFigEdge();
+        for (EdgeData edgeData : figEdges) {
+            final FigEdge edge = edgeData.getFigEdge();
             
             LOG.info("Setting model element for " + edge);
             
@@ -325,19 +324,15 @@ class PGMLStackParser
             }
         }
         
-        for (Iterator it = figEdges.iterator(); it.hasNext(); ) {
-            EdgeData edgeData = (EdgeData) it.next();
-            FigEdge edge = edgeData.getFigEdge();
+        for (EdgeData edgeData : figEdges) {
+            final FigEdge edge = edgeData.getFigEdge();
             
-            Fig sourcePortFig = null;
-            Fig destPortFig = null;
-            FigNode sourceFigNode = null;
-            FigNode destFigNode = null;
-            
-            sourcePortFig = findFig(edgeData.getSourcePortFigId());
-            destPortFig = findFig(edgeData.getDestPortFigId());
-            sourceFigNode = getFigNode(edgeData.getSourceFigNodeId());
-            destFigNode = getFigNode(edgeData.getDestFigNodeId());
+            Fig sourcePortFig = findFig(edgeData.getSourcePortFigId());
+            Fig destPortFig = findFig(edgeData.getDestPortFigId());
+            final FigNode sourceFigNode =
+                getFigNode(edgeData.getSourceFigNodeId());
+            final FigNode destFigNode =
+                getFigNode(edgeData.getDestFigNodeId());
             
             if (sourceFigNode instanceof FigEdgePort) {
                 sourcePortFig = sourceFigNode;
@@ -480,6 +475,13 @@ class PGMLStackParser
          */
         public EdgeData(FigEdge edge, String sourcePortId, 
                 String destPortId, String sourceNodeId, String destNodeId) {
+            if (sourcePortId == null || destPortId == null) {
+                throw new IllegalArgumentException(
+                        "source port and dest port must not be null"
+                        + " source = " + sourcePortId
+                        + " dest = " + destPortId
+                        + " figEdge = " + edge);
+            }
             this.figEdge = edge;
             this.sourcePortFigId = sourcePortId;
             this.destPortFigId = destPortId;
