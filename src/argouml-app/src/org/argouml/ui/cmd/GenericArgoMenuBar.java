@@ -24,12 +24,8 @@
 
 package org.argouml.ui.cmd;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -50,8 +46,6 @@ import org.argouml.cognitive.ui.ActionAutoCritique;
 import org.argouml.cognitive.ui.ActionOpenDecisions;
 import org.argouml.cognitive.ui.ActionOpenGoals;
 import org.argouml.i18n.Translator;
-import org.argouml.model.CommandStack;
-import org.argouml.model.Model;
 import org.argouml.ui.ActionExportXMI;
 import org.argouml.ui.ActionImportXMI;
 import org.argouml.ui.ActionProjectSettings;
@@ -392,8 +386,6 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
-        
-        initCommandStackItems(edit);
 
         JMenuItem undoItem = edit.add(
                 ProjectActions.getInstance().getUndoAction());
@@ -474,67 +466,6 @@ public class GenericArgoMenuBar extends JMenuBar implements
                 .assignAccelerator(settingsItem, ShortcutMgr.ACTION_SETTINGS);
     }
 
-    private void initCommandStackItems(JMenu menu) {
-        if (!Model.getCommandStack().isCommandStackCapabilityAvailable()) {
-            return;
-        }
-
-        final JMenuItem undo = new JMenuItem("Undo");
-        undo.setEnabled(false);
-        menu.add(undo);
-
-        undo.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                Model.getCommandStack().undo();
-            }
-
-        });
-
-        final JMenuItem redo = new JMenuItem("Redo");
-        redo.setEnabled(false);
-        menu.add(redo);
-
-        redo.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                Model.getCommandStack().redo();
-            }
-
-        });
-
-        PropertyChangeListener listener = new PropertyChangeListener() {
-
-            public void propertyChange(PropertyChangeEvent evt) {
-                updateUndoRedo(undo, redo);
-            }
-
-        };
-
-        Model.getPump().addClassModelEventListener(listener,
-                Model.getMetaTypes().getModelElement(), (String[]) null);
-        Model.getPump().addModelEventListener(listener,
-                CommandStack.COMMAND_STACK_UPDATE_EVENT, (String[]) null);
-
-        menu.addSeparator();
-    }
-
-    private void updateUndoRedo(JMenuItem undo, JMenuItem redo) {
-        if (!Model.getCommandStack().canUndo()) {
-            undo.setText("Undo");
-            undo.setEnabled(false);
-        } else {
-            undo.setText("Undo: " + Model.getCommandStack().getUndoLabel());
-            undo.setEnabled(true);
-        }
-        if (!Model.getCommandStack().canRedo()) {
-            redo.setText("Redo");
-            redo.setEnabled(false);
-        } else {
-            redo.setText("Redo: " + Model.getCommandStack().getRedoLabel());
-            redo.setEnabled(true);
-        }
-    }
 
     /**
      * Build the menu "View".
@@ -1130,10 +1061,21 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setTarget();
     }
     
+    /**
+     * Add a new menu to the main toolbar.
+     * 
+     * @param menu the menu to be added
+     */
     public static void registerMenuItem(JMenu menu) {
         moduleMenus.add(menu);
     }
 
+    /**
+     * Add a new Action to the Create Diagram toolbar.  This can be used to
+     * register create actions for new diagram types by plugin modules.
+     * 
+     * @param action the create action to be registered.
+     */
     public static void registerCreateDiagramAction(Action action) {
         moduleCreateDiagramActions.add(action);
     }
