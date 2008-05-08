@@ -187,20 +187,6 @@ public abstract class PropPanelModelElement extends PropPanel {
 
 
     /**
-     * @return a scrollpane for the namespace
-     * @deprecated for 0.24 by bobtarling.  Use {@link #getNamespaceSelector()}
-     */
-    @Deprecated
-    protected JComponent getNamespaceScroll() {
-        if (namespaceScroll == null) {
-            JList namespaceList = new UMLLinkedList(namespaceListModel);
-            namespaceList.setVisibleRowCount(1);
-            namespaceScroll = new JScrollPane(namespaceList);
-        }
-        return namespaceScroll;
-    }
-
-    /**
      * Returns the namespace selector. This is a component which allows the
      * user to select a single item as the namespace.
      *
