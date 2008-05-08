@@ -28,7 +28,6 @@ import java.awt.Rectangle;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -246,6 +245,7 @@ class PGMLStackParser
         Map<String, String> map = new HashMap<String, String>();
         String name;
         String value;
+        
         while (st.hasMoreElements()) {
             String namevaluepair = st.nextToken();
             int equalsPos = namevaluepair.indexOf('=');
@@ -315,8 +315,6 @@ class PGMLStackParser
     private void attachEdges(Diagram d) {
         for (EdgeData edgeData : figEdges) {
             final FigEdge edge = edgeData.getFigEdge();
-            
-            LOG.info("Setting model element for " + edge);
             
             Object modelElement = modelElementsByFigEdge.get(edge);
             if (modelElement != null) {
