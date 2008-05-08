@@ -177,9 +177,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-        if (!(modelelement instanceof EObject)
-                && !(modelelement instanceof String && modelelement
-                        .equals(CommandStackImpl.COMMAND_STACK_UPDATE_EVENT))) {
+        if (!(modelelement instanceof EObject)) {
             throw new IllegalArgumentException(
                     "The modelelement must be instance " //$NON-NLS-1$
                             + "of EObject."); //$NON-NLS-1$
@@ -238,9 +236,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-        if (!(modelelement instanceof EObject)
-                && !(modelelement instanceof String && modelelement
-                        .equals(CommandStackImpl.COMMAND_STACK_UPDATE_EVENT))) {
+        if (!(modelelement instanceof EObject)) {
             throw new IllegalArgumentException();
         }
         unregisterListener(
@@ -393,14 +389,6 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                     }
                 }
             }
-        } else if (notification.getEventType() == COMMAND_STACK_UPDATE) {
-            events.add(new EventAndListeners(
-                    new PropertyChangeEvent(
-                            this, CommandStackImpl.COMMAND_STACK_UPDATE_EVENT,
-                            false, false),
-                    getListeners(CommandStackImpl.COMMAND_STACK_UPDATE_EVENT)));
-// TODO: Why is this commented out? - tfm
-//            Model.notifyMementoCreationObserver(CommandStackImpl.getInstance(modelImpl));
         }
 
         for (EventAndListeners e : events) {

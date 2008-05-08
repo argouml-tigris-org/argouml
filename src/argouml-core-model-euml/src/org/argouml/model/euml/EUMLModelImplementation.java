@@ -201,6 +201,9 @@ public class EUMLModelImplementation implements ModelImplementation {
         ComposedAdapterFactory adapterFactory = new ComposedAdapterFactory(
                 factories);
 
+        // TODO: This will need to be adapted to send undo/redo commands back
+        // to our consumer (e.g. ArgoUML) if a new undo mechanism is implemented
+        // for the Model subsystem - tfm
         editingDomain = new UML2AdapterFactoryEditingDomain(
                 adapterFactory, commandStack);
 
@@ -510,7 +513,7 @@ public class EUMLModelImplementation implements ModelImplementation {
         return null;
     }
 
-    public CommandStackImpl getCommandStack() {
+    private CommandStackImpl getCommandStack() {
         if (theCommandStack == null) {
             theCommandStack = new CommandStackImpl(this);
         }

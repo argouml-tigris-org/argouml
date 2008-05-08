@@ -26,13 +26,13 @@
 
 package org.argouml.model.euml;
 
-import org.argouml.model.CommandStack;
+//import org.argouml.model.CommandStack;
 
 /**
  * CommandStack implementation to support Undo/Redo.
  * 
  */
-public class CommandStackImpl implements CommandStack {
+public class CommandStackImpl /*implements CommandStack*/ {
 
     private EUMLModelImplementation modelImplementation;
 
