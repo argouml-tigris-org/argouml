@@ -98,7 +98,9 @@ public class ExceptionDialog extends JDialog implements ActionListener {
      */
     public ExceptionDialog(Frame f, String message, Throwable e,
             boolean highlightCause) {
-        this(f, formatException(message, e, highlightCause));
+        this(f, Translator.localize("dialog.exception.title"), 
+                Translator.localize("dialog.exception.message"), 
+                formatException(message, e, highlightCause));
     }
 
     public static String formatException(String message, Throwable e,
@@ -121,21 +123,6 @@ public class ExceptionDialog extends JDialog implements ActionListener {
         return sw.toString();
     }
 
-    /**
-     * Construct an exception dialog with a preformatted error string.
-     *
-     * @param f   the <code>Frame</code> from which the dialog is displayed
-     * @param message
-     *            the message
-     * @deprecated by tfmorris for 0.24, use 
-     * {@link #ExceptionDialog(Frame, String, String, String)}
-     */
-    @Deprecated
-    public ExceptionDialog(Frame f, String message) {
-        this(f, Translator.localize("dialog.exception.title"), 
-                Translator.localize("dialog.exception.message"), 
-                message);
-    }
     
     /**
      * Construct an exception dialog with given title, introduction, and detail
