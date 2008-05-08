@@ -79,6 +79,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getSupertypes(generalizableElement);
     }
 
+    @Deprecated
     public Collection getAssociateEnds(Object classifier) {
         return impl.getAssociateEnds(classifier);
     }
@@ -123,7 +124,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getSpecification(object);
     }
 
-
+    @Deprecated
     public Collection getSpecifications(Object classifier) {
         return impl.getSpecifications(classifier);
     }
@@ -208,6 +209,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getAssociationEnd(type, assoc);
     }
 
+    @Deprecated
     public Collection getAllContents(Object clazz) {
         return impl.getAllContents(clazz);
     }
@@ -414,6 +416,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.addSupplierDependency(supplier, dependency);
     }
 
+    @Deprecated
     public void addTaggedValue(Object handle, Object taggedValue) {
         impl.addTaggedValue(handle, taggedValue);
     }
@@ -503,6 +506,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setOwner(handle, owner);
     }
 
+    @Deprecated
     public void setOwnerScope(Object handle, Object os) {
         impl.setOwnerScope(handle, os);
     }
@@ -543,10 +547,12 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setSpecifications(handle, specifications);
     }
 
+    @Deprecated
     public void setTaggedValue(Object handle, String tag, String value) {
         impl.setTaggedValue(handle, tag, value);
     }
 
+    @Deprecated
     public void setTaggedValues(Object handle, Collection taggedValues) {
         impl.setTaggedValues(handle, taggedValues);
     }
@@ -575,10 +581,12 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setLeaf(handle, flag);
     }
 
+    @Deprecated
     public void setChangeability(Object handle, Object ck) {
         impl.setChangeability(handle, ck);
     }
 
+    @Deprecated
     public void setChangeable(Object handle, boolean flag) {
         impl.setChangeable(handle, flag);
     }
@@ -631,6 +639,7 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setSpecification(handle, specification);
     }
 
+    @Deprecated
     public void setTargetScope(Object handle, Object scopeKind) {
         impl.setTargetScope(handle, scopeKind);
     }

@@ -46,6 +46,7 @@ public interface ModelManagementFactory extends Factory {
      *             time, so the concept of a single root model needs to be
      *             dropped.
      */
+    @Deprecated
     void setRootModel(Object rootModel);
 
     /**
@@ -56,6 +57,7 @@ public interface ModelManagementFactory extends Factory {
      *             for now, but that may need enhancement/change to accommodate
      *             multiple projects.
      */
+    @Deprecated
     Object getRootModel();
 
     /**
@@ -95,6 +97,7 @@ public interface ModelManagementFactory extends Factory {
      *             non-null. Use single argument form
      *             {@link #buildPackage(String)}.
      */
+    @Deprecated
     Object buildPackage(String name, String uuid);
 
     /**

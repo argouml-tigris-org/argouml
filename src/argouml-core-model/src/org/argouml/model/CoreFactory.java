@@ -606,13 +606,13 @@ public interface CoreFactory extends Factory {
 
     /**
      * Builds an operation for a classifier.
-     *
+     * 
      * @param classifier is the given classifier
      * @param model is the model to which the class belongs
      * @param returnType the type of the return parameter
      * @return the operation
-     * @deprecated for 0.25.2 by tfmorris 
-     * use {@link #buildOperation(Object, Object)}
+     * @deprecated for 0.25.2 by tfmorris. Use
+     *             {@link #buildOperation(Object, Object)}.
      */
     @Deprecated
     Object buildOperation(Object classifier, Object model, Object returnType);
@@ -628,14 +628,14 @@ public interface CoreFactory extends Factory {
 
     /**
      * Builds an operation with a given name for classifier.
-     *
+     * 
      * @param cls is the classifier that shall own the operation
      * @param model is the model that contains the class
      * @param returnType the type of the return parameter
      * @param name the given name for the operation
      * @return the operation
-     * @deprecated for 0.25.2 by tfmorris - use 
-     * {@link #buildOperation2(Object, Object, String)}
+     * @deprecated for 0.25.2 by tfmorris. Use
+     *             {@link #buildOperation2(Object, Object, String)}.
      */
     @Deprecated
     Object buildOperation(Object cls, Object model, Object returnType,
@@ -670,8 +670,8 @@ public interface CoreFactory extends Factory {
      * @param type
      *            the type of the parameter
      * @return the parameter
-     * @deprecated for 0.25.2 by tfmorris - use
-     *             {@link #buildParameter(Object, Object)}
+     * @deprecated for 0.25.2 by tfmorris. Use
+     *             {@link #buildParameter(Object, Object)}.
      */
     @Deprecated
     Object buildParameter(Object o, Object model, Object type);

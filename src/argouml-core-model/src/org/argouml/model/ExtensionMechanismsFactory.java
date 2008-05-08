@@ -45,7 +45,11 @@ public interface ExtensionMechanismsFactory extends Factory {
     Object createTaggedValue();
 
     /**
-     * Builds a stereotype for some kind of modelelement.
+     * Build a stereotype which has the given name and a base class which
+     * matches the type of the given model element.
+     * <p>
+     * <em>NOTE:</em> Most users will want to find and use an existing 
+     * stereotype, often from a profile, so uses of this method should be rare.
      *
      * @param theModelElementObject    a Model Element that the stereotype
      *                                 will be applied to. The stereotype will

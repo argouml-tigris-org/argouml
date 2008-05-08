@@ -74,7 +74,7 @@ public interface CoreHelper {
      * @return a collection of the associationends
      * @see Facade#getAssociationEnds(Object)
      * @deprecated for 0.25.4 by tfmorris.  Use 
-     * {@link Facade#getAssociationEnds(Object)}.
+     *          {@link Facade#getAssociationEnds(Object)}.
      */
     @Deprecated
     Collection getAssociateEnds(Object classifier);
@@ -185,7 +185,7 @@ public interface CoreHelper {
      *            the class you want to have the interfaces for
      * @return a collection of the Interfaces
      * @deprecated for 0.25.2 by tfmorris. Use
-     *             {@link Facade#getSpecifications(Object)}
+     *             {@link Facade#getSpecifications(Object)}.
      */
     @Deprecated
     Collection getSpecifications(Object classifier);
@@ -364,14 +364,13 @@ public interface CoreHelper {
     Object getAssociationEnd(Object type, Object assoc);
 
     /**
-     * Returns the contents (owned elements) of this Namespace and
-     * all its parents as specified in section 2.5.3.8 of the UML 1.3
-     * spec.<p>
-     *
+     * Returns the contents (owned elements) of this Namespace and all its
+     * parents as specified in section 2.5.3.8 of the UML 1.3 spec.
+     * 
      * @param namespace is the classifier
      * @return Collection
-     * @deprecated for 0.25.1 by tfmorris - 
-     * use {@link ModelManagementHelper#getAllContents(Object)}
+     * @deprecated for 0.25.1 by tfmorris. Use
+     *             {@link ModelManagementHelper#getAllContents(Object)}.
      */
     @Deprecated
     Collection getAllContents(Object namespace);
@@ -812,11 +811,11 @@ public interface CoreHelper {
 
     /**
      * Add a TaggedValue to a ModelElement.
-     *
+     * 
      * @param handle ModelElement
      * @param taggedValue TaggedValue
-     * @deprecated for 0.25.1 by tfmorris - use 
-     * {@link ExtensionMechanismsHelper#addTaggedValue(Object, Object)}
+     * @deprecated for 0.25.1 by tfmorris. Use
+     *         {@link ExtensionMechanismsHelper#addTaggedValue(Object, Object)}.
      */
     @Deprecated
     void addTaggedValue(Object handle, Object taggedValue);
@@ -940,7 +939,7 @@ public interface CoreHelper {
      * @param ck
      *            a {@link ChangeableKind} of Changeable, Frozen or AddOnly
      *            returned from {@link Model#getChangeableKind()}.
-     * @deprecated for 0.25.4 by tfmorris - use
+     * @deprecated for 0.25.4 by tfmorris. Use
      *             {@link #setReadOnly(Object, boolean)}. NOTE: The UML 1.x
      *             enum of AddOnly has no equivalent in UML 2.x.
      */
@@ -956,7 +955,7 @@ public interface CoreHelper {
      * @param handle
      *            is the feature
      * @param changeable true for Changeable and false for Frozen.
-     * @deprecated for 0.25.4 by tfmorris - use
+     * @deprecated for 0.25.4 by tfmorris. Use
      *             {@link #setReadOnly(Object, boolean)} with a negated value.
      */
     @Deprecated
@@ -1342,13 +1341,13 @@ public interface CoreHelper {
 
     /**
      * Set a tagged value of a ModelElement.
-     *
+     * 
      * @param handle is the model element
      * @param tag is the tag name (a string)
      * @param value is the value
-     * @deprecated by tfmorris for 0.23.3 - 
-     * use {@link ExtensionMechanismsHelper#setType(Object, Object)}
-     * and {@link ExtensionMechanismsHelper#setValueOfTag(Object, String)}
+     * @deprecated by tfmorris for 0.23.3. Use
+     *             {@link ExtensionMechanismsHelper#setType(Object, Object)} and
+     *          {@link ExtensionMechanismsHelper#setValueOfTag(Object, String)}.
      */
     @Deprecated
     void setTaggedValue(Object handle, String tag, String value);
@@ -1358,8 +1357,8 @@ public interface CoreHelper {
      *
      * @param handle ModelElement
      * @param taggedValues Collection of TaggedValues
-     * @deprecated for 0.25.1 by tfmorris - use 
-     * {@link ExtensionMechanismsHelper#setTaggedValue(Object, Collection)}
+     * @deprecated for 0.25.1 by tfmorris. Use 
+     *     {@link ExtensionMechanismsHelper#setTaggedValue(Object, Collection)}.
      */
     @Deprecated
     void setTaggedValues(Object handle, Collection taggedValues);
@@ -1367,13 +1366,11 @@ public interface CoreHelper {
     /**
      * Set the targetScope of an AssociationEnd or StructuralFeature.
      * 
-     * @param handle
-     *            the model element
-     * @param targetScope
-     *            a {@link ScopeKind} of Instance or Classifier returned from
-     *            {@link Model#getScopeKind()}.
-     * @deprecated for 0.25.4 by tfmorris.  Target Scope has been removed from 
-     * the UML 2.x spec so this should not be used.
+     * @param handle the model element
+     * @param targetScope a {@link ScopeKind} of Instance or Classifier returned
+     *                from {@link Model#getScopeKind()}.
+     * @deprecated for 0.25.4 by tfmorris. Target Scope has been removed from
+     *             the UML 2.x spec so this should not be used.
      */
     @Deprecated
     void setTargetScope(Object handle, Object targetScope);

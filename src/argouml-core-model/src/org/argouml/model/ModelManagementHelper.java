@@ -208,37 +208,34 @@ public interface ModelManagementHelper {
      * This function may fail and return null eg if some required object doesn't
      * exist in the target model and cannot be copied.
      * 
-     * @param elem
-     *                is some element.
-     * @param model
-     *                is the model the returned object shall belong to.
+     * @param elem is some element.
+     * @param model is the model the returned object shall belong to.
      * @return An element of the same type and at the same position in the model
      *         as elem, or if that would turn out impossible then null.
-     * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model 
-     * implementation maintains cross XMI file references now.
+     * @deprecated for 0.25.4 by tfmorris. Unnecessary because Model
+     *             implementation maintains cross XMI file references now.
      */
     @Deprecated
     Object getCorrespondingElement(Object elem, Object model);
 
     /**
-     * Utility function for managing several overlaid models, eg a user
-     * model to which elements from some profile models is imported when
-     * needed. This version of the function will only copy objects if
-     * canCreate is true, but may then also copy other missing elements.
-     *
-     * This function may fail and return null eg if the required object
-     * doesn't exist in the target model and canCreate is false or some
-     * required object doesn't exist in the target model and cannot be
-     * copied.
-     *
+     * Utility function for managing several overlaid models, eg a user model to
+     * which elements from some profile models is imported when needed. This
+     * version of the function will only copy objects if canCreate is true, but
+     * may then also copy other missing elements.
+     * <p>
+     * This function may fail and return null eg if the required object doesn't
+     * exist in the target model and canCreate is false or some required object
+     * doesn't exist in the target model and cannot be copied.
+     * 
      * @param elem is some element.
      * @param model is the model the returned object shall belong to.
      * @param canCreate determines if objects can be copied into model.
-     * @return An element of the same type and at the same position in the
-     *  model as elem, or if that would turn out impossible then null.
-     *  
-     * @deprecated for 0.25.4 by tfmorris.  Unnecessary because Model 
-     * implementation maintains cross XMI file references now.
+     * @return An element of the same type and at the same position in the model
+     *         as elem, or if that would turn out impossible then null.
+     * 
+     * @deprecated for 0.25.4 by tfmorris. Unnecessary because Model
+     *             implementation maintains cross XMI file references now.
      */
     @Deprecated
     Object getCorrespondingElement(Object elem, Object model,

@@ -210,7 +210,7 @@ public interface ModelImplementation {
      *
      * @return The object implementing the interface.
      * @deprecated for 0.25.4 by tfmorris.  Use 
-     * {@link Facade#isReadOnly(Object)}.
+     *          {@link Facade#isReadOnly(Object)}.
      */
     @Deprecated
     ChangeableKind getChangeableKind();
@@ -233,8 +233,7 @@ public interface ModelImplementation {
      * Getter for the ScopeKind object.
      * 
      * @return The object implementing the interface.
-     * @deprecated for 0.25.4 by tfmorris. Use 
-     * {@link Facade#isStatic(Object)}.
+     * @deprecated for 0.25.4 by tfmorris. Use {@link Facade#isStatic(Object)}.
      */
     @Deprecated
     ScopeKind getScopeKind();
@@ -290,7 +289,7 @@ public interface ModelImplementation {
      * @throws UmlException
      *             on any error while writing
      * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #getXmiWriter(Object, OutputStream, String)}
+     *             {@link #getXmiWriter(Object, OutputStream, String)}.
      */
     @Deprecated
     XmiWriter getXmiWriter(Object model, Writer writer, String version)
@@ -324,8 +323,8 @@ public interface ModelImplementation {
      * Get the command stack.
      * 
      * @return the command stack
-     * @deprecated - do not use. This will be replaced by a command stack
-     *             managed by ArgoUML, not the Model subsystem.
+     * @deprecated for 0.25.4 by tfmorris. Use the ArgoUML undo facility which
+     *             merges all undo actions, including Model subsystems.
      */
     @Deprecated
     CommandStack getCommandStack();

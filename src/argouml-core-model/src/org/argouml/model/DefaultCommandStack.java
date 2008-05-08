@@ -29,7 +29,7 @@ package org.argouml.model;
  * don't support this capability.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
- * 
+ * @deprecated for 0.25.5 by tfmorris.  To be removed before 0.26.
  */
 public class DefaultCommandStack implements CommandStack {
 

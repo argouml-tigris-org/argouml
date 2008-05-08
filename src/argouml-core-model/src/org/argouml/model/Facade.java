@@ -852,6 +852,7 @@ public interface Facade {
      *             {@link #isAPackageImport(Object)}.
      * 
      */
+    @Deprecated
     boolean isAPermission(Object handle);
 
     /**
@@ -1617,7 +1618,7 @@ public interface Facade {
      *
      * @param handle the StructuralFeature or AssociationEnd
      * @return the Changeability
-     * @deprecated for 0.25.4 by tfmorris - use {@link #isReadOnly(Object)}
+     * @deprecated for 0.25.4 by tfmorris. Use {@link #isReadOnly(Object)}.
      */
     @Deprecated
     Object getChangeability(Object handle);
@@ -2058,6 +2059,7 @@ public interface Facade {
      *             or ... (do we need another method which implements the old,
      *             as-implemented semantics)
      */
+    @Deprecated
     Object getModel(Object handle);
     
     /**
@@ -2470,7 +2472,7 @@ public interface Facade {
      *
      * @param handle the association end
      * @return Object the opposite end.
-     * @deprecated for 0.25.2 by tfmorris - use {@link #getNextEnd(Object)}
+     * @deprecated for 0.25.2 by tfmorris. Use {@link #getNextEnd(Object)}.
      */
     @Deprecated
     Object getOppositeEnd(Object handle);

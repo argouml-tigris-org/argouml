@@ -29,7 +29,10 @@ package org.argouml.model;
  * as a stack of commands. There are methods to undo a command (moving the stack
  * pointer down to the previous executed command) or to redo a command (moving
  * the stack pointer up, to the next command in the stack)
+ * 
+ * @deprecated for 0.25.5 by tfmorris.  Use ArgoUMLs command stack.
  */
+@Deprecated
 public interface CommandStack {
 
     /**

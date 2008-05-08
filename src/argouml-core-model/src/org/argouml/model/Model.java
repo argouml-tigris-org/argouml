@@ -355,10 +355,10 @@ public final class Model {
     // kinds in the UML meta-model.
     /**
      * Getter for the ChangeableKind object.
-     *
+     * 
      * @return The object implementing the interface.
-     * @deprecated for 0.25.4 by tfmorris.  This enumeration has been
-     * removed from UML 2.  Use the getter for the isReadOnly attribute.
+     * @deprecated for 0.25.4 by tfmorris. This enumeration has been removed
+     *             from UML 2. Use the getter for the isReadOnly attribute.
      */
     @Deprecated
     public static ChangeableKind getChangeableKind() {
@@ -385,10 +385,10 @@ public final class Model {
 
     /**
      * Getter for the ScopeKind object.
-     *
+     * 
      * @return The object implementing the interface.
-     * @deprecated for 0.25.4 by tfmorris.  This has been removed from 
-     * UML 2.  Use the getter for the isStatic attribute instead.
+     * @deprecated for 0.25.4 by tfmorris. This has been removed from UML 2. Use
+     *             {@link Facade#isStatic(Object)} instead.
      */
     @Deprecated
     public static ScopeKind getScopeKind() {
@@ -519,13 +519,16 @@ public final class Model {
     }
 
     /**
-     * Allows an external system to register itself to recieve mementos
-     * created by the model implementation.
+     * Allows an external system to register itself to receive mementos created
+     * by the model implementation.
+     * 
      * @see ModelMemento
-     *
+     * 
      * @param observer the interested party
-     * @deprecated use setModelCommandCreationObserver
+     * @deprecated for 0.25.4 by bobtarling. Use
+     *             {@link #setModelCommandCreationObserver}.
      */
+    @Deprecated
     public static void setMementoCreationObserver(
             MementoCreationObserver observer) {
         mementoCreationObserver = observer;
@@ -545,9 +548,12 @@ public final class Model {
 
     /**
      * Gets the external class responsible for handling mementos.
+     * 
      * @return the MementoCreationObserver
-     * @deprecated use getModelCommandCreationObserver
+     * @deprecated for 0.25.4 by bobtarling. Use
+     *             {@link #getModelCommandCreationObserver}.
      */
+    @Deprecated
     public static MementoCreationObserver getMementoCreationObserver() {
         return mementoCreationObserver;
     }
@@ -563,10 +569,12 @@ public final class Model {
 
     /**
      * Notify any observer that a command has been created.
-     *
+     * 
      * @param memento The newly created memento.
-     * @deprecated use notifyModelCommandCreationObserver
+     * @deprecated for 0.25.4 by bobtarling. Use
+     *             {@link #notifyModelCommandCreationObserver}.
      */
+    @Deprecated
     public static void notifyMementoCreationObserver(
             ModelMemento memento) {
         MementoCreationObserver mco = getMementoCreationObserver();
@@ -579,7 +587,7 @@ public final class Model {
      * Notify any observer that a command has been created and execute
      * that it.
      * @param command The newly created command.
-     * @return the reulting object from the command
+     * @return the resulting object from the command
      */
     public static Object execute(
             ModelCommand command) {
@@ -604,11 +612,11 @@ public final class Model {
      * Get the command stack.
      * 
      * @return the command stack
-     * @deprecated - do not use. This will be replaced by a command stack
-     *             managed by ArgoUML, not the Model subsystem.
+     * @deprecated for 0.25.4 by tfmorris. Use the command stack from ArgoUML
+     *             instead of the Model subsystem.
      */
     @Deprecated
-    public static CommandStack getCommandStack() {
+    private static CommandStack getCommandStack() {
         return impl.getCommandStack();
     }
 }

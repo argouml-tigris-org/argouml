@@ -80,9 +80,10 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         return impl.getAllPossibleStereotypes(models, modelElement);
     }
 
-    /**
+    /*
      * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
      */
+    @Deprecated
     public boolean isValidStereoType(Object theModelElement,
             Object theStereotype) {
         return isValidStereotype(theModelElement, theStereotype);
@@ -125,11 +126,6 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.setIcon(handle, icon);
     }
 
-    @SuppressWarnings("deprecation")
-    public void setTag(Object handle, Object tag) {
-        impl.setTag(handle, tag);
-    }
-
     public void setTagType(Object handle, String tagType) {
         impl.setType(handle, tagType);
     }
@@ -159,9 +155,10 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.setTaggedValue(handle, taggedValues);
     }
 
-    /**
+    /*
      * @deprecated Use {@link #hasStereotype(Object,String)} instead
      */
+    @Deprecated
     public boolean hasStereoType(Object handle, String name) {
         return hasStereotype(handle, name);
     }

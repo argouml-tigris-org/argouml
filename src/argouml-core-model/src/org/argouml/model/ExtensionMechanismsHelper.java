@@ -28,9 +28,7 @@ import java.util.Collection;
 
 
 /**
- * The interface for the helper of the ExtensionMechanisms.<p>
- *
- * Created from the old ExtensionMechanismsHelper.
+ * The interface for the helper of the ExtensionMechanisms.
  */
 public interface ExtensionMechanismsHelper {
     /**
@@ -193,15 +191,6 @@ public interface ExtensionMechanismsHelper {
      */
     void setIcon(Object handle, Object icon);
 
-    /**
-     * Set the Tag of a TaggedValue.
-     * 
-     * @param handle TaggedValue
-     * @param tag String
-     * @deprecated by tfmorris for 0.23.3 - use {@link #setType(Object, Object)}
-     */
-    @Deprecated
-    void setTag(Object handle, Object tag);
 
     /**
      * Set the tagType of a TaggedDefinition.  This controls the range of legal
@@ -266,7 +255,7 @@ public interface ExtensionMechanismsHelper {
     void removeTaggedValue(Object handle, Object taggedValue);
 
     /**
-     * Se the list of tagged values for a model element.
+     * Set the list of tagged values for a model element.
      *
      * @param handle The model element to set for.
      * @param taggedValues A Collection of tagged values.
@@ -279,18 +268,17 @@ public interface ExtensionMechanismsHelper {
      * @param handle the given object
      * @param name the given name
      * @return true if there is such a stereotype
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #hasStereotype(Object,String)} instead
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #hasStereotype(Object,String)} instead
      */
     boolean hasStereoType(Object handle, String name);
 
     /**
-     * Returns <code>true</code> if the given ModelElement has a Stereotype with the
-     * given name.
+     * Returns <code>true</code> if the given ModelElement has a Stereotype
+     * with the given name.
      * 
-     * @param element
-     *                the given element
-     * @param name
-     *                the given name
+     * @param element the given element
+     * @param name the given name
      * @return true if there is such a stereotype
      */
     boolean hasStereotype(Object element, String name);

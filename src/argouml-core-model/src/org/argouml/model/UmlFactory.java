@@ -96,7 +96,8 @@ public interface UmlFactory {
      * the UML spec.  To control use behavior use 
      * {@link #isConnectionValid(Object, Object, Object, boolean)}.<p>
      * 
-     * @deprecated for 0.25.1 by tfmorris use 4 arg version
+     * @deprecated for 0.25.1 by tfmorris use 4 arg version 
+     *          {@link #isConnectionValid(Object, Object, Object, boolean)}
      * @param connectionType  the UML object type of the connection
      * @param fromElement     the UML object type of the "from"
      * @param toElement       the UML object type of the "to"
