@@ -656,7 +656,4 @@ class MockModelImplementation implements ModelImplementation {
         throw new NotImplementedException();
     }
 
-    public CommandStack getCommandStack() {
-        return new DefaultCommandStack();
-    }
 }
