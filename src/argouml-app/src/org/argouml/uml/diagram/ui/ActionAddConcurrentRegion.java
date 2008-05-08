@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.model.StateMachinesFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
@@ -65,9 +66,9 @@ public class ActionAddConcurrentRegion extends UndoableAction {
     private static final Logger LOG =
         Logger.getLogger(ActionAddConcurrentRegion.class);
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * Constructor
+     */
     public ActionAddConcurrentRegion() {
         super(Translator.localize("action.add-concurrent-region"),
                 ResourceLoaderWrapper.lookupIcon(
@@ -96,15 +97,17 @@ public class ActionAddConcurrentRegion extends UndoableAction {
         super.actionPerformed(ae);
         try {
             /*Here the actions to divide a region*/
-            FigNodeModelElement f = (FigNodeModelElement) TargetManager.getInstance().getFigTarget();
+            Fig f = TargetManager.getInstance().getFigTarget();
 
             if (Model.getFacade().isAConcurrentRegion(f.getOwner())) {
-                f = (FigNodeModelElement) f.getEnclosingFig();
+                f = f.getEnclosingFig();
             }
 
-            List<Fig> nodesInside;
-            nodesInside = ((List<Fig>) f.getEnclosedFigs().clone());
-            Object st = f.getOwner();
+            final FigCompositeState figCompositeState = (FigCompositeState) f;
+            
+            final List<FigConcurrentRegion> regionFigs = 
+                ((List<FigConcurrentRegion>) f.getEnclosedFigs().clone());
+            final Object compositeState = figCompositeState.getOwner();
             Editor editor = Globals.curEditor();
             GraphModel gm = editor.getGraphModel();
             LayerDiagram lay =
@@ -113,18 +116,20 @@ public class ActionAddConcurrentRegion extends UndoableAction {
             Rectangle rName =
                 ((FigNodeModelElement) f).getNameFig().getBounds();
             Rectangle rFig = f.getBounds();
-            final FigCompositeState figCompositeState = (FigCompositeState) f;
             if (!(gm instanceof MutableGraphModel)) {
                 return;
             }
 
             StateDiagramGraphModel mgm = (StateDiagramGraphModel) gm;
 
-            if (!Model.getFacade().isConcurrent(st)) {
+            final StateMachinesFactory factory =
+                Model.getStateMachinesFactory();
+            
+            if (!Model.getFacade().isConcurrent(compositeState)) {
 
-                Object region1 =
-                    Model.getStateMachinesFactory().buildCompositeState(st);
-                FigConcurrentRegion region =
+                final Object region1 =
+                    factory.buildCompositeState(compositeState);
+                final FigConcurrentRegion region =
                     new FigConcurrentRegion(gm, region1,
                                             Color.white,
                                             rFig.width - 6,
@@ -141,10 +146,9 @@ public class ActionAddConcurrentRegion extends UndoableAction {
 
                 }
 
-                if (!nodesInside.isEmpty()) {
-                    for (int i = 0; i < nodesInside.size(); i++) {
-                        FigStateVertex curFig =
-                            (FigStateVertex) nodesInside.get(i);
+                if (!regionFigs.isEmpty()) {
+                    for (int i = 0; i < regionFigs.size(); i++) {
+                        FigStateVertex curFig = regionFigs.get(i);
                         curFig.setEnclosingFig(region);
                         region.addEnclosedFig(curFig);
                         curFig.redrawEnclosedFigs();
@@ -152,9 +156,8 @@ public class ActionAddConcurrentRegion extends UndoableAction {
                 }
             }
 
-            Object region2 =
-                Model.getStateMachinesFactory().buildCompositeState(st);
-            FigConcurrentRegion regionNew =
+            final Object region2 = factory.buildCompositeState(compositeState);
+            final FigConcurrentRegion regionNew =
                 new FigConcurrentRegion(gm, region2, Color.black,
                         rFig.width - 6, 126);
 
@@ -171,10 +174,10 @@ public class ActionAddConcurrentRegion extends UndoableAction {
                 mgm.fireNodeAdded(region2);
             }
 
-            Model.getStateMachinesHelper().setConcurrent(st, true);
+            Model.getStateMachinesHelper().setConcurrent(compositeState, true);
 
         } catch (Exception ex) {
-            LOG.error(ex);
+            LOG.error("Exception caught", ex);
         }
     }
 
