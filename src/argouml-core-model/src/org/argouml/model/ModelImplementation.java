@@ -319,14 +319,5 @@ public interface ModelImplementation {
      */
     CopyHelper getCopyHelper();
     
-    /**
-     * Get the command stack.
-     * 
-     * @return the command stack
-     * @deprecated for 0.25.4 by tfmorris. Use the ArgoUML undo facility which
-     *             merges all undo actions, including Model subsystems.
-     */
-    @Deprecated
-    CommandStack getCommandStack();
 
 }

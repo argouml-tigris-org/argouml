@@ -608,15 +608,4 @@ public final class Model {
 	return impl.getCopyHelper();
     }
     
-    /**
-     * Get the command stack.
-     * 
-     * @return the command stack
-     * @deprecated for 0.25.4 by tfmorris. Use the command stack from ArgoUML
-     *             instead of the Model subsystem.
-     */
-    @Deprecated
-    private static CommandStack getCommandStack() {
-        return impl.getCommandStack();
-    }
 }
