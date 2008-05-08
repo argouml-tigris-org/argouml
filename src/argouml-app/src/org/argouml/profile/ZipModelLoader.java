@@ -48,40 +48,42 @@ public class ZipModelLoader extends StreamModelLoader {
     public Collection loadModel(ProfileReference reference) 
         throws ProfileException {
         LOG.info("Loading profile from ZIP '" + reference.getPath() + "'");
+        
+        if (!reference.getPath().endsWith("zip")) {
+            throw new ProfileException("Profile could not be loaded!");
+        }
 
         InputStream is = null;
         File modelFile = new File(reference.getPath());
         // TODO: This is in the wrong place.  It's not profile specific.
         // It needs to be moved to main XMI reading code. - tfm 20060326
-        if (reference.getPath().endsWith("zip")) {
-            String filename = modelFile.getName();
-            String extension = filename.substring(filename.indexOf('.'),
-                    filename.lastIndexOf('.'));
-            String path = modelFile.getParent();
-            // Add the path of the model to the search path, so we can
-            // read dependent models
-            if (path != null) {
-                System.setProperty("org.argouml.model.modules_search_path",
-                        path);
-            }
-            try {
-                is = openZipStreamAt(modelFile.toURI().toURL(), extension);
-            } catch (MalformedURLException e) {
-                LOG.error("Exception while loading profile '"
-                        + reference.getPath() + "'", e);
-                throw new ProfileException(e);
-            } catch (IOException e) {
-                LOG.error("Exception while loading profile '"
-                        + reference.getPath() + "'", e);
-                throw new ProfileException(e);
-            }
-
-            if (is != null) {
-                return super.loadModel(is, reference.getPublicReference());
-            }
+        String filename = modelFile.getName();
+        String extension = filename.substring(filename.indexOf('.'),
+                filename.lastIndexOf('.'));
+        String path = modelFile.getParent();
+        // Add the path of the model to the search path, so we can
+        // read dependent models
+        if (path != null) {
+            System.setProperty("org.argouml.model.modules_search_path",
+                    path);
+        }
+        try {
+            is = openZipStreamAt(modelFile.toURI().toURL(), extension);
+        } catch (MalformedURLException e) {
+            LOG.error("Exception while loading profile '"
+                    + reference.getPath() + "'", e);
+            throw new ProfileException(e);
+        } catch (IOException e) {
+            LOG.error("Exception while loading profile '"
+                    + reference.getPath() + "'", e);
+            throw new ProfileException(e);
         }
         
-        throw new ProfileException("Profile could not be loaded!");
+        if (is == null) {
+            throw new ProfileException("Profile could not be loaded!");
+        }
+        
+        return super.loadModel(is, reference.getPublicReference());
     }
 
     /**

@@ -62,21 +62,23 @@ public class ReaderModelLoader implements ProfileModelLoader {
      */
     public Collection loadModel(ProfileReference reference) 
         throws ProfileException {
-        if (reader != null) {
-            try {
-                XmiReader xmiReader = Model.getXmiReader();
-                InputSource inputSource = new InputSource(reader);
-                inputSource.setSystemId(reference.getPath());
-                inputSource.setPublicId(
-                        reference.getPublicReference().toString());
-                Collection elements = xmiReader.parse(inputSource, true);
-                return elements;
-            } catch (UmlException e) {
-                throw new ProfileException("Invalid XMI data!", e);
-            }
+        
+        if (reader == null) {
+            LOG.error("Profile not found");
+            throw new ProfileException("Profile not found!");
         }
-        LOG.error("Profile not found");
-        throw new ProfileException("Profile not found!");
+        
+        try {
+            XmiReader xmiReader = Model.getXmiReader();
+            InputSource inputSource = new InputSource(reader);
+            inputSource.setSystemId(reference.getPath());
+            inputSource.setPublicId(
+                    reference.getPublicReference().toString());
+            Collection elements = xmiReader.parse(inputSource, true);
+            return elements;
+        } catch (UmlException e) {
+            throw new ProfileException("Invalid XMI data!", e);
+        }
     }
 
 }

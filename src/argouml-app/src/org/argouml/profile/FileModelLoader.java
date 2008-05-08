@@ -48,7 +48,7 @@ public class FileModelLoader extends URLModelLoader {
             URL url = modelFile.toURI().toURL();
             return super.loadModel(url, reference.getPublicReference());
         } catch (MalformedURLException e) {
-            throw new ProfileException("Model file not found!");
+            throw new ProfileException("Model file not found!", e);
         }
     }
 

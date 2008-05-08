@@ -55,19 +55,19 @@ public abstract class StreamModelLoader implements ProfileModelLoader {
     public Collection loadModel(InputStream inputStream, URL publicReference)
         throws ProfileException {
         
-        if (inputStream != null) {
-            try {
-                XmiReader xmiReader = Model.getXmiReader();
-                InputSource inputSource = new InputSource(inputStream);
-                inputSource.setPublicId(publicReference.toString());
-                Collection elements = xmiReader.parse(inputSource, true);
-                return elements;
-            } catch (UmlException e) {
-                LOG.error("Exception while loading profile ", e);
-                throw new ProfileException("Invalid XMI data!");
-            }
+        if (inputStream == null) {
+            LOG.error("Profile not found");
+            throw new ProfileException("Profile not found!");
         }
-        LOG.error("Profile not found");
-        throw new ProfileException("Profile not found!");
+        
+        try {
+            XmiReader xmiReader = Model.getXmiReader();
+            InputSource inputSource = new InputSource(inputStream);
+            inputSource.setPublicId(publicReference.toString());
+            Collection elements = xmiReader.parse(inputSource, true);
+            return elements;
+        } catch (UmlException e) {
+            throw new ProfileException("Invalid XMI data!", e);
+        }
     }
 }
