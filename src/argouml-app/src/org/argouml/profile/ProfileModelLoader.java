@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,28 +33,15 @@ import java.util.Collection;
  */
 public interface ProfileModelLoader {
     
-    /**
-     * Load a model from the specified path.
-     * 
-     * @param path the path where the profile can be found. <em>Note:</em>The
-     *                expected string format is implementation specific!
-     * @return the set of defined packages
-     * @throws ProfileException if the profile could not be loaded for some
-     *                 reason
-     * @deprecated for 0.25.5 by euluis. 
-     * Use {@link #loadModel(ProfileReference)} instead.
-     */
-    @Deprecated
-    Collection loadModel(String path) throws ProfileException;  
     
     /**
      * Load a model from the specified path.
      * 
-     * @param reference the reference to the profile file, which contains the 
-     * path where the profile file can be found.
+     * @param reference the reference to the profile file, which contains the
+     *                path where the profile file can be found.
      * @return the set of defined packages.
      * @throws ProfileException if the profile could not be loaded for some
-     * reason.
+     *                 reason.
      */
     Collection loadModel(ProfileReference reference) throws ProfileException;  
 }

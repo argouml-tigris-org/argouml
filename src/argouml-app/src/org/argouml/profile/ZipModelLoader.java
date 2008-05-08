@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,45 +44,7 @@ public class ZipModelLoader extends StreamModelLoader {
 
     private static final Logger LOG = Logger.getLogger(ZipModelLoader.class);
 
-    @Deprecated
-    public Collection loadModel(String modelFilename) throws ProfileException {
-        LOG.info("Loading profile from ZIP '" + modelFilename + "'");
-
-        InputStream is = null;
-        File modelFile = new File(modelFilename);
-        // TODO: This is in the wrong place.  It's not profile specific.
-        // It needs to be moved to main XMI reading code. - tfm 20060326
-        if (modelFilename.endsWith("zip")) {
-            String filename = modelFile.getName();
-            String extension = filename.substring(filename.indexOf('.'),
-                    filename.lastIndexOf('.'));
-            String path = modelFile.getParent();
-            // Add the path of the model to the search path, so we can
-            // read dependent models
-            if (path != null) {
-                System.setProperty("org.argouml.model.modules_search_path",
-                        path);
-            }
-            try {
-                is = openZipStreamAt(modelFile.toURI().toURL(), extension);
-            } catch (MalformedURLException e) {
-                LOG.error("Exception while loading profile '" + modelFilename
-                        + "'", e);
-                throw new ProfileException(e);
-            } catch (IOException e) {
-                LOG.error("Exception while loading profile '" + modelFilename
-                        + "'", e);
-                throw new ProfileException(e);
-            }
-
-            if (is != null) {
-                return super.loadModel(is);
-            }
-        }
-        
-        throw new ProfileException("Profile could not be loaded!");
-    }
-    
+   
     public Collection loadModel(ProfileReference reference) 
         throws ProfileException {
         LOG.info("Loading profile from ZIP '" + reference.getPath() + "'");
@@ -105,12 +67,12 @@ public class ZipModelLoader extends StreamModelLoader {
             try {
                 is = openZipStreamAt(modelFile.toURI().toURL(), extension);
             } catch (MalformedURLException e) {
-                LOG.error("Exception while loading profile '" + reference.getPath()
-                        + "'", e);
+                LOG.error("Exception while loading profile '"
+                        + reference.getPath() + "'", e);
                 throw new ProfileException(e);
             } catch (IOException e) {
-                LOG.error("Exception while loading profile '" + reference.getPath()
-                        + "'", e);
+                LOG.error("Exception while loading profile '"
+                        + reference.getPath() + "'", e);
                 throw new ProfileException(e);
             }
 

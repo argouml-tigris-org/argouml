@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,24 +39,6 @@ import org.apache.log4j.Logger;
 public class FileModelLoader extends URLModelLoader {
 
     private static final Logger LOG = Logger.getLogger(FileModelLoader.class);
-
-    @Deprecated
-    public Collection loadModel(String modelFilename) throws ProfileException {
-        LOG.info("Loading profile from file'" + modelFilename + "'");
-        try {
-            File modelFile = new File(modelFilename);
-            URL url = modelFile.toURI().toURL();
-            URL url2 = null;
-            try {
-                url2 = new URL(modelFile.getName());
-            } catch (MalformedURLException e) {
-                LOG.error("Exception", e);
-            }
-            return super.loadModel(url, url2);
-        } catch (MalformedURLException e) {
-            throw new ProfileException("Model file not found!");
-        }
-    }
 
     public Collection loadModel(ProfileReference reference) 
         throws ProfileException {

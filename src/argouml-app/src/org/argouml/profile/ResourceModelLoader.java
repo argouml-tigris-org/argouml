@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,6 @@
 
 package org.argouml.profile;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
@@ -62,20 +60,6 @@ public class ResourceModelLoader extends URLModelLoader {
         clazz = c;
     }
 
-    /*
-     * @see org.argouml.profile.ProfileModelLoader#loadModel(java.lang.String)
-     */
-    @Deprecated
-    public Collection loadModel(String path) throws ProfileException {
-        LOG.info("Loading profile from resource'" + path + "'");
-        URL url = null;
-        try {
-            url = new URL(path);
-        } catch (MalformedURLException e) {
-            LOG.error("Exception", e);
-        }
-        return super.loadModel(clazz.getResource(path), url);
-    }
     
     public Collection loadModel(ProfileReference reference) 
         throws ProfileException {

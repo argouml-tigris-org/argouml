@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,34 +43,12 @@ public abstract class StreamModelLoader implements ProfileModelLoader {
 
     private static final Logger LOG = Logger.getLogger(StreamModelLoader.class);
 
-    /**
-     * @param inputStream the stream from where the model should be loaded
-     * @return the model
-     * @throws ProfileException if the XMIReader couldn't read the input stream
-     */
-    @Deprecated
-    public Collection loadModel(InputStream inputStream) 
-        throws ProfileException {
-        
-        if (inputStream != null) {
-            try {
-                XmiReader xmiReader = Model.getXmiReader();
-                InputSource inputSource = new InputSource(inputStream);
-                Collection elements = xmiReader.parse(inputSource, true);
-                return elements;
-            } catch (UmlException e) {
-                LOG.error("Exception while loading profile ", e);
-                throw new ProfileException("Invalid XMI data!");
-            }
-        }
-        LOG.error("Profile not found");
-        throw new ProfileException("Profile not found!");
-    }
+
 
     /**
      * @param inputStream the stream from where the model should be loaded
-     * @param publicReference the URL to be used as the public reference of 
-     * the profile that will be loaded.
+     * @param publicReference the URL to be used as the public reference of the
+     *                profile that will be loaded.
      * @return the model
      * @throws ProfileException if the XMIReader couldn't read the input stream
      */
