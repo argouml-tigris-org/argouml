@@ -332,29 +332,45 @@ to refer to files needed to compile and run tests.
           <para>
 Only references to subsystems depended on are allowed.
 </para>
-          <itemizedlist>
-            <listitem>
-              <para>
-argouml-core-model-mdr and argouml-core-model-euml depend on
-     argouml-core-infra and argouml-core-model and no other.
-</para>
-            </listitem>
-            <listitem>
-              <para>
-argouml-app should in the orthodox world depend only on
-argouml-core-infra and argouml-core-model.
-It depends also on argouml-core-model-mdr but only for running tests
-but that is because the tests are integration-level tests instead of tests
-for that subsystem.
-</para>
-            </listitem>
-            <listitem>
-              <para>
-argouml-core-diagrams-sequence2 and all other diagrams subsystems depend
-on argouml-core-infra, argouml-core-model, and argouml-app.
-</para>
-            </listitem>
-          </itemizedlist>
+          <table>
+            <title>Allowed subsystem dependencies</title>
+            <tgroup cols="2">
+
+              <thead>
+                <row>
+                  <entry>Project</entry>
+                  <entry>Depends on (only)</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>argouml-core-model-mdr</entry>
+                  <entry>argouml-core-infra, argouml-core-model</entry>
+                </row>
+                <row>
+                  <entry>argouml-core-model-euml</entry>
+                  <entry>argouml-core-infra, argouml-core-model</entry>
+                </row>
+                <row>
+                  <entry>argouml-app</entry>
+                  <entry>argouml-core-infra, argouml-core-model (+
+argouml-core-model-mdr but only for integration-level tests)
+                  </entry>
+                </row>
+                <row>
+                  <entry>argouml-core-diagrams-sequence2</entry>
+                  <entry>argouml-core-infra, argouml-core-model, argouml-app
+                  </entry>
+                </row>
+                <row>
+                  <entry>all other diagram subsystems</entry>
+                  <entry>argouml-core-infra, argouml-core-model, argouml-app
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
         </listitem>
 
         <listitem>
@@ -392,7 +408,7 @@ For that reason make sure everything that is exported is in files
 and everything that is not exported in directories.
 </para>
           <para>
-Especially generated java files,
+Specially generated java files,
 the class files as results of the compilation of source and tests,
 test results, 
 javadoc report, and
@@ -411,7 +427,7 @@ creates the directory
 and copies all exported jars from all subsystems there.
 </para>
           <para>
-For this reason no Eclipse project shall be name "argouml".
+For this reason no Eclipse project shall be named "argouml".
 </para>
         </listitem>
 
@@ -616,7 +632,7 @@ the amount of dependencies to a certain file or files and
 removes need to have that file available to calculate the paths.
 </para>
             <para>
-If the location of the tools directory will every change,
+If the location of the tools directory ever changes,
 there will be a major problem updating all projects.
 </para>
           </sidebar>
