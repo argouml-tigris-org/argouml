@@ -24,6 +24,8 @@
 
 package org.argouml.model.mdr;
 
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.StateMachinesFactory;
 import org.omg.uml.behavioralelements.statemachines.CallEvent;
@@ -485,6 +487,13 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     /**
      * Deletes any associated subVertices.
+     * 
+     * This also enforces the following well-formedness rule.
+     * <p>Well formedness rule 4.12.3.1 CompositeState
+     * [4] There have to be at least two composite substates in a
+     * concurrent composite state.<p>
+     * If this is broken by deletion of substate then we delete the other
+     * remaining substate and convert the composite state to non-concurrent
      *
      * @param elem
      *            the UML element to be deleted
@@ -494,8 +503,31 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException();
         }
 
-        for (StateVertex vertex : ((CompositeState) elem).getSubvertex()) {
-            modelImpl.getUmlFactory().delete(vertex);
+        final CompositeState compositeState = (CompositeState) elem;
+        final CompositeState containingCompositeState = 
+            compositeState.getContainer();
+                
+        // Well formedness rule 4.12.3.1 CompositeState
+        // [4] There have to be at least two composite substates in a
+        // concurrent composite state.
+        // If this is broken by deletion of substate then we delete the other
+        // remaining substates.
+        if (containingCompositeState != null && containingCompositeState.isConcurrent()) {
+            final Collection<StateVertex> siblings =
+                containingCompositeState.getSubvertex();
+            
+            for (StateVertex vertex : compositeState.getSubvertex()) {
+                modelImpl.getUmlFactory().delete(vertex);
+            }
+            
+            final int substatesRemaining = siblings.size();
+            if (substatesRemaining == 2) {
+                for (StateVertex sibling : siblings) {
+                    if (sibling != compositeState) {
+                        modelImpl.getUmlFactory().delete(sibling);
+                    }
+                }
+            }
         }
     }
 
