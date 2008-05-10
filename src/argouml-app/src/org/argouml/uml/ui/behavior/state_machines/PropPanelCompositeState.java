@@ -49,7 +49,6 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
 
     private JList subverticesList = null;
     private Action addConcurrentRegion;
-    private Action deleteConcurrentRegion;
 
     /**
      * Constructor for PropPanelCompositeState.
@@ -121,7 +120,6 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
 
     protected void updateExtraButtons() {
         addConcurrentRegion.setEnabled(addConcurrentRegion.isEnabled());
-        deleteConcurrentRegion.setEnabled(deleteConcurrentRegion.isEnabled());
     }
 
     /**
