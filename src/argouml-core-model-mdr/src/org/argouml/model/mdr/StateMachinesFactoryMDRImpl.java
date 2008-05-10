@@ -504,6 +504,10 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         }
 
         final CompositeState compositeState = (CompositeState) elem;
+        for (StateVertex vertex : compositeState.getSubvertex()) {
+            modelImpl.getUmlFactory().delete(vertex);
+        }
+        
         final CompositeState containingCompositeState = 
             compositeState.getContainer();
                 
@@ -512,13 +516,10 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         // concurrent composite state.
         // If this is broken by deletion of substate then we delete the other
         // remaining substates.
-        if (containingCompositeState != null && containingCompositeState.isConcurrent()) {
+        if (containingCompositeState != null
+                && containingCompositeState.isConcurrent()) {
             final Collection<StateVertex> siblings =
                 containingCompositeState.getSubvertex();
-            
-            for (StateVertex vertex : compositeState.getSubvertex()) {
-                modelImpl.getUmlFactory().delete(vertex);
-            }
             
             final int substatesRemaining = siblings.size();
             if (substatesRemaining == 2) {
