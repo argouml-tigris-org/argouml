@@ -973,6 +973,30 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
             if (elem == top) {
                 for (RefObject o : elementsInDeletionOrder) {
+                    if (o instanceof CompositeState) {
+                        // This enforces the following well-formedness rule.
+                        // <p>Well formedness rule 4.12.3.1 CompositeState
+                        // [4] There have to be at least two composite
+                        // substates in a concurrent composite state.<p>
+                        // If this is broken by deletion of substate then we
+                        // change the parent composite substate to be not
+                        // concurrent.
+                        CompositeState deletedCompositeState = 
+                            (CompositeState) o;
+                        try {
+                            CompositeState containingCompositeState =
+                                deletedCompositeState.getContainer();
+                            if (containingCompositeState != null
+                                    && containingCompositeState.
+                                    isConcurrent()
+                                    && containingCompositeState.getSubvertex().
+                                        size() == 1) {
+                                containingCompositeState.setConcurrent(false);
+                            }
+                        } catch (InvalidObjectException e) {
+                            LOG.warn("Object already deleted " + o);
+                        }
+                    }
                     try {
                         o.refDelete();
                     } catch (InvalidObjectException e) {
