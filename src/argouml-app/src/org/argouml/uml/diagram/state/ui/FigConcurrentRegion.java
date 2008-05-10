@@ -30,20 +30,17 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JSeparator;
-import javax.swing.SwingUtilities;
 
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ProjectActions;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
-import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -150,11 +147,9 @@ public class FigConcurrentRegion extends FigState
                 ProjectActions.getInstance().getRemoveFromDiagramAction());
         popUpActions.add(new JSeparator());
         // TODO: There's a cyclic dependency between FigConcurrentRegion and
-        // the actions ActionAddConcurrentRegion and ActionDeleteConcurrentRegion
+        // the actions ActionAddConcurrentRegion
         popUpActions.addElement(
                 new ActionAddConcurrentRegion());
-        popUpActions.addElement(
-                new ActionDeleteConcurrentRegion());
         return popUpActions;
     }
 

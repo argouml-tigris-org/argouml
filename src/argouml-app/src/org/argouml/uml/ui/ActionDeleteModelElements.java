@@ -47,7 +47,6 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -146,17 +145,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                             target = owner;
                         }
                     }
-                    // TODO: This introduces a dependency between the core
-                    // and a specific diagram subsystem which causes a cyclic
-                    // dependency - see issue 5051
-                    // and besides, this will fail if the concurrent region
-                    // is not the first target selected.
-                    if (Model.getFacade().isAConcurrentRegion(target)) {
-                        new ActionDeleteConcurrentRegion()
-                            .actionPerformed(ae);
-                    } else {
-                        p.moveToTrash(target);
-                    }
+                    p.moveToTrash(target);
                 }
             } catch (InvalidElementException e) {
                 LOG.debug("Model element deleted twice - ignoring 2nd delete");

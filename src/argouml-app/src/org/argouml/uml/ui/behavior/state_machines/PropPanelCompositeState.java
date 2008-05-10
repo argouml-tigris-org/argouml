@@ -33,7 +33,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
-import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -118,8 +117,6 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         super.addExtraButtons();
         addConcurrentRegion = new ActionAddConcurrentRegion();
         addAction(addConcurrentRegion);
-        deleteConcurrentRegion = new ActionDeleteConcurrentRegion();
-        addAction(deleteConcurrentRegion);
     }
 
     protected void updateExtraButtons() {

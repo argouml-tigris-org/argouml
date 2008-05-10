@@ -34,10 +34,12 @@ import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
@@ -222,6 +224,9 @@ public class FigCompositeState extends FigState {
     /**
      * To resize only when a new concurrent region is added,
      * changing the height.
+     * TODO: Badly named method, it actually sets height. Probably shouldn't
+     * exist as this class should be listening for added concurrent regions
+     * and call this internally itself.
      *
      * @param h the new height
      */
@@ -325,14 +330,43 @@ public class FigCompositeState extends FigState {
 
     @Override 
     protected void updateLayout(UmlChangeEvent event) {
-        if (event.getPropertyName().equals("isConcurrent")) {
-            // TODO: this should split the composite state into two
-            // regions. This must be implemented. 
-            // Bob says - But it appears to me that there is no way to change
-            // isConcurrent of an existing CompositeState so do we
-            // really need to do this and do we need to redraw everything?
-            renderingChanged();
+                
+        if (!(event instanceof RemoveAssociationEvent)) {
+            return;
         }
+        
+        final Object removedRegion = event.getOldValue();
+        
+        List<FigConcurrentRegion> regionFigs =
+            ((List<FigConcurrentRegion>) getEnclosedFigs().clone());
+
+        int totHeight = getInitialHeight();
+        if (!regionFigs.isEmpty()) {
+            Fig removedFig = null;
+            for (FigConcurrentRegion figRegion : regionFigs) {
+                if (figRegion.getOwner() == removedRegion) {
+                    removedFig = figRegion;
+                    removeEnclosedFig(figRegion);
+                    break;
+                }
+            }
+            if (removedFig != null) {
+                regionFigs.remove(removedFig);
+                if (!regionFigs.isEmpty()) {
+                    for (FigConcurrentRegion figRegion : regionFigs) {
+                        if (figRegion.getY() > removedFig.getY()) {
+                            figRegion.displace(0, -removedFig.getHeight());
+                        }
+                    }
+                    totHeight = getHeight() - removedFig.getHeight();
+                }
+            }
+        }
+        
+        setBounds(getX(), getY(), getWidth(), totHeight);
+
+        // do we need to 
+        renderingChanged();
     }
 
 
