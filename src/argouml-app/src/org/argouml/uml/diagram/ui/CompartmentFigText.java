@@ -213,20 +213,16 @@ public class CompartmentFigText extends FigSingleLineText {
     }
 
     /**
-     * Mark whether this item is to be highlighted.<p>
-     *
-     * If it is highlighted, make the superclass line width 1 rather
-     * than 0 and set the associated component fig as the target in
-     * the browser.<p>
-     *
+     * This is actually used to mark this Fig as selected, however setSelected
+     * is set final in GEF.
+     * TODO: Can setSelected be used without side-effect if GEF is adjusted?
+     * Otherwise consider renamaing as setSelectedChild and try to make
+     * protected.
      * @param flag  <code>true</code> if the entry is to be highlighted,
      *              <code>false</code> otherwise.
      */
     public void setHighlighted(boolean flag) {
         highlighted = flag;
-        if (flag == false) {
-            flag = false;
-        }
     }
     
     /**
