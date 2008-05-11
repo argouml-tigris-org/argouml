@@ -264,6 +264,8 @@ public class FigDataType extends FigClassifierBox {
             return;
         }
         int i = getOperationsFig().getFigs().indexOf(ft);
+        // TODO: Duplicate code here as in FigClass. Can this all be moved to
+        // FigEditableCompartment?
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);

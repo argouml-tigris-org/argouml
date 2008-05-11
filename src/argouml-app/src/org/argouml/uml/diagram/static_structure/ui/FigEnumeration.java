@@ -203,7 +203,10 @@ public class FigEnumeration extends FigDataType
         if (cls == null) {
             return;
         }
+        
         int i = literalsCompartment.getFigs().indexOf(ft);
+        // TODO: Almost duplicate code here as in FigClass. Can this all be
+        // moved to FigEditableCompartment?
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);

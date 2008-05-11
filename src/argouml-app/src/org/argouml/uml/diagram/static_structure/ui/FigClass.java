@@ -339,6 +339,8 @@ public class FigClass extends FigClassifierBox
         if (classifier == null) {
             return;
         }
+        // TODO: Two duplicate code blocks here. Can this all be moved to
+        // FigEditableCompartment?
         int i = new ArrayList(getAttributesFig().getFigs()).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
