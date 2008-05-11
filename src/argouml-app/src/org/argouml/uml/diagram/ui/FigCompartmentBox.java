@@ -49,7 +49,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     /**
      * Text highlighted by mouse actions on the diagram.<p>
      */
-    private CompartmentFigText highlightedFigText;
+    private static CompartmentFigText highlightedFigText = null;
 
     private Fig borderFig;
     
@@ -121,6 +121,10 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             FigEditableCompartment figCompartment = (FigEditableCompartment) f;
             f = figCompartment.hitFig(r);
             if (f instanceof CompartmentFigText) {
+                if (highlightedFigText != null && highlightedFigText != f) {
+                    highlightedFigText.setHighlighted(false);
+                    highlightedFigText.getGroup().damage();
+                }
                 ((CompartmentFigText) f).setHighlighted(true);
                 highlightedFigText = (CompartmentFigText) f;
                 TargetManager.getInstance().setTarget(f);
@@ -128,13 +132,13 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
     }
 
-    /*
-     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-     */
-    public void mouseExited(MouseEvent me) {
-        super.mouseExited(me);
-        unhighlight();
-    }
+//    /*
+//     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+//     */
+//    public void mouseExited(MouseEvent me) {
+//        super.mouseExited(me);
+//        unhighlight();
+//    }
 
     /**
      * Remove the highlight from the currently highlit FigText.
@@ -171,7 +175,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             if (ft instanceof CompartmentFigText
                     && ((CompartmentFigText) ft).isHighlighted()) {
                 ((CompartmentFigText) ft).setHighlighted(false);
-                highlightedFigText = null;
+                ft.getGroup().damage();
                 return ((CompartmentFigText) ft);
             }
         }
@@ -192,6 +196,10 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         if (figList.size() > 0) {
             Fig fig = (Fig) figList.get(figList.size() - 1);
             if (fig != null && fig instanceof CompartmentFigText) {
+                if (highlightedFigText != null) {
+                    highlightedFigText.setHighlighted(false);
+                    highlightedFigText.getGroup().damage();
+                }
                 CompartmentFigText ft = (CompartmentFigText) fig;
                 ft.startTextEditor(ie);
                 ft.setHighlighted(true);
