@@ -25,9 +25,12 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 import org.apache.log4j.Logger;
 import org.argouml.notation.NotationProvider;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
@@ -60,9 +63,9 @@ public class CompartmentFigText extends FigSingleLineText {
     private Fig refFig;
 
     /**
-     * Record whether we are currently highlighted.
+     * Set if the user has selected this component Fig inside the FigNode.
      */
-    private boolean isHighlighted;
+    private boolean highlighted;
 
     /**
      * Build a new compartment figText of the given dimensions, within the
@@ -220,14 +223,60 @@ public class CompartmentFigText extends FigSingleLineText {
      *              <code>false</code> otherwise.
      */
     public void setHighlighted(boolean flag) {
-        isHighlighted = flag;
-        if (isHighlighted) {
-            super.setLineWidth(1);
-        } else {
-            super.setLineWidth(0);
+        highlighted = flag;
+        if (flag == false) {
+            flag = false;
         }
     }
-
+    
+    /**
+     * Extends the normal paint function in order to display a similar
+     * selectionbox to that given for a non-resizable FigNode.
+     * @param g the graphics object
+     * @see org.tigris.gef.presentation.FigText#paint(java.awt.Graphics)
+     */
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        if (highlighted) {
+            final int x = getX();
+            final int y = getY();
+            final int w = getWidth();
+            final int h = getHeight();
+            g.setColor(Globals.getPrefs().handleColorFor(this));
+            
+            g.drawRect(
+                    x - 1,
+                    y - 1,
+                    w + 2,
+                    h + 2);
+            g.drawRect(
+                    x - 1,
+                    y - 1,
+                    w + 2,
+                    h + 2);
+            g.fillRect(
+                x - Selection.HAND_SIZE / 2,
+                y - Selection.HAND_SIZE / 2,
+                Selection.HAND_SIZE,
+                Selection.HAND_SIZE);
+            g.fillRect(
+                x + w - Selection.HAND_SIZE / 2,
+                y - Selection.HAND_SIZE / 2,
+                Selection.HAND_SIZE,
+                Selection.HAND_SIZE);
+            g.fillRect(
+                x - Selection.HAND_SIZE / 2,
+                y + h - Selection.HAND_SIZE / 2,
+                Selection.HAND_SIZE,
+                Selection.HAND_SIZE);
+            g.fillRect(
+                x + w - Selection.HAND_SIZE / 2,
+                y + h - Selection.HAND_SIZE / 2,
+                Selection.HAND_SIZE,
+                Selection.HAND_SIZE);
+        }
+    }
 
     /**
      * Return whether this item is highlighted.<p>
@@ -236,6 +285,6 @@ public class CompartmentFigText extends FigSingleLineText {
      *          <code>false</code> otherwise.
      */
     public boolean isHighlighted() {
-        return isHighlighted;
+        return highlighted;
     }
 }
