@@ -102,6 +102,35 @@ E.g. deleting a class also deletes all its associations.
     </glossentry>
 
     <glossentry>
+      <glossterm>Critic</glossterm>
+      <glossdef>
+        <para>
+A critic is a part of ArgoUML 
+that runs as a separate asynchronous process 
+to check the quality of the model.
+Once a flaw has been found, it creates a so called critique. 
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Critique</glossterm>
+      <glossdef>
+        <para>
+A todo item created by a critic. 
+The critic creates a critique to communicate 
+the details of the dicovered model flaw to the user, 
+e.g. it explains the reason why this is a bad design.
+The critique also allows the user to start a wizard 
+to automate fixing the problem.
+There are also todo items 
+that are created by the user - 
+these are not called critique. 
+</para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
       <glossterm>Dependency</glossterm>
       <glossdef>
 
@@ -236,6 +265,21 @@ The Save operation saves everything (it is a no-loss operation).
 A Save, Open cycle does not loose any information.
 (Don't use Export, or Write for this).
 </para>
+      </glossdef>
+    </glossentry>
+
+    <glossentry>
+      <glossterm>Todo item</glossterm>
+      <glossdef>
+        <para>
+          A "to do" item presents feedback to the designer 
+          about activities to be performed on the model.
+          This feedback can be automatically generated 
+          (by the critics), or by the designer himself.
+          The use of a "to do" list fits in ArgoUML's use 
+          of cognitive features - see the 
+          Robbins Dissertation on ArgoUML for more details.
+        </para>
       </glossdef>
     </glossentry>
 
