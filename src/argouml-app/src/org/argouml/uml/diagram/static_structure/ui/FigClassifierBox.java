@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -38,6 +37,7 @@ import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddNote;
@@ -71,9 +71,12 @@ public abstract class FigClassifierBox extends FigCompartmentBox
 
     /**
      * Text highlighted by mouse actions on the diagram.<p>
+     * TODO: This should be private with a protected getter. However let see if
+     * we can get rid of it instead. See TODO's in subclasses that use this.
      */
     protected CompartmentFigText highlightedFigText;
 
+    // TODO: This is already defined in the superclass, can we use that?
     protected Fig borderFig;
     
     /**
@@ -122,9 +125,14 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     }
 
     /**
-     * Updates the operations box. Called from modelchanged if there is
-     * a modelevent effecting the attributes and from renderingChanged in all
+     * Updates the operations box. Called from updateLayout if there is
+     * a model event effecting the attributes and from renderingChanged in all
      * cases.
+     * TODO: The above statement means that the entire contents of
+     * FigOperationsCompartment is being rebuilt whenever a add/remove
+     * operation reception or reception is detected. It would be better to
+     * have FigOperationsCompartment itself listen for add and remove events
+     * and make minimum change rather than entirely rebuild.
      */
     protected void updateOperations() {
         if (!isOperationsVisible()) {
@@ -147,24 +155,20 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         super.renderingChanged();
     }
 
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
-                && getOwner().equals(mee.getSource())) {
+    protected void updateLayout(UmlChangeEvent event) {
+        super.updateLayout(event);
+        if (event instanceof AssociationChangeEvent 
+                && getOwner().equals(event.getSource())) {
             Object o = null;
-            if (mee instanceof AddAssociationEvent) {
-                o = mee.getNewValue();
-            } else if (mee instanceof RemoveAssociationEvent) {
-                o = mee.getOldValue();
+            if (event instanceof AddAssociationEvent) {
+                o = event.getNewValue();
+            } else if (event instanceof RemoveAssociationEvent) {
+                o = event.getOldValue();
             }
             if (Model.getFacade().isAOperation(o) 
                     || Model.getFacade().isAReception(o)) {
                 updateOperations();
             }
-            
-            // We need to update listeners on connected model elements
-            // if any association changes
-            updateListeners(getOwner(), getOwner());
         }
     }
 
