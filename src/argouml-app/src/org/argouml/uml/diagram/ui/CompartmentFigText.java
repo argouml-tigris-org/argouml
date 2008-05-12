@@ -283,4 +283,15 @@ public class CompartmentFigText extends FigSingleLineText {
     public boolean isHighlighted() {
         return highlighted;
     }
+    
+    /**
+     * Called when text editing has completed on this Fig.
+     * TODO: This should become protected once textEdited in FigEnumeration
+     * has been refactored to FigNodeModelElement
+     */
+    public void textEdited() {
+        setHighlighted(true);
+        getNotationProvider().parse(getOwner(), getText());
+        setText(getNotationProvider().toString(getOwner(), null));
+    }
 }

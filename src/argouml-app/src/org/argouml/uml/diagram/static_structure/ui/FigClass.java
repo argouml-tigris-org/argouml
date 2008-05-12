@@ -332,36 +332,17 @@ public class FigClass extends FigClassifierBox
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     * TODO: Move this to superclass once TODO comments in
+     * FigEnumeration.textEdited complete
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
-        Object classifier = getOwner();
-        if (classifier == null) {
+        // TODO: Do we really need this?
+        if (getOwner() == null) {
             return;
         }
-        // TODO: Two duplicate code blocks here. Can this all be moved to
-        // FigEditableCompartment?
-        int i = new ArrayList(getAttributesFig().getFigs()).indexOf(ft);
-        if (i != -1) {
-            final CompartmentFigText figText = (CompartmentFigText) ft;
-            figText.setHighlighted(true);
-
-            figText.getNotationProvider()
-                .parse(figText.getOwner(), ft.getText());
-            ft.setText(figText.getNotationProvider().toString(
-                    figText.getOwner(), null));
-            return;
-        }
-        i = new ArrayList(getOperationsFig().getFigs()).indexOf(ft);
-        if (i != -1) {
-            final CompartmentFigText figText = (CompartmentFigText) ft;
-            figText.setHighlighted(true);
-
-            figText.getNotationProvider()
-                .parse(figText.getOwner(), ft.getText());
-            ft.setText(figText.getNotationProvider().toString(
-                figText.getOwner(), null));
-            return;
+        if (ft instanceof CompartmentFigText) {
+            ((CompartmentFigText) ft).textEdited();
         }
     }
 

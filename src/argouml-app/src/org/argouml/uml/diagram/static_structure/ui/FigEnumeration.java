@@ -203,11 +203,12 @@ public class FigEnumeration extends FigDataType
         if (cls == null) {
             return;
         }
-        
+        // TODO: Can we do same here as in FigClass, FigInterface etc?
+        // Does work need doing in notations to allow this?
+        // Then we can move all common functionality of textEdited to
+        // superclass.
         int i = literalsCompartment.getFigs().indexOf(ft);
-        // TODO: Almost duplicate code here as in FigClass. Can this all be
-        // moved to FigEditableCompartment?
-        if (i != -1) {
+        if (ft instanceof CompartmentFigText) {
             final CompartmentFigText figText = (CompartmentFigText) ft;
             figText.setHighlighted(true);
             Model.getCoreHelper().setName(figText.getOwner(),

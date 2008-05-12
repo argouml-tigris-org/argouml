@@ -259,13 +259,15 @@ public class FigDataType extends FigClassifierBox {
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
-        Object cls = getOwner();
-        if (cls == null) {
+        // TODO: Do we really need this?
+        if (getOwner() == null) {
             return;
         }
+        // TODO: Can we do same here as in FigClass and FigInterface?
+        // FigEnumeration will need to be reworked first.
+        // Then we can move all common functionality of textEdited to
+        // superclass.
         int i = getOperationsFig().getFigs().indexOf(ft);
-        // TODO: Duplicate code here as in FigClass. Can this all be moved to
-        // FigEditableCompartment?
         if (i != -1) {
             final CompartmentFigText figText = (CompartmentFigText) ft;
             figText.setHighlighted(true);
