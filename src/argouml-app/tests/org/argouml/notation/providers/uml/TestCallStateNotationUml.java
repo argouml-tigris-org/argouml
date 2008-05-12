@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -115,7 +115,18 @@ public class TestCallStateNotationUml extends TestCase {
         assertEquals("Notation not correctly generated", "myOper\n(ClassA)",
                 notationStr);
     }
-    
+
+    /**
+     * Test if the string for an unnamed class and unnamed operation is correct.
+     */
+    public void testStringGenerationNoClassNameNoOperName() {
+        setUp2();
+        Model.getCoreHelper().setName(aOper, "");
+        CallStateNotationUml notation = new CallStateNotationUml(aCallState);
+        String notationStr = notation.toString(aCallState, null);
+        assertEquals("Notation not correctly generated", "", notationStr);
+    }
+
     /**
      * Test generating the modelelements from a string, and then 
      * re-creating the string from the modelelements. 
