@@ -26,6 +26,7 @@ package org.argouml.profile;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.argouml.model.InitializeModel;
@@ -56,7 +57,7 @@ public class TestProfileManager extends TestCase {
             @Override
             public Collection<Object> getProfilePackages() 
                 throws ProfileException {
-                return null;
+                return Collections.emptyList();
             }
         };
         manager = ProfileFacade.getManager();
@@ -69,11 +70,17 @@ public class TestProfileManager extends TestCase {
         super.tearDown();
     }
 
+    /**
+     * Test the {@link ProfileManager#registerProfile(Profile)} method.
+     */
     public void testRegisterProfile() {
         manager.registerProfile(mockProfile);
         assertTrue(manager.getRegisteredProfiles().contains(mockProfile));
     }
     
+    /**
+     * Test the {@link ProfileManager#removeProfile(Profile)} method.
+     */
     public void testRemoveProfile() {
         assertFalse(manager.getRegisteredProfiles().contains(mockProfile));
         manager.registerProfile(mockProfile);
@@ -82,6 +89,9 @@ public class TestProfileManager extends TestCase {
         assertFalse(manager.getRegisteredProfiles().contains(mockProfile));
     }
 
+    /**
+     * Test the {@link ProfileManager#getProfileForClass(String)} method.
+     */
     public void testGetProfileForClass() {
         mockProfileClassName = mockProfile.getClass().getName();
         assertNull(manager.getProfileForClass(mockProfileClassName));
@@ -92,6 +102,10 @@ public class TestProfileManager extends TestCase {
         assertNull(manager.getProfileForClass(mockProfileClassName));
     }
     
+    /**
+     * Tests the methods of {@link ProfileManager} related to default profiles 
+     * management.
+     */
     public void testDefaultProfilesManagement() {
         List<Object> initialDefaultProfiles = 
             new ArrayList<Object>(manager.getDefaultProfiles());
@@ -106,7 +120,10 @@ public class TestProfileManager extends TestCase {
         assertFalse(manager.getDefaultProfiles().contains(mockProfile));
     }
     
-    public void testGetUMLProfile() throws Exception {
+    /**
+     * Test the method {@link ProfileManager#getUMLProfile()}.
+     */
+    public void testGetUMLProfile() {
         Profile uml = manager.getUMLProfile();
         assertNotNull(uml);
         assertTrue(uml.getDisplayName().indexOf("UML") != -1);

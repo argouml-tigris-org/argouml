@@ -282,6 +282,8 @@ public class ProfileManagerImpl implements ProfileManager {
                                 registerProfile(udp);
                             } catch (ProfileException e) {
                                 // if an exception is raised file is unusable
+                                LOG.warn("Failed to load user defined profile "
+                                    + file.getAbsolutePath() + ".", e);
                             }
                         }
                     }

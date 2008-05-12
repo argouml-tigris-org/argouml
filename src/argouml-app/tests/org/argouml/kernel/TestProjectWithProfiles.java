@@ -145,7 +145,7 @@ public class TestProjectWithProfiles extends TestCase {
                 javaProfile));
         // create a dependency from the project's model to the UML profile for 
         // Java
-        Object model = Model.getModelManagementFactory().getRootModel();
+        Object model = getModelManagementFactory().getRootModel();
         assertNotNull(model);
         Object fooClass = Model.getCoreFactory().buildClass("Foo", model);
         Object javaListType = project.findType("List", false);
@@ -307,8 +307,10 @@ public class TestProjectWithProfiles extends TestCase {
      */
     public void testProjectWithRemovedUserDefinedProfilePersistency() 
         throws Exception {
+        final String testName = 
+            "testProjectWithRemovedUserDefinedProfilePersistency";
         File userDefinedProfileFile = createUserProfileFile(testCaseDir,
-            "testProjectWithRemovedUserDefinedProfile-TestUserProfile.xmi");
+            testName + "-TestUserProfile.xmi");
         // add it to the project configuration
         Profile userDefinedProfile = 
             new UserDefinedProfile(userDefinedProfileFile);
@@ -320,7 +322,8 @@ public class TestProjectWithProfiles extends TestCase {
         // create a dependency between the project's model and the user defined 
         // profile
         Object model = getModelManagementFactory().getRootModel();
-        Object fooClass = getCoreFactory().buildClass("Foo", model);
+        final String className = "Foo4" + testName;
+        Object fooClass = getCoreFactory().buildClass(className, model);
         Collection stereotypes = getExtensionMechanismsHelper().getStereotypes(
                 project.getModels());
         Object stStereotype = null;
@@ -333,8 +336,7 @@ public class TestProjectWithProfiles extends TestCase {
         }
         Model.getCoreHelper().addStereotype(fooClass, stStereotype);
         // save the project
-        File file = getFileInTestDir(
-            "testProjectWithUserDefinedProfilePersistency.zargo");
+        File file = getFileInTestDir(testName + ".zargo");
         AbstractFilePersister persister = getProjectPersister(file);
         project.setVersion(ApplicationVersion.getVersion());
         persister.save(project, file);
@@ -359,7 +361,6 @@ public class TestProjectWithProfiles extends TestCase {
                     file.getAbsolutePath());
         return persister;
     }
-    
 
     private File createUserProfileFile(File directory, String filename)
         throws IOException {

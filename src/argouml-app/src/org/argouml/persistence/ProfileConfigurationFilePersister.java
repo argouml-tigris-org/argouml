@@ -1,5 +1,5 @@
-// $Id: ProfileConfigurationFilePersister.java 13298 2007-08-12 19:40:57Z maurelio1234 $
-// Copyright (c) 2007 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,7 +55,7 @@ import org.argouml.profile.ProfileManager;
 import org.argouml.profile.UserDefinedProfile;
 
 /**
- * Persister for Project's Profile Configuration
+ * Persister for project's profile configuration.
  *
  * @author maurelio1234
  */
@@ -97,45 +97,13 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                 Profile profile = null;
 
                 if (line.equals("<userDefined>")) {
-                    line = br.readLine().trim();
-                    String fileName = line.substring(line.indexOf(">") + 1,
-                            line.indexOf("</")).trim();
-
-                    // consumes the <model> tag
-                    br.readLine();
-
-                    StringBuffer xmi = new StringBuffer();
-                    
-                    while (true) {
-                        line = br.readLine();
-                        if (line == null || line.contains("</model>")) {
-                            break;
-                        }
-                        xmi.append(line + "\n");
-                    }
-                    ProfileManager profileManager = ProfileFacade.getManager();
-                    profile = getMatchingUserDefinedProfile(fileName, 
-                        profileManager);
-                    if (profile == null) {
-                        throw new XmiReferenceException("Profile: " + fileName,
-                                null);
-                        // Use xmi as a fall back alternative when the
-                        // file for the user defined profile isn't found by the
-                        // profile manager.
-//                        profile = new UserDefinedProfile(fileName,
-//                                new StringReader(xmi.toString()));
-//                        profile = createUserProfileDefinition(fileName, xmi,
-//                                profileManager);
-
-                    }
-                    
+                    profile = handleUserDefinedProfile(br);
                     // consumes the </userDefined>
-                    line = br.readLine().trim();		    
+                    br.readLine();
                 } else if (line.equals("<plugin>")) {
-                    String className = br.readLine().trim();
-                    profile = ProfileFacade.getManager().getProfileForClass(
-                            className);
-                    line = br.readLine().trim();
+                    profile = handlePluginProfile(br);
+                    // consumes closing tag
+                    br.readLine();
                 }
 
                 if (profile != null) {
@@ -153,40 +121,87 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         }
     }
 
+    private Profile handlePluginProfile(BufferedReader br) throws IOException,
+        XmiReferenceException {
+        Profile profile;
+        String className = br.readLine().trim();
+        profile = ProfileFacade.getManager().getProfileForClass(
+                className);
+        if (profile == null) 
+            throw new XmiReferenceException(
+                "Plugin profile \"" + className 
+                + "\" is not available in installation.", null);
+        return profile;
+    }
+
+    private Profile handleUserDefinedProfile(BufferedReader br)
+        throws IOException, XmiReferenceException {
+        String line;
+        Profile profile;
+        line = br.readLine().trim();
+        String fileName = line.substring(line.indexOf(">") + 1,
+                line.indexOf("</")).trim();
+
+        // consumes the <model> tag
+        br.readLine();
+
+        StringBuffer xmi = new StringBuffer();
+        
+        while (true) {
+            line = br.readLine();
+            if (line == null || line.contains("</model>")) {
+                break;
+            }
+            xmi.append(line + "\n");
+        }
+        ProfileManager profileManager = ProfileFacade.getManager();
+        profile = getMatchingUserDefinedProfile(fileName, 
+            profileManager);
+        if (profile == null) {
+            throw new XmiReferenceException(
+                "User defined profile \"" + fileName 
+                + "\" isn't available in the current configuration.",
+                    null);
+            // Use XMI as a fall back alternative when the 
+            // file for the user defined profile isn't found by the 
+            // profile manager.
+            // TODO: work in progress, see issue 5039
+//                        addUserDefinedProfile(fileName, xmi, profileManager);
+//                        profile = getMatchingUserDefinedProfile(fileName, 
+//                            profileManager);
+//                        assert profile != null 
+//                            : "Profile should have been found now.";
+        }
+        return profile;
+    }
+
     /**
-     * Create a user defined profile from the current project using the backup
-     * XMI file from the current project.  Currently unused.
+     * Register a user defined profile in the profileManager, using the backup 
+     * XMI file from the project being loaded.
      * <p>
      * <em>NOTE:</em> This has the side effect of permanently registering the
      * profile which may not be what the user wants.
      * 
      * @param fileName name of original XMI file that the author of the project
      *                used when creating the UserDefinedProfile.
-     * @param contents the contents of the XMI file.
-     * @return the new profile
+     * @param xmi the contents of the XMI file.
+     * @param profileManager the {@link ProfileManager}.
      * @throws IOException on any i/o error
      */
-    private Profile createUserProfileDefinition(String fileName,
-            StringBuffer contents, ProfileManager profileManager)
-        throws IOException {
-
-
-        Profile profile;
+    private void addUserDefinedProfile(String fileName, StringBuffer xmi,
+            ProfileManager profileManager) throws IOException {
         File profilesDirectory = getProfilesDirectory(profileManager);
         File profileFile = new File(profilesDirectory, fileName);
         FileWriter writer = new FileWriter(profileFile);
-        writer.write(contents.toString());
+        writer.write(xmi.toString());
         writer.close();
-        LOG.info("Wrote user defined profile \"" + profileFile
-                + "\", with size " + contents.length() + ".");
+        LOG.info("Wrote user defined profile \"" + profileFile 
+            + "\", with size " + xmi.length() + ".");
         if (isSomeProfileDirectoryConfigured(profileManager))
             profileManager.refreshRegisteredProfiles();
-        else
-            profileManager.addSearchPathDirectory(profilesDirectory
-                    .getAbsolutePath());
-        profile = getMatchingUserDefinedProfile(fileName, profileManager);
-        assert profile != null : "Profile should be found now.";
-        return profile;
+        else 
+            profileManager.addSearchPathDirectory(
+                profilesDirectory.getAbsolutePath());
     }
 
     private Profile getMatchingUserDefinedProfile(String fileName, 
@@ -269,10 +284,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                                 + "</filename>");
                         w.println("\t\t\t<model>");
 
-                        final Collection profilePackages = 
-                            uprofile.getProfilePackages();
-                        final Object model = profilePackages.iterator().next();
-                        printModelXMI(w, model);
+                        printModelXMI(w, uprofile.getProfilePackages());
 
                         w.println("\t\t\t</model>");
                         w.println("\t\t</userDefined>");
@@ -291,14 +303,22 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 	}
     }
 
-    private void printModelXMI(PrintWriter w, Object model) 
+    private void printModelXMI(PrintWriter w, Collection profileModels) 
         throws UmlException {
         
+        if (true) return;
         StringWriter myWriter = new StringWriter();
-        XmiWriter xmiWriter = Model.getXmiWriter(model, myWriter,
+        // FIXME: this is completely useless since the XMI writer won't 
+        // write the model it is given, but, a list of models which it 
+        // determines on its own. See XmiWriterMDRImpl.write() implementation 
+        // and the usage of the flag WRITE_ALL.
+        for (Object model : profileModels) {
+            XmiWriter xmiWriter = Model.getXmiWriter(model, 
+                (OutputStream) null, //myWriter, 
                 ApplicationVersion.getVersion() + "("
-                        + UmlFilePersister.PERSISTENCE_VERSION + ")");
-        xmiWriter.write();
+                    + UmlFilePersister.PERSISTENCE_VERSION + ")");
+            xmiWriter.write();
+        }
 
         myWriter.flush();
         w.println("" + myWriter.toString());
