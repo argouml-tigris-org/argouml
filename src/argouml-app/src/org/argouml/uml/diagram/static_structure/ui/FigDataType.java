@@ -267,12 +267,12 @@ public class FigDataType extends FigClassifierBox {
         // TODO: Duplicate code here as in FigClass. Can this all be moved to
         // FigEditableCompartment?
         if (i != -1) {
-            highlightedFigText = (CompartmentFigText) ft;
-            highlightedFigText.setHighlighted(true);
-            highlightedFigText.getNotationProvider()
-                .parse(highlightedFigText.getOwner(), ft.getText());
-            ft.setText(highlightedFigText.getNotationProvider().toString(
-                highlightedFigText.getOwner(), null));
+            final CompartmentFigText figText = (CompartmentFigText) ft;
+            figText.setHighlighted(true);
+            figText.getNotationProvider()
+                .parse(figText.getOwner(), ft.getText());
+            ft.setText(figText.getNotationProvider().toString(
+                figText.getOwner(), null));
         }
     }
 

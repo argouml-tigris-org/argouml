@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,13 +68,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * The Fig for the operations compartment (if any).
      */
     private FigOperationsCompartment operationsFig;
-
-    /**
-     * Text highlighted by mouse actions on the diagram.<p>
-     * TODO: This should be private with a protected getter. However let see if
-     * we can get rid of it instead. See TODO's in subclasses that use this.
-     */
-    protected CompartmentFigText highlightedFigText;
 
     // TODO: This is already defined in the superclass, can we use that?
     protected Fig borderFig;

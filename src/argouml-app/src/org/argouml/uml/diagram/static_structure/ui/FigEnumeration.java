@@ -208,10 +208,10 @@ public class FigEnumeration extends FigDataType
         // TODO: Almost duplicate code here as in FigClass. Can this all be
         // moved to FigEditableCompartment?
         if (i != -1) {
-            highlightedFigText = (CompartmentFigText) ft;
-            highlightedFigText.setHighlighted(true);
-            Model.getCoreHelper().setName(highlightedFigText.getOwner(),
-                    highlightedFigText.getText().trim());
+            final CompartmentFigText figText = (CompartmentFigText) ft;
+            figText.setHighlighted(true);
+            Model.getCoreHelper().setName(figText.getOwner(),
+                    figText.getText().trim());
             return;
         }
     }

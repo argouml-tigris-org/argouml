@@ -343,24 +343,24 @@ public class FigClass extends FigClassifierBox
         // FigEditableCompartment?
         int i = new ArrayList(getAttributesFig().getFigs()).indexOf(ft);
         if (i != -1) {
-            highlightedFigText = (CompartmentFigText) ft;
-            highlightedFigText.setHighlighted(true);
+            final CompartmentFigText figText = (CompartmentFigText) ft;
+            figText.setHighlighted(true);
 
-            highlightedFigText.getNotationProvider()
-                .parse(highlightedFigText.getOwner(), ft.getText());
-            ft.setText(highlightedFigText.getNotationProvider().toString(
-                    highlightedFigText.getOwner(), null));
+            figText.getNotationProvider()
+                .parse(figText.getOwner(), ft.getText());
+            ft.setText(figText.getNotationProvider().toString(
+                    figText.getOwner(), null));
             return;
         }
         i = new ArrayList(getOperationsFig().getFigs()).indexOf(ft);
         if (i != -1) {
-            highlightedFigText = (CompartmentFigText) ft;
-            highlightedFigText.setHighlighted(true);
+            final CompartmentFigText figText = (CompartmentFigText) ft;
+            figText.setHighlighted(true);
 
-            highlightedFigText.getNotationProvider()
-                .parse(highlightedFigText.getOwner(), ft.getText());
-            ft.setText(highlightedFigText.getNotationProvider().toString(
-                highlightedFigText.getOwner(), null));
+            figText.getNotationProvider()
+                .parse(figText.getOwner(), ft.getText());
+            ft.setText(figText.getNotationProvider().toString(
+                figText.getOwner(), null));
             return;
         }
     }
