@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -125,10 +125,7 @@ public class CallStateNotationUml extends CallStateNotation {
                 && (newOperationName != null) 
                 && !newOperationName.equals(oldOperationName)) {
             // Same class, other operation
-            Collection c = Model.getFacade().getOperations(clazz);
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                Object op = i.next();
+            for ( Object op : Model.getFacade().getOperations(clazz)) {
                 if (newOperationName.equals(
                         Model.getFacade().getName(op))) {
                     Model.getCommonBehaviorHelper().setOperation(entry, op);
