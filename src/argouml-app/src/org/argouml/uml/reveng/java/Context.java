@@ -29,7 +29,11 @@
 
 package org.argouml.uml.reveng.java;
 
+import java.net.MalformedURLException;
+
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.reveng.ImportClassLoader;
 
 /**
    The context is the current available namespaces via import in the
@@ -39,7 +43,9 @@ import org.argouml.model.Model;
 */
 abstract class Context
 {
-    /** The succeding context. May be null. */
+    private static final Logger LOG = Logger.getLogger(Context.class);
+    
+    /** The parent context. May be null. */
     private Context context;
 
     /**
@@ -110,6 +116,54 @@ abstract class Context
      */
     protected Context getContext() {
         return context;
+    }
+
+    protected Class<?> findClass(String name, boolean interfacesOnly) {
+        Class<?> clazz = null;
+        try {
+            // TODO: Do we ever want to look up things on our own classpath?
+            // This really should only be used for default Java types and even
+            // then probably should be done after searching the user classpath
+            clazz = Class.forName(name);
+        } catch (ClassNotFoundException e) {
+            clazz = findClassOnUserClasspath(name, interfacesOnly);
+        } catch (LinkageError e) {
+            // We found the class, but we couldn't load it for some reason
+            // most likely a missing dependency on the class path, but could
+            // be wrong class file version or something else
+            // TODO: Need to make this visible to the user
+            LOG.warn("Linkage error loading found class " + name, e);
+            // We'll continue the search, but this is probably the one we wanted
+            clazz = findClassOnUserClasspath(name, interfacesOnly);
+        }
+        // Got something, but it wasn't what we wanted.  Try again.
+        if (clazz != null && interfacesOnly && !clazz.isInterface()) {
+            clazz = findClassOnUserClasspath(name, interfacesOnly);
+        }
+        return clazz;
+    }
+
+    private Class<?> findClassOnUserClasspath(String name,
+            boolean interfacesOnly) {
+        Class<?> clazz = null;
+        try {
+            clazz = ImportClassLoader.getInstance().loadClass(name);
+        } catch (MalformedURLException e) {
+            // TODO: Need to make this visible to the user
+            LOG.warn("Classpath configuration error", e);
+        } catch (ClassNotFoundException e) {
+            return null;
+        } catch (LinkageError e) {
+            // We found the class, but we couldn't load it for some reason
+            // most likely a missing dependency on the class path
+            // TODO: Need to make this visible to the user
+            LOG.warn("Linkage error loading found class " + name, e);
+            return null;
+        }
+        if (clazz != null && interfacesOnly && !clazz.isInterface()) {
+            return null;
+        }
+        return clazz;
     }
 }
 

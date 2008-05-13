@@ -24,12 +24,10 @@
 
 package org.argouml.uml.reveng.java;
 
-import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
-import org.argouml.uml.reveng.ImportClassLoader;
 
 /**
  * This context is a package.
@@ -38,7 +36,7 @@ import org.argouml.uml.reveng.ImportClassLoader;
  */
 class PackageContext extends Context {
     
-    private static final Logger LOG = Logger.getLogger(PackageContext.class);
+    static final Logger LOG = Logger.getLogger(PackageContext.class);
     
     /** The package this context represents. */
     private Object mPackage;
@@ -95,70 +93,24 @@ class PackageContext extends Context {
 
 	if (mClassifier == null) {
 	    Class classifier;
-	    // Try to find it via the classpath
-	    try {
-
-		// Special case for model
-		if (Model.getFacade().isAModel(mPackage)) {
-		    classifier = Class.forName(name);
-		}
-		else {
-                    String clazzName = javaName + "." + name;
-                    classifier = Class.forName(clazzName);
-		}
-		if (classifier.isInterface()) {
-		    mClassifier =
-                            Model.getCoreFactory().buildInterface(
-                                    name, mPackage);
-		} else {
-                    if (!interfacesOnly) {
-                        mClassifier =
-                                Model.getCoreFactory().buildClass(
-                                        name, mPackage);
-                    }
-		}
+	    String clazzName = name;
+	    // Special case for model
+	    if (!Model.getFacade().isAModel(mPackage)) {
+	        clazzName = javaName + "." + name;
+	    }
+	    classifier = findClass(clazzName, interfacesOnly);
+	    if (classifier != null) {
+	        if (classifier.isInterface()) {
+                    mClassifier = Model.getCoreFactory().buildInterface(name,
+                            mPackage);
+                } else {
+                    mClassifier = Model.getCoreFactory().buildClass(name,
+                            mPackage);
+                }
                 if (mClassifier != null) {
                     setGeneratedTag(mClassifier);
                 }
 	    }
-	    catch (ClassNotFoundException e) {
-		// No class or interface found
-                // try USER classpath
-
-                try {
-                    // Special case for model
-                    if (Model.getFacade().isAModel(mPackage)) {
-                        classifier =
-			    ImportClassLoader.getInstance().loadClass(name);
-                    }
-                    else {
-                        String clazzName = javaName + "." + name;
-                        classifier =
-			    ImportClassLoader.getInstance()
-			        .loadClass(clazzName);
-                    }
-		    if (classifier.isInterface()) {
-			mClassifier =
-                                Model.getCoreFactory().buildInterface(
-                                        name, mPackage);
-		    } else {
-		        if (!interfacesOnly) {
-                            mClassifier =
-                                    Model.getCoreFactory().buildClass(
-                                            name, mPackage);
-                        }
-		    }
-                    if (mClassifier != null) {
-                        setGeneratedTag(mClassifier);
-                    }
-                }
-                catch (ClassNotFoundException e1) {
-                    // Ignore - we'll deal with this later by checking to see
-                    // if we found anything.
-                } catch (MalformedURLException e1) {
-                    LOG.warn("Classpath configuration error", e1);
-                }
-            }
 	}
 	if (mClassifier == null) {
 	    // Continue the search through the rest of the model
