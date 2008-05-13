@@ -73,20 +73,23 @@ public class JavaImport implements ImportInterface {
 
         newElements = new HashSet();
         monitor.updateMainTask(Translator.localize("dialog.import.pass1"));
-        if (settings.getImportLevel() == ImportSettings.DETAIL_CLASSIFIER_FEATURE
-                || settings.getImportLevel() == ImportSettings.DETAIL_FULL) {
-            monitor.setMaximumProgress(files.size() * 2);
-            doImportPass(p, files, settings, monitor, 0, 1);
-            if (!monitor.isCanceled()) {
-                monitor.updateMainTask(
-                        Translator.localize("dialog.import.pass2"));
-                doImportPass(p, files, settings, monitor, files.size(), 2);
+        try {
+            if (settings.getImportLevel() == ImportSettings.DETAIL_CLASSIFIER_FEATURE
+                    || settings.getImportLevel() == ImportSettings.DETAIL_FULL) {
+                monitor.setMaximumProgress(files.size() * 2);
+                doImportPass(p, files, settings, monitor, 0, 1);
+                if (!monitor.isCanceled()) {
+                    monitor.updateMainTask(Translator
+                            .localize("dialog.import.pass2"));
+                    doImportPass(p, files, settings, monitor, files.size(), 2);
+                }
+            } else {
+                monitor.setMaximumProgress(files.size() * 2);
+                doImportPass(p, files, settings, monitor, 0, 0);
             }
-        } else {
-            monitor.setMaximumProgress(files.size() * 2);
-            doImportPass(p, files, settings, monitor, 0, 0);
+        } finally {
+            monitor.close();
         }
-        monitor.close();
         return newElements;
     }
 
@@ -106,7 +109,7 @@ public class JavaImport implements ImportInterface {
             if (file instanceof File) {
                 try {
                     parseFile(p, (File) file, settings, pass);
-                } catch (ImportException e) {
+                } catch (Exception e) {
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new java.io.PrintWriter(sw);
                     e.printStackTrace(pw);

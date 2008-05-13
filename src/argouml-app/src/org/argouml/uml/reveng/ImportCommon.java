@@ -530,6 +530,9 @@ public abstract class ImportCommon implements ImportSettingsInternal {
             }
             ExplorerEventAdaptor.getInstance().structureChanged();
             Model.getPump().startPumpingEvents();
+            // Should already be closed.  If not, something bad happened, so
+            // make sure it's closed so the user isn't stuck
+            monitor.close();
         }
     }
 
@@ -551,7 +554,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         try {
             newElements.addAll(currentModule.parseFiles(
                     project, filesLeft, this, monitor));
-        } catch (ImportException e) {
+        } catch (Exception e) {
             problems.append(printToBuffer(e));
         }
         // New style importers don't create diagrams, so we'll do it
