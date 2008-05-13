@@ -1638,7 +1638,6 @@ class CoreHelperMDRImpl implements CoreHelper {
             generalizableElement.getGeneralization();
         
         for (Generalization generalization : generalizations) {
-            // TODO: Fix the following problem, as described in issue 3772:
             GeneralizableElement parent = generalization.getParent();
             if (!modelImpl.getModelManagementHelper().getAllContents(namespace)
                     .contains(parent)) {
