@@ -778,12 +778,8 @@ public class Modeller {
         if (!Model.getFacade().isAClass(element)) {
             return false;
         }
-        for (Object stereotype : Model.getFacade().getStereotypes(element)) {
-            if ("enumeration".equals(Model.getFacade().getName(stereotype))) {
-                return true;
-            }
-        }
-        return false;
+        return Model.getExtensionMechanismsHelper().hasStereotype(element,
+                "enumeration");
     }
 
     /**
@@ -1022,6 +1018,8 @@ public class Modeller {
 	} else {
 	    try {
 		mClassifier =
+		    // FIXME: This can't throw away the fully qualified 
+		    // name before starting the search!
 		    getContext(returnType).get(getClassifierName(returnType));
             } catch (ClassifierNotFoundException e) {
                 if (forceIt && returnType != null && model != null) {
@@ -1734,6 +1732,11 @@ public class Modeller {
 
     /**
      * Get the classifier name from a fully specified classifier name.
+     * <p>
+     * FIXME: Most uses of this method are wrong. We should be adding context
+     * such as package names or outer classifier names, not removing it, before
+     * doing lookup so that the search methods have the fully qualified name to
+     * work with.
      * 
      * @param name A fully specified classifier name.
      * @return The classifier name.
