@@ -46,7 +46,11 @@ class DefaultUndoManager implements UndoManager {
     private static final Logger LOG =
         Logger.getLogger(DefaultUndoManager.class);
 
-    private int undoMax = 100;
+    /**
+     * The number of undoable commands to store. When set to zero undo is
+     * disabled entirely.
+     */
+    private int undoMax = 0;
     
     private ArrayList<PropertyChangeListener> listeners =
         new ArrayList<PropertyChangeListener>();

@@ -387,17 +387,18 @@ public class GenericArgoMenuBar extends JMenuBar implements
         edit = add(new JMenu(menuLocalize("Edit")));
         setMnemonic(edit, "Edit");
 
-        JMenuItem undoItem = edit.add(
-                ProjectActions.getInstance().getUndoAction());
-        setMnemonic(undoItem, "Undo");
-        ShortcutMgr.assignAccelerator(undoItem, ShortcutMgr.ACTION_UNDO);
-
-        JMenuItem redoItem = edit.add(
-                ProjectActions.getInstance().getRedoAction());
-        setMnemonic(redoItem, "Redo");
-        ShortcutMgr.assignAccelerator(redoItem, ShortcutMgr.ACTION_REDO);
-
-        edit.addSeparator();
+// Comment out when we are ready to release undo/redo        
+//        JMenuItem undoItem = edit.add(
+//                ProjectActions.getInstance().getUndoAction());
+//        setMnemonic(undoItem, "Undo");
+//        ShortcutMgr.assignAccelerator(undoItem, ShortcutMgr.ACTION_UNDO);
+//
+//        JMenuItem redoItem = edit.add(
+//                ProjectActions.getInstance().getRedoAction());
+//        setMnemonic(redoItem, "Redo");
+//        ShortcutMgr.assignAccelerator(redoItem, ShortcutMgr.ACTION_REDO);
+//
+//        edit.addSeparator();
 
         select = new JMenu(menuLocalize("Select"));
         setMnemonic(select, "Select");
