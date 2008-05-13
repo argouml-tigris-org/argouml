@@ -1630,47 +1630,42 @@ public abstract class FigNodeModelElement
                     .setHidingStereotypesWithIcon(hiding);
         }
 
-	if (practicalView == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON) {
-	    
-	    // TODO: do we need to test for null? The getStereotypes call above
-	    // should guarantee an empty collection rather than a null
-	    // collection
-	    if (stereos != null) {
-		Image replaceIcon = null;
+        if (practicalView == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON) {
 
-		if (stereos.size() == 1) {
-		    Object stereo = stereos.iterator().next();
-		    // TODO: Should we not use getProject here?
-		    replaceIcon = ProjectManager.getManager()
-			    .getCurrentProject().getProfileConfiguration()
-			    .getFigNodeStrategy().getIconForStereotype(stereo);
-		}
-		
-		if (replaceIcon != null) {
-		    stereotypeFigProfileIcon = new FigProfileIcon(replaceIcon,
-			    getName());
-		    stereotypeFigProfileIcon.setOwner(getOwner());
+            Image replaceIcon = null;
 
-		    stereotypeFigProfileIcon.setLocation(getBigPort()
-			    .getLocation());
-		    addFig(stereotypeFigProfileIcon);
+            if (stereos.size() == 1) {
+                Object stereo = stereos.iterator().next();
+                // TODO: Should we not use getProject here?
+                replaceIcon = ProjectManager.getManager().getCurrentProject()
+                        .getProfileConfiguration().getFigNodeStrategy()
+                        .getIconForStereotype(stereo);
+            }
 
-		    originalNameFig = this.getNameFig();
-		    final FigText labelFig =
-		        stereotypeFigProfileIcon.getLabelFig();
-		    setNameFig(labelFig);
+            if (replaceIcon != null) {
+                stereotypeFigProfileIcon = new FigProfileIcon(replaceIcon,
+                        getName());
+                stereotypeFigProfileIcon.setOwner(getOwner());
 
-		    labelFig.addPropertyChangeListener(this);
-		    
-		    getBigPort().
-		    	setBounds(stereotypeFigProfileIcon.getBounds());
-		 
-		    for (Object fig : getFigs()) {
-			((Fig) fig).setVisible(fig == stereotypeFigProfileIcon);
-		    }
-		    
-		}
-	    }
+                stereotypeFigProfileIcon.setLocation(getBigPort()
+                        .getLocation());
+                addFig(stereotypeFigProfileIcon);
+
+                originalNameFig = this.getNameFig();
+                final FigText labelFig =
+                    stereotypeFigProfileIcon.getLabelFig();
+                setNameFig(labelFig);
+
+                labelFig.addPropertyChangeListener(this);
+
+                getBigPort().
+                setBounds(stereotypeFigProfileIcon.getBounds());
+
+                for (Object fig : getFigs()) {
+                    ((Fig) fig).setVisible(fig == stereotypeFigProfileIcon);
+                }
+
+            }
 	} else if (practicalView
 	        == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
             int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;

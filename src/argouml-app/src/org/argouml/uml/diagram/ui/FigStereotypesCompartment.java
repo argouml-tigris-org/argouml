@@ -256,47 +256,42 @@ public class FigStereotypesCompartment extends FigCompartment {
             acounter++;
         }
 
-        Collection stereos = Model.getFacade().getStereotypes(modelElement);
-        if (stereos != null) {
-            Iterator iter = stereos.iterator();
-            while (iter.hasNext()) {
-                Object stereotype = iter.next();
-                if (figs.size() <= acounter) {
-                    ++stereotypeCount;
-                    stereotypeTextFig =
-                        new FigStereotype(
-                                xpos + 1,
-                                ypos + 1
-                                + (acounter - 1)
-                                	* FigNodeModelElement.ROWHEIGHT,
-                                0,
-                                FigNodeModelElement.ROWHEIGHT - 2,
-                                bigPort,
-                                stereotype);
-                    // bounds not relevant here
-                    stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
-                    stereotypeTextFig.setEditable(false);
-                    addFig(stereotypeTextFig);
-                } else {
-                    stereotypeTextFig =
-                        (CompartmentFigText) figs.get(acounter);
-                }
-                stereotypeTextFig.setOwner(stereotype);
-
-                acounter++;
+        for (Object stereo : Model.getFacade().getStereotypes(modelElement)) {
+            if (figs.size() <= acounter) {
+                ++stereotypeCount;
+                stereotypeTextFig =
+                    new FigStereotype(
+                            xpos + 1,
+                            ypos + 1
+                            + (acounter - 1)
+                            * FigNodeModelElement.ROWHEIGHT,
+                            0,
+                            FigNodeModelElement.ROWHEIGHT - 2,
+                            bigPort,
+                            stereo);
+                // bounds not relevant here
+                stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
+                stereotypeTextFig.setEditable(false);
+                addFig(stereotypeTextFig);
+            } else {
+                stereotypeTextFig = (CompartmentFigText) figs.get(acounter);
             }
-            if (figs.size() > acounter) {
-                //cleanup of unused FigText's
-                for (int i = figs.size() - 1; i >= acounter; i--) {
-                    removeFig((Fig) figs.get(i));
-                }
-            }
+            stereotypeTextFig.setOwner(stereo);
 
-            reorderStereotypeFigs();
-            
-            // remove all stereotypes that have a graphical icon
-            updateHiddenStereotypes();
+            acounter++;
         }
+        if (figs.size() > acounter) {
+            //cleanup of unused FigText's
+            for (int i = figs.size() - 1; i >= acounter; i--) {
+                removeFig((Fig) figs.get(i));
+            }
+        }
+
+        reorderStereotypeFigs();
+
+        // remove all stereotypes that have a graphical icon
+        updateHiddenStereotypes();
+
     }
 
     private void updateHiddenStereotypes() {
