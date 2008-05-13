@@ -265,17 +265,8 @@ public abstract class UmlDiagramRenderer
         } else if (Model.getFacade().isAUsage(edge)) {
             newEdge = new FigUsage();
         } else if (Model.getFacade().isADependency(edge)) {
-            Collection c = Model.getFacade().getStereotypes(edge);
-            Iterator i = c.iterator();
-            String name = "";
-            while (i.hasNext()) {
-                Object o = i.next();
-                name = Model.getFacade().getName(o);
-                if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
-		    break;
-		}
-            }
-            if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
+            if (Model.getExtensionMechanismsHelper().hasStereotype(edge, 
+                    CoreFactory.REALIZE_STEREOTYPE)) {
                 newEdge = new FigRealization();
             } else {
                 newEdge = new FigDependency();

@@ -521,22 +521,15 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         String nameStr = null;
         boolean constructor = false;
 
-        String name = null;
-        for (Object o : Model.getFacade().getStereotypes(op)) {
-            name = Model.getFacade().getName(o);
-            if ("create".equals(name)) {
-		break;
-	    }
-        }
-        if ("create".equals(name)) {
-            // constructor
+        if (Model.getExtensionMechanismsHelper().hasStereotype(op, "create")) {
             nameStr =
                 generateName(Model.getFacade().getName(
                     Model.getFacade().getOwner(op)));
-            constructor = true;
+            constructor = true;            
         } else {
             nameStr = generateName(Model.getFacade().getName(op));
         }
+
         // Each pattern here must be similar to corresponding code piece
         // Operation code piece doesn't start with '\n'
         // so the next line is commented. See Issue 1505

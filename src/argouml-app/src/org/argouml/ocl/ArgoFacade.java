@@ -176,21 +176,12 @@ class ArgoAny implements Any, Type2 {
 		    && (Model.getFacade().getUpper(multiplicity) > 1
 			|| Model.getFacade().getUpper(multiplicity)
                            == -1)) {
-		    Collection c = Model.getFacade().getStereotypes(ae);
-		    Iterator i = c.iterator();
-		    String stname = "";
-		    while (i.hasNext()) {
-		        Object o = i.next();
-		        stname = Model.getFacade().getName(o);
-		        if ("ordered".equals(stname)) {
-                            break;
-                        }
-		    }
-		    if ("ordered".equals(stname)) {
-			isSequence = true;
-		    } else {
-			isSet = true;
-		    }
+		    if (Model.getExtensionMechanismsHelper().hasStereotype(ae, 
+		            "ordered")) {
+                        isSequence = true;
+                    } else {
+                        isSet = true;
+                    }
 		}
 	    }
 	}
