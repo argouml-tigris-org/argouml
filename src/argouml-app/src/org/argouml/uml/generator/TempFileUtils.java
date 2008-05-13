@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -94,9 +94,9 @@ public class TempFileUtils {
      * @param dir directory to read files from
      * @return A collection of SourceUnit objects.
      */
-    public static Collection readAllFiles(File dir) {
+    public static Collection<SourceUnit> readAllFiles(File dir) {
         try {
-            final List ret = new ArrayList();
+            final List<SourceUnit> ret = new ArrayList<SourceUnit>();
             final int prefix = dir.getPath().length() + 1;
             traverseDir(dir, new FileAction() {
 
@@ -156,8 +156,8 @@ public class TempFileUtils {
      * @param dir The base directory.
      * @return The collection of files.
      */
-    public static Collection readFileNames(File dir) {
-        final List ret = new ArrayList();
+    public static Collection<String> readFileNames(File dir) {
+        final List<String> ret = new ArrayList<String>();
         final int prefix = dir.getPath().length() + 1;
         try {
             traverseDir(dir, new FileAction() {
