@@ -531,12 +531,13 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
 
     public boolean hasStereotype(Object handle, String name) {
+        if (name == null || !(handle instanceof ModelElement)) {
+            throw new IllegalArgumentException();
+        }
         try {
-            Collection sts = modelImpl.getFacade().getStereotypes(handle);
-            Iterator i = sts.iterator();
-            while (i.hasNext()) {
-                Object st = i.next();
-                if (name.equals(modelImpl.getFacade().getName(st))) {
+            ModelElement element = (ModelElement) handle;
+            for (Stereotype stereotype : element.getStereotype()) {
+                if (name.equals(stereotype.getName())) {
                     return true;
                 }
             }
