@@ -1642,13 +1642,6 @@ class CoreHelperMDRImpl implements CoreHelper {
             GeneralizableElement parent = generalization.getParent();
             if (!modelImpl.getModelManagementHelper().getAllContents(namespace)
                     .contains(parent)) {
-                LOG.debug(parent.getName() + " is the ancestor of "
-                        + generalizableElement.getName()
-                        + ". It is not in the same namespace "
-                        + namespace.getName()
-                        + " that we are trying to assign to "
-                        + generalizableElement.getName()
-                        + ". So namespace is not valid.");
                 return false;
             }
         }
