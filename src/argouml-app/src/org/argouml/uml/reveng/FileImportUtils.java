@@ -107,26 +107,29 @@ public  class FileImportUtils {
 	    }
 
 	    // Get the contents of the directory
-	    for (File curFile : curDir.listFiles()) {
+	    File[] files = curDir.listFiles();
+            if (files != null) {
+                for (File curFile : curDir.listFiles()) {
 
-	        // The following test can cause trouble with
-	        // links, because links are accepted as
-	        // directories, even if they link files.  Links
-	        // could also result in infinite loops. For this
-	        // reason we don't do this traversing recursively.
-	        if (curFile.isDirectory()) {
-	            // If this file is a directory
-	            if (recurse && !seenDirectories.contains(curFile)) {
-	                toDoDirectories.add(curFile);
-                        seenDirectories.add(curFile);
-	            }
-	        } else {
-	            if (matchesSuffix(curFile, filters)) {
-	                results.add(curFile);
-	            }
-	        }
-	    }
-	}
+                    // The following test can cause trouble with
+                    // links, because links are accepted as
+                    // directories, even if they link files. Links
+                    // could also result in infinite loops. For this
+                    // reason we don't do this traversing recursively.
+                    if (curFile.isDirectory()) {
+                        // If this file is a directory
+                        if (recurse && !seenDirectories.contains(curFile)) {
+                            toDoDirectories.add(curFile);
+                            seenDirectories.add(curFile);
+                        }
+                    } else {
+                        if (matchesSuffix(curFile, filters)) {
+                            results.add(curFile);
+                        }
+                    }
+                }
+            }
+        }
 
 	return results;
     }
