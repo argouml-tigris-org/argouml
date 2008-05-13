@@ -673,17 +673,17 @@ public abstract class FigNodeModelElement
      * @param newEncloser the new encloser for this Fig
      */
     protected void moveIntoComponent(Fig newEncloser) {
-        Object component = newEncloser.getOwner();
-        Object owner = getOwner();
+        final Object component = newEncloser.getOwner();
+        final Object owner = getOwner();
 
         assert Model.getFacade().isAComponent(component);
         assert Model.getFacade().isAUMLElement(owner);
 
-        Collection er1 = Model.getFacade().getElementResidences(owner);
-        Collection er2 = Model.getFacade().getResidentElements(component);
+        final Collection er1 = Model.getFacade().getElementResidences(owner);
+        final Collection er2 = Model.getFacade().getResidentElements(component);
         boolean found = false;
         // Find all ElementResidences between the class and the component:
-        Collection common = new ArrayList(er1);
+        final Collection<Object> common = new ArrayList<Object>(er1);
         common.retainAll(er2);
         for (Object elementResidence : common) {
             if (!found) {
@@ -734,6 +734,7 @@ public abstract class FigNodeModelElement
      * @param figures in the new order
      * @deprecated in 0.25.5 This method is never used
      */
+    @Deprecated
     public void elementOrdering(List<Fig> figures) {
         int size = figures.size();
         getLayer().bringToFront(this);
@@ -1078,6 +1079,7 @@ public abstract class FigNodeModelElement
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == nameFig) {
+            // TODO: Can we delegate this to a specialist FigName class?
             if (getOwner() == null) {
                 return;
             }
@@ -1630,6 +1632,9 @@ public abstract class FigNodeModelElement
 
 	if (practicalView == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON) {
 	    
+	    // TODO: do we need to test for null? The getStereotypes call above
+	    // should guarantee an empty collection rather than a null
+	    // collection
 	    if (stereos != null) {
 		Image replaceIcon = null;
 
@@ -1698,8 +1703,8 @@ public abstract class FigNodeModelElement
         damage();
 	calcBounds();
 	updateEdges();
-	this.updateBounds();
-	this.redraw();
+	updateBounds();
+	redraw();
     }
 
     /*
@@ -1902,7 +1907,8 @@ public abstract class FigNodeModelElement
 
     /**
      * To redraw each element correctly when changing its location
-     * with X and U additions.
+     * with X and Y additions. Also manages relocation of enclosed
+     * Figs.
      *
      * @param xInc the increment in the x direction
      * @param yInc the increment in the y direction
@@ -2112,10 +2118,8 @@ public abstract class FigNodeModelElement
                                             == null))) {
                 practicalView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;
             }
-            return practicalView;
-        } else {
-            return practicalView;
         }
+        return practicalView;
     }
     
     /**
@@ -2128,6 +2132,7 @@ public abstract class FigNodeModelElement
         try {
             renderingChanged();
         } catch (Exception e) {
+            // TODO: Why is this ignored?
         }
     }
     
