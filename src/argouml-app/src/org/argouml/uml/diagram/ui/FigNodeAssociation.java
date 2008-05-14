@@ -35,6 +35,7 @@ import javax.swing.SwingUtilities;
 
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -124,21 +125,18 @@ public class FigNodeAssociation extends FigNodeModelElement {
 
 
     /**
-     * Used when a n-ary association becomes a binary association.
+     * Called when a model event is received from model subsystem.
+     * handles when a n-ary association becomes a binary association.
      *
      * @param mee the event
      */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if ("connection".equals(mee.getPropertyName())) {
-            if (mee instanceof RemoveAssociationEvent) {
-                Object association =
-                    ((RemoveAssociationEvent) mee).getSource();
-                if (Model.getFacade().getConnections(association).size()
-                        == 2) {
-                    reduceToBinary();
-                }
-            }
+    protected void updateLayout(UmlChangeEvent mee) {
+        super.updateLayout(mee);
+        if (mee instanceof RemoveAssociationEvent
+                && "connection".equals(mee.getPropertyName())
+                && Model.getFacade().getConnections(mee.getSource()).size() 
+                == 2) {
+            reduceToBinary();
         }
     }
 
@@ -147,32 +145,23 @@ public class FigNodeAssociation extends FigNodeModelElement {
      * from the model (OR from the diagram?), 
      * reduce this to a binary association.
      */
-    void reduceToBinary() {
+    private void reduceToBinary() {
         final Object association = getOwner();
-        final Fig oldNodeFig = this;
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                oldNodeFig.setOwner(null);
-                FigEdge figEdge = null;
-                Editor editor = Globals.curEditor();
-                GraphModel gm = editor.getGraphModel();
-                GraphEdgeRenderer renderer =
-                    editor.getGraphEdgeRenderer();
-                Layer lay = editor.getLayerManager().getActiveLayer();
-                figEdge =
-                    renderer.getFigEdgeFor(gm, lay, association, null);
-                editor.add(figEdge);
-                if (gm instanceof MutableGraphModel) {
-                    MutableGraphModel mutableGraphModel =
-                        (MutableGraphModel) gm;
-                    mutableGraphModel.removeNode(association);
-                    mutableGraphModel.addEdge(association);
-                }
-                oldNodeFig.removeFromDiagram();
-                editor.getSelectionManager().deselectAll();
-                editor.damageAll();
-            }
-        });
+        final Editor editor = Globals.curEditor();
+        final MutableGraphModel gm = 
+            (MutableGraphModel) editor.getGraphModel();
+        final GraphEdgeRenderer renderer =
+            editor.getGraphEdgeRenderer();
+        gm.removeNode(association);
+        removeFromDiagram();
+        final Layer lay = editor.getLayerManager().getActiveLayer();
+        final FigAssociation figEdge = (FigAssociation) renderer.getFigEdgeFor(
+                gm, lay, association, null);
+        editor.add(figEdge);
+        gm.addEdge(association);
+        figEdge.computeRoute();
+        editor.getSelectionManager().deselectAll();
+        editor.damageAll();
     }
     
     /*
