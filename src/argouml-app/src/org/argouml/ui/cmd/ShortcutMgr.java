@@ -247,6 +247,9 @@ public class ShortcutMgr {
     /** Action key for open critics */
     public static final String ACTION_OPEN_CRITICS = "openCritics";
 
+    /** Action key for help */
+    public static final String ACTION_HELP = "help";
+
     /** Action key for system info */
     public static final String ACTION_SYSTEM_INFORMATION = "systemInfo";
 
@@ -724,5 +727,10 @@ public class ShortcutMgr {
                 KeyEvent.VK_B, SHIFTED_DEFAULT_MASK), new ReorderAction(
                         "ToBack",
                         ReorderAction.SEND_TO_BACK));
+
+	// help menu
+	putDefaultShortcut(ACTION_HELP, 
+                           KeyStroke.getKeyStroke( KeyEvent.VK_F1, 0), 
+                           new ActionHelp());
     }
 }

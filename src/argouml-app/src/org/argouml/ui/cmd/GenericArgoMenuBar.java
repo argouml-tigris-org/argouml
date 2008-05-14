@@ -899,6 +899,12 @@ public class GenericArgoMenuBar extends JMenuBar implements
             help.insertSeparator(0);
         }
 
+        // Add the help menu item.
+        JMenuItem argoHelp = help.add(new ActionHelp());
+        setMnemonic(argoHelp, "ArgoUML help");
+        ShortcutMgr.assignAccelerator(argoHelp, ShortcutMgr.ACTION_HELP);
+        help.addSeparator();
+
         JMenuItem systemInfo = help.add(new ActionSystemInfo());
         setMnemonic(systemInfo, "System Information");
         ShortcutMgr.assignAccelerator(systemInfo,
