@@ -39,6 +39,7 @@ import javax.swing.Action;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
@@ -649,6 +650,19 @@ public class FigClass extends FigClassifierBox
         super.updateNameText();
         calcBounds();
         setBounds(getBounds());
+    }
+    
+    public void propertyChange(PropertyChangeEvent event) {
+        if (!(event instanceof DeleteInstanceEvent)
+                && event.getSource() == getOwner()
+                && event.getPropertyName().equals("association")
+                && Model.getFacade().isAAssociationEnd(event.getOldValue())) {
+            // TODO: We are getting events we don't want. Can we instruct the
+            // model event pump not to send these in the first place?
+            // See defect 5095.
+            return;
+        }
+        super.propertyChange(event);
     }
 
     /*
