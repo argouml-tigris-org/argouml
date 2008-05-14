@@ -39,6 +39,7 @@ import org.argouml.model.UmlChangeEvent;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -147,21 +148,18 @@ public class FigNodeAssociation extends FigNodeModelElement {
      */
     private void reduceToBinary() {
         final Object association = getOwner();
-        final Editor editor = Globals.curEditor();
-        final MutableGraphModel gm = 
-            (MutableGraphModel) editor.getGraphModel();
-        final GraphEdgeRenderer renderer =
-            editor.getGraphEdgeRenderer();
+        final LayerPerspective lay = (LayerPerspective) getLayer();
+        final MutableGraphModel gm = (MutableGraphModel) lay.getGraphModel();
         gm.removeNode(association);
         removeFromDiagram();
-        final Layer lay = editor.getLayerManager().getActiveLayer();
+        
+        final GraphEdgeRenderer renderer =
+            lay.getGraphEdgeRenderer();
         final FigAssociation figEdge = (FigAssociation) renderer.getFigEdgeFor(
                 gm, lay, association, null);
-        editor.add(figEdge);
+        lay.add(figEdge);
         gm.addEdge(association);
         figEdge.computeRoute();
-        editor.getSelectionManager().deselectAll();
-        editor.damageAll();
     }
     
     /*
