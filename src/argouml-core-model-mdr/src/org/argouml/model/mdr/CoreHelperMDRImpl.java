@@ -1332,7 +1332,10 @@ class CoreHelperMDRImpl implements CoreHelper {
                         || modelElement instanceof Stereotype)) {
                     return false;
                 }
+            } else if (modelElement instanceof ClassifierRole) {
+                return ns instanceof Collaboration;
             } else if (ns instanceof Collaboration) {
+
                 /*
                  * Although not represented in the OCL (or our Java), the
                  * English text of WFR #4 of Section 2.10.3.4 in the UML 1.4
