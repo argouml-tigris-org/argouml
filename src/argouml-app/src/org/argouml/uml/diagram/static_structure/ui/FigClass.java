@@ -652,19 +652,6 @@ public class FigClass extends FigClassifierBox
         setBounds(getBounds());
     }
     
-    public void propertyChange(PropertyChangeEvent event) {
-        if (!(event instanceof DeleteInstanceEvent)
-                && event.getSource() == getOwner()
-                && event.getPropertyName().equals("association")
-                && Model.getFacade().isAAssociationEnd(event.getOldValue())) {
-            // TODO: We are getting events we don't want. Can we instruct the
-            // model event pump not to send these in the first place?
-            // See defect 5095.
-            return;
-        }
-        super.propertyChange(event);
-    }
-
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
