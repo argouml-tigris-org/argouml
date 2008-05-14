@@ -2518,6 +2518,17 @@ class CoreHelperMDRImpl implements CoreHelper {
             } else {
                 ae.setAggregation(AggregationKindEnum.AK_NONE);
             }
+            // If we made something aggregate, make sure the other ends conform
+            // to UML 1.4 WFR 2.5.3.1 #2 - no more than one aggregate end
+            if (ak == AggregationKindEnum.AK_AGGREGATE
+                    || ak == AggregationKindEnum.AK_COMPOSITE) {
+                for (AssociationEnd end : ae.getAssociation().getConnection()) {
+                    if (!end.equals(ae)
+                            && end.getAggregation() != AggregationKindEnum.AK_NONE) {
+                        end.setAggregation(AggregationKindEnum.AK_NONE);
+                    }
+                }
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
