@@ -918,7 +918,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     @Deprecated
     public Collection getAllContents(Object clazz) {
         if (clazz == null) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         if (!(clazz instanceof Classifier)) {
             throw new IllegalArgumentException();
@@ -1464,9 +1464,13 @@ class CoreHelperMDRImpl implements CoreHelper {
         //     GeneralizableElement.
         //       self.generalization->forAll(g |
         //           self.namespace.allContents->includes(g.parent) )
-        return ModelManagementHelperMDRImpl.getContents(ns).contains(
-                gen.getParent());
+//        return ModelManagementHelperMDRImpl.getContents(ns).contains(
+//                gen.getParent());
         
+        // There actually don't appear to be any restrictions on the
+        // namespace for a Generalization.  The UML 1.4 WFR 2.5.3.20 #3
+        // refers to GeneralizableElements, not Generalizations - tfm
+        return true;
         
         // These old checks don't appear to be supported by the
         // UML 1.4 spec. - tfm 20080514
@@ -1628,10 +1632,8 @@ class CoreHelperMDRImpl implements CoreHelper {
             GeneralizableElement generalizableElement,
             Namespace namespace) {
         
-        CorePackage corePackage = modelImpl.getUmlPackage().getCore();
         Collection<Generalization> generalizations = 
             generalizableElement.getGeneralization();
-        
         for (Generalization generalization : generalizations) {
             GeneralizableElement parent = generalization.getParent();
             if (!modelImpl.getModelManagementHelper().getAllContents(namespace)

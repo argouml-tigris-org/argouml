@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -674,8 +674,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 }
             }
             /* TODO: This is the 2nd part of this method: */
-            Collection imports = modelImpl.getFacade()
-                    .getImportedElements(ns);
+            Collection imports = modelImpl.getFacade().getImportedElements(ns);
             ret.addAll(imports);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -754,13 +753,20 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
              */
 
             if (pack instanceof Classifier || pack instanceof UmlPackage) {
-                Collection<GeneralizableElement> ges = 
+                Collection<GeneralizableElement> parents = 
                     CoreHelperMDRImpl.getParents((GeneralizableElement) pack);
-                Collection<ModelElement> allContents = 
-                    new HashSet<ModelElement>();
-                for (GeneralizableElement ge : ges) {
-                    allContents.addAll(getAllContents(ge));
+                Set<ModelElement> allContents = new HashSet<ModelElement>();
+                for (GeneralizableElement parent : parents) {
+                    allContents.addAll(getAllContents(parent));
                 }
+                
+                if (pack instanceof UmlPackage) {
+                    allContents.addAll(getAllImportedElements(pack));
+                    for (GeneralizableElement parent : parents) {
+                        allContents.addAll(getAllImportedElements(parent));
+                    }
+                }
+
                 for (ModelElement element : allContents) {
                     if (VisibilityKindEnum.VK_PUBLIC.equals(element
                             .getVisibility())
@@ -769,7 +775,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                         results.add(element);
                     }
                 }
+
             }
+
 
 
             /*

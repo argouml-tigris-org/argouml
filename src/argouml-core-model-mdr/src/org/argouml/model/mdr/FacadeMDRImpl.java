@@ -1900,9 +1900,7 @@ class FacadeMDRImpl implements Facade {
              * similar automatically as part of its namespace processing.
              * - tfm - 20060408
              */
-            Collection<ElementImport> imports =
-                    ((UmlPackage) pack).getElementImport();
-            for (ElementImport ei : imports) {
+            for (ElementImport ei : ((UmlPackage) pack).getElementImport()) {
                 ModelElement element = ei.getImportedElement();
                 results.add(element);
             }
