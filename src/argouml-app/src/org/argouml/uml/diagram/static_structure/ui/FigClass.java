@@ -41,6 +41,7 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
@@ -442,20 +443,14 @@ public class FigClass extends FigClassifierBox
     }
     
     /*
-     * Handles changes to the model. Takes into account the event that
-     * occurred. If you need to update the whole fig, consider using
-     * renderingChanged.
-     *
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      * TODO: Based on my comments below, with that work done,
      * this method can be removed - Bob.
      */
-    protected void modelChanged(PropertyChangeEvent mee) {
-        // Let our superclass sort itself out first
-        super.modelChanged(mee);
+    protected void updateLayout(UmlChangeEvent event) {
+        super.updateLayout(event);
 
-        if (mee instanceof AttributeChangeEvent) {
-            Object source = mee.getSource();
+        if (event instanceof AttributeChangeEvent) {
+            Object source = event.getSource();
             if (Model.getFacade().isAAttribute(source)) {
                 // TODO: We just need to get someone to rerender a single line
                 // of text which represents the element here, but I'm not sure
@@ -465,13 +460,13 @@ public class FigClass extends FigClassifierBox
         	// change and the FigFeature should be update from that.
                 updateAttributes();
             }
-        } else if (mee instanceof AssociationChangeEvent 
-                && getOwner().equals(mee.getSource())) {
+        } else if (event instanceof AssociationChangeEvent 
+                && getOwner().equals(event.getSource())) {
             Object o = null;
-            if (mee instanceof AddAssociationEvent) {
-                o = mee.getNewValue();
-            } else if (mee instanceof RemoveAssociationEvent) {
-                o = mee.getOldValue();
+            if (event instanceof AddAssociationEvent) {
+                o = event.getNewValue();
+            } else if (event instanceof RemoveAssociationEvent) {
+                o = event.getOldValue();
             }
             if (Model.getFacade().isAAttribute(o)) {
         	// TODO: Bob says - we should not be listening here for
@@ -479,8 +474,6 @@ public class FigClass extends FigClassifierBox
         	// FigAttributesCompartment.
                 updateAttributes();
             }
-            
-            // Our superclass has already updated all listeners
         }
     }
 
