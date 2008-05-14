@@ -2120,7 +2120,15 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void addConnection(Object handle, Object connection) {
         if (handle instanceof UmlAssociation
                 && connection instanceof AssociationEnd) {
-            ((UmlAssociation) handle).getConnection().add((AssociationEnd) connection);
+            List<AssociationEnd> ends = 
+                ((UmlAssociation) handle).getConnection();
+            ends.add((AssociationEnd) connection);
+            // UML 1.4 WFR 2.5.3.1 #3
+            if (ends.size() >= 3) {
+                for (AssociationEnd end : ends) {
+                    end.setAggregation(AggregationKindEnum.AK_NONE);
+                }
+            }
             return;
         }
         if (handle instanceof Link && connection instanceof LinkEnd) {
@@ -2137,6 +2145,14 @@ class CoreHelperMDRImpl implements CoreHelper {
                 && connection instanceof AssociationEnd) {
             ((UmlAssociation) handle).getConnection().add(position,
                     (AssociationEnd) connection);
+            List<AssociationEnd> ends = 
+                ((UmlAssociation) handle).getConnection();
+            // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for N-ary associations
+            if (ends.size() >= 3) {
+                for (AssociationEnd end : ends) {
+                    end.setAggregation(AggregationKindEnum.AK_NONE);
+                }
+            }
             return;
         }
         /* Strange, but the Link.getConnection() 
@@ -2492,8 +2508,16 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void setAggregation(Object handle, Object aggregationKind) {
         if (handle instanceof AssociationEnd
                 && aggregationKind instanceof AggregationKind) {
-            ((AssociationEnd) handle).
-                    setAggregation((AggregationKind) aggregationKind);
+            AggregationKind ak = (AggregationKind) aggregationKind;
+            AssociationEnd ae = (AssociationEnd) handle;
+            // We silently ignore requests which conflict with 
+            // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for n-ary associations
+            if (ak == AggregationKindEnum.AK_NONE
+                    || ae.getAssociation().getConnection().size() < 3) {
+                ae.setAggregation(ak);
+            } else {
+                ae.setAggregation(AggregationKindEnum.AK_NONE);
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
@@ -2626,8 +2650,15 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public void setConnections(Object handle, Collection elems) {
         if (handle instanceof UmlAssociation && elems instanceof List) {
-            CollectionHelper.update(
-                    ((UmlAssociation) handle).getConnection(), elems);
+            List<AssociationEnd> ends = 
+                ((UmlAssociation) handle).getConnection();
+            CollectionHelper.update(ends, elems);
+            // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for N-ary associations
+            if (ends.size() >= 3) {
+                for (AssociationEnd end : ends) {
+                    end.setAggregation(AggregationKindEnum.AK_NONE);
+                }
+            }
             return;
         }
         if (handle instanceof Link && elems instanceof List) {

@@ -598,6 +598,13 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         end.setAssociation((UmlAssociation) assoc);
         end.setParticipant((Classifier) type);
         end.setName(name);
+        // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for N-ary associations
+        List<AssociationEnd> ends = ((UmlAssociation) assoc).getConnection();
+        if (ends.size() >= 3) {
+            for (AssociationEnd e : ends) {
+                e.setAggregation(AggregationKindEnum.AK_NONE);
+            }
+        }
         if (multi != null) {
             end.setMultiplicity((Multiplicity) multi);
         } else {
