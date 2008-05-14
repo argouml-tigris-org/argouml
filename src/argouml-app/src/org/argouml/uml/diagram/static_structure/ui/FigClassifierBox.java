@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -35,6 +36,7 @@ import javax.swing.Action;
 
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
@@ -43,7 +45,6 @@ import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
-import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
@@ -146,6 +147,35 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     public void renderingChanged() {
         updateOperations();
         super.renderingChanged();
+    }
+    
+    /**
+     * We are getting events we don't want. Filter them out.
+     * TODO: Can we instruct the model event pump not to send these in the
+     * first place? See defect 5095.
+     * @param event the event
+     */
+    public void propertyChange(PropertyChangeEvent event) {
+        if (event instanceof DeleteInstanceEvent
+                || event.getSource() != getOwner()) {
+            super.propertyChange(event);
+        }
+        
+        if (event.getPropertyName().equals("generalization")
+                && Model.getFacade().isAGeneralization(event.getOldValue())) {
+            return;
+        } else if (event.getPropertyName().equals("association")
+                && Model.getFacade().isAAssociationEnd(event.getOldValue())) {
+            return;
+        } else if (event.getPropertyName().equals("supplierDependency")
+                && Model.getFacade().isAUsage(event.getOldValue())) {
+            return;
+        } else if (event.getPropertyName().equals("clientDependency")
+                && Model.getFacade().isAAbstraction(event.getOldValue())) {
+            return;
+        }
+        
+        super.propertyChange(event);
     }
 
     protected void updateLayout(UmlChangeEvent event) {

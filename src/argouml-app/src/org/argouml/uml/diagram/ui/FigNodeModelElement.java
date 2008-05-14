@@ -935,6 +935,15 @@ public abstract class FigNodeModelElement
             removeFromDiagram();
             return;
         }
+        
+        // We are getting events we don't want. Filter them out.
+        if (pve.getPropertyName().equals("supplierDependency")
+                && Model.getFacade().isADependency(pve.getOldValue())) {
+            // TODO: Can we instruct the model event pump not to send these in
+            // the first place? See defect 5095.
+            return;
+        }
+        
         // We handle and consume editing events
         if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
@@ -975,7 +984,14 @@ public abstract class FigNodeModelElement
             try {
                 modelChanged(event);
             } catch (InvalidElementException e) {
-                LOG.debug("modelChanged method accessed deleted element ", e);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("event = " + event.getClass().getName());
+                    LOG.debug("source = " + event.getSource());
+                    LOG.debug("old = " + event.getOldValue());
+                    LOG.debug("name = " + event.getPropertyName());
+                    LOG.debug("modelChanged method accessed deleted element ",
+                            e);
+                }
             }
             
             if (event.getSource() == owner 
@@ -987,8 +1003,11 @@ public abstract class FigNodeModelElement
                 public void run() {
                     try {
                         updateLayout(event);
-                    }
-                    catch (InvalidElementException e) {
+                    } catch (InvalidElementException e) {
+                        LOG.debug("event = " + event.getClass().getName());
+                        LOG.debug("source = " + event.getSource());
+                        LOG.debug("old = " + event.getOldValue());
+                        LOG.debug("name = " + event.getPropertyName());
                         LOG.debug(
                                 "updateLayout method accessed deleted element ",
                                 e);
@@ -2072,7 +2091,7 @@ public abstract class FigNodeModelElement
     /**
      * Determine if this Fig is the sole selected target in
      * the TargetManager
-     * @return true if this si the sole target.
+     * @return true if this is the sole target.
      */
     protected boolean isSingleTarget() {
 	return TargetManager.getInstance().getSingleModelTarget()
@@ -2095,7 +2114,8 @@ public abstract class FigNodeModelElement
      * 
      * @return current practical stereotype view
      */
-    private int getPracticalView() {               
+    private int getPracticalView() {
+        // TODO assert modelElement != null???
 	int practicalView = getStereotypeView();
         Object modelElement = getOwner();
 
