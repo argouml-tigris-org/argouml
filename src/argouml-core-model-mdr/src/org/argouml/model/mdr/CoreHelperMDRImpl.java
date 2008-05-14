@@ -1246,23 +1246,18 @@ class CoreHelperMDRImpl implements CoreHelper {
         Namespace ns = (Namespace) nsObj;
 
         try {
-            if (Model.getFacade().getModel(ns) != Model.getFacade().getModel(
+            if (Model.getFacade().getRoot(ns) != Model.getFacade().getRoot(
                     modelElement)) {
-                // TODO: This will incorrectly return false for 
-                // nested Models - tfm
+                // TODO: This restriction is from earlier versions of ArgoUML, 
+                // but is it still valid? It will restrict moving elements 
+                // between multiple root elements when we support them - tfm
                 return false;
             }
 
             if (modelElement == ns) {
                 return false;
             }
-            // TODO: Is this checking for circular containment?  If so, it's
-            // done implicitly by MDR - tfm 20080514
-//            if (modelElement instanceof Namespace
-//                    && modelElement
-//                            == getFirstSharedNamespace(modelElement, ns)) {
-//                return false;
-//            }
+
             if (ns instanceof Interface
                     || ns instanceof Actor
                     || ns instanceof DataType
