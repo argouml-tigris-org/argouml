@@ -127,10 +127,21 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode implements
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        // Name of the UMLDiagram represented by this node has changed.
-        if (evt.getSource() instanceof Diagram
-                && "name".equals(evt.getPropertyName())) {
-            model.nodeChanged(this);
+        if (evt.getSource() instanceof Diagram) {
+            if ("name".equals(evt.getPropertyName())) {
+                /* The name of the UMLDiagram 
+                 * represented by this node has changed. */
+                model.nodeChanged(this);
+            }
+            if ( "namespace".equals(evt.getPropertyName())) {
+                /* TODO: Update the old and new node above this!
+                 * This is issue 5079.
+                 * The old and new UML namespaces are in the event, but
+                 * how do we know which nodes to refresh?
+                 * And how to refresh? 
+                 * Not necessarily the namespaces, 
+                 * depending on the perspective. */
+            }
         }
     }
 }
