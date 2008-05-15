@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,10 @@ import org.argouml.notation.Notation;
  *
  * TODO: In some cases (test cases) this object is created without setting
  * the treeModel. I (Linus) will add tests for this now. It would be better
- * if this is created only when the Explorer is created.
+ * if this is created only when the Explorer is created. <p>
+ * 
+ * TODO: The ExplorerTreeNode also listens to some events
+ * (from Diagrams), so it does not follow the rule above.
  *
  * @since 0.15.2, Created on 16 September 2003, 23:13
  * @author  alexb
