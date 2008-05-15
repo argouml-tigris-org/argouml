@@ -77,11 +77,11 @@ public class JavaImport implements ImportInterface {
             if (settings.getImportLevel() == ImportSettings.DETAIL_CLASSIFIER_FEATURE
                     || settings.getImportLevel() == ImportSettings.DETAIL_FULL) {
                 monitor.setMaximumProgress(files.size() * 2);
-                doImportPass(p, files, settings, monitor, 0, 1);
+                doImportPass(p, files, settings, monitor, 0, 0);
                 if (!monitor.isCanceled()) {
                     monitor.updateMainTask(Translator
                             .localize("dialog.import.pass2"));
-                    doImportPass(p, files, settings, monitor, files.size(), 2);
+                    doImportPass(p, files, settings, monitor, files.size(), 1);
                 }
             } else {
                 monitor.setMaximumProgress(files.size() * 2);
@@ -176,9 +176,9 @@ public class JavaImport implements ImportInterface {
             int parserMode =
                     JavaRecognizer.MODE_IMPORT_PASS1
                             | JavaRecognizer.MODE_IMPORT_PASS2;
-            if (pass == 1) {
+            if (pass == 0) {
                 parserMode = JavaRecognizer.MODE_IMPORT_PASS1;
-            } else if (pass == 2) {
+            } else if (pass == 1) {
                 parserMode = JavaRecognizer.MODE_IMPORT_PASS2;
             }
             parser.setParserMode(parserMode);
