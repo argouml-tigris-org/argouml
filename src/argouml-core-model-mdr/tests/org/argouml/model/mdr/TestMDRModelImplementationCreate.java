@@ -74,23 +74,23 @@ public class TestMDRModelImplementationCreate extends TestCase {
                 createPackage();
         mi.getCoreHelper().setNamespace(p, m);
         UmlClass c = (UmlClass) mi.getCoreFactory().buildClass(m);
-        Model m1 = (Model) mi.getFacade().getModel(c);
+        Model m1 = (Model) mi.getFacade().getRoot(c);
         assertNotNull(m1);
-        Model m2 = (Model) mi.getFacade().getModel(p);
+        Model m2 = (Model) mi.getFacade().getRoot(p);
         assertNotNull(m2);
         assertEquals(m1, m);
         assertEquals(m2, m);
         XmiReader xmiReader = mi.getXmiReader();
         URL modelUrl = getClass().getClassLoader().getResource(
-                "testmodels/test.xmi"); //!"ALittleBit.xmi";
+                "testmodels/test.xmi");
         assertNotNull(modelUrl);
         File fileModel = new File(modelUrl.getPath());
         assertTrue(fileModel.exists());
         InputSource source = new InputSource(new FileInputStream(fileModel));
-        //Model aLittleBit = (Model) xmiReader.parse(source);
         Collection modelElements = xmiReader.parse(source, false);
         assertNotNull(modelElements);
         assertEquals(1, modelElements.size());
+        assertNotNull(modelElements.iterator().next());
     }
 
 }
