@@ -156,11 +156,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * @param event the event
      */
     public void propertyChange(PropertyChangeEvent event) {
-        if (event instanceof DeleteInstanceEvent
-                || event.getSource() != getOwner()) {
-            super.propertyChange(event);
-        }
-        
         if (event.getPropertyName().equals("generalization")
                 && Model.getFacade().isAGeneralization(event.getOldValue())) {
             return;
