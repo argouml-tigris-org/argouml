@@ -34,6 +34,7 @@ import java.util.Iterator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -429,9 +430,18 @@ public class FigClassifierRole extends FigNodeModelElement {
         super.modelChanged(mee);
         if (mee instanceof AddAssociationEvent
                 || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
             notationProvider.updateListener(this, getOwner(), mee);
+        }
+    }
+
+    @Override
+    protected void updateLayout(UmlChangeEvent event) {
+        super.updateLayout(event);
+        if (event instanceof AddAssociationEvent
+                || event instanceof AttributeChangeEvent) {
+            // TODO: We need to be more specific here about what to build
+            renderingChanged();
+            // TODO: Is this really needed?
             damage();
         }
     }
