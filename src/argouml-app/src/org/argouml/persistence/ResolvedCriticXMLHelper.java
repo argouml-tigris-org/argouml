@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -72,42 +71,31 @@ public class ResolvedCriticXMLHelper {
     /**
      * Gets the offender vector of this critic where each offender is
      * wrapped in an OffenderXMLHelper.
-     *
+     * 
      * @return	A Vector of OffenderXMLHelpers, or null if there are
      *		no offenders.
      * @see	OffenderXMLHelper
-     * @deprecated for 0.25.6 by tfmorris.  Use {@link #getOffenders()}.
+     * NOTE: used by todo.tee
      */
     public Vector<OffenderXMLHelper> getOffenderList() {
-        Vector<OffenderXMLHelper> out = new Vector<OffenderXMLHelper>();
-        collectOffenders(out);
+	List<String> in = item.getOffenderList();
+	Vector<OffenderXMLHelper> out;
+
+	if (in == null) {
+	    return null;
+	}
+	out = new Vector<OffenderXMLHelper>();
+	for (String elem : in) {
+	    try {
+		OffenderXMLHelper helper =
+		    new OffenderXMLHelper(elem);
+		out.addElement(helper);
+	    } catch (ClassCastException cce) {
+	        // TODO: Shouldn't we do something here?
+	    }
+	}
+
 	return out;
     }
-
-
-    private void collectOffenders(List<OffenderXMLHelper> out) {
-        List<String> in = item.getOffenderList();
-        if (in == null) {
-            return;
-        }
-        for (String element : in) {
-            out.add(new OffenderXMLHelper(element));
-        }
-    }
-    
-    /**
-     * Gets the offender list of this critic where each offender is wrapped in
-     * an OffenderXMLHelper.
-     * 
-     * @return A List of OffenderXMLHelpers. If there are no offenders it
-     *         returns an empty list.
-     * @see OffenderXMLHelper
-     */
-    public List<OffenderXMLHelper> getOffenders() {
-        List<OffenderXMLHelper> out = new ArrayList<OffenderXMLHelper>();
-        collectOffenders(out);
-        return out;
-    }
-
 }
 
