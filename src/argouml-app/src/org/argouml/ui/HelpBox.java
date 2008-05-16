@@ -72,7 +72,7 @@ public class HelpBox extends JFrame implements HyperlinkListener {
     /**
      * The names and URLs for the pages.
      */
-    String _pages [] [] = { { "Manual", "http://argouml-stats.tigris.org/documentation/manual-0.24/" , "The ArgoUML online manual"},
+    String _pages [] [] = { { "Manual", "http://argouml-stats.tigris.org/nonav/documentation/manual-0.24/" , "The ArgoUML online manual"},
 		            { "Forum", "http://www.argouml-users.net/forum/viewforum.php?f=1", "A ArgoUML forum" },
                             { "Wiki", "http://www.argouml-users.net/index.php?title=Main_Page", "A ArgoUML wiki" } };
 
