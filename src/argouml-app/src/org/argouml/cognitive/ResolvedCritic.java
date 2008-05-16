@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2007 The Regents of the University of California. All
+// Copyright (c) 2002-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,10 +64,10 @@ public class ResolvedCritic {
      */
     public ResolvedCritic(String cr, List<String> offs) {
         critic = cr;
-        if (offs != null && offs.size() > 0) {
+        if (offs != null) {
             offenders = new ArrayList<String>(offs);
         } else {
-            offenders = null;
+            offenders = new ArrayList<String>();
         }
     }
     
@@ -110,7 +110,7 @@ public class ResolvedCritic {
 		offenders = new ArrayList<String>(offs.size());
 		importOffenders(offs, canCreate);
 	    } else {
-	        offenders = null;
+	        offenders = new ArrayList<String>();
 	    }
 	} catch (UnresolvableException ure) {
 	    try {
@@ -131,6 +131,7 @@ public class ResolvedCritic {
      * This is a rather bad hash solution but with the {@link #equals(Object)}
      * defined as below, it is not possible to do better.
      */
+    @Override
     public int hashCode() {
         if (critic == null) {
             return 0;
@@ -154,9 +155,9 @@ public class ResolvedCritic {
      *
      * {@inheritDoc}
      */
+    @Override
     public boolean equals(Object obj) {
 	ResolvedCritic rc;
-	int i, j;
 
 	if (obj == null || !(obj instanceof ResolvedCritic)) {
 	    return false;
@@ -180,13 +181,14 @@ public class ResolvedCritic {
 	    return false;
 	}
 
-	for (i = 0; i < offenders.size(); i++) {
-	    if (offenders.get(i) == null) {
+	for (String offender : offenders) {
+	    if (offender == null) {
 	        continue;
 	    }
 
+	    int j;
 	    for (j = 0; j < rc.offenders.size(); j++) {
-	        if (offenders.get(i).equals(rc.offenders.get(j))) {
+	        if (offender.equals(rc.offenders.get(j))) {
 	            break;
 	        }
 	    }
@@ -219,7 +221,7 @@ public class ResolvedCritic {
      * Imports the set of related objects in set to this object. If an
      * object does not have an ItemUID, canCreate determines if one will
      * be provided. If some object does not have an ItemUID and canCreate
-     * is false och the object does not accept and ItemUID, then
+     * is false or the object does not accept an ItemUID, then
      * UnresolvableException is thrown.
      *
      * @param	set	The set of related objects to import.
@@ -281,7 +283,7 @@ public class ResolvedCritic {
      *
      * @return The list of offenders of the critic this instance resolved.
      */
-    public List getOffenderList() {
+    public List<String> getOffenderList() {
 	return offenders;
     }
 
