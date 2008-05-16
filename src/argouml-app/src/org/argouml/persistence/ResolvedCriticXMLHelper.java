@@ -24,7 +24,7 @@
 
 package org.argouml.persistence;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -76,28 +76,38 @@ public class ResolvedCriticXMLHelper {
      * @return	A Vector of OffenderXMLHelpers, or null if there are
      *		no offenders.
      * @see	OffenderXMLHelper
+     * @deprecated for 0.25.6 by tfmorris.  Use {@link #getOffenders()}.
      */
-    public Vector getOffenderList() {
-	List in = item.getOffenderList();
-	Iterator elems;
-	Vector out;
-
-	if (in == null) {
-	    return null;
-	}
-	out = new Vector();
-	elems = in.iterator();
-	while (elems.hasNext()) {
-	    try {
-		OffenderXMLHelper helper =
-		    new OffenderXMLHelper((String) elems.next());
-		out.addElement(helper);
-	    } catch (ClassCastException cce) {
-	        // TODO: Shouldn't we do something here?
-	    }
-	}
-
+    public Vector<OffenderXMLHelper> getOffenderList() {
+        Vector<OffenderXMLHelper> out = new Vector<OffenderXMLHelper>();
+        collectOffenders(out);
 	return out;
     }
+
+
+    private void collectOffenders(List<OffenderXMLHelper> out) {
+        List<String> in = item.getOffenderList();
+        if (in == null) {
+            return;
+        }
+        for (String element : in) {
+            out.add(new OffenderXMLHelper(element));
+        }
+    }
+    
+    /**
+     * Gets the offender list of this critic where each offender is wrapped in
+     * an OffenderXMLHelper.
+     * 
+     * @return A List of OffenderXMLHelpers. If there are no offenders it
+     *         returns an empty list.
+     * @see OffenderXMLHelper
+     */
+    public List<OffenderXMLHelper> getOffenders() {
+        List<OffenderXMLHelper> out = new ArrayList<OffenderXMLHelper>();
+        collectOffenders(out);
+        return out;
+    }
+
 }
 
