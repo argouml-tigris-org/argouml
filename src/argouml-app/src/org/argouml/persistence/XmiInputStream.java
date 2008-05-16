@@ -33,10 +33,10 @@ import org.argouml.persistence.AbstractFilePersister.ProgressMgr;
 
 /**
  * A BufferInputStream that is aware of XML structure.
- * It can search for the first occurence of a named tag
+ * It can search for the first occurrence of a named tag
  * and reads only the data (inclusively) from that tag
  * to the matching end tag or it can search for the first
- * occurence of a named tag and read on the child tags.
+ * occurrence of a named tag and read on the child tags.
  * The tag is not expected to be an empty tag.
  * @author Bob Tarling
  */
@@ -99,7 +99,7 @@ class XmiInputStream extends BufferedInputStream {
      * @param extParser the parser to call to read any
      *                           XMI.extension elements
      * @param len the expected length of the input stream
-     * @param spacing the number of characers to read before
+     * @param spacing the number of characters to read before
      *        firing a progress event.
      * @param prgrssMgr the progress manager
      * @deprecated by Linus Tolke for 0.25.3.
