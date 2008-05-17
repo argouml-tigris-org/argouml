@@ -814,6 +814,28 @@ i.e. almost all non-binary files.
 
           <tbody valign="top">
             <row>
+              <entry>svn:eol-style</entry>
+              <entry>CRLF</entry>
+              <entry>
+All Windows batch files: *.bat.
+<!-- See issue 5078. -->
+</entry>
+            </row>
+          </tbody>
+
+          <tbody valign="top">
+            <row>
+              <entry>svn:eol-style</entry>
+              <entry>LF</entry>
+              <entry>
+All Linux shell files: *.sh.
+<!-- See issue 5078. -->
+</entry>
+            </row>
+          </tbody>
+
+          <tbody valign="top">
+            <row>
               <entry>svn:executable</entry>
               <entry>*</entry>
               <entry>
