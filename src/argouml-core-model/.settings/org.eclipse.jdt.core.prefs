@@ -1,4 +1,4 @@
-#Thu Dec 20 20:47:05 EST 2007
+#Sun May 18 14:54:13 EDT 2008
 eclipse.preferences.version=1
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.5
@@ -82,7 +82,7 @@ org.eclipse.jdt.core.formatter.alignment_for_arguments_in_enum_constant=16
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_explicit_constructor_call=16
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation=16
 org.eclipse.jdt.core.formatter.alignment_for_arguments_in_qualified_allocation_expression=16
-org.eclipse.jdt.core.formatter.alignment_for_assignment=16
+org.eclipse.jdt.core.formatter.alignment_for_assignment=0
 org.eclipse.jdt.core.formatter.alignment_for_binary_expression=16
 org.eclipse.jdt.core.formatter.alignment_for_compact_if=16
 org.eclipse.jdt.core.formatter.alignment_for_conditional_expression=80
@@ -95,8 +95,8 @@ org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation=16
 org.eclipse.jdt.core.formatter.alignment_for_superclass_in_type_declaration=16
 org.eclipse.jdt.core.formatter.alignment_for_superinterfaces_in_enum_declaration=16
 org.eclipse.jdt.core.formatter.alignment_for_superinterfaces_in_type_declaration=16
-org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_constructor_declaration=16
-org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration=16
+org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_constructor_declaration=20
+org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration=20
 org.eclipse.jdt.core.formatter.blank_lines_after_imports=1
 org.eclipse.jdt.core.formatter.blank_lines_after_package=1
 org.eclipse.jdt.core.formatter.blank_lines_before_field=1
