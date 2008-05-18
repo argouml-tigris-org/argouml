@@ -58,7 +58,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
@@ -198,7 +197,10 @@ public class DnDExplorerTree
         if (targets.size() < 1) {
             return;
         }
-        LOG.debug("Drag: start transferring " + targets.size() + " targets.");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Drag: start transferring " + targets.size()
+                    + " targets.");
+        }
         TransferableModelElements tf =
             new TransferableModelElements(targets);
 
@@ -307,6 +309,8 @@ public class DnDExplorerTree
         }
 
         /* If the destination is a DataType, then abort: */
+        // TODO: Any Namespace can contain other elements.  Why don't we allow
+        // this? - tfm
         if (Model.getFacade().isADataType(dest)) {
             LOG.debug("No valid Drag: destination is a DataType.");
             return false;
@@ -317,26 +321,23 @@ public class DnDExplorerTree
          * may be dropped, then the drag is valid.
          * The others will be ignored when dropping.
          */
-        Collection c;
         try {
-            c =
+            Collection transfers =
                 (Collection) tf.getTransferData(
                     TransferableModelElements.UML_COLLECTION_FLAVOR);
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                Object me = i.next();
-                if (Model.getCoreHelper().isValidNamespace(me, dest)) {
+            for (Object element : transfers) {
+                if (Model.getCoreHelper().isValidNamespace(element, dest)) {
                     LOG.debug("Valid Drag: namespace " + dest);
                     return true;
                 }
-                if (me instanceof Relocatable) {
-                    Relocatable d = (Relocatable) me;
+                if (element instanceof Relocatable) {
+                    Relocatable d = (Relocatable) element;
                     if (d.isRelocationAllowed(dest)) {
                         LOG.debug("Valid Drag: diagram " + dest);
                         return true;
                     }
                 }
-                if (Model.getFacade().isAFeature(me) 
+                if (Model.getFacade().isAFeature(element) 
                         && Model.getFacade().isAClassifier(dest)) {
                     return true;
                 }
@@ -562,7 +563,6 @@ public class DnDExplorerTree
          * @see java.awt.dnd.DropTargetListener#dragOver(java.awt.dnd.DropTargetDragEvent)
          */
         public void dragOver(DropTargetDragEvent dropTargetDragEvent) {
-            // LOG.debug("dragOver"); //many many of these!
             Point pt = dropTargetDragEvent.getLocation();
             if (pt.equals(lastMouseLocation)) {
                 return;
@@ -661,7 +661,11 @@ public class DnDExplorerTree
 
             /* If the destination is not a NameSpace, then reject: */
             if (!Model.getFacade().isANamespace(dest)) {
-                LOG.debug("No valid Drag: not a namespace.");
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("No valid Drag: "
+                            + Model.getFacade().getName(dest)
+                            + " not a namespace.");
+                }
                 dropTargetDragEvent.rejectDrag();
                 return;
             }
@@ -673,20 +677,8 @@ public class DnDExplorerTree
                 return;
             }
 
-//          /* TODO: The next only works from Java 1.5 onwards :-( */
-//          Transferable tf = dropTargetDragEvent.getTransferable();
-//          if (tf.isDataFlavorSupported(
-//          TransferableModelElements.UML_COLLECTION_FLAVOR)) {
-//          /* Check tf contents like in isValidDrag(). */
-//          dropTargetDragEvent.acceptDrag(
-//          dropTargetDragEvent.getDropAction());
-//          } else {
-//          dropTargetDragEvent.rejectDrag();
-//          }
-
             dropTargetDragEvent.acceptDrag(
                     dropTargetDragEvent.getDropAction());
-
         }
 
         /**
@@ -714,7 +706,9 @@ public class DnDExplorerTree
                 //get new parent node
                 Point loc = dropTargetDropEvent.getLocation();
                 TreePath destinationPath = getPathForLocation(loc.x, loc.y);
-                LOG.debug("Drop location: x=" + loc.x + " y=" + loc.y);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Drop location: x=" + loc.x + " y=" + loc.y);
+                }
 
                 if (!isValidDrag(destinationPath, tr)) {
                     dropTargetDropEvent.rejectDrop();
@@ -725,8 +719,10 @@ public class DnDExplorerTree
                 Collection modelElements =
                     (Collection) tr.getTransferData(
                         TransferableModelElements.UML_COLLECTION_FLAVOR);
-                LOG.debug("transfer data = " + modelElements);
-
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("transfer data = " + modelElements);
+                }
+                
                 Object dest =
                     ((DefaultMutableTreeNode) destinationPath
                         .getLastPathComponent()).getUserObject();
@@ -750,13 +746,15 @@ public class DnDExplorerTree
                     dropTargetDropEvent.rejectDrop();
                     return;
                 }
-                Collection newTargets = new ArrayList();
+                // TODO: Really should be Element/ModelElement, but we don't
+                // have a type which is portable for this
+                Collection<Object> newTargets = new ArrayList<Object>();
                 try {
                     dropTargetDropEvent.acceptDrop(action);
-                    Iterator i = modelElements.iterator();
-                    while (i.hasNext()) {
-                        Object me = i.next();
-                        LOG.debug((moveAction ? "move " : "copy ") + me);
+                    for (Object me : modelElements) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug((moveAction ? "move " : "copy ") + me);
+                        }
                         if (Model.getCoreHelper().isValidNamespace(me, dest)) {
                             if (moveAction) {
                                 Model.getCoreHelper().setNamespace(me, dest);
