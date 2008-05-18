@@ -26,7 +26,6 @@ package org.argouml.uml.reveng.java;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.reveng.ImportClassLoader;
 
 /**
  * This context is an outer class containing inner classes.
