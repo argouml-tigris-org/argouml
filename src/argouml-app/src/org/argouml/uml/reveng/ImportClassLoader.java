@@ -139,16 +139,9 @@ public final class ImportClassLoader extends URLClassLoader {
     /**
      * @param f the file to be added
      * @throws MalformedURLException when the URL is bad
-     * 
-     * TODO: Either method signature or implementation needs to be
-     * changed to make behavior consistent - tfm
      */
     public void addFile(File f) throws MalformedURLException {
-        try {
-            this.addURL(f.toURI().toURL());
-        } catch (MalformedURLException e) {
-	    LOG.warn("could not add file ", e);
-	}
+        addURL(f.toURI().toURL());
     }
 
     /**
