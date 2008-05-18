@@ -4,6 +4,7 @@
 <project reference="0.9.3,http://argouml-classfile.tigris.org/svn/argouml-classfile/trunk,argouml-module-classfile"/>
 <project reference="0.9.3,http://argouml-cpp.tigris.org/svn/argouml-cpp/trunk,argouml-module-cpp"/>
 <project reference="0.9.3,http://argouml-csharp.tigris.org/svn/argouml-csharp/trunk,argouml-module-csharp"/>
+<project reference="0.9.3,http://argouml-java.tigris.org/svn/argouml-java/trunk,argouml-module-java"/>
 <project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/modules/dev,argouml-module-dev"/>
 <project reference="0.9.3,http://argouml-idl.tigris.org/svn/argouml-idl/trunk,argouml-module-idl"/>
 <project reference="0.9.3,http://argouml-php.tigris.org/svn/argouml-php/trunk,argouml-module-php"/>
