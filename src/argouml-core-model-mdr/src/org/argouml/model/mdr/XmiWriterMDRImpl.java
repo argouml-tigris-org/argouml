@@ -41,7 +41,6 @@ import org.netbeans.api.xmi.XMIWriter;
 import org.netbeans.api.xmi.XMIWriterFactory;
 import org.netbeans.lib.jmi.xmi.OutputConfig;
 import org.omg.uml.UmlPackage;
-import org.omg.uml.modelmanagement.Model;
 
 /**
  * XmiWriter implementation for MDR.
@@ -78,13 +77,6 @@ class XmiWriterMDRImpl implements XmiWriter {
     private XmiExtensionWriter xmiExtensionWriter;
 
     private static final char[] TARGET = "/XMI.content".toCharArray();
-    
-    /*
-     * If true, change write semantics to write all top level model elements
-     * except for the profile model(s), ignoring the model specified by the 
-     * caller.
-     */
-    private static final boolean WRITE_ALL = true;
 
     /*
      * Private constructor for common work needed by both public
@@ -162,27 +154,21 @@ class XmiWriterMDRImpl implements XmiWriter {
                 config);
         try {
             ArrayList elements = new ArrayList();
-            if (model != null && !WRITE_ALL) {
-                elements.add(model);
-                LOG.info("Saving model '" + ((Model) model).getName() + "'");
-            } else {
-                UmlPackage pkg = modelImpl.getUmlPackage();
-                // Make sure user model is first
-                elements.add(model);
-                for (Iterator it = pkg.getCore().getElement().refAllOfType()
-                        .iterator(); it.hasNext();) {
-                    RefObject obj = (RefObject) it.next();
-                    // Find top level objects which aren't part of profile
-                    if (obj.refImmediateComposite() == null ) {
-                        if (!elements.contains(obj)) {
-                            elements.add(obj);
-                        }
+            UmlPackage pkg = modelImpl.getUmlPackage();
+            // Make sure user model is first
+            elements.add(model);
+            for (Iterator it = pkg.getCore().getElement().refAllOfType()
+                    .iterator(); it.hasNext();) {
+                RefObject obj = (RefObject) it.next();
+                // Find top level objects which aren't part of profile
+                if (obj.refImmediateComposite() == null) {
+                    if (!elements.contains(obj)) {
+                        elements.add(obj);
                     }
                 }
-                LOG.info("Saving " + elements.size() 
-                        + " top level model elements");
             }
-     
+            LOG.info("Saving " + elements.size() + " top level model elements");
+
             OutputStream stream;
             if (oStream == null) {
                 stream = new WriterOuputStream(writer);                
