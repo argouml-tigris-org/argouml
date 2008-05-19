@@ -40,6 +40,9 @@ import org.netbeans.api.xmi.XMIReferenceProvider;
 class XmiReferenceProviderImpl implements XMIReferenceProvider {
     
     private Map<String, XmiReference> mofIdToXmiId;
+
+    private boolean topSystemIdSaved = false;
+    private String topSystemId = null;
     
     /**
      * Create a new reference provider which uses the given map for lookups.
@@ -59,13 +62,29 @@ class XmiReferenceProviderImpl implements XMIReferenceProvider {
         // Look for an existing reference matching our MofID
         XmiReference ref = mofIdToXmiId.get(mofId);
 
+        // Remember the system id of our root document so that we can write
+        // out profiles and linked models to a different file if requested
+        if (!topSystemIdSaved) {
+            if (ref == null) {
+                topSystemId = null;
+            } else {
+                topSystemId = ref.getSystemId();
+            }
+            topSystemIdSaved = true;
+        }
+        
         // Anything not found is newly created, so return a null SystemID
-        // indicating that it is in the parent document.  Otherwise return
-        // the same reference that we read in originally.
+        // indicating that it is in the parent document. 
+        // TODO: This assumption will be invalid if/when we allow editing of
+        // linked sub-models
         if (ref == null) {
             return new XMIReferenceProvider.XMIReference(null, mofId);
         } else {
-            return new XMIReferenceProvider.XMIReference(ref.getSystemId(), 
+            String systemId = ref.getSystemId();
+            if (topSystemId != null && topSystemId.equals(systemId)) {
+                systemId = null;
+            }
+            return new XMIReferenceProvider.XMIReference(systemId, 
                     ref.getXmiId());
         }
     }
