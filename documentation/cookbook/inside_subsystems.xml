@@ -47,6 +47,7 @@
   &subsystempropertypanels;
   &subsystempersistence;
   &subsystemnotation;
+  &subsystemprofile;
   
   <sect1 id="reverseengineering">
     <title>Reverse Engineering Subsystem</title> <indexterm>
@@ -291,9 +292,9 @@
       the C++ plugin is located <ulink url="http://argouml-cpp.tigris.org/">
       here</ulink>.
     </para>
-    <para>Currently C++ has no reverse engineering but only code generation (and
-      a very simple one at that). The Java classfile module has only reverse 
-      engineering.
+    <para>Currently C++ has a proof of concept reverse engineering module and 
+      a more mature code generation module, although still very simple.
+      The Java classfile module has only reverse engineering.
     </para>
     <para>There are stubs/shells for many different languages, but the following
     are mature enough to be distributed with ArgoUML: C++ (Cpp), C# (Csharp), 

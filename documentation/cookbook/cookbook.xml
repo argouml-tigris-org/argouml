@@ -45,6 +45,7 @@
 <!ENTITY subsystemdiagrams SYSTEM "subsystemdiagrams.xml">
 <!ENTITY subsystempersistence SYSTEM "subsystempersistence.xml">
 <!ENTITY subsystemnotation SYSTEM "subsystemnotation.xml">
+<!ENTITY subsystemprofile SYSTEM "subsystemprofile.xml">
 <!ENTITY subsystempropertypanels SYSTEM "subsystempropertypanels.xml">
 <!ENTITY subsysteminternationalization SYSTEM "subsysteminternationalization.xml">
 <!ENTITY subsystemlogging SYSTEM "subsystemlogging.xml">
