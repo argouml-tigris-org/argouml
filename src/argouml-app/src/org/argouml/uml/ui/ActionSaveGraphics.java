@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -138,11 +138,15 @@ public class ActionSaveGraphics extends AbstractAction
                 }
             }
         } catch (OutOfMemoryError e) {
-            new ExceptionDialog(ArgoFrame.getInstance(),
+            ExceptionDialog ed = new ExceptionDialog(ArgoFrame.getInstance(),
                 "You have run out of memory. "
                 + "Close down ArgoUML and restart with a larger heap size.", e);
+            ed.setModal(true);
+            ed.setVisible(true);
         } catch (Exception e) {
-            new ExceptionDialog(ArgoFrame.getInstance(), e);
+            ExceptionDialog ed = new ExceptionDialog(ArgoFrame.getInstance(), e);
+            ed.setModal(true);
+            ed.setVisible(true);
             LOG.error("Got some exception", e);
         }
 
