@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,6 @@
 
 package org.argouml.uml.diagram;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.argouml.model.CoreFactory;
@@ -222,14 +220,12 @@ public abstract class UmlDiagramRenderer
      * @param fig the fig to style.
      * @param attributeMap a map of name value pairs
      */
-    private void setStyleAttributes(Fig fig, Map attributeMap) {
+    private void setStyleAttributes(Fig fig, Map<String, String> attributeMap) {
         String name;
         String value;
-        Iterator it = attributeMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry) it.next();
-            name = (String) entry.getKey();
-            value = (String) entry.getValue();
+        for (Map.Entry<String, String> entry : attributeMap.entrySet()) {
+            name = entry.getKey();
+            value = entry.getValue();
 
             if ("operationsVisible".equals(name)) {
                 ((OperationsCompartmentContainer) fig)
@@ -260,7 +256,7 @@ public abstract class UmlDiagramRenderer
             newEdge = new FigLink();
         } else if (Model.getFacade().isAGeneralization(edge)) {
             newEdge = new FigGeneralization();
-        } else if (Model.getFacade().isAPermission(edge)) {
+        } else if (Model.getFacade().isAPackageImport(edge)) {
             newEdge = new FigPermission();
         } else if (Model.getFacade().isAUsage(edge)) {
             newEdge = new FigUsage();
@@ -352,17 +348,14 @@ public abstract class UmlDiagramRenderer
      */
     private FigNode getNodePresentationFor(Layer lay, Object modelElement) {
         assert modelElement != null : "A modelElement must be supplied";
-        for (Iterator it = lay.getContentsNoEdges().iterator();
-                it.hasNext(); ) {
-            Object fig = it.next();
+        for (Object fig : lay.getContentsNoEdges()) {
+ 
             if (fig instanceof FigNode
                     && ((FigNode) fig).getOwner().equals(modelElement)) {
                 return ((FigNode) fig);
             }
         }
-        for (Iterator it = lay.getContentsEdgesOnly().iterator();
-            it.hasNext(); ) {
-            Object fig = it.next();
+        for (Object fig : lay.getContentsEdgesOnly()) {
             if (fig instanceof FigEdgeModelElement
                     && modelElement.equals(((FigEdgeModelElement) fig)
                             .getOwner())) {
@@ -373,4 +366,4 @@ public abstract class UmlDiagramRenderer
     }
     
 
-} /* end class CollabDiagramRenderer */
+}
