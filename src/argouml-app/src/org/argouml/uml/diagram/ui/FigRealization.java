@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,13 +28,17 @@ package org.argouml.uml.diagram.ui;
 /**
  * Fig for a UML Realization.
  * <p>
- * Implementation has been moved to FigAbstraction for alignment
- * with UML spec and to allow reuse for other abstractions such
- * as Derivation, Refinement, or Trace.
+ * Implementation has been moved to FigAbstraction for alignment with UML spec
+ * and to allow reuse for other abstractions such as Derivation, Refinement, or
+ * Trace.
+ * <p>
  * TODO: Bob says - looks like this should be deprecated with FigAbstraction
- * used instead. Make sure any persistence impact is addressed first.
- * @deprecated for 0.25.5 by tfmorris.  Use {@link FigAbstraction}.
+ * used instead. Make sure any persistence impact is addressed before this is
+ * removed.
+ * 
+ * @deprecated for 0.25.5 by tfmorris. Use {@link FigAbstraction}.
  */
+@Deprecated
 public class FigRealization extends FigAbstraction {
     /**
      * The constructor.
@@ -57,5 +61,5 @@ public class FigRealization extends FigAbstraction {
      * The UID.
      */
     private static final long serialVersionUID = -5688833795126793130L;
-} /* end class FigRealization */
+}
 

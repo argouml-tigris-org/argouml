@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,17 +31,21 @@ import org.tigris.gef.presentation.ArrowHeadTriangle;
 /**
  * Fig representing a UML Abstraction.
  * <p>
- * Implementation was copied here from FigRealization and parent type changed
- * from FigEdgeModelElement to FigDependency to align better with UML spec and
- * to allow reuse for other abstractions such as Derivation, Refinement, or
- * Trace. FigRealization is just a shell for backward compatibility.
- * <p>
+
  * Graphical representation is a dashed line and a triangle arrow-head.
  * 
  * @author agauthie
  */
 public class FigAbstraction extends FigDependency {
 
+    /*
+     * Implementation was copied here from FigRealization and parent type
+     * changed from FigEdgeModelElement to FigDependency to align better with
+     * UML spec and to allow reuse for other abstractions such as Derivation,
+     * Refinement, or Trace. FigRealization is just a shell for backward
+     * compatibility.
+     * 
+     */
     private ArrowHeadTriangle endArrow;
 
     /**
@@ -65,5 +69,5 @@ public class FigAbstraction extends FigDependency {
         setOwner(edge);
     }
 
-} /* end class FigRealization */
+}
 
