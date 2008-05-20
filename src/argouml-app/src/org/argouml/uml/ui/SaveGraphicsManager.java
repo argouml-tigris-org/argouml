@@ -25,23 +25,27 @@
 package org.argouml.uml.ui;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Logger;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
+import org.argouml.gefext.DeferredBufferedImage;
 import org.argouml.i18n.Translator;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
@@ -104,7 +108,7 @@ public final class SaveGraphicsManager {
     /**
      * The list of other file formats.
      */
-    private List otherFilters = new ArrayList();
+    private List<SuffixFilter> otherFilters = new ArrayList<SuffixFilter>();
 
     /**
      * The singleton instance.
@@ -129,9 +133,7 @@ public final class SaveGraphicsManager {
      * @param suffix the extension of the new default file-format
      */
     public void setDefaultFilterBySuffix(String suffix) {
-        Iterator i = otherFilters.iterator();
-        while (i.hasNext()) {
-            SuffixFilter sf = (SuffixFilter) i.next();
+        for (SuffixFilter sf : otherFilters) {
             if (sf.getSuffix().equalsIgnoreCase(suffix)) {
                 setDefaultFilter(sf);
                 break;
@@ -152,13 +154,10 @@ public final class SaveGraphicsManager {
                 KEY_DEFAULT_GRAPHICS_FILTER,
                 f.getSuffix());
 
-        Collections.sort(otherFilters, new Comparator() {
-            /*
-             * @see java.util.Comparator#compare(T, T)
-             */
-            public int compare(Object arg0, Object arg1) {
-                return ((SuffixFilter) arg0).getSuffix().compareToIgnoreCase(
-                        ((SuffixFilter) arg1).getSuffix());
+        Collections.sort(otherFilters, new Comparator<SuffixFilter>() {
+            public int compare(SuffixFilter arg0, SuffixFilter arg1) {
+                return arg0.getSuffix().compareToIgnoreCase(
+                        arg1.getSuffix());
             }
         });
     }
@@ -323,7 +322,8 @@ public final class SaveGraphicsManager {
         }
         return cmd;
     }
-    
+
+
     /**
      * @param suffix the suffix (extension) of the filename,
      *               which corresponds to the graphics format to be used
@@ -334,9 +334,10 @@ public final class SaveGraphicsManager {
         if (FileFilters.PS_FILTER.getSuffix().equals(suffix)) {
             cmd = new SavePSAction(Translator.localize("action.save-ps"));
         } else if (FileFilters.EPS_FILTER.getSuffix().equals(suffix)) {
-            cmd = new SaveEPSAction(Translator.localize("action.save-eps"));
+            cmd = new SaveScaledEPSAction(
+                    Translator.localize("action.save-eps"));
         } else if (FileFilters.PNG_FILTER.getSuffix().equals(suffix)) {
-            cmd = new SavePNGAction(Translator.localize("action.save-png"));
+            cmd = new SavePNGAction2(Translator.localize("action.save-png"));
         } else if (FileFilters.GIF_FILTER.getSuffix().equals(suffix)) {
             cmd = new SaveGIFAction(Translator.localize("action.save-gif"));
         } else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
@@ -350,19 +351,16 @@ public final class SaveGraphicsManager {
      * @return the complete collection of SuffixFilters,
      *         the first one is the default one
      */
-    public Collection getSettingsList() {
-        Collection c = new ArrayList();
+    public List<SuffixFilter> getSettingsList() {
+        List<SuffixFilter> c = new ArrayList<SuffixFilter>();
         c.add(defaultFilter);
-        Iterator iter = otherFilters.iterator();
-        while (iter.hasNext()) {
-            c.add((iter.next()));
-        }
+        c.addAll(otherFilters);
         return c;
     }
 }
 
 /**
- * Class to adjust {@link org.tigris.gef.base.CmdSaveEPS} for our purpuses.<p>
+ * Class to adjust {@link org.tigris.gef.base.CmdSaveEPS} for our purposes.<p>
  *
  * TODO: While doing this refactoring (February 2004) it is unclear to me (Linus
  * Tolke) why this modification in the {@link org.tigris.gef.base.CmdSaveEPS}
@@ -371,13 +369,13 @@ public final class SaveGraphicsManager {
  * 
  * TODO: Does this behavior need to be replicated for {@link SaveEPSAction} 
  * as well? - tfm - 20070511
+ * <p>
+ * @deprecated for 0.25.5 by tfmorris use {@link SaveScaledEPSAction}
  */
+@SuppressWarnings("deprecation")
+@Deprecated
 class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
-    /*
-     * @see org.tigris.gef.base.CmdSaveGraphics#saveGraphics(
-     *         java.io.OutputStream, org.tigris.gef.base.Editor,
-     *         java.awt.Rectangle)
-     */
+
     protected void saveGraphics(OutputStream s, Editor ce,
                                 Rectangle drawingArea)
         throws IOException {
@@ -401,5 +399,70 @@ class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
      * The UID.
      */
     private static final long serialVersionUID = 2859279843998315644L;
+}
+
+class SaveScaledEPSAction extends SaveEPSAction {
+    
+    SaveScaledEPSAction(String name) {
+        super(name);
+    }
+
+    @Override
+    protected void saveGraphics(OutputStream s, Editor ce,
+                                Rectangle drawingArea)
+        throws IOException {
+
+        double editorScale = ce.getScale();
+        int x = (int) (drawingArea.x * editorScale);
+        int y = (int) (drawingArea.y * editorScale);
+        int h = (int) (drawingArea.height * editorScale);
+        int w = (int) (drawingArea.width * editorScale);
+        drawingArea = new Rectangle(x, y, w, h);
+
+        PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
+
+        ps.scale(editorScale, editorScale);
+
+        ce.print(ps);
+        ps.dispose();
+    }
+
+}
+
+/**
+ * Write out a PNG image of the current diagram using a more memory efficient
+ * scheme than GEF uses.
+ * 
+ * @author Tom Morris <tfmorris@gmail.com>
+ */
+class SavePNGAction2 extends SavePNGAction {
+    
+    private static final Logger LOG = Logger.getLogger(SavePNGAction2.class);
+    
+    SavePNGAction2(String name) {
+        super(name);
+    }
+    
+
+    /**
+     * Write the diagram contained by the current editor into an OutputStream as
+     * a PNG image.
+     */
+    @Override
+    protected void saveGraphics(OutputStream s, Editor ce, 
+            Rectangle drawingArea)
+        throws IOException {
+
+        // Create an image which will do deferred rendering of the GEF
+        // diagram on demand as data is pulled from it 
+        RenderedImage i = new DeferredBufferedImage(drawingArea,
+                BufferedImage.TYPE_INT_ARGB, ce, scale);
+
+        LOG.debug("Created DeferredBufferedImage - drawingArea = "
+                + drawingArea + " , scale = " + scale);
+        
+        ImageIO.write(i, "png", s);
+
+    }
 }
 
