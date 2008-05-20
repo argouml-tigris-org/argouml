@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,11 +52,13 @@ import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Util;
 
 /**
- * Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file.
- * Introduced thanks to issue 2126. Saves diagrams only as GIFs. <p>
- *
- * TODO: Add a user choice for other formats (PNG, SVG,...)
- * TODO: Why is this an UndoableAction?  (and how?) - tfm
+ * Wraps a SaveGraphicsAction allow selection of an output directory to which
+ * all diagrams will be written. Introduced thanks to issue 2126. Saves diagrams
+ * only using the default format.
+ * <p>
+ * 
+ * TODO: Add a user choice for other formats (PNG, SVG,...) <p>
+ * TODO: Why is this an UndoableAction? (and how?) - tfm
  * 
  * @author Leonardo Souza Mario Bueno (lsbueno@tigris.org)
  */
