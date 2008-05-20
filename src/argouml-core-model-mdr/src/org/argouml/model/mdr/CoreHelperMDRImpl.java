@@ -579,11 +579,12 @@ class CoreHelperMDRImpl implements CoreHelper {
     public Collection<Interface> getRealizedInterfaces(Object cls) {
         Classifier classifier = (Classifier) cls;
         if (classifier == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         List<Interface> result = new ArrayList<Interface>();
         try {
-            for (Dependency clientDependency : classifier.getClientDependency()) {
+            for (Dependency clientDependency 
+                    : classifier.getClientDependency()) {
                 if (clientDependency instanceof Abstraction) {
                     Abstraction abstraction = (Abstraction) clientDependency;
                     for (Stereotype stereo : abstraction.getStereotype()) {
@@ -1335,7 +1336,6 @@ class CoreHelperMDRImpl implements CoreHelper {
             } else if (modelElement instanceof ClassifierRole) {
                 return ns instanceof Collaboration;
             } else if (ns instanceof Collaboration) {
-
                 /*
                  * Although not represented in the OCL (or our Java), the
                  * English text of WFR #4 of Section 2.10.3.4 in the UML 1.4
@@ -1637,6 +1637,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         
         Collection<Generalization> generalizations = 
             generalizableElement.getGeneralization();
+        
         for (Generalization generalization : generalizations) {
             GeneralizableElement parent = generalization.getParent();
             if (!modelImpl.getModelManagementHelper().getAllContents(namespace)
@@ -1820,7 +1821,8 @@ class CoreHelperMDRImpl implements CoreHelper {
                 }
                 for (Object supertype : getSupertypes(o)) {
                     if (!visited.contains(supertype)) {
-                        internalGetAllRealizedInterfaces(supertype, col, visited);
+                        internalGetAllRealizedInterfaces(supertype, col, 
+                                visited);
                     }
                 }
             }
@@ -2100,7 +2102,8 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void addClientDependency(Object handle, Object dependency) {
         if (handle instanceof ModelElement
                 && dependency instanceof Dependency) {
-            ((ModelElement) handle).getClientDependency().add((Dependency) dependency);
+            ((ModelElement) handle).getClientDependency().add(
+                    (Dependency) dependency);
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
