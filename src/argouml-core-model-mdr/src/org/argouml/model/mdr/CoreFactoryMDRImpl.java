@@ -1203,14 +1203,13 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Abstraction realization = createAbstraction();
         Namespace nsc = client.getNamespace();
         Namespace nss = supplier.getNamespace();
-        // TODO: Shouldn't this use this computed nsc value below? - tfm
-        realization.setNamespace(nsc);
         Namespace ns = null;
         if (nsc.equals(nss)) {
             ns = nsc;
         } else {
             ns = (Namespace) model;
         }
+        realization.setNamespace(nsc);
         modelImpl.getExtensionMechanismsFactory().buildStereotype(realization,
                 CoreFactory.REALIZE_STEREOTYPE, ns);
         modelImpl.getCoreHelper().addClientDependency(client, realization);
