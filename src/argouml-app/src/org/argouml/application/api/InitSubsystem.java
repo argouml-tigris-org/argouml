@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,25 +40,32 @@ import java.util.List;
 public interface InitSubsystem {
 
     /**
-     * This is called at initialisation time, 
+     * ArgoUML shall call this at initialisation time, 
      * before the other operations in this interface are called.
+     * <p>
      * Use it at will.
      */
     public void init();
     
     /**
+     * This method shall not return null.
+     * 
      * @return an ordered list of tab panels 
      * to be added to the settings dialog
      */
     public List<GUISettingsTabInterface> getSettingsTabs();
 
     /**
+     * This method shall not return null.
+     * 
      * @return an ordered list of tab panels 
      * to be added to the project-settings dialog
      */
     public List<GUISettingsTabInterface> getProjectSettingsTabs();
 
     /**
+     * This method shall not return null.
+     * 
      * @return an ordered list of Tabs
      * to be added to the DetailsPanel
      */
