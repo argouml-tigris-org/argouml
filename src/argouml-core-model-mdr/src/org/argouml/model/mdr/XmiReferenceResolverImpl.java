@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,7 @@ import javax.jmi.reflect.RefPackage;
 
 import org.apache.log4j.Logger;
 import org.netbeans.api.xmi.XMIInputConfig;
+import org.netbeans.lib.jmi.util.DebugException;
 import org.netbeans.lib.jmi.xmi.XmiContext;
 import org.omg.uml.foundation.core.ModelElement;
 
@@ -122,6 +123,12 @@ class XmiReferenceResolverImpl extends XmiContext {
     private Map<String, String> public2SystemIds;
 
     private String modelPublicId;
+    
+    /**
+     * The URL of the last document that we attempted to read.  Used for
+     * error reporting if the read fails inside MDR.
+     */
+    private String lastExternalReference;
     
     /**
      * Constructor.
@@ -522,4 +529,16 @@ class XmiReferenceResolverImpl extends XmiContext {
         }
         return url;
     }
+
+    @Override
+    public void readExternalDocument(String arg0) {
+        lastExternalReference = arg0;
+        try {
+            super.readExternalDocument(arg0);
+        } catch (DebugException e) {
+            LOG.error("Error reading external document " + arg0);
+            throw e;
+        }
+    }
+
 }
