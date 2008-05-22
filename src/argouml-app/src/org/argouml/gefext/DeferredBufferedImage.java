@@ -72,8 +72,7 @@ public class DeferredBufferedImage implements RenderedImage {
             new Color(TRANSPARENT_BG_COLOR, true);
     
     private static final int BUFFER_HEIGHT = 32;
-    private static final int MARGIN = 10;
-    
+ 
     private int x, y;
     private int width;
     private int height;
@@ -105,14 +104,6 @@ public class DeferredBufferedImage implements RenderedImage {
         y = drawingArea.y;
         width = drawingArea.width;
         height = drawingArea.height;
-        
-        // We're going to draw from the origin, so adjust width and height
-        // Also add a margin to the bottom and right, because GEF sets the
-        // bounding box very tight
-        width = width + x + MARGIN;
-        x = 0;
-        height = height + y + MARGIN;
-        y = 0;
 
         // Scale everything up
         x = x  * scale;
@@ -122,6 +113,10 @@ public class DeferredBufferedImage implements RenderedImage {
         scaledBufferHeight = BUFFER_HEIGHT * scale;
         
         // Create our bandbuffer which is just a small slice of the image
+        // TODO: We used a fixed height buffer now, but we could be smarter and
+        // compute a height which would fit in some memory budget, allowing us
+        // to use taller buffers with narrower images, minimizing the overhead
+        // of multiple rendering passes
         image = new BufferedImage(width, scaledBufferHeight, imageType);
 
         // Initialize band buffer bounds

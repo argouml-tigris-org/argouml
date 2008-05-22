@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.beans.PropertyChangeEvent;
@@ -56,6 +57,7 @@ import org.tigris.gef.base.CmdSavePNG;
 import org.tigris.gef.base.CmdSavePS;
 import org.tigris.gef.base.CmdSaveSVG;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SaveEPSAction;
 import org.tigris.gef.base.SaveGIFAction;
 import org.tigris.gef.base.SaveGraphicsAction;
@@ -76,6 +78,8 @@ import org.tigris.gef.persistence.PostscriptWriter;
  */
 public final class SaveGraphicsManager {
 
+    private static final int MIN_MARGIN = 15;
+    
     /**
      * The configuration key for the preferred graphics format.
      */
@@ -357,6 +361,34 @@ public final class SaveGraphicsManager {
         c.addAll(otherFilters);
         return c;
     }
+    
+    /**
+     * Adjust the drawing area so that instead of a tight bounding box, it
+     * includes the canvas origin and some space around the lower and right
+     * sides so that the elements will be roughly centered. Elements which are
+     * off the top or left side of the canvas may still be clipped (ie if the
+     * original drawing area had a negative x or y coordinated).
+     * 
+     * @param area rectangle representing original drawing area
+     * @return an expanded rectangle
+     */
+    static Rectangle adjustDrawingArea(Rectangle area) {
+        int xMargin = area.x;
+        if (xMargin < 0) {
+            xMargin = 0;
+        }
+        int yMargin = area.y;
+        if (yMargin < 0) {
+            yMargin = 0;
+        }
+        int margin = Math.max(xMargin, yMargin);
+        if (margin < MIN_MARGIN) {
+            margin = MIN_MARGIN;
+        }
+        return new Rectangle(0, 0, 
+                area.width + (2 * margin), 
+                area.height + (2 * margin));
+    }
 }
 
 /**
@@ -442,7 +474,27 @@ class SavePNGAction2 extends SavePNGAction {
     SavePNGAction2(String name) {
         super(name);
     }
-    
+
+    public void actionPerformed(ActionEvent ae) {
+        Editor ce = Globals.curEditor();
+        Rectangle drawingArea = 
+            ce.getLayerManager().getActiveLayer().calcDrawingArea();
+        // If the diagram is empty, GEF won't write anything, leaving us with
+        // an empty (and invalid) file.  Handle this case ourselves to prevent
+        // this from happening.
+        if (drawingArea.width <= 0 || drawingArea.height <= 0) {
+            Rectangle dummyArea = new Rectangle(0, 0, 50, 50);
+            try {
+                saveGraphics(outputStream, ce, dummyArea);
+            } catch (java.io.IOException e) {
+                LOG.error("Error while exporting Graphics:", e);
+            }
+            return;
+        }
+        
+        // Anything else is handled the normal way
+        super.actionPerformed(ae);
+    }
 
     /**
      * Write the diagram contained by the current editor into an OutputStream as
@@ -453,16 +505,21 @@ class SavePNGAction2 extends SavePNGAction {
             Rectangle drawingArea)
         throws IOException {
 
+        Rectangle canvasArea = 
+            SaveGraphicsManager.adjustDrawingArea(drawingArea);
+        
         // Create an image which will do deferred rendering of the GEF
         // diagram on demand as data is pulled from it 
-        RenderedImage i = new DeferredBufferedImage(drawingArea,
+        RenderedImage i = new DeferredBufferedImage(canvasArea,
                 BufferedImage.TYPE_INT_ARGB, ce, scale);
 
         LOG.debug("Created DeferredBufferedImage - drawingArea = "
-                + drawingArea + " , scale = " + scale);
+                + canvasArea + " , scale = " + scale);
         
         ImageIO.write(i, "png", s);
 
     }
+    
+
 }
 
