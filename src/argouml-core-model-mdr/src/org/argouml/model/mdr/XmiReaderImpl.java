@@ -61,8 +61,11 @@ import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.netbeans.lib.jmi.xmi.InputConfig;
 import org.netbeans.lib.jmi.xmi.UnknownElementsListener;
+import org.netbeans.lib.jmi.xmi.XMIHeaderConsumer;
+import org.openide.ErrorManager;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
 
@@ -72,7 +75,8 @@ import org.xml.sax.XMLReader;
  *
  * @author Bob Tarling
  */
-class XmiReaderImpl implements XmiReader, UnknownElementsListener {
+class XmiReaderImpl implements XmiReader, UnknownElementsListener,
+        XMIHeaderConsumer {
 
     /**
      * Logger.
@@ -109,6 +113,11 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
      * Flag indicating that we stripped at least one diagram during the import.
      */
     private int ignoredElementCount;
+    
+    /**
+     * String that we pulled from the header of the XMI file
+     */
+    private String xmiHeader;
 
     /**
      * Constructor for XMIReader.
@@ -146,6 +155,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
                     profile, 
                     inputSource.getPublicId(), inputSource.getSystemId());
             config.setReferenceResolver(resolver);
+            config.setHeaderConsumer(this);
             
             XMIReader xmiReader =
                     XMIReaderFactory.getDefault().createXMIReader(config);
@@ -161,6 +171,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
              * This can be uses to disable logging.  Default output is 
              * System.err
              * setProperty("org.netbeans.lib.jmi.Logger.fileName", "")
+             *              org.netbeans.mdr.Logger
              * 
              * The property org.netbeans.lib.jmi.Logger controls the minimum 
              * severity level for logging
@@ -235,6 +246,19 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
             }
 
         } catch (MalformedXMIException e) {
+            // If we can find a nested SAX exception, it will have information
+            // on the line number, etc.
+            ErrorManager.Annotation[] annotations = 
+                ErrorManager.getDefault().findAnnotations(e);
+            for (ErrorManager.Annotation annotation : annotations) {
+                Throwable throwable = annotation.getStackTrace();
+                if (throwable instanceof SAXParseException) {
+                    SAXParseException spe = (SAXParseException) throwable;
+                    throw new XmiException(spe.getMessage(), spe.getPublicId(),
+                            spe.getSystemId(), spe.getLineNumber(), 
+                            spe.getColumnNumber(), e);
+                }
+            }
             throw new XmiException(e);
         } catch (IOException e) {
             throw new XmiException(e);
@@ -575,6 +599,23 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener {
 
     public List<String> getSearchPath() {
         return modelImpl.getSearchPath();
+    }
+
+    public void consumeHeader(InputStream stream) {
+        try {
+            int length = stream.available();
+            byte[] bytes = new byte[length];
+            stream.read(bytes, 0, length);
+            // we presume the stream is encoded using the default char encoding
+            xmiHeader = new String(bytes);
+        } catch (IOException e) {
+            LOG.error("Exception reading XMI file header", e);
+        }
+    }
+    
+
+    public String getHeader() {
+        return xmiHeader;
     }
 
 }
