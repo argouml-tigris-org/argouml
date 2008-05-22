@@ -182,5 +182,10 @@ class XmiReaderEUMLImpl implements XmiReader {
     public void removeSearchPath(String path) {
         searchDirs.remove(path);
     }
+
+    public String getHeader() {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+    }
     
 }
