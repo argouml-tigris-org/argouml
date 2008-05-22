@@ -58,7 +58,7 @@ import org.argouml.uml.ui.InitUmlUI;
  *
  * @author Michiel
  */
-public class TestInitSubsystem extends TestCase {
+public class GUITestInitSubsystem extends TestCase {
 
     private Collection<InitSubsystem> initialisers;
 
