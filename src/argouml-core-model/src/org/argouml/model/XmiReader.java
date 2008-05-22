@@ -45,12 +45,12 @@ public interface XmiReader {
     
     /**
      * Parse a given inputsource to a collection of top level model elements.
-     *
+     * 
      * @param pIs the input source for parsing
      * @return a collection of top level elements
      * @throws UmlException on any error
-     * @deprecated for 0.25.4 by tfmorris. Use 
-     * {@link #parse(InputSource, boolean)}.
+     * @deprecated for 0.25.4 by tfmorris. Use
+     *             {@link #parse(InputSource, boolean)}.
      */
     @Deprecated
     Collection parse(InputSource pIs) throws UmlException;
@@ -152,4 +152,24 @@ public interface XmiReader {
      *                directory path to remove from search
      */
     public void removeSearchPath(String path);
+    
+    /**
+     * Get the header comment from the XMI file, if any.  The comment is
+     * contained in the <XMI.header> element.  The contents are optional
+     * and may vary from one UML tool to the other.  ArgoUML writes a 
+     * string similar to the following:
+     * <pre>
+     * &lt;XMI.documentation&gt;
+     *   &lt;XMI.exporter&gt;
+     *     ArgoUML (using Netbeans XMI Writer version 1.0)
+     *   &lt;/XMI.exporter&gt;
+     *   &lt;XMI.exporterVersion&gt;
+     *     1.4 revised on $Date$
+     *   &lt;/XMI.exporterVersion&gt;
+     * &lt;/XMI.documentation&gt;
+     * &lt;XMI.metamodel xmi.name = 'UML' xmi.version = '1.4'/&gt;
+     * </pre>
+     * @return A String containing the XML fragment
+     */
+    public String getHeader();
 }

@@ -35,10 +35,6 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.Model;
-import org.argouml.model.UmlException;
-import org.argouml.model.XmiReader;
-import org.argouml.model.XmiWriter;
 import org.xml.sax.InputSource;
 
 /**
@@ -50,11 +46,13 @@ import org.xml.sax.InputSource;
 public class TestXmi extends TestCase {
 
     private static final String MODEL_NAME = "TestXmi-model";
+    private XmiReader xmiReader;
     
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        xmiReader = Model.getXmiReader();
     }
 
     /**
@@ -64,8 +62,8 @@ public class TestXmi extends TestCase {
      * @throws UmlException if something else goes wrong during the read
      */
     public void testXmiReader() throws UmlException, IOException {
-        XmiReader xmiReader = Model.getXmiReader();
-        
+
+        assertEquals("Wrong tag", "XMI", xmiReader.getTagName());
         String[] ignoredElements = new String[] {"foo"};
         xmiReader.setIgnoredElements(ignoredElements);
         assertEquals("Ignored elements array not correct length", 1, 
@@ -77,14 +75,32 @@ public class TestXmi extends TestCase {
         File xmiFile = File.createTempFile("TestXmiRead", "xmi");
         writeFile(xmiFile);
         
+        // Now read it and check the results.
         InputSource inputSource = new InputSource(new FileInputStream(xmiFile));
         Collection elements = xmiReader.parse(inputSource, false);
-        
-        assertEquals("Wrong number of elements read", 1, elements.size());
+        assertEquals("Wrong number of top level elements", 1, elements.size());
         Object model = elements.iterator().next();
         assertEquals("Wrong model name", MODEL_NAME, 
                 Model.getFacade().getName(model));
+        assertTrue("Didn't find ArgoUML in the header", 
+                xmiReader.getHeader().contains("ArgoUML"));
+        assertEquals("Wrong number of total elements in ID map", 2, 
+                xmiReader.getXMIUUIDToObjectMap().size());
         Model.getUmlFactory().delete(model);
+        
+        // Create an empty file and try to read it
+        File emptyFile = File.createTempFile("TestXmiRead", "xmi");
+        try {
+            elements =
+                    xmiReader.parse(new InputSource(new FileInputStream(
+                            emptyFile)), false);
+            fail("Reading empty file failed to throw an exception");
+        } catch (UmlException e) {
+            assertTrue("Unexpected exception type", e instanceof XmiException);
+            XmiException xe = (XmiException) e;
+            assertEquals("Unexpected line number", -1, xe.getLineNumber());
+            assertEquals("Unexpected column number", -1, xe.getColumnNumber());
+        }
     }
     
     /**
@@ -95,23 +111,44 @@ public class TestXmi extends TestCase {
      * @throws UmlException if something else goes wrong during the read
      */
     public void testUml13Reader() throws UmlException, IOException {
-
-        String filename = "/testmodels/uml13/argo-Alittlebitofeverything.xmi";
+        readAndCheckXmi("/testmodels/uml13/argo-Alittlebitofeverything.xmi",
+                "testing", 214);
+    }
+    
+    private void readAndCheckXmi(String xmiFile, String packageName,
+            int numElements) throws UmlException, FileNotFoundException {
+        Collection elements = readXmi(xmiFile);
+        checkModel(packageName, numElements, elements);
+        Model.getUmlHelper().deleteCollection(elements);
+    }
+    
+    private Collection readXmi(String filename) throws UmlException,
+            FileNotFoundException {
         URL url = getClass().getResource(filename);
         assertTrue("Unintended failure: resource to be tested is not found: "
                 + filename + ", converted to URL: " + url, url != null);
         String fName = url.getFile();
-        
-        XmiReader xmiReader = Model.getXmiReader();
+
         InputSource inputSource = new InputSource(new FileInputStream(fName));
-        Collection elements = xmiReader.parse(inputSource, false);
-        
-        assertEquals("Wrong number of top level elements read", 1, 
-                elements.size());
-        Object model = elements.iterator().next();
-        assertEquals("Wrong model name", "testing", 
-                Model.getFacade().getName(model));
-        Model.getUmlFactory().delete(model);
+        return xmiReader.parse(inputSource, false);
+    }
+
+    private void checkModel(String packageName, int numElements,
+            Collection elements) {
+        // Not true in general, but should be true for our test models
+        assertEquals("Wrong number of top level elements read", 1, elements
+                .size());
+        Object pkg = elements.iterator().next();
+        assertEquals("Wrong model name", packageName, Model.getFacade()
+                .getName(pkg));
+        assertEquals("Wrong number of total elements in ID map", numElements,
+                xmiReader.getXMIUUIDToObjectMap().size());
+    }
+    
+    public void notestUml13Large() {
+        // TODO: Get file from bug report
+        // http://argouml.tigris.org/issues/show_bug.cgi?id=4188
+        // that fails with no more DTM ID message
     }
     
     /**
@@ -130,9 +167,28 @@ public class TestXmi extends TestCase {
         
         Object model = Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(model, MODEL_NAME);
+        Model.getCoreFactory().buildClass("TestXmiClass", model);
         OutputStream stream = new FileOutputStream(outputFile);
         XmiWriter xmiWriter = Model.getXmiWriter(model, stream, "1.4");
         xmiWriter.write();
         Model.getUmlFactory().delete(model);
     }
+    
+    public void notestXmiVisio() {
+        // TODO: 
+    }
+    
+    public void notestXmiRoseUml13() {
+        // TODO: http://argouml.tigris.org/issues/show_bug.cgi?id=4919
+    }
+    
+    public void notestXmiRoseUml14() {
+        // TODO: 
+    }
+    
+    public void notestPoseidonHybrid() {
+        // TODO: http://argouml.tigris.org/issues/show_bug.cgi?id=4440
+    }
+    
+ 
 }
