@@ -144,7 +144,8 @@ public class ActionSaveGraphics extends AbstractAction
             ed.setModal(true);
             ed.setVisible(true);
         } catch (Exception e) {
-            ExceptionDialog ed = new ExceptionDialog(ArgoFrame.getInstance(), e);
+            ExceptionDialog ed = 
+                new ExceptionDialog(ArgoFrame.getInstance(), e);
             ed.setModal(true);
             ed.setVisible(true);
             LOG.error("Got some exception", e);
