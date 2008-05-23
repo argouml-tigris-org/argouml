@@ -27,9 +27,9 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
-import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -140,9 +140,13 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             multiplicityNotationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_MULTIPLICITY, own, this);
-            boolean value = getProject().getProjectSettings()
-            .getShowSingularMultiplicitiesValue();
-        getNotationArguments().put("singularMultiplicityVisible", value);
+            Project p = getProject();
+            if (p != null) {
+                boolean value = p.getProjectSettings()
+                    .getShowSingularMultiplicitiesValue();
+                getNotationArguments().put("singularMultiplicityVisible", 
+                        value);
+            }
         }
     }
 
