@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -166,13 +166,10 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         String s = "";
         if (isValue("visibilityVisible", args)) {
             Object v = Model.getFacade().getVisibility(modelElement);
-            if (v == null) {
-                /* Initially, the visibility is not set in the model.
-                 * Still, we want to show the default, i.e. public.
-                 */
-                v = Model.getVisibilityKind().getPublic();
+            if (v != null) {
+                s = NotationUtilityUml.generateVisibility(v);
             }
-            s = NotationUtilityUml.generateVisibility(v);
+            /* When nothing is generated: omit the space. */
             if (s.length() > 0) {
                 s = s + " ";
             }            

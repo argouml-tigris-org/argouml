@@ -42,7 +42,7 @@ import org.argouml.notation.providers.AssociationNameNotation;
 /**
  * Handles the notation of the name of an association modelelement in UML,
  * ie a string on the format:<pre>
- *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#] [name]
+ *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#|~] [name]
  * </pre>
  *
  * @author Michiel
@@ -145,18 +145,14 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
         String s = "";
         if (isValue("visibilityVisible", args)) {
             Object v = Model.getFacade().getVisibility(modelElement);
-            if (v == null) {
-                /* Initially, the visibility is not set in the model.
-                 * Still, we want to show the default, i.e. public.
-                 */
-                v = Model.getVisibilityKind().getPublic();
+            if (v != null) {
+                s = NotationUtilityUml.generateVisibility(v);
             }
-            s = NotationUtilityUml.generateVisibility(v);
+            /* When nothing is generated: omit the space. */
             if (s.length() > 0) {
                 s = s + " ";
             }
         }
-        /* This for when nothing is generated: omit the space. */
         return s;
     }
 }
