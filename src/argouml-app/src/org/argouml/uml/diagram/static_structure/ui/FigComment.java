@@ -49,6 +49,7 @@ import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -610,12 +611,9 @@ public class FigComment
     ///////////////////////////////////////////////////////////////////
     // Internal methods
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
     @Override
-    protected final void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
+    protected final void updateLayout(UmlChangeEvent mee) {
+        super.updateLayout(mee);
 
         if (mee instanceof AttributeChangeEvent
                 && mee.getPropertyName().equals("body")) {
@@ -629,10 +627,9 @@ public class FigComment
             /* Remove the commentedge.
              * If there are more then one comment-edges between 
              * the 2 objects, then delete them all. */
-            Collection toRemove = new ArrayList();
+            Collection<FigEdgeNote> toRemove = new ArrayList<FigEdgeNote>();
             Collection c = getFigEdges(); // all connected edges
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
+            for (Iterator i = c.iterator(); i.hasNext(); ) {
                 FigEdgeNote fen = (FigEdgeNote) i.next();
                 Object otherEnd = fen.getDestination(); // the UML object
                 if (otherEnd == getOwner()) { // wrong end of the edge
@@ -642,9 +639,8 @@ public class FigComment
                     toRemove.add(fen);
                 }
             }
-            i = toRemove.iterator();
-            while (i.hasNext()) {
-                FigEdgeNote fen = (FigEdgeNote) i.next();
+            
+            for (FigEdgeNote fen : toRemove) {
                 fen.removeFromDiagram();
             }
         }
@@ -700,6 +696,10 @@ public class FigComment
         newlyCreated = false;
     }
     
+    /**
+     * Get the text body of the comment.
+     * @return the body of the comment
+     */
     public String getBody() {
         return bodyTextFig.getText();
     }
