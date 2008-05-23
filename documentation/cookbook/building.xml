@@ -73,7 +73,7 @@ See <ulink url="http://subclipse.tigris.org/install.html"/>.
 
         <listitem>
           <para>
-Download the Project Set File for the argouml project
+Download the Project Set File for the ArgoUML project
 and save it on your file system.
 </para>
           <para>
@@ -99,7 +99,7 @@ at first download.
 
         <listitem>
           <para>
-Start argouml using ArgoUML configuration.
+Start ArgoUML using ArgoUML configuration.
 </para>
         </listitem>
       </orderedlist>
@@ -137,6 +137,18 @@ the chapter for more detailed instructions on how to build ArgoUML.
 
   <sect1 id="source-layout">
     <title>Source layout</title>
+    <indexterm>
+      <primary>Source layout</primary>
+    </indexterm>
+    <indexterm>
+      <primary>Eclipse layout</primary>
+      <secondary></secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Repository layout</primary>
+      <secondary></secondary>
+    </indexterm>
+
     <para>
 The development environment (source layout) of ArgoUML exists in two flavors:
 <itemizedlist>
@@ -163,7 +175,7 @@ This is the traditional layout and the checkout procedure is described in
 The Eclipse layout is used when doing development within Eclipse.
 This was created to fit with Eclipse way of organizing projects.
 The checkout procedure is described in 
-<xref linkend="eclipse-checkout"/> and controlled by Eclipse psf files.
+<xref linkend="eclipse-checkout"/> and controlled by Eclipse PSF files.
 </para>
 
     <para>
@@ -185,8 +197,8 @@ The table below show how the code is organized in the different layouts.
           <tbody>
             <row>
               <entry>Subsystems</entry>
-              <entry>
-<literallayout>http://argouml.tigris.org/svn/argouml/
+              <entry><literallayout>http://argouml.tigris.org/
+svn/argouml/
 trunk/src/<replaceable>SUBSYSTEM-NAME</replaceable></literallayout>
 </entry>
               <entry><replaceable>WORK</replaceable>/argouml/src/<replaceable>SUBSYSTEM-NAME</replaceable></entry>
@@ -195,8 +207,8 @@ trunk/src/<replaceable>SUBSYSTEM-NAME</replaceable></literallayout>
 
             <row>
               <entry>Integration scripts for the core application</entry>
-              <entry>
-<literallayout>http://argouml.tigris.org/svn/argouml/
+              <entry><literallayout>http://argouml.tigris.org/
+svn/argouml/
 trunk/src/argouml-build/*</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argouml/src/argouml-build/*</entry>
               <entry><replaceable>WORKSPACE</replaceable>/argouml-build/* (optional)</entry>
@@ -204,8 +216,8 @@ trunk/src/argouml-build/*</literallayout></entry>
 
             <row>
               <entry>Subsystems that are separate projects</entry>
-              <entry>
-<literallayout>http://<replaceable>PROJECT-NAME</replaceable>.tigris.org/svn/<replaceable>PROJECT-NAME</replaceable>/
+              <entry><literallayout>http://<replaceable>PROJECT-NAME</replaceable>.tigris.org/
+svn/<replaceable>PROJECT-NAME</replaceable>/
 trunk</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/<replaceable>PROJECT-NAME</replaceable></entry>
               <entry><replaceable>WORKSPACE</replaceable>/<replaceable>PROJECT-NAME</replaceable></entry>
@@ -223,8 +235,8 @@ trunk</literallayout></entry>
 Tools used for building and testing.
 This is the tools common to several subsystems.
 </entry>
-              <entry>
-<literallayout>http://argouml.tigris.org/svn/argouml/
+              <entry><literallayout>http://argouml.tigris.org/
+svn/argouml/
 trunk/tools</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argouml/tools</entry>
               <entry><replaceable>WORKSPACE</replaceable>/argouml-tools</entry>
@@ -232,8 +244,7 @@ trunk/tools</literallayout></entry>
 
             <row>
               <entry>Tools used for release generation</entry>
-              <entry>
-<literallayout>http://argoumlinstaller.tigris.org/
+              <entry><literallayout>http://argoumlinstaller.tigris.org/
 svn/argoumlinstaller/
 trunk/*</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argoumlinstaller/</entry>
@@ -242,8 +253,8 @@ trunk/*</literallayout></entry>
 
             <row>
               <entry>Tools used for static checks</entry>
-              <entry>
-<literallayout>http://argouml-gen.tigris.org/svn/argouml-gen/
+              <entry><literallayout>http://argouml-gen.tigris.org/
+svn/argouml-gen/
 trunk/tools</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argouml-gen/tools</entry>
               <entry>N/A ???</entry>
@@ -251,8 +262,8 @@ trunk/tools</literallayout></entry>
 
             <row>
               <entry>Documentation source</entry>
-              <entry>
-<literallayout>http://argouml.tigris.org/svn/argouml/
+              <entry><literallayout>http://argouml.tigris.org/
+svn/argouml/
 trunk/documentation</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argouml/documentation</entry>
               <entry><replaceable>WORKSPACE</replaceable>/argouml-documentation</entry>
@@ -260,9 +271,9 @@ trunk/documentation</literallayout></entry>
 
 
             <row>
-              <entry>Eclipse psf files</entry>
-              <entry>
-<literallayout>http://argouml.tigris.org/svn/argouml/
+              <entry>Eclipse PSF files</entry>
+              <entry><literallayout>http://argouml.tigris.org/
+svn/argouml/
 trunk/www/psf</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argouml/www/psf (not used)</entry>
               <entry><replaceable>WORKSPACE</replaceable>/psf</entry>
@@ -270,8 +281,8 @@ trunk/www/psf</literallayout></entry>
 
             <row>
               <entry>Eclipse templates (to use in the workspace or import into each project)</entry>
-              <entry>
-<literallayout>http://argouml.tigris.org/svn/argouml/
+              <entry><literallayout>http://argouml.tigris.org/
+svn/argouml/
 trunk/tools/eclipse</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argouml/tools/eclipse (not used)</entry>
               <entry><replaceable>WORKSPACE</replaceable>/argouml-core-tools/eclipse</entry>
@@ -280,8 +291,8 @@ trunk/tools/eclipse</literallayout></entry>
 
             <row>
               <entry>Tools used for static checks</entry>
-              <entry>
-<literallayout>http://argouml-gen.tigris.org/svn/argouml-gen/
+              <entry><literallayout>http://argouml-gen.tigris.org/
+svn/argouml-gen/
 trunk/tools</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argouml-gen/tools</entry>
               <entry>N/A ???</entry>
@@ -289,19 +300,24 @@ trunk/tools</literallayout></entry>
 
             <row>
               <entry>Src of released subsystem from core project</entry>
-              <entry>
-<literallayout>http://argouml.tigris.org/svn/argouml/
+              <entry><literallayout>http://argouml.tigris.org/
+svn/argouml/
 releases/<replaceable>RELEASE-TAG</replaceable>/src/<replaceable>SUBSYSTEM-NAME</replaceable></literallayout></entry>
-              <entry><replaceable>WORK</replaceable>/argoumlinstaller/build/<replaceable>RELEASE-TAG</replaceable>/argouml/src/<replaceable>SUBSYSTEM-NAME</replaceable></entry>
+              <entry><literallayout><replaceable>WORK</replaceable>/argoumlinstaller/build/
+<replaceable>RELEASE-TAG</replaceable>/
+argouml/src/
+<replaceable>SUBSYSTEM-NAME</replaceable></literallayout></entry>
               <entry>N/A or <replaceable>WORKSPACE</replaceable>/<replaceable>SUBSYSTEM-NAME</replaceable> (if switched to)</entry>
             </row>
 
             <row>
               <entry>Src of released subsystem from other project</entry>
-              <entry>
-<literallayout>http://<replaceable>PROJECT-NAME</replaceable>.tigris.org/svn/<replaceable>PROJECT-NAME</replaceable>/
+              <entry><literallayout>http://<replaceable>PROJECT-NAME</replaceable>.tigris.org/
+svn/<replaceable>PROJECT-NAME</replaceable>/
 releases/<replaceable>RELEASE-TAG</replaceable></literallayout></entry>
-              <entry><replaceable>WORK</replaceable>/argoumlinstaller/build/<replaceable>RELEASE-TAG</replaceable>/<replaceable>PROJECT-NAME</replaceable>/</entry>
+              <entry><literallayout><replaceable>WORK</replaceable>/argoumlinstaller/build/
+<replaceable>RELEASE-TAG</replaceable>/
+<replaceable>PROJECT-NAME</replaceable>/</literallayout></entry>
               <entry>N/A or <replaceable>WORKSPACE</replaceable>/<replaceable>PROJECT-NAME</replaceable> (if switched to)</entry>
             </row>
           </tbody>
@@ -575,7 +591,7 @@ Every build.xml file that uses tools from the tools directory
 shall set the argo.tools.dir property.
 </para>
           <para>
-This is done by testing for the existance of the 
+This is done by testing for the existence of the 
 <filename><replaceable>candidate-dir</replaceable>/checkstyle/java.header</filename>
 file and the result should be set to:
 <itemizedlist>
@@ -2402,6 +2418,16 @@ and not the temporary file.
       <primary>Eclipse</primary>
       <secondary>Setting up the development environment</secondary>
     </indexterm>
+    <indexterm>
+      <primary>Eclipse</primary>
+      <secondary>Project Set Files</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Project Set Files</primary>
+    </indexterm>
+    <indexterm>
+      <primary>.psf</primary>
+    </indexterm>
 
     <para>
 If you are running Eclipse 3.2 or 3.3
@@ -2411,7 +2437,9 @@ Set .psf files available at the developer zone web site:
 </para>
    <para>
 The directory structure of an Eclipse check-out of the main source code now 
-mirrors the svn repository structure (since 20 April 2008).  
+mirrors the svn repository structure (since 20 April 2008).
+For details on the directory structure and layouts,
+see <xref linkend="source-layout"></xref>.
 The 
 <filename>argouml-core-projectset.psf</filename>
 project 
@@ -2426,46 +2454,6 @@ Eclipse.  Alternatively, you could achieve the same result by checking-out
 using Eclipse to edit the files (not requiring any .psf files).
 </para>
 
-<para>
-In the Eclipse setup, the only difference is that the documentation and 
-tools directories are in a slightly different location relative to the main
-source code.  This all (should) be taken care of automatically by the
-build scripts.
-</para>
-
-<programlisting>
-In summary:
-
-SVN repository structure:
-trunk/src/argouml-app/
-trunk/src/argouml-build/
-trunk/src/argouml-core-infra/
-trunk/src/argouml-core-model/
-trunk/src/argouml-core-model-euml/
-trunk/src/argouml-core-model-mdr/
-trunk/tools/
-trunk/documentation/
-
-Command line check-out structure:
-workingdir/src/argouml-app/
-workingdir/src/argouml-build/
-workingdir/src/argouml-core-infra/
-workingdir/src/argouml-core-model/
-workingdir/src/argouml-core-model-euml/
-workingdir/src/argouml-core-model-mdr/
-workingdir/tools/
-workingdir/documentation/
-
-Eclipse .psf check-out structure:
-EclipseWorkspace/argouml-app/
-EclipseWorkspace/argouml-build/ (optional)
-EclipseWorkspace/argouml-core-infra/
-EclipseWorkspace/argouml-core-model/
-EclipseWorkspace/argouml-core-model-euml/
-EclipseWorkspace/argouml-core-model-mdr/
-EclipseWorkspace/argouml-core-tools/ 
-EclipseWorkspace/argouml-documentation/ (optional)
-</programlisting>
     <para>
 For the recommended setup to work we make certain assumption on 
 what modules you have available in your Eclipse.
@@ -2479,12 +2467,21 @@ The following are needed:
 The following is optional and the features will be enabled
 if available:
       <itemizedlist>
-        <listitem><para>Checkstyle</para></listitem>
+        <listitem><para>Checkclipse</para></listitem>
       </itemizedlist>
 </para>
     
     <sect2 id="eclipse-install-instructions">
       <title>Eclipse installation instructions</title>
+      <indexterm>
+        <primary>Installation Instructions</primary>
+        <secondary>Eclipse</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Eclipse</primary>
+        <secondary>Installation Instructions</secondary>
+      </indexterm>
+
       <para>
 These instructions are tested on Eclipse 3.3.1.1, downloading
 <application>Eclipse IDE for Java developers</application>.  
@@ -2572,8 +2569,8 @@ Here are the ideas governing the layout of the recommended Eclipse set up.
 
           <sidebar>
             <para>
-This recommendation was based on the assumption that we could rely on
-the workspace-specific settings (see next item).
+To some extent the ArgoUML projects rely on
+the workspace-specific settings.
 If no workspace-specific settings are relied on this is not important.
 </para>
           </sidebar>
@@ -2581,16 +2578,15 @@ If no workspace-specific settings are relied on this is not important.
 
         <listitem>
           <para>
-Prefer workspace-specific settings to
-project-specific settings (compiler, JRE, style).
+Prefer project-specific settings to
+workspace-specific settings (compiler, JRE, style).
 </para>
 
           <sidebar>
             <para>
-This is not such a good idea after all because the workspace-specific
-settings are not saved automatically in the repository so this is
-error-prone.
-We should change this to project-oriented settings.
+The workspace-specific
+settings are not saved automatically in the repository so 
+using them would be error-prone.
 </para>
           </sidebar>
         </listitem>
@@ -2631,8 +2627,8 @@ with all OS and platform issues.
 </para>
 
             <para>
-Eclipse also has an infrastructure for handling tools that are used
-but not installed so developers forgetting to install one or several
+Eclipse also has an infrastructure for handling tools that are
+configured but missing so developers forgetting to install one or several
 tools can still do basic things.
 </para>
           </sidebar>
