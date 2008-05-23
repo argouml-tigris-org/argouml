@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
@@ -37,6 +38,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.CustomSeparator;
 import org.argouml.util.MyTokenizer;
@@ -396,7 +398,7 @@ public final class NotationUtilityUml {
     }
 
     /**
-     * Returns a visibility String eihter for a MVisibilityKind (according to
+     * Returns a visibility String either for a MVisibilityKind (according to
      * the definition in NotationProvider2), but also for a model element.
      *
      * @param o a modelelement or a visibilitykind
@@ -1037,6 +1039,11 @@ public final class NotationUtilityUml {
 
     /**
      * Generate the text of a multiplicity.
+     * <p>
+     * @deprecated by mvw in V0.25.5. Use the next method instead.
+     * We needed to remove the use of the Project to obtain 
+     * its settings. Instead, make use of the args Map
+     * provided by the Fig.
      *
      * @param m the given multiplicity
      * @return a string (guaranteed not null)
@@ -1049,6 +1056,33 @@ public final class NotationUtilityUml {
                 || (!ps.getShowSingularMultiplicitiesValue() 
                         && "1".equals(s))) {
             return "";
+        }
+        return s;
+    }
+    
+    /**
+     * Generate the text of a multiplicity.
+     * The argument singularMultiplicityVisible 
+     * determines if "1" will be returned or ""
+     * in case the multiplicity is 1.
+     * 
+     * @param multiplicityOwner the modelelement (NOT the multiplicity!)
+     * @param args the value singularMultiplicityVisible 
+     * influences the outcome
+     * @return the resulting string
+     */
+    public static String generateMultiplicity(Object multiplicityOwner, 
+            Map args) {
+        String s = "";
+        Object multiplicity = Model.getFacade().getMultiplicity(
+                multiplicityOwner);
+        if (multiplicity != null) {
+            s = Model.getFacade().toString(multiplicity);
+        }
+        if (!NotationProvider.isValue("singularMultiplicityVisible", args)) {
+            if ("1".equals(s)) {
+                s =""; 
+            }
         }
         return s;
     }

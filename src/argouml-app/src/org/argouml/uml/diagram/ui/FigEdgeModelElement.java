@@ -137,7 +137,7 @@ public abstract class FigEdgeModelElement
     // instance variables
 
     private NotationProvider notationProviderName;
-    private HashMap npArguments = new HashMap();
+    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
 
     /**
      * The Fig that displays the name of this model element.
@@ -1362,6 +1362,9 @@ public abstract class FigEdgeModelElement
         listeners.clear();
     }
 
+    protected HashMap<String, Object> getNotationArguments() {
+        return npArguments;
+    }
 
     /**
      * This optional method is not implemented.  It will throw an

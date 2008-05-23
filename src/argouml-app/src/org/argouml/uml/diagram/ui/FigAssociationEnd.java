@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
@@ -139,6 +140,9 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             multiplicityNotationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_MULTIPLICITY, own, this);
+            boolean value = getProject().getProjectSettings()
+            .getShowSingularMultiplicitiesValue();
+        getNotationArguments().put("singularMultiplicityVisible", value);
         }
     }
 
@@ -197,7 +201,8 @@ public class FigAssociationEnd extends FigEdgeModelElement {
              * to see if it's a valid multiplicity. If so then that is the 
              * multiplicity to be set. If not the input is rejected. */
             multiplicityNotationProvider.parse(getOwner(), ft.getText());
-            ft.setText(multiplicityNotationProvider.toString(getOwner(), null));
+            ft.setText(multiplicityNotationProvider.toString(getOwner(), 
+                    getNotationArguments()));
         }
     }
 
@@ -223,7 +228,8 @@ public class FigAssociationEnd extends FigEdgeModelElement {
 
         if (multiplicityNotationProvider != null) {
             multiToUpdate.setText(
-                    multiplicityNotationProvider.toString(getOwner(), null));
+                    multiplicityNotationProvider.toString(getOwner(), 
+                            getNotationArguments()));
         }
 
         Object order = Model.getFacade().getOrdering(owner);

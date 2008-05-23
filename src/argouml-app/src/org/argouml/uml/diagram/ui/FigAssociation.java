@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -491,9 +492,10 @@ public class FigAssociation extends FigEdgeModelElement {
 class FigMultiplicity extends FigSingleLineText 
     implements PropertyChangeListener {
 
-    private NotationProvider notationProvider;
+    private NotationProvider multiplicityNotationProvider;
     private static final long serialVersionUID = 5385230942216677015L;
-
+    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
+    
     FigMultiplicity() {
         super(10, 10, 90, 20, false, "multiplicity");
 
@@ -504,7 +506,8 @@ class FigMultiplicity extends FigSingleLineText
     @Override
     protected void setText() {
         assert getOwner() != null;
-        setText(notationProvider.toString(getOwner(), null));
+        setText(multiplicityNotationProvider.toString(getOwner(), 
+                npArguments));
         damage();
     }
     
@@ -518,16 +521,18 @@ class FigMultiplicity extends FigSingleLineText
     }
     
     protected void textEdited() {
-        notationProvider.parse(getOwner(), getText());
-        setText(notationProvider.toString(getOwner(), null));
+        multiplicityNotationProvider.parse(getOwner(), getText());
+        setText(multiplicityNotationProvider.toString(getOwner(), 
+                npArguments));
     }
     
     protected void textEditStarted() {
-        String s = notationProvider.getParsingHelp();
+        String s = multiplicityNotationProvider.getParsingHelp();
         ArgoEventPump.fireEvent(new ArgoHelpEvent(
                 ArgoEventTypes.HELP_CHANGED, this,
                 Translator.localize(s)));
-        setText(notationProvider.toString(getOwner(), null));
+        setText(multiplicityNotationProvider.toString(getOwner(), 
+                npArguments));
     }
 
     /**
@@ -537,13 +542,16 @@ class FigMultiplicity extends FigSingleLineText
      */
     protected void initNotationProviders(Object own) {
         /* Careful; the owner is not yet set! */
-        if (notationProvider != null) {
-            notationProvider.cleanListener(this, own);
+        if (multiplicityNotationProvider != null) {
+            multiplicityNotationProvider.cleanListener(this, own);
         }
         if (Model.getFacade().isAModelElement(own)) {
-            notationProvider =
+            multiplicityNotationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_MULTIPLICITY, own, this);
+            boolean value = getProject().getProjectSettings()
+                .getShowSingularMultiplicitiesValue();
+            npArguments.put("singularMultiplicityVisible", value);
         }
     }
 }

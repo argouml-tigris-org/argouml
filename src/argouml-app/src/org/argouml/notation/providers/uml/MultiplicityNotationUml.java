@@ -85,9 +85,8 @@ public class MultiplicityNotationUml extends MultiplicityNotation {
     
     @Override
     public String toString(Object multiplicityOwner, Map args) {
-        Object mulitiplicity = 
-            Model.getFacade().getMultiplicity(multiplicityOwner);
-        return NotationUtilityUml.generateMultiplicity(mulitiplicity);
+        return NotationUtilityUml.generateMultiplicity(
+                multiplicityOwner, args);
     }
 
 }
