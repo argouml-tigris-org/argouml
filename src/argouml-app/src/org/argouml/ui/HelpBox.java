@@ -1,4 +1,4 @@
-// $Id$
+// $Id $
 // Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,25 +26,19 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.io.IOException;
-import java.net.URL;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import org.argouml.i18n.Translator;
-import org.argouml.util.ArgoDialog;
-import org.argouml.util.Tools;
 
 /**
  * This is what you see after you activate the "Help->Help" menu-item.
@@ -56,9 +50,6 @@ public class HelpBox extends JFrame implements HyperlinkListener {
      */
     private static final int INSET_PX = 3;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     /**
      * A tabbed pane to display several pages simultaneously.
      */
@@ -67,18 +58,21 @@ public class HelpBox extends JFrame implements HyperlinkListener {
     /**
      * The panes to display the various help pages.
      */
-    JEditorPane [] _panes = null;
+    private JEditorPane [] panes = null;
 
     /**
      * The names and URLs for the pages.
      */
-    String _pages [] [] = { { "Manual", "http://argouml-stats.tigris.org/nonav/documentation/manual-0.24/" , "The ArgoUML online manual"},
-		            { "Forum", "http://www.argouml-users.net/forum/viewforum.php?f=1", "A ArgoUML forum" },
-                            { "Wiki", "http://www.argouml-users.net/index.php?title=Main_Page", "A ArgoUML wiki" } };
-
-
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    private String pages [] [] = {{"Manual", 
+            "http://argouml-stats.tigris.org/nonav/documentation/"
+                + "manual-0.24/" , 
+            "The ArgoUML online manual"},
+        {"Forum", 
+            "http://www.argouml-users.net/forum/viewforum.php?f=1", 
+            "A ArgoUML forum" },
+        {"Wiki", 
+            "http://www.argouml-users.net/index.php?title=Main_Page", 
+            "A ArgoUML wiki" } };
 
     /**
      * @see Translator#localize(String)
@@ -103,44 +97,45 @@ public class HelpBox extends JFrame implements HyperlinkListener {
 	getContentPane().setLayout(new BorderLayout(0, 0));
 	setSize( 800, 600);
 
-	_panes = new JEditorPane [ _pages.length];
-	for( int i=0; i < _pages.length; i++) {
-            _panes[i] = new JEditorPane();
-            _panes[i].setEditable( false);
-            _panes[i].setSize( 780, 580);
-            _panes[i].addHyperlinkListener( this);
+	panes = new JEditorPane [ pages.length];
+	for ( int i = 0; i < pages.length; i++) {
+            panes[i] = new JEditorPane();
+            panes[i].setEditable( false);
+            panes[i].setSize( 780, 580);
+            panes[i].addHyperlinkListener( this);
 
 	    URL paneURL = null;
             try {
-                paneURL = new URL( _pages[i][1]);
-            } catch( MalformedURLException e) {
-                System.err.println( _pages[i][0] + " URL malformed: " + _pages[i][1]);
+                paneURL = new URL( pages[i][1]);
+            } catch ( MalformedURLException e) {
+                System.err.println( pages[i][0] + " URL malformed: " + pages[i][1]);
             }
 
-            if( paneURL != null) {
+            if ( paneURL != null) {
                 try {
-                    _panes[i].setPage( paneURL);
-                } catch( IOException e) {
+                    panes[i].setPage( paneURL);
+                } catch ( IOException e) {
                     System.err.println("Attempted to read a bad URL: " + paneURL);
                 }
             } else {
-                System.err.println("Couldn't find " + _pages[i][0]);
+                System.err.println("Couldn't find " + pages[i][0]);
             }
 
             // Put the current pane in a scroll pane.
-            JScrollPane paneScrollPane = new JScrollPane( _panes[i]);
-            paneScrollPane.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            JScrollPane paneScrollPane = new JScrollPane( panes[i]);
+            paneScrollPane.setVerticalScrollBarPolicy( 
+                    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
             paneScrollPane.setPreferredSize(new Dimension(800, 600));
             paneScrollPane.setMinimumSize(new Dimension(400, 300));
 
-	    tabs.addTab( _pages[i][0], null, paneScrollPane, _pages[i][2]);
+	    tabs.addTab( pages[i][0], null, paneScrollPane, pages[i][2]);
         }
         getContentPane().add( tabs, BorderLayout.CENTER);
     }
 
     public void hyperlinkUpdate(HyperlinkEvent event) {
 	if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-	    JEditorPane pane = (JEditorPane)event.getSource();
+	    JEditorPane pane = (JEditorPane) event.getSource();
             try {
                 pane.setPage(event.getURL());
             } catch (IOException ioe) {
@@ -153,4 +148,5 @@ public class HelpBox extends JFrame implements HyperlinkListener {
      * The UID.
      */
     private static final long serialVersionUID = 0L;
+
 } /* end class HelpBox */
