@@ -532,7 +532,7 @@ public class AttributeNotationUml extends AttributeNotation {
                     NotationUtilityUml.generateVisibility(modelElement);
             // generateStereotype accepts a collection, despite its name
             String stereo = NotationUtilityUml.generateStereotype(
-                    Model.getFacade().getStereotypes(modelElement));
+                    Model.getFacade().getStereotypes(modelElement), args);
             String name = Model.getFacade().getName(modelElement);
             String multiplicity = generateMultiplicity(
                     Model.getFacade().getMultiplicity(modelElement));

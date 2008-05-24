@@ -898,11 +898,28 @@ public final class NotationUtilityUml {
     }
 
     /**
+     * TODO: Rewrite this, so that it does not use the Project.
+     * 
+     * @param st a stereotype UML object
+     *                 or a string
+     *                 or a collection of stereotypes
+     *                 or a modelelement of which the stereotypes are retrieved
+     * @param args arguments that may determine the notation
+     * @return a string representing the given stereotype(s)
+     */
+    public static String generateStereotype(Object st, Map args) {
+        return generateStereotype(st);
+    }
+
+    /**
      * @param st a stereotype UML object
      *                 or a string
      *                 or a collection of stereotypes
      *                 or a modelelement of which the stereotypes are retrieved
      * @return a string representing the given stereotype(s)
+     * @deprecated by mvw in V0.25.5. Use the previous method instead,
+     * with the arguments Map.
+     * Rationale: Use the args Map instead of accessing the Project from here.
      */
     public static String generateStereotype(Object st) {
         if (st == null) {

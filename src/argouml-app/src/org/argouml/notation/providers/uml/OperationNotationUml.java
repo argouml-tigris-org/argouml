@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -487,13 +487,13 @@ public class OperationNotationUml extends OperationNotation {
 
         try {
             String stereoStr = NotationUtilityUml.generateStereotype(
-                    Model.getFacade().getStereotypes(modelElement));
+                    Model.getFacade().getStereotypes(modelElement), args);
             boolean isReception = Model.getFacade().isAReception(modelElement);
             // TODO: needs I18N
             if (isReception) {
                 stereoStr =
                         NotationUtilityUml
-                                .generateStereotype(RECEPTION_KEYWORD)
+                                .generateStereotype(RECEPTION_KEYWORD, args)
                                 + " " + stereoStr;
             }
             String visStr = NotationUtilityUml.generateVisibility(modelElement);
