@@ -161,6 +161,10 @@ public abstract class FigStateVertex extends FigNodeModelElement {
      * Return a list of gravity points around circle which is enclosed
      * in the bounding box.  Convenience method for use by FigInitialState
      * and FigFinalState.
+     * TODO: As this method is not required by all sub classes then should we
+     * it would seem sensible to extend FigStateVertex with FigCircleVertex
+     * and only have the relevant concrete Figs extand that and gain this
+     * functionality.
      * @return a List of Points
      */
     List<Point> getCircleGravityPoints() {
