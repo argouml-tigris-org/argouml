@@ -38,7 +38,7 @@ import org.xml.sax.InputSource;
  *
  * @author Tom Morris
  */
-public abstract class URLModelLoader implements ProfileModelLoader {
+public class URLModelLoader implements ProfileModelLoader {
 
     private static final Logger LOG = Logger.getLogger(URLModelLoader.class);
 
@@ -63,5 +63,9 @@ public abstract class URLModelLoader implements ProfileModelLoader {
         } catch (UmlException e) {
             throw new ProfileException("Invalid XMI data!", e);
         }
+    }
+
+    public Collection loadModel(ProfileReference reference) throws ProfileException {
+        return loadModel(reference.getPublicReference(), reference.getPublicReference());
     }
 }

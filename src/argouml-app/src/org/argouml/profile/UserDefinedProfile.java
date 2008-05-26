@@ -27,12 +27,18 @@ package org.argouml.profile;
 import java.io.File;
 import java.io.Reader;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+import org.argouml.model.Model;
 
 /**
  * Represents a profile defined by the user
  *
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public class UserDefinedProfile extends Profile {
 
@@ -59,6 +65,8 @@ public class UserDefinedProfile extends Profile {
         }
         model = new FileModelLoader().loadModel(reference);
         fromZargo = false;
+
+        completeLoading();
     }
 
     
@@ -84,8 +92,68 @@ public class UserDefinedProfile extends Profile {
         }
         model = new ReaderModelLoader(reader).loadModel(reference);
         fromZargo = true;
+        
+        completeLoading();
     }
 
+
+    public UserDefinedProfile(URL url) throws ProfileException {
+        ProfileReference reference = null;
+        reference = new UserProfileReference(url.getPath(), url);
+        model = new URLModelLoader().loadModel(reference);
+        fromZargo = false;
+
+        completeLoading();
+     }
+
+
+    /**
+     * Reads the informations defined as TaggedValues
+     */
+    private void completeLoading() {
+        
+        for (Object obj : model) {
+            if (Model.getExtensionMechanismsHelper().hasStereotype(obj,
+                    "profile")) {
+
+                // load profile name
+                String name = Model.getFacade().getName(obj);
+                if (name != null) {
+                    displayName = name;
+                } else {
+                    displayName = "Untitled";
+                }
+                                
+                // load profile dependencies
+                String dep = Model.getFacade().getTaggedValueValue(obj, "Dependency");
+                StringTokenizer st = new StringTokenizer(dep, " ,;:");
+                
+                String prof = null;
+                
+                do {
+                    prof = st.nextToken();
+                    if (prof != null) {
+                        this.addProfileDependency(lookForRegisteredProfile(prof));
+                    }
+                } while(st.hasMoreTokens());
+                
+            }
+        }
+                
+    }
+
+    private Profile lookForRegisteredProfile(String value) {
+        ProfileManager man = ProfileFacade.getManager();
+        List<Profile> regs = man.getRegisteredProfiles();
+
+        for (Profile profile : regs) {
+            if (profile.getDisplayName().equalsIgnoreCase(value)) {
+                return profile;
+            }
+        }
+        return null;
+    }
+    
 
     /**
      * @return the string that should represent this profile in the GUI. An

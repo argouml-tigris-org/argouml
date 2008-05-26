@@ -27,6 +27,7 @@ package org.argouml.moduleloader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -51,6 +52,11 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
+import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileFacade;
+import org.argouml.profile.UserDefinedProfile;
+import org.argouml.profile.internal.ProfileManagerImpl;
+import org.argouml.ui.ProjectBrowser;
 
 /**
  * This is the module loader that loads modules implementing the
@@ -568,6 +574,9 @@ public final class ModuleLoader2 {
             return;
 	}
 
+        LOG.info("Reading profiles...");
+        loadProfilesFromJarFile(jarfile, file);
+        
         Manifest manifest;
         try {
             manifest = jarfile.getManifest();
@@ -600,10 +609,34 @@ public final class ModuleLoader2 {
         
         if (loadedClass) {
             // Add this to search list for I18N properties
-            Translator.addClassLoader(classloader);
+            Translator.addClassLoader(classloader);           
         } else {
             LOG.error("Failed to find any loadable ArgoUML modules in jar "
                     + file);
+        }
+    }
+
+    /**
+     * Searches for Profiles models (*.xmi) files in the directory "
+     * 
+     * @param jarfile the jarfile
+     * @param file 
+     */
+    private void loadProfilesFromJarFile(JarFile jarfile, File file) {       
+        Enumeration<JarEntry> entries = jarfile.entries();
+        for(JarEntry entry = entries.nextElement(); entries.hasMoreElements(); entry = entries.nextElement()) {
+            if (entry.getName().toLowerCase().endsWith(".xmi")) {
+                try {
+                    UserDefinedProfile udp = new UserDefinedProfile(new URL("jar:file:"+file.getCanonicalPath()+"!/"+entry.getName()));
+                    ProfileFacade.getManager().registerProfile(udp);
+                    
+                    LOG.debug("Registered Profile: " + udp.getDisplayName()+"...");
+                } catch (ProfileException e) {
+                    LOG.error("Exception", e);
+                } catch (IOException e) {
+                    LOG.error("Exception", e);
+                }
+            }
         }
     }
 

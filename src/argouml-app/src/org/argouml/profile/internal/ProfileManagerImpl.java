@@ -43,7 +43,7 @@ import org.argouml.profile.UserDefinedProfile;
 /**
  * Default <code>ProfileManager</code> implementation
  *
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public class ProfileManagerImpl implements ProfileManager {
     
@@ -84,6 +84,7 @@ public class ProfileManagerImpl implements ProfileManager {
             defaultProfiles.add(uml);
             registerProfile(uml);
             registerProfile(new ProfileJava(uml));
+            registerProfile(new ProfileMeta());
         } catch (ProfileException e) {
             throw new RuntimeException(e);
         }
