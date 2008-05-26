@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -163,11 +163,10 @@ public class UMLComboBoxEntry implements Comparable {
         return longName;
     }
 
-    // Refactoring: static to denote that it doesn't use any class members.
-    // TODO:
-    // Idea to move this to MMUtil together with the same function from
-    // org/argouml/uml/cognitive/critics/WizOperName.java
-    // org/argouml/uml/generator/ParserDisplay.java
+    /* 
+     * This method is static to denote that it doesn't use any class members.
+     * TODO: Move this to the model subsystem.
+     */
     private static Object findNamespace(Object phantomNS, Object targetModel) {
         Object ns = null;
         Object targetParentNS = null;
