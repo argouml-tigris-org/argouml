@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,10 +25,13 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -42,8 +45,8 @@ import org.argouml.util.Tools;
 
 /**
  * This is what you see after you activate the "Help->About ArgoUML" menu-item.
- *
- * TODO: Add registration for new AboutBox tabs.
+ * <p>
+ * Modules can add extra tabs at will.
  */
 public class AboutBox extends ArgoDialog {
 
@@ -51,9 +54,9 @@ public class AboutBox extends ArgoDialog {
      * Insets in pixels.
      */
     private static final int INSET_PX = 3;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
+    
+    private static Map<String, Component> extraTabs = 
+        new HashMap<String, Component>();
 
     private JTabbedPane tabs = new JTabbedPane();
 
@@ -62,8 +65,6 @@ public class AboutBox extends ArgoDialog {
      */
     private SplashPanel splashPanel;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
     /**
      * Class constructor.
      */
@@ -146,12 +147,35 @@ public class AboutBox extends ArgoDialog {
 	tabs.addTab(localize("aboutbox.tab.legal"),
 		     createPane(localize("aboutbox.legal")));
 
+        for (String key : extraTabs.keySet()) {
+            tabs.addTab(key, extraTabs.get(key));
+        }
+
 	getContentPane().setLayout(new BorderLayout(0, 0));
 	getContentPane().add(tabs, BorderLayout.CENTER);
 
 	// TODO: 10 and 120 were found by trial and error.  Calculate them.
 	setSize(imgWidth + 10, imgHeight + 120);
 	//pack();
+    }
+
+    /**
+     * Add an extra tab to the About box.
+     * 
+     * @param name the name of the tab as shown on screen
+     * @param tab the tab
+     */
+    public static void addAboutTab(String name, Component tab) {
+        extraTabs.put(name, tab);
+    }
+    
+    /**
+     * Remove a previously added tab from the About Box.
+     * 
+     * @param name the name of the tab as shown on screen
+     */
+    public static void removeAboutTab(String name) {
+        extraTabs.remove(name);
     }
 
     /**

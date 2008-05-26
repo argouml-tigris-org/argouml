@@ -24,12 +24,16 @@
 
 package org.argouml.dev;
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
@@ -37,6 +41,7 @@ import org.argouml.dev.figinspector.FigInspectorPanel;
 import org.argouml.dev.test.TestPanel;
 import org.argouml.moduleloader.DetailsTabProvider;
 import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.ui.AboutBox;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.undo.UndoManager;
 
@@ -49,6 +54,7 @@ public final class DeveloperModule implements ModuleInterface,
         DetailsTabProvider {
 
     private static final Logger LOG = Logger.getLogger(DeveloperModule.class);
+    private static String aboutName = "Dev module";
     
     /**
      * Wrapper.
@@ -92,6 +98,14 @@ public final class DeveloperModule implements ModuleInterface,
         ProjectBrowser.getInstance().addPanel(devPanel, 
                 ProjectBrowser.Position.East);
 
+        /* Demonstrate the About Box interface to add a tab: */
+        JPanel tab = new JPanel(new BorderLayout());
+        JLabel lbl1 = new JLabel(
+                "<html><p>Developer module</p>"
+                + "<p>by</p><p>Bob Tarling</p></html>");
+        lbl1.setHorizontalAlignment(SwingConstants.CENTER);
+        tab.add(lbl1, BorderLayout.NORTH);
+        AboutBox.addAboutTab(aboutName, tab);
 
         return true;
     }
@@ -109,6 +123,8 @@ public final class DeveloperModule implements ModuleInterface,
 
         JComponent undoLogPanel = UndoLogPanel.getInstance();
         ProjectBrowser.getInstance().removePanel(undoLogPanel);
+        
+        AboutBox.removeAboutTab(aboutName);
         return true;
     }
 
