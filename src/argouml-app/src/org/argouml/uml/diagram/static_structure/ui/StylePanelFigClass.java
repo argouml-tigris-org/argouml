@@ -43,7 +43,6 @@ import org.argouml.uml.diagram.OperationsCompartmentContainer;
  */
 public class StylePanelFigClass extends StylePanelFigNodeModelElement {
 
-    /* TODO: i18n */
     private JCheckBox attrCheckBox =
             new JCheckBox(Translator.localize("checkbox.attributes"));
 
