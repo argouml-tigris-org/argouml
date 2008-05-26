@@ -852,14 +852,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
             Model.getUmlFactory().delete(obj);
 
-            if (obj instanceof ProjectMember
-                    && members.contains(obj)) {
-                // TODO: Bob says - can this condition ever be reached?
-                // Surely obj cannot be both a model element (previous if) and
-                // a ProjectMember (this if)
-                members.remove(obj);
-            }
-
             // TODO: Presumably this is only relevant if
             // obj is actually a Model.
             // An added test of Model.getFacade.isAModel(obj) would clarify what
@@ -875,11 +867,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
                     .firePropertyChanged("remove", obj, null);
         } else if (obj instanceof Fig) {
             ((Fig) obj).deleteFromModel();
-            // TODO: Bob says - I've never seen this appear in the log.
-            // I believe this code is never reached. If we delete a FigEdge
+            // If we delete a FigEdge
             // or FigNode we actually call this method with the owner not
-            // the Fig itself.
-            // MVW: This is now called by ActionDeleteModelElements
+            // the Fig itself. However, this method 
+            // is called by ActionDeleteModelElements
             // for primitive Figs (without owner).
             LOG.info("Request to delete a Fig " + obj.getClass().getName());
         } else if (obj instanceof CommentEdge) {
