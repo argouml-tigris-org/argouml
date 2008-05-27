@@ -28,7 +28,7 @@ import java.io.File;
 import java.net.URL;
 
 /**
- * Support for the profile reference which internally to Argo implies having 
+ * A reference to a Profile which internally implies having 
  * both a public profile reference and the path to the profile file. 
  * 
  * @author Luis Sergio Oliveira (euluis)

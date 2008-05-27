@@ -27,7 +27,6 @@ package org.argouml.profile;
 import java.net.URL;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
@@ -40,13 +39,13 @@ import org.xml.sax.InputSource;
  */
 public class URLModelLoader implements ProfileModelLoader {
 
-    private static final Logger LOG = Logger.getLogger(URLModelLoader.class);
-
     /**
      * @param url the url/system id to load
-     * @param publicId the publicId for which the model will be known - must be 
-     * equal in different machines in order to be possible to load the model.
-     * @return the model
+     * @param publicId the publicId for which the model will be known - must be
+     *                equal in different machines in order to be possible to
+     *                load the model.
+     * @return a collection of top level elements in the profile (usually a
+     *         single package stereotyped <<profile>>
      * @throws ProfileException if the XMIReader couldn't read the profile
      */
     public Collection loadModel(URL url, URL publicId) 
@@ -65,7 +64,17 @@ public class URLModelLoader implements ProfileModelLoader {
         }
     }
 
-    public Collection loadModel(ProfileReference reference) throws ProfileException {
-        return loadModel(reference.getPublicReference(), reference.getPublicReference());
+    /**
+     * Load a profile from a ProfileReference.
+     * 
+     * @param reference ProfileReference for desired profile
+     * @return a collection of top level elements in the profile (usually a
+     *         single package stereotyped <<profile>>
+     * @throws ProfileException if the XMIReader couldn't read the profile
+     */
+    public Collection loadModel(final ProfileReference reference)
+        throws ProfileException {
+        return loadModel(reference.getPublicReference(), reference
+                .getPublicReference());
     }
 }

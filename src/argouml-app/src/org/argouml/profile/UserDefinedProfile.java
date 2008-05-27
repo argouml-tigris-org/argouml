@@ -31,7 +31,6 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import org.argouml.model.Model;
 
@@ -44,7 +43,7 @@ public class UserDefinedProfile extends Profile {
 
     private String displayName;
     private File modelFile;
-    private Collection model;
+    private Collection profilePackages;
     private boolean fromZargo;
 
     /**
@@ -63,7 +62,7 @@ public class UserDefinedProfile extends Profile {
             throw new ProfileException(
                 "Failed to create the ProfileReference.", e);
         }
-        model = new FileModelLoader().loadModel(reference);
+        profilePackages = new FileModelLoader().loadModel(reference);
         fromZargo = false;
 
         completeLoading();
@@ -90,21 +89,22 @@ public class UserDefinedProfile extends Profile {
             throw new ProfileException(
                 "Failed to create the ProfileReference.", e);
         }
-        model = new ReaderModelLoader(reader).loadModel(reference);
+        profilePackages = new ReaderModelLoader(reader).loadModel(reference);
         fromZargo = true;
         
         completeLoading();
     }
 
 
+    // TODO: Add missing Javadoc
     public UserDefinedProfile(URL url) throws ProfileException {
-        ProfileReference reference = null;
-        reference = new UserProfileReference(url.getPath(), url);
-        model = new URLModelLoader().loadModel(reference);
+        ProfileReference reference = 
+            new UserProfileReference(url.getPath(), url);
+        profilePackages = new URLModelLoader().loadModel(reference);
         fromZargo = false;
 
         completeLoading();
-     }
+    }
 
 
     /**
@@ -112,7 +112,7 @@ public class UserDefinedProfile extends Profile {
      */
     private void completeLoading() {
         
-        for (Object obj : model) {
+        for (Object obj : profilePackages) {
             if (Model.getExtensionMechanismsHelper().hasStereotype(obj,
                     "profile")) {
 
@@ -121,33 +121,40 @@ public class UserDefinedProfile extends Profile {
                 if (name != null) {
                     displayName = name;
                 } else {
+                    // TODO: I18N
                     displayName = "Untitled";
                 }
-                                
+
+                // TODO: Instead of a TaggedValue, why can't this just use
+                // Dependencies with the <<appliedProfile>> stereotype?  It
+                // seems designed exactly for cases like this.
+                
                 // load profile dependencies
-                String dep = Model.getFacade().getTaggedValueValue(obj, "Dependency");
+                String dep = Model.getFacade().getTaggedValueValue(obj,
+                        "Dependency");
                 StringTokenizer st = new StringTokenizer(dep, " ,;:");
-                
+
                 String prof = null;
-                
-                do {
+
+                while (st.hasMoreTokens()) {
                     prof = st.nextToken();
                     if (prof != null) {
-                        this.addProfileDependency(lookForRegisteredProfile(prof));
+                        this.addProfileDependency(
+                                lookForRegisteredProfile(prof));
                     }
-                } while(st.hasMoreTokens());
-                
+                }
+
             }
         }
                 
     }
 
-    private Profile lookForRegisteredProfile(String value) {
+    private Profile lookForRegisteredProfile(String name) {
         ProfileManager man = ProfileFacade.getManager();
         List<Profile> regs = man.getRegisteredProfiles();
 
-        for (Profile profile : regs) {
-            if (profile.getDisplayName().equalsIgnoreCase(value)) {
+        for (Profile profile : regs) { 
+            if (profile.getDisplayName().equalsIgnoreCase(name)) {
                 return profile;
             }
         }
@@ -202,6 +209,6 @@ public class UserDefinedProfile extends Profile {
 
     @Override
     public Collection getProfilePackages() {
-        return model;
+        return profilePackages;
     }
 }
