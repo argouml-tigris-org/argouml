@@ -24,16 +24,33 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 
 /**
- * A scrollable list of items.
+ * A scrollable list of items. This makes sure that there is no horizontal
+ * scrollbar (which takes up too much screen real estate) and that sideways
+ * scrolling can be achieved instead with arrow keys.
  * @author Bob Tarling
  */
-public class ScrollList extends JScrollPane {
+public class ScrollList extends JScrollPane implements KeyListener {
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 6711776013279497682L;
+
+    /**
+     * The Component that this scroll is wrapping.
+     */
+    private Component list;
+    
     /**
      * Builds a JList from a given list model and wraps
      * in a scrollable view.
@@ -55,9 +72,43 @@ public class ScrollList extends JScrollPane {
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         setViewportView(new UMLLinkedList(listModel, showIcon, showPath));
     }
-
+    
+    public void setViewportView(Component view) {
+        super.setViewportView(view);
+        list = view;
+    }
+    
     /**
-     * The UID.
+     * Examine key event to scroll left or right depending on key press
+     * @param e the key event to examine
      */
-    private static final long serialVersionUID = 6711776013279497682L;
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            final Point posn = getViewport().getViewPosition();
+            if (posn.x > 0) {
+                getViewport().setViewPosition(new Point(posn.x - 1, posn.y));
+            }
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            final Point posn = getViewport().getViewPosition();
+            if (list.getWidth() - posn.x > getViewport().getWidth()) {
+                getViewport().setViewPosition(new Point(posn.x + 1, posn.y));
+            }
+        }
+    }
+
+    public void keyReleased(KeyEvent arg0) {
+    }
+
+    public void keyTyped(KeyEvent arg0) {
+    }
+    
+    public void addNotify() {
+        super.addNotify();
+        list.addKeyListener(this);
+    }
+    
+    public void removeNotify() {
+        super.removeNotify();
+        list.removeKeyListener(this);
+    }
 }
