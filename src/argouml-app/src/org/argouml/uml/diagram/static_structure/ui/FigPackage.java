@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -758,18 +758,6 @@ public class FigPackage extends FigNodeModelElement
      */
     @Override
     protected void textEditStarted(FigText ft) {
-
-        /* The following 2 lines should be retained for reference.
-         * They represent the better way of editing on the diagram, which
-         * 1. would work for different notations, and
-         * 2. would indicate to the user that he can edit more aspects
-         * of the modelelement than the name alone.
-         * But: it is different behaviour, which I (MVW)
-         * do not know if it is acceptable.
-         */
-
-//        String s = GeneratorDisplay.getInstance().generate(getOwner());
-//        ft.setText(s);
 
         if (ft == getNameFig()) {
             showHelp("parsing.help.fig-package");

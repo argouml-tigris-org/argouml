@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -982,57 +982,6 @@ public class FigUseCase extends FigNodeModelElement
     public void mouseExited(MouseEvent me) {
         super.mouseExited(me);
         unhighlight();
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Internal methods
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Invoked when text has been edited.<p>
-     *
-     * We check that it is one of the extension point compartments and then
-     * parse accordingly.<p>
-     *
-     * The parameter ft is the Fig with the text that has been edited.
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        // Let the parent do anything it wants first (in casu: the usecase name)
-        super.textEdited(ft);
-
-        // Only works if we have an owner
-        Object useCase = getOwner();
-        if (useCase == null) {
-            return;
-        }
-
-        // Give up if we are not one of the extension points
-        if (!epVec.getFigs().contains(ft)) {
-            return;
-        }
-
-        // Parse the text
-        CompartmentFigText hlft = (CompartmentFigText) ft;
-        hlft.getNotationProvider().parse(hlft.getOwner(), ft.getText());
-        ft.setText(hlft.getNotationProvider().toString(hlft.getOwner(), null));
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(
-     *      org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEditStarted(FigText ft) {
-        super.textEditStarted(ft);
-        if (epVec.getFigs().contains(ft)) {
-            showHelp(((CompartmentFigText) ft)
-                    .getNotationProvider().getParsingHelp());
-        }
     }
 
     /**

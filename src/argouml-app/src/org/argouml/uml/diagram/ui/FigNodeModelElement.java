@@ -1067,6 +1067,12 @@ public abstract class FigNodeModelElement
             showHelp(notationProviderName.getParsingHelp());
             ft.setText(notationProviderName.toString(getOwner(), npArguments));
         }
+        if (ft instanceof CompartmentFigText) {
+            final CompartmentFigText figText = (CompartmentFigText) ft;
+            showHelp(figText.getNotationProvider().getParsingHelp());
+            figText.setText(figText.getNotationProvider().toString(
+                    figText.getOwner(), npArguments));
+        }
     }
 
     /**
@@ -1089,8 +1095,8 @@ public abstract class FigNodeModelElement
      * This method is called after the user finishes editing a text
      * field that is in the FigNodeModelElement.  Determine which
      * field and update the model.  This class handles the name,
-     * and the stereotype,
-     * subclasses should override to handle other text elements.
+     * the stereotype, and any CompartmentFigTexts.
+     * Subclasses should override to handle other text elements.
      *
      * @param ft the FigText that has been edited and contains the new text
      * @throws PropertyVetoException thrown when new text represents
@@ -1104,6 +1110,12 @@ public abstract class FigNodeModelElement
             }
             notationProviderName.parse(getOwner(), ft.getText());
             ft.setText(notationProviderName.toString(getOwner(), npArguments));
+        }
+        if (ft instanceof CompartmentFigText) {
+            final CompartmentFigText figText = (CompartmentFigText) ft;
+            figText.getNotationProvider().parse(ft.getOwner(), ft.getText());
+            ft.setText(figText.getNotationProvider().toString(
+                    ft.getOwner(), npArguments));
         }
     }
 

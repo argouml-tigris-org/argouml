@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -191,30 +191,6 @@ public class FigEnumeration extends FigDataType
 
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(getBounds());
-    }
-    
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        super.textEdited(ft);
-        Object cls = /*(Classifier)*/ getOwner();
-        if (cls == null) {
-            return;
-        }
-        // TODO: Can we do same here as in FigClass, FigInterface etc?
-        // Does work need doing in notations to allow this?
-        // Then we can move all common functionality of textEdited to
-        // superclass.
-        int i = literalsCompartment.getFigs().indexOf(ft);
-        if (ft instanceof CompartmentFigText) {
-            final CompartmentFigText figText = (CompartmentFigText) ft;
-            figText.setHighlighted(true);
-            Model.getCoreHelper().setName(figText.getOwner(),
-                    figText.getText().trim());
-            return;
-        }
     }
 
     /*

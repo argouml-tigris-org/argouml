@@ -289,38 +289,6 @@ public class FigInterface extends FigClassifierBox {
         }
     }
 
-    ////////////////////////////////////////////////////////////////
-    // internal methods
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(
-     * org.tigris.gef.presentation.FigText)
-     * TODO: Move this to superclass once TODO comments in
-     * FigEnumeration.textEdited complete
-     */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        super.textEdited(ft);
-        // TODO: Is this really needed?
-        if (getOwner() == null) {
-            return;
-        }
-        if (ft instanceof CompartmentFigText) {
-            ((CompartmentFigText) ft).textEdited();
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(
-     * org.tigris.gef.presentation.FigText)
-     */
-    protected void textEditStarted(FigText ft) {
-        super.textEditStarted(ft);
-        if (getOperationsFig().getFigs().contains(ft)) {
-            showHelp(((CompartmentFigText) ft)
-                    .getNotationProvider().getParsingHelp());
-        }
-    }
-
     /**
      * @param ft the figtext holding the feature
      * @param i the index (?)

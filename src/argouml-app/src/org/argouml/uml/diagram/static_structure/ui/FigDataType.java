@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -253,42 +253,6 @@ public class FigDataType extends FigClassifierBox {
         }
 
     }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        super.textEdited(ft);
-        // TODO: Do we really need this?
-        if (getOwner() == null) {
-            return;
-        }
-        // TODO: Can we do same here as in FigClass and FigInterface?
-        // FigEnumeration will need to be reworked first.
-        // Then we can move all common functionality of textEdited to
-        // superclass.
-        int i = getOperationsFig().getFigs().indexOf(ft);
-        if (i != -1) {
-            final CompartmentFigText figText = (CompartmentFigText) ft;
-            figText.setHighlighted(true);
-            figText.getNotationProvider()
-                .parse(figText.getOwner(), ft.getText());
-            ft.setText(figText.getNotationProvider().toString(
-                figText.getOwner(), null));
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
-     */
-    protected void textEditStarted(FigText ft) {
-        super.textEditStarted(ft);
-        if (getOperationsFig().getFigs().contains(ft)) {
-            showHelp(((CompartmentFigText) ft)
-                    .getNotationProvider().getParsingHelp());
-        }
-    }
-
 
     /**
      * USED BY PGML.tee.
