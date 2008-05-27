@@ -1,5 +1,5 @@
 // $Id $
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,17 +38,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import org.argouml.i18n.Translator;
+import org.apache.log4j.Logger;
 
 /**
  * This is what you see after you activate the "Help->Help" menu-item.
  */
 public class HelpBox extends JFrame implements HyperlinkListener {
-
-    /**
-     * Insets in pixels.
-     */
-    private static final int INSET_PX = 3;
+    
+    private static final Logger LOG = Logger.getLogger(HelpBox.class);
 
     /**
      * A tabbed pane to display several pages simultaneously.
@@ -58,12 +55,12 @@ public class HelpBox extends JFrame implements HyperlinkListener {
     /**
      * The panes to display the various help pages.
      */
-    private JEditorPane [] panes = null;
+    private JEditorPane[] panes = null;
 
     /**
      * The names and URLs for the pages.
      */
-    private String pages [] [] = {{"Manual", 
+    private String pages[][] = {{"Manual", 
             "http://argouml-stats.tigris.org/nonav/documentation/"
                 + "manual-0.24/" , 
             "The ArgoUML online manual"},
@@ -74,15 +71,6 @@ public class HelpBox extends JFrame implements HyperlinkListener {
             "http://www.argouml-users.net/index.php?title=Main_Page", 
             "A ArgoUML wiki" } };
 
-    /**
-     * @see Translator#localize(String)
-     *
-     * @param str The key to localize.
-     * @return The localized String.
-     */
-    private static String localize(String str) {
-	return Translator.localize(str);
-    }
 
     /**
     * Class constructor.
@@ -108,17 +96,17 @@ public class HelpBox extends JFrame implements HyperlinkListener {
             try {
                 paneURL = new URL( pages[i][1]);
             } catch ( MalformedURLException e) {
-                System.err.println( pages[i][0] + " URL malformed: " + pages[i][1]);
+                LOG.warn( pages[i][0] + " URL malformed: " + pages[i][1]);
             }
 
             if ( paneURL != null) {
                 try {
                     panes[i].setPage( paneURL);
                 } catch ( IOException e) {
-                    System.err.println("Attempted to read a bad URL: " + paneURL);
+                    LOG.warn("Attempted to read a bad URL: " + paneURL);
                 }
             } else {
-                System.err.println("Couldn't find " + pages[i][0]);
+                LOG.warn("Couldn't find " + pages[i][0]);
             }
 
             // Put the current pane in a scroll pane.
@@ -139,7 +127,7 @@ public class HelpBox extends JFrame implements HyperlinkListener {
             try {
                 pane.setPage(event.getURL());
             } catch (IOException ioe) {
-                System.err.println( "Could not fetch requested URL");
+                LOG.warn( "Could not fetch requested URL");
             }
 	}
     }
@@ -149,4 +137,4 @@ public class HelpBox extends JFrame implements HyperlinkListener {
      */
     private static final long serialVersionUID = 0L;
 
-} /* end class HelpBox */
+}
