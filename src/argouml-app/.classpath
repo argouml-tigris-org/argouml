@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="tudresden/ocl20/integration/|org/argouml/ocl/ArgoFacade.java" kind="src" path="src"/>
+	<classpathentry kind="src" output="build-eclipse-tests" path="tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="lib/antlr-2.7.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging-1.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/gef-0.12.4BETA3.jar" sourcepath="/gef/src"/>
+	<classpathentry exported="true" kind="lib" path="lib/swidgets-0.1.4.jar" sourcepath="/swidgets/src"/>
+	<classpathentry exported="true" kind="lib" path="lib/toolbar-1.4.1-20071227.jar" sourcepath="/toolbar/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="lib" path="/argouml-core-tools/lib/easymock12.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-tools/jdepend-2.9/lib/jdepend-2.9.jar"/>
+	<classpathentry kind="lib" path="lib/ocl20codegen-java.jar"/>
+	<classpathentry kind="lib" path="lib/ocl20jmiapi.jar"/>
+	<classpathentry kind="lib" path="lib/ocl20jmiimpl.jar" sourcepath="/ocl20/src"/>
+	<classpathentry kind="lib" path="lib/ocl20parserbase.jar"/>
+	<classpathentry kind="lib" path="lib/ocl20parsertools.jar"/>
+	<classpathentry kind="lib" path="lib/ocl20repository.jar" sourcepath="/ocl20/src"/>
+	<classpathentry kind="lib" path="lib/ocl20stdlib.jar"/>
+	<classpathentry kind="lib" path="lib/ocl2-argo.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-model-mdr/lib/jmi.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model-mdr"/>
+	<classpathentry kind="output" path="build-eclipse"/>
+</classpath>
