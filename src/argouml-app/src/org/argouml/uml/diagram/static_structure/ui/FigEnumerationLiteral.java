@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,6 +35,22 @@ import org.tigris.gef.presentation.Fig;
  */
 public class FigEnumerationLiteral extends CompartmentFigText {
 
+    /**
+     * Build a new Enumeration Literal figText of the given dimensions, 
+     * within the compartment described by <code>aFig</code>.
+     * <p>
+     * 
+     * <em>Warning</em>. Won't work properly if <code>aFig</code> is null.
+     * A warning is printed.
+     * <p>
+     * 
+     * @param x X coordinate of the top left of the FigText.
+     * @param y Y coordinate of the top left of the FigText.
+     * @param w Width of the FigText.
+     * @param h Height of the FigText.
+     * @param aFig The figure describing the whole compartment
+     * @param np The notationProvider. See NotationProviderFactory2.
+     */
     public FigEnumerationLiteral(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, aFig, np);
