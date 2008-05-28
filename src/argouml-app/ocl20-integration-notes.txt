@@ -1,0 +1,70 @@
+OCL Changes
+
+org.argouml.ocl - unchanged?
+ - regression of changes made to consolidate multiple OCL implementations
+ - regression of deprecation
+ - commenting out of some methods
+
+org.argouml.uml.ui.TabConstraints - minor updates for new code
+
+ch.ethz.infosec.ocl2Argo.ArgoUMLModelFacade - new (updated version of org.argouml.ocl.ArgoFacade?)
+   - introduces direct dependency on JMI and MDR (probably not necessary)
+   
+Java & C# generators depend on old OCL parser to generate Javadoc for constraints
+
+   
+tudresden.ocl20.gui derived from ocl project's tudresden.ocl.gui
+----------------------------------------------------------------
+SourceForge SVN at https://dresden-ocl.svn.sourceforge.net/svnroot/dresden-ocl/trunk/ocl/src/tudresden/ocl/gui
+
+LGPL licensed, so can't be mingled with ArgoUML sources - need a binary dist.
+
+mostly just changed package names to match new ocl20 names
+
+OCLEditor.java had a revision in 2003 which we apparently never got
+  (also large number of formatting changes)
+  
+OCLEditorPreferences - change of string
+
+tudresden.ocl20.images copied unchanged from tudresden.ocl.images
+-----------------------------------------------------------------
+SourceForge SVN at https://dresden-ocl.svn.sourceforge.net/svnroot/dresden-ocl/trunk/ocl/src/tudresden/ocl/images
+
+tudresden.ocl20.integration (no changes from version forked? double check against history)
+---------------------------
+SourceForge SVN at https://dresden-ocl.svn.sourceforge.net/svnroot/dresden-ocl/trunk/ocl20/src/tudresden/ocl20/integration
+
+- doesn't appear to be included in jar ocl20jmiimpl.jar, so perhaps they are modified in some way that we need
+- the following diffs 
+
+Classes.java - no changes
+ModelFacade.java - replaceRefProject & getElement methods added
+OCLChecker.java - transaction rollback supported added to SourceForge version
+
+
+
+Changes
+-------
+- removed constraint enriched doc comment generation from Java and C# code generators
+- moved ch.ethz.infsec.ocl2Argo.ArgoUMLModelFacade to org.argouml.ocl where old facade was
+  (no license information for this.  Need to get it copyright/license cleared!)
+- changed debugging printlns to use Log4J
+
+Questions
+---------
+- What is compatibility story between old OCL and new OCL constraints?
+
+
+Modified Files for Initial Commit (included during creation of branch)
+
+    G  C:/eclipse-workspace-clean2/argouml-app/.classpath
+    G  C:/eclipse-workspace-clean2/argouml-app/META-INF/MANIFEST.MF
+    D  C:/eclipse-workspace-clean2/argouml-app/lib/ocl-argo-1.1.jar
+    G  C:/eclipse-workspace-clean2/argouml-app/ArgoUML DEBUG.launch
+    G  C:/eclipse-workspace-clean2/argouml-app/src/org/argouml/language/java/generator/GeneratorJava.java
+    G  C:/eclipse-workspace-clean2/argouml-app/src/org/argouml/uml/ui/TabConstraints.java
+    G  C:/eclipse-workspace-clean2/argouml-app/src/org/argouml/ocl/OCLEvaluator.java
+    G  C:/eclipse-workspace-clean2/argouml-app/src/org/argouml/ocl/OCLExpander.java
+    G  C:/eclipse-workspace-clean2/argouml-app/src/org/argouml/ocl/OCLUtil.java
+    G  C:/eclipse-workspace-clean2/argouml-app/src/org/argouml/ocl/ArgoFacade.java
+    G  C:/eclipse-workspace-clean2/argouml-app/src/org/argouml/ocl/CriticOclEvaluator.java
