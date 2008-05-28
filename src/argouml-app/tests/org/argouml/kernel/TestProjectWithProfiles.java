@@ -366,7 +366,7 @@ public class TestProjectWithProfiles extends TestCase {
         throws IOException {
         ProfileMother mother = new ProfileMother();
         Object profileModel = mother.createSimpleProfileModel();
-        Model.getCoreHelper().setName(profileModel, "TestUserProfile");
+        Model.getCoreHelper().setName(profileModel, filename);
         File userDefinedProfileFile = new File(directory, filename);
         mother.saveProfileModel(profileModel, userDefinedProfileFile);
         // Clean up after ourselves by deleting profile model

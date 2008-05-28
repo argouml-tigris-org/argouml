@@ -120,9 +120,6 @@ public class UserDefinedProfile extends Profile {
                 String name = Model.getFacade().getName(obj);
                 if (name != null) {
                     displayName = name;
-                } else {
-                    // TODO: I18N
-                    displayName = "Untitled";
                 }
 
                 // TODO: Instead of a TaggedValue, why can't this just use
