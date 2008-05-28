@@ -121,8 +121,8 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         }
     }
 
-    private Profile handlePluginProfile(BufferedReader br) throws IOException,
-        XmiReferenceException {
+    private static Profile handlePluginProfile(BufferedReader br)
+        throws IOException, XmiReferenceException {
         Profile profile;
         String className = br.readLine().trim();
         profile = ProfileFacade.getManager().getProfileForClass(
@@ -134,7 +134,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         return profile;
     }
 
-    private Profile handleUserDefinedProfile(BufferedReader br)
+    private static Profile handleUserDefinedProfile(BufferedReader br)
         throws IOException, XmiReferenceException {
         String line;
         Profile profile;
@@ -204,7 +204,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                 profilesDirectory.getAbsolutePath());
     }
 
-    private Profile getMatchingUserDefinedProfile(String fileName, 
+    private static Profile getMatchingUserDefinedProfile(String fileName, 
             ProfileManager profileManager) {
         for (Profile candidateProfile 
             : profileManager.getRegisteredProfiles()) {
@@ -219,7 +219,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         return null;
     }
 
-    private File getProfilesDirectory(ProfileManager profileManager) {
+    private static File getProfilesDirectory(ProfileManager profileManager) {
         if (isSomeProfileDirectoryConfigured(profileManager)) {
             List<String> directories = 
                 profileManager.getSearchPathDirectories();
@@ -232,7 +232,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         }
     }
 
-    private boolean isSomeProfileDirectoryConfigured(
+    private static boolean isSomeProfileDirectoryConfigured(
             ProfileManager profileManager) {
         return profileManager.getSearchPathDirectories().size() > 0;
     }
@@ -306,12 +306,10 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
     private void printModelXMI(PrintWriter w, Collection profileModels) 
         throws UmlException {
         
+        // TODO: Why is this not executed?  Remove if not needed - tfm
         if (true) return;
+
         StringWriter myWriter = new StringWriter();
-        // FIXME: this is completely useless since the XMI writer won't 
-        // write the model it is given, but, a list of models which it 
-        // determines on its own. See XmiWriterMDRImpl.write() implementation 
-        // and the usage of the flag WRITE_ALL.
         for (Object model : profileModels) {
             XmiWriter xmiWriter = Model.getXmiWriter(model, 
                 (OutputStream) null, //myWriter, 
