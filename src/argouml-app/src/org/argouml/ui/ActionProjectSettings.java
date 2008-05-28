@@ -42,7 +42,7 @@ public class ActionProjectSettings extends AbstractAction {
     /**
      * The settings dialog.
      */
-    private ProjectSettingsDialog dialog;
+    private static ProjectSettingsDialog dialog;
 
     /**
      * Constructor.

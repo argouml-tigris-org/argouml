@@ -25,11 +25,13 @@
 package org.argouml.notation.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -45,6 +47,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
+import org.argouml.swingext.JLinkButton;
+import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ShadowComboBox;
 
 /**
@@ -90,9 +94,31 @@ public class SettingsTabNotation
         super();
         scope = settingsScope;
         setLayout(new BorderLayout());
-        JPanel top = new JPanel();
 
-        top.setLayout(new GridBagLayout());
+        JPanel top = new JPanel();
+        top.setLayout(new BorderLayout());
+
+        if (settingsScope == Argo.SCOPE_APPLICATION) {
+            JPanel warning = new JPanel();
+            warning.setLayout(new BoxLayout(warning, BoxLayout.PAGE_AXIS));
+            JLabel warningLabel = new JLabel(Translator
+                    .localize("label.warning"));
+            warningLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+            warning.add(warningLabel);
+
+            JLinkButton projectSettings = new JLinkButton();
+            projectSettings.setAction(new ActionProjectSettings());
+            projectSettings.setText(Translator
+                    .localize("button.project-settings"));
+            projectSettings.setIcon(null);
+            projectSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+            warning.add(projectSettings);
+
+            top.add(warning, BorderLayout.NORTH);
+        }
+
+        JPanel settings = new JPanel();
+        settings.setLayout(new GridBagLayout());
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.anchor = GridBagConstraints.WEST;
@@ -114,53 +140,55 @@ public class SettingsTabNotation
         notationLanguageLabel.setLabelFor(notationLanguage);
         notationLanguagePanel.add(notationLanguageLabel);
         notationLanguagePanel.add(notationLanguage);
-        top.add(notationLanguagePanel, constraints);
+        settings.add(notationLanguagePanel, constraints);
 
         showBoldNames = createCheckBox("label.show-bold-names");
-        top.add(showBoldNames, constraints);
+        settings.add(showBoldNames, constraints);
 
         useGuillemots = createCheckBox("label.use-guillemots");
-        top.add(useGuillemots, constraints);
+        settings.add(useGuillemots, constraints);
 
         // 2002-07-31
         // Jaap Branderhorst
         // from here made visibility etc. configurable
 
         showAssociationNames = createCheckBox("label.show-associationnames");
-        top.add(showAssociationNames, constraints);
+        settings.add(showAssociationNames, constraints);
 
         showVisibility = createCheckBox("label.show-visibility");
-        top.add(showVisibility, constraints);
+        settings.add(showVisibility, constraints);
 
         showMultiplicity = createCheckBox("label.show-multiplicity");
-        top.add(showMultiplicity, constraints);
+        settings.add(showMultiplicity, constraints);
 
         showInitialValue = createCheckBox("label.show-initialvalue");
-        top.add(showInitialValue, constraints);
+        settings.add(showInitialValue, constraints);
 
         showProperties = createCheckBox("label.show-properties");
-        top.add(showProperties, constraints);
+        settings.add(showProperties, constraints);
 
         showTypes = createCheckBox("label.show-types");
-        top.add(showTypes, constraints);
+        settings.add(showTypes, constraints);
 
         showStereotypes = createCheckBox("label.show-stereotypes");
-        top.add(showStereotypes, constraints);
+        settings.add(showStereotypes, constraints);
 
-        showSingularMultiplicities =
+        showSingularMultiplicities = 
             createCheckBox("label.show-singular-multiplicities");
-        top.add(showSingularMultiplicities, constraints);
+        settings.add(showSingularMultiplicities, constraints);
 
         constraints.insets = new Insets(5, 30, 0, 4);
-        JPanel defaultShadowWidthPanel =
-            new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        JLabel defaultShadowWidthLabel =
-            createLabel("label.default-shadow-width");
+        JPanel defaultShadowWidthPanel = new JPanel(new FlowLayout(
+            FlowLayout.LEFT, 5, 0));
+        JLabel defaultShadowWidthLabel = createLabel(
+            "label.default-shadow-width");
         defaultShadowWidth = new ShadowComboBox();
         defaultShadowWidthLabel.setLabelFor(defaultShadowWidth);
         defaultShadowWidthPanel.add(defaultShadowWidthLabel);
         defaultShadowWidthPanel.add(defaultShadowWidth);
-        top.add(defaultShadowWidthPanel, constraints);
+        settings.add(defaultShadowWidthPanel, constraints);
+
+        top.add(settings, BorderLayout.CENTER);
 
         add(top, BorderLayout.NORTH);
     }

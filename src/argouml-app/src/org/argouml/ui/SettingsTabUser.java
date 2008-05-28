@@ -25,10 +25,12 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -37,6 +39,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
+import org.argouml.swingext.JLinkButton;
 
 /**
  * Tab Panel for setting the default user attributes: name and email.
@@ -67,8 +70,27 @@ class SettingsTabUser extends JPanel
      */
     SettingsTabUser() {
         setLayout(new BorderLayout());
-	JPanel top = new JPanel();
-    	top.setLayout(new GridBagLayout());
+        
+        JPanel top = new JPanel();
+        top.setLayout(new BorderLayout());
+        
+        JPanel warning = new JPanel();
+        warning.setLayout(new BoxLayout(warning, BoxLayout.PAGE_AXIS));
+        JLabel warningLabel = new JLabel(Translator.localize("label.warning"));
+        warningLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        warning.add(warningLabel);
+
+        JLinkButton projectSettings = new JLinkButton();
+        projectSettings.setAction(new ActionProjectSettings());
+        projectSettings.setText(Translator.localize("button.project-settings"));
+        projectSettings.setIcon(null);
+        projectSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        warning.add(projectSettings);
+        
+        top.add(warning, BorderLayout.NORTH);
+        
+	JPanel settings = new JPanel();
+    	settings.setLayout(new GridBagLayout());
 
 	GridBagConstraints labelConstraints = new GridBagConstraints();
 	labelConstraints.anchor = GridBagConstraints.WEST;
@@ -90,20 +112,21 @@ class SettingsTabUser extends JPanel
 
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
-	top.add(new JLabel(Translator.localize("label.user")),
+	settings.add(new JLabel(Translator.localize("label.user")),
                 labelConstraints);
 	JTextField j = new JTextField();
         userFullname = j;
-	top.add(userFullname, fieldConstraints);
+	settings.add(userFullname, fieldConstraints);
 
 	labelConstraints.gridy = 1;
 	fieldConstraints.gridy = 1;
- 	top.add(new JLabel(Translator.localize("label.email")),
+ 	settings.add(new JLabel(Translator.localize("label.email")),
                 labelConstraints);
  	JTextField j1 = new JTextField();
         userEmail = j1;
-	top.add(userEmail, fieldConstraints);
-
+	settings.add(userEmail, fieldConstraints);
+	top.add(settings, BorderLayout.CENTER);
+	
 	add(top, BorderLayout.NORTH);
     }
 

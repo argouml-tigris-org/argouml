@@ -1,4 +1,4 @@
-// $Id: ProfileSelectionTab.java 13040 2007-07-10 20:00:25Z linus $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -25,6 +25,7 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -56,6 +57,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
+import org.argouml.swingext.JLinkButton;
 import org.argouml.uml.diagram.DiagramAppearance;
 
 /**
@@ -101,39 +103,141 @@ public class SettingsTabProfile extends JPanel implements
     private JComboBox stereoField = new JComboBox();
     
     /**
-     * The default constructor for this class
+     * The default constructor for this class.
      */
     public SettingsTabProfile() {
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BorderLayout());
+        
+        JPanel warning = new JPanel();
+        warning.setLayout(new BoxLayout(warning, BoxLayout.PAGE_AXIS));
+        JLabel warningLabel = new JLabel(Translator.localize("label.warning"));
+        warningLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        warning.add(warningLabel);
 
-        //////////////
+        JLinkButton projectSettings = new JLinkButton();
+        projectSettings.setAction(new ActionProjectSettings());
+        projectSettings.setText(Translator.localize("button.project-settings"));
+        projectSettings.setIcon(null);
+        projectSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        warning.add(projectSettings);
         
+        add(warning, BorderLayout.NORTH);
+ 
+        JPanel profileSettings = new JPanel();
+        profileSettings.setLayout(new BoxLayout(profileSettings,
+                BoxLayout.Y_AXIS));
+
+        profileSettings.add(initDefaultStereotypeViewSelector());
+
+        directoryList.setPrototypeCellValue(
+            "123456789012345678901234567890123456789012345678901234567890");
+        directoryList.setMinimumSize(new Dimension(50, 50));
+
+        JPanel sdirPanel = new JPanel();
+        sdirPanel.setLayout(new BoxLayout(sdirPanel, BoxLayout.Y_AXIS));
+
+        JPanel dlist = new JPanel();
+        dlist.setLayout(new BorderLayout());
+
+        JPanel lcb = new JPanel();
+        lcb.setLayout(new BoxLayout(lcb, BoxLayout.Y_AXIS));
+
+        lcb.add(addDirectory);
+        lcb.add(removeDirectory);
+
+        addDirectory.addActionListener(this);
+        removeDirectory.addActionListener(this);
+
+        dlist.add(new JScrollPane(directoryList), BorderLayout.CENTER);
+        dlist.add(lcb, BorderLayout.EAST);
+
+        sdirPanel.add(new JLabel(Translator
+                .localize("tab.profiles.directories.desc")));
+        sdirPanel.add(dlist);
+
+        profileSettings.add(sdirPanel);
+
+        JPanel configPanel = new JPanel();
+        configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.X_AXIS));
+
+        availableList.setPrototypeCellValue("12345678901234567890");
+        defaultList.setPrototypeCellValue("12345678901234567890");
+
+        availableList.setMinimumSize(new Dimension(50, 50));
+        defaultList.setMinimumSize(new Dimension(50, 50));
+
+        refreshLists();
+
+        JPanel leftList = new JPanel();
+        leftList.setLayout(new BorderLayout());
+        leftList.add(new JLabel(Translator
+                .localize("tab.profiles.userdefined.available")),
+                BorderLayout.NORTH);
+        leftList.add(new JScrollPane(availableList), BorderLayout.CENTER);
+        configPanel.add(leftList);
+
+        JPanel centerButtons = new JPanel();
+        centerButtons.setLayout(new BoxLayout(centerButtons, BoxLayout.Y_AXIS));
+        centerButtons.add(addButton);
+        centerButtons.add(removeButton);
+        configPanel.add(centerButtons);
+
+        JPanel rightList = new JPanel();
+        rightList.setLayout(new BorderLayout());
+        rightList.add(new JLabel(Translator
+                .localize("tab.profiles.userdefined.default")),
+                BorderLayout.NORTH);
+
+        rightList.add(new JScrollPane(defaultList), BorderLayout.CENTER);
+        configPanel.add(rightList);
+
+        addButton.addActionListener(this);
+        removeButton.addActionListener(this);
+
+        profileSettings.add(configPanel);
+
+        JPanel lffPanel = new JPanel();
+        lffPanel.setLayout(new FlowLayout());
+        lffPanel.add(loadFromFile);
+        lffPanel.add(unregisterProfile);
+        lffPanel.add(refreshProfiles);
+
+        loadFromFile.addActionListener(this);
+        unregisterProfile.addActionListener(this);
+        refreshProfiles.addActionListener(this);
+
+        profileSettings.add(lffPanel);
+
+        add(profileSettings, BorderLayout.CENTER);
+    }
+
+    private JPanel initDefaultStereotypeViewSelector() {
         JPanel setDefStereoV = new JPanel();
-        setDefStereoV.setLayout(new FlowLayout());        
-        
+        setDefStereoV.setLayout(new FlowLayout());
+
         stereoLabel.setLabelFor(stereoField);
         setDefStereoV.add(stereoLabel);
         setDefStereoV.add(stereoField);
 
         DefaultComboBoxModel cmodel = new DefaultComboBoxModel();
         stereoField.setModel(cmodel);
-        
+
         cmodel.addElement(Translator
                 .localize("menu.popup.stereotype-view.textual"));
         cmodel.addElement(Translator
                 .localize("menu.popup.stereotype-view.big-icon"));
         cmodel.addElement(Translator
                 .localize("menu.popup.stereotype-view.small-icon"));
-        
+
         stereoField.addItemListener(new ItemListener() {
 
             public void itemStateChanged(ItemEvent e) {
                 Object src = e.getSource();
-                
+
                 if (src == stereoField) {
                     Object item = e.getItem();
-                    DefaultComboBoxModel model = 
-                        (DefaultComboBoxModel) stereoField.getModel();
+                    DefaultComboBoxModel model = (DefaultComboBoxModel) 
+                        stereoField.getModel();
                     int idx = model.getIndexOf(item);
 
                     switch (idx) {
@@ -155,93 +259,9 @@ public class SettingsTabProfile extends JPanel implements
                     }
                 }
             }
-            
+
         });
-
-        add(setDefStereoV);
-                
-        ////////////
-        
-        directoryList.setPrototypeCellValue(
-                "123456789012345678901234567890123456789012345678901234567890");
-        directoryList.setMinimumSize(new Dimension(50, 50));
-        
-        JPanel sdirPanel = new JPanel();
-        sdirPanel.setLayout(new BoxLayout(sdirPanel, BoxLayout.Y_AXIS));
-        
-        JPanel dlist = new JPanel();
-        dlist.setLayout(new BorderLayout());
-                
-        JPanel lcb = new JPanel();
-        lcb.setLayout(new BoxLayout(lcb, BoxLayout.Y_AXIS));
-        
-        lcb.add(addDirectory);
-        lcb.add(removeDirectory);
-
-        addDirectory.addActionListener(this);
-        removeDirectory.addActionListener(this);        
-        
-        dlist.add(new JScrollPane(directoryList), BorderLayout.CENTER);
-        dlist.add(lcb, BorderLayout.EAST);
-        
-        sdirPanel.add(new JLabel(Translator
-                .localize("tab.profiles.directories.desc")));
-        sdirPanel.add(dlist);
-
-        add(sdirPanel);
-        
-        /////
-        
-	JPanel configPanel = new JPanel();
-	configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.X_AXIS));
-
-	availableList.setPrototypeCellValue("12345678901234567890");
-	defaultList.setPrototypeCellValue("12345678901234567890");
-
-	availableList.setMinimumSize(new Dimension(50, 50));
-	defaultList.setMinimumSize(new Dimension(50, 50));
-
-        refreshLists();
-        	
-	JPanel leftList = new JPanel();
-	leftList.setLayout(new BorderLayout());
-	leftList.add(new JLabel(Translator
-		.localize("tab.profiles.userdefined.available")),
-		BorderLayout.NORTH);
-	leftList.add(new JScrollPane(availableList), BorderLayout.CENTER);
-	configPanel.add(leftList);
-
-	JPanel centerButtons = new JPanel();
-	centerButtons.setLayout(new BoxLayout(centerButtons, BoxLayout.Y_AXIS));
-	centerButtons.add(addButton);
-	centerButtons.add(removeButton);
-	configPanel.add(centerButtons);
-
-	JPanel rightList = new JPanel();
-	rightList.setLayout(new BorderLayout());
-	rightList.add(new JLabel(Translator
-		.localize("tab.profiles.userdefined.default")),
-		BorderLayout.NORTH);       
-        
-	rightList.add(new JScrollPane(defaultList), BorderLayout.CENTER);
-	configPanel.add(rightList);
-
-	addButton.addActionListener(this);
-	removeButton.addActionListener(this);
-
-	add(configPanel);
-
-	JPanel lffPanel = new JPanel();
-	lffPanel.setLayout(new FlowLayout());
-	lffPanel.add(loadFromFile);
-	lffPanel.add(unregisterProfile);
-	lffPanel.add(refreshProfiles);        
-        
-	loadFromFile.addActionListener(this);
-	unregisterProfile.addActionListener(this);
-	refreshProfiles.addActionListener(this); //ADDED
-        
-	add(lffPanel);                       
+        return setDefStereoV;
     }
 
     private void refreshLists() {
@@ -347,15 +367,10 @@ public class SettingsTabProfile extends JPanel implements
                         .removeElementAt(idx);
             }
         } else if (arg0.getSource() == refreshProfiles) { 
-            boolean refresh = (JOptionPane
-                    .showConfirmDialog(
-                            this,
-                            Translator
-                                    .localize("tab.profiles.confirmrefresh"),
-                            Translator
-                                    .localize("tab.profiles.confirmrefresh.title"),
-                            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
-
+            boolean refresh = JOptionPane.showConfirmDialog(this,
+                Translator.localize("tab.profiles.confirmrefresh"),
+                Translator.localize("tab.profiles.confirmrefresh.title"),
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
             if (refresh) {
                 handleSettingsTabSave();
                 ProfileFacade.getManager().refreshRegisteredProfiles();

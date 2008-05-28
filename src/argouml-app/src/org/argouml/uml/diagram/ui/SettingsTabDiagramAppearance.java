@@ -23,13 +23,13 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.uml.diagram.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,6 +42,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.swingext.JLinkButton;
+import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ArgoJFontChooser;
 import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.util.ArgoFrame;
@@ -86,32 +88,40 @@ public class SettingsTabDiagramAppearance extends JPanel implements
      * This method initializes this
      */
     private void initialize() {
-        GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-        gridBagConstraints2.gridx = 0;
-        gridBagConstraints2.fill = GridBagConstraints.BOTH;
-        gridBagConstraints2.weightx = 1.0;
-        gridBagConstraints2.weighty = 1.0;
-        gridBagConstraints2.gridy = 2;
-        GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-        gridBagConstraints1.gridx = 0;
-        gridBagConstraints1.anchor = GridBagConstraints.NORTHWEST;
-        gridBagConstraints1.insets = new Insets(5, 5, 0, 0);
-        gridBagConstraints1.gridy = 0;
+        
+        this.setLayout(new BorderLayout());
+        JPanel top = new JPanel();
+        top.setLayout(new BorderLayout());
+        
+        if (scope == Argo.SCOPE_APPLICATION) {
+            JPanel warning = new JPanel();
+            warning.setLayout(new BoxLayout(warning, BoxLayout.PAGE_AXIS));
+            JLabel warningLabel = new JLabel(
+                Translator.localize("label.warning"));
+            warningLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+            warning.add(warningLabel);
+
+            JLinkButton projectSettings = new JLinkButton();
+            projectSettings.setAction(new ActionProjectSettings());
+            projectSettings.setText(
+                Translator.localize("button.project-settings"));
+            projectSettings.setIcon(null);
+            projectSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
+            warning.add(projectSettings);
+            
+            top.add(warning, BorderLayout.NORTH);
+        }
+        
+        JPanel settings = new JPanel();
         jlblDiagramFont = new JLabel();
-        jlblDiagramFont.setText(
-                Translator.localize("label.diagramappearance.diagramfont"));
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new Insets(5, 5, 0, 5);
-        gridBagConstraints.gridy = 1;
-        this.setLayout(new GridBagLayout());
+        jlblDiagramFont.setText(Translator
+                .localize("label.diagramappearance.diagramfont"));       
+        settings.add(getJbtnDiagramFont());
+        settings.add(jlblDiagramFont);
+        top.add(settings, BorderLayout.CENTER);
+        
+        this.add(top, BorderLayout.NORTH);
         this.setSize(new Dimension(296, 169));
-        this.add(getJbtnDiagramFont(), gridBagConstraints);
-        this.add(jlblDiagramFont, gridBagConstraints1);
-        this.add(new JPanel(), gridBagConstraints2);
 
     }
 
