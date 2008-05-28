@@ -90,11 +90,14 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
     private MDRModelImplementation modelImpl;
 
-    private Object lock = new Byte[0];
+    private Object registrationMutex = new Byte[0];
 
     private MDRepository repository;
 
-    private int pendingEvents;
+    private Boolean eventCountMutex = new Boolean(false);
+    private int pendingEvents = 0;
+    
+    private Thread eventThread;
 
     /**
      * Map of Element/attribute tuples and the listeners they have registered.
@@ -236,6 +239,11 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * @see org.netbeans.api.mdr.events.MDRChangeListener#change
      */
     public void change(MDRChangeEvent mdrEvent) {
+        
+        if (eventThread == null) {
+            eventThread = Thread.currentThread();
+        }
+        
         // TODO: This should be done after all events are delivered, but leave
         // it here for now to avoid last minute synchronization problems
         decrementEvents();
@@ -349,8 +357,11 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * @param e Event from MDR indicating a planned change.
      * @see org.netbeans.api.mdr.events.MDRPreChangeListener#plannedChange
      */
-    public synchronized void plannedChange(MDRChangeEvent e) {
-        pendingEvents++;
+    public void plannedChange(MDRChangeEvent e) {
+        
+        synchronized (eventCountMutex) {
+            pendingEvents++;
+        }
 
         // Prototypical logging code that can be enabled and modified to
         // discover who's creating certain types of events
@@ -379,10 +390,13 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * Decrement count of outstanding events and wake
      * any waiters when it becomes zero.
      */
-    private synchronized void decrementEvents() {
-        pendingEvents--;
-        if (pendingEvents == 0) {
-            notifyAll();
+    private void decrementEvents() {
+
+        synchronized (eventCountMutex) {
+            pendingEvents--;
+            if (pendingEvents <= 0) {
+                eventCountMutex.notifyAll();
+            }
         }
     }
 
@@ -397,7 +411,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         // registered for multiple relevant matches
         Set<PropertyChangeListener> listeners =
                 new HashSet<PropertyChangeListener>();
-        synchronized (lock) {
+        synchronized (registrationMutex) {
             listeners.addAll(elements.getMatches(mofId, event
                     .getPropertyName()));
 
@@ -467,7 +481,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     + ", listener:" + listener
                     + "]");
         }
-        synchronized (lock) {
+        synchronized (registrationMutex) {
             elements.register(listener, mofId, propertyNames);
         }
     }
@@ -496,7 +510,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     + ", listener:" + listener
                     + "]");
         }
-        synchronized (lock) {
+        synchronized (registrationMutex) {
             elements.unregister(listener, mofId, propertyNames);
         }
     }
@@ -522,7 +536,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             }
             Collection<String> subtypes = subtypeMap.get(className);
             verifyAttributeNames(className, propertyNames);
-            synchronized (lock) {
+            synchronized (registrationMutex) {
                 listenedClasses.register(listener, className, propertyNames);
                 for (String subtype : subtypes) {
                     listenedClasses.register(listener, subtype, propertyNames);
@@ -549,7 +563,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                         + ", listener:" + listener + "]");
             }
             Collection<String> subtypes = subtypeMap.get(className);
-            synchronized (lock) {
+            synchronized (registrationMutex) {
                 listenedClasses.unregister(listener, className, propertyNames);
                 for (String subtype : subtypes) {
                     listenedClasses.unregister(listener, subtype,
@@ -586,14 +600,23 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     /*
      * @see org.argouml.model.ModelEventPump#flushModelEvents()
      */
-    public synchronized void flushModelEvents() {
-        try {
-            while (pendingEvents > 0) {
-                wait();
+    public void flushModelEvents() {
+        while (true) {
+            synchronized (eventCountMutex) {
+                if (pendingEvents <= 0 
+                        // Don't wait on ourselves, we'll deadlock!
+                        // TODO: We might want to throw an exception here
+                        || Thread.currentThread().equals(eventThread)) {
+                    return;
+                }
+                try {
+                    eventCountMutex.wait();
+                } catch (InterruptedException e) {
+                    LOG.error("Interrupted while waiting in flushModelEvents");
+                }
             }
-        } catch (InterruptedException e) {
-            LOG.error("Interrupted while waiting in flushModelEvents");
         }
+
     }
 
     /**
