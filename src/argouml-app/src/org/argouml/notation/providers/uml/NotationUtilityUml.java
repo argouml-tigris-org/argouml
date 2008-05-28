@@ -258,7 +258,7 @@ public final class NotationUtilityUml {
     /**
      * Parse a string on the format:
      * <pre>
-     *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#|~] [name]
+     *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#|~] [full_pathname ::] [name]
      * </pre>
      * 
      * @param me   The ModelElement <em>text</em> describes.
@@ -905,7 +905,8 @@ public final class NotationUtilityUml {
      *                 or a collection of stereotypes
      *                 or a modelelement of which the stereotypes are retrieved
      * @param args arguments that may determine the notation
-     * @return a string representing the given stereotype(s)
+     * @return a string representing the given stereotype(s). 
+     * This string is guaranteed not null.
      */
     public static String generateStereotype(Object st, Map args) {
         return generateStereotype(st);
