@@ -224,8 +224,12 @@ public interface ModelEventPump {
     void stopPumpingEvents();
 
     /**
-     * Flush events from the ModelEventPump.
-     * Blocks until all events have been delivered.
+     * Flush events from the ModelEventPump. Blocks until all events have been
+     * delivered.
+     * <p>
+     * <em>NOTE: </em> This may not be called from a 
+     * {@link PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)}
+     * method which has been invoked by the ModelEventPump.
      */
     void flushModelEvents();
     
