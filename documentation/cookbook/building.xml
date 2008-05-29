@@ -28,24 +28,27 @@
 <chapter id="buildingandtools">
   <title>Building from source</title>
   <para>
-Building ArgoUML from source requires a SVN client,
-a current JDK (Java5 or later),
-and 350MB of free disk space.
-All other tools, including the Ant build tool upon which
-the build is based, are included in the project source tree.
-
-If you have these tools and are familiar with them, the next section contains
-quick instructions to build ArgoUML from source.  For more detailed directions,
-see the following sections.
+Building ArgoUML from source requires around 350MB of free disk space
+depending on what modules you want to build and if you want to build
+the documentation or not.
+The ambition is to provide a way to download and build that is
+as simple and straight-forward as possible.
+</para>
+  <para>
+Currently there are two ways to do this, either the traditional way,
+resulting in a file structure called the repository layout because
+the directories are located as they are in the repository, or
+a file structure called the Eclipse layout because it works with
+Eclipse's project structure.
 </para>
 
   <sect1 id="quickbuild">
     <title>Quick Start</title>
 
     <para>
-We use Eclipse as the suggested development environment when developing
-ArgoUML.
-Here is the recommended, step by step instruction to set up your
+The recommended way is to use the Eclipse as the development environment
+when developing ArgoUML.
+Here is the quickest, step by step instruction to set up your
 Eclipse development environment:
       <orderedlist>
         <listitem>
@@ -116,10 +119,12 @@ the following commands will build ArgoUML from source and
 run it.  If you are using Unix/Linux, the equivalent commands for
 your particular shell should work.
 <programlisting>
-C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/tools argouml --username guest
+C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/src argouml/src --username guest
+Password:  (give empty password if prompted)
+C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/tools argouml/tools --username guest
 Password:  (give empty password if prompted)
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
-C:\Work&gt;cd argouml\src
+C:\Work&gt;cd argouml
 C:\Work\argouml\src&gt;build run
 </programlisting>
 A newly compiled ArgoUML will open in a new window.
@@ -170,6 +175,32 @@ when doing development that is not done within Eclipse.
 This is the traditional layout and the checkout procedure is described in
 <xref linkend="checkout"></xref>.
 </para>
+
+    <sidebar>
+      <para>
+The idea governing this layout is that the checkout and build commands
+are similar for all projects. Like this:
+<programlisting>
+svn co http://argouml.tigris.org/svn/argouml/trunk argouml
+svn co http://argouml-cpp.tigris.org/svn/argouml-cpp/trunk argouml-cpp
+svn co http://argouml-de.tigris.org/svn/argouml-de/trunk argouml-de
+<replaceable>...</replaceable>
+
+cd argouml
+ANT install
+cd ..
+cd argouml-cpp
+ANT install
+cd ..
+cd argouml-de
+ANT install
+cd ..
+<replaceable>...</replaceable>
+</programlisting>
+ANT is provided from argouml/tools/apache-ant-1.7.0.
+The result is located in argouml/build.
+</para>
+    </sidebar>
 
     <para>
 The Eclipse layout is used when doing development within Eclipse.
@@ -226,7 +257,7 @@ trunk</literallayout></entry>
             <row>
               <entry>Integration result</entry>
               <entry>N/A</entry>
-              <entry><replaceable>WORK</replaceable>/argouml/build or <replaceable>WORK</replaceable>/argouml/src/build?</entry>
+              <entry><replaceable>WORK</replaceable>/argouml/build</entry>
               <entry>N/A</entry>
             </row>
 
@@ -257,7 +288,7 @@ trunk/*</literallayout></entry>
 svn/argouml-gen/
 trunk/tools</literallayout></entry>
               <entry><replaceable>WORK</replaceable>/argouml-gen/tools</entry>
-              <entry>N/A ???</entry>
+              <entry>N/A</entry>
             </row>
 
             <row>
@@ -442,9 +473,15 @@ creates the directory
 <filename>../argouml/build</filename>
 and copies all exported jars from all subsystems there.
 </para>
+
           <para>
 For this reason no Eclipse project shall be named "argouml".
 </para>
+          <note>
+            <para>
+This is not yet (May 2008) implemented.
+</para>
+          </note>
         </listitem>
 
         <listitem>
@@ -514,7 +551,7 @@ in all subsystems and modules.
                     <entry>
 Result of the compilation of
 src/<replaceable>tree</replaceable> and
-build/java/<replaceable>tree</replaceable>
+src_generated/<replaceable>tree</replaceable>
 </entry>
                     <entry>classes/<replaceable>tree</replaceable></entry>
                   </row>
@@ -531,7 +568,7 @@ tests/classes/<replaceable>tree</replaceable>
 
                   <row>
                     <entry>Generated java code</entry>
-                    <entry>java/<replaceable>tree</replaceable></entry>
+                    <entry>../src_generated/<replaceable>tree</replaceable></entry>
                   </row>
 
                   <row>
@@ -1119,16 +1156,6 @@ See the project at
 
   <sect1 id="checkout">
     <title id="checkout_term">Downloading from the Subversion repository</title>
-    <!-- 
-    I think this is meaningless now since we don't use CVS (Dave T 10/4/2008). 
-    <indexterm>
-      <primary>CVS</primary>
-      <secondary>checking out from</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Checking out from CVS</primary>
-    </indexterm>
-     -->
     <indexterm>
       <primary>Subversion</primary>
       <secondary>checking out from</secondary>
@@ -1137,15 +1164,8 @@ See the project at
       <primary>Checking out from Subversion</primary>
     </indexterm>
 
-    <note>
-      <para>
-If you are using Eclipse, please use the Team Project Set files to
-check-out ArgoUML, see 
-<xref linkend="eclipse-checkout"/>      
-      </para>
-    </note>
     <para>
-The easiest thing to do is to check out the whole 
+The traditions way to check out the source is to check out the whole 
 <parameter>argouml</parameter> project from
 <filename>http://argouml.tigris.org/svn/argouml/trunk</filename>.
 This includes the source code, tools, documentation and web-site, i.e. :
@@ -1155,16 +1175,18 @@ svn checkout http://argouml.tigris.org/svn/argouml/trunk argouml --username gues
     </para>
     <para>
 If you only want to build argouml, and don't want anything else, you
-can just download the source code and the tools:
+could just download the source code and the tools:
 <programlisting>
-svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/tools argouml --username guest
+svn checkout http://argouml.tigris.org/svn/argouml/trunk/src argouml/src --username guest
+svn checkout http://argouml.tigris.org/svn/argouml/trunk/tools argouml/tools --username guest
 </programlisting>
     </para>
     <para>
 If you just want to build the documentation you can just check out the
 documentation xml files and the tools:
 <programlisting>
-svn checkout http://argouml.tigris.org/svn/argouml/trunk/documentation http://argouml.tigris.org/svn/argouml/trunk/tools argouml --username guest
+svn checkout http://argouml.tigris.org/svn/argouml/trunk/documentation argouml/documentation --username guest
+svn checkout http://argouml.tigris.org/svn/argouml/trunk/tools argouml/tools --username guest
 </programlisting>
 For the documentation you will also need the file
 <filename>default.properties</filename>
@@ -1229,20 +1251,27 @@ each mini-project directory:
         <secondary>how it is used</secondary>
       </indexterm>
       <para>
-For your convenience the ant tool of the correct version is present in the
+For your convenience the ant tool is present in the
 source repository of ArgoUML in the file
-<filename class="libraryfile">argouml/tools/apache-ant-X.X.X/lib/ant.jar</filename>.
+<filename class="directory">argouml/tools/apache-ant-X.X.X</filename> directory.
 </para>
       <para>
 It is possible to start ant with the command
-<command>../tools/apache-ant-<replaceable>X.X.X</replaceable>/bin/ant <replaceable>arg</replaceable></command>
-and in the modules
-<command>
-../../tools/apache-ant-<replaceable>X.X.X</replaceable>/bin/ant <replaceable>arg</replaceable>
-</command>.
-On windows the command
-<command>..\tools\apache-ant-<replaceable>X.X.X</replaceable>\bin\ant <replaceable>arg</replaceable></command>
-runs the program <filename>ant.bat</filename>.
+<command>tools/apache-ant-<replaceable>X.X.X</replaceable>/bin/ant <replaceable>arg</replaceable></command>,
+<command>../../tools/apache-ant-<replaceable>X.X.X</replaceable>/bin/ant <replaceable>arg</replaceable></command>,
+<command>../argouml/tools/apache-ant-<replaceable>X.X.X</replaceable>/bin/ant <replaceable>arg</replaceable></command>,
+or
+<command>../tools/apache-ant-<replaceable>X.X.X</replaceable>/bin/ant <replaceable>arg</replaceable></command>,
+depending on if you work from
+the <filename class="directory">argouml</filename> directory,
+the <filename class="directory">argouml/src/argouml-build</filename> directory,
+a module in the <filename class="directory">argouml-<replaceable>cpp</replaceable></filename>
+directory, or
+the <filename class="directory">argouml/documenation</filename> directory respectively.
+</para>
+      <para>
+On windows the script to run is
+the <filename>ant.bat</filename>.
 </para>
       
       <para>
@@ -1265,9 +1294,8 @@ By setting JAVA_HOME to different values you can at different times
 build with different versions of JDK and Java.
 </para>
       <para>
-To use different versions of Ant,
-you are responsible for installing your own version.
-Also, you must execute
+To use another version of Ant than the one provided in the repository
+you must execute
 <command>/where/ever/you/placed/your/new/ant <replaceable>target</replaceable></command>
 rather than
 <command>build <replaceable>target</replaceable></command>.
@@ -1335,7 +1363,7 @@ and run.
 	<para>
 In certain cases when
 something is changed in the argouml project
-you need to use the clean target
+you need to use the "clean" target
 to re-compile everything,
 since we have not set up dependencies correctly.
 </para>
@@ -1367,7 +1395,8 @@ If you do this from Cygwin you work just like for Unix.
             <para>
 <command>set JAVA_HOME=<replaceable>\where\you\have\installed\jdk</replaceable></command>
 <!-- TODO: MVW: My setting includes a "\" at the end, and works. 
-Does it matter? -->
+Does it matter? 
+I guess it doesn't matter. /Linus -->
 </para>
           </listitem>
           <listitem>
@@ -1375,7 +1404,7 @@ Does it matter? -->
 Change the current directory to the directory you are building
 </para>
             <para>
-<command>cd <replaceable>\your\checked\out\copy\of\argouml\src_new</replaceable></command>
+<command>cd <replaceable>\your\checked\out\copy\of\argouml\src\argouml-build</replaceable></command>
 </para>
           </listitem>
           <listitem>
@@ -1396,44 +1425,21 @@ Run ArgoUML using <command>build run</command>
 
 
       </sect3>
+
       <sect3>
         <title>Customizing and configuring your build</title>
         <indexterm>
           <primary>Compiling</primary>
           <secondary>customized</secondary>
         </indexterm>
-        <indexterm>
-          <primary>build.properties</primary>
-        </indexterm>
-        <indexterm>
-          <primary>default.properties</primary>
-        </indexterm>
-        <indexterm>
-          <primary>argouml.build.properties</primary>
-        </indexterm>
-        <indexterm>
-          <primary>Ant target</primary>
-          <secondary>list-property-files</secondary>
-        </indexterm>
-        <indexterm>
-          <primary>list-property-files ant target</primary>
-        </indexterm>
         <para>
-It is possible to customize your compilation of ArgoUML.
+If you want to customize your build,
+change the appropriate <filename>build.xml</filename> or
+<filename>default.properties</filename> file.
 </para>
         <para>
-If you issue the command
-<command>build list-property-files</command>
-you can see what files are searched for properties.
-</para>
-        <para>
-Don't change the
-<filename class="libraryfile">trunk/src/argouml-app/default.properties</filename>
-file (unless you are working with updating the development environment
-itself).
-Instead create one of the other files locally on you machine.
-The properties in these files have precedence over the properties in
-<filename class="libraryfile">trunk/src/argouml-app/default.properties</filename>.
+Don't commit these changes 
+unless you are working with updating the development environment itself.
 </para>
         <para>
 Remember that if you do this, you have modified your development
@@ -1442,9 +1448,11 @@ To be sure that you will not break anything for
 anyone else when checking in things 
 developed using this modified environment, 
 remove these files temporarily for the compiling and testing
-you do just before you commit.
+you do just before you commit
+just as you would do before other commits.
 	  </para>
       </sect3>
+
       <sect3>
         <title>Building Javadoc</title>
         <indexterm>
@@ -1467,6 +1475,7 @@ the Javadoc documentation is generated and put into
 <filename class="directory">trunk/src/build/javadocs</filename>.
 </para>
       </sect3>
+
       <sect3>
         <title>Building one of the modules</title>
         <para>
@@ -1477,20 +1486,18 @@ If you want to run ArgoUML with modules enabled the
               <para>Test just one module</para>
               <orderedlist>
                 <listitem>
-                  <para>Build ArgoUML, the package</para>
+                  <para>Build the core ArgoUML</para>
                   <para>
-This is done with <command>ant package</command>
-in the <filename class="directory">trunk/src/argouml-build</filename> directory.
+This is done with <command>install</command> ant-target
+in the <filename class="directory">argouml</filename> directory.
 </para>
                 </listitem>
                 <listitem>
                   <para>Run the module</para>
                   <para>
-This is done with <command>ant run</command>-command 
-in the 
-<filename class="directory">
-trunk/modules/<replaceable>whatever</replaceable>
-</filename> directory.
+This is done with <command>run</command> ant-target in the 
+<filename class="directory">argouml-<replaceable>whatever</replaceable></filename>
+directory.
 </para>
                 </listitem>
               </orderedlist>
@@ -1499,32 +1506,36 @@ trunk/modules/<replaceable>whatever</replaceable>
               <para>Test several modules together</para>
               <orderedlist>
                 <listitem>
-                  <para>Build ArgoUML, the package</para>
+                  <para>Build the core ArgoUML</para>
                   <para>
-This is done with <command>ant package</command>
-in the <filename class="directory">trunk/src/argouml-build</filename> directory.
+This is done with <command>install</command> ant-target
+in the <filename class="directory">argouml</filename> directory.
 </para>
                 </listitem>
                 <listitem>
                   <para>Compile and install the modules</para>
                   <para>
-This is done with <command>ant install</command>-command
+This is done with <command>install</command> ant-target
 in each of the 
-<filename class="directory">
-trunk/modules/<replaceable>whatever</replaceable>
-</filename> directories.
+<filename class="directory">argouml-<replaceable>whatever</replaceable></filename>
+directories.
+</para>
+                  <para>
+The <command>install</command> ant-target copies the jar or jars of
+the module to the 
+<filename class="directory">argouml/build/ext</filename> directory.
 </para>
                 </listitem>
                 <listitem>
                   <para>Start ArgoUML</para>
                   <para>
-This is done with <command>ant run</command>
-in the <filename class="directory">trunk/src/argouml-build</filename> directory.
+This is done with <command>run</command> ant-target
+in the <filename class="directory">argouml</filename> directory.
 </para>
                 </listitem>
               </orderedlist>
               <para>
-This will start ArgoUML with all modules available.
+This will start ArgoUML with all the modules "installed".
 </para>
             </listitem>
           </orderedlist>         
