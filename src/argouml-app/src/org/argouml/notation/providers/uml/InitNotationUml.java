@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -113,6 +113,9 @@ public class InitNotationUml implements InitSubsystem {
         npf.addNotationProvider(
                 NotationProviderFactory2.TYPE_MULTIPLICITY,
                 name, MultiplicityNotationUml.class);
+        npf.addNotationProvider(
+                NotationProviderFactory2.TYPE_ENUMERATION_LITERAL,
+                name, EnumerationLiteralNotationUml.class);
 
         NotationProviderFactory2.getInstance().setDefaultNotation(name);
 

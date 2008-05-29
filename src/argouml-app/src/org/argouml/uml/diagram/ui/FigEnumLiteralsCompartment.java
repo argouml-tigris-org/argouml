@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,7 @@ import org.tigris.gef.presentation.Fig;
 
 /**
  * The Fig for the compartment of an Enumeration 
- * that shows a list of enumerationliterals.
+ * that shows a list of enumeration literals.
  * 
  * @author Tom Morris
  */
@@ -69,10 +69,10 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
      * @see org.argouml.uml.diagram.ui.FigEditableCompartment#getNotationType()
      */
     protected int getNotationType() {
-        /* TODO: Make a dedicated notation that supports 
-         * parsing "name1;name2" and maybe other notation... 
-         * Also needs to support deleting literal by erasing text. */
-        return NotationProviderFactory2.TYPE_NAME;
+        /* The EnumerationLiteral uses a dedicated notation that supports 
+         * parsing "name1;name2;name3" and stereotypes. 
+         * Also supports deleting a literal by erasing text. */
+        return NotationProviderFactory2.TYPE_ENUMERATION_LITERAL;
     }
 
     /**
@@ -81,7 +81,7 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
     protected void createModelElement() {
         Object enumeration = getGroup().getOwner();
         Object literal = Model.getCoreFactory().buildEnumerationLiteral(
-                "",  enumeration);
+                "literal",  enumeration);
         TargetManager.getInstance().setTarget(literal);
     }
 

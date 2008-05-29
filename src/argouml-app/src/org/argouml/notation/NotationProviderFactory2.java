@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  *  to access the textual representation of modelobjects, 
  *  and since plugin modules can add extra languages.
  *  
- * @author mvw@tigris.org
+ * @author Michiel
  */
 public final class NotationProviderFactory2 {
 
@@ -150,6 +150,11 @@ public final class NotationProviderFactory2 {
     public static final int TYPE_MULTIPLICITY = 19;
 
     /**
+     * The text shown for an enumeration literal.
+     */
+    public static final int TYPE_ENUMERATION_LITERAL = 20;
+
+    /**
      * defaultLanguage the Notation language used by default, i.e. UML
      */
     private NotationName defaultLanguage;
@@ -199,11 +204,15 @@ public final class NotationProviderFactory2 {
 
     /**
      * Get a NotationProvider for the current project.
+     * <p>
+     * If there is any reason for failure, null is returned - no
+     * exception is thrown. 
+     * The caller is supposed to deal with receiving null.
      * 
      * @param type the provider type
      * @param object the constructor parameter
      * @param name the name of the notation language to use
-     * @return the provider
+     * @return the provider, or null if there was any failure
      */
     private NotationProvider getNotationProvider(int type,
             Object object, NotationName name) {
