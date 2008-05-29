@@ -123,7 +123,10 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             if (f instanceof CompartmentFigText) {
                 if (highlightedFigText != null && highlightedFigText != f) {
                     highlightedFigText.setHighlighted(false);
-                    highlightedFigText.getGroup().damage();
+                    if (highlightedFigText.getGroup() != null) {
+                        /* Preventing NullPointerException. */
+                        highlightedFigText.getGroup().damage();
+                    }
                 }
                 ((CompartmentFigText) f).setHighlighted(true);
                 highlightedFigText = (CompartmentFigText) f;
@@ -131,14 +134,6 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             }
         }
     }
-
-//    /*
-//     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-//     */
-//    public void mouseExited(MouseEvent me) {
-//        super.mouseExited(me);
-//        unhighlight();
-//    }
 
     /**
      * Remove the highlight from the currently highlit FigText.
@@ -198,7 +193,10 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             if (fig != null && fig instanceof CompartmentFigText) {
                 if (highlightedFigText != null) {
                     highlightedFigText.setHighlighted(false);
-                    highlightedFigText.getGroup().damage();
+                    if (highlightedFigText.getGroup() != null) {
+                        /* Preventing NullPointerException. */
+                        highlightedFigText.getGroup().damage();
+                    }
                 }
                 CompartmentFigText ft = (CompartmentFigText) fig;
                 ft.startTextEditor(ie);
