@@ -158,6 +158,8 @@ public class AttributeNotationUml extends AttributeNotation {
                 if (newAttribute != null) {
                     try {
                         parseAttribute(s, newAttribute);
+                        /* If the 1st attribute is static, 
+                         * then the new ones, too. */
                         Model.getCoreHelper().setStatic(
                                 newAttribute,
                                 Model.getFacade().isStatic(attribute));
@@ -548,11 +550,11 @@ public class AttributeNotationUml extends AttributeNotation {
                             Model.getFacade().getInitialValue(modelElement));
             }
             String changeableKind = "";
+            if (Model.getFacade().isReadOnly(modelElement)) {
+                changeableKind = "frozen";
+            }
             if (Model.getFacade().getChangeability(modelElement) != null) {
-                if (Model.getChangeableKind().getFrozen().equals(
-                        Model.getFacade().getChangeability(modelElement))) {
-                    changeableKind = "frozen";
-                } else if (Model.getChangeableKind().getAddOnly().equals(
+                if (Model.getChangeableKind().getAddOnly().equals(
                         Model.getFacade().getChangeability(modelElement))) {
                     changeableKind = "addOnly";
                 }
