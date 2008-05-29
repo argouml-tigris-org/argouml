@@ -32,6 +32,7 @@ import org.argouml.model.Model;
  * Helper methods for OCL support.
  *
  * @author Steffen Zschaler
+ * @author Raphael Schmid
  */
 public final class OCLUtil {
 
@@ -76,26 +77,26 @@ public final class OCLUtil {
 
         // Object selectedObject = TargetManager.getInstance().getTarget();
         Object selectedObject = me;
-        if (selectedObject instanceof org.omg.uml.foundation.core.UmlClass) {
-            packageName = ((org.omg.uml.foundation.core.UmlClass) selectedObject)
-                    .getNamespace().getName();
-            className = ((org.omg.uml.foundation.core.UmlClass) selectedObject)
-                    .getName();
+        if (Model.getFacade().isAClass(selectedObject)) {
+            packageName = Model.getFacade().getName(
+                    Model.getFacade().getNamespace(selectedObject));
+            className = Model.getFacade().getName(selectedObject);
         }
-        if (selectedObject instanceof org.omg.uml.foundation.core.Feature) {
-            packageName = ((org.omg.uml.foundation.core.Feature) selectedObject)
-                    .getOwner().getNamespace().getName();
-            className = ((org.omg.uml.foundation.core.Feature) selectedObject)
-                    .getOwner().getName();
-            featureName = ((org.omg.uml.foundation.core.Feature) selectedObject)
-                    .getName();
+        if (Model.getFacade().isAFeature(selectedObject)) {
+            packageName = Model.getFacade().getName(
+                    Model.getFacade().getNamespace(
+                            Model.getFacade().getOwner(selectedObject)));
+            className = Model.getFacade().getName(
+                    Model.getFacade().getOwner(selectedObject));
+            featureName = Model.getFacade().getName(selectedObject);
 
-            if (selectedObject instanceof org.omg.uml.foundation.core.BehavioralFeature) {
-                List<org.omg.uml.foundation.core.Parameter> parameters = ((org.omg.uml.foundation.core.BehavioralFeature) selectedObject)
-                        .getParameter();
-                for (org.omg.uml.foundation.core.Parameter p : parameters) {
-                    if (p.getKind() == org.omg.uml.foundation.datatypes.ParameterDirectionKindEnum.PDK_RETURN) {
-                        returnTypeName = p.getType().getName();
+            if (Model.getFacade().isABehavioralFeature(selectedObject)) {
+                List parameters = Model.getFacade().getParametersList(
+                        selectedObject);
+                for (Object p : parameters) {
+                    if (Model.getFacade().hasReturnParameterDirectionKind(p)) {
+                        returnTypeName = Model.getFacade().getName(
+                                Model.getFacade().getType(p));
                         break;
                     }
                 }
