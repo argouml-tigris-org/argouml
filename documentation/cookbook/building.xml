@@ -119,9 +119,7 @@ the following commands will build ArgoUML from source and
 run it.  If you are using Unix/Linux, the equivalent commands for
 your particular shell should work.
 <programlisting>
-C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/src argouml/src --username guest
-Password:  (give empty password if prompted)
-C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/tools argouml/tools --username guest
+C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/tools argouml --username guest
 Password:  (give empty password if prompted)
 C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work&gt;cd argouml
@@ -1177,16 +1175,14 @@ svn checkout http://argouml.tigris.org/svn/argouml/trunk argouml --username gues
 If you only want to build argouml, and don't want anything else, you
 could just download the source code and the tools:
 <programlisting>
-svn checkout http://argouml.tigris.org/svn/argouml/trunk/src argouml/src --username guest
-svn checkout http://argouml.tigris.org/svn/argouml/trunk/tools argouml/tools --username guest
+svn checkout http://argouml.tigris.org/svn/argouml/trunk/src http://argouml.tigris.org/svn/argouml/trunk/tools argouml --username guest
 </programlisting>
     </para>
     <para>
 If you just want to build the documentation you can just check out the
 documentation xml files and the tools:
 <programlisting>
-svn checkout http://argouml.tigris.org/svn/argouml/trunk/documentation argouml/documentation --username guest
-svn checkout http://argouml.tigris.org/svn/argouml/trunk/tools argouml/tools --username guest
+svn checkout http://argouml.tigris.org/svn/argouml/trunk/documentation http://argouml.tigris.org/svn/argouml/trunk/tools argouml --username guest
 </programlisting>
 For the documentation you will also need the file
 <filename>default.properties</filename>
