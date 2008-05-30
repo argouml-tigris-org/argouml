@@ -685,6 +685,15 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         checkThrows(op, NOPER10, true, false, false);
     }
 
+    /**
+     * Parse a given text, and check if the given element 
+     * was renamed to "name".
+     * 
+     * @param element an Attribute or an Operation
+     * @param text the text to parse
+     * @param name this should be the resulting name of the element
+     * @throws ParseException if it went wrong
+     */
     private void checkName(Object element, String text, String name)
         throws ParseException {
 
