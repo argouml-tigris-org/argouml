@@ -57,7 +57,7 @@ public class UMLSingleRowSelector extends JPanel {
         
         JList associationList = new UMLLinkedList(model);
         associationList.setVisibleRowCount(1);
-        scroll = new JScrollPane(associationList);
+        scroll = new ScrollList(associationList);
         add(scroll);
         
         preferredSize = scroll.getPreferredSize();

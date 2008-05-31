@@ -714,34 +714,22 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         // ignored        
     }
 
-
-    /**
-     * Create a single row scroll pane backed by a JList.
-     *
-     * @param list the list to be used to back the scroll pane
-     * @return a scrollpane with a single row
-     */
     protected JScrollPane getSingleRowScroll(JList list) {
         // TODO: Temporary fix while we find something better - tfm
         list.setVisibleRowCount(2);
 //        list.setVisibleRowCount(1);
         JScrollPane pane = new JScrollPane(list);
-        // Scroll bar is not allowed to take up more than 20% of height
-//        pane.getHorizontalScrollBar().setMaximumSize(
-//                new Dimension(1000, 
-//                        list.getPreferredScrollableViewportSize().height / 5));
         return pane;
     }
-
+    
     /**
-     * Create a single row scroll pane backed by a UMLLinkedList which uses
-     * the given list model.
+     * Create a single row scroll pane backed by a ListModel.
      *
-     * @param model the list to be used to back the scroll pane
+     * @param model the ListModel to be used to back the scroll pane
      * @return a scrollpane with a single row
      */
-    protected JScrollPane getSingleRowScroll(ListModel model) {
-        return getSingleRowScroll(new UMLLinkedList(model));
+    protected UMLSingleRowSelector getSingleRowScroll(ListModel model) {
+        UMLSingleRowSelector pane = new UMLSingleRowSelector(model);
+        return pane;
     }
-
 }

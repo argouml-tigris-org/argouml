@@ -29,6 +29,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
@@ -49,7 +50,7 @@ public class ScrollList extends JScrollPane implements KeyListener {
     /**
      * The Component that this scroll is wrapping.
      */
-    private Component list;
+    private JList list;
     
     /**
      * Builds a JList from a given list model and wraps
@@ -64,18 +65,43 @@ public class ScrollList extends JScrollPane implements KeyListener {
      * Builds a JList from a given list model and wraps
      * in a scrollable view.
      * @param listModel The model from which to build the list
+     * @param visibleRowCount an integer specifying the preferred number of
+     * rows to display without requiring scrolling
+     */
+    public ScrollList(ListModel listModel, int visibleRowCount) {
+        setHorizontalScrollBarPolicy(
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        list = new UMLLinkedList(listModel, true, true);
+        list.setVisibleRowCount(visibleRowCount);
+        setViewportView(list);
+    }
+
+    /**
+     * Builds a JList from a given list model and wraps
+     * in a scrollable view.
+     * @param listModel The model from which to build the list
      * @param showIcon show an icon with elements in the list
      * @param showPath show containment path for elements in list
      */
     public ScrollList(ListModel listModel, boolean showIcon, boolean showPath) {
         setHorizontalScrollBarPolicy(
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        setViewportView(new UMLLinkedList(listModel, showIcon, showPath));
+        list = new UMLLinkedList(listModel, showIcon, showPath);
+        setViewportView(list);
     }
     
-    public void setViewportView(Component view) {
-        super.setViewportView(view);
-        list = view;
+    /**
+     * Builds a JList from a given list model and wraps
+     * in a scrollable view.
+     * @param listModel The model from which to build the list
+     * @param showIcon show an icon with elements in the list
+     * @param showPath show containment path for elements in list
+     */
+    public ScrollList(JList list) {
+        setHorizontalScrollBarPolicy(
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        this.list = list;
+        setViewportView(list);
     }
     
     /**
