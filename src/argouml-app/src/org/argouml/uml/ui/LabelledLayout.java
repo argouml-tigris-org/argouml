@@ -22,8 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.swingext;
+package org.argouml.uml.ui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -75,13 +76,13 @@ import javax.swing.UIManager;
  *
  * @author Bob Tarling
  */
-public class LabelledLayout implements LayoutManager, java.io.Serializable {
+class LabelledLayout implements LayoutManager, java.io.Serializable {
 
     private static final long serialVersionUID = -5596655602155151443L;
 
     /**
      * This is the horizontal gap (in pixels) which specifies the space
-     * between columns.  They can be changed at any time.
+     * between sections.  They can be changed at any time.
      * This should be a non negative integer.
      *
      * @serial
@@ -174,14 +175,12 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                     int childHeight = getPreferredHeight(childComp);
                     if (childComp instanceof JLabel) {
                         final JLabel jlabel = (JLabel) childComp;
-                        if (widestLabel < getPreferredWidth(jlabel)) {
-                            widestLabel = getPreferredWidth(jlabel);
-                        }
+                        widestLabel = 
+                            Math.max(widestLabel, getPreferredWidth(jlabel));
                         childComp = jlabel.getLabelFor();
                         final int childWidth = getPreferredWidth(childComp);
-                        if (childWidth > preferredWidth) {
-                            preferredWidth = childWidth;
-                        }
+                        preferredWidth = 
+                            Math.max(preferredWidth, childWidth);
 
                         childHeight =
                             Math.min(childHeight, getPreferredHeight(jlabel));
@@ -213,10 +212,10 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                 if (childComp instanceof JLabel) {
                     final JLabel jlabel = (JLabel) childComp;
                     childComp = jlabel.getLabelFor();
-                    int childHeight = getMinimumHeight(childComp);
-                    if (childHeight < getMinimumHeight(jlabel)) {
-                        childHeight = getMinimumHeight(jlabel);
-                    }
+                    
+                    final int childHeight = Math.max(
+                            getMinimumHeight(childComp),
+                            getMinimumHeight(jlabel));
                     minimumHeight += childHeight + this.vgap;
                 }
             }
@@ -314,8 +313,6 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
             return;
         }
 
-        int childWidth;
-        int childHeight;
         int labelWidth = 0;
         int unknownHeightCount = 0;
         int totalHeight = 0;
@@ -323,24 +320,22 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
         // Build up an array list of the heights of each label/component pair.
         // Heights of zero indicate a proportional height.
         for (int i = 0; i < componentCount; ++i) {
-            Component childComp = (Component) components.get(i);
+            final Component childComp = (Component) components.get(i);
+            final int childHeight;
             if (childComp instanceof JLabel) {
                 final JLabel jlabel = (JLabel) childComp;
-                childComp = jlabel.getLabelFor();
-                childWidth = getPreferredWidth(jlabel);
-                if (childWidth > labelWidth) {
-                    labelWidth = childWidth;
-                }
-                // Start off with the child height being the preferred
-                // height of the label.
-                childHeight = getPreferredHeight(jlabel);
-
-                if (childComp != null) {
-                    i++;
-                    childHeight = getChildHeight(childComp);
+                final Component labelledComp = jlabel.getLabelFor();
+                
+                labelWidth = Math.max(labelWidth, getPreferredWidth(jlabel));
+                
+                if (labelledComp != null) {
+                    ++i;
+                    childHeight = getChildHeight(labelledComp);
                     if (childHeight == 0) {
                         ++unknownHeightCount;
                     }
+                } else {
+                    childHeight = getPreferredHeight(jlabel);
                 }
             } else {
                 // to manage the case there are no label/component
@@ -378,13 +373,12 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                 if (childComp instanceof JLabel
                         && ((JLabel) childComp).getLabelFor() != null) {
                     i++; // Assumes the next child is the labelled component
-                    // (could be improved)
                     final JLabel jlabel = (JLabel) childComp;
                     childComp = jlabel.getLabelFor();
                     jlabel.setBounds(sectionX, y, labelWidth,
 				     getPreferredHeight(jlabel));
-                    componentWidth = sectionWidth - (labelWidth + this.hgap);
-                    componentX = sectionX + labelWidth + this.hgap;
+                    componentWidth = sectionWidth - (labelWidth);
+                    componentX = sectionX + labelWidth;
                 }
                 rowHeight = rowHeights.get(row).intValue();
                 if (rowHeight == 0) {
@@ -395,26 +389,22 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                                 unknownHeightCount--, 
                                 childComp);
                     } catch (ArithmeticException e) {
-                        // We should put the exception as second parameter
-                        // when we use JDK 1.5 exclusively
                         throw new IllegalStateException(
                                 "Division by zero laying out "
                                 + childComp.getClass().getName()
                                 + " on " + parent.getClass().getName()
                                 + " in section " + sectionNo
                                 + " using "
-                                + UIManager.getLookAndFeel().getClass().getName()
-                                + ":" + e.getMessage());                        
+                                + UIManager.getLookAndFeel().getClass().getName(),
+                                e);
                     }
                     totalHeight += rowHeight;
                 }
                 // Make sure the component width isn't any greater
                 // than its maximum allowed width
                 if (childComp.getMaximumSize() != null
-		    && childComp.getMaximumSize().getWidth() < componentWidth)
-		{
-		    componentWidth =
-			(int) childComp.getMaximumSize().getWidth();
+                        && getMaximumWidth(childComp) < componentWidth) {
+		    componentWidth = getMaximumWidth(childComp);
                 }
                 childComp.setBounds(componentX, y, componentWidth, rowHeight);
                 y += rowHeight + this.vgap;
@@ -423,6 +413,10 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
         }
     }
     
+    /**
+     * @param childComp a component
+     * @return 0 for a resizable component or a positive value for its fixed height
+     */
     private int getChildHeight(Component childComp) {
         if (isResizable(childComp)) {
             // If the child component is resizable then
@@ -435,7 +429,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
             // If a preferred height is not given or is
             // the same as the minimum height then fix the
             // height of this row.
-            return childComp.getMinimumSize().height;
+            return getMinimumHeight(childComp);
         }
     }
 
@@ -458,25 +452,30 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
         return (getMinimumHeight(comp) < getPreferredHeight(comp));
     }
 
-    private int calculateHeight(int parentHeight, int totalHeight,
-				int unknownHeightsLeft, Component childComp) {
-        int rowHeight = (parentHeight - totalHeight) / unknownHeightsLeft;
-        if (rowHeight < getMinimumHeight(childComp)) {
-            rowHeight = getMinimumHeight(childComp);
-        }
-        return rowHeight;
+    private final int calculateHeight(
+            final int parentHeight, 
+            final int totalHeight,
+            final int unknownHeightsLeft, 
+            final Component childComp) {
+        return Math.max(
+                (parentHeight - totalHeight) / unknownHeightsLeft,
+                getMinimumHeight(childComp));
     }
     
-    private int getPreferredHeight(Component comp) {
+    private int getPreferredHeight(final Component comp) {
         return (int) comp.getPreferredSize().getHeight();
     }
     
-    private int getPreferredWidth(Component comp) {
+    private int getPreferredWidth(final Component comp) {
         return (int) comp.getPreferredSize().getWidth();
     }
 
-    private int getMinimumHeight(Component comp) {
+    private int getMinimumHeight(final Component comp) {
         return (int) comp.getMinimumSize().getHeight();
+    }
+    
+    private int getMaximumWidth(final Component comp) {
+        return (int) comp.getMaximumSize().getWidth();
     }
     
     public static Seperator getSeparator() {

@@ -58,7 +58,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabModelTarget;
@@ -76,7 +75,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * This abstract class provides the basic layout and event dispatching support
  * for all Property Panels.<p>
  *
- * The property panel is {@link org.argouml.swingext.LabelledLayout} layed out as
+ * The property panel is {@link org.argouml.uml.ui.LabelledLayout} layed out as
  * a number (specified in the constructor) of equally sized panels that split
  * the available space. Each panel has a column of "captions" and matching
  * column of "fields" which are laid out independently from the other
