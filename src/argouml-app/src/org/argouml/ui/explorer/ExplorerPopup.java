@@ -46,6 +46,8 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
+import org.argouml.ui.ActionCreateContainedModelElement;
+import org.argouml.ui.ActionCreateEdgeModelElement;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -446,7 +448,7 @@ public class ExplorerPopup extends JPopupMenu {
                     // this element can be contained add a menu item 
                     // that allows the user to take that action
                     menuItems.add(new OrderedMenuItem(
-                            new ActionCreateContainedElement(
+                            new ActionCreateContainedModelElement(
                                     MODEL_ELEMENT_MENUITEMS[iter],
                                     target, 
                                     (String) 
@@ -506,7 +508,7 @@ public class ExplorerPopup extends JPopupMenu {
         if (Model.getUmlFactory().isConnectionValid(
                     metaType, source, dest, true)) {
             JMenuItem menuItem = new JMenuItem(
-                    new ActionCreateModelElement(
+                    new ActionCreateEdgeModelElement(
                             metaType, 
                             source, 
                             dest, 
@@ -664,54 +666,6 @@ public class ExplorerPopup extends JPopupMenu {
         }
     }
         
-    
-    
-    
-    /**
-     * An action to create a relation between 2 model elements.
-     *
-     * @author Bob Tarling
-     */
-    private class ActionCreateModelElement extends AbstractAction {
-        
-        private Object metaType; 
-        private Object source; 
-        private Object dest;
-
-        public ActionCreateModelElement(
-                Object theMetaType, 
-                Object theSource, 
-                Object theDestination,
-                String relationshipDescr) {
-            super(MessageFormat.format(
-                relationshipDescr,
-                new Object[] {
-                    DisplayTextTree.getModelElementDisplayName(theSource),
-                    DisplayTextTree.getModelElementDisplayName(
-                            theDestination)}));
-            this.metaType = theMetaType;
-            this.source = theSource;
-            this.dest = theDestination;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            Object rootModel = 
-                ProjectManager.getManager().getCurrentProject().getModel();
-            try {
-                Model.getUmlFactory().buildConnection(
-                    metaType,
-                    source,
-                    null,
-                    dest,
-                    null,
-                    null,
-                    rootModel);
-            } catch (IllegalModelElementConnectionException e1) {
-                LOG.error("Exception", e1);
-            }
-        }
-    }
-    
     /**
      * An action to create an association between 2 or more model elements.
      *
@@ -803,43 +757,6 @@ public class ExplorerPopup extends JPopupMenu {
         }
     }
 
-    /**
-     * An action to create a model element to be contained by the 
-     * target model element.
-     *
-     * @author Scott Roberts
-     */
-    private class ActionCreateContainedElement
-                extends AbstractActionNewModelElement {
-
-        private Object metaType; 
-
-        /**
-         * Construct the action.
-         * 
-         * @param theMetaType the element to be created
-         * @param target the container that will own the new element
-         * @param menuDescr the description for the menu item label.
-         */
-        public ActionCreateContainedElement(
-                Object theMetaType, 
-                Object target,
-                String menuDescr) {
-            super(menuDescr);
-            
-            metaType = theMetaType;
-            
-            setTarget(target);
-        }
-
-        public void actionPerformed(ActionEvent e) {            
-            Object newElement = Model.getUmlFactory().buildNode(metaType, 
-                    getTarget());
-                
-            TargetManager.getInstance().setTarget(newElement);                
-        }
-    }
-    
     private boolean isRelatedToProfiles(Project currentProject,
             Object selectedItem) {
         boolean found = selectedItem instanceof ProfileConfiguration
