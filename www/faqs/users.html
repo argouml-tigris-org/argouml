@@ -296,13 +296,15 @@ See <a href="http://argouml.tigris.org/servlets/SummarizeList?listName=users">
 </a>.
 
 <DT><a name="xmx">Can I use ArgoUML for "large" projects?</a></DT>
-<DD>Yes. But be sure to increase the default heap space, 
+<DD>Yes. But be sure to use a large heap space 
   when you have more than about 50 modelelements.
-  You can increase the heap space for any Java application by starting that
-  application from the command prompt and doing the likes of:<br>
+  The heap space for any java application can be defined on the command line,
+  the supplied launch scripts for ArgoUML (.bat, .sh, .jnlp, .lnk), all 
+  use:<br>
 <PRE>
-    java -jar -Xmx512m argouml.jar
+    java -Xmx512m -jar argouml.jar
 </PRE>
+  If you have problems with large models, you may need to set this higher.
 <br></DD>
   
 </DL>
