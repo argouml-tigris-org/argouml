@@ -78,17 +78,10 @@ public class PropPanelTransition extends PropPanelModelElement {
                 getSingleRowScroll(new UMLTransitionTargetListModel()));
         addField("label.trigger",
                 getSingleRowScroll( new UMLTransitionTriggerListModel()));
-        
-        JList guardList = new UMLMutableLinkedList(
-                new UMLTransitionGuardListModel(), null,
-                ActionNewGuard.getSingleton());
-        
         addField("label.guard",
-                getSingleRowScroll(guardList));
-        JList effectList = new UMLTransitionEffectList(
-                new UMLTransitionEffectListModel());
+                getSingleRowScroll(new UMLTransitionGuardListModel()));
         addField("label.effect",
-                getSingleRowScroll(effectList));
+                getSingleRowScroll(new UMLTransitionEffectListModel()));
 
         addAction(new ActionNavigateContainerElement());
         addAction(getTriggerActions());

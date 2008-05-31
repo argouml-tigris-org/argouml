@@ -713,14 +713,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     public void componentResized(ComponentEvent e) {
         // ignored        
     }
-
-    protected JScrollPane getSingleRowScroll(JList list) {
-        // TODO: Temporary fix while we find something better - tfm
-        list.setVisibleRowCount(2);
-//        list.setVisibleRowCount(1);
-        JScrollPane pane = new JScrollPane(list);
-        return pane;
-    }
     
     /**
      * Create a single row scroll pane backed by a ListModel.
