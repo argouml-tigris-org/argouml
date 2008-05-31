@@ -56,15 +56,11 @@ public class PropPanelInclude extends PropPanelRelationship {
 
         addSeparator();
 
-        JList baseBox =
-	    new UMLLinkedList(new UMLIncludeBaseListModel());
         addField("label.usecase-base",
-		 getSingleRowScroll(baseBox));
+		 getSingleRowScroll(new UMLIncludeBaseListModel()));
 
-        JList additionBox =
-	    new UMLLinkedList(new UMLIncludeAdditionListModel());
         addField("label.addition",
-		 getSingleRowScroll(additionBox));
+		 getSingleRowScroll(new UMLIncludeAdditionListModel()));
 
         // Add the toolbar buttons:
         addAction(new ActionNavigateNamespace());

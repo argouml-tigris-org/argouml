@@ -79,12 +79,10 @@ public class PropPanelExtend extends PropPanelRelationship {
 
         // Link to the two ends.
         addField("label.usecase-base",
-                getSingleRowScroll(new UMLLinkedList(
-                        new UMLExtendBaseListModel())));
+                getSingleRowScroll(new UMLExtendBaseListModel()));
 
         addField("label.extension",
-                getSingleRowScroll(new UMLLinkedList(
-                        new UMLExtendExtensionListModel())));
+                getSingleRowScroll(new UMLExtendExtensionListModel()));
 
         JList extensionPointList =
 	    new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(),

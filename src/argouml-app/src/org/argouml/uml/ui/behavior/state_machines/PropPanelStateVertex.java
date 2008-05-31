@@ -26,6 +26,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.ImageIcon;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -45,7 +46,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
     private JScrollPane outgoingScroll;
 
-    private JScrollPane containerScroll;
+    private JPanel containerScroll;
 
     /**
      * Constructor for PropPanelStateVertex.
@@ -108,7 +109,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
     /**
      * @return Returns the containerScroll.
      */
-    protected JScrollPane getContainerScroll() {
+    protected JPanel getContainerScroll() {
         return containerScroll;
     }
 

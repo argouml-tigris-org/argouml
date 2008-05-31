@@ -31,6 +31,7 @@ import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
@@ -51,7 +52,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 public class PropPanelPartition extends PropPanelModelElement {
 
     private JScrollPane contentsScroll;
-    private JScrollPane activityGraphScroll;
+    private JPanel activityGraphScroll;
 
     private static UMLPartitionContentListModel contentListModel =
         new UMLPartitionContentListModel("contents");
@@ -106,7 +107,7 @@ public class PropPanelPartition extends PropPanelModelElement {
         return contentsScroll;
     }
     
-    protected JScrollPane getActivityGraphField() {
+    protected JPanel getActivityGraphField() {
         return activityGraphScroll;
     }
 
