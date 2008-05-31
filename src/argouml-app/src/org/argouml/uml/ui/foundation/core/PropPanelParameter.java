@@ -52,7 +52,7 @@ public class PropPanelParameter extends PropPanelModelElement {
      */
     private static final long serialVersionUID = -1207518946939283220L;
 
-    private JScrollPane behFeatureScroll;
+    private JPanel behFeatureScroll;
 
     private static UMLParameterBehavioralFeatListModel behFeatureModel;
 
@@ -128,9 +128,9 @@ public class PropPanelParameter extends PropPanelModelElement {
     /**
      * Returns the behavioral Feature Scroll.
      *
-     * @return JScrollPane
+     * @return JPanel
      */
-    public JScrollPane getBehavioralFeatureScroll() {
+    public JPanel getBehavioralFeatureScroll() {
         if (behFeatureScroll == null) {
             if (behFeatureModel == null) {
                 behFeatureModel = new UMLParameterBehavioralFeatListModel();

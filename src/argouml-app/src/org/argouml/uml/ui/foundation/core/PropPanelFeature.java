@@ -41,7 +41,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
 
     private UMLFeatureOwnerScopeCheckBox ownerScopeCheckbox;
 
-    private JScrollPane ownerScroll;
+    private JPanel ownerScroll;
 
     private static UMLFeatureOwnerListModel ownerListModel;
 
@@ -94,7 +94,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
      *
      * @return JScrollPane
      */
-    public JScrollPane getOwnerScroll() {
+    public JPanel getOwnerScroll() {
         if (ownerScroll == null) {
             if (ownerListModel == null) {
                 ownerListModel = new UMLFeatureOwnerListModel();
