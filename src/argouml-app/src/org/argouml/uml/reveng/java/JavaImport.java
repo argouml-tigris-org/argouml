@@ -42,9 +42,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.uml.reveng.FileImportUtils;
+import org.argouml.uml.reveng.Import;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.ImporterManager;
+import org.argouml.uml.reveng.ui.ImportClasspathDialog;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 
@@ -52,7 +54,7 @@ import org.argouml.util.SuffixFilter;
  * This is the main class for Java reverse engineering. It's based
  * on the Antlr Java example.
  *
- * @author Andreas Rueckert <a_rueckert@gmx.net>
+ * @author Andreas Rueckert, Thomas Neustupny
  */
 public class JavaImport implements ImportInterface {
 
@@ -229,6 +231,14 @@ public class JavaImport implements ImportInterface {
     public SuffixFilter[] getSuffixFilters() {
 	SuffixFilter[] result = {FileFilters.JAVA_FILE_FILTER};
 	return result;
+    }
+
+    /*
+     * @see org.argouml.uml.reveng.ImportInterface#isApprovedImport(Import)
+     */
+    public boolean isApprovedImport(Import importer) {
+        new ImportClasspathDialog(importer);
+        return false;
     }
 
     /*
