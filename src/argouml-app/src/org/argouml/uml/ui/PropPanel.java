@@ -43,9 +43,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.ListModel;
 import javax.swing.SwingConstants;
@@ -60,6 +58,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -68,7 +68,6 @@ import org.argouml.ui.targetmanager.TargettableModelView;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Horizontal;
-import org.tigris.swidgets.LabelledLayout;
 import org.tigris.swidgets.Orientation;
 import org.tigris.swidgets.Vertical;
 import org.tigris.toolbar.ToolBarFactory;
@@ -77,7 +76,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * This abstract class provides the basic layout and event dispatching support
  * for all Property Panels.<p>
  *
- * The property panel is {@link org.tigris.swidgets.LabelledLayout} layed out as
+ * The property panel is {@link org.argouml.swingext.LabelledLayout} layed out as
  * a number (specified in the constructor) of equally sized panels that split
  * the available space. Each panel has a column of "captions" and matching
  * column of "fields" which are laid out independently from the other
@@ -277,11 +276,21 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      */
     public JLabel addField(String label, Component component) {
         JLabel jlabel = new JLabel(Translator.localize(label));
+        jlabel.setToolTipText(label);
         jlabel.setFont(stdFont);
         component.setFont(stdFont);
         jlabel.setLabelFor(component);
         add(jlabel);
         add(component);
+        if (component instanceof UMLLinkedList) {
+            UMLModelElementListModel2 list =
+                (UMLModelElementListModel2) ((UMLLinkedList) component).getModel();
+            ActionCreateContainedModelElement newAction =
+                new ActionCreateContainedModelElement(
+                        list.getMetaType(),
+                        list.getTarget(),
+                        "New..."); // TODO: i18n
+        }
         return jlabel;
     }
 
@@ -347,9 +356,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * Add a separator.
      */
     protected final void addSeparator() {
-        // Note: the mispelling is in a foreign component's method name
-        // so can't be corrected. - tfm
-        add(LabelledLayout.getSeperator());
+        add(LabelledLayout.getSeparator());
     }
 
     /**
