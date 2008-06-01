@@ -59,8 +59,6 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
         (new InitProfileSubsystem()).init();
         (new InitNotation()).init();
         (new InitNotationUml()).init();
-//        (new InitNotationJava()).init();
-//        Project p = ProjectManager.getManager().getCurrentProject();
         Object model =
             Model.getModelManagementFactory().createModel();
         aEnumeration = Model.getCoreFactory().buildEnumeration("", model);
@@ -207,7 +205,7 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
     public void testGenerateLiteral() throws ParseException {
         checkGenerate(aLiteral, "", npArguments);
         checkName(aLiteral, " << s1, s2, s3 >> name3", "name3");
-        checkGenerate(aLiteral, "<<s1,s2,s3>>name3", npArguments);
+        checkGenerate(aLiteral, "<<s1,s2,s3>> name3", npArguments);
     }
     
     private void checkGenerate(Object literal, String text, Map args) {
