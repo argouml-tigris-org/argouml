@@ -138,6 +138,16 @@ public class FigClassifierRole extends FigNodeModelElement {
         firePropChange("bounds", oldBounds, getBounds());
     }
     
+    /*
+     * This method is overridden in order to ignore change of the y coordinate
+     * during draging.
+     *
+     * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
+     */
+     public void superTranslate(int dx, int dy) {
+ 	setBounds(getX() + dx, getY(), getWidth(), getHeight());
+     }
+     
     /**
      * Updates the head offset, looking for the create messages. 
      */
