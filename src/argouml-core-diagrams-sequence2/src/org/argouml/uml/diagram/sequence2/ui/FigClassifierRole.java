@@ -130,6 +130,14 @@ public class FigClassifierRole extends FigNodeModelElement {
         headFig.setBounds(x, y + offset, ww, headFig.getMinimumHeight());
         lifeLineFig.setBounds(x, y + offset + headFig.getHeight(),
                 ww, h - offset - headFig.getHeight());
+        // TODO: createActivations must be called here otherwise activations
+        // don't reposition correctly when Fig is first placed. We must
+        // determine a better way of doing this. Why don't the child Figs
+        // reposition themselves?
+        // Once we can get rid of this line we may need to replace with
+        // something to just resize the last activation only.
+        createActivations();
+        
         // set bounds of big box
         getBigPort().setBounds(x, y, ww, h);
 
