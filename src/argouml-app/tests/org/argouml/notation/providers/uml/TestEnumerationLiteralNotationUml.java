@@ -112,10 +112,10 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
             eln.parseEnumerationLiteralFig(
                     Model.getFacade().getEnumeration(element),
                     element, text);
-            assertTrue(text
+            assertEquals(text
                        + " gave wrong name: "
                        + Model.getFacade().getName(element),
-                       name.equals(Model.getFacade().getName(element)));
+                       name, Model.getFacade().getName(element));
         } else {
             fail("Can only check name of a enumeration literal");
         }
@@ -213,8 +213,8 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
     private void checkGenerate(Object literal, String text, Map args) {
         EnumerationLiteralNotationUml notation = 
             new EnumerationLiteralNotationUml(aLiteral); 
-        assertTrue("Incorrect generation", 
-                text.equals(notation.toString(literal, args)));
+        assertEquals("Incorrect generation", 
+                text, notation.toString(literal, args));
     }
     
     /**
