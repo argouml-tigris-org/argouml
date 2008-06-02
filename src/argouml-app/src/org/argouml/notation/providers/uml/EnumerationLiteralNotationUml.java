@@ -50,7 +50,8 @@ import org.argouml.util.MyTokenizer;
  * means deletion of the literal). <li>
  * Multiple literals may be entered at once 
  * by separating the names with a semicolon. <li> 
- * A stereotype may precede the name. </ul><p>
+ * Extra literals are inserted after the one being parsed. <li>
+ * A stereotype may precede the name of any literal. </ul><p>
  * 
  * As explained in issue 5000, the real implemented BNF is something like: 
  * <pre>
