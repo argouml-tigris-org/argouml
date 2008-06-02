@@ -37,7 +37,7 @@ import org.argouml.util.SuffixFilter;
  * An interface which identifies an ArgoUML plug-in which imports 
  * source language modules and creates UML model elements in our model.
  * 
- * @author Tom Morris, Thomas Neustupny
+ * @author Tom Morris
  * @since 0.23.2
  */
 
@@ -64,20 +64,6 @@ public interface ImportInterface extends ModuleInterface {
      * @return SuffixFilter[] suffixes for processing
      */
     SuffixFilter[] getSuffixFilters();
-
-    /**
-     * Allows for a check of the import facility before actually doing the
-     * import. If true is returned, then the import will be invoked by calling
-     * the public doFile() method of the Import class, otherwise no import is
-     * invoked. The import module normally returns true, but it could return
-     * false and call the doFile() method on it's own, which is done e.g. by
-     * the JavaImport after displaying a classpath dialog.
-     * 
-     * @param importer the Import instance
-     * 
-     * @return whether Import.doFile() should be invoked or not
-     */
-    boolean isApprovedImport(Import importer);
 
     /**
      * Tells if the object is parseable or not.  It's is up to the module

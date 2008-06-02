@@ -24,6 +24,7 @@
 
 package org.argouml.uml.reveng.java;
 
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -41,9 +42,9 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.taskmgmt.ProgressMonitor;
+import org.argouml.uml.reveng.ExtendedImportInterface;
 import org.argouml.uml.reveng.FileImportUtils;
-import org.argouml.uml.reveng.Import;
-import org.argouml.uml.reveng.ImportInterface;
+import org.argouml.uml.reveng.ImportCommandInterface;
 import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.ImporterManager;
 import org.argouml.uml.reveng.ui.ImportClasspathDialog;
@@ -56,7 +57,7 @@ import org.argouml.util.SuffixFilter;
  *
  * @author Andreas Rueckert, Thomas Neustupny
  */
-public class JavaImport implements ImportInterface {
+public class JavaImport implements ExtendedImportInterface {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(JavaImport.class);
@@ -225,7 +226,7 @@ public class JavaImport implements ImportInterface {
     }
 
 
-    /*
+    /**
      * @see org.argouml.uml.reveng.ImportInterface#getSuffixFilters()
      */
     public SuffixFilter[] getSuffixFilters() {
@@ -233,12 +234,12 @@ public class JavaImport implements ImportInterface {
 	return result;
     }
 
-    /*
-     * @see org.argouml.uml.reveng.ImportInterface#isApprovedImport(Import)
+    /**
+     * @see org.argouml.uml.reveng.ExtendedImportInterface#invokeImport(java.awt.Component, org.argouml.uml.reveng.ImportCommandInterface)
      */
-    public boolean isApprovedImport(Import importer) {
-        new ImportClasspathDialog(importer);
-        return false;
+    public void invokeImport(Component component,
+            ImportCommandInterface importCmd) {
+        new ImportClasspathDialog(component, importCmd);
     }
 
     /*

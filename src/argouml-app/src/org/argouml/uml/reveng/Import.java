@@ -65,24 +65,28 @@ import org.argouml.util.UIUtils;
 import org.tigris.gef.base.Globals;
 import org.tigris.swidgets.GridLayout2;
 
-
 /**
- * This is the main class for all import classes.<p>
- *
- * It provides JPanels for tailoring the import run in the FileChooser.<p>
- *
- * The Import run is started by calling doFile(Project, File)<p>
- *
- * Supports recursive search in folder for all .java classes.<p>
- *
- * There are now 3 levels of detail for import:<p>
- *
+ * This is the main class for all import classes.
+ * <p>
+ * 
+ * It provides JPanels for tailoring the import run in the FileChooser.
+ * <p>
+ * 
+ * The Import run is started by calling doFile(Project, File)
+ * <p>
+ * 
+ * Supports recursive search in folder for all .java classes.
+ * <p>
+ * 
+ * There are now 3 levels of detail for import:
+ * <p>
+ * 
  * <ol>
- *   <li> 0 - classifiers only
- *   <li> 1 - classifiers plus feature specifications
- *   <li> 2 - full import, feature detail (ie. operations with methods)
+ * <li> 0 - classifiers only
+ * <li> 1 - classifiers plus feature specifications
+ * <li> 2 - full import, feature detail (ie. operations with methods)
  * </ol>
- *
+ * 
  * @author Andreas Rueckert a_rueckert@gmx.net
  */
 public class Import extends ImportCommon implements ImportSettings {
@@ -108,28 +112,27 @@ public class Import extends ImportCommon implements ImportSettings {
     // level 2 import detail
     private JRadioButton fullImport;
 
-    //import detail level var:
-//    private int importLevel;
+    // import detail level var:
+    // private int importLevel;
 
     private JTextField inputSourceEncoding;
 
     private JDialog dialog;
 
     private ImportStatusScreen iss;
-    
+
     private Frame myFrame;
 
-
     /**
-     * The default extended configuration panel.
-     * TODO: This used to be provided by the abstract class FileImportSupport
-     * and it can be merged with our main configuration panel here.
+     * The default extended configuration panel. TODO: This used to be provided
+     * by the abstract class FileImportSupport and it can be merged with our
+     * main configuration panel here.
      */
     private ConfigPanelExtension importConfigPanel;
 
     /**
      * Creates dialog window with chooser and configuration panel.
-     *
+     * 
      * @param frame the ui frame to display dialogs on
      */
     public Import(Frame frame) {
@@ -137,21 +140,14 @@ public class Import extends ImportCommon implements ImportSettings {
         myFrame = frame;
 
         JComponent chooser = getChooser();
-        dialog =
-            new JDialog(frame,
-                    Translator.localize("action.import-sources"), true);
+        dialog = new JDialog(frame, Translator
+                .localize("action.import-sources"), true);
 
         dialog.getContentPane().add(chooser, BorderLayout.CENTER);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
-        int x =
-            (frame.getSize().width
-             - dialog.getSize().width)
-            / 2;
-        int y =
-            (frame.getSize().height
-             - dialog.getSize().height)
-            / 2;
+        int x = (frame.getSize().width - dialog.getSize().width) / 2;
+        int y = (frame.getSize().height - dialog.getSize().height) / 2;
         dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
 
         UIUtils.loadCommonKeyMap(dialog);
@@ -194,12 +190,12 @@ public class Import extends ImportCommon implements ImportSettings {
         flags.append(isCreateDiagramsSelected()).append(",");
         flags.append(isMinimizeFigsSelected()).append(",");
         flags.append(isDiagramLayoutSelected());
-        Configuration.setString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS,
-                flags.toString());
-        Configuration.setString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL,
-                String.valueOf(getImportLevel()));
+        Configuration.setString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS, flags
+                .toString());
+        Configuration.setString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL, String
+                .valueOf(getImportLevel()));
         Configuration.setString(Argo.KEY_INPUT_SOURCE_ENCODING,
-            getInputSourceEncoding());
+                getInputSourceEncoding());
         if (importConfigPanel != null) {
             importConfigPanel.disposeDialog();
         }
@@ -208,13 +204,11 @@ public class Import extends ImportCommon implements ImportSettings {
     }
 
     /**
-     * Get the panel that lets the user set reverse engineering
-     * parameters.
-     *
+     * Get the panel that lets the user set reverse engineering parameters.
+     * 
      * @param importInstance the instance of the import
-     * @return the panel
-     * This is an internal method.  Use the accessors in
-     * {@link ImportSettings} to determine the current settings.
+     * @return the panel This is an internal method. Use the accessors in
+     *         {@link ImportSettings} to determine the current settings.
      */
     private JComponent getConfigPanel(final Import importInstance) {
 
@@ -223,16 +217,15 @@ public class Import extends ImportCommon implements ImportSettings {
         // build the configPanel:
         if (configPanel == null) {
             JPanel general = new JPanel();
-            general.setLayout(
-                    new GridLayout2(13, 1, 0, 0, GridLayout2.NONE));
+            general.setLayout(new GridLayout2(13, 1, 0, 0, GridLayout2.NONE));
 
-            general.add(new JLabel(
-                    Translator.localize("action.import-select-lang")));
+            general.add(new JLabel(Translator
+                    .localize("action.import-select-lang")));
 
-            JComboBox selectedLanguage = 
-                new JComboBox(getModules().keySet().toArray());
-            selectedLanguage.addActionListener(
-                    new SelectedLanguageListener(importInstance, tab));
+            JComboBox selectedLanguage = new JComboBox(getModules().keySet()
+                    .toArray());
+            selectedLanguage.addActionListener(new SelectedLanguageListener(
+                    importInstance, tab));
             general.add(selectedLanguage);
 
             boolean desc = true;
@@ -240,9 +233,8 @@ public class Import extends ImportCommon implements ImportSettings {
             boolean crea = true;
             boolean mini = true;
             boolean layo = true;
-            String flags =
-                    Configuration
-                            .getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+            String flags = Configuration
+                    .getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
             if (flags != null && flags.length() > 0) {
                 StringTokenizer st = new StringTokenizer(flags, ",");
                 if (st.hasMoreTokens() && st.nextToken().equals("false")) {
@@ -261,31 +253,27 @@ public class Import extends ImportCommon implements ImportSettings {
                     layo = false;
                 }
             }
-            
-            descend =
-                new JCheckBox(Translator.localize(
-                        "action.import-option-descend-dir-recur"), desc);
+
+            descend = new JCheckBox(Translator
+                    .localize("action.import-option-descend-dir-recur"), desc);
             general.add(descend);
 
-            changedOnly =
-                new JCheckBox(Translator.localize(
-                        "action.import-option-changed_new"), chan);
+            changedOnly = new JCheckBox(Translator
+                    .localize("action.import-option-changed_new"), chan);
             general.add(changedOnly);
 
-            createDiagrams =
-                new JCheckBox(Translator.localize(
-                        "action.import-option-create-diagram"), crea);
+            createDiagrams = new JCheckBox(Translator
+                    .localize("action.import-option-create-diagram"), crea);
             general.add(createDiagrams);
 
-            minimiseFigs =
-                new JCheckBox(Translator.localize(
-                        "action.import-option-min-class-icon"), mini);
+            minimiseFigs = new JCheckBox(Translator
+                    .localize("action.import-option-min-class-icon"), mini);
             general.add(minimiseFigs);
 
-            layoutDiagrams =
-                new JCheckBox(Translator.localize(
-                        "action.import-option-perform-auto-diagram-layout"),
-                        layo);
+            layoutDiagrams = new JCheckBox(
+                    Translator
+                            .localize("action.import-option-perform-auto-diagram-layout"),
+                    layo);
             general.add(layoutDiagrams);
 
             // de-selects the fig minimising & layout
@@ -304,26 +292,22 @@ public class Import extends ImportCommon implements ImportSettings {
             // 1 - classifiers plus feature specifications
             // 2 - full import, feature detail
 
-            JLabel importDetailLabel =
-                new JLabel(Translator.localize(
-                        "action.import-level-of-import-detail"));
+            JLabel importDetailLabel = new JLabel(Translator
+                    .localize("action.import-level-of-import-detail"));
             ButtonGroup detailButtonGroup = new ButtonGroup();
 
-            classOnly =
-                new JRadioButton(Translator.localize(
-                        "action.import-option-classifiers"));
+            classOnly = new JRadioButton(Translator
+                    .localize("action.import-option-classifiers"));
             detailButtonGroup.add(classOnly);
 
-            classAndFeatures =
-                new JRadioButton(Translator.localize(
-                        "action.import-option-classifiers-plus-specs"));
+            classAndFeatures = new JRadioButton(Translator
+                    .localize("action.import-option-classifiers-plus-specs"));
             detailButtonGroup.add(classAndFeatures);
 
-            fullImport =
-                new JRadioButton(Translator.localize(
-                        "action.import-option-full-import"));
-            String detaillevel =
-                Configuration.getString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL);
+            fullImport = new JRadioButton(Translator
+                    .localize("action.import-option-full-import"));
+            String detaillevel = Configuration
+                    .getString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL);
             if ("0".equals(detaillevel)) {
                 classOnly.setSelected(true);
             } else if ("1".equals(detaillevel)) {
@@ -338,31 +322,31 @@ public class Import extends ImportCommon implements ImportSettings {
             general.add(classAndFeatures);
             general.add(fullImport);
 
-            general.add(new JLabel(
-                    Translator.localize("action.import-file-encoding")));
-            String enc =
-                Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
+            general.add(new JLabel(Translator
+                    .localize("action.import-file-encoding")));
+            String enc = Configuration
+                    .getString(Argo.KEY_INPUT_SOURCE_ENCODING);
             if (enc == null || enc.trim().equals("")) {
-                inputSourceEncoding =
-                    new JTextField(System.getProperty("file.encoding"));
+                inputSourceEncoding = new JTextField(System
+                        .getProperty("file.encoding"));
             } else {
                 inputSourceEncoding = new JTextField(enc);
 
             }
             general.add(inputSourceEncoding);
 
-            // TODO: Encoding needs to be validated against set of 
+            // TODO: Encoding needs to be validated against set of
             // available encodings using {@link Charset.isSupported(String)}
-            // -- or use a menu with the contents of 
-            // {@link Charset.availableCharsets()}            
-//            JComboBox encoding =
-//                    new JComboBox(Charset.availableCharsets().keySet()
-//                            .toArray());
-//            encoding.setSelectedItem(inputSourceEncoding.getText());
-//            general.add(encoding);
+            // -- or use a menu with the contents of
+            // {@link Charset.availableCharsets()}
+            // JComboBox encoding =
+            // new JComboBox(Charset.availableCharsets().keySet()
+            // .toArray());
+            // encoding.setSelectedItem(inputSourceEncoding.getText());
+            // general.add(encoding);
 
             tab.add(general, Translator.localize("action.import-general"));
-            tab.add(getConfigPanelExtension(), 
+            tab.add(getConfigPanelExtension(),
                     ((ModuleInterface) getCurrentModule()).getName());
             configPanel = tab;
         }
@@ -396,6 +380,7 @@ public class Import extends ImportCommon implements ImportSettings {
 
         /**
          * The constructor.
+         * 
          * @param i The current import.
          * @param t The pane.
          */
@@ -412,20 +397,18 @@ public class Import extends ImportCommon implements ImportSettings {
             String selected = (String) cb.getSelectedItem();
             ImportInterface oldModule = getCurrentModule();
             setCurrentModule(getModules().get(selected));
-            updateFilters(
-                    (JFileChooser) dialog.getContentPane().getComponent(0),
-                    oldModule.getSuffixFilters(),
-                    getCurrentModule()
-                    .getSuffixFilters());
+            updateFilters((JFileChooser) dialog.getContentPane()
+                    .getComponent(0), oldModule.getSuffixFilters(),
+                    getCurrentModule().getSuffixFilters());
             // TODO: Update configPanelExtension with extension settings
             // for new language
-            
+
         }
     }
 
     /**
-     * Parse all selected files. It calls the actual
-     * parser methods depending on the type of the file.
+     * Parse all selected files. It calls the actual parser methods depending on
+     * the type of the file.
      */
     public void doFile() {
         iss = new ImportStatusScreen(myFrame, "Importing", "Splash");
@@ -474,7 +457,6 @@ public class Import extends ImportCommon implements ImportSettings {
         return false;
     }
 
-
     /*
      * @see org.argouml.uml.reveng.ImportCommon#isDiagramLayoutSelected()
      */
@@ -484,7 +466,6 @@ public class Import extends ImportCommon implements ImportSettings {
         }
         return false;
     }
-
 
     /*
      * @see org.argouml.uml.reveng.ImportCommon#isDescendSelected()
@@ -505,7 +486,6 @@ public class Import extends ImportCommon implements ImportSettings {
         }
         return false;
     }
-
 
     /*
      * Create chooser for objects we are to import. Old style modules get to
@@ -538,7 +518,6 @@ public class Import extends ImportCommon implements ImportSettings {
         }
     }
 
-
     private static class ImportFileChooser extends JFileChooser {
 
         private Import theImport;
@@ -565,9 +544,7 @@ public class Import extends ImportCommon implements ImportSettings {
          * @param fsv the file system view
          * @see javax.swing.JFileChooser#JFileChooser(String, FileSystemView)
          */
-        public ImportFileChooser(
-                Import imp,
-                String currentDirectoryPath,
+        public ImportFileChooser(Import imp, String currentDirectoryPath,
                 FileSystemView fsv) {
             super(currentDirectoryPath, fsv);
             theImport = imp;
@@ -593,21 +570,18 @@ public class Import extends ImportCommon implements ImportSettings {
          * @param fsv the file system view
          * @see javax.swing.JFileChooser#JFileChooser(FileSystemView)
          */
-        public ImportFileChooser(
-                Import imp,
-                FileSystemView fsv) {
+        public ImportFileChooser(Import imp, FileSystemView fsv) {
             super(fsv);
             theImport = imp;
             initChooser();
         }
-
 
         private void initChooser() {
             setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             setMultiSelectionEnabled(true);
             setSelectedFile(getCurrentDirectory());
         }
-        
+
         /*
          * @see javax.swing.JFileChooser#approveSelection()
          */
@@ -616,7 +590,7 @@ public class Import extends ImportCommon implements ImportSettings {
             File[] files = getSelectedFiles();
             File dir = getCurrentDirectory();
             if (files.length == 0) {
-                files = new File[] {dir};
+                files = new File[] { dir };
             }
             if (files.length == 1) {
                 File file = files[0];
@@ -629,10 +603,15 @@ public class Import extends ImportCommon implements ImportSettings {
             theImport.setSelectedFiles(files);
             Globals.setLastDirectory(dir.getPath());
             theImport.disposeDialog();
-            
-            if (theImport.getCurrentModule().isApprovedImport(theImport)) {
+
+            if (theImport.getCurrentModule() instanceof ExtendedImportInterface) {
+                ExtendedImportInterface eii = (ExtendedImportInterface) theImport
+                        .getCurrentModule();
+                eii.invokeImport(theImport.getFrame(), new ImportCommand(
+                        theImport));
+            } else {
                 theImport.doFile();
-            } 
+            }
         }
 
         /*
