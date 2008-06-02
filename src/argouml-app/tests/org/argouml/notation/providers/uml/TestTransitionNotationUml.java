@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2007 The Regents of the University of California. All
+// Copyright (c) 2004-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,10 +27,10 @@ package org.argouml.notation.providers.uml;
 import java.text.ParseException;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.profile.init.InitProfileSubsystem;
@@ -338,5 +338,18 @@ public class TestTransitionNotationUml extends TestCase {
         assertTrue("No help at all given", help.length() > 0);
         assertTrue("Parsing help not conform for translation", 
                 help.startsWith("parsing."));
+    }
+    
+    /**
+     * Test if the notationProvider refuses to instantiate 
+     * without showing it the right UML element.
+     */
+    public void testValidObjectCheck() {
+        try {
+            new TransitionNotationUml(aState);
+            fail("The NotationProvider did not throw for a wrong UML element.");
+        } catch (IllegalArgumentException e) {
+            /* Everything fine... */
+        } 
     }
 }

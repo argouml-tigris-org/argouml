@@ -266,4 +266,17 @@ public class TestCallStateNotationUml extends TestCase {
         assertTrue("Parsing help not conform for translation", 
                 help.startsWith("parsing."));
     }
+    
+    /**
+     * Test if the notationProvider refuses to instantiate 
+     * without showing it the right UML element.
+     */
+    public void testValidObjectCheck() {
+        try {
+            new CallStateNotationUml(aState);
+            fail("The NotationProvider did not throw for a wrong UML element.");
+        } catch (IllegalArgumentException e) {
+            /* Everything fine... */
+        } 
+    }
 }

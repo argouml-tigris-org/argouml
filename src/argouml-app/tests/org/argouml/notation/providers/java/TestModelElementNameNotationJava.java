@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,9 @@ package org.argouml.notation.providers.java;
 import java.util.HashMap;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.ModelElementNameNotation;
 import org.argouml.profile.init.InitProfileSubsystem;
@@ -85,5 +85,30 @@ public class TestModelElementNameNotationJava extends TestCase {
 
     private Object getModel() {
         return ProjectManager.getManager().getCurrentProject().getModel();
+    }
+
+    /**
+     * Test if help is correctly provided.
+     */
+    public void testGetHelpOperation() {
+        ModelElementNameNotation notation = 
+            new ModelElementNameNotationJava(theClass); 
+        String help = notation.getParsingHelp();
+        assertTrue("No help at all given", help.length() > 0);
+        assertTrue("Parsing help not conform for translation", 
+                help.startsWith("parsing."));
+    }
+    
+    /**
+     * Test if the notationProvider refuses to instantiate 
+     * without showing it the right UML element.
+     */
+    public void testValidObjectCheck() {
+        try {
+            new ModelElementNameNotationJava(new Object());
+            fail("The NotationProvider did not throw for a wrong UML element.");
+        } catch (IllegalArgumentException e) {
+            /* Everything fine... */
+        } 
     }
 }

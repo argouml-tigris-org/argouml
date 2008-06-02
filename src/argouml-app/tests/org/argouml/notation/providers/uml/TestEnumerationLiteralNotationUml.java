@@ -73,9 +73,13 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
      * @throws ParseException if the parsing fails
      */
     public void testEnumerationLiteralName() throws ParseException {
+        checkLiterals(1, 
+                new String[] {""});
         checkName(aLiteral, "name", "name");
         checkName(aLiteral, "name2", "name2");
         checkName(aLiteral, "name;create second one", "name");
+        checkLiterals(2, 
+                new String[] {"name", "create second one"});
         checkName(aLiteral, "na me", "na me");
         checkName(aLiteral, " name ", "name");
         checkName(aLiteral, "<<>>name2", "name2");
@@ -85,11 +89,18 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
         checkName(aLiteral, " << stereotype >> name", "name");
         checkName(aLiteral, 
                 " << stereotype >> name3; << stereotype >> name4", "name3");
+        checkLiterals(3, 
+                new String[] {"name3", "name4", "create second one"});
         checkName(aLiteral, "name;<<s2>>nameX", "name");
+        checkLiterals(4, 
+                new String[] {"name", "nameX", "name4", "create second one"});
         checkName(aLiteral, "µôèéà€ü$", "µôèéà€ü$");
         checkName(aLiteral, "name;", "name");
         checkName(aLiteral, " \u00AB stereotype \u00BB name3", "name3");
         checkName(aLiteral, "name;\u00ABstereotype\u00BBname", "name");
+        checkLiterals(5, 
+                new String[] {"name", "name", 
+                    "nameX", "name4", "create second one"});
     }
     
     /**
@@ -104,18 +115,38 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
     private void checkName(Object element, String text, String name)
         throws ParseException {
 
-        if (Model.getFacade().isAEnumerationLiteral(element)) {
-            EnumerationLiteralNotationUml eln = 
-                new EnumerationLiteralNotationUml(element); 
-            eln.parseEnumerationLiteralFig(
-                    Model.getFacade().getEnumeration(element),
-                    element, text);
-            assertEquals(text
-                       + " gave wrong name: "
-                       + Model.getFacade().getName(element),
-                       name, Model.getFacade().getName(element));
-        } else {
-            fail("Can only check name of a enumeration literal");
+        EnumerationLiteralNotationUml eln = 
+            new EnumerationLiteralNotationUml(element); 
+        eln.parseEnumerationLiteralFig(
+                Model.getFacade().getEnumeration(element),
+                element, text);
+        assertEquals(text
+                + " gave wrong name: "
+                + Model.getFacade().getName(element),
+                name, Model.getFacade().getName(element));
+    }
+    
+    /**
+     * Check if the number of literals is equal to the given number.
+     * Check if the names of the literals are equal to the ones given.
+     * 
+     * @param count the supposed number of literals
+     * @param names the supposed names of the literals
+     */
+    private void checkLiterals(int count, String[] names) {
+        List literals = 
+            Model.getFacade().getEnumerationLiterals(aEnumeration);
+        assertEquals("Unexpected number of Literals", count, 
+                literals.size());
+        if (count != literals.size()) {
+            /* No need to check any further if we fail the 1st part. */
+            return;
+        }
+        int i = 0;
+        for (Object lit : literals) {
+            String name = Model.getFacade().getName(lit);
+            if (name == null) name = "";
+            assertEquals("Unexpected Literal name", name, names[i++]);
         }
     }
 
@@ -206,6 +237,10 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
         checkGenerate(aLiteral, "", npArguments);
         checkName(aLiteral, " << s1, s2, s3 >> name3", "name3");
         checkGenerate(aLiteral, "<<s1,s2,s3>> name3", npArguments);
+        npArguments.put("leftGuillemot", "\u00AB");
+        npArguments.put("rightGuillemot", "\u00BB");
+        /* TODO: Make this work: */
+//        checkGenerate(aLiteral, "\u00ABs1,s2,s3\u00BB name3", npArguments);
     }
     
     private void checkGenerate(Object literal, String text, Map args) {

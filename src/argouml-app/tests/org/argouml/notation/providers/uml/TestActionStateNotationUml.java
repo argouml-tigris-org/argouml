@@ -174,10 +174,24 @@ public class TestActionStateNotationUml extends TestCase {
      * Test if help is correctly provided.
      */
     public void testGetHelp() {
-        ActionStateNotationUml notation = new ActionStateNotationUml(aActionState);
+        ActionStateNotationUml notation = 
+            new ActionStateNotationUml(aActionState);
         String help = notation.getParsingHelp();
         assertTrue("No help at all given", help.length() > 0);
         assertTrue("Parsing help not conform for translation", 
                 help.startsWith("parsing."));
+    }
+    
+    /**
+     * Test if the notationProvider refuses to instantiate 
+     * without showing it the right UML element.
+     */
+    public void testValidObjectCheck() {
+        try {
+            new ActionStateNotationUml(aStateMachine);
+            fail("The NotationProvider did not throw for a wrong UML element.");
+        } catch (IllegalArgumentException e) {
+            /* Everything fine... */
+        } 
     }
 }

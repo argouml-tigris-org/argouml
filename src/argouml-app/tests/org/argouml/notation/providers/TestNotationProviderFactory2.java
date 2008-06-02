@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,14 +27,17 @@ package org.argouml.notation.providers;
 import java.util.Map;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
+import org.argouml.model.Model;
+import org.argouml.notation.InitNotation;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
+import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 
@@ -54,7 +57,10 @@ public class TestNotationProviderFactory2 extends TestCase {
      */
     protected void setUp() throws Exception {
         InitializeModel.initializeDefault();
+        assertTrue("Model subsystem init failed.", Model.isInitiated());
         new InitProfileSubsystem().init();
+        (new InitNotation()).init();
+        (new InitNotationUml()).init();
         name = Notation.makeNotation(
                     "Test",
                     null,

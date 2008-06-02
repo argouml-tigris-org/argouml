@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,9 +28,10 @@ import java.text.ParseException;
 import java.util.Iterator;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.notation.InitNotation;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -56,7 +57,11 @@ public class TestMessageNotationUml extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
-        new InitProfileSubsystem().init();
+//        new InitProfileSubsystem().init();
+        assertTrue("Model subsystem init failed.", Model.isInitiated());
+        (new InitProfileSubsystem()).init();
+        (new InitNotation()).init();
+        (new InitNotationUml()).init();
     }
 
     /**
@@ -476,5 +481,20 @@ public class TestMessageNotationUml extends TestCase {
         assertTrue("No help at all given", help.length() > 0);
         assertTrue("Parsing help not conform for translation", 
                 help.startsWith("parsing."));
+    }
+    
+    /**
+     * Test if the notationProvider refuses to instantiate 
+     * without showing it the right UML element.
+     */
+    public void testValidObjectCheck() {
+        Object coll = Model.getCollaborationsFactory().createCollaboration();
+        Object inter = Model.getCollaborationsFactory().buildInteraction(coll);
+        try {
+            new MessageNotationUml(inter);
+            fail("The NotationProvider did not throw for a wrong UML element.");
+        } catch (IllegalArgumentException e) {
+            /* Everything fine... */
+        } 
     }
 }

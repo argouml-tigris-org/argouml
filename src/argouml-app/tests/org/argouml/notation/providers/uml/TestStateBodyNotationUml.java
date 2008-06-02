@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2007 The Regents of the University of California. All
+// Copyright (c) 2004-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,10 +28,10 @@ import java.text.ParseException;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 
@@ -252,4 +252,16 @@ public class TestStateBodyNotationUml extends TestCase {
                 help.startsWith("parsing."));
     }
 
+    /**
+     * Test if the notationProvider refuses to instantiate 
+     * without showing it the right UML element.
+     */
+    public void testValidObjectCheck() {
+        try {
+            new StateBodyNotationUml(aClass);
+            fail("The NotationProvider did not throw for a wrong UML element.");
+        } catch (IllegalArgumentException e) {
+            /* Everything fine... */
+        } 
+    }
 }
