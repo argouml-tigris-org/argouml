@@ -259,13 +259,17 @@ class FigLifeLine extends FigGroup {
         final Rectangle oldBounds = getBounds();
         
         rectFig.setBounds(x, y, w, h);
-        lineFig.setBounds(x + w / 2, y, 
-                w, h);
+        lineFig.setBounds(x + w / 2, y, w, h);
+        
+        final int yDiff = oldBounds.y - y;
     
         // we don't recalculate activations, just move them
         for (FigActivation act : activations) {
+            // TODO: why do we need to remove then add the Fig?
             removeFig(act);
-            act.setX(lineFig.getX() - FigActivation.DEFAULT_WIDTH / 2);
+            act.setLocation(
+                    lineFig.getX() - FigActivation.DEFAULT_WIDTH / 2,
+                    act.getY() - yDiff);
             if (activations.size() == 1 
                     && act.getHeight() == oldBounds.height) {
                 act.setHeight(getHeight());
