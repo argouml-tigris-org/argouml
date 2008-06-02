@@ -142,14 +142,14 @@ public class FigClassifierRole extends FigNodeModelElement {
      *
      * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
      */
-     public void superTranslate(int dx, int dy) {
+    public void superTranslate(int dx, int dy) {
  	setBounds(getX() + dx, getY(), getWidth(), getHeight());
-     }
+    }
      
     /**
      * Updates the head offset, looking for the create messages. 
      */
-    protected void updateHeadOffset() {
+    private void updateHeadOffset() {
         FigMessage createMessage = getFirstCreateFigMessage();
         if (createMessage != null) {
             int y = createMessage.getFirstPoint().y;
@@ -218,7 +218,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * Updates the position of the classifier role.
      * Called when a create message is added or moved.
      */
-    protected void relocate() {
+    void relocate() {
         updateHeadOffset();
         emptyFig.setBounds(getX(), getY(), getWidth(), offset);
         headFig.setBounds(getX(), getY() + offset,
