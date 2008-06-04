@@ -87,6 +87,8 @@ import org.tigris.gef.presentation.Fig;
  * TODO: subsequent parsing of further operation bodies <p>
  * TODO: suppressing multiple creation of already created messages<p>
  * TODO: processing of non-constructor-calls to other classifiers<p>
+ * TODO: refactoring into many classes depending on their purpose<p>
+ * TODO: work with import modules instead of the internal Java import<p>
  * TODO: i18n<p>
  */
 public class RESequenceDiagramDialog
@@ -124,7 +126,8 @@ public class RESequenceDiagramDialog
 
 
     /**
-     * Constructor.
+     * Constructor. A new sequence diagram will be created and the work
+     * happens in that new sequence diagram.
      *
      * @param oper The operation that should be reverse engineered.
      */
@@ -133,12 +136,16 @@ public class RESequenceDiagramDialog
     }
 
     /**
-     * Constructor.
+     * Constructor. If a FigMessage object is passed, then it is assumed that
+     * the actual diagram is a sequence diagram, so no new one is created and
+     * the work happens in the actual sequence diagram.
      *
      * @param oper The operation that should be reverse engineered.
      * @param figMessage the message figure where the result will be drawn to
      */
     public RESequenceDiagramDialog(Object oper, FigMessage figMessage) {
+        // TODO: don't depend on a Fig (but it is needed to extend an existing
+        // sequence diagram, i.e. to perform an action on a FigMessage!) 
         super(
                 "NOT FUNCTIONAL!!! "
                 + Translator.localize(
@@ -153,10 +160,13 @@ public class RESequenceDiagramDialog
         operation = oper;
         model = ProjectManager.getManager().getCurrentProject().getModel();
         try {
+            // TODO: must not depend on the Java modeller, but the needed one
+            // must be either derived from the method's notation, or chosen by
+            // the user from a list of available language importers
             modeller = new Modeller(model, new DummySettings(), null);
         } catch (Exception ex) { 
-            // TODO: Why are these being ignored? - tfm
-            LOG.warn("Exception ignored", ex);
+            // the only chance we have is to finish the current operation
+            LOG.warn("Modeller not ready, so no more generation of calls", ex);
         }
 
         classifier = Model.getFacade().getOwner(operation);
@@ -165,8 +175,8 @@ public class RESequenceDiagramDialog
             graphModel =
                 (SequenceDiagramGraphModel) Globals.curEditor().getGraphModel();
             collaboration = graphModel.getCollaboration();
-            // maybe there is an easier way to find
-            // the current diagram than this:
+            // TODO: implement an easier way than this to find
+            // the current diagram:
             Project p = ProjectManager.getManager().getCurrentProject();
             Iterator<ArgoDiagram> iter = p.getDiagramList().iterator();
             while (iter.hasNext()) {
@@ -176,6 +186,7 @@ public class RESequenceDiagramDialog
                 }
             }
             classifierRole = getClassifierRole(classifier, "obj");
+            // TODO: using an interface method to get the amount of ports:
             portCnt =
                 SequenceDiagramLayer.getNodeIndex(
                     figMessage.getDestMessageNode().getFigMessagePort().getY());
@@ -268,6 +279,7 @@ public class RESequenceDiagramDialog
         Project p = ProjectManager.getManager().getCurrentProject();
         Object newTarget = null;
         if (target instanceof Fig) {
+            // TODO: common method for getting the model element of a fig
             target = ((Fig) target).getOwner();
         }
         if (Model.getFacade().isAModelElement(target)
@@ -463,7 +475,8 @@ public class RESequenceDiagramDialog
     }
 
     /**
-     * Builds the sequence diagram for a classifier.
+     * Builds the sequence diagram for a classifier.<p>
+     * TODO: find a better place for a similar method returning a diagram.
      */
     private void buildSequenceDiagram(Object theClassifier) {
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -484,7 +497,9 @@ public class RESequenceDiagramDialog
 
     /**
      * Gets or builds the figure of the classifier role for a given classifier
-     * and object name.
+     * and object name.<p>
+     * TODO: Hide this method elsewhere and use it in the implementation of a
+     * to be defined method (see usage of this method in this class)
      */
     private FigClassifierRole getClassifierRole(
             Object theClassifier, String objName) {
@@ -543,8 +558,10 @@ public class RESequenceDiagramDialog
         JavaRecognizer parser = null;
         calls.clear();
         types.clear();
-        modeller.clearMethodCalls();
-        modeller.clearLocalVariableDeclarations();
+        if (modeller != null) {
+            modeller.clearMethodCalls();
+            modeller.clearLocalVariableDeclarations();
+        }
         try {
             lexer =
                 new JavaLexer(
@@ -554,8 +571,8 @@ public class RESequenceDiagramDialog
             parser.setModeller(modeller);
             parser.setParserMode(JavaRecognizer.MODE_REVENG_SEQUENCE);
         } catch (Exception ex) { 
-            // TODO: Why are these being ignored?
-            LOG.warn("Exception ignored", ex);
+            // the only chance we have is to finish the current operation
+            LOG.warn("Parser not ready, so no more generation of calls", ex);
         }
         if (modeller != null && parser != null) {
             try {
@@ -575,6 +592,7 @@ public class RESequenceDiagramDialog
 
     /**
      * Gets the (first) body of an operation.
+     * TODO: get the right body instead (notation!), else nothing.
      */
     private static String getBody(Object operation) {
         String body = null;
@@ -593,6 +611,7 @@ public class RESequenceDiagramDialog
     /**
      * Builds the complete action and its target
      * classifier role (if not existing).
+     * TODO: Put a similar method in a to be defined interface.
      */
     private Object buildAction(String call) {
         Object action = null;
@@ -654,7 +673,9 @@ public class RESequenceDiagramDialog
     }
 
     /**
-     * Builds the edge figure for an action.
+     * Builds the edge figure for an action.<p>
+     * TODO: Hide this method in the implementation of a to be defined
+     * interface.
      */
     private FigMessage buildEdge(String call,
             FigClassifierRole startFig,
@@ -697,7 +718,9 @@ public class RESequenceDiagramDialog
     /**
      * Gets or builds a classifier role from a type. The type is a classifier
      * name, either fully qualified (with whole package path) or not.
-     * Also ensures that there is an association to the actual classifier.
+     * Also ensures that there is an association to the actual classifier.<p>
+     * TODO: Hide this method in the implementation of a to be defined
+     * interface.
      */
     private Object getClassifierFromModel(String type, String objName) {
         Object theClassifier = null;
@@ -774,7 +797,9 @@ public class RESequenceDiagramDialog
 
     /**
      * Checks if there is a directed association between two classifiers, and
-     * creates one if necessary.
+     * creates one if necessary.<p>
+     * TODO: Hide this method in the implementation of a to be defined
+     * interface.
      */
     private void ensureDirectedAssociation(Object fromCls, Object toCls) {
         String fromName = Model.getFacade().getName(fromCls);
@@ -801,7 +826,9 @@ public class RESequenceDiagramDialog
 
     /**
      * Get the classifier with the given name from a permission
-     * (null if not found).
+     * (null if not found).<p>
+     * TODO: Hide this method in the implementation of a to be defined
+     * interface.
      */
     private Object permissionLookup(Object comp, String clsName) {
         Object theClassifier = null;
