@@ -46,6 +46,21 @@ public interface SettingsTypes {
          * @return the String message
          */
         String getLabel();
+
+    }
+    
+    
+    /**
+     * A setting which provides a description as well as a label.
+     */
+    interface Setting2 extends Setting {
+        
+        /**
+         * Returns a string with an extended description of the setting, 
+         * suitable for use as a tooltip or help message.
+         * @return the description
+         */
+        String getDescription(); 
     }
 
     /**
@@ -64,7 +79,7 @@ public interface SettingsTypes {
         /**
          * Returns the available options from which the user can pick one.
          * 
-         * @return a list with Strings that identinfies the options
+         * @return a list with Strings that identifies the options
          */
         List<String> getOptions();
 
@@ -118,6 +133,39 @@ public interface SettingsTypes {
          * @return the user selected value
          */
         boolean isSelected();
+    }
+    
+    /**
+     * File system path setting.  A single path in the file system.
+     */
+    interface PathSelection extends Setting2 {
+        
+        /**
+         * @return the default path  to use when first displayed
+         */
+        String getDefaultPath();
+        
+        /**
+         * @return the user selected path
+         */
+        String getPath();
+    }
+    
+    /**
+     * Setting containing ordered list of file system paths. Suitable for use
+     * for things like a Java classpath or an preprocessor include path list.
+     */
+    interface PathListSelection extends Setting2 {
+
+        /**
+         * @return the default list of paths to use when first displayed
+         */
+        List<String> getDefaultPathList();
+        
+        /**
+         * @return the user selected ordered list of file system paths
+         */
+        List<String> getPathList();
     }
 
 }

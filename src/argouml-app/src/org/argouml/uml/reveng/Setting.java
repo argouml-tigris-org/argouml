@@ -24,18 +24,22 @@
 
 package org.argouml.uml.reveng;
 
+import java.util.List;
+
 
 /**
  * Common class that all settings types inherit from.  It provides
  * a label to be associated with the setting in the user interface.
  */
-public class Setting implements SettingsTypes.Setting {
+public class Setting implements SettingsTypes.Setting2 {
 
     /**
      * The message of the Label.
      */
     private String label;
 
+    private String description;
+    
     /**
      * Construct a new Setting with the given label text.
      * 
@@ -45,17 +49,30 @@ public class Setting implements SettingsTypes.Setting {
         super();
         label = labelText;
     }
-
-    /* 
-     * @see org.argouml.uml.reveng.SettingsTypes.Setting#getLabel()
+    
+    /**
+     * Construct a new Setting with the given label text and description.
+     * 
+     * @param labelText string to use as the label
+     * @param descriptionText string to use as description
      */
+    public Setting(String labelText, String descriptionText) {
+        this(labelText);
+        description = descriptionText;
+    }
+
+
     public final String getLabel() {
         return label;
+    }
+    
+    public String getDescription() {
+        return description;
     }
 
     /**
      * Setting which specifies a boolean value.  Typical user presentation
-     * would be labelled checkbox.
+     * would be labeled checkbox.
      */
     public static class BooleanSelection extends Setting
         implements SettingsTypes.BooleanSelection {
@@ -90,4 +107,90 @@ public class Setting implements SettingsTypes.Setting {
             return defaultValue;
         }
     }
+    
+    public static class UniqueSelection extends Setting implements
+            SettingsTypes.UniqueSelection {
+
+        private List<String> options;
+
+        private int selection;
+
+        public UniqueSelection(String labelText, List<String> optionLabels,
+                int defaultSelection) {
+            super(labelText);
+            options = optionLabels;
+            this.selection = selection;
+        }
+
+        public int getDefaultSelection() {
+            return selection;
+        }
+
+        public List<String> getOptions() {
+            return options;
+        }
+
+        public boolean setSelection(int selection) {
+            this.selection = selection;
+            return true;
+        }
+    }
+
+    public static class PathSelection extends Setting implements
+            SettingsTypes.PathSelection {
+
+        private String path;
+
+        private String defaultPath;
+
+        public PathSelection(String labelText, String descriptionText,
+                String defaultPath) {
+            super(labelText, descriptionText);
+            this.defaultPath = defaultPath;
+            path = defaultPath;
+        }
+
+        public String getDefaultPath() {
+            return defaultPath;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        /**
+         * Set the path selection so that it is available to the importer.
+         * 
+         * @param newPath string representing the new path
+         */
+        public void setPath(String newPath) {
+            path = newPath;
+        }
+
+    }
+
+    public static class PathListSelection extends Setting implements
+            SettingsTypes.PathListSelection {
+
+        private List<String> defaultPathList;
+
+        private List<String> pathList;
+
+        public PathListSelection(String labelText, String descriptionText,
+                List<String> defaultPathList) {
+            super(labelText, descriptionText);
+            this.defaultPathList = defaultPathList;
+            pathList = defaultPathList;
+        }
+
+        public List<String> getDefaultPathList() {
+            return defaultPathList;
+        }
+
+        public List<String> getPathList() {
+            return pathList;
+        }
+
+    }
+
 }
