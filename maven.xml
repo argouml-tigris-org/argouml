@@ -1,8 +1,0 @@
-<project xmlns:ant="jelly:ant">
-  <preGoal name="java:compile">
-    <ant:filter token="ARGO_RELEASE_VERSION" value="${pom.currentVersion}"/>
-    <ant:copy file="src_new/templates/ArgoVersion.template"
-              filtering="on" overwrite="on"
-	      tofile="src_new/org/argouml/application/ArgoVersion.java"/>
-  </preGoal>
-</project>
