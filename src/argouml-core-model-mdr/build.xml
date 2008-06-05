@@ -168,14 +168,14 @@ Building this requires:
     <uptodate property="generate.notRequired" 
       srcfile="${xmi.file}.xml"
     	
-      targetfile="${build.dir}/${javainterfaces.jar}" >
+      targetfile="${build.dir}/UML14.dtd" >
     	
     </uptodate>
 
   </target>
 
   <target name="generate-skipped" if="generate.notRequired">
-    <echo message="${build.dir}/${javainterfaces.jar} is up to date"/>
+    <echo message="${build.dir}/UML14.dtd is up to date"/>
   </target>
 
   <!-- =================================================================== -->
