@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  * This is what you see after you activate the "Help->Help" menu-item.
  */
 public class HelpBox extends JFrame implements HyperlinkListener {
-    
+
     private static final Logger LOG = Logger.getLogger(HelpBox.class);
 
     /**
@@ -60,16 +60,13 @@ public class HelpBox extends JFrame implements HyperlinkListener {
     /**
      * The names and URLs for the pages.
      */
-    private String pages[][] = {{"Manual", 
+    private String pages[][] = {{"Manual",
             "http://argouml-stats.tigris.org/nonav/documentation/"
-                + "manual-0.24/" , 
+                + "manual-0.24/" ,
             "The ArgoUML online manual"},
-        {"Forum", 
-            "http://www.argouml-users.net/forum/viewforum.php?f=1", 
-            "A ArgoUML forum" },
-        {"Wiki", 
-            "http://www.argouml-users.net/index.php?title=Main_Page", 
-            "A ArgoUML wiki" } };
+        {"Support",
+            "http://argouml.tigris.org/nonav/support.html",
+            "The ArgoUML support page" }};
 
 
     /**
@@ -111,7 +108,7 @@ public class HelpBox extends JFrame implements HyperlinkListener {
 
             // Put the current pane in a scroll pane.
             JScrollPane paneScrollPane = new JScrollPane( panes[i]);
-            paneScrollPane.setVerticalScrollBarPolicy( 
+            paneScrollPane.setVerticalScrollBarPolicy(
                     JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
             paneScrollPane.setPreferredSize(new Dimension(800, 600));
             paneScrollPane.setMinimumSize(new Dimension(400, 300));
