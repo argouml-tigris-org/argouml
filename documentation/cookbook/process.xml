@@ -210,7 +210,7 @@ This is also in sync with our release process.
               <para>
 Looking at it from a single persons perspective an issue is either a
 "I could work with this issue but I currently don't",
-"I work with this one", or
+"I am currently working on this issue", or
 "I am now done with my work on this issue".
 For a resolver this is corresponds to NEW/REOPEN for the first group,
 STARTED for the second and
