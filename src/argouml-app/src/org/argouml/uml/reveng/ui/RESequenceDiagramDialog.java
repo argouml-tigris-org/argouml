@@ -63,6 +63,7 @@ import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
@@ -87,7 +88,9 @@ import org.tigris.gef.presentation.Fig;
  * TODO: subsequent parsing of further operation bodies <p>
  * TODO: suppressing multiple creation of already created messages<p>
  * TODO: processing of non-constructor-calls to other classifiers<p>
- * TODO: refactoring into many classes depending on their purpose<p>
+ * TODO: refactoring into many classes depending on their purpose.
+ * At the very least split dialog from processing and remove knowledge
+ * of sequence diagram implementation<p>
  * TODO: work with import modules instead of the internal Java import<p>
  * TODO: i18n<p>
  */
@@ -102,17 +105,25 @@ public class RESequenceDiagramDialog
 
     private static final int X_OFFSET = 10;
 
-    private Object model;
+    private final Object model;
     private Modeller modeller;
-    private Object classifier;
-    private Object operation;
-    private FigClassifierRole classifierRole;
-    private List calls = new ArrayList();
-    private List calldata = new ArrayList();
-    private Hashtable types = new Hashtable();
-    private Object collaboration;
+    private final Object classifier;
+    private final Object operation;
+    
+    // TODO: Need to remove knowledge of Fig type. At the very least this
+    // be FigNodeModelElement but preferably we can also remove GEF knowledge.
+    private final FigClassifierRole figClassifierRole;
+    
+    private final List<String> calls = new ArrayList<String>();
+    private final List<String> calldata = new ArrayList<String>();
+    private final Hashtable types = new Hashtable();
+    
+    // TODO: We possibly have more state than we need here. Can we have diagram
+    // only? graphModel and collaboration can be deduced from that.
     private ArgoDiagram diagram;
-    private SequenceDiagramGraphModel graphModel;
+    private UMLMutableGraphSupport graphModel;
+    private Object collaboration;
+    
     private CheckboxTableModel callTable;
     private JComboBox modeChoice;
     private JPanel changingPanel;
@@ -122,7 +133,7 @@ public class RESequenceDiagramDialog
     private int maxPort;
     private int portCnt;
     private int anonCnt;
-    private boolean isNewSequenceDiagram;
+    private final boolean isNewSequenceDiagram;
 
 
     /**
@@ -172,9 +183,10 @@ public class RESequenceDiagramDialog
         classifier = Model.getFacade().getOwner(operation);
         if (figMessage != null) {
             isNewSequenceDiagram = false;
-            graphModel =
+            SequenceDiagramGraphModel sequenceDiagramGraphModel = 
                 (SequenceDiagramGraphModel) Globals.curEditor().getGraphModel();
-            collaboration = graphModel.getCollaboration();
+            graphModel = sequenceDiagramGraphModel;
+            collaboration = sequenceDiagramGraphModel.getCollaboration();
             // TODO: implement an easier way than this to find
             // the current diagram:
             Project p = ProjectManager.getManager().getCurrentProject();
@@ -185,14 +197,16 @@ public class RESequenceDiagramDialog
                     break;
                 }
             }
-            classifierRole = getClassifierRole(classifier, "obj");
-            // TODO: using an interface method to get the amount of ports:
+            figClassifierRole = getClassifierRole(classifier, "obj");
+            // TODO: There is only a single port on new implementation of SD
+            // so how do we resolve this?
             portCnt =
                 SequenceDiagramLayer.getNodeIndex(
                     figMessage.getDestMessageNode().getFigMessagePort().getY());
             Iterator<Fig> it = diagram.getFigIterator();
             while (it.hasNext()) {
                 Fig f = it.next();
+                // TODO: Test fig owner type rather than Fig class type
                 if (f instanceof FigClassifierRole) {
                     int x = f.getX();
                     if (maxXPos < x) {
@@ -202,6 +216,7 @@ public class RESequenceDiagramDialog
                             .startsWith("anon")) {
                         anonCnt++;
                     }
+                    // TODO: Test fig owner type rather than Fig class type
                 } else if (f instanceof FigMessage) {
                     int port =
                         SequenceDiagramLayer.getNodeIndex(
@@ -214,9 +229,9 @@ public class RESequenceDiagramDialog
             }
         } else {
             isNewSequenceDiagram = true;
-            buildSequenceDiagram(classifier);
-            classifierRole = getClassifierRole(classifier, "obj");
-            maxXPos = classifierRole.getX();
+            diagram = buildSequenceDiagram(classifier);
+            figClassifierRole = getClassifierRole(classifier, "obj");
+            maxXPos = figClassifierRole.getX();
         }
         parseBody();
 
@@ -476,16 +491,16 @@ public class RESequenceDiagramDialog
 
     /**
      * Builds the sequence diagram for a classifier.<p>
-     * TODO: find a better place for a similar method returning a diagram.
+     * TODO: find a better place for a similar method.
      */
-    private void buildSequenceDiagram(Object theClassifier) {
+    private ArgoDiagram buildSequenceDiagram(Object theClassifier) {
         Project p = ProjectManager.getManager().getCurrentProject();
 
         collaboration =
             Model.getCollaborationsFactory().buildCollaboration(
                 Model.getFacade().getNamespace(theClassifier),
                 theClassifier);
-        diagram =
+        final ArgoDiagram diagram =
             DiagramFactory.getInstance().createDiagram(
                 DiagramType.Sequence,
                 collaboration,
@@ -493,6 +508,7 @@ public class RESequenceDiagramDialog
         graphModel = (SequenceDiagramGraphModel) diagram.getGraphModel();
         p.addMember(diagram);
         TargetManager.getInstance().setTarget(diagram);
+        return diagram;
     }
 
     /**
@@ -580,7 +596,7 @@ public class RESequenceDiagramDialog
             } catch (Exception ex) {
                 LOG.debug("Parsing method body failed:", ex);
             }
-            Collection methodCalls = modeller.getMethodCalls();
+            Collection<String> methodCalls = modeller.getMethodCalls();
             if (methodCalls != null) {
                 calls.addAll(methodCalls);
                 if (modeller.getLocalVariableDeclarations() != null) {
@@ -613,8 +629,7 @@ public class RESequenceDiagramDialog
      * classifier role (if not existing).
      * TODO: Put a similar method in a to be defined interface.
      */
-    private Object buildAction(String call) {
-        Object action = null;
+    private void buildAction(String call) {
         StringBuffer sb = new StringBuffer(call);
         int findpos = sb.lastIndexOf(".");
         int createPos = sb.indexOf("new ");
@@ -623,17 +638,15 @@ public class RESequenceDiagramDialog
             && (createPos == 0 || sb.charAt(createPos - 1) == '=');
         if (!isCreate && findpos == -1) {
             // call of a method of the class
-            action =
-                buildEdge(call, classifierRole, classifierRole,
-                        Model.getMetaTypes().getCallAction());
+            buildEdge(call, figClassifierRole, figClassifierRole,
+                    Model.getMetaTypes().getCallAction());
         } else if (!isCreate
                 && findpos <= 5
                 && (call.startsWith("super.") || call.startsWith("this."))) {
             // also call of a method of the class,
             // but prefixed with "super." or "this."
-            action =
-                buildEdge(call, classifierRole, classifierRole,
-                        Model.getMetaTypes().getCallAction());
+            buildEdge(call, figClassifierRole, figClassifierRole,
+                    Model.getMetaTypes().getCallAction());
         } else {
             String type = null;
             if (isCreate) {
@@ -643,12 +656,11 @@ public class RESequenceDiagramDialog
                     createPos >= 2 ? sb.substring(0, createPos - 1) : null;
                 Object cls = getClassifierFromModel(type, objName);
                 FigClassifierRole endFig = getClassifierRole(cls, objName);
-                action =
-                    buildEdge(
-                            sb.substring(createPos),
-                            classifierRole,
-                            endFig,
-                            Model.getMetaTypes().getCreateAction());
+                buildEdge(
+                        sb.substring(createPos),
+                        figClassifierRole,
+                        endFig,
+                        Model.getMetaTypes().getCreateAction());
             } else {
                 String teststring = call.substring(0, findpos);
                 type = (String) types.get(teststring);
@@ -656,9 +668,8 @@ public class RESequenceDiagramDialog
                     Object cls = getClassifierFromModel(type, teststring);
                     FigClassifierRole endFig =
                         getClassifierRole(cls, teststring);
-                    action =
-                        buildEdge(call, classifierRole, endFig,
-                                Model.getMetaTypes().getCallAction());
+                    buildEdge(call, figClassifierRole, endFig,
+                            Model.getMetaTypes().getCallAction());
                 }
             }
 
@@ -669,19 +680,22 @@ public class RESequenceDiagramDialog
                 // unknown type
             // }
         }
-        return action;
     }
 
     /**
      * Builds the edge figure for an action.<p>
      * TODO: Hide this method in the implementation of a to be defined
      * interface.
+     * TODO: When moving it would be better to take model elements rather than
+     * Figs as arguments here the implementation of that interface suggested
+     * above can then find the Figs itself without such diagram knowledge being
+     * in RE.
      */
-    private FigMessage buildEdge(String call,
+    private void buildEdge(
+            String call,
             FigClassifierRole startFig,
             FigClassifierRole endFig,
             Object callType) {
-        FigMessage figEdge = null;
         SequenceDiagramLayer lay = (SequenceDiagramLayer) diagram.getLayer();
         int n = startFig == endFig ? 2 : 1;
         if (portCnt < maxPort) {
@@ -693,26 +707,30 @@ public class RESequenceDiagramDialog
         maxPort += n;
         Fig startPortFig = startFig.getPortFig(startPort);
         Fig destPortFig = endFig.getPortFig(foundPort);
-        Object edgeType = Model.getMetaTypes().getMessage();
+        Object messageType = Model.getMetaTypes().getMessage();
+        
+        // TODO: This has a bad smell. I don't think we should be using Modes here.
+        // Modes are for user interactions. Find a better way to do this.
         Editor ce = Globals.curEditor();
         Hashtable args = new Hashtable();
         args.put("action", callType);
         Mode mode = ce.getModeManager().top();
         mode.setArgs(args);
-        Object newEdge = graphModel.connect(startPort, foundPort, edgeType);
+        
+        Object newEdge = graphModel.connect(startPort, foundPort, messageType);
         if (null != newEdge) {
             Model.getCoreHelper().setName(newEdge, call);
-            figEdge = (FigMessage) lay.presentationFor(newEdge);
-            figEdge.setSourcePortFig(startPortFig);
-            figEdge.setSourceFigNode(startFig);
-            figEdge.setDestPortFig(destPortFig);
-            figEdge.setDestFigNode(endFig);
+            final FigMessage figMessage =
+                (FigMessage) lay.presentationFor(newEdge);
+            figMessage.setSourcePortFig(startPortFig);
+            figMessage.setSourceFigNode(startFig);
+            figMessage.setDestPortFig(destPortFig);
+            figMessage.setDestFigNode(endFig);
             endFig.updateEdges();
             if (startFig != endFig) {
                 startFig.updateEdges();
             }
         }
-        return figEdge;
     }
 
     /**
@@ -721,6 +739,7 @@ public class RESequenceDiagramDialog
      * Also ensures that there is an association to the actual classifier.<p>
      * TODO: Hide this method in the implementation of a to be defined
      * interface.
+     * TODO: objName is not used. Are there plans for this?
      */
     private Object getClassifierFromModel(String type, String objName) {
         Object theClassifier = null;
