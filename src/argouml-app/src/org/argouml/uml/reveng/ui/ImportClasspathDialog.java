@@ -1,8 +1,8 @@
 package org.argouml.uml.reveng.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -47,22 +47,19 @@ public class ImportClasspathDialog extends JDialog {
     private JButton removeFile;
 
     private JButton ok;
-    
-    private Component parent;
 
     private ImportCommandInterface importCmd;
 
     /**
      * Construct a dialog to allow the user to set up the classpath for the
-     * import.
+     * import.<p>
+     * @param impCmd 
      */
-    public ImportClasspathDialog(Component comp,
-            ImportCommandInterface impCmd) {
+    public ImportClasspathDialog(ImportCommandInterface impCmd) {
 
         super();
         importClasspathDialog = this;
         setTitle(Translator.localize("dialog.import.classpath.title"));
-        parent = comp;
         importCmd = impCmd;
 
         Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -224,7 +221,7 @@ public class ImportClasspathDialog extends JDialog {
                 }
             });
 
-            chooser.showOpenDialog(parent);
+            chooser.showOpenDialog(new Frame());
         }
     }
 

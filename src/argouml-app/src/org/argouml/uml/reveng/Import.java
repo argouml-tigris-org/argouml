@@ -25,40 +25,29 @@
 package org.argouml.uml.reveng;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.URL;
 import java.util.StringTokenizer;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.moduleloader.ModuleInterface;
-import org.argouml.uml.reveng.java.JavaImport;
 import org.argouml.uml.reveng.ui.ImportStatusScreen;
 import org.argouml.util.SuffixFilter;
 import org.argouml.util.UIUtils;
@@ -607,8 +596,7 @@ public class Import extends ImportCommon implements ImportSettings {
             if (theImport.getCurrentModule() instanceof ExtendedImportInterface) {
                 ExtendedImportInterface eii = (ExtendedImportInterface) theImport
                         .getCurrentModule();
-                eii.invokeImport(theImport.getFrame(), new ImportCommand(
-                        theImport));
+                eii.invokeImport(new ImportCommand(theImport));
             } else {
                 theImport.doFile();
             }

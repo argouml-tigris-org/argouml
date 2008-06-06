@@ -24,8 +24,6 @@
 
 package org.argouml.uml.reveng;
 
-import java.awt.Component;
-
 /**
  * An extended interface which identifies an ArgoUML plug-in which imports 
  * source language modules and creates UML model elements in our model.
@@ -46,8 +44,7 @@ public interface ExtendedImportInterface extends ImportInterface {
      * extended import module functionality (e.g. displaying a classpath
      * dialog for JavaImport).
      * 
-     * @param component the visual component this is called from
      * @param importCmd the import command to invoke the import
      */
-    void invokeImport(Component component, ImportCommandInterface importCmd);
+    void invokeImport(ImportCommandInterface importCmd);
 }

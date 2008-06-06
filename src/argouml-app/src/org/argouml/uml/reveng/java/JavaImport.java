@@ -24,7 +24,6 @@
 
 package org.argouml.uml.reveng.java;
 
-import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -235,11 +234,10 @@ public class JavaImport implements ExtendedImportInterface {
     }
 
     /**
-     * @see org.argouml.uml.reveng.ExtendedImportInterface#invokeImport(java.awt.Component, org.argouml.uml.reveng.ImportCommandInterface)
+     * @see org.argouml.uml.reveng.ExtendedImportInterface#invokeImport(org.argouml.uml.reveng.ImportCommandInterface)
      */
-    public void invokeImport(Component component,
-            ImportCommandInterface importCmd) {
-        new ImportClasspathDialog(component, importCmd);
+    public void invokeImport(ImportCommandInterface importCmd) {
+        new ImportClasspathDialog(importCmd);
     }
 
     /*
