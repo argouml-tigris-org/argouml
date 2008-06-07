@@ -169,7 +169,10 @@ public class RESequenceDiagramDialog
         setResizable(false);
 
         operation = oper;
-        model = ProjectManager.getManager().getCurrentProject().getModel();
+        // TODO: Remove reference to getCurrentProject. Project should be
+        // as an argument.
+        Project project = ProjectManager.getManager().getCurrentProject();
+        model = project.getModel();
         try {
             // TODO: must not depend on the Java modeller, but the needed one
             // must be either derived from the method's notation, or chosen by
@@ -187,17 +190,17 @@ public class RESequenceDiagramDialog
                 (SequenceDiagramGraphModel) Globals.curEditor().getGraphModel();
             graphModel = sequenceDiagramGraphModel;
             collaboration = sequenceDiagramGraphModel.getCollaboration();
-            // TODO: implement an easier way than this to find
-            // the current diagram:
-            Project p = ProjectManager.getManager().getCurrentProject();
-            Iterator<ArgoDiagram> iter = p.getDiagramList().iterator();
+            
+            // TODO: Pass the current diagram as an argument to constructor.
+            Iterator<ArgoDiagram> iter = project.getDiagramList().iterator();
             while (iter.hasNext()) {
                 diagram = iter.next();
                 if (graphModel == diagram.getGraphModel()) {
                     break;
                 }
             }
-            figClassifierRole = getClassifierRole(classifier, "obj");
+            
+            figClassifierRole = getFigClassifierRole(classifier, "obj");
             // TODO: There is only a single port on new implementation of SD
             // so how do we resolve this?
             portCnt =
@@ -230,7 +233,7 @@ public class RESequenceDiagramDialog
         } else {
             isNewSequenceDiagram = true;
             diagram = buildSequenceDiagram(classifier);
-            figClassifierRole = getClassifierRole(classifier, "obj");
+            figClassifierRole = getFigClassifierRole(classifier, "obj");
             maxXPos = figClassifierRole.getX();
         }
         parseBody();
@@ -248,7 +251,7 @@ public class RESequenceDiagramDialog
         if (e.getSource() == getOkButton()) {
             for (int i = 0; i < callTable.getRowCount(); i++) {
                 if (Boolean.TRUE.equals(callTable.getValueAt(i, 1))) {
-                    buildAction((String) callTable.getValueAt(i, 0));
+                    buildAction((String) callTable.getValueAt(i, 0), figClassifierRole, figClassifierRole);
                 }
             }
         } else if (e.getSource() == getCancelButton()
@@ -517,8 +520,9 @@ public class RESequenceDiagramDialog
      * TODO: Hide this method elsewhere and use it in the implementation of a
      * to be defined method (see usage of this method in this class)
      */
-    private FigClassifierRole getClassifierRole(
-            Object theClassifier, String objName) {
+    private FigClassifierRole getFigClassifierRole(
+            Object theClassifier,
+            String objName) {
         FigClassifierRole crFig = null;
         // first check if the fig of the classifier role already exists
         Collection coll = diagram.getLayer().getContents();
@@ -527,13 +531,17 @@ public class RESequenceDiagramDialog
             Object fig = iter.next();
             if (fig instanceof FigClassifierRole) {
                 Object elem = ((FigClassifierRole) fig).getOwner();
-                Collection bases = Model.getFacade().getBases(elem);
-                if (Model.getFacade().isAClassifierRole(elem)
-                     && Model.getFacade().getName(elem).equals(objName)
-                     && bases != null && bases.contains(theClassifier)) {
-                    // yes found, so this will be returned
-                    crFig = (FigClassifierRole) fig;
-                    break;
+                // TODO: Do we really need to test for name here if we know we
+                // have the right classifier role?
+                if (Model.getFacade().getName(elem).equals(objName)) {
+                    final Collection bases = Model.getFacade().getBases(elem);
+                    // TODO: Do we really have to test for null here? I suspect
+                    // not, I'd expect an empty collection.
+                    if (bases != null && bases.contains(theClassifier)) {
+                        // yes found, so this will be returned
+                        crFig = (FigClassifierRole) fig;
+                        break;
+                    }
                 }
             }
         }
@@ -545,6 +553,8 @@ public class RESequenceDiagramDialog
             if (objName != null) {
                 Model.getCoreHelper().setName(node, objName);
             } else {
+                // TODO: I don't think it's normal to generate model element
+                // names
                 Model.getCoreHelper().setName(node, "anon" + (++anonCnt));
             }
             coll = new ArrayList();
@@ -629,7 +639,10 @@ public class RESequenceDiagramDialog
      * classifier role (if not existing).
      * TODO: Put a similar method in a to be defined interface.
      */
-    private void buildAction(String call) {
+    private void buildAction(
+            String call, 
+            FigClassifierRole startFig, 
+            FigClassifierRole endFig) {
         StringBuffer sb = new StringBuffer(call);
         int findpos = sb.lastIndexOf(".");
         int createPos = sb.indexOf("new ");
@@ -638,14 +651,14 @@ public class RESequenceDiagramDialog
             && (createPos == 0 || sb.charAt(createPos - 1) == '=');
         if (!isCreate && findpos == -1) {
             // call of a method of the class
-            buildEdge(call, figClassifierRole, figClassifierRole,
+            buildEdge(call, startFig, endFig,
                     Model.getMetaTypes().getCallAction());
         } else if (!isCreate
                 && findpos <= 5
                 && (call.startsWith("super.") || call.startsWith("this."))) {
             // also call of a method of the class,
             // but prefixed with "super." or "this."
-            buildEdge(call, figClassifierRole, figClassifierRole,
+            buildEdge(call, startFig, endFig,
                     Model.getMetaTypes().getCallAction());
         } else {
             String type = null;
@@ -655,20 +668,20 @@ public class RESequenceDiagramDialog
                 String objName =
                     createPos >= 2 ? sb.substring(0, createPos - 1) : null;
                 Object cls = getClassifierFromModel(type, objName);
-                FigClassifierRole endFig = getClassifierRole(cls, objName);
                 buildEdge(
                         sb.substring(createPos),
-                        figClassifierRole,
-                        endFig,
+                        startFig,
+                        getFigClassifierRole(cls, objName),
                         Model.getMetaTypes().getCreateAction());
             } else {
                 String teststring = call.substring(0, findpos);
                 type = (String) types.get(teststring);
                 if (type != null) {
                     Object cls = getClassifierFromModel(type, teststring);
-                    FigClassifierRole endFig =
-                        getClassifierRole(cls, teststring);
-                    buildEdge(call, figClassifierRole, endFig,
+                    buildEdge(
+                            call, 
+                            startFig, 
+                            getFigClassifierRole(cls, teststring),
                             Model.getMetaTypes().getCallAction());
                 }
             }
