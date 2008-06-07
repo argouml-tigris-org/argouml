@@ -106,6 +106,8 @@ public class RESequenceDiagramDialog
     private static final int X_OFFSET = 10;
 
     private final Object model;
+    
+    // TODO: Why is this not final?
     private Modeller modeller;
     private final Object classifier;
     private final Object operation;
@@ -143,7 +145,7 @@ public class RESequenceDiagramDialog
      * @param oper The operation that should be reverse engineered.
      */
     public RESequenceDiagramDialog(Object oper) {
-        this(oper, null);
+        this(oper, null, null);
     }
 
     /**
@@ -154,7 +156,10 @@ public class RESequenceDiagramDialog
      * @param oper The operation that should be reverse engineered.
      * @param figMessage the message figure where the result will be drawn to
      */
-    public RESequenceDiagramDialog(Object oper, FigMessage figMessage) {
+    public RESequenceDiagramDialog(
+            Object oper, 
+            FigMessage figMessage,
+            ArgoDiagram diagram) {
         // TODO: don't depend on a Fig (but it is needed to extend an existing
         // sequence diagram, i.e. to perform an action on a FigMessage!) 
         super(
@@ -181,6 +186,8 @@ public class RESequenceDiagramDialog
         } catch (Exception ex) { 
             // the only chance we have is to finish the current operation
             LOG.warn("Modeller not ready, so no more generation of calls", ex);
+            // TODO: Why do we continue here as if nothing has gone wrong?
+            // Can we really continue correctly without a modeller?
         }
 
         classifier = Model.getFacade().getOwner(operation);
@@ -209,18 +216,18 @@ public class RESequenceDiagramDialog
             Iterator<Fig> it = diagram.getFigIterator();
             while (it.hasNext()) {
                 Fig f = it.next();
-                // TODO: Test fig owner type rather than Fig class type
-                if (f instanceof FigClassifierRole) {
+                Object modelElement = f.getOwner();
+                
+                if (Model.getFacade().isAClassifierRole(modelElement)) {
                     int x = f.getX();
                     if (maxXPos < x) {
                         maxXPos = x;
                     }
-                    if (Model.getFacade().getName(f.getOwner())
+                    if (Model.getFacade().getName(modelElement)
                             .startsWith("anon")) {
                         anonCnt++;
                     }
-                    // TODO: Test fig owner type rather than Fig class type
-                } else if (f instanceof FigMessage) {
+                } else if (Model.getFacade().isAMessage(modelElement)) {
                     int port =
                         SequenceDiagramLayer.getNodeIndex(
                             ((FigMessage) f).getDestMessageNode()

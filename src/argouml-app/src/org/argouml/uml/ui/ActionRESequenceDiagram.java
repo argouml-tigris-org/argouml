@@ -31,10 +31,15 @@ import java.util.Iterator;
 import javax.swing.AbstractAction;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.sequence.ui.FigMessage;
 import org.argouml.uml.reveng.ui.RESequenceDiagramDialog;
+import org.tigris.gef.base.Globals;
 
 /**
  * Action to reverse engineer a sequence diagram from the operation bodies.
@@ -64,28 +69,45 @@ public class ActionRESequenceDiagram extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        Object obj = TargetManager.getInstance().getTarget();
-        if (Model.getFacade().isAOperation(obj)) {
-            RESequenceDiagramDialog dialog = new RESequenceDiagramDialog(obj);
+        final Object target = TargetManager.getInstance().getTarget();
+        if (Model.getFacade().isAOperation(target)) {
+            RESequenceDiagramDialog dialog =
+                new RESequenceDiagramDialog(target);
             dialog.setVisible(true);
-        } else if (Model.getFacade().isAMessage(obj) && messageFig != null) {
-            Object ac = Model.getFacade().getAction(obj);
-            Object op =
-                Model.getFacade().isACallAction(ac)
-                ? Model.getFacade().getOperation(ac)
+        } else if (Model.getFacade().isAMessage(target) && messageFig != null) {
+            final Object action = Model.getFacade().getAction(target);
+            Object operation =
+                Model.getFacade().isACallAction(action)
+                ? Model.getFacade().getOperation(action)
                         : null;
-            if (op != null) {
+            final SequenceDiagramGraphModel sequenceDiagramGraphModel = 
+                (SequenceDiagramGraphModel) Globals.curEditor().getGraphModel();
+            final Project project =
+                ProjectManager.getManager().getCurrentProject();
+            ArgoDiagram diagram = null;
+            Iterator<ArgoDiagram> iter = project.getDiagramList().iterator();
+            while (iter.hasNext()) {
+                diagram = iter.next();
+                if (sequenceDiagramGraphModel == diagram.getGraphModel()) {
+                    break;
+                }
+            }
+            if (operation != null) {
                 // it is highly desirable that the message action
                 // already knows it's operation
-                RESequenceDiagramDialog dialog =
-                    // TODO: There is a cyclic dependency between 
-                    // ActionRESequenceDiagram and FigMessage
-                    new RESequenceDiagramDialog(op, (FigMessage) messageFig);
+                // TODO: There is a cyclic dependency between 
+                // ActionRESequenceDiagram and FigMessage
+                RESequenceDiagramDialog dialog = new RESequenceDiagramDialog(
+                        operation, 
+                        (FigMessage) messageFig, 
+                        diagram);
                 dialog.setVisible(true);
             } else {
                 // the hard way: try to determine the operation
                 // from the message name
-                Object receiver = Model.getFacade().getReceiver(obj);
+                Object receiver = Model.getFacade().getReceiver(target);
+                // TODO: Do we really need to test for null here? I would
+                // expect an empty array which is safe.
                 Collection c =
                     receiver != null
                     ? Model.getFacade().getBases(receiver)
@@ -95,7 +117,7 @@ public class ActionRESequenceDiagram extends AbstractAction {
                 if (cls != null && Model.getFacade().isAClassifier(cls)) {
                     // too primitive (just gets the first method
                     // with matching name)
-                    String opName = Model.getFacade().getName(obj);
+                    String opName = Model.getFacade().getName(target);
                     int pos1 = opName.lastIndexOf(".");
                     int pos2 = opName.lastIndexOf("(");
                     if (pos1 == -1) {
@@ -106,16 +128,19 @@ public class ActionRESequenceDiagram extends AbstractAction {
                     }
                     pos2 = pos2 != -1 ? pos2 : opName.length();
                     opName = opName.substring(pos1, pos2);
-                    c = Model.getCoreHelper().getOperationsInh(cls);
-                    Iterator iter = c != null ? c.iterator() : null;
-                    while (iter != null && iter.hasNext()) {
-                        op = iter.next();
-                        if (opName.equals(Model.getFacade().getName(op))) {
+                    final Iterator it = 
+                        Model.getCoreHelper().getOperationsInh(cls).iterator();
+                    while (it.hasNext()) {
+                        operation = it.next();
+                        if (opName.equals(
+                                Model.getFacade().getName(operation))) {
                             // TODO: There is a cyclic dependency between 
                             // ActionRESequenceDiagram and FigMessage
                             RESequenceDiagramDialog dialog =
-                                new RESequenceDiagramDialog(op,
-                                        (FigMessage) messageFig);
+                                new RESequenceDiagramDialog(
+                                        operation,
+                                        (FigMessage) messageFig,
+                                        diagram);
                             dialog.setVisible(true);
                             break;
                         }
@@ -135,6 +160,7 @@ public class ActionRESequenceDiagram extends AbstractAction {
             || Model.getFacade().isAMessage(target);
     }
 
+    // TODO: We later cast this to FigMessage so why define as Object here?
     private Object messageFig;
 
     /**
