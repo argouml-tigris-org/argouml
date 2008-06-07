@@ -47,6 +47,11 @@ import org.tigris.gef.base.Globals;
 public class ActionRESequenceDiagram extends AbstractAction {
 
     /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 2915509413708666273L;
+
+    /**
      * The constructor. If a figure is given, then it is invoked inside of a
      * sequence diagram, so it will work with this diagram. If figure is null,
      * then this causes the creation of a new sequence diagram.
@@ -69,21 +74,16 @@ public class ActionRESequenceDiagram extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
+        Project project = ProjectManager.getManager().getCurrentProject();
         final Object target = TargetManager.getInstance().getTarget();
         if (Model.getFacade().isAOperation(target)) {
             RESequenceDiagramDialog dialog =
-                new RESequenceDiagramDialog(target);
+                new RESequenceDiagramDialog(project, target);
             dialog.setVisible(true);
         } else if (Model.getFacade().isAMessage(target) && messageFig != null) {
             final Object action = Model.getFacade().getAction(target);
-            Object operation =
-                Model.getFacade().isACallAction(action)
-                ? Model.getFacade().getOperation(action)
-                        : null;
             final SequenceDiagramGraphModel sequenceDiagramGraphModel = 
                 (SequenceDiagramGraphModel) Globals.curEditor().getGraphModel();
-            final Project project =
-                ProjectManager.getManager().getCurrentProject();
             ArgoDiagram diagram = null;
             Iterator<ArgoDiagram> iter = project.getDiagramList().iterator();
             while (iter.hasNext()) {
@@ -92,12 +92,14 @@ public class ActionRESequenceDiagram extends AbstractAction {
                     break;
                 }
             }
-            if (operation != null) {
+            if (Model.getFacade().isACallAction(action)) {
+                final Object operation = Model.getFacade().getOperation(action);
                 // it is highly desirable that the message action
                 // already knows it's operation
                 // TODO: There is a cyclic dependency between 
                 // ActionRESequenceDiagram and FigMessage
                 RESequenceDiagramDialog dialog = new RESequenceDiagramDialog(
+                        project,
                         operation, 
                         (FigMessage) messageFig, 
                         diagram);
@@ -105,14 +107,14 @@ public class ActionRESequenceDiagram extends AbstractAction {
             } else {
                 // the hard way: try to determine the operation
                 // from the message name
-                Object receiver = Model.getFacade().getReceiver(target);
+                final Object receiver = Model.getFacade().getReceiver(target);
                 // TODO: Do we really need to test for null here? I would
                 // expect an empty array which is safe.
-                Collection c =
+                final Collection c =
                     receiver != null
                     ? Model.getFacade().getBases(receiver)
                             : null;
-                Object cls =
+                final Object cls =
                     c != null && !c.isEmpty() ? c.iterator().next() : null;
                 if (cls != null && Model.getFacade().isAClassifier(cls)) {
                     // too primitive (just gets the first method
@@ -128,16 +130,15 @@ public class ActionRESequenceDiagram extends AbstractAction {
                     }
                     pos2 = pos2 != -1 ? pos2 : opName.length();
                     opName = opName.substring(pos1, pos2);
-                    final Iterator it = 
-                        Model.getCoreHelper().getOperationsInh(cls).iterator();
-                    while (it.hasNext()) {
-                        operation = it.next();
+                    
+                    for (Object operation : Model.getCoreHelper().getOperationsInh(cls)) {
                         if (opName.equals(
                                 Model.getFacade().getName(operation))) {
                             // TODO: There is a cyclic dependency between 
                             // ActionRESequenceDiagram and FigMessage
                             RESequenceDiagramDialog dialog =
                                 new RESequenceDiagramDialog(
+                                        project,
                                         operation,
                                         (FigMessage) messageFig,
                                         diagram);
@@ -162,9 +163,4 @@ public class ActionRESequenceDiagram extends AbstractAction {
 
     // TODO: We later cast this to FigMessage so why define as Object here?
     private Object messageFig;
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 2915509413708666273L;
 } 

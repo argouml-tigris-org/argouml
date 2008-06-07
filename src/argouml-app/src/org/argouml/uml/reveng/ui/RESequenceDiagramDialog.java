@@ -56,7 +56,6 @@ import javax.swing.SpinnerNumberModel;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CheckboxTableModel;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
@@ -111,6 +110,11 @@ public class RESequenceDiagramDialog
 
     private static final int X_OFFSET = 10;
 
+    /**
+     * The project this dialog is operating within
+     */
+    private final Project project;
+    
     private final Object model;
     
     // TODO: Why is this not final?
@@ -147,8 +151,8 @@ public class RESequenceDiagramDialog
      *
      * @param oper The operation that should be reverse engineered.
      */
-    public RESequenceDiagramDialog(Object oper) {
-        this(oper, null, null);
+    public RESequenceDiagramDialog(Project project, Object oper) {
+        this(project, oper, null, null);
     }
 
     /**
@@ -156,11 +160,13 @@ public class RESequenceDiagramDialog
      * the actual diagram is a sequence diagram, so no new one is created and
      * the work happens in the actual sequence diagram.
      *
+     * @param project The project this dialog is acting within
      * @param oper The operation that should be reverse engineered.
      * @param figMessage the message figure where the result will be drawn to
      * @param diagram the diagram to draw to or null is a new diagram required
      */
     public RESequenceDiagramDialog(
+            final Project project,
             final Object oper, 
             final FigMessage figMessage,
             final ArgoDiagram diagram) {
@@ -176,11 +182,9 @@ public class RESequenceDiagramDialog
                 ArgoDialog.OK_CANCEL_OPTION,
                 true);
         setResizable(false);
-
+        this.project = project;
+        
         operation = oper;
-        // TODO: Remove reference to getCurrentProject. Project should be
-        // as an argument.
-        Project project = ProjectManager.getManager().getCurrentProject();
         model = project.getModel();
         try {
             // TODO: must not depend on the Java modeller, but the needed one
@@ -258,21 +262,20 @@ public class RESequenceDiagramDialog
         } else if (e.getSource() == getCancelButton()
                 && isNewSequenceDiagram) {
             // remove SD and clean up everything
-            Project p = ProjectManager.getManager().getCurrentProject();
             Object newTarget = null;
             if (ActionDeleteModelElements.sureRemove(diagram)) {
                 Object collaboration = diagram.getNamespace();
                 // remove from the model
                 newTarget = getNewTarget(diagram);
-                p.moveToTrash(diagram);
-                p.moveToTrash(collaboration);
+                project.moveToTrash(diagram);
+                project.moveToTrash(collaboration);
             }
             if (newTarget != null) {
                 TargetManager.getInstance().setTarget(newTarget);
             }
         }
     }
-
+    
     /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
@@ -296,7 +299,6 @@ public class RESequenceDiagramDialog
      * @return The object.
      */
     private Object getNewTarget(Object target) {
-        Project p = ProjectManager.getManager().getCurrentProject();
         Object newTarget = null;
         if (target instanceof Fig) {
             // TODO: common method for getting the model element of a fig
@@ -306,18 +308,18 @@ public class RESequenceDiagramDialog
                 && Model.getFacade().getNamespace(target) != null) {
             newTarget = Model.getFacade().getNamespace(target);
         } else if (target instanceof Diagram) {
-            Diagram firstDiagram = (Diagram) p.getDiagramList().get(0);
+            Diagram firstDiagram = (Diagram) project.getDiagramList().get(0);
             if (target != firstDiagram) {
                 newTarget = firstDiagram;
             } else {
-                if (p.getDiagramList().size() > 1) {
-                    newTarget = p.getDiagramList().get(1);
+                if (project.getDiagramList().size() > 1) {
+                    newTarget = project.getDiagramList().get(1);
                 } else {
-                    newTarget = p.getRoot();
+                    newTarget = project.getRoot();
                 }
             }
         } else {
-            newTarget = p.getRoot();
+            newTarget = project.getRoot();
         }
         return newTarget;
     }
@@ -499,9 +501,6 @@ public class RESequenceDiagramDialog
      * TODO: find a better place for a similar method.
      */
     private ArgoDiagram buildSequenceDiagram(Object theClassifier) {
-        // TODO: Remove reference to ProjectManager
-        Project p = ProjectManager.getManager().getCurrentProject();
-
         Object collaboration =
             Model.getCollaborationsFactory().buildCollaboration(
                 Model.getFacade().getNamespace(theClassifier),
@@ -511,7 +510,7 @@ public class RESequenceDiagramDialog
                 DiagramType.Sequence,
                 collaboration,
                 null);
-        p.addMember(newDiagram);
+        project.addMember(newDiagram);
         TargetManager.getInstance().setTarget(newDiagram);
         return newDiagram;
     }
