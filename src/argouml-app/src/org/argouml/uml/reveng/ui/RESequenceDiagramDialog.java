@@ -63,7 +63,6 @@ import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
@@ -80,6 +79,7 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Mode;
+import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -92,6 +92,7 @@ import org.tigris.gef.presentation.Fig;
  * At the very least split dialog from processing and remove knowledge
  * of sequence diagram implementation<p>
  * TODO: work with import modules instead of the internal Java import<p>
+ * TODO: use java5 style for loops
  * TODO: i18n<p>
  */
 public class RESequenceDiagramDialog
@@ -102,6 +103,11 @@ public class RESequenceDiagramDialog
      */
     private static final Logger LOG =
         Logger.getLogger(RESequenceDiagramDialog.class);
+    
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -8595714827064181907L;
 
     private static final int X_OFFSET = 10;
 
@@ -109,6 +115,7 @@ public class RESequenceDiagramDialog
     
     // TODO: Why is this not final?
     private Modeller modeller;
+    
     private final Object classifier;
     private final Object operation;
     
@@ -120,11 +127,7 @@ public class RESequenceDiagramDialog
     private final List<String> calldata = new ArrayList<String>();
     private final Hashtable types = new Hashtable();
     
-    // TODO: We possibly have more state than we need here. Can we have diagram
-    // only? graphModel and collaboration can be deduced from that.
-    private ArgoDiagram diagram;
-    private UMLMutableGraphSupport graphModel;
-    private Object collaboration;
+    private final ArgoDiagram diagram;
     
     private CheckboxTableModel callTable;
     private JComboBox modeChoice;
@@ -155,11 +158,12 @@ public class RESequenceDiagramDialog
      *
      * @param oper The operation that should be reverse engineered.
      * @param figMessage the message figure where the result will be drawn to
+     * @param diagram the diagram to draw to or null is a new diagram required
      */
     public RESequenceDiagramDialog(
-            Object oper, 
-            FigMessage figMessage,
-            ArgoDiagram diagram) {
+            final Object oper, 
+            final FigMessage figMessage,
+            final ArgoDiagram diagram) {
         // TODO: don't depend on a Fig (but it is needed to extend an existing
         // sequence diagram, i.e. to perform an action on a FigMessage!) 
         super(
@@ -192,21 +196,8 @@ public class RESequenceDiagramDialog
 
         classifier = Model.getFacade().getOwner(operation);
         if (figMessage != null) {
+            this.diagram = diagram;
             isNewSequenceDiagram = false;
-            SequenceDiagramGraphModel sequenceDiagramGraphModel = 
-                (SequenceDiagramGraphModel) Globals.curEditor().getGraphModel();
-            graphModel = sequenceDiagramGraphModel;
-            collaboration = sequenceDiagramGraphModel.getCollaboration();
-            
-            // TODO: Pass the current diagram as an argument to constructor.
-            Iterator<ArgoDiagram> iter = project.getDiagramList().iterator();
-            while (iter.hasNext()) {
-                diagram = iter.next();
-                if (graphModel == diagram.getGraphModel()) {
-                    break;
-                }
-            }
-            
             figClassifierRole = getFigClassifierRole(classifier, "obj");
             // TODO: There is only a single port on new implementation of SD
             // so how do we resolve this?
@@ -239,7 +230,7 @@ public class RESequenceDiagramDialog
             }
         } else {
             isNewSequenceDiagram = true;
-            diagram = buildSequenceDiagram(classifier);
+            this.diagram = buildSequenceDiagram(classifier);
             figClassifierRole = getFigClassifierRole(classifier, "obj");
             maxXPos = figClassifierRole.getX();
         }
@@ -258,7 +249,10 @@ public class RESequenceDiagramDialog
         if (e.getSource() == getOkButton()) {
             for (int i = 0; i < callTable.getRowCount(); i++) {
                 if (Boolean.TRUE.equals(callTable.getValueAt(i, 1))) {
-                    buildAction((String) callTable.getValueAt(i, 0), figClassifierRole, figClassifierRole);
+                    buildAction(
+                            (String) callTable.getValueAt(i, 0), 
+                            figClassifierRole, 
+                            figClassifierRole);
                 }
             }
         } else if (e.getSource() == getCancelButton()
@@ -267,6 +261,7 @@ public class RESequenceDiagramDialog
             Project p = ProjectManager.getManager().getCurrentProject();
             Object newTarget = null;
             if (ActionDeleteModelElements.sureRemove(diagram)) {
+                Object collaboration = diagram.getNamespace();
                 // remove from the model
                 newTarget = getNewTarget(diagram);
                 p.moveToTrash(diagram);
@@ -504,21 +499,21 @@ public class RESequenceDiagramDialog
      * TODO: find a better place for a similar method.
      */
     private ArgoDiagram buildSequenceDiagram(Object theClassifier) {
+        // TODO: Remove reference to ProjectManager
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        collaboration =
+        Object collaboration =
             Model.getCollaborationsFactory().buildCollaboration(
                 Model.getFacade().getNamespace(theClassifier),
                 theClassifier);
-        final ArgoDiagram diagram =
+        final ArgoDiagram newDiagram =
             DiagramFactory.getInstance().createDiagram(
                 DiagramType.Sequence,
                 collaboration,
                 null);
-        graphModel = (SequenceDiagramGraphModel) diagram.getGraphModel();
-        p.addMember(diagram);
-        TargetManager.getInstance().setTarget(diagram);
-        return diagram;
+        p.addMember(newDiagram);
+        TargetManager.getInstance().setTarget(newDiagram);
+        return newDiagram;
     }
 
     /**
@@ -554,28 +549,31 @@ public class RESequenceDiagramDialog
         }
         if (crFig == null) {
             // classifier role does not exists, so create a new one
-            Object node =
+            Object newClassifierRole =
                 Model.getCollaborationsFactory()
-                    .buildClassifierRole(collaboration);
+                    .buildClassifierRole(diagram.getNamespace());
             if (objName != null) {
-                Model.getCoreHelper().setName(node, objName);
+                Model.getCoreHelper().setName(newClassifierRole, objName);
             } else {
                 // TODO: I don't think it's normal to generate model element
                 // names
-                Model.getCoreHelper().setName(node, "anon" + (++anonCnt));
+                Model.getCoreHelper().setName(newClassifierRole, "anon" + (++anonCnt));
             }
             coll = new ArrayList();
             coll.add(theClassifier);
-            Model.getCollaborationsHelper().setBases(node, coll);
-            crFig = new FigClassifierRole(node);
+            Model.getCollaborationsHelper().setBases(newClassifierRole, coll);
+            crFig = new FigClassifierRole(newClassifierRole);
 
             // location must be set for correct automatic layouting (how funny)
             // otherwise, the new classifier role is not the rightmost
             maxXPos += X_OFFSET;
             crFig.setLocation(maxXPos, 0);
 
+            // TODO: Do we need to do both of these?
             diagram.add(crFig);
-            graphModel.addNode(node);
+            ((MutableGraphModel)
+                    (diagram.getGraphModel())).addNode(newClassifierRole);
+            
             // TODO: Send event instead of calling event adapter directly
             ExplorerEventAdaptor.getInstance().modelElementChanged(
                 Model.getFacade().getNamespace(classifier));
@@ -737,6 +735,8 @@ public class RESequenceDiagramDialog
         Mode mode = ce.getModeManager().top();
         mode.setArgs(args);
         
+        SequenceDiagramGraphModel graphModel =
+            (SequenceDiagramGraphModel) diagram.getGraphModel();
         Object newEdge = graphModel.connect(startPort, foundPort, messageType);
         if (null != newEdge) {
             Model.getCoreHelper().setName(newEdge, call);
@@ -761,7 +761,9 @@ public class RESequenceDiagramDialog
      * interface.
      * TODO: objName is not used. Are there plans for this?
      */
-    private Object getClassifierFromModel(String type, String objName) {
+    private Object getClassifierFromModel(
+            final String type,
+            final String objName) {
         Object theClassifier = null;
         int pos = type.lastIndexOf(".");
         if (pos != -1) {
@@ -873,11 +875,15 @@ public class RESequenceDiagramDialog
         Object theClassifier = null;
         // TODO: This could use the new CoreHelper.getPackageImports()
         Collection cdeps = Model.getFacade().getClientDependencies(comp);
+        // TODO: Do we really need to test for null here?
+        // We should get empty collections.
         Iterator iter1 = cdeps != null ? cdeps.iterator() : null;
         while (theClassifier == null && iter1 != null && iter1.hasNext()) {
             Object perm = iter1.next();
             if (Model.getFacade().isAPermission(perm)) {
                 Collection suppliers = Model.getFacade().getSuppliers(perm);
+                // TODO: Do we really need to test for null here?
+                // We should get empty collections.
                 Iterator iter2 =
                     suppliers != null ? suppliers.iterator() : null;
                 while (theClassifier == null
@@ -929,9 +935,4 @@ public class RESequenceDiagramDialog
         }
         
     }
-    
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -8595714827064181907L;
 }
