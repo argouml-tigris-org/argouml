@@ -42,7 +42,7 @@ Build file to proxy the argoumlstandard ant targets.
   </target>
 
   <!-- =================================================================== -->
-  <!-- Make sure the files are in build                                    -->
+  <!-- Copy files from argouml/src/argouml-build to argouml/build          -->
   <!-- =================================================================== -->
   <target name="install" depends="init, jar"
           description="">
@@ -52,6 +52,30 @@ Build file to proxy the argoumlstandard ant targets.
         <include name="*"/>
       </fileset>
     </copy>
+
+    <!-- update argouml.jar manifest with any jars found in new location 
+     (i.e. include anything in ext/*.jar -->
+    <property name="manifest.update" value="mf.mf"/>
+    <fileset dir="${build.dir}" id="classpath.jars" >
+        <include name="**/*.jar" />
+    </fileset>
+    <pathconvert pathsep=" " property="cp" refid="classpath.jars" >
+      <mapper>
+        <globmapper from="${basedir}${file.separator}${build.dir}${file.separator}*" to="*"/>
+        <globmapper from="${basedir}${file.separator}${build.dir}${file.separator}ext${file.separator}*" to="ext${file.separator}*"/> 
+      </mapper>
+    </pathconvert>
+    <echo message="Class-Path: ${cp}" file="${build.dir}/${manifest.update}" />
+    <jar update="true"
+         basedir="${build.dir}"
+         includes="no-files"
+         manifest="${build.dir}/${manifest.update}"
+         jarfile="${build.dir}/argouml.jar"/>
+    <delete>
+      <fileset dir="${build.dir}">
+        <include name="${manifest.update}"/>
+      </fileset>
+    </delete>    
   </target>
 
   <!-- =================================================================== -->
