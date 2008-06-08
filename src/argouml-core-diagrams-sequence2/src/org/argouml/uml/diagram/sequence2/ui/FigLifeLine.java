@@ -75,6 +75,7 @@ class FigLifeLine extends FigGroup {
         addFig(lineFig);
     }
     
+    // TODO: Does this still need to be synchronized? If so then explain why.
     synchronized void createActivations(final List<FigMessage> messages) {
         clearActivations();
         Collections.sort(messages, new FigMessageComparator());
