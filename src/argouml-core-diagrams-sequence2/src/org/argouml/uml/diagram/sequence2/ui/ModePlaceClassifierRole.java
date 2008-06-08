@@ -60,10 +60,15 @@ public class ModePlaceClassifierRole extends ModePlace {
 
     
     private void  postProcessing() {
+        // _pers is the FigClassifierRole we're trying to place
         int y = _pers.getY();
         Layer lay = editor.getLayerManager().getActiveLayer();
         List nodes = lay.getContentsNoEdges();
-        // It's 1 because super has created the node
+        // Get the first existing FigNode and if it exists set the
+        // y position of _pers to be the same as it.
+        // TODO: What if the first node is not a FigClassifierRole but is a
+        // FigComment. Make this safe for that.
+        // TODO: We should also fix height as well as y position here.
         if (nodes.size() > 0) {
             Fig fig = (Fig) nodes.get(0);
             if (fig != _pers) {
