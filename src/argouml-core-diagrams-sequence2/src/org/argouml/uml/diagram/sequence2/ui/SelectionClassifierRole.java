@@ -61,12 +61,17 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
             return;
         }
 
+        // TODO: Avoid Globals when possible. That's a nasty anti-pattern in GEF.
+        // We can get the Layer object from getContent().getLayer() and then get
+        // the other contents of the layer from that Layer with getContents().
         List<Fig> figs = Globals.curEditor().getLayerManager().getContents();
 
         // get the bounds of FigMessages
         int yMax = 65535; // this should be big enough for init
         int yMin = 0;
+        // TODO Java 5 style for loop would be nicer
         for (int i = 0; i < figs.size(); i++) {
+            // TODO use instanceof rather than equate class name
             if (figs.get(i).getClass() == FigMessage.class) {
                 if (figs.get(i).getY() < yMax) {
                     yMax = figs.get(i).getY();
@@ -88,9 +93,17 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
         case Handle.NORTHWEST:
         case Handle.NORTH:
         case Handle.NORTHEAST:
+            // TODO Java 5 style for loop would be nicer
             for (int i = 0; i < figs.size(); i++) {
                 workOnFig = figs.get(i);
+                // TODO use instanceof rather than equate class name
                 if (workOnFig.getClass() == FigClassifierRole.class) {
+                    // TODO This looks rather complex and contains knowledge
+                    // of how a FigClassifierRole is constructed (uses child
+                    // item 3).
+                    // Would it be useful to implement getMinimumSize()
+                    // on FigClassifierRole and call that here?
+                    // The double casting is almost certainly not needed here.
                     headFigHeight = ((Fig) ((FigClassifierRole) (workOnFig))
                             .getFigs().get(3)).getHeight();
                     if ((mY + headFigHeight < yMax)) {
@@ -104,8 +117,10 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
         case Handle.SOUTH:
         case Handle.SOUTHEAST:
         case Handle.SOUTHWEST:
+            // TODO Java 5 style for loop would be nicer
             for (int i = 0; i < figs.size(); i++) {
                 workOnFig = figs.get(i);
+                // TODO use instanceof rather than equate class name
                 if (workOnFig.getClass() == FigClassifierRole.class
                         && mY > yMin) {
                     workOnFig.setHeight(mY - workOnFig.getY());
