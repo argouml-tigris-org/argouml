@@ -620,6 +620,7 @@ class FigRole extends FigSingleLineText
     private static final long serialVersionUID = 5385230942216677015L;
 
     private NotationProvider notationProviderRole;
+    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
 
     FigRole() {
         super(10, 10, 90, 20, false/*, 
@@ -648,6 +649,13 @@ class FigRole extends FigSingleLineText
                         NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
                         getOwner(),
                         this);
+            Project p = getProject();
+            if (p != null) {
+                npArguments.put("rightGuillemot", 
+                        p.getProjectSettings().getRightGuillemot());
+                npArguments.put("leftGuillemot", 
+                        p.getProjectSettings().getLeftGuillemot());
+            }
         }
     }
     
@@ -655,7 +663,7 @@ class FigRole extends FigSingleLineText
     protected void setText() {
         assert getOwner() != null;
         assert notationProviderRole != null;
-        setText(notationProviderRole.toString(getOwner(), null));
+        setText(notationProviderRole.toString(getOwner(), npArguments));
     }
 
     /**

@@ -146,6 +146,10 @@ public class FigAssociationEnd extends FigEdgeModelElement {
                     .getShowSingularMultiplicitiesValue();
                 getNotationArguments().put("singularMultiplicityVisible", 
                         value);
+                getNotationArguments().put("rightGuillemot", 
+                        p.getProjectSettings().getRightGuillemot());
+                getNotationArguments().put("leftGuillemot", 
+                        p.getProjectSettings().getLeftGuillemot());
             }
         }
     }

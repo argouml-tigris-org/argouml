@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,10 +28,12 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.model.InvalidElementException;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
@@ -201,10 +203,20 @@ public abstract class FigEditableCompartment extends FigCompartment {
                 }
                 addFig(comp); // add it again (but now in the right sequence)
                 
+                HashMap<String, Object> npArguments = 
+                    new HashMap<String, Object>();
+                Project p = getProject();
+                if (p != null) {
+                    npArguments.put("rightGuillemot", 
+                            p.getProjectSettings().getRightGuillemot());
+                    npArguments.put("leftGuillemot", 
+                            p.getProjectSettings().getLeftGuillemot());
+                }
+
                 // Now put the text in
                 // We must handle the case where the text is null
-                String ftText =
-                        comp.getNotationProvider().toString(umlObject, null);
+                String ftText = comp.getNotationProvider()
+                    .toString(umlObject, npArguments);
                 if (ftText == null) {
                     ftText = "";
                 }

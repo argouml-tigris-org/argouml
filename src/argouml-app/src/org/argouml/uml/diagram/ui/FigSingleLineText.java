@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,9 @@ import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
+import java.util.HashMap;
 
+import org.argouml.kernel.Project;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
@@ -66,6 +68,7 @@ public class FigSingleLineText extends ArgoFigText {
      * The notation provider for the text shown in this compartment.
      */
     private NotationProvider notationProvider;
+    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
 
     /*
      * @see org.tigris.gef.presentation.FigText#FigText(
@@ -178,7 +181,7 @@ public class FigSingleLineText extends ArgoFigText {
             deleteFromModel();
         } else if (notationProvider != null) {
             notationProvider.updateListener(this, getOwner(), pce);
-            this.setText(notationProvider.toString(getOwner(), null));
+            this.setText(notationProvider.toString(getOwner(), npArguments));
             damage();
         }
     }
@@ -208,5 +211,12 @@ public class FigSingleLineText extends ArgoFigText {
             notationProvider.cleanListener(this, getOwner());
         }
         this.notationProvider = np;
+        Project p = getProject();
+        if (p != null) {
+            npArguments.put("rightGuillemot", 
+                    p.getProjectSettings().getRightGuillemot());
+            npArguments.put("leftGuillemot", 
+                    p.getProjectSettings().getLeftGuillemot());
+        }
     }
 }
