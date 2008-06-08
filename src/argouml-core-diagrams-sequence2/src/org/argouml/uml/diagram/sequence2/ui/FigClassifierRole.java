@@ -36,6 +36,7 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigRect;
 
@@ -297,5 +298,9 @@ public class FigClassifierRole extends FigNodeModelElement {
             }
             return new Point(x, y);
         }
+    }
+    
+    public Selection makeSelection() {
+        return new SelectionClassifierRole(this);
     }
 }
