@@ -1343,7 +1343,7 @@ public final class ProjectBrowser
         ProjectFilePersister persister = null;
 
         try {
-            if (!PersistenceManager.getInstance().confirmOverwrite(
+            if (!confirmOverwrite(
                     ArgoFrame.getInstance(), overwrite, file)) {
                 return false;
             }
@@ -1926,6 +1926,36 @@ public final class ProjectBrowser
             return theFile;
         }
         return null;
+    }
+    
+    /**
+     * Returns true if we are allowed to overwrite the given file.
+     *
+     * @param overwrite if true, then the user is not asked
+     * @param file the given file
+     * @return true if we are allowed to overwrite the given file
+     * @param frame the Component to display the confirmation dialog on
+     */
+    public boolean confirmOverwrite(Component frame, 
+            boolean overwrite, File file) {
+        if (file.exists() && !overwrite) {
+            String sConfirm =
+                Translator.messageFormat(
+                    "optionpane.confirm-overwrite",
+                    new Object[] {file});
+            int nResult =
+                JOptionPane.showConfirmDialog(
+                        frame,
+                        sConfirm,
+                        Translator.localize(
+                            "optionpane.confirm-overwrite-title"),
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+            if (nResult != JOptionPane.YES_OPTION) {
+                return false;
+            }
+        }
+        return true;
     }
     
     /**

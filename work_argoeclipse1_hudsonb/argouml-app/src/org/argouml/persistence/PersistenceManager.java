@@ -24,7 +24,6 @@
 
 package org.argouml.persistence;
 
-import java.awt.Component;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
@@ -37,7 +36,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.argouml.configuration.Configuration;
@@ -359,36 +357,6 @@ public final class PersistenceManager {
     public void setDiagramMemberFilePersister(
             DiagramMemberFilePersister persister) {
     	diagramMemberFilePersister = persister;
-    }
-
-    /**
-     * Returns true if we are allowed to overwrite the given file.
-     *
-     * @param overwrite if true, then the user is not asked
-     * @param file the given file
-     * @return true if we are allowed to overwrite the given file
-     * @param frame the Component to display the confirmation dialog on
-     */
-    public boolean confirmOverwrite(Component frame, 
-            boolean overwrite, File file) {
-        if (file.exists() && !overwrite) {
-            String sConfirm =
-                Translator.messageFormat(
-                    "optionpane.confirm-overwrite",
-                    new Object[] {file});
-            int nResult =
-                JOptionPane.showConfirmDialog(
-                        frame,
-                        sConfirm,
-                        Translator.localize(
-                            "optionpane.confirm-overwrite-title"),
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
-            if (nResult != JOptionPane.YES_OPTION) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
