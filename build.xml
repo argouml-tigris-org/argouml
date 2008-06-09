@@ -64,10 +64,9 @@ Build file to proxy the argoumlstandard ant targets.
     <fileset dir="${build.dir}" id="classpath.jars" >
         <include name="**/*.jar" />
     </fileset>
-    <pathconvert pathsep=" " property="cp" refid="classpath.jars" >
+    <pathconvert pathsep=" " property="cp" refid="classpath.jars" dirsep="/" >
       <mapper>
-        <globmapper from="${basedir}${file.separator}${build.dir}${file.separator}*" to="*"/>
-        <globmapper from="${basedir}${file.separator}${build.dir}${file.separator}ext${file.separator}*" to="ext/*"/> 
+        <globmapper from="${basedir}/${build.dir}/*" to="*" handledirsep="yes" />
       </mapper>
     </pathconvert>
     <echo message="Class-Path: ${cp}" file="${build.dir}/${manifest.update}" />
