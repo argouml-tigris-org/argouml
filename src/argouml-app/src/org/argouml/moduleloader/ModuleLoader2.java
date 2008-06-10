@@ -323,14 +323,28 @@ public final class ModuleLoader2 {
 		}
 
 		if (!status.isEnabled() && status.isSelected()) {
-		    if (module.enable()) {
-		        someModuleSucceeded = true;
-		        status.setEnabled();
+		    try {
+		        if (module.enable()) {
+		            someModuleSucceeded = true;
+		            status.setEnabled();
+		        }
+		    }
+		    // Catch all exceptions including runtime exceptions.
+		    catch (Exception e) {                       
+		        LOG.info("Exception while trying to enable module " 
+		                + module.getName(), e);
 		    }
 		} else if (status.isEnabled() && !status.isSelected()) {
-		    if (module.disable()) {
-		        someModuleSucceeded = true;
-		        status.setDisabled();
+		    try { 
+		        if (module.disable()) {
+		            someModuleSucceeded = true;
+		            status.setDisabled();
+		        }
+		    }
+                    // Catch all exceptions including runtime exceptions.
+		    catch (Exception e) {
+		        LOG.info("Exception while trying to disable module "
+		                + module.getName(), e);
 		    }
 		}
 	    }
