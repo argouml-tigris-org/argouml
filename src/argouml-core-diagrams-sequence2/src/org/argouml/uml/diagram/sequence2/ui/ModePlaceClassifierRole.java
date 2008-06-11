@@ -59,22 +59,26 @@ public class ModePlaceClassifierRole extends ModePlace {
     }
 
     
-    private void  postProcessing() {
-        // _pers is the FigClassifierRole we're trying to place
-        int y = _pers.getY();
-        Layer lay = editor.getLayerManager().getActiveLayer();
-        List nodes = lay.getContentsNoEdges();
+    /**
+     * Set height and Y position of the new CR as the already existing CRs.
+     */
+    private void postProcessing() {
+        List nodes =
+            editor.getLayerManager().getActiveLayer().getContentsNoEdges();
+        int i = 0;
+        boolean figClassifierRoleFound = false;
+        Fig fig = null;
+    
         // Get the first existing FigNode and if it exists set the
-        // y position of _pers to be the same as it.
-        // TODO: What if the first node is not a FigClassifierRole but is a
-        // FigComment. Make this safe for that.
-        // TODO: We should also fix height as well as y position here.
-        if (nodes.size() > 0) {
-            Fig fig = (Fig) nodes.get(0);
-            if (fig != _pers) {
-                y = fig.getY();
-                _pers.setY(y);
+        // y position and height of _pers to be the same as it.
+        while (i < nodes.size() && !figClassifierRoleFound) {
+            fig = (Fig) nodes.get(i);
+            if (fig != _pers && fig instanceof FigClassifierRole) {
+                _pers.setY(fig.getY());
+                _pers.setHeight(fig.getHeight());
+                figClassifierRoleFound = true;
             }
+            i++;
         }
     }
 }

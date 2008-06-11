@@ -61,75 +61,63 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
             return;
         }
 
-        // TODO: Avoid Globals when possible. That's a nasty anti-pattern in GEF.
-        // We can get the Layer object from getContent().getLayer() and then get
-        // the other contents of the layer from that Layer with getContents().
-        List<Fig> figs = Globals.curEditor().getLayerManager().getContents();
+        List<Fig> figs = getContent().getLayer().getContents();
 
         // get the bounds of FigMessages
         int yMax = 65535; // this should be big enough for init
         int yMin = 0;
-        // TODO Java 5 style for loop would be nicer
-        for (int i = 0; i < figs.size(); i++) {
-            // TODO use instanceof rather than equate class name
-            if (figs.get(i).getClass() == FigMessage.class) {
-                if (figs.get(i).getY() < yMax) {
-                    yMax = figs.get(i).getY();
+        for (Fig fig : figs) {
+            if (fig instanceof FigMessage) {
+                if (fig.getY() < yMax) {
+                    yMax = fig.getY();
                 }
-                if (figs.get(i).getY() > yMin) {
-                    yMin = figs.get(i).getY();
+                if (fig.getY() > yMin) {
+                    yMin = fig.getY();
                 }
             }
         }
         // a little buffer to ensure good visibility
-        // yMax -= 10; // no required
+        // yMax -= 10; // not required
         yMin += 10;
  
-        int headFigHeight = 0;
-        Fig workOnFig = null;
-
         // vertical resizing
         switch (hand.index) {
         case Handle.NORTHWEST:
         case Handle.NORTH:
         case Handle.NORTHEAST:
             // TODO Java 5 style for loop would be nicer
-            for (int i = 0; i < figs.size(); i++) {
-                workOnFig = figs.get(i);
-                // TODO use instanceof rather than equate class name
-                if (workOnFig.getClass() == FigClassifierRole.class) {
-                    // TODO This looks rather complex and contains knowledge
-                    // of how a FigClassifierRole is constructed (uses child
-                    // item 3).
-                    // Would it be useful to implement getMinimumSize()
-                    // on FigClassifierRole and call that here?
-                    // The double casting is almost certainly not needed here.
-                    headFigHeight = ((Fig) ((FigClassifierRole) (workOnFig))
-                            .getFigs().get(3)).getHeight();
-                    if ((mY + headFigHeight < yMax)) {
-                        workOnFig.setHeight(workOnFig.getHeight()
-                                + workOnFig.getY() - mY);
-                        workOnFig.setY(mY);
-                    }
+            for (Fig workOnFig : figs) {
+                /*
+                 * the resize will take place if the workOnFig 1. is a
+                 * FifClassifierRole 2. doesn't force a FigMessage to move 3.
+                 * doesn't violate minimum size of a CR
+                 */
+                if (workOnFig instanceof FigClassifierRole
+                        && mY + workOnFig.getMinimumSize().height < yMax
+                        && (workOnFig.getHeight() + workOnFig.getY() - mY) > workOnFig
+                                .getMinimumSize().height) {
+                    workOnFig.setHeight(workOnFig.getHeight()
+                             + workOnFig.getY() - mY);
+                    workOnFig.setY(mY);            
                 }
             }
             break;
         case Handle.SOUTH:
         case Handle.SOUTHEAST:
         case Handle.SOUTHWEST:
-            // TODO Java 5 style for loop would be nicer
-            for (int i = 0; i < figs.size(); i++) {
-                workOnFig = figs.get(i);
-                // TODO use instanceof rather than equate class name
-                if (workOnFig.getClass() == FigClassifierRole.class
-                        && mY > yMin) {
+            for (Fig workOnFig : figs) {
+                // same conditions here as above
+                if (workOnFig instanceof FigClassifierRole
+                        && mY > yMin
+                        && mY - workOnFig.getY() 
+                        > workOnFig.getMinimumSize().height) {                    
                     workOnFig.setHeight(mY - workOnFig.getY());
                 }
             }
         default:
         }
 
-        workOnFig = getContent();
+        Fig workOnFig = getContent();
         // horizontal resizing
         switch (hand.index) {
         case Handle.NORTHWEST:

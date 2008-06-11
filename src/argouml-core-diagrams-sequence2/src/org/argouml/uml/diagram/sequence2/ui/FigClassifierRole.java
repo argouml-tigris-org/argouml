@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.sequence2.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -178,6 +179,19 @@ public class FigClassifierRole extends FigNodeModelElement {
         }        
         return createMessage;
     }
+    
+    /**
+     * 
+     * @return the 
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
+    public Dimension getMinimumSize() {
+        // The minimum size of the CR is the minimum size of the headFig 
+        // An extra buffer of 10 for the height to ensure lifeLine visibility
+        return new Dimension(
+                headFig.getMinimumWidth(), headFig.getMinimumHeight() + 10);
+    }
+      
     
     @Override
     public void addFigEdge(FigEdge edge) {
