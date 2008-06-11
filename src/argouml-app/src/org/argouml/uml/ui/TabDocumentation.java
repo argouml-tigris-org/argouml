@@ -37,7 +37,6 @@ import org.argouml.model.Model;
 import org.argouml.swingext.UpArrowIcon;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
-import org.tigris.swidgets.LabelledLayout;
 import org.tigris.swidgets.Vertical;
 
 /**
@@ -108,7 +107,7 @@ public class TabDocumentation extends PropPanel {
         addField(Translator.localize("label.see"), spSee);
 
         //make new column with LabelledLayout
-        add(LabelledLayout.getSeperator());
+        add(LabelledLayout.getSeparator());
 
         UMLTextArea2 doc = new UMLTextArea2(
                 new UMLModelElementTaggedValueDocument(Argo.DOCUMENTATION_TAG));
