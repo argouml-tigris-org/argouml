@@ -329,10 +329,10 @@ public final class ModuleLoader2 {
 		            status.setEnabled();
 		        }
 		    }
-		    // Catch all exceptions including runtime exceptions.
-		    catch (Exception e) {                       
-		        LOG.info("Exception while trying to enable module " 
-		                + module.getName(), e);
+		    // Catch all exceptions and errors, however severe
+		    catch (Throwable e) {                       
+		        LOG.info("Exception or error while trying to "
+                                + "enable module " + module.getName(), e);
 		    }
 		} else if (status.isEnabled() && !status.isSelected()) {
 		    try { 
@@ -341,10 +341,10 @@ public final class ModuleLoader2 {
 		            status.setDisabled();
 		        }
 		    }
-                    // Catch all exceptions including runtime exceptions.
-		    catch (Exception e) {
-		        LOG.info("Exception while trying to disable module "
-		                + module.getName(), e);
+                    // Catch all exceptions and errors, however severe
+		    catch (Throwable e) {
+		        LOG.info("Exception or error while trying to "
+                                + "disable module " + module.getName(), e);
 		    }
 		}
 	    }
@@ -740,7 +740,7 @@ public final class ModuleLoader2 {
                     + classname + " - may indicate an obsolete"
                     + " extension module or an unresolved dependency", e);
             return false;
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOG.error("Unexpected error while loading " + classname, e);
             return false;
         }
@@ -774,7 +774,7 @@ public final class ModuleLoader2 {
                     + classname + " - may indicate an obsolete"
                     + " extension module or an unresolved dependency", e);
             return false;
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LOG.error("Unexpected error while instantiating " + classname, e);
             return false;
         }
