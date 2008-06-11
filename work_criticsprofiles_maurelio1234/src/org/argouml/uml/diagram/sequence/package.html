@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<title>org.argouml.uml.diagram.sequence package</title>
+<!--
+   Copyright (c) 1996-99 The Regents of the University of California. All
+   Rights Reserved. Permission to use, copy, modify, and distribute this
+   software and its documentation without fee, and without a written
+   agreement is hereby granted, provided that the above copyright notice
+   and this paragraph appear in all copies.  This software program and
+   documentation are copyrighted by The Regents of the University of
+   California. The software program and documentation are supplied "AS
+   IS", without any accompanying services from The Regents. The Regents
+   does not warrant that the operation of the program will be
+   uninterrupted or error-free. The end-user understands that the program
+   was developed for research purposes and is advised not to rely
+   exclusively on the program for any reason.  IN NO EVENT SHALL THE
+   UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+   SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+   WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+   UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+</head>
+<body bgcolor="white">
+
+<p>Provides a Sequence diagram capability.</P>
+
+<h2>Summary</h2>
+
+    <p>A historical note:
+ArgoUml's Sequence diagrams now have had 3+ implementations: pre- 0.14,
+an incomplete 0.14 thru 0.18 implementation, which
+inspired an implementation by the
+current author, which was introduced in the 0.19 timeframe.
+There is
+also some code implemented by Peter Nabbefeld, this is described in the section: 
+'work_sdnested_epdv Branch Implementation'.</P>
+
+    <p>Sequence diagrams are different from the other diagrams in that:</P>
+
+<UL>
+ <li>there is a lot of automatic layout to perform.</LI>
+ <LI>The source and destination connection
+points of edges are not centred on the node they are connecting to.</LI>
+ <LI>If one edge is removed it is possible that other edges must be
+repositioned or even deleted due to the sequence of messages.</LI>
+</UL>
+
+<H2>PRE-0.14 Implementation</H2>
+
+<ul><li>Persistent Structure (PGML / UML model)</LI></UL>
+
+    <p>To Do</P>
+
+<ul><li>Save / Load procedure</LI></UL>
+
+    <p>To Do</P>
+
+<ul><li>Diagram rendering / editing implementation</LI></UL>
+
+    <p>To Do</P>
+
+<H2>work_sdnested_epdv BRANCH Implementation</H2>
+
+<ul><li>Persistent Structure (PGML / UML model)</LI></UL>
+
+    <p>To Do</P>
+
+<ul><li>Save / Load procedure</LI></UL>
+
+    <p>To Do</P>
+
+<ul><li>Diagram rendering / editing implementation</LI></UL>
+
+    <p>To Do</P>
+
+<H2>0.14 Implementation</H2>
+
+<ul><li>Persistent Structure (PGML / UML model)</LI></UL>
+
+    <p>To Do</P>
+
+<ul><li>Save / Load procedure</LI></UL>
+
+    <p>To Do</P>
+
+<ul><li>Diagram rendering / editing implmenentation</LI></UL>
+
+    <p>To Do</P>
+
+<H2>0.19 Implementation</H2>
+
+<ul><li>Persistent Structure (PGML / UML model)</LI></UL>
+
+    <p>The model is updated at the specification level; the object lifetimes
+in the sequence diagram are associated with ClassifierRoles; the edges are Messages.
+Each message is associated with an action, which may be Call, Create, Destroy, or
+return.  For the model to serialize correctly, the actions have to be associated
+with a state; a state in a state diagram for the model is created for each message.</P>
+
+<ul><li>Save / Load procedure</LI></UL>
+
+    <p>Each FigClassifierRole create a FigMessagePort fig at every point that
+it sends and receives a message.  The FigMessagePort objects are associated with
+the FigEdge objects by their Y position; this is how the diagram is re-connected
+and the messages positioned when the diagram is loaded.  The PGMLStackParser
+pgml implementation lets FigClassifierRole control loading itself; otherwise,
+the FigMessagePort object positions would be ignored.</P>
+
+<ul><li>Diagram rendering / editing implmenentation</LI></UL>
+
+    <p>Each FigClassifierRole contains an array of MessageNode objects
+that designate a port--a point where a message can be sent or received.  The
+array stretches the length of the lifeline.  When a message is actually created,
+each end is associated with a FigMessagePort that is itself associated with
+a MessageNode in each FigClassifierRole.  When drawing the activation boxes,
+the array of MessageNode objects is traversed by a state machine; sending
+or receiving a message triggers a change of state that may start or end an
+activation box.  The state that is associated with each node also determines
+the messages that may be sent or received there.</P>
+
+<h2>Related Documentation:</h2>
+
+    <A href='http://argouml.tigris.org/issues/buglist.cgi?subcomponent=InteractionDiagrams&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&issueidtype=include&issue_id=&changedin=&votes=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&issue_file_loc=&issue_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&field0-0-0=noop&type0-0-0=noop&value0-0-0=&cmdtype=doit&order=Reuse+same+sort+as+last+time'>Issues</a>
+
+</body>
+</html>
+
+
