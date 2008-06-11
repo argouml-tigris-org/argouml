@@ -54,7 +54,6 @@ import org.tigris.gef.base.LayerGrid;
  * @author Michiel
  */
 public class ActionAdjustGrid extends AbstractAction {
-
     private final Map<String, Comparable> myMap;
     private static final String DEFAULT_ID = "03";
     private static ButtonGroup myGroup;
@@ -67,7 +66,7 @@ public class ActionAdjustGrid extends AbstractAction {
      *          the spacing, paintLines and paintDots. 
      * @param name the name for this action
      */
-    private ActionAdjustGrid(final Map<String, Comparable> map,
+    public ActionAdjustGrid(final Map<String, Comparable> map,
             final String name) {
         super();
         myMap = map;
@@ -158,7 +157,18 @@ public class ActionAdjustGrid extends AbstractAction {
         return result;
     }
 
-    private static Action buildGridAction(final String property,
+    /**
+     * Builder method for Grid actions
+     * 
+     * @param property
+     * @param spacing
+     * @param paintLines whether or not to paint lines
+     * @param paintDots whether or not to paint dots
+     * @param id identifier action identifier
+     * @param key shortcut key
+     * @return grid action
+     */
+    public static Action buildGridAction(final String property,
             final int spacing, final boolean paintLines,
             final boolean paintDots, final String id, final int key) {
         String name = Translator.localize(property);
