@@ -24,6 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -54,12 +57,30 @@ public class CrUML extends Critic {
      */
     private static final Logger LOG = Logger.getLogger(CrUML.class);
 
+   /**
+    * By default looks for the localized strings at the <code>critics</code>
+    * Resource, but critics defined elsewhere (out of ArgoUML main tree)
+    * may override this parameter
+    */  
+    private String localizationPrefix = "critics";
+    
     /**
      * The constructor for this class.
      */
     public CrUML() {
     }
 
+    /**
+     * The constructor for this class overriding the default
+     * localization resource.
+     */
+    public CrUML(String localizationPrefix) {
+        if (localizationPrefix != null) {
+            this.localizationPrefix = localizationPrefix;
+            setupHeadAndDesc();
+        }
+    }
+    
     /**
      * Set the resources for this critic based on the class name.
      *
@@ -88,7 +109,7 @@ public class CrUML extends Critic {
      * @return the localized string
      */
     protected String getLocalizedString(String key, String suffix) {
-        return Translator.localize("critics." + key + suffix);
+        return Translator.localize(localizationPrefix + "." + key + suffix);
     }
     
     /**
@@ -242,7 +263,16 @@ public class CrUML extends Critic {
         return className.substring(className.lastIndexOf('.') + 1);
     }
 
-
+    /**
+     * @return the metatype to be criticized by this critic, the Class
+     * metatype is assumed by default.
+     */
+    public Set<Object> getCriticizedMetatypes() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        return ret;
+    }
+    
     /**
      * The UID.
      */

@@ -44,7 +44,7 @@ import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.cognitive.critics.CrProfile;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * Represents a profile defined by the user
@@ -178,7 +178,7 @@ public class UserDefinedProfile extends Profile {
      * @param critics the Critics defined by this profile
      * @throws ProfileException
      */
-    public UserDefinedProfile(URL url, Set<CrProfile> critics) throws ProfileException {
+    public UserDefinedProfile(URL url, Set<CrUML> critics) throws ProfileException {
         LOG.info("load " + url);
         
         ProfileReference reference = null;
@@ -258,14 +258,14 @@ public class UserDefinedProfile extends Profile {
         Collection allCritiques = getAllCritiques();
         
         for (Object critique : allCritiques) {
-            CrProfile c = generateCriticFromModel(critique);
+            CrUML c = generateCriticFromModel(critique);
             if (c!=null) {
                 this.critics.add(c);
             }
         }
     }
 
-    private CrProfile generateCriticFromModel(Object critique) {
+    private CrUML generateCriticFromModel(Object critique) {
 //        String ocl = Model.getDataTypesHelper().getBody(critique);
                 
         return null;

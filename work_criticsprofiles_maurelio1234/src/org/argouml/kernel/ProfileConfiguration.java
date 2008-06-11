@@ -46,7 +46,7 @@ import org.argouml.profile.FormatingStrategy;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
-import org.argouml.uml.cognitive.critics.CrProfile;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  *   This class captures represents the unique access point for the 
@@ -193,7 +193,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
                 addProfile(dependency);
             }
 
-            for (CrProfile critic : p.getCritics()) {
+            for (CrUML critic : p.getCritics()) {
                 critic.setEnabled(true);
             }
             
@@ -220,7 +220,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public void removeProfile(Profile p) {
         profiles.remove(p);
 
-        for (CrProfile critic : p.getCritics()) {
+        for (CrUML critic : p.getCritics()) {
             critic.setEnabled(false);
         }
 

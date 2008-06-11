@@ -40,7 +40,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileManager;
 import org.argouml.profile.UserDefinedProfile;
-import org.argouml.uml.cognitive.critics.CrProfile;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * Default <code>ProfileManager</code> implementation
@@ -183,8 +183,11 @@ public class ProfileManagerImpl implements ProfileManager {
                     || getProfileForClass(p.getClass().getName()) == null) {
                 profiles.add(p);
                 
-                for (CrProfile critic : p.getCritics()) {
-                    Agency.register(critic, critic.getCriticizedMetatype());
+                for (CrUML critic : p.getCritics()) {
+                    for (Object meta : critic.getCriticizedMetatypes()) {
+                        Agency.register(critic, meta);                        
+                    }
+                    
                     critic.setEnabled(false);
                 }
                 

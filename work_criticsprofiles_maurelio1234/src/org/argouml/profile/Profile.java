@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.argouml.uml.cognitive.critics.CrProfile;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 
 /**
@@ -42,7 +42,7 @@ public abstract class Profile {
     
     private Set<Profile> importedProfiles  = new HashSet<Profile>();
     private Set<Profile> importingProfiles = new HashSet<Profile>();
-    protected Set<CrProfile> critics = new HashSet<CrProfile>();
+    protected Set<CrUML> critics = new HashSet<CrUML>();
         
     /**
      * Add a dependency on the given profile from this profile.
@@ -123,7 +123,7 @@ public abstract class Profile {
     /**
      * @return Returns the critics defined by this profile.
      */
-    public Set<CrProfile> getCritics() {
+    public Set<CrUML> getCritics() {
         return critics;
     }
 }

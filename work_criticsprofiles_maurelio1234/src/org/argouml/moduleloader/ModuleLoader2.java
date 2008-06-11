@@ -55,7 +55,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
-import org.argouml.uml.cognitive.critics.CrProfile;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * This is the module loader that loads modules implementing the
@@ -639,7 +639,7 @@ public final class ModuleLoader2 {
                         Translator.addClassLoader(classloader);
                         classLoaderAlreadyLoaded = true;
                     }
-                    Set<CrProfile> profiles = loadCritiquesForProfile(attr, classloader);
+                    Set<CrUML> profiles = loadCritiquesForProfile(attr, classloader);
                     String modelPath = attr.getValue("Model");
                     
                     UserDefinedProfile udp = new UserDefinedProfile(new URL(
@@ -658,27 +658,29 @@ public final class ModuleLoader2 {
         }
     }
 
-    private Set<CrProfile> loadCritiquesForProfile(Attributes attr, ClassLoader classloader) {
-        Set<CrProfile> ret = new HashSet<CrProfile>();
+    private Set<CrUML> loadCritiquesForProfile(Attributes attr, ClassLoader classloader) {
+        Set<CrUML> ret = new HashSet<CrUML>();
         
-        String value = attr.getValue("Java-Critics");        
-        StringTokenizer st = new StringTokenizer(value, ",");
+        String value = attr.getValue("Java-Critics");
+        if (value != null) {
+            StringTokenizer st = new StringTokenizer(value, ",");
 
-        while(st.hasMoreElements()) {
-            String entry = st.nextToken().trim();
-            
-            try {
-                Class cl = classloader.loadClass(entry);
-                CrProfile critic = (CrProfile) cl.newInstance();
-                ret.add(critic);                    
-            } catch (ClassNotFoundException e) {
-                LOG.error("Error loading class: " + entry, e);
-            } catch (InstantiationException e) {
-                LOG.error("Error instantianting class: " + entry, e);
-            } catch (IllegalAccessException e) {
-                LOG.error("Exception", e);
-            }                
-        }            
+            while (st.hasMoreElements()) {
+                String entry = st.nextToken().trim();
+
+                try {
+                    Class cl = classloader.loadClass(entry);
+                    CrUML critic = (CrUML) cl.newInstance();
+                    ret.add(critic);
+                } catch (ClassNotFoundException e) {
+                    LOG.error("Error loading class: " + entry, e);
+                } catch (InstantiationException e) {
+                    LOG.error("Error instantianting class: " + entry, e);
+                } catch (IllegalAccessException e) {
+                    LOG.error("Exception", e);
+                }
+            }
+        }
 
         return ret;
     }
