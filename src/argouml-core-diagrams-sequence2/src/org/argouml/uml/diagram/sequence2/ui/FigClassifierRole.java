@@ -186,10 +186,12 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
-        // The minimum size of the CR is the minimum size of the headFig 
-        // An extra buffer of 10 for the height to ensure lifeLine visibility
+        // The minimum size of the CR is the minimum size of the headFig,
+        // with the offset required when a create message is received.
+        // An extra buffer of 10 is added to ensure lifeLine visibility.
         return new Dimension(
-                headFig.getMinimumWidth(), headFig.getMinimumHeight() + 10);
+                headFig.getMinimumWidth(),
+                this.offset + headFig.getMinimumHeight() + 10);
     }
       
     
