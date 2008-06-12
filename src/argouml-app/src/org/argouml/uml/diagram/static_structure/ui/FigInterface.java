@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -37,7 +36,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -48,6 +46,9 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML Interface in a diagram.
+ * <p>
+ * An Interface may show compartments for stereotypes
+ * and operations. Attributes are not supported in ArgoUML.
  */
 public class FigInterface extends FigClassifierBox {
 
@@ -455,10 +456,5 @@ public class FigInterface extends FigClassifierBox {
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -390783219580351197L;
 
 } /* end class FigInterface */
