@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,31 +24,28 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Vector;
 
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
-import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * Class to display graphics for a UML Signal in a diagram.
+ * <p>
+ * A Signal may have attributes - the UML standard document 
+ * contains an example diagram showing this.
+ * <p>
+ * A Signal may have operations.
  * 
  * @author Tom Morris
  */
-public class FigSignal extends FigClassifierBox {
+public class FigSignal extends FigClassifierBoxWithAttributes {
     
-    private FigAttributesCompartment attributesFigCompartment;
 
     /**
      * Default constructor for a {@link FigSignal}.
@@ -59,20 +56,16 @@ public class FigSignal extends FigClassifierBox {
             (FigStereotypesCompartment) getStereotypeFig();
         fsc.setKeyword("signal");
 
-        enableSizeChecking(false);
-        setSuppressCalcBounds(true);
         addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
+        addFig(getOperationsFig());
+        addFig(getAttributesFig());
         addFig(borderFig);
-        attributesFigCompartment =
-            new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
-        addFig(attributesFigCompartment);
-        
+
+        // by default, do not show operations nor attributes:
         setOperationsVisible(false);
-        enableSizeChecking(true);
-        setSuppressCalcBounds(false);
-//        setBounds(getBounds());     
+        setAttributesVisible(false);
     }
 
     /**
@@ -85,66 +78,14 @@ public class FigSignal extends FigClassifierBox {
      */
     public FigSignal(GraphModel gm, Object node) {
         this();
-        enableSizeChecking(true);
         setOwner(node);
-        setBounds(getBounds());
     }
 
-    /**
-     * Construct a FigSignal owned by the given Signal and with
-     * bounds specified.
-     *
-     * @param node The UML object being placed.
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param w width
-     * @param h height
-     */
-    public FigSignal(Object node, int x, int y, int w, int h) {
-        this(null, node);
-        setBounds(x, y, w, h);
-    }
-    
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
      */
     public Selection makeSelection() {
         return new SelectionSignal(this);
-    }
-
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
-     */
-    public Dimension getMinimumSize() {
-        Dimension aSize = getNameFig().getMinimumSize();
-        aSize.height += 4; // +2 padding above and below name
-        aSize.height = Math.max(21, aSize.height);
-
-        aSize = addChildDimensions(aSize, getStereotypeFig());
-        aSize = addChildDimensions(aSize, getOperationsFig());
-
-        aSize.width = Math.max(40, aSize.width);
-
-        return aSize;
-    }
-
-    /**
-     * Add size of a child component to overall size.  Width is maximized
-     * with child's width and child's height is added to the overall height.
-     * If the child figure is not visible, it's size is not added.
-     * 
-     * @param size current dimensions
-     * @param child child figure
-     * @return new Dimension with child size added
-     */
-    private Dimension addChildDimensions(Dimension size, Fig child) {
-        if (child.isVisible()) {
-            Dimension childSize = child.getMinimumSize();
-            size.width = Math.max(size.width, childSize.width);
-            size.height += childSize.height;
-        }
-        return size;
     }
 
     /*
@@ -168,68 +109,6 @@ public class FigSignal extends FigClassifierBox {
             renderingChanged();
             updateListeners(getOwner(), getOwner());
         }
-    }
-    
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
-     */
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        if (newOwner != null) {
-            // add the listeners to the newOwner
-            addElementListener(newOwner);
-            // and its stereotypes
-            Collection c = new ArrayList(
-                    Model.getFacade().getStereotypes(newOwner));
-            // And now add listeners to them all:
-            for (Object obj : c) {
-                addElementListener(obj);
-            }
-        }
-    }
-
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
-    protected void setStandardBounds(final int x, final int y, final int w,
-            final int h) {
-
-        // Save our old boundaries so it can be used in property message later
-        Rectangle oldBounds = getBounds();
-
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
-
-        getNameFig().setLineWidth(0);
-
-        int currentHeight = 0;
-
-        if (getStereotypeFig().isVisible()) {
-            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
-            getStereotypeFig().setBounds(
-                    x,
-                    y,
-                    w,
-                    stereotypeHeight);
-            currentHeight += stereotypeHeight;
-        }
-
-        int nameHeight = getNameFig().getMinimumSize().height;
-        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
-        currentHeight += nameHeight;
-
-
-        // Now force calculation of the bounds of the figure, update the edges
-        // and trigger anyone who's listening to see if the "bounds" property
-        // has changed.
-
-        calcBounds();
-        updateEdges();
-        firePropChange("bounds", oldBounds, getBounds());
     }
 
 } 

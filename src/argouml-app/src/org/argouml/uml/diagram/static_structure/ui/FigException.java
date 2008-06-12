@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,27 +34,16 @@ import org.tigris.gef.graph.GraphModel;
  */
 public class FigException extends FigSignal {
     
+    /**
+     * The Constructor.
+     * 
+     * @param gm the GraphModel
+     * @param node the UML object
+     */
     public FigException(GraphModel gm, Object node) {
         super(gm, node);
     }
-    
-    /**
-     * Construct a FigSignal owned by the given Signal and with
-     * bounds specified.
-     *
-     * @param node The UML object being placed.
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @param w width
-     * @param h height
-     */
-    public FigException(Object node, int x, int y, int w, int h) {
-        super(node, x, y, w, h);
-    }
 
-    /*
-     * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
-     */
     public Selection makeSelection() {
         return new SelectionException(this);
     }
