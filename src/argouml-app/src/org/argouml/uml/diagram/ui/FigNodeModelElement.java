@@ -1611,7 +1611,8 @@ public abstract class FigNodeModelElement
      * This is may be an expensive operation for subclasses which are complex,
      * so should be used sparingly. This functionality was originally the
      * functionality of modelChanged but modelChanged takes the event now into
-     * account.
+     * account. <p>
+     * TODO: Does this have to be public?
      */
     public void renderingChanged() {
         updateNameText();
