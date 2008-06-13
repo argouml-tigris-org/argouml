@@ -583,13 +583,6 @@ public class GenericArgoMenuBar extends JMenuBar implements
         ShortcutMgr.assignAccelerator(classDiagram,
                 ShortcutMgr.ACTION_CLASS_DIAGRAM);
 
-        JMenuItem sequenzDiagram =
-            createDiagramMenu.add(new ActionSequenceDiagram());
-        setMnemonic(sequenzDiagram, "Sequenz Diagram");
-        toolbarTools.add((new ActionSequenceDiagram()));
-        ShortcutMgr.assignAccelerator(sequenzDiagram,
-                ShortcutMgr.ACTION_SEQUENCE_DIAGRAM);
-
         JMenuItem collaborationDiagram =
             createDiagramMenu.add(new ActionCollaborationDiagram());
         setMnemonic(collaborationDiagram, "Collaboration Diagram");
