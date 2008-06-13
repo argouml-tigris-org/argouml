@@ -57,8 +57,6 @@ public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
             System.setProperty(
                     "org.netbeans.mdr.storagemodel.StorageFactoryClassName",
                     "org.netbeans.mdr.persistence.memoryimpl.StorageFactoryImpl");
-            System.setProperty("argouml.model.implementation",
-                    "org.argouml.model.mdr.MDRModelImplementation");
             System.setProperty("org.netbeans.lib.jmi.Logger", "0");
             System.setProperty("org.netbeans.mdr.Logger", "0");
             modelImplementation = new MDRModelImplementation();

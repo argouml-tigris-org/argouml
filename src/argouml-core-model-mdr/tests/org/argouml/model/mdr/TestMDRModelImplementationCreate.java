@@ -64,8 +64,6 @@ public class TestMDRModelImplementationCreate extends TestCase {
      */
     public void testMDRModelImplementation() throws UmlException,
             FileNotFoundException {
-        System.setProperty("argouml.model.implementation",
-                "org.argouml.model.mdr.MDRModelImplementation");
         MDRModelImplementation mi = new MDRModelImplementation();
         assertNotNull(mi.getFacade());
         Model m = (Model) mi.getModelManagementFactory().createModel();
