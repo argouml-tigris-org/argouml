@@ -54,10 +54,20 @@ public class FigClassifierRole extends FigNodeModelElement {
         Logger.getLogger(FigClassifierRole.class);
 
     /**
-     * This is an empty rectangle needed to keep the size of the CR.
+     * This is an empty rectangle placed above HeadFig. It creates a space
+     * between where the classifierRole would normally start and where it
+     * starts as the result of a create message.
      */
     private FigEmptyRect emptyFig;
+    /**
+     * This is the box head of the classifierRole containing the notation
+     * and stereotypes.
+     */
     private FigHead headFig;
+    /**
+     * This is the dashed lifeline under FigHead that contain the activation
+     * blocks.
+     */
     private FigLifeLine lifeLineFig;
     
     private int offset = 0;
