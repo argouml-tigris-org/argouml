@@ -25,6 +25,8 @@
 package org.argouml.core.propertypanels.panel;
 
 import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
 import org.argouml.ui.TabFigTarget;
@@ -36,10 +38,9 @@ public class XmlPropertyPanel extends PropPanel implements TabFigTarget {
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
-
     
     public XmlPropertyPanel(String label, ImageIcon icon) {
-        super(label, icon);    
+        super(label, icon);
     }
 
     /**
@@ -70,5 +71,14 @@ public class XmlPropertyPanel extends PropPanel implements TabFigTarget {
         // Our XML can be called Class.xml or if we split the
         // UI and the model info, Class.ui.xml and Class.model.xml
         LOG.info("[XMLPP] t is type:" + t.getClass());
+        
+        JPanel panel;
+        try {
+            panel = UIFactory.getInstance().createGUI(t);
+            this.add(panel);
+        } catch (Exception e) {
+            // TODO: Auto-generated catch block
+            LOG.error("Exception", e);
+        }
     }
 }
