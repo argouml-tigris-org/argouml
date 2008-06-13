@@ -203,14 +203,16 @@ public class ImportClasspathDialog extends JDialog {
             final JFileChooser chooser = ch;
 
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-
+            chooser.setMultiSelectionEnabled(true);
             chooser.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e1) {
                     if (e1.getActionCommand().equals(
                             JFileChooser.APPROVE_SELECTION)) {
-                        File theFile = chooser.getSelectedFile();
-                        if (theFile != null) {
-                            pathsModel.addElement(theFile.toString());
+                        File[] files = chooser.getSelectedFiles();
+                        for(File theFile : files) {
+                            if (theFile != null) {
+                                pathsModel.addElement(theFile.toString());
+                            }
                         }
                     } else if (e1.getActionCommand().equals(
                             JFileChooser.CANCEL_SELECTION)) {
