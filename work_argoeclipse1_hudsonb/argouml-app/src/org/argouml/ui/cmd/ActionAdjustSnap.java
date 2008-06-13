@@ -47,25 +47,27 @@ import org.tigris.gef.base.GuideGrid;
 
 /**
  * This action changes the snap (called guide or grid-guide in GEF).
- *
+ * 
  * @author Michiel
  */
 public class ActionAdjustSnap extends AbstractAction {
 
     private int guideSize;
+
     private static final String DEFAULT_ID = "8";
+
     private static ButtonGroup myGroup;
-    
+
     /**
      * @param size the size of the snap in pixels
      * @param name the name of the action
      */
-    private ActionAdjustSnap(int size, String name) {
+    public ActionAdjustSnap(int size, String name) {
         super();
         guideSize = size;
         putValue(Action.NAME, name);
     }
-    
+
     public void actionPerformed(ActionEvent e) {
         Editor ce = Globals.curEditor();
         Guide guide = ce.getGuide();
@@ -80,10 +82,9 @@ public class ActionAdjustSnap extends AbstractAction {
     }
 
     /**
-     * This executes one of the actions, 
-     * based on the stored ArgoUML configuration. 
-     * This function is intended for the initial setting 
-     * of the snap when ArgoUML is started.
+     * This executes one of the actions, based on the stored ArgoUML
+     * configuration. This function is intended for the initial setting of the
+     * snap when ArgoUML is started.
      */
     static void init() {
         String id = Configuration.getString(Argo.KEY_SNAP, DEFAULT_ID);
@@ -93,12 +94,12 @@ public class ActionAdjustSnap extends AbstractAction {
                 a.actionPerformed(null);
 
                 if (myGroup != null) {
-                    for (Enumeration e = myGroup.getElements(); 
-                        e.hasMoreElements();) {
+                    for (Enumeration e = myGroup.getElements(); e
+                            .hasMoreElements();) {
                         AbstractButton ab = (AbstractButton) e.nextElement();
                         Action action = ab.getAction();
                         if (action instanceof ActionAdjustSnap) {
-                            String currentID = (String) action.getValue("ID"); 
+                            String currentID = (String) action.getValue("ID");
                             if (id.equals(currentID)) {
                                 myGroup.setSelected(ab.getModel(), true);
                                 return;
@@ -112,8 +113,8 @@ public class ActionAdjustSnap extends AbstractAction {
     }
 
     /**
-     * Return a list of actions to adjust the size of the snap grid.
-     * Current values are 4, 8, 16, and 32.
+     * Return a list of actions to adjust the size of the snap grid. Current
+     * values are 4, 8, 16, and 32.
      * 
      * @return List of Actions which adjust the size of the snap grid
      */
@@ -121,35 +122,35 @@ public class ActionAdjustSnap extends AbstractAction {
         List<Action> result = new ArrayList<Action>();
         Action a;
         String name;
-        
+
         name = Translator.localize("menu.item.snap-4");
         a = new ActionAdjustSnap(4, name);
         a.putValue("ID", "4");
-        a.putValue("shortcut", KeyStroke.getKeyStroke(
-                KeyEvent.VK_1, Event.ALT_MASK + Event.CTRL_MASK));
+        a.putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_1,
+                Event.ALT_MASK + Event.CTRL_MASK));
         result.add(a);
-        
+
         name = Translator.localize("menu.item.snap-8");
         a = new ActionAdjustSnap(8, name);
         a.putValue("ID", "8"); /* This ID is used as DEFAULT_ID ! */
-        a.putValue("shortcut", KeyStroke.getKeyStroke(
-                KeyEvent.VK_2, Event.ALT_MASK + Event.CTRL_MASK));
+        a.putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_2,
+                Event.ALT_MASK + Event.CTRL_MASK));
         result.add(a);
-        
+
         name = Translator.localize("menu.item.snap-16");
         a = new ActionAdjustSnap(16, name);
         a.putValue("ID", "16");
-        a.putValue("shortcut", KeyStroke.getKeyStroke(
-                KeyEvent.VK_3, Event.ALT_MASK + Event.CTRL_MASK));
+        a.putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_3,
+                Event.ALT_MASK + Event.CTRL_MASK));
         result.add(a);
-        
+
         name = Translator.localize("menu.item.snap-32");
         a = new ActionAdjustSnap(32, name);
         a.putValue("ID", "32");
-        a.putValue("shortcut", KeyStroke.getKeyStroke(
-                KeyEvent.VK_4, Event.ALT_MASK + Event.CTRL_MASK));
+        a.putValue("shortcut", KeyStroke.getKeyStroke(KeyEvent.VK_4,
+                Event.ALT_MASK + Event.CTRL_MASK));
         result.add(a);
-        
+
         return result;
     }
 
