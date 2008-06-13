@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
 import org.tigris.gef.base.Layer;
@@ -55,9 +54,6 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
      */
     private static final long serialVersionUID = -7249069222789301797L;
     
-    private static final Logger LOG =
-	Logger.getLogger(ModeCreateAssociationEnd.class);
-
     public Object getMetaType() {
         return Model.getMetaTypes().getAssociationEnd();
     }
@@ -69,8 +65,9 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
      * @param graphModel     the graph model in which to create the connection
      *                       element
      * @param edgeType       the UML object type of the connection
-     * @param sourceFigNode  the FigNode for the source element
-     * @param destFigNode    the FigNode for the destination element
+     * @param sourceFig      the FigNode for the source element
+     * @param destFig        the FigNode for the destination element
+     * @return The FigEdge representing the newly created model element
      */
     @Override
     protected FigEdge buildConnection(
@@ -109,9 +106,9 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
                 _newItem.setLineColor(Color.black);
                 fe.setFig(_newItem);
                 fe.setSourcePortFig(sourceFigNode);
-                fe.setSourceFigNode((FigNode) sourceFigNode);
+                fe.setSourceFigNode(sourceFigNode);
                 fe.setDestPortFig(destFigNode);
-                fe.setDestFigNode((FigNode) destFigNode);
+                fe.setDestFigNode(destFigNode);
                 return fe;
             } else {
                 return null;
