@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.tigris.gef.base.Layer;
@@ -54,6 +55,11 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
      * The Fig from which drawing starts, either a FigNode or a FigEdge
      */
     private Fig sourceFig;
+    
+    /**
+     * The port where the edge was dropped.
+     */
+    private Fig endPort;
 
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
@@ -141,7 +147,7 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
         } else {
             LOG.info("Connection valid");
         }
-
+        
         if (destFig instanceof FigEdgeModelElement
                 && !(destFig instanceof FigEdgeNote)) {
             FigEdgeModelElement destEdge = (FigEdgeModelElement) destFig;
@@ -170,49 +176,25 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
                 p.setComplete(true);
                 
                 LOG.info("Connecting");
-                Object modelElement = graphModel.connect(
-                        getStartPort(), 
-                        foundPort, 
-                        getMetaType());
-                setNewEdge(modelElement);
-
-                // Calling connect() will add the edge to the GraphModel and
-                // any LayerPersectives on that GraphModel will get a
-                // edgeAdded event and will add an appropriate FigEdge
-                // (determined by the GraphEdgeRenderer).
-
-                if (getNewEdge() != null) {
-                    getSourceFigNode().damage();
-                    destFigNode.damage();
-                    Layer lay = editor.getLayerManager().getActiveLayer();
-                    FigEdge fe = (FigEdge) lay.presentationFor(getNewEdge());
-                    _newItem.setLineColor(Color.black);
-                    fe.setFig(_newItem);
-                    fe.setSourcePortFig(getStartPortFig());
-                    fe.setSourceFigNode(getSourceFigNode());
-                    fe.setDestPortFig(destPortFig);
-                    fe.setDestFigNode(destFigNode);
-
-                    if (fe != null) {
-                        editor.getSelectionManager().select(fe);
-                    }
-                    editor.damageAll();
-
-                    // if the new edge implements the MouseListener
-                    // interface it has to receive the mouseReleased() event
-                    if (fe instanceof MouseListener) {
-                        ((MouseListener) fe).mouseReleased(me);
-                    }
-
-                    // set the new edge in place
-                    if (getSourceFigNode() != null) {
-                        getSourceFigNode().updateEdges();
-                    }
-                    if (destFigNode != null) {
-                        destFigNode.updateEdges();
-                    }
-                    endAttached(fe);
+                FigEdge fe = buildConnection(
+                        graphModel,
+                        getMetaType(),
+                        sourceFig, 
+                        destFig);
+                
+                if (fe != null) {
+                    editor.getSelectionManager().select(fe);
                 }
+                editor.damageAll();
+
+                // if the new edge implements the MouseListener
+                // interface it has to receive the mouseReleased() event
+                if (fe instanceof MouseListener) {
+                    ((MouseListener) fe).mouseReleased(me);
+                }
+                
+                endAttached(fe);
+                
                 done();
                 me.consume();
                 return;
@@ -233,8 +215,8 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
     
     /**
      * Return the meta type of the element that this mode is designed to
-     * create. In the case the dependency metatype.
-     * @return the dependency meta type.
+     * create.
+     * @return the meta type of the connection required.
      */
     protected abstract Object getMetaType();
     
@@ -253,5 +235,49 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
 		source.getOwner(), 
 		dest.getOwner(),
                 true);
+    }
+    
+    /**
+     * Create an edge of the given type and connect it to the
+     * given nodes.
+     *
+     * @param edgeType       the UML object type of the connection
+     * @param fromElement    the UML object for the "from" element
+     * @param toElement      the UML object for the "to" element
+     */
+    protected FigEdge buildConnection(
+            MutableGraphModel graphModel,
+            Object edgeType,
+            Fig fromElement,
+            Fig destFigNode) {
+        Object modelElement = graphModel.connect(
+                fromElement.getOwner(), 
+                destFigNode.getOwner(), 
+                edgeType);
+        
+        setNewEdge(modelElement);
+
+        // Calling connect() will add the edge to the GraphModel and
+        // any LayerPersectives on that GraphModel will get a
+        // edgeAdded event and will add an appropriate FigEdge
+        // (determined by the GraphEdgeRenderer).
+
+        if (getNewEdge() != null) {
+            getSourceFigNode().damage();
+            destFigNode.damage();
+            Layer lay = editor.getLayerManager().getActiveLayer();
+            FigEdge fe = (FigEdge) lay.presentationFor(getNewEdge());
+            _newItem.setLineColor(Color.black);
+            fe.setFig(_newItem);
+            fe.setSourcePortFig(getStartPortFig());
+            fe.setSourceFigNode(getSourceFigNode());
+            fe.setDestPortFig(destFigNode);
+            fe.setDestFigNode((FigNode) destFigNode);
+            return fe;
+
+        } else {
+            return null;
+        }
+        
     }
 }
