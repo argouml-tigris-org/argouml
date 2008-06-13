@@ -75,7 +75,6 @@ import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
 import org.argouml.uml.ui.ActionSaveProjectAs;
-import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.tigris.gef.base.AdjustPageBreaksAction;
