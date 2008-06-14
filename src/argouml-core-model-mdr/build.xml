@@ -175,7 +175,7 @@ Building this requires:
   </target>
 
   <target name="generate-skipped" if="generate.notRequired">
-    <echo message="${build.dir}/UML14.dtd is up to date"/>
+    <echo message="${build.dir}/UML14.dtd is up to date in argouml-core-model-mdr"/>
   </target>
 
   <!-- =================================================================== -->
@@ -195,7 +195,7 @@ Building this requires:
     <!-- NOTE: The MDR task needs an absolute path for storageFile or it will
                put it in the caller's directory when called from argouml build
     -->
-    <echo message="Generating JMI interfaces from ${xmi.file}"/>
+    <echo message="Generating JMI interfaces from ${xmi.file} in argouml-core-model-mdr"/>
     <echo message="Storage file is in ${basedir}/${build.javas}"/>
     <echo message="Sources written to ${build.javas}"/>
     <mdr storageFile="${basedir}/${build.javas}/mymdr">
