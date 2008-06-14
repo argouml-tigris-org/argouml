@@ -35,6 +35,12 @@ import org.tigris.gef.presentation.FigSpline;
  */
 public class FigMessageSpline extends FigSpline {
     
+    public FigMessageSpline () {
+        // this constructor is needed for PGMLStackParser to load
+        // saved diagrams. It does nothing, because 
+        // PGMLStackParser will call setPoints later.
+    }
+    
     FigMessageSpline (Point start) {
 	assert (start != null) : "Point can't be null";
 	
