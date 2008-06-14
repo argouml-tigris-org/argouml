@@ -12,5 +12,5 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.argouml.application.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="argouml-app"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx400M -ea -Dlog4j.configuration=org/argouml/resource/full_console.lcf  -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx400M -ea -Dlog4j.configuration=org/argouml/resource/full_console.lcf  -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation;org.argouml.uml.diagram.sequence2.module.SequenceDiagramModule;"/>
 </launchConfiguration>
