@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.sequence2.module;
 
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 
@@ -51,6 +52,8 @@ public class SequenceDiagramModule implements ModuleInterface {
 
     private ActionSequenceDiagram newSequence;
 
+    private JButton toolbarBtn;
+    
     private JMenu menuSequence;
 
     private SequenceDiagramPropPanelFactory propPanelFactory;
@@ -67,12 +70,12 @@ public class SequenceDiagramModule implements ModuleInterface {
 
     public boolean enable() {
         // Register into the menu.
-//        GenericArgoMenuBar.registerMenuItem(menuSequence);
-//        GenericArgoMenuBar.registerCreateDiagramAction(newSequence);
-        // add a element to the toolbar.
         JToolBar toolbar = ((GenericArgoMenuBar) ProjectBrowser.getInstance()
                 .getJMenuBar()).getCreateDiagramToolbar();
-        toolbar.add(newSequence);
+        // there is no setIndex or similar, so we have to add
+        // twice, and it moves the item instead of adding again.
+        toolbarBtn = toolbar.add(newSequence);
+        toolbar.add(toolbarBtn, 3);
         toolbar.updateUI();
         
         propPanelFactory =
@@ -92,8 +95,8 @@ public class SequenceDiagramModule implements ModuleInterface {
         // remove it from the toolbar.
         JToolBar toolbar = ((GenericArgoMenuBar) ProjectBrowser.getInstance()
                 .getJMenuBar()).getCreateDiagramToolbar();
-        // remove the last one...
-        toolbar.remove(toolbar.getComponentCount() - 1);
+        
+        toolbar.remove(toolbarBtn);
         toolbar.updateUI();
 
         PropPanelFactoryManager.removePropPanelFactory(propPanelFactory);
