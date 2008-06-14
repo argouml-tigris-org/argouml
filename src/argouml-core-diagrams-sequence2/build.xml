@@ -135,7 +135,7 @@ Building this requires:
     <jar basedir="build/classes"
          excludes="*.txt,*.bat,*.xml,*.sh" 
          includes="org/argouml/**"
-	 jarfile="build/argouml-sequence.jar" />
+	 jarfile="build/argouml-diagrams-sequence.jar" />
   </target>
 
 
