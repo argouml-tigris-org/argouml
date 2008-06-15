@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,11 +27,9 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
@@ -89,10 +87,8 @@ public class FigStereotype extends CompartmentFigText {
      * {@inheritDoc}
      */
     public void setText(String text) {
-        Project project = 
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-        super.setText(ps.getLeftGuillemot() + text + ps.getRightGuillemot());
+        super.setText(NotationUtilityUml.formatSingleStereotype(text,
+                getNpArguments()));
     }
     
 }

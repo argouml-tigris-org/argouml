@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -160,7 +160,8 @@ public abstract class FigState extends FigStateVertex {
             return;
         }
         if (notationProviderBody != null) {
-            internal.setText(notationProviderBody.toString(getOwner(), null));
+            internal.setText(notationProviderBody.toString(getOwner(), 
+                    getNotationArguments()));
         }
         super.renderingChanged();
         calcBounds();
@@ -224,7 +225,8 @@ public abstract class FigState extends FigStateVertex {
                 return;
             }
             notationProviderBody.parse(getOwner(), ft.getText());
-            ft.setText(notationProviderBody.toString(getOwner(), null));
+            ft.setText(notationProviderBody.toString(getOwner(), 
+                    getNotationArguments()));
         }
     }
 

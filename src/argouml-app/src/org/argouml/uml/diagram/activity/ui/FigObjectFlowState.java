@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -288,7 +288,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
         if (isReadyToEdit()) {
             if (notationProviderType != null) {
                 getNameFig().setText(
-                        notationProviderType.toString(getOwner(), null));
+                        notationProviderType.toString(getOwner(), 
+                                getNotationArguments()));
             }
         }
     }
@@ -298,7 +299,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     private void updateStateText() {
         if (isReadyToEdit()) {
-            state.setText(notationProviderState.toString(getOwner(), null));
+            state.setText(notationProviderState.toString(getOwner(), 
+                    getNotationArguments()));
         }
     }
 

@@ -32,6 +32,10 @@ import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.kernel.Project;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
@@ -52,7 +56,9 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author Bob Tarling
  */
-public class FigSingleLineText extends ArgoFigText {
+public class FigSingleLineText extends ArgoFigText
+    implements ArgoNotationEventListener 
+    {
 
     /**
      * The UID.
@@ -82,6 +88,9 @@ public class FigSingleLineText extends ArgoFigText {
         setTabAction(FigText.END_EDITING);
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
+
+        initNotationArguments();
+        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
     /*
@@ -211,6 +220,17 @@ public class FigSingleLineText extends ArgoFigText {
             notationProvider.cleanListener(this, getOwner());
         }
         this.notationProvider = np;
+        initNotationArguments();
+    }
+
+    /**
+     * @return Returns the Notation Provider Arguments.
+     */
+    public HashMap<String, Object> getNpArguments() {
+        return npArguments;
+    }
+
+    private void initNotationArguments() {
         Project p = getProject();
         if (p != null) {
             npArguments.put("rightGuillemot", 
@@ -218,5 +238,27 @@ public class FigSingleLineText extends ArgoFigText {
             npArguments.put("leftGuillemot", 
                     p.getProjectSettings().getLeftGuillemot());
         }
+    }
+    
+    public void notationAdded(ArgoNotationEvent e) {
+        // Do nothing
+    }
+
+    public void notationChanged(ArgoNotationEvent e) {
+        initNotationArguments();
+//        if (getOwner() == null) return;
+//        setText();
+    }
+
+    public void notationProviderAdded(ArgoNotationEvent e) {
+        // Do nothing
+    }
+
+    public void notationProviderRemoved(ArgoNotationEvent e) {
+        // Do nothing    
+    }
+
+    public void notationRemoved(ArgoNotationEvent e) {
+        // Do nothing        
     }
 }

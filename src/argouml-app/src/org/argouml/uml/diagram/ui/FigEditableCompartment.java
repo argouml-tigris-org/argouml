@@ -28,12 +28,10 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
 import org.argouml.model.InvalidElementException;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
@@ -47,7 +45,7 @@ import org.tigris.gef.presentation.FigLine;
  * 
  * This class is adds the possibility to 
  * make the whole compartment invisible, and
- * a NotationProvideer is used to handle (generate and parse) 
+ * a NotationProvider is used to handle (generate and parse) 
  * the texts shown in the compartment, i.e. 
  * the compartment texts are editable by the user.
  */
@@ -202,21 +200,11 @@ public abstract class FigEditableCompartment extends FigCompartment {
                     np.initialiseListener(comp, umlObject);
                 }
                 addFig(comp); // add it again (but now in the right sequence)
-                
-                HashMap<String, Object> npArguments = 
-                    new HashMap<String, Object>();
-                Project p = getProject();
-                if (p != null) {
-                    npArguments.put("rightGuillemot", 
-                            p.getProjectSettings().getRightGuillemot());
-                    npArguments.put("leftGuillemot", 
-                            p.getProjectSettings().getLeftGuillemot());
-                }
 
                 // Now put the text in
                 // We must handle the case where the text is null
                 String ftText = comp.getNotationProvider()
-                    .toString(umlObject, npArguments);
+                    .toString(umlObject, comp.getNpArguments());
                 if (ftText == null) {
                     ftText = "";
                 }

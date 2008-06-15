@@ -1399,6 +1399,13 @@ public abstract class FigNodeModelElement
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), own, this);
             npArguments.put("pathVisible", Boolean.valueOf(isPathVisible()));
+            Project p = getProject();
+            if (p != null) {
+                npArguments.put("rightGuillemot", 
+                        p.getProjectSettings().getRightGuillemot());
+                npArguments.put("leftGuillemot", 
+                        p.getProjectSettings().getLeftGuillemot());
+            }
         }
     }
 
@@ -2072,6 +2079,10 @@ public abstract class FigNodeModelElement
             }
         }
         listeners.clear();
+    }
+
+    protected HashMap<String, Object> getNotationArguments() {
+        return npArguments;
     }
 
     protected void putNotationArgument(String key, Object value) {

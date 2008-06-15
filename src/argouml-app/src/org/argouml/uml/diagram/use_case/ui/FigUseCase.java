@@ -1180,7 +1180,8 @@ public class FigUseCase extends FigNodeModelElement
 
                 // Now put the text in
                 // We must handle the case where the text is null
-                String epText = epFig.getNotationProvider().toString(ep, null);
+                String epText = epFig.getNotationProvider().toString(ep, 
+                        getNotationArguments());
                 if (epText == null) {
                     epText = "";
                 }

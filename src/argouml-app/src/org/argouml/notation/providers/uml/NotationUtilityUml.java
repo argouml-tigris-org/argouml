@@ -898,18 +898,65 @@ public final class NotationUtilityUml {
     }
 
     /**
-     * TODO: Rewrite this, so that it does not use the Project.
+     * Generate the text for one or more stereotype(s).
      * 
      * @param st a stereotype UML object
      *                 or a string
      *                 or a collection of stereotypes
      *                 or a modelelement of which the stereotypes are retrieved
      * @param args arguments that may determine the notation
-     * @return a string representing the given stereotype(s). 
-     * This string is guaranteed not null.
+     * The values of "leftGuillemot" and "rightGuillemot" influence the outcome.
+     * @return a string representing the given stereotype(s)
      */
     public static String generateStereotype(Object st, Map args) {
-        return generateStereotype(st);
+        if (st == null) {
+            return "";
+        }
+
+        if (st instanceof String) {
+            return formatSingleStereotype((String) st, args);
+        }
+        if (Model.getFacade().isAStereotype(st)) {
+            return formatSingleStereotype(Model.getFacade().getName(st), args);
+        }
+
+        if (Model.getFacade().isAModelElement(st)) {
+            st = Model.getFacade().getStereotypes(st);
+        }
+        if (st instanceof Collection) {
+            Object o;
+            StringBuffer sb = new StringBuffer(10);
+            boolean first = true;
+            Iterator iter = ((Collection) st).iterator();
+            while (iter.hasNext()) {
+                if (!first) {
+                    sb.append(',');
+                }
+                o = iter.next();
+                if (o != null) {
+                    sb.append(Model.getFacade().getName(o));
+                    first = false;
+                }
+            }
+            if (!first) {
+                return formatSingleStereotype(sb.toString(), args);
+            }
+        }
+        return "";
+    }
+
+    public static String formatSingleStereotype(String name, Map args) {
+        if (name == null || name.length() == 0) {
+            return "";
+        }
+        if (args != null) {
+            if (args.get("leftGuillemot") != null 
+                    && args.get("rightGuillemot") != null) {
+                return args.get("leftGuillemot") + name 
+                    + args.get("rightGuillemot");
+            }
+        }
+        return "<<" + name + ">>";
     }
 
     /**

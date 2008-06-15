@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -288,7 +288,8 @@ public class FigActionState extends FigStateVertex {
     @Override
     protected void updateNameText() {
         if (notationProvider != null) {
-            getNameFig().setText(notationProvider.toString(getOwner(), null));
+            getNameFig().setText(notationProvider.toString(getOwner(), 
+                    getNotationArguments()));
         }
     }
 
@@ -306,7 +307,8 @@ public class FigActionState extends FigStateVertex {
     @Override
     protected void textEdited(FigText ft) throws PropertyVetoException {
         notationProvider.parse(getOwner(), ft.getText());
-        ft.setText(notationProvider.toString(getOwner(), null));
+        ft.setText(notationProvider.toString(getOwner(), 
+                getNotationArguments()));
     }
 
     /*

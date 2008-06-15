@@ -28,6 +28,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -153,7 +154,18 @@ public class DisplayTextTree extends JTree {
                             .getNotationProvider(
                                 NotationProviderFactory2.TYPE_EXTENSION_POINT,
                                 value);
-                    name = notationProvider.toString(value, null);
+                    /* TODO: move this Map outside this method 
+                     * for performance. */
+                    HashMap<String, Object> npArguments = 
+                        new HashMap<String, Object>();
+                    Project p = ProjectManager.getManager().getCurrentProject();
+                    if (p != null) {
+                        npArguments.put("rightGuillemot", 
+                                p.getProjectSettings().getRightGuillemot());
+                        npArguments.put("leftGuillemot", 
+                                p.getProjectSettings().getLeftGuillemot());
+                    }
+                    name = notationProvider.toString(value, npArguments);
                 } else if (Model.getFacade().isAComment(value)) {
                     name = (String) Model.getFacade().getBody(value);
                 } else if (Model.getFacade().isATaggedValue(value)) {
