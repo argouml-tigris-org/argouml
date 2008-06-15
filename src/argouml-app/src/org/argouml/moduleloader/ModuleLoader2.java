@@ -721,6 +721,9 @@ public final class ModuleLoader2 {
                     + " extension module or an unresolved dependency", e);
             return false;
         } catch (Throwable e) {
+            if (e instanceof ClassNotFoundException) {
+                throw (ClassNotFoundException) e;
+            }
             LOG.error("Unexpected error while loading " + classname, e);
             return false;
         }
