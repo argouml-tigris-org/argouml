@@ -715,6 +715,14 @@ public final class ModuleLoader2 {
         } catch (UnsupportedClassVersionError e) {
             LOG.error("Unsupported Java class version for " + classname);
             return false;
+        } catch (NoClassDefFoundError e) {
+            LOG.error("Unable to find required class while loading "
+                    + classname + " - may indicate an obsolete"
+                    + " extension module or an unresolved dependency", e);
+            return false;
+        } catch (Throwable e) {
+            LOG.error("Unexpected error while loading " + classname, e);
+            return false;
         }
         
         if (!ModuleInterface.class.isAssignableFrom(moduleClass)) {
