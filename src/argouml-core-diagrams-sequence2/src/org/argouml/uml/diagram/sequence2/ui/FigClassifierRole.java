@@ -70,6 +70,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     private FigLifeLine lifeLineFig;
     
+    // TODO: Do we need this? Is this the same as emptyFig.getHeight()?
     private int offset = 0;
     
     /**
