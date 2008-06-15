@@ -157,6 +157,10 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     "The supplier and client of an abstraction"
                             + "should be classifiers");
         }
+        if (client.equals(supplier)) {
+            throw new IllegalArgumentException("The supplier and the client "
+                    + "must be different elements");
+        }
         Abstraction abstraction = createAbstraction();
         abstraction.setName(name);
         abstraction.getClient().add((Classifier) client);
@@ -1197,7 +1201,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         ModelElement client = (ModelElement) clnt;
         ModelElement supplier = (ModelElement) spplr;
         if (client == null || supplier == null || client.getNamespace() == null
-                || supplier.getNamespace() == null) {
+                || supplier.getNamespace() == null || client.equals(supplier)) {
             throw new IllegalArgumentException("faulty arguments.");
         }
         Abstraction realization = createAbstraction();
@@ -1212,8 +1216,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         realization.setNamespace(nsc);
         modelImpl.getExtensionMechanismsFactory().buildStereotype(realization,
                 CoreFactory.REALIZE_STEREOTYPE, ns);
-        modelImpl.getCoreHelper().addClientDependency(client, realization);
-        modelImpl.getCoreHelper().addSupplierDependency(supplier, realization);
+        realization.getClient().add(client);
+        realization.getSupplier().add(supplier);
         return realization;
     }
 
