@@ -347,8 +347,9 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
         currentHeight += nameHeight;
 
-        if (attributesFigCompartment.isVisible()){
-            int attributesHeight = attributesFigCompartment.getMinimumSize().height;
+        if (attributesFigCompartment.isVisible()) {
+            int attributesHeight = 
+                attributesFigCompartment.getMinimumSize().height;
             if (isOperationsVisible()) {
                 attributesHeight += whitespace / 2;
             }

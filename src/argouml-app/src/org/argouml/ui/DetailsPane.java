@@ -574,11 +574,11 @@ public class DetailsPane
     /*
      * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
-    public void setOrientation(Orientation orientation) {
+    public void setOrientation(Orientation newOrientation) {
         for (JPanel t : tabPanelList) {
             if (t instanceof Orientable) {
                 Orientable o = (Orientable) t;
-                o.setOrientation(orientation);
+                o.setOrientation(newOrientation);
             }
         }
     }

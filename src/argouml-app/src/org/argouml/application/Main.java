@@ -538,12 +538,12 @@ public class Main {
      * If the file does not exist or cannot be converted the default
      * {@link URL} is returned.
      *
-     * @param projectName is the file name of the project
+     * @param theProjectName is the file name of the project
      * @param urlToOpen is the default {@link URL}
      * @return the new URL.
      */
-    private static URL projectUrl(final String projectName, URL urlToOpen) {
-        File projectFile = new File(projectName);
+    private static URL projectUrl(final String theProjectName, URL urlToOpen) {
+        File projectFile = new File(theProjectName);
         if (!projectFile.exists()) {
             System.err.println("Project file '" + projectFile
 			       + "' does not exist.");

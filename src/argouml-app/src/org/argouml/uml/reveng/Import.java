@@ -259,9 +259,8 @@ public class Import extends ImportCommon implements ImportSettings {
                     .localize("action.import-option-min-class-icon"), mini);
             general.add(minimiseFigs);
 
-            layoutDiagrams = new JCheckBox(
-                    Translator
-                            .localize("action.import-option-perform-auto-diagram-layout"),
+            layoutDiagrams = new JCheckBox(Translator.localize(
+                    "action.import-option-perform-auto-diagram-layout"),
                     layo);
             general.add(layoutDiagrams);
 
@@ -579,7 +578,7 @@ public class Import extends ImportCommon implements ImportSettings {
             File[] files = getSelectedFiles();
             File dir = getCurrentDirectory();
             if (files.length == 0) {
-                files = new File[] { dir };
+                files = new File[] {dir };
             }
             if (files.length == 1) {
                 File file = files[0];
@@ -593,9 +592,10 @@ public class Import extends ImportCommon implements ImportSettings {
             Globals.setLastDirectory(dir.getPath());
             theImport.disposeDialog();
 
-            if (theImport.getCurrentModule() instanceof ExtendedImportInterface) {
-                ExtendedImportInterface eii = (ExtendedImportInterface) theImport
-                        .getCurrentModule();
+            if (theImport.getCurrentModule() 
+                    instanceof ExtendedImportInterface) {
+                ExtendedImportInterface eii = 
+                    (ExtendedImportInterface) theImport.getCurrentModule();
                 eii.invokeImport(new ImportCommand(theImport));
             } else {
                 theImport.doFile();
