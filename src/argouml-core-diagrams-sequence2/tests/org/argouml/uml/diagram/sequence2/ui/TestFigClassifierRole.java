@@ -24,25 +24,14 @@
 
 package org.argouml.uml.diagram.sequence2.ui;
 
-import java.awt.event.ActionEvent;
+import junit.framework.TestCase;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
-import org.argouml.model.Model;
-import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.diagram.sequence2.ActionSequenceDiagram;
-import org.argouml.uml.diagram.sequence2.module.SequenceDiagramFactory;
-import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
-
-import junit.framework.TestCase;
 
 /**
  * Tests the FigClassifierRole class.
