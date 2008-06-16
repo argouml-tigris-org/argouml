@@ -76,6 +76,13 @@ Building this requires:
         <include name="*.jar"/>
       </fileset>
     </path>
+    
+    <path id="tests.all.classpath">
+      <pathelement location="build/classes"/>
+      <pathelement location="build/tests/classes"/>
+      <path refid="tests.run.classpath"/>
+    </path>
+      
   </target>
 	
   <!-- =================================================================== -->
