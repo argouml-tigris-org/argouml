@@ -27,13 +27,15 @@ package org.argouml.uml.diagram.sequence2.ui;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.graph.GraphFactory;
 import org.tigris.gef.presentation.Fig;
 
 /**
- *
+ * Ensures that each new ClassifierRole has the same Y position and height as
+ * all the existing ones.
+ * 
+ * @author bszanto
  * @author penyaskito
  */
 public class ModePlaceClassifierRole extends ModePlace {

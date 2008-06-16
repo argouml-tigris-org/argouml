@@ -38,6 +38,7 @@ import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigRect;
 
@@ -192,17 +193,34 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
     
     /**
-     * 
-     * @return the 
-     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     * Gets the minimum size of the CR:<br>
+     * width = the minimum width of the headFig<br>
+     * height = the minimum height of the headFig + offset (in case a create
+     * message is present).<br>
+     * An extra buffer of 10 is added to ensure lifeLine visibility.
      */
     public Dimension getMinimumSize() {
-        // The minimum size of the CR is the minimum size of the headFig,
-        // with the offset required when a create message is received.
-        // An extra buffer of 10 is added to ensure lifeLine visibility.
-        return new Dimension(
-                headFig.getMinimumWidth(),
-                this.offset + headFig.getMinimumHeight() + 10);
+
+        List<Fig> figs = this.getEdges();
+
+        if (figs.size() > 0) {
+            // the Y position of the lower most FigMessage
+            int yMax = 0;
+
+            for (Fig fig : figs) {
+                if (fig instanceof FigMessage) {
+                    if (fig.getLastPoint().y > yMax) {
+                        yMax = fig.getY();
+                    }
+                }
+            }
+            
+            return new Dimension(headFig.getMinimumWidth(), yMax - getY() + 10);
+        } else {
+            return new Dimension(headFig.getMinimumWidth(), emptyFig
+                    .getHeight()
+                    + headFig.getMinimumHeight() + 10);
+        }
     }
       
     

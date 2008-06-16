@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.sequence2.ui;
 
+import java.awt.Point;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -52,8 +53,19 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
     }
 
     /**
-     * Make sure that the north facing handles cannot be dragged as part of a
-     * resize. {@inheritDoc}
+     * Makes sure that draging on the CR keeps them all aligned and resizing
+     * doesn't force FigMessages overlaying.
+     * 
+     * @param mX
+     *                New X position (aka current mouse X position)
+     * @param mY
+     *                New Y position (aka current mouse Y position)
+     * @param anX
+     *                Old X position
+     * @param anY
+     *                Old Y position
+     * @param hand
+     *                The handle being dragged
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
 
@@ -63,57 +75,73 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
 
         List<Fig> figs = getContent().getLayer().getContents();
 
-        // get the bounds of FigMessages
-        int yMax = 65535; // this should be big enough for init
-        int yMin = 0;
-        for (Fig fig : figs) {
-            if (fig instanceof FigMessage) {
-                if (fig.getY() < yMax) {
-                    yMax = fig.getY();
-                }
-                if (fig.getY() > yMin) {
-                    yMin = fig.getY();
-                }
-            }
-        }
-        // a little buffer to ensure good visibility
-        // yMax -= 10; // not required
-        yMin += 10;
- 
+        // if this is true all resizing/moving will stop
+        boolean stopResize = false;
+        
         // vertical resizing
         switch (hand.index) {
         case Handle.NORTHWEST:
         case Handle.NORTH:
         case Handle.NORTHEAST:
-            // TODO Java 5 style for loop would be nicer
-            for (Fig workOnFig : figs) {
+                 final int dY = mY - getContent().getY();
                 /*
-                 * the resize will take place if the workOnFig 1. is a
-                 * FifClassifierRole 2. doesn't force a FigMessage to move 3.
-                 * doesn't violate minimum size of a CR
+                 * First check if all CRs can be moved. The resize will take place
+                 * if: 1. workOnFig is a FifClassifierRole that doesn't contain a
+                 * Creation Message; 2. doesn't force a FigMessage to move more over
+                 * another message; 3. doesn't violate minimum size of a CR
+                 * 
+                 * TODO: take care of CRs with creation/destruction messages.
+                 * Depends on issue 5130
                  */
+                 for (Fig workOnFig : figs) {
                 if (workOnFig instanceof FigClassifierRole
-                        && mY + workOnFig.getMinimumSize().height < yMax
-                        && (workOnFig.getHeight() + workOnFig.getY() - mY) > workOnFig
-                                .getMinimumSize().height) {
-                    workOnFig.setHeight(workOnFig.getHeight()
-                             + workOnFig.getY() - mY);
-                    workOnFig.setY(mY);            
+                        && (workOnFig.getHeight() + workOnFig.getY() - mY) < workOnFig
+                        .getMinimumSize().height) {
+                    stopResize = true;
+                }
+            }
+                 
+            // if everything is OK, go on and move CRs and FigMessages
+            if (!stopResize) {
+                for (Fig workOnFig : figs) {
+                    if (workOnFig instanceof FigClassifierRole) {
+                        workOnFig.setHeight(workOnFig.getHeight()
+                                + workOnFig.getY() - mY);
+                        workOnFig.setY(mY);
+                    } else if (workOnFig instanceof FigMessage) {
+                 
+                        // the array of points from a FigMessage
+                        Point[] messagePoints = workOnFig.getPoints();
+                        for (Point pt : messagePoints) {
+                            pt.y = pt.y + dY;
+                            workOnFig.setPoints(messagePoints);
+                        }
+                    }
                 }
             }
             break;
         case Handle.SOUTH:
         case Handle.SOUTHEAST:
         case Handle.SOUTHWEST:
+            /*
+             * First check if all CRs can be moved. The resize will take place
+             * if the lower most FigMessage is not reached
+             */
             for (Fig workOnFig : figs) {
-                // same conditions here as above
                 if (workOnFig instanceof FigClassifierRole
-                        && mY > yMin
-                        && mY - workOnFig.getY() 
-                        > workOnFig.getMinimumSize().height) {                    
-                    workOnFig.setHeight(mY - workOnFig.getY());
+                        && (mY - workOnFig.getY() < workOnFig.getMinimumSize().height)) {
+                    stopResize = true;
                 }
             }
+            
+            // if everything is OK, go on and move CRs and FigMessages
+            if (!stopResize) {
+                for (Fig workOnFig : figs) {
+                    if (workOnFig instanceof FigClassifierRole) {
+                        workOnFig.setHeight(mY - workOnFig.getY());
+                    }
+                }
+            }        
         default:
         }
 
