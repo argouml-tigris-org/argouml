@@ -170,6 +170,7 @@ Building this requires:
     <!-- create directories -->
     <mkdir dir="build/tests/classes"/>
 
+
     <javac debug="true" 
            deprecation="on"
            optimize="false" 
@@ -191,6 +192,9 @@ Building this requires:
   <target name="tests" depends="compile,compile-tests"
           description="Run all tests that don't require any GUI components in headleass mode.">
 
+    <mkdir dir="build/tests/reports"/>
+    <mkdir dir="build/tests/reports/html"/>
+      
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
            fork="yes"  dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
