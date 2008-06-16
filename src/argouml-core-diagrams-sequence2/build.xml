@@ -187,7 +187,7 @@ Building this requires:
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
            fork="yes"  dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
-           maxmemory="48M" printsummary="${junit.printsummary}">
+           maxmemory="48M" printsummary="true">
       <sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
       <sysproperty key="java.awt.headless" value="true"/>
       <assertions>
