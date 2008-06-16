@@ -206,7 +206,7 @@ Building this requires:
       </assertions>
       <classpath refid="tests.all.classpath"/>
       <formatter type="xml"/>
-      <batchtest todir="build/tests/reports}">
+      <batchtest todir="build/tests/reports">
         <fileset dir="tests">
           <include name="org/argouml/**/Test*.java"/>
         </fileset>
