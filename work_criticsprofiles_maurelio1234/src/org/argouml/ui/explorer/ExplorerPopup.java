@@ -42,12 +42,17 @@ import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
+import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -58,9 +63,7 @@ import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
-import org.argouml.profile.Profile;
-import org.argouml.kernel.ProfileConfiguration;
-import org.argouml.profile.ProfileException;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -71,7 +74,6 @@ import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.MutableGraphModel;
 
@@ -193,7 +195,11 @@ public class ExplorerPopup extends JPopupMenu {
         if (!multiSelect && selectedItem instanceof Profile) {
             this.add(new ActionExportProfileXMI((Profile) selectedItem));
         }
-        
+
+        if (!multiSelect && selectedItem instanceof ProfileConfiguration) {
+            this.add(new ActionManageProfiles());
+        }
+
         if (modelElementsOnly) {
             initMenuCreateModelElements();
         }
@@ -844,7 +850,8 @@ public class ExplorerPopup extends JPopupMenu {
             Object selectedItem) {
         boolean found = selectedItem instanceof ProfileConfiguration
                 || selectedItem instanceof Profile
-                || selectedItem instanceof ArgoDiagram;
+                || selectedItem instanceof ArgoDiagram
+                || selectedItem instanceof CrUML;
                 
         if (!found) {
             for (Profile profile : currentProject.getProfileConfiguration()
