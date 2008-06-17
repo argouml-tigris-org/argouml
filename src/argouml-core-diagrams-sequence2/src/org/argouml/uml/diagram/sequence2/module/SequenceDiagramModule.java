@@ -24,16 +24,11 @@
 
 package org.argouml.uml.diagram.sequence2.module;
 
-import javax.swing.JButton;
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
-
 import org.apache.log4j.Logger;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.proppanel.sequence2.SequenceDiagramPropPanelFactory;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.cmd.GenericArgoMenuBar;
-import org.argouml.uml.diagram.sequence2.ActionSequenceDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.ui.PropPanelFactoryManager;
 
 /**
@@ -50,56 +45,27 @@ public class SequenceDiagramModule implements ModuleInterface {
     private static final Logger LOG = Logger
             .getLogger(SequenceDiagramModule.class);
 
-    private ActionSequenceDiagram newSequence;
-
-    private JButton toolbarBtn;
-    
-    private JMenu menuSequence;
-
     private SequenceDiagramPropPanelFactory propPanelFactory;
         
-    /**
-     * This is creatable from the module loader.
-     */
-    public SequenceDiagramModule() {
-        super();
-        menuSequence = new JMenu("Sequence Module");
-        newSequence = new ActionSequenceDiagram();
-        menuSequence.add(newSequence);
-    }
-
     public boolean enable() {
-        // Register into the menu.
-        JToolBar toolbar = ((GenericArgoMenuBar) ProjectBrowser.getInstance()
-                .getJMenuBar()).getCreateDiagramToolbar();
-        // there is no setIndex or similar, so we have to add
-        // twice, and it moves the item instead of adding again.
-        toolbarBtn = toolbar.add(newSequence);
-        toolbar.add(toolbarBtn, 3);
-        toolbar.updateUI();
         
         propPanelFactory =
             new SequenceDiagramPropPanelFactory();
         PropPanelFactoryManager.addPropPanelFactory(propPanelFactory);
+        
+        DiagramFactory.getInstance().registerDiagramFactory(
+                DiagramType.Sequence, new SequenceDiagramFactory());
 
         LOG.info("SequenceDiagram Module enabled.");
         return true;
     }
 
     public boolean disable() {
-        GenericArgoMenuBar menubar = (GenericArgoMenuBar) ProjectBrowser
-                .getInstance().getJMenuBar();
-        menubar.remove(menuSequence);
-        menubar.updateUI();
-
-        // remove it from the toolbar.
-        JToolBar toolbar = ((GenericArgoMenuBar) ProjectBrowser.getInstance()
-                .getJMenuBar()).getCreateDiagramToolbar();
-        
-        toolbar.remove(toolbarBtn);
-        toolbar.updateUI();
 
         PropPanelFactoryManager.removePropPanelFactory(propPanelFactory);
+
+        DiagramFactory.getInstance().registerDiagramFactory(
+                DiagramType.Sequence, null);
 
         LOG.info("SequenceDiagram Module disabled.");
         return true;
