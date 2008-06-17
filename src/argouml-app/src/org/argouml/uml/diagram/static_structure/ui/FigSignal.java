@@ -76,7 +76,8 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
      *
      * @param node The UML object being placed.
      */
-    public FigSignal(GraphModel gm, Object node) {
+    public FigSignal(@SuppressWarnings("unused")
+    GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
@@ -84,6 +85,7 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionSignal(this);
     }
@@ -91,6 +93,7 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigClassifierBox#getPopUpActions(java.awt.event.MouseEvent)
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         
@@ -102,6 +105,7 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee instanceof AssociationChangeEvent 
