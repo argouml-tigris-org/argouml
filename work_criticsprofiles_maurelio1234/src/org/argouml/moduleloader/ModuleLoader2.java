@@ -641,10 +641,16 @@ public final class ModuleLoader2 {
                     }
                     Set<CrUML> profiles = loadCritiquesForProfile(attr, classloader);
                     String modelPath = attr.getValue("Model");
+                    URL modelURL = null;
                     
-                    UserDefinedProfile udp = new UserDefinedProfile(new URL(
-                            "jar:file:" + file.getCanonicalPath() + "!"
-                                    + modelPath), profiles);
+                    if (modelPath != null) {
+                        modelURL = new URL(
+                                "jar:file:" + file.getCanonicalPath() + "!"
+                                + modelPath);
+                    }
+                    
+                    UserDefinedProfile udp = new UserDefinedProfile(entryName,
+                            modelURL, profiles);
                     
                     ProfileFacade.getManager().registerProfile(udp);
                     LOG.debug("Registered Profile: " + udp.getDisplayName()
