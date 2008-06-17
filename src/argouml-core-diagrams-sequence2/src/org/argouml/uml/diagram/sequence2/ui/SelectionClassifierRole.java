@@ -83,17 +83,17 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
         case Handle.NORTHWEST:
         case Handle.NORTH:
         case Handle.NORTHEAST:
-                 final int dY = mY - getContent().getY();
-                /*
-                 * First check if all CRs can be moved. The resize will take place
-                 * if: 1. workOnFig is a FifClassifierRole that doesn't contain a
-                 * Creation Message; 2. doesn't force a FigMessage to move more over
-                 * another message; 3. doesn't violate minimum size of a CR
-                 * 
-                 * TODO: take care of CRs with creation/destruction messages.
-                 * Depends on issue 5130
-                 */
-                 for (Fig workOnFig : figs) {
+            final int dY = mY - getContent().getY();
+            /*
+             * First check if all CRs can be moved. The resize will take place
+             * if: 1. workOnFig is a FifClassifierRole that doesn't contain a
+             * Creation Message; 2. doesn't force a FigMessage to move more over
+             * another message; 3. doesn't violate minimum size of a CR
+             * 
+             * TODO: take care of CRs with creation/destruction messages.
+             * Depends on issue 5130
+             */
+            for (Fig workOnFig : figs) {
                 if (workOnFig instanceof FigClassifierRole
                         && (workOnFig.getHeight() + workOnFig.getY() - mY) < workOnFig
                         .getMinimumSize().height) {
