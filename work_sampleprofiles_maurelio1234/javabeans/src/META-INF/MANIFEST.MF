@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Class-Path: argouml.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: JavaBeans Profile
+Profile: true
+Model: /org/argouml/uml/profile/javabeans/JavaBeans.xmi 
+Java-Critics: org.argouml.uml.profile.cognitive.critics.CrJavaBeanPropertyApplication

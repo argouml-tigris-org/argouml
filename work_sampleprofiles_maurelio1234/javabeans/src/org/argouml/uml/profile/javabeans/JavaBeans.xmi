@@ -1,0 +1,58 @@
+<?xml version = '1.0' encoding = 'UTF-8' ?>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Fri Jun 06 14:55:05 CEST 2008'>
+  <XMI.header>    <XMI.documentation>
+      <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
+      <XMI.exporterVersion>PRE-0.25.6(6) revised on $Date: 2007-05-12 08:08:08 +0200 (sam., 12 mai 2007) $ </XMI.exporterVersion>
+    </XMI.documentation>
+    <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
+  <XMI.content>
+    <UML:Model xmi.id = '10-1-1-3--78fd8828:1127669a1fa:-8000:000000000000077B'
+      name = 'UML Profile for JavaBeans' isSpecification = 'false' isRoot = 'false'
+      isLeaf = 'false' isAbstract = 'false'>
+      <UML:ModelElement.stereotype>
+        <UML:Stereotype href = 'http://argouml.org/profiles/uml14/default-uml14.xmi#.:0000000000000877'/>
+      </UML:ModelElement.stereotype>
+      <UML:ModelElement.taggedValue>
+        <UML:TaggedValue xmi.id = '127-0-1-1--fda1a11:11a21f70e98:-8000:000000000000080B'
+          isSpecification = 'false'>
+          <UML:TaggedValue.dataValue>Java</UML:TaggedValue.dataValue>
+          <UML:TaggedValue.type>
+            <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--3790810c:11a1f2b16a5:-8000:00000000000007C8'/>
+          </UML:TaggedValue.type>
+        </UML:TaggedValue>
+      </UML:ModelElement.taggedValue>
+      <UML:Namespace.ownedElement>
+        <UML:Stereotype xmi.id = '10-1-1-3--78fd8828:1127669a1fa:-8000:000000000000077C'
+          name = 'Bean' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'>
+          <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+          <UML:ModelElement.taggedValue>
+            <UML:TaggedValue xmi.id = '127-0-1-1--38d5c701:11a260f64f7:-8000:0000000000000897'
+              isSpecification = 'false'>
+              <UML:TaggedValue.dataValue>/documents/workspace/gsoc/javabeans/src/org/argouml/uml/profile/javabeans/bean.GIF</UML:TaggedValue.dataValue>
+              <UML:TaggedValue.type>
+                <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--3790810c:11a1f2b16a5:-8000:00000000000007D1'/>
+              </UML:TaggedValue.type>
+            </UML:TaggedValue>
+          </UML:ModelElement.taggedValue>
+        </UML:Stereotype>
+        <UML:Stereotype xmi.id = '10-1-1-3--78fd8828:1127669a1fa:-8000:000000000000077E'
+          name = 'Property' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'>
+          <UML:Stereotype.baseClass>Attribute</UML:Stereotype.baseClass>
+        </UML:Stereotype>
+        <UML:Stereotype xmi.id = '10-1-1-3--1493a662:11305da89f4:-8000:00000000000008B1'
+          name = 'Event' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+          isAbstract = 'false'>
+          <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
+        </UML:Stereotype>
+        <UML:Comment xmi.id = '127-0-1-1-65adf79:11a5ddc3c5c:-8000:000000000000089C'
+          isSpecification = 'false' body = 'context Class inv: self.stereotype-&gt;contains(Bean) implies self.operation-&gt;forAll(x | x.stereotype-&gt;includes(Property))'>
+          <UML:ModelElement.stereotype>
+            <UML:Stereotype href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--259518d7:11a5dd26371:-8000:00000000000008DF'/>
+          </UML:ModelElement.stereotype>
+        </UML:Comment>
+      </UML:Namespace.ownedElement>
+    </UML:Model>
+  </XMI.content>
+</XMI>
