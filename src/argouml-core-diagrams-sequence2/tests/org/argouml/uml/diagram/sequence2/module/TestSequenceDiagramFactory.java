@@ -41,8 +41,6 @@ public class TestSequenceDiagramFactory extends TestCase {
 
     private Class sequence2DiagramClass = 
         org.argouml.uml.diagram.sequence2.ui.UMLSequenceDiagram.class;
-    private Class sequenceDiagramClass = 
-        org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram.class;
         
     protected void setUp() throws Exception {        
         super.setUp();
@@ -60,13 +58,8 @@ public class TestSequenceDiagramFactory extends TestCase {
             getCurrentNamespace();
         col = Model.getCollaborationsFactory().buildCollaboration(ns);        
         
-        ArgoDiagram newDiagram = SequenceDiagramFactory.getInstance().
-            createDiagram(sequence2DiagramClass, col, col);
+        ArgoDiagram newDiagram = new SequenceDiagramFactory().
+            createDiagram(col, col);
         assertEquals(newDiagram.getClass(), sequence2DiagramClass);
-        
-        ArgoDiagram oldDiagram = SequenceDiagramFactory.getInstance().
-            createDiagram(sequenceDiagramClass, col, col);
-        assertEquals(oldDiagram.getClass(), sequenceDiagramClass);
-                
     }
 }
