@@ -56,6 +56,8 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 */
 public final class DiagramFactory {
 
+    private final Map noStyleProperties = new HashMap();
+
     /**
      * Map from our public enum to our internal implementation classes.
      * This allows use to hide the implementation classes from users of
@@ -80,6 +82,9 @@ public final class DiagramFactory {
    
     private List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
 
+    private Map<DiagramType, DiagramFactoryInterface> factories =
+        new EnumMap<DiagramType, DiagramFactoryInterface>(DiagramType.class);
+
     private DiagramFactory() {
         super();
         diagramClasses.put(DiagramType.Class, UMLClassDiagram.class);
@@ -101,6 +106,7 @@ public final class DiagramFactory {
 
     /**
      * @return the list of diagrams
+     * @deprecated in 0.26 By Bob Tarling
      */
     public List<ArgoDiagram> getDiagram() {
         // TODO: This list is currently unused in ArgoUML.  Since it's session
@@ -130,9 +136,22 @@ public final class DiagramFactory {
      *                         (only: statemachine - activitygraph)
      * @return the newly instantiated class diagram
      */
-    public ArgoDiagram createDiagram(DiagramType type, Object namespace,
-            Object machine) {
-        return createDiagram(diagramClasses.get(type), namespace, machine);
+    public ArgoDiagram createDiagram(
+            final DiagramType type, 
+            final Object namespace,
+            final Object machine) {
+        
+        DiagramFactoryInterface factory = factories.get(type);
+        if (factory != null) {
+            final ArgoDiagram diagram =
+                factory.createDiagram(namespace, machine);
+            //keep a reference on it in the case where we must add all the
+            //diagrams as project members (loading)
+            diagrams.add(diagram);
+            return diagram;
+        } else {
+            return createDiagram(diagramClasses.get(type), namespace, machine);
+        }
     }
     
     /**
@@ -182,6 +201,8 @@ public final class DiagramFactory {
         }
         
         if (Model.getDiagramInterchangeModel() != null) {
+            // TODO: This is never executed as Ludos DI work was never
+            // finished.
             diagram.getGraphModel().addGraphEventListener(
                  GraphChangeAdapter.getInstance());
             /*
@@ -235,13 +256,23 @@ public final class DiagramFactory {
 //    }
 
 
-    private final Map noStyleProperties = new HashMap();
-
     public Object createRenderingElement(Object diagram, Object model) {
         GraphNodeRenderer rend =
             ((Diagram) diagram).getLayer().getGraphNodeRenderer();
         Object renderingElement =
                 rend.getFigNodeFor(model, 0, 0, noStyleProperties);
         return renderingElement;
+    }
+    
+    /**
+     * Register a specific factory class to create diagram instances for a
+     * specific diagram type
+     * @param type the diagram type
+     * @param factory the factory instance
+     */
+    public void registerDiagramFactory(
+            final DiagramType type,
+            final DiagramFactoryInterface factory) {
+        factories.put(type, factory);
     }
 }
