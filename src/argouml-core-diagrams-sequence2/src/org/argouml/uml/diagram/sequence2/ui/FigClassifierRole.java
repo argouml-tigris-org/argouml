@@ -193,11 +193,13 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
     
     /**
-     * Gets the minimum size of the CR:<br>
-     * width = the minimum width of the headFig<br>
-     * height = the minimum height of the headFig + offset (in case a create
-     * message is present).<br>
-     * An extra buffer of 10 is added to ensure lifeLine visibility.
+     * Gets the minimum size of the Fig<br>
+     * The width is restricted by the notation making sure that the full
+     * classifier role description is displayed.<br>
+     * The minimum height is restricted so that the all attached message will
+     * remain in the same position relative to the Fig. If no messages are
+     * attached then the minimum height will ensure box is shown plus at least
+     * 10 pixels of the lifeline.
      */
     public Dimension getMinimumSize() {
 
