@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,7 +68,7 @@ public class UMLExpressionBodyField extends JTextArea
         getDocument().addDocumentListener(this);
         setToolTipText(Translator.localize("label.body.tooltip"));
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
-        setRows(2); // make it strech vertically
+        setRows(2); // make it stretch vertically
     }
 
     /*
