@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.sequence2;
 import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.sequence2.module.SequenceDiagramFactory;
-import org.argouml.uml.diagram.sequence2.ui.UMLSequenceDiagram;
 import org.argouml.uml.ui.ActionNewDiagram;
 
 /**

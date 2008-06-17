@@ -25,15 +25,15 @@
 package org.argouml.uml.diagram.sequence2.module;
 
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactoryInterface;
 import org.argouml.uml.diagram.sequence2.ui.UMLSequenceDiagram;
 
 /**
- * This factory creates a sequence2 Sequence Diagram if needed, otherwise 
- * it delegates on the ArgoUML core DiagramFactory.
+ * This factory creates a sequence2 Sequence Diagram.
  * @see org.argouml.uml.diagram.DiagramFactory
  * @author penyaskito
  */
-public class SequenceDiagramFactory  {
+public class SequenceDiagramFactory implements DiagramFactoryInterface {
 
     /**
      * Factory method to create a new instance of an ArgoDiagram,
