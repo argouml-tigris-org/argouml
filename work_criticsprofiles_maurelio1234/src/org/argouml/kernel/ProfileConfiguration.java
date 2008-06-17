@@ -49,10 +49,10 @@ import org.argouml.profile.ProfileFacade;
 import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
- *   This class captures represents the unique access point for the 
- *   configurability allowed by the use of profiles. 
- *
- *   @author maurelio1234
+ * This class captures represents the unique access point for the
+ * configurability allowed by the use of profiles.
+ * 
+ * @author maurelio1234
  */
 public class ProfileConfiguration extends AbstractProjectMember {
     /**
@@ -70,22 +70,21 @@ public class ProfileConfiguration extends AbstractProjectMember {
     private List<Profile> profiles = new ArrayList<Profile>();
 
     private List<Object> profileModels = new ArrayList<Object>();
-    
+
     /**
      * The extension used in serialization and returned by {@link #getType()}
      */
     public static final String EXTENSION = "profile";
-    
 
     /**
      * The configuration key for the default stereotype view.
      */
-    public static final ConfigurationKey KEY_DEFAULT_STEREOTYPE_VIEW = 
-        Configuration.makeKey("profiles", "stereotypeView");
-    
+    public static final ConfigurationKey KEY_DEFAULT_STEREOTYPE_VIEW = Configuration
+            .makeKey("profiles", "stereotypeView");
+
     /**
-     * The default constructor for this class. Sets the default profiles as 
-     * given by {@link org.argouml.profile.ProfileManager} as the profiles of 
+     * The default constructor for this class. Sets the default profiles as
+     * given by {@link org.argouml.profile.ProfileManager} as the profiles of
      * the project.
      * 
      * @param project the project that contains this configuration
@@ -98,15 +97,16 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
         updateStrategies();
     }
-    
+
     /**
-     * The constructor for pre-defined profile configurations, such as when a 
+     * The constructor for pre-defined profile configurations, such as when a
      * project is read from a saved file.
+     * 
      * @param project the project that contains this configuration
-     * @param configuredProfiles the {@link Profile}s that will be the project 
-     *        profiles
+     * @param configuredProfiles the {@link Profile}s that will be the project
+     *            profiles
      */
-    public ProfileConfiguration(Project project, 
+    public ProfileConfiguration(Project project,
             Collection<Profile> configuredProfiles) {
         super(EXTENSION, project);
         for (Profile profile : configuredProfiles) {
@@ -114,11 +114,11 @@ public class ProfileConfiguration extends AbstractProjectMember {
         }
         updateStrategies();
     }
-    
+
     private void updateStrategies() {
         for (Profile profile : profiles) {
-            activateFormatingStrategy(profile);                
-            activateDefaultTypeStrategy(profile);                
+            activateFormatingStrategy(profile);
+            activateDefaultTypeStrategy(profile);
         }
     }
 
@@ -135,10 +135,10 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return defaultTypeStrategy;
     }
-    
+
     /**
-     * Updates the current strategy to the strategy provided by the 
-     * passed profile. The profile should have been previously registered.
+     * Updates the current strategy to the strategy provided by the passed
+     * profile. The profile should have been previously registered.
      * 
      * @param profile the profile providing the current default type strategy
      */
@@ -148,18 +148,18 @@ public class ProfileConfiguration extends AbstractProjectMember {
             this.defaultTypeStrategy = profile.getDefaultTypeStrategy();
         }
     }
-    
+
     /**
-     * Updates the current strategy to the strategy provided by the 
-     * passed profile. The profile should have been previously registered.
+     * Updates the current strategy to the strategy provided by the passed
+     * profile. The profile should have been previously registered.
      * 
      * @param profile the profile providing the current formating strategy
      */
     public void activateFormatingStrategy(Profile profile) {
-	if (profile != null && profile.getFormatingStrategy() != null
-		&& getProfiles().contains(profile)) {
-	    this.formatingStrategy = profile.getFormatingStrategy();
-	}
+        if (profile != null && profile.getFormatingStrategy() != null
+                && getProfiles().contains(profile)) {
+            this.formatingStrategy = profile.getFormatingStrategy();
+        }
     }
 
     /**
@@ -168,7 +168,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public List<Profile> getProfiles() {
         return profiles;
     }
-    
+
     /**
      * Applies a new profile to this configuration
      * 
@@ -183,7 +183,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
             } catch (ProfileException e) {
                 LOG.warn("Error retrieving profile's " + p + " packages.", e);
             }
-            
+
             FigNodeStrategy fns = p.getFigureStrategy();
             if (fns != null) {
                 figNodeStrategies.add(fns);
@@ -196,15 +196,15 @@ public class ProfileConfiguration extends AbstractProjectMember {
             for (CrUML critic : p.getCritics()) {
                 critic.setEnabled(true);
             }
-            
+
             updateStrategies();
-            
+
             ArgoEventPump.fireEvent(new ArgoProfileEvent(
                     ArgoEventTypes.PROFILE_ADDED, new PropertyChangeEvent(this,
                             "profile", null, p)));
         }
     }
-        
+
     /**
      * @return the list of models of the currently applied profile.
      */
@@ -213,7 +213,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
 
     /**
-     * Removes the passed profile from the configuration. 
+     * Removes the passed profile from the configuration.
      * 
      * @param p the profile to be removed
      */
@@ -255,30 +255,30 @@ public class ProfileConfiguration extends AbstractProjectMember {
                 ArgoEventTypes.PROFILE_REMOVED, new PropertyChangeEvent(this,
                         "profile", p, null)));
     }
-    
+
     private FigNodeStrategy compositeFigNodeStrategy = new FigNodeStrategy() {
 
-	public Image getIconForStereotype(Object element) {
-	    Iterator it = figNodeStrategies.iterator();
+        public Image getIconForStereotype(Object element) {
+            Iterator it = figNodeStrategies.iterator();
 
-	    while (it.hasNext()) {
-		FigNodeStrategy strat = (FigNodeStrategy) it.next();
-		Image extra = strat.getIconForStereotype(element);
+            while (it.hasNext()) {
+                FigNodeStrategy strat = (FigNodeStrategy) it.next();
+                Image extra = strat.getIconForStereotype(element);
 
-		if (extra != null) {
-		    return extra;
-		}
-	    }
-	    return null;
-	}
-	
+                if (extra != null) {
+                    return extra;
+                }
+            }
+            return null;
+        }
+
     };
-    
+
     /**
      * @return the current FigNodeStrategy
      */
     public FigNodeStrategy getFigNodeStrategy() {
-	return compositeFigNodeStrategy; 
+        return compositeFigNodeStrategy;
     }
 
     /**
@@ -286,18 +286,18 @@ public class ProfileConfiguration extends AbstractProjectMember {
      * @see org.argouml.kernel.AbstractProjectMember#getType()
      */
     public String getType() {
-	return EXTENSION;
+        return EXTENSION;
     }
 
     /**
-     * Objects of this class are always consistent, there's no need 
-     * to repair them.
+     * Objects of this class are always consistent, there's no need to repair
+     * them.
      * 
      * @return the empty string.
      * @see org.argouml.kernel.ProjectMember#repair()
      */
     public String repair() {
-	return "";
+        return "";
     }
 
     /**
@@ -309,9 +309,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
         return "Profile Configuration";
     }
 
-
     /**
-     * Find a stereotype with the given name which is applicable to the given 
+     * Find a stereotype with the given name which is applicable to the given
      * element.
      * 
      * @param name name of stereotype to look for
@@ -320,7 +319,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
      */
     public Object findStereotypeForObject(String name, Object element) {
         Iterator iter = null;
-        
+
         for (Object model : profileModels) {
             iter = Model.getFacade().getOwnedElements(model).iterator();
 
@@ -358,10 +357,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
 
     /**
-     * Finds a type in a model by name
-     * 
-     * FIXME: duplicated from the method with the same name in 
-     * org.argouml.profile.internal.ModelUtils.
+     * Finds a type in a model by name FIXME: duplicated from the method with
+     * the same name in org.argouml.profile.internal.ModelUtils.
      * 
      * @param s the type name
      * @param model the model
@@ -370,14 +367,12 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public static Object findTypeInModel(String s, Object model) {
 
         if (!Model.getFacade().isANamespace(model)) {
-            throw new IllegalArgumentException(
-                    "Looking for the classifier " + s
-                    + " in a non-namespace object of " + model
+            throw new IllegalArgumentException("Looking for the classifier "
+                    + s + " in a non-namespace object of " + model
                     + ". A namespace was expected.");
         }
 
-        Collection allClassifiers =
-            Model.getModelManagementHelper()
+        Collection allClassifiers = Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model,
                         Model.getMetaTypes().getClassifier());
 
@@ -388,7 +383,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
 
             classifier = classifiers[i];
             if (Model.getFacade().getName(classifier) != null
-                        && Model.getFacade().getName(classifier).equals(s)) {
+                    && Model.getFacade().getName(classifier).equals(s)) {
                 return classifier;
             }
         }
@@ -397,12 +392,12 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
 
     /**
-     * Find all the model elements in the configured {@link Profile}s 
-     * of the given meta type.
+     * Find all the model elements in the configured {@link Profile}s of the
+     * given meta type.
      * 
      * @param metaType the meta type of the model elements to find
-     * @return a {@link Collection} containing the model elements that 
-     *         are of the given meta type
+     * @return a {@link Collection} containing the model elements that are of
+     *         the given meta type
      */
     @SuppressWarnings("unchecked")
     public Collection findByMetaType(Object metaType) {
@@ -418,8 +413,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
 
     /**
-     * @param modelElement
-     *                ModelElement for which find possible stereotypes
+     * @param modelElement ModelElement for which find possible stereotypes
      * @return collection of stereotypes which are valid for the given model
      *         element.
      */
