@@ -60,7 +60,7 @@ public class ActionSequenceDiagram extends ActionNewDiagram {
     protected ArgoDiagram createDiagram(Object namespace) {
         LOG.debug("Creating Sequence Diagram");
         Object c = createCollaboration(namespace);
-        return SequenceDiagramFactory.getInstance().createDiagram(
-                UMLSequenceDiagram.class, c, c);    
+        SequenceDiagramFactory factory = new SequenceDiagramFactory();
+        return factory.createDiagram(c, null);    
     }    
 }
