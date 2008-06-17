@@ -29,10 +29,7 @@ import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
  * Action to add a new sequence diagram.
- * @deprecated in 0.25.6 by BobTarling The new sequence2 module plugs in
- * automatically to the ArgoUML framework.
  */
-@Deprecated
 public final class ActionSequenceDiagram extends ActionNewDiagram {
 
     /**
