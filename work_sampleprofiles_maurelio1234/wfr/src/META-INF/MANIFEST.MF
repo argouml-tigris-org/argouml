@@ -4,4 +4,14 @@ Created-By: 1.2 (Sun Microsystems Inc.)
 
 Name: UML 1.4 Well Formedness Rules Profile
 Profile: true
-Java-Critics: org.argouml.uml.profile.cognitive.critics.CrJavaBeanPropertyApplication
+Java-Critics: org.argouml.uml.cognitive.critics.CrAssocNameConflict,
+ org.argouml.uml.cognitive.critics.CrAttrNameConflict,
+ org.argouml.uml.cognitive.critics.CrCircularInheritance,
+ org.argouml.uml.cognitive.critics.CrConflictingComposites,
+ org.argouml.uml.cognitive.critics.CrCrossNamespaceAssoc,
+ org.argouml.uml.cognitive.critics.CrDisambigClassName, 
+ org.argouml.uml.cognitive.critics.CrDupParamName, 
+ org.argouml.uml.cognitive.critics.CrDupRoleNames, 
+ org.argouml.uml.cognitive.critics.CrFinalSubclassed, 
+ org.argouml.uml.cognitive.critics.CrForkOutgoingTransition, 
+ org.argouml.uml.cognitive.critics.CrIllegalGeneralization
