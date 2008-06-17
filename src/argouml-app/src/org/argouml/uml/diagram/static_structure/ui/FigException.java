@@ -33,6 +33,13 @@ import org.tigris.gef.graph.GraphModel;
  * @author Tom Morris
  */
 public class FigException extends FigSignal {
+
+    /**
+     * Default constructor. 
+     */
+    public FigException() {
+        super();
+    }
     
     /**
      * The Constructor.
@@ -44,6 +51,7 @@ public class FigException extends FigSignal {
         super(gm, node);
     }
 
+    @Override
     public Selection makeSelection() {
         return new SelectionException(this);
     }
