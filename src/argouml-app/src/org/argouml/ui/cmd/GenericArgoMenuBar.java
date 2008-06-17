@@ -75,6 +75,7 @@ import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveAllGraphics;
 import org.argouml.uml.ui.ActionSaveGraphics;
 import org.argouml.uml.ui.ActionSaveProjectAs;
+import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.tigris.gef.base.AdjustPageBreaksAction;
@@ -582,6 +583,13 @@ public class GenericArgoMenuBar extends JMenuBar implements
         ShortcutMgr.assignAccelerator(classDiagram,
                 ShortcutMgr.ACTION_CLASS_DIAGRAM);
 
+        JMenuItem sequenzDiagram =
+            createDiagramMenu.add(new ActionSequenceDiagram());
+        setMnemonic(sequenzDiagram, "Sequenz Diagram");
+        toolbarTools.add((new ActionSequenceDiagram()));
+        ShortcutMgr.assignAccelerator(sequenzDiagram,
+                ShortcutMgr.ACTION_SEQUENCE_DIAGRAM);
+        
         JMenuItem collaborationDiagram =
             createDiagramMenu.add(new ActionCollaborationDiagram());
         setMnemonic(collaborationDiagram, "Collaboration Diagram");
