@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -173,18 +174,25 @@ public class UserDefinedProfile extends Profile {
     /**
      * A constructor that reads a file from an URL 
      * associated with some profiles
+     * @param entryName 
      * 
      * @param url the URL
      * @param critics the Critics defined by this profile
      * @throws ProfileException
      */
-    public UserDefinedProfile(URL url, Set<CrUML> critics) throws ProfileException {
+    public UserDefinedProfile(String entryName, URL url, Set<CrUML> critics)
+        throws ProfileException {
         LOG.info("load " + url);
-        
-        ProfileReference reference = null;
-        reference = new UserProfileReference(url.getPath(), url);
-        model = new URLModelLoader().loadModel(reference);
-        fromZargo = false;
+
+        displayName = entryName;
+        if (url != null) {
+            ProfileReference reference = null;
+            reference = new UserProfileReference(url.getPath(), url);
+            model = new URLModelLoader().loadModel(reference);
+            fromZargo = false;            
+        } else {
+            model = new ArrayList(0);
+        }
         this.critics = critics;
         
         finishLoading();
@@ -283,7 +291,7 @@ public class UserDefinedProfile extends Profile {
             for (Object comment : comments) {
                 if (Model.getExtensionMechanismsHelper().hasStereotype(comment,
                         "Critic")) {
-                    ret.add(comment);
+                    ret.add(generateCriticFromModel(comment));
                 }
             }
             
@@ -344,7 +352,8 @@ public class UserDefinedProfile extends Profile {
      */
     @Override
     public String toString() {
-        return super.toString() + " [" + getModelFile() + "]";
+        File str = getModelFile();
+        return super.toString() + (str !=null ? " [" +  str + "]" : "");
     }
 
     @Override
