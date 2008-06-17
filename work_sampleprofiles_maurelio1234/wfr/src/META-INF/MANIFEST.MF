@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Class-Path: argouml.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: UML 1.4 Well Formedness Rules Profile
+Profile: true
+Java-Critics: org.argouml.uml.profile.cognitive.critics.CrJavaBeanPropertyApplication
