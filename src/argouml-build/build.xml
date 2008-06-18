@@ -265,6 +265,13 @@ Property files to be searched (in argouml-build):
       <fileset dir="../argouml-app/build">
         <include name="*"/>
       </fileset>
+    </copy>
+
+    <delete failonerror="false">
+      <fileset dir="${argo.build.dir}/ext"/>
+    </delete>
+    <mkdir dir="${argo.build.dir}/ext"/>
+    <copy todir="${argo.build.dir}/ext" includeEmptyDirs="false">
       <fileset dir="../argouml-core-diagrams-sequence2/build">
         <include name="*"/>
       </fileset>
