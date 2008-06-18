@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,7 @@ import org.argouml.notation.NotationProvider;
  * for the text shown in the attribute compartment of a Class.
  * Subclass this for all languages.
  *
- * @author mvw@tigris.org
+ * @author Michiel
  */
 public abstract class AttributeNotation extends NotationProvider {
 
@@ -51,7 +51,7 @@ public abstract class AttributeNotation extends NotationProvider {
     public void initialiseListener(PropertyChangeListener listener, 
             Object modelElement) {
         addElementListener(listener, modelElement);
-        if (Model.getFacade().isAOperation(modelElement)) {
+        if (Model.getFacade().isAAttribute(modelElement)) {
             // We also show stereotypes
             for (Object uml : Model.getFacade().getStereotypes(modelElement)) {
                 addElementListener(listener, uml);
