@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,19 +30,20 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.Action;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateOwner;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLPlainTextDocument;
-import org.argouml.uml.ui.UMLTextArea2;
-import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.UMLExpressionBodyField;
+import org.argouml.uml.ui.UMLExpressionLanguageField;
+import org.argouml.uml.ui.UMLExpressionModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -52,19 +53,15 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class PropPanelMethod extends PropPanelFeature {
 
-    private JTextField languageTextField;
     private UMLComboBox2 specificationComboBox;
     private static UMLMethodSpecificationComboBoxModel 
     specificationComboBoxModel;
-    private UMLModelElementLanguageDocument languageDocument =
-        new UMLModelElementLanguageDocument();
 
     /**
      * Construct a property panel for UML Method elements.
      */
     public PropPanelMethod() {
         super("label.method", lookupIcon("Method"));
-        UMLPlainTextDocument uptd = new UMLMethodBodyDocument();
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -89,28 +86,18 @@ public class PropPanelMethod extends PropPanelFeature {
 
         addSeparator();
 
+        UMLExpressionModel2 procedureModel = new UMLProcedureExpressionModel(
+                this, "");
         addField(Translator.localize("label.language"),
-                getLanguageTextField());
-
-        UMLTextArea2 bodyArea = new UMLTextArea2(uptd);
-        bodyArea.setLineWrap(true);
-        bodyArea.setRows(5);
-        bodyArea.setFont(LookAndFeelMgr.getInstance().getStandardFont());
-        JScrollPane pane = new JScrollPane(bodyArea);
-        addField(Translator.localize("label.body"), pane);
+                new UMLExpressionLanguageField(procedureModel,
+                false));
+        JScrollPane bodyPane = new JScrollPane(
+                new UMLExpressionBodyField(
+                        procedureModel, true));
+        addField(Translator.localize("label.body"), bodyPane);
 
         addAction(new ActionNavigateOwner());
         addAction(getDeleteAction());
-    }
-
-    /**
-     * @return a textfield for the name
-     */
-    protected JTextField getLanguageTextField() {
-        if (languageTextField == null) {
-            languageTextField = new UMLTextField2(languageDocument);
-        }
-        return languageTextField;
     }
 
     /**
@@ -185,10 +172,6 @@ public class PropPanelMethod extends PropPanelFeature {
             }
         }
 
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = -7439424794380015022L;
     }
 
     private static class ActionSetMethodSpecification extends UndoableAction {
@@ -231,105 +214,62 @@ public class PropPanelMethod extends PropPanelFeature {
         }
     }
 
-    private static class UMLModelElementLanguageDocument
-        extends UMLPlainTextDocument {
-        /**
-         * Constructor for UMLModelElementNameDocument.
-         */
-        public UMLModelElementLanguageDocument() {
-             super("language");
-        }
+}
 
-        /*
-         * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
-         */
-        protected void setProperty(String text) {
-            Object meth = getTarget();
-            if (Model.getFacade().isAMethod(meth)) {
-                Object expr = Model.getFacade().getBody(meth);
-                if (expr != null) {
-                    Model.getDataTypesHelper().setLanguage(expr, text);
-                } else {
-                    Model.getCoreHelper().setBody(meth,
-                            Model.getDataTypesFactory()
-                            .createProcedureExpression(text, null));
-                }
-            }
-        }
+/**
+ * The model for the procedure expression of a Method.
+ * 
+ * @author Michiel
+ */
+class UMLProcedureExpressionModel extends UMLExpressionModel2 {
 
-        /*
-         * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
-         */
-        protected String getProperty() {
-            Object expr = Model.getFacade().getBody(getTarget());
-            if (expr == null) {
-                return null;
-            } else {
-                return Model.getDataTypesHelper().getLanguage(expr);
-            }
-        }
+    private static final Logger LOG =
+        Logger.getLogger(UMLProcedureExpressionModel.class);
 
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = -2004931253036454061L;
-    }
-
-    private static class UMLMethodBodyDocument extends UMLPlainTextDocument {
-        /**
-         * Constructor for UMLMethodBodyDocument.
-         */
-        public UMLMethodBodyDocument() {
-            super("body");
-            /*
-             * TODO: This is probably not the right location
-             * for switching off the "filterNewlines".
-             * The setting gets lost after selecting a different
-             * ModelElement in the diagram.
-             * BTW, see how it is used in
-             * javax.swing.text.PlainDocument.
-             * See issue 1812.
-             */
-            putProperty("filterNewlines", Boolean.FALSE);
-        }
-
-        /*
-         * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
-         */
-        protected void setProperty(String text) {
-            Object meth = getTarget();
-            if (Model.getFacade().isAMethod(meth)) {
-                Object expr = Model.getFacade().getBody(meth);
-                if (expr != null) {
-                    Model.getDataTypesHelper().setBody(expr, text);
-                } else {
-                    Model.getCoreHelper().setBody(meth,
-                            Model.getDataTypesFactory()
-                            .createProcedureExpression(null, text));
-                }
-            }
-        }
-
-        /*
-         * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
-         */
-        protected String getProperty() {
-            Object expr = Model.getFacade().getBody(getTarget());
-            if (expr == null) {
-                return null;
-            } else {
-                return (String) Model.getFacade().getBody(expr);
-            }
-        }
-
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = -4797010104885972301L;
+    /**
+     * The constructor.
+     *
+     * @param container the container of UML user interface components
+     * @param propertyName the name of the property
+     */
+    public UMLProcedureExpressionModel(UMLUserInterfaceContainer container,
+            String propertyName) {
+        super(container, propertyName);
     }
 
     /**
-     * The UID.
+     * This returns a ProcedureExpression.
+     * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
-    private static final long serialVersionUID = -6443549338375514393L;
+    public Object getExpression() {
+        return Model.getFacade().getBody(
+                TargetManager.getInstance().getTarget());
+    }
+
+    /**
+     * Sets the "Body" of the target (which is a Method).
+     * The Body is the ProcedureExpression, which consists 
+     * of a body and language.
+     * 
+     * @param expression a ProcedureExpression
+     * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
+     */
+    public void setExpression(Object expression) {
+        Object target = TargetManager.getInstance().getTarget();
+
+        if (target == null) {
+            throw new IllegalStateException("There is no target for "
+                    + getContainer());
+        }
+        Model.getCoreHelper().setBody(target, expression);
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
+     */
+    public Object newExpression() {
+        LOG.debug("new empty procedure expression");
+        return Model.getDataTypesFactory().createProcedureExpression("", "");
+    }
+
 }
