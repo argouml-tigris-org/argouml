@@ -24,7 +24,8 @@
 
 package org.argouml.uml.diagram.sequence2.ui;
 
-import java.awt.Point;
+import java.awt.Polygon;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -75,73 +76,57 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
 
         List<Fig> figs = getContent().getLayer().getContents();
 
-        // if this is true all resizing/moving will stop
-        boolean stopResize = false;
+        int minimumHeight = 0;
+        for (Fig workOnFig : figs) {
+            if (workOnFig instanceof FigClassifierRole
+                    && workOnFig.getMinimumSize().height > minimumHeight) {
+                minimumHeight = workOnFig.getMinimumSize().height;
+            }
+        }
+
+        int deltaY = mY - getContent().getY();
+        int newHeight;
         
         // vertical resizing
         switch (hand.index) {
         case Handle.NORTHWEST:
         case Handle.NORTH:
-        case Handle.NORTHEAST:
-            final int dY = mY - getContent().getY();
-            /*
-             * First check if all CRs can be moved. The resize will take place
-             * if: 1. workOnFig is a FifClassifierRole that doesn't contain a
-             * Creation Message; 2. doesn't force a FigMessage to move more over
-             * another message; 3. doesn't violate minimum size of a CR
-             * 
-             * TODO: take care of CRs with creation/destruction messages.
-             * Depends on issue 5130
-             */
+        case Handle.NORTHEAST:         
+            newHeight = getContent().getHeight() - deltaY;
+            if (newHeight < minimumHeight) {
+                newHeight = minimumHeight;
+                deltaY = getContent().getHeight() - newHeight;
+            }
+            
+            HashMap<Fig, Polygon> msgPoly = new HashMap<Fig, Polygon>();         
             for (Fig workOnFig : figs) {
-                if (workOnFig instanceof FigClassifierRole
-                        && (workOnFig.getHeight() + workOnFig.getY() - mY) < workOnFig
-                        .getMinimumSize().height) {
-                    stopResize = true;
+                if (workOnFig instanceof FigMessage) {
+                    msgPoly.put(workOnFig, ((FigMessage) workOnFig).getPolygon());
                 }
             }
-                 
-            // if everything is OK, go on and move CRs and FigMessages
-            if (!stopResize) {
-                for (Fig workOnFig : figs) {
-                    if (workOnFig instanceof FigClassifierRole) {
-                        workOnFig.setHeight(workOnFig.getHeight()
-                                + workOnFig.getY() - mY);
-                        workOnFig.setY(mY);
-                    } else if (workOnFig instanceof FigMessage) {
-                 
-                        // the array of points from a FigMessage
-                        Point[] messagePoints = workOnFig.getPoints();
-                        for (Point pt : messagePoints) {
-                            pt.y = pt.y + dY;
-                            workOnFig.setPoints(messagePoints);
-                        }
-                    }
+
+            for (Fig workOnFig : figs) {
+                if (workOnFig instanceof FigClassifierRole) {
+                    workOnFig.setHeight(newHeight);
+                    workOnFig.translate(0, deltaY);
+                } else if (workOnFig instanceof FigMessage) {
+                    msgPoly.get(workOnFig).translate(0, deltaY);
+                    ((FigMessage) workOnFig).setPolygon(msgPoly.get(workOnFig));
                 }
             }
             break;
         case Handle.SOUTH:
         case Handle.SOUTHEAST:
         case Handle.SOUTHWEST:
-            /*
-             * First check if all CRs can be moved. The resize will take place
-             * if the lower most FigMessage is not reached
-             */
+            newHeight = deltaY;
+            if (newHeight < minimumHeight) {
+                newHeight = minimumHeight;
+            }
             for (Fig workOnFig : figs) {
-                if (workOnFig instanceof FigClassifierRole
-                        && (mY - workOnFig.getY() < workOnFig.getMinimumSize().height)) {
-                    stopResize = true;
+                if (workOnFig instanceof FigClassifierRole) {
+                    workOnFig.setHeight(newHeight);
                 }
             }
-            
-            // if everything is OK, go on and move CRs and FigMessages
-            if (!stopResize) {
-                for (Fig workOnFig : figs) {
-                    if (workOnFig instanceof FigClassifierRole) {
-                        workOnFig.setHeight(mY - workOnFig.getY());
-                    }
-                }
-            }        
         default:
         }
 
