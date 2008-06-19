@@ -74,7 +74,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
             return;
         }
 
-        List<Fig> figs = getContent().getLayer().getContents();
+        final List<Fig> figs = getContent().getLayer().getContents();
 
         int minimumHeight = 0;
         for (Fig workOnFig : figs) {
@@ -85,33 +85,48 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
         }
 
         int deltaY = mY - getContent().getY();
-        int newHeight;
         
         // vertical resizing
         switch (hand.index) {
         case Handle.NORTHWEST:
         case Handle.NORTH:
-        case Handle.NORTHEAST:         
-            newHeight = getContent().getHeight() - deltaY;
+        case Handle.NORTHEAST:
+            int newHeight = getContent().getHeight() - deltaY;
             if (newHeight < minimumHeight) {
                 newHeight = minimumHeight;
                 deltaY = getContent().getHeight() - newHeight;
             }
             
-            HashMap<Fig, Polygon> msgPoly = new HashMap<Fig, Polygon>();         
+            final HashMap<Fig, Polygon> polygonsByFig =
+            	new HashMap<Fig, Polygon>();
+            
+            // There is a bug in GEF where positioning nodes can affect
+            // edge positions. We need to do 3 iterations to protect
+            // against that.
+            
+            // 1. Remember current message paths
             for (Fig workOnFig : figs) {
                 if (workOnFig instanceof FigMessage) {
-                    msgPoly.put(workOnFig, ((FigMessage) workOnFig).getPolygon());
+                    polygonsByFig.put(
+                    		workOnFig,
+                    		((FigMessage) workOnFig).getPolygon());
                 }
             }
 
+            // 2. Reposition and resize nodes
             for (Fig workOnFig : figs) {
                 if (workOnFig instanceof FigClassifierRole) {
                     workOnFig.setHeight(newHeight);
                     workOnFig.translate(0, deltaY);
-                } else if (workOnFig instanceof FigMessage) {
-                    msgPoly.get(workOnFig).translate(0, deltaY);
-                    ((FigMessage) workOnFig).setPolygon(msgPoly.get(workOnFig));
+                }
+            }
+
+            // 3. Now reposition messages based on their original position
+            for (Fig workOnFig : figs) {
+                if (workOnFig instanceof FigMessage) {
+                    polygonsByFig.get(workOnFig).translate(0, deltaY);
+                    ((FigMessage) workOnFig).setPolygon(
+                    		polygonsByFig.get(workOnFig));
                 }
             }
             break;
@@ -130,7 +145,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
         default:
         }
 
-        Fig workOnFig = getContent();
+        final Fig workOnFig = getContent();
         // horizontal resizing
         switch (hand.index) {
         case Handle.NORTHWEST:
