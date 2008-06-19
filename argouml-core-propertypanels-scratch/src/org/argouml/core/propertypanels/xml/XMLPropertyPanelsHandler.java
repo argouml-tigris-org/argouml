@@ -22,59 +22,51 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.core.propertypanels.panel;
+package org.argouml.core.propertypanels.xml;
 
-import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
-import org.argouml.ui.TabFigTarget;
-import org.argouml.uml.ui.PropPanel;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
-public class XmlPropertyPanel extends PropPanel 
-    implements TabFigTarget {
+/**
+ * This handles the XML events by SAX Api for building 
+ * the property panels.
+ * @author penyaskito
+ */
+public class XMLPropertyPanelsHandler extends DefaultHandler {
+
+    /**
+     * The panel that will host the controls. 
+     */
+    private final JPanel panel;    
+    
     
     /**
-     * Logger.
+     * 
      */
-    private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
-    
-    public XmlPropertyPanel(String label, ImageIcon icon) {
-        super(label, icon);
+    public XMLPropertyPanelsHandler(JPanel panel) {
+        this.panel = panel;
     }
 
-    /**
-     * The instance.
-     */
-    private static final XmlPropertyPanel INSTANCE =
-        new XmlPropertyPanel("XML Property Panel", null);
-
-    /**
-     * @return The instance.
-     */
-    public static XmlPropertyPanel getInstance() {
-        return INSTANCE;
-    }
-    
-    @Override
-    public void setTarget(Object t) {
-        super.setTarget(t);
-        // TODO: Here will have to do something based on the 
-        // type of the target received. For
-        // commodity, we could use just the name:
-        // p.e.: org.omg.uml.foundation.core.UmlClass$Impl
-        // Our XML can be called Class.xml or if we split the
-        // UI and the model info, Class.ui.xml and Class.model.xml
-        LOG.info("[XMLPP] t is type:" + t.getClass());
-        
-        JPanel panel;
-        try {
-            this.removeAll();
-            panel = UIFactory.getInstance().createGUI(t);
-            this.add(panel);
-        } catch (Exception e) {
-            // TODO: Auto-generated catch block
-            LOG.error("Exception", e);
+    public void startElement(String namespaceURI, String localName, 
+            String qName, Attributes attr) throws SAXException { 
+        if (localName.equals("panel")){
+            String title = attr.getValue("title");
+            panel.add(new JLabel(title));
+            panel.add(new JSeparator() );
+        }
+        if (localName.equals("property")){
+            String name = attr.getValue("name");
+            String value = attr.getValue("value");
+            panel.add(new JLabel(name));
+            panel.add(new JTextField(value, 60));
+            panel.add(new JSeparator() );
         }
     }
+
 }

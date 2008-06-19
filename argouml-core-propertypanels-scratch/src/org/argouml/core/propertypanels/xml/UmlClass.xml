@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<panel>
-	<label text="This is a test from XML" />	
+<?xml version='1.0' encoding='UTF-8'?>
+<panel title='Prueba de titutlo'>
+	<label text='This is a test from XML' />
+	<property name='name' value='hey'	/>
 </panel>

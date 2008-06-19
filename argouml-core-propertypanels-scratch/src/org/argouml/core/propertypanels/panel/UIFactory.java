@@ -24,19 +24,19 @@
 
 package org.argouml.core.propertypanels.panel;
 
-import java.awt.Panel;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.DataInputStream;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
+
+// this import is weird, but it will be removed (just a workaround
+// until the problem with loading XMLs from jars is solved.
+import com.sun.org.apache.bcel.internal.util.ByteSequence;
 
 // TODO: This class will be an interface or abstract class
 // and will be implemented by SwingUIFactory and SwtUIFactory.
@@ -60,12 +60,10 @@ public class UIFactory {
     // TODO: This will be a template method, where there will be two
     // implementations, for Swing and for SWT.
     public JPanel createGUI (Object target) throws Exception {
-        JPanel p = new JPanel();
-        p.add(new JLabel("Test label from code"));
         String filename = getXMLFileName(target);
         LOG.info("[XMLPP] filename is:" + filename);
-        // parseXML(filename);
-        return p;       
+        JPanel panel = parseXML(filename);
+        return panel;       
     }
     
     private String getXMLFileName(Object target) {
@@ -74,8 +72,10 @@ public class UIFactory {
         return classname.replace("$Impl", "");
     }
 
-    public void parseXML(String filename) 
+    public JPanel parseXML(String filename) 
         throws Exception {
+        JPanel panel = new JPanel();
+        
         // TODO: I have to investigate how to read the XML.
         // There are some different APIs available, but
         // I'll choose SAX because it's the one API used in
@@ -83,10 +83,33 @@ public class UIFactory {
         XMLReader parser = XMLReaderFactory.createXMLReader(
                 "org.apache.xerces.parsers.SAXParser"
               );
+        parser.setContentHandler(new XMLPropertyPanelsHandler(panel));
+
         String file = "/org/argouml/core/propertypanels/xml/"
-            + filename;
-        FileInputStream stream = new FileInputStream(file);
+            + filename + ".xml";
+        LOG.info("File = "+ file);
+        // URL url = ClassLoader.getSystemResource(file);
+        // ClassLoader loader = UIFactory.class.getClassLoader();
+        // URL url = loader.getResource(file);
+        // LOG.info("URL = "+ url.toString());
+//        Enumeration<URL> urls = loader.getResources(file);        
+//        while (urls.hasMoreElements()) {
+//            URL u = (URL) urls.nextElement();
+//            LOG.info("URL = "+ u.toString());
+//        }
+//        URL url = loader.getResource(file);
+//        LOG.info("URL = "+ url.toString());
+        DataInputStream stream = getStream();
+//        FileInputStream stream = new FileInputStream(file);
+        
         InputSource source = new InputSource(stream);
-        parser.parse(source);
+        parser.parse(source);        
+        
+        return panel; 
+    }
+
+    private DataInputStream getStream() {
+        String x = "<?xml version='1.0' encoding='UTF-8'?><panel title='Prueba de titutlo'>     <label text='This is a test from XML' />        <property name='name' value='hey'       /></panel>";
+        return new ByteSequence(x.getBytes());
     }
 }
