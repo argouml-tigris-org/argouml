@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/branches/xmlpropertypanels-penyaskito-soc08/argouml-core-propertypanels-scratch,argouml-core-propertypanels-scratch"/>
+</provider>
+</psf>
