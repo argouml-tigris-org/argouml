@@ -139,11 +139,13 @@ public class CrUML extends Critic {
      * appears in the to-do tab of the details pane).
      * 
      * MVW: Maybe we can make it part of the constructor CrUML()?
+     * 
+     * FIXME: why override if nobody uses?
      */
-    @Override
-    public final void setHeadline(String s) {
-        setupHeadAndDesc();
-    }
+    //@Override
+    //public final void setHeadline(String s) {
+        //setupHeadAndDesc();
+    //}
 
     /**
      * Set up the locale specific text for the critic headline

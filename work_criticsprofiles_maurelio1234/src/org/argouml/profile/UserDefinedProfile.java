@@ -35,7 +35,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -45,6 +44,7 @@ import javax.swing.ImageIcon;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.profile.internal.ocl.CrOCL;
 import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
@@ -65,11 +65,8 @@ public class UserDefinedProfile extends Profile {
 
     private Collection model;
 
-    private boolean fromZargo;
-
     private UserDefinedFigNodeStrategy figNodeStrategy 
                                     = new UserDefinedFigNodeStrategy();
-
     
     private class UserDefinedFigNodeStrategy implements FigNodeStrategy {
 
@@ -124,7 +121,6 @@ public class UserDefinedProfile extends Profile {
                     "Failed to create the ProfileReference.", e);
         }
         model = new FileModelLoader().loadModel(reference);
-        fromZargo = false;
         finishLoading();
     }
 
@@ -150,7 +146,6 @@ public class UserDefinedProfile extends Profile {
                     "Failed to create the ProfileReference.", e);
         }
         model = new ReaderModelLoader(reader).loadModel(reference);
-        fromZargo = true;
         finishLoading();
     }
 
@@ -166,7 +161,6 @@ public class UserDefinedProfile extends Profile {
         ProfileReference reference = null;
         reference = new UserProfileReference(url.getPath(), url);
         model = new URLModelLoader().loadModel(reference);
-        fromZargo = false;
 
         finishLoading();
     }
@@ -178,9 +172,10 @@ public class UserDefinedProfile extends Profile {
      * 
      * @param url the URL
      * @param critics the Critics defined by this profile
+     * @param dependencies 
      * @throws ProfileException
      */
-    public UserDefinedProfile(String entryName, URL url, Set<CrUML> critics)
+    public UserDefinedProfile(String entryName, URL url, Set<CrUML> critics, Set<Profile> dependencies)
         throws ProfileException {
         LOG.info("load " + url);
 
@@ -189,12 +184,14 @@ public class UserDefinedProfile extends Profile {
             ProfileReference reference = null;
             reference = new UserProfileReference(url.getPath(), url);
             model = new URLModelLoader().loadModel(reference);
-            fromZargo = false;            
         } else {
             model = new ArrayList(0);
         }
         this.critics = critics;
         
+        for (Profile profile : dependencies) {
+            addProfileDependency(profile);
+        }
         finishLoading();
     }
     
@@ -230,7 +227,7 @@ public class UserDefinedProfile extends Profile {
                     if (profile != null) {
                       LOG.debug("AddingDependency " + profile);
                       this.
-                        addProfileDependency(lookForRegisteredProfile(profile));
+                        addProfileDependency(ProfileFacade.getManager().lookForRegisteredProfile(profile));
                     }
                 } while (st.hasMoreTokens());
 
@@ -263,61 +260,75 @@ public class UserDefinedProfile extends Profile {
         }
         
         // load critiques
-        Collection allCritiques = getAllCritiques();
-        
-        for (Object critique : allCritiques) {
-            CrUML c = generateCriticFromModel(critique);
-            if (c!=null) {
-                this.critics.add(c);
-            }
+        Vector<CrUML> allCritiques = getAllCritiquesInModel();
+
+        for (CrUML critique : allCritiques) {
+            this.critics.add(critique);
         }
     }
 
-    private CrUML generateCriticFromModel(Object critique) {
-//        String ocl = Model.getDataTypesHelper().getBody(critique);
-                
-        return null;
+    private CrUML generateCriticFromComment(Object critique) {
+        String ocl = ""+Model.getFacade().getBody(critique);
+        String headline = null;
+        
+        Collection tags = Model.getFacade().getTaggedValuesCollection(critique);
+
+        for (Object tag : tags) {
+            if (Model.getFacade().getTag(tag).toLowerCase()
+                    .equals("headline")) {                
+                headline = Model.getFacade().getValueOfTag(tag);                
+            }
+        }
+        
+        LOG.debug("OCL-Critic: "+ocl);
+
+        if (headline == null) {
+            return new CrOCL(ocl);
+        } else {
+            return new CrOCL(ocl, headline);            
+        }
     }
 
     @SuppressWarnings("unchecked")
-    private Collection getAllCritiques() {
-        Collection ret = new Vector();
+    private Vector<CrUML> getAllCritiquesInModel() {
+        Vector<CrUML> ret = new Vector();
 
-        for (Object obj : model) {
-            Collection comments = Model.getModelManagementHelper()
-                    .getAllModelElementsOfKindWithModel(obj,
-                            Model.getMetaTypes().getComment());
+        Collection comments = getAllCommentsInModel(model);
 
-            for (Object comment : comments) {
-                if (Model.getExtensionMechanismsHelper().hasStereotype(comment,
-                        "Critic")) {
-                    ret.add(generateCriticFromModel(comment));
+        for (Object comment : comments) {
+            if (Model.getExtensionMechanismsHelper().hasStereotype(comment,
+                    "Critic")) {
+                CrUML cr = generateCriticFromComment(comment);
+                if (cr!= null) {
+                    ret.add(cr);                    
                 }
             }
-            
         }
         return ret;
     }
 
-    private Profile lookForRegisteredProfile(String value) {
-        ProfileManager manager = ProfileFacade.getManager();
-        List<Profile> registeredProfiles = manager.getRegisteredProfiles();
-
-        for (Profile profile : registeredProfiles) {
-            if (profile.getDisplayName().equalsIgnoreCase(value)) {
-                return profile;
+    @SuppressWarnings("unchecked")
+    private Collection getAllCommentsInModel(Collection objs) {
+        Collection col = new Vector<Object>(); 
+        for (Object obj : objs) {
+            if (Model.getFacade().isAComment(obj)) {
+                col.add(obj);
+            } else if (Model.getFacade().isANamespace(obj)) {
+                Collection contents = Model.getModelManagementHelper()
+                        .getAllContents(obj);
+                if (contents != null) {
+                    col.addAll(contents);                   
+                }
             }
-        }
-        return null;
+        }        
+        return col;
     }
 
     /**
-     * @return the string that should represent this profile in the GUI. An
-     *         start (*) is placed on it if it comes from the currently opened
-     *         zargo file.
+     * @return the string that should represent this profile in the GUI. 
      */
     public String getDisplayName() {
-        return displayName + (fromZargo ? "*" : "");
+        return displayName;
     }
 
     /**

@@ -52,6 +52,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
+import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
@@ -639,7 +640,7 @@ public final class ModuleLoader2 {
                         Translator.addClassLoader(classloader);
                         classLoaderAlreadyLoaded = true;
                     }
-                    Set<CrUML> profiles = loadCritiquesForProfile(attr, classloader);
+                    Set<CrUML> critics = loadCritiquesForProfile(attr, classloader);
                     String modelPath = attr.getValue("Model");
                     URL modelURL = null;
                     
@@ -650,7 +651,8 @@ public final class ModuleLoader2 {
                     }
                     
                     UserDefinedProfile udp = new UserDefinedProfile(entryName,
-                            modelURL, profiles);
+                            modelURL, critics,
+                            loadManifestDependenciesForProfile(attr));
                     
                     ProfileFacade.getManager().registerProfile(udp);
                     LOG.debug("Registered Profile: " + udp.getDisplayName()
@@ -661,7 +663,29 @@ public final class ModuleLoader2 {
                     LOG.error("Exception", e);
                 }
             }
+            
         }
+    }
+
+    private Set<Profile> loadManifestDependenciesForProfile(Attributes attr) {
+        Set<Profile> ret = new HashSet<Profile>();
+        String value = attr.getValue("Depends-on");
+        if (value != null) {
+            StringTokenizer st = new StringTokenizer(value, ",");
+
+            while (st.hasMoreElements()) {
+                String entry = st.nextToken().trim();
+                Profile p = ProfileFacade.getManager().lookForRegisteredProfile(
+                        entry);                
+                if (p!=null) {
+                    ret.add(p);   
+                } else {
+                    LOG.debug("NULL profile?? " + entry);
+                }
+            }
+        }
+
+        return ret;
     }
 
     private Set<CrUML> loadCritiquesForProfile(Attributes attr, ClassLoader classloader) {

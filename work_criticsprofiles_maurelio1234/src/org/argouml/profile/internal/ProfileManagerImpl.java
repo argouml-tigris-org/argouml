@@ -332,4 +332,18 @@ public class ProfileManagerImpl implements ProfileManager {
         return p;
     }
 
+    /**
+     * @see org.argouml.profile.ProfileManager#lookForRegisteredProfile(java.lang.String)
+     */
+    public Profile lookForRegisteredProfile(String value) {
+        List<Profile> registeredProfiles = getRegisteredProfiles();
+
+        for (Profile profile : registeredProfiles) {
+            if (profile.getDisplayName().equalsIgnoreCase(value)) {
+                return profile;
+            }
+        }
+        return null;
+    }
+
 }

@@ -27,7 +27,6 @@ package org.argouml.profile;
 import java.net.URL;
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
@@ -40,7 +39,7 @@ import org.xml.sax.InputSource;
  */
 public class URLModelLoader implements ProfileModelLoader {
 
-    private static final Logger LOG = Logger.getLogger(URLModelLoader.class);
+    //private static final Logger LOG = Logger.getLogger(URLModelLoader.class);
 
     /**
      * @param url the url/system id to load
