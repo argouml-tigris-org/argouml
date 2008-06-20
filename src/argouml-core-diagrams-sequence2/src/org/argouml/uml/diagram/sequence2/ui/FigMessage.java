@@ -70,6 +70,22 @@ public class FigMessage extends FigEdgeModelElement {
         super.setOwner(owner);
         updateArrow();
     }
+    
+    public boolean isCallAction() {
+    	return Model.getFacade().isACallAction(getAction());
+    }
+
+    public boolean isCreateAction() {
+    	return Model.getFacade().isACreateAction(getAction());
+    }
+
+    public boolean isDestroyAction() {
+    	return Model.getFacade().isADestroyAction(getAction());
+    }
+
+    public boolean isReturnAction() {
+    	return Model.getFacade().isAReturnAction(getAction());
+    }
 
     /**
      * Updates the arrow head and the arrow line according
