@@ -93,10 +93,10 @@ class FigLifeLine extends FigGroup {
     }
 
     private List<FigActivation> createStandardActivations(
-	    final List<FigMessage> messages) {        
+    		final List<FigMessage> figMessages) {        
 	
-	List<FigActivation> newActivations =
-	    new LinkedList<FigActivation>();
+        final List<FigActivation> newActivations =
+            new LinkedList<FigActivation>();
 	
         final FigClassifierRole cr =
             (FigClassifierRole) getGroup();                
@@ -104,55 +104,49 @@ class FigLifeLine extends FigGroup {
         
         // Check here if there are no incoming call actions
         // if not then create an activation at the top of the lifeline
-        if (!hasIncomingCallActions(messages) 
-                && !hasOutgoingDestroyActions(messages)) {
+        if (!hasIncomingCallActions(figMessages) 
+                && !hasOutgoingDestroyActions(figMessages)) {
             currentAct = 
                 new FigActivation(lineFig.getX(), lineFig.getY(), false);
-            currentAct.setHeight(getHeight());
-            newActivations.add(currentAct);
-            currentAct = null;
         }
         
-        for (FigMessage message : messages) {
+        for (FigMessage figMessage : figMessages) {
             int ySender = 0;
-            final Object action = message.getAction();
-            // if we are the dest and is a call action, create the 
-            // activation, but don't add it until the height is set.
+            final Object action = figMessage.getAction();
             if (currentAct == null
-                    && cr.equals(message.getDestFigNode())
-                    && !cr.equals(message.getSourceFigNode())
+                    && cr.equals(figMessage.getDestFigNode())
+                    && !cr.equals(figMessage.getSourceFigNode())
                     && Model.getFacade().isACallAction(action)) {
-        	ySender = message.getFinalY();        	
+                // if we are the dest and is a call action, create the 
+                // activation, but don't add it until the height is set.
+        	ySender = figMessage.getFinalY();        	
                 currentAct = 
                     new FigActivation(lineFig.getX(), ySender, false); 
-            }
-            // if we are the dest of a create action, create the
-            // entire activation, because we should need the destroy X
-            else if (currentAct == null
-                    && cr.equals(message.getDestFigNode())
-                    && !cr.equals(message.getSourceFigNode())
+            } else if (currentAct == null
+                    && cr.equals(figMessage.getDestFigNode())
+                    && !cr.equals(figMessage.getSourceFigNode())
                     && Model.getFacade().isACreateAction(action)) {
+                // if we are the dest of a create action, create the
+                // entire activation, because we should need the destroy X
                 currentAct = 
                     new FigActivation(lineFig.getX(), lineFig.getY(), false);
-            }                    
-            // if we are the source of a return action
-            // the figlifeline ends here.
-            else if (currentAct != null
-                    && cr.equals(message.getSourceFigNode()) 
-                    && !cr.equals(message.getDestFigNode())
+            } else if (currentAct != null
+                    && cr.equals(figMessage.getSourceFigNode()) 
+                    && !cr.equals(figMessage.getDestFigNode())
                     && Model.getFacade().isAReturnAction(action)) {
-        	ySender = message.getStartY();
+                // if we are the source of a return action
+                // the figlifeline ends here.
+        	ySender = figMessage.getStartY();
                 currentAct.setHeight(ySender - currentAct.getY());
                 newActivations.add(currentAct);
                 currentAct = null;
-            }
-            // if we are the source of a destroy actionm
-            // the figlifeline ends here and we add the activation
-            else if (currentAct != null
-                    && cr.equals(message.getSourceFigNode())
-                    && !cr.equals(message.getDestFigNode())
+            } else if (currentAct != null
+                    && cr.equals(figMessage.getSourceFigNode())
+                    && !cr.equals(figMessage.getDestFigNode())
                     && Model.getFacade().isADestroyAction(action)) {
-        	ySender = message.getFinalY();
+                // if we are the source of a destroy actionm
+                // the figlifeline ends here and we add the activation
+        	ySender = figMessage.getFinalY();
                 currentAct.setHeight(ySender - currentAct.getY());
                 currentAct.setDestroy(true);
                 this.setHeight(ySender - getY());
@@ -161,13 +155,12 @@ class FigLifeLine extends FigGroup {
             }
         }
         
-        // TODO: Check if currentAct != null
         // If we have a currentAct object that means have reached the end
         // of the lifeline with a call or a create not returned.
         // Add the activation to the list after setting its height to end
         // at the end of the lifeline.
         if (currentAct != null) {
-            currentAct.setHeight(getHeight() - currentAct.getY());
+            currentAct.setHeight(getHeight() - (currentAct.getY() - getY()));
             newActivations.add(currentAct);
         }
         
@@ -175,52 +168,49 @@ class FigLifeLine extends FigGroup {
     }
     
     private List<FigActivation> createStackedActivations(
-	    final List<FigMessage> messages) {
+	    final List<FigMessage> figMessages) {
 	
-	List<FigActivation> newActivations =
+	final List<FigActivation> newActivations =
 	    new LinkedList<FigActivation>();
 	
 	FigActivation currentAct = null;
 	
-        for (FigMessage message : messages) {
+        for (FigMessage figMessage : figMessages) {
             int ySender = 0;
-            final Object action = message.getAction();
             // if we are the dest and is a call action, create the 
             // activation, but don't add it until the height is set.
-            if (message.isSelfMessage()
-                    && Model.getFacade().isACallAction(action)) {
-        	ySender = message.getFinalY();
-                currentAct = new FigActivation(
-                	lineFig.getX() + FigActivation.DEFAULT_WIDTH / 2,
-                        ySender,
-                        false);
-            }
-            else if (currentAct != null
-                    && message.isSelfMessage()
-                    && Model.getFacade().isAReturnAction(action)) {
-        	ySender = message.getStartY();
-                currentAct.setHeight(ySender - currentAct.getY());
-                newActivations.add(currentAct);
-                currentAct = null;
+            if (figMessage.isSelfMessage()) {
+                if (figMessage.isCallAction()) {
+                    ySender = figMessage.getFinalY();
+                    currentAct = new FigActivation(
+                            lineFig.getX() + FigActivation.DEFAULT_WIDTH / 2,
+                            ySender,
+                            false);
+                } else if (currentAct != null
+                        && figMessage.isReturnAction()) {
+                    ySender = figMessage.getStartY();
+                    currentAct.setHeight(ySender - currentAct.getY());
+                    newActivations.add(currentAct);
+                    currentAct = null;
+                }
             }
         }
         return newActivations;
     }
 
 
-    private boolean hasIncomingCallActions(List<FigMessage> messages) {
-        boolean found = false;
+    private boolean hasIncomingCallActions(
+    		final List<FigMessage> figMessages) {
         final FigClassifierRole cr =
             (FigClassifierRole) getGroup();                
-        for (FigMessage message : messages) {
-            if (cr.equals(message.getDestFigNode())
-                    && !cr.equals(message.getSourceFigNode())
-                    && Model.getFacade().isACallAction(message.getAction())) {
-                found = true;
-                break;
+        for (FigMessage figMessage : figMessages) {
+            if (cr.equals(figMessage.getDestFigNode())
+                    && !cr.equals(figMessage.getSourceFigNode())
+                    && (figMessage.isCallAction())) {
+                return true;
             }
         }
-        return found;
+        return false;
     }
 
     private boolean hasOutgoingDestroyActions(List<FigMessage> messages) {
