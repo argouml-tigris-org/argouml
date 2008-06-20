@@ -24,7 +24,7 @@
 
 package org.argouml.core.propertypanels.panel;
 
-import java.io.DataInputStream;
+import java.io.InputStream;
 
 import javax.swing.JPanel;
 
@@ -33,10 +33,6 @@ import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-// this import is weird, but it will be removed (just a workaround
-// until the problem with loading XMLs from jars is solved.
-import com.sun.org.apache.bcel.internal.util.ByteSequence;
 
 // TODO: This class will be an interface or abstract class
 // and will be implemented by SwingUIFactory and SwtUIFactory.
@@ -85,31 +81,17 @@ public class UIFactory {
               );
         parser.setContentHandler(new XMLPropertyPanelsHandler(panel));
 
-        String file = "/org/argouml/core/propertypanels/xml/"
+        String file = "org/argouml/core/propertypanels/xml/"
             + filename + ".xml";
         LOG.info("File = "+ file);
-        // URL url = ClassLoader.getSystemResource(file);
-        // ClassLoader loader = UIFactory.class.getClassLoader();
-        // URL url = loader.getResource(file);
-        // LOG.info("URL = "+ url.toString());
-//        Enumeration<URL> urls = loader.getResources(file);        
-//        while (urls.hasMoreElements()) {
-//            URL u = (URL) urls.nextElement();
-//            LOG.info("URL = "+ u.toString());
-//        }
-//        URL url = loader.getResource(file);
-//        LOG.info("URL = "+ url.toString());
-        DataInputStream stream = getStream();
-//        FileInputStream stream = new FileInputStream(file);
-        
+        LOG.info("URL="+this.getClass().getClassLoader().
+                getResource(file));
+        InputStream stream = this.getClass().getClassLoader().
+            getResourceAsStream(file);
+        LOG.info("INPUT = " + stream);
         InputSource source = new InputSource(stream);
         parser.parse(source);        
         
         return panel; 
-    }
-
-    private DataInputStream getStream() {
-        String x = "<?xml version='1.0' encoding='UTF-8'?><panel title='Prueba de titutlo'>     <label text='This is a test from XML' />        <property name='name' value='hey'       /></panel>";
-        return new ByteSequence(x.getBytes());
     }
 }
