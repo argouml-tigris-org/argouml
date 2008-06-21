@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,6 @@ import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -472,10 +471,7 @@ public class SequenceDiagramGraphModel
             if (clsfr == null) {
                 throw new IllegalStateException("Can not create a Classifier");
             }
-            Collection c = Model.getFacade().getOwnedElements(clsfr);
-            Iterator it = c.iterator();
-            while (it.hasNext()) {
-                Object child = it.next();
+            for (Object child : Model.getFacade().getOwnedElements(clsfr)) {
                 if (Model.getFacade().isAStateMachine(child)) {
                     defaultStateMachine = child;
                     break;
@@ -484,8 +480,6 @@ public class SequenceDiagramGraphModel
             if (defaultStateMachine == null) {
                 defaultStateMachine =
                     Model.getStateMachinesFactory().buildStateMachine(clsfr);
-                Model.getStateMachinesFactory()
-                    .buildCompositeStateOnStateMachine(defaultStateMachine);
             }
         }
         return defaultStateMachine;
