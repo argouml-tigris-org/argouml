@@ -83,7 +83,7 @@ public interface ActivityGraphsFactory extends Factory {
      * Builds an activity graph owned by the given context.<p>
      *
      * @param theContext is a ModelElement that will own the graph.
-     * @return the new MActivityGraph as Object
+     * @return the new ActivityGraph as Object
      */
     Object buildActivityGraph(Object theContext);
 

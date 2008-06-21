@@ -162,7 +162,7 @@ public interface StateMachinesFactory extends Factory {
 
     /**
      * Builds a pseudostate initialized as a choice pseudostate. The
-     * pseudostate will be a subvertix of the given
+     * pseudostate will be a subvertex of the given
      * compositestate. The parameter compositeState is of type Object
      * to decouple the factory and model implementation as much as
      * possible from the rest of ArgoUML.<p>
@@ -173,8 +173,8 @@ public interface StateMachinesFactory extends Factory {
     Object buildPseudoState(Object compositeState);
 
     /**
-     * Builds a synchstate initalized with bound 0. The synchstate
-     * will be a subvertix of the given compositestate. The parameter
+     * Builds a synchstate initialized with bound 0. The synchstate
+     * will be a subvertex of the given compositestate. The parameter
      * compositeState is of type Object to decouple the factory and
      * model implementation as much as possible from the rest of ArgoUML.
      *
@@ -184,8 +184,8 @@ public interface StateMachinesFactory extends Factory {
     Object buildSynchState(Object compositeState);
 
     /**
-     * Builds a stubstate initalized with an empty referenced
-     * state. The stubstate will be a subvertix of the given
+     * Builds a stubstate initialized with an empty referenced
+     * state. The stubstate will be a subvertex of the given
      * compositestate. The parameter compositeState is of type Object
      * to decouple the factory and model implementation as much as
      * possible from the rest of ArgoUML.
@@ -196,7 +196,7 @@ public interface StateMachinesFactory extends Factory {
     Object buildStubState(Object compositeState);
 
     /**
-     * Build a CompositeState initalized as a non-concurrent
+     * Build a CompositeState initialized as a non-concurrent
      * composite state.  The CompositeState will be a subvertex of the
      * given CompositeState.
      *
@@ -207,7 +207,7 @@ public interface StateMachinesFactory extends Factory {
     Object buildCompositeState(Object compositeState);
 
     /**
-     * Builds a simplestate. The simplestate will be a subvertix of
+     * Builds a simplestate. The simplestate will be a subvertex of
      * the given compositestate.
      *
      * @param compositeState the given compositestate
@@ -216,7 +216,7 @@ public interface StateMachinesFactory extends Factory {
     Object buildSimpleState(Object compositeState);
 
     /**
-     * Builds a finalstate. The finalstate will be a subvertix of the
+     * Builds a finalstate. The finalstate will be a subvertex of the
      * given compositestate. The parameter compositeState is of type
      * Object to decouple the factory and model implementation as much
      * as possible from the rest of ArgoUML.
@@ -228,7 +228,7 @@ public interface StateMachinesFactory extends Factory {
 
     /**
      * Builds a submachinestate. The submachinestate will be a
-     * subvertix of the given compositestate. The parameter
+     * subvertex of the given compositestate. The parameter
      * compositeState is of type Object to decouple the factory and
      * model implementation as much as possible.  from the rest of ArgoUML.
      *
