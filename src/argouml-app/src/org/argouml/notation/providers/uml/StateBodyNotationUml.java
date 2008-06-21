@@ -28,24 +28,27 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.StateBodyNotation;
 
 /**
  * UML notation for the body of a state.
  * 
- * @author mvw@tigris.org
+ * @author Michiel
  */
 public class StateBodyNotationUml extends StateBodyNotation {
 
+    /**
+     * The default language for an expression.
+     */
+    private static final String LANGUAGE = "Java";
+    
     /**
      * The constructor.
      *
@@ -113,12 +116,10 @@ public class StateBodyNotationUml extends StateBodyNotation {
         Collection internaltrans =
             Model.getFacade().getInternalTransitions(modelElement);
         if (internaltrans != null) {
-            Iterator iter = internaltrans.iterator();
-            while (iter.hasNext()) {
+            for (Object trans : internaltrans) {
                 if (s.length() > 0) {
                     s.append("\n");
                 }
-                Object trans = iter.next();
                 /* TODO: Is this a good way of handling nested notation? */
                 s.append((new TransitionNotationUml(trans))
                             .toString(trans, null));
@@ -129,7 +130,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
 
     /**
      * Parse user input for state bodies and assign the individual lines to
-     * according actions or transistions. The user input consists of multiple
+     * according actions or transitions. The user input consists of multiple
      * lines like:<pre>
      *   action-label / action-expression
      * </pre> or the format of a regular
@@ -226,7 +227,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
         /**
          * The list that we maintain.
          */
-        private Collection theList;
+        private Collection<InfoItem> theList;
 
         /**
          * An item in a list, maintains all info about one UML object,
@@ -242,7 +243,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
 
             /**
              * The constructor.
-             * @param obj the uml object
+             * @param obj the UML object
              */
             InfoItem(Object obj) {
                 umlObject = obj;
@@ -252,7 +253,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
             /**
              * The constructor.
              *
-             * @param obj the uml object.
+             * @param obj the UML object.
              * @param r
              */
             InfoItem(Object obj, boolean r) {
@@ -297,10 +298,9 @@ public class StateBodyNotationUml extends StateBodyNotation {
          *          that were present before
          */
         ModelElementInfoList(Collection c) {
-            theList = new ArrayList();
-            Iterator i = c.iterator();
-            while (i.hasNext()) {
-                theList.add(new InfoItem(i.next()));
+            theList = new ArrayList<InfoItem>();
+            for (Object obj : c) {
+                theList.add(new InfoItem(obj));
             }
         }
 
@@ -319,10 +319,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
          * @return true if the item was already present in the list
          */
         boolean checkRetain(String line) {
-            Iterator i = theList.iterator();
-            while (i.hasNext()) {
-                InfoItem tInfo =
-                    (InfoItem) i.next();
+            for (InfoItem tInfo : theList) {
                 if (tInfo.getGenerated().equals(line)) {
                     tInfo.retain();
                     return true;
@@ -340,11 +337,8 @@ public class StateBodyNotationUml extends StateBodyNotation {
          */
         Collection finalisedList() {
             // don't forget to remove old internals!
-            Collection newModelElementsList = new ArrayList();
-            Iterator i = theList.iterator();
-            while (i.hasNext()) {
-                InfoItem tInfo =
-                    (InfoItem) i.next();
+            Collection<Object> newModelElementsList = new ArrayList<Object>();
+            for (InfoItem tInfo : theList) {
                 if (tInfo.isRetained()) {
                     newModelElementsList.add(tInfo.getUmlObject());
                 } else {
@@ -434,7 +428,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
         Object a =
             Model.getCommonBehaviorFactory().createCallAction();
         Object ae =
-            Model.getDataTypesFactory().createActionExpression("Java", s);
+            Model.getDataTypesFactory().createActionExpression(LANGUAGE, s);
         Model.getCommonBehaviorHelper().setScript(a, ae);
         Model.getCoreHelper().setName(a, "anon");
         return a;
@@ -449,7 +443,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
      */
     private void updateAction(Object old, String s) {
         Object ae = Model.getFacade().getScript(old); // the ActionExpression
-        String language = "Java";
+        String language = LANGUAGE;
         if (ae != null) {
             language = Model.getDataTypesHelper().getLanguage(ae);
             String body = (String) Model.getFacade().getBody(ae);
@@ -464,13 +458,13 @@ public class StateBodyNotationUml extends StateBodyNotation {
     /**
      * This deletes modelelements, and swallows null without barking.
      *
-     * @author mvw@tigris.org
+     * @author Michiel
      * @param obj
      *            the modelelement to be deleted
      */
     private void delete(Object obj) {
         if (obj != null) {
-            ProjectManager.getManager().getCurrentProject().moveToTrash(obj);
+            Model.getUmlFactory().delete(obj);
         }
     }
 
