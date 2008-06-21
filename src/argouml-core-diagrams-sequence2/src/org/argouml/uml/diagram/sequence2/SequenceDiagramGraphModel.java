@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,6 @@ import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.util.Collection;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,6 +47,7 @@ import org.tigris.gef.graph.MutableGraphModel;
 /**
  * The sequence graph model is the bridge between the UML meta-model 
  * representation of the design and the graph model of GEF. 
+ * @author 5eichler@informatik.uni-hamburg.de
  * @author penyaskito
  */
 public class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
@@ -278,11 +278,11 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
 
     /**
      * Creates a link based on the given from and toPort. The fromPort
-     * should allways point to a MessageCoordinates instance. The toPort
+     * should always point to a MessageCoordinates instance. The toPort
      * can point to a MessageCoordinates instance or to a Object
      * instance. On a sequence diagram you can only draw Messages. So
      * other edgeClasses then links are not supported.
-     *
+     * {@inheritDoc}
      * @see org.tigris.gef.graph.MutableGraphModel#connect(
      *          Object, Object, Class)
      */
@@ -399,10 +399,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
             if (clsfr == null) {
                 throw new IllegalStateException("Can not create a Classifier");
             }
-            Collection c = Model.getFacade().getOwnedElements(clsfr);
-            Iterator it = c.iterator();
-            while (it.hasNext()) {
-                Object child = it.next();
+            for (Object child : Model.getFacade().getOwnedElements(clsfr)) {
                 if (Model.getFacade().isAStateMachine(child)) {
                     defaultStateMachine = child;
                     break;
@@ -411,8 +408,6 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
             if (defaultStateMachine == null) {
                 defaultStateMachine =
                     Model.getStateMachinesFactory().buildStateMachine(clsfr);
-                Model.getStateMachinesFactory()
-                    .buildCompositeStateOnStateMachine(defaultStateMachine);
             }
         }
         return defaultStateMachine;
