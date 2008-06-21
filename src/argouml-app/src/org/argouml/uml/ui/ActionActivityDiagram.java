@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,22 +55,14 @@ public class ActionActivityDiagram extends ActionNewDiagram {
      * @return the newly created and initialized diagram
      */
     protected ArgoDiagram createDiagram(Object namespace) {
-        Object target = TargetManager.getInstance().getModelTarget();
-        Object graph = null;
-
-        if (Model.getActivityGraphsHelper().isAddingActivityGraphAllowed(
-                target)) {
-            /* The target is a valid context */
-            graph = Model.getActivityGraphsFactory().buildActivityGraph(target);
-        } else {
-            graph = Model.getActivityGraphsFactory().createActivityGraph();
-            if (Model.getFacade().isANamespace(target)) {
-                namespace = target;
-            }
-            Model.getCoreHelper().setNamespace(graph, namespace);
-            Model.getStateMachinesFactory()
-                .buildCompositeStateOnStateMachine(graph);
-        }
+        Object context = TargetManager.getInstance().getModelTarget();
+        
+        if (!Model.getActivityGraphsHelper().isAddingActivityGraphAllowed(
+                context)) {
+            context = namespace;
+        } 
+        Object graph = 
+            Model.getActivityGraphsFactory().buildActivityGraph(context);
 
         return DiagramFactory.getInstance().createDiagram(
                 DiagramFactory.DiagramType.Activity,
