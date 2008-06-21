@@ -74,6 +74,9 @@ public class FigClassifierRole extends FigNodeModelElement {
     // TODO: Do we need this? Is this the same as emptyFig.getHeight()?
     private int offset = 0;
     
+    // the Y position of the lower most FigMessage
+    private int yMax = 0;
+    
     /**
      * Constructor 
      */
@@ -167,8 +170,9 @@ public class FigClassifierRole extends FigNodeModelElement {
         FigMessage createMessage = getFirstCreateFigMessage();
         if (createMessage != null) {
             int y = createMessage.getFirstPoint().y;
-            if (y > 0)
-                offset = y - headFig.getHeight();
+            if (y > 0) {
+                offset = y - (headFig.getY() + headFig.getHeight() / 2);
+            }
         } else {
             offset = 0;
         }       
@@ -202,21 +206,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * 10 pixels of the lifeline.
      */
     public Dimension getMinimumSize() {
-
-        List<Fig> figs = this.getEdges();
-
-        if (figs.size() > 0) {
-            // the Y position of the lower most FigMessage
-            int yMax = 0;
-
-            for (Fig fig : figs) {
-                if (fig instanceof FigMessage) {
-                    if (fig.getLastPoint().y > yMax) {
-                        yMax = fig.getY();
-                    }
-                }
-            }
-            
+        if (getEdges().size() > 0) {
             return new Dimension(headFig.getMinimumWidth(), yMax - getY() + 10);
         } else {
             return new Dimension(headFig.getMinimumWidth(), emptyFig
@@ -224,12 +214,36 @@ public class FigClassifierRole extends FigNodeModelElement {
                     + headFig.getMinimumHeight() + 10);
         }
     }
-      
+    
+    @Override
+    public void removeFigEdge(FigEdge edge){
+        super.removeFigEdge(edge);
+
+        // if the removed edge is the last Y positioned message, yMax should be
+        // updated
+        if (edge.getY() == yMax) {
+            List<Fig> figs = this.getEdges();
+            for (Fig fig : figs) {
+                if (fig instanceof FigMessage) {
+                    if (fig.getLastPoint().y > yMax) {
+                        yMax = getLastPoint().y;
+                    }
+                }
+            }
+        }
+    }
     
     @Override
     public void addFigEdge(FigEdge edge) {
         super.addFigEdge(edge);
+        
         if (edge instanceof FigMessage) {
+
+            // if a new message has been added, yMax should be updated
+            if (edge.getLastPoint().y > yMax) {
+                yMax = edge.getY();
+            }
+            
             FigMessage mess = (FigMessage) edge;
             if (mess.isSelfMessage()) {
                 mess.convertToArc();
@@ -267,15 +281,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * Called when a create message is added or moved.
      */
     void relocate() {
-        updateHeadOffset();
-        emptyFig.setBounds(getX(), getY(), getWidth(), offset);
-        headFig.setBounds(getX(), getY() + offset,
-                getWidth(), headFig.getHeight());
-        lifeLineFig.setBounds(getX(), getY() + headFig.getHeight() + offset,
-                getWidth(), getHeight() - headFig.getHeight() - offset);
-
-        updateEdges();
-        forceRepaintShadow();
+        setBounds(getX(), getY(), getWidth(), getHeight());
     }
     
     void createActivations() {
