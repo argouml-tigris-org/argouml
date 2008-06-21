@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,15 +27,14 @@ package org.argouml.notation.providers.uml;
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
 import org.argouml.notation.providers.TransitionNotation;
@@ -93,7 +92,7 @@ public class TransitionNotationUml extends TransitionNotation {
      * Remark: The UML standard does not make a distinction between
      * the syntax of a CallEvent and SignalEvent:
      * both may have parameters between ().
-     * For simplicity and user-friendlyness, we chose for this distinction.
+     * For simplicity and user-friendliness, we chose for this distinction.
      * If a user wants parameters for a SignalEvent,
      * then he may add them in the properties panels, but not on the diagram.<p>
      *
@@ -209,8 +208,8 @@ public class TransitionNotationUml extends TransitionNotation {
         /*
          * We can distinguish between 4 cases:
          * 1. A trigger is given. None exists yet.
-         * 2. The name of the trigger was present, but is (the same or)
-         * altered.
+         * 2. The trigger was present, and it is the same type, 
+         * or a different type, and its text is changed, or the same.
          * 3. A trigger is not given. None exists yet.
          * 4. The name of the trigger was present, but is removed.
          * The reaction in these cases should be:
@@ -220,11 +219,11 @@ public class TransitionNotationUml extends TransitionNotation {
          * 4. Unhook and erase the existing trigger.
          */
         Object evt = Model.getFacade().getTrigger(trans);
-        Object model =
-                ProjectManager.getManager().getCurrentProject().getModel();
+        /* It is safe to give a null to the next function,
+         * since a statemachine is always composed by a model anyhow. */
         Object ns =
             Model.getStateMachinesHelper()
-                .findNamespaceForEvent(trans, model);
+                .findNamespaceForEvent(trans, null);
         StateMachinesFactory sMFactory =
                 Model.getStateMachinesFactory();
         boolean createdEvent = false;
@@ -234,9 +233,11 @@ public class TransitionNotationUml extends TransitionNotation {
                 // case 1
                 if (timeEvent) { // after(...)
                     evt = sMFactory.buildTimeEvent(s, ns);
+                    /* Do not set the name. */
                 }
                 if (changeEvent) { // when(...)
                     evt = sMFactory.buildChangeEvent(s, ns);
+                    /* Do not set the name. */
                 }
                 if (callEvent) { // operation(paramlist)
                     String triggerName =
@@ -253,28 +254,62 @@ public class TransitionNotationUml extends TransitionNotation {
                 createdEvent = true;
             } else {
                 // case 2
-                if (!Model.getFacade().getName(evt).equals(trigger)) {
-                    Model.getCoreHelper().setName(evt, trigger);
-                    if (timeEvent && !Model.getFacade().isATimeEvent(evt)) {
-                        delete(evt);
+                if (timeEvent) {
+                    if (Model.getFacade().isATimeEvent(evt)) {
+                        /* Just change the time expression */
+                        Object timeExpr = Model.getFacade().getWhen(evt);
+                        Model.getDataTypesHelper().setBody(timeExpr, s);
+                    } else {
+                        /* It's a time-event now, 
+                         * but was of another type before! */
+                        delete(evt); /* TODO: What if used elsewhere? */
                         evt = sMFactory.buildTimeEvent(s, ns);
                         createdEvent = true;
                     }
-                    if (changeEvent && !Model.getFacade().isAChangeEvent(evt)) {
-                        delete(evt);
+                }
+                if (changeEvent) {
+                    if (Model.getFacade().isAChangeEvent(evt)) {
+                        /* Just change the ChangeExpression */
+                        Object changeExpr = 
+                            Model.getFacade().getChangeExpression(evt);
+                        Model.getDataTypesHelper().setBody(changeExpr, s);
+                    } else {
+                        /* The parsed text describes a change-event,
+                         * but the model contains another type! */
+                        delete(evt); /* TODO: What if used elsewhere? */
                         evt = sMFactory.buildChangeEvent(s, ns);
                         createdEvent = true;
                     }
-                    if (callEvent && !Model.getFacade().isACallEvent(evt)) {
-                        delete(evt);
+                }
+                if (callEvent) {
+                    if (Model.getFacade().isACallEvent(evt)) {
+                        /* Just change the Name and linked operation */
+                        String triggerName =
+                            trigger.indexOf("(") > 0
+                            ? trigger.substring(0, trigger.indexOf("(")).trim()
+                                    : trigger;
+                        if (!Model.getFacade().getName(evt)
+                                .equals(triggerName)) {
+                            Model.getCoreHelper().setName(evt, triggerName);
+                        }
+                            /* TODO: Change the linked operation. */
+                    } else {
+                        delete(evt); /* TODO: What if used elsewhere? */
                         evt = sMFactory.buildCallEvent(trans, trigger, ns);
                         // and parse the parameter list
                         NotationUtilityUml.parseParamList(evt, s, 0);
                         createdEvent = true;
                     }
-                    if (signalEvent
-                            && !Model.getFacade().isASignalEvent(evt)) {
-                        delete(evt);
+                }
+                if (signalEvent) {
+                    if (Model.getFacade().isASignalEvent(evt)) {
+                        /* Just change the Name and linked signal */
+                        if (!Model.getFacade().getName(evt).equals(trigger)) {
+                            Model.getCoreHelper().setName(evt, trigger);
+                        }
+                        /* TODO: link to the Signal. */
+                    } else {
+                        delete(evt); /* TODO: What if used elsewhere? */
                         evt = sMFactory.buildSignalEvent(trigger, ns);
                         createdEvent = true;
                     }
@@ -428,7 +463,7 @@ public class TransitionNotationUml extends TransitionNotation {
      */
     private void delete(Object obj) {
         if (obj != null) {
-            ProjectManager.getManager().getCurrentProject().moveToTrash(obj);
+            Model.getUmlFactory().delete(obj);
         }
     }
 
