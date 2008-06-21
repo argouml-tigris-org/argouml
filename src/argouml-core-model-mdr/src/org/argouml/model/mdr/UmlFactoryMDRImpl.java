@@ -973,6 +973,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
             if (elem == top) {
                 for (RefObject o : elementsInDeletionOrder) {
+                    // TODO: This doesn't belong here, but it's not a good time
+                    // to move it.  Find someplace less obtrusive than this
+                    // inner loop. - tfm
                     if (o instanceof CompositeState) {
                         // This enforces the following well-formedness rule.
                         // <p>Well formedness rule 4.12.3.1 CompositeState
