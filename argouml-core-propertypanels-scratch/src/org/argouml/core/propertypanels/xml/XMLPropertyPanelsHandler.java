@@ -51,13 +51,22 @@ public class XMLPropertyPanelsHandler extends DefaultHandler {
 
     public void startElement(String namespaceURI, String localName, 
             String qName, Attributes attr) throws SAXException { 
-        if (localName.equals("panel")) {
-            String title = attr.getValue("title");
-            data.addPanel(title);
-        }
-        if (localName.equals("property")) {
-            String name = attr.getValue("name");
-            data.addProperty("property", name);
-        }
+//        if (localName.equals("panel")) {
+//            String title = attr.getValue("title");
+//            data.addPanel(title);
+//        }
+//        if (localName.equals("text")) {
+//            String name = attr.getValue("name");
+//            data.addProperty("text", name);
+//        }
+//        if (localName.equals("combo")) {
+//            String name = attr.getValue("name");
+//            data.addProperty("combo", name);
+//        }
+        XMLPropertyPanelsDataRecord record = 
+            new XMLPropertyPanelsDataRecord(localName, attr.getValue("name"));
+        data.addProperty(record);
+        
+        
     }
 }

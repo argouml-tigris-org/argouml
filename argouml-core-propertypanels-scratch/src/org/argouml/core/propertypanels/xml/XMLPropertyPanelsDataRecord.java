@@ -24,61 +24,26 @@
 
 package org.argouml.core.propertypanels.xml;
 
-import java.util.Collections;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-
 /**
- * Contains the data read on the XML file.
+ * Entry of the XML that defines the property panels
  *
  * @author penyaskito
  */
-public class XMLPropertyPanelsData  {
+public class XMLPropertyPanelsDataRecord {
     
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = 
-        Logger.getLogger(XMLPropertyPanelsData.class);
-        
-    /**
-     * The info of the properties in the XML.
-     */
-    private List<XMLPropertyPanelsDataRecord> properties;
+    private String type;
+    private String name;
     
-    /**
-     * The info of the panels in the XML.
-     */
-    private XMLPropertyPanelsDataRecord panel;
+    public XMLPropertyPanelsDataRecord (String theType, String theName) {
+        this.type = theType;
+        this.name = theName;
+    }
+    
+    public String getType() {
+        return type;
+    }
 
-    
-    public XMLPropertyPanelsData() {
-        properties = new LinkedList<XMLPropertyPanelsDataRecord>();
-    }
-    
-    public void addProperty(XMLPropertyPanelsDataRecord record) {
-        properties.add(record);
-    }
-    
-    public void addPanel(XMLPropertyPanelsDataRecord record) {
-        if (panel != null) {
-            LOG.error("You tried to add a panel "
-            		+ "when a previous one exist.");            
-        }
-        panel = record;
-    }
-    
-    public String getTitle() {
-        return panel.getName();
-    }    
-    
-    public List<XMLPropertyPanelsDataRecord> getProperties () {
-        return Collections.unmodifiableList(properties);
+    public String getName() {
+        return name;
     }
 }
-

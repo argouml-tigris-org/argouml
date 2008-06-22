@@ -26,15 +26,26 @@ package org.argouml.core.propertypanels.panel;
 
 import java.io.InputStream;
 
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
+import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
+import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceListModel;
+import org.tigris.swidgets.LabelledLayout;
+import org.tigris.swidgets.Vertical;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -53,6 +64,8 @@ public class UIFactory {
     private static final Logger LOG = Logger.getLogger(UIFactory.class);
     
     private static UIFactory instance = new UIFactory();
+    
+    private JPanel panel;
     
     public UIFactory() {
         
@@ -77,29 +90,50 @@ public class UIFactory {
         String filename = getXMLFileName(target);
         LOG.info("[XMLPP] filename is:" + filename);
         XMLPropertyPanelsData data = parseXML(filename);
-        JPanel panel = buildPanel(data, target);
+        buildPanel(data, target);
         return panel;       
     }
     
     private JPanel buildPanel(XMLPropertyPanelsData data, Object target) {
         
-        JPanel panel = new JPanel();
-               
-        for (String prop : data.getProperties()) {
-            JLabel label = new JLabel(prop);
-            GenericUMLPlainTextDocument document = 
-                new GenericUMLPlainTextDocument(prop);
-            document.setTarget(target);
-            JTextField tfield = 
-                new UMLTextField2(document);
-            tfield.setColumns(80);
+        panel = new JPanel();
+        
+        for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {
+            String name = prop.getName();
+            JLabel label = new JLabel(name);
             panel.add(label);
-            panel.add(tfield);
+            
+            if ("text".equals(prop.getType())) {
+                GenericUMLPlainTextDocument document = 
+                    new GenericUMLPlainTextDocument(name);
+                document.setTarget(target);
+                JTextField tfield = 
+                    new UMLTextField2(document);
+                tfield.setColumns(40);
+                panel.add(tfield);
+            }
+            else if ("combo".equals(prop.getType())) {
+                // TODO: we can't have a lot of hardcoded elements here
+                // How could we do this? A lot of reflection?
+                if ("namespace".equals(prop.getName())) {
+                    UMLModelElementNamespaceComboBoxModel namespaceModel =
+                        new UMLModelElementNamespaceComboBoxModel();
+                    
+                    JComboBox namespaceSelector = new UMLSearchableComboBox(
+                            namespaceModel,
+                            new ActionSetModelElementNamespace(), true);                    
+                    panel.add(namespaceSelector);                    
+//                  panel.add(new UMLComboBoxNavigator(
+//                  Translator.localize(
+//                  "label.namespace.navigate.tooltip"),
+//                  namespaceSelector));
+                }
+            }
             panel.add(new JSeparator());
         }
-        
         return panel;
     }
+
 
     private String getXMLFileName(Object target) {
         String classname = target.getClass().getSimpleName();
