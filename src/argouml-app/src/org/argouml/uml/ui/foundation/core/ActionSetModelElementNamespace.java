@@ -40,7 +40,7 @@ public class ActionSetModelElementNamespace extends UndoableAction {
     /**
      * Constructor for ActionSetModelElementNamespace.
      */
-    protected ActionSetModelElementNamespace() {
+    public ActionSetModelElementNamespace() {
         super();
     }
 
