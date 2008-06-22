@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,50 +24,32 @@
 
 package org.argouml.uml.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.argouml.application.api.AbstractArgoJPanel;
-import org.argouml.application.api.GUISettingsTabInterface;
-import org.argouml.application.api.InitSubsystem;
+import org.argouml.model.Model;
 
 /**
- * Initialise this subsystem.
+ * This factory creates the right PropPanel
+ * for a given UML Object that is not an "element", 
+ * such as Expression and Multiplicity.
  *
  * @author Michiel
  */
-public class InitUmlUI implements InitSubsystem {
+class UmlObjectPropPanelFactory implements PropPanelFactory {
 
-    public void init() {
-        /* Set up the property panels for UML elements: */
-        PropPanelFactory elementFactory = new ElementPropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(elementFactory);
-
-        /* Set up the property panels for other UML objects: */
-        PropPanelFactory umlObjectFactory = new UmlObjectPropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(umlObjectFactory);
+    public PropPanel createPropPanel(Object object) {
+        if (Model.getFacade().isAExpression(object)) {
+            return getExpressionPropPanel(object);
+        }
+        if (Model.getFacade().isAMultiplicity(object)) {
+            return getMultiplicityPropPanel(object);
+        }
+        return null;
     }
 
-    public List<AbstractArgoJPanel> getDetailsTabs() {
-        List<AbstractArgoJPanel> result = 
-            new ArrayList<AbstractArgoJPanel>();
-        result.add(new TabProps());
-        result.add(new TabDocumentation());
-        result.add(new TabStyle());
-        result.add(new TabSrc());
-        result.add(new TabConstraints());
-        result.add(new TabStereotype());
-        result.add(new TabTaggedValues());
-        return result;
+    private PropPanel getExpressionPropPanel(Object object) {
+        return null;
     }
 
-    public List<GUISettingsTabInterface> getProjectSettingsTabs() {
-        return Collections.emptyList();
+    private PropPanel getMultiplicityPropPanel(Object object) {
+        return null;
     }
-
-    public List<GUISettingsTabInterface> getSettingsTabs() {
-        return Collections.emptyList();
-    }
-
 }
