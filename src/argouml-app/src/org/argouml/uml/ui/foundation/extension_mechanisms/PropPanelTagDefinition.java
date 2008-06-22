@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,6 +37,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
@@ -192,9 +193,10 @@ class UMLTagDefinitionNamespaceComboBoxModel
     extends UMLModelElementNamespaceComboBoxModel {
 
     /**
-     * 
+     * Logger.
      */
-    private static final long serialVersionUID = -7055212587563120811L;
+    private static final Logger LOG =
+        Logger.getLogger(UMLTagDefinitionNamespaceComboBoxModel.class);
 
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
@@ -216,6 +218,21 @@ class UMLTagDefinitionNamespaceComboBoxModel
         for (Object root : roots) {
             c.add(root);
             c.addAll(Model.getModelManagementHelper().getAllNamespaces(root));
+        }
+
+        Object target = getTarget();
+        /* These next lines for the case that the current namespace
+         * is not a valid one... Which of course should not happen,
+         * but it does - in this case for TDs from profiles.
+         */
+        /* TODO: Enhance so that this never happens.
+         */
+        if (target != null) {
+            Object namespace = Model.getFacade().getNamespace(target);
+            if (namespace != null) {
+                c.add(namespace);
+                LOG.warn("The current TD namespace is not a valid one!");
+            }
         }
         setElements(c);
     }
