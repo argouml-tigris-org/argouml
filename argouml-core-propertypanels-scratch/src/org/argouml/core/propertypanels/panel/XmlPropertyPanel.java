@@ -31,6 +31,11 @@ import org.apache.log4j.Logger;
 import org.argouml.ui.TabFigTarget;
 import org.argouml.uml.ui.PropPanel;
 
+/**
+ * This class is the main property panel, based on XML
+ *
+ * @author penyaskito
+ */
 public class XmlPropertyPanel extends PropPanel 
     implements TabFigTarget {
     
@@ -38,6 +43,8 @@ public class XmlPropertyPanel extends PropPanel
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
+    
+    private JPanel currentPanel = null;
     
     public XmlPropertyPanel(String label, ImageIcon icon) {
         super(label, icon);
@@ -59,6 +66,7 @@ public class XmlPropertyPanel extends PropPanel
     @Override
     public void setTarget(Object t) {
         super.setTarget(t);
+        setTitle(t.toString());
         // TODO: Here will have to do something based on the 
         // type of the target received. For
         // commodity, we could use just the name:
@@ -67,11 +75,12 @@ public class XmlPropertyPanel extends PropPanel
         // UI and the model info, Class.ui.xml and Class.model.xml
         LOG.info("[XMLPP] t is type:" + t.getClass());
         
-        JPanel panel;
+        if (currentPanel != null) {
+            this.remove(currentPanel);
+        }
         try {
-            this.removeAll();
-            panel = UIFactory.getInstance().createGUI(t);
-            this.add(panel);
+            currentPanel = UIFactory.getInstance().createGUI(t);
+            this.add(currentPanel);
         } catch (Exception e) {
             // TODO: Auto-generated catch block
             LOG.error("Exception", e);

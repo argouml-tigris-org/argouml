@@ -24,14 +24,9 @@
 
 package org.argouml.core.propertypanels.xml;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
-
-import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * This handles the XML events by SAX Api for building 
@@ -43,30 +38,26 @@ public class XMLPropertyPanelsHandler extends DefaultHandler {
     /**
      * The panel that will host the controls. 
      */
-    private final JPanel panel;    
-    
+    private final XMLPropertyPanelsData data;       
     
     /**
-     * 
+     * Default constructor.
+     * @param theData The XMLPropertyPanelsData that will 
+     * host the info read.
      */
-    public XMLPropertyPanelsHandler(JPanel panel) {
-        this.panel = panel;
+    public XMLPropertyPanelsHandler(XMLPropertyPanelsData theData) {
+        this.data = theData;
     }
 
     public void startElement(String namespaceURI, String localName, 
             String qName, Attributes attr) throws SAXException { 
-        if (localName.equals("panel")){
+        if (localName.equals("panel")) {
             String title = attr.getValue("title");
-            panel.add(new JLabel(title));
-            panel.add(new JSeparator() );
+            data.addPanel(title);
         }
-        if (localName.equals("property")){
+        if (localName.equals("property")) {
             String name = attr.getValue("name");
-            String value = attr.getValue("value");
-            panel.add(new JLabel(name));
-            panel.add(new JTextField(value, 60));
-            panel.add(new JSeparator() );
+            data.addProperty("property", name);
         }
     }
-
 }

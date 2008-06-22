@@ -22,55 +22,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.core.propertypanels.module;
+package org.argouml.core.propertypanels.panel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.argouml.application.api.AbstractArgoJPanel;
-import org.argouml.core.propertypanels.panel.XmlPropertyPanel;
-import org.argouml.moduleloader.DetailsTabProvider;
-import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLPlainTextDocument;
 
 /**
- * Defines the XMLPropertyPanels module
+ * Generic document for the plain text properties of the
+ * UML elements.
  *
  * @author penyaskito
  */
-public class XmlPropertyPanelsModule 
-        implements ModuleInterface, DetailsTabProvider {
+public class GenericUMLPlainTextDocument extends UMLPlainTextDocument {
 
-    public boolean disable() {
-        return true;
+    private String fieldName = null;
+    
+    public GenericUMLPlainTextDocument(String theFieldName) {
+        super(theFieldName);
+        this.fieldName = theFieldName;
     }
-
-    public boolean enable() {        
-        return true;
-    }
-
-    public List<AbstractArgoJPanel> getDetailsTabs() {        
-        List<AbstractArgoJPanel> result = new ArrayList<AbstractArgoJPanel>();
-        result.add(XmlPropertyPanel.getInstance());
-        return result;
-    }
-
-    public String getInfo(int type) {
-        switch (type) {
-        case AUTHOR:
-            return "Christian Lopez Espinola";
-        case DESCRIPTION:
-            return "Module for adding property panels based on XML";
-        case DOWNLOADSITE:
-            return "Not released. Prototyping yet.";
-        case VERSION:
-            return "0.1";
-        default:
-            return null;
+    
+    @Override
+    protected String getProperty() {
+        Object target = getTarget();
+        // TODO: This can be a mess... There are any better solution?
+        if ("name".equals(fieldName)) {
+            return Model.getFacade().getName(target);
         }
+        return null;
     }
 
-    public String getName() {        
-        return "Xml Property Panels Module";
+    @Override
+    protected void setProperty(String text) {
+        Object target = getTarget();
+        // TODO: This can be a mess... There are any better solution?        
+        if ("name".equals(fieldName)) {
+            Model.getCoreHelper().setName(target, text);
+        }
     }
 
 }
