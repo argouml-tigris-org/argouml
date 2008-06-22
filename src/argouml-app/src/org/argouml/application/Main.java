@@ -976,7 +976,8 @@ class LoadModules implements Runnable {
      * @see java.lang.Runnable#run()
      */
     public void run() {
-	new JavaImport().init();
+        // Why is this done separately? - tfm?
+	new JavaImport().enable();
 	huntForInternalModules();
         LOG.info("Module loading done");
     }
