@@ -312,10 +312,10 @@ class ElementPropPanelFactory implements PropPanelFactory {
     
     private PropPanelStateVertex getStateVertexPropPanel(Object element) {
         if (Model.getFacade().isAState(element)) {
-            if (Model.getFacade().isAActionState(element)) {
-                return new PropPanelActionState();
-            } else if (Model.getFacade().isACallState(element)) {
+            if (Model.getFacade().isACallState(element)) {
                 return new PropPanelCallState();
+            } else if (Model.getFacade().isAActionState(element)) {
+                return new PropPanelActionState();
             } else if (Model.getFacade().isACompositeState(element)) {
                 if (Model.getFacade().isASubmachineState(element)) {
                     if (Model.getFacade().isASubactivityState(element)) {
