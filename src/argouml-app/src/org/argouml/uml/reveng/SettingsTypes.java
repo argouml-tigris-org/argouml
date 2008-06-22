@@ -105,6 +105,18 @@ public interface SettingsTypes {
          *         bounds
          */
         boolean setSelection(int selection);
+        
+        /**
+         * @return the current selection
+         */
+        int getSelection();
+    }
+    
+    /**
+     * A UniqueSelection which includes a description.
+     * @see UniqueSelection
+     */
+    interface UniqueSelection2 extends UniqueSelection, Setting2 {
     }
     
     /**
@@ -115,10 +127,27 @@ public interface SettingsTypes {
          * @return the initial string to display, if any.  May be null.
          */
         String getDefaultString();
+        
         /**
          * @return the user entered string
          */
         String getUserString();
+        
+        /**
+         * Set user string to new value.
+         * 
+         * @param userString new user string
+         */
+        void setUserString(String userString);
+        
+    }
+    
+    /**
+     * A UserString which includes a description.
+     * @see UserString
+     */
+    interface UserString2 extends UserString, Setting2 {
+        
     }
     
     /**
@@ -133,6 +162,20 @@ public interface SettingsTypes {
          * @return the user selected value
          */
         boolean isSelected();
+        
+        /**
+         * Set the selection value.
+         * @param selected boolean indicating new state of selection
+         */
+        void setSelected(boolean selected);
+    }
+    
+    /**
+     * A BooleanSelection which includes a description.
+     * @see BooleanSelection
+     */
+    interface BooleanSelection2 extends BooleanSelection, Setting2 {
+        
     }
     
     /**
@@ -149,6 +192,12 @@ public interface SettingsTypes {
          * @return the user selected path
          */
         String getPath();
+        
+        /**
+         * Set the path to the given value
+         * @param path new value of the path
+         */
+        void setPath(String path);
     }
     
     /**
@@ -166,6 +215,13 @@ public interface SettingsTypes {
          * @return the user selected ordered list of file system paths
          */
         List<String> getPathList();
+        
+        /**
+         * Set the path list to the new values.
+         * 
+         * @param pathList new list of paths
+         */
+        void setPathList(List<String> pathList);
     }
 
 }

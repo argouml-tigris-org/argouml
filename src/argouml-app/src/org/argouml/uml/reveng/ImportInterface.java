@@ -36,6 +36,9 @@ import org.argouml.util.SuffixFilter;
 /**
  * An interface which identifies an ArgoUML plug-in which imports 
  * source language modules and creates UML model elements in our model.
+ * <p>
+ * This interface is GUI independent and must not have any dependency on
+ * Swing/AWT or SWT.
  * 
  * @author Tom Morris
  * @since 0.23.2

@@ -43,7 +43,6 @@ import org.argouml.model.Model;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.reveng.ImportCommon;
 import org.argouml.uml.reveng.ImportInterface;
-import org.argouml.uml.reveng.ImportSettings;
 
 /**
  * Modeller maps Java source code(parsed/recognised by ANTLR) to UML model
@@ -139,7 +138,6 @@ public class Modeller {
      */
     private boolean generateNames = true;
     
-
     /**
      * Create a new modeller.
      *
@@ -147,11 +145,12 @@ public class Modeller {
      * @param settings the settings to use for this import
      * @param theFileName the current file name
      */
-    public Modeller(Object theModel, ImportSettings settings, 
+    public Modeller(Object theModel, boolean attributeSelected,
+            boolean datatypeSelected,
             String theFileName) {
         model = theModel;
-        noAssociations = settings.isAttributeSelected();
-        arraysAsDatatype = settings.isDatatypeSelected();
+        noAssociations = attributeSelected;
+        arraysAsDatatype = datatypeSelected;
         currentPackage = this.model;
         newElements = new HashSet<Object>();
         parseState = new ParseState(this.model, getPackage(JAVA_PACKAGE));
@@ -794,6 +793,7 @@ public class Modeller {
                          short modifiers,
                          String javadoc,
                          boolean forceIt) {
+        // TODO: Not implemented
         logError( "Java 5 annotation definitions not supported", "@" + name);
     }
     
@@ -803,6 +803,7 @@ public class Modeller {
      * @param name identifier for annotation.
      */
     void addAnnotation(String name) {
+        // TODO: Not implemented
         logError( "Java 5 annotations not supported", "@" + name);
     }
 

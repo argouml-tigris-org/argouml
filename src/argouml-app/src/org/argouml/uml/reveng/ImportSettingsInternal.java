@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,22 +54,16 @@ public interface ImportSettingsInternal extends ImportSettings {
     public boolean isDiagramLayoutSelected();
 
     /**
-     * TODO: This should be moved from the superclass when diagram updating
-     * removed from the importers (as it should be). - tfm 20061129
-     * 
      * @return true if the user has request diagrams to be created for packages
      *         contained in the imported source code.
      */
-//    public boolean isCreateDiagramsSelected();
+    public boolean isCreateDiagramsSelected();
     
     /**
-     * TODO: This should be moved from the superclass when diagram updating
-     * removed from the importers (as it should be). - tfm 20061129
-     * 
      * @return true, if user has requested that new figures placed in diagrams
      *         should be minimized so they don't show internal compartments.
      */
-//    public boolean isMinimizeFigsSelected();
+    public boolean isMinimizeFigsSelected();
 
 
 }

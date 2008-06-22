@@ -1,162 +1,125 @@
+// $Id$
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.uml.reveng.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
-import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
-import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
-import org.argouml.uml.reveng.ImportClassLoader;
-import org.argouml.uml.reveng.ImportCommandInterface;
+import org.argouml.uml.reveng.SettingsTypes.PathListSelection;
 import org.tigris.gef.base.Globals;
 
 /**
- * dialog to setup the import classpath.
+ * Panel to collect a list of paths for an importer. <em>NOTE:</em> Although
+ * this class is public it is <em>only</em> intended for use by the package
+ * org.argouml.reveng.
+ * <p>
+ * This was originally included in Import.java and was called
+ * ImportClasspathDialog.
  */
-public class ImportClasspathDialog extends JDialog {
+public class ImportClasspathDialog extends JPanel {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(ImportClasspathDialog.class);
-
-    private JDialog importClasspathDialog;
     private JList paths;
+
     private DefaultListModel pathsModel;
 
-    private JButton addFile;
+    private JButton addButton;
 
-    private JButton removeFile;
+    private JButton removeButton;
 
-    private JButton ok;
+    private JFileChooser chooser;
+    
+    private PathListSelection setting;
 
-    private ImportCommandInterface importCmd;
 
     /**
-     * Construct a dialog to allow the user to set up the classpath for the
-     * import.<p>
-     * @param impCmd 
+     * Construct a panel which provides controls for populating a list of 
+     * paths.  This can be used for a Java classpath, C++ include path, etc.
+     * 
+     * @param pathListSetting the settings object for this pathlist
      */
-    public ImportClasspathDialog(ImportCommandInterface impCmd) {
-
+    public ImportClasspathDialog(PathListSelection pathListSetting) {
         super();
-        importClasspathDialog = this;
-        setTitle(Translator.localize("dialog.import.classpath.title"));
-        importCmd = impCmd;
+        setting = pathListSetting;
+        setToolTipText(setting.getDescription());
+        
+        setLayout(new BorderLayout(0, 0));
 
-        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-        getContentPane().setLayout(new BorderLayout(0, 0));
+        JLabel label = new JLabel(setting.getLabel());
+        add(label, BorderLayout.NORTH);
 
-        // Explanatory text
-        JTextArea ta =
-                new JTextArea(Translator
-                        .localize("dialog.import.classpath.text"));
-        ta.setLineWrap(true);
-        ta.setWrapStyleWord(true);
-        ta.setFocusable(false);
-        getContentPane().add(ta, BorderLayout.NORTH);
-
-        // paths list
         pathsModel = new DefaultListModel();
+        for (String path : setting.getDefaultPathList()) {
+            pathsModel.addElement(path);
+        }
+        
         paths = new JList(pathsModel);
         paths.setVisibleRowCount(5);
+        paths.setToolTipText(setting.getDescription());
         JScrollPane listScroller = new JScrollPane(paths);
-        listScroller.setPreferredSize(new Dimension(300, 100));
-        getContentPane().add(listScroller, BorderLayout.CENTER);
+        add(listScroller, BorderLayout.CENTER);
 
-        initList();
-
-        // controls
+        // panel for controls
         JPanel controlsPanel = new JPanel();
-        controlsPanel.setLayout(new GridLayout(0, 3));
-        addFile = new JButton(Translator.localize("button.add"));
-        removeFile = new JButton(Translator.localize("button.remove"));
-        ok = new JButton(Translator.localize("button.ok"));
-        controlsPanel.add(addFile);
-        controlsPanel.add(removeFile);
-        controlsPanel.add(ok);
-        getContentPane().add(controlsPanel, BorderLayout.SOUTH);
-
-        addFile.addActionListener(new AddListener());
-        removeFile.addActionListener(new RemoveListener());
-        ok.addActionListener(new OkListener());
-
-        //Display the window.
-        Dimension contentPaneSize = getContentPane().getPreferredSize();
-        setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
-            scrSize.height / 2 - contentPaneSize.height / 2);
-        pack();
-        ok.requestFocusInWindow();
-        setVisible(true);
-        this.setModal(true);        //MVW   Issue 2539.
-    }
-
-    private void initList() {
-
-        URL[] urls =
-            ImportClassLoader.getURLs(Configuration.getString(
-                Argo.KEY_USER_IMPORT_CLASSPATH, ""));
-
-        for (int i = 0; i < urls.length; i++) {
-            pathsModel.addElement(urls[i].getFile());
-        }
-
-        paths.setSelectedIndex(0);
+        controlsPanel.setLayout(new GridLayout(0, 2, 50, 0));
+        
+        addButton = new JButton(Translator.localize("button.add"));
+        controlsPanel.add(addButton);
+        addButton.addActionListener(new AddListener());
+        
+        removeButton = new JButton(Translator.localize("button.remove"));
+        controlsPanel.add(removeButton);
+        removeButton.addActionListener(new RemoveListener());
+        
+        // TODO: Add Up/Down buttons to control the ordering of items
+        
+        add(controlsPanel, BorderLayout.SOUTH);
     }
 
 
-    class OkListener implements ActionListener {
-        /*
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            try {
-                URL[] urls = new URL[pathsModel.size()];
-                for (int i = 0; i < urls.length; i++) {
-                    try {
-                        urls[i] = new File((String) pathsModel.get(i)).toURI()
-                                .toURL();
-                    } catch (Exception e1) {
-                        LOG.warn("could not do ok: could not make"
-                                + "url " + pathsModel.get(i) + ", " + e1,
-                                e1);
-                    }
-                }
-
-                try {
-                    ImportClassLoader.getInstance(urls);
-                    ImportClassLoader.getInstance().saveUserPath();
-                } catch (Exception e1) {
-                    LOG.warn("could not do ok", e1);
-                }
-                setVisible(false);
-                setModal(false);
-                dispose();
-                importCmd.execute();
-            } finally {
-                setVisible(false);
-                setModal(false);
-                dispose();
-            }
+    private void updatePathList() {
+        List<String> pathList = new ArrayList<String>();
+        for (int i = 0; i < pathsModel.size(); i++) {
+            String path = (String) pathsModel.getElementAt(i);
+            pathList.add(path);
         }
+        setting.setPathList(pathList);
     }
 
     class RemoveListener implements ActionListener {
@@ -168,12 +131,16 @@ public class ImportClasspathDialog extends JDialog {
             //there's a valid selection
             //so go ahead and remove whatever's selected.
             int index = paths.getSelectedIndex();
+            if (index < 0) {
+                return;
+            }
             pathsModel.remove(index);
+            updatePathList();
 
             int size = pathsModel.getSize();
 
             if (size == 0) { //nothings left, disable firing.
-                removeFile.setEnabled(false);
+                removeButton.setEnabled(false);
 
             } else { //Select an index.
                 if (index == pathsModel.getSize()) {
@@ -185,6 +152,7 @@ public class ImportClasspathDialog extends JDialog {
                 paths.ensureIndexIsVisible(index);
             }
         }
+
     }
 
 
@@ -194,41 +162,37 @@ public class ImportClasspathDialog extends JDialog {
          */
         public void actionPerformed(ActionEvent e) {
 
-            String directory = Globals.getLastDirectory();
-            JFileChooser ch = new JFileChooser(directory);
-            if (ch == null) {
-                ch = new JFileChooser();
-            }
-
-            final JFileChooser chooser = ch;
-
-            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            chooser.setMultiSelectionEnabled(true);
-            chooser.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e1) {
-                    if (e1.getActionCommand().equals(
-                            JFileChooser.APPROVE_SELECTION)) {
-                        File[] files = chooser.getSelectedFiles();
-                        for(File theFile : files) {
-                            if (theFile != null) {
-                                pathsModel.addElement(theFile.toString());
-                            }
-                        }
-                    } else if (e1.getActionCommand().equals(
-                            JFileChooser.CANCEL_SELECTION)) {
-                        // TODO: What shall we do here?
-                    }
-                    // bring the import classpath dialog to the front
-                    importClasspathDialog.setVisible(true);
+            if (chooser == null ) {
+                chooser = new JFileChooser(Globals.getLastDirectory()); 
+                if (chooser == null) {
+                    chooser = new JFileChooser();
                 }
-            });
+
+                chooser.setFileSelectionMode(
+                        JFileChooser.FILES_AND_DIRECTORIES);
+                chooser.setMultiSelectionEnabled(true);
+                chooser.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e1) {
+                        if (e1.getActionCommand().equals(
+                                JFileChooser.APPROVE_SELECTION)) {
+                            File[] files = chooser.getSelectedFiles();
+                            for (File theFile : files) {
+                                if (theFile != null) {
+                                    pathsModel.addElement(theFile.toString());
+                                }
+                            }
+                            updatePathList();
+                        } else if (e1.getActionCommand().equals(
+                                JFileChooser.CANCEL_SELECTION)) {
+                            // Just quit
+                        }
+
+                    }
+                });
+            }
 
             chooser.showOpenDialog(new Frame());
         }
     }
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -8684620532717336574L;
 }

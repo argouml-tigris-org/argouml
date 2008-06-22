@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,21 +32,27 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.taskmgmt.ProgressMonitor;
-import org.argouml.uml.reveng.ExtendedImportInterface;
 import org.argouml.uml.reveng.FileImportUtils;
-import org.argouml.uml.reveng.ImportCommandInterface;
+import org.argouml.uml.reveng.ImportClassLoader;
+import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImportSettings;
 import org.argouml.uml.reveng.ImporterManager;
-import org.argouml.uml.reveng.ui.ImportClasspathDialog;
+import org.argouml.uml.reveng.Setting;
+import org.argouml.uml.reveng.SettingsTypes;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 
@@ -54,30 +60,92 @@ import org.argouml.util.SuffixFilter;
  * This is the main class for Java reverse engineering. It's based
  * on the Antlr Java example.
  *
- * @author Andreas Rueckert, Thomas Neustupny
+ * @author Andreas Rueckert
+ * @author Thomas Neustupny
  */
-public class JavaImport implements ExtendedImportInterface {
+public class JavaImport implements ImportInterface {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(JavaImport.class);
+
+    
+    /**
+     * Key for RE extended settings: model attributes as:
+     * 0: attributes
+     * 1: associations
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_MODEL_ATTR =
+        Configuration
+            .makeKey("import", "extended", "java", "model", "attributes");
+
+    /**
+     * Key for RE extended settings: model arrays as:
+     * 0: datatype
+     * 1: associations
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_MODEL_ARRAYS =
+        Configuration.makeKey("import", "extended", "java", "model", "arrays");
+
+    /**
+     * Key for RE extended settings: flag for modeling of listed collections,
+     * if to model them as associations with multiplicity *.
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_COLLECTIONS_FLAG =
+        Configuration
+            .makeKey("import", "extended", "java", "collections", "flag");
+
+    /**
+     * Key for RE extended settings: list of collections, that will be modelled
+     * as associations with multiplicity *.
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_COLLECTIONS_LIST =
+        Configuration
+            .makeKey("import", "extended", "java", "collections", "list");
+
+    /**
+     * Key for RE extended settings: flag for modelling of listed collections,
+     * if to model them as ordered associations with multiplicity *.
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_ORDEREDCOLLS_FLAG =
+        Configuration
+            .makeKey("import", "extended", "java", "orderedcolls", "flag");
+
+    /**
+     * Key for RE extended settings: list of collections, that will be modelled
+     * as ordered associations with multiplicity *.
+     */
+    public static final ConfigurationKey KEY_IMPORT_EXTENDED_ORDEREDCOLLS_LIST =
+        Configuration
+            .makeKey("import", "extended", "java", "orderedcolls", "list");
+
     
     /**
      * New model elements that were added
      */
     private Collection newElements;
+
+    private List<SettingsTypes.Setting> settingsList;
+    private SettingsTypes.UniqueSelection2 attributeSetting;
+    private SettingsTypes.UniqueSelection2 datatypeSetting;
+    private SettingsTypes.PathListSelection pathlistSetting;
     
+
     /*
      * @see org.argouml.uml.reveng.ImportInterface#parseFiles(org.argouml.kernel.Project, java.util.Collection, org.argouml.uml.reveng.ImportSettings, org.argouml.application.api.ProgressMonitor)
      */
-    public Collection parseFiles(Project p, Collection files,
+    public Collection parseFiles(Project p, Collection<File> files,
             ImportSettings settings, ProgressMonitor monitor)
         throws ImportException {
 
+        saveSettings();
+        updateImportClassloader();
         newElements = new HashSet();
         monitor.updateMainTask(Translator.localize("dialog.import.pass1"));
         try {
-            if (settings.getImportLevel() == ImportSettings.DETAIL_CLASSIFIER_FEATURE
-                    || settings.getImportLevel() == ImportSettings.DETAIL_FULL) {
+            if (settings.getImportLevel() 
+                        == ImportSettings.DETAIL_CLASSIFIER_FEATURE
+                    || settings.getImportLevel() 
+                        == ImportSettings.DETAIL_FULL) {
                 monitor.setMaximumProgress(files.size() * 2);
                 doImportPass(p, files, settings, monitor, 0, 0);
                 if (!monitor.isCanceled()) {
@@ -95,43 +163,45 @@ public class JavaImport implements ExtendedImportInterface {
         return newElements;
     }
 
+    private void saveSettings() {
+        Configuration.setString(KEY_IMPORT_EXTENDED_MODEL_ATTR, String
+                .valueOf(attributeSetting.getSelection()));
+        Configuration.setString(KEY_IMPORT_EXTENDED_MODEL_ARRAYS, String
+                .valueOf(datatypeSetting.getSelection()));
+    }
 
-    private void doImportPass(Project p, Collection files,
+    private void doImportPass(Project p, Collection<File> files,
             ImportSettings settings, ProgressMonitor monitor, int startCount,
-            int pass) throws ImportException {
+            int pass) {
         
         int count = startCount;
-        for (Iterator it = files.iterator(); it.hasNext();) {
+        for (File file : files) {
             if (monitor.isCanceled()) {
                 monitor.updateSubTask(
                         Translator.localize("dialog.import.cancelled"));
                 return;
             }
-            Object file = it.next();
-            if (file instanceof File) {
-                try {
-                    parseFile(p, (File) file, settings, pass);
-                } catch (Exception e) {
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new java.io.PrintWriter(sw);
-                    e.printStackTrace(pw);
-                    monitor.notifyMessage(
+            try {
+                parseFile(p, file, settings, pass);
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new java.io.PrintWriter(sw);
+                e.printStackTrace(pw);
+                monitor.notifyMessage(
+                    Translator.localize(
+                        "dialog.title.import-problems"), //$NON-NLS-1$
                         Translator.localize(
-                            "dialog.title.import-problems"), //$NON-NLS-1$
-                            Translator.localize(
-                            "label.import-problems"),        //$NON-NLS-1$
-                            sw.toString());
-                    if (monitor.isCanceled()) {
-                        break;
-                    }
+                        "label.import-problems"),        //$NON-NLS-1$
+                        sw.toString());
+                if (monitor.isCanceled()) {
+                    break;
                 }
-                monitor.updateProgress(count++);
-                monitor.updateSubTask(Translator.localize(
-                        "dialog.import.parsingAction",
-                        new Object[] {((File) file).getAbsolutePath()}));
-            } else {
-                throw new ImportException("Object isn't a file " + file);
             }
+            monitor.updateProgress(count++);
+            monitor.updateSubTask(Translator.localize(
+                    "dialog.import.parsingAction",
+                    new Object[] {file.getAbsolutePath()}));
+
         }
 
         return;
@@ -187,7 +257,7 @@ public class JavaImport implements ExtendedImportInterface {
 
             // Create a modeller for the parser
             Modeller modeller = new Modeller(p.getModel(),
-                    settings,
+                    isAttributeSelected(),isDatatypeSelected(),
                     f.getName());
 
             // Print the name of the current file, so we can associate
@@ -225,19 +295,12 @@ public class JavaImport implements ExtendedImportInterface {
     }
 
 
-    /**
+    /*
      * @see org.argouml.uml.reveng.ImportInterface#getSuffixFilters()
      */
     public SuffixFilter[] getSuffixFilters() {
 	SuffixFilter[] result = {FileFilters.JAVA_FILE_FILTER};
 	return result;
-    }
-
-    /**
-     * @see org.argouml.uml.reveng.ExtendedImportInterface#invokeImport(org.argouml.uml.reveng.ImportCommandInterface)
-     */
-    public void invokeImport(ImportCommandInterface importCmd) {
-        new ImportClasspathDialog(importCmd);
     }
 
     /*
@@ -282,22 +345,107 @@ public class JavaImport implements ExtendedImportInterface {
      * @see org.argouml.moduleloader.ModuleInterface#enable()
      */
     public boolean enable() {
-        init();
+	ImporterManager.getInstance().addImporter(this);
         return true;
     }
 
-    /**
-     * Enable the importer.
-     */
-    public void init() {
-	ImporterManager.getInstance().addImporter(this);
-    }
     
     /*
      * @see org.argouml.uml.reveng.ImportInterface#getImportSettings()
      */
-    public List getImportSettings() {
-        return null;
+    public List<SettingsTypes.Setting> getImportSettings() {
+        
+        settingsList = new ArrayList<SettingsTypes.Setting>();
+
+        // Settings from ConfigPanelExtension
+
+        // TODO: These properties should move out of the core into someplace
+        // specific to the Java importer
+        List<String> options = new ArrayList<String>();
+        options.add(Translator.localize("action.import-java-UML-attr"));
+        options.add(Translator.localize("action.import-java-UML-assoc"));
+
+        int selected;
+        String modelattr = Configuration
+                .getString(KEY_IMPORT_EXTENDED_MODEL_ATTR);
+        selected = Integer.parseInt(modelattr);
+
+        attributeSetting = new Setting.UniqueSelection(Translator
+                .localize("action.import-java-attr-model"), options,
+                selected);
+        settingsList.add(attributeSetting);
+
+        options.clear();
+        options.add(Translator
+                .localize("action.import-java-array-model-datatype"));
+        options.add(Translator
+                .localize("action.import-java-array-model-multi"));
+
+        String modelarrays = Configuration
+                .getString(KEY_IMPORT_EXTENDED_MODEL_ARRAYS);
+        selected = Integer.parseInt(modelarrays);
+
+        datatypeSetting = new Setting.UniqueSelection(Translator
+                .localize("action.import-java-array-model"), options,
+                selected);
+        settingsList.add(datatypeSetting);
+
+        List<String> paths = new ArrayList<String>();
+        URL[] urls = ImportClassLoader.getURLs(Configuration.getString(
+                Argo.KEY_USER_IMPORT_CLASSPATH, ""));
+
+        for (URL url : urls) {
+            paths.add(url.getFile());
+        }
+        pathlistSetting = new Setting.PathListSelection(Translator
+                .localize("dialog.import.classpath.title"), Translator
+                .localize("dialog.import.classpath.text"), paths);
+        settingsList.add(pathlistSetting);
+
+        
+        return settingsList;
+    }
+    
+
+    public void updateImportClassloader() {
+        List<String> pathList = pathlistSetting.getPathList();
+        URL[] urls = new URL[pathList.size()];
+
+        int i = 0;
+        for (String path : pathlistSetting.getPathList()) {
+            try {
+                urls[i++] = new File(path).toURI().toURL();
+            } catch (MalformedURLException e) {
+                LOG.error("Bad path in classpath " + path);
+            }
+        }
+
+        try {
+            ImportClassLoader.getInstance(urls);
+            ImportClassLoader.getInstance().saveUserPath();
+        } catch (MalformedURLException e) {
+
+        }
+    }
+
+    /**
+     * Only intended for use in the Java classfile importer.
+     * 
+     * @return true if references should be modeled as UML Attributes instead of
+     *         UML Associations.
+     */
+    public boolean isAttributeSelected() {        
+        return attributeSetting.getSelection() == 0;
+    }
+    
+    /**
+     * Only intended for use in the Java classfile importer
+     * 
+     * @return true if arrays should be modeled as datatypes instead of using
+     *         UML's multiplicities.
+     */
+    public boolean isDatatypeSelected() {
+        return datatypeSetting.getSelection() == 0;
     }
 
 }

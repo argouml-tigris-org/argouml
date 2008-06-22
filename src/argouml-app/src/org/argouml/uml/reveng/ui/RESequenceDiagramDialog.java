@@ -190,7 +190,7 @@ public class RESequenceDiagramDialog
             // TODO: must not depend on the Java modeller, but the needed one
             // must be either derived from the method's notation, or chosen by
             // the user from a list of available language importers
-            modeller = new Modeller(model, new DummySettings(), null);
+            modeller = new Modeller(model, true, true, null);
         } catch (Exception ex) { 
             // the only chance we have is to finish the current operation
             LOG.warn("Modeller not ready, so no more generation of calls", ex);
@@ -904,34 +904,4 @@ public class RESequenceDiagramDialog
         return theClassifier;
     }
 
-    /**
-     * Fixed import settings class for our use.
-     */
-    private class DummySettings implements ImportSettings {
-
-        public int getImportLevel() {
-            return ImportSettings.DETAIL_CLASSIFIER;
-        }
-
-        public String getInputSourceEncoding() {
-            return null;
-        }
-
-        public boolean isAttributeSelected() {
-            return true;
-        }
-
-        public boolean isCreateDiagramsSelected() {
-            return false;
-        }
-
-        public boolean isDatatypeSelected() {
-            return true;
-        }
-
-        public boolean isMinimizeFigsSelected() {
-            return false;
-        }
-        
-    }
 }

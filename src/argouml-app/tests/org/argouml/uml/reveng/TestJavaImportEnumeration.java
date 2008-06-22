@@ -82,7 +82,7 @@ public class TestJavaImportEnumeration extends TestCase {
         new InitProfileSubsystem().init();
 
         Modeller modeller = new Modeller(parsedModel,
-                new DummyImportSettings(), "TestClass.java");
+                false, false, "TestClass.java");
         assertNotNull("Creation of Modeller instance failed.", modeller);
 
         try {
