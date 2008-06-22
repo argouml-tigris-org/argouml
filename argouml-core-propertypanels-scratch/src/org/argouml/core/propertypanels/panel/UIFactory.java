@@ -29,7 +29,6 @@ import java.io.InputStream;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
@@ -37,15 +36,10 @@ import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
-import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceListModel;
-import org.tigris.swidgets.LabelledLayout;
-import org.tigris.swidgets.Vertical;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -117,13 +111,14 @@ public class UIFactory {
                 // How could we do this? A lot of reflection?
                 if ("namespace".equals(prop.getName())) {
                     UMLModelElementNamespaceComboBoxModel namespaceModel =
-                        new UMLModelElementNamespaceComboBoxModel();
+                        new UMLModelElementNamespaceComboBoxModel();                    
                     
                     JComboBox namespaceSelector = new UMLSearchableComboBox(
                             namespaceModel,
                             // this needs a visibility
                             // change in ArgoUML Core...
-                            new ActionSetModelElementNamespace(), true);                    
+                            new ActionSetModelElementNamespace(), true);
+                    
                     panel.add(namespaceSelector);                    
 //                  panel.add(new UMLComboBoxNavigator(
 //                  Translator.localize(

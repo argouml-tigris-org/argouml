@@ -22,61 +22,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.core.propertypanels.module;
+package org.argouml.core.propertypanels.panel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.argouml.application.api.AbstractArgoJPanel;
-import org.argouml.core.propertypanels.panel.XMLPropPanelFactory;
-import org.argouml.core.propertypanels.panel.XmlPropertyPanel;
-import org.argouml.moduleloader.DetailsTabProvider;
-import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactoryManager;
 
 /**
- * Defines the XMLPropertyPanels module
- *
+ * 
  * @author penyaskito
  */
-public class XmlPropertyPanelsModule 
-        implements ModuleInterface, DetailsTabProvider {
+public class XMLPropPanelFactory implements PropPanelFactory {
 
-    public boolean disable() {
-        return true;
-    }
-
-    public boolean enable() { 
-        /* Set up the property panels for UML elements: */
-        PropPanelFactory elementFactory = new XMLPropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(elementFactory);
-        return true;
-    }
-
-    public List<AbstractArgoJPanel> getDetailsTabs() {        
-        List<AbstractArgoJPanel> result = new ArrayList<AbstractArgoJPanel>();
-        result.add(XmlPropertyPanel.getInstance());
-        return result;
-    }
-
-    public String getInfo(int type) {
-        switch (type) {
-        case AUTHOR:
-            return "Christian Lopez Espinola";
-        case DESCRIPTION:
-            return "Module for adding property panels based on XML";
-        case DOWNLOADSITE:
-            return "Not released. Prototyping yet.";
-        case VERSION:
-            return "0.1";
-        default:
-            return null;
-        }
-    }
-
-    public String getName() {        
-        return "Xml Property Panels Module";
+    public PropPanel createPropPanel(Object target) {
+        // TODO: Auto-generated method stub
+       return null;
     }
 
 }
