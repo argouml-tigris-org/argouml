@@ -121,6 +121,8 @@ public class UIFactory {
                     
                     JComboBox namespaceSelector = new UMLSearchableComboBox(
                             namespaceModel,
+                            // this needs a visibility
+                            // change in ArgoUML Core...
                             new ActionSetModelElementNamespace(), true);                    
                     panel.add(namespaceSelector);                    
 //                  panel.add(new UMLComboBoxNavigator(
@@ -145,11 +147,7 @@ public class UIFactory {
         throws Exception {
         
         XMLPropertyPanelsData data = new XMLPropertyPanelsData();
-        
-        // TODO: I have to investigate how to read the XML.
-        // There are some different APIs available, but
-        // I'll choose SAX because it's the one API used in
-        // PGML, so we don't have different APIs in Argo.
+
         XMLReader parser = XMLReaderFactory.createXMLReader(
                 "org.apache.xerces.parsers.SAXParser"              
         );
@@ -157,7 +155,7 @@ public class UIFactory {
 
         String file = "org/argouml/core/propertypanels/xml/"
             + filename + ".xml";
-        LOG.info("File = " + file);
+        LOG.debug("UIFactory creates PropPanel with file " + file);
         InputStream stream = this.getClass().getClassLoader().
             getResourceAsStream(file);
         if (stream != null) {
