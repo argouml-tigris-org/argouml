@@ -171,10 +171,13 @@ public class UIFactory {
             derivedCbx.setTarget(target);
             panel.add(derivedCbx);
             
-            UMLCheckBox2 activeCbx = 
-                new UMLClassActiveCheckBox();
-            activeCbx.setTarget(target);
-            panel.add(activeCbx);                   
+            // TODO: this must be created only if the target is
+            // a class, so I disable it until we are able of
+            // nesting checkboxes to a checkgroup
+//            UMLCheckBox2 activeCbx = 
+//                new UMLClassActiveCheckBox();
+//            activeCbx.setTarget(target);
+//            panel.add(activeCbx);                   
         }
         return panel;
     }
@@ -194,13 +197,11 @@ public class UIFactory {
         if ("namespace".equals(prop.getName())) {
             UMLModelElementNamespaceComboBoxModel namespaceModel =
                 new UMLModelElementNamespaceComboBoxModel();                    
-            
+            namespaceModel.setTarget(target);
             JComboBox namespaceSelector = new UMLSearchableComboBox(
                     namespaceModel,
-                    // this needs a visibility
-                    // change in ArgoUML Core...
                     new ActionSetModelElementNamespace(), true);
-            Object c = target;
+            
             p.add(namespaceSelector);                    
 //                  p.add(new UMLComboBoxNavigator(
 //                  Translator.localize(

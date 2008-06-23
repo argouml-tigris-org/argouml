@@ -24,6 +24,10 @@
 
 package org.argouml.core.propertypanels.xml;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Entry of the XML that defines the property panels
  *
@@ -34,9 +38,14 @@ public class XMLPropertyPanelsDataRecord {
     private String type;
     private String name;
     
+    private List<XMLPropertyPanelsDataRecord> children;
+    
+    // TODO: this is a tree node, we must refine the tree structure
+    
     public XMLPropertyPanelsDataRecord (String theType, String theName) {
         this.type = theType;
         this.name = theName;
+        children = new LinkedList<XMLPropertyPanelsDataRecord>();
     }
     
     public String getType() {
@@ -46,4 +55,16 @@ public class XMLPropertyPanelsDataRecord {
     public String getName() {
         return name;
     }
+    
+    public List<XMLPropertyPanelsDataRecord> getChildren() {
+        return Collections.unmodifiableList(children);
+    }
+    
+    public void addChild(XMLPropertyPanelsDataRecord child) {
+        children.add(child);
+    }
+    public void removeChild(XMLPropertyPanelsDataRecord child) {
+        children.remove(child);
+    }
+    
 }

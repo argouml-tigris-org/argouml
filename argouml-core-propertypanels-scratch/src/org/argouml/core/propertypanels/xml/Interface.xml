@@ -8,7 +8,6 @@
 		<checkbox name='abstract' />
 		<checkbox name='leaf'/>
 		<checkbox name='root'/>
-		<checkbox name='derived'/>
-		<checkbox name='active'/>	
+		<checkbox name='derived'/>	
 	</checkgroup>
 </panel>
