@@ -342,7 +342,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * 
      * @param theNewTarget the target
      */
-    protected void setTarget(Object theNewTarget) {
+    public void setTarget(Object theNewTarget) {
         LOG.debug("setTarget target :  " + theNewTarget);
         theNewTarget = theNewTarget instanceof Fig 
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
