@@ -86,7 +86,8 @@ public class PropPanelMethod extends PropPanelFeature {
 
         addSeparator();
 
-        UMLExpressionModel2 procedureModel = new UMLProcedureExpressionModel(
+        UMLExpressionModel2 procedureModel = 
+            new UMLMethodProcedureExpressionModel(
                 this, "");
         addField(Translator.localize("label.language"),
                 new UMLExpressionLanguageField(procedureModel,
@@ -221,10 +222,10 @@ public class PropPanelMethod extends PropPanelFeature {
  * 
  * @author Michiel
  */
-class UMLProcedureExpressionModel extends UMLExpressionModel2 {
+class UMLMethodProcedureExpressionModel extends UMLExpressionModel2 {
 
     private static final Logger LOG =
-        Logger.getLogger(UMLProcedureExpressionModel.class);
+        Logger.getLogger(UMLMethodProcedureExpressionModel.class);
 
     /**
      * The constructor.
@@ -232,7 +233,8 @@ class UMLProcedureExpressionModel extends UMLExpressionModel2 {
      * @param container the container of UML user interface components
      * @param propertyName the name of the property
      */
-    public UMLProcedureExpressionModel(UMLUserInterfaceContainer container,
+    public UMLMethodProcedureExpressionModel(
+            UMLUserInterfaceContainer container,
             String propertyName) {
         super(container, propertyName);
     }
