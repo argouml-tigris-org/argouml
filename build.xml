@@ -53,12 +53,14 @@ Build file to proxy the argoumlstandard ant targets.
       </fileset>
     </copy>
 
+<!--
     <mkdir dir="${build.dir}/ext"/>
     <copy todir="${build.dir}/ext" includeEmptyDirs="false">
       <fileset dir="src/argouml-build/build/ext">
         <include name="*"/>
       </fileset>
     </copy>
+ -->
   </target>
 
 
