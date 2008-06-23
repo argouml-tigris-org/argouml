@@ -64,26 +64,29 @@ public class XmlPropertyPanel extends PropPanel
     }
     
     @Override
-    public void setTarget(Object t) {
-        super.setTarget(t);
-        setTitle(t.toString());
+    public void setTarget(Object target) {
+        super.setTarget(target);       
         // TODO: Here will have to do something based on the 
         // type of the target received. For
         // commodity, we could use just the name:
         // p.e.: org.omg.uml.foundation.core.UmlClass$Impl
         // Our XML can be called Class.xml or if we split the
         // UI and the model info, Class.ui.xml and Class.model.xml
-        LOG.info("[XMLPP] t is type:" + t.getClass());
+        build(target);
+    }
+    
+    public void build(Object target){
+        LOG.info("[XMLPP] t is type:" + target.getClass());
         
         if (currentPanel != null) {
             this.remove(currentPanel);
         }
         try {
-            currentPanel = UIFactory.getInstance().createGUI(t);
+            currentPanel = UIFactory.getInstance().createGUI(target);
             this.add(currentPanel);
         } catch (Exception e) {
             // TODO: Auto-generated catch block
             LOG.error("Exception", e);
-        }
+        }        
     }
 }

@@ -24,6 +24,7 @@
 
 package org.argouml.core.propertypanels.panel;
 
+import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelFactory;
 
@@ -34,8 +35,10 @@ import org.argouml.uml.ui.PropPanelFactory;
 public class XMLPropPanelFactory implements PropPanelFactory {
 
     public PropPanel createPropPanel(Object target) {
-        // TODO: Auto-generated method stub
-       return null;
+        XmlPropertyPanel panel = 
+            new XmlPropertyPanel("XML Property Panel", null);
+        panel.build(target);
+        return panel;
     }
 
 }
