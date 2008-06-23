@@ -89,7 +89,6 @@ import org.argouml.uml.ui.foundation.core.PropPanelComponent;
 import org.argouml.uml.ui.foundation.core.PropPanelConstraint;
 import org.argouml.uml.ui.foundation.core.PropPanelDataType;
 import org.argouml.uml.ui.foundation.core.PropPanelDependency;
-import org.argouml.uml.ui.foundation.core.PropPanelElementResidence;
 import org.argouml.uml.ui.foundation.core.PropPanelEnumeration;
 import org.argouml.uml.ui.foundation.core.PropPanelEnumerationLiteral;
 import org.argouml.uml.ui.foundation.core.PropPanelFlow;
@@ -105,7 +104,6 @@ import org.argouml.uml.ui.foundation.core.PropPanelUsage;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelTagDefinition;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelTaggedValue;
-import org.argouml.uml.ui.model_management.PropPanelElementImport;
 import org.argouml.uml.ui.model_management.PropPanelModel;
 import org.argouml.uml.ui.model_management.PropPanelPackage;
 import org.argouml.uml.ui.model_management.PropPanelSubsystem;
@@ -162,10 +160,6 @@ class ElementPropPanelFactory implements PropPanelFactory {
                 return new PropPanelConstraint();
             } else if (Model.getFacade().isAEnumerationLiteral(element)) {
                 return new PropPanelEnumerationLiteral();
-            } else if (Model.getFacade().isAElementImport(element)) {
-                return new PropPanelElementImport();
-            } else if (Model.getFacade().isAElementResidence(element)) {
-                return new PropPanelElementResidence();
             } else if (Model.getFacade().isAExtensionPoint(element)) {
                 return new PropPanelExtensionPoint();
             } else if (Model.getFacade().isAGuard(element)) {
