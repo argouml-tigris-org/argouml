@@ -117,7 +117,6 @@ public class JavaImport implements ImportInterface {
     public static final ConfigurationKey KEY_IMPORT_EXTENDED_ORDEREDCOLLS_LIST =
         Configuration
             .makeKey("import", "extended", "java", "orderedcolls", "list");
-
     
     /**
      * New model elements that were added
@@ -125,10 +124,12 @@ public class JavaImport implements ImportInterface {
     private Collection newElements;
 
     private List<SettingsTypes.Setting> settingsList;
+
     private SettingsTypes.UniqueSelection2 attributeSetting;
+
     private SettingsTypes.UniqueSelection2 datatypeSetting;
-    private SettingsTypes.PathListSelection pathlistSetting;
-    
+
+    private SettingsTypes.PathListSelection pathlistSetting;    
 
     /*
      * @see org.argouml.uml.reveng.ImportInterface#parseFiles(org.argouml.kernel.Project, java.util.Collection, org.argouml.uml.reveng.ImportSettings, org.argouml.application.api.ProgressMonitor)
@@ -257,7 +258,7 @@ public class JavaImport implements ImportInterface {
 
             // Create a modeller for the parser
             Modeller modeller = new Modeller(p.getModel(),
-                    isAttributeSelected(),isDatatypeSelected(),
+                    isAttributeSelected(), isDatatypeSelected(),
                     f.getName());
 
             // Print the name of the current file, so we can associate
@@ -345,7 +346,7 @@ public class JavaImport implements ImportInterface {
      * @see org.argouml.moduleloader.ModuleInterface#enable()
      */
     public boolean enable() {
-	ImporterManager.getInstance().addImporter(this);
+        ImporterManager.getInstance().addImporter(this);
         return true;
     }
 
@@ -407,7 +408,7 @@ public class JavaImport implements ImportInterface {
     }
     
 
-    public void updateImportClassloader() {
+    private void updateImportClassloader() {
         List<String> pathList = pathlistSetting.getPathList();
         URL[] urls = new URL[pathList.size()];
 
@@ -447,5 +448,4 @@ public class JavaImport implements ImportInterface {
     public boolean isDatatypeSelected() {
         return datatypeSetting.getSelection() == 0;
     }
-
 }
