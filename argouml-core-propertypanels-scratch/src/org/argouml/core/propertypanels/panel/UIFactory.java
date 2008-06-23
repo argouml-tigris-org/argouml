@@ -151,7 +151,9 @@ public class UIFactory {
     protected JPanel buildCheckGroup(Object target,
             XMLPropertyPanelsDataRecord prop) {
         JPanel panel = new JPanel();
-        if ("modifiers".equals(prop.getName())) {            
+        if ("modifiers".equals(prop.getName())) {  
+            // TODO: The checkboxes must be explicitly said at the
+            // XML. Interface and UmlClass differ on "derived"
             UMLCheckBox2 abstractCbx = 
                 new UMLGeneralizableElementAbstractCheckBox();
             abstractCbx.setTarget(target);
