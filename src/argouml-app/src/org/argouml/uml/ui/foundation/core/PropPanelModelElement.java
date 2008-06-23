@@ -39,7 +39,6 @@ import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLSearchableComboBox;
@@ -135,7 +134,7 @@ public abstract class PropPanelModelElement extends PropPanel {
      * The constructor.
      *
      * @param name the name of the properties panel
-     * @param icon the ico
+     * @param icon the icon
      */
     public PropPanelModelElement(String name, ImageIcon icon) {
         super(name, icon);
