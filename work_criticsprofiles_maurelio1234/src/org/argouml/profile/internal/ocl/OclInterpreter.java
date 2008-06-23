@@ -30,7 +30,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-import sun.org.mozilla.javascript.internal.EvaluatorException;
 import tudresden.ocl.parser.OclParser;
 import tudresden.ocl.parser.lexer.Lexer;
 import tudresden.ocl.parser.node.Start;
@@ -46,7 +45,7 @@ public class OclInterpreter {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(CrOCL.class);
+    private static final Logger LOG = Logger.getLogger(OclInterpreter.class);
 
     /**
      * Parser OCL tree

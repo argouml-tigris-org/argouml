@@ -32,6 +32,8 @@ import org.argouml.model.Model;
 
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
 import tudresden.ocl.parser.node.AClassifierContext;
+import tudresden.ocl.parser.node.APostStereotype;
+import tudresden.ocl.parser.node.APreStereotype;
 
 /**
  * Checks the context clause of the OCL expression to verify if it
@@ -86,5 +88,23 @@ public class ContextApplicable extends DepthFirstAdapter {
 
     }
     
+    /**
+     * @param node
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#inAPreStereotype(tudresden.ocl.parser.node.APreStereotype)
+     */
+    public void inAPreStereotype(APreStereotype node)
+    {
+        applicable = false;
+    }
+    
+
+    /**
+     * @param node
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#inAPostStereotype(tudresden.ocl.parser.node.APostStereotype)
+     */
+    public void inAPostStereotype(APostStereotype node)
+    {
+        applicable = false;
+    }
     
 }
