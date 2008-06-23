@@ -2,4 +2,12 @@
 <panel>	
 	<text name='name' />
 	<combo name='namespace' />
+	<optionbox name='visibility' />
+	<checkgroup name='modifiers' >
+		<checkbox />
+		<checkbox />
+		<checkbox />
+		<checkbox />
+		<checkbox />	
+	</checkgroup>
 </panel>

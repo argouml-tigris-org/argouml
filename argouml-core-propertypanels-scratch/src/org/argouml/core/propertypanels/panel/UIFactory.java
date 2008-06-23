@@ -36,10 +36,20 @@ import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
+import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.UMLCheckBox2;
+import org.argouml.uml.ui.UMLDerivedCheckBox;
+import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
+import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
+import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
+import org.tigris.swidgets.LabelledLayout;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -90,45 +100,134 @@ public class UIFactory {
     
     private JPanel buildPanel(XMLPropertyPanelsData data, Object target) {
         
-        panel = new JPanel();
+        panel = new JPanel(new LabelledLayout());
         
         for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {
-            String name = prop.getName();
-            JLabel label = new JLabel(name);
-            panel.add(label);
             
             if ("text".equals(prop.getType())) {
-                GenericUMLPlainTextDocument document = 
-                    new GenericUMLPlainTextDocument(name);
-                document.setTarget(target);
-                JTextField tfield = 
-                    new UMLTextField2(document);
-                tfield.setColumns(40);
-                panel.add(tfield);
+                JPanel p = buildTextboxPanel(target, prop);
+                panel.add(p);
             }
             else if ("combo".equals(prop.getType())) {
-                // TODO: we can't have a lot of hardcoded elements here
-                // How could we do this? A lot of reflection?
-                if ("namespace".equals(prop.getName())) {
-                    UMLModelElementNamespaceComboBoxModel namespaceModel =
-                        new UMLModelElementNamespaceComboBoxModel();                    
-                    
-                    JComboBox namespaceSelector = new UMLSearchableComboBox(
-                            namespaceModel,
-                            // this needs a visibility
-                            // change in ArgoUML Core...
-                            new ActionSetModelElementNamespace(), true);
-                    
-                    panel.add(namespaceSelector);                    
-//                  panel.add(new UMLComboBoxNavigator(
+                JPanel p = buildComboPanel(target, prop);
+                panel.add(p);
+            }
+            else if ("checkgroup".equals(prop.getType())) {
+                JPanel p = buildCheckGroup(target, prop);
+                panel.add(p);
+            }
+            else if ("optionbox".equals(prop.getType())) {
+                JPanel p = buildOptionBox(target, prop);
+                panel.add(p);
+            }
+        }
+        return panel;
+    }
+
+    /**
+     * @param target
+     * @param prop
+     * @return 
+     */
+    protected JPanel buildOptionBox(Object target,
+            XMLPropertyPanelsDataRecord prop) {
+        if ("visibility".equals(prop.getName())) {
+            UMLRadioButtonPanel visibilityPanel =   
+                new UMLModelElementVisibilityRadioButtonPanel(
+                    Translator.localize("label.visibility"), 
+                    true); 
+            visibilityPanel.setTarget(target);
+            return visibilityPanel;
+        }
+        // log something? Invalid XML!
+        return null;
+    }
+
+    /**
+     * @param target
+     * @param prop
+     * @return 
+     */
+    protected JPanel buildCheckGroup(Object target,
+            XMLPropertyPanelsDataRecord prop) {
+        JPanel panel = new JPanel();
+        if ("modifiers".equals(prop.getName())) {            
+            UMLCheckBox2 abstractCbx = 
+                new UMLGeneralizableElementAbstractCheckBox();
+            abstractCbx.setTarget(target);
+            panel.add(abstractCbx);
+            UMLCheckBox2 leafCbx =                            
+                new UMLGeneralizableElementLeafCheckBox();
+            leafCbx.setTarget(target);
+            panel.add(leafCbx);
+            UMLCheckBox2 rootCbx =
+                new UMLGeneralizableElementRootCheckBox();
+            rootCbx.setTarget(target);
+            panel.add(rootCbx);
+            UMLCheckBox2 derivedCbx = 
+                new UMLDerivedCheckBox();
+            derivedCbx.setTarget(target);
+            panel.add(derivedCbx);
+            
+            UMLCheckBox2 activeCbx = 
+                new UMLClassActiveCheckBox();
+            activeCbx.setTarget(target);
+            panel.add(activeCbx);                   
+        }
+        return panel;
+    }
+
+    /**
+     * @param target
+     * @param prop
+     * @return
+     */
+    protected JPanel buildComboPanel(Object target,
+            XMLPropertyPanelsDataRecord prop) {
+        JPanel p = new JPanel();
+        String name = prop.getName();
+        JLabel label = new JLabel(name);
+        p.add(label);
+
+        if ("namespace".equals(prop.getName())) {
+            UMLModelElementNamespaceComboBoxModel namespaceModel =
+                new UMLModelElementNamespaceComboBoxModel();                    
+            
+            JComboBox namespaceSelector = new UMLSearchableComboBox(
+                    namespaceModel,
+                    // this needs a visibility
+                    // change in ArgoUML Core...
+                    new ActionSetModelElementNamespace(), true);
+            Object c = target;
+            p.add(namespaceSelector);                    
+//                  p.add(new UMLComboBoxNavigator(
 //                  Translator.localize(
 //                  "label.namespace.navigate.tooltip"),
 //                  namespaceSelector));
-                }
-            }
-            panel.add(new JSeparator());
         }
-        return panel;
+        return p;
+    }
+
+    /**
+     * @param target
+     * @param prop
+     * @return
+     */
+    protected JPanel buildTextboxPanel(Object target,
+            XMLPropertyPanelsDataRecord prop) {
+        JPanel p = new JPanel();
+        String name = prop.getName();
+        JLabel label = new JLabel(name);
+        p.add(label);
+
+        GenericUMLPlainTextDocument document = 
+            new GenericUMLPlainTextDocument(name);
+        document.setTarget(target);
+        JTextField tfield = 
+            new UMLTextField2(document);
+        tfield.setColumns(40);
+        p.add(tfield);
+        return p;
     }
 
 
