@@ -2,8 +2,9 @@ Manifest-Version: 1.0
 Class-Path: argouml.jar
 Created-By: 1.2 (Sun Microsystems Inc.) 
 
-Name: UML 1.4 Well Formedness Rules Profile
+Name: UML 1.4 WFRs
 Profile: true
+Depends-on: UML 1.4
 Java-Critics: org.argouml.uml.cognitive.critics.CrAssocNameConflict,
  org.argouml.uml.cognitive.critics.CrAttrNameConflict,
  org.argouml.uml.cognitive.critics.CrCircularInheritance,
