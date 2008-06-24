@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="org/argouml/uml/profile/javabeans/old/|org/argouml/uml/profile/javabeans/JavaBeansProfileModule.java" kind="src" path="src"/>
-	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
 	<classpathentry kind="lib" path="/argouml-core-infra/lib/log4j-1.2.6.jar"/>

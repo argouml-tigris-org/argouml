@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="/home/maas/Documents/workspace/gsoc/argouml-app/ext/argouml-critics.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/argouml-core-critics/CREATE_JAR.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" manifestLocation="/argouml-core-critics/src/META-INF/MANIFEST.MF" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <folder path="/argouml-core-critics/src"/>
+        <folder path="/argouml-core-critics/tests"/>
+        <file path="/argouml-core-critics/.classpath"/>
+        <file path="/argouml-core-critics/.project"/>
+    </selectedElements>
+</jardesc>

@@ -2,17 +2,56 @@ Manifest-Version: 1.0
 Class-Path: argouml.jar
 Created-By: 1.2 (Sun Microsystems Inc.) 
 
+Name: UML 1.1 WFRs
+Profile: true
+Depends-on: UML 1.4
+Java-Critics: org.argouml.uml.cognitive.critics.CrAttrNameConflict,
+ CrCircularInheritance,
+ CrConflictingComposites,
+ CrDupParamName,
+ CrFinalSubclassed
+Comment: none
+
+Name: UML 1.3 WFRs
+Profile: true
+Depends-on: UML 1.4
+Java-Critics: org.argouml.uml.cognitive.critics.CrAttrNameConflict,
+ CrCrossNamespaceAssoc,
+ CrDupRoleNames
+Comment: none
+
 Name: UML 1.4 WFRs
 Profile: true
 Depends-on: UML 1.4
 Java-Critics: org.argouml.uml.cognitive.critics.CrAssocNameConflict,
  org.argouml.uml.cognitive.critics.CrAttrNameConflict,
- org.argouml.uml.cognitive.critics.CrCircularInheritance,
- org.argouml.uml.cognitive.critics.CrConflictingComposites,
- org.argouml.uml.cognitive.critics.CrCrossNamespaceAssoc,
  org.argouml.uml.cognitive.critics.CrDisambigClassName, 
- org.argouml.uml.cognitive.critics.CrDupParamName, 
- org.argouml.uml.cognitive.critics.CrDupRoleNames, 
- org.argouml.uml.cognitive.critics.CrFinalSubclassed, 
- org.argouml.uml.cognitive.critics.CrForkOutgoingTransition, 
- org.argouml.uml.cognitive.critics.CrIllegalGeneralization
+Comment: none
+
+Name: UML 1.5 WFRs
+Profile: true
+Depends-on: UML 1.4
+Java-Critics: CrForkOutgoingTransition
+Comment: none
+
+Name: Tips
+Profile: true
+Depends-on: UML 1.4
+Java-Critics: CrAlreadyRealizes,
+Anything: none
+
+
+Name: Other
+Profile: true
+Depends-on: UML 1.4
+Java-Critics: CrCircularAssocClass,
+ CrCircularComposition,
+ CrClassMustBeAbstract,
+ CrClassWithoutComponent,
+ CrCompInstanceWithoutNode,
+ CrComponentInstanceWithoutClassifier,
+ CrComponentWithoutNode,
+ CrConstructorNeeded,
+ CrDisambigStateName,
+ CrEmptyPackage
+Anything: none
