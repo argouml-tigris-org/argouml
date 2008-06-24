@@ -43,12 +43,21 @@ define almost all the subsystem API, concerning the definition and management
 of UML profiles. 
 The package <classname>org.argouml.profile.init</classname> contains the 
 remaining subsystem API, being its only purpose to provide the subsystem 
-initialization API (this is therefore of use only to a minority of external 
+initialization API (this is therefore of use only to a minority of other 
 subsystems).
   </para>
-  <para>
-TODO: place here a simple picture of the subsystem.
-  </para>
+
+  <figure id="fig.profile-subsystem.1" float="1">
+    <title>Profile subsystem overview class diagram.</title>
+
+    <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                   fileref="images/cookbook/profile-subsystem-overview.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+  </figure>
+
   <para>
 The profile subsystem is similar in some ways to the model subsystem &ndash; 
 there is a <classname>ProfileFacade</classname> that is the main entry point 
@@ -57,14 +66,261 @@ to the methods and classes that provide management functions to the subsystem
 It also maintains a one to one relationship with the remaining subsystems of 
 ArgoUML, although it is not Singleton based in order to facilitate testing 
 and easy cleanup or reset of its internal state. 
-The classes that provide support for defining profiles are explained in <xref
-        linkend="profile-subsys-design"></xref>
   </para>
+  <para>
+This section which describes the Profile subsystem is organized according to 
+the main usages of it from a point of view of programming.
+We hope that it provides guidance for the developers that want to write code 
+that interacts with this subsystem, but, we also try to provide enough 
+internal design information that it serves as an invitation for those same 
+developers to delve, enhance and fix!
+Therefore we have the following sub-sections:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+<xref linkend="profile-subsys-initialization"></xref> &ndash; 
+describes how to initialize the subsystem or the related issue how to 
+re-initialize the subsystem and what does that mean to your profiles.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<xref linkend="profile-subsys-profile-management"></xref> &ndash; 
+describes the API involved in the management of the profiles and some 
+classes related to this, even if these aren't in the Profile subsystem.
+This is probably the most interesting section for the majority of the readers 
+since it goes well inside the guts of the subsystem, as well as it shows how 
+there is support by other subsystems that helps the Profile subsystem to 
+accomplish the goals of managing the profiles within ArgoUML.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<xref linkend="profile-subsys-defining-profiles"></xref> &ndash; 
+describes what means the subsystem provides that enable profiles to be defined 
+by modules and by users.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<xref linkend="profile-subsys-history"></xref> &ndash; 
+provides a small history on the subsystem and some links to issues that might 
+be interesting to someone that wants to get involved in the Profile subsystem 
+maintenance and evolution.
+      </para>
+    </listitem>
+</itemizedlist>
 
-  <sect2 id="profile-subsys-design">
-    <title>Design of the subsystem</title>
+  <sect2 id="profile-subsys-initialization">
+    <title>Initialization of the profile subsystem</title>
     <para>
-TODO: here the detailed design is explained 
+To initialize the profile subsystem you do:
+    </para>
+    <para>
+<literal>new org.argouml.profile.init.InitProfileSubsystem().init();</literal>
+    </para>
+    <para>
+This will create a new instance of the class that implements the 
+<classname>ProfileManager</classname> interface and set 
+<classname>ProfileFacade</classname> to use this instance of 
+<classname>ProfileManager</classname>... 
+Which, by the way is currently <classname>ProfileManagerImpl</classname>, 
+from the <literal>org.argouml.profile.internal</literal> package.
+Check <xref linkend="fig.profile-subsys-initialization">the sequence diagram 
+of the profile subsystem initialization</xref> for more details.
+    </para>
+
+    <figure id="fig.profile-subsys-initialization" float="1">
+      <title>Sequence diagram of the profile subsystem initialization.</title>
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+            fileref="images/cookbook/profile-subsystem-initialization.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+    </figure>
+  
+    <para>
+To complete the description we explain how to re-initialize the subsystem:
+    </para>
+    <para>
+<literal>new org.argouml.profile.init.InitProfileSubsystem().init();</literal>
+    </para>
+    <para>
+Simple enough?!
+But, what does it mean from an internal point of view? 
+Well, the prior internal objects that were used by the subsystem are left alone 
+and hopefully the garbage collector will clean the memory they occupy.
+So, it simply creates new fresh objects and these are attached to 
+<classname>ProfileFacade</classname>.
+This is of use in the automated tests, where there is the need to guarantee 
+that the status of the subsystem isn't changed by previously executed test 
+fixtures.
+    </para>
+  </sect2>
+
+  <sect2 id="profile-subsys-profile-management">
+    <title>Profile(s) management</title>
+    <para>
+For a profile to be known by the profile subsystem it must be registered. 
+This is done by external entities, like for instance, a language module to 
+register its UML profile would do:
+    </para>
+    <para>
+<literal>ProfileFacade.register(profile);</literal>
+    </para>
+    <para>
+Which is a synonym for:
+    </para>
+    <para>
+<literal>ProfileFacade.getManager().register(profile);</literal>
+    </para>
+    <para>
+Another possibility is for the profile manager to register its own profiles.
+That happens for the UML profile, being created by the profile manager and 
+then registered by it.
+That also happens for user defined profiles, which consist of XMI files that 
+the user places in some directories and afterwards, using the GUI, marks the 
+directories as containing user defined profiles.
+    </para>
+    <para>
+All of these registered profiles have the common base class 
+<classname>Profile</classname>, which establishes the interface that must be 
+implemented by a profile so that it is registrable.
+The <xref linkend="fig.profile-class-and-some-derived-classes"></xref>
+shows the <classname>Profile</classname> class and its specialized classes 
+<classname>ProfileUML</classname> and <classname>UserDefinedProfile</classname>.
+<classname>ProfileUML</classname> is the class that specializes 
+<classname>Profile</classname> with behavior specific for the UML profile; 
+<classname>UserDefinedProfile</classname> is a specialization that contains 
+functionality for loading and representing a user defined profile.
+    </para>
+
+    <figure id="fig.profile-class-and-some-derived-classes" float="1">
+      <title>Class diagram of the <classname>Profile</classname> class and 
+      some derived classes</title>
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+            fileref="images/cookbook/profile-class-and-some-derived-classes.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+    </figure>
+
+    <para>
+As it is possible to register a <classname>Profile</classname> in the 
+<classname>ProfileManager</classname>, it is possible to unregister it also.
+A common case is that of a ArgoUML language module, which registers its 
+specific <classname>Profile</classname> when enabled and unregisters it when 
+it is disabled.
+<xref linkend="fig.sequence-diagram-of-the-registering-and-unregistering-of-a-profile"></xref> 
+illustrates this, standing the <literal>module</literal> 
+<literal>ClassifierRole</literal> as a language module which is activated by 
+<literal>moduleManager</literal> by a call to its operation <literal>enable</literal>.
+As part of the activation, <literal>module</literal> creates the 
+<literal>moduleProfile</literal> and registers it in the profile subsystem by a 
+call to the <literal>register(moduleProfile)</literal> operation of the 
+<classname>ProfileFacade</classname>.
+The deactivation of the <literal>module</literal> causes the call to the 
+<literal>remove(moduleProfile)</literal>, which will unregister the 
+<literal>moduleProfile</literal> in the profile subsystem.
+    </para>
+
+    <figure id="fig.sequence-diagram-of-the-registering-and-unregistering-of-a-profile" 
+            float="1">
+      <title>Class diagram of the <classname>Profile</classname> class and 
+      some derived classes</title>
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+            fileref="images/cookbook/sequence-diagram-of-the-registering-and-unregistering-of-a-profile.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+    </figure>
+    
+    <para>
+TODO: default profiles. Sprinkle GUI over here...
+    </para>
+    <para>
+After a profile is registered, it may be chosen as a default profile by the 
+user.
+A default profile is a profile which is added to new projects by default.
+For this there is the <classname>org.argouml.ui.SettingsTabProfile</classname> 
+class that is part of the ArgoUML application settings dialog and shows the 
+all the registered profiles, being the profiles set as default profiles shown 
+in a specific list.
+    </para>
+    <para>
+The <classname>ProfileManager</classname> is responsible for keeping track of 
+the profiles chosen as default.
+For this, it has the operations:
+    </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+<literal>List&lt;Profile&gt; getDefaultProfiles()</literal>
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<literal>void addToDefaultProfiles(Profile profile)</literal>
+      </para>
+    </listitem>
+    <listitem>
+      <para>and 
+<literal>void removeFromDefaultProfiles(Profile profile)</literal>
+      </para>
+    </listitem>
+  </itemizedlist>
+
+    <para>
+
+    </para>
+    <para>
+There are two GUI classes that enable the user to see the profiles which are registered is ... TODO
+
+    </para>
+
+    <para>
+TODO: configured profiles in a project. 
+How are these things saved in a project, etc.
+Sprinkle GUI over here...
+    </para>
+    <para>
+TODO: user defined profiles.
+    </para>
+  </sect2>
+
+  <sect2 id="profile-subsys-defining-profiles">
+    <title>Defining profiles</title>
+    <para>
+TODO: how to programmatically define a profile and provide examples to 
+existing profiles (UML profile for C++) defined in modules.
+    </para>
+    <para>
+TODO: go a bit into the references that models which use the defined profiles 
+use and why this is important &ndash; hint persistence and need to reopen the 
+containing projects.
+    </para>
+    <para>
+TODO: remember readers that this might change in the medium term if the 
+proposal by Marcos Aur&eacute;lio is accepted.
+    </para>
+  </sect2>
+
+  <sect2 id="profile-subsys-history">
+    <title>History of the Profile subsystem</title>
+    <para>
+TODO: when it was created, by whom and the context.
+    </para>
+    <para>
+TODO: list some of the issues of interest for persons that want to go after 
+the reasoning behind some of the decisions that took the subsystem to where it 
+is now.
+    </para>
+    <para>
+TODO: list some of the issues that might affect the future of the subsystem.
     </para>
   </sect2>
 </sect1>
