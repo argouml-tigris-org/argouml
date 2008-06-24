@@ -49,28 +49,28 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 public class InitCognitiveCritics implements InitSubsystem {
 
     // UML specific
-//    private static Critic crAssocNameConflict = new CrAssocNameConflict();
+    private static Critic crAssocNameConflict = new CrAssocNameConflict();
     
-    //    private static Critic crAttrNameConflict = new CrAttrNameConflict();
+    private static Critic crAttrNameConflict = new CrAttrNameConflict();
 
     private static Critic crOperNameConflict = new CrOperNameConflict();
 
     private static Critic crCircularAssocClass = new CrCircularAssocClass();
 
-    //    private static Critic crCircularInheritance = new CrCircularInheritance();
+    private static Critic crCircularInheritance = new CrCircularInheritance();
 
     private static Critic crCircularComposition = new CrCircularComposition();
 
-    //    private static Critic crCrossNamespaceAssoc = new CrCrossNamespaceAssoc();
+    private static Critic crCrossNamespaceAssoc = new CrCrossNamespaceAssoc();
 
-    //    private static Critic crDupParamName = new CrDupParamName();
+    private static Critic crDupParamName = new CrDupParamName();
 
-    //    private static Critic crDupRoleNames = new CrDupRoleNames();
+    private static Critic crDupRoleNames = new CrDupRoleNames();
 
-    //    private static Critic crFinalSubclassed = new CrFinalSubclassed();
+    private static Critic crFinalSubclassed = new CrFinalSubclassed();
 
-    //private static Critic crIllegalGeneralization = 
-    //    new CrIllegalGeneralization();
+    private static Critic crIllegalGeneralization =
+	new CrIllegalGeneralization();
 
     private static Critic crAlreadyRealizes = new CrAlreadyRealizes();
 
@@ -108,7 +108,7 @@ public class InitCognitiveCritics implements InitSubsystem {
 
     private static Critic crUselessInterface = new CrUselessInterface();
 
-    //    private static Critic crDisambigClassName = new CrDisambigClassName();
+    private static Critic crDisambigClassName = new CrDisambigClassName();
 
     private static Critic crDisambigStateName = new CrDisambigStateName();
 
@@ -210,8 +210,8 @@ public class InitCognitiveCritics implements InitSubsystem {
     private static Critic crInvalidInitial =
         new CrInvalidInitial();
 
-    //    private static Critic crForkOutgoingTransition =
-    //new CrForkOutgoingTransition();
+    private static Critic crForkOutgoingTransition =
+        new CrForkOutgoingTransition();
 
     private static Critic crJoinIncomingTransition =
         new CrJoinIncomingTransition();
@@ -252,11 +252,8 @@ public class InitCognitiveCritics implements InitSubsystem {
     private static Critic crZeroLengthEdge = new CrZeroLengthEdge();
 
     // Compound critics
-    // TODO: check this!
-    //private static CompoundCritic clsNaming =
-    //new CompoundCritic(crMissingClassName, crDisambigClassName);
-
-    private static Critic clsNaming = crMissingClassName;
+    private static CompoundCritic clsNaming =
+	new CompoundCritic(crMissingClassName, crDisambigClassName);
 
     private static CompoundCritic noTrans1 =
 	new CompoundCritic(crNoTransitions, crNoIncomingTransitions);
@@ -299,19 +296,19 @@ public class InitCognitiveCritics implements InitSubsystem {
 
 	// TODO: Agency should allow registration by interface
 	// useful for MAssociation.
-        //        Agency.register(crAssocNameConflict, namespaceCls);
-        //Agency.register(crAttrNameConflict, classifierCls);
+        Agency.register(crAssocNameConflict, namespaceCls);
+	Agency.register(crAttrNameConflict, classifierCls);
 	Agency.register(crOperNameConflict, classifierCls);
 	Agency.register(crCircularAssocClass, assocClassCls);
-        //Agency.register(crCircularInheritance, genElementCls);
+	Agency.register(crCircularInheritance, genElementCls);
 	Agency.register(crCircularComposition, classCls);
 	Agency.register(crClassMustBeAbstract, classCls);
-        //Agency.register(crCrossNamespaceAssoc, assocCls);
-        //Agency.register(crDupParamName, operCls);
-        //Agency.register(crDupRoleNames, assocCls);
-        //Agency.register(crFinalSubclassed, classCls);
-        //Agency.register(crFinalSubclassed, interfaceCls);
-        //Agency.register(crIllegalGeneralization, genCls);
+	Agency.register(crCrossNamespaceAssoc, assocCls);
+	Agency.register(crDupParamName, operCls);
+	Agency.register(crDupRoleNames, assocCls);
+	Agency.register(crFinalSubclassed, classCls);
+	Agency.register(crFinalSubclassed, interfaceCls);
+	Agency.register(crIllegalGeneralization, genCls);
 	Agency.register(crAlreadyRealizes, classCls);
 	Agency.register(crInterfaceAllPublic, interfaceCls);
 	Agency.register(crInterfaceOperOnly, interfaceCls);
@@ -399,7 +396,7 @@ public class InitCognitiveCritics implements InitSubsystem {
 	Agency.register(crInvalidForkTriggerOrGuard, transitionCls);
 	Agency.register(crInvalidPseudoStateTrigger, transitionCls);
 	Agency.register(crInvalidInitial, pseudostateCls);
-	//Agency.register(crForkOutgoingTransition, transitionCls);
+	Agency.register(crForkOutgoingTransition, transitionCls);
 	Agency.register(crJoinIncomingTransition, transitionCls);
 
 	// Class sequenceDiagramCls = UMLSequenceDiagram.class;
