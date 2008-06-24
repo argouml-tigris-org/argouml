@@ -1277,6 +1277,31 @@ public class FigUseCase extends FigNodeModelElement
         }
     }
     
+    /*
+     * @see org.tigris.gef.presentation.Fig#calcBounds()
+     */
+    public void calcBounds() {
+        // the stereotype fig must not have an impact,
+        // so it is temporary moved out of the way
+        int y = 0;
+        if (((FigGroup) getStereotypeFig()).getFigCount() > 0) {
+            y = getStereotypeFig().getY();
+            getStereotypeFig().setBounds(
+                    getStereotypeFig().getX(),
+                    getY(),
+                    getStereotypeFig().getWidth(),
+                    getStereotypeFig().getHeight());
+        }
+        super.calcBounds();
+        // now move it back
+        if (((FigGroup) getStereotypeFig()).getFigCount() > 0) {
+            getStereotypeFig().setBounds(
+                    getStereotypeFig().getX(),
+                    y,
+                    getStereotypeFig().getWidth(),
+                    getStereotypeFig().getHeight());
+        }
+    }
 
     /**
      * Get a list of the extension point Figs <em>without</em> the first fig

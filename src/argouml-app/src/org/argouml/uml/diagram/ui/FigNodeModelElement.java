@@ -2291,16 +2291,19 @@ public abstract class FigNodeModelElement
      * @param fg the FigGroup to change the font of.
      */
     private void deepUpdateFont(FigGroup fg) {
+        boolean changed = false;
         List<Fig> figs = fg.getFigs();
         for (Fig f : figs) {
             if (f instanceof ArgoFigText) {
                 ((ArgoFigText) f).diagramFontChanged(null);
-                fg.calcBounds();
+                changed = true;
             }
             if (f instanceof FigGroup) {
                 deepUpdateFont((FigGroup) f);
-                f.calcBounds();
             }
+        }
+        if (changed) {
+            fg.calcBounds();
         }
     }
 }
