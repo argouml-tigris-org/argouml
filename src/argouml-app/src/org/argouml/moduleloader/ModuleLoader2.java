@@ -51,9 +51,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
-import org.argouml.profile.ProfileException;
-import org.argouml.profile.ProfileFacade;
-import org.argouml.profile.UserDefinedProfile;
 
 
 /**
@@ -586,7 +583,6 @@ public final class ModuleLoader2 {
             return;
 	}
 
-        
         Manifest manifest;
         try {
             manifest = jarfile.getManifest();
@@ -620,43 +616,9 @@ public final class ModuleLoader2 {
         if (loadedClass) {
             // Add this to search list for I18N properties
             Translator.addClassLoader(classloader);
-            
-            LOG.info("Reading profiles...");
-            loadProfilesFromJarFile(jarfile, file);
         } else {
             LOG.error("Failed to find any loadable ArgoUML modules in jar "
                     + file);
-        }
-    }
-
-    /**
-     * Searches for Profiles models (*.xmi) files in the directory "
-     * 
-     * @param jarfile the jarfile
-     * @param file 
-     */
-    private void loadProfilesFromJarFile(JarFile jarfile, File file) {       
-        Enumeration<JarEntry> entries = jarfile.entries();
-        // TODO: This should ask the module for its profiles rather than just
-        // assuming that any .xmi file is a profile.  The module may have 
-        // bundled .xmi files for other reasons.
-        for (JarEntry entry = entries.nextElement(); entries.hasMoreElements(); 
-                entry = entries.nextElement()) {
-            if (entry.getName().toLowerCase().endsWith(".xmi")) {
-                try {
-                    URL url = new URL("jar:file:" + file.getCanonicalPath()
-                            + "!/" + entry.getName());
-                    UserDefinedProfile udp = new UserDefinedProfile(url);
-                    ProfileFacade.getManager().registerProfile(udp);
-                    
-                    LOG.debug("Registered Profile: " + udp.getDisplayName()
-                            + "...");
-                } catch (ProfileException e) {
-                    LOG.error("Exception", e);
-                } catch (IOException e) {
-                    LOG.error("Exception", e);
-                }
-            }
         }
     }
 
