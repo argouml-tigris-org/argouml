@@ -13,5 +13,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="/argouml-core-tools/lib/easymock12.jar"/>
 	<classpathentry kind="lib" path="/argouml-core-tools/jdepend-2.9/lib/jdepend-2.9.jar"/>
+	<classpathentry kind="lib" path="/argouml-core-tools/junit-3.8.2/junit.jar"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
