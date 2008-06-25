@@ -269,7 +269,7 @@ public class InitCognitiveCritics implements InitSubsystem {
      * static initializer, register all appropriate critics.
      */
     public void init() {
-        Object modelCls = Model.getMetaTypes().getModel();
+        /*Object modelCls = Model.getMetaTypes().getModel();
         Object packageCls = Model.getMetaTypes().getPackage();
         Object classCls = Model.getMetaTypes().getUMLClass();
         Object classifierCls = Model.getMetaTypes().getClassifier();
@@ -289,14 +289,14 @@ public class InitCognitiveCritics implements InitSubsystem {
         Object stateVertexCls = Model.getMetaTypes().getStateVertex();
         Object stateCls = Model.getMetaTypes().getState();
         Object compositieStateCls = Model.getMetaTypes().getCompositeState();
-        Object synchStateCls = Model.getMetaTypes().getSynchState();
+        Object synchStateCls = Model.getMetaTypes().getSynchState();*/
 	// Class stateDiagramCls   = UMLStateDiagram.class;
 	// Class useCaseDiagramCls = UMLUseCaseDiagram.class;
         // Class classDiagramCls   = UMLClassDiagram.class;
 
 	// TODO: Agency should allow registration by interface
 	// useful for MAssociation.
-        Agency.register(crAssocNameConflict, namespaceCls);
+        /*Agency.register(crAssocNameConflict, namespaceCls);
 	Agency.register(crAttrNameConflict, classifierCls);
 	Agency.register(crOperNameConflict, classifierCls);
 	Agency.register(crCircularAssocClass, assocClassCls);
@@ -320,11 +320,11 @@ public class InitCognitiveCritics implements InitSubsystem {
 	Agency.register(clsNaming, classCls);
         Agency.register(clsNaming, interfaceCls);
 	Agency.register(clsNaming, actorCls);
-	Agency.register(clsNaming, useCaseCls);
+	Agency.register(clsNaming, useCaseCls);*/
 
 	// TODO: should be just CrMissingName with a
 	// customized description
-	Agency.register(crMissingClassName, modelCls);
+	/*Agency.register(crMissingClassName, modelCls);
 	Agency.register(crMissingAttrName, attrCls);
 	Agency.register(crMissingOperName, operCls);
 	Agency.register(crMissingStateName, stateVertexCls);
@@ -417,7 +417,7 @@ public class InitCognitiveCritics implements InitSubsystem {
 	Agency.register(new CrNameConflict(), namespaceCls);
 	Agency.register(crAlreadyRealizes, classCls);
 	Agency.register(new CrUtilityViolated(), classifierCls);
-	Agency.register(new CrOppEndVsAttr(), classifierCls);
+	Agency.register(new CrOppEndVsAttr(), classifierCls);*/
     }
 
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {
