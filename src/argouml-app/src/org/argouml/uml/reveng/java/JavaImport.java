@@ -368,7 +368,7 @@ public class JavaImport implements ImportInterface {
 
         int selected;
         String modelattr = Configuration
-                .getString(KEY_IMPORT_EXTENDED_MODEL_ATTR);
+                .getString(KEY_IMPORT_EXTENDED_MODEL_ATTR, "0");
         selected = Integer.parseInt(modelattr);
 
         attributeSetting = new Setting.UniqueSelection(Translator
@@ -383,7 +383,7 @@ public class JavaImport implements ImportInterface {
                 .localize("action.import-java-array-model-multi"));
 
         String modelarrays = Configuration
-                .getString(KEY_IMPORT_EXTENDED_MODEL_ARRAYS);
+                .getString(KEY_IMPORT_EXTENDED_MODEL_ARRAYS, "0");
         selected = Integer.parseInt(modelarrays);
 
         datatypeSetting = new Setting.UniqueSelection(Translator
