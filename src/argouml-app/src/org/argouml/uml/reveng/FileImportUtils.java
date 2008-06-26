@@ -145,10 +145,9 @@ public  class FileImportUtils {
         if (!(file instanceof File)) {
             return false;
         }
-        String fileName = ((File) file).getName();
 	if (filters != null) {
 	    for (int i = 0; i < filters.length; i++) {
-		if (fileName.endsWith(filters[i].getSuffix())) {
+		if (filters[i].accept((File) file)) {
 		    return true;
 		}
 	    }

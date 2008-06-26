@@ -37,9 +37,6 @@ import org.argouml.i18n.Translator;
  */
 public class FileFilters {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     /**
      * This is a filter for uncompressed project format.
      */
@@ -86,17 +83,15 @@ public class FileFilters {
     public static final SuffixFilter LOG_FILTER = new
         SuffixFilter("log", "Argo usage log");
 
-    /** Java Source File Filter */
+    /**
+     * Java Source File Filter
+     * 
+     * @deprecated for 0.26 by tfmorris. This will be removed from the core when
+     *             the Java importer is moved to a separate module.
+     */
+    @Deprecated
     public static final SuffixFilter JAVA_FILE_FILTER = new
         SuffixFilter("java", Translator.localize("combobox.filefilter.java"));
-
-    /** Java Class File Filter */
-    public static final SuffixFilter JAVA_CLASS_FILTER = new
-        SuffixFilter("class", "Java Class File");
-
-    /** Java JAR File Filter */
-    public static final SuffixFilter JAVA_JAR_FILTER = new
-        SuffixFilter("jar", "Java JAR File");
 
     /** 
      * This writes the GIF file.
@@ -145,10 +140,6 @@ public class FileFilters {
     public static final SuffixFilter SVG_FILTER = new
         SuffixFilter("svg", Translator.localize("combobox.filefilter.svg"));
 
-    /** Filter for IDL files */
-    public static final SuffixFilter IDL_FILTER = new
-		SuffixFilter("idl", "Interface Definition Language file");
-
     /**
      * Returns the suffix for which a FileFilter filters.
      * @param filter The FileFilter from which we want to know the suffix
@@ -162,4 +153,4 @@ public class FileFilters {
         return null;
     }
 
-} /* end class FileFilters */
+} 

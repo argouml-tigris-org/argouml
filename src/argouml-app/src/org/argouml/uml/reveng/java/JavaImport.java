@@ -300,7 +300,10 @@ public class JavaImport implements ImportInterface {
      * @see org.argouml.uml.reveng.ImportInterface#getSuffixFilters()
      */
     public SuffixFilter[] getSuffixFilters() {
-	SuffixFilter[] result = {FileFilters.JAVA_FILE_FILTER};
+        SuffixFilter[] result = {
+            new SuffixFilter("java", 
+                    Translator.localize("combobox.filefilter.java")),
+        };
 	return result;
     }
 

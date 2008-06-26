@@ -520,6 +520,9 @@ public class Import extends ImportCommon implements ImportSettings {
             for (int i = 0; i < newFilters.length; i++) {
                 chooser.addChoosableFileFilter(newFilters[i]);
             }
+            if (newFilters.length > 0) {
+                chooser.setFileFilter(newFilters[0]);
+            }
         }
     }
 
