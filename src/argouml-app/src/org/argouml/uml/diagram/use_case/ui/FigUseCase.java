@@ -131,7 +131,7 @@ public class FigUseCase extends FigNodeModelElement
     private static final int MIN_VERT_PADDING = 4;
     
     // Space between ellipse and stereotype underneath
-    private static final int STEREOTYPE_PADDDING = 0;
+    private static final int STEREOTYPE_PADDING = 0;
     
 
     /**
@@ -617,7 +617,7 @@ public class FigUseCase extends FigNodeModelElement
         int newW = (minSize.width > w) ? minSize.width : w;
         int newH = (minSize.height > h) ? minSize.height : h;
         
-        newH = newH - (getStereotypeFig().getHeight() + STEREOTYPE_PADDDING);
+        newH = newH - (getStereotypeFig().getHeight() + STEREOTYPE_PADDING);
 
         // Work out the size of the name and extension point rectangle, and
         // hence the vertical padding
@@ -672,7 +672,7 @@ public class FigUseCase extends FigNodeModelElement
         _x = x;
         _y = y;
         _w = newW;
-        _h = newH + getStereotypeFig().getHeight() + STEREOTYPE_PADDDING;
+        _h = newH + getStereotypeFig().getHeight() + STEREOTYPE_PADDING;
         
         positionStereotypes();
 
@@ -1274,7 +1274,7 @@ public class FigUseCase extends FigNodeModelElement
             getStereotypeFig().setBounds(
         	    (getX() + getWidth() / 2
         		    - getStereotypeFig().getWidth() / 2),
-        	    (getY() + bigPort.getHeight() + STEREOTYPE_PADDDING),
+        	    (getY() + bigPort.getHeight() + STEREOTYPE_PADDING),
                     getStereotypeFig().getWidth(),
                     getStereotypeFig().getHeight());
         } else {
@@ -1294,10 +1294,4 @@ public class FigUseCase extends FigNodeModelElement
         l.remove(0);
         return l;
     }
-
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -4018623737124023696L;
 }
