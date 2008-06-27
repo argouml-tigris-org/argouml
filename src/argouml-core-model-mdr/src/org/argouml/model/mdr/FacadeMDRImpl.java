@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -4216,7 +4216,12 @@ class FacadeMDRImpl implements Facade {
                 if (ref == null) {
                     return mofId;
                 } else {
-                    return ref.getXmiId();
+                    String systemId = ref.getSystemId();
+                    if (systemId == null || systemId.equals("")) {
+                        return ref.getXmiId();
+                    } else {
+                        return systemId + "#" + ref.getXmiId();
+                    }
                 }
             }
         } catch (InvalidObjectException e) {

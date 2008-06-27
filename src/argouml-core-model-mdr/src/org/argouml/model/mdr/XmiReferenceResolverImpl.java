@@ -208,7 +208,7 @@ class XmiReferenceResolverImpl extends XmiContext {
             // No # here because PGML parser needs bare UUID/xmi.id
             key = xmiId;            
         } else {
-            key = systemId + "#" + xmiId;                
+            key = resolvedSystemId + "#" + xmiId;                
         }
 
         if (!idToObjects.containsKey(key) 
