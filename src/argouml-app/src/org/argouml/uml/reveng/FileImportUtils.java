@@ -93,7 +93,7 @@ public  class FileImportUtils {
 
 	while (!toDoDirectories.isEmpty()) {
             if (monitor != null && monitor.isCanceled()) {
-                return results;
+                return Collections.emptyList();
             }
 	    File curDir = toDoDirectories.remove(0);
 
