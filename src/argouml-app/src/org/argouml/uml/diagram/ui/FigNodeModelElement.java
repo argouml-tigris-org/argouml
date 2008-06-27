@@ -282,7 +282,15 @@ public abstract class FigNodeModelElement
 
     // TODO: A more strongly typed data structure could be used here.
     private Collection<Object[]> listeners = new ArrayList<Object[]>();
-    
+
+    /**
+     * If this semaphore is false, then a Runnable to update the layout 
+     * is already waiting to be executed. The semaphore is then used to 
+     * guarantee that not more than one such (functionally identical) Runnable
+     * is created and queued in the SwingUtilities.invokeLater() call.
+     */
+    private boolean semaphore = true;
+
     /**
      * The main constructor. <p>
      * 
@@ -998,23 +1006,33 @@ public abstract class FigNodeModelElement
                     && "stereotype".equals(event.getPropertyName())) {
                 stereotypeChanged(event);            
             }
-            
-            Runnable doWorkRunnable = new Runnable() {
-                public void run() {
-                    try {
-                        updateLayout(event);
-                    } catch (InvalidElementException e) {
-                        LOG.debug("event = " + event.getClass().getName());
-                        LOG.debug("source = " + event.getSource());
-                        LOG.debug("old = " + event.getOldValue());
-                        LOG.debug("name = " + event.getPropertyName());
-                        LOG.debug(
-                                "updateLayout method accessed deleted element ",
-                                e);
-                    }
-                }  
-            };
-            SwingUtilities.invokeLater(doWorkRunnable);
+
+            /*
+             * If this semaphore is false, then a Runnable to update the layout 
+             * is already waiting to be executed. The semaphore is then used to 
+             * guarantee that not more than one such (functionally identical) 
+             * Runnable is created and queued in the 
+             * SwingUtilities.invokeLater() call.
+             */
+            if (semaphore) {
+                semaphore = false;
+                Runnable doWorkRunnable = new Runnable() {
+                    public void run() {
+                        try {
+                            semaphore = true;
+                            updateLayout(event);
+                        } catch (InvalidElementException e) {
+                            LOG.debug("event = " + event.getClass().getName());
+                            LOG.debug("source = " + event.getSource());
+                            LOG.debug("old = " + event.getOldValue());
+                            LOG.debug("name = " + event.getPropertyName());
+                            LOG.debug("updateLayout method accessed "
+                            		+ "deleted element ", e);
+                        }
+                    }  
+                };
+                SwingUtilities.invokeLater(doWorkRunnable);
+            }
         }
     }
 
