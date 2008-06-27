@@ -216,8 +216,8 @@ public class DetailsPane
         enableTabs(item);
         for (JPanel t : tabPanelList) {
             if (t instanceof TabToDoTarget) {
-                ((TabToDoTarget) t).setTarget(item);
                 topLevelTabbedPane.setSelectedComponent(t);
+                ((TabToDoTarget) t).setTarget(item);
                 return true;
             }
         }
