@@ -40,6 +40,8 @@ import org.tigris.gef.ui.IStatusBar;
  */
 public class ArgoStatusBar extends StatusBar implements IStatusBar {
 
+    // Currently unused.  ProjectBrowser registers Help events directly.
+    
     /**
      * Default constructor.  Registers itself to receive Help events
      * from the ArgoUML event pump.

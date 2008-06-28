@@ -1630,6 +1630,7 @@ public final class ProjectBrowser
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
                         file.getCanonicalPath());
                 
+                // TODO: Fire ArgoStatusEvent here
                 ProjectBrowser.getInstance().showStatus(
                         Translator.localize(
                                 "label.open-project-status-read",
