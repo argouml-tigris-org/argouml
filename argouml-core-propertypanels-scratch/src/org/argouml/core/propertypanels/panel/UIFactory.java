@@ -154,32 +154,38 @@ public class UIFactory {
         if ("modifiers".equals(prop.getName())) {  
             // TODO: The checkboxes must be explicitly said at the
             // XML. Interface and UmlClass differ on "derived"
-            UMLCheckBox2 abstractCbx = 
-                new UMLGeneralizableElementAbstractCheckBox();
-            abstractCbx.setTarget(target);
-            panel.add(abstractCbx);
-            UMLCheckBox2 leafCbx =                            
-                new UMLGeneralizableElementLeafCheckBox();
-            leafCbx.setTarget(target);
-            panel.add(leafCbx);
-            UMLCheckBox2 rootCbx =
-                new UMLGeneralizableElementRootCheckBox();
-            rootCbx.setTarget(target);
-            panel.add(rootCbx);
-            UMLCheckBox2 derivedCbx = 
-                new UMLDerivedCheckBox();
-            derivedCbx.setTarget(target);
-            panel.add(derivedCbx);
-            
-            // TODO: this must be created only if the target is
-            // a class, so I disable it until we are able of
-            // nesting checkboxes to a checkgroup
-//            UMLCheckBox2 activeCbx = 
-//                new UMLClassActiveCheckBox();
-//            activeCbx.setTarget(target);
-//            panel.add(activeCbx);                   
+            // we must build the checkboxes
+            for (XMLPropertyPanelsDataRecord p : prop.getChildren()) {
+                UMLCheckBox2 checkbox = buildCheckBox(target, p);
+                panel.add(checkbox);
+            }                            
         }
         return panel;
+    }
+
+    protected UMLCheckBox2 buildCheckBox(Object target,
+            XMLPropertyPanelsDataRecord p) {
+        UMLCheckBox2 checkbox = null;
+        
+        if ("abstract".equals(p.getName())) {
+            checkbox = new UMLGeneralizableElementAbstractCheckBox();
+        }
+        else if ("leaf".equals(p.getName())) {
+            checkbox = new UMLGeneralizableElementLeafCheckBox();
+        }
+        else if ("root".equals(p.getName())) {
+            checkbox = new UMLGeneralizableElementRootCheckBox(); 
+        }
+        else if ("derived".equals(p.getName())) {
+            checkbox = new UMLDerivedCheckBox();
+        }
+        else if ("active".equals(p.getName())) {
+            checkbox = new UMLClassActiveCheckBox();    
+        }        
+        if (checkbox != null) {
+            checkbox.setTarget(target);
+        }
+        return checkbox;
     }
 
     /**

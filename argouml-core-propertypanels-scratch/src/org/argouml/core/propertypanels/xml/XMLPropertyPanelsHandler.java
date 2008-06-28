@@ -38,7 +38,8 @@ public class XMLPropertyPanelsHandler extends DefaultHandler {
     /**
      * The panel that will host the controls. 
      */
-    private final XMLPropertyPanelsData data;       
+    private final XMLPropertyPanelsData data;  
+    private XMLPropertyPanelsDataRecord current = null;
     
     /**
      * Default constructor.
@@ -65,8 +66,36 @@ public class XMLPropertyPanelsHandler extends DefaultHandler {
 //        }
         XMLPropertyPanelsDataRecord record = 
             new XMLPropertyPanelsDataRecord(localName, attr.getValue("name"));
-        data.addProperty(record);
+        
+        if (isChild(localName)) {
+            current.addChild(record);
+        }
+        else if (hasChilds(localName)) {
+            current = record;
+            data.addProperty(record);
+        }
+        else {
+            data.addProperty(record);
+        }
         
         
+    }
+
+    private boolean isChild(String elementName) {
+        if ("checkbox".equals(elementName)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private boolean hasChilds(String elementName) {
+        if ("checkgroup".equals(elementName)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
