@@ -25,6 +25,7 @@
 package org.argouml.core.propertypanels.panel;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
@@ -54,7 +55,7 @@ public class XmlPropertyPanel extends PropPanel
      * The instance.
      */
     private static final XmlPropertyPanel INSTANCE =
-        new XmlPropertyPanel("XML Property Panel", null);
+        new XmlPropertyPanel("XML Properties", null);
 
     /**
      * @return The instance.
@@ -83,10 +84,25 @@ public class XmlPropertyPanel extends PropPanel
         }
         try {
             currentPanel = UIFactory.getInstance().createGUI(target);
+            this.getTitleLabel().setText(getPanelTitle(target));
             this.add(currentPanel);
         } catch (Exception e) {
             // TODO: Auto-generated catch block
             LOG.error("Exception", e);
         }        
     }
+    
+    // TODO: Code duplication. This is the same that
+    // UIFactory.getXMLFileName
+    /**
+     * @return the title of the panel, according to the target 
+     */
+    private String getPanelTitle(Object target) {
+        String classname = target.getClass().getSimpleName();
+        // TODO: I don't like this hack, it may exist a better way.
+        return classname.replace("$Impl", "");
+        // this returns UmlClass for classes, in the original PropPanels
+        // it's Class... Should we change it?
+    }
+   
 }
