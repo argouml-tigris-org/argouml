@@ -63,7 +63,7 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     private JScrollPane constraintScroll;
 
-    private JPanel namespaceVisibilityPanel;
+    private JPanel visibilityPanel;
 
     private JScrollPane elementResidenceScroll;
 
@@ -266,20 +266,26 @@ public abstract class PropPanelModelElement extends PropPanel {
     }
 
     /**
-     * TODO: This should better be named "getVisibilityPanel", 
-     * since it is not restricted to a namespace.
-     * 
      * @return a panel for the visibility
      */
-    protected JComponent getNamespaceVisibilityPanel() {
-        if (namespaceVisibilityPanel == null) {
-            namespaceVisibilityPanel =
+    protected JComponent getVisibilityPanel() {
+        if (visibilityPanel == null) {
+            visibilityPanel =
 		new UMLModelElementVisibilityRadioButtonPanel(
                     Translator.localize("label.visibility"), true);
         }
-        return namespaceVisibilityPanel;
+        return visibilityPanel;
     }
-
+    
+    /**
+     * @deprecated for 0.26 by penyaskito. Use
+     *             {@link #getVisibilityPanel()} instead.
+     * @return a panel for the visibility
+     */
+    protected JComponent getNamespaceVisibilityPanel() {        
+        return getVisibilityPanel();
+    }
+    
     /**
      * @return a scrollpane for residence
      */
