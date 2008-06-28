@@ -24,12 +24,15 @@
 
 package org.argouml.core.propertypanels.panel;
 
+import java.awt.Dimension;
 import java.io.InputStream;
 
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
@@ -37,19 +40,34 @@ import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.LabelledLayout;
+import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
+import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
+import org.argouml.uml.ui.foundation.core.UMLAttributeInitialValueListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLClassAttributeListModel;
+import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
+import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
+import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
+import org.argouml.uml.ui.foundation.core.UMLModelElementClientDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
+import org.argouml.uml.ui.foundation.core.UMLModelElementSupplierDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
-import org.tigris.swidgets.LabelledLayout;
+import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -120,14 +138,94 @@ public class UIFactory {
                 JPanel p = buildOptionBox(target, prop);
                 panel.add(p);
             }
+            else if ("list".equals(prop.getType())) {
+                JPanel p = new JPanel();               
+                JComponent list = buildList(target, prop);
+                if (list != null) {
+                    p.add(list);
+                    list.setPreferredSize(new Dimension(200, 80));
+                    JScrollPane scrollPane = new JScrollPane(p);
+                    JLabel lbl = new JLabel(prop.getName());
+                    lbl.setLabelFor(scrollPane);
+                    panel.add(lbl);
+                    panel.add(scrollPane);
+                }
+            }
+            else if ("separator".equals(prop.getType())) {
+                panel.add(LabelledLayout.getSeparator());
+            }
         }
         return panel;
     }
 
+    protected JComponent buildList(Object target, 
+            XMLPropertyPanelsDataRecord prop) {
+        JComponent list = null;
+        UMLModelElementListModel2 model = null;
+        if ("client_dependency".equals(prop.getName())) {
+            model = new UMLModelElementClientDependencyListModel();
+            model.setTarget(target); 
+            list = new UMLMutableLinkedList(
+                    model,
+                    new ActionAddClientDependencyAction(),
+                    null,
+                    null,
+                    true);           
+        }
+        else if ("supplier_dependency".equals(prop.getName())) {
+            model = new UMLModelElementSupplierDependencyListModel();
+            model.setTarget(target);
+            list = new UMLMutableLinkedList(
+                    model,
+                    new ActionAddSupplierDependencyAction(),
+                    null,
+                    null,
+                    true);        
+        }
+        else if ("generalizations".equals(prop.getName())) {
+            model = new UMLGeneralizableElementGeneralizationListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("specializations".equals(prop.getName())) {
+            model = new UMLGeneralizableElementSpecializationListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("attributes".equals(prop.getName())) {
+            model = new UMLClassAttributeListModel();
+            model.setTarget(target);
+            list = new ScrollList(model, true, false);
+        }
+        else if ("association_ends".equals(prop.getName())) {
+            model = new UMLClassifierAssociationEndListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("features".equals(prop.getName())) {
+            model = new UMLClassifierFeatureListModel();
+            model.setTarget(target);
+            list = new ScrollList(model, true, false);
+        }
+        else if ("operations".equals(prop.getName())) {
+            model = new UMLClassOperationListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("owned".equals(prop.getName())) {
+            model = new UMLNamespaceOwnedElementListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+
+        return list;
+    }
+
     /**
-     * @param target
-     * @param prop
-     * @return 
+     * @param target The target of the panel
+     * @param prop The XML data that contains the information
+     *        of the options.
+     * @return a radio button panel with the options 
      */
     protected JPanel buildOptionBox(Object target,
             XMLPropertyPanelsDataRecord prop) {
@@ -144,23 +242,24 @@ public class UIFactory {
     }
 
     /**
-     * @param target
-     * @param prop
-     * @return 
+     * @param target The target of the checkbox group
+     * @param prop The XML data that contains the information
+     *        of the checkboxes.
+     * @return a panel that contains the checkboxes 
      */
     protected JPanel buildCheckGroup(Object target,
             XMLPropertyPanelsDataRecord prop) {
-        JPanel panel = new JPanel();
+        JPanel p = new JPanel();
         if ("modifiers".equals(prop.getName())) {  
             // TODO: The checkboxes must be explicitly said at the
             // XML. Interface and UmlClass differ on "derived"
             // we must build the checkboxes
-            for (XMLPropertyPanelsDataRecord p : prop.getChildren()) {
-                UMLCheckBox2 checkbox = buildCheckBox(target, p);
-                panel.add(checkbox);
+            for (XMLPropertyPanelsDataRecord data : prop.getChildren()) {
+                UMLCheckBox2 checkbox = buildCheckBox(target, data);
+                p.add(checkbox);
             }                            
         }
-        return panel;
+        return p;
     }
 
     protected UMLCheckBox2 buildCheckBox(Object target,
@@ -189,9 +288,10 @@ public class UIFactory {
     }
 
     /**
-     * @param target
-     * @param prop
-     * @return
+     * @param target The target of the panel
+     * @param prop The XML data that contains the information
+     *        of the combo.
+     * @return a combo panel 
      */
     protected JPanel buildComboPanel(Object target,
             XMLPropertyPanelsDataRecord prop) {
@@ -218,24 +318,29 @@ public class UIFactory {
     }
 
     /**
-     * @param target
-     * @param prop
-     * @return
+     * @param target The target of the panel
+     * @param prop The XML data that contains the information
+     *        of the options.
+     * @return a panel with a labelled text field 
      */
     protected JPanel buildTextboxPanel(Object target,
             XMLPropertyPanelsDataRecord prop) {
         JPanel p = new JPanel();
         String name = prop.getName();
         JLabel label = new JLabel(name);
-        p.add(label);
 
         GenericUMLPlainTextDocument document = 
             new GenericUMLPlainTextDocument(name);
         document.setTarget(target);
         JTextField tfield = 
             new UMLTextField2(document);
-        tfield.setColumns(40);
+        tfield.setColumns(20);
+
+        label.setLabelFor(tfield);
+        
+        p.add(label);        
         p.add(tfield);
+        
         return p;
     }
 
