@@ -51,8 +51,6 @@ import org.tigris.swidgets.Orientation;
  */
 public abstract class PropPanelModelElement extends PropPanel {
 
-    private JScrollPane namespaceScroll;
-
     private JComboBox namespaceSelector;
 
     private JScrollPane supplierDependencyScroll;
