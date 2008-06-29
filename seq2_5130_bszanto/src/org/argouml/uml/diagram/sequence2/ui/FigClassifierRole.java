@@ -77,7 +77,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     /**
      * The minimum height of the classifier role.
      */
-    int minimumHeight;
+    private int minimumHeight;
     
     /**
      * Constructor 
