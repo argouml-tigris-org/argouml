@@ -36,17 +36,19 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoStatusEvent;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ExceptionDialog;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.ArgoFrame;
 import org.argouml.util.SuffixFilter;
-import org.tigris.gef.base.SaveGraphicsAction;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.SaveGraphicsAction;
 import org.tigris.gef.util.Util;
 
 
@@ -177,8 +179,9 @@ public class ActionSaveGraphics extends AbstractAction
         }
 
         if (useUI) {
-            ProjectBrowser.getInstance().showStatus(
-                            "Writing " + theFile + "...");
+            updateStatus(Translator.localize(
+                    "statusmsg.bar.save-graphics-status-writing",
+                    new Object[] {theFile}));
         }
 	if (theFile.exists() && useUI) {
 	    int response = JOptionPane.showConfirmDialog(
@@ -201,9 +204,17 @@ public class ActionSaveGraphics extends AbstractAction
             fo.close();
         }
         if (useUI) {
-            ProjectBrowser.getInstance().showStatus("Wrote " + theFile);
+            updateStatus(Translator.localize(
+                    "statusmsg.bar.save-graphics-status-wrote", 
+                    new Object[] {theFile}));
         }
 	return true;
+    }
+    
+    private void updateStatus(String status) {
+        ArgoEventPump.fireEvent(
+                new ArgoStatusEvent(ArgoEventTypes.STATUS_TEXT,
+                this, status));
     }
 
 
