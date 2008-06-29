@@ -69,6 +69,7 @@ import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoStatusEvent;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
 import org.argouml.configuration.Configuration;
@@ -197,7 +198,7 @@ public final class ProjectBrowser
      * Partially implemented. Needs work to display
      * import of source and saving of zargo.
      */
-    private StatusBar statusBar = new StatusBar();
+    private StatusBar statusBar = new ArgoStatusBar();
 
     /**
      * TODO: this needs work so that users can set the font
@@ -304,8 +305,6 @@ public final class ProjectBrowser
             // Rationale: reset the undo manager to start a new chain.
             addKeyboardFocusListener();
         }
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_HELP_EVENT, 
-                new HelpListener(getStatusBar()));
     }
 
     private void addKeyboardFocusListener() {
@@ -976,15 +975,28 @@ public final class ProjectBrowser
     public void setVisible(boolean b) {
         super.setVisible(b);
         if (b) {
-            Globals.setStatusBar(this);
+            Globals.setStatusBar(getStatusBar());
         }
     }
 
-    /*
-     * @see org.tigris.gef.ui.IStatusBar#showStatus(java.lang.String)
+    /**
+     * Show a string in the status bar.
+     * 
+     * @param s the new status string
+     * 
+     * @deprecated for 0.26 by tfmorris. Use {@link ArgoEventPump#fireEvent} to
+     *             send a status event instead.  When this method is removed
+     *             also remove the implements clause for GEF's IStatusBar from
+     *             this (ProjectBrowser) class.
      */
+    @Deprecated
     public void showStatus(String s) {
-        statusBar.showStatus(s);
+        updateStatus(s);
+    }
+    
+    private void updateStatus(String status) {
+        ArgoEventPump.fireEvent(new ArgoStatusEvent(ArgoEventTypes.STATUS_TEXT,
+                this, status));
     }
 
     /**
@@ -1130,6 +1142,9 @@ public final class ProjectBrowser
                 // update all panes
                 TargetManager.getInstance().setTarget(p.getInitialTarget());
             }
+            // TODO: Do we want to use the Project here instead of just its name?
+            ArgoEventPump.fireEvent(new ArgoStatusEvent(
+                    ArgoEventTypes.STATUS_PROJECT_LOADED, this, p.getName()));
         }
     }
 
@@ -1361,9 +1376,9 @@ public final class ProjectBrowser
 
             String sStatus =
                 MessageFormat.format(Translator.localize(
-                    "label.save-project-status-writing"),
+                    "statusmsg.bar.save-project-status-writing"),
                          new Object[] {file});
-            this.showStatus (sStatus);
+            updateStatus (sStatus);
 
             persister = pm.getSavePersister();
             pm.setSavePersister(null);
@@ -1400,11 +1415,9 @@ public final class ProjectBrowser
             persister.save(project, file);
             project.postSave();
 
-            sStatus =
-                MessageFormat.format(Translator.localize(
-                    "label.save-project-status-wrote"),
-                         new Object[] {project.getURI()});
-            showStatus(sStatus);
+            ArgoEventPump.fireEvent(new ArgoStatusEvent(
+                    ArgoEventTypes.STATUS_PROJECT_SAVED, this, project.getURI()
+                            .toString()));
             LOG.debug ("setting most recent project file to "
                    + file.getCanonicalPath());
 
@@ -1630,10 +1643,9 @@ public final class ProjectBrowser
                 Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
                         file.getCanonicalPath());
                 
-                // TODO: Fire ArgoStatusEvent here
-                ProjectBrowser.getInstance().showStatus(
+                updateStatus(
                         Translator.localize(
-                                "label.open-project-status-read",
+                                "statusmsg.bar.open-project-status-read",
                                 new Object[] {file.getName(), }));
             } catch (VersionException ex) {
                 project = oldProject;
