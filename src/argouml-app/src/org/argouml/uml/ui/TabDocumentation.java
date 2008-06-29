@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import org.argouml.application.api.Argo;
@@ -121,15 +122,7 @@ public class TabDocumentation extends PropPanel {
         // Comment.name text field - editing disabled
         UMLTextArea2 comment = new UMLTextArea2(
                 new UMLModelElementCommentDocument(false));
-        comment.setRows(2);
-        comment.setLineWrap(true);
-        comment.setWrapStyleWord(true);
-        comment.setEnabled(false);
-        comment.setDisabledTextColor(comment.getForeground());
-        // See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4919687
-        Color c = new Color(
-                UIManager.getColor("TextField.inactiveBackground").getRGB());
-        comment.setBackground(c);
+        disableTextArea(comment);
         JScrollPane spComment = new JScrollPane();
         spComment.getViewport().add(comment);
         addField(Translator.localize("label.comment.name"), spComment);
@@ -137,12 +130,7 @@ public class TabDocumentation extends PropPanel {
         // Comment.body text field - editing disabled
         UMLTextArea2 commentBody = new UMLTextArea2(
                 new UMLModelElementCommentDocument(true));
-        commentBody.setRows(2);
-        commentBody.setLineWrap(true);
-        commentBody.setWrapStyleWord(true);
-        commentBody.setEnabled(false);
-        commentBody.setDisabledTextColor(comment.getForeground());
-        commentBody.setBackground(c);
+        disableTextArea(commentBody);
         JScrollPane spCommentBody = new JScrollPane();
         spCommentBody.getViewport().add(commentBody);
         addField(Translator.localize("label.comment.body"), spCommentBody);
@@ -151,6 +139,22 @@ public class TabDocumentation extends PropPanel {
          * the size of the buttonpanel, otherwise the 
          * title would not be aligned right. */
         setButtonPanelSize(18);
+    }
+    
+    private void disableTextArea(final JTextArea textArea) {
+        textArea.setRows(2);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setEnabled(false);
+        textArea.setDisabledTextColor(textArea.getForeground());
+        // Only change the background colour if it is supplied by the LAF.
+        // Otherwise leave look and feel to handle this itself.
+        final Color inactiveColor =
+            UIManager.getColor("TextField.inactiveBackground");
+        if (inactiveColor != null) {
+            // See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4919687
+            textArea.setBackground(new Color(inactiveColor.getRGB()));
+        }
     }
 
     /**
