@@ -74,8 +74,10 @@ public class FigClassifierRole extends FigNodeModelElement {
     // TODO: Do we need this? Is this the same as emptyFig.getHeight()?
     private int offset = 0;
     
-    // minimum height of the CR
-    private int minimumHeight = 0;
+    /**
+     * The minimum height of the classifier role.
+     */
+    int minimumHeight;
     
     /**
      * Constructor 
@@ -206,13 +208,24 @@ public class FigClassifierRole extends FigNodeModelElement {
      * attached then the minimum height will ensure box is shown plus at least
      * 10 pixels of the lifeline.
      */
-    public Dimension getMinimumSize() {
+    public Dimension getMinimumSize() {       
+         /**
+          * TODO: minimum height should not be calculated every time, but only 
+          * when an FigMessage has been added or removed.
+          * Currently doing that doesn't work because of an unknown problem. 
+          * How to test: create only two CRs and a create message between them. 
+          * Then move the create message to the bottom!
+          * Until that is fixed the workaround is to call updateMinimumHeight()
+          * every time the minimum size is needed
+          */
         updateMinimumHeight();
+        
         return new Dimension(headFig.getMinimumWidth(), minimumHeight);
     }
     
     /**
-     * Updates minimumHeight when an edge has been added or removed
+     * Updates the minimum height of the classifier role when a FigMessage
+     * is added or removed.
      */
     private void updateMinimumHeight() {
         int yMax = getY();
@@ -236,13 +249,20 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
     
     @Override
-    public void removeFigEdge(FigEdge edge){
+    public void removeFigEdge(FigEdge edge) {
         super.removeFigEdge(edge);
 
-        // if the removed edge is a FigMessage it might affect minimumHeight 
-        // so it should be updated
+        // if the removed edge is a Create Message it will affect the position
+        // of the ClassifierRole so it should be repositioned
         if (edge instanceof FigMessage) {
-            updateMinimumHeight();
+            FigMessage mess = (FigMessage) edge;
+            if (equals(mess.getDestFigNode())
+                    && !equals(mess.getSourceFigNode())  
+                    && Model.getFacade().isACreateAction(mess.getAction())) {
+                  
+                LOG.info("Removed a create message");
+                relocate();
+            }         
         }
     }
     
@@ -256,6 +276,9 @@ public class FigClassifierRole extends FigNodeModelElement {
             if (mess.isSelfMessage()) {
                 mess.convertToArc();
             }
+            
+            // if the removed edge is a Create Message it will affect the position
+            // of the ClassifierRole so it should be repositioned
             if (equals(mess.getDestFigNode())
                   && !equals(mess.getSourceFigNode())  
                   && Model.getFacade().isACreateAction(mess.getAction())) {
@@ -263,14 +286,18 @@ public class FigClassifierRole extends FigNodeModelElement {
                 LOG.info("Added a create message");
                 relocate();
             }
-            
-            // adding a FigMessage might affect minimumHeight so it
-            // should be updated
-            if (edge instanceof FigMessage) {
-                updateMinimumHeight();
-            }
         }        
+    }  
+
+    /**
+     * Updates the position of the classifier role.
+     * Called when a create message is added, moved or removed.
+     */
+    void relocate() {
+        updateHeadOffset();
+        setBounds(getX(), getY(), getWidth(), getHeight());
     }
+    
     /**
      * Return all message edges that are complete (ie the user has finished
      * drawing).
@@ -289,14 +316,6 @@ public class FigClassifierRole extends FigNodeModelElement {
             }
         }
         return completeMessages;
-    }
-    /**
-     * Updates the position of the classifier role.
-     * Called when a create message is added or moved.
-     */
-    void relocate() {
-        updateHeadOffset();
-        setBounds(getX(), getY(), getWidth(), getHeight());
     }
     
     void createActivations() {
