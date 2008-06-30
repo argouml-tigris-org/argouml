@@ -25,7 +25,6 @@
 package org.argouml.core.propertypanels.panel;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
@@ -49,6 +48,11 @@ public class XmlPropertyPanel extends PropPanel
     
     public XmlPropertyPanel(String label, ImageIcon icon) {
         super(label, icon);
+        /* Since there are no buttons on this panel (YET), 
+         * we have to set the size of the buttonpanel, 
+         * otherwise the layout will give it a lot of space 
+         * */
+        setButtonPanelSize(18);
     }
 
     /**
