@@ -48,6 +48,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
      * The element that we work on.
      */
     private Object elem;
+    
+    private Object dummy;
 
     /**
      * The model that we work on.
@@ -101,6 +103,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         Model.getCoreHelper().setNamespace(role2, col);
         elem =
 	    Model.getCollaborationsFactory().buildAssociationRole(role1, role2);
+        dummy =
+            Model.getCollaborationsFactory().buildAssociationRole(role1, role2);
         model.targetSet(new TargetEvent(this,
 					TargetEvent.TARGET_SET,
 					new Object[0],
@@ -182,16 +186,18 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         // One can only delete a assoc by changing target,
         // so let's simulate that:
         /* TODO: Get rid of this! */
-        model.targetSet(new TargetEvent(this,
-                TargetEvent.TARGET_SET,
-                new Object[0],
-                new Object[] {
-                    elem,
-                }));
+        changeTarget();
         // there is one extra element since removal of the base is allowed.
         Model.getPump().flushModelEvents();
         assertEquals(NO_ELEMENTS_IN_TEST + 1 - 1, model.getSize());
         assertTrue(!model.contains(bases[NO_ELEMENTS_IN_TEST - 1]));
+    }
+    
+    private void changeTarget() {
+        model.targetSet(new TargetEvent(this, TargetEvent.TARGET_SET,
+                new Object[] {elem}, new Object[] {dummy}));
+        model.targetSet(new TargetEvent(this, TargetEvent.TARGET_SET,
+                new Object[] {dummy}, new Object[] {elem}));
     }
 
 }

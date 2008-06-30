@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,6 +57,8 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      * The element.
      */
     private Object elem;
+    
+    private Object dummy;
 
     /**
      * Constructor for TestUMLStructuralFeatureTypeComboBoxModel.
@@ -78,6 +80,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         Model.getCoreHelper().setName(mmodel, "untitledModel");
         Model.getModelManagementFactory().setRootModel(mmodel);
         elem = Model.getCoreFactory().createAttribute();
+        dummy = Model.getCoreFactory().createAttribute();
         model = new UMLStructuralFeatureTypeComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
@@ -114,15 +117,18 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         Model.getPump().flushModelEvents();
         // One can only do this by changing target,
         // so let's simulate that:
-        model.targetSet(new TargetEvent(this,
-                TargetEvent.TARGET_SET,
-                new Object[0],
-                new Object[] {
-                    elem,
-                }));
+        changeTarget();
         assertTrue(model.contains(types[NO_OF_ELEMENTS / 2]));
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[NO_OF_ELEMENTS - 1]));
+    }
+
+    
+    private void changeTarget() {
+        model.targetSet(new TargetEvent(this, TargetEvent.TARGET_SET,
+                new Object[] {elem}, new Object[] {dummy}));
+        model.targetSet(new TargetEvent(this, TargetEvent.TARGET_SET,
+                new Object[] {dummy}, new Object[] {elem}));
     }
 
     /**
@@ -131,14 +137,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     public void testSetType() {
         Model.getCoreHelper().setType(elem, types[0]);
         Model.getPump().flushModelEvents();
-        // One can only do this by changing target,
-        // so let's simulate that:
-        model.targetSet(new TargetEvent(this,
-                TargetEvent.TARGET_SET,
-                new Object[0],
-                new Object[] {
-                    elem,
-                }));
+        changeTarget();
         assertTrue(model.getSelectedItem() == types[0]);
     }
 
