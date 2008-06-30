@@ -74,8 +74,10 @@ public class FigClassifierRole extends FigNodeModelElement {
     // TODO: Do we need this? Is this the same as emptyFig.getHeight()?
     private int offset = 0;
     
-    // the Y position of the lower most FigMessage
-    private int yMax = 0;
+    /**
+     * The minimum height of the classifier role.
+     */
+    private int minimumHeight;
     
     /**
      * Constructor 
@@ -96,6 +98,8 @@ public class FigClassifierRole extends FigNodeModelElement {
         getBigPort().setVisible(false);
         
         emptyFig.setLineWidth(0);
+        
+        minimumHeight = headFig.getMinimumHeight() + 10;
         
         addFig(emptyFig);        
         addFig(lifeLineFig);
@@ -141,7 +145,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         final Rectangle oldBounds = getBounds();
         final int ww = Math.max(w, headFig.getMinimumSize().width);
         
-        updateHeadOffset();
         emptyFig.setBounds(x, y, ww, offset);
         headFig.setBounds(x, y + offset, ww, headFig.getMinimumHeight());
         lifeLineFig.setBounds(x, y + offset + headFig.getHeight(),
@@ -160,7 +163,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
      */
     public void superTranslate(int dx, int dy) {
- 	setBounds(getX() + dx, getY(), getWidth(), getHeight());
+        setBounds(getX() + dx, getY(), getWidth(), getHeight());
     }
      
     /**
@@ -171,7 +174,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         if (createMessage != null) {
             int y = createMessage.getFirstPoint().y;
             if (y > 0) {
-                offset = y - (headFig.getY() + headFig.getHeight() / 2);
+                offset = y - (getY() + headFig.getHeight() / 2);
             }
         } else {
             offset = 0;
@@ -205,31 +208,61 @@ public class FigClassifierRole extends FigNodeModelElement {
      * attached then the minimum height will ensure box is shown plus at least
      * 10 pixels of the lifeline.
      */
-    public Dimension getMinimumSize() {
-        if (getEdges().size() > 0) {
-            return new Dimension(headFig.getMinimumWidth(), yMax - getY() + 10);
+    public Dimension getMinimumSize() {       
+         /**
+          * TODO: minimum height should not be calculated every time, but only 
+          * when an FigMessage has been added or removed.
+          * Currently doing that doesn't work because of an unknown problem. 
+          * How to test: create only two CRs and a create message between them. 
+          * Then move the create message to the bottom!
+          * Until that is fixed the workaround is to call updateMinimumHeight()
+          * every time the minimum size is needed
+          */
+        updateMinimumHeight();
+        
+        return new Dimension(headFig.getMinimumWidth(), minimumHeight);
+    }
+    
+    /**
+     * Updates the minimum height of the classifier role when a FigMessage
+     * is added or removed.
+     */
+    private void updateMinimumHeight() {
+        int yMax = getY();
+        List<Fig> figs = getEdges();
+        FigMessage createMessage = getFirstCreateFigMessage();
+        
+        if (figs.size() == 1 && createMessage != null) {
+            minimumHeight = headFig.getMinimumSize().height + offset + 10;
         } else {
-            return new Dimension(headFig.getMinimumWidth(), emptyFig
-                    .getHeight()
-                    + headFig.getMinimumHeight() + 10);
+            for (Fig fig : figs) {
+                if ( fig instanceof FigMessage
+                        // we need the edge to be complete
+                        && ((FigMessage) fig).getDestFigNode() != null
+                        && ((FigMessage) fig).getSourceFigNode() != null
+                        && ((FigMessage) fig).getY() > yMax) {
+                    yMax = ((FigMessage) fig).getY();
+                }
+            }
+            minimumHeight = yMax - getY() + 10;
         }
     }
     
     @Override
-    public void removeFigEdge(FigEdge edge){
+    public void removeFigEdge(FigEdge edge) {
         super.removeFigEdge(edge);
 
-        // if the removed edge is the last Y positioned message, yMax should be
-        // updated
-        if (edge.getY() == yMax) {
-            List<Fig> figs = this.getEdges();
-            for (Fig fig : figs) {
-                if (fig instanceof FigMessage) {
-                    if (fig.getLastPoint().y > yMax) {
-                        yMax = getLastPoint().y;
-                    }
-                }
-            }
+        // if the removed edge is a Create Message it will affect the position
+        // of the ClassifierRole so it should be repositioned
+        if (edge instanceof FigMessage) {
+            FigMessage mess = (FigMessage) edge;
+            if (equals(mess.getDestFigNode())
+                    && !equals(mess.getSourceFigNode())  
+                    && Model.getFacade().isACreateAction(mess.getAction())) {
+                  
+                LOG.info("Removed a create message");
+                relocate();
+            }         
         }
     }
     
@@ -238,16 +271,14 @@ public class FigClassifierRole extends FigNodeModelElement {
         super.addFigEdge(edge);
         
         if (edge instanceof FigMessage) {
-
-            // if a new message has been added, yMax should be updated
-            if (edge.getLastPoint().y > yMax) {
-                yMax = edge.getY();
-            }
             
             FigMessage mess = (FigMessage) edge;
             if (mess.isSelfMessage()) {
                 mess.convertToArc();
             }
+            
+            // if the removed edge is a Create Message it will affect the position
+            // of the ClassifierRole so it should be repositioned
             if (equals(mess.getDestFigNode())
                   && !equals(mess.getSourceFigNode())  
                   && Model.getFacade().isACreateAction(mess.getAction())) {
@@ -256,7 +287,17 @@ public class FigClassifierRole extends FigNodeModelElement {
                 relocate();
             }
         }        
+    }  
+
+    /**
+     * Updates the position of the classifier role.
+     * Called when a create message is added, moved or removed.
+     */
+    void relocate() {
+        updateHeadOffset();
+        setBounds(getX(), getY(), getWidth(), getHeight());
     }
+    
     /**
      * Return all message edges that are complete (ie the user has finished
      * drawing).
@@ -275,13 +316,6 @@ public class FigClassifierRole extends FigNodeModelElement {
             }
         }
         return completeMessages;
-    }
-    /**
-     * Updates the position of the classifier role.
-     * Called when a create message is added or moved.
-     */
-    void relocate() {
-        setBounds(getX(), getY(), getWidth(), getHeight());
     }
     
     void createActivations() {
