@@ -26,7 +26,6 @@ package org.argouml.ui.explorer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -42,13 +41,15 @@ import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.ActionCreateEdgeModelElement;
-import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
@@ -60,9 +61,6 @@ import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
-import org.argouml.profile.Profile;
-import org.argouml.kernel.ProfileConfiguration;
-import org.argouml.profile.ProfileException;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -73,7 +71,6 @@ import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.MutableGraphModel;
 
@@ -763,20 +760,26 @@ public class ExplorerPopup extends JPopupMenu {
                 || selectedItem instanceof Profile
                 || selectedItem instanceof ArgoDiagram;
                 
-        if (!found) {
-            for (Profile profile : currentProject.getProfileConfiguration()
-                    .getProfiles()) {
-                Collection models;
-                try {
-                    models = profile.getProfilePackages();
-                    for (Object model : models) {
-                        if ((Model.getFacade().getRoot(selectedItem)
-                                .equals(model))) {
-                            found = true;
-                            break;
+        /* The next statement fixes an exception 
+         * when right-clicking on e.g. an AssociationsNode 
+         * from the class-centric perspective: */
+        if (Model.getFacade().isAUMLElement(selectedItem)) {
+            /* The next presumes we are dealing with a UML object: */
+            if (!found) {
+                for (Profile profile : currentProject.getProfileConfiguration()
+                        .getProfiles()) {
+                    Collection models;
+                    try {
+                        models = profile.getProfilePackages();
+                        for (Object model : models) {
+                            if ((Model.getFacade().getRoot(selectedItem)
+                                    .equals(model))) {
+                                found = true;
+                                break;
+                            }
                         }
+                    } catch (ProfileException e) {
                     }
-                } catch (ProfileException e) {
                 }
             }
         }
