@@ -69,41 +69,30 @@ public class SelectionMessage extends SelectionRerouteEdge {
     }
 
     @Override
-    public void mouseDragged(MouseEvent me) {
-	FigMessage message = (FigMessage) getContent(); 
-	if (message.isSelfMessage()) {
-	    message.translate(0, me.getY() - message.getY());
-	}
-	else {
-	    super.mouseDragged(me);
-	}
-	handleMovement();
-    }
-
-    @Override
     public void dragHandle(int x, int y, int w, int h, Handle handle) {
         FigMessage message = (FigMessage) getContent(); 
-        if (!message.isSelfMessage()) {
+        if (message.isSelfMessage()) {
+            message.translate(0, y - message.getY());
+        } else {
             super.dragHandle(x, y, w, h, handle);
+            handleMovement();
         }
     }
     
     private void handleMovement() {
-        FigMessage message = (FigMessage) getContent();
+        FigMessage figMessage = (FigMessage) getContent();
         
         // if it is a create action, relocate its dest node.
-        if (Model.getFacade().isACreateAction(message.getAction())) {
-            ((FigClassifierRole) message.getDestFigNode()).relocate();
+        if (figMessage.isCreateAction()) {
+            ((FigClassifierRole) figMessage.getDestFigNode()).relocate();
         }
         
         // we recalculate all the activations
-        FigNode source = message.getSourceFigNode();
-        if (source != null && source instanceof FigClassifierRole) {
-            ((FigClassifierRole) source).createActivations();
-        }
-        FigNode dest = message.getDestFigNode();
-        if (dest != null && !message.isSelfMessage() 
-        	&& dest instanceof FigClassifierRole) {
+        FigNode source = figMessage.getSourceFigNode();
+        ((FigClassifierRole) source).createActivations();
+        
+        FigNode dest = figMessage.getDestFigNode();
+        if (!figMessage.isSelfMessage()) {
             ((FigClassifierRole) dest).createActivations();
         }
     }
