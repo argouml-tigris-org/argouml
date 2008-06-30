@@ -6,3 +6,5 @@ Name: JavaBeans Profile
 Profile: true
 Model: /org/argouml/uml/profile/javabeans/JavaBeans.xmi 
 Java-Critics: org.argouml.uml.profile.cognitive.critics.CrJavaBeanPropertyApplication
+Dummy: a
+Dummy2: b

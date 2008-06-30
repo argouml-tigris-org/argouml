@@ -1,5 +1,8 @@
 package org.argouml.uml.profile.cognitive.critics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
@@ -34,4 +37,5 @@ public class CrJavaBeanPropertyApplication extends CrUML {
 		}
 		return NO_PROBLEM;
 	}
+	
 }
