@@ -30,7 +30,6 @@ import java.io.InputStream;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -40,7 +39,6 @@ import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.LabelledLayout;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
@@ -52,7 +50,6 @@ import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
-import org.argouml.uml.ui.foundation.core.UMLAttributeInitialValueListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassAttributeListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
@@ -68,6 +65,7 @@ import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementSupplierDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
+import org.tigris.swidgets.LabelledLayout;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -152,7 +150,7 @@ public class UIFactory {
                 }
             }
             else if ("separator".equals(prop.getType())) {
-                panel.add(LabelledLayout.getSeparator());
+                panel.add(LabelledLayout.getSeperator());
             }
         }
         return panel;
