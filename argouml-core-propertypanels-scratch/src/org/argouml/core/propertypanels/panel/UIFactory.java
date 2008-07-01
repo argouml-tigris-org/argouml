@@ -65,6 +65,7 @@ import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementSupplierDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
+import org.argouml.uml.ui.model_management.UMLClassifierPackageImportsListModel;
 import org.tigris.swidgets.LabelledLayout;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -214,6 +215,16 @@ public class UIFactory {
             model = new UMLNamespaceOwnedElementListModel();
             model.setTarget(target);
             list = new ScrollList(model);
+        }
+        else if ("imported_elements".equals(prop.getName())) {
+            model = new UMLClassifierPackageImportsListModel();
+            model.setTarget(target);
+            list = new UMLMutableLinkedList(model,
+                    // TODO: It's OK to change the visibility of this actions?
+                    null, // new ActionAddPackageImport(),
+                    null,
+                    null, //new ActionRemovePackageImport(),
+                    true);
         }
 
         return list;
