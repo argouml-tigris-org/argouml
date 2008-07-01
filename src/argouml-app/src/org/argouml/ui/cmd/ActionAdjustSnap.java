@@ -1,5 +1,5 @@
-// $Id: eclipse-argo-codetemplates.xml 10612 2006-05-25 12:58:04Z linus $
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,7 +60,7 @@ public class ActionAdjustSnap extends AbstractAction {
      * @param size the size of the snap in pixels
      * @param name the name of the action
      */
-    private ActionAdjustSnap(int size, String name) {
+    public ActionAdjustSnap(int size, String name) {
         super();
         guideSize = size;
         putValue(Action.NAME, name);
