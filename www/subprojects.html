@@ -56,14 +56,12 @@ The current plan for how this will work is:
 	  other tools needed to build.
       <li>The tagging and branching rules from the ArgoUML main project apply.
       <li>The subprojects will use subversion as the version control system.
-      <li>Xenofarm and maybe other static checks will work over several 
+      <li>The nightly build and other static checks will work over several 
           projects, i.e. all projects included in the releases.
-          There is work to be done here!
       <li>Java Web Start starts will be made to include subproject result.
-          There is work to be done here!
     </ul>
 
-<li>Subprojects will, in most cases, not use their own issuezilla.
+<li>Subprojects will not use their own issuezilla.
     Instead bug reports will be filed in the ArgoUML issuezilla where
     subprojects will get their own subcomponent.
     The reasons for this are
@@ -72,7 +70,7 @@ The current plan for how this will work is:
     to make it easier for our users to file bug reports, and
     to make it possible to move a miss-filed issue from one subproject
     to another (or back and forth between the main project).
-    This requires that persons developing in the subproject are require
+    This requires that persons developing in a subproject
     to hold an Observer role in the main project to be able to work
     with the issues.
 
