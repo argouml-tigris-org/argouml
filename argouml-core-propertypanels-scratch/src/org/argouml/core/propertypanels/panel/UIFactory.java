@@ -41,6 +41,7 @@ import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLCheckBox2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -317,11 +318,11 @@ public class UIFactory {
                     namespaceModel,
                     new ActionSetModelElementNamespace(), true);
             
-            p.add(namespaceSelector);                    
-//                  p.add(new UMLComboBoxNavigator(
-//                  Translator.localize(
-//                  "label.namespace.navigate.tooltip"),
-//                  namespaceSelector));
+            p.add(namespaceSelector);
+            p.add(new UMLComboBoxNavigator(
+                    Translator.localize(
+                    "label.namespace.navigate.tooltip"),
+                    namespaceSelector));
         }
         return p;
     }
