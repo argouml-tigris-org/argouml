@@ -1530,6 +1530,7 @@ public abstract class FigNodeModelElement
             if (elementNs != null) {
                 boolean visible = elementNs != diagramNs; 
                 npArguments.put("pathVisible", Boolean.valueOf(visible));
+                pathVisible = visible;
                 renderingChanged();
                 damage();
             }
