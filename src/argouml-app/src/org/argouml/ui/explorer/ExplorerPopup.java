@@ -259,6 +259,7 @@ public class ExplorerPopup extends JPopupMenu {
                                 && !dataValueSelected
                                 && !sequenceDiagramActive)
                         || nAryAssociationSelected || commentSelected) {
+                    // TODO: Why can't we use ActionAddExistingNodes here? Bob.
                     Action action =
                         new ActionAddExistingNode(
                             menuLocalize("menu.popup.add-to-diagram"),
