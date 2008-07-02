@@ -1,0 +1,13 @@
+Manifest-Version: 2.0
+Main-Class: org.argouml.application.Main
+Class-Path: argouml-model.jar ocl-argo.jar gef.jar antlrall.jar log4j.jar toolbar.jar swidgets.jar commons-logging.jar ext/argouml-i18n-nb.jar ext/argouml-i18n-zh.jar argouml.jar org.eclipse.emf.common_2.3.0.v200703080200.jar org.eclipse.emf.ecore.xmi_2.3.0.v200703080200.jar org.eclipse.emf.ecore_2.3.0.v200703080200.jar org.eclipse.uml2.common_1.3.0.v200703011358.jar org.eclipse.uml2.uml_2.1.0.v200703011358.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: org/argouml/application/
+Specification-Title: ArgoUML
+Specification-Vendor: The ArgoUML team
+Implementation-Vendor: The ArgoUML team
+Implementation-Title: ArgoUML
+
+
+
