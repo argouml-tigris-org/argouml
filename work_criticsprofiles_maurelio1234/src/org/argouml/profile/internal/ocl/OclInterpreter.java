@@ -51,13 +51,21 @@ public class OclInterpreter {
      * Parser OCL tree
      */
     private Start     tree   = null;
+
+    /**
+     * The model interpreter
+     */
+    private ModelInterpreter modelInterpreter;
     
     /**
      * Creates a new OCL interpreter for a given OCL expression
      * 
      * @param ocl expression
+     * @param interpreter 
      */
-    public OclInterpreter(String ocl) {
+    public OclInterpreter(String ocl, ModelInterpreter interpreter) {
+        this.modelInterpreter = interpreter;
+        
         Lexer lexer = new Lexer(new PushbackReader(new StringReader(ocl), 2));
 
         OclParser parser = new OclParser(lexer);
@@ -90,7 +98,8 @@ public class OclInterpreter {
      * @return if is satisfied
      */
     public boolean check(Object modelElement) {
-        EvaluateInvariant ei = new EvaluateInvariant(modelElement);
+        EvaluateInvariant ei = new EvaluateInvariant(modelElement,
+                modelInterpreter);
         tree.apply(ei);
         return ei.isOK();
     }

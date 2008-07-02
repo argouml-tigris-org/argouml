@@ -28,6 +28,7 @@ import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.profile.internal.ocl.uml14.Uml14ModelInterpreter;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.critics.CrUML;
 
@@ -59,7 +60,7 @@ public class CrOCL extends CrUML {
      * @param ocl ocl expression
      */
     public CrOCL(String ocl) {
-        interpreter = new OclInterpreter(ocl);
+        interpreter = new OclInterpreter(ocl, new Uml14ModelInterpreter());
         
         addSupportedDecision(UMLDecision.PLANNED_EXTENSIONS);
         setPriority(ToDoItem.HIGH_PRIORITY);
