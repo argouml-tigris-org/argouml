@@ -35,6 +35,11 @@ import org.tigris.gef.base.Globals;
 
 import org.argouml.i18n.Translator;
 
+/**
+ * 
+ *
+ * @deprecated in 0.26 alpha3 Use ModeContract or ModeExpand
+ */
 public class ModeChangeHeight extends FigModifyingModeImpl {
 
     /**
