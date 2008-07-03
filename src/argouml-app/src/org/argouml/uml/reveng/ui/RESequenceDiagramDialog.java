@@ -184,6 +184,8 @@ public class RESequenceDiagramDialog
         setResizable(false);
         this.project = project;
         
+        SequenceDiagramLayer layer = (SequenceDiagramLayer) diagram.getLayer();
+
         operation = oper;
         model = project.getModel();
         try {
@@ -206,7 +208,7 @@ public class RESequenceDiagramDialog
             // TODO: There is only a single port on new implementation of SD
             // so how do we resolve this?
             portCnt =
-                SequenceDiagramLayer.getNodeIndex(
+                layer.getNodeIndex(
                     figMessage.getDestMessageNode().getFigMessagePort().getY());
             Iterator<Fig> it = diagram.getFigIterator();
             while (it.hasNext()) {
@@ -224,7 +226,7 @@ public class RESequenceDiagramDialog
                     }
                 } else if (Model.getFacade().isAMessage(modelElement)) {
                     int port =
-                        SequenceDiagramLayer.getNodeIndex(
+                        layer.getNodeIndex(
                             ((FigMessage) f).getDestMessageNode()
                                 .getFigMessagePort().getY());
                     if (maxPort < port) {

@@ -176,8 +176,19 @@ public class SequenceDiagramLayer extends LayerPerspectiveMutable {
      * @param y The point.
      * @return The node index.
      */
-    public static int getNodeIndex(int y) {
-        y -= DIAGRAM_TOP_MARGIN + FigClassifierRole.MIN_HEAD_HEIGHT;
+    public int getNodeIndex(int y) {
+        FigClassifierRole figClassifierRole = null;
+        for (Object fig : getContentsNoEdges()) {
+            if (fig instanceof FigClassifierRole) {
+                figClassifierRole = (FigClassifierRole) fig;
+            }
+        }
+        if (figClassifierRole == null) {
+            return 0;
+        }
+        y -= figClassifierRole.getY() 
+            + figClassifierRole.getHeadFig().getHeight(); 
+        y += LINK_DISTANCE / 2;
         if (y < 0) {
             y = 0;
 	}

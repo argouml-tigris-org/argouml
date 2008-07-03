@@ -85,21 +85,21 @@ public class ModeContract extends FigModifyingModeImpl {
             return;
 	}
 
-        SequenceDiagramLayer layout =
+        SequenceDiagramLayer layer =
 	    (SequenceDiagramLayer) Globals.curEditor().getLayerManager()
 	        .getActiveLayer();
         int endY = me.getY();
-        int startOffset = SequenceDiagramLayer.getNodeIndex(startY);
+        int startOffset = layer.getNodeIndex(startY);
         int endOffset;
         if (startY > endY) {
             endOffset = startOffset;
-            startOffset = SequenceDiagramLayer.getNodeIndex(endY);
+            startOffset = layer.getNodeIndex(endY);
         } else {
-            endOffset = SequenceDiagramLayer.getNodeIndex(endY);
+            endOffset = layer.getNodeIndex(endY);
 	}
         int diff = endOffset - startOffset;
         if (diff > 0) {
-            layout.contractDiagram(startOffset, diff);
+            layer.contractDiagram(startOffset, diff);
         }
 
         me.consume();

@@ -85,20 +85,20 @@ public class ModeExpand extends FigModifyingModeImpl {
             return;
         }
 
-        SequenceDiagramLayer layout =
+        SequenceDiagramLayer layer =
             (SequenceDiagramLayer) Globals.curEditor().getLayerManager()
                 .getActiveLayer();
         int endY = me.getY();
-        int startOffset = SequenceDiagramLayer.getNodeIndex(startY);
+        int startOffset = layer.getNodeIndex(startY);
         if (startOffset > 0 && endY < startY) {
             startOffset--;
         }
-        int diff = SequenceDiagramLayer.getNodeIndex(endY) - startOffset;
+        int diff = layer.getNodeIndex(endY) - startOffset;
         if (diff < 0) {
             diff = -diff;
         }
         if (diff > 0) {
-            layout.expandDiagram(startOffset, diff);
+            layer.expandDiagram(startOffset, diff);
         }
 
         me.consume();
