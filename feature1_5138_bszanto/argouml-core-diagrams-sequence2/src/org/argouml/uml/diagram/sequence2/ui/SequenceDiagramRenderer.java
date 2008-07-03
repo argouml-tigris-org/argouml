@@ -52,7 +52,12 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
     private static final Logger LOG =
         Logger.getLogger(SequenceDiagramRenderer.class);
     
-    private Object makeNode(Object base) {
+    /**
+     * Creates a new Classifier Role with a specified base.
+     * @param base
+     * @return The new CR
+     */
+    private Object makeNewCR(Object base) {
         Object node = null;
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
@@ -85,7 +90,7 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
              * if the user tries to add a Class or an Actor, a new CR should be
              * created with the Class or the Actor as a Base.
              */
-            result = new FigClassifierRole(makeNode(node));
+            result = new FigClassifierRole(makeNewCR(node));
         }
         LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
         lay.add(result);
