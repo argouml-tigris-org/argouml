@@ -1,3 +1,4 @@
+// $Id: ModeAddToDiagram.java 14844 2008-05-31 12:15:11Z bobtarling $
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -30,7 +31,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -104,7 +104,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
      * @param me the mouse event
      */
     @Override
-    public void mouseReleased(MouseEvent me) {
+    public void mouseReleased(final MouseEvent me) {
     	if (me.isConsumed()) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("MouseReleased but rejected as already consumed");
@@ -115,12 +115,13 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
         start();
     	MutableGraphModel gm = (MutableGraphModel) editor.getGraphModel();
         
-        int x = me.getX();
-        int y = me.getY();
+        final int x = me.getX();
+        final int y = me.getY();
         editor.damageAll();
-        Point snapPt = new Point(x, y);
+        final Point snapPt = new Point(x, y);
         editor.snap(snapPt);
         editor.damageAll();
+        int count = 0;
         
         Layer lay = editor.getLayerManager().getActiveLayer();
         GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
@@ -130,8 +131,9 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
         
         for (final Object node : modelElements) {
             if (gm.canAddNode(node)) {
-                FigNode pers = renderer.getFigNodeFor(gm, lay, node, null);
-                pers.setLocation(snapPt.x, snapPt.y);
+                final FigNode pers =
+                    renderer.getFigNodeFor(gm, lay, node, null);
+                pers.setLocation(snapPt.x + (count++ * 100), snapPt.y);
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("mouseMoved: Location set ("
                             + pers.getX() + "," + pers.getY() + ")");
@@ -144,11 +146,9 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
                 }
 
                 Fig encloser = null;
-                Rectangle bbox = pers.getBounds();
-                List otherFigs = lay.getContents();
-                Iterator it = otherFigs.iterator();
-                while (it.hasNext()) {
-                    Fig otherFig = (Fig) it.next();
+                final Rectangle bbox = pers.getBounds();
+                final List<Fig> otherFigs = lay.getContents();
+                for (final Fig otherFig : otherFigs) {
                     if (!(otherFig.getUseTrapRect())) {
                         continue;
                     }
@@ -161,7 +161,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
                     if (otherFig.equals(pers)) {
                         continue;
                     }
-                    Rectangle trap = otherFig.getTrapRect();
+                    final Rectangle trap = otherFig.getTrapRect();
                     if (trap != null
                             && trap.contains(bbox.x, bbox.y)
                             && trap.contains(
@@ -183,6 +183,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
             UndoManager.getInstance().addMemento(memento);
         }
         UndoManager.getInstance().addMementoLock(this);
+        editor.getSelectionManager().select(placedFigs);
         
         done();
         me.consume();
@@ -210,20 +211,18 @@ class AddToDiagramMemento extends Memento {
     
     public void undo() {
     	UndoManager.getInstance().addMementoLock(this);
-        for (FigNode node : nodesPlaced) {
-            editor.getSelectionManager().deselect(node);
-            mgm.removeNode(node.getOwner());
-            editor.remove(node);
+        for (FigNode figNode : nodesPlaced) {
+            mgm.removeNode(figNode.getOwner());
+            editor.remove(figNode);
         }
         UndoManager.getInstance().removeMementoLock(this);
     }
     public void redo() {
         UndoManager.getInstance().addMementoLock(this);
-        for (FigNode node : nodesPlaced) {
-            editor.add(node);
-            mgm.addNode(node.getOwner());
+        for (FigNode figNode : nodesPlaced) {
+            editor.add(figNode);
+            mgm.addNode(figNode.getOwner());
         }
-        editor.getSelectionManager().select(nodesPlaced);
         UndoManager.getInstance().removeMementoLock(this);
     }
     public void dispose() {
