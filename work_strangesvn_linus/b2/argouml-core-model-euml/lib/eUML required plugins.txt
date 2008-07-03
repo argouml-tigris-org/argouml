@@ -1,0 +1,20 @@
+EMF download site: http://www.eclipse.org/modeling/emf/downloads/index.php?project=emf
+UML2 download site: http://www.eclipse.org/modeling/mdt/downloads/?project=uml2
+
+EMF required jars
+org.eclipse.emf.common
+org.eclipse.emf.ecore.change.edit
+org.eclipse.emf.ecore.change
+org.eclipse.emf.ecore.edit
+org.eclipse.emf.ecore.xmi
+org.eclipse.emf.ecore
+org.eclipse.emf.edit
+org.eclipse.emf.mapping.ecore2xml
+org.eclipse.emf.mapping
+
+UML2 required jars
+org.eclipse.uml2.common.edit
+org.eclipse.uml2.common
+org.eclipse.uml2.uml.edit
+org.eclipse.uml2.uml.resources
+org.eclipse.uml2.uml

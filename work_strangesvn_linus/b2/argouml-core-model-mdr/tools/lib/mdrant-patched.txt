@@ -1,0 +1,10 @@
+This version of MDRAnt was created by deleting all the createFoo() methods
+(eg createReadXMI) from org.netbeans.mdrant.MdrTask so that Ant 1.7 
+can't find them and call them in preference to the addReadXMI style of
+methods.
+
+This version will work with both Ant 1.6.5 (and probably earlier) as well
+as Ant 1.7.
+
+Tom Morris
+5 June 2007
