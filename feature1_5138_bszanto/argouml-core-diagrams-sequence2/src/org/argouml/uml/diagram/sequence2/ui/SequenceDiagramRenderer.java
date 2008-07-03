@@ -30,8 +30,11 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
+import org.argouml.uml.diagram.sequence2.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -48,6 +51,21 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      */
     private static final Logger LOG =
         Logger.getLogger(SequenceDiagramRenderer.class);
+    
+    private Object makeNode(Object base) {
+        Object node = null;
+        Editor ce = Globals.curEditor();
+        GraphModel gm = ce.getGraphModel();
+        if (gm instanceof SequenceDiagramGraphModel) {
+            Object collaboration =
+                ((SequenceDiagramGraphModel) gm).getCollaboration();
+            node =
+                Model.getCollaborationsFactory().buildClassifierRole(
+                        collaboration);
+        }
+        //TODO: add the base
+        return node;
+    }
 
     /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
@@ -61,6 +79,13 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
             result = new FigClassifierRole(node);
         } else if (Model.getFacade().isAComment(node)) {
             result = new FigComment(gm, node);
+        } else if (Model.getFacade().isAClass(node) 
+                || Model.getFacade().isAActor(node)) {
+            /*
+             * if the user tries to add a Class or an Actor, a new CR should be
+             * created with the Class or the Actor as a Base.
+             */
+            result = new FigClassifierRole(makeNode(node));
         }
         LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
         lay.add(result);

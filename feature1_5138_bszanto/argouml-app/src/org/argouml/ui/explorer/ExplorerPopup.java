@@ -248,8 +248,6 @@ public class ExplorerPopup extends JPopupMenu {
                     
             if (!multiSelect) {
                 
-                //I should do the test here
-                
                 if ((classifierSelected && !relationshipSelected)
                         || (packageSelected && selectedItem != projectModel)
                         || (stateVertexSelected

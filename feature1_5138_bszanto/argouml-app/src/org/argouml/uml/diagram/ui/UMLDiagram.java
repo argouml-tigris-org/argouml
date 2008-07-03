@@ -51,7 +51,9 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.base.ModeSelect;
+import org.tigris.gef.graph.GraphFactory;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.ToolBarManager;
 import org.tigris.toolbar.toolbutton.ToolButton;
@@ -561,7 +563,31 @@ public abstract class UMLDiagram
     }
 
     /**
-     * The UID.
+     * Method to test it the diagram can accept a certain object.
+     * This should be overriden by any diagram that wants to accept a certain
+     * type of object. All other diagrams should not bother since the default
+     * answer is false, ie. don't accept the object.
+     * @param objectToAccept
+     * @return True if it can accept it, false otherwise.
      */
-    static final long serialVersionUID = -401219134410459387L;
+    public boolean doesAccept(Object objectToAccept) {
+        return false;
+    }
+    
+//    /**
+//     * Creates a diagram specific @see org.tigris.gef.base.ModePlace that 
+//     * alowes the diagram to place an accepted type of object 
+//     * [ @see #doesAccept(Object) ] as it should. This is required 1. since a 
+//     * diagram may receive an object that can't be placed as is, but needs some
+//     * tranformation and 2. diagrams in modules should be independent from the
+//     * main app, and should use their own implementation of ModePlace if it's
+//     * required.
+//     * @param gf
+//     * @param instructions
+//     * @return The created ModePlace.
+//     */
+//    public ModePlace getModePlace(GraphFactory gf, String instructions) {
+//        return new ModePlace(gf, instructions);
+//    }
+    
 }

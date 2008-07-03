@@ -27,6 +27,8 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -67,6 +69,12 @@ public class ActionAddExistingNode extends UndoableAction {
         if (dia == null) {
             return false;
         }
+        
+        if (dia instanceof UMLDiagram && 
+                ((UMLDiagram) dia).doesAccept(object)) {
+            return true;
+        }
+        
         MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
         return gm.canAddNode(target);
     }

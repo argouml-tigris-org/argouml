@@ -114,16 +114,26 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
         }
 
         String instructions = null;
+        ModePlace placeMode = null;
         if (object != null) {
-            instructions =
-                Translator.localize(
-                    "misc.message.click-on-diagram-to-add",
-                    new Object[] {
-                            Model.getFacade().toString(object),
-                    });
+            ArgoDiagram activeDiagram = ProjectManager.getManager().
+                getCurrentProject().getActiveDiagram();
+            
+            if (activeDiagram instanceof UMLDiagram &&
+                    ((UMLDiagram) activeDiagram).doesAccept(object)) {
+                //TODO: i18n
+                instructions = "Click on diagram to add as a new Classifier Role";
+            } else {
+                instructions =
+                    Translator.localize(
+                            "misc.message.click-on-diagram-to-add",
+                            new Object[] {Model.getFacade().toString(object),});
+                
+            }
             Globals.showStatus(instructions);
         }
-        ModePlace placeMode = new ModePlace(this, instructions);
+        
+        placeMode = new ModePlace(this, instructions);       
         placeMode.setAddRelatedEdges(true);
 
         if (location == null) {

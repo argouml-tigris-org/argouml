@@ -38,6 +38,8 @@ import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModePlace;
+import org.tigris.gef.graph.GraphFactory;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.FigNode;
 
@@ -171,5 +173,13 @@ public class UMLSequenceDiagram extends UMLDiagram {
         setNamespace(base);
         damage();
         return true;
+    }
+    
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+        if (Model.getFacade().isAClass(objectToAccept)) {
+            return true;
+        }
+        return false;
     }
 }
