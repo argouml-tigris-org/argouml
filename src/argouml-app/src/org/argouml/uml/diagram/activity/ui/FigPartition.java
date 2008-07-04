@@ -291,6 +291,7 @@ public class FigPartition extends FigNodeModelElement {
 	int width = getWidth();
 	FigPool figPool = getFigPool();
         if (figPool == null) { //Needed for project deletion
+            super.removeFromDiagramImpl();
             return;
         }
         

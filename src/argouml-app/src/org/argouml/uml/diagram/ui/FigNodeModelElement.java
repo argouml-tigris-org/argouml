@@ -1822,6 +1822,10 @@ public abstract class FigNodeModelElement
         return this;
     }
     
+    /**
+     * If you override this method, make sure to remove all listeners:
+     * If you don't, objects in a deleted project will still receive events.
+     */
     protected void removeFromDiagramImpl() {
         if (notationProviderName != null) { //This test needed for a FigPool
             notationProviderName.cleanListener(this, getOwner());
