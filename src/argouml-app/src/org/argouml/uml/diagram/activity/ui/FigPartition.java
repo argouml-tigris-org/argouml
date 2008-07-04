@@ -98,7 +98,8 @@ public class FigPartition extends FigNodeModelElement {
      * @param gm ignored
      * @param node the UML element
      */
-    public FigPartition(GraphModel gm, Object node) {
+    public FigPartition(@SuppressWarnings("unused")
+            GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
@@ -307,7 +308,7 @@ public class FigPartition extends FigNodeModelElement {
 
         if (nextPartition == null && previousPartition == null) {
             /* We removed the last partition, so now remove the pool, too: */
-            figPool.removeFromDiagramImpl();
+            figPool.removeFromDiagram();
             return;
         }
 

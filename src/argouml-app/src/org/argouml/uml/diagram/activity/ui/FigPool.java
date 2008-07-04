@@ -166,15 +166,5 @@ public class FigPool extends FigNodeModelElement {
 	return false;
     }
 
-    /**
-     * Used by FigPartition.
-     * 
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#removeFromDiagramImpl()
-     */
-    @Override
-    protected void removeFromDiagramImpl() {
-        super.removeFromDiagramImpl();
-    }
-
 }
 
