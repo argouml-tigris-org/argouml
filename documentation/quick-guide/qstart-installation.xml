@@ -103,6 +103,40 @@ downloaded.
 					</orderedlist>
 				</listitem>
 				<listitem>
+				  <para>
+				    Use the Windows Installer
+				  </para>
+				  <para>
+				    This installation method is the easiest way for most Windows users. 
+				    It also installs all available modules, 
+				    which includes support for e.g. C++ and PHP.
+				  </para>
+				  <orderedlist>
+				    <listitem>
+				      <para>
+				        Download the installer from the &argo-homepage;. 
+				        The filename is of the form 
+				        <filename>ArgoUML-vvvv-setup.exe</filename> 
+				        (with vvvv the version number).
+				      </para>
+				    </listitem>
+				    <listitem>
+				      <para>
+				        Run the downloaded installer program 
+				        and follow the directions on the screen.
+				      </para>
+				    </listitem>
+                    <listitem>
+                      <para>
+                        The install wizard gives you the opportunity to install 
+                        the latest "JRE" (Java Runtime Environment). 
+                        There is no need to select this if you already have a 
+                        Sun Java installed, version 5 or better.
+                      </para>
+                    </listitem>
+				  </orderedlist>
+				</listitem>
+				<listitem>
 					<para>
 Binary distribution
 </para>
@@ -168,10 +202,13 @@ java -jar argouml.jar
   <sect1>
     <title>Installing Auxiliary Modules</title>
     <para>
-      The standard installation of ArgoUML does not support C++, php and C# code
-      generation. To make this possible, you need to download the 
-      <literal>auxiliary modules</literal> 
-      from the download page at the ArgoUML website.
+      The standard installation of ArgoUML 
+      already comes with several modules 
+      which add e.g. support for C++, php and C# code
+      generation. 
+      In some cases, you may want to add even more functionality by adding a third party module.
+      To make this possible, you first need to download the 
+      module.
     </para>
     
     <para>
