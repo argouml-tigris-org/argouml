@@ -10738,7 +10738,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           diagram (as white dotted lines).</para>
 
           <warning>
-            <para>This menu item does not work in ArgoUML V0.24.</para>
+            <para>This menu item does not work in ArgoUML V0.26.</para>
             <!-- This menu-item is incorrectly implemented in the 
             V0.22 version of ArgoUML, since it should be a tick box 
             toggle.  This is issue  604.
@@ -12297,7 +12297,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           drag it up or down.</para>
 
           <para>All three titles of the lists show the number of 
-          items in the list. ArgoUML V0.24 has 9 default perspectives, 
+          items in the list. ArgoUML V0.26 has 9 default perspectives, 
           and 72 rules in the library to build perspectives from.</para>
 
           <para>The buttons at the top right are explained as 
@@ -15989,7 +15989,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <caution>
 
-          <para>The OCL editor implementation for ArgoUML V0.24 
+          <para>The OCL editor implementation for ArgoUML V0.26 
           doesn&apos;t support OCL constraints for elements other than 
           Classes and Features.</para>
 
@@ -16105,7 +16105,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <warning>
 
               <para>It seems logical, that when a new constraint is 
-              created, it needs to be edited. But ArgoUML V0.24 fails 
+              created, it needs to be edited. But ArgoUML V0.26 fails 
               to start the OCL editor upon creation; you have to do 
               this by primo selecting the new constraint first, secundo 
               rename it, and tertio press the <literal>Edit 
@@ -16133,7 +16133,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <caution>
 
-              <para>In V0.24 of ArgoUML this button is not downlighted 
+              <para>In V0.26 of ArgoUML this button is not downlighted 
               when it is not functional, i.e. when no constraint is 
               selected.</para>
 
@@ -16155,7 +16155,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <caution>
 
-              <para>In V0.24 of ArgoUML this button is not downlighted 
+              <para>In V0.26 of ArgoUML this button is not downlighted 
               when it is not functional, i.e. when no constraint is 
               selected.</para>
 
@@ -20903,9 +20903,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         <warning>
 
-          <para>In ArgoUML version 0.24, the UML 1.4 object diagram as 
+          <para>In ArgoUML version 0.26, the UML 1.4 object diagram as 
           a variant of the class diagram is not directly supported. 
-          However, it is possible to create simple object diagrams 
+          However, it is possible to create object diagrams 
           within the ArgoUML deployment diagram.</para>
 
         </warning>
@@ -24084,9 +24084,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title>Limitations Concerning Class Diagrams in 
           ArgoUML</title>
 
-          <para>Various limitations exist in V0.24 of ArgoUML 
+          <para>Various limitations exist in V0.26 of ArgoUML 
           for stereotype definition diagrams. 
-          E.g. the current implementation does not allow 
+          E.g. the implementation does not allow 
           stereotype compartments
           to be shown on stereotype definition diagrams.</para>
 
