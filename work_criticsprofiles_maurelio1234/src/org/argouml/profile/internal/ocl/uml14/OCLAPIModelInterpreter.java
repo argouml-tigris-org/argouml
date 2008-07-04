@@ -24,22 +24,30 @@
 
 package org.argouml.profile.internal.ocl.uml14;
 
-import org.argouml.profile.internal.ocl.CompositeModelInterpreter;
+import java.util.HashMap;
+
+import org.argouml.profile.internal.ocl.ModelInterpreter;
 
 /**
- * Interpreter for UML 1.4 / OCL 1.4
+ * OCL API
  * 
  * @author maurelio1234
  */
-public class Uml14ModelInterpreter extends CompositeModelInterpreter {
+public class OCLAPIModelInterpreter implements ModelInterpreter {
 
     /**
-     * Default Constructor 
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap,
+     *      java.lang.Object, java.lang.String, java.lang.String,
+     *      java.lang.Object[])
      */
-    public Uml14ModelInterpreter() {
-        addModelInterpreter(new ModelAccessModelInterpreter());
-        addModelInterpreter(new OCLAPIModelInterpreter());
-        addModelInterpreter(new CollectionsModelInterpreter());
+    public Object invokeFeature(HashMap<String, Object> vt, Object subject,
+            String feature, String type, Object[] parameters) {
+        if (type.equals(".")) {
+            if (feature.toString().trim().equals("oclIsKindOf")) {
+                return true;
+            }
+        }
+        return null;
     }
 
 }
