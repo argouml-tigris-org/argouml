@@ -66,12 +66,13 @@ public class ActionAddExistingNode extends UndoableAction {
         Object target = TargetManager.getInstance().getTarget();
         ArgoDiagram dia = ProjectManager.getManager().
             getCurrentProject().getActiveDiagram();
+        
         if (dia == null) {
             return false;
         }
         
-        if (dia instanceof UMLDiagram && 
-                ((UMLDiagram) dia).doesAccept(object)) {
+        if (dia instanceof UMLDiagram 
+                && ((UMLDiagram) dia).doesAccept(object)) {
             return true;
         }
         

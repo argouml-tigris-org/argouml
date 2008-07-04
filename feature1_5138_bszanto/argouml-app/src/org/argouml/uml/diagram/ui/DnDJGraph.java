@@ -34,9 +34,11 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Diagram;
@@ -133,7 +135,15 @@ class DnDJGraph
      *         java.awt.dnd.DropTargetDragEvent)
      */
     public void dragOver(DropTargetDragEvent dtde) {
+        System.out.println("Drag Over");
     	try {
+    	    ArgoDiagram dia = ProjectManager.getManager().
+    	        getCurrentProject().getActiveDiagram();
+    	    if (dia instanceof UMLDiagram 
+                /*&& ((UMLDiagram) dia).doesAccept(dtde.getSource())*/) {
+    	        dtde.acceptDrag(dtde.getDropAction());
+    	        return;
+    	    }
     	    if (dtde.isDataFlavorSupported(
     	            TransferableModelElements.UML_COLLECTION_FLAVOR)) {
     	        dtde.acceptDrag(dtde.getDropAction());
@@ -166,6 +176,8 @@ class DnDJGraph
      *         java.awt.dnd.DropTargetDropEvent)
      */
     public void drop(DropTargetDropEvent dropTargetDropEvent) {
+        System.out.println("Droped");
+       
         Transferable tr = dropTargetDropEvent.getTransferable();
         //if the flavor is not supported, then reject the drop:
         if (!tr.isDataFlavorSupported(
@@ -176,13 +188,19 @@ class DnDJGraph
 
         dropTargetDropEvent.acceptDrop(dropTargetDropEvent.getDropAction());
         //get the model elements that are being transfered.
-        Collection modelElements;
+        Collection modelElements; 
         try {
             ArgoDiagram diagram = ProjectManager.getManager()
                 .getCurrentProject().getActiveDiagram();
             modelElements =
                 (Collection) tr.getTransferData(
                     TransferableModelElements.UML_COLLECTION_FLAVOR);
+            
+            Iterator i = modelElements.iterator();
+            while (i.hasNext()) {
+                ((UMLDiagram )diagram).drop(i.next(),
+                        dropTargetDropEvent.getLocation());
+            }
 
             ActionAddExistingNodes.addNodes(modelElements, 
                     dropTargetDropEvent.getLocation(), diagram);

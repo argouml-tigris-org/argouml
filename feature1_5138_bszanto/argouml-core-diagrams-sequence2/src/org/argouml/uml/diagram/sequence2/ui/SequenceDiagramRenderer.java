@@ -68,7 +68,7 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
                 Model.getCollaborationsFactory().buildClassifierRole(
                         collaboration);
         }
-        //TODO: add the base
+        Model.getCollaborationsHelper().addBase(node, base);
         return node;
     }
 

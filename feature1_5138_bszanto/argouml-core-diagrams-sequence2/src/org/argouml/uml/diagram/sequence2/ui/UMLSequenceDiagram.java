@@ -24,8 +24,10 @@
 
 package org.argouml.uml.diagram.sequence2.ui;
 
+import java.awt.Point;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
@@ -36,11 +38,13 @@ import org.argouml.uml.diagram.sequence2.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
-import org.tigris.gef.base.ModePlace;
-import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -175,11 +179,70 @@ public class UMLSequenceDiagram extends UMLDiagram {
         return true;
     }
     
+    /**
+     * A sequence diagram can accept Classes and Actors. It will add them as
+     * a new Classifier Role with that Class/Actor as a base.
+     * @param objectToAccept
+     * @return
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#doesAccept(java.lang.Object)
+     */
     @Override
     public boolean doesAccept(Object objectToAccept) {
-        if (Model.getFacade().isAClass(objectToAccept)) {
+        if (Model.getFacade().isAClass(objectToAccept) 
+                || Model.getFacade().isAActor(objectToAccept)) {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Creates a new Classifier Role with a specified base.
+     * @param base
+     * @return The new CR
+     */
+    private FigClassifierRole makeNewCR(Object base) {
+        Object node = null;
+        Editor ce = Globals.curEditor();
+        GraphModel gm = ce.getGraphModel();
+        if (gm instanceof SequenceDiagramGraphModel) {
+            Object collaboration =
+                ((SequenceDiagramGraphModel) gm).getCollaboration();
+            node =
+                Model.getCollaborationsFactory().buildClassifierRole(
+                        collaboration);
+        }
+        
+        Model.getCollaborationsHelper().addBase(node, base);
+        
+        FigClassifierRole newCR = new FigClassifierRole(node);
+        
+        // Y position of the new CR should match existing CRs Y position
+        List nodes = getLayer().getContentsNoEdges();
+        int i = 0;
+        boolean figClassifierRoleFound = false;
+        Fig fig = null;
+        while (i < nodes.size() && !figClassifierRoleFound) {
+            fig = (Fig) nodes.get(i);
+            if (nodes.get(i) instanceof Fig) {
+                if (fig != newCR && fig instanceof FigClassifierRole) {
+                    newCR.setY(((Fig) fig).getY());
+                    newCR.setHeight(((Fig) fig).getHeight());
+                    figClassifierRoleFound = true;
+                }
+            }
+            i++;
+        }
+        
+        return newCR;
+    }
+    
+    
+    @Override
+    public void drop(Object droppedObject, Point location) {
+        FigClassifierRole newCR = makeNewCR(droppedObject);
+        if (location != null) {
+            newCR.setX(location.x);
+        }
+        add(newCR);
     }
 }

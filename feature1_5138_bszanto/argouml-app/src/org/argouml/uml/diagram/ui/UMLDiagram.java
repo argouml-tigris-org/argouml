@@ -25,7 +25,9 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.beans.PropertyVetoException;
+import java.util.Collection;
 
 import javax.swing.Action;
 import javax.swing.ButtonModel;
@@ -572,6 +574,14 @@ public abstract class UMLDiagram
      */
     public boolean doesAccept(Object objectToAccept) {
         return false;
+    }
+
+    /**
+     * Handles elements dropped over.
+     * @param droppedObject
+     * @param location
+     */
+    public void drop(Object droppedObject, Point location) {
     }
     
 //    /**
