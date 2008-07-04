@@ -59,7 +59,6 @@ import tudresden.ocl.parser.node.AMinusUnaryOperator;
 import tudresden.ocl.parser.node.AMultMultiplyOperator;
 import tudresden.ocl.parser.node.AMultiplicativeExpressionTail;
 import tudresden.ocl.parser.node.ANEqualRelationalOperator;
-import tudresden.ocl.parser.node.ANamePathNameBegin;
 import tudresden.ocl.parser.node.ANotUnaryOperator;
 import tudresden.ocl.parser.node.AOrLogicalOperator;
 import tudresden.ocl.parser.node.APlusAddOperator;
@@ -144,7 +143,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
      */
     public void defaultIn(Node node)
     {
-        LOG.debug("\nEntering: " + node.getClass() + "\n NODE: " + node + "\n VAL: " + val + " fwd: "+ fwd);
+        //LOG.debug("\nEntering: " + node.getClass() + "\n NODE: " + node + "\n VAL: " + val + " fwd: "+ fwd);
     }
 
     /**
@@ -190,6 +189,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
         {
             node.getIfBranch().apply(this);            
             test = asBoolean(val, node.getIfBranch());
+            val = null;
         }
         if(node.getTThen() != null)
         {
@@ -200,6 +200,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
             node.getThenBranch().apply(this);
             if (test) {
                 ret = asBoolean(val, node.getThenBranch());
+                val = null;
             }
         }
         if(node.getTElse() != null)
@@ -211,6 +212,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
             node.getElseBranch().apply(this);
             if (!test) {
                 ret = asBoolean(val, node.getThenBranch());                
+                val = null;
             }
         }
         if(node.getEndif() != null)
@@ -228,6 +230,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
     public void caseALogicalExpressionTail(ALogicalExpressionTail node)
     {
         Object left = val;
+        val = null;
 
         inALogicalExpressionTail(node);
         if(node.getLogicalOperator() != null)
@@ -241,6 +244,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
 
         Object op = node.getLogicalOperator();
         Object right = val;
+        val = null;
         
         if (left != null && op!= null && right != null) {
             if (op instanceof AAndLogicalOperator) {
@@ -266,6 +270,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
     public void caseARelationalExpressionTail(ARelationalExpressionTail node)
     {
         Object left = val;
+        val = null;
         
         inARelationalExpressionTail(node);
         if(node.getRelationalOperator() != null)
@@ -279,6 +284,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
 
         Object op = node.getRelationalOperator();
         Object right = val;
+        val = null;
         
         if (left != null && op!= null && right != null) {
             if (op instanceof AEqualRelationalOperator) {
@@ -308,6 +314,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
     public void caseAAdditiveExpressionTail(AAdditiveExpressionTail node)
     {
         Object left = val;
+        val = null;
 
         inAAdditiveExpressionTail(node);
         if(node.getAddOperator() != null)
@@ -321,6 +328,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
 
         Object op = node.getAddOperator();
         Object right = val;
+        val = null;
         
         if (left != null && op!= null && right != null) {
             if (op instanceof AMinusAddOperator) {
@@ -343,6 +351,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
     public void caseAMultiplicativeExpressionTail(AMultiplicativeExpressionTail node)
     {
         Object left = val;
+        val = null;
 
         inAMultiplicativeExpressionTail(node);
         if(node.getMultiplyOperator() != null)
@@ -356,6 +365,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
 
         Object op = node.getMultiplyOperator();
         Object right = val;
+        val = null;
         
         if (left != null && op!= null && right != null) {
             if (op instanceof ADivMultiplyOperator) {
@@ -384,6 +394,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
         }
         if(node.getPostfixExpression() != null)
         {
+            val = null;
             node.getPostfixExpression().apply(this);
         }
         
@@ -429,9 +440,10 @@ public class EvaluateInvariant extends DepthFirstAdapter {
         
         inAFeaturePrimaryExpression(node);
         if(node.getPathName() != null)
-        {
+        {            
+            // TODO support other name kinds             
             node.getPathName().apply(this);
-            feature = val;
+            feature = node.getPathName().toString().trim();
         }
         if(node.getTimeExpression() != null)
         {
@@ -445,8 +457,8 @@ public class EvaluateInvariant extends DepthFirstAdapter {
         }
         if(node.getFeatureCallParameters() != null)
         {
-            node.getFeatureCallParameters().apply(this);
-            
+            val = null;
+            node.getFeatureCallParameters().apply(this);            
             parameters = (Vector<Object>) val;
         }
 
@@ -508,7 +520,8 @@ public class EvaluateInvariant extends DepthFirstAdapter {
                      * @see org.argouml.profile.internal.ocl.LambdaEvaluator#evaluate(java.util.HashMap, java.lang.Object)
                      */
                     public Object evaluate(HashMap<String, Object> vti, Object expi) {
-                        Object old_val = EvaluateInvariant.this.val; 
+                        Object old_val = EvaluateInvariant.this.val;
+                        EvaluateInvariant.this.val = null;
                         ((PExpression)expi).apply(EvaluateInvariant.this);
                         
                         Object reti = EvaluateInvariant.this.val;
@@ -547,7 +560,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
             
             vars.add(node.getName().toString().trim());
         }
-        {
+        {            
             Object temp[] = node.getDeclaratorTail().toArray();
             for (int i = 0; i < temp.length; i++) {
                 ((PDeclaratorTail) temp[i]).apply(this);
@@ -596,7 +609,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
         if(node.getName() != null)
         {
             node.getName().apply(this);
-            name = val;
+            name = node.getName().toString().trim();
         }
         if(node.getLetExpressionTypeDeclaration() != null)
         {
@@ -691,9 +704,10 @@ public class EvaluateInvariant extends DepthFirstAdapter {
         inAFeatureCall(node);
         if(node.getPathName() != null)
         {
+            // TODO support other name kinds 
             node.getPathName().apply(this);
             
-            feature = val;
+            feature = node.getPathName().toString().trim();
         }
         if(node.getTimeExpression() != null)
         {
@@ -706,7 +720,8 @@ public class EvaluateInvariant extends DepthFirstAdapter {
             node.getQualifiers().apply(this);
         }
         if(node.getFeatureCallParameters() != null)
-        {            
+        {
+            val = null;            
             node.getFeatureCallParameters().apply(this);
             
             parameters = (Vector<Object>) val;
@@ -724,6 +739,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
         inAActualParameterList(node);
         if(node.getExpression() != null)
         {
+            val = null;
             node.getExpression().apply(this);
             list.add(val);
         }
@@ -732,8 +748,8 @@ public class EvaluateInvariant extends DepthFirstAdapter {
             Object temp[] = node.getActualParameterListTail().toArray();
             for(int i = 0; i < temp.length; i++)
             {
-                ((PActualParameterListTail) temp[i]).apply(this);
-                
+                val = null;
+                ((PActualParameterListTail) temp[i]).apply(this);                
                 list.add(val);
             }
         }
@@ -742,16 +758,6 @@ public class EvaluateInvariant extends DepthFirstAdapter {
         outAActualParameterList(node);
     }
     
-    /**
-     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outANamePathNameBegin(tudresden.ocl.parser.node.ANamePathNameBegin)
-     */
-    public void outANamePathNameBegin(ANamePathNameBegin node)
-    {
-        // TODO support other name kinds 
-        val = node.getName().getText();
-        defaultOut(node);
-    }
-
     /** HELPER METHODS **/
     private boolean asBoolean(Object value, Object node) {
         if (value instanceof Boolean) {
@@ -773,7 +779,11 @@ public class EvaluateInvariant extends DepthFirstAdapter {
 
     @SuppressWarnings("unchecked")
     private Object runFeatureCall(Object subject, Object feature, Object type, Vector<Object> parameters) {
-        LOG.debug("OCL FEATURE CALL: " + subject + ""+ type +""+ feature + "" + parameters);
+        //LOG.debug("OCL FEATURE CALL: " + subject + ""+ type +""+ feature + "" + parameters);
+        
+        if (parameters == null) {
+            parameters = new Vector<Object>();
+        }
         
         return interp.invokeFeature(vt, subject, feature.toString().trim(),
                 type.toString().trim(), parameters.toArray());
