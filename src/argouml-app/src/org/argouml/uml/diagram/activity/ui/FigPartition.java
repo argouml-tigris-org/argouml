@@ -303,7 +303,13 @@ public class FigPartition extends FigNodeModelElement {
 	    next.translateWithContents(-width);
             next = next.nextPartition;
 	}
-	
+
+        if (nextPartition == null && previousPartition == null) {
+            /* We removed the last partition, so now remove the pool, too: */
+            figPool.removeFromDiagramImpl();
+            return;
+        }
+
 	if (nextPartition != null) {
 	    nextPartition.setPreviousPartition(previousPartition);
 	}
