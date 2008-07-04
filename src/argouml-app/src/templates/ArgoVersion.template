@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,12 +44,13 @@ final class ArgoVersion {
      * Version number.
      */
     private static final String VERSION = "@ARGO_RELEASE_VERSION@";
+    private static final String STABLE_VERSION = "0.26";
 
     /**
      * Make the version of ArgoUML public. 
      */
     static void init() {
-        ApplicationVersion.init(VERSION);
+        ApplicationVersion.init(VERSION, STABLE_VERSION);
     }
 
     /**
