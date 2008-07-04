@@ -32,22 +32,40 @@ What tools do I need to use this build file?
 
 <project name="ArgoDocs" default="defaulthtml" basedir=".">
 
+  <property name="argo.core.version" value="PRE-0.26.beta1"/>
+
   <!-- we really need an absolute path for argo.root.dir -->
   <property name="argo.root.dir" value="${basedir}/.."/>
   
-  <!-- Property files read highest priority first -->
-  <!-- (properties are immutable once set) -->
-  <property file="build.properties"/>
-  <property file="${user.home}/argouml.build.properties"/>
-  <property file="${override.build.properties}"/>
-	<property name="argo.build.dir" value="${basedir}/build"/>
-  <!-- Fallback definition for argo.src.dir - won't override current value -->
-  <property name="argo.src.dir" value="${argo.root.dir}/src/argouml-app/src"/>
+  <property name="argo.build.dir" value="${basedir}/build"/>
+  <property name="argo.docs.output.dir" value="${argo.build.dir}/documentation"/>
 
-  <!-- We get the argouml version from the version in the app directory. -->
-  <property file="${argo.src.dir}/default.properties"/>
+  <property name="argo.tools.dir" value="${argo.root.dir}/tools"/>
+  <property name="argo.tools.lib" value="${argo.tools.dir}/lib"/>
+
   <!-- Our defaults depend on and don't override main props, so they go 2nd -->
-  <property file="default.properties"/>
+
+  <property name="fop.version" value="fop-0.20.5"/>
+  <property name="fop.build.dir" value="${argo.tools.dir}/${fop.version}/build"/>
+  <property name="fop.lib.dir" value="${argo.tools.dir}/${fop.version}/lib"/>
+
+  <property name="docbook-xsl-source-url-base" 
+            value="http://internap.dl.sourceforge.net/sourceforge/docbook/"
+  />
+  <!-- 
+       The mirror below may be faster from Europe 
+       (or can be used as an alternative)
+            value="http://puzzle.dl.sourceforge.net/sourceforge/docbook/"
+  -->
+  <property name="docbook-xsl-version" value="1.69.1"/>
+
+  <property name="saxon.jar.path" value="${argo.tools.lib}/saxon-6.5.2.jar"/>
+  <property name="jimi.jar.path" value="${argo.tools.lib}/JimiProClasses.zip"/>
+
+  <!-- Define in build.properties to skip production of individual manuals -->
+  <!-- <property name="skip-cookbook" value="true"/> -->
+  <!-- <property name="skip-quickguide" value="true"/> -->
+  <!-- <property name="skip-argomanual" value="true"/> -->
 
   <property name="documentation.dir" value="${basedir}"/>
 

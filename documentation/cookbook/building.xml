@@ -3675,13 +3675,14 @@ already present in any of the involved projects.
 
       <listitem>
         <para>Set the <methodname>argo.core.version</methodname>
-to not include the "PRE-" part.
+to not include the "PRE-" part
+and commit the files.
 </para>
         <para>
-This is done in the <filename>default.properties</filename>-file
-in
-<filename>build/VERSION_<replaceable>GIVEN_VERSION</replaceable>/argouml/src_new</filename>
-and then, commit the file.
+This is done in the <filename>default.properties</filename>-files
+<filename>build/VERSION_<replaceable>GIVEN_VERSION</replaceable>/argouml/src/argouml-app</filename>
+and
+<filename>build/VERSION_<replaceable>GIVEN_VERSION</replaceable>/argouml/documentation/build.xml</filename>.
 </para>
       </listitem>
  
