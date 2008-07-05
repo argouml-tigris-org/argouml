@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Manager of factories registered in ArgoUML. <p>
@@ -37,14 +38,14 @@ import java.util.Collection;
  * @author Michiel
  */
 public class PropPanelFactoryManager {
-    private static Collection<PropPanelFactory> ppfactories = 
+    private static List<PropPanelFactory> ppfactories = 
         new ArrayList<PropPanelFactory>();
     
     /**
      * @param factory add the given factory
      */
     public static void addPropPanelFactory(PropPanelFactory factory) {
-        ppfactories.add(factory);
+        ppfactories.add(0, factory);
     }
     
     /**
