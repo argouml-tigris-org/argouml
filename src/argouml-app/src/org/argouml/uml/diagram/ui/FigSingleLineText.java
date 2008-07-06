@@ -32,13 +32,19 @@ import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import javax.swing.SwingUtilities;
+
+import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.kernel.Project;
+import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProvider;
 import org.tigris.gef.presentation.FigText;
 
@@ -57,13 +63,15 @@ import org.tigris.gef.presentation.FigText;
  * @author Bob Tarling
  */
 public class FigSingleLineText extends ArgoFigText
-    implements ArgoNotationEventListener 
-    {
+    implements ArgoNotationEventListener  {
 
     /**
      * The UID.
      */
     private static final long serialVersionUID = -5611216741181499679L;
+    
+    private static final Logger LOG =
+        Logger.getLogger(FigSingleLineText.class);
 
     /**
      * The properties of 'owner' that this is interested in
@@ -172,29 +180,73 @@ public class FigSingleLineText extends ArgoFigText
     
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
-        if (getOwner() == pce.getSource()
-                && properties != null
-                && Arrays.asList(properties).contains(pce.getPropertyName())
-                && pce instanceof AttributeChangeEvent) {
-            /* TODO: Why does it fail for changing 
-             * the name of an associationend?
-             *  Why should it pass? */
-            //assert Arrays.asList(properties).contains(pce.getPropertyName()) 
-            //  : pce.getPropertyName(); 
-            setText();
-        }
-//      super.propertyChange(pce); // Adding this gives loads of problems!!!
-
         if ("remove".equals(pce.getPropertyName()) 
                 && (pce.getSource() == getOwner())) {
             deleteFromModel();
         } else if (notationProvider != null) {
             notationProvider.updateListener(this, getOwner(), pce);
+        }
+        
+        if (pce instanceof UmlChangeEvent) {
+            final UmlChangeEvent event = (UmlChangeEvent) pce;
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    try {
+                        updateLayout(event);
+                    } catch (InvalidElementException e) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("event = "
+                                    + event.getClass().getName());
+                            LOG.debug("source = " + event.getSource());
+                            LOG.debug("old = " + event.getOldValue());
+                            LOG.debug("name = " + event.getPropertyName());
+                            LOG.debug("updateLayout method accessed "
+                                    + "deleted element ", e);
+                        }
+                    }
+                }  
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
+        }
+    }
+    
+    /**
+     * This is a template method called by the ArgoUML framework as the result
+     * of a change to a model element. Do not call this method directly
+     * yourself.
+     * <p>Override this in any subclasses in order to redisplay the Fig
+     * due to change of any model element that this Fig is listening to.</p>
+     * <p>This method is guaranteed by the framework to be running on the 
+     * Swing/AWT thread.</p>
+     *
+     * @param event the UmlChangeEvent that caused the change
+     */
+    protected void updateLayout(UmlChangeEvent event) {
+        assert event != null;
+        if (getOwner() == event.getSource()
+                && properties != null
+                && Arrays.asList(properties).contains(event.getPropertyName())
+                && event instanceof AttributeChangeEvent) {
+            /* TODO: Why does it fail for changing 
+             * the name of an associationend?
+             *  Why should it pass? */
+            //assert Arrays.asList(properties).contains(event.getPropertyName()) 
+            //  : event.getPropertyName(); 
+            // TODO: Do we really always need to do this or only if
+            // notationProvider is null?
+            setText();
+        }
+
+        if (notationProvider != null
+                && (!"remove".equals(event.getPropertyName())
+                        || event.getSource() != getOwner())) {
             this.setText(notationProvider.toString(getOwner(), npArguments));
             damage();
         }
     }
 
+    
+    
     /**
      * This function without parameter shall
      * determine the text of the Fig taking values from the owner,
