@@ -322,9 +322,6 @@ public class UIFactory {
         p.setBorder(border);
         
         if ("modifiers".equals(prop.getName())) {  
-            // TODO: The checkboxes must be explicitly said at the
-            // XML. Interface and UmlClass differ on "derived"
-            // we must build the checkboxes
             for (XMLPropertyPanelsDataRecord data : prop.getChildren()) {
                 UMLCheckBox2 checkbox = buildCheckBox(target, data);
                 if (checkbox != null) {
