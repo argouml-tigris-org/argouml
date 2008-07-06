@@ -101,7 +101,10 @@ public class ActionAddExistingNodes extends UndoableAction {
         Collection oldTargets = TargetManager.getInstance().getTargets();
         int count = 0;
         for (Object me : modelElements) {
-            if (Model.getFacade().isANaryAssociation(me)) {
+            if (diagram instanceof UMLDiagram 
+                    && ((UMLDiagram) diagram).doesAccept(me)) {
+                ((UMLDiagram) diagram).drop(me, location);
+            } else if (Model.getFacade().isANaryAssociation(me)) {
                 AddExistingNodeCommand cmd =
                     new AddExistingNodeCommand(me, location,
                             count++);

@@ -135,7 +135,6 @@ class DnDJGraph
      *         java.awt.dnd.DropTargetDragEvent)
      */
     public void dragOver(DropTargetDragEvent dtde) {
-        System.out.println("Drag Over");
     	try {
     	    ArgoDiagram dia = ProjectManager.getManager().
     	        getCurrentProject().getActiveDiagram();
@@ -176,8 +175,6 @@ class DnDJGraph
      *         java.awt.dnd.DropTargetDropEvent)
      */
     public void drop(DropTargetDropEvent dropTargetDropEvent) {
-        System.out.println("Droped");
-       
         Transferable tr = dropTargetDropEvent.getTransferable();
         //if the flavor is not supported, then reject the drop:
         if (!tr.isDataFlavorSupported(
@@ -202,8 +199,8 @@ class DnDJGraph
                         dropTargetDropEvent.getLocation());
             }
 
-            ActionAddExistingNodes.addNodes(modelElements, 
-                    dropTargetDropEvent.getLocation(), diagram);
+//            ActionAddExistingNodes.addNodes(modelElements, 
+//                    dropTargetDropEvent.getLocation(), diagram);
 
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {

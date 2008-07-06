@@ -56,6 +56,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.ToolBarManager;
 import org.tigris.toolbar.toolbutton.ToolButton;
@@ -580,24 +581,35 @@ public abstract class UMLDiagram
      * Handles elements dropped over.
      * @param droppedObject
      * @param location
+     * @return The object that has been added to the diagram.
      */
-    public void drop(Object droppedObject, Point location) {
+    public FigNode drop(Object droppedObject, Point location) {
+        return null;
     }
     
-//    /**
-//     * Creates a diagram specific @see org.tigris.gef.base.ModePlace that 
-//     * alowes the diagram to place an accepted type of object 
-//     * [ @see #doesAccept(Object) ] as it should. This is required 1. since a 
-//     * diagram may receive an object that can't be placed as is, but needs some
-//     * tranformation and 2. diagrams in modules should be independent from the
-//     * main app, and should use their own implementation of ModePlace if it's
-//     * required.
-//     * @param gf
-//     * @param instructions
-//     * @return The created ModePlace.
-//     */
-//    public ModePlace getModePlace(GraphFactory gf, String instructions) {
-//        return new ModePlace(gf, instructions);
-//    }
+    /**
+     * Gets the instructions to be displayed on the status bar.
+     * @param droppedObject
+     * @return The instructions.
+     */
+    public String getInstructions(Object droppedObject) {
+        return "";
+    }
+    
+    /**
+     * Creates a diagram specific @see org.tigris.gef.base.ModePlace that 
+     * alowes the diagram to place an accepted type of object 
+     * [ @see #doesAccept(Object) ] as it should. This is required 1. since a 
+     * diagram may receive an object that can't be placed as is, but needs some
+     * tranformation and 2. diagrams in modules should be independent from the
+     * main app, and should use their own implementation of ModePlace if it's
+     * required.
+     * @param gf
+     * @param instructions
+     * @return The created ModePlace.
+     */
+    public ModePlace getModePlace(GraphFactory gf, String instructions) {
+        return new ModePlace(gf, instructions);
+    }
     
 }

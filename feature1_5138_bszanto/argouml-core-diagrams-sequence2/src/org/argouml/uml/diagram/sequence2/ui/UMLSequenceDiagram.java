@@ -42,6 +42,8 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModePlace;
+import org.tigris.gef.graph.GraphFactory;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -200,7 +202,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * @param base
      * @return The new CR
      */
-    private FigClassifierRole makeNewCR(Object base) {
+    private Object makeNewCR(Object base) {
         Object node = null;
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
@@ -211,10 +213,23 @@ public class UMLSequenceDiagram extends UMLDiagram {
                 Model.getCollaborationsFactory().buildClassifierRole(
                         collaboration);
         }
-        
+        getGraphModel().getNodes().add(node);
         Model.getCollaborationsHelper().addBase(node, base);
         
-        FigClassifierRole newCR = new FigClassifierRole(node);
+        return node;
+    }
+    
+    /**
+     * Creates the Fig for the CR. Y position will be adjusted to match other 
+     * the other CRs.
+     * @param classifierRole
+     * @param location The position where to put the new fig.
+     * @return
+     */
+    private FigClassifierRole makeNewFigCR(Object classifierRole, 
+            Point location) {
+        
+        FigClassifierRole newCR = new FigClassifierRole(classifierRole);
         
         // Y position of the new CR should match existing CRs Y position
         List nodes = getLayer().getContentsNoEdges();
@@ -232,17 +247,45 @@ public class UMLSequenceDiagram extends UMLDiagram {
             }
             i++;
         }
-        
+        if (location != null) {
+            if (newCR.getY() == 0) {
+                newCR.setY(location.y);
+            }
+            newCR.setX(location.x);
+        }
         return newCR;
     }
     
+    @Override
+    public FigNode drop(Object droppedObject, Point location) {
+        FigClassifierRole newCR = null;
+        if (Model.getFacade().isAClassifierRole(droppedObject)) {
+            newCR = makeNewFigCR(droppedObject, location);           
+        } else if (Model.getFacade().isAClass(droppedObject)
+                || Model.getFacade().isAActor(droppedObject)){
+            newCR = makeNewFigCR(makeNewCR(droppedObject), location);
+        }
+        if (newCR != null) {
+            add(newCR);
+            LOG.debug("Dropped object " + droppedObject + " converted to " 
+                    + newCR);
+        } else {
+            LOG.debug("Dropped object NOT added " + droppedObject);
+        }
+        return newCR;
+    }
     
     @Override
-    public void drop(Object droppedObject, Point location) {
-        FigClassifierRole newCR = makeNewCR(droppedObject);
-        if (location != null) {
-            newCR.setX(location.x);
+    public String getInstructions(Object droppedObject) {
+        if (Model.getFacade().isAClassifierRole(droppedObject)) {
+            //TODO: i18n
+            return "Click on diagram to add as a new Classifier Role";
         }
-        add(newCR);
+        return super.getInstructions(droppedObject);
+    }
+    
+    @Override
+    public ModePlace getModePlace(GraphFactory gf, String instructions) {
+        return new ModePlaceClassifierRole(gf, instructions);
     }
 }
