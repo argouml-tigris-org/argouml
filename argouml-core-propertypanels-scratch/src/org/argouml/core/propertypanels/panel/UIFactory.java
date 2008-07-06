@@ -424,7 +424,7 @@ public class UIFactory {
         }
         if ("multiplicity".equals(prop.getName())) {            
             UMLMultiplicityPanel mPanel = new UMLMultiplicityPanel();
-            // mPanel.setTarget(target);
+            mPanel.setTarget(target);
             p.add(mPanel);
         }
         return p;
