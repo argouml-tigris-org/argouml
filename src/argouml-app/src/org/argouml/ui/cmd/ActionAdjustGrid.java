@@ -146,18 +146,27 @@ public class ActionAdjustGrid extends AbstractAction {
                 : "menu.item.lines-16", 16, true, true, "01", KeyEvent.VK_1));
         result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-8"
                 : "menu.item.lines-8", 8, true, true, "02", KeyEvent.VK_2));
-        result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-16"
-                : "menu.item.lines-16", 16, false, true, "03", KeyEvent.VK_3));
-        result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-32"
-                : "menu.item.lines-32", 32, false, true, "04", KeyEvent.VK_4));
+        result.add(buildGridAction(longStrings ? "action.adjust-grid.dots-16"
+                : "menu.item.dots-16", 16, false, true, "03", KeyEvent.VK_3));
+        result.add(buildGridAction(longStrings ? "action.adjust-grid.dots-32"
+                : "menu.item.dots-32", 32, false, true, "04", KeyEvent.VK_4));
         result.add(buildGridAction(
-                longStrings ? "action.adjust-grid.lines-none"
-                        : "menu.item.lines-none", 16, false, false, "05",
+                longStrings ? "action.adjust-grid.none"
+                        : "menu.item.none", 16, false, false, "05",
                 KeyEvent.VK_5));
      
         return result;
     }
 
+    /**
+     * @param property the name (not yet localised)
+     * @param spacing the spacing distance
+     * @param paintLines show lines
+     * @param paintDots show dots
+     * @param id identifier
+     * @param key keyCode
+     * @return the Action
+     */
     public static Action buildGridAction(final String property,
             final int spacing, final boolean paintLines,
             final boolean paintDots, final String id, final int key) {

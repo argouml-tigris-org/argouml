@@ -28,7 +28,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Action;
@@ -509,12 +508,11 @@ public class GenericArgoMenuBar extends JMenuBar implements
         
         JMenu grid = (JMenu) view.add(new JMenu(menuLocalize("Adjust Grid")));
         setMnemonic(grid, "Grid");
-        List gridActions = ActionAdjustGrid.createAdjustGridActions(false);
+        List<Action> gridActions = 
+            ActionAdjustGrid.createAdjustGridActions(false);
         ButtonGroup groupGrid = new ButtonGroup();
         ActionAdjustGrid.setGroup(groupGrid);
-        Iterator i = gridActions.iterator();
-        while (i.hasNext()) {
-            Action cmdAG = (Action) i.next();
+        for ( Action cmdAG : gridActions) {
             JRadioButtonMenuItem mi = new JRadioButtonMenuItem(cmdAG);
             groupGrid.add(mi);
             JMenuItem adjustGrid = grid.add(mi);
@@ -525,12 +523,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         JMenu snap = (JMenu) view.add(new JMenu(menuLocalize("Adjust Snap")));
         setMnemonic(snap, "Snap");
-        List snapActions = ActionAdjustSnap.createAdjustSnapActions();
+        List<Action> snapActions = ActionAdjustSnap.createAdjustSnapActions();
         ButtonGroup groupSnap = new ButtonGroup();
         ActionAdjustSnap.setGroup(groupSnap);
-        i = snapActions.iterator();
-        while (i.hasNext()) {
-            Action cmdAS = (Action) i.next();
+        for ( Action cmdAS : snapActions) {
             JRadioButtonMenuItem mi = new JRadioButtonMenuItem(cmdAS);
             groupSnap.add(mi);
             JMenuItem adjustSnap = snap.add(mi);
@@ -539,7 +535,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
                     ShortcutMgr.ACTION_ADJUST_GUIDE + cmdAS.getValue("ID"));
         }
 
-        JMenuItem adjustPageBreaks = view.add(new AdjustPageBreaksAction());
+        Action pba  = new AdjustPageBreaksAction();
+        JMenuItem adjustPageBreaks = view.add(pba);
+        pba.putValue(Action.NAME, 
+                Translator.localize("menu.adjust-pagebreaks"));
         setMnemonic(adjustPageBreaks, "Adjust Pagebreaks");
         ShortcutMgr.assignAccelerator(adjustPageBreaks,
                 ShortcutMgr.ACTION_ADJUST_PAGE_BREAKS);
