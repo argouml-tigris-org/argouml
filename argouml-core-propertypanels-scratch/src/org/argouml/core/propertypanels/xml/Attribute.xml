@@ -10,5 +10,5 @@
 	<checkgroup name='modifiers'>
 		<checkbox name='static' />
 	</checkgroup>
-	<text name='initial_value' />
+	<textarea name='initial_value' />
 </panel>

@@ -36,6 +36,9 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
+import org.argouml.core.propertypanels.ui.UMLExpressionModel3;
+import org.argouml.core.propertypanels.ui.UMLExpressionPanel;
+import org.argouml.core.propertypanels.ui.UMLInitialValueExpressionModel;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
@@ -47,6 +50,9 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
+import org.argouml.uml.ui.UMLExpressionBodyField;
+import org.argouml.uml.ui.UMLExpressionLanguageField;
+import org.argouml.uml.ui.UMLExpressionModel2;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -76,10 +82,8 @@ import org.argouml.uml.ui.foundation.core.UMLModelElementSupplierDependencyListM
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTargetScopeCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.argouml.uml.ui.model_management.UMLClassifierPackageImportsListModel;
-import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.LabelledLayout;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -178,11 +182,31 @@ public class UIFactory {
                     panel.add(scrollPane);
                 }
             }
+            else if ("textarea".equals(prop.getType())) {
+                JPanel p = buildTextArea(target, prop);
+                if (p != null) {
+                    panel.add(p);
+                }
+            }
             else if ("separator".equals(prop.getType())) {
                 panel.add(LabelledLayout.getSeperator());
             }
         }
         return panel;
+    }
+
+    private JPanel buildTextArea(Object target, XMLPropertyPanelsDataRecord prop) {
+        JPanel p = new JPanel();
+        TitledBorder border = new TitledBorder(prop.getName());        
+        p.setBorder(border);
+
+        if ("initial_value".equals(prop.getName())) {        
+            UMLExpressionModel3 model = new UMLInitialValueExpressionModel();
+            // model.setTarget(target);
+
+            p  = new UMLExpressionPanel(model, prop.getName());
+        }
+        return p;
     }
 
     private JPanel buildSingleRow(Object target,
