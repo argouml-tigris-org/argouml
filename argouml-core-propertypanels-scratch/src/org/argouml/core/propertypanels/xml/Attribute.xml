@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<panel>
+	<text name='name' />
+	<combo name='type' />
+	<combo name='multiplicity' />
+	<list name="owner" />
+	<separator />
+	<optionbox name='visibility' />
+	<optionbox name='changeability' />
+	<checkgroup name='modifiers'>
+		<checkbox name='static' />
+	</checkgroup>
+	<text name='initial_value' />
+</panel>
