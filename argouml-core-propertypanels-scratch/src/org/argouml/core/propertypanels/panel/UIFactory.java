@@ -51,6 +51,7 @@ import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
+import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
@@ -61,6 +62,7 @@ import org.argouml.uml.ui.foundation.core.UMLClassAttributeListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
+import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerListModel;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
@@ -152,6 +154,12 @@ public class UIFactory {
                     panel.add(p);
                 }
             }
+            else if ("singlerow".equals(prop.getType())) {
+                JPanel p = buildSingleRow(target, prop);
+                if (p != null) {
+                    panel.add(p);
+                }
+            }
             else if ("list".equals(prop.getType())) {
                 JPanel p = new JPanel();               
                 JComponent list = buildList(target, prop);
@@ -170,6 +178,28 @@ public class UIFactory {
             }
         }
         return panel;
+    }
+
+    private JPanel buildSingleRow(Object target,
+            XMLPropertyPanelsDataRecord prop) {
+        JPanel p = new JPanel();
+        
+        UMLModelElementListModel2 model = null;
+        UMLSingleRowSelector pane = null;
+        if ("owner".equals(prop.getName())) {
+            model = new UMLFeatureOwnerListModel();
+            model.setTarget(target);
+        }
+        if (model != null) {
+            pane = new UMLSingleRowSelector(model);
+            // TODO: We'll need to use addField in the future.
+            JLabel label = new JLabel(prop.getName());
+            label.setLabelFor(pane);
+            p.add(label);
+            p.add(pane);
+            return p;
+        }
+        return null;
     }
 
     protected JComponent buildList(Object target, 
