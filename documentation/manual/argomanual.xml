@@ -1485,7 +1485,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <indexterm><primary>GIF</primary></indexterm>
                 <ulink url="http://en.wikipedia.org/wiki/GIF"><emphasis>Graphics
                 Interchange Format (GIF)</emphasis></ulink> uses lossless compression, 
-                and preserves shap edges well, which makes it well-suited for ArgoUML.
+                and preserves sharp edges well, which makes it well-suited for ArgoUML.
                 The GIF format used to be a patent encumbered format, 
                 but all the patents have currently expired.
               </para></listitem>
@@ -2355,6 +2355,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   Note that the splash panel does not show during the load.
                 </para>
               </listitem>
+
               <listitem><para>
                 <emphasis>Edit=&gt;Settings=&gt;Environment</emphasis>.
                 Do <emphasis>File=&gt;Export Graphics</emphasis> and observe
@@ -2366,10 +2367,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <emphasis>File=&gt;Export Graphics</emphasis> dialog and notice
                 that the new format is now the default.
               </para></listitem>
+
               <listitem><para>
                 <emphasis>Edit=&gt;Settings=&gt;User</emphasis>.
                 Enter your name and email address.
               </para></listitem>
+
               <listitem><para>
                 <emphasis>Edit=&gt;Settings=&gt;Appearance</emphasis>.
                 Change the "Look and Feel:" to Metal."
@@ -2381,6 +2384,34 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 The display should be markedly different.
                 You can change it back or leave it that way as you prefer. 
               </para></listitem>
+                
+              <listitem><para>
+                <emphasis>Edit=&gt;Settings=&gt;Profiles</emphasis>.
+                Look in the Explorer Pane under "Profile Configuration". 
+                The only folder by default is the UML 1.4 profile. 
+                Now go to <emphasis>Edit=&gt;Settings=&gt;Profiles</emphasis>
+                and look at the field "Default Profiles". 
+                It only contains the same UML 1.4 profile.
+                Add the Java profile to it, and press OK.
+              </para>
+              <para>
+                If you now look at the Explorer Pane, nothing has changed, 
+                since you adapted the default setting, not the project setting.
+                Press <emphasis>File=&gt;New</emphasis> and
+                check out the profiles in the Explorer Pane: 
+                it now shows both the UML 1.4 profile and the Java profile.
+              </para>
+              <para>
+                Many examples in this manual presume that the Java profile is available,
+                so you may best leave it enabled.              
+              </para></listitem>
+                
+              <listitem><para>
+                <emphasis>Edit=&gt;Settings=&gt;Configure Shortcuts</emphasis>.
+                (To be written).
+                <!-- Does not work - see issue 5207. -->
+              </para></listitem>
+
               <listitem><para>
                 <emphasis>Edit=&gt;Settings=&gt;Notations</emphasis>.
                 We played around with this earlier with the
@@ -2401,10 +2432,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Double click in the operation section to create a method.
                 Observe the difference in the displays.
               </para></listitem>
+
              <listitem><para>
                 <emphasis>Edit=&gt;Settings=&gt;Diagram Appearance</emphasis>.
-                (To be written).
+                This settings makes it possible to change the font and font-size used in the diagrams. 
+                Hence this setting does not influence the font used in the UI of ArgoUML itself.
+                The default font for ArgoUML is Dialog.
               </para></listitem>
+
               <listitem><para>
                 <emphasis>Edit=&gt;Settings=&gt;Modules</emphasis>.
                 This shows the currently loaded modules.
@@ -2436,10 +2471,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Go To Diagram panel.
                 Select the class diagram entry in this panel and click on
                 the "Go to Selection" button.
-                There should be 0 nodes and 0 edges in the leftmost column.
+                There should be 0 nodes and 0 edges in the description column.
                 Click on the "Close" button.
                 In the Details Pane (Properties tab) enter the name as "Blort".
-                Create two classes (See ...) in the class diagram and go
+                Create two classes <!--  (See ...)--> in the class diagram and go
                 back to <emphasis>View=&gt;Goto Diagram</emphasis>.
                 You should now see 2 nodes and 0 edges shown.
                 Click on the "Close" button again and link the classes with
@@ -2496,7 +2531,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <emphasis>View=&gt;Zoom.</emphasis>
                 As an exeption to a general rule the toolbar equivalent of
                 <emphasis>View=&gt;Zoom</emphasis> does not operate in the
-                same way as the correspinding menu item.
+                same way as the corresponding menu item.
                 Highlight <emphasis>View=&gt;Zoom.</emphasis> and a submenu
                 will appear that contains "Zoom Out", "Zoom Reset" and
                 "Zoom In".
@@ -2511,7 +2546,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <emphasis>View=&gt;Adjust Grid.</emphasis>
               </para></listitem>
               <listitem><para>
-                <emphasis>View=&gt;Adjust Grid Snap.</emphasis>
+                <emphasis>View=&gt;Adjust Snap.</emphasis>
               </para></listitem>
               <listitem><para>
                 <emphasis>View=&gt;Page Breaks.</emphasis>
