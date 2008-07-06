@@ -27,17 +27,21 @@ package org.argouml.core.propertypanels.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.ui.UMLExpressionModel2;
 
 /**
- *
+ * @author jrobbins
+ * @author jaap.branderhorst
  * @author penyaskito
  */
 public class UMLInitialValueExpressionModel 
     extends UMLExpressionModel3 {
 
+    
+    
     public UMLInitialValueExpressionModel() {
         super("initial value");
     }
@@ -51,9 +55,12 @@ public class UMLInitialValueExpressionModel
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     @Override
-    public Object getExpression() {
-        // TODO: Auto-generated method stub
-        return null;
+    public Object getExpression() {        
+        Object target = null; //TODO getTarget();
+        if (target == null) {
+            return null;
+        }
+        return Model.getFacade().getInitialValue(target);
     }
 
     /**
@@ -62,8 +69,7 @@ public class UMLInitialValueExpressionModel
      */
     @Override
     public Object newExpression() {
-        // TODO: Auto-generated method stub
-        return null;
+        return Model.getDataTypesFactory().createExpression("", "");
     }
 
     /**
@@ -71,9 +77,9 @@ public class UMLInitialValueExpressionModel
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     @Override
-    public void setExpression(Object expr) {
-        // TODO: Auto-generated method stub
-
+    public void setExpression(Object expression) {
+        Object target = null; // TODO  getTarget();
+        Model.getCoreHelper().setInitialValue(target, expression);
     }
 
     public void targetAdded(TargetEvent e) {

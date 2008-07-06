@@ -37,7 +37,9 @@ import org.tigris.swidgets.LabelledLayout;
  */
 public class UMLExpressionPanel extends JPanel {
 
-    private UMLExpressionModel3 model;
+    private final UMLExpressionModel3 model;
+    private final UMLExpressionLanguageField languageField;
+    private final UMLExpressionBodyField bodyField;
     
     public UMLExpressionPanel(UMLExpressionModel3 model, String title) {
         
@@ -46,11 +48,13 @@ public class UMLExpressionPanel extends JPanel {
         this.setBorder(border);        
         
         this.model = model;
+        this.languageField = new UMLExpressionLanguageField(model,
+                false);
+        this.bodyField = new UMLExpressionBodyField(
+                model, true);
         
-        add(new UMLExpressionLanguageField(model,
-                false));        
-        add(new JScrollPane(new UMLExpressionBodyField(
-                model, true)));
+        add(languageField);        
+        add(new JScrollPane(bodyField));
     }
     
 }
