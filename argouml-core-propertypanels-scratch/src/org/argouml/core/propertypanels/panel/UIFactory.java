@@ -39,6 +39,7 @@ import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -389,9 +390,7 @@ public class UIFactory {
 
 
     private String getXMLFileName(Object target) {
-        String classname = target.getClass().getSimpleName();
-        // TODO: I don't like this hack, it may exist a better way.
-        return classname.replace("$Impl", "");
+        return Model.getMetaTypes().getName(target);
     }
 
     private XMLPropertyPanelsData parseXML(String filename) 

@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.ui.TabFigTarget;
 import org.argouml.uml.ui.PropPanel;
 
@@ -102,11 +103,7 @@ public class XmlPropertyPanel extends PropPanel
      * @return the title of the panel, according to the target 
      */
     private String getPanelTitle(Object target) {
-        String classname = target.getClass().getSimpleName();
-        // TODO: I don't like this hack, it may exist a better way.
-        return classname.replace("$Impl", "");
-        // this returns UmlClass for classes, in the original PropPanels
-        // it's Class... Should we change it?
+        return Model.getMetaTypes().getName(target);
     }
    
 }
