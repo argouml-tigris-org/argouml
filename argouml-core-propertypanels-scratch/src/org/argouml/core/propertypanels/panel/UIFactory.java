@@ -36,6 +36,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
+import org.argouml.core.propertypanels.ui.UMLClassifierPackageImportsListModel;
 import org.argouml.core.propertypanels.ui.UMLExpressionModel3;
 import org.argouml.core.propertypanels.ui.UMLExpressionPanel;
 import org.argouml.core.propertypanels.ui.UMLInitialValueExpressionModel;
@@ -80,7 +81,6 @@ import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPa
 import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
-import org.argouml.uml.ui.model_management.UMLClassifierPackageImportsListModel;
 import org.tigris.swidgets.LabelledLayout;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
