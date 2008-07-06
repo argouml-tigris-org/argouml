@@ -562,7 +562,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         the Developers Cookbook</ulink>, 
         <ulink url="http://argouml.tigris.org/faqs/users.html">the 
         FAQ</ulink>, and 
-        <ulink url="http://argouml-stats.tigris.org/documentation/quick-guide-0.22/">
+        <ulink url="http://argouml-stats.tigris.org/documentation/quick-guide-0.26/">
         the Quick Guide</ulink>.</para>
 
       </sect2>
@@ -621,10 +621,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         the case study used throughout the document. 
         <xref linkend="app.umlres"/> and <xref linkend="app.umlcase"/> 
         identify background information on UML and UML CASE tools. 
+        <xref linkend="app.cppmod"/> explains the use of the C++ module.
         <xref linkend="app.legal"/> is a copy of the GNU Free 
         Documentation License.</para>
-
-        <para>A future ambition is to provide a comprehensive index.</para>
 
       </sect2>
 
@@ -812,10 +811,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         approved that autumn.</para>
 
         <para>ArgoUML is based on UML v1.4, which was adopted by OMG in 
-        March 2000. The current official version is UML v1.5 dated 
-        March 2003, soon to be replaced by a major revision, UML v2.0, 
-        which is in the final stages of standardization and is 
-        expected to be complete in 2006.</para>
+        September 2001. The current official version, supported by ArgoUML, 
+         is UML v1.4.2 dated July 2004, adopted as ISO/IEC 19501.
+        The latest UML version is UML v2.1.2, from November 2007.
+        </para>
 
       </sect1>
 
@@ -893,7 +892,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           the development of a number of lightweight variants of 
           processes (often known as <emphasis>agile 
           computing</emphasis> or <emphasis>extreme 
-          programming</emphasis>) that are suited to very small teams 
+          programming</emphasis>) that are suited to small teams 
           of engineers.</para>
 
           <sect3>
@@ -1485,9 +1484,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem><para>
                 <indexterm><primary>GIF</primary></indexterm>
                 <ulink url="http://en.wikipedia.org/wiki/GIF"><emphasis>Graphics
-                Interchange Format (GIF)</emphasis></ulink> is a patent
-                encumbered format, although the patents will run out
-                in August of 2006.
+                Interchange Format (GIF)</emphasis></ulink> uses lossless compression, 
+                and preserves shap edges well, which makes it well-suited for ArgoUML.
+                The GIF format used to be a patent encumbered format, 
+                but all the patents have currently expired.
               </para></listitem>
 
               <listitem><para>
@@ -1503,7 +1503,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 
               <listitem><para>
                 <indexterm><primary>PNG</primary></indexterm>
-                <ulink url="http://en.wikipedia.org/wiki/PNG">
+                <ulink url="http://en.wikipedia.org/wiki/Portable_Network_Graphics">
                 <emphasis>Portable Network Graphics (PNG)</emphasis></ulink> is an
                 ISO/IEC standard (15948:2004) and is also a W3C recommendation.
                 PNG is a bitmap image format that employs lossless data
@@ -1520,7 +1520,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem><para>
                 <indexterm><primary>PS</primary></indexterm>
-                <ulink url="http://en.wikipedia.org/wiki/PostScript/">
+                <ulink url="http://en.wikipedia.org/wiki/PostScript">
                   <emphasis>PostScript (PS)</emphasis>
                 </ulink> is a page description language and
                 programming language used primarily in the electronic and
@@ -1535,13 +1535,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 vector graphics, both static and animated, and either declarative
                 or scripted.
                 It is an open standard created by the World Wide Web Consortium.
+                <!-- The next part is too literally copied from wikipedia: -->
                 The use of SVG on the web is in its infancy.
-                <!-- Is all this still up to date? -->
                 There is a great deal of inertia due to the long-time use of pure
                 raster formats and other formats like Macromedia Flash or Java
                 applets, but also browser support is still uneven, with native
-                support in Opera and Firefox, but Safari and Internet Explorer
-                require a plugin.
+                support in Opera, Safari and Firefox, but Internet Explorer
+                requires a plugin.
                 See PGML above.
               </para></listitem>
 
@@ -1553,7 +1553,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <title>Object Constraint Language (OCL)</title>
             <para>
-              <ulink url="[http://en.wikipedia.org/wiki/Object_Constraint_Language">
+              <ulink url="http://en.wikipedia.org/wiki/Object_Constraint_Language">
               <emphasis>Object Constraint Language (OCL)</emphasis></ulink>
               is a declarative language for describing rules that apply
               to UML models.
@@ -1700,7 +1700,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para>Download the binary executable code. This is the 
+                <para>Download the Windows installer program. This is the 
+                right option if you are on Windows 
+                and intend using ArgoUML regularly.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para>Download the binary executable code. 
+                Unless you are on Windows, this is the 
                 right option if you intend using ArgoUML regularly and 
                 is not that difficult.</para>
 
@@ -1710,7 +1719,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                 <para>
                   <indexterm><primary>Build</primary></indexterm>
-                  Download the source code using CVS and build your own version.
+                  Download the source code using Subversion and build your own version.
                   Choose this option if you want to look at the internal
                   workings of ArgoUML, or want to join in as a developer.
                   This option does require the whole JDK 
@@ -1721,7 +1730,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             </orderedlist>
 
-            <para>All three options are freely available through the 
+            <para>All four options are freely available through the 
             project web site, <ulink url="http://argouml.tigris.org">
             argouml.tigris.org</ulink>.</para>
 
@@ -1770,6 +1779,27 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <sect3>
 
+            <title>Using the Windows installer</title>
+
+            <para>If you choose to download and install 
+            using the Windows installer, you 
+            will have a choice of downloading the latest stable version 
+            of the code (which will be more reliable, but not have all 
+            the latest features), or the current version (which will be 
+            less reliable, but have more features). Choose according to 
+            your own situation.</para>
+
+            <para>
+            	The install wizard gives you the opportunity to install
+            	the latest "JRE" (Java Runtime Environment). There is no
+            	need to select this if you already have a Sun Java
+            	installed, version 5 or better.
+            </para>
+
+          </sect3>
+
+          <sect3>
+
             <title>Downloading the Binary Executable</title>
 
             <para>If you choose to download the binary executable, you 
@@ -1782,15 +1812,19 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             <para>ArgoUML comes in <literal>.zip</literal> or <literal>
             tar.gz</literal> flavors. Choose the former if you are a 
             Microsoft Windows user, and the latter if you are running 
-            some flavor of Unix. Unpacking is as follows.</para>
+            some flavor of Unix. 
+            There is also a Mac OS X version with <literal>.app.tgz</literal> extension.
+            Unpacking is as follows.
+            </para>
 
             <itemizedlist>
 
               <listitem>
 
                 <para>On Windows. Unzip the <literal>.zip</literal> 
-                file with WinZip, or on later versions of Windows (ME, 
-                XP) copy the files out of the compressed folder and put 
+                file with WinZip, or if your version of Windows 
+                supports it,
+                copy the files out of the compressed folder and put 
                 them into a directory of your choosing.</para>
 
               </listitem>
@@ -1816,7 +1850,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <sect3 id="s4.probsolving">
 
-            <title>Problems Downloading</title>
+            <title>Problems Downloading and Installing</title>
 
             <para>If you get completely stuck and you have no local 
             assistance, try the web site, particularly the 
@@ -1857,20 +1891,23 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                 <para>
-                  On Windows. Start an MSDOS shell window by e.g. 
+                  On Windows. If you used the installer, starting ArgoUML is a matter of clicking on its icon.
+                  In case you installed the binairy executable, read on:
+                  Start an MSDOS shell window by e.g. 
                   using Start/Run with <quote>command</quote> in the text window.
                   In the window change to the directory holding your ArgoUML files
                   and type <literal>java -jar argouml.jar</literal>.
                   This method has the advantage that progress and debugging
                   information is visible in the DOS window. 
-                  Alternatively create a batch file (.bat) containing the above
+                  Alternatively use the supplied batch file (.bat), 
+                  or create one containing the above
                   command, with a shortcut to it on the desktop.
                   The batch file should end with a "pause" statement in case any
                   debugging information is created during a run.
                   On some systems, simply (double) clicking on the
                   <literal>argouml.jar</literal> file works.
                   On others doing so initiates a zip utility.
-                  Refer to you operating system instructions or help facility
+                  Refer to your operating system instructions or help facility
                   to determine how to configure this.
                 </para>
 
@@ -2147,11 +2184,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               <listitem>
 
                     <para>
-                      <emphasis>File=&gt;Properties.</emphasis>
+                      <emphasis>File=&gt;Project Properties.</emphasis>
                       You can change the Notation language in the
-                      Properties dialog as well.
+                      Project Properties dialog as well.
                       Click on
-                      <emphasis>File=&gt;Properties</emphasis> and select
+                      <emphasis>File=&gt;Project Properties</emphasis> and select
                       the Notations tab.
                       Set the Notation Language to UML1.4.
                       Turn on all of the options and click Apply.
@@ -2209,6 +2246,21 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   </listitem>
                   <listitem>
                     <para>
+                      Open everything in the Explorer Pane tree, 
+                      so that all elements are visible.
+                      Now activate the first menu item:
+                      <emphasis>Edit=&gt;Select=&gt;All</emphasis>.
+                      Obviously, this selects all elements, 
+                      but only those on the current diagram - elements 
+                      only present on another diagram are not selected this way.
+                      This function is e.g. usefull if you have a big diagram, 
+                      and need to shift everything 
+                      to add some more elements 
+                      at the left or top of the diagram.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
                       Each of the classes in the diagram has three vertically
                       spaced sections.
                       Double click in the top section of each class and
@@ -2244,7 +2296,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                   <listitem>
                     <para>
                       Do an
-                      <emphasis>Edit=&gt;Select=&gt;Remove From Diagram</emphasis>.
+                      <emphasis>Edit=&gt;Remove From Diagram</emphasis>.
                       Notice that class B is gone from the diagram but still
                       exists in the Explorer Pane.
                     </para>
@@ -2258,7 +2310,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                       You should be pretty much right back where you were before
                       you removed it from the diagram.
                       Do an
-                      <emphasis>Edit=&gt;Select=&gt;Delete From Model</emphasis>.
+                      <emphasis>Edit=&gt;Delete From Model</emphasis>.
                       Now class B should be gone both from the diagram and from
                       the Explorer Pane.
                     </para>
@@ -2275,7 +2327,23 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 </para>
               </listitem>
               <listitem>
-                <para>
+
+              <figure float="1" id="fig.tut.settings.preferences">
+
+              	<title>Initial ArgoUML window</title>
+
+              	<screenshot>
+              		<mediaobject>
+              			<imageobject>
+              				<imagedata align="center"
+              					fileref="images/tutorial/settings-preferences.png" format="PNG" />
+              			</imageobject>
+              		</mediaobject>
+              	</screenshot>
+
+              </figure>
+
+              <para>
                   <emphasis>Edit=&gt;Settings=&gt;Preferences</emphasis>.
                   Enter Help=&gt;About ArgoUML.
                   Look at the panel in the "splash" tab.
@@ -2317,7 +2385,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 <emphasis>Edit=&gt;Settings=&gt;Notations</emphasis>.
                 We played around with this earlier with the
                 <emphasis>File=&gt;Notation</emphasis> and
-                <emphasis>File=&gt;Properties</emphasis> menu items.
+                <emphasis>File=&gt;Project Properties</emphasis> menu items.
                 Start another copy of ArgoUML resize each copy so they can
                 be seen at the same time next to each other.
                 On one of them set the Notation Language to UML
@@ -2333,9 +2401,13 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 Double click in the operation section to create a method.
                 Observe the difference in the displays.
               </para></listitem>
+             <listitem><para>
+                <emphasis>Edit=&gt;Settings=&gt;Diagram Appearance</emphasis>.
+                (To be written).
+              </para></listitem>
               <listitem><para>
                 <emphasis>Edit=&gt;Settings=&gt;Modules</emphasis>.
-                This is work in progress.
+                This shows the currently loaded modules.
                 We are not going to mess with it in this version of the
                 tutorial.
               </para></listitem>
