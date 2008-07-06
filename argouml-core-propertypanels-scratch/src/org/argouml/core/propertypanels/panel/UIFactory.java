@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
@@ -63,6 +64,7 @@ import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerListModel;
+import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerScopeCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
@@ -73,8 +75,11 @@ import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementSupplierDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
+import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
+import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTargetScopeCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.argouml.uml.ui.model_management.UMLClassifierPackageImportsListModel;
+import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.LabelledLayout;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -291,6 +296,15 @@ public class UIFactory {
             visibilityPanel.setTarget(target);
             return visibilityPanel;
         }
+        if ("changeability".equals(prop.getName())) {
+            UMLRadioButtonPanel panel =   
+                new UMLStructuralFeatureChangeabilityRadioButtonPanel(
+                    Translator.localize("label.changeability"), 
+                    true); 
+            panel.setTarget(target);
+            return panel;
+            
+        }
         // log something? Invalid XML!
         return null;
     }
@@ -304,6 +318,9 @@ public class UIFactory {
     protected JPanel buildCheckGroup(Object target,
             XMLPropertyPanelsDataRecord prop) {
         JPanel p = new JPanel();
+        TitledBorder border = new TitledBorder(prop.getName());        
+        p.setBorder(border);
+        
         if ("modifiers".equals(prop.getName())) {  
             // TODO: The checkboxes must be explicitly said at the
             // XML. Interface and UmlClass differ on "derived"
@@ -337,6 +354,10 @@ public class UIFactory {
         else if ("active".equals(p.getName())) {
             checkbox = new UMLClassActiveCheckBox();    
         }        
+        else if ("static".equals(p.getName())) {
+            checkbox = new UMLFeatureOwnerScopeCheckBox();    
+        }        
+
         if (checkbox != null) {
             checkbox.setTarget(target);
         }
