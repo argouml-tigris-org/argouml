@@ -41,9 +41,12 @@ import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLCheckBox2;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
@@ -51,6 +54,7 @@ import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
+import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassAttributeListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
@@ -66,6 +70,7 @@ import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementSupplierDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
+import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.argouml.uml.ui.model_management.UMLClassifierPackageImportsListModel;
 import org.tigris.swidgets.LabelledLayout;
 import org.xml.sax.InputSource;
@@ -124,19 +129,27 @@ public class UIFactory {
             
             if ("text".equals(prop.getType())) {
                 JPanel p = buildTextboxPanel(target, prop);
-                panel.add(p);
+                if (p != null) {
+                    panel.add(p);
+                }
             }
             else if ("combo".equals(prop.getType())) {
                 JPanel p = buildComboPanel(target, prop);
-                panel.add(p);
+                if (p != null) {
+                    panel.add(p);
+                }
             }
             else if ("checkgroup".equals(prop.getType())) {
                 JPanel p = buildCheckGroup(target, prop);
-                panel.add(p);
+                if (p != null) {
+                    panel.add(p);
+                }
             }
             else if ("optionbox".equals(prop.getType())) {
                 JPanel p = buildOptionBox(target, prop);
-                panel.add(p);
+                if (p != null) {
+                    panel.add(p);
+                }
             }
             else if ("list".equals(prop.getType())) {
                 JPanel p = new JPanel();               
@@ -266,7 +279,9 @@ public class UIFactory {
             // we must build the checkboxes
             for (XMLPropertyPanelsDataRecord data : prop.getChildren()) {
                 UMLCheckBox2 checkbox = buildCheckBox(target, data);
-                p.add(checkbox);
+                if (checkbox != null) {
+                    p.add(checkbox);
+                }
             }                            
         }
         return p;
@@ -310,19 +325,37 @@ public class UIFactory {
         JLabel label = new JLabel(name);
         p.add(label);
 
+        UMLComboBoxModel2 model = null;
+        JComboBox combo = null;
+        
         if ("namespace".equals(prop.getName())) {
-            UMLModelElementNamespaceComboBoxModel namespaceModel =
+            model = 
                 new UMLModelElementNamespaceComboBoxModel();                    
-            namespaceModel.setTarget(target);
-            JComboBox namespaceSelector = new UMLSearchableComboBox(
-                    namespaceModel,
+            model.setTarget(target);
+            combo = new UMLSearchableComboBox(
+                    model,
                     new ActionSetModelElementNamespace(), true);
             
-            p.add(namespaceSelector);
+            p.add(combo);
+            // TODO: What about an
+            // UMLSearchableNavigableComboBox?
             p.add(new UMLComboBoxNavigator(
                     Translator.localize(
                     "label.namespace.navigate.tooltip"),
-                    namespaceSelector));
+                    combo));
+        }
+        if ("type".equals(prop.getName())) {
+            model =  new UMLStructuralFeatureTypeComboBoxModel();
+            model.setTarget(target);
+            combo = new UMLComboBox2(
+                    model,
+                    ActionSetStructuralFeatureType.getInstance());
+            p.add(combo);
+        }
+        if ("multiplicity".equals(prop.getName())) {            
+            UMLMultiplicityPanel mPanel = new UMLMultiplicityPanel();
+            // mPanel.setTarget(target);
+            p.add(mPanel);
         }
         return p;
     }
