@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -95,9 +95,9 @@ class SettingsTabShortcuts extends JPanel implements
 
     private JLabel warningLabel = new JLabel(" ");
 
-    private Action target;
+    private ActionWrapper target;
 
-    private Action[] actions = ShortcutMgr.getShortcuts();
+    private ActionWrapper[] actions = ShortcutMgr.getShortcuts();
 
     private int lastRowSelected = -1;
 
@@ -233,7 +233,7 @@ class SettingsTabShortcuts extends JPanel implements
      *            the new target
      */
     private void setTarget(Object t) {
-        target = (Action) t;
+        target = (ActionWrapper) t;
         // let's enable the radiobuttons container
         enableFields(true);
         // updating the radiobuttons container's title
@@ -324,7 +324,7 @@ class SettingsTabShortcuts extends JPanel implements
         // if a shortcut has been select then we have to check if the actual
         // action is in conflict with other ones
         if (!noneButton.isSelected()) {
-            Action oldAction = getActionAlreadyAssigned(ShortcutMgr
+            ActionWrapper oldAction = getActionAlreadyAssigned(ShortcutMgr
                     .decodeKeyStroke(shortcutField.getText()));
             if (oldAction != null) {
                 // this shortcut was already been assigned to another action;
@@ -367,7 +367,7 @@ class SettingsTabShortcuts extends JPanel implements
      *            the KeyStroke to be checked
      * @return the Action that has already been assigned
      */
-    public Action getActionAlreadyAssigned(KeyStroke keyStroke) {
+    public ActionWrapper getActionAlreadyAssigned(KeyStroke keyStroke) {
         for (int i = 0; i < actions.length; i++) {
             if (actions[i].getCurrentShortcut() != null
                     && actions[i].getCurrentShortcut().equals(keyStroke)
@@ -459,7 +459,7 @@ class SettingsTabShortcuts extends JPanel implements
      * @param newKeyStroke      the key stroke to be checked
      */
     private void checkShortcutAlreadyAssigned(KeyStroke newKeyStroke) {
-        Action oldAction = getActionAlreadyAssigned(newKeyStroke);
+        ActionWrapper oldAction = getActionAlreadyAssigned(newKeyStroke);
         if (oldAction != null) {
             // the shortcut has already been assigned to another action!
             this.shortcutField.setBackground(Color.YELLOW);
@@ -474,7 +474,7 @@ class SettingsTabShortcuts extends JPanel implements
     }
 
     /**
-     * Table model for the table with modules.
+     * Table model for the table with actions and shortcuts.
      */
     class ShortcutTableModel extends AbstractTableModel {
 
@@ -485,7 +485,7 @@ class SettingsTabShortcuts extends JPanel implements
             elements = new Object[actions.length][3];
 
             for (int i = 0; i < elements.length; i++) {
-                Action currentAction = actions[i];
+                ActionWrapper currentAction = actions[i];
                 elements[i][0] = currentAction.getActionName();
                 elements[i][1] = currentAction.getCurrentShortcut();
                 elements[i][2] = currentAction.getDefaultShortcut();
@@ -534,8 +534,8 @@ class SettingsTabShortcuts extends JPanel implements
         @Override
         public void setValueAt(Object ob, int row, int col) {
             // if the given object is a KeyStroke instance, then we ca
-            if (ob instanceof Action) {
-                Action newValueAction = (Action) ob;
+            if (ob instanceof ActionWrapper) {
+                ActionWrapper newValueAction = (ActionWrapper) ob;
                 for (int i = 0; i < elements.length; i++) {
                     if (elements[i][0].equals(newValueAction.getActionName())) {
                         elements[i][1] = newValueAction.getCurrentShortcut();
@@ -560,7 +560,8 @@ class SettingsTabShortcuts extends JPanel implements
         /*
          * @see javax.swing.table.TableModel#getColumnClass(int)
          */
-        public Class getColumnClass(int col) {
+        @Override
+        public Class<?> getColumnClass(int col) {
             switch (col) {
             case 0:
                 return String.class;
@@ -581,10 +582,6 @@ class SettingsTabShortcuts extends JPanel implements
             return false;
         }
 
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = -5970280716477119863L;
     }
 }
 
@@ -594,10 +591,6 @@ class SettingsTabShortcuts extends JPanel implements
  * @author andrea.nironi@gmail.com
  */
 class KeyStrokeCellRenderer extends DefaultTableCellRenderer {
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -7086302679799095974L;
 
     /**
      * Construct a table cell rendered for key strokes.
