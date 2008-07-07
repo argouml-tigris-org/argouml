@@ -22,32 +22,32 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.reveng;
+package org.argouml.ui.cmd;
 
-import java.awt.Component;
+import org.argouml.i18n.Translator;
+import org.tigris.gef.base.AdjustPageBreaksAction;
 
 /**
- * An extended interface which identifies an ArgoUML plug-in which imports 
- * source language modules and creates UML model elements in our model.
- * <p>
- * WARNING: This is very new stuff and probably will be changed. If you
- * are going to use it in your import module, then please send a mail to
- * dev@argouml.tigris.org, so that your module gets the needed support
- * until this interface has become stable!
- * 
- * @author Thomas Neustupny
- * @since 0.25.6
+ * This Action toggles the display of the page breaks lines.
+ *
+ * @author Michiel
  */
-public interface ExtendedImportInterface extends ImportInterface {
+public class ActionAdjustPageBreaks extends AdjustPageBreaksAction {
 
     /**
-     * Invokes the import process. Normally, this is done for import modules,
-     * so the module need not invoke it on its own. This is needed only for
-     * extended import module functionality (e.g. displaying a classpath
-     * dialog for JavaImport).
-     * 
-     * @param component the visual component this is called from
-     * @param importCmd the import command to invoke the import
+     * The Constructor.
      */
-    void invokeImport(Component component, ImportCommandInterface importCmd);
+    public ActionAdjustPageBreaks() {
+        this(Translator.localize("menu.adjust-pagebreaks"));
+    }
+
+    /**
+     * The Constructor.
+     * 
+     * @param name the name of the action
+     */
+    public ActionAdjustPageBreaks(String name) {
+        super(name);
+    }
+
 }

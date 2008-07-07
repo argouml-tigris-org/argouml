@@ -342,7 +342,11 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * 
      * @param theNewTarget the target
      */
-    protected void setTarget(Object theNewTarget) {
+    public void setTarget(Object theNewTarget) {
+        if (theNewTarget != null && theNewTarget.equals(comboBoxTarget)) {
+            LOG.debug("Ignoring duplicate setTarget request " + theNewTarget);
+            return;
+        }
         LOG.debug("setTarget target :  " + theNewTarget);
         theNewTarget = theNewTarget instanceof Fig 
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
@@ -465,6 +469,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param o the element to be added
      */
     public void addElement(Object o) {
+        // TODO: For large lists, this is doing a linear search of literally thousands of elements
         if (!objects.contains(o)) {
             objects.add(o);
             fireIntervalAdded(this, objects.size() - 1, objects.size() - 1);

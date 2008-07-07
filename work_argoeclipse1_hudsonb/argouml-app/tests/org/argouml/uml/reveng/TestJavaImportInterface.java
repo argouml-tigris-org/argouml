@@ -84,7 +84,7 @@ public class TestJavaImportInterface extends TestCase {
         new InitProfileSubsystem().init();
 
         Modeller modeller =
-                new Modeller(parsedModel, new DummyImportSettings(),
+                new Modeller(parsedModel, false, false,
                     "TestInterface.java");
         assertNotNull("Creation of Modeller instance failed.", modeller);
 

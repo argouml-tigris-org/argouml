@@ -165,5 +165,6 @@ public class FigPool extends FigNodeModelElement {
     public boolean isSelectable() {
 	return false;
     }
+
 }
 

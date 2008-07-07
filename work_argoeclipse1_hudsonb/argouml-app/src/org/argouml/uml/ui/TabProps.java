@@ -68,7 +68,6 @@ public class TabProps
      */
     private static final Logger LOG = Logger.getLogger(TabProps.class);
 
-    private boolean shouldBeEnabled = false;
     private JPanel blankPanel = new JPanel();
     private Hashtable<Class, TabModelTarget> panels = 
         new Hashtable<Class, TabModelTarget>();
@@ -166,12 +165,16 @@ public class TabProps
     @Deprecated
     public void setTarget(Object target) {
         // targets ought to be UML objects or diagrams
+        LOG.info("setTarget: there are "
+                + TargetManager.getInstance().getTargets().size()
+                + " targets");
+
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
         if (!(target == null || Model.getFacade().isAUMLElement(target) 
                 || target instanceof ArgoDiagram)) {
             return;
         }
-
+        
         if (lastPanel != null) {
             remove(lastPanel);
             if (lastPanel instanceof TargetListener) {
@@ -187,10 +190,10 @@ public class TabProps
         this.target = target;
         if (target == null) {
             add(blankPanel, BorderLayout.CENTER);
-            shouldBeEnabled = false;
+            validate();
+            repaint();
             lastPanel = blankPanel;
         } else {
-            shouldBeEnabled = true;
             TabModelTarget newPanel = null;
             newPanel = findPanelFor(target);
             if (newPanel != null) {
@@ -198,14 +201,13 @@ public class TabProps
             }
             if (newPanel instanceof JPanel) {
                 add((JPanel) newPanel, BorderLayout.CENTER);
-                shouldBeEnabled = true;
                 lastPanel = (JPanel) newPanel;
             } else {
                 add(blankPanel, BorderLayout.CENTER);
-                shouldBeEnabled = false;
+                validate();
+                repaint();
                 lastPanel = blankPanel;
             }
-
         }
     }
 

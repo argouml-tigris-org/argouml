@@ -597,5 +597,40 @@ public class TestCoreFactory extends TestCase {
         
     }
 
+    /**
+     * Test buildRealization and buildAbstraction
+     */
+    public void testBuildRealization() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object client = Model.getCoreFactory().buildClass("ClassA", model);
+        Object supplier = Model.getCoreFactory().buildInterface("InterfaceB",
+                model);
+        Object realization = Model.getCoreFactory().buildRealization(client,
+                supplier, model);
+
+        assertTrue(Model.getFacade().isAAbstraction(realization));
+        assertTrue(Model.getExtensionMechanismsHelper().hasStereotype(
+                realization, "realize"));
+
+        try {
+            Model.getCoreFactory().buildRealization(supplier, supplier, model);
+            fail("buildRealization to self didn't throw exception");
+        } catch (Exception e) {
+            // success
+        }
+
+        Object abstraction = Model.getCoreFactory().buildAbstraction("foo", 
+                supplier, client);
+        assertTrue(Model.getFacade().isAAbstraction(abstraction));
+
+        try {
+            Model.getCoreFactory().buildAbstraction("foo2", supplier, supplier);
+            fail("buildAbstraction to self didn't throw exception");
+        } catch (Exception e) {
+            // success
+        }
+        
+    }
+
 
 }

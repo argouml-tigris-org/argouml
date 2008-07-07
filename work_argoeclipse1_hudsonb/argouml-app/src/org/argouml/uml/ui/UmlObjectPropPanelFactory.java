@@ -22,29 +22,51 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.reveng;
+package org.argouml.uml.ui;
+
+import org.argouml.model.Model;
+import org.argouml.uml.ui.foundation.core.PropPanelElementResidence;
+import org.argouml.uml.ui.model_management.PropPanelElementImport;
 
 /**
- * An interface for an import command, that allows import modules to execute the
- * import process.
- * <p>
- * WARNING: This is very new stuff and probably will be changed. If you
- * are going to use it in your import module, then please send a mail to
- * dev@argouml.tigris.org, so that your module gets the needed support
- * until this interface has become stable!
+ * This factory creates the right PropPanel
+ * for a given UML Object that is not an "element", 
+ * such as Expression and Multiplicity. <p>
  * 
- * @author Thomas Neustupny
- * @since 0.25.6
+ * The complete list of UML objects that are not Element:
+ * ElementImport,
+ * ElementResidence
+ * Expression (9 types)
+ * Multiplicity
+ * MultiplicityRange
+ * TemplateArgument
+ * TemplateParameter
+ *
+ * @author Michiel
  */
-public interface ImportCommandInterface {
+class UmlObjectPropPanelFactory implements PropPanelFactory {
 
-    /**
-     * The execute method for the command instance.
-     * <p>
-     * WARNING: This is very new stuff and probably will be changed. If you
-     * are going to use it in your import module, then please send a mail to
-     * dev@argouml.tigris.org, so that your module gets the needed support
-     * until this method signature has become stable!
-     */
-    public void execute();
+    public PropPanel createPropPanel(Object object) {
+        if (Model.getFacade().isAExpression(object)) {
+            return getExpressionPropPanel(object);
+        }
+        if (Model.getFacade().isAMultiplicity(object)) {
+            return getMultiplicityPropPanel(object);
+        }
+        if (Model.getFacade().isAElementImport(object)) {
+            return new PropPanelElementImport();
+        }
+        if (Model.getFacade().isAElementResidence(object)) {
+            return new PropPanelElementResidence();
+        }
+        return null;
+    }
+
+    private PropPanel getExpressionPropPanel(Object object) {
+        return null;
+    }
+
+    private PropPanel getMultiplicityPropPanel(Object object) {
+        return null;
+    }
 }

@@ -22,32 +22,32 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.reveng;
+package org.argouml.ui.cmd;
+
+import org.argouml.cognitive.Translator;
+import org.tigris.gef.base.SelectInvertAction;
 
 /**
- * An import command, that allows import modules to execute the
- * import process.
+ * This Action inverts the current selection.
  *
- * @author Thomas Neustupny
+ * @author Michiel
  */
-public class ImportCommand implements ImportCommandInterface {
+public class ActionSelectInvert extends SelectInvertAction {
 
-    private Import importer;
-    
+    /**
+     * The constructor.
+     */
+    public ActionSelectInvert() {
+        this(Translator.localize("menu.item.invert-selection"));
+    }
+
     /**
      * The constructor.
      * 
-     * @param imp the Import instance
+     * @param name the name of the action
      */
-    public ImportCommand(Import imp) {
-        importer = imp;
-    }
-    
-    /**
-     * @see org.argouml.uml.reveng.ImportCommandInterface#execute()
-     */
-    public void execute() {
-        importer.doFile();
+    ActionSelectInvert(String name) {
+        super(name);
     }
 
 }

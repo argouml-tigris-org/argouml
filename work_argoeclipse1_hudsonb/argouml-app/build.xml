@@ -175,7 +175,7 @@ Building this requires:
 
   <target name="prepare" depends="init,check-version">
     <!-- create directories -->
-    <echo message="Preparing the build directories"/>
+    <echo message="Preparing the build directories in argouml-app"/>
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes}"/>
 
@@ -221,7 +221,7 @@ Building this requires:
 
   <target name="generateparser" depends="init"
           description="Generate the antlr parsers.">
-    <echo message="Generate parsers"/>
+    <echo message="Generate parsers in argouml-app"/>
 
     <uptodate property="parser.re.is.current"
               targetfile="src/org/argouml/uml/reveng/java/JavaTokenTypes.txt">
@@ -313,7 +313,7 @@ Building this requires:
 
   <target name="update-version" depends="check-version"
           unless="version.is.current">
-    <echo message="Creating ArgoVersion.java for version ${argo.build.version}"/>
+    <echo message="Creating ArgoVersion.java for version ${argo.build.version} in argouml-app"/>
     <filter token="ARGO_RELEASE_VERSION" value="${argo.build.version}"/>
     <copy file="src/templates/ArgoVersion.template"
           filtering="on" 
@@ -328,7 +328,7 @@ Building this requires:
       depends="prepare,update-version,generateparser"
       description="Compile the sources.">
 
-    <echo message="Compiling the sources"/>
+    <echo message="Compiling the sources in argouml-app"/>
 
     <javac debug="${debug}" 
     	   deprecation="${deprecation}"

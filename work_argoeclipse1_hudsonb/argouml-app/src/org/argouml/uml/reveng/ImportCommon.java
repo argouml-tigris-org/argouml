@@ -49,7 +49,6 @@ import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
-import org.argouml.uml.reveng.ImportInterface.ImportException;
 import org.tigris.gef.base.Globals;
 
 /**
@@ -124,13 +123,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     public abstract int getImportLevel();
 
 
-    /*
-     * @see org.argouml.uml.reveng.ImportSettings#getDiagramInterface()
-     */
-    public DiagramInterface getDiagramInterface() {
-        return diagramInterface;
-    }
-
     /**
      * Compute and cache the current diagram interface.
      */
@@ -158,22 +150,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      */
     public abstract String getInputSourceEncoding();
 
-    /*
-     * @see org.argouml.uml.reveng.ImportSettings#isAttributeSelected()
-     */
-    public abstract boolean isAttributeSelected();
-
-    /*
-     * @see org.argouml.uml.reveng.ImportSettings#isDatatypeSelected()
-     */
-    public abstract boolean isDatatypeSelected();
-
-    /*
-     * @see org.argouml.uml.reveng.ImportSettings#getImportSession()
-     */
-    public ImportCommon getImportSession() {
-        return this;
-    }
 
     /**
      * Get the files.  We generate it based on their specified
@@ -448,7 +424,10 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     /**
      * Gets the import classpaths. This should be asked by the GUI for
      * initialization.
+     * 
      * @return a list with Strings representing the classpaths
+     * @deprecated for 0.25.7 by tfmorris. This is a Java importer specific
+     *             method.
      */
     public List<String> getImportClasspath() {
         List<String> list = new ArrayList<String>();
@@ -471,15 +450,13 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      */
     public void layoutDiagrams(ProgressMonitor monitor, int startingProgress) {
 
-        // ArgoEclipse implementation
-        DiagramInterface di = getDiagramInterface();
-        if (di == null) {
+        if (diagramInterface == null) {
             return;
         }
 //        if (monitor != null) {
 //            monitor.updateSubTask(ImportsMessages.layoutingAction);
 //        }
-        List<ArgoDiagram> diagrams = di.getModifiedDiagramList();
+        List<ArgoDiagram> diagrams = diagramInterface.getModifiedDiagramList();
         int total = startingProgress + diagrams.size()
                 / 10;
         for (int i = 0; i < diagrams.size(); i++) {
@@ -542,7 +519,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      * @param filesLeft the files to parse
      * @param monitor the progress meter
      * @param progress the actual progress until now
-     * @throws ImportException exception thrown my import module
      */
     private void doImportInternal(List<File> filesLeft,
             final ProgressMonitor monitor, int progress) {

@@ -77,8 +77,6 @@ import org.tigris.gef.base.AdjustPageBreaksAction;
 import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.DistributeAction;
 import org.tigris.gef.base.ReorderAction;
-import org.tigris.gef.base.SelectAllAction;
-import org.tigris.gef.base.SelectInvertAction;
 import org.tigris.gef.base.ZoomAction;
 
 /**
@@ -310,25 +308,27 @@ public class ShortcutMgr {
     private static final int SHIFTED_DEFAULT_MASK = Toolkit.getDefaultToolkit()
             .getMenuShortcutKeyMask() | KeyEvent.SHIFT_DOWN_MASK;
 
-    private static HashMap shortcutHash = new HashMap(90);
+    private static HashMap<String, ActionWrapper> shortcutHash = 
+        new HashMap<String, ActionWrapper>(90);
 
-    private static HashMap duplicate = new HashMap(10);
+    private static HashMap<KeyStroke, KeyStroke> duplicate = 
+        new HashMap<KeyStroke, KeyStroke>(10);
 
     /**
-     * Return the shortcuts as an Actions array
+     * Return the shortcuts as an ActionWrapper array
      * 
-     * @return an array of Actions
+     * @return an array of ActionWrappers
      */
-    public static Action[] getShortcuts() {
-        Action[] actions = (Action[]) shortcutHash.values().toArray(
-                new Action[shortcutHash.size()]);
-        Arrays.sort(actions, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                String name1 = ((Action) o1).getActionName();
+    static ActionWrapper[] getShortcuts() {
+        ActionWrapper[] actions = shortcutHash.values().toArray(
+                new ActionWrapper[shortcutHash.size()]);
+        Arrays.sort(actions, new Comparator<ActionWrapper>() {
+            public int compare(ActionWrapper o1, ActionWrapper o2) {
+                String name1 = o1.getActionName();
                 if (name1 == null) {
                     name1 = "";
                 }
-                String name2 = ((Action) o2).getActionName();
+                String name2 = o2.getActionName();
                 if (name2 == null) {
                     name2 = "";
                 }
@@ -348,15 +348,14 @@ public class ShortcutMgr {
      */
     public static void assignAccelerator(JMenuItem menuItem, 
             String shortcutKey) {
-        Action shortcut = (Action) shortcutHash.get(shortcutKey);
+        ActionWrapper shortcut = shortcutHash.get(shortcutKey);
 
         if (shortcut != null) {
             KeyStroke keyStroke = shortcut.getCurrentShortcut();
             if (keyStroke != null) {
                 menuItem.setAccelerator(keyStroke);
             }
-            KeyStroke alternativeKeyStroke = (KeyStroke) duplicate
-                    .get(keyStroke);
+            KeyStroke alternativeKeyStroke = duplicate.get(keyStroke);
             if (alternativeKeyStroke != null) {
                 String actionName = (String) menuItem.getAction().getValue(
                         AbstractAction.NAME);
@@ -378,7 +377,7 @@ public class ShortcutMgr {
      */
     public static void assignAccelerator(JPanel panel, 
             String shortcutKey) {
-        Action shortcut = (Action) shortcutHash.get(shortcutKey);
+        ActionWrapper shortcut = shortcutHash.get(shortcutKey);
 
         if (shortcut != null) {
             KeyStroke keyStroke = shortcut.getCurrentShortcut();
@@ -386,8 +385,7 @@ public class ShortcutMgr {
                 panel.registerKeyboardAction(shortcut.getActionInstance(), 
                         keyStroke, JComponent.WHEN_FOCUSED);
             }
-            KeyStroke alternativeKeyStroke = (KeyStroke) duplicate
-                    .get(keyStroke);
+            KeyStroke alternativeKeyStroke = duplicate.get(keyStroke);
             if (alternativeKeyStroke != null) {
                 String actionName = (String) 
                     shortcut.getActionInstance().getValue(AbstractAction.NAME);
@@ -406,8 +404,8 @@ public class ShortcutMgr {
      * @param keyStroke         the KeyStroke to search for
      * @return                  the duplicate, or null if not present
      */
-    public static KeyStroke getDuplicate(KeyStroke keyStroke) {
-        return (KeyStroke) duplicate.get(keyStroke);
+    static KeyStroke getDuplicate(KeyStroke keyStroke) {
+        return duplicate.get(keyStroke);
     }
     
     /**
@@ -417,8 +415,8 @@ public class ShortcutMgr {
      *            the id of the action
      * @return the given action, or null if the action is not found
      */
-    public static Action getShortcut(String actionId) {
-        return (Action) shortcutHash.get(actionId);
+    public static ActionWrapper getShortcut(String actionId) {
+        return shortcutHash.get(actionId);
     }
 
     private static void putDefaultShortcut(String shortcutKey,
@@ -445,7 +443,8 @@ public class ShortcutMgr {
             currentKeyStroke = decodeKeyStroke(confCurrentShortcut);
         }
 
-        Action currentShortcut = new Action(shortcutKey, currentKeyStroke,
+        ActionWrapper currentShortcut = 
+            new ActionWrapper(shortcutKey, currentKeyStroke,
                 defaultKeyStroke, action, actionName);
         shortcutHash.put(shortcutKey, currentShortcut);
     }
@@ -486,9 +485,9 @@ public class ShortcutMgr {
      * @param newActions
      *            the actions array
      */
-    public static void saveShortcuts(Action[] newActions) {
+    static void saveShortcuts(ActionWrapper[] newActions) {
         for (int i = 0; i < newActions.length; i++) {
-            Action oldAction = (Action) shortcutHash
+            ActionWrapper oldAction = shortcutHash
                     .get(newActions[i].getKey());
             if (newActions[i].getCurrentShortcut() == null
                     && newActions[i].getDefaultShortcut() != null) {
@@ -581,7 +580,8 @@ public class ShortcutMgr {
 
         // edit menu
         putDefaultShortcut(ACTION_SELECT_ALL, KeyStroke.getKeyStroke(
-                KeyEvent.VK_A, DEFAULT_MASK), new SelectAllAction());
+                KeyEvent.VK_A, DEFAULT_MASK), 
+                new ActionSelectAll());
         putDefaultShortcut(ACTION_REDO, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
                 DEFAULT_MASK), ProjectActions.getInstance().getRedoAction());
         putDefaultShortcut(ACTION_UNDO, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
@@ -591,7 +591,7 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_NAVIGATE_BACK, null,
                 new NavigateTargetBackAction());
         putDefaultShortcut(ACTION_SELECT_INVERT, null, 
-                new SelectInvertAction());
+                new ActionSelectInvert());
         putDefaultShortcut(ACTION_PERSPECTIVE_CONFIG, null,
                 new ActionPerspectiveConfig());
         putDefaultShortcut(ACTION_SETTINGS, null, new ActionSettings());
@@ -623,7 +623,7 @@ public class ShortcutMgr {
         }
 
         putDefaultShortcut(ACTION_ADJUST_PAGE_BREAKS, null,
-                new AdjustPageBreaksAction());
+                new ActionAdjustPageBreaks());
         putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());
 
         putDefaultShortcut(ACTION_ZOOM_IN, KeyStroke.getKeyStroke(

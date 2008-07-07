@@ -143,7 +143,7 @@ class DefaultUndoManager implements UndoManager {
     }
     
     public synchronized void startInteraction(String label) {
-        LOG.info("Starting interaction " + label);
+        LOG.debug("Starting interaction " + label);
         this.newInteractionLabel = label;
         newInteraction = true;
     }

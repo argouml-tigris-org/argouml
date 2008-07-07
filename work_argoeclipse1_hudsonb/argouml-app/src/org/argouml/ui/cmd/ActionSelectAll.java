@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,40 +22,32 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application;
+package org.argouml.ui.cmd;
 
-import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.cognitive.Translator;
+import org.tigris.gef.base.SelectAllAction;
 
 /**
- * This class <strong>only</strong> encapsulates the ArgoUML version string.<p>
+ * This action selects all elements on the current drawing.
  *
- * It should <strong>not</strong> be edited manually because it is
- * build from the file ArgoVersion.template when necessary.<p>
- * 
- * Since this class resides in the top-level package, 
- * none of its functionality should be used
- * outside this package.
- *
- * @author Thierry Lach
- * @since  Argo0.11.1
+ * @author Michiel
  */
-final class ArgoVersion {
-    /**
-     * Version number.
-     */
-    private static final String VERSION = "@ARGO_RELEASE_VERSION@";
-    private static final String STABLE_VERSION = "0.26";
+public class ActionSelectAll extends SelectAllAction {
 
     /**
-     * Make the version of ArgoUML public. 
+     * The constructor.
      */
-    static void init() {
-        ApplicationVersion.init(VERSION, STABLE_VERSION);
+    public ActionSelectAll() {
+        this(Translator.localize("menu.item.select-all"));
     }
 
     /**
-     * Don't allow instantiation.
+     * The Constructor.
+     * 
+     * @param name the name of the action
      */
-    private ArgoVersion() {
+    ActionSelectAll(String name) {
+        super(name);
     }
+
 }

@@ -28,7 +28,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Action;
@@ -82,8 +81,6 @@ import org.tigris.gef.base.AdjustPageBreaksAction;
 import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.DistributeAction;
 import org.tigris.gef.base.ReorderAction;
-import org.tigris.gef.base.SelectAllAction;
-import org.tigris.gef.base.SelectInvertAction;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**
@@ -370,7 +367,9 @@ public class GenericArgoMenuBar extends JMenuBar implements
         file.addSeparator();
         JMenuItem exitItem = file.add(new ActionExit());
         setMnemonic(exitItem, "Exit");
-        // exit shortcut is not user configurable!
+        /* The "Close window" shortcut (ALT+F4) actually can't 
+         * be registered as a shortcut, 
+         * because it closes the configuration dialog! */
         exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
               InputEvent.ALT_MASK));
 
@@ -404,8 +403,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(select, "Select");
         edit.add(select);
 
-        JMenuItem selectAllItem = select.add(
-                new SelectAllAction(menuItemLocalize("Select All")));
+        JMenuItem selectAllItem = select.add(new ActionSelectAll());
         setMnemonic(selectAllItem, "Select All");
         ShortcutMgr.assignAccelerator(selectAllItem,
                 ShortcutMgr.ACTION_SELECT_ALL);
@@ -420,8 +418,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
                 ShortcutMgr.ACTION_NAVIGATE_FORWARD);
         select.addSeparator();
 
-        JMenuItem selectInvert = select.add(
-                new SelectInvertAction(menuItemLocalize("Invert Selection")));
+        JMenuItem selectInvert = select.add(new ActionSelectInvert());
         setMnemonic(selectInvert, "Invert Selection");
         ShortcutMgr.assignAccelerator(selectInvert,
                 ShortcutMgr.ACTION_SELECT_INVERT);
@@ -509,12 +506,11 @@ public class GenericArgoMenuBar extends JMenuBar implements
         
         JMenu grid = (JMenu) view.add(new JMenu(menuLocalize("Adjust Grid")));
         setMnemonic(grid, "Grid");
-        List gridActions = ActionAdjustGrid.createAdjustGridActions(false);
+        List<Action> gridActions = 
+            ActionAdjustGrid.createAdjustGridActions(false);
         ButtonGroup groupGrid = new ButtonGroup();
         ActionAdjustGrid.setGroup(groupGrid);
-        Iterator i = gridActions.iterator();
-        while (i.hasNext()) {
-            Action cmdAG = (Action) i.next();
+        for ( Action cmdAG : gridActions) {
             JRadioButtonMenuItem mi = new JRadioButtonMenuItem(cmdAG);
             groupGrid.add(mi);
             JMenuItem adjustGrid = grid.add(mi);
@@ -525,12 +521,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         JMenu snap = (JMenu) view.add(new JMenu(menuLocalize("Adjust Snap")));
         setMnemonic(snap, "Snap");
-        List snapActions = ActionAdjustSnap.createAdjustSnapActions();
+        List<Action> snapActions = ActionAdjustSnap.createAdjustSnapActions();
         ButtonGroup groupSnap = new ButtonGroup();
         ActionAdjustSnap.setGroup(groupSnap);
-        i = snapActions.iterator();
-        while (i.hasNext()) {
-            Action cmdAS = (Action) i.next();
+        for ( Action cmdAS : snapActions) {
             JRadioButtonMenuItem mi = new JRadioButtonMenuItem(cmdAS);
             groupSnap.add(mi);
             JMenuItem adjustSnap = snap.add(mi);
@@ -539,7 +533,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
                     ShortcutMgr.ACTION_ADJUST_GUIDE + cmdAS.getValue("ID"));
         }
 
-        JMenuItem adjustPageBreaks = view.add(new AdjustPageBreaksAction());
+        Action pba  = new ActionAdjustPageBreaks();
+        JMenuItem adjustPageBreaks = view.add(pba);
         setMnemonic(adjustPageBreaks, "Adjust Pagebreaks");
         ShortcutMgr.assignAccelerator(adjustPageBreaks,
                 ShortcutMgr.ACTION_ADJUST_PAGE_BREAKS);
@@ -589,7 +584,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         toolbarTools.add((new ActionSequenceDiagram()));
         ShortcutMgr.assignAccelerator(sequenzDiagram,
                 ShortcutMgr.ACTION_SEQUENCE_DIAGRAM);
-
+        
         JMenuItem collaborationDiagram =
             createDiagramMenu.add(new ActionCollaborationDiagram());
         setMnemonic(collaborationDiagram, "Collaboration Diagram");

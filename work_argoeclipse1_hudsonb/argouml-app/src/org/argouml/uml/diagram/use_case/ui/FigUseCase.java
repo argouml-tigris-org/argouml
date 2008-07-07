@@ -31,7 +31,6 @@ import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -75,23 +74,23 @@ import org.tigris.gef.presentation.FigText;
  * Implements all interfaces through its superclasses.<p>
  *
  * There is some coordinate geometry to be done to fit rectangular
- * text boxes inside an elipse. The rectangular text box contains the
+ * text boxes inside an ellipse. The rectangular text box contains the
  * name and any extension points if shown, and is deemed to be of
  * height <em>2h</em> and width <em>2w</em>. We allow a margin of
  * <em>p</em> above the top and below the bottom of the box, so we
- * know the height of the elipse, <em>2b</em> = <em>2h</em> +
+ * know the height of the ellipse, <em>2b</em> = <em>2h</em> +
  * <em>2p</em>.<p>
  *
- * The formula for an elipse of width <em>2a</em> and height
+ * The formula for an ellipse of width <em>2a</em> and height
  * <em>2b</em>, centred on the origin, is<p>
  *
  * <em>x</em>^2/<em>a</em>^2 + <em>y</em>^2/<em>b</em>^2 = 1.<p>
  *
  * We know that a corner of the rectangle is at coordinate
- * (<em>w</em>,<em>h</em>), since the rectangle must also be centred
- * on the origin to fit within the elipse. Subsituting these values
+ * (<em>w</em>,<em>h</em>), since the rectangle must also be centered
+ * on the origin to fit within the ellipse. Substituting these values
  * for <em>x</em> and <em>y</em> in the formula above, we can compute
- * <em>a</em>, half the width of the elipse, since we know
+ * <em>a</em>, half the width of the ellipse, since we know
  * <em>b</em>.<p>
  *
  * <em>a</em> = <em>wb</em>/sqrt(<em>b</em>^2 - <em>h</em>^2).<p>
@@ -129,13 +128,17 @@ public class FigUseCase extends FigNodeModelElement
      * the use case name and extension points to the top of the use
      * case oval itself.<p>
      */
-    protected static final int MIN_VERT_PADDING = 4;
+    private static final int MIN_VERT_PADDING = 4;
+    
+    // Space between ellipse and stereotype underneath
+    private static final int STEREOTYPE_PADDING = 0;
+    
 
     /**
      * Space above and below the line separating name from extension
      * points. The line takes a further 1 pixel.<p>
      */
-    protected static final int SPACER = 2;
+    private static final int SPACER = 2;
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -270,7 +273,7 @@ public class FigUseCase extends FigNodeModelElement
 
         // The separator. We cheat here. Since the name and extension points
         // rectangles are the same size at this stage, this must be at the
-        // midpoint of the elipse.
+        // midpoint of the ellipse.
 
         epSep.setShape(0,
 			ellipse.height / 2,
@@ -613,6 +616,8 @@ public class FigUseCase extends FigNodeModelElement
 
         int newW = (minSize.width > w) ? minSize.width : w;
         int newH = (minSize.height > h) ? minSize.height : h;
+        
+        newH = newH - (getStereotypeFig().getHeight() + STEREOTYPE_PADDING);
 
         // Work out the size of the name and extension point rectangle, and
         // hence the vertical padding
@@ -667,7 +672,7 @@ public class FigUseCase extends FigNodeModelElement
         _x = x;
         _y = y;
         _w = newW;
-        _h = newH;
+        _h = newH + getStereotypeFig().getHeight() + STEREOTYPE_PADDING;
         
         positionStereotypes();
 
@@ -865,13 +870,13 @@ public class FigUseCase extends FigNodeModelElement
         }
 
         /**
-         * Compute the border point of the elipse that is on the edge
+         * Compute the border point of the ellipse that is on the edge
          *   between the stored upper left corner and the given parameter.<p>
          *
          * @param anotherPt  The remote point to which an edge is drawn.
          *
          * @return           The connection point on the boundary of the
-         *                   elipse.
+         *                   ellipse.
          */
         @Override
         public Point connectionPoint(Point anotherPt) {
@@ -1180,7 +1185,8 @@ public class FigUseCase extends FigNodeModelElement
 
                 // Now put the text in
                 // We must handle the case where the text is null
-                String epText = epFig.getNotationProvider().toString(ep, null);
+                String epText = epFig.getNotationProvider().toString(ep, 
+                        getNotationArguments());
                 if (epText == null) {
                     epText = "";
                 }
@@ -1218,7 +1224,7 @@ public class FigUseCase extends FigNodeModelElement
     }
 
     /*
-     * Makes sure that the edges stick to the elipse fig of the usecase. <p>
+     * Makes sure that the edges stick to the ellipse fig of the usecase. <p>
      * 
      * TODO: This function is called way too many times - I count 6x when
      * simply clicking on this usecase, and 20x when clicking on the button
@@ -1268,14 +1274,13 @@ public class FigUseCase extends FigNodeModelElement
             getStereotypeFig().setBounds(
         	    (getX() + getWidth() / 2
         		    - getStereotypeFig().getWidth() / 2),
-        	    (getY() + bigPort.getHeight() + MIN_VERT_PADDING),
+        	    (getY() + bigPort.getHeight() + STEREOTYPE_PADDING),
                     getStereotypeFig().getWidth(),
                     getStereotypeFig().getHeight());
         } else {
             getStereotypeFig().setBounds(0, 0, 0, 0);
         }
     }
-    
 
     /**
      * Get a list of the extension point Figs <em>without</em> the first fig
@@ -1289,10 +1294,4 @@ public class FigUseCase extends FigNodeModelElement
         l.remove(0);
         return l;
     }
-
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -4018623737124023696L;
 }

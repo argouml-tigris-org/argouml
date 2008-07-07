@@ -27,9 +27,14 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -38,6 +43,7 @@ import org.tigris.gef.undo.UndoableAction;
 *
 * @author Eugenio Alvarez
 * Data Access Technologies.
+* TODO: Why do we have this class as well as ActionAddExistingNodes?
 */
 public class ActionAddExistingNode extends UndoableAction {
 
@@ -76,7 +82,27 @@ public class ActionAddExistingNode extends UndoableAction {
      */
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
-        AddExistingNodeCommand cmd = new AddExistingNodeCommand(object);
-        cmd.execute();
+        Editor ce = Globals.curEditor();
+        GraphModel gm = ce.getGraphModel();
+        if (!(gm instanceof MutableGraphModel)) {
+            return;
+        }
+
+        String instructions = null;
+        if (object != null) {
+            instructions =
+                Translator.localize(
+                    "misc.message.click-on-diagram-to-add",
+                    new Object[] {
+                            Model.getFacade().toString(object),
+                    });
+            Globals.showStatus(instructions);
+        }
+        
+        final ModeAddToDiagram placeMode = new ModeAddToDiagram(
+                TargetManager.getInstance().getTargets(),
+                instructions);
+
+        Globals.mode(placeMode, false);
     }
 }

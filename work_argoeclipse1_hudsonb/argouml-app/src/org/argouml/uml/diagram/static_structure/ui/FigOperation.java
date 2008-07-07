@@ -40,6 +40,16 @@ import org.tigris.gef.presentation.Fig;
  */
 public class FigOperation extends FigFeature {
 
+    /**
+     * Constructor.
+     * 
+     * @param x x
+     * @param y x
+     * @param w w
+     * @param h h
+     * @param aFig the fig
+     * @param np the notation provider for the text
+     */
     public FigOperation(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, aFig, np);
@@ -76,7 +86,7 @@ public class FigOperation extends FigFeature {
         }
     }
 
-    /**
+    /*
      * If the Operation is abstract, then the text will be set to italics.
      */
     @Override

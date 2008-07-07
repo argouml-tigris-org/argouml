@@ -1,5 +1,5 @@
-// $Id$
-// Copyright (c) 2006-2008 The Regents of the University of California. All
+// $Id: SequenceDiagramFactory.java 14988 2008-06-17 19:38:48Z bobtarling $
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,48 +22,23 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.reveng;
+package org.argouml.uml.diagram;
 
 /**
- * Extended version of ImportSettings which must be implemented by GUI
- * implementations. NOT FOR USE BY IMPORT MODULES. It is a superset of the
- * settings available to pluggable import modules.
+ * An interface to be implemented by an factories for a specific diagram type.
+ *
+ * @author Bob Tarling
  */
-
-public interface ImportSettingsInternal extends ImportSettings {
-
-    /**
-     * @return true if the directory tree should be descended recursively
-     *         importing all parseable files.
-     */
-    public boolean isDescendSelected();
+public interface DiagramFactoryInterface  {
 
     /**
-     * @return true if user as requested that only sources files which have been
-     *         changed since the last import should be imported this time. If
-     *         false, all files should be imported, regardless of their
-     *         modification date.
+     * Factory method to create a new instance of an ArgoDiagram.
+     * 
+     * @param namespace The namespace that (in)directly 
+     *                        owns the elements on the diagram
+     * @param machine The StateMachine for the diagram
+     *                         (only: statemachine - activitygraph)
+     * @return the newly instantiated diagram
      */
-    public boolean isChangedOnlySelected();
-    
-
-    /**
-     * @return true if the user has requested automatic layout for figures
-     *         placed on diagrams.
-     */
-    public boolean isDiagramLayoutSelected();
-
-    /**
-     * @return true if the user has request diagrams to be created for packages
-     *         contained in the imported source code.
-     */
-    public boolean isCreateDiagramsSelected();
-    
-    /**
-     * @return true, if user has requested that new figures placed in diagrams
-     *         should be minimized so they don't show internal compartments.
-     */
-    public boolean isMinimizeFigsSelected();
-
-
+    public ArgoDiagram createDiagram(Object namespace, final Object machine);
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,7 +45,7 @@ import org.tigris.gef.presentation.FigLine;
  * 
  * This class is adds the possibility to 
  * make the whole compartment invisible, and
- * a NotationProvideer is used to handle (generate and parse) 
+ * a NotationProvider is used to handle (generate and parse) 
  * the texts shown in the compartment, i.e. 
  * the compartment texts are editable by the user.
  */
@@ -200,11 +200,11 @@ public abstract class FigEditableCompartment extends FigCompartment {
                     np.initialiseListener(comp, umlObject);
                 }
                 addFig(comp); // add it again (but now in the right sequence)
-                
+
                 // Now put the text in
                 // We must handle the case where the text is null
-                String ftText =
-                        comp.getNotationProvider().toString(umlObject, null);
+                String ftText = comp.getNotationProvider()
+                    .toString(umlObject, comp.getNpArguments());
                 if (ftText == null) {
                     ftText = "";
                 }

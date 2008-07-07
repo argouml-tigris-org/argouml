@@ -384,7 +384,7 @@ public class FigStereotypesCompartment extends FigCompartment {
         
         if (modelElement != null) {
             Collection stereos = Model.getFacade().getStereotypes(modelElement);
-            if (stereos.size() > 0) {
+            if (stereos.size() > 0 || keyword != null) {
                 dim = super.getMinimumSize();
             }
         }

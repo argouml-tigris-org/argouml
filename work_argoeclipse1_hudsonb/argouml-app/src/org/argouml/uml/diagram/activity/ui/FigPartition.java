@@ -98,7 +98,8 @@ public class FigPartition extends FigNodeModelElement {
      * @param gm ignored
      * @param node the UML element
      */
-    public FigPartition(GraphModel gm, Object node) {
+    public FigPartition(@SuppressWarnings("unused")
+            GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
@@ -291,6 +292,7 @@ public class FigPartition extends FigNodeModelElement {
 	int width = getWidth();
 	FigPool figPool = getFigPool();
         if (figPool == null) { //Needed for project deletion
+            super.removeFromDiagramImpl();
             return;
         }
         
@@ -303,7 +305,13 @@ public class FigPartition extends FigNodeModelElement {
 	    next.translateWithContents(-width);
             next = next.nextPartition;
 	}
-	
+
+        if (nextPartition == null && previousPartition == null) {
+            /* We removed the last partition, so now remove the pool, too: */
+            figPool.removeFromDiagram();
+            return;
+        }
+
 	if (nextPartition != null) {
 	    nextPartition.setPreviousPartition(previousPartition);
 	}

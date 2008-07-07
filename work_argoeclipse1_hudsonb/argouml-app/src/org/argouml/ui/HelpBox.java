@@ -39,6 +39,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.helpers.ApplicationVersion;
 
 /**
  * This is what you see after you activate the "Help->Help" menu-item.
@@ -61,11 +62,10 @@ public class HelpBox extends JFrame implements HyperlinkListener {
      * The names and URLs for the pages.
      */
     private String pages[][] = {{"Manual",
-            "http://argouml-stats.tigris.org/nonav/documentation/"
-                + "manual-0.24/" ,
+            ApplicationVersion.getOnlineManual() ,
             "The ArgoUML online manual"},
         {"Support",
-            "http://argouml.tigris.org/nonav/support.html",
+            ApplicationVersion.getOnlineSupport(),
             "The ArgoUML support page" }};
 
 

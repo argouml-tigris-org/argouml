@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -113,7 +113,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
                 && evt.getNewValue() != null) {
 //            setTarget(t); // this fixes issue 3780, but causes issue 3832.
             buildModelList();
-            /* In some cases (se issue 3780) the list remains the same, but
+            /* In some cases (see issue 3780) the list remains the same, but
              * the selected item differs. Without the next step,
              * the combo would not be refreshed.
              */

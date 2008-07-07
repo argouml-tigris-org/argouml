@@ -24,6 +24,7 @@
 
 package org.argouml.uml.reveng;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -75,7 +76,7 @@ public class Setting implements SettingsTypes.Setting2 {
      * would be labeled checkbox.
      */
     public static class BooleanSelection extends Setting
-        implements SettingsTypes.BooleanSelection {
+        implements SettingsTypes.BooleanSelection2 {
 
         private boolean defaultValue;
         private boolean value;
@@ -106,36 +107,117 @@ public class Setting implements SettingsTypes.Setting2 {
         public final boolean getDefaultValue() {
             return defaultValue;
         }
+        
+        public final void setSelected(boolean selected) {
+            this.value = selected;
+        }
     }
     
+    /**
+     * A setting that allows a single selection from a list of choices.
+     * 
+     * @see SettingsTypes.UniqueSelection2
+     * @author Bogdan Pistol
+     * 
+     */
     public static class UniqueSelection extends Setting implements
-            SettingsTypes.UniqueSelection {
+            SettingsTypes.UniqueSelection2 {
 
+        /**
+         * The list of String options
+         */
         private List<String> options;
-
-        private int selection;
-
-        public UniqueSelection(String labelText, List<String> optionLabels,
-                int defaultSelection) {
-            super(labelText);
-            options = optionLabels;
-            this.selection = selection;
+        
+        /**
+         * Default selection is UNDEFINED
+         */
+        private int defaultSelection = UNDEFINED_SELECTION;
+        
+        /**
+         * The selection is UNDEFINED
+         */
+        private int selection = UNDEFINED_SELECTION;
+        
+        /**
+         * Constructor
+         * 
+         * @param label the user visible string to associate with this setting
+         * @param variants
+         *            the list of String options
+         * @param defaultVariant
+         *            the default selection or UNDEFINED_SELECTION
+         */
+        public UniqueSelection(String label, List<String> variants,
+                int defaultVariant) {
+            super(label);
+            options = variants;
+            if (isOption(defaultVariant)) {
+                defaultSelection = defaultVariant;
+            }
         }
 
+        /**
+         * Tests if this is a valid option.
+         * 
+         * @param opt
+         *            the option to test
+         * @return true if it's OK and false otherwise
+         */
+        private boolean isOption(int opt) {
+            if (options == null) {
+                return false;
+            }
+            return opt >= 0 && opt < options.size() ? true : false;        
+        }
+
+        /*
+         * @see org.argouml.uml.reveng.ImportSettingTypes.UniqueSelection#getDefaultSelection()
+         */
         public int getDefaultSelection() {
-            return selection;
+            return defaultSelection;
         }
 
+        /*
+         * We return a new List with the options instead of the options themself
+         * because we don't want the user to be able to change the options.
+         * 
+         * @see org.argouml.uml.reveng.SettingsTypes.UniqueSelection#getOptions()
+         */
         public List<String> getOptions() {
-            return options;
+            return Collections.unmodifiableList(options);
         }
 
-        public boolean setSelection(int selection) {
-            this.selection = selection;
-            return true;
+        /*
+         * @see org.argouml.uml.reveng.ImportSettingTypes.UniqueSelection#setSelection(int)
+         */
+        public boolean setSelection(int sel) {
+            if (isOption(sel)) {
+                selection = sel;
+                return true;
+            } else {
+                return false;
+            }
         }
+        
+        /**
+         * This method (package access) determines the selected option.
+         * 
+         * @return the 0-based index of the selected option or the default
+         *         option if no other option was selected
+         */
+        public int getSelection() {
+            if (selection == UNDEFINED_SELECTION) {
+                return defaultSelection;
+            } else {
+                return selection;
+            }
+        }
+
     }
 
+    /**
+     * A selection for a single path (e.g. file system path or directory).
+     */
     public static class PathSelection extends Setting implements
             SettingsTypes.PathSelection {
 
@@ -143,11 +225,19 @@ public class Setting implements SettingsTypes.Setting2 {
 
         private String defaultPath;
 
+        /**
+         * Construct a PathSelection with the given attributes.
+         * 
+         * @param labelText string to use for the label of the path list
+         * @param descriptionText longer description of the purpose of this
+         *                pathlist (appropriate for a tooltip)
+         * @param defaultValue initial value of the path 
+         */
         public PathSelection(String labelText, String descriptionText,
-                String defaultPath) {
+                String defaultValue) {
             super(labelText, descriptionText);
-            this.defaultPath = defaultPath;
-            path = defaultPath;
+            defaultPath = defaultValue;
+            path = defaultValue;
         }
 
         public String getDefaultPath() {
@@ -169,6 +259,9 @@ public class Setting implements SettingsTypes.Setting2 {
 
     }
 
+    /**
+     * An implementation of the PathListSelection.
+     */
     public static class PathListSelection extends Setting implements
             SettingsTypes.PathListSelection {
 
@@ -176,11 +269,19 @@ public class Setting implements SettingsTypes.Setting2 {
 
         private List<String> pathList;
 
+        /**
+         * Construct a new PathListSelection with the given attributes.
+         * 
+         * @param labelText string to use for the label of the path list
+         * @param descriptionText longer description of the purpose of this
+         *                pathlist (appropriate for a tooltip)
+         * @param defaultList inital values of the path list
+         */
         public PathListSelection(String labelText, String descriptionText,
-                List<String> defaultPathList) {
+                List<String> defaultList) {
             super(labelText, descriptionText);
-            this.defaultPathList = defaultPathList;
-            pathList = defaultPathList;
+            defaultPathList = defaultList;
+            pathList = defaultList;
         }
 
         public List<String> getDefaultPathList() {
@@ -189,6 +290,10 @@ public class Setting implements SettingsTypes.Setting2 {
 
         public List<String> getPathList() {
             return pathList;
+        }
+
+        public void setPathList(List<String> newPathList) {
+            pathList = newPathList;
         }
 
     }

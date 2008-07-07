@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import org.argouml.model.Model;
@@ -159,7 +160,6 @@ public class FigCompositeState extends FigState {
         Dimension nameDim = getNameFig().getMinimumSize();
         List regionsList = getEnclosedFigs();
 
-
         /* If it is concurrent and contains concurrent regions,
         the bottom region has a minimum height*/
         if (getOwner() != null) {
@@ -167,8 +167,8 @@ public class FigCompositeState extends FigState {
                     && !regionsList.isEmpty()
                     && regionsList.get(regionsList.size() - 1)
                         instanceof FigConcurrentRegion) {
-                FigConcurrentRegion f = ((FigConcurrentRegion) regionsList
-                        .get(regionsList.size() - 1));
+                FigConcurrentRegion f = 
+                    ((FigConcurrentRegion) regionsList.get(regionsList.size() - 1));
                 Rectangle regionBounds = f.getBounds();
                 if ((h - oldBounds.height + regionBounds.height)
                         <= (f.getMinimumSize().height)) {
@@ -219,6 +219,19 @@ public class FigCompositeState extends FigState {
             }
         }
 
+    }
+    
+    @Override
+    public Vector<Fig> getEnclosedFigs() {
+        Vector<Fig> enclosedFigs = super.getEnclosedFigs();
+        
+        TreeMap<Integer, Fig> figsByY = new TreeMap<Integer, Fig>();
+        for (Fig fig : enclosedFigs) {
+            if (fig instanceof FigConcurrentRegion) {
+                figsByY.put(fig.getY(), fig);
+            }
+        }
+        return new Vector<Fig>(figsByY.values());
     }
 
     /**

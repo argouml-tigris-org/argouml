@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,6 +33,7 @@ import java.util.Observable;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.critics.SnoozeOrder;
 import org.argouml.cognitive.critics.Wizard;
@@ -148,23 +149,15 @@ public class Critic
 	Translator.localize("misc.knowledge.tool");
 
     /**
-     * This function calculates the default url to describe this critic.
-     * This syntax is synchronized with:
-     * <ol>
-     * <li>Tags in the manual.
-     * <li>Name of the ArgoUML site.
-     * <li>How the manual is deployed on the site.
-     * </ol>
-     * so this must be updated when any of these change.
+     * This function calculates the default URL to describe this critic.
      *
-     * @return the url in string format
+     * @return the URL in string format
      */
     public final String defaultMoreInfoURL() {
 	String clsName = getClass().getName();
 	clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
-	return "http://argouml-stats.tigris.org/documentation/"
-	    + "manual-0.24-single/argomanual.html"
-	    + "#critics." + clsName;
+	return ApplicationVersion.getManualForCritic()
+	    + clsName;
     }
 
     ////////////////////////////////////////////////////////////////

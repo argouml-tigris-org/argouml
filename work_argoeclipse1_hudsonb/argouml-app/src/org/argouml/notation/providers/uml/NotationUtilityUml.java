@@ -375,7 +375,7 @@ public final class NotationUtilityUml {
             Object nspe =
                 Model.getModelManagementHelper().getElement(
                         path,
-                        Model.getFacade().getModel(me));
+                        Model.getFacade().getRoot(me));
 
             if (nspe == null || !(Model.getFacade().isANamespace(nspe))) {
                 String msg = 
@@ -509,7 +509,7 @@ public final class NotationUtilityUml {
         // Copy returned parameters because it will be a live collection for MDR
         Collection origParam =
             new ArrayList(Model.getFacade().getParameters(op));
-        Object ns = Model.getFacade().getModel(op);
+        Object ns = Model.getFacade().getRoot(op);
         if (Model.getFacade().isAOperation(op)) {
             Object ow = Model.getFacade().getOwner(op);
 
@@ -811,7 +811,7 @@ public final class NotationUtilityUml {
 
         /**
          * Constructs a new PropertySpecialString that will invoke the
-         * action in op when {@link #invoke(Object, String, String)} is
+         * action in propop when {@link #invoke(Object, String, String)} is
          * called with name equal to str and then return true from invoke.
          *
          * @param str
@@ -825,8 +825,9 @@ public final class NotationUtilityUml {
         }
 
         /**
-         * Called by {@link ParserDisplay#setProperties(Object, java.util.Vector,
-         * PropertySpecialString[])} while searching for an action to
+         * Called by {@link NotationUtilityUml#setProperties(Object, 
+         * java.util.Vector, PropertySpecialString[])} while 
+         * searching for an action to
          * invoke for a property. If it returns true, then setProperties
          * may assume that all required actions have been taken and stop
          * searching.
@@ -835,10 +836,12 @@ public final class NotationUtilityUml {
          *            The name of a property.
          * @param value
          *            The value of a property.
+         * @param element
+         *            A model element to apply the properties to.
          * @return <code>true</code> if an action is performed, otherwise
          *         <code>false</code>.
          */
-        public boolean invoke(Object element, String pname, String value) {
+        boolean invoke(Object element, String pname, String value) {
             if (!name.equalsIgnoreCase(pname)) {
                 return false;
             }
@@ -898,18 +901,74 @@ public final class NotationUtilityUml {
     }
 
     /**
-     * TODO: Rewrite this, so that it does not use the Project.
+     * Generate the text for one or more stereotype(s).
      * 
      * @param st a stereotype UML object
      *                 or a string
      *                 or a collection of stereotypes
      *                 or a modelelement of which the stereotypes are retrieved
      * @param args arguments that may determine the notation
-     * @return a string representing the given stereotype(s). 
-     * This string is guaranteed not null.
+     * The values of "leftGuillemot" and "rightGuillemot" influence the outcome.
+     * @return a string representing the given stereotype(s)
      */
     public static String generateStereotype(Object st, Map args) {
-        return generateStereotype(st);
+        if (st == null) {
+            return "";
+        }
+
+        if (st instanceof String) {
+            return formatSingleStereotype((String) st, args);
+        }
+        if (Model.getFacade().isAStereotype(st)) {
+            return formatSingleStereotype(Model.getFacade().getName(st), args);
+        }
+
+        if (Model.getFacade().isAModelElement(st)) {
+            st = Model.getFacade().getStereotypes(st);
+        }
+        if (st instanceof Collection) {
+            Object o;
+            StringBuffer sb = new StringBuffer(10);
+            boolean first = true;
+            Iterator iter = ((Collection) st).iterator();
+            while (iter.hasNext()) {
+                if (!first) {
+                    sb.append(',');
+                }
+                o = iter.next();
+                if (o != null) {
+                    sb.append(Model.getFacade().getName(o));
+                    first = false;
+                }
+            }
+            if (!first) {
+                return formatSingleStereotype(sb.toString(), args);
+            }
+        }
+        return "";
+    }
+
+    /**
+     * Create a string representation of a single stereotype.
+     * This function generates angled brackets or guillemets 
+     * depending in the project's settings.
+     * 
+     * @param name the name of the stereotype
+     * @param args any arguments
+     * @return the string representation
+     */
+    public static String formatSingleStereotype(String name, Map args) {
+        if (name == null || name.length() == 0) {
+            return "";
+        }
+        if (args != null) {
+            if (args.get("leftGuillemot") != null 
+                    && args.get("rightGuillemot") != null) {
+                return args.get("leftGuillemot") + name 
+                    + args.get("rightGuillemot");
+            }
+        }
+        return "<<" + name + ">>";
     }
 
     /**
@@ -922,6 +981,7 @@ public final class NotationUtilityUml {
      * with the arguments Map.
      * Rationale: Use the args Map instead of accessing the Project from here.
      */
+    @Deprecated
     public static String generateStereotype(Object st) {
         if (st == null) {
             return "";
@@ -1066,6 +1126,7 @@ public final class NotationUtilityUml {
      * @param m the given multiplicity
      * @return a string (guaranteed not null)
      */
+    @Deprecated
     public static String generateMultiplicity(Object m) {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
@@ -1099,7 +1160,7 @@ public final class NotationUtilityUml {
         }
         if (!NotationProvider.isValue("singularMultiplicityVisible", args)) {
             if ("1".equals(s)) {
-                s =""; 
+                s = ""; 
             }
         }
         return s;
@@ -1139,7 +1200,8 @@ public final class NotationUtilityUml {
                 }
 
                 if (Model.getFacade().getValue(arg) != null) {
-                    p.append(generateExpression(Model.getFacade().getValue(arg)));
+                    p.append(generateExpression(
+                            Model.getFacade().getValue(arg)));
                 }
                 first = false;
             }

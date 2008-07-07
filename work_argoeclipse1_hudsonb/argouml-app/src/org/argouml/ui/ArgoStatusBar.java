@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,30 +24,83 @@
 
 package org.argouml.ui;
 
+import java.text.MessageFormat;
+
+import javax.swing.SwingUtilities;
+
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoHelpEvent;
+import org.argouml.application.events.ArgoHelpEventListener;
+import org.argouml.application.events.ArgoStatusEvent;
+import org.argouml.application.events.ArgoStatusEventListener;
+import org.argouml.i18n.Translator;
 import org.tigris.gef.ui.IStatusBar;
 
 /**
  * A StatusBar that registers itself with the ArgoEventPump to receive
- * help events.
- * <p>
- * Note: it does not register directly for Status events, but instead
- * relies on ProjectBrowser to get the status events (since it needs to
- * monitor them anyway for project save/load events.
+ * help and status events.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
-public class ArgoStatusBar extends StatusBar implements IStatusBar {
+public class ArgoStatusBar extends StatusBar implements IStatusBar,
+        ArgoStatusEventListener, ArgoHelpEventListener {
 
     /**
-     * Default constructor.  Registers itself to receive Help events
+     * Default constructor.  Registers itself to receive Help & Status events
      * from the ArgoUML event pump.
      */
     public ArgoStatusBar() {
         super();
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_HELP_EVENT,
-                new HelpListener(this));
+        ArgoEventPump.addListener(ArgoEventTypes.ANY_HELP_EVENT, this);
+        ArgoEventPump.addListener(ArgoEventTypes.ANY_STATUS_EVENT, this);
+    }
+
+    public void projectLoaded(ArgoStatusEvent e) {
+        String status = MessageFormat.format(
+                Translator.localize("statusmsg.bar.open-project-status-read"),
+                new Object[] {e.getText()});
+        showStatusOnSwingThread(status);
+    }
+
+    public void projectModified(ArgoStatusEvent e) {
+        String status = MessageFormat.format(
+                Translator.localize("statusmsg.bar.project-modified"),
+                new Object[] {e.getText()});
+        showStatusOnSwingThread(status);
+    }
+
+    public void projectSaved(ArgoStatusEvent e) {
+        String status = MessageFormat.format(
+                Translator.localize("statusmsg.bar.save-project-status-wrote"),
+                new Object[] {e.getText()});
+        showStatusOnSwingThread(status);
+    }
+
+    public void statusCleared(ArgoStatusEvent e) {
+        showStatusOnSwingThread("");
+    }
+
+    public void statusText(ArgoStatusEvent e) {
+        showStatusOnSwingThread(e.getText());
+    }
+
+    public void helpChanged(ArgoHelpEvent e) {
+        showStatusOnSwingThread(e.getHelpText());
+    }
+
+    public void helpRemoved(ArgoHelpEvent e) {
+        showStatusOnSwingThread("");
+    }
+    
+    // We don't know what thread events will be delivered on, so make sure
+    // we run Swing methods on the Swing thread
+    private void showStatusOnSwingThread(final String status) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                showStatus(status);
+            }
+        });
     }
 
 }

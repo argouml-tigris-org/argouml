@@ -65,7 +65,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -879,11 +878,20 @@ public abstract class FigEdgeModelElement
         if (notationProviderName != null) {
             notationProviderName.cleanListener(this, own);
         }
-        // TODO: Should this be looking for a NamedElement? - tfm
+        /* This should NOT be looking for a NamedElement, 
+	 * since this is not always about the name of this 
+	 * modelelement alone.*/
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), own, this);
+            Project p = getProject();
+            if (p != null) {
+                npArguments.put("rightGuillemot", 
+                        p.getProjectSettings().getRightGuillemot());
+                npArguments.put("leftGuillemot", 
+                        p.getProjectSettings().getLeftGuillemot());
+            }
         }
     }
 

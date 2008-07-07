@@ -59,9 +59,11 @@ public class TestStateBodyNotationUml extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
+        InitializeModel.initializeDefault();
+        assertTrue("Model subsystem init failed.", Model.isInitiated());
+        new InitProfileSubsystem().init();
         Object model =
             Model.getModelManagementFactory().createModel();
-        new InitProfileSubsystem().init();
         Project p = ProjectManager.getManager().getCurrentProject();
         aClass = Model.getCoreFactory().buildClass(model);
         Object returnType = p.getDefaultReturnType();
@@ -170,7 +172,7 @@ public class TestStateBodyNotationUml extends TestCase {
     /**
      * Check if the elements are generated or not.
      *
-     * @param st          the parent state in which a substate is to be created
+     * @param st          the parent state in which a sub-state is to be created
      * @param text        the text to be parsed
      * @param entryAction true if an entry action is expected to be created
      * @param exitAction  true if an exit action is expected to be created

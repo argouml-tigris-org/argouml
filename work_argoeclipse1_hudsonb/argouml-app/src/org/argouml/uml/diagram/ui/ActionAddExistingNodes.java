@@ -29,11 +29,14 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -82,11 +85,22 @@ public class ActionAddExistingNodes extends UndoableAction {
     @Override
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
-        if (!objects.isEmpty()) {
-            ArgoDiagram dia = ProjectManager.getManager().getCurrentProject()
-                    .getActiveDiagram();
-            addNodes(objects, null, dia);
+        Editor ce = Globals.curEditor();
+        GraphModel gm = ce.getGraphModel();
+        if (!(gm instanceof MutableGraphModel)) {
+            return;
         }
+
+        String instructions =
+            Translator.localize(
+                "misc.message.click-on-diagram-to-add");
+        Globals.showStatus(instructions);
+        
+        final ModeAddToDiagram placeMode = new ModeAddToDiagram(
+                objects,
+                instructions);
+
+        Globals.mode(placeMode, false);
     }
     
     /**

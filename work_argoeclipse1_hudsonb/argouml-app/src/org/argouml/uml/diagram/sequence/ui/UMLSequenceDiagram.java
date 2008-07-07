@@ -140,13 +140,13 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
             args.put("name", SEQUENCE_EXPAND_BUTTON);
             actions[5] =
-		new RadioAction(new ActionSetMode(ModeChangeHeight.class,
+		new RadioAction(new ActionSetMode(ModeExpand.class,
 					       args,
 					       SEQUENCE_EXPAND_BUTTON));
             args.clear();
             args.put("name", SEQUENCE_CONTRACT_BUTTON);
             actions[6] =
-		new RadioAction(new ActionSetMode(ModeChangeHeight.class,
+		new RadioAction(new ActionSetMode(ModeContract.class,
 					       args,
 					       SEQUENCE_CONTRACT_BUTTON));
         }

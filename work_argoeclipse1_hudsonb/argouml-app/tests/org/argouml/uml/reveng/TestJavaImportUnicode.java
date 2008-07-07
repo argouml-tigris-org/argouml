@@ -93,7 +93,7 @@ public class TestJavaImportUnicode extends TestCase {
                 parsedModel);
 
         Modeller modeller =
-            new Modeller(parsedModel, new DummyImportSettings(),
+            new Modeller(parsedModel, false, false,
                 "TestClass.java");
         assertNotNull("Creation of Modeller instance failed.", modeller);
 

@@ -111,12 +111,12 @@ public class StatusBar extends JPanel implements Runnable, IStatusBar {
 	    progress.setValue(i);
 	    repaint();
 	    try { wait(10); }
-	    catch (Exception ex) { }
+	    catch (InterruptedException ex) { }
 	}
 	showStatus(statusText + "... done.");
 	repaint();
 	try { wait(1000); }
-	catch (Exception ex) { }
+	catch (InterruptedException ex) { }
 	progress.setValue(0);
 	showStatus("");
 	repaint();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,13 +37,12 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for org.argouml.model");
         //$JUnit-BEGIN$
-//        suite.addTestSuite(TestAGHelperWithMock.class);
         suite.addTestSuite(TestExtensionMechanismsFactory.class);
         suite.addTestSuite(TestModel2.class);
         suite.addTestSuite(TestUmlGeneralization.class);
+        suite.addTestSuite(TestDataTypesFactory.class);
         suite.addTestSuite(TestCommonBehaviorHelper.class);
         suite.addTestSuite(TestModelManagementFactory.class);
-        suite.addTestSuite(TestDataTypesFactory.class);
         suite.addTestSuite(TestModelEventPump.class);
         suite.addTestSuite(TestStateMachinesFactory.class);
         suite.addTestSuite(TestModelManagementHelper.class);
@@ -68,6 +67,7 @@ public class AllTests {
         suite.addTestSuite(TestActivityGraphsHelper.class);
         suite.addTestSuite(TestUmlModel.class);
         suite.addTestSuite(TestUmlActor.class);
+        suite.addTestSuite(TestUmlFactory.class);
         suite.addTest(TestModelFacade3.suite());
         suite.addTestSuite(TestUseCasesFactory.class);
         //$JUnit-END$

@@ -25,6 +25,7 @@
 package org.argouml.util;
 
 import java.io.File;
+
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -33,29 +34,32 @@ import javax.swing.filechooser.FileFilter;
  */
 public class SuffixFilter extends FileFilter {
 
-    ////////////////////////////////////////////////////////////////
-    // instance varaibles
-
-    private final String suffix;
+    private final String[] suffixes;
     private final String desc;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
-
     /**
-     * The constructor.
+     * Construct a file filter files with the given suffix and description.
      *
-     * @param s the suffix string
+     * @param suffix the suffix string
      * @param d the file type description
      */
-    public SuffixFilter(String s, String d) {
-	suffix = s;
+    public SuffixFilter(String suffix, String d) {
+        suffixes = new String[] {suffix};
 	desc = d;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // FileFilter API
-
+    /**
+     * Construct a filter for an array of suffixes
+     *
+     * @param s the suffixes string
+     * @param d the file type description
+     */
+    public SuffixFilter(String[] s, String d) {
+        suffixes = new String[s.length];
+        System.arraycopy(s, 0, suffixes, 0, s.length);
+        desc = d;
+    }
+    
     /*
      * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
      */
@@ -67,8 +71,10 @@ public class SuffixFilter extends FileFilter {
             return true;
         }
 	String extension = getExtension(f);
-	if (suffix.equalsIgnoreCase(extension)) {
-            return true;
+        for (String suffix : suffixes) {
+            if (suffix.equalsIgnoreCase(extension)) {
+                return true;
+            }
         }
 	return false;
     }
@@ -100,16 +106,28 @@ public class SuffixFilter extends FileFilter {
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
     public String getDescription() {
-	return desc + " (*." + suffix + ")";
+        String result = desc + " (";
+        for (int i = 0; i < suffixes.length - 1; i++) {
+            result = result + "." + suffixes[i] + ", ";
+        }
+        result = result + suffixes[suffixes.length - 1] + ")";
+        return result;
     }
 
     /**
-     * @return Returns the _suffix.
+     * @return Returns the default or preferred suffix for this type of file.
      */
     public String getSuffix() {
-        return suffix;
+        return suffixes[0];
     }
 
+    /**
+     * @return Returns the list of all acceptable suffixes.
+     */
+    public String[] getSuffixes() {
+        return suffixes;
+    }
+    
     /**
      * Adding this function enables easy selection of suffixfilters
      * e.g. in a combobox.
@@ -120,4 +138,4 @@ public class SuffixFilter extends FileFilter {
         return getDescription();
     }
 
-} /* end class SuffixFilter */
+}

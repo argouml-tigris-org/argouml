@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,6 @@ import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLSearchableComboBox;
@@ -51,8 +50,6 @@ import org.tigris.swidgets.Orientation;
  *
  */
 public abstract class PropPanelModelElement extends PropPanel {
-
-    private JScrollPane namespaceScroll;
 
     private JComboBox namespaceSelector;
 
@@ -66,7 +63,7 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     private JScrollPane constraintScroll;
 
-    private JPanel namespaceVisibilityPanel;
+    private JPanel visibilityPanel;
 
     private JScrollPane elementResidenceScroll;
 
@@ -135,7 +132,7 @@ public abstract class PropPanelModelElement extends PropPanel {
      * The constructor.
      *
      * @param name the name of the properties panel
-     * @param icon the ico
+     * @param icon the icon
      */
     public PropPanelModelElement(String name, ImageIcon icon) {
         super(name, icon);
@@ -269,20 +266,26 @@ public abstract class PropPanelModelElement extends PropPanel {
     }
 
     /**
-     * TODO: This should better be named "getVisibilityPanel", 
-     * since it is not restricted to a namespace.
-     * 
      * @return a panel for the visibility
      */
-    protected JComponent getNamespaceVisibilityPanel() {
-        if (namespaceVisibilityPanel == null) {
-            namespaceVisibilityPanel =
+    protected JComponent getVisibilityPanel() {
+        if (visibilityPanel == null) {
+            visibilityPanel =
 		new UMLModelElementVisibilityRadioButtonPanel(
                     Translator.localize("label.visibility"), true);
         }
-        return namespaceVisibilityPanel;
+        return visibilityPanel;
     }
-
+    
+    /**
+     * @deprecated for 0.26 by penyaskito. Use
+     *             {@link #getVisibilityPanel()} instead.
+     * @return a panel for the visibility
+     */
+    protected JComponent getNamespaceVisibilityPanel() {        
+        return getVisibilityPanel();
+    }
+    
     /**
      * @return a scrollpane for residence
      */

@@ -43,6 +43,10 @@ public class InitUmlUI implements InitSubsystem {
         /* Set up the property panels for UML elements: */
         PropPanelFactory elementFactory = new ElementPropPanelFactory();
         PropPanelFactoryManager.addPropPanelFactory(elementFactory);
+
+        /* Set up the property panels for other UML objects: */
+        PropPanelFactory umlObjectFactory = new UmlObjectPropPanelFactory();
+        PropPanelFactoryManager.addPropPanelFactory(umlObjectFactory);
     }
 
     public List<AbstractArgoJPanel> getDetailsTabs() {

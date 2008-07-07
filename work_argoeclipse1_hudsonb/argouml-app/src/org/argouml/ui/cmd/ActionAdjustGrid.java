@@ -1,5 +1,5 @@
-// $Id: eclipse-argo-codetemplates.xml 10612 2006-05-25 12:58:04Z linus $
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,6 +54,7 @@ import org.tigris.gef.base.LayerGrid;
  * @author Michiel
  */
 public class ActionAdjustGrid extends AbstractAction {
+
     private final Map<String, Comparable> myMap;
     private static final String DEFAULT_ID = "03";
     private static ButtonGroup myGroup;
@@ -66,7 +67,7 @@ public class ActionAdjustGrid extends AbstractAction {
      *          the spacing, paintLines and paintDots. 
      * @param name the name for this action
      */
-    public ActionAdjustGrid(final Map<String, Comparable> map,
+    private ActionAdjustGrid(final Map<String, Comparable> map,
             final String name) {
         super();
         myMap = map;
@@ -145,28 +146,26 @@ public class ActionAdjustGrid extends AbstractAction {
                 : "menu.item.lines-16", 16, true, true, "01", KeyEvent.VK_1));
         result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-8"
                 : "menu.item.lines-8", 8, true, true, "02", KeyEvent.VK_2));
-        result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-16"
-                : "menu.item.lines-16", 16, false, true, "03", KeyEvent.VK_3));
-        result.add(buildGridAction(longStrings ? "action.adjust-grid.lines-32"
-                : "menu.item.lines-32", 32, false, true, "04", KeyEvent.VK_4));
+        result.add(buildGridAction(longStrings ? "action.adjust-grid.dots-16"
+                : "menu.item.dots-16", 16, false, true, "03", KeyEvent.VK_3));
+        result.add(buildGridAction(longStrings ? "action.adjust-grid.dots-32"
+                : "menu.item.dots-32", 32, false, true, "04", KeyEvent.VK_4));
         result.add(buildGridAction(
-                longStrings ? "action.adjust-grid.lines-none"
-                        : "menu.item.lines-none", 16, false, false, "05",
+                longStrings ? "action.adjust-grid.none"
+                        : "menu.item.none", 16, false, false, "05",
                 KeyEvent.VK_5));
      
         return result;
     }
 
     /**
-     * Builder method for Grid actions
-     * 
-     * @param property
-     * @param spacing
-     * @param paintLines whether or not to paint lines
-     * @param paintDots whether or not to paint dots
-     * @param id identifier action identifier
-     * @param key shortcut key
-     * @return grid action
+     * @param property the name (not yet localised)
+     * @param spacing the spacing distance
+     * @param paintLines show lines
+     * @param paintDots show dots
+     * @param id identifier
+     * @param key keyCode
+     * @return the Action
      */
     public static Action buildGridAction(final String property,
             final int spacing, final boolean paintLines,

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,33 +58,52 @@ public interface ImportSettings {
      */
     public String getInputSourceEncoding();
 
-    // TODO: Change attribute and datatype to return a literal/enum
-    // instead? - tfm
-
     /**
-     * @return true if associations should be modeled as attributes
+     * @return always returns false.
+     * @deprecated for 0.25.6 by tfmorris.  This is a Java-specific setting
+     * that was inadvertantly included in the interface for 0.24.  Not 
+     * intended for public use.  Instead use the Settings interface to
+     * importer-specific settings.
      */
+    @Deprecated
     public boolean isAttributeSelected();
 
     /**
-     * @return true if arrays should be modeled as UML Datatypes
+     * @return always returns false.
+     * @deprecated for 0.25.6 by tfmorris.  This is a Java-specific setting
+     * that was inadvertantly included in the interface for 0.24.  Not 
+     * intended for public use.  Instead use the Settings interface to
+     * importer-specific settings.
      */
+    @Deprecated
     public boolean isDatatypeSelected();
 
     /**
-     * TODO: This should be removed when diagram updating removed from the 
-     * importers (as it should be). - tfm 20061129
      * @return true if the user has request diagrams to be created for packages
      *         contained in the imported source code.
+     * @deprecated for 0.25.6 by tfmorris. This is handled by the import
+     *             framework so specific importers don't need to worry about it.
      */
+    /*
+     * NOTE: When this is removed from here, it should NOT be removed from
+     * ImportSettingsInternal to guarantee that GUI implementations are forced
+     * to implement it.
+     */
+    @Deprecated
     public boolean isCreateDiagramsSelected();
     
     /**
-     * TODO: This should be removed when diagram updating removed from the 
-     * importers (as it should be). - tfm 20061129
      * @return true, if user has requested that new figures placed in diagrams
      *         should be minimized so they don't show internal compartments.
+     * @deprecated for 0.25.6 by tfmorris. This is handled by the import
+     *             framework so specific importers don't need to worry about it.
      */
+    /*
+     * NOTE: When this is removed from here, it should NOT be removed from
+     * ImportSettingsInternal to guarantee that GUI implementations are forced
+     * to implement it.
+     */
+    @Deprecated
     public boolean isMinimizeFigsSelected();
 
 

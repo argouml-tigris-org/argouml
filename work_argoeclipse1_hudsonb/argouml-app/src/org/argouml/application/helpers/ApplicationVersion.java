@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.application.helpers;
 
 /**
  * Receives the version of the application at initialisation time.
+ * Also knows about website locations that depend on the version of ArgoUML.
  *
  * @author Michiel
  */
@@ -34,6 +35,7 @@ public class ApplicationVersion {
      * Version number.
      */
     private static String version;
+    private static String stableVersion;
 
     /**
      * Retrieve the version number of the application.
@@ -42,6 +44,45 @@ public class ApplicationVersion {
      */
     public static String getVersion() {
         return version;
+    }
+    
+    /**
+     * Retrieve the online HTML manual of ArgoUML for a critic. 
+     * You need to append the critic class-name.
+     * This syntax is synchronized with:
+     * <ol>
+     * <li>Tags in the manual.
+     * <li>Name of the ArgoUML site.
+     * <li>How the manual is deployed on the site.
+     * </ol>
+     * so this must be updated when any of these change.
+     *
+     * @return the URL
+     */
+    public static String getManualForCritic() {
+        return "http://argouml-stats.tigris.org/documentation/"
+            + "manual-" 
+            + stableVersion
+            + "-single/argomanual.html#critics.";
+    }
+
+    /**
+     * Retrieve the URL of the online manual of ArgoUML.
+     * 
+     * @return the URL
+     */
+    public static String getOnlineManual() {
+        return "http://argouml-stats.tigris.org/nonav/documentation/"
+                + "manual-" + stableVersion + "/";
+    }
+
+    /**
+     * Retrieve the URL of the location for online support for ArgoUML.
+     * 
+     * @return the URL
+     */
+    public static String getOnlineSupport() {
+        return "http://argouml.tigris.org/nonav/support.html";
     }
 
     /**
@@ -52,9 +93,12 @@ public class ApplicationVersion {
 
     /**
      * @param v The version to set.
+     * @param sv The stable version to set.
      */
-    public static void init(String v) {
+    public static void init(String v, String sv) {
         assert version == null;
         version = v;
+        assert stableVersion == null;
+        stableVersion = sv;
     }
 }

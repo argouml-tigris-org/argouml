@@ -124,7 +124,7 @@ public final class ImportClassLoader extends URLClassLoader {
     /**
      * There is no default constructor for URLClassloader, so we should provide
      * urls when creating the instance.
-     * We crate a new instance in this method.
+     * We create a new instance in this method.
      *
      * @param urls the URLs
      * @return the instance of this class

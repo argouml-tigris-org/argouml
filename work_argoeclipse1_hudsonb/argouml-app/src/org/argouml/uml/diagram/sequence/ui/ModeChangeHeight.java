@@ -35,6 +35,11 @@ import org.tigris.gef.base.Globals;
 
 import org.argouml.i18n.Translator;
 
+/**
+ * 
+ *
+ * @deprecated in 0.26 alpha3 Use ModeContract or ModeExpand
+ */
 public class ModeChangeHeight extends FigModifyingModeImpl {
 
     /**
@@ -82,34 +87,34 @@ public class ModeChangeHeight extends FigModifyingModeImpl {
             return;
 	}
 
-        SequenceDiagramLayer layout =
+        SequenceDiagramLayer layer =
 	    (SequenceDiagramLayer) Globals.curEditor().getLayerManager()
 	        .getActiveLayer();
         int endY = me.getY();
         if (isContract()) {
-            int startOffset = SequenceDiagramLayer.getNodeIndex(startY);
+            int startOffset = layer.getNodeIndex(startY);
             int endOffset;
             if (startY > endY) {
                 endOffset = startOffset;
-                startOffset = SequenceDiagramLayer.getNodeIndex(endY);
+                startOffset = layer.getNodeIndex(endY);
             } else {
-                endOffset = SequenceDiagramLayer.getNodeIndex(endY);
+                endOffset = layer.getNodeIndex(endY);
 	    }
             int diff = endOffset - startOffset;
             if (diff > 0) {
-                layout.contractDiagram(startOffset, diff);
+                layer.contractDiagram(startOffset, diff);
             }
         } else {
-            int startOffset = SequenceDiagramLayer.getNodeIndex(startY);
+            int startOffset = layer.getNodeIndex(startY);
             if (startOffset > 0 && endY < startY) {
                 startOffset--;
 	    }
-            int diff = SequenceDiagramLayer.getNodeIndex(endY) - startOffset;
+            int diff = layer.getNodeIndex(endY) - startOffset;
             if (diff < 0) {
                 diff = -diff;
 	    }
             if (diff > 0) {
-                layout.expandDiagram(startOffset, diff);
+                layer.expandDiagram(startOffset, diff);
 	    }
         }
 

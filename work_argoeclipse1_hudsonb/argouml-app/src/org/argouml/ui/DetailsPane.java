@@ -216,8 +216,8 @@ public class DetailsPane
         enableTabs(item);
         for (JPanel t : tabPanelList) {
             if (t instanceof TabToDoTarget) {
-                ((TabToDoTarget) t).setTarget(item);
                 topLevelTabbedPane.setSelectedComponent(t);
+                ((TabToDoTarget) t).setTarget(item);
                 return true;
             }
         }
@@ -447,8 +447,7 @@ public class DetailsPane
      */
     public void stateChanged(ChangeEvent e) {
         LOG.debug("DetailsPane state changed");
-        Component sel = topLevelTabbedPane.getSelectedComponent();
-
+        
         // update the previously selected tab
         if (lastNonNullTab >= 0) {
 	    JPanel tab = tabPanelList.get(lastNonNullTab);
@@ -458,21 +457,6 @@ public class DetailsPane
 	    }
 	}
         Object target = TargetManager.getInstance().getSingleTarget();
-
-        if (sel instanceof TabToDoTarget) {
-            ((TabToDoTarget) sel).setTarget(target);
-        } else if (sel instanceof TabTarget) {
-            ((TabTarget) sel).setTarget(target);
-        }
-        if (sel instanceof TargetListener) {
-            removeTargetListener((TargetListener) sel);
-            addTargetListener((TargetListener) sel);
-            // Newly selected tab may have stale target info, so generate
-            // a new set target event for it to refresh it
-            ((TargetListener) sel).targetSet(new TargetEvent(this,
-                    TargetEvent.TARGET_SET, new Object[] {},
-                    new Object[] {target}));
-        }
 
         if (target != null
             && Model.getFacade().isAUMLElement(target)
@@ -574,11 +558,11 @@ public class DetailsPane
     /*
      * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
-    public void setOrientation(Orientation orientation) {
+    public void setOrientation(Orientation newOrientation) {
         for (JPanel t : tabPanelList) {
             if (t instanceof Orientable) {
                 Orientable o = (Orientable) t;
-                o.setOrientation(orientation);
+                o.setOrientation(newOrientation);
             }
         }
     }

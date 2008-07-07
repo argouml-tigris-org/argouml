@@ -36,7 +36,6 @@ import javax.swing.Action;
 
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
@@ -308,6 +307,17 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         return addMenu;
     }
 
+    /**
+     * USED BY PGML.tee.
+     * @return the class name and bounds together with compartment
+     * visibility.
+     */
+    public String classNameAndBounds() {
+        return super.classNameAndBounds()
+            + "operationsVisible=" + isOperationsVisible() + ";";
+    }
+
+    
     protected Object buildModifierPopUp() {
         return buildModifierPopUp(ABSTRACT | LEAF | ROOT);
     }

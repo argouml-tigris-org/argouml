@@ -32,7 +32,7 @@ import javax.swing.KeyStroke;
  * 
  * @author andrea.nironi@gmail.com
  */
-public class Action {
+class ActionWrapper {
 
     private KeyStroke defaultShortcut;
 
@@ -45,7 +45,7 @@ public class Action {
     private String actionInstanceName;
 
     /**
-     * Constructor for Action class
+     * Constructor for ActionWrapper class
      * 
      * @param actionKey
      *            the key of this action
@@ -58,7 +58,7 @@ public class Action {
      * @param actionName
      *            the name of the action
      */
-    protected Action(String actionKey, KeyStroke currentKeyStroke,
+    protected ActionWrapper(String actionKey, KeyStroke currentKeyStroke,
             KeyStroke defaultKeyStroke, AbstractAction action, 
             String actionName) {
         this.key = actionKey;

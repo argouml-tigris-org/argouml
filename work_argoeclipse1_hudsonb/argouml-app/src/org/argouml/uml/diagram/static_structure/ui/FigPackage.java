@@ -319,7 +319,7 @@ public class FigPackage extends FigNodeModelElement
         } else {
             /* we got stereotype */
             getStereotypeFig().setOwner(getOwner());
-            ((FigStereotypesCompartment) getStereotypeFig()).populate();
+//            ((FigStereotypesCompartment) getStereotypeFig()).populate(); // included in previous line
             if (!stereotypeVisible) {
                 stereoLineBlinder.setVisible(false);
                 getStereotypeFig().setVisible(false);

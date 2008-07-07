@@ -25,49 +25,60 @@
 package org.argouml.uml.reveng;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
-import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileSystemView;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.moduleloader.ModuleInterface;
-import org.argouml.uml.reveng.java.JavaImport;
+import org.argouml.uml.reveng.SettingsTypes.BooleanSelection2;
+import org.argouml.uml.reveng.SettingsTypes.PathListSelection;
+import org.argouml.uml.reveng.SettingsTypes.PathSelection;
+import org.argouml.uml.reveng.SettingsTypes.Setting;
+import org.argouml.uml.reveng.SettingsTypes.UniqueSelection2;
+import org.argouml.uml.reveng.SettingsTypes.UserString2;
+import org.argouml.uml.reveng.ui.ImportClasspathDialog;
 import org.argouml.uml.reveng.ui.ImportStatusScreen;
 import org.argouml.util.SuffixFilter;
 import org.argouml.util.UIUtils;
 import org.tigris.gef.base.Globals;
 import org.tigris.swidgets.GridLayout2;
 
+
+
 /**
- * This is the main class for all import classes.
+ * This is the main class for the Swing importer framework.  It extends 
+ * ImportCommon which contains all the GUI independent pieces of the import
+ * framework.  
  * <p>
+ * The Service Providers Interface (SPI) to the individual language importers
+ * is defined in such a way that they can be completely GUI independent as
+ * well, receiving lists of source files and settings for the import and 
+ * reporting progress via progress monitor API.
  * 
  * It provides JPanels for tailoring the import run in the FileChooser.
  * <p>
@@ -75,10 +86,11 @@ import org.tigris.swidgets.GridLayout2;
  * The Import run is started by calling doFile(Project, File)
  * <p>
  * 
- * Supports recursive search in folder for all .java classes.
+ * Supports recursive search in folder for source files with matching 
+ * extensions.
  * <p>
  * 
- * There are now 3 levels of detail for import:
+ * There are three levels of detail for import:
  * <p>
  * 
  * <ol>
@@ -88,6 +100,7 @@ import org.tigris.swidgets.GridLayout2;
  * </ol>
  * 
  * @author Andreas Rueckert a_rueckert@gmx.net
+ * @author Tom Morris <tfmorris@gmail.com>
  */
 public class Import extends ImportCommon implements ImportSettings {
 
@@ -112,23 +125,13 @@ public class Import extends ImportCommon implements ImportSettings {
     // level 2 import detail
     private JRadioButton fullImport;
 
-    // import detail level var:
-    // private int importLevel;
-
-    private JTextField inputSourceEncoding;
-
+    private JComboBox sourceEncoding;
+    
     private JDialog dialog;
 
     private ImportStatusScreen iss;
 
     private Frame myFrame;
-
-    /**
-     * The default extended configuration panel. TODO: This used to be provided
-     * by the abstract class FileImportSupport and it can be merged with our
-     * main configuration panel here.
-     */
-    private ConfigPanelExtension importConfigPanel;
 
     /**
      * Creates dialog window with chooser and configuration panel.
@@ -140,11 +143,12 @@ public class Import extends ImportCommon implements ImportSettings {
         myFrame = frame;
 
         JComponent chooser = getChooser();
-        dialog = new JDialog(frame, Translator
-                .localize("action.import-sources"), true);
+        dialog =
+            new JDialog(frame,
+                    Translator.localize("action.import-sources"), true);
 
         dialog.getContentPane().add(chooser, BorderLayout.CENTER);
-        dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
+        dialog.getContentPane().add(getConfigPanel(), BorderLayout.EAST);
         dialog.pack();
         int x = (frame.getSize().width - dialog.getSize().width) / 2;
         int y = (frame.getSize().height - dialog.getSize().height) / 2;
@@ -159,25 +163,23 @@ public class Import extends ImportCommon implements ImportSettings {
      * @see org.argouml.uml.reveng.ImportSettings#getInputSourceEncoding()
      */
     public String getInputSourceEncoding() {
-        return inputSourceEncoding.getText();
+        return (String) sourceEncoding.getSelectedItem();
     }
 
     /*
      * @see org.argouml.uml.reveng.ImportSettings#isAttributeSelected()
      */
+    @Deprecated
     public boolean isAttributeSelected() {
-        // This is only valid for new style importers, but they're also
-        // the only ones invoking this method
-        return importConfigPanel.getAttribute().isSelected();
+        return false;
     }
 
     /*
      * @see org.argouml.uml.reveng.ImportSettings#isDatatypeSelected()
      */
+    @Deprecated
     public boolean isDatatypeSelected() {
-        // This is only valid for new style importers, but they're also
-        // the only ones invoking this method
-        return importConfigPanel.getDatatype().isSelected();
+        return false;
     }
 
     /**
@@ -196,9 +198,6 @@ public class Import extends ImportCommon implements ImportSettings {
                 .valueOf(getImportLevel()));
         Configuration.setString(Argo.KEY_INPUT_SOURCE_ENCODING,
                 getInputSourceEncoding());
-        if (importConfigPanel != null) {
-            importConfigPanel.disposeDialog();
-        }
         dialog.setVisible(false);
         dialog.dispose();
     }
@@ -210,140 +209,29 @@ public class Import extends ImportCommon implements ImportSettings {
      * @return the panel This is an internal method. Use the accessors in
      *         {@link ImportSettings} to determine the current settings.
      */
-    private JComponent getConfigPanel(final Import importInstance) {
+    private JComponent getConfigPanel() {
 
         final JTabbedPane tab = new JTabbedPane();
 
         // build the configPanel:
         if (configPanel == null) {
             JPanel general = new JPanel();
-            general.setLayout(new GridLayout2(13, 1, 0, 0, GridLayout2.NONE));
+            general.setLayout(new GridLayout2(20, 1, 0, 0, GridLayout2.NONE));
 
             general.add(new JLabel(Translator
                     .localize("action.import-select-lang")));
 
             JComboBox selectedLanguage = new JComboBox(getModules().keySet()
                     .toArray());
-            selectedLanguage.addActionListener(new SelectedLanguageListener(
-                    importInstance, tab));
+            selectedLanguage
+                    .addActionListener(new SelectedLanguageListener(tab));
             general.add(selectedLanguage);
 
-            boolean desc = true;
-            boolean chan = true;
-            boolean crea = true;
-            boolean mini = true;
-            boolean layo = true;
-            String flags = Configuration
-                    .getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
-            if (flags != null && flags.length() > 0) {
-                StringTokenizer st = new StringTokenizer(flags, ",");
-                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
-                    desc = false;
-                }
-                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
-                    chan = false;
-                }
-                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
-                    crea = false;
-                }
-                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
-                    mini = false;
-                }
-                if (st.hasMoreTokens() && st.nextToken().equals("false")) {
-                    layo = false;
-                }
-            }
+            addConfigCheckboxes(general);
 
-            descend = new JCheckBox(Translator
-                    .localize("action.import-option-descend-dir-recur"), desc);
-            general.add(descend);
+            addDetailLevelButtons(general);
 
-            changedOnly = new JCheckBox(Translator
-                    .localize("action.import-option-changed_new"), chan);
-            general.add(changedOnly);
-
-            createDiagrams = new JCheckBox(Translator
-                    .localize("action.import-option-create-diagram"), crea);
-            general.add(createDiagrams);
-
-            minimiseFigs = new JCheckBox(Translator
-                    .localize("action.import-option-min-class-icon"), mini);
-            general.add(minimiseFigs);
-
-            layoutDiagrams = new JCheckBox(
-                    Translator
-                            .localize("action.import-option-perform-auto-diagram-layout"),
-                    layo);
-            general.add(layoutDiagrams);
-
-            // de-selects the fig minimising & layout
-            // if we are not creating diagrams
-            createDiagrams.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent actionEvent) {
-                    if (!createDiagrams.isSelected()) {
-                        minimiseFigs.setSelected(false);
-                        layoutDiagrams.setSelected(false);
-                    }
-                }
-            });
-
-            // select the level of import
-            // 0 - classifiers only
-            // 1 - classifiers plus feature specifications
-            // 2 - full import, feature detail
-
-            JLabel importDetailLabel = new JLabel(Translator
-                    .localize("action.import-level-of-import-detail"));
-            ButtonGroup detailButtonGroup = new ButtonGroup();
-
-            classOnly = new JRadioButton(Translator
-                    .localize("action.import-option-classifiers"));
-            detailButtonGroup.add(classOnly);
-
-            classAndFeatures = new JRadioButton(Translator
-                    .localize("action.import-option-classifiers-plus-specs"));
-            detailButtonGroup.add(classAndFeatures);
-
-            fullImport = new JRadioButton(Translator
-                    .localize("action.import-option-full-import"));
-            String detaillevel = Configuration
-                    .getString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL);
-            if ("0".equals(detaillevel)) {
-                classOnly.setSelected(true);
-            } else if ("1".equals(detaillevel)) {
-                classAndFeatures.setSelected(true);
-            } else {
-                fullImport.setSelected(true);
-            }
-            detailButtonGroup.add(fullImport);
-
-            general.add(importDetailLabel);
-            general.add(classOnly);
-            general.add(classAndFeatures);
-            general.add(fullImport);
-
-            general.add(new JLabel(Translator
-                    .localize("action.import-file-encoding")));
-            String enc = Configuration
-                    .getString(Argo.KEY_INPUT_SOURCE_ENCODING);
-            if (enc == null || enc.trim().equals("")) {
-                inputSourceEncoding = new JTextField(System
-                        .getProperty("file.encoding"));
-            } else {
-                inputSourceEncoding = new JTextField(enc);
-
-            }
-            general.add(inputSourceEncoding);
-
-            // TODO: Encoding needs to be validated against set of
-            // available encodings using {@link Charset.isSupported(String)}
-            // -- or use a menu with the contents of
-            // {@link Charset.availableCharsets()}
-            // JComboBox encoding =
-            // new JComboBox(Charset.availableCharsets().keySet()
-            // .toArray());
-            // encoding.setSelectedItem(inputSourceEncoding.getText());
-            // general.add(encoding);
+            addSourceEncoding(general);
 
             tab.add(general, Translator.localize("action.import-general"));
             tab.add(getConfigPanelExtension(),
@@ -354,24 +242,135 @@ public class Import extends ImportCommon implements ImportSettings {
 
     }
 
+
+    private void addConfigCheckboxes(JPanel panel) {
+        boolean desc = true;
+        boolean chan = true;
+        boolean crea = true;
+        boolean mini = true;
+        boolean layo = true;
+        String flags = Configuration
+                .getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
+        if (flags != null && flags.length() > 0) {
+            StringTokenizer st = new StringTokenizer(flags, ",");
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                desc = false;
+            }
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                chan = false;
+            }
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                crea = false;
+            }
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                mini = false;
+            }
+            if (st.hasMoreTokens() && st.nextToken().equals("false")) {
+                layo = false;
+            }
+        }
+
+        descend = new JCheckBox(Translator
+                .localize("action.import-option-descend-dir-recur"), desc);
+        panel.add(descend);
+
+        changedOnly = new JCheckBox(Translator
+                .localize("action.import-option-changed_new"), chan);
+        panel.add(changedOnly);
+
+        createDiagrams = new JCheckBox(Translator
+                .localize("action.import-option-create-diagram"), crea);
+        panel.add(createDiagrams);
+
+        minimiseFigs = new JCheckBox(Translator
+                .localize("action.import-option-min-class-icon"), mini);
+        panel.add(minimiseFigs);
+
+        layoutDiagrams = new JCheckBox(Translator.localize(
+                "action.import-option-perform-auto-diagram-layout"),
+                layo);
+        panel.add(layoutDiagrams);
+
+        // de-selects the fig minimising & layout
+        // if we are not creating diagrams
+        createDiagrams.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                if (!createDiagrams.isSelected()) {
+                    minimiseFigs.setSelected(false);
+                    layoutDiagrams.setSelected(false);
+                }
+            }
+        });
+    }
+
+
+    private void addDetailLevelButtons(JPanel panel) {
+        // select the level of import
+        // 0 - classifiers only
+        // 1 - classifiers plus feature specifications
+        // 2 - full import, feature detail
+
+        JLabel importDetailLabel = new JLabel(Translator
+                .localize("action.import-level-of-import-detail"));
+        ButtonGroup detailButtonGroup = new ButtonGroup();
+
+        classOnly = new JRadioButton(Translator
+                .localize("action.import-option-classifiers"));
+        detailButtonGroup.add(classOnly);
+
+        classAndFeatures = new JRadioButton(Translator
+                .localize("action.import-option-classifiers-plus-specs"));
+        detailButtonGroup.add(classAndFeatures);
+
+        fullImport = new JRadioButton(Translator
+                .localize("action.import-option-full-import"));
+        String detaillevel = Configuration
+                .getString(Argo.KEY_IMPORT_GENERAL_DETAIL_LEVEL);
+        if ("0".equals(detaillevel)) {
+            classOnly.setSelected(true);
+        } else if ("1".equals(detaillevel)) {
+            classAndFeatures.setSelected(true);
+        } else {
+            fullImport.setSelected(true);
+        }
+        detailButtonGroup.add(fullImport);
+
+        panel.add(importDetailLabel);
+        panel.add(classOnly);
+        panel.add(classAndFeatures);
+        panel.add(fullImport);
+    }
+    
+    
+    private void addSourceEncoding(JPanel panel) {
+        panel.add(new JLabel(
+                Translator.localize("action.import-file-encoding")));
+        String enc =
+            Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
+        if (enc == null || enc.trim().equals("")) {
+            enc = System.getProperty("file.encoding");
+        }
+        // cp1252 is often the default, but windows-1252 is the name listed
+        // by Charset.availableCharsets
+        if (enc.startsWith("cp")) {
+            enc = "windows-" + enc.substring(2);
+        }
+
+        sourceEncoding = new JComboBox(Charset
+                .availableCharsets().keySet().toArray());
+        sourceEncoding.setSelectedItem(enc);
+        panel.add(sourceEncoding);
+    }
+    
     /*
      * Get the extension panel for the configuration settings.
      */
     private JComponent getConfigPanelExtension() {
-        // New style importers don't provide a config panel
-        // TODO: This needs review for the new style importers - tfm - 20070527
-        if (importConfigPanel == null) {
-            importConfigPanel = new ConfigPanelExtension();
-        }
-        return importConfigPanel;
+        List<Setting> settings = getCurrentModule().getImportSettings();
+        return  new ConfigPanelExtension(settings);
     }
 
     private class SelectedLanguageListener implements ActionListener {
-
-        /**
-         * The current import.
-         */
-        private Import importInstance;
 
         /**
          * The pane.
@@ -384,8 +383,7 @@ public class Import extends ImportCommon implements ImportSettings {
          * @param i The current import.
          * @param t The pane.
          */
-        SelectedLanguageListener(Import i, JTabbedPane t) {
-            importInstance = i;
+        SelectedLanguageListener(JTabbedPane t) {
             tab = t;
         }
 
@@ -400,11 +398,18 @@ public class Import extends ImportCommon implements ImportSettings {
             updateFilters((JFileChooser) dialog.getContentPane()
                     .getComponent(0), oldModule.getSuffixFilters(),
                     getCurrentModule().getSuffixFilters());
-            // TODO: Update configPanelExtension with extension settings
-            // for new language
-
+            updateTabbedPane();
+        }
+        
+        private void updateTabbedPane() {
+            String name = ((ModuleInterface) getCurrentModule()).getName();
+            if (tab.indexOfTab(name) < 0) {
+                tab.add(getConfigPanelExtension(), name);
+            }
         }
     }
+    
+
 
     /**
      * Parse all selected files. It calls the actual parser methods depending on
@@ -515,6 +520,9 @@ public class Import extends ImportCommon implements ImportSettings {
             for (int i = 0; i < newFilters.length; i++) {
                 chooser.addChoosableFileFilter(newFilters[i]);
             }
+            if (newFilters.length > 0) {
+                chooser.setFileFilter(newFilters[0]);
+            }
         }
     }
 
@@ -590,7 +598,7 @@ public class Import extends ImportCommon implements ImportSettings {
             File[] files = getSelectedFiles();
             File dir = getCurrentDirectory();
             if (files.length == 0) {
-                files = new File[] { dir };
+                files = new File[] {dir};
             }
             if (files.length == 1) {
                 File file = files[0];
@@ -604,14 +612,7 @@ public class Import extends ImportCommon implements ImportSettings {
             Globals.setLastDirectory(dir.getPath());
             theImport.disposeDialog();
 
-            if (theImport.getCurrentModule() instanceof ExtendedImportInterface) {
-                ExtendedImportInterface eii = (ExtendedImportInterface) theImport
-                        .getCurrentModule();
-                eii.invokeImport(theImport.getFrame(), new ImportCommand(
-                        theImport));
-            } else {
-                theImport.doFile();
-            }
+            theImport.doFile();
         }
 
         /*
@@ -625,9 +626,142 @@ public class Import extends ImportCommon implements ImportSettings {
     }
 
     /**
-     * @return Returns the Frame.
+     * Extended configuration panel for file import.  Built based on settings
+     * requested by the specific language importer.
      */
-    public Frame getFrame() {
-        return myFrame;
+    class ConfigPanelExtension extends JPanel {
+
+
+        /**
+         * Construct the configuration extension panel.
+         * @param settings A list of settings requested by the language importer
+         */
+        public ConfigPanelExtension(final List<Setting> settings) {
+
+            setLayout(new GridBagLayout());
+            
+            if (settings == null || settings.size() == 0) {
+                JLabel label = new JLabel("No settings for this importer");
+                add(label, createGridBagConstraints(true, false, false));
+                add(new JPanel(), createGridBagConstraintsFinal()); 
+                return;
+            }
+
+            for (Setting setting : settings) {
+                if (setting instanceof UniqueSelection2) {
+                    JLabel label = new JLabel(setting.getLabel());
+                    add(label, createGridBagConstraints(true, false, false));
+
+                    final UniqueSelection2 us = (UniqueSelection2) setting;
+                    ButtonGroup group = new ButtonGroup();
+                    int count = 0;
+                    for (String option : us.getOptions()) {
+                        JRadioButton button = new JRadioButton(option);
+                        final int index = count++;
+                        if (us.getDefaultSelection() == index) {
+                            button.setSelected(true);
+                        }
+                        group.add(button);
+                        button.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                us.setSelection(index);
+                            }
+                        });
+                        add(button, createGridBagConstraints(false, false,
+                                false));
+                    }
+                } else if (setting instanceof UserString2) {
+                    JLabel label = new JLabel(setting.getLabel());
+                    add(label, createGridBagConstraints(true, false, false));
+                    final UserString2 us = (UserString2) setting;
+                    final JTextField text = 
+                        new JTextField(us.getDefaultString());
+                    text.addFocusListener(new FocusListener() {
+                        public void focusGained(FocusEvent e) { } 
+                        public void focusLost(FocusEvent e) {
+                            us.setUserString(text.getText());           
+                        }
+                        
+                    });
+                    add(text, createGridBagConstraints(true, false, false));
+                } else if (setting instanceof BooleanSelection2) {
+                    final BooleanSelection2 bs = (BooleanSelection2) setting;
+                    final JCheckBox button = new JCheckBox(setting.getLabel());
+                    button.setEnabled(bs.isSelected());
+                    button.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            bs.setSelected(button.isSelected());
+                        }
+                    });
+                    add(button, createGridBagConstraints(true, false, false));
+                } else if (setting instanceof PathSelection) {
+                    JLabel label = new JLabel(setting.getLabel());
+                    add(label, createGridBagConstraints(true, false, false));
+                    PathSelection ps = (PathSelection) setting;
+                    // TODO: Need to add FileChooser 
+                    JTextField text = new JTextField(ps.getDefaultPath());
+                    add(text, createGridBagConstraints(true, false, false));
+                    // TODO: Update setting
+                } else if (setting instanceof PathListSelection) {
+                    PathListSelection pls = (PathListSelection) setting;
+                    add(new ImportClasspathDialog(pls),
+                            createGridBagConstraints(true, false, false));
+                } else {
+                    throw new RuntimeException("Unknown setting type requested "
+                            + setting);
+                }
+            }
+            add(new JPanel(), createGridBagConstraintsFinal()); 
+        }
+
+
+        /**
+         * Create a GridBagConstraints object to use with the layout.
+         * 
+         * @param topInset true to use a top inset 
+         * @param bottomInset true to use a bottom inset
+         * @param fill true to fill (horizontally)
+         * @return the grid bag constraints
+         */
+        private GridBagConstraints createGridBagConstraints(boolean topInset,
+                boolean bottomInset, boolean fill) {
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = GridBagConstraints.RELATIVE;
+            gbc.gridy = GridBagConstraints.RELATIVE;
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            gbc.gridheight = 1;
+            gbc.weightx = 1.0;
+            gbc.weighty = 0.0;
+            gbc.anchor = GridBagConstraints.NORTHWEST;
+            gbc.fill = fill ? GridBagConstraints.HORIZONTAL
+                    : GridBagConstraints.NONE;
+            gbc.insets = 
+                new Insets(
+                        topInset ? 5 : 0, 
+                                5, 
+                                bottomInset ? 5 : 0, 
+                                        5);
+            gbc.ipadx = 0;
+            gbc.ipady = 0;
+            return gbc;
+        }
+
+        /**
+         * A GridBagConstraints for the last item to take up the rest of the
+         * space.
+         * 
+         * @return the GridBagConstraints object
+         */
+        private GridBagConstraints createGridBagConstraintsFinal() {
+            GridBagConstraints gbc = createGridBagConstraints(false, true,
+                    false);
+            gbc.gridheight = GridBagConstraints.REMAINDER;
+            gbc.weighty = 1.0;
+            return gbc;
+        }
+
     }
+
+
+
 }

@@ -26,7 +26,6 @@ package org.argouml.application.events;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
@@ -104,7 +103,9 @@ public final class ArgoEventPump {
         if (listeners == null) {
             listeners = new ArrayList<Pair>();
         }
-        listeners.add(new Pair(event, listener));
+        synchronized (listeners) {
+            listeners.add(new Pair(event, listener));
+        }
     }
 
     /**
@@ -120,23 +121,25 @@ public final class ArgoEventPump {
         if (listeners == null) {
             return;
         }
-        List<Pair> removeList = new ArrayList<Pair>();
-        if (event == ArgoEventTypes.ANY_EVENT) {
-            for (Pair p : listeners) {
-                if (p.listener == listener) {
-                    removeList.add(p);
+        synchronized (listeners) {
+            List<Pair> removeList = new ArrayList<Pair>();
+            if (event == ArgoEventTypes.ANY_EVENT) {
+                for (Pair p : listeners) {
+                    if (p.listener == listener) {
+                        removeList.add(p);
+                    }
                 }
-            }
 
-        } else {
-            Pair test = new Pair(event, listener);
-            for (Pair p : listeners) {
-                if (p.equals(test)) {
-                    removeList.add(p);
+            } else {
+                Pair test = new Pair(event, listener);
+                for (Pair p : listeners) {
+                    if (p.equals(test)) {
+                        removeList.add(p);
+                    }
                 }
             }
+            listeners.removeAll(removeList);
         }
-        listeners.removeAll(removeList);
     }
 
     /**
@@ -383,18 +386,22 @@ public final class ArgoEventPump {
      * @param event the event to be fired
      */
     protected void doFireEvent(ArgoEvent event) {
-
         if (listeners == null) {
             return;
         }
 
-        ListIterator iterator = listeners.listIterator();
-        while (iterator.hasNext()) {
-            Pair pair = (Pair) iterator.next();
+        // Make a read-only copy of the listeners list so that reentrant calls
+        // back to add/removeListener won't mess us up.
+        // TODO: Potential performance issue, but we need the correctness - tfm
+        List<Pair> readOnlyListeners;
+        synchronized (listeners) {
+            readOnlyListeners = new ArrayList<Pair>(listeners);
+        }
+
+        for (Pair pair : readOnlyListeners) {
             if (pair.getEventType() == ArgoEventTypes.ANY_EVENT) {
                 handleFireEvent(event, pair.getListener());
-            } else if (
-                    pair.getEventType() == event.getEventStartRange()
+            } else if (pair.getEventType() == event.getEventStartRange()
                     || pair.getEventType() == event.getEventType()) {
                 handleFireEvent(event, pair.getListener());
             }
@@ -434,16 +441,14 @@ public final class ArgoEventPump {
             return listener;
         }
 
-        /*
-         * @see java.lang.Object#toString()
-         */
+
+        @Override
         public String toString() {
             return "{Pair(" + eventType + "," + listener + ")}";
         }
 
-        /*
-         * @see java.lang.Object#hashCode()
-         */
+
+        @Override
         public int hashCode() {
             if (listener != null) {
                 return eventType + listener.hashCode();
@@ -451,9 +456,8 @@ public final class ArgoEventPump {
             return eventType;
         }
 
-        /*
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
+
+        @Override
         public boolean equals(Object o) {
             if (o instanceof Pair) {
                 Pair p = (Pair) o;

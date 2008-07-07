@@ -162,8 +162,8 @@ public class FigAssociationClass extends FigAssociation implements
             return new Rectangle(0, 0, 0, 0);
     }
 
-    /**
-     * Overrided in order to implement AttributesCompartmentContainer.
+    /*
+     * Overridden in order to implement AttributesCompartmentContainer.
      */
     public boolean isAttributesVisible() {
         if (getAssociationClass() != null)
@@ -172,8 +172,8 @@ public class FigAssociationClass extends FigAssociation implements
             return true;
     }
 
-    /**
-     * Overrided in order to implement AttributesCompartmentContainer.
+    /*
+     * Overridden in order to implement AttributesCompartmentContainer.
      */
     public void setAttributesVisible(boolean visible) {
         if (getAssociationClass() != null) {
@@ -181,8 +181,8 @@ public class FigAssociationClass extends FigAssociation implements
         }
     }
 
-    /**
-     * Overrided in order to implement PathCompartmentContainer.
+    /*
+     * Overridden in order to implement PathCompartmentContainer.
      */
     public boolean isPathVisible() {
         if (getAssociationClass() != null)
@@ -191,8 +191,8 @@ public class FigAssociationClass extends FigAssociation implements
             return false;
     }
 
-    /**
-     * Overrided in order to implement PathCompartmentContainer.
+    /*
+     * Overridden in order to implement PathCompartmentContainer.
      */
     public void setPathVisible(boolean visible) {
         if (getAssociationClass() != null) {
@@ -200,8 +200,8 @@ public class FigAssociationClass extends FigAssociation implements
         }
     }
 
-    /**
-     * Overrided in order to implement OperationsCompartmentContainer.
+    /*
+     * Overridden in order to implement OperationsCompartmentContainer.
      */
     public Rectangle getOperationsBounds() {
         if (getAssociationClass() != null) {
@@ -211,8 +211,8 @@ public class FigAssociationClass extends FigAssociation implements
         }
     }
 
-    /**
-     * Overrided in order to implement OperationsCompartmentContainer.
+    /*
+     * Overridden in order to implement OperationsCompartmentContainer.
      */
     public boolean isOperationsVisible() {
         if (getAssociationClass() != null) {
@@ -222,8 +222,8 @@ public class FigAssociationClass extends FigAssociation implements
         }
     }
 
-    /**
-     * Overrided in order to implement OperationsCompartmentContainer.
+    /*
+     * Overridden in order to implement OperationsCompartmentContainer.
      */
     public void setOperationsVisible(boolean visible) {
         if (getAssociationClass() != null) {
@@ -232,8 +232,9 @@ public class FigAssociationClass extends FigAssociation implements
     }
 
     /**
-     * Overrided in order to set fill color of contained
-     * FigClassAssociationClass.
+     * Set fill color of contained FigClassAssociationClass.
+     * 
+     * @param color new fill color.
      */
     @Override
     public void setFillColor(Color color) {
@@ -243,8 +244,7 @@ public class FigAssociationClass extends FigAssociation implements
     }
 
     /**
-     * Overrided in order to get fill color of contained
-     * FigClassAssociationClass.
+     * @return fill color of contained FigClassAssociationClass.
      */
     @Override
     public Color getFillColor() {
@@ -256,8 +256,9 @@ public class FigAssociationClass extends FigAssociation implements
     }
 
     /**
-     * Overrided in order to set line color of contained
-     * FigClassAssociationClass.
+     * Set line color of contained FigClassAssociationClass.
+     * 
+     * @param arg0 new line color.
      */
     @Override
     public void setLineColor(Color arg0) {
