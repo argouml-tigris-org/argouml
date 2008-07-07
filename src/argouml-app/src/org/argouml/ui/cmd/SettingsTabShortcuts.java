@@ -43,6 +43,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -207,6 +208,19 @@ class SettingsTabShortcuts extends JPanel implements
             panelConstraints.weighty = 1;
             add(selectedContainer, panelConstraints);
 
+            JLabel restart =
+                new JLabel(Translator.localize("label.restart-application"));
+            restart.setHorizontalAlignment(SwingConstants.CENTER);
+            restart.setVerticalAlignment(SwingConstants.CENTER);
+            restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
+            
+            panelConstraints.gridy = 2;
+            panelConstraints.anchor = GridBagConstraints.CENTER;
+            panelConstraints.fill = GridBagConstraints.BOTH;
+            panelConstraints.weightx = 1;
+            panelConstraints.weighty = 0;
+            add(restart, panelConstraints);
+            
             this.enableFields(false);
         }
 

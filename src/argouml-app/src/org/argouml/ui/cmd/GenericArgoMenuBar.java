@@ -367,7 +367,9 @@ public class GenericArgoMenuBar extends JMenuBar implements
         file.addSeparator();
         JMenuItem exitItem = file.add(new ActionExit());
         setMnemonic(exitItem, "Exit");
-        // exit shortcut is not user configurable!
+        /* The "Close window" shortcut (ALT+F4) actually can't 
+         * be registered as a shortcut, 
+         * because it closes the configuration dialog! */
         exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
               InputEvent.ALT_MASK));
 
