@@ -40,7 +40,6 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.kernel.Project;
-import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
@@ -65,11 +64,6 @@ import org.tigris.gef.presentation.FigText;
 public class FigSingleLineText extends ArgoFigText
     implements ArgoNotationEventListener  {
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -5611216741181499679L;
-    
     private static final Logger LOG =
         Logger.getLogger(FigSingleLineText.class);
 
@@ -84,9 +78,14 @@ public class FigSingleLineText extends ArgoFigText
     private NotationProvider notationProvider;
     private HashMap<String, Object> npArguments = new HashMap<String, Object>();
 
-    /*
-     * @see org.tigris.gef.presentation.FigText#FigText(
-     *         int, int, int, int, boolean)
+    /**
+     * The constructor.
+     *
+     * @param x the initial x position
+     * @param y the initial y position
+     * @param w the initial width
+     * @param h the initial height
+     * @param expandOnly true if this fig shall not shrink
      */
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
@@ -101,9 +100,15 @@ public class FigSingleLineText extends ArgoFigText
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.FigText#FigText(
-     *         int, int, int, int, boolean)
+    /**
+     * The constructor.
+     *
+     * @param x the initial x position
+     * @param y the initial y position
+     * @param w the initial width
+     * @param h the initial height
+     * @param expandOnly true if this fig shall not shrink
+     * @param property the property to listen to
      */
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly, 
             String property) {
@@ -114,13 +119,21 @@ public class FigSingleLineText extends ArgoFigText
      * @see org.tigris.gef.presentation.FigText#FigText(
      *         int, int, int, int, boolean)
      */
+    /**
+     * The constructor.
+     *
+     * @param x the initial x position
+     * @param y the initial y position
+     * @param w the initial width
+     * @param h the initial height
+     * @param expandOnly true if this fig shall not shrink
+     * @param allProperties the properties to listen to
+     */
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly, 
             String[] allProperties) {
         this(x, y, w, h, expandOnly);
         this.properties = allProperties;
     }
-
-
 
     @Override
     public Dimension getMinimumSize() {
