@@ -81,8 +81,6 @@ import org.tigris.gef.base.AdjustPageBreaksAction;
 import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.DistributeAction;
 import org.tigris.gef.base.ReorderAction;
-import org.tigris.gef.base.SelectAllAction;
-import org.tigris.gef.base.SelectInvertAction;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**
@@ -403,8 +401,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(select, "Select");
         edit.add(select);
 
-        JMenuItem selectAllItem = select.add(
-                new SelectAllAction(menuItemLocalize("Select All")));
+        JMenuItem selectAllItem = select.add(new ActionSelectAll());
         setMnemonic(selectAllItem, "Select All");
         ShortcutMgr.assignAccelerator(selectAllItem,
                 ShortcutMgr.ACTION_SELECT_ALL);
@@ -419,8 +416,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
                 ShortcutMgr.ACTION_NAVIGATE_FORWARD);
         select.addSeparator();
 
-        JMenuItem selectInvert = select.add(
-                new SelectInvertAction(menuItemLocalize("Invert Selection")));
+        JMenuItem selectInvert = select.add(new ActionSelectInvert());
         setMnemonic(selectInvert, "Invert Selection");
         ShortcutMgr.assignAccelerator(selectInvert,
                 ShortcutMgr.ACTION_SELECT_INVERT);
@@ -535,10 +531,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
                     ShortcutMgr.ACTION_ADJUST_GUIDE + cmdAS.getValue("ID"));
         }
 
-        Action pba  = new AdjustPageBreaksAction();
+        Action pba  = new ActionAdjustPageBreaks();
         JMenuItem adjustPageBreaks = view.add(pba);
-        pba.putValue(Action.NAME, 
-                Translator.localize("menu.adjust-pagebreaks"));
         setMnemonic(adjustPageBreaks, "Adjust Pagebreaks");
         ShortcutMgr.assignAccelerator(adjustPageBreaks,
                 ShortcutMgr.ACTION_ADJUST_PAGE_BREAKS);

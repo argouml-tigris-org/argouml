@@ -77,8 +77,6 @@ import org.tigris.gef.base.AdjustPageBreaksAction;
 import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.DistributeAction;
 import org.tigris.gef.base.ReorderAction;
-import org.tigris.gef.base.SelectAllAction;
-import org.tigris.gef.base.SelectInvertAction;
 import org.tigris.gef.base.ZoomAction;
 
 /**
@@ -582,7 +580,8 @@ public class ShortcutMgr {
 
         // edit menu
         putDefaultShortcut(ACTION_SELECT_ALL, KeyStroke.getKeyStroke(
-                KeyEvent.VK_A, DEFAULT_MASK), new SelectAllAction());
+                KeyEvent.VK_A, DEFAULT_MASK), 
+                new ActionSelectAll());
         putDefaultShortcut(ACTION_REDO, KeyStroke.getKeyStroke(KeyEvent.VK_Y,
                 DEFAULT_MASK), ProjectActions.getInstance().getRedoAction());
         putDefaultShortcut(ACTION_UNDO, KeyStroke.getKeyStroke(KeyEvent.VK_Z,
@@ -592,7 +591,7 @@ public class ShortcutMgr {
         putDefaultShortcut(ACTION_NAVIGATE_BACK, null,
                 new NavigateTargetBackAction());
         putDefaultShortcut(ACTION_SELECT_INVERT, null, 
-                new SelectInvertAction());
+                new ActionSelectInvert());
         putDefaultShortcut(ACTION_PERSPECTIVE_CONFIG, null,
                 new ActionPerspectiveConfig());
         putDefaultShortcut(ACTION_SETTINGS, null, new ActionSettings());
@@ -624,7 +623,7 @@ public class ShortcutMgr {
         }
 
         putDefaultShortcut(ACTION_ADJUST_PAGE_BREAKS, null,
-                new AdjustPageBreaksAction());
+                new ActionAdjustPageBreaks());
         putDefaultShortcut(ACTION_SHOW_XML_DUMP, null, new ActionShowXMLDump());
 
         putDefaultShortcut(ACTION_ZOOM_IN, KeyStroke.getKeyStroke(
