@@ -46,6 +46,7 @@ import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -135,7 +136,7 @@ public class UIFactory {
         panel = new JPanel(new LabelledLayout());
         
         for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {
-            
+            String label = prop.getName();
             if ("text".equals(prop.getType())) {
                 JPanel p = buildTextboxPanel(target, prop);
                 if (p != null) {
@@ -143,10 +144,7 @@ public class UIFactory {
                 }
             }
             else if ("combo".equals(prop.getType())) {
-                JPanel p = buildComboPanel(target, prop);
-                if (p != null) {
-                    panel.add(p);
-                }
+                buildComboPanel(panel, target, prop);                
             }
             else if ("checkgroup".equals(prop.getType())) {
                 JPanel p = buildCheckGroup(target, prop);
@@ -383,51 +381,49 @@ public class UIFactory {
     }
 
     /**
+     * @param panel The panel where the controls will be added.
      * @param target The target of the panel
      * @param prop The XML data that contains the information
      *        of the combo.
      * @return a combo panel 
      */
-    protected JPanel buildComboPanel(Object target,
-            XMLPropertyPanelsDataRecord prop) {
-        JPanel p = new JPanel();
-        String name = prop.getName();
-        JLabel label = new JLabel(name);
-        p.add(label);
-
-        UMLComboBoxModel2 model = null;
-        JComboBox combo = null;
-        
+    private void buildComboPanel(JPanel panel, Object target,
+            XMLPropertyPanelsDataRecord prop) {        
+        JComponent comp = null;
         if ("namespace".equals(prop.getName())) {
-            model = 
-                new UMLModelElementNamespaceComboBoxModel();                    
+            final UMLComboBoxModel2 model =
+                new UMLModelElementNamespaceComboBoxModel();
             model.setTarget(target);
-            combo = new UMLSearchableComboBox(
+            final JComboBox combo = new UMLSearchableComboBox(
                     model,
-                    new ActionSetModelElementNamespace(), true);
-            
-            p.add(combo);
-            // TODO: What about an
-            // UMLSearchableNavigableComboBox?
-            p.add(new UMLComboBoxNavigator(
+                    new ActionSetModelElementNamespace(), true);            
+            comp = new UMLComboBoxNavigator(
                     Translator.localize(
                     "label.namespace.navigate.tooltip"),
-                    combo));
+                    combo);
         }
         if ("type".equals(prop.getName())) {
-            model =  new UMLStructuralFeatureTypeComboBoxModel();
-            model.setTarget(target);
-            combo = new UMLComboBox2(
+            final UMLComboBoxModel2 model =
+                new UMLStructuralFeatureTypeComboBoxModel();
+            model.setTarget(target);           
+            final JComboBox combo = new UMLComboBox2(
                     model,
                     ActionSetStructuralFeatureType.getInstance());
-            p.add(combo);
+            comp = combo;
         }
         if ("multiplicity".equals(prop.getName())) {            
-            UMLMultiplicityPanel mPanel = new UMLMultiplicityPanel();
+            final UMLMultiplicityPanel mPanel = new UMLMultiplicityPanel();
             mPanel.setTarget(target);
-            p.add(mPanel);
+            comp = mPanel;
         }
-        return p;
+        if (comp != null) {
+            String name = prop.getName();
+
+            JLabel label = new JLabel(name);
+            label.setLabelFor(comp);
+            panel.add(label);
+            panel.add(comp);
+        }
     }
 
     /**
