@@ -4,8 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="/argouml-app"/>
 	<classpathentry kind="src" path="/argouml-core-infra"/>
-	<classpathentry exported="true" kind="lib" path="lib/xerces_2_5_0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/argouml-core-model"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>

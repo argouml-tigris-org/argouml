@@ -463,9 +463,7 @@ public class UIFactory {
         
         XMLPropertyPanelsData data = new XMLPropertyPanelsData();
 
-        XMLReader parser = XMLReaderFactory.createXMLReader(
-                "org.apache.xerces.parsers.SAXParser"              
-        );
+        XMLReader parser = XMLReaderFactory.createXMLReader();
         parser.setContentHandler(new XMLPropertyPanelsHandler(data));
 
         String file = "org/argouml/core/propertypanels/xml/"
