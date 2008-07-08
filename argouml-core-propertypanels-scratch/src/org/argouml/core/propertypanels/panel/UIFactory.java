@@ -37,6 +37,7 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.ui.UMLClassifierPackageImportsListModel;
+import org.argouml.core.propertypanels.ui.UMLDefaultValueExpressionModel;
 import org.argouml.core.propertypanels.ui.UMLExpressionModel3;
 import org.argouml.core.propertypanels.ui.UMLExpressionPanel;
 import org.argouml.core.propertypanels.ui.UMLInitialValueExpressionModel;
@@ -89,6 +90,8 @@ import org.argouml.uml.ui.foundation.core.UMLOperationConcurrencyRadioButtonPane
 import org.argouml.uml.ui.foundation.core.UMLOperationMethodsListModel;
 import org.argouml.uml.ui.foundation.core.UMLOperationRaisedSignalsListModel;
 import org.argouml.uml.ui.foundation.core.UMLOperationSpecificationDocument;
+import org.argouml.uml.ui.foundation.core.UMLParameterBehavioralFeatListModel;
+import org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.tigris.swidgets.GridLayout2;
@@ -190,6 +193,13 @@ public class UIFactory {
             p  = new UMLExpressionPanel(model, prop.getName());
             control = p;
         }
+        if ("default_value".equals(prop.getName())) {        
+            UMLExpressionModel3 model = new UMLDefaultValueExpressionModel();
+            // model.setTarget(target);
+
+            p  = new UMLExpressionPanel(model, prop.getName());
+            control = p;
+        }
         else if ("specification".equals(prop.getName())) {
             UMLPlainTextDocument document = 
                 new UMLOperationSpecificationDocument();
@@ -224,6 +234,11 @@ public class UIFactory {
         
         if ("owner".equals(prop.getName())) {
             model = new UMLFeatureOwnerListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        if ("feature".equals(prop.getName())) {
+            model = new UMLParameterBehavioralFeatListModel();
             model.setTarget(target);
             pane = new UMLSingleRowSelector(model);
         }
@@ -370,6 +385,13 @@ public class UIFactory {
             control = cPanel;
             
         }
+        else if ("direction_kind".equals(prop.getName())) {
+            UMLRadioButtonPanel cPanel = 
+                new UMLParameterDirectionKindRadioButtonPanel(
+                    Translator.localize("label.parameter.kind"), true);
+            cPanel.setTarget(target);
+            control = cPanel;   
+        }
         if (control != null) {
             panel.add(control);
         }
@@ -454,6 +476,8 @@ public class UIFactory {
             model.setTarget(target);           
             final JComboBox combo = new UMLComboBox2(
                     model,
+                    // TODO: The action is different for
+                    // attributes and parameters. Issue #5222
                     ActionSetStructuralFeatureType.getInstance());
             comp = combo;
         }

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<panel>
+	<text name='name' />
+	<singlerow name='feature' />
+	<separator />
+	<combo name='type' />
+	<textarea name='default_value' />
+	<optionbox name='direction_kind' />
+</panel>
