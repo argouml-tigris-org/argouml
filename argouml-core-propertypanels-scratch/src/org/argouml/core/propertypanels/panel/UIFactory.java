@@ -71,6 +71,7 @@ import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
+import org.argouml.uml.ui.foundation.core.ActionSetGeneralizationPowertype;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
 import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
@@ -80,6 +81,7 @@ import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierParameterListModel;
+import org.argouml.uml.ui.foundation.core.UMLDiscriminatorNameDocument;
 import org.argouml.uml.ui.foundation.core.UMLEnumerationLiteralsListModel;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerListModel;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerScopeCheckBox;
@@ -88,7 +90,11 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationL
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizationChildListModel;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizationParentListModel;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizationPowertypeComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementClientDependencyListModel;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementSupplierDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
@@ -155,8 +161,7 @@ public class UIFactory {
         
         panel = new JPanel(new LabelledLayout());
         
-        for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {
-            String label = prop.getName();
+        for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {        
             if ("text".equals(prop.getType())) {
                 buildTextboxPanel(panel, target, prop);
             }
@@ -241,6 +246,16 @@ public class UIFactory {
         
         if ("owner".equals(prop.getName())) {
             model = new UMLFeatureOwnerListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("parent".equals(prop.getName())) {
+            model = new UMLGeneralizationParentListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("child".equals(prop.getName())) {
+            model = new UMLGeneralizationChildListModel();
             model.setTarget(target);
             pane = new UMLSingleRowSelector(model);
         }
@@ -511,7 +526,7 @@ public class UIFactory {
                     "label.namespace.navigate.tooltip"),
                     combo);
         }
-        if ("type".equals(prop.getName())) {
+        else if ("type".equals(prop.getName())) {
             final UMLComboBoxModel2 model =
                 new UMLStructuralFeatureTypeComboBoxModel();
             model.setTarget(target);           
@@ -522,7 +537,16 @@ public class UIFactory {
                     ActionSetStructuralFeatureType.getInstance());
             comp = combo;
         }
-        if ("multiplicity".equals(prop.getName())) {            
+        else if ("powertype".equals(prop.getName())) {
+            final UMLComboBoxModel2 model = 
+                new UMLGeneralizationPowertypeComboBoxModel();
+            model.setTarget(target);
+            final JComboBox combo = new UMLComboBox2(
+                    model,
+                    ActionSetGeneralizationPowertype.getInstance());
+            comp = combo;
+        }
+        else if ("multiplicity".equals(prop.getName())) {            
             final UMLMultiplicityPanel mPanel = new UMLMultiplicityPanel();
             mPanel.setTarget(target);
             comp = mPanel;
@@ -546,22 +570,26 @@ public class UIFactory {
     private void buildTextboxPanel(JPanel panel, Object target,
             XMLPropertyPanelsDataRecord prop) {
        
-        String name = prop.getName();
-        JLabel label = new JLabel(name);
-
-        // TODO: if the XML is invalid, this will explode 
-        GenericUMLPlainTextDocument document = 
-            new GenericUMLPlainTextDocument(name);
-        document.setTarget(target);
-        JTextField tfield = 
-            new UMLTextField2(document);
-        tfield.setColumns(20);
-
-        label.setLabelFor(tfield);
+        JTextField tfield = null;
+        UMLPlainTextDocument document = null;
+        if ("name".equals(prop.getName())) {
+            document = new UMLModelElementNameDocument();            
+        }
+        else if ("discriminator".equals(prop.getName())) {
+            document = new UMLDiscriminatorNameDocument();            
+        }
         
-        panel.add(label);        
-        panel.add(tfield);
-        
+        if (document != null) {
+            document.setTarget(target);
+            tfield = new UMLTextField2(document);
+        }        
+        if (tfield != null) {
+            String name = prop.getName();
+            JLabel label = new JLabel(name);
+            label.setLabelFor(tfield);
+            panel.add(label);
+            panel.add(tfield);
+        }        
     }
 
 

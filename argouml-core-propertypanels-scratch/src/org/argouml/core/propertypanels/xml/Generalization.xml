@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<panel>	
+	<text name='name' />
+	<text name='discriminator' />
+	<combo name='namespace' />
+	<separator />
+	<singlerow name='parent' />
+	<singlerow name='child' />
+	<combo name='powertype' />
+</panel>
