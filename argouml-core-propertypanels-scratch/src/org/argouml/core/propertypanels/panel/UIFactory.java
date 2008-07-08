@@ -69,6 +69,7 @@ import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.foundation.core.ActionAddAssociationSpecification;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionSetGeneralizationPowertype;
@@ -76,6 +77,14 @@ import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
 import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.UMLAssociationAssociationRoleListModel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationConnectionListModel;
+import org.argouml.uml.ui.foundation.core.UMLAssociationEndAggregationRadioButtonPanel;
+import org.argouml.uml.ui.foundation.core.UMLAssociationEndAssociationListModel;
+import org.argouml.uml.ui.foundation.core.UMLAssociationEndChangeabilityRadioButtonPanel;
+import org.argouml.uml.ui.foundation.core.UMLAssociationEndNavigableCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLAssociationEndOrderingCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLAssociationEndQualifiersListModel;
+import org.argouml.uml.ui.foundation.core.UMLAssociationEndSpecificationListModel;
+import org.argouml.uml.ui.foundation.core.UMLAssociationEndTargetScopeCheckbox;
 import org.argouml.uml.ui.foundation.core.UMLAssociationLinkListModel;
 import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
@@ -274,6 +283,11 @@ public class UIFactory {
             m.setTarget(target);   
             pane = new UMLSingleRowSelector(m);
         }
+        else if ("association".equals(prop.getName())) {
+            model = new UMLAssociationEndAssociationListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
         if (pane != null) {           
             JLabel label = new JLabel(prop.getName());
             label.setLabelFor(pane);
@@ -425,6 +439,19 @@ public class UIFactory {
             model.setTarget(target);
             list = new ScrollList(model);
         }
+        else if ("specification".equals(prop.getName())) {
+            model = new UMLAssociationEndSpecificationListModel();
+            model.setTarget(target);
+            list = new ScrollList(new UMLMutableLinkedList(
+                    model,
+                    ActionAddAssociationSpecification.getInstance(),
+                    null, null, true));
+        }
+        else if ("qualifiers".equals(prop.getName())) {
+            model = new UMLAssociationEndQualifiersListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
         if (list != null) {
             String name = prop.getName();
 
@@ -455,13 +482,21 @@ public class UIFactory {
             control = visibilityPanel;
         }
         else if ("changeability".equals(prop.getName())) {
-            UMLRadioButtonPanel cPanel =   
-                new UMLStructuralFeatureChangeabilityRadioButtonPanel(
-                    Translator.localize("label.changeability"), 
-                    true); 
+            UMLRadioButtonPanel cPanel = null;
+            if (Model.getFacade().isAAssociationEnd(target)) {
+                cPanel = 
+                    new UMLAssociationEndChangeabilityRadioButtonPanel(
+                            "label.changeability", true);
+            }
+            else {
+                cPanel =   
+                    new UMLStructuralFeatureChangeabilityRadioButtonPanel(
+                            Translator.localize("label.changeability"), 
+                            true);
+            }
             cPanel.setTarget(target);
             control = cPanel;
-            
+
         }
         else if ("concurrency".equals(prop.getName())) { 
             UMLRadioButtonPanel cPanel =   
@@ -475,6 +510,13 @@ public class UIFactory {
             UMLRadioButtonPanel cPanel = 
                 new UMLParameterDirectionKindRadioButtonPanel(
                     Translator.localize("label.parameter.kind"), true);
+            cPanel.setTarget(target);
+            control = cPanel;   
+        }
+        else if ("aggregation".equals(prop.getName())) {
+            UMLRadioButtonPanel cPanel = 
+                new UMLAssociationEndAggregationRadioButtonPanel(
+                        "label.aggregation", true);
             cPanel.setTarget(target);
             control = cPanel;   
         }
@@ -523,10 +565,21 @@ public class UIFactory {
             checkbox = new UMLClassActiveCheckBox();    
         }        
         else if ("static".equals(p.getName())) {
-            checkbox = new UMLFeatureOwnerScopeCheckBox();    
+            if (Model.getFacade().isAAssociationEnd(target)) {
+                checkbox = new UMLAssociationEndTargetScopeCheckbox();
+            }
+            else {
+                checkbox = new UMLFeatureOwnerScopeCheckBox();
+            }
         }
         else if ("query".equals(p.getName())) {
             checkbox = new UMLBehavioralFeatureQueryCheckBox();
+        }
+        else if ("navigable".equals(p.getName())) {
+            checkbox = new UMLAssociationEndNavigableCheckBox();
+        }
+        else if ("ordered".equals(p.getName())) {
+            checkbox = new UMLAssociationEndOrderingCheckBox();
         }
         if (checkbox != null) {
             checkbox.setTarget(target);
