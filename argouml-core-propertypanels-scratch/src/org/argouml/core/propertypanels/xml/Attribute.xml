@@ -3,7 +3,7 @@
 	<text name='name' />
 	<combo name='type' />
 	<combo name='multiplicity' />
-	<singlerow name="owner" />
+	<singlerow name='owner' />
 	<separator />
 	<optionbox name='visibility' />
 	<optionbox name='changeability' />
