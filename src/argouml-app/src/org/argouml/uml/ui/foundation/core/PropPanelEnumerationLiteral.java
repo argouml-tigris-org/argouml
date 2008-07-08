@@ -70,16 +70,11 @@ public class PropPanelEnumerationLiteral extends PropPanelModelElement {
 }
 
 /**
- * The list model for the namespace of a diagram.
+ * The list model for the enumeration of a literal.
  *
  * @author mvw@tigris.org
  */
 class EnumerationListModel extends DefaultListModel implements TargetListener {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 5200714273864311332L;
 
     /**
      * Constructor for EnumerationListModel.
