@@ -82,7 +82,7 @@ class EnumerationListModel extends DefaultListModel implements TargetListener {
     private static final long serialVersionUID = 5200714273864311332L;
 
     /**
-     * Constructor for UMLCommentAnnotatedElementListModel.
+     * Constructor for EnumerationListModel.
      */
     public EnumerationListModel() {
         super();
