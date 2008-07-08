@@ -39,6 +39,7 @@ import javax.swing.border.TitledBorder;
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.ui.ActionAddStereotypeBaseClass;
 import org.argouml.core.propertypanels.ui.ActionDeleteStereotypeBaseClass;
+import org.argouml.core.propertypanels.ui.EnumerationListModel;
 import org.argouml.core.propertypanels.ui.UMLClassifierPackageImportsListModel;
 import org.argouml.core.propertypanels.ui.UMLDefaultValueExpressionModel;
 import org.argouml.core.propertypanels.ui.UMLExpressionModel3;
@@ -79,6 +80,7 @@ import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierParameterListModel;
+import org.argouml.uml.ui.foundation.core.UMLEnumerationLiteralsListModel;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerListModel;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerScopeCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
@@ -242,10 +244,15 @@ public class UIFactory {
             model.setTarget(target);
             pane = new UMLSingleRowSelector(model);
         }
-        if ("feature".equals(prop.getName())) {
+        else if ("feature".equals(prop.getName())) {
             model = new UMLParameterBehavioralFeatListModel();
             model.setTarget(target);
             pane = new UMLSingleRowSelector(model);
+        }
+        else if ("enumeration".equals(prop.getName())) {
+            EnumerationListModel m = new EnumerationListModel();
+            m.setTarget(target);   
+            pane = new UMLSingleRowSelector(m);
         }
         if (pane != null) {           
             JLabel label = new JLabel(prop.getName());
@@ -368,7 +375,11 @@ public class UIFactory {
             list = new ScrollList( new UMLLinkedList(model, 
                     true, true));
         }
-
+        else if ("literals".equals(prop.getName())) {
+            model = new UMLEnumerationLiteralsListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
         if (list != null) {
             String name = prop.getName();
 
