@@ -220,6 +220,26 @@ public interface ArgoEventTypes {
      * Last profile event.
      */
     int LAST_PROFILE_EVENT = 1799;
+    
+    /***
+     * Indicating an Project event.
+     */
+    int ANY_PROJECT_EVENT = 1800;
+    
+    /**
+     * Indicating that a diagram has been added.
+     */
+    int PROJECT_DIAGRAM_ADDED_EVENT = 1801;
+    
+    /**
+     * Indicating that a diagram has been removed.
+     */
+    int PROJECT_DIAGRAM_REMOVED_EVENT = 1802;
+    
+    /**
+     * Last project event.
+     */
+    int LAST_PROJECT_EVENT = 1899;
 
     /**
      * Id marker for the last Argo event.

@@ -31,8 +31,8 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
 
 /**
- * ArgoEventPump is an eventhandler which handles events regarding
- * the loading and unloading of modules.
+ * ArgoEventPump is an eventhandler which handles events regarding the loading
+ * and unloading of modules.
  */
 public final class ArgoEventPump {
     /**
@@ -42,7 +42,7 @@ public final class ArgoEventPump {
 
     /**
      * <code>listeners</code> contains the list of register listeners.
-     *
+     * 
      * It is a list of {@link Pair}.
      */
     private List<Pair> listeners;
@@ -110,10 +110,10 @@ public final class ArgoEventPump {
 
     /**
      * Removes a listener, eventtype pair from the listener list.
-     *
-     * TODO: replace the listener implementation with a EventListenerList
-     * for better performance
-     *
+     * 
+     * TODO: replace the listener implementation with a EventListenerList for
+     * better performance
+     * 
      * @param event the event to which the listener will not listen any more
      * @param listener the listener to be removed
      */
@@ -144,54 +144,53 @@ public final class ArgoEventPump {
 
     /**
      * Handle firing a notation event.
-     *
+     * 
      * @param event The event to be fired.
      * @param listener The listener.
      */
-    private void handleFireNotationEvent(
-        ArgoNotationEvent event,
-        ArgoNotationEventListener listener) {
+    private void handleFireNotationEvent(ArgoNotationEvent event,
+            ArgoNotationEventListener listener) {
         switch (event.getEventType()) {
-	case ArgoEventTypes.NOTATION_CHANGED :
-	    listener.notationChanged(event);
-	    break;
+        case ArgoEventTypes.NOTATION_CHANGED:
+            listener.notationChanged(event);
+            break;
 
-	case ArgoEventTypes.NOTATION_ADDED :
-	    listener.notationAdded(event);
-	    break;
+        case ArgoEventTypes.NOTATION_ADDED:
+            listener.notationAdded(event);
+            break;
 
-	case ArgoEventTypes.NOTATION_REMOVED :
-	    listener.notationRemoved(event);
-	    break;
+        case ArgoEventTypes.NOTATION_REMOVED:
+            listener.notationRemoved(event);
+            break;
 
-	case ArgoEventTypes.NOTATION_PROVIDER_ADDED :
-	    listener.notationProviderAdded(event);
-	    break;
+        case ArgoEventTypes.NOTATION_PROVIDER_ADDED:
+            listener.notationProviderAdded(event);
+            break;
 
-	case ArgoEventTypes.NOTATION_PROVIDER_REMOVED :
-	    listener.notationProviderRemoved(event);
-	    break;
+        case ArgoEventTypes.NOTATION_PROVIDER_REMOVED:
+            listener.notationProviderRemoved(event);
+            break;
 
-	default :
-	    LOG.error("Invalid event:" + event.getEventType());
-	    break;
+        default:
+            LOG.error("Invalid event:" + event.getEventType());
+            break;
         }
     }
 
     /**
      * Handle firing a diagram appearance event.
-     *
+     * 
      * @param event The event to be fired.
      * @param listener The listener.
      */
     private void handleFireDiagramAppearanceEvent(
-        ArgoDiagramAppearanceEvent event,
-        ArgoDiagramAppearanceEventListener listener) {
+            ArgoDiagramAppearanceEvent event,
+            ArgoDiagramAppearanceEventListener listener) {
         switch (event.getEventType()) {
-        case ArgoEventTypes.DIAGRAM_FONT_CHANGED :
+        case ArgoEventTypes.DIAGRAM_FONT_CHANGED:
             listener.diagramFontChanged(event);
             break;
-        default :
+        default:
             LOG.error("Invalid event:" + event.getEventType());
             break;
         }
@@ -199,60 +198,57 @@ public final class ArgoEventPump {
 
     /**
      * Handle firing a help text event.
-     *
+     * 
      * @param event The event to be fired.
      * @param listener The listener.
      */
-    private void handleFireHelpEvent(
-        ArgoHelpEvent event,
-        ArgoHelpEventListener listener) {
+    private void handleFireHelpEvent(ArgoHelpEvent event,
+            ArgoHelpEventListener listener) {
         switch (event.getEventType()) {
-        case ArgoEventTypes.HELP_CHANGED :
+        case ArgoEventTypes.HELP_CHANGED:
             listener.helpChanged(event);
             break;
 
-        case ArgoEventTypes.HELP_REMOVED :
+        case ArgoEventTypes.HELP_REMOVED:
             listener.helpRemoved(event);
             break;
 
-        default :
+        default:
             LOG.error("Invalid event:" + event.getEventType());
             break;
         }
     }
 
-
     /**
      * Handle firing a status text event.
-     *
+     * 
      * @param event The event to be fired.
      * @param listener The listener.
      */
-    private void handleFireStatusEvent(
-        ArgoStatusEvent event,
-        ArgoStatusEventListener listener) {
+    private void handleFireStatusEvent(ArgoStatusEvent event,
+            ArgoStatusEventListener listener) {
         switch (event.getEventType()) {
-        case ArgoEventTypes.STATUS_TEXT :
+        case ArgoEventTypes.STATUS_TEXT:
             listener.statusText(event);
             break;
 
-        case ArgoEventTypes.STATUS_CLEARED :
+        case ArgoEventTypes.STATUS_CLEARED:
             listener.statusCleared(event);
             break;
 
-        case ArgoEventTypes.STATUS_PROJECT_SAVED :
+        case ArgoEventTypes.STATUS_PROJECT_SAVED:
             listener.projectSaved(event);
             break;
 
-        case ArgoEventTypes.STATUS_PROJECT_LOADED :
+        case ArgoEventTypes.STATUS_PROJECT_LOADED:
             listener.projectLoaded(event);
             break;
 
-        case ArgoEventTypes.STATUS_PROJECT_MODIFIED :
+        case ArgoEventTypes.STATUS_PROJECT_MODIFIED:
             listener.projectModified(event);
             break;
-            
-        default :
+
+        default:
             LOG.error("Invalid event:" + event.getEventType());
             break;
         }
@@ -260,13 +256,12 @@ public final class ArgoEventPump {
 
     /**
      * Handle firing a profile event.
-     *
+     * 
      * @param event The event to be fired.
      * @param listener The listener.
      */
-    private void handleFireProfileEvent(
-        ArgoProfileEvent event,
-        ArgoProfileEventListener listener) {
+    private void handleFireProfileEvent(ArgoProfileEvent event,
+            ArgoProfileEventListener listener) {
         switch (event.getEventType()) {
         case ArgoEventTypes.PROFILE_ADDED:
             listener.profileAdded(event);
@@ -284,13 +279,12 @@ public final class ArgoEventPump {
 
     /**
      * Handle firing a generator event.
-     *
+     * 
      * @param event The event to be fired.
      * @param listener The listener.
      */
-    private void handleFireGeneratorEvent(
-        ArgoGeneratorEvent event,
-        ArgoGeneratorEventListener listener) {
+    private void handleFireGeneratorEvent(ArgoGeneratorEvent event,
+            ArgoGeneratorEventListener listener) {
         switch (event.getEventType()) {
         case ArgoEventTypes.GENERATOR_CHANGED:
             listener.generatorChanged(event);
@@ -314,11 +308,11 @@ public final class ArgoEventPump {
         if (event.getEventType() == ArgoEventTypes.ANY_EVENT) {
             if (listener instanceof ArgoNotationEventListener) {
                 handleFireNotationEvent((ArgoNotationEvent) event,
-					(ArgoNotationEventListener) listener);
+                        (ArgoNotationEventListener) listener);
             }
             if (listener instanceof ArgoHelpEventListener) {
                 handleFireHelpEvent((ArgoHelpEvent) event,
-                                        (ArgoHelpEventListener) listener);
+                        (ArgoHelpEventListener) listener);
             }
             if (listener instanceof ArgoStatusEventListener) {
                 handleFireStatusEvent((ArgoStatusEvent) event,
@@ -326,52 +320,72 @@ public final class ArgoEventPump {
             }
         } else {
             if (event.getEventType() >= ArgoEventTypes.ANY_NOTATION_EVENT
-                && event.getEventType() < ArgoEventTypes.LAST_NOTATION_EVENT) {
+                    && event.getEventType() < ArgoEventTypes.LAST_NOTATION_EVENT) {
                 if (listener instanceof ArgoNotationEventListener) {
                     handleFireNotationEvent((ArgoNotationEvent) event,
-					(ArgoNotationEventListener) listener);
+                            (ArgoNotationEventListener) listener);
                 }
-            }
-            if (event.getEventType() >= ArgoEventTypes
-                            .ANY_DIAGRAM_APPEARANCE_EVENT
-                    && event.getEventType() < ArgoEventTypes
-                            .LAST_DIAGRAM_APPEARANCE_EVENT) {
+            } else if (event.getEventType() >= ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT
+                    && event.getEventType() < ArgoEventTypes.LAST_DIAGRAM_APPEARANCE_EVENT) {
                 if (listener instanceof ArgoDiagramAppearanceEventListener) {
                     handleFireDiagramAppearanceEvent(
                             (ArgoDiagramAppearanceEvent) event,
                             (ArgoDiagramAppearanceEventListener) listener);
                 }
-            }
-            if (event.getEventType() >= ArgoEventTypes.ANY_HELP_EVENT
+            } else if (event.getEventType() >= ArgoEventTypes.ANY_HELP_EVENT
                     && event.getEventType() < ArgoEventTypes.LAST_HELP_EVENT) {
                 if (listener instanceof ArgoHelpEventListener) {
                     handleFireHelpEvent((ArgoHelpEvent) event,
                             (ArgoHelpEventListener) listener);
                 }
-            }
-            if (event.getEventType() >= ArgoEventTypes.ANY_GENERATOR_EVENT
-                && event.getEventType() < ArgoEventTypes.LAST_GENERATOR_EVENT) {
+            } else if (event.getEventType() >= ArgoEventTypes.ANY_GENERATOR_EVENT
+                    && event.getEventType() < ArgoEventTypes.LAST_GENERATOR_EVENT) {
                 if (listener instanceof ArgoGeneratorEventListener) {
                     handleFireGeneratorEvent((ArgoGeneratorEvent) event,
                             (ArgoGeneratorEventListener) listener);
                 }
-            }
-            if (event.getEventType() >= ArgoEventTypes.ANY_STATUS_EVENT
-                    && event.getEventType() < ArgoEventTypes
-                            .LAST_STATUS_EVENT) {
+            } else if (event.getEventType() >= ArgoEventTypes.ANY_STATUS_EVENT
+                    && event.getEventType() < ArgoEventTypes.LAST_STATUS_EVENT) {
                 if (listener instanceof ArgoStatusEventListener) {
                     handleFireStatusEvent((ArgoStatusEvent) event,
                             (ArgoStatusEventListener) listener);
                 }
-            }
-            if (event.getEventType() >= ArgoEventTypes.ANY_PROFILE_EVENT
-                    && event.getEventType() < ArgoEventTypes
-                            .LAST_PROFILE_EVENT) {
+            } else if (event.getEventType() >= ArgoEventTypes.ANY_PROFILE_EVENT
+                    && event.getEventType() < ArgoEventTypes.LAST_PROFILE_EVENT) {
                 if (listener instanceof ArgoProfileEventListener) {
                     handleFireProfileEvent((ArgoProfileEvent) event,
                             (ArgoProfileEventListener) listener);
                 }
+            } else if (event.getEventType() >= ArgoEventTypes.ANY_PROJECT_EVENT
+                    && event.getEventType() < ArgoEventTypes.LAST_PROJECT_EVENT) {
+                if (listener instanceof ArgoProjectEventListener) {
+                    handleFireProjectEvent((ArgoProjectEvent) event,
+                            (ArgoProjectEventListener) listener);
+                }
             }
+        }
+    }
+
+    /**
+     * Handle firing a project event.
+     * 
+     * @param event The event to be fired.
+     * @param listener The listener.
+     */
+    private void handleFireProjectEvent(ArgoProjectEvent event,
+            ArgoProjectEventListener listener) {
+        switch (event.getEventType()) {
+        case ArgoEventTypes.PROJECT_DIAGRAM_ADDED_EVENT:
+            listener.diagramAdded(event);
+            break;
+
+        case ArgoEventTypes.PROJECT_DIAGRAM_REMOVED_EVENT:
+            listener.diagramRemoved(event);
+            break;
+
+        default:
+            LOG.error("Invalid event:" + event.getEventType());
+            break;
         }
     }
 
@@ -414,11 +428,12 @@ public final class ArgoEventPump {
      */
     static class Pair {
         private int eventType;
+
         private ArgoEventListener listener;
 
         /**
          * Constructor.
-         *
+         * 
          * @param myEventType The event type.
          * @param myListener The listener.
          */
@@ -441,12 +456,10 @@ public final class ArgoEventPump {
             return listener;
         }
 
-
         @Override
         public String toString() {
             return "{Pair(" + eventType + "," + listener + ")}";
         }
-
 
         @Override
         public int hashCode() {
@@ -455,7 +468,6 @@ public final class ArgoEventPump {
             }
             return eventType;
         }
-
 
         @Override
         public boolean equals(Object o) {
