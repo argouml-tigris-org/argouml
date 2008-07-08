@@ -27,6 +27,7 @@ package org.argouml.core.propertypanels.panel;
 import java.awt.Dimension;
 import java.io.InputStream;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -36,18 +37,22 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
+import org.argouml.core.propertypanels.ui.ActionAddStereotypeBaseClass;
+import org.argouml.core.propertypanels.ui.ActionDeleteStereotypeBaseClass;
 import org.argouml.core.propertypanels.ui.UMLClassifierPackageImportsListModel;
 import org.argouml.core.propertypanels.ui.UMLDefaultValueExpressionModel;
 import org.argouml.core.propertypanels.ui.UMLExpressionModel3;
 import org.argouml.core.propertypanels.ui.UMLExpressionPanel;
+import org.argouml.core.propertypanels.ui.UMLExtendedElementsListModel;
 import org.argouml.core.propertypanels.ui.UMLInitialValueExpressionModel;
 import org.argouml.core.propertypanels.ui.UMLMultiplicityPanel;
+import org.argouml.core.propertypanels.ui.UMLStereotypeBaseClassListModel;
+import org.argouml.core.propertypanels.ui.UMLStereotypeTagDefinitionListModel;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -337,6 +342,31 @@ public class UIFactory {
             model.setTarget(target);
             list = new ScrollList(new UMLLinkedList(model, 
                     true, false));
+        }
+        else if ("tag_definitions".equals(prop.getName())) {
+            model = new UMLStereotypeTagDefinitionListModel();
+            model.setTarget(target);
+            list = new ScrollList(new UMLLinkedList(model,
+                    true, false));
+        }
+        else if ("base_class".equals(prop.getName())) {
+            model = new UMLStereotypeBaseClassListModel();
+            model.setTarget(target);
+            UMLMutableLinkedList l = new UMLMutableLinkedList(
+                    new UMLStereotypeBaseClassListModel(), 
+                    new ActionAddStereotypeBaseClass(),
+                    null,
+                    new ActionDeleteStereotypeBaseClass(),
+                    true);
+            l.setCellRenderer(new DefaultListCellRenderer());
+            list = new ScrollList(l
+                   );
+        }
+        else if ("extended_elements".equals(prop.getName())) {
+            model = new UMLExtendedElementsListModel();
+            model.setTarget(target);
+            list = new ScrollList( new UMLLinkedList(model, 
+                    true, true));
         }
 
         if (list != null) {
