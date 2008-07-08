@@ -81,6 +81,8 @@ import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierParameterListModel;
+import org.argouml.uml.ui.foundation.core.UMLDependencyClientListModel;
+import org.argouml.uml.ui.foundation.core.UMLDependencySupplierListModel;
 import org.argouml.uml.ui.foundation.core.UMLDiscriminatorNameDocument;
 import org.argouml.uml.ui.foundation.core.UMLEnumerationLiteralsListModel;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerListModel;
@@ -392,6 +394,16 @@ public class UIFactory {
         }
         else if ("literals".equals(prop.getName())) {
             model = new UMLEnumerationLiteralsListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("suppliers".equals(prop.getName())) {
+            model = new UMLDependencySupplierListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("clients".equals(prop.getName())) {
+            model = new UMLDependencyClientListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }

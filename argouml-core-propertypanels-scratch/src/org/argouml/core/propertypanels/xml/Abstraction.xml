@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<panel>	
+	<text name='name' />	
+	<combo name='namespace' />
+	<separator />
+	<list name="clients" />
+	<list name="suppliers" />
+</panel>
