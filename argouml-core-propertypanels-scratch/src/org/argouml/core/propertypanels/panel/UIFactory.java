@@ -53,21 +53,26 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLSingleRowSelector;
+import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
 import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
+import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassAttributeListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
+import org.argouml.uml.ui.foundation.core.UMLClassifierParameterListModel;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerListModel;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerScopeCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
@@ -80,6 +85,10 @@ import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementSupplierDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
+import org.argouml.uml.ui.foundation.core.UMLOperationConcurrencyRadioButtonPanel;
+import org.argouml.uml.ui.foundation.core.UMLOperationMethodsListModel;
+import org.argouml.uml.ui.foundation.core.UMLOperationRaisedSignalsListModel;
+import org.argouml.uml.ui.foundation.core.UMLOperationSpecificationDocument;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.tigris.swidgets.GridLayout2;
@@ -172,13 +181,39 @@ public class UIFactory {
         TitledBorder border = new TitledBorder(prop.getName());        
         p.setBorder(border);
 
+        JComponent control = null;
+        
         if ("initial_value".equals(prop.getName())) {        
             UMLExpressionModel3 model = new UMLInitialValueExpressionModel();
             // model.setTarget(target);
 
             p  = new UMLExpressionPanel(model, prop.getName());
+            control = p;
         }
-        panel.add(p);
+        else if ("specification".equals(prop.getName())) {
+            UMLPlainTextDocument document = 
+                new UMLOperationSpecificationDocument();
+            document.setTarget(target);
+            UMLTextArea2 osta = new UMLTextArea2(
+                    new UMLOperationSpecificationDocument());
+            osta.setRows(3);
+            control = new JScrollPane(osta);
+        }
+        
+        if (control != null) {
+            // if the control is a panel, add it
+            if (control == p) {
+                panel.add(control);
+            }
+            // if not, it is a control and must be labeled...
+            else {
+                JLabel label = new JLabel(prop.getName());
+                label.setLabelFor(control);
+                panel.add(label);
+                panel.add(control);
+            }
+            
+        }
     }
 
     private void buildSingleRow(JPanel panel, Object target,
@@ -270,6 +305,24 @@ public class UIFactory {
                     null, //new ActionRemovePackageImport(),
                     true));
         }
+        else if ("parameters".equals(prop.getName())) {
+            model = new UMLClassifierParameterListModel();
+            model.setTarget(target);
+            list = new ScrollList(new UMLLinkedList(model, 
+                    true, false));
+        }
+        else if ("raised_signals".equals(prop.getName())) {
+            model = new UMLOperationRaisedSignalsListModel();
+            model.setTarget(target);
+            list = new ScrollList(new UMLLinkedList(model, 
+                    true, false));
+        }
+        else if ("methods".equals(prop.getName())) {
+            model = new UMLOperationMethodsListModel();
+            model.setTarget(target);
+            list = new ScrollList(new UMLLinkedList(model, 
+                    true, false));
+        }
 
         if (list != null) {
             String name = prop.getName();
@@ -300,11 +353,19 @@ public class UIFactory {
             visibilityPanel.setTarget(target);
             control = visibilityPanel;
         }
-        if ("changeability".equals(prop.getName())) {
+        else if ("changeability".equals(prop.getName())) {
             UMLRadioButtonPanel cPanel =   
                 new UMLStructuralFeatureChangeabilityRadioButtonPanel(
                     Translator.localize("label.changeability"), 
                     true); 
+            cPanel.setTarget(target);
+            control = cPanel;
+            
+        }
+        else if ("concurrency".equals(prop.getName())) { 
+            UMLRadioButtonPanel cPanel =   
+                new UMLOperationConcurrencyRadioButtonPanel(
+                        Translator.localize("label.concurrency"), true); 
             cPanel.setTarget(target);
             control = cPanel;
             
@@ -355,8 +416,10 @@ public class UIFactory {
         }        
         else if ("static".equals(p.getName())) {
             checkbox = new UMLFeatureOwnerScopeCheckBox();    
-        }        
-
+        }
+        else if ("query".equals(p.getName())) {
+            checkbox = new UMLBehavioralFeatureQueryCheckBox();
+        }
         if (checkbox != null) {
             checkbox.setTarget(target);
             panel.add(checkbox);
