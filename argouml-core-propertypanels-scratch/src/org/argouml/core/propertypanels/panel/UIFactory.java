@@ -82,6 +82,7 @@ import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPa
 import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
+import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.LabelledLayout;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -138,40 +139,25 @@ public class UIFactory {
         for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {
             String label = prop.getName();
             if ("text".equals(prop.getType())) {
-                JPanel p = buildTextboxPanel(target, prop);
-                if (p != null) {
-                    panel.add(p);
-                }
+                buildTextboxPanel(panel, target, prop);
             }
             else if ("combo".equals(prop.getType())) {
                 buildComboPanel(panel, target, prop);                
             }
             else if ("checkgroup".equals(prop.getType())) {
-                JPanel p = buildCheckGroup(target, prop);
-                if (p != null) {
-                    panel.add(p);
-                }
+                buildCheckGroup(panel, target, prop);
             }
             else if ("optionbox".equals(prop.getType())) {
-                JPanel p = buildOptionBox(target, prop);
-                if (p != null) {
-                    panel.add(p);
-                }
+                buildOptionBox(panel, target, prop);
             }
             else if ("singlerow".equals(prop.getType())) {
-                JPanel p = buildSingleRow(target, prop);
-                if (p != null) {
-                    panel.add(p);
-                }
+                buildSingleRow(panel, target, prop);
             }
             else if ("list".equals(prop.getType())) {                    
                 buildList(panel, target, prop);
             }
             else if ("textarea".equals(prop.getType())) {
-                JPanel p = buildTextArea(target, prop);
-                if (p != null) {
-                    panel.add(p);
-                }
+                buildTextArea(panel, target, prop);
             }
             else if ("separator".equals(prop.getType())) {
                 panel.add(LabelledLayout.getSeperator());
@@ -180,7 +166,8 @@ public class UIFactory {
         return panel;
     }
 
-    private JPanel buildTextArea(Object target, XMLPropertyPanelsDataRecord prop) {
+    private void buildTextArea(JPanel panel, Object target, 
+            XMLPropertyPanelsDataRecord prop) {
         JPanel p = new JPanel();
         TitledBorder border = new TitledBorder(prop.getName());        
         p.setBorder(border);
@@ -191,29 +178,26 @@ public class UIFactory {
 
             p  = new UMLExpressionPanel(model, prop.getName());
         }
-        return p;
+        panel.add(p);
     }
 
-    private JPanel buildSingleRow(Object target,
+    private void buildSingleRow(JPanel panel, Object target,
             XMLPropertyPanelsDataRecord prop) {
-        JPanel p = new JPanel();
         
         UMLModelElementListModel2 model = null;
         UMLSingleRowSelector pane = null;
+        
         if ("owner".equals(prop.getName())) {
             model = new UMLFeatureOwnerListModel();
             model.setTarget(target);
-        }
-        if (model != null) {
             pane = new UMLSingleRowSelector(model);
-            // TODO: We'll need to use addField in the future.
+        }
+        if (pane != null) {           
             JLabel label = new JLabel(prop.getName());
             label.setLabelFor(pane);
-            p.add(label);
-            p.add(pane);
-            return p;
+            panel.add(label);
+            panel.add(pane);
         }
-        return null;
     }
 
     private void buildList(JPanel panel, Object target, 
@@ -303,27 +287,31 @@ public class UIFactory {
      *        of the options.
      * @return a radio button panel with the options 
      */
-    protected JPanel buildOptionBox(Object target,
+    private void buildOptionBox(JPanel panel, Object target,
             XMLPropertyPanelsDataRecord prop) {
+        
+        UMLRadioButtonPanel control = null;
+        
         if ("visibility".equals(prop.getName())) {
             UMLRadioButtonPanel visibilityPanel =   
                 new UMLModelElementVisibilityRadioButtonPanel(
                     Translator.localize("label.visibility"), 
                     true); 
             visibilityPanel.setTarget(target);
-            return visibilityPanel;
+            control = visibilityPanel;
         }
         if ("changeability".equals(prop.getName())) {
-            UMLRadioButtonPanel panel =   
+            UMLRadioButtonPanel cPanel =   
                 new UMLStructuralFeatureChangeabilityRadioButtonPanel(
                     Translator.localize("label.changeability"), 
                     true); 
-            panel.setTarget(target);
-            return panel;
+            cPanel.setTarget(target);
+            control = cPanel;
             
         }
-        // log something? Invalid XML!
-        return null;
+        if (control != null) {
+            panel.add(control);
+        }
     }
 
     /**
@@ -332,24 +320,21 @@ public class UIFactory {
      *        of the checkboxes.
      * @return a panel that contains the checkboxes 
      */
-    protected JPanel buildCheckGroup(Object target,
+    private void buildCheckGroup(JPanel panel, Object target,
             XMLPropertyPanelsDataRecord prop) {
-        JPanel p = new JPanel();
+        JPanel p = new JPanel(new GridLayout2());
         TitledBorder border = new TitledBorder(prop.getName());        
         p.setBorder(border);
         
         if ("modifiers".equals(prop.getName())) {  
             for (XMLPropertyPanelsDataRecord data : prop.getChildren()) {
-                UMLCheckBox2 checkbox = buildCheckBox(target, data);
-                if (checkbox != null) {
-                    p.add(checkbox);
-                }
+                buildCheckBox(p, target, data);
             }                            
         }
-        return p;
+        panel.add(p);
     }
 
-    protected UMLCheckBox2 buildCheckBox(Object target,
+    private void buildCheckBox(JPanel panel, Object target,
             XMLPropertyPanelsDataRecord p) {
         UMLCheckBox2 checkbox = null;
         
@@ -374,8 +359,8 @@ public class UIFactory {
 
         if (checkbox != null) {
             checkbox.setTarget(target);
+            panel.add(checkbox);
         }
-        return checkbox;
     }
 
     /**
@@ -430,12 +415,13 @@ public class UIFactory {
      *        of the options.
      * @return a panel with a labelled text field 
      */
-    protected JPanel buildTextboxPanel(Object target,
+    private void buildTextboxPanel(JPanel panel, Object target,
             XMLPropertyPanelsDataRecord prop) {
-        JPanel p = new JPanel();
+       
         String name = prop.getName();
         JLabel label = new JLabel(name);
 
+        // TODO: if the XML is invalid, this will explode 
         GenericUMLPlainTextDocument document = 
             new GenericUMLPlainTextDocument(name);
         document.setTarget(target);
@@ -445,10 +431,9 @@ public class UIFactory {
 
         label.setLabelFor(tfield);
         
-        p.add(label);        
-        p.add(tfield);
+        panel.add(label);        
+        panel.add(tfield);
         
-        return p;
     }
 
 
