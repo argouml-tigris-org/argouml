@@ -164,18 +164,8 @@ public class UIFactory {
                     panel.add(p);
                 }
             }
-            else if ("list".equals(prop.getType())) {
-                JPanel p = new JPanel();               
-                JComponent list = buildList(target, prop);
-                if (list != null) {
-                    p.add(list);
-                    list.setPreferredSize(new Dimension(200, 80));
-                    JScrollPane scrollPane = new JScrollPane(p);
-                    JLabel lbl = new JLabel(prop.getName());
-                    lbl.setLabelFor(scrollPane);
-                    panel.add(lbl);
-                    panel.add(scrollPane);
-                }
+            else if ("list".equals(prop.getType())) {                    
+                buildList(panel, target, prop);
             }
             else if ("textarea".equals(prop.getType())) {
                 JPanel p = buildTextArea(target, prop);
@@ -226,29 +216,30 @@ public class UIFactory {
         return null;
     }
 
-    protected JComponent buildList(Object target, 
+    private void buildList(JPanel panel, Object target, 
             XMLPropertyPanelsDataRecord prop) {
-        JComponent list = null;
+        
+        ScrollList list = null;
         UMLModelElementListModel2 model = null;
         if ("client_dependency".equals(prop.getName())) {
             model = new UMLModelElementClientDependencyListModel();
             model.setTarget(target); 
-            list = new UMLMutableLinkedList(
+            list = new ScrollList(new UMLMutableLinkedList(
                     model,
                     new ActionAddClientDependencyAction(),
                     null,
                     null,
-                    true);           
+                    true));
         }
         else if ("supplier_dependency".equals(prop.getName())) {
             model = new UMLModelElementSupplierDependencyListModel();
             model.setTarget(target);
-            list = new UMLMutableLinkedList(
+            list = new ScrollList(new UMLMutableLinkedList(
                     model,
                     new ActionAddSupplierDependencyAction(),
                     null,
                     null,
-                    true);        
+                    true));
         }
         else if ("generalizations".equals(prop.getName())) {
             model = new UMLGeneralizableElementGeneralizationListModel();
@@ -288,15 +279,22 @@ public class UIFactory {
         else if ("imported_elements".equals(prop.getName())) {
             model = new UMLClassifierPackageImportsListModel();
             model.setTarget(target);
-            list = new UMLMutableLinkedList(model,
+            list = new ScrollList(new UMLMutableLinkedList(model,
                     // TODO: It's OK to change the visibility of this actions?
                     null, // new ActionAddPackageImport(),
                     null,
                     null, //new ActionRemovePackageImport(),
-                    true);
+                    true));
         }
 
-        return list;
+        if (list != null) {
+            String name = prop.getName();
+
+            JLabel label = new JLabel(name);
+            label.setLabelFor(list);
+            panel.add(label);
+            panel.add(list);
+        }
     }
 
     /**
