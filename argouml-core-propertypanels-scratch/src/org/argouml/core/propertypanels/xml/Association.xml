@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<panel>
+	<text name='name' />
+	<combo name='namespace' />
+	<checkgroup name='modifiers'>
+		<checkbox name='abstract' />
+		<checkbox name='leaf' />
+		<checkbox name='root' />
+	</checkgroup>
+	<separator />
+	<list name='connections' />
+	<separator />
+	<list name='association_roles' />
+	<list name='links' />
+</panel>

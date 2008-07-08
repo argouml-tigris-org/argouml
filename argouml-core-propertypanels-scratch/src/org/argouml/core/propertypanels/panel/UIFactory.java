@@ -74,6 +74,9 @@ import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionSetGeneralizationPowertype;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
 import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
+import org.argouml.uml.ui.foundation.core.UMLAssociationAssociationRoleListModel;
+import org.argouml.uml.ui.foundation.core.UMLAssociationConnectionListModel;
+import org.argouml.uml.ui.foundation.core.UMLAssociationLinkListModel;
 import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassAttributeListModel;
@@ -404,6 +407,21 @@ public class UIFactory {
         }
         else if ("clients".equals(prop.getName())) {
             model = new UMLDependencyClientListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("connections".equals(prop.getName())) {
+            model = new UMLAssociationConnectionListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("association_roles".equals(prop.getName())) {
+            model = new UMLAssociationAssociationRoleListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("links".equals(prop.getName())) {
+            model = new UMLAssociationLinkListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }
