@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<panel>
+	<text name='name' />
+	<combo name='namespace' />
+	<optionbox name='visibility' />
+	<checkgroup name='modifiers'>
+		<checkbox name='abstract' />
+		<checkbox name='leaf' />
+		<checkbox name='root' />
+		<checkbox name='derived' />
+		<checkbox name='active' />
+	</checkgroup>
+	<separator />
+	<list name='client_dependency' />
+	<list name='supplier_dependency' />
+	<list name='generalizations' />
+	<list name='specializations' />
+	<list name='connections' />
+	<separator />
+	<list name='attributes' />
+	<list name='association_ends' />
+	<list name='operations' />
+	<list name='owned' />
+</panel>
