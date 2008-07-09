@@ -27,7 +27,9 @@ package org.argouml.profile.internal.ocl;
 import java.util.HashMap;
 
 /**
- * Actually interprets the feature and operations in the model
+ * Actually interprets the feature and operations in the model, in the sense
+ * that the OclInterpreter is only responsible for interpreting the OCL 
+ * constructors
  *
  * @author maurelio1234
  */
@@ -36,13 +38,17 @@ public interface ModelInterpreter {
     /**
      * Actually interprets the feature and operations in the model
      * 
-     * @param vt
-     * @param subject
-     * @param feature
-     * @param type
-     * @param parameters
+     * @param vt the variable table
+     * @param subject the subject (the object from which the feature is
+     *            accessed)
+     * @param feature the feature name (operation, attribute or collection
+     *            operation)
+     * @param type the type of feature ("." for operations and attributes and
+     *            "->" for collection operations)
+     * @param parameters the parameters for this invokation
      * @return the return value
      */
-    Object invokeFeature(HashMap<String, Object> vt, Object subject, String feature, String type, Object[] parameters);
+    Object invokeFeature(HashMap<String, Object> vt, Object subject,
+            String feature, String type, Object[] parameters);
     
 }

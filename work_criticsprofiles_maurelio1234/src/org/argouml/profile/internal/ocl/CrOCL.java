@@ -38,10 +38,6 @@ import org.argouml.uml.cognitive.critics.CrUML;
  *
  * @author maurelio1234
  */
-/**
- *
- * @author maas
- */
 public class CrOCL extends CrUML {
 
     /**

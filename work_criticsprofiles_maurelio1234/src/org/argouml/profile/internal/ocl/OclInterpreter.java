@@ -29,6 +29,7 @@ import java.io.StringReader;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Critic;
 
 import tudresden.ocl.parser.OclParser;
 import tudresden.ocl.parser.lexer.Lexer;
@@ -105,7 +106,11 @@ public class OclInterpreter {
     }
 
     /**
-     * @return the triggers for this OCL
+     * Computes and returns the set of triggers for this 
+     * constraint. 
+     * 
+     * @see Critic#addTrigger(String)
+     * @return the set of triggers 
      */
     public Vector<String> getTriggers() {
         ComputeTriggers ct = new ComputeTriggers();
