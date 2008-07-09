@@ -121,7 +121,10 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addAction(new ActionAddAttribute());
         addAction(new ActionAddDataType());
         addAction(new ActionAddEnumeration());
-        addAction(new ActionNewStereotype());
+        addAction(new ActionNewStereotype());     
+        addAction(new ActionMoveUpDown(ActionMoveUpDown.MOVE_DOWN));
+        addAction(new ActionMoveUpDown(ActionMoveUpDown.MOVE_UP));
+        
         addAction(getDeleteAction());
     }
     

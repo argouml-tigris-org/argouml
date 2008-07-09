@@ -126,6 +126,8 @@ public class PropPanelOperation extends PropPanelFeature {
         addAction(new ActionAddDataType());
         addAction(new ActionAddEnumeration());
         addAction(new ActionNewStereotype());
+        addAction(new ActionMoveUpDown(ActionMoveUpDown.MOVE_DOWN));
+        addAction(new ActionMoveUpDown(ActionMoveUpDown.MOVE_UP));
         addAction(getDeleteAction());
     }
 
