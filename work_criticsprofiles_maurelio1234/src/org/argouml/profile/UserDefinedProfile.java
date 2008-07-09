@@ -166,20 +166,20 @@ public class UserDefinedProfile extends Profile {
     }
     
     /**
-     * A constructor that reads a file from an URL 
-     * associated with some profiles
-     * @param entryName 
+     * A constructor that reads a file from an URL associated with some profiles
      * 
-     * @param url the URL
+     * @param displayName the display name of the profile
+     * @param url the URL of the profile mode
      * @param critics the Critics defined by this profile
-     * @param dependencies 
-     * @throws ProfileException
+     * @param dependencies the dependencies of this profile
+     * 
+     * @throws ProfileException if the model cannot be loaded
      */
-    public UserDefinedProfile(String entryName, URL url, Set<CrUML> critics, Set<Profile> dependencies)
-        throws ProfileException {
+    public UserDefinedProfile(String displayName, URL url, Set<CrUML> critics,
+            Set<Profile> dependencies) throws ProfileException {
         LOG.info("load " + url);
 
-        displayName = entryName;
+        this.displayName = displayName;
         if (url != null) {
             ProfileReference reference = null;
             reference = new UserProfileReference(url.getPath(), url);
@@ -188,7 +188,7 @@ public class UserDefinedProfile extends Profile {
             model = new ArrayList(0);
         }
         this.critics = critics;
-        
+
         for (Profile profile : dependencies) {
             addProfileDependency(profile);
         }
