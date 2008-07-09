@@ -151,7 +151,8 @@ public class AttributeNotationUml extends AttributeNotation {
                 }
                 if (!project.getModels().contains(ns)) {
                     // namespace not found in the project's namespace tree, so
-                    // set a valid namespace:
+                    // set a valid namespace: (unfortunately never called, see
+                    // issue 5229)
                     Model.getCoreHelper().setNamespace(attrType, model);
                 }
                 
