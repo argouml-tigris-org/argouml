@@ -83,12 +83,7 @@ public class PropPanelComment extends PropPanelModelElement {
 class UMLCommentBodyDocument extends UMLPlainTextDocument {
     
     /**
-     * The serial version.
-     */
-    private static final long serialVersionUID = 3713801312285489580L;
-
-    /**
-     * Constructor for UMLModelElementNameDocument.
+     * Constructor for UMLCommentBodyDocument.
      */
     public UMLCommentBodyDocument() {
         super("body"); 
