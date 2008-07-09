@@ -233,8 +233,7 @@ public class UIFactory {
             UMLPlainTextDocument document = 
                 new UMLOperationSpecificationDocument();
             document.setTarget(target);
-            UMLTextArea2 osta = new UMLTextArea2(
-                    new UMLOperationSpecificationDocument());
+            UMLTextArea2 osta = new UMLTextArea2(document);
             osta.setRows(3);
             control = new JScrollPane(osta);
         }
