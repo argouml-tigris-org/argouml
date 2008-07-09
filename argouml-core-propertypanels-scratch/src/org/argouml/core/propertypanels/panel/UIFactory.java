@@ -37,9 +37,12 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
+import org.argouml.core.propertypanels.ui.ActionAddReceptionSignal;
 import org.argouml.core.propertypanels.ui.ActionAddStereotypeBaseClass;
 import org.argouml.core.propertypanels.ui.ActionDeleteAnnotatedElement;
 import org.argouml.core.propertypanels.ui.ActionDeleteStereotypeBaseClass;
+import org.argouml.core.propertypanels.ui.ActionRemoveContextSignal;
+import org.argouml.core.propertypanels.ui.ActionRemoveReceptionSignal;
 import org.argouml.core.propertypanels.ui.EnumerationListModel;
 import org.argouml.core.propertypanels.ui.UMLClassifierPackageImportsListModel;
 import org.argouml.core.propertypanels.ui.UMLCommentBodyDocument;
@@ -49,6 +52,7 @@ import org.argouml.core.propertypanels.ui.UMLExpressionPanel;
 import org.argouml.core.propertypanels.ui.UMLExtendedElementsListModel;
 import org.argouml.core.propertypanels.ui.UMLInitialValueExpressionModel;
 import org.argouml.core.propertypanels.ui.UMLMultiplicityPanel;
+import org.argouml.core.propertypanels.ui.UMLSignalReceptionListModel;
 import org.argouml.core.propertypanels.ui.UMLStereotypeBaseClassListModel;
 import org.argouml.core.propertypanels.ui.UMLStereotypeTagDefinitionListModel;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
@@ -71,6 +75,8 @@ import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.behavior.common_behavior.ActionAddContextSignal;
+import org.argouml.uml.ui.behavior.common_behavior.UMLSignalContextListModel;
 import org.argouml.uml.ui.foundation.core.ActionAddAssociationSpecification;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
@@ -467,6 +473,24 @@ public class UIFactory {
             UMLMutableLinkedList l = new UMLMutableLinkedList(
                     model, null, null);            
             l.setDeleteAction(new ActionDeleteAnnotatedElement());
+            list = new ScrollList(l);
+        }
+        else if ("contexts".equals(prop.getName())) {
+            model = new UMLSignalContextListModel();
+            model.setTarget(target);
+            UMLMutableLinkedList l = new UMLMutableLinkedList(
+                    model,
+                    new ActionAddContextSignal(), null, 
+                    new ActionRemoveContextSignal(), true);
+            list = new ScrollList(l);
+        }
+        else if ("receptions".equals(prop.getName())) {
+            model = new UMLSignalReceptionListModel();
+            model.setTarget(target);
+            UMLMutableLinkedList l = new UMLMutableLinkedList(
+                    model,
+                    new ActionAddReceptionSignal(), null, 
+                    new ActionRemoveReceptionSignal(), true);
             list = new ScrollList(l);
         }
         if (list != null) {
