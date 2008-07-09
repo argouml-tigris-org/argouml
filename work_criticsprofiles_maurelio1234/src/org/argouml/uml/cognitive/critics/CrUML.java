@@ -73,6 +73,8 @@ public class CrUML extends Critic {
     /**
      * The constructor for this class overriding the default
      * localization resource.
+     * 
+     * @param localizationPrefix the overriding localization resource
      */
     public CrUML(String localizationPrefix) {
         if (localizationPrefix != null) {
@@ -266,8 +268,10 @@ public class CrUML extends Critic {
     }
 
     /**
-     * @return the metatype to be criticized by this critic, the Class
-     * metatype is assumed by default.
+     *  Get the metatypes to be criticized by this critic, the UML Class
+     *  metatype is assumed by default.
+     * 
+     * @return the metatypes 
      */
     public Set<Object> getCriticizedMetatypes() {
         Set<Object> ret = new HashSet<Object>();
