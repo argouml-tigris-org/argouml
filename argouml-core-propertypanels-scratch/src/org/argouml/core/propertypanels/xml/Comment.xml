@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<panel>	
+	<text name='name' />	
+	<list name='annotated_elements' />
+	<separator />
+	<textarea name='body' />
+</panel>

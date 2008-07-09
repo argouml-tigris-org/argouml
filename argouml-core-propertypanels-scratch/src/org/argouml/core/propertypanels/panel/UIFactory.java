@@ -38,9 +38,11 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.ui.ActionAddStereotypeBaseClass;
+import org.argouml.core.propertypanels.ui.ActionDeleteAnnotatedElement;
 import org.argouml.core.propertypanels.ui.ActionDeleteStereotypeBaseClass;
 import org.argouml.core.propertypanels.ui.EnumerationListModel;
 import org.argouml.core.propertypanels.ui.UMLClassifierPackageImportsListModel;
+import org.argouml.core.propertypanels.ui.UMLCommentBodyDocument;
 import org.argouml.core.propertypanels.ui.UMLDefaultValueExpressionModel;
 import org.argouml.core.propertypanels.ui.UMLExpressionModel3;
 import org.argouml.core.propertypanels.ui.UMLExpressionPanel;
@@ -93,6 +95,7 @@ import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierParameterListModel;
+import org.argouml.uml.ui.foundation.core.UMLCommentAnnotatedElementListModel;
 import org.argouml.uml.ui.foundation.core.UMLDependencyClientListModel;
 import org.argouml.uml.ui.foundation.core.UMLDependencySupplierListModel;
 import org.argouml.uml.ui.foundation.core.UMLDiscriminatorNameDocument;
@@ -235,7 +238,14 @@ public class UIFactory {
             osta.setRows(3);
             control = new JScrollPane(osta);
         }
-        
+        else if ("body".equals(prop.getName())) {
+            UMLPlainTextDocument document = new UMLCommentBodyDocument();
+            document.setTarget(target);
+            UMLTextArea2 text = new UMLTextArea2(document);
+            text.setLineWrap(true);
+            text.setRows(5);
+            control = new JScrollPane(text);
+        }
         if (control != null) {
             // if the control is a panel, add it
             if (control == p) {
@@ -451,6 +461,14 @@ public class UIFactory {
             model = new UMLAssociationEndQualifiersListModel();
             model.setTarget(target);
             list = new ScrollList(model);
+        }
+        else if ("annotated_elements".equals(prop.getName())) {
+            model = new UMLCommentAnnotatedElementListModel();
+            model.setTarget(target);
+            UMLMutableLinkedList l = new UMLMutableLinkedList(
+                    model, null, null);            
+            l.setDeleteAction(new ActionDeleteAnnotatedElement());
+            list = new ScrollList(l);
         }
         if (list != null) {
             String name = prop.getName();
