@@ -138,9 +138,26 @@ public class AttributeNotationUml extends AttributeNotation {
             s = text.substring(start, end).trim();
             if (s.length() > 0) {
                 // yes, there are more:
+                Object model = project.getModel();
                 Object attrType = project.getDefaultAttributeType();
+                // Force type element into given namespace if not already there
+                // Dangerous! Why are we changing the model 
+                // as a side effect? - tfm 20070307
+                // Because if the type is unknown, a class without valid
+                // was created, so we MUST set it's namespace! - thn 20080709
+                Object ns = Model.getFacade().getNamespace(attrType);
+                while (ns != null && !Model.getFacade().isAModel(ns)) {
+                    ns = Model.getFacade().getNamespace(ns);
+                }
+                if (!project.getModels().contains(ns)) {
+                    // namespace not found in the project's namespace tree, so
+                    // set a valid namespace:
+                    Model.getCoreHelper().setNamespace(attrType, model);
+                }
+                
                 Object newAttribute = Model.getUmlFactory().buildNode(
                         Model.getMetaTypes().getAttribute());
+                
                 Model.getCoreHelper().setType(newAttribute, attrType);
                 
                 if (newAttribute != null) {
