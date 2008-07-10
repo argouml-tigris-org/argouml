@@ -31,7 +31,6 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.Handle;
 
