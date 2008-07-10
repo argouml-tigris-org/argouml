@@ -1247,13 +1247,6 @@ class CoreHelperMDRImpl implements CoreHelper {
         Namespace ns = (Namespace) nsObj;
 
         try {
-            if (Model.getFacade().getRoot(ns) != Model.getFacade().getRoot(
-                    modelElement)) {
-                // TODO: This restriction is from earlier versions of ArgoUML, 
-                // but is it still valid? It will restrict moving elements 
-                // between multiple root elements when we support them - tfm
-                return false;
-            }
 
             if (modelElement == ns) {
                 return false;
