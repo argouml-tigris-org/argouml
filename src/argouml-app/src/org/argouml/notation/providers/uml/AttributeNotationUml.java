@@ -47,7 +47,7 @@ import org.argouml.util.MyTokenizer;
 /**
  * The notation for an attribute for UML.
  * 
- * @author mvw@tigris.org
+ * @author Michiel
  */
 public class AttributeNotationUml extends AttributeNotation {
 
@@ -97,7 +97,7 @@ public class AttributeNotationUml extends AttributeNotation {
     /**
      * Parse a string representing one ore more ';' separated attributes. The
      * case that a String or char contains a ';' (e.g. in an initializer) is
-     * handled, but not other occurences of ';'.
+     * handled, but not other occurrences of ';'.
      *
      * @param classifier  Classifier The classifier the attribute(s) belong to
      * @param attribute   Attribute The attribute on which the editing happened
@@ -146,6 +146,15 @@ public class AttributeNotationUml extends AttributeNotation {
                 Model.getCoreHelper().setType(newAttribute, attrType);
                 
                 if (newAttribute != null) {
+                    /* We need to set the namespace/owner 
+                     * of the new attribute before parsing: */
+                    if (i != -1) {
+                        Model.getCoreHelper().addFeature(
+                                classifier, ++i, newAttribute);
+                    } else {
+                        Model.getCoreHelper().addFeature(
+                                classifier, newAttribute);
+                    }
                     try {
                         parseAttribute(s, newAttribute);
                         /* If the 1st attribute is static, 
@@ -153,13 +162,6 @@ public class AttributeNotationUml extends AttributeNotation {
                         Model.getCoreHelper().setStatic(
                                 newAttribute,
                                 Model.getFacade().isStatic(attribute));
-                        if (i != -1) {
-                            Model.getCoreHelper().addFeature(
-                                    classifier, ++i, newAttribute);
-                        } else {
-                            Model.getCoreHelper().addFeature(
-                                    classifier, newAttribute);
-                        }
                     } catch (ParseException ex) {
                         if (pex == null) {
                             pex = ex;
