@@ -29,7 +29,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -125,31 +124,6 @@ public class UserDefinedProfile extends Profile {
     }
 
     /**
-     * A constructor that takes a file name and a reader, being the reader the
-     * input method to get the profile model.
-     * 
-     * @param fileName name of the profile model file.
-     * @param reader a reader opened from where the profile model will be
-     *            loaded.
-     * @throws ProfileException if something goes wrong in initializing the
-     *             profile.
-     */
-    public UserDefinedProfile(String fileName, Reader reader)
-        throws ProfileException {
-        LOG.info("load " + fileName);
-        displayName = fileName;
-        ProfileReference reference = null;
-        try {
-            reference = new UserProfileReference(fileName);
-        } catch (MalformedURLException e) {
-            throw new ProfileException(
-                    "Failed to create the ProfileReference.", e);
-        }
-        model = new ReaderModelLoader(reader).loadModel(reference);
-        finishLoading();
-    }
-
-    /**
      * A constructor that reads a file from an URL
      * 
      * @param url the URL
@@ -205,13 +179,14 @@ public class UserDefinedProfile extends Profile {
             if (Model.getExtensionMechanismsHelper().hasStereotype(obj,
                     "profile")) {
 
-
                 // load profile name
                 String name = Model.getFacade().getName(obj);
                 if (name != null) {
                     displayName = name;
                 } else {
-                    displayName = Translator.localize("misc.profile.unnamed");
+                    if (displayName == null) {
+                        displayName = Translator.localize("misc.profile.unnamed");
+                    }
                 }
                 LOG.info("profile " + displayName);
 
@@ -222,14 +197,14 @@ public class UserDefinedProfile extends Profile {
 
                 String profile = null;
 
-                do {
+                while (st.hasMoreTokens()) {
                     profile = st.nextToken();
                     if (profile != null) {
                       LOG.debug("AddingDependency " + profile);
                       this.
                         addProfileDependency(ProfileFacade.getManager().lookForRegisteredProfile(profile));
                     }
-                } while (st.hasMoreTokens());
+                }
 
             }
         }
