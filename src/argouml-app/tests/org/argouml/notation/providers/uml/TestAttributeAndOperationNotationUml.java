@@ -66,7 +66,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private static final String ATTR12 = "+ name : String = a << 5";
     private static final String ATTR13 =
         "<<attrstereo1,attrstereo2>> +name : String = a[15]";
-
+    private static final String ATTR14 = "a : int; b : Foo";
+    
     private static final String NATTR01 = "too many string in an attribute";
     private static final String NATTR02 = "+vis name";
     private static final String NATTR03 = "vis name : type : type";
@@ -200,6 +201,44 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Model.getCoreHelper().setNamespace(attr, ns);
 
         checkType(attr, ATTR06, "int");
+    }
+    
+    /**
+     * Test the parsing of several attributes with semicolons,
+     * and the correct assignation of the new datatypes to
+     * the same namespace of the owner
+     * See issue 5229 (http://argouml.tigris.org/issues/show_bug.cgi?id=5229) 
+     * @throws ParseException
+     */
+    public void testAttributeNewTypeNamespace() throws ParseException {
+        Object attr;
+
+        Project project = ProjectManager.getManager().getCurrentProject();
+        Object ns = project.getModel();
+        
+        Object cl = Model.getCoreFactory().buildClass();
+        Model.getCoreHelper().setNamespace(cl, ns);
+        
+        Object attrType = project.getDefaultAttributeType();
+        attr = Model.getCoreFactory().buildAttribute2(cl, attrType);       
+
+        AttributeNotationUml anu = new AttributeNotationUml(); 
+        anu.parse(attr, ATTR14);
+                
+        List attrs = Model.getFacade().getAttributes(cl);
+        assertEquals("Wrong number of attributes", 2, attrs.size());
+        
+        // we want the b: Foo attribute, that is the second in the list
+        attr = attrs.get(1);
+        
+        attrType = Model.getFacade().getType(attr);
+        Object namespace = Model.getFacade().getNamespace(attrType);
+        
+        assertNotNull("Namespace of the created type for the attribute must not be null",
+                namespace);
+        assertEquals("The namespace of the created type is not the same than" +
+        		" the namespace of the original class.", ns, namespace);
+        
     }
 
     /**
