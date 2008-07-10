@@ -764,6 +764,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Classifier clsType = (Classifier) theType;
         // Force type element into given namespace if not already there
         // side effect!
+        /* TODO: (MVW) This is wrong! See issue 5211. 
+         * We have profiles now... */ 
         if (model != clsType.getNamespace()
                 && !(modelImpl.getModelManagementHelper().getAllNamespaces(
                         model).contains(clsType.getNamespace()))) {
