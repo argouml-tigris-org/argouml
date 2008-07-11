@@ -168,8 +168,27 @@ public class TestActionStateNotationUml extends TestCase {
         assertNotNull("No entry action generated", entry);
         assertTrue("No UninterpretedAction generated", Model.getFacade()
                 .isAUninterpretedAction(entry));
+        /* If there is no script, then the language should not be maintained. */
+        Model.getCommonBehaviorHelper().setScript(entry, null);
+        notation.parse(aActionState, "testUA()");
+        Object script = Model.getFacade().getScript(entry);
+        assertTrue("Language not reset",
+                "".equals(Model.getDataTypesHelper().getLanguage(script)));
     }
 
+    /**
+     * Test if a null body returns an empty string instead of null.
+     */
+    public void testNullBody() {
+        setUp2();
+        Object script = Model.getFacade().getScript(aUninterpretedAction);
+        Model.getDataTypesHelper().setBody(script, null);
+        ActionStateNotationUml notation = 
+            new ActionStateNotationUml(aActionState);
+        String result = notation.toString(aActionState, null);
+        assertTrue("Null body did not return empty string", "".equals(result));
+    }
+    
     /**
      * Test if help is correctly provided.
      */
