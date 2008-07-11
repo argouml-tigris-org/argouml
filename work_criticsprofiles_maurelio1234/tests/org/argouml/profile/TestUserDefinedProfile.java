@@ -40,6 +40,7 @@ import org.argouml.uml.cognitive.critics.CrUML;
  * Some basic tests for the {@link UserDefinedProfile} class.
  * 
  * @author Luis Sergio Oliveira (euluis)
+ * @authos maurelio1234
  */
 public class TestUserDefinedProfile extends TestCase {
     
