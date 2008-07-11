@@ -1,5 +1,5 @@
-// $Id: TestProfileJava.java 13911 2007-12-13 00:09:36Z euluis $
-// Copyright (c) 2007 The Regents of the University of California. All
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,27 +24,20 @@
 
 package org.argouml.profile.internal.ocl;
 
-import java.util.HashMap;
-
 import junit.framework.TestCase;
 
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 
 /**
- * Tests for the OclInterpreter class.
+ * Tests for the CrOCL class.
  * 
  * @author maurelio1234
  */
-public class TestOclInterpreter extends TestCase {
+public class TestCrOCL extends TestCase {
 
-    private class DefaultModelInterpreter implements ModelInterpreter {
-        public Object invokeFeature(HashMap<String, Object> vt, Object subject,
-                String feature, String type, Object[] parameters) {
-            return null;
-        }
-    }
-    
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -52,55 +45,22 @@ public class TestOclInterpreter extends TestCase {
     }
 
     /**
-     * Test <code>applicable</code> operation
+     * Test the <code>predicate2</code> operation
      * 
      * @throws Exception
      */
-    public void testApplicable() throws Exception {
+    public void testPredicate() throws Exception {
         Object obj1 = Model.getUseCasesFactory().createActor();
         Object obj2 = Model.getActivityGraphsFactory().createPartition();
 
-        String ocl = "context Actor inv: 2 > 0";
+        String ocl = "context Actor inv: 0 > 2";
 
-        OclInterpreter interpreter = new OclInterpreter(ocl,
-                new DefaultModelInterpreter());
+        CrOCL cr = new CrOCL(ocl);
         
-        assertTrue(interpreter.applicable(obj1));
-        assertFalse(interpreter.applicable(obj2));
-    }
-    
-    /**
-     * Test <code>getTriggers</code> operation
-     * 
-     * @throws Exception
-     */
-    public void testGetTriggers() throws Exception {
-        String ocl = "context Actor inv: 2 > 0";
-
-        OclInterpreter interpreter = new OclInterpreter(ocl,
-                new DefaultModelInterpreter());
+        assertEquals(cr.predicate2(obj1, Designer.theDesigner()),
+                Critic.PROBLEM_FOUND);
+        assertEquals(cr.predicate2(obj2, Designer.theDesigner()),
+                Critic.NO_PROBLEM);
         
-        assertTrue(interpreter.getTriggers().contains("actor"));
     }
-
-    /**
-     * Test <code>check</code> operation (general)
-     * 
-     * @throws Exception
-     */
-    public void testCheckGeneral() throws Exception {
-        Object obj = Model.getUseCasesFactory().createActor();
-
-        String ocl1 = "context Actor inv: 2 > 0";
-        String ocl2 = "context Actor inv: 2 < 0";
-
-        OclInterpreter interpreter1 = new OclInterpreter(ocl1,
-                new DefaultModelInterpreter());
-        OclInterpreter interpreter2 = new OclInterpreter(ocl2,
-                new DefaultModelInterpreter());
-        
-        assertTrue(interpreter1.check(obj));
-        assertFalse(interpreter2.check(obj));
-    }
-
 }
