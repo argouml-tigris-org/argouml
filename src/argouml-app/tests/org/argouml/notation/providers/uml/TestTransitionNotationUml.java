@@ -36,10 +36,9 @@ import org.argouml.notation.NotationProvider;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
- * Test ParserDisplay: parsing transitions.
+ * Test UML Notation: parsing transitions.
  *
  * @author MVW
- *
  */
 public class TestTransitionNotationUml extends TestCase {
     private Object aClass;
