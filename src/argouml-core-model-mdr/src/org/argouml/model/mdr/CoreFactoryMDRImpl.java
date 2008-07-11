@@ -761,16 +761,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     public Attribute buildAttribute(Object model, Object theType) {
-        Classifier clsType = (Classifier) theType;
-        // Force type element into given namespace if not already there
-        // side effect!
-        /* TODO: (MVW) This is wrong! See issue 5211. 
-         * We have profiles now... */ 
-        if (model != clsType.getNamespace()
-                && !(modelImpl.getModelManagementHelper().getAllNamespaces(
-                        model).contains(clsType.getNamespace()))) {
-            clsType.setNamespace((Model) model);
-        }
         return buildAttribute2(theType);
     }
     
