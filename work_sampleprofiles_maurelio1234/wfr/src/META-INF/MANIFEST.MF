@@ -6,52 +6,116 @@ Name: UML 1.1 WFRs
 Profile: true
 Depends-on: UML 1.4
 Java-Critics: org.argouml.uml.cognitive.critics.CrAttrNameConflict,
- CrCircularInheritance,
- CrConflictingComposites,
- CrDupParamName,
- CrFinalSubclassed
+ org.argouml.uml.cognitive.critics.CrCircularInheritance,
+ org.argouml.uml.cognitive.critics.CrConflictingComposites,
+ org.argouml.uml.cognitive.critics.CrDupParamName,
+ org.argouml.uml.cognitive.critics.CrFinalSubclassed,
+ org.argouml.uml.cognitive.critics.CrIllegalGeneralization,
+ org.argouml.uml.cognitive.critics.CrInterfaceAllPublic,
+ org.argouml.uml.cognitive.critics.CrInterfaceOperOnly,
+ org.argouml.uml.cognitive.critics.CrInvalidFork,
+ org.argouml.uml.cognitive.critics.CrInvalidJoin,
+ org.argouml.uml.cognitive.critics.CrNameConflict,
+ org.argouml.uml.cognitive.critics.CrNameConflictAC,
+ org.argouml.uml.cognitive.critics.CrNonAggDataType,
+ org.argouml.uml.cognitive.critics.CrOppEndConflict,
+ org.argouml.uml.cognitive.critics.CrOppEndVsAttr
 Comment: none
 
 Name: UML 1.3 WFRs
 Profile: true
-Depends-on: UML 1.4
+Depends-on: UML 1.1 WFRs
 Java-Critics: org.argouml.uml.cognitive.critics.CrAttrNameConflict,
- CrCrossNamespaceAssoc,
- CrDupRoleNames
+ org.argouml.uml.cognitive.critics.CrCrossNamespaceAssoc,
+ org.argouml.uml.cognitive.critics.CrDupRoleNames,
+ org.argouml.uml.cognitive.critics.CrInvalidBranch,
+ org.argouml.uml.cognitive.critics.CrMultiComposite,
+ org.argouml.uml.cognitive.critics.CrMultipleAgg,
+ org.argouml.uml.cognitive.critics.CrNWayAgg
 Comment: none
 
 Name: UML 1.4 WFRs
 Profile: true
-Depends-on: UML 1.4
+Depends-on: UML 1.3 WFRs
 Java-Critics: org.argouml.uml.cognitive.critics.CrAssocNameConflict,
  org.argouml.uml.cognitive.critics.CrAttrNameConflict,
  org.argouml.uml.cognitive.critics.CrDisambigClassName, 
+ org.argouml.uml.cognitive.critics.CrInvalidInitial,
+ org.argouml.uml.cognitive.critics.CrNameConfusion
 Comment: none
 
 Name: UML 1.5 WFRs
 Profile: true
-Depends-on: UML 1.4
-Java-Critics: CrForkOutgoingTransition
+Depends-on: UML 1.4 WFRs
+Java-Critics: org.argouml.uml.cognitive.critics.CrForkOutgoingTransition,
+ org.argouml.uml.cognitive.critics.CrInvalidForkTriggerOrGuard,
+ org.argouml.uml.cognitive.critics.CrInvalidHistory,
+ org.argouml.uml.cognitive.critics.CrInvalidJoinTriggerOrGuard,
+ org.argouml.uml.cognitive.critics.CrInvalidPseudoStateTrigger,
+ org.argouml.uml.cognitive.critics.CrInvalidSynch,
+ org.argouml.uml.cognitive.critics.CrJoinIncomingTransition,
+ org.argouml.uml.cognitive.critics.CrMultipleDeepHistoryStates,
+ org.argouml.uml.cognitive.critics.CrMultipleShallowHistoryStates
 Comment: none
-
-Name: Tips
-Profile: true
-Depends-on: UML 1.4
-Java-Critics: CrAlreadyRealizes,
-Anything: none
-
 
 Name: Other
 Profile: true
 Depends-on: UML 1.4
-Java-Critics: CrCircularAssocClass,
- CrCircularComposition,
- CrClassMustBeAbstract,
- CrClassWithoutComponent,
- CrCompInstanceWithoutNode,
- CrComponentInstanceWithoutClassifier,
- CrComponentWithoutNode,
- CrConstructorNeeded,
- CrDisambigStateName,
- CrEmptyPackage
+Java-Critics:  org.argouml.uml.cognitive.critics.CrAlreadyRealizes,
+ org.argouml.uml.cognitive.critics.CrCircularAssocClass,
+ org.argouml.uml.cognitive.critics.CrCircularComposition,
+ org.argouml.uml.cognitive.critics.CrClassMustBeAbstract,
+ org.argouml.uml.cognitive.critics.CrClassWithoutComponent,
+ org.argouml.uml.cognitive.critics.CrCompInstanceWithoutNode,
+ org.argouml.uml.cognitive.critics.CrComponentInstanceWithoutClassifier,
+ org.argouml.uml.cognitive.critics.CrComponentWithoutNode,
+ org.argouml.uml.cognitive.critics.CrConstructorNeeded,
+ org.argouml.uml.cognitive.critics.CrDisambigStateName,
+ org.argouml.uml.cognitive.critics.CrEmptyPackage,
+ org.argouml.uml.cognitive.critics.CrIllegalName,
+ org.argouml.uml.cognitive.critics.CrInstanceWithoutClassifier,
+ org.argouml.uml.cognitive.critics.CrInterfaceWithoutComponent,
+ org.argouml.uml.cognitive.critics.CrMergeClasses,
+ org.argouml.uml.cognitive.critics.CrMissingAttrName,
+ org.argouml.uml.cognitive.critics.CrMissingClassName,
+ org.argouml.uml.cognitive.critics.CrMissingOperName,
+ org.argouml.uml.cognitive.critics.CrMissingStateName,
+ org.argouml.uml.cognitive.critics.CrMultipleInitialStates,
+ org.argouml.uml.cognitive.critics.CrNavFromInterface,
+ org.argouml.uml.cognitive.critics.CrNoAssociations,
+ org.argouml.uml.cognitive.critics.CrNodeInsideElement,
+ org.argouml.uml.cognitive.critics.CrNodeInstanceInsideElement,
+ org.argouml.uml.cognitive.critics.CrNodeInstanceWithoutClassifier,
+ org.argouml.uml.cognitive.critics.CrNodesOverlap,
+ org.argouml.uml.cognitive.critics.CrNoGuard,
+ org.argouml.uml.cognitive.critics.CrNoIncomingTransitions,
+ org.argouml.uml.cognitive.critics.CrNoInitialState,
+ org.argouml.uml.cognitive.critics.CrNoInstanceVariables,
+ org.argouml.uml.cognitive.critics.CrNoOperations,
+ org.argouml.uml.cognitive.critics.CrNoOutgoingTransitions,
+ org.argouml.uml.cognitive.critics.CrNoTransitions,
+ org.argouml.uml.cognitive.critics.CrNoTriggerOrGuard,
+ org.argouml.uml.cognitive.critics.CrObjectWithoutClassifier,
+ org.argouml.uml.cognitive.critics.CrObjectWithoutComponent,
+ org.argouml.uml.cognitive.critics.CrOperNameConflict,
+ org.argouml.uml.cognitive.critics.CrReservedName,
+ org.argouml.uml.cognitive.critics.CrSeqInstanceWithoutClassifier,
+ org.argouml.uml.cognitive.critics.CrSubclassReference,
+ org.argouml.uml.cognitive.critics.CrTooManyAssoc,
+ org.argouml.uml.cognitive.critics.CrTooManyAttr,
+ org.argouml.uml.cognitive.critics.CrTooManyClasses,
+ org.argouml.uml.cognitive.critics.CrTooManyOper,
+ org.argouml.uml.cognitive.critics.CrTooManyStates,
+ org.argouml.uml.cognitive.critics.CrTooManyTransitions,
+ org.argouml.uml.cognitive.critics.CrUnconventionalAttrName,
+ org.argouml.uml.cognitive.critics.CrUnconventionalClassName,
+ org.argouml.uml.cognitive.critics.CrUnconventionalOperName,
+ org.argouml.uml.cognitive.critics.CrUnconventionalPackName,
+ org.argouml.uml.cognitive.critics.CrUnnavigableAssoc,
+ org.argouml.uml.cognitive.critics.CrUselessAbstract,
+ org.argouml.uml.cognitive.critics.CrUselessInterface,
+ org.argouml.uml.cognitive.critics.CrUtilityViolated,
+ org.argouml.uml.cognitive.critics.CrWrongDepEnds,
+ org.argouml.uml.cognitive.critics.CrWrongLinkEnds,
+ org.argouml.uml.cognitive.critics.CrZeroLengthEdge
 Anything: none
