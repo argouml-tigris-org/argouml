@@ -101,7 +101,8 @@ public class TestProject extends TestCase {
         
         for (Object root : Model.getFacade().getRootElements()) {
             assertTrue(
-                    "All roots should be a Model",
+                    "All roots should be a Model - but found a " 
+                    + Model.getMetaTypes().getName(root),
                     Model.getFacade().isAModel(root));
             System.out.println(Model.getFacade().getName(root) + " "
                     + Model.getFacade().getOwnedElements(root).size());
