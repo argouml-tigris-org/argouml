@@ -533,10 +533,26 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException(
                     "either one of the arguments was null");
         }
-        return buildAssociationClass(
-                buildClass(),
-                (Classifier) end1,
-                (Classifier) end2);
+        final Classifier classifier1 = (Classifier) end1;
+        final Classifier classifier2 = (Classifier) end2;
+        AssociationClass assocClass = createAssociationClass();
+        
+        assocClass.setNamespace(classifier1.getNamespace());
+        assocClass.setName("");
+        assocClass.setAbstract(false);
+        assocClass.setActive(false);
+        assocClass.setRoot(false);
+        assocClass.setLeaf(false);
+        assocClass.setSpecification(false);
+        assocClass.setVisibility(VisibilityKindEnum.VK_PUBLIC);
+        
+        buildAssociationEnd(
+                assocClass, null, classifier1, null, null, true, null, null,
+                null, null, null);
+        buildAssociationEnd(
+                assocClass, null, classifier2, null, null, true, null, null,
+                null, null, null);
+        return assocClass;
     }
 
 
@@ -683,87 +699,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 null, null, null, VisibilityKindEnum.VK_PUBLIC);
     }
 
-    /**
-     * Builds an association class from a class and two classifiers that should
-     * be associated. Both ends of the associationclass are navigable.
-     * <p>
-     * 
-     * @param cl
-     *            the class
-     * @param end1
-     *            the first classifier
-     * @param end2
-     *            the second classifier
-     * @return MAssociationClass
-     */
-    private AssociationClass buildAssociationClass(UmlClass cl,
-            Classifier end1, Classifier end2) {
-        if (end1 == null || end2 == null || cl == null) {
-            throw new IllegalArgumentException(
-                    "one of the arguments was null");
-        }
-        AssociationClass assoc = createAssociationClass();
-        
-        // Copy attributes from our template class
-        assoc.setNamespace(cl.getNamespace());
-        assoc.setName(cl.getName());
-        assoc.setAbstract(cl.isAbstract());
-        assoc.setActive(cl.isActive());
-        assoc.setLeaf(cl.isLeaf());
-        assoc.setRoot(cl.isRoot());
-        assoc.setSpecification(cl.isSpecification());
-        assoc.getStereotype().addAll(cl.getStereotype());
-        assoc.setVisibility(cl.getVisibility());
-        
-        /*
-         * Normally we will be called with a newly created default class as our
-         * template so only the above attribute copying is needed. The rest of
-         * this is just in case someone wants it to be more general in the
-         * future.
-         * TODO: This is untested and just copies what was done in the NSUML
-         * implementation (which is also untested for the same reason as above).
-         */
-        assoc.getClientDependency().addAll(cl.getClientDependency());
-        assoc.getComment().addAll(cl.getComment());
-        assoc.getConstraint().addAll(cl.getConstraint());        
-        assoc.getFeature().addAll(cl.getFeature());
-        assoc.getGeneralization().addAll(cl.getGeneralization());
-        assoc.getPowertypeRange().addAll(cl.getPowertypeRange());
-        assoc.getSourceFlow().addAll(cl.getSourceFlow());
-        assoc.getTaggedValue().addAll(cl.getTaggedValue());
-        assoc.getTargetFlow().addAll(cl.getTargetFlow());
-        assoc.getTemplateParameter().addAll(cl.getTemplateParameter());
-
-        // Other things copied in the NSUML implementation 
-        // which have no direct analog here
-        
-        //assoc.setAssociationEnds(facade.getAssociationEnds(cl));
-        //assoc.setClassifierRoles(cl.getClassifierRole());
-        //assoc.setClassifierRoles1(cl.getClassifierRoles1());
-        //assoc.setClassifiersInState(cl.getClassifiersInState());
-        //assoc.setCollaborations(cl.getCollaborations());
-        //assoc.setCollaborations1(cl.getCollaborations1());
-        //assoc.setCreateActions(cl.getCreateActions());
-        //assoc.setExtensions(cl.getExtensions());
-        //assoc.setInstances(cl.getInstances());
-        //assoc.setObjectFlowStates(cl.getObjectFlowStates());
-        //assoc.setParticipants(cl.getParticipants());
-        //assoc.setPartitions1(cl.getPartitions1());
-        //assoc.setPresentations(cl.getPresentations());
-        //assoc.setStructuralFeatures(cl.getStructuralFeatures());
-
-        buildAssociationEnd(assoc, null, end1, null, null, true, null, null,
-                null, null, null);
-        buildAssociationEnd(assoc, null, end2, null, null, true, null, null,
-                null, null, null);
-        return assoc;
-    }
-
-
     public Attribute buildAttribute(Object model, Object theType) {
         return buildAttribute2(theType);
     }
-    
 
     public Attribute buildAttribute2(Object theType) {
         Attribute attr = buildAttribute();
