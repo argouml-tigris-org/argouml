@@ -50,6 +50,8 @@ public class TestUserDefinedProfile extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        ProfileFacade.setManager(new ProfileManagerImpl());
+        
         testDir = FileHelper.setUpDir4Test(getClass());
     }
     
@@ -84,7 +86,7 @@ public class TestUserDefinedProfile extends TestCase {
      * @throws Exception if something goes wrong
      */
     public void testLoadingAsFromJar() throws Exception {
-        ProfileManager pm = new ProfileManagerImpl();
+        ProfileManager pm = ProfileFacade.getManager();
         
         // create profile model
         ProfileMother profileMother = new ProfileMother();
@@ -97,8 +99,8 @@ public class TestUserDefinedProfile extends TestCase {
         Set<CrUML> critics = new HashSet<CrUML>();
         critics.add(critic);
         
-        Set<Profile> profiles = new HashSet<Profile>();
-        profiles.add(pm.getUMLProfile());
+        Set<String> profiles = new HashSet<String>();
+        profiles.add(pm.getUMLProfile().getProfileIdentifier());
         
         Profile profile = new UserDefinedProfile("displayName", profileFile
                 .toURI().toURL(), critics, profiles);

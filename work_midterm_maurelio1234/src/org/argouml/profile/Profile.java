@@ -40,8 +40,7 @@ import org.argouml.uml.cognitive.critics.CrUML;
  */
 public abstract class Profile {
     
-    private Set<Profile> importedProfiles  = new HashSet<Profile>();
-    private Set<Profile> importingProfiles = new HashSet<Profile>();
+    private Set<String> dependencies  = new HashSet<String>();
     protected Set<CrUML> critics = new HashSet<CrUML>();
         
     /**
@@ -50,31 +49,51 @@ public abstract class Profile {
      * @param p
      *                the profile
      * @throws IllegalArgumentException
-     *                 if there is some cycle on the dependency graph
+     *                 never thrown
      */
     protected final void addProfileDependency(Profile p)
         throws IllegalArgumentException {
-        
-        if (importingProfiles.contains(p)) {
-            throw new IllegalArgumentException("This profile causes a cycle "
-                    + "in the profile dependency graph!");
-        } else {
-            importedProfiles.add(p);
-            importedProfiles.addAll(p.importedProfiles);
-
-            for (Profile importedProfile : importedProfiles) {
-                importedProfile.importingProfiles.add(this);
-            }
-        }
+        addProfileDependency(p.getProfileIdentifier());
     }    
+
+    /**
+     * Add a dependency on the given profile from this profile.
+     * 
+     * @param p
+     *                the profile identifier
+     *                
+     * @param profileIdentifier 
+     */
+    protected void addProfileDependency(String profileIdentifier) {
+        dependencies.add(profileIdentifier);
+    }
 
     /**
      * @return the dependencies
      */
     public final Set<Profile> getDependencies() {
-        return importedProfiles;
+        if (ProfileFacade.isInitiated()) {
+            Set<Profile> ret = new HashSet<Profile>();
+            for (String pid : dependencies) {
+                Profile p = ProfileFacade.getManager().lookForRegisteredProfile(pid);
+                if (p!=null) {
+                    ret.add(p);
+                    ret.addAll(p.getDependencies());
+                }
+            }
+            return ret;            
+        } else {
+            return new HashSet<Profile>();
+        }
     }
-    
+
+    /**
+     * @return the ids of the dependencies
+     */
+    public final Set<String> getDependenciesID() {
+        return dependencies;
+    }
+
     /**
      * @return the name for this profile 
      */
@@ -125,5 +144,12 @@ public abstract class Profile {
      */
     public Set<CrUML> getCritics() {
         return critics;
+    }
+
+    /**
+     * @return a unique identifier for this profile
+     */
+    public String getProfileIdentifier() {
+        return getDisplayName();
     }
 }

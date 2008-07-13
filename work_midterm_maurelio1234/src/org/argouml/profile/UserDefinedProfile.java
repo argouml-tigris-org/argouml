@@ -150,7 +150,7 @@ public class UserDefinedProfile extends Profile {
      * @throws ProfileException if the model cannot be loaded
      */
     public UserDefinedProfile(String displayName, URL url, Set<CrUML> critics,
-            Set<Profile> dependencies) throws ProfileException {
+            Set<String> dependencies) throws ProfileException {
         LOG.info("load " + url);
 
         this.displayName = displayName;
@@ -164,8 +164,8 @@ public class UserDefinedProfile extends Profile {
 
         this.critics = critics;
 
-        for (Profile profile : dependencies) {
-            addProfileDependency(profile);
+        for (String profileID : dependencies) {
+            addProfileDependency(profileID);
         }
         
         finishLoading();

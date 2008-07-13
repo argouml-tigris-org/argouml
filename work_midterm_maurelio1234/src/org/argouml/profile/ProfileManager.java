@@ -117,7 +117,7 @@ public interface ProfileManager {
     /**
      * Looks for registered Profile
      * 
-     * @param profile name
+     * @param profile identifier
      * @return profile
      */
     Profile lookForRegisteredProfile(String profile);

@@ -339,7 +339,7 @@ public class ProfileManagerImpl implements ProfileManager {
         List<Profile> registeredProfiles = getRegisteredProfiles();
 
         for (Profile profile : registeredProfiles) {
-            if (profile.getDisplayName().equalsIgnoreCase(value)) {
+            if (profile.getProfileIdentifier().equalsIgnoreCase(value)) {
                 return profile;
             }
         }
