@@ -1,5 +1,5 @@
-// $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,30 +22,33 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.init;
+package org.argouml.profile.internal.ocl;
 
-import org.argouml.profile.ProfileFacade;
-import org.argouml.profile.internal.ui.ProfilePropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactoryManager;
+import java.util.HashMap;
 
 /**
- * Initializer class for the Profile subsystem.
- * 
- * @author Luis Sergio Oliveira (euluis)
+ * Actually interprets the feature and operations in the model, in the sense
+ * that the OclInterpreter is only responsible for interpreting the OCL 
+ * constructors
+ *
+ * @author maurelio1234
  */
-public class InitProfileSubsystem {
+public interface ModelInterpreter {
 
     /**
-     * Initialize the Profiles subsystem by binding the 2 packages together.
+     * Actually interprets the feature and operations in the model
+     * 
+     * @param vt the variable table
+     * @param subject the subject (the object from which the feature is
+     *            accessed)
+     * @param feature the feature name (operation, attribute or collection
+     *            operation)
+     * @param type the type of feature ("." for operations and attributes and
+     *            "->" for collection operations)
+     * @param parameters the parameters for this invokation
+     * @return the return value
      */
-    public void init() {
-        ProfileFacade.setManager(
-                new org.argouml.profile.internal.ProfileManagerImpl());
-
-        /* Set up the property panels for critics: */
-        PropPanelFactory factory = new ProfilePropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(factory);    
-    }
-
+    Object invokeFeature(HashMap<String, Object> vt, Object subject,
+            String feature, String type, Object[] parameters);
+    
 }

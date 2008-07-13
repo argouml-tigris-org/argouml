@@ -113,4 +113,12 @@ public interface ProfileManager {
      *         the standard.
      */
     Profile getUMLProfile();
+
+    /**
+     * Looks for registered Profile
+     * 
+     * @param profile name
+     * @return profile
+     */
+    Profile lookForRegisteredProfile(String profile);
 }

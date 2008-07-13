@@ -46,7 +46,7 @@ import org.argouml.util.ArgoDialog;
  * 
  * @author michiel
  */
-class ProjectSettingsDialog extends ArgoDialog implements WindowListener {
+public class ProjectSettingsDialog extends ArgoDialog implements WindowListener {
 
     private JButton applyButton;
     private JButton resetToDefaultButton;
@@ -246,6 +246,19 @@ class ProjectSettingsDialog extends ArgoDialog implements WindowListener {
     public void windowClosing(WindowEvent e) {
         // Handle the same as an explicit cancel
         handleCancel();
+    }
+
+    /**
+     * Show the dialog with the tab as selected
+     * @param profilesTab tab to be selected
+     */
+    public void showDialog(ProjectSettingsTabProfile profilesTab) {
+        try {
+            tabs.setSelectedComponent(profilesTab);           
+        } catch(Throwable t) {
+            
+        }
+        showDialog();
     }
 
 }

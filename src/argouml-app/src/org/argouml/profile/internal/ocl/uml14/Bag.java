@@ -1,5 +1,5 @@
-// $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,30 +22,25 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.init;
+package org.argouml.profile.internal.ocl.uml14;
 
-import org.argouml.profile.ProfileFacade;
-import org.argouml.profile.internal.ui.ProfilePropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactoryManager;
+import java.util.Set;
 
 /**
- * Initializer class for the Profile subsystem.
- * 
- * @author Luis Sergio Oliveira (euluis)
+ * Represent OCL bags (sets which allow repeated elements
+ *
+ * @author maurelio1234
+ * @param <E> the type
  */
-public class InitProfileSubsystem {
+public interface Bag<E> extends Set<E> {
 
+    
     /**
-     * Initialize the Profiles subsystem by binding the 2 packages together.
+     * Counts the number of repetitons of E in this Bag, 
+     * if E is not present return 0
+     * 
+     * @param element
+     * @return the number of occourrences of E in this bag
      */
-    public void init() {
-        ProfileFacade.setManager(
-                new org.argouml.profile.internal.ProfileManagerImpl());
-
-        /* Set up the property panels for critics: */
-        PropPanelFactory factory = new ProfilePropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(factory);    
-    }
-
+    int count(E element);
 }

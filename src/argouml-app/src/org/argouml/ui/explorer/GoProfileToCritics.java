@@ -1,5 +1,5 @@
-// $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,30 +22,45 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.init;
+package org.argouml.ui.explorer;
 
-import org.argouml.profile.ProfileFacade;
-import org.argouml.profile.internal.ui.ProfilePropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactoryManager;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+
+import org.argouml.i18n.Translator;
+import org.argouml.profile.Profile;
+import org.argouml.ui.explorer.rules.PerspectiveRule;
 
 /**
- * Initializer class for the Profile subsystem.
- * 
- * @author Luis Sergio Oliveira (euluis)
+ * Show the critics exported by a Profile
+ *
+ * @author maurelio1234
  */
-public class InitProfileSubsystem {
+public class GoProfileToCritics implements PerspectiveRule {
 
-    /**
-     * Initialize the Profiles subsystem by binding the 2 packages together.
+    /*
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public void init() {
-        ProfileFacade.setManager(
-                new org.argouml.profile.internal.ProfileManagerImpl());
-
-        /* Set up the property panels for critics: */
-        PropPanelFactory factory = new ProfilePropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(factory);    
+    public String getRuleName() {
+        return Translator.localize("misc.profile.critic");
     }
 
+    /*
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
+    public Collection getChildren(Object parent) {
+        if (parent instanceof Profile) {
+            return ((Profile) parent).getCritics();
+        }
+        return Collections.EMPTY_SET;
+    }
+
+    /*
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
+    public Set getDependencies(Object parent) {
+        // TODO: What?
+        return Collections.EMPTY_SET;
+    }
 }

@@ -1,5 +1,5 @@
-// $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,30 +22,35 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.init;
+package org.argouml.profile.internal.ocl;
 
-import org.argouml.profile.ProfileFacade;
-import org.argouml.profile.internal.ui.ProfilePropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactoryManager;
+import java.util.Vector;
+
+import tudresden.ocl.parser.analysis.DepthFirstAdapter;
+import tudresden.ocl.parser.node.AClassifierContext;
 
 /**
- * Initializer class for the Profile subsystem.
- * 
- * @author Luis Sergio Oliveira (euluis)
+ * Check the triggers related to this OCL
+ *
+ * @author maas
  */
-public class InitProfileSubsystem {
+public class ComputeTriggers extends DepthFirstAdapter {
 
+    private Vector<String> triggs = new Vector<String>();
+    
     /**
-     * Initialize the Profiles subsystem by binding the 2 packages together.
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAClassifierContext(tudresden.ocl.parser.node.AClassifierContext)
      */
-    public void init() {
-        ProfileFacade.setManager(
-                new org.argouml.profile.internal.ProfileManagerImpl());
-
-        /* Set up the property panels for critics: */
-        PropPanelFactory factory = new ProfilePropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(factory);    
+    public void caseAClassifierContext(AClassifierContext node) {
+        String str = ""+node.getPathTypeName();
+        triggs.add(str.trim().toLowerCase());
+    }
+    
+    /**
+     * @return the triggers
+     */
+    public Vector<String> getTriggers() {
+        return triggs;
     }
 
 }

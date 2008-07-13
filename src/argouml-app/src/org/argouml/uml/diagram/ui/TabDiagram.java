@@ -44,6 +44,7 @@ import javax.swing.border.EtchedBorder;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
+import org.argouml.cognitive.Critic;
 import org.argouml.configuration.Configuration;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.TabModelTarget;

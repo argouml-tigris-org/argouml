@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Agency;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.model.Model;
@@ -39,6 +40,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileManager;
 import org.argouml.profile.UserDefinedProfile;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * Default <code>ProfileManager</code> implementation
@@ -181,6 +183,14 @@ public class ProfileManagerImpl implements ProfileManager {
                     || getProfileForClass(p.getClass().getName()) == null) {
                 profiles.add(p);
                 
+                for (CrUML critic : p.getCritics()) {
+                    for (Object meta : critic.getCriticizedMetatypes()) {
+                        Agency.register(critic, meta);                        
+                    }
+                    
+                    critic.setEnabled(false);
+                }
+                
                 // this profile could have not been loaded when 
                 // the default profile configuration 
                 // was loaded at first, so we need to do it again
@@ -320,6 +330,20 @@ public class ProfileManagerImpl implements ProfileManager {
             throw new RuntimeException(e);
         }
         return p;
+    }
+
+    /**
+     * @see org.argouml.profile.ProfileManager#lookForRegisteredProfile(java.lang.String)
+     */
+    public Profile lookForRegisteredProfile(String value) {
+        List<Profile> registeredProfiles = getRegisteredProfiles();
+
+        for (Profile profile : registeredProfiles) {
+            if (profile.getDisplayName().equalsIgnoreCase(value)) {
+                return profile;
+            }
+        }
+        return null;
     }
 
 }

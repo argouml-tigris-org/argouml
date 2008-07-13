@@ -28,18 +28,21 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.argouml.uml.cognitive.critics.CrUML;
+
 
 /**
  * Abstract class representing a Profile.  It contains default types and 
  * presentation characteristics that can be tailored to various modeling
  * environments.
  * 
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public abstract class Profile {
     
     private Set<Profile> importedProfiles  = new HashSet<Profile>();
     private Set<Profile> importingProfiles = new HashSet<Profile>();
+    protected Set<CrUML> critics = new HashSet<CrUML>();
         
     /**
      * Add a dependency on the given profile from this profile.
@@ -115,5 +118,12 @@ public abstract class Profile {
     @Override
     public String toString() {
         return getDisplayName();
+    }
+
+    /**
+     * @return Returns the critics defined by this profile.
+     */
+    public Set<CrUML> getCritics() {
+        return critics;
     }
 }

@@ -51,6 +51,7 @@ import org.argouml.profile.ProfileException;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.ActionCreateEdgeModelElement;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -192,7 +193,11 @@ public class ExplorerPopup extends JPopupMenu {
         if (!multiSelect && selectedItem instanceof Profile) {
             this.add(new ActionExportProfileXMI((Profile) selectedItem));
         }
-        
+
+        if (!multiSelect && selectedItem instanceof ProfileConfiguration) {
+            this.add(new ActionManageProfiles());
+        }
+
         if (modelElementsOnly) {
             initMenuCreateModelElements();
         }
@@ -759,7 +764,8 @@ public class ExplorerPopup extends JPopupMenu {
             Object selectedItem) {
         boolean found = selectedItem instanceof ProfileConfiguration
                 || selectedItem instanceof Profile
-                || selectedItem instanceof ArgoDiagram;
+                || selectedItem instanceof ArgoDiagram
+                || selectedItem instanceof CrUML;
                 
         /* The next statement fixes an exception 
          * when right-clicking on e.g. an AssociationsNode 
