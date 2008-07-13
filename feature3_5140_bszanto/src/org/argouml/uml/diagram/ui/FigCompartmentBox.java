@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.static_structure.ui.FigAttribute;
 import org.argouml.uml.diagram.static_structure.ui.SelectionClass;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -107,14 +108,20 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         if (sel instanceof SelectionClass) {
             ((SelectionClass) sel).hideButtons();
         }
-        unhighlight();
-
+        
         Rectangle r =
             new Rectangle(
                 mouseEvent.getX() - 1,
                 mouseEvent.getY() - 1,
                 2,
                 2);
+        
+        if (highlightedFigText instanceof FigAttribute) {
+            // try to change visibility
+            ((FigAttribute) highlightedFigText).changeVisibility(r);
+        }
+        
+        unhighlight();
 
         Fig f = hitFig(r);
         if (f instanceof FigEditableCompartment) {

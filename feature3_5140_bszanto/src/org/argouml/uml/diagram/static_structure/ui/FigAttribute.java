@@ -24,23 +24,82 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.awt.Rectangle;
+
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Fig with specific knowledge of Attribute display. <p>
+ * Fig with specific knowledge of Attribute display.
+ * <p>
  * 
- * This class does not contain any Attribute specific functionality. 
- * But since the Feature is an abstract class in the UML metamodel,
- * it seems more logical to follow this structure here, 
- * and keep FigFeature abstract, too.
- *
+ * This class does not contain any Attribute specific functionality. But since
+ * the Feature is an abstract class in the UML metamodel, it seems more logical
+ * to follow this structure here, and keep FigFeature abstract, too.
+ * 
  * @author Michiel
  */
 public class FigAttribute extends FigFeature {
 
-    public FigAttribute(int x, int y, int w, int h, Fig aFig, 
+    /**
+     * Constructor.
+     * @param x x
+     * @param y x
+     * @param w width
+     * @param h height
+     * @param aFig the fig
+     * @param np the notation provider for the text
+     */
+    public FigAttribute(int x, int y, int w, int h, Fig aFig,
             NotationProvider np) {
         super(x, y, w, h, aFig, np);
+    }
+
+    /**
+     * Cyclies the visibility of an attribute when clicking in the beggining 
+     * part of the FigAttribute.
+     * @param r Hit rectangle.
+     * @author bszanto
+     */
+    public void changeVisibility(Rectangle r) {
+        if (super.hit(r)) {
+            String notation = ProjectManager.getManager().getCurrentProject()
+                    .getProjectSettings().getNotationLanguage();
+            
+            // The hit zone is different for the different notations.
+            // Java uses words (public, protected, private) while UML 1.4 uses
+            // signs (+, -, ~, #).
+            int offset = 0;
+            if (notation.equals("Java")) {
+                offset = 50;
+            } else if (notation.equals("UML 1.4")) {
+                offset = 10;
+            }
+             
+            if (r.x < (_x + offset)) {
+                Object atttribute = getOwner();
+                Object visibity = Model.getFacade().getVisibility(atttribute);
+                
+                // visibility is chandes according to prop panel order which is:
+                // public, package, protected, private
+                if (Model.getVisibilityKind().getPrivate().equals(visibity)) {
+                    Model.getCoreHelper().setVisibility(atttribute,
+                            Model.getVisibilityKind().getPublic());
+                } else if (Model.getVisibilityKind().getPublic().equals(
+                        visibity)) {
+                    Model.getCoreHelper().setVisibility(atttribute,
+                            Model.getVisibilityKind().getPackage());
+                } else if (Model.getVisibilityKind().getPackage().equals(
+                        visibity)) {
+                    Model.getCoreHelper().setVisibility(atttribute,
+                            Model.getVisibilityKind().getProtected());
+                } else {
+                    Model.getCoreHelper().setVisibility(atttribute,
+                            Model.getVisibilityKind().getPrivate());
+                }
+            }
+        }
     }
 }
