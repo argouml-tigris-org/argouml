@@ -332,7 +332,6 @@ public final class PerspectiveManager {
         classPerspective.addRule(new GoProjectToProfileConfiguration());
         classPerspective.addRule(new GoProfileConfigurationToProfile());
         classPerspective.addRule(new GoProfileToModel());
-        classPerspective.addRule(new GoProfileToCritics());
         classPerspective.addRule(new GoProjectToRoots());
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
         classPerspective.addRule(new GoNamespaceToDiagram());
@@ -351,7 +350,6 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoProjectToProfileConfiguration());
         packagePerspective.addRule(new GoProfileConfigurationToProfile());
         packagePerspective.addRule(new GoProfileToModel());
-        packagePerspective.addRule(new GoProfileToCritics());
         packagePerspective.addRule(new GoProjectToRoots());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
         packagePerspective.addRule(new GoPackageToElementImport());
@@ -400,7 +398,6 @@ public final class PerspectiveManager {
         diagramPerspective.addRule(new GoProjectToProfileConfiguration());
         diagramPerspective.addRule(new GoProfileConfigurationToProfile());
         diagramPerspective.addRule(new GoProfileToModel());
-        diagramPerspective.addRule(new GoProfileToCritics());
         diagramPerspective.addRule(new GoModelToDiagrams());
         diagramPerspective.addRule(new GoDiagramToNode());
         diagramPerspective.addRule(new GoDiagramToEdge());
@@ -415,7 +412,6 @@ public final class PerspectiveManager {
         inheritancePerspective.addRule(new GoProjectToProfileConfiguration());
         classPerspective.addRule(new GoProfileConfigurationToProfile());
         classPerspective.addRule(new GoProfileToModel());
-        classPerspective.addRule(new GoProfileToCritics());
         inheritancePerspective.addRule(new GoModelToBaseElements());
         inheritancePerspective
                 .addRule(new GoGeneralizableElementToSpecialized());
@@ -427,7 +423,6 @@ public final class PerspectiveManager {
         associationsPerspective.addRule(new GoProjectToProfileConfiguration());
         associationsPerspective.addRule(new GoProfileConfigurationToProfile());
         associationsPerspective.addRule(new GoProfileToModel());
-        associationsPerspective.addRule(new GoProfileToCritics());
         associationsPerspective.addRule(new GoNamespaceToDiagram());
         associationsPerspective.addRule(new GoPackageToClass());
         associationsPerspective.addRule(new GoClassToAssociatedClass());
@@ -439,7 +434,6 @@ public final class PerspectiveManager {
         residencePerspective.addRule(new GoProjectToProfileConfiguration());
         residencePerspective.addRule(new GoProfileConfigurationToProfile());
         residencePerspective.addRule(new GoProfileToModel());
-        residencePerspective.addRule(new GoProfileToCritics());
         residencePerspective.addRule(new GoModelToNode());
         residencePerspective.addRule(new GoNodeToResidentComponent());
         residencePerspective.addRule(new GoComponentToResidentModelElement());
@@ -474,7 +468,6 @@ public final class PerspectiveManager {
         compositionPerspective.addRule(new GoProjectToProfileConfiguration());
         compositionPerspective.addRule(new GoProfileConfigurationToProfile());
         compositionPerspective.addRule(new GoProfileToModel());
-        compositionPerspective.addRule(new GoProfileToCritics());
         compositionPerspective.addRule(new GoProjectToRoots());
         compositionPerspective.addRule(new GoModelElementToContents());
         compositionPerspective.addRule(new GoModelElementToContainedDiagrams());
@@ -540,7 +533,6 @@ public final class PerspectiveManager {
             new GoProjectToProfileConfiguration(), 
             new GoProfileConfigurationToProfile(),
             new GoProfileToModel(),
-            new GoProfileToCritics(),
             new GoProjectToRoots(),
             new GoSignalToReception(), new GoStateMachineToTop(),
             new GoStatemachineToDiagram(), new GoStateMachineToState(),

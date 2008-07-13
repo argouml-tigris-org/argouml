@@ -1,4 +1,4 @@
-// $Id: GoProjectToModel.java 13040 2007-07-10 20:00:25Z linus $
+// $Id: CrProfile.java 13040 2007-07-10 20:00:25Z linus $
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,48 +22,54 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer.rules;
+package org.argouml.uml.cognitive.critics;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
-import org.argouml.i18n.Translator;
-import org.argouml.profile.Profile;
-import org.argouml.profile.ProfileException;
+import org.argouml.cognitive.Translator;
 
 /**
- * Rule for Project->Profile.
+ * "Abstract" Critic subclass that captures commonalities among all
+ * critics defined by profiles. This class also defines and registers
+ * the categories of design decisions that the critics can
+ * address. 
  *
+ * @see org.argouml.cognitive.Designer
+ * @see org.argouml.cognitive.DecisionModel
+ *
+ * @author maurelio1234
  */
-public class GoProfileToModel extends AbstractPerspectiveRule {
-
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+public class CrProfile extends CrUML {
+    private String localizationPrefix;
+    
+    /**
+     * The constructor for this class.<br>
+     * <br>
+     * By default, CrUML looks for localized strings under the <code>"critics"
+     * </code> prefix. Since profiles cannot include their strings at the 
+     * <code>critics.profile</code> file located at the ArgoUML source code this
+     * class allows critics defined on profile plug-ins to define look for 
+     * localized strings at other files.  
+     * 
+     * @param prefix the prefix of the localized strings
      */
-    public String getRuleName() {
-	return Translator.localize("misc.profile.model");
+    public CrProfile(final String prefix) {
+	super();
+	
+	if (prefix == null || "".equals(prefix)) {
+	    this.localizationPrefix = "critics";
+	} else {
+	    this.localizationPrefix = prefix;
+	}
+	
+	setupHeadAndDesc();
+    }
+    
+    @Override
+    protected String getLocalizedString(String key, String suffix) {
+        return Translator.localize(localizationPrefix + "." + key + suffix);
     }
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+    /**
+     * The UID.
      */
-    public Collection getChildren(Object parent) {
-	if (parent instanceof Profile) {
-            try {
-                return ((Profile) parent).getProfilePackages();
-            } catch (ProfileException e) {
-                return Collections.EMPTY_SET;
-            }
-        }
-        return Collections.EMPTY_SET;
-    }
-
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
-     */
-    public Set getDependencies(Object parent) {
-        // TODO: What?
-	return Collections.EMPTY_SET;
-    }
+    private static final long serialVersionUID = 1785043010468681602L;
 }

@@ -33,7 +33,6 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
-import org.argouml.cognitive.Critic;
 import org.argouml.model.Model;
 import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.TabModelTarget;
@@ -172,9 +171,7 @@ public class TabProps
 
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
         if (!(target == null || Model.getFacade().isAUMLElement(target) 
-                || target instanceof ArgoDiagram
-                // TODO Improve extensibility of this!
-                || target instanceof Critic)) {
+                || target instanceof ArgoDiagram)) {
             return;
         }
         
@@ -272,8 +269,8 @@ public class TabProps
 	        : PropPanelFactoryManager.getFactories()) {
 	    propPanel = factory.createPropPanel(targetObject);
 	    if (propPanel != null) return propPanel;
-	}        
-        
+	}
+
 	/* This does not work (anymore/yet?), 
 	 * since we never have a FigText here: */
 	if (targetObject instanceof FigText) {
@@ -330,11 +327,7 @@ public class TabProps
         if (target instanceof Fig) {
             target = ((Fig) target).getOwner();
         }
-        
-        // TODO: this should be more extensible... may be only 
-        // "findPanelFor(target)" if there is a panel why not show it?
-        return ((target instanceof Diagram || Model.getFacade().isAUMLElement(
-                target)) || target instanceof Critic
+        return ((target instanceof Diagram || Model.getFacade().isAUMLElement(target))
                 && findPanelFor(target) != null);
     }
 

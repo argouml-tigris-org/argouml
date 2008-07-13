@@ -25,22 +25,16 @@
 package org.argouml.profile;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
 
 import junit.framework.TestCase;
 
 import org.argouml.FileHelper;
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.internal.ProfileManagerImpl;
-import org.argouml.profile.internal.ocl.CrOCL;
-import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * Some basic tests for the {@link UserDefinedProfile} class.
  * 
  * @author Luis Sergio Oliveira (euluis)
- * @authos maurelio1234
  */
 public class TestUserDefinedProfile extends TestCase {
     
@@ -76,35 +70,4 @@ public class TestUserDefinedProfile extends TestCase {
         assertTrue(profile.getDisplayName().contains(profileFile.getName()));
     }
 
-    /**
-     * Test the constructor used for loading a profile from a Jar file
-     * 
-     * TODO Test FigNode!
-     * 
-     * @throws Exception if something goes wrong
-     */
-    public void testLoadingAsFromJar() throws Exception {
-        ProfileManager pm = new ProfileManagerImpl();
-        
-        // create profile model
-        ProfileMother profileMother = new ProfileMother();
-        Object model = profileMother.createSimpleProfileModel();
-        // save the profile into a xmi file
-        File profileFile = new File(testDir, "testLoadingConstructor.xmi");
-        profileMother.saveProfileModel(model, profileFile);
-
-        CrOCL critic = new CrOCL("context Class inv: 3 > 2");
-        Set<CrUML> critics = new HashSet<CrUML>();
-        critics.add(critic);
-        
-        Set<Profile> profiles = new HashSet<Profile>();
-        profiles.add(pm.getUMLProfile());
-        
-        Profile profile = new UserDefinedProfile("displayName", profileFile
-                .toURI().toURL(), critics, profiles);
-        
-        assertEquals(profile.getDisplayName(), "displayName");
-        assertTrue(profile.getDependencies().contains(pm.getUMLProfile()));
-        assertTrue(profile.getCritics().contains(critic));       
-    }
 }

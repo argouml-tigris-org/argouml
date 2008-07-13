@@ -25,9 +25,6 @@
 package org.argouml.profile.init;
 
 import org.argouml.profile.ProfileFacade;
-import org.argouml.profile.internal.ui.ProfilePropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactory;
-import org.argouml.uml.ui.PropPanelFactoryManager;
 
 /**
  * Initializer class for the Profile subsystem.
@@ -42,10 +39,6 @@ public class InitProfileSubsystem {
     public void init() {
         ProfileFacade.setManager(
                 new org.argouml.profile.internal.ProfileManagerImpl());
-
-        /* Set up the property panels for critics: */
-        PropPanelFactory factory = new ProfilePropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(factory);    
     }
 
 }

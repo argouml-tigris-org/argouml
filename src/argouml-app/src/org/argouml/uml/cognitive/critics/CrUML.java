@@ -24,9 +24,6 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -57,32 +54,12 @@ public class CrUML extends Critic {
      */
     private static final Logger LOG = Logger.getLogger(CrUML.class);
 
-   /**
-    * By default looks for the localized strings at the <code>critics</code>
-    * Resource, but critics defined elsewhere (out of ArgoUML main tree)
-    * may override this parameter
-    */  
-    private String localizationPrefix = "critics";
-    
     /**
      * The constructor for this class.
      */
     public CrUML() {
     }
 
-    /**
-     * The constructor for this class overriding the default
-     * localization resource.
-     * 
-     * @param localizationPrefix the overriding localization resource
-     */
-    public CrUML(String localizationPrefix) {
-        if (localizationPrefix != null) {
-            this.localizationPrefix = localizationPrefix;
-            setupHeadAndDesc();
-        }
-    }
-    
     /**
      * Set the resources for this critic based on the class name.
      *
@@ -111,7 +88,7 @@ public class CrUML extends Critic {
      * @return the localized string
      */
     protected String getLocalizedString(String key, String suffix) {
-        return Translator.localize(localizationPrefix + "." + key + suffix);
+        return Translator.localize("critics." + key + suffix);
     }
     
     /**
@@ -141,13 +118,11 @@ public class CrUML extends Critic {
      * appears in the to-do tab of the details pane).
      * 
      * MVW: Maybe we can make it part of the constructor CrUML()?
-     * 
-     * FIXME: why override if nobody uses?
      */
-    //@Override
-    //public final void setHeadline(String s) {
-        //setupHeadAndDesc();
-    //}
+    @Override
+    public final void setHeadline(String s) {
+        setupHeadAndDesc();
+    }
 
     /**
      * Set up the locale specific text for the critic headline
@@ -267,18 +242,7 @@ public class CrUML extends Critic {
         return className.substring(className.lastIndexOf('.') + 1);
     }
 
-    /**
-     *  Get the metatypes to be criticized by this critic, the UML Class
-     *  metatype is assumed by default.
-     * 
-     * @return the metatypes 
-     */
-    public Set<Object> getCriticizedMetatypes() {
-        Set<Object> ret = new HashSet<Object>();
-        ret.add(Model.getMetaTypes().getUMLClass());
-        return ret;
-    }
-    
+
     /**
      * The UID.
      */
