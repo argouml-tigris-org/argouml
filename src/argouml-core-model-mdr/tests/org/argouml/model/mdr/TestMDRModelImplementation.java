@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,9 +28,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.jmi.reflect.InvalidObjectException;
+
 import junit.framework.TestCase;
 
 import org.argouml.model.UmlException;
+import org.omg.uml.behavioralelements.statemachines.Guard;
+import org.omg.uml.behavioralelements.statemachines.State;
+import org.omg.uml.behavioralelements.statemachines.StateMachine;
+import org.omg.uml.behavioralelements.statemachines.StateMachinesPackage;
+import org.omg.uml.behavioralelements.statemachines.Transition;
+import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
 
 /**
  * Testing the MDRModelImplementation.
@@ -301,4 +309,52 @@ public class TestMDRModelImplementation extends TestCase {
             "dummyModel", new FileOutputStream(
                 File.createTempFile("dummy", null)), null));
     }
+    
+
+    /**
+     * Test deleting a Guard composited in a Transition.
+     * 
+     * --- Known to fail with NetBeans MDR build number 200507110943 ---
+     */
+    public void notestDeleteCompositeGuard() {
+        org.omg.uml.UmlPackage umlPkg = modelImplementation.getUmlPackage();
+        StateMachinesPackage sm = umlPkg.getStateMachines();
+        State state1 = sm.getSimpleState().createSimpleState();
+        State state2 = sm.getSimpleState().createSimpleState();
+        Transition transition = sm.getTransition().createTransition();
+        transition.setSource(state1);
+        transition.setTarget(state2);
+        Guard guard = sm.getGuard().createGuard("guard",
+                VisibilityKindEnum.VK_PUBLIC, false, null);
+        transition.setGuard(guard);
+        transition.refDelete();
+        try {
+            guard.getName();
+            fail("Guard not deleted with owning transition");
+        } catch (InvalidObjectException e) {
+            // success
+        } 
+    }
+
+    /**
+     * Test deleting top State composited in StateMachine.
+     * 
+     * --- Known to fail with NetBeans MDR build number 200507110943 ---
+     */
+    public void notestDeleteCompositeTopState() {
+        org.omg.uml.UmlPackage umlPkg = modelImplementation.getUmlPackage();
+        StateMachinesPackage sm = umlPkg.getStateMachines();
+        StateMachine machine = sm.getStateMachine().createStateMachine();
+        State state1 = sm.getSimpleState().createSimpleState("top state", 
+                VisibilityKindEnum.VK_PUBLIC, false);
+        machine.setTop(state1);
+        machine.refDelete();
+        try {
+            state1.getName();
+            fail("Top state not deleted with owning state machine");
+        } catch (InvalidObjectException e) {
+            // success
+        } 
+    }
+
 }
