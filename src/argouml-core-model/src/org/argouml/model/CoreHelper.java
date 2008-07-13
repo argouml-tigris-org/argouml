@@ -1154,9 +1154,9 @@ public interface CoreHelper {
     void setOrdering(Object handle, Object ordering);
 
     /**
-     * Set the owner of a Feature.
+     * Set the owner of a Feature or a TagDefinition.
      *
-     * @param handle Feature
+     * @param handle Feature or TagDefinition
      * @param owner Classifier or null
      */
     void setOwner(Object handle, Object owner);
