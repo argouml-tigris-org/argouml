@@ -689,21 +689,15 @@ public final class ModuleLoader2 {
      * 
      * @return the set of defined profiles
      */
-    private Set<Profile> loadManifestDependenciesForProfile(Attributes attr) {
-        Set<Profile> ret = new HashSet<Profile>();
+    private Set<String> loadManifestDependenciesForProfile(Attributes attr) {
+        Set<String> ret = new HashSet<String>();
         String value = attr.getValue("Depends-on");
         if (value != null) {
             StringTokenizer st = new StringTokenizer(value, ",");
 
             while (st.hasMoreElements()) {
                 String entry = st.nextToken().trim();
-                Profile p = ProfileFacade.getManager()
-                        .lookForRegisteredProfile(entry);
-                if (p != null) {
-                    ret.add(p);
-                } else {
-                    LOG.debug("Found unknown profile in dependency list! " + entry);
-                }
+                ret.add(entry);
             }
         }
 
