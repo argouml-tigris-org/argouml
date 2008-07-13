@@ -605,8 +605,11 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         }
         StateMachine stateMachine = (StateMachine) elem;
         
-        // This code is probably unnecessary since the top is
-        // associated by composition
+        // This shouldn't be required since it's a composite, but there's
+        // a bug in the version of MDR that we use (20050711) that causes
+        // it to fail to delete aggregate elements which are single valued
+        // and where the aggregate end is listed second in the association
+        // defined in the metamodel. - tfm 20080713
         State top = stateMachine.getTop();
         if (top != null) {
             modelImpl.getUmlFactory().delete(top);
@@ -685,6 +688,19 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof Transition)) {
             throw new IllegalArgumentException();
         }
+        
+        final Transition transition = (Transition) elem;
+        final Guard guard = transition.getGuard();
+        if (guard != null) {
+            // This shouldn't be required since it's a composite, but there's
+            // a bug in the version of MDR that we use (20050711) that causes
+            // it to fail to delete aggregate elements which are single valued
+            // and where the aggregate end is listed second in the association
+            // defined in the metamodel. - tfm 20080713
+            modelImpl.getUmlFactory().delete(guard);
+        }
+        
+        // The effect will get deleted automatically by MDR, unlike the Guard.
     }
 
 }

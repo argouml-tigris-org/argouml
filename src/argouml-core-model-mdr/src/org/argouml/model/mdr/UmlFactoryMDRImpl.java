@@ -960,11 +960,18 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 Object container = ((RefObject) elem).refImmediateComposite();
                 if (container == null
                         || !elementsToBeDeleted.contains(container)
-                        // For some reason StateMachine.top doesn't get deleted
-                        // even though it should because it's a composite
-                        // see issue 4948
+                        // There is a bug in the version of MDR (20050711) that 
+                        // we use  that causes it to fail to delete aggregate 
+                        // elements which are single valued and where the 
+                        // aggregate end is listed second in the association
+                        // defined in the metamodel. For the UML 1.4 metamodel,
+                        // this affects a StateMachine's top StateVertex and
+                        // a Transition's Guard.  See issue 4948 & 5227 - tfm 
+                        // 20080713
                         || (container instanceof StateMachine 
-                                && elem instanceof StateVertex)) {
+                                && elem instanceof StateVertex)
+                        || (container instanceof Transition 
+                                && elem instanceof Guard)) {
                     elementsInDeletionOrder.add((RefObject) elem);
                 }
             } catch (InvalidObjectException e) {
