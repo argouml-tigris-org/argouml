@@ -30,11 +30,19 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.profile.init.InitProfileSubsystem;
+
 /**
  * Test the StateMachinesFactory class.
  *
  */
 public class TestStateMachinesFactory extends TestCase {
+    private Object aClass;
+    private Object aStateMachine;
+    private Object aState;
+
     /**
      * Model elements to test.
      */
@@ -109,6 +117,34 @@ public class TestStateMachinesFactory extends TestCase {
         CheckUMLModelHelper.createAndRelease(
                 Model.getStateMachinesFactory(), getTestableModelElements());
     }
-
+    
+    /**
+     * Test issue 5227: Guard not deleted with Transition.
+     */
+    public void testDeleteTransition()  {
+        new InitProfileSubsystem().init();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object model =
+            Model.getModelManagementFactory().createModel();
+        aClass = Model.getCoreFactory().buildClass(model);
+        Object returnType = p.getDefaultReturnType();
+        Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
+        aStateMachine =
+            Model.getStateMachinesFactory().buildStateMachine(aClass);
+        Object top = Model.getFacade().getTop(aStateMachine);
+        aState = Model.getStateMachinesFactory().buildCompositeState(top);
+        Object internalTransition =
+            Model.getStateMachinesFactory().buildInternalTransition(aState);
+        Object guard = 
+            Model.getStateMachinesFactory().buildGuard(internalTransition);
+        Object effect = 
+            Model.getCommonBehaviorFactory().createUninterpretedAction();
+        Model.getStateMachinesHelper().setEffect(internalTransition, effect);
+        Model.getUmlFactory().delete(aStateMachine);
+        assertTrue("Effect action not deleted with Transition", 
+                Model.getUmlFactory().isRemoved(effect));
+        assertTrue("Guard not deleted with Transition", 
+                Model.getUmlFactory().isRemoved(guard));
+    }
 
 }

@@ -108,10 +108,15 @@ public class TestUseCasesFactory extends TestCase {
         Object extend = Model.getUseCasesFactory()
             	.buildExtend(base, extension, point);
         assertTrue("extend not added to extension",
-		   Model.getFacade().getExtends(extension).contains(extend));
+                Model.getFacade().getExtends(extension).contains(extend));
         assertTrue("extend not added to correct extensionpoint",
 		   (Model.getFacade().getExtensionPoints(extend).contains(point)
 		 && Model.getFacade().getExtensionPoints(extend).size() == 1));
+        Model.getUmlFactory().delete(base);
+        assertTrue("ExtensionPoint not deleted with base UseCase", 
+                Model.getUmlFactory().isRemoved(point));
+        assertTrue("Extend not deleted with its UseCase", 
+                Model.getUmlFactory().isRemoved(extend));
     }
     
     public void testGetAll() {
@@ -147,6 +152,7 @@ public class TestUseCasesFactory extends TestCase {
                 Model.getUseCasesHelper().getAllActors(model).size());
         
     }
+
 
 }
 
