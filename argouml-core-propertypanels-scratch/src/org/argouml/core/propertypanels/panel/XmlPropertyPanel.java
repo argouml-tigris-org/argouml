@@ -81,7 +81,7 @@ public class XmlPropertyPanel extends PropPanel
         build(target);
     }
     
-    public void build(Object target){
+    public void build(Object target) {
         LOG.info("[XMLPP] t is type:" + target.getClass());
         
         if (currentPanel != null) {
