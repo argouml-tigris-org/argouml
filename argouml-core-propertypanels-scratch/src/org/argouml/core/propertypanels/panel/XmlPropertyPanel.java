@@ -89,6 +89,8 @@ public class XmlPropertyPanel extends PropPanel
             this.remove(currentPanel);
         }
         try {
+            // TODO: This references the concrete factory
+            // We need a factories factory
             UIFactory factory = SwingUIFactory.getInstance();
             currentPanel = factory.createGUI(target);
             this.getTitleLabel().setText(getPanelTitle(target));
