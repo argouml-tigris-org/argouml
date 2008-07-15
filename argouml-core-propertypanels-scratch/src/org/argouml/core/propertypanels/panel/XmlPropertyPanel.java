@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.argouml.core.propertypanels.ui.SwingUIFactory;
 import org.argouml.model.Model;
 import org.argouml.ui.TabFigTarget;
 import org.argouml.uml.ui.PropPanel;
@@ -88,7 +89,8 @@ public class XmlPropertyPanel extends PropPanel
             this.remove(currentPanel);
         }
         try {
-            currentPanel = UIFactory.getInstance().createGUI(target);
+            UIFactory factory = SwingUIFactory.getInstance();
+            currentPanel = factory.createGUI(target);
             this.getTitleLabel().setText(getPanelTitle(target));
             this.add(currentPanel);
         } catch (Exception e) {
