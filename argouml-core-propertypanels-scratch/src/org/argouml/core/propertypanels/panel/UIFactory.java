@@ -412,8 +412,7 @@ public class UIFactory {
                     new ActionDeleteStereotypeBaseClass(),
                     true);
             l.setCellRenderer(new DefaultListCellRenderer());
-            list = new ScrollList(l
-                   );
+            list = new ScrollList(l);
         }
         else if ("extended_elements".equals(prop.getName())) {
             model = new UMLExtendedElementsListModel();
