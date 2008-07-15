@@ -24,7 +24,6 @@
 
 package org.argouml.core.propertypanels.panel;
 
-import java.awt.Dimension;
 import java.io.InputStream;
 
 import javax.swing.DefaultListCellRenderer;
@@ -151,8 +150,6 @@ public class UIFactory {
     
     private static UIFactory instance = new UIFactory();
     
-    private JPanel panel;
-    
     public UIFactory() {
         
     }
@@ -176,13 +173,13 @@ public class UIFactory {
         String filename = getXMLFileName(target);
         LOG.info("[XMLPP] filename is:" + filename);
         XMLPropertyPanelsData data = parseXML(filename);
-        buildPanel(data, target);
-        return panel;       
+        JPanel p = buildPanel(data, target);
+        return p;       
     }
     
     private JPanel buildPanel(XMLPropertyPanelsData data, Object target) {
         
-        panel = new JPanel(new LabelledLayout());
+        JPanel panel = new JPanel(new LabelledLayout());
         
         for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {        
             if ("text".equals(prop.getType())) {
