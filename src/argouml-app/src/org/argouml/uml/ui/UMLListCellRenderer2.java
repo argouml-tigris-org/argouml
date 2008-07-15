@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,6 +43,10 @@ import org.argouml.model.Model;
  * children.
  *
  * This class must be efficient as it is called many 1000's of times.
+ * 
+ * TODO: MVW: Since this class is the only one that knows 
+ * which UML objects influence the rendering, should it 
+ * not be listening to model change events?
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 2, 2003
