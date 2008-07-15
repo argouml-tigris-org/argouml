@@ -3857,9 +3857,12 @@ svn commit -m'The release <replaceable>RELEASENAME</replaceable>.'
 Tag the argoumlinstaller directory.
 </para>
         <para>
-The following commands will do it for you:
+The following command will do it for you:
 <programlisting>
-svn copy http://argoumlinstaller.tigris.org/svn/argoumlinstaller/trunk http://argoumlinstaller.tigris.org/svn/argoumlinstaller/releases/VERSION_<replaceable>GIVEN_VERSION</replaceable> -m'Installer used for <replaceable>GIVEN_VERSION</replaceable>
+svn copy \
+  http://argoumlinstaller.tigris.org/svn/argoumlinstaller/trunk \
+  http://argoumlinstaller.tigris.org/svn/argoumlinstaller/releases/VERSION_<replaceable>GIVEN_VERSION</replaceable> \
+  -m'Installer used for <replaceable>GIVEN_VERSION</replaceable>
 </programlisting>
 </para>
       </listitem>
