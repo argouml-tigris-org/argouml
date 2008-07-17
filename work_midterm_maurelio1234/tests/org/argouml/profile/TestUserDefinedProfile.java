@@ -95,7 +95,8 @@ public class TestUserDefinedProfile extends TestCase {
         File profileFile = new File(testDir, "testLoadingConstructor.xmi");
         profileMother.saveProfileModel(model, profileFile);
 
-        CrOCL critic = new CrOCL("context Class inv: 3 > 2");
+        CrOCL critic = new CrOCL("context Class inv: 3 > 2", null, null, null,
+                null, null, null);
         Set<CrUML> critics = new HashSet<CrUML>();
         critics.add(critic);
         
