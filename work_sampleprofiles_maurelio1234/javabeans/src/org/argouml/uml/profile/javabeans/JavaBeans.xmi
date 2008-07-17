@@ -1,8 +1,8 @@
 <?xml version = '1.0' encoding = 'UTF-8' ?>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Jun 30 18:17:04 CEST 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Thu Jul 17 07:59:51 CEST 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
-      <XMI.exporterVersion>PRE-0.25.6(6) revised on $Date: 2007-05-12 08:08:08 +0200 (sam., 12 mai 2007) $ </XMI.exporterVersion>
+      <XMI.exporterVersion>PRE-0.26.beta1(6) revised on $Date: 2007-05-12 08:08:08 +0200 (sam., 12 mai 2007) $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
@@ -47,16 +47,73 @@
           <UML:Stereotype.baseClass>Class</UML:Stereotype.baseClass>
         </UML:Stereotype>
         <UML:Comment xmi.id = '127-0-1-1-65adf79:11a5ddc3c5c:-8000:000000000000089C'
-          isSpecification = 'false' body = 'context Class inv: self.feature-&gt;size() &gt; 2&#10;'>
+          name = 'critic1' isSpecification = 'false' body = 'context Class inv: self.feature-&gt;select ( a | a.oclIsKindOf (Attribute) )-&gt;forAll ( p, q | p.name = q.name implies p = q )&#10;'>
           <UML:ModelElement.stereotype>
             <UML:Stereotype href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--259518d7:11a5dd26371:-8000:00000000000008DF'/>
           </UML:ModelElement.stereotype>
           <UML:ModelElement.taggedValue>
             <UML:TaggedValue xmi.id = '127-0-1-1-3ae9e206:11aa242a0f4:-8000:0000000000000905'
               isSpecification = 'false'>
-              <UML:TaggedValue.dataValue>All Bean&apos;s attributes should be Properties</UML:TaggedValue.dataValue>
+              <UML:TaggedValue.dataValue>All attributes in a class should have distinct names.</UML:TaggedValue.dataValue>
               <UML:TaggedValue.type>
                 <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--231af496:11aa229b828:-8000:000000000000089C'/>
+              </UML:TaggedValue.type>
+            </UML:TaggedValue>
+            <UML:TaggedValue xmi.id = '127-0-1-1--72f5fd1c:11b2f913d28:-8000:000000000000093E'
+              isSpecification = 'false'>
+              <UML:TaggedValue.dataValue>This is the WFR 2 in section 4.5.3.8 of UML 1.4 specification</UML:TaggedValue.dataValue>
+              <UML:TaggedValue.type>
+                <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--231af496:11aa229b828:-8000:0000000000000899'/>
+              </UML:TaggedValue.type>
+            </UML:TaggedValue>
+            <UML:TaggedValue xmi.id = '127-0-1-1--72f5fd1c:11b2f913d28:-8000:000000000000093F'
+              isSpecification = 'false'>
+              <UML:TaggedValue.dataValue>med</UML:TaggedValue.dataValue>
+              <UML:TaggedValue.type>
+                <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--690faa61:11b2f4ae818:-8000:00000000000008AC'/>
+              </UML:TaggedValue.type>
+            </UML:TaggedValue>
+            <UML:TaggedValue xmi.id = '127-0-1-1--72f5fd1c:11b2f913d28:-8000:0000000000000940'
+              isSpecification = 'false'>
+              <UML:TaggedValue.dataValue>naming,containment</UML:TaggedValue.dataValue>
+              <UML:TaggedValue.type>
+                <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--690faa61:11b2f4ae818:-8000:00000000000008B1'/>
+              </UML:TaggedValue.type>
+            </UML:TaggedValue>
+            <UML:TaggedValue xmi.id = '127-0-1-1--72f5fd1c:11b2f913d28:-8000:0000000000000941'
+              isSpecification = 'false'>
+              <UML:TaggedValue.dataValue>correctness, organizational, presentation, semantics, syntax</UML:TaggedValue.dataValue>
+              <UML:TaggedValue.type>
+                <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--690faa61:11b2f4ae818:-8000:00000000000008B4'/>
+              </UML:TaggedValue.type>
+            </UML:TaggedValue>
+            <UML:TaggedValue xmi.id = '127-0-1-1--72f5fd1c:11b2f913d28:-8000:0000000000000942'
+              isSpecification = 'false'>
+              <UML:TaggedValue.dataValue>http://www.omg.org</UML:TaggedValue.dataValue>
+              <UML:TaggedValue.type>
+                <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--690faa61:11b2f4ae818:-8000:00000000000008B7'/>
+              </UML:TaggedValue.type>
+            </UML:TaggedValue>
+          </UML:ModelElement.taggedValue>
+        </UML:Comment>
+        <UML:Comment xmi.id = '127-0-1-1-a2a3425:11b2f250c3c:-8000:00000000000008B2'
+          name = 'critic2' isSpecification = 'false' body = 'context Class inv: self.feature-&gt;select ( a | a.oclIsKindOf (Operation) )-&gt;forAll ( p, q | p.name = q.name implies p = q )'>
+          <UML:ModelElement.stereotype>
+            <UML:Stereotype href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--259518d7:11a5dd26371:-8000:00000000000008DF'/>
+          </UML:ModelElement.stereotype>
+          <UML:ModelElement.taggedValue>
+            <UML:TaggedValue xmi.id = '127-0-1-1-a2a3425:11b2f250c3c:-8000:00000000000008B3'
+              isSpecification = 'false'>
+              <UML:TaggedValue.dataValue>Always different attributes!</UML:TaggedValue.dataValue>
+              <UML:TaggedValue.type>
+                <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--231af496:11aa229b828:-8000:000000000000089C'/>
+              </UML:TaggedValue.type>
+            </UML:TaggedValue>
+            <UML:TaggedValue xmi.id = '127-0-1-1--72f5fd1c:11b2f913d28:-8000:0000000000000943'
+              isSpecification = 'false'>
+              <UML:TaggedValue.dataValue>www.yahoo.com</UML:TaggedValue.dataValue>
+              <UML:TaggedValue.type>
+                <UML:TagDefinition href = 'http://argouml.org/profiles/uml14/metaprofile.xmi#127-0-1-1--690faa61:11b2f4ae818:-8000:00000000000008B7'/>
               </UML:TaggedValue.type>
             </UML:TaggedValue>
           </UML:ModelElement.taggedValue>
