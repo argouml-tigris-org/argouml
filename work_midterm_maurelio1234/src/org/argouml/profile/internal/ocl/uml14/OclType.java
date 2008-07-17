@@ -22,45 +22,34 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
-import org.argouml.i18n.Translator;
-import org.argouml.profile.Profile;
-import org.argouml.ui.explorer.rules.PerspectiveRule;
+package org.argouml.profile.internal.ocl.uml14;
 
 /**
- * Show the critics exported by a Profile
- *
+ * Represents the OCL "OclType" class
+ * 
  * @author maurelio1234
  */
-public class GoProfileToCritics implements PerspectiveRule {
+public class OclType {
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+    /**
+     * The name of the type
      */
-    public String getRuleName() {
-        return Translator.localize("misc.profile.critic");
+    private String name;
+    
+    /**
+     * Default Constructor
+     * 
+     * @param type
+     */
+    public OclType(String type) {
+        this.name = type;
     }
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+    /**
+     * @return Returns the name.
      */
-    public Collection getChildren(Object parent) {
-        if (parent instanceof Profile) {
-            return ((Profile) parent).getCritics();
-        }
-        return Collections.EMPTY_SET;
+    public String getName() {
+        return name;
     }
-
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
-     */
-    public Set getDependencies(Object parent) {
-        // TODO: What?
-        return Collections.EMPTY_SET;
-    }
+       
 }

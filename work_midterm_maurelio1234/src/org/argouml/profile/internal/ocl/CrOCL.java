@@ -26,6 +26,7 @@ package org.argouml.profile.internal.ocl;
 
 import java.util.Vector;
 
+import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.profile.internal.ocl.uml14.Uml14ModelInterpreter;
@@ -49,13 +50,23 @@ public class CrOCL extends CrUML {
      * the OCL Interpreter 
      */
     private OclInterpreter interpreter = null;
-
+    
     /**
      * Creates a new OCL critic
      * 
      * @param ocl ocl expression
+     * @param headline headline
+     * @param description description
+     * @param moreInfoURL 
+     * @param knowledgeTypes 
+     * @param supportedDecisions 
+     * @param priority 
+     * @throws InvalidOclException if the ocl is not valid
      */
-    public CrOCL(String ocl) {
+    public CrOCL(String ocl, String headline, String description,
+            Integer priority, Vector<Decision> supportedDecisions,
+            Vector<String> knowledgeTypes, String moreInfoURL)
+        throws InvalidOclException {
         interpreter = new OclInterpreter(ocl, new Uml14ModelInterpreter());
         
         addSupportedDecision(UMLDecision.PLANNED_EXTENSIONS);
@@ -67,20 +78,40 @@ public class CrOCL extends CrUML {
             addTrigger(string);            
         }
         
-        super.setHeadline("OCL Expression");
-        super.setDescription(ocl);
-    }
+        if (headline == null) {
+            super.setHeadline("OCL Expression");            
+        } else {
+            super.setHeadline(headline);                        
+        }
 
-    /**
-     * Creates a new OCL critic
-     * 
-     * @param ocl ocl expression
-     * @param headline headline
-     */
-    public CrOCL(String ocl, String headline) {
-        this(ocl);
-        super.setHeadline(headline);
-    }       
+        if (description == null) {
+            super.setDescription(ocl);
+        } else {
+            super.setDescription(description);            
+        }
+        
+        if (priority == null) {
+            setPriority(ToDoItem.HIGH_PRIORITY);
+        } else {
+            setPriority(priority);
+        }
+        
+        if (supportedDecisions != null) {
+            for (Decision d : supportedDecisions) {
+                addSupportedDecision(d);
+            }
+        }
+        
+        if (knowledgeTypes != null) {
+            for (String k : knowledgeTypes) {
+                addKnowledgeType(k);
+            }            
+        }
+        
+        if (moreInfoURL != null) {
+            setMoreInfoURL(moreInfoURL);
+        }
+    }
     
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,

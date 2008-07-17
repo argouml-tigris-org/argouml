@@ -24,10 +24,13 @@
 
 package org.argouml.profile.internal.ocl.uml14;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.profile.internal.ocl.ModelInterpreter;
 
@@ -37,6 +40,12 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
  * @author maurelio1234
  */
 public class ModelAccessModelInterpreter implements ModelInterpreter {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger
+            .getLogger(ModelAccessModelInterpreter.class);
 
     /**
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap, java.lang.Object, java.lang.String, java.lang.String, java.lang.Object[])
@@ -68,6 +77,25 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             }
         } 
                 
+        return null;
+    }
+
+    /**
+     * Add the metamodel-metaclasses as built-in symbols
+     * 
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
+     */
+    public Object getBuiltInSymbol(String sym) {
+        Method m;
+        try {
+            m = Facade.class.getDeclaredMethod("isA" + sym,
+                    new Class[] { Object.class });
+            if (m != null) {
+                return new OclType(sym.toString());
+            }
+        } catch (Exception e) {
+            LOG.error("Exception", e);
+        }
         return null;
     }
 

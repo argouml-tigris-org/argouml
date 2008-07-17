@@ -137,5 +137,12 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
         }        
     }
 
+    /**
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
+     */
+    public Object getBuiltInSymbol(String sym) {
+        return null;
+    }
+
 
 }

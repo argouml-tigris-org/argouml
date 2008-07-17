@@ -46,7 +46,7 @@ public class OclInterpreter {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(OclInterpreter.class);
+    //private static final Logger LOG = Logger.getLogger(OclInterpreter.class);
 
     /**
      * Parser OCL tree
@@ -63,8 +63,10 @@ public class OclInterpreter {
      * 
      * @param ocl expression
      * @param interpreter 
+     * @throws InvalidOclException 
      */
-    public OclInterpreter(String ocl, ModelInterpreter interpreter) {
+    public OclInterpreter(String ocl, ModelInterpreter interpreter)
+        throws InvalidOclException {
         this.modelInterpreter = interpreter;
         
         Lexer lexer = new Lexer(new PushbackReader(new StringReader(ocl), 2));
@@ -74,7 +76,7 @@ public class OclInterpreter {
         try {
             tree = parser.parse();
         } catch (Exception e) {
-            LOG.error("Exception", e);
+            throw new InvalidOclException("Invalid OCL!");
         }
     }
 

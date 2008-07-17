@@ -27,6 +27,7 @@ package org.argouml.cognitive.ui;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
 

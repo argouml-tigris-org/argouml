@@ -24,44 +24,19 @@
 
 package org.argouml.profile.internal.ocl;
 
-import junit.framework.TestCase;
-
-import org.argouml.cognitive.Critic;
-import org.argouml.cognitive.Designer;
-import org.argouml.model.InitializeModel;
-import org.argouml.model.Model;
-
 /**
- * Tests for the CrOCL class.
- * 
+ * Exception thrown when an invalid ocl is set
+ *
  * @author maurelio1234
  */
-public class TestCrOCL extends TestCase {
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        InitializeModel.initializeDefault();
-    }
-
+public class InvalidOclException extends Exception {
+  
     /**
-     * Test the <code>predicate2</code> operation
+     * Default Constructor 
      * 
-     * @throws Exception
+     * @param ocl
      */
-    public void testPredicate() throws Exception {
-        Object obj1 = Model.getUseCasesFactory().createActor();
-        Object obj2 = Model.getActivityGraphsFactory().createPartition();
-
-        String ocl = "context Actor inv: 0 > 2";
-
-        CrOCL cr = new CrOCL(ocl, null, null, null,
-                null, null, null);
-        
-        assertEquals(cr.predicate2(obj1, Designer.theDesigner()),
-                Critic.PROBLEM_FOUND);
-        assertEquals(cr.predicate2(obj2, Designer.theDesigner()),
-                Critic.NO_PROBLEM);
-        
+    public InvalidOclException(String ocl) {
+        super(ocl);
     }
 }

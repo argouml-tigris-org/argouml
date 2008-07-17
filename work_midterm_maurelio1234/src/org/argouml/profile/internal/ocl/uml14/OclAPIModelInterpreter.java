@@ -22,29 +22,28 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.internal.ocl;
+package org.argouml.profile.internal.ocl.uml14;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.argouml.model.Facade;
+import org.argouml.model.Model;
+import org.argouml.profile.internal.ocl.ModelInterpreter;
 
 /**
- * Represents a composite ModelInterpreter
+ * OCL API
  * 
  * @author maurelio1234
  */
-public class CompositeModelInterpreter implements ModelInterpreter {
+public class OclAPIModelInterpreter implements ModelInterpreter {
 
-    private Set<ModelInterpreter> set = new HashSet<ModelInterpreter>();
-    
+
     /**
-     * Adds a ModelInterpreter to this set
-     * 
-     * @param mi
+     * Logger.
      */
-    public void addModelInterpreter(ModelInterpreter mi) {
-        set.add(mi);       
-    }
+    private static final Logger LOG = Logger.getLogger(OclAPIModelInterpreter.class);
     
     /**
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap,
@@ -53,27 +52,55 @@ public class CompositeModelInterpreter implements ModelInterpreter {
      */
     public Object invokeFeature(HashMap<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters) {
-        for (ModelInterpreter mi : set) {
-            Object ret = mi.invokeFeature(vt, subject, feature, type,
-                    parameters);
-            if (ret != null) {
-                return ret;
+        if (type.equals(".")) {
+            // TODO implement the difference between oclIsKindOf and oclIsTypeOf 
+            if (feature.toString().trim().equals("oclIsKindOf") ||
+                    feature.toString().trim().equals("oclIsTypeOf")) {
+                
+                String typeName = ((OclType)parameters[0]).getName();
+                
+                if (typeName.equals("OclAny")) {
+                    return true;
+                } else {
+                    boolean applicable = false;
+                    try {
+                        Method m = Facade.class.getDeclaredMethod("isA" + typeName,
+                                new Class[] { Object.class });
+                        if (m != null) {
+                            applicable = (Boolean) m.invoke(Model.getFacade(),
+                                    new Object[] { subject });
+                        }
+                    } catch (Exception e) {
+                        LOG.error("Exception", e);
+                    }
+                    return applicable;
+                }
             }
+            
+            if (subject instanceof OclType) {
+                if (feature.toString().trim().equals("name")) {
+                    return ((OclType)subject).getName();
+                }                
+            }
+
         }
         return null;
     }
 
     /**
-     * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.Object)
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
      */
     public Object getBuiltInSymbol(String sym) {
-        for (ModelInterpreter mi : set) {
-            Object ret = mi.getBuiltInSymbol(sym);
-            if (ret != null) {
-                return ret;
-            }
+        if (sym.equals("OclType")) {
+            return new OclType("OclType");
+        } else if (sym.equals("OclExpression")) {
+            return new OclType("OclExpression");
+        }
+        if (sym.equals("OclAny")) {
+            return new OclType("OclAny");
         }
         return null;
     }
+
 
 }

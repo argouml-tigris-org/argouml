@@ -38,7 +38,7 @@ public class Uml14ModelInterpreter extends CompositeModelInterpreter {
      */
     public Uml14ModelInterpreter() {
         addModelInterpreter(new ModelAccessModelInterpreter());
-        addModelInterpreter(new OCLAPIModelInterpreter());
+        addModelInterpreter(new OclAPIModelInterpreter());
         addModelInterpreter(new CollectionsModelInterpreter());
     }
 

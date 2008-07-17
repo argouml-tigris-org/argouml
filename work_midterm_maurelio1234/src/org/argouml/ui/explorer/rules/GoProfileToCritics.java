@@ -22,32 +22,44 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile.internal.ocl.uml14;
+package org.argouml.ui.explorer.rules;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
-import org.argouml.profile.internal.ocl.ModelInterpreter;
+import org.argouml.i18n.Translator;
+import org.argouml.profile.Profile;
 
 /**
- * OCL API
- * 
+ * Show the critics exported by a Profile
+ *
  * @author maurelio1234
  */
-public class OCLAPIModelInterpreter implements ModelInterpreter {
+public class GoProfileToCritics implements PerspectiveRule {
 
-    /**
-     * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap,
-     *      java.lang.Object, java.lang.String, java.lang.String,
-     *      java.lang.Object[])
+    /*
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public Object invokeFeature(HashMap<String, Object> vt, Object subject,
-            String feature, String type, Object[] parameters) {
-        if (type.equals(".")) {
-            if (feature.toString().trim().equals("oclIsKindOf")) {
-                return true;
-            }
-        }
-        return null;
+    public String getRuleName() {
+        return Translator.localize("misc.profile.critic");
     }
 
+    /*
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
+    public Collection getChildren(Object parent) {
+        if (parent instanceof Profile) {
+            return ((Profile) parent).getCritics();
+        }
+        return Collections.EMPTY_SET;
+    }
+
+    /*
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
+    public Set getDependencies(Object parent) {
+        // TODO: What?
+        return Collections.EMPTY_SET;
+    }
 }

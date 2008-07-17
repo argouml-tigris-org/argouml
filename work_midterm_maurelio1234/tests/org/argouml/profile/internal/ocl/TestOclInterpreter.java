@@ -43,6 +43,10 @@ public class TestOclInterpreter extends TestCase {
                 String feature, String type, Object[] parameters) {
             return null;
         }
+
+        public Object getBuiltInSymbol(String sym) {
+            return null;
+        }
     }
     
     @Override

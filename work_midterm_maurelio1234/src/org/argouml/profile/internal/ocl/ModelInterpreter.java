@@ -50,5 +50,16 @@ public interface ModelInterpreter {
      */
     Object invokeFeature(HashMap<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters);
+
+    /**
+     * Looks for a built-in symbol. In the case that not all possible built-in
+     * symbols are not in the variable table, the remaining ones should be 
+     * resolved using this method. This should be the case, e.g., for the names
+     * of the UML metaclasses. 
+     * 
+     * @param sym the symbol name
+     * @return the symbol value, or null if the passed symbol is not built-in
+     */
+    Object getBuiltInSymbol(String sym);
     
 }

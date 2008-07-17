@@ -52,7 +52,8 @@ public class TestCrOCL2 extends TestCase {
     public void test6_5_4_2() throws Exception {
         Object obj = Model.getUseCasesFactory().createActor();
 
-        CrOCL ocl = new CrOCL("context Actor inv: 2->size() = 1");
+        CrOCL ocl = new CrOCL("context Actor inv: 2->size() = 1", null, null,
+                null, null, null, null);
 
         assertEquals(ocl.predicate2(obj, Designer.theDesigner()),
                 Critic.NO_PROBLEM);

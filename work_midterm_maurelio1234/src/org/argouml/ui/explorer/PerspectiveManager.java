@@ -77,6 +77,7 @@ import org.argouml.ui.explorer.rules.GoOperationToSequenceDiagram;
 import org.argouml.ui.explorer.rules.GoPackageToClass;
 import org.argouml.ui.explorer.rules.GoPackageToElementImport;
 import org.argouml.ui.explorer.rules.GoProfileConfigurationToProfile;
+import org.argouml.ui.explorer.rules.GoProfileToCritics;
 import org.argouml.ui.explorer.rules.GoProfileToModel;
 import org.argouml.ui.explorer.rules.GoProjectToCollaboration;
 import org.argouml.ui.explorer.rules.GoProjectToDiagram;
