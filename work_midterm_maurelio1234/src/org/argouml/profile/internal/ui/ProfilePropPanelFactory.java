@@ -28,6 +28,11 @@ import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelFactory;
 
+/**
+ * Proppanel creator for critics
+ *
+ * @author maurelio1234
+ */
 public class ProfilePropPanelFactory implements PropPanelFactory {
 
     public PropPanel createPropPanel(Object object) {

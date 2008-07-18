@@ -39,65 +39,70 @@ import org.argouml.uml.ui.PropPanel;
 public class PropPanelCritic extends PropPanel {
 
     private JTextField criticClass;
+
     private JTextField name;
+
     private JTextField headline;
+
     private JTextField priority;
-    private JTextArea  description;
+
+    private JTextArea description;
+
     private JTextField supportedDecision;
+
     private JTextField knowledgeType;
-    
+
     /**
-     * Constructor 
+     * Constructor
      */
     public PropPanelCritic() {
-        super("", (ImageIcon)null);
-                
+        super("", (ImageIcon) null);
+
         criticClass = new JTextField();
         addField("label.class", criticClass);
         criticClass.setEditable(false);
-        
+
         name = new JTextField();
         addField("label.name", name);
         name.setEditable(false);
-        
+
         headline = new JTextField();
         addField("label.headline", headline);
         headline.setEditable(false);
-        
+
         priority = new JTextField();
         addField("label.priority", priority);
         priority.setEditable(false);
-        
-        description = new JTextArea(5, 30);        
+
+        description = new JTextArea(5, 30);
         addField("label.description", description);
         description.setEditable(false);
         description.setLineWrap(true);
-        
+
         supportedDecision = new JTextField();
         addField("label.decision", supportedDecision);
-        supportedDecision.setEditable(false);        
+        supportedDecision.setEditable(false);
 
         knowledgeType = new JTextField();
         addField("label.knowledge_types", knowledgeType);
-        knowledgeType.setEditable(false);        
+        knowledgeType.setEditable(false);
     }
-
 
     /**
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
         super.setTarget(t);
-        
+
         criticClass.setText(getTarget().getClass().getCanonicalName());
-        
+
         Critic c = (Critic) getTarget();
         name.setText(c.getCriticName());
         headline.setText(c.getHeadline());
         description.setText(c.getDescriptionTemplate());
-        supportedDecision.setText(""+c.getSupportedDecisions());
-        
-        priority.setText(""+c.getPriority());
+        supportedDecision.setText("" + c.getSupportedDecisions());
+
+        priority.setText("" + c.getPriority());
         knowledgeType.setText("" + c.getKnowledgeTypes());
     }
 }
