@@ -30,7 +30,7 @@ import tudresden.ocl.parser.node.PConstraintBody;
 
 /**
  * Evaluates OCL invariants, this class should not depend on the model
- * subsystem. 
+ * subsystem.
  * 
  * @author maurelio1234
  */
@@ -39,8 +39,8 @@ public class EvaluateInvariant extends DepthFirstAdapter {
     /**
      * Logger.
      */
-    //private static final Logger LOG = Logger.getLogger(EvaluateInvariant.class);
-
+    // private static final Logger LOG =
+    // Logger.getLogger(EvaluateInvariant.class);
     /**
      * Is this invariant satified?
      */
@@ -56,7 +56,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
     private ModelInterpreter mi;
 
     /**
-     * Constructor 
+     * Constructor
      * 
      * @param modelElement self
      * @param mi model interpreter
@@ -74,7 +74,7 @@ public class EvaluateInvariant extends DepthFirstAdapter {
         return ok;
     }
 
-    /** Interpreter Code **/
+    /** Interpreter Code * */
 
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAConstraint(tudresden.ocl.parser.node.AConstraint)

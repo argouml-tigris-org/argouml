@@ -75,7 +75,7 @@ import tudresden.ocl.parser.node.PExpression;
 /**
  * Evaluates OCL expressions, this class should not depend on the model
  * subsystem. This adapter assumes the ocl expression is syntacally and
- * semantically correct. 
+ * semantically correct.
  * 
  * @author maurelio1234
  */
@@ -84,30 +84,31 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(EvaluateExpression.class);
-    
+    private static final Logger LOG = Logger
+            .getLogger(EvaluateExpression.class);
+
     /**
      * The Variable Table
      */
     private HashMap<String, Object> vt = null;
-    
+
     /**
-     * Keeps the return value of the visitor 
+     * Keeps the return value of the visitor
      */
     private Object val = null;
-    
+
     /**
      * Keeps a forward propagated value
      */
-    private Object fwd = null;    
-    
+    private Object fwd = null;
+
     /**
      * The model interpreter
      */
     private ModelInterpreter interp = null;
-    
+
     /**
-     * Constructor 
+     * Constructor
      * 
      * @param modelElement self
      * @param mi model interpreter
@@ -119,75 +120,67 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * Resets the internal state of this adapter
      * 
-     * @param mi 
-     * @param modelElement 
+     * @param mi
+     * @param modelElement
      */
     public void reset(Object modelElement, ModelInterpreter mi) {
         this.interp = mi;
-        
+
         val = null;
         fwd = null;
         vt = new HashMap<String, Object>();
         vt.put("self", modelElement);
     }
-    
+
     /**
      * @return is the invariant ok?
      */
     public Object getValue() {
         return val;
     }
-  
-    /** Interpreter Code **/   
-    
+
+    /** Interpreter Code * */
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAIfExpression(tudresden.ocl.parser.node.AIfExpression)
      */
-    public void caseAIfExpression(AIfExpression node)
-    {
+    public void caseAIfExpression(AIfExpression node) {
         boolean test = false;
         boolean ret = false;
-        
+
         inAIfExpression(node);
-        if(node.getTIf() != null)
-        {
+        if (node.getTIf() != null) {
             node.getTIf().apply(this);
         }
-        if(node.getIfBranch() != null)
-        {
-            node.getIfBranch().apply(this);            
+        if (node.getIfBranch() != null) {
+            node.getIfBranch().apply(this);
             test = asBoolean(val, node.getIfBranch());
             val = null;
         }
-        if(node.getTThen() != null)
-        {
+        if (node.getTThen() != null) {
             node.getTThen().apply(this);
         }
-        if(node.getThenBranch() != null)
-        {
+        if (node.getThenBranch() != null) {
             node.getThenBranch().apply(this);
             if (test) {
                 ret = asBoolean(val, node.getThenBranch());
                 val = null;
             }
         }
-        if(node.getTElse() != null)
-        {
+        if (node.getTElse() != null) {
             node.getTElse().apply(this);
         }
-        if(node.getElseBranch() != null)
-        {
+        if (node.getElseBranch() != null) {
             node.getElseBranch().apply(this);
             if (!test) {
-                ret = asBoolean(val, node.getThenBranch());                
+                ret = asBoolean(val, node.getThenBranch());
                 val = null;
             }
         }
-        if(node.getEndif() != null)
-        {
+        if (node.getEndif() != null) {
             node.getEndif().apply(this);
         }
-        
+
         val = ret;
         outAIfExpression(node);
     }
@@ -195,26 +188,23 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseALogicalExpressionTail(tudresden.ocl.parser.node.ALogicalExpressionTail)
      */
-    public void caseALogicalExpressionTail(ALogicalExpressionTail node)
-    {
+    public void caseALogicalExpressionTail(ALogicalExpressionTail node) {
         Object left = val;
         val = null;
 
         inALogicalExpressionTail(node);
-        if(node.getLogicalOperator() != null)
-        {
+        if (node.getLogicalOperator() != null) {
             node.getLogicalOperator().apply(this);
         }
-        if(node.getRelationalExpression() != null)
-        {
+        if (node.getRelationalExpression() != null) {
             node.getRelationalExpression().apply(this);
         }
 
         Object op = node.getLogicalOperator();
         Object right = val;
         val = null;
-        
-        if (left != null && op!= null && right != null) {
+
+        if (left != null && op != null && right != null) {
             if (op instanceof AAndLogicalOperator) {
                 val = asBoolean(left, node) && asBoolean(right, node);
             } else if (op instanceof AImpliesLogicalOperator) {
@@ -225,38 +215,35 @@ public class EvaluateExpression extends DepthFirstAdapter {
                 val = !asBoolean(left, node) ^ asBoolean(right, node);
             } else {
                 error(node);
-            }           
+            }
         } else {
             error(node);
         }
         outALogicalExpressionTail(node);
     }
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseARelationalExpressionTail(tudresden.ocl.parser.node.ARelationalExpressionTail)
      */
-    public void caseARelationalExpressionTail(ARelationalExpressionTail node)
-    {
+    public void caseARelationalExpressionTail(ARelationalExpressionTail node) {
         Object left = val;
         val = null;
-        
+
         inARelationalExpressionTail(node);
-        if(node.getRelationalOperator() != null)
-        {
-            node.getRelationalOperator().apply(this);                       
+        if (node.getRelationalOperator() != null) {
+            node.getRelationalOperator().apply(this);
         }
-        if(node.getAdditiveExpression() != null)
-        {
+        if (node.getAdditiveExpression() != null) {
             node.getAdditiveExpression().apply(this);
         }
 
         Object op = node.getRelationalOperator();
         Object right = val;
         val = null;
-        
-        if (left != null && op!= null && right != null) {
+
+        if (left != null && op != null && right != null) {
             if (op instanceof AEqualRelationalOperator) {
-                val = left.equals(right);                
+                val = left.equals(right);
             } else if (op instanceof AGteqRelationalOperator) {
                 val = asInteger(left, node) >= asInteger(right, node);
             } else if (op instanceof AGtRelationalOperator) {
@@ -266,9 +253,9 @@ public class EvaluateExpression extends DepthFirstAdapter {
             } else if (op instanceof ALtRelationalOperator) {
                 val = asInteger(left, node) < asInteger(right, node);
             } else if (op instanceof ANEqualRelationalOperator) {
-                val = !left.equals(right);                
+                val = !left.equals(right);
             } else {
-                error(node);                
+                error(node);
             }
         } else {
             error(node);
@@ -279,154 +266,138 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAAdditiveExpressionTail(tudresden.ocl.parser.node.AAdditiveExpressionTail)
      */
-    public void caseAAdditiveExpressionTail(AAdditiveExpressionTail node)
-    {
+    public void caseAAdditiveExpressionTail(AAdditiveExpressionTail node) {
         Object left = val;
         val = null;
 
         inAAdditiveExpressionTail(node);
-        if(node.getAddOperator() != null)
-        {
+        if (node.getAddOperator() != null) {
             node.getAddOperator().apply(this);
         }
-        if(node.getMultiplicativeExpression() != null)
-        {
+        if (node.getMultiplicativeExpression() != null) {
             node.getMultiplicativeExpression().apply(this);
         }
 
         Object op = node.getAddOperator();
         Object right = val;
         val = null;
-        
-        if (left != null && op!= null && right != null) {
+
+        if (left != null && op != null && right != null) {
             if (op instanceof AMinusAddOperator) {
                 val = asInteger(left, node) - asInteger(right, node);
             } else if (op instanceof APlusAddOperator) {
                 val = asInteger(left, node) + asInteger(right, node);
             } else {
                 error(node);
-            }           
+            }
         } else {
             error(node);
         }
-        
+
         outAAdditiveExpressionTail(node);
     }
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAMultiplicativeExpressionTail(tudresden.ocl.parser.node.AMultiplicativeExpressionTail)
      */
-    public void caseAMultiplicativeExpressionTail(AMultiplicativeExpressionTail node)
-    {
+    public void caseAMultiplicativeExpressionTail(
+            AMultiplicativeExpressionTail node) {
         Object left = val;
         val = null;
 
         inAMultiplicativeExpressionTail(node);
-        if(node.getMultiplyOperator() != null)
-        {
+        if (node.getMultiplyOperator() != null) {
             node.getMultiplyOperator().apply(this);
         }
-        if(node.getUnaryExpression() != null)
-        {
+        if (node.getUnaryExpression() != null) {
             node.getUnaryExpression().apply(this);
         }
 
         Object op = node.getMultiplyOperator();
         Object right = val;
         val = null;
-        
-        if (left != null && op!= null && right != null) {
+
+        if (left != null && op != null && right != null) {
             if (op instanceof ADivMultiplyOperator) {
                 val = asInteger(left, node) / asInteger(right, node);
             } else if (op instanceof AMultMultiplyOperator) {
                 val = asInteger(left, node) * asInteger(right, node);
             } else {
                 error(node);
-            }           
+            }
         } else {
             error(node);
         }
-        
+
         outAMultiplicativeExpressionTail(node);
     }
-        
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAUnaryUnaryExpression(tudresden.ocl.parser.node.AUnaryUnaryExpression)
      */
-    public void caseAUnaryUnaryExpression(AUnaryUnaryExpression node)
-    {
+    public void caseAUnaryUnaryExpression(AUnaryUnaryExpression node) {
         inAUnaryUnaryExpression(node);
-        if(node.getUnaryOperator() != null)
-        {
+        if (node.getUnaryOperator() != null) {
             node.getUnaryOperator().apply(this);
         }
-        if(node.getPostfixExpression() != null)
-        {
+        if (node.getPostfixExpression() != null) {
             val = null;
             node.getPostfixExpression().apply(this);
         }
-        
+
         Object op = node.getUnaryOperator();
         if (op instanceof AMinusUnaryOperator) {
             val = -asInteger(val, node);
         } else if (op instanceof ANotUnaryOperator) {
             val = !asBoolean(val, node);
         }
-        
+
         outAUnaryUnaryExpression(node);
     }
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAPostfixExpressionTail(tudresden.ocl.parser.node.APostfixExpressionTail)
      */
-    public void caseAPostfixExpressionTail(APostfixExpressionTail node)
-    {
+    public void caseAPostfixExpressionTail(APostfixExpressionTail node) {
         inAPostfixExpressionTail(node);
-        if(node.getPostfixExpressionTailBegin() != null)
-        {
+        if (node.getPostfixExpressionTailBegin() != null) {
             node.getPostfixExpressionTailBegin().apply(this);
         }
-        if(node.getFeatureCall() != null)
-        {
+        if (node.getFeatureCall() != null) {
             fwd = node.getPostfixExpressionTailBegin();
             node.getFeatureCall().apply(this);
-            
+
             // XXX: hypotheses for AFeatureCall: fwd = op, val = head
         }
         outAPostfixExpressionTail(node);
     }
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeaturePrimaryExpression(tudresden.ocl.parser.node.AFeaturePrimaryExpression)
      */
     @SuppressWarnings("unchecked")
-    public void caseAFeaturePrimaryExpression(AFeaturePrimaryExpression node)
-    {
+    public void caseAFeaturePrimaryExpression(AFeaturePrimaryExpression node) {
         Object subject = val;
         Object feature = null;
         Vector<Object> parameters = null;
-        
+
         inAFeaturePrimaryExpression(node);
-        if(node.getPathName() != null)
-        {            
-            // TODO support other name kinds             
+        if (node.getPathName() != null) {
+            // TODO support other name kinds
             node.getPathName().apply(this);
             feature = node.getPathName().toString().trim();
         }
-        if(node.getTimeExpression() != null)
-        {
+        if (node.getTimeExpression() != null) {
             // hypotheses no time expression (only invariants)
             node.getTimeExpression().apply(this);
         }
-        if(node.getQualifiers() != null)
-        {
+        if (node.getQualifiers() != null) {
             // XXX: hypotheses no qualifiers (I don't know)
             node.getQualifiers().apply(this);
         }
-        if(node.getFeatureCallParameters() != null)
-        {
+        if (node.getFeatureCallParameters() != null) {
             val = null;
-            node.getFeatureCallParameters().apply(this);            
+            node.getFeatureCallParameters().apply(this);
             parameters = (Vector<Object>) val;
         }
 
@@ -436,35 +407,31 @@ public class EvaluateExpression extends DepthFirstAdapter {
                 val = this.interp.getBuiltInSymbol(feature.toString().trim());
             }
         } else {
-            val = runFeatureCall(subject, feature,fwd,parameters);            
+            val = runFeatureCall(subject, feature, fwd, parameters);
         }
         outAFeaturePrimaryExpression(node);
-    }       
+    }
 
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAEmptyFeatureCallParameters(tudresden.ocl.parser.node.AEmptyFeatureCallParameters)
      */
-    public void outAEmptyFeatureCallParameters(AEmptyFeatureCallParameters node)
-    {
+    public void outAEmptyFeatureCallParameters(AEmptyFeatureCallParameters node) {
         val = new Vector<Object>();
         defaultOut(node);
     }
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeatureCallParameters(tudresden.ocl.parser.node.AFeatureCallParameters)
      */
     @SuppressWarnings("unchecked")
-    public void caseAFeatureCallParameters(AFeatureCallParameters node)
-    {
+    public void caseAFeatureCallParameters(AFeatureCallParameters node) {
         inAFeatureCallParameters(node);
-        if(node.getLPar() != null)
-        {
+        if (node.getLPar() != null) {
             node.getLPar().apply(this);
         }
-        
+
         boolean hasDeclarator = false;
-        if(node.getDeclarator() != null)
-        {
+        if (node.getDeclarator() != null) {
             node.getDeclarator().apply(this);
             hasDeclarator = true;
         }
@@ -475,34 +442,35 @@ public class EvaluateExpression extends DepthFirstAdapter {
                 vars = (Vector<String>) val;
                 final PExpression exp = ((AActualParameterList) node
                         .getActualParameterList()).getExpression();
-                
+
                 /*
-                 * For a iterator call we should provide:
-                 *  (a) the variables
-                 *  (b) the expression to be evaluated on each step
-                 *  (c) the lambda-evaluator to evaluate it
+                 * For a iterator call we should provide: (a) the variables (b)
+                 * the expression to be evaluated on each step (c) the
+                 * lambda-evaluator to evaluate it
                  */
-                
+
                 ret.add(vars);
                 ret.add(exp);
                 ret.add(new LambdaEvaluator() {
 
                     /**
-                     * @see org.argouml.profile.internal.ocl.LambdaEvaluator#evaluate(java.util.HashMap, java.lang.Object)
+                     * @see org.argouml.profile.internal.ocl.LambdaEvaluator#evaluate(java.util.HashMap,
+                     *      java.lang.Object)
                      */
-                    public Object evaluate(HashMap<String, Object> vti, Object expi) {
+                    public Object evaluate(HashMap<String, Object> vti,
+                            Object expi) {
                         Object old_val = EvaluateExpression.this.val;
                         EvaluateExpression.this.val = null;
-                        ((PExpression)expi).apply(EvaluateExpression.this);
-                        
+                        ((PExpression) expi).apply(EvaluateExpression.this);
+
                         Object reti = EvaluateExpression.this.val;
                         EvaluateExpression.this.val = old_val;
-                        
+
                         return reti;
                     }
-                    
-                });                
-                
+
+                });
+
                 val = ret;
             } else {
                 node.getActualParameterList().apply(this);
@@ -514,50 +482,45 @@ public class EvaluateExpression extends DepthFirstAdapter {
         }
         outAFeatureCallParameters(node);
     }
-    
+
     /**
      * @param node
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAStandardDeclarator(tudresden.ocl.parser.node.AStandardDeclarator)
      */
-    public void caseAStandardDeclarator(AStandardDeclarator node)
-    {        
+    public void caseAStandardDeclarator(AStandardDeclarator node) {
         inAStandardDeclarator(node);
-        
+
         Vector<String> vars = new Vector<String>();
-        
-        if(node.getName() != null)
-        {
+
+        if (node.getName() != null) {
             node.getName().apply(this);
-            
+
             vars.add(node.getName().toString().trim());
         }
-        {            
+        {
             Object temp[] = node.getDeclaratorTail().toArray();
             for (int i = 0; i < temp.length; i++) {
                 ((PDeclaratorTail) temp[i]).apply(this);
 
                 vars.add(((ADeclaratorTail) temp[i]).getName()
 
-                .toString().trim());                
+                .toString().trim());
             }
-            
+
             val = vars;
         }
-        if(node.getDeclaratorTypeDeclaration() != null)
-        {
+        if (node.getDeclaratorTypeDeclaration() != null) {
             // TODO check types!
             node.getDeclaratorTypeDeclaration().apply(this);
         }
-        if(node.getBar() != null)
-        {
+        if (node.getBar() != null) {
             node.getBar().apply(this);
         }
         outAStandardDeclarator(node);
     }
 
-    public void outAIterateDeclarator(AIterateDeclarator node)
-    {
-        //TODO support iterate declarator
+    public void outAIterateDeclarator(AIterateDeclarator node) {
+        // TODO support iterate declarator
         val = new Vector<String>();
         defaultOut(node);
     }
@@ -565,51 +528,43 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseALetExpression(tudresden.ocl.parser.node.ALetExpression)
      */
-    public void caseALetExpression(ALetExpression node)
-    {
+    public void caseALetExpression(ALetExpression node) {
         // TODO support nested let expressions !
 
         Object name = null;
         Object value = null;
-        
+
         inALetExpression(node);
-        if(node.getTLet() != null)
-        {
+        if (node.getTLet() != null) {
             node.getTLet().apply(this);
         }
-        if(node.getName() != null)
-        {
+        if (node.getName() != null) {
             node.getName().apply(this);
             name = node.getName().toString().trim();
         }
-        if(node.getLetExpressionTypeDeclaration() != null)
-        {
+        if (node.getLetExpressionTypeDeclaration() != null) {
             // TODO: check type!
             node.getLetExpressionTypeDeclaration().apply(this);
         }
-        if(node.getEqual() != null)
-        {
+        if (node.getEqual() != null) {
             node.getEqual().apply(this);
         }
-        if(node.getExpression() != null)
-        {
+        if (node.getExpression() != null) {
             node.getExpression().apply(this);
         }
-        if(node.getTIn() != null)
-        {
+        if (node.getTIn() != null) {
             node.getTIn().apply(this);
         }
-        
-        vt.put((""+name).trim(), value);
+
+        vt.put(("" + name).trim(), value);
         val = value;
         outALetExpression(node);
     }
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAStringLiteral(tudresden.ocl.parser.node.AStringLiteral)
      */
-    public void outAStringLiteral(AStringLiteral node)
-    {
+    public void outAStringLiteral(AStringLiteral node) {
         val = node.getStringLit().getText();
         defaultOut(node);
     }
@@ -617,27 +572,24 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outARealLiteral(tudresden.ocl.parser.node.ARealLiteral)
      */
-    public void outARealLiteral(ARealLiteral node)
-    {
+    public void outARealLiteral(ARealLiteral node) {
         // TODO support real types
-        val = (int)Double.parseDouble(node.getReal().getText());
+        val = (int) Double.parseDouble(node.getReal().getText());
         defaultOut(node);
     }
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAIntegerLiteral(tudresden.ocl.parser.node.AIntegerLiteral)
      */
-    public void outAIntegerLiteral(AIntegerLiteral node)
-    {
+    public void outAIntegerLiteral(AIntegerLiteral node) {
         val = Integer.parseInt(node.getInt().getText());
         defaultOut(node);
     }
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outABooleanLiteral(tudresden.ocl.parser.node.ABooleanLiteral)
      */
-    public void outABooleanLiteral(ABooleanLiteral node)
-    {
+    public void outABooleanLiteral(ABooleanLiteral node) {
         val = Boolean.parseBoolean(node.getBool().getText());
         defaultOut(node);
     }
@@ -645,18 +597,16 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAEnumLiteral(tudresden.ocl.parser.node.AEnumLiteral)
      */
-    public void outAEnumLiteral(AEnumLiteral node)
-    {
+    public void outAEnumLiteral(AEnumLiteral node) {
         // TODO support enums!
         val = null;
         defaultOut(node);
     }
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outALiteralCollection(tudresden.ocl.parser.node.ALiteralCollection)
      */
-    public void outALiteralCollection(ALiteralCollection node)
-    {
+    public void outALiteralCollection(ALiteralCollection node) {
         // TODO support collections
         val = new Vector<Object>();
         defaultOut(node);
@@ -666,77 +616,69 @@ public class EvaluateExpression extends DepthFirstAdapter {
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeatureCall(tudresden.ocl.parser.node.AFeatureCall)
      */
     @SuppressWarnings("unchecked")
-    public void caseAFeatureCall(AFeatureCall node)
-    {
+    public void caseAFeatureCall(AFeatureCall node) {
         Object subject = val;
         Object feature = null;
         Vector<Object> parameters = null;
-        
+
         inAFeatureCall(node);
-        if(node.getPathName() != null)
-        {
-            // TODO support other name kinds 
+        if (node.getPathName() != null) {
+            // TODO support other name kinds
             node.getPathName().apply(this);
-            
+
             feature = node.getPathName().toString().trim();
         }
-        if(node.getTimeExpression() != null)
-        {
+        if (node.getTimeExpression() != null) {
             // XXX hypothesis: no time expression (inv)
             node.getTimeExpression().apply(this);
         }
-        if(node.getQualifiers() != null)
-        {
+        if (node.getQualifiers() != null) {
             // TODO understand qualifiers
             node.getQualifiers().apply(this);
         }
-        if(node.getFeatureCallParameters() != null)
-        {
-            val = null;            
+        if (node.getFeatureCallParameters() != null) {
+            val = null;
             node.getFeatureCallParameters().apply(this);
-            
+
             parameters = (Vector<Object>) val;
         } else {
             parameters = new Vector<Object>();
         }
-        
+
         val = runFeatureCall(subject, feature, fwd, parameters);
         outAFeatureCall(node);
     }
-    
-    public void caseAActualParameterList(AActualParameterList node)
-    {
-        Vector<Object> list = new Vector<Object>(); 
+
+    public void caseAActualParameterList(AActualParameterList node) {
+        Vector<Object> list = new Vector<Object>();
         inAActualParameterList(node);
-        if(node.getExpression() != null)
-        {
+        if (node.getExpression() != null) {
             val = null;
             node.getExpression().apply(this);
             list.add(val);
         }
         {
-            
+
             Object temp[] = node.getActualParameterListTail().toArray();
-            for(int i = 0; i < temp.length; i++)
-            {
+            for (int i = 0; i < temp.length; i++) {
                 val = null;
-                ((PActualParameterListTail) temp[i]).apply(this);                
+                ((PActualParameterListTail) temp[i]).apply(this);
                 list.add(val);
             }
         }
-        
+
         val = list;
         outAActualParameterList(node);
     }
-    
-    /** HELPER METHODS **/
+
+    /** HELPER METHODS * */
     private boolean asBoolean(Object value, Object node) {
         if (value instanceof Boolean) {
             return (Boolean) value;
         } else {
             errorNotType(node, "Boolean", false);
             return false;
-        }                
+        }
     }
 
     private int asInteger(Object value, Object node) {
@@ -745,32 +687,34 @@ public class EvaluateExpression extends DepthFirstAdapter {
         } else {
             errorNotType(node, "integer", 0);
             return 0;
-        }                
+        }
     }
 
     @SuppressWarnings("unchecked")
-    private Object runFeatureCall(Object subject, Object feature, Object type, Vector<Object> parameters) {
-        //LOG.debug("OCL FEATURE CALL: " + subject + ""+ type +""+ feature + "" + parameters);
-        
+    private Object runFeatureCall(Object subject, Object feature, Object type,
+            Vector<Object> parameters) {
+        // LOG.debug("OCL FEATURE CALL: " + subject + ""+ type +""+ feature + ""
+        // + parameters);
+
         if (parameters == null) {
             parameters = new Vector<Object>();
         }
-        
+
         return interp.invokeFeature(vt, subject, feature.toString().trim(),
                 type.toString().trim(), parameters.toArray());
     }
-    
-    /** Error Handling **/
+
+    /** Error Handling * */
     private void errorNotType(Object node, String type, Object dft) {
-        LOG.error("OCL does not evaluate to a "+type+ " expression!! Exp: "
+        LOG.error("OCL does not evaluate to a " + type + " expression!! Exp: "
                 + node + " Val: " + val);
         val = dft;
     }
 
     private void error(Object node) {
-        LOG.error("Unknown error processing OCL exp!! Exp: "
-                + node + " Val: " + val);
+        LOG.error("Unknown error processing OCL exp!! Exp: " + node + " Val: "
+                + val);
         val = null;
     }
-    
+
 }

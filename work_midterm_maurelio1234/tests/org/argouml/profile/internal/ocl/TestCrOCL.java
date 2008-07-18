@@ -55,13 +55,12 @@ public class TestCrOCL extends TestCase {
 
         String ocl = "context Actor inv: 0 > 2";
 
-        CrOCL cr = new CrOCL(ocl, null, null, null,
-                null, null, null);
-        
+        CrOCL cr = new CrOCL(ocl, null, null, null, null, null, null);
+
         assertEquals(cr.predicate2(obj1, Designer.theDesigner()),
                 Critic.PROBLEM_FOUND);
         assertEquals(cr.predicate2(obj2, Designer.theDesigner()),
                 Critic.NO_PROBLEM);
-        
+
     }
 }

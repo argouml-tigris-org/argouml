@@ -37,15 +37,15 @@ import org.argouml.model.Model;
  * @author maurelio1234
  */
 public class TestCrOCL2 extends TestCase {
-    
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
     }
-    
+
     /**
-     * Test collections operations in objects 
+     * Test collections operations in objects
      * 
      * @throws Exception
      */

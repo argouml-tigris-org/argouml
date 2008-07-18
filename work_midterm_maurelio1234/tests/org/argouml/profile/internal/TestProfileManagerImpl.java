@@ -36,11 +36,11 @@ import org.argouml.profile.ProfileManager;
 
 /**
  * Tests for the ProfileManagerImpl class.
- *
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestProfileManagerImpl extends TestCase {
-    
+
     private ProfileManager manager;
 
     @Override
@@ -50,30 +50,39 @@ public class TestProfileManagerImpl extends TestCase {
         manager = new ProfileManagerImpl();
     }
 
+    /**
+     * test profile manager 
+     */
     public void testProfileManagerImpl() {
         List<Profile> registeredProfiles = manager.getRegisteredProfiles();
         assertTrue(2 <= registeredProfiles.size());
         Set<String> internalProfileNameSet = new HashSet<String>();
         for (Profile profile : registeredProfiles) {
-            if (profile.getDisplayName().equals(ProfileUML.NAME) 
+            if (profile.getDisplayName().equals(ProfileUML.NAME)
                     || profile.getDisplayName().equals(ProfileJava.NAME))
                 internalProfileNameSet.add(profile.getDisplayName());
         }
         assertEquals(2, internalProfileNameSet.size());
     }
-    
+
+    /**
+     * test remove profile
+     */
     public void testRemoveProfileThatIsntDefault() {
-        Profile javaProfile = manager.getProfileForClass(
-                ProfileJava.class.getName());
+        Profile javaProfile = manager.getProfileForClass(ProfileJava.class
+                .getName());
         assertNotNull(javaProfile);
         assertTrue(manager.getRegisteredProfiles().contains(javaProfile));
         manager.removeProfile(javaProfile);
         assertFalse(manager.getRegisteredProfiles().contains(javaProfile));
     }
-    
+
+    /**
+     * test remove profile
+     */
     public void testRemoveDefaultProfile() {
-        Profile umlProfile = manager.getProfileForClass(
-                ProfileUML.class.getName());
+        Profile umlProfile = manager.getProfileForClass(ProfileUML.class
+                .getName());
         assertNotNull(umlProfile);
         assertTrue(manager.getRegisteredProfiles().contains(umlProfile));
         assertTrue(manager.getDefaultProfiles().contains(umlProfile));

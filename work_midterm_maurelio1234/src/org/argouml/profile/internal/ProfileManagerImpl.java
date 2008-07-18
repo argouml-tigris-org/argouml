@@ -44,13 +44,13 @@ import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * Default <code>ProfileManager</code> implementation
- *
+ * 
  * @author Marcos Aur�lio
  */
 public class ProfileManagerImpl implements ProfileManager {
-    
-    private static final Logger LOG = Logger.getLogger(
-            ProfileManagerImpl.class);
+
+    private static final Logger LOG = Logger
+            .getLogger(ProfileManagerImpl.class);
 
     private static final String DIRECTORY_SEPARATOR = "*";
 
@@ -70,7 +70,7 @@ public class ProfileManagerImpl implements ProfileManager {
      * Avoids recursive configuration update when loading configuration
      */
     private boolean disableConfigurationUpdate = false;
-    
+
     private List<Profile> profiles = new ArrayList<Profile>();
 
     private List<Profile> defaultProfiles = new ArrayList<Profile>();
@@ -98,19 +98,19 @@ public class ProfileManagerImpl implements ProfileManager {
         loadDefaultProfilesfromConfiguration();
     }
 
-    private void loadDefaultProfilesfromConfiguration() {    
+    private void loadDefaultProfilesfromConfiguration() {
         disableConfigurationUpdate = true;
-        
+
         StringTokenizer tokenizer = new StringTokenizer(Configuration
                 .getString(KEY_DEFAULT_PROFILES), DIRECTORY_SEPARATOR, false);
 
         while (tokenizer.hasMoreTokens()) {
             String desc = tokenizer.nextToken();
             Profile p = null;
-            
+
             if (desc.charAt(0) == 'U') {
                 String fileName = desc.substring(1);
-                p = findUserDefinedProfile(new File(fileName));                
+                p = findUserDefinedProfile(new File(fileName));
             } else if (desc.charAt(0) == 'C') {
                 String className = desc.substring(1);
                 p = getProfileForClass(className);
@@ -127,7 +127,7 @@ public class ProfileManagerImpl implements ProfileManager {
     private void updateDefaultProfilesConfiguration() {
         if (!disableConfigurationUpdate) {
             StringBuffer buf = new StringBuffer();
-            
+
             for (Profile p : defaultProfiles) {
                 if (p instanceof UserDefinedProfile) {
                     buf.append("U"
@@ -146,16 +146,14 @@ public class ProfileManagerImpl implements ProfileManager {
 
     private void loadDirectoriesFromConfiguration() {
         disableConfigurationUpdate = true;
-        
-        StringTokenizer tokenizer = 
-            new StringTokenizer(
-                    Configuration.getString(KEY_DEFAULT_DIRECTORIES), 
-                    DIRECTORY_SEPARATOR, false);
+
+        StringTokenizer tokenizer = new StringTokenizer(Configuration
+                .getString(KEY_DEFAULT_DIRECTORIES), DIRECTORY_SEPARATOR, false);
 
         while (tokenizer.hasMoreTokens()) {
             searchDirectories.add(tokenizer.nextToken());
         }
-        
+
         disableConfigurationUpdate = false;
     }
 
@@ -171,34 +169,31 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-
     public List<Profile> getRegisteredProfiles() {
         return profiles;
     }
 
-
-    public void registerProfile(Profile p) {        
+    public void registerProfile(Profile p) {
         if (p != null && !profiles.contains(p)) {
             if (p instanceof UserDefinedProfile
                     || getProfileForClass(p.getClass().getName()) == null) {
                 profiles.add(p);
-                
+
                 for (CrUML critic : p.getCritics()) {
                     for (Object meta : critic.getCriticizedMetatypes()) {
-                        Agency.register(critic, meta);                        
+                        Agency.register(critic, meta);
                     }
-                    
+
                     critic.setEnabled(false);
                 }
-                
-                // this profile could have not been loaded when 
-                // the default profile configuration 
+
+                // this profile could have not been loaded when
+                // the default profile configuration
                 // was loaded at first, so we need to do it again
                 loadDefaultProfilesfromConfiguration();
             }
         }
     }
-
 
     public void removeProfile(Profile p) {
         if (p != null) {
@@ -206,7 +201,6 @@ public class ProfileManagerImpl implements ProfileManager {
             defaultProfiles.remove(p);
         }
     }
-
 
     public Profile getProfileForClass(String profileClass) {
         Profile found = null;
@@ -219,20 +213,16 @@ public class ProfileManagerImpl implements ProfileManager {
         return found;
     }
 
-
     public void addToDefaultProfiles(Profile p) {
-        if (p != null && profiles.contains(p) 
-                && !defaultProfiles.contains(p)) {
+        if (p != null && profiles.contains(p) && !defaultProfiles.contains(p)) {
             defaultProfiles.add(p);
             updateDefaultProfilesConfiguration();
         }
     }
 
-
     public List<Profile> getDefaultProfiles() {
         return Collections.unmodifiableList(defaultProfiles);
     }
-
 
     public void removeFromDefaultProfiles(Profile p) {
         if (p != null && profiles.contains(p)) {
@@ -240,7 +230,6 @@ public class ProfileManagerImpl implements ProfileManager {
             updateDefaultProfilesConfiguration();
         }
     }
-
 
     public void addSearchPathDirectory(String path) {
         if (path != null && !searchDirectories.contains(path)) {
@@ -254,11 +243,9 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-
     public List<String> getSearchPathDirectories() {
         return Collections.unmodifiableList(searchDirectories);
     }
-
 
     public void removeSearchPathDirectory(String path) {
         if (path != null) {
@@ -272,7 +259,6 @@ public class ProfileManagerImpl implements ProfileManager {
         }
     }
 
-
     public void refreshRegisteredProfiles() {
 
         for (String dirName : searchDirectories) {
@@ -283,8 +269,7 @@ public class ProfileManagerImpl implements ProfileManager {
                     // TODO: Allow .zargo as profile as well?
                     if (file.getName().toLowerCase().endsWith(".xmi")) {
 
-                        boolean found = 
-                            findUserDefinedProfile(file) != null;
+                        boolean found = findUserDefinedProfile(file) != null;
 
                         if (!found) {
                             UserDefinedProfile udp = null;
@@ -294,7 +279,7 @@ public class ProfileManagerImpl implements ProfileManager {
                             } catch (ProfileException e) {
                                 // if an exception is raised file is unusable
                                 LOG.warn("Failed to load user defined profile "
-                                    + file.getAbsolutePath() + ".", e);
+                                        + file.getAbsolutePath() + ".", e);
                             }
                         }
                     }
@@ -304,7 +289,7 @@ public class ProfileManagerImpl implements ProfileManager {
     }
 
     private Profile findUserDefinedProfile(File file) {
-        
+
         for (Profile p : profiles) {
             if (p instanceof UserDefinedProfile) {
                 UserDefinedProfile udp = (UserDefinedProfile) p;
@@ -317,12 +302,10 @@ public class ProfileManagerImpl implements ProfileManager {
         return null;
     }
 
-
     public Profile getUMLProfile() {
         for (Profile p : getRegisteredProfiles())
-            if (p.getDisplayName() != null 
-                    && p.getDisplayName().contains("UML"))
-                return p;
+            if (p.getDisplayName() != null
+                    && p.getDisplayName().contains("UML")) return p;
         Profile p = null;
         try {
             p = new ProfileUML();

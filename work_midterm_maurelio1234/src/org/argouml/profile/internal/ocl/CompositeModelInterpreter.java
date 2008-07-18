@@ -36,16 +36,16 @@ import java.util.Set;
 public class CompositeModelInterpreter implements ModelInterpreter {
 
     private Set<ModelInterpreter> set = new HashSet<ModelInterpreter>();
-    
+
     /**
      * Adds a ModelInterpreter to this set
      * 
      * @param mi
      */
     public void addModelInterpreter(ModelInterpreter mi) {
-        set.add(mi);       
+        set.add(mi);
     }
-    
+
     /**
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap,
      *      java.lang.Object, java.lang.String, java.lang.String,
@@ -64,7 +64,7 @@ public class CompositeModelInterpreter implements ModelInterpreter {
     }
 
     /**
-     * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.Object)
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
      */
     public Object getBuiltInSymbol(String sym) {
         for (ModelInterpreter mi : set) {

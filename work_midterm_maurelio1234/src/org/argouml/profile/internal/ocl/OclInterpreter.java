@@ -28,7 +28,6 @@ import java.io.PushbackReader;
 import java.io.StringReader;
 import java.util.Vector;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 
 import tudresden.ocl.parser.OclParser;
@@ -36,9 +35,9 @@ import tudresden.ocl.parser.lexer.Lexer;
 import tudresden.ocl.parser.node.Start;
 
 /**
- * Encapsulates actual interpretation of the OCL expressions for
- * OCL critics provided by a Profile
- *
+ * Encapsulates actual interpretation of the OCL expressions for OCL critics
+ * provided by a Profile
+ * 
  * @author maurelio1234
  */
 public class OclInterpreter {
@@ -46,29 +45,28 @@ public class OclInterpreter {
     /**
      * Logger.
      */
-    //private static final Logger LOG = Logger.getLogger(OclInterpreter.class);
-
+    // private static final Logger LOG = Logger.getLogger(OclInterpreter.class);
     /**
      * Parser OCL tree
      */
-    private Start     tree   = null;
+    private Start tree = null;
 
     /**
      * The model interpreter
      */
     private ModelInterpreter modelInterpreter;
-    
+
     /**
      * Creates a new OCL interpreter for a given OCL expression
      * 
      * @param ocl expression
-     * @param interpreter 
-     * @throws InvalidOclException 
+     * @param interpreter
+     * @throws InvalidOclException
      */
     public OclInterpreter(String ocl, ModelInterpreter interpreter)
         throws InvalidOclException {
         this.modelInterpreter = interpreter;
-        
+
         Lexer lexer = new Lexer(new PushbackReader(new StringReader(ocl), 2));
 
         OclParser parser = new OclParser(lexer);
@@ -81,11 +79,10 @@ public class OclInterpreter {
     }
 
     /**
-     * Checks whether this OCL expression is applicable to a given
-     * model element 
+     * Checks whether this OCL expression is applicable to a given model element
      * 
      * @param modelElement the ModelElement
-     * @return if is applicable 
+     * @return if is applicable
      */
     public boolean applicable(Object modelElement) {
         ContextApplicable ca = new ContextApplicable(modelElement);
@@ -94,8 +91,8 @@ public class OclInterpreter {
     }
 
     /**
-     * Checks if this expression (invariant) is satisfied for
-     * the given model element
+     * Checks if this expression (invariant) is satisfied for the given model
+     * element
      * 
      * @param modelElement the ModelElement
      * @return if is satisfied
@@ -108,15 +105,14 @@ public class OclInterpreter {
     }
 
     /**
-     * Computes and returns the set of triggers for this 
-     * constraint. 
+     * Computes and returns the set of triggers for this constraint.
      * 
      * @see Critic#addTrigger(String)
-     * @return the set of triggers 
+     * @return the set of triggers
      */
     public Vector<String> getTriggers() {
         ComputeTriggers ct = new ComputeTriggers();
-        tree.apply(ct);       
+        tree.apply(ct);
         return ct.getTriggers();
     }
 

@@ -43,7 +43,7 @@ import org.argouml.uml.cognitive.critics.CrUML;
  * @authos maurelio1234
  */
 public class TestUserDefinedProfile extends TestCase {
-    
+
     private File testDir;
 
     @Override
@@ -51,16 +51,16 @@ public class TestUserDefinedProfile extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         ProfileFacade.setManager(new ProfileManagerImpl());
-        
+
         testDir = FileHelper.setUpDir4Test(getClass());
     }
-    
+
     @Override
     protected void tearDown() throws Exception {
         FileHelper.deleteDir(testDir);
         super.tearDown();
     }
-    
+
     /**
      * Test loading of a very simple profile via its constructor. Check that its
      * display name contains the file name.
@@ -79,15 +79,14 @@ public class TestUserDefinedProfile extends TestCase {
     }
 
     /**
-     * Test the constructor used for loading a profile from a Jar file
-     * 
-     * TODO Test FigNode!
+     * Test the constructor used for loading a profile from a Jar file TODO Test
+     * FigNode!
      * 
      * @throws Exception if something goes wrong
      */
     public void testLoadingAsFromJar() throws Exception {
         ProfileManager pm = ProfileFacade.getManager();
-        
+
         // create profile model
         ProfileMother profileMother = new ProfileMother();
         Object model = profileMother.createSimpleProfileModel();
@@ -99,15 +98,15 @@ public class TestUserDefinedProfile extends TestCase {
                 null, null, null);
         Set<CrUML> critics = new HashSet<CrUML>();
         critics.add(critic);
-        
+
         Set<String> profiles = new HashSet<String>();
         profiles.add(pm.getUMLProfile().getProfileIdentifier());
-        
+
         Profile profile = new UserDefinedProfile("displayName", profileFile
                 .toURI().toURL(), critics, profiles);
-        
+
         assertEquals(profile.getDisplayName(), "displayName");
         assertTrue(profile.getDependencies().contains(pm.getUMLProfile()));
-        assertTrue(profile.getCritics().contains(critic));       
+        assertTrue(profile.getCritics().contains(critic));
     }
 }

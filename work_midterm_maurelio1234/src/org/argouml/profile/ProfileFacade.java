@@ -25,11 +25,11 @@
 package org.argouml.profile;
 
 /**
- * The <a href="http://en.wikipedia.org/wiki/Facade_pattern">Facade</a> of the 
- * profile subsystem. 
- * It provides a simplified interface to the subsystem, and access to objects 
- * of the subsystem when the methods it provides directly aren't enough.
- *
+ * The <a href="http://en.wikipedia.org/wiki/Facade_pattern">Facade</a> of the
+ * profile subsystem. It provides a simplified interface to the subsystem, and
+ * access to objects of the subsystem when the methods it provides directly
+ * aren't enough.
+ * 
  * @author Luis Sergio Oliveira (euluis)
  * @since 0.25.4
  */
@@ -37,6 +37,7 @@ public class ProfileFacade {
 
     /**
      * Register a profile in the {@link ProfileManager}.
+     * 
      * @param profile the profile to be registered
      */
     public static void register(Profile profile) {
@@ -45,6 +46,7 @@ public class ProfileFacade {
 
     /**
      * Remove or unregister the profile from the {@link ProfileManager}.
+     * 
      * @param profile the profile to be removed
      */
     public static void remove(Profile profile) {
@@ -55,13 +57,12 @@ public class ProfileFacade {
      * @return the profile manager
      */
     public static ProfileManager getManager() {
-        if (manager == null)
-            notInitialized("manager");
+        if (manager == null) notInitialized("manager");
         return manager;
     }
 
     private static void notInitialized(String string) {
-        throw new RuntimeException("ProfileFacade's " + string  
+        throw new RuntimeException("ProfileFacade's " + string
                 + " isn't initialized!");
     }
 
@@ -84,5 +85,5 @@ public class ProfileFacade {
     public static boolean isInitiated() {
         return manager != null;
     }
-    
+
 }

@@ -30,39 +30,35 @@ import java.util.Set;
 
 import org.argouml.uml.cognitive.critics.CrUML;
 
-
 /**
- * Abstract class representing a Profile.  It contains default types and 
+ * Abstract class representing a Profile. It contains default types and
  * presentation characteristics that can be tailored to various modeling
  * environments.
  * 
  * @author Marcos Aur�lio
  */
 public abstract class Profile {
-    
-    private Set<String> dependencies  = new HashSet<String>();
+
+    private Set<String> dependencies = new HashSet<String>();
+
     protected Set<CrUML> critics = new HashSet<CrUML>();
-        
-    /**
-     * Add a dependency on the given profile from this profile.
-     * 
-     * @param p
-     *                the profile
-     * @throws IllegalArgumentException
-     *                 never thrown
-     */
-    protected final void addProfileDependency(Profile p)
-        throws IllegalArgumentException {
-        addProfileDependency(p.getProfileIdentifier());
-    }    
 
     /**
      * Add a dependency on the given profile from this profile.
      * 
-     * @param p
-     *                the profile identifier
-     *                
-     * @param profileIdentifier 
+     * @param p the profile
+     * @throws IllegalArgumentException never thrown
+     */
+    protected final void addProfileDependency(Profile p)
+        throws IllegalArgumentException {
+        addProfileDependency(p.getProfileIdentifier());
+    }
+
+    /**
+     * Add a dependency on the given profile from this profile.
+     * 
+     * @param p the profile identifier
+     * @param profileIdentifier
      */
     protected void addProfileDependency(String profileIdentifier) {
         dependencies.add(profileIdentifier);
@@ -75,13 +71,14 @@ public abstract class Profile {
         if (ProfileFacade.isInitiated()) {
             Set<Profile> ret = new HashSet<Profile>();
             for (String pid : dependencies) {
-                Profile p = ProfileFacade.getManager().lookForRegisteredProfile(pid);
-                if (p!=null) {
+                Profile p = ProfileFacade.getManager()
+                        .lookForRegisteredProfile(pid);
+                if (p != null) {
                     ret.add(p);
                     ret.addAll(p.getDependencies());
                 }
             }
-            return ret;            
+            return ret;
         } else {
             return new HashSet<Profile>();
         }
@@ -95,10 +92,10 @@ public abstract class Profile {
     }
 
     /**
-     * @return the name for this profile 
+     * @return the name for this profile
      */
     public abstract String getDisplayName();
-    
+
     /**
      * @return the formating strategy offered by this profile, if any. Returns
      *         <code>null</code> if this profile has no formating strategy.
@@ -122,15 +119,14 @@ public abstract class Profile {
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return null;
     }
-    
+
     /**
      * @return a collection of the top level UML Packages containing the
      *         profile.
-     * @throws ProfileException
-     *                 if failed to get profile.
+     * @throws ProfileException if failed to get profile.
      */
     public abstract Collection getProfilePackages() throws ProfileException;
-    
+
     /**
      * @return the display name
      */

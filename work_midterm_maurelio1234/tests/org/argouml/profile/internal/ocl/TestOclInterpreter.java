@@ -48,7 +48,7 @@ public class TestOclInterpreter extends TestCase {
             return null;
         }
     }
-    
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -68,11 +68,11 @@ public class TestOclInterpreter extends TestCase {
 
         OclInterpreter interpreter = new OclInterpreter(ocl,
                 new DefaultModelInterpreter());
-        
+
         assertTrue(interpreter.applicable(obj1));
         assertFalse(interpreter.applicable(obj2));
     }
-    
+
     /**
      * Test <code>getTriggers</code> operation
      * 
@@ -83,7 +83,7 @@ public class TestOclInterpreter extends TestCase {
 
         OclInterpreter interpreter = new OclInterpreter(ocl,
                 new DefaultModelInterpreter());
-        
+
         assertTrue(interpreter.getTriggers().contains("actor"));
     }
 
@@ -102,7 +102,7 @@ public class TestOclInterpreter extends TestCase {
                 new DefaultModelInterpreter());
         OclInterpreter interpreter2 = new OclInterpreter(ocl2,
                 new DefaultModelInterpreter());
-        
+
         assertTrue(interpreter1.check(obj));
         assertFalse(interpreter2.check(obj));
     }

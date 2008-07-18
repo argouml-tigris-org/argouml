@@ -61,16 +61,17 @@ public class UserDefinedProfile extends Profile {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(UserDefinedProfile.class);
+    private static final Logger LOG = Logger
+            .getLogger(UserDefinedProfile.class);
 
     private String displayName;
 
     private File modelFile;
+
     private Collection profilePackages;
 
-    private UserDefinedFigNodeStrategy figNodeStrategy 
-                                    = new UserDefinedFigNodeStrategy();
-    
+    private UserDefinedFigNodeStrategy figNodeStrategy = new UserDefinedFigNodeStrategy();
+
     private class UserDefinedFigNodeStrategy implements FigNodeStrategy {
 
         private HashMap<String, Image> images = new HashMap<String, Image>();
@@ -136,14 +137,14 @@ public class UserDefinedProfile extends Profile {
      */
     public UserDefinedProfile(URL url) throws ProfileException {
         LOG.info("load " + url);
-        
+
         ProfileReference reference = null;
         reference = new UserProfileReference(url.getPath(), url);
         profilePackages = new URLModelLoader().loadModel(reference);
 
         finishLoading();
     }
-    
+
     /**
      * A constructor that reads a file from an URL associated with some profiles
      * 
@@ -151,7 +152,6 @@ public class UserDefinedProfile extends Profile {
      * @param url the URL of the profile mode
      * @param critics the Critics defined by this profile
      * @param dependencies the dependencies of this profile
-     * 
      * @throws ProfileException if the model cannot be loaded
      */
     public UserDefinedProfile(String displayName, URL url, Set<CrUML> critics,
@@ -172,17 +172,16 @@ public class UserDefinedProfile extends Profile {
         for (String profileID : dependencies) {
             addProfileDependency(profileID);
         }
-        
+
         finishLoading();
     }
-    
 
     /**
      * Reads the informations defined as TaggedValues
      */
     private void finishLoading() {
 
-        for (Object obj : profilePackages) {            
+        for (Object obj : profilePackages) {
             if (Model.getExtensionMechanismsHelper().hasStereotype(obj,
                     "profile")) {
 
@@ -192,24 +191,26 @@ public class UserDefinedProfile extends Profile {
                     displayName = name;
                 } else {
                     if (displayName == null) {
-                        displayName = Translator.localize("misc.profile.unnamed");
+                        displayName = Translator
+                                .localize("misc.profile.unnamed");
                     }
                 }
                 LOG.info("profile " + displayName);
 
                 // load profile dependencies
-                String dependencyListStr = Model.getFacade().getTaggedValueValue(obj,
-                        "Dependency");
-                StringTokenizer st = new StringTokenizer(dependencyListStr, " ,;:");
+                String dependencyListStr = Model.getFacade()
+                        .getTaggedValueValue(obj, "Dependency");
+                StringTokenizer st = new StringTokenizer(dependencyListStr,
+                        " ,;:");
 
                 String profile = null;
 
                 while (st.hasMoreTokens()) {
                     profile = st.nextToken();
                     if (profile != null) {
-                      LOG.debug("AddingDependency " + profile);
-                      this.
-                        addProfileDependency(ProfileFacade.getManager().lookForRegisteredProfile(profile));
+                        LOG.debug("AddingDependency " + profile);
+                        this.addProfileDependency(ProfileFacade.getManager()
+                                .lookForRegisteredProfile(profile));
                     }
                 }
 
@@ -217,16 +218,18 @@ public class UserDefinedProfile extends Profile {
         }
 
         // load fig nodes
-        Collection allStereotypes = Model.getExtensionMechanismsHelper().getStereotypes(
-                profilePackages);
+        Collection allStereotypes = Model.getExtensionMechanismsHelper()
+                .getStereotypes(profilePackages);
         for (Object stereotype : allStereotypes) {
-            Collection tags = Model.getFacade().getTaggedValuesCollection(stereotype);
+            Collection tags = Model.getFacade().getTaggedValuesCollection(
+                    stereotype);
 
             for (Object tag : tags) {
                 if (Model.getFacade().getTag(tag).toLowerCase()
                         .equals("figure")) {
-                    LOG.debug("AddFigNode " + Model.getFacade().getName(stereotype));
-                    
+                    LOG.debug("AddFigNode "
+                            + Model.getFacade().getName(stereotype));
+
                     String value = Model.getFacade().getValueOfTag(tag);
                     File f = new File(value);
                     FigNodeDescriptor fnd = null;
@@ -240,7 +243,7 @@ public class UserDefinedProfile extends Profile {
                 }
             }
         }
-        
+
         // load critiques
         Vector<CrUML> allCritiques = getAllCritiquesInModel();
 
@@ -250,27 +253,26 @@ public class UserDefinedProfile extends Profile {
     }
 
     private CrUML generateCriticFromComment(Object critique) {
-        String ocl = ""+Model.getFacade().getBody(critique);
+        String ocl = "" + Model.getFacade().getBody(critique);
         String headline = null;
         String description = null;
-        int    priority = ToDoItem.HIGH_PRIORITY;
+        int priority = ToDoItem.HIGH_PRIORITY;
         Vector<Decision> supportedDecisions = new Vector<Decision>();
-        Vector<String>   knowledgeTypes = new Vector<String>();
+        Vector<String> knowledgeTypes = new Vector<String>();
         String moreInfoURL = null;
-        
+
         Collection tags = Model.getFacade().getTaggedValuesCollection(critique);
 
         for (Object tag : tags) {
-            if (Model.getFacade().getTag(tag).toLowerCase()
-                    .equals("headline")) {                
-                headline = Model.getFacade().getValueOfTag(tag);                
-            } else if (Model.getFacade().getTag(tag).toLowerCase()
-                    .equals("description")) {                
-                description = Model.getFacade().getValueOfTag(tag);                
-            } else if (Model.getFacade().getTag(tag).toLowerCase()
-                    .equals("priority")) {
-                String prioStr = Model.getFacade().getValueOfTag(tag); 
-                
+            if (Model.getFacade().getTag(tag).toLowerCase().equals("headline")) {
+                headline = Model.getFacade().getValueOfTag(tag);
+            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
+                    "description")) {
+                description = Model.getFacade().getValueOfTag(tag);
+            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
+                    "priority")) {
+                String prioStr = Model.getFacade().getValueOfTag(tag);
+
                 if (prioStr.toLowerCase().equals("high")) {
                     priority = ToDoItem.HIGH_PRIORITY;
                 } else if (prioStr.toLowerCase().equals("med")) {
@@ -280,12 +282,12 @@ public class UserDefinedProfile extends Profile {
                 } else if (prioStr.toLowerCase().equals("interruptive")) {
                     priority = ToDoItem.INTERRUPTIVE_PRIORITY;
                 }
-            } else if (Model.getFacade().getTag(tag).toLowerCase()
-                    .equals("supporteddecision")) {                
+            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
+                    "supporteddecision")) {
                 String decStr = Model.getFacade().getValueOfTag(tag);
-                
+
                 StringTokenizer st = new StringTokenizer(decStr, ",;:");
-                
+
                 while (st.hasMoreTokens()) {
                     String token = st.nextToken().trim().toLowerCase();
 
@@ -322,12 +324,12 @@ public class UserDefinedProfile extends Profile {
                     if (token.equals("storage"))
                         supportedDecisions.add(UMLDecision.STORAGE);
                 }
-            } else if (Model.getFacade().getTag(tag).toLowerCase()
-                    .equals("knowledgetype")) {                
+            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
+                    "knowledgetype")) {
                 String ktStr = Model.getFacade().getValueOfTag(tag);
-                
+
                 StringTokenizer st = new StringTokenizer(ktStr, ",;:");
-                
+
                 while (st.hasMoreTokens()) {
                     String token = st.nextToken().trim().toLowerCase();
 
@@ -354,25 +356,24 @@ public class UserDefinedProfile extends Profile {
                     if (token.equals("tool"))
                         knowledgeTypes.add(Critic.KT_TOOL);
                 }
-            } else if (Model.getFacade().getTag(tag).toLowerCase()
-                    .equals("moreinfourl")) {                
-                moreInfoURL = Model.getFacade().getValueOfTag(tag);                                
-            } 
-            
-            
+            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
+                    "moreinfourl")) {
+                moreInfoURL = Model.getFacade().getValueOfTag(tag);
+            }
+
         }
-        
-        LOG.debug("OCL-Critic: "+ocl);
-        
+
+        LOG.debug("OCL-Critic: " + ocl);
+
         try {
             return new CrOCL(ocl, headline, description, priority,
                     supportedDecisions, knowledgeTypes, moreInfoURL);
         } catch (InvalidOclException e) {
             LOG.error("Invalid OCL in XMI!", e);
-            
+
             return null;
         }
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -385,9 +386,9 @@ public class UserDefinedProfile extends Profile {
             if (Model.getExtensionMechanismsHelper().hasStereotype(comment,
                     "Critic")) {
                 CrUML cr = generateCriticFromComment(comment);
-                
-                if (cr!= null) {
-                    ret.add(cr);                    
+
+                if (cr != null) {
+                    ret.add(cr);
                 }
             }
         }
@@ -396,7 +397,7 @@ public class UserDefinedProfile extends Profile {
 
     @SuppressWarnings("unchecked")
     private Collection getAllCommentsInModel(Collection objs) {
-        Collection col = new Vector<Object>(); 
+        Collection col = new Vector<Object>();
         for (Object obj : objs) {
             if (Model.getFacade().isAComment(obj)) {
                 col.add(obj);
@@ -404,16 +405,15 @@ public class UserDefinedProfile extends Profile {
                 Collection contents = Model.getModelManagementHelper()
                         .getAllContents(obj);
                 if (contents != null) {
-                    col.addAll(contents);                   
+                    col.addAll(contents);
                 }
             }
-        }        
+        }
         return col;
     }
 
-
-     /**
-     * @return the string that should represent this profile in the GUI. 
+    /**
+     * @return the string that should represent this profile in the GUI.
      */
     public String getDisplayName() {
         return displayName;
@@ -452,7 +452,7 @@ public class UserDefinedProfile extends Profile {
     @Override
     public String toString() {
         File str = getModelFile();
-        return super.toString() + (str !=null ? " [" +  str + "]" : "");
+        return super.toString() + (str != null ? " [" + str + "]" : "");
     }
 
     @Override

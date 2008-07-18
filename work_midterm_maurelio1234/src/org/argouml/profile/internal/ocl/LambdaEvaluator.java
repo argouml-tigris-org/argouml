@@ -28,12 +28,12 @@ import java.util.HashMap;
 
 /**
  * Evaluates an OCL expression given a variable table
- *
+ * 
  * @author maurelio1234
  */
 public interface LambdaEvaluator {
     /**
-     * Evaluates the given OCL expression 
+     * Evaluates the given OCL expression
      * 
      * @param vt variable table
      * @param exp expression

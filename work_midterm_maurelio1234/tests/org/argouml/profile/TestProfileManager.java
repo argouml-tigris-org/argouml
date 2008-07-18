@@ -36,13 +36,15 @@ import junit.framework.TestCase;
 
 /**
  * Tests for a ProfileManager implementation.
- *
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestProfileManager extends TestCase {
-    
+
     private Profile mockProfile;
+
     private ProfileManager manager;
+
     private String mockProfileClassName;
 
     @Override
@@ -54,8 +56,9 @@ public class TestProfileManager extends TestCase {
             public String getDisplayName() {
                 return null;
             }
+
             @Override
-            public Collection<Object> getProfilePackages() 
+            public Collection<Object> getProfilePackages()
                 throws ProfileException {
                 return Collections.emptyList();
             }
@@ -63,7 +66,7 @@ public class TestProfileManager extends TestCase {
         manager = ProfileFacade.getManager();
         assertNotNull(manager);
     }
-    
+
     @Override
     protected void tearDown() throws Exception {
         ProfileFacade.reset();
@@ -77,7 +80,7 @@ public class TestProfileManager extends TestCase {
         manager.registerProfile(mockProfile);
         assertTrue(manager.getRegisteredProfiles().contains(mockProfile));
     }
-    
+
     /**
      * Test the {@link ProfileManager#removeProfile(Profile)} method.
      */
@@ -96,30 +99,30 @@ public class TestProfileManager extends TestCase {
         mockProfileClassName = mockProfile.getClass().getName();
         assertNull(manager.getProfileForClass(mockProfileClassName));
         manager.registerProfile(mockProfile);
-        assertEquals(mockProfile, manager.getProfileForClass(
-                mockProfileClassName));
+        assertEquals(mockProfile, manager
+                .getProfileForClass(mockProfileClassName));
         manager.removeProfile(mockProfile);
         assertNull(manager.getProfileForClass(mockProfileClassName));
     }
-    
+
     /**
-     * Tests the methods of {@link ProfileManager} related to default profiles 
+     * Tests the methods of {@link ProfileManager} related to default profiles
      * management.
      */
     public void testDefaultProfilesManagement() {
-        List<Object> initialDefaultProfiles = 
-            new ArrayList<Object>(manager.getDefaultProfiles());
+        List<Object> initialDefaultProfiles = new ArrayList<Object>(manager
+                .getDefaultProfiles());
         assertNull(manager.getProfileForClass(mockProfileClassName));
         manager.registerProfile(mockProfile);
         manager.addToDefaultProfiles(mockProfile);
-        assertEquals(initialDefaultProfiles.size() + 1, 
-                manager.getDefaultProfiles().size());
+        assertEquals(initialDefaultProfiles.size() + 1, manager
+                .getDefaultProfiles().size());
         manager.removeFromDefaultProfiles(mockProfile);
-        assertEquals(initialDefaultProfiles.size(), 
-                manager.getDefaultProfiles().size());
+        assertEquals(initialDefaultProfiles.size(), manager
+                .getDefaultProfiles().size());
         assertFalse(manager.getDefaultProfiles().contains(mockProfile));
     }
-    
+
     /**
      * Test the method {@link ProfileManager#getUMLProfile()}.
      */

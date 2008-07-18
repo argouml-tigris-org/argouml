@@ -31,21 +31,21 @@ import tudresden.ocl.parser.node.AClassifierContext;
 
 /**
  * Check the triggers related to this OCL
- *
+ * 
  * @author maas
  */
 public class ComputeTriggers extends DepthFirstAdapter {
 
     private Vector<String> triggs = new Vector<String>();
-    
+
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAClassifierContext(tudresden.ocl.parser.node.AClassifierContext)
      */
     public void caseAClassifierContext(AClassifierContext node) {
-        String str = ""+node.getPathTypeName();
+        String str = "" + node.getPathTypeName();
         triggs.add(str.trim().toLowerCase());
     }
-    
+
     /**
      * @return the triggers
      */

@@ -25,9 +25,9 @@
 package org.argouml.profile;
 
 /**
- * Using this strategy profiles can provide the default used when creating new 
+ * Using this strategy profiles can provide the default used when creating new
  * parameters, operations and attributes.
- *
+ * 
  * @author maurelio1234
  */
 public interface DefaultTypeStrategy {

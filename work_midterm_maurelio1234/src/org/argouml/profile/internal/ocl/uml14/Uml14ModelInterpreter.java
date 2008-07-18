@@ -34,7 +34,7 @@ import org.argouml.profile.internal.ocl.CompositeModelInterpreter;
 public class Uml14ModelInterpreter extends CompositeModelInterpreter {
 
     /**
-     * Default Constructor 
+     * Default Constructor
      */
     public Uml14ModelInterpreter() {
         addModelInterpreter(new ModelAccessModelInterpreter());

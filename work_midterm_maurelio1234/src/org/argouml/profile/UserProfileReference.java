@@ -30,37 +30,36 @@ import java.net.URL;
 
 /**
  * This class provides the base URL for user defined profiles.
- *
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
 public class UserProfileReference extends ProfileReference {
 
-    static final String DEFAULT_USER_PROFILE_BASE_URL = 
-        "http://argouml.org/user-profiles/";
+    static final String DEFAULT_USER_PROFILE_BASE_URL = "http://argouml.org/user-profiles/";
 
     /**
      * Constructor that simply delegates to super.
      * 
-     * @param thePath see thePath documentation in 
-     * {@link ProfileReference#ProfileReference(String, URL)}.
-     * @param publicReference see publicReference documentation in 
-     * {@link ProfileReference#ProfileReference(String, URL)}.
+     * @param thePath see thePath documentation in
+     *            {@link ProfileReference#ProfileReference(String, URL)}.
+     * @param publicReference see publicReference documentation in
+     *            {@link ProfileReference#ProfileReference(String, URL)}.
      */
     public UserProfileReference(String thePath, URL publicReference) {
         super(thePath, publicReference);
     }
 
     /**
-     * Constructor, which builds a ProfileReference for a user defined profile 
-     * by prefixing the fileName with {@link #DEFAULT_USER_PROFILE_BASE_URL} 
-     * and using this as the publicReference.
+     * Constructor, which builds a ProfileReference for a user defined profile
+     * by prefixing the fileName with {@link #DEFAULT_USER_PROFILE_BASE_URL} and
+     * using this as the publicReference.
      * 
      * @param path the profile absolute file name.
      * @throws MalformedURLException if the built URL is incorrect.
      */
     public UserProfileReference(String path) throws MalformedURLException {
-        super(path, 
-            new URL(DEFAULT_USER_PROFILE_BASE_URL + new File(path).getName()));
+        super(path, new URL(DEFAULT_USER_PROFILE_BASE_URL
+                + new File(path).getName()));
     }
 
 }

@@ -35,7 +35,7 @@ public class OclType {
      * The name of the type
      */
     private String name;
-    
+
     /**
      * Default Constructor
      * 
@@ -51,5 +51,5 @@ public class OclType {
     public String getName() {
         return name;
     }
-       
+
 }

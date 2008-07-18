@@ -45,27 +45,28 @@ import org.argouml.model.XmiWriter;
 import org.argouml.persistence.UmlFilePersister;
 
 /**
- * Based on the 
- * <a href="http://www.xpuniverse.com/2001/pdfs/Testing03.pdf">ObjectMother 
- * design pattern</a>, provides reusable facilities to create profiles.
- *
+ * Based on the <a
+ * href="http://www.xpuniverse.com/2001/pdfs/Testing03.pdf">ObjectMother design
+ * pattern</a>, provides reusable facilities to create profiles.
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
 public class ProfileMother {
-    
+
     private static final Logger LOG = Logger.getLogger(ProfileMother.class);
 
     /**
      * "profile"
      */
     public static final String STEREOTYPE_NAME_PROFILE = "profile";
+
     /**
      * "st" the example stereotype name.
      */
     public static final String STEREOTYPE_NAME_ST = "st";
 
     /**
-     * Create a simple profile model with a class named "foo" and with a 
+     * Create a simple profile model with a class named "foo" and with a
      * stereotype named "st".
      * 
      * @return the profile model.
@@ -75,7 +76,7 @@ public class ProfileMother {
         Object profileStereotype = getProfileStereotype();
         getCoreHelper().addStereotype(model, profileStereotype);
         Object fooClass = Model.getCoreFactory().buildClass("foo", model);
-        getExtensionMechanismsFactory().buildStereotype(fooClass, 
+        getExtensionMechanismsFactory().buildStereotype(fooClass,
                 STEREOTYPE_NAME_ST, model);
         return model;
     }
@@ -85,22 +86,21 @@ public class ProfileMother {
         Collection<Object> models = new ArrayList<Object>();
         models.add(umlProfile);
         Collection stereotypes = getExtensionMechanismsHelper().getStereotypes(
-            models);
+                models);
         for (Object stereotype : stereotypes) {
-            if (STEREOTYPE_NAME_PROFILE.equals(
-                    Model.getFacade().getName(stereotype)))
-                return stereotype;
+            if (STEREOTYPE_NAME_PROFILE.equals(Model.getFacade().getName(
+                    stereotype))) return stereotype;
         }
         return null;
     }
-    
+
     private Object umlProfileModel;
 
     Object getUmlProfileModel() {
         if (ProfileFacade.isInitiated()) {
             try {
-                umlProfileModel = ProfileFacade.getManager().getUMLProfile().
-                    getProfilePackages().iterator().next();
+                umlProfileModel = ProfileFacade.getManager().getUMLProfile()
+                        .getProfilePackages().iterator().next();
                 TestCase.assertTrue(getFacade().isAModel(umlProfileModel));
             } catch (ProfileException e) {
                 LOG.error("Exception", e);
@@ -108,8 +108,8 @@ public class ProfileMother {
         }
         if (umlProfileModel == null) {
             umlProfileModel = getModelManagementFactory().createModel();
-            getExtensionMechanismsFactory().buildStereotype(
-                umlProfileModel, STEREOTYPE_NAME_PROFILE, umlProfileModel);
+            getExtensionMechanismsFactory().buildStereotype(umlProfileModel,
+                    STEREOTYPE_NAME_PROFILE, umlProfileModel);
         }
         return umlProfileModel;
     }
@@ -124,7 +124,7 @@ public class ProfileMother {
     public void saveProfileModel(Object model, File file) throws IOException {
         FileOutputStream fileOut = new FileOutputStream(file);
         try {
-            XmiWriter xmiWriter = Model.getXmiWriter(model, fileOut, "x(" 
+            XmiWriter xmiWriter = Model.getXmiWriter(model, fileOut, "x("
                     + UmlFilePersister.PERSISTENCE_VERSION + ")");
             xmiWriter.write();
             fileOut.flush();

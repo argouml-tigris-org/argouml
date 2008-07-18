@@ -33,14 +33,14 @@ import org.apache.log4j.Logger;
 
 /**
  * An implementation for the ProfileModelLoader that loads profiles from files.
- *
+ * 
  * @author maurelio1234
  */
 public class FileModelLoader extends URLModelLoader {
 
     private static final Logger LOG = Logger.getLogger(FileModelLoader.class);
 
-    public Collection loadModel(ProfileReference reference) 
+    public Collection loadModel(ProfileReference reference)
         throws ProfileException {
         LOG.info("Loading profile from file'" + reference.getPath() + "'");
         try {

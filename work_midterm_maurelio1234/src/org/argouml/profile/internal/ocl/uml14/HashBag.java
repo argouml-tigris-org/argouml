@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-
 /**
  * An implementation for the Bag interface
  * 
@@ -37,7 +36,14 @@ import java.util.Iterator;
  */
 public class HashBag<E> implements Bag<E> {
 
-    private HashMap<E,Integer> map = new HashMap<E,Integer>(); 
+    private HashMap<E, Integer> map = new HashMap<E, Integer>();
+
+    /**
+     * Default Constructor
+     * 
+     */
+    public HashBag() {
+    }
     
     /**
      * Creates a new Bag from a Collection
@@ -46,15 +52,16 @@ public class HashBag<E> implements Bag<E> {
      */
     @SuppressWarnings("unchecked")
     public HashBag(Collection col) {
+        this();
         addAll(col);
     }
-    
+
     /**
      * @see org.argouml.profile.internal.ocl.uml14.Bag#count(java.lang.Object)
      */
     public int count(Object element) {
         Integer c = map.get(element);
-        return  c == null ? 0 : c;
+        return c == null ? 0 : c;
     }
 
     /**
@@ -67,7 +74,7 @@ public class HashBag<E> implements Bag<E> {
         } else {
             map.put(e, map.get(e) + 1);
         }
-        
+
         return true;
     }
 
@@ -78,7 +85,7 @@ public class HashBag<E> implements Bag<E> {
     public boolean addAll(Collection c) {
         for (Object object : c) {
             add((E) object);
-        }        
+        }
         return true;
     }
 
@@ -93,7 +100,7 @@ public class HashBag<E> implements Bag<E> {
      * @see java.util.Set#contains(java.lang.Object)
      */
     public boolean contains(Object o) {
-        return count(o) > 0;            
+        return count(o) > 0;
     }
 
     /**
@@ -157,9 +164,9 @@ public class HashBag<E> implements Bag<E> {
      */
     public int size() {
         int sum = 0;
-        
+
         Iterator<E> it = iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             E next = it.next();
             sum += count(next);
         }

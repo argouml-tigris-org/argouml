@@ -33,7 +33,7 @@ import org.argouml.profile.Profile;
 
 /**
  * Show the critics exported by a Profile
- *
+ * 
  * @author maurelio1234
  */
 public class GoProfileToCritics implements PerspectiveRule {

@@ -80,45 +80,374 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
                     vt.put(varName, oldVal);
 
                     return col;
+                } else if (feature.toString().trim().equals("reject")) {
+                    Vector<String> vars = (Vector<String>) parameters[0];
+                    Object exp = parameters[1];
+                    LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
+
+                    Collection col = cloneCollection((Collection) subject);
+                    Vector<Object> remove = new Vector<Object>();
+
+                    // TODO is it possible to use more than one variable?
+                    String varName = vars.elementAt(0);
+                    Object oldVal = vt.get(varName);
+
+                    for (Object object : col) {
+                        vt.put(varName, object);
+                        Object res = eval.evaluate(vt, exp);
+                        if (res instanceof Boolean && (Boolean) res) {
+                            // if test is ok this element should not
+                            // be in the result set
+                            remove.add(object);
+                        }
+                    }
+
+                    col.removeAll(remove);
+                    vt.put(varName, oldVal);
+
+                    return col;
                 } else if (feature.toString().trim().equals("forAll")) {
                     Vector<String> vars = (Vector<String>) parameters[0];
                     Object exp = parameters[1];
                     LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
-                    return doForAll(vt, (Collection)subject, vars, exp, eval);
+                    return doForAll(vt, (Collection) subject, vars, exp, eval);
+                } else if (feature.toString().trim().equals("collect")) {
+                    Vector<String> vars = (Vector<String>) parameters[0];
+                    Object exp = parameters[1];
+                    LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
+
+                    Collection col = (Collection) subject;
+                    Bag<Object> res = new HashBag<Object>();
+
+                    // TODO is it possible to use more than one variable?
+                    String varName = vars.elementAt(0);
+                    Object oldVal = vt.get(varName);
+
+                    for (Object object : col) {
+                        vt.put(varName, object);
+
+                        Object val = eval.evaluate(vt, exp);
+                        res.add(val);
+                    }
+
+                    vt.put(varName, oldVal);
+
+                    return col;
+                } else if (feature.toString().trim().equals("exists")) {
+                    Vector<String> vars = (Vector<String>) parameters[0];
+                    Object exp = parameters[1];
+                    LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
+
+                    Collection col = (Collection) subject;
+
+                    // TODO is it possible to use more than one variable?
+                    String varName = vars.elementAt(0);
+                    Object oldVal = vt.get(varName);
+
+                    for (Object object : col) {
+                        vt.put(varName, object);
+
+                        Object val = eval.evaluate(vt, exp);
+                        if (val instanceof Boolean && (Boolean) val) {
+                            return true;
+                        }
+                    }
+
+                    vt.put(varName, oldVal);
+
+                    return false;
+                } else if (feature.toString().trim().equals("isUnique")) {
+                    Vector<String> vars = (Vector<String>) parameters[0];
+                    Object exp = parameters[1];
+                    LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
+
+                    Collection col = (Collection) subject;
+                    Bag<Object> res = new HashBag<Object>();
+
+                    // TODO is it possible to use more than one variable?
+                    String varName = vars.elementAt(0);
+                    Object oldVal = vt.get(varName);
+
+                    for (Object object : col) {
+                        vt.put(varName, object);
+
+                        Object val = eval.evaluate(vt, exp);
+                        res.add(val);
+                        if (res.count(val) > 1) {
+                            return false;
+                        }
+                    }
+
+                    vt.put(varName, oldVal);
+
+                    return true;
                 }
+            } else if (feature.toString().trim().equals("one")) {
+                Vector<String> vars = (Vector<String>) parameters[0];
+                Object exp = parameters[1];
+                LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
+
+                Collection col = (Collection) subject;
+
+                // TODO is it possible to use more than one variable?
+                String varName = vars.elementAt(0);
+                Object oldVal = vt.get(varName);
+                boolean found = false;
+
+                for (Object object : col) {
+                    vt.put(varName, object);
+
+                    Object val = eval.evaluate(vt, exp);
+                    if (val instanceof Boolean && (Boolean) val) {
+                        if (!found) {
+                            found = true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+
+                vt.put(varName, oldVal);
+
+                return found;
+            } else if (feature.toString().trim().equals("any")) {
+                Vector<String> vars = (Vector<String>) parameters[0];
+                Object exp = parameters[1];
+                LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
+
+                Collection col = (Collection) subject;
+
+                // TODO is it possible to use more than one variable?
+                String varName = vars.elementAt(0);
+                Object oldVal = vt.get(varName);
+
+                for (Object object : col) {
+                    vt.put(varName, object);
+
+                    Object val = eval.evaluate(vt, exp);
+                    if (val instanceof Boolean && (Boolean) val) {
+                        return object;
+                    }
+                }
+
+                vt.put(varName, oldVal);
+
+                return null;
             }
+
+            // TODO implement iterate()
+            // TODO implement sortedBy()
+            // TODO implement subSequence()
         }
 
-        if (subject instanceof Set) {
+        // these operations are ok for lists too
+        if (subject instanceof Collection) {
             if (type.equals("->")) {
                 if (feature.equals("size")) {
-                    return ((Set) subject).size();
+                    return ((Collection) subject).size();
+                }
+
+                if (feature.equals("includes")) {
+                    return ((Collection) subject).contains(parameters[0]);
+                }
+
+                if (feature.equals("excludes")) {
+                    return !((Collection) subject).contains(parameters[0]);
+                }
+
+                if (feature.equals("count")) {
+                    return (new HashBag<Object>((Collection) subject))
+                            .count(parameters[0]);
+                }
+
+                if (feature.equals("includesAll")) {
+
+                    Collection col = (Collection) parameters[0];
+                    for (Object object : col) {
+                        if (!((Collection) subject).contains(object)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                if (feature.equals("excludesAll")) {
+
+                    Collection col = (Collection) parameters[0];
+                    for (Object object : col) {
+                        if (((Collection) subject).contains(object)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                if (feature.equals("isEmpty")) {
+                    return ((Collection) subject).isEmpty();
+                }
+
+                if (feature.equals("notEmpty")) {
+                    return !((Collection) subject).isEmpty();
+                }
+
+                if (feature.equals("asSequence")) {
+                    return new ArrayList<Object>((Collection) subject);
+                }
+
+                if (feature.equals("asBag")) {
+                    return new HashBag<Object>((Collection) subject);
+                }
+
+                if (feature.equals("asSet")) {
+                    return new HashSet<Object>((Collection) subject);
+                }
+
+                // TODO support real numbers
+                if (feature.equals("sum")) {
+                    Integer sum = 0;
+
+                    Collection col = (Collection) subject;
+                    for (Object object : col) {
+                        sum += (Integer) object;
+                    }
+                    return sum;
+                }
+
+                if (feature.equals("union")) {
+                    Collection copy = cloneCollection((Collection) subject);
+                    copy.addAll((Collection) parameters[0]);
+                    return copy;
+                }
+
+                if (feature.equals("append")) {
+                    Collection copy = cloneCollection((Collection) subject);
+                    copy.add(parameters[0]);
+                    return copy;
+                }
+
+                if (feature.equals("prepend")) {
+                    Collection copy = cloneCollection((Collection) subject);
+                    if (copy instanceof List) {
+                        ((List)copy).add(0, parameters[0]);
+                    } else {
+                        copy.add(parameters[0]);
+                    }
+                    return copy;
+                }                
+            }
+        }
+
+        if (subject instanceof List) {
+            if (type.equals("->")) {
+                if (feature.equals("at")) {
+                    return ((List)subject).get((Integer) parameters[0]);
+                }
+
+                if (feature.equals("first")) {
+                    return ((List)subject).get(0);
+                }
+
+                if (feature.equals("last")) {
+                    return ((List)subject).get(((List)subject).size());
+                }                
+            }
+        }
+        // these operations are ok for bags too
+        if (subject instanceof Set) {
+            if (type.equals("->")) {
+
+                if (feature.equals("intersection")) {
+                    Set c1 = (Set) subject;
+                    Set c2 = (Set) parameters[0];
+                    Set r = new HashSet<Object>();
+
+                    for (Object o : c1) {
+                        if (c2.contains(o)) {
+                            r.add(o);
+                        }
+                    }
+
+                    for (Object o : c2) {
+                        if (c1.contains(o)) {
+                            r.add(o);
+                        }
+                    }
+
+                    return r;
+                }
+
+                if (feature.equals("including")) {
+                    Set copy = (Set) cloneCollection((Set) subject);
+                    copy.add(parameters[0]);
+                    return copy;
+                }
+
+                if (feature.equals("excluding")) {
+                    Set copy = (Set) cloneCollection((Set) subject);
+                    copy.remove(parameters[0]);
+                    return copy;
+                }
+
+                if (feature.equals("symmetricDifference")) {
+                    Set c1 = (Set) subject;
+                    Set c2 = (Set) parameters[0];
+                    Set r = new HashSet<Object>();
+
+                    for (Object o : c1) {
+                        if (!c2.contains(o)) {
+                            r.add(o);
+                        }
+                    }
+
+                    for (Object o : c2) {
+                        if (!c1.contains(o)) {
+                            r.add(o);
+                        }
+                    }
+
+                    return r;
+                }
+            }
+        }
+        
+        if (subject instanceof Bag) {
+            if (type.equals("->")) {
+                if (feature.equals("count")) {
+                    return ((Bag) subject).count(parameters[0]);
                 }
             }
         }
 
+        if (!(subject instanceof Collection)) {
+            if (type.equals("->")) {
+                Set ns = new HashSet();
+                ns.add(subject);
+                return ns;
+            }
+        }
         return null;
     }
 
-    private boolean doForAll(HashMap<String,Object> vt, Collection collection, Vector<String> vars, Object exp, LambdaEvaluator eval) {
+    private boolean doForAll(HashMap<String, Object> vt, Collection collection,
+            Vector<String> vars, Object exp, LambdaEvaluator eval) {
         if (vars.isEmpty()) {
-            return (Boolean) eval.evaluate(vt, exp);            
+            return (Boolean) eval.evaluate(vt, exp);
         } else {
             String var = vars.firstElement();
             vars.removeElement(var);
             Object oldval = vt.get(var);
-            
+
             for (Object element : collection) {
                 vt.put(var, element);
-                
+
                 boolean ret = doForAll(vt, collection, vars, exp, eval);
-                
+
                 if (!ret) {
                     return false;
-                }                
+                }
             }
-            
+
             vt.put(var, oldval);
         }
         return true;
@@ -126,15 +455,15 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
 
     @SuppressWarnings("unchecked")
     private Collection cloneCollection(Collection col) {
-        if (col instanceof Set) {
-            return new HashSet(col);
-        } else if (col instanceof List) {
+        if (col instanceof List) {
             return new ArrayList(col);
         } else if (col instanceof Bag) {
             return new HashBag(col);
+        } else if (col instanceof Set) {
+            return new HashSet(col);
         } else {
             throw new IllegalArgumentException();
-        }        
+        }
     }
 
     /**
@@ -143,6 +472,5 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
     public Object getBuiltInSymbol(String sym) {
         return null;
     }
-
 
 }

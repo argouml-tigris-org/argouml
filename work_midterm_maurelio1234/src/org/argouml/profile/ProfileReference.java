@@ -28,18 +28,19 @@ import java.io.File;
 import java.net.URL;
 
 /**
- * A reference to a Profile which internally implies having 
- * both a public profile reference and the path to the profile file. 
+ * A reference to a Profile which internally implies having both a public
+ * profile reference and the path to the profile file.
  * 
  * @author Luis Sergio Oliveira (euluis)
  */
 public class ProfileReference {
 
     private String path;
+
     private URL url;
 
     /**
-     * Constructor. Note that this checks if the file name in path and in 
+     * Constructor. Note that this checks if the file name in path and in
      * publicReference are the same.
      * 
      * @param thePath the system path to the profile file.
@@ -48,26 +49,25 @@ public class ProfileReference {
     public ProfileReference(String thePath, URL publicReference) {
         File file = new File(thePath);
         File fileFromPublicReference = new File(publicReference.getPath());
-        assert file.getName().equals(fileFromPublicReference.getName()) 
-            : "File name in path and in publicReference are different.";
+        assert file.getName().equals(fileFromPublicReference.getName()) : "File name in path and in publicReference are different.";
         path = thePath;
         url = publicReference;
     }
 
     /**
-     * @return the path to the profile, being in principle this path the 
-     * system path to the profile file.
+     * @return the path to the profile, being in principle this path the system
+     *         path to the profile file.
      */
     public String getPath() {
         return path;
     }
 
     /**
-     * @return the public reference by which the profile will 
-     * be known in models that depend on it. I.e., this reference will prefix 
-     * the IDs of the profile model elements referred in the XMI of models 
-     * that depend on the profile for which the constructed ProfileReference 
-     * is used.
+     * @return the public reference by which the profile will be known in models
+     *         that depend on it. I.e., this reference will prefix the IDs of
+     *         the profile model elements referred in the XMI of models that
+     *         depend on the profile for which the constructed ProfileReference
+     *         is used.
      */
     public URL getPublicReference() {
         return url;

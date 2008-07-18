@@ -28,16 +28,15 @@ import java.util.Set;
 
 /**
  * Represent OCL bags (sets which allow repeated elements
- *
+ * 
  * @author maurelio1234
  * @param <E> the type
  */
 public interface Bag<E> extends Set<E> {
 
-    
     /**
-     * Counts the number of repetitons of E in this Bag, 
-     * if E is not present return 0
+     * Counts the number of repetitons of E in this Bag, if E is not present
+     * return 0
      * 
      * @param element
      * @return the number of occourrences of E in this bag

@@ -36,8 +36,8 @@ import tudresden.ocl.parser.node.APostStereotype;
 import tudresden.ocl.parser.node.APreStereotype;
 
 /**
- * Checks the context clause of the OCL expression to verify if it
- * is applicable to the given model element.
+ * Checks the context clause of the OCL expression to verify if it is applicable
+ * to the given model element.
  * 
  * @author maurelio1234
  */
@@ -51,7 +51,7 @@ public class ContextApplicable extends DepthFirstAdapter {
     private boolean applicable = true;
 
     private Object modelElement;
-    
+
     /**
      * Constructos
      * 
@@ -87,24 +87,21 @@ public class ContextApplicable extends DepthFirstAdapter {
         }
 
     }
-    
+
     /**
      * @param node
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#inAPreStereotype(tudresden.ocl.parser.node.APreStereotype)
      */
-    public void inAPreStereotype(APreStereotype node)
-    {
+    public void inAPreStereotype(APreStereotype node) {
         applicable = false;
     }
-    
 
     /**
      * @param node
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#inAPostStereotype(tudresden.ocl.parser.node.APostStereotype)
      */
-    public void inAPostStereotype(APostStereotype node)
-    {
+    public void inAPostStereotype(APostStereotype node) {
         applicable = false;
     }
-    
+
 }

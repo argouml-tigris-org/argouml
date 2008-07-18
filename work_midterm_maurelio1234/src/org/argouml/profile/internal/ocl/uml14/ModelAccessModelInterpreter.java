@@ -48,7 +48,9 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             .getLogger(ModelAccessModelInterpreter.class);
 
     /**
-     * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap, java.lang.Object, java.lang.String, java.lang.String, java.lang.Object[])
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap,
+     *      java.lang.Object, java.lang.String, java.lang.String,
+     *      java.lang.Object[])
      */
     @SuppressWarnings("unchecked")
     public Object invokeFeature(HashMap<String, Object> vt, Object subject,
@@ -57,7 +59,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         if (subject == null) {
             subject = vt.get("self");
         }
-                
+
         if (Model.getFacade().isAModelElement(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("name")) {
@@ -65,7 +67,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
             }
         }
-        
+
         if (Model.getFacade().isAClass(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("feature")) {
@@ -73,10 +75,10 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     ret.addAll(Model.getCoreHelper().getAllAttributes(subject));
                     ret.addAll(Model.getCoreHelper().getOperationsInh(subject));
                     return ret;
-                }                
+                }
             }
-        } 
-                
+        }
+
         return null;
     }
 
