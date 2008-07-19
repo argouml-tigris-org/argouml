@@ -34,7 +34,7 @@ public class InvalidOclException extends Exception {
     /**
      * Default Constructor
      * 
-     * @param ocl
+     * @param ocl the invalid ocl expression
      */
     public InvalidOclException(String ocl) {
         super(ocl);

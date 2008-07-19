@@ -53,12 +53,12 @@ public class ContextApplicable extends DepthFirstAdapter {
     private Object modelElement;
 
     /**
-     * Constructos
+     * Constructors
      * 
-     * @param modelElement the element
+     * @param element the model element
      */
-    public ContextApplicable(Object modelElement) {
-        this.modelElement = modelElement;
+    public ContextApplicable(Object element) {
+        this.modelElement = element;
     }
 
     /**

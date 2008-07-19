@@ -52,7 +52,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.i18n.Translator;
-import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
@@ -549,7 +548,7 @@ public final class ModuleLoader2 {
                         // TODO: Should we be delegating to a different
                         // classloader than the default here? - - tfm
                         ClassLoader classloader = new URLClassLoader(
-                                new URL[] { file.toURI().toURL(), });
+                                new URL[] {file.toURI().toURL()} );
                         try {
                             processJarFile(classloader, file);
                         } catch (ClassNotFoundException e) {

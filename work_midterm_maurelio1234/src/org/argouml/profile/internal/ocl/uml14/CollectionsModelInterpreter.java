@@ -341,15 +341,15 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
         if (subject instanceof List) {
             if (type.equals("->")) {
                 if (feature.equals("at")) {
-                    return ((List)subject).get((Integer) parameters[0]);
+                    return ((List) subject).get((Integer) parameters[0]);
                 }
 
                 if (feature.equals("first")) {
-                    return ((List)subject).get(0);
+                    return ((List) subject).get(0);
                 }
 
                 if (feature.equals("last")) {
-                    return ((List)subject).get(((List)subject).size());
+                    return ((List) subject).get(((List) subject).size());
                 }                
             }
         }

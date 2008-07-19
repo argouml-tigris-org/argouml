@@ -65,10 +65,10 @@ public class OclAPIModelInterpreter implements ModelInterpreter {
                     boolean applicable = false;
                     try {
                         Method m = Facade.class.getDeclaredMethod("isA"
-                                + typeName, new Class[] { Object.class });
+                                + typeName, new Class[] {Object.class});
                         if (m != null) {
                             applicable = (Boolean) m.invoke(Model.getFacade(),
-                                    new Object[] { subject });
+                                    new Object[] {subject});
                         }
                     } catch (Exception e) {
                         LOG.error("Exception", e);

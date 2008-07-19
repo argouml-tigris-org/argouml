@@ -32,7 +32,7 @@ import org.argouml.profile.FormatingStrategy;
 /**
  * The Formating Strategy based on Java naming conventions.
  * 
- * @author Marcos Aur�lio
+ * @author maurelio1234
  */
 public class JavaFormatingStrategy implements FormatingStrategy {
 

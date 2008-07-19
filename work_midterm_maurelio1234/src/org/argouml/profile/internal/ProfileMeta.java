@@ -51,7 +51,7 @@ public class ProfileMeta extends Profile {
     /**
      * Creates a new instance of this profile
      * 
-     * @throws ProfileException
+     * @throws ProfileException if something goes wrong
      */
     @SuppressWarnings("unchecked")
     public ProfileMeta() throws ProfileException {

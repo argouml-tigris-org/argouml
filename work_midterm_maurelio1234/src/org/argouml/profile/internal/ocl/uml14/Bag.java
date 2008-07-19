@@ -38,7 +38,7 @@ public interface Bag<E> extends Set<E> {
      * Counts the number of repetitons of E in this Bag, if E is not present
      * return 0
      * 
-     * @param element
+     * @param element the element
      * @return the number of occourrences of E in this bag
      */
     int count(E element);

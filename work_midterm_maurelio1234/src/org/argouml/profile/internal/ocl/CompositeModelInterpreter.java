@@ -40,7 +40,7 @@ public class CompositeModelInterpreter implements ModelInterpreter {
     /**
      * Adds a ModelInterpreter to this set
      * 
-     * @param mi
+     * @param mi the model interpreter
      */
     public void addModelInterpreter(ModelInterpreter mi) {
         set.add(mi);

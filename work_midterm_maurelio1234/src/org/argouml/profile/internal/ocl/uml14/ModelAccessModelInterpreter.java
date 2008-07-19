@@ -84,6 +84,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
 
     /**
      * Add the metamodel-metaclasses as built-in symbols
+     * @param sym the symbol
+     * @return the value of the symbol
      * 
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
      */
@@ -91,7 +93,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         Method m;
         try {
             m = Facade.class.getDeclaredMethod("isA" + sym,
-                    new Class[] { Object.class });
+                    new Class[] {Object.class});
             if (m != null) {
                 return new OclType(sym.toString());
             }

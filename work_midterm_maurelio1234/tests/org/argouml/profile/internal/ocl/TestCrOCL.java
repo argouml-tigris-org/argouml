@@ -47,7 +47,7 @@ public class TestCrOCL extends TestCase {
     /**
      * Test the <code>predicate2</code> operation
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     public void testPredicate() throws Exception {
         Object obj1 = Model.getUseCasesFactory().createActor();

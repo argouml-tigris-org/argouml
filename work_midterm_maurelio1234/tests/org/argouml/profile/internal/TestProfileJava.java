@@ -47,7 +47,7 @@ public class TestProfileJava extends TestCase {
     /**
      * test java profile creation
      * 
-     * @throws ProfileException
+     * @throws ProfileException if something goes wrong
      */
     public void testProfileJava() throws ProfileException {
         new ProfileJava(new ProfileUML());
@@ -56,7 +56,7 @@ public class TestProfileJava extends TestCase {
     /**
      * test java profile creation
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     public void testProfileJavaNoArgs() throws Exception {
         new ProfileJava();

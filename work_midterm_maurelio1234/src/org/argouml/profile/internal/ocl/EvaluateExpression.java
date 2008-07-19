@@ -120,16 +120,16 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * Resets the internal state of this adapter
      * 
-     * @param mi
-     * @param modelElement
+     * @param mi the model interpreter
+     * @param element the model element
      */
-    public void reset(Object modelElement, ModelInterpreter mi) {
+    public void reset(Object element, ModelInterpreter mi) {
         this.interp = mi;
 
         val = null;
         fwd = null;
         vt = new HashMap<String, Object>();
-        vt.put("self", modelElement);
+        vt.put("self", element);
     }
 
     /**

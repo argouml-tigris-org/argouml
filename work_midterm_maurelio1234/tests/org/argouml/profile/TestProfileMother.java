@@ -66,7 +66,7 @@ public class TestProfileMother extends TestCase {
     /**
      * test simple profile model creation
      * 
-     * @throws Exception
+     * @throws Exception is something goes wrong
      */
     public void testCreateSimpleProfileModel() throws Exception {
         final Object model = mother.createSimpleProfileModel();
@@ -93,7 +93,7 @@ public class TestProfileMother extends TestCase {
     /**
      * test save profile model
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     public void testSaveProfileModel() throws Exception {
         Object model = mother.createSimpleProfileModel();

@@ -49,7 +49,8 @@ public class ProfileReference {
     public ProfileReference(String thePath, URL publicReference) {
         File file = new File(thePath);
         File fileFromPublicReference = new File(publicReference.getPath());
-        assert file.getName().equals(fileFromPublicReference.getName()) : "File name in path and in publicReference are different.";
+        assert file.getName().equals(fileFromPublicReference.getName()) 
+                    : "File name in path and in publicReference are different.";
         path = thePath;
         url = publicReference;
     }

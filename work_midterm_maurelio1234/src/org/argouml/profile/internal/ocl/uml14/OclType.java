@@ -39,7 +39,7 @@ public class OclType {
     /**
      * Default Constructor
      * 
-     * @param type
+     * @param type the type name
      */
     public OclType(String type) {
         this.name = type;

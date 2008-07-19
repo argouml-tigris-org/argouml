@@ -91,13 +91,13 @@ public class UserDefinedProfile extends Profile {
     }
 
     private class FigNodeDescriptor {
-        String stereotype;
+        private String stereotype;
 
-        Image img;
+        private Image img;
 
-        String src;
+        private String src;
 
-        int length;
+        private int length;
 
         /**
          * @return if this descriptor ir valid
@@ -133,7 +133,7 @@ public class UserDefinedProfile extends Profile {
      * A constructor that reads a file from an URL
      * 
      * @param url the URL
-     * @throws ProfileException
+     * @throws ProfileException if the profile can't be read or is not valid
      */
     public UserDefinedProfile(URL url) throws ProfileException {
         LOG.info("load " + url);
@@ -148,17 +148,17 @@ public class UserDefinedProfile extends Profile {
     /**
      * A constructor that reads a file from an URL associated with some profiles
      * 
-     * @param displayName the display name of the profile
+     * @param dn the display name of the profile
      * @param url the URL of the profile mode
      * @param critics the Critics defined by this profile
      * @param dependencies the dependencies of this profile
      * @throws ProfileException if the model cannot be loaded
      */
-    public UserDefinedProfile(String displayName, URL url, Set<CrUML> critics,
+    public UserDefinedProfile(String dn, URL url, Set<CrUML> critics,
             Set<String> dependencies) throws ProfileException {
         LOG.info("load " + url);
 
-        this.displayName = displayName;
+        this.displayName = dn;
         if (url != null) {
             ProfileReference reference = null;
             reference = new UserProfileReference(url.getPath(), url);
@@ -167,7 +167,7 @@ public class UserDefinedProfile extends Profile {
             profilePackages = new ArrayList(0);
         }
 
-        this.critics = critics;
+        this.setCritics(critics);
 
         for (String profileID : dependencies) {
             addProfileDependency(profileID);
@@ -246,10 +246,13 @@ public class UserDefinedProfile extends Profile {
 
         // load critiques
         Vector<CrUML> allCritiques = getAllCritiquesInModel();
-
+        Set<CrUML> myCritics = this.getCritics(); 
+        
         for (CrUML critique : allCritiques) {
-            this.critics.add(critique);
+            myCritics.add(critique);
         }
+        
+        this.setCritics(myCritics);
     }
 
     private CrUML generateCriticFromComment(Object critique) {

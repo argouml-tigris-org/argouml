@@ -48,7 +48,7 @@ public class HashBag<E> implements Bag<E> {
     /**
      * Creates a new Bag from a Collection
      * 
-     * @param col
+     * @param col the collection
      */
     @SuppressWarnings("unchecked")
     public HashBag(Collection col) {
@@ -151,7 +151,6 @@ public class HashBag<E> implements Bag<E> {
     }
 
     /**
-     * @param c
      * @see java.util.Set#retainAll(java.util.Collection)
      */
     public boolean retainAll(Collection c) {

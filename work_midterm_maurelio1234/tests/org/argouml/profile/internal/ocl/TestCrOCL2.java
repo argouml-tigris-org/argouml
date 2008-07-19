@@ -47,7 +47,7 @@ public class TestCrOCL2 extends TestCase {
     /**
      * Test collections operations in objects
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     public void test6_5_4_2() throws Exception {
         Object obj = Model.getUseCasesFactory().createActor();

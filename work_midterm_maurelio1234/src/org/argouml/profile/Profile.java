@@ -41,7 +41,10 @@ public abstract class Profile {
 
     private Set<String> dependencies = new HashSet<String>();
 
-    protected Set<CrUML> critics = new HashSet<CrUML>();
+    /**
+     * The critics provided by this profile
+     */
+    private Set<CrUML> critics = new HashSet<CrUML>();
 
     /**
      * Add a dependency on the given profile from this profile.
@@ -57,8 +60,7 @@ public abstract class Profile {
     /**
      * Add a dependency on the given profile from this profile.
      * 
-     * @param p the profile identifier
-     * @param profileIdentifier
+     * @param profileIdentifier the profile identifier
      */
     protected void addProfileDependency(String profileIdentifier) {
         dependencies.add(profileIdentifier);
@@ -147,5 +149,12 @@ public abstract class Profile {
      */
     public String getProfileIdentifier() {
         return getDisplayName();
+    }
+
+    /**
+     * @param critics The critics to set.
+     */
+    protected void setCritics(Set<CrUML> critics) {
+        this.critics = critics;
     }
 }

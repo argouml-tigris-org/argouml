@@ -55,10 +55,10 @@ public class CrOCL extends CrUML {
      * @param ocl ocl expression
      * @param headline headline
      * @param description description
-     * @param moreInfoURL
-     * @param knowledgeTypes
-     * @param supportedDecisions
-     * @param priority
+     * @param moreInfoURL the info url
+     * @param knowledgeTypes the knowledge types
+     * @param supportedDecisions the decisions
+     * @param priority the priority
      * @throws InvalidOclException if the ocl is not valid
      */
     public CrOCL(String ocl, String headline, String description,

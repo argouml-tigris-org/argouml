@@ -89,6 +89,7 @@ public class PropPanelCritic extends PropPanel {
     }
 
     /**
+     * @param t the target
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {

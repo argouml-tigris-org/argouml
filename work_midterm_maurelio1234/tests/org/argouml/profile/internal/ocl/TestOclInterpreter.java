@@ -58,7 +58,7 @@ public class TestOclInterpreter extends TestCase {
     /**
      * Test <code>applicable</code> operation
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     public void testApplicable() throws Exception {
         Object obj1 = Model.getUseCasesFactory().createActor();
@@ -76,7 +76,7 @@ public class TestOclInterpreter extends TestCase {
     /**
      * Test <code>getTriggers</code> operation
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     public void testGetTriggers() throws Exception {
         String ocl = "context Actor inv: 2 > 0";
@@ -90,7 +90,7 @@ public class TestOclInterpreter extends TestCase {
     /**
      * Test <code>check</code> operation (general)
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     public void testCheckGeneral() throws Exception {
         Object obj = Model.getUseCasesFactory().createActor();

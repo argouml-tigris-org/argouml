@@ -28,8 +28,6 @@ import java.io.PushbackReader;
 import java.io.StringReader;
 import java.util.Vector;
 
-import org.argouml.cognitive.Critic;
-
 import tudresden.ocl.parser.OclParser;
 import tudresden.ocl.parser.lexer.Lexer;
 import tudresden.ocl.parser.node.Start;
@@ -60,8 +58,8 @@ public class OclInterpreter {
      * Creates a new OCL interpreter for a given OCL expression
      * 
      * @param ocl expression
-     * @param interpreter
-     * @throws InvalidOclException
+     * @param interpreter the interpreter
+     * @throws InvalidOclException if the expression is not valid
      */
     public OclInterpreter(String ocl, ModelInterpreter interpreter)
         throws InvalidOclException {

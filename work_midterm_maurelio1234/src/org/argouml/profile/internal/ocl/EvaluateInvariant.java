@@ -58,13 +58,13 @@ public class EvaluateInvariant extends DepthFirstAdapter {
     /**
      * Constructor
      * 
-     * @param modelElement self
+     * @param element self
      * @param mi model interpreter
      */
-    public EvaluateInvariant(Object modelElement, ModelInterpreter mi) {
-        this.modelElement = modelElement;
+    public EvaluateInvariant(Object element, ModelInterpreter mi) {
+        this.modelElement = element;
         this.mi = mi;
-        this.expEvaluator = new EvaluateExpression(modelElement, mi);
+        this.expEvaluator = new EvaluateExpression(element, mi);
     }
 
     /**
