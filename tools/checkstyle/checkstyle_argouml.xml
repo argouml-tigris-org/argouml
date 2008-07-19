@@ -106,6 +106,8 @@
 
     <module name="MethodLength"/>
     <module name="MethodName"/>
+    <module name="NeedBraces"/>
+
     <module name="ModifierOrder"/>
     <module name="NoWhitespaceAfter"/>
 
