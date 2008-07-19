@@ -580,7 +580,7 @@ Building this requires:
                    ant.optional.init" >
 
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
-           fork="yes"  dir="${basedir}" forkmode="perTest"
+           fork="yes" dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
            maxmemory="48M" printsummary="${junit.printsummary}">
       <sysproperty key="test.model.uml" 
@@ -630,7 +630,7 @@ Building this requires:
       <assertions>
         <enable/>
       </assertions>
-      <classpath path="tests.all.classpath"/>
+      <classpath refid="tests.all.classpath"/>
       <formatter type="xml"/>
       <batchtest todir="${tests.reports}">
         <fileset dir="tests">
