@@ -366,6 +366,12 @@ Building this requires:
     <antcall target="junit-report-create"/>
   </target>
 
+  <target name="guitests">
+    <echo message="No guitests exists for argouml-core-model-mdr."/>
+  </target>
+
+  <target name="alltests" depends="tests"/>
+
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->

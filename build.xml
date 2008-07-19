@@ -34,7 +34,7 @@ Build file to proxy the argoumlstandard ant targets.
   </target>
 
   <!-- =================================================================== -->
-  <!-- Creates the jar file                                                -->
+  <!-- Creates the jar files                                               -->
   <!-- =================================================================== -->
   <target name="jar" depends="init"
           description="Build and copies files.">
@@ -90,6 +90,28 @@ Build file to proxy the argoumlstandard ant targets.
       </fileset>
     </delete>    
   </target>
+
+
+
+  <!-- =================================================================== -->
+  <!-- Targets for tests                                                   -->
+  <!-- =================================================================== -->
+  <target name="tests"
+          description="Run normal tests.">
+    <ant dir="src/argouml-build" inheritAll="false"    target="tests"/>
+  </target>
+
+  <target name="guitests"
+          description="Run the GUI tests.">
+    <ant dir="src/argouml-build" inheritAll="false"    target="guitests"/>
+  </target>
+
+  <target name="alltests"
+          description="Run all tests.">
+    <ant dir="src/argouml-build" inheritAll="false"    target="alltests"/>
+  </target>
+
+
 
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->

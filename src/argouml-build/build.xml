@@ -316,8 +316,7 @@ Property files to be searched (in argouml-build):
   <!-- Run tests in all subdirectories.                                    -->
   <!-- Order is important.                                                 -->
   <!-- =================================================================== -->
-  <target name="tests"
-          description="Run tests.">
+  <target name="tests-run-them-all">
 
     <!-- Build the subdirs in order. -->
 
@@ -327,15 +326,20 @@ Property files to be searched (in argouml-build):
     <!-- Tests for model-mdr -->
     <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
-    <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="tests"/>
+    <ant dir="../argouml-core-model-mdr" inheritAll="false"
+         target="${tests-to-do}"/>
 
-<!--    <ant dir="model-euml" inheritAll="false"      target="tests"/> -->
+    <!-- model-euml is not included in this run.
+      <ant dir="model-euml" inheritAll="false"
+           target="${tests-to-do}"/>
+     -->
 
     <!-- Tests for argouml-app -->
     <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="jar"/>
-    <ant dir="../argouml-app" inheritAll="false"               target="tests"/>
+    <ant dir="../argouml-app" inheritAll="false"
+         target="${tests-to-do}"/>
 
     <!-- Tests for sequence2 -->
 <!--
@@ -343,7 +347,8 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="jar"/>
     <ant dir="../argouml-app" inheritAll="false"               target="jar"/>
-    <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false" target="tests"/>
+    <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false"
+         target="${tests-to-do}"/>
 -->
 
     <antcall target="tests-reports"/>
@@ -376,6 +381,28 @@ Property files to be searched (in argouml-build):
 -->
       <report format="frames" todir="${tests.reports}/html"/>
     </junitreport>
+  </target>
+
+
+  <target name="tests"
+          description="Run tests in all subsystems.">
+    <antcall target="tests-run-them-all">
+      <param name="tests-to-do" value="tests"/>
+    </antcall>
+  </target>
+
+  <target name="guitests"
+          description="Run GUI tests in all subsystems.">
+    <antcall target="tests-run-them-all">
+      <param name="tests-to-do" value="guitests"/>
+    </antcall>
+  </target>
+
+  <target name="alltests"
+          description="Run all tests in all subsystems.">
+    <antcall target="tests-run-them-all">
+      <param name="tests-to-do" value="alltests"/>
+    </antcall>
   </target>
 
 
