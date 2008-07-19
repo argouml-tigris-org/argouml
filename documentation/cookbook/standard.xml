@@ -145,6 +145,10 @@ or if within a Javadoc or c-style comment
 This differs from the Sun Code Conventions that 
 uses either XXX or FIXME depending on if it works or not.
 </para>
+        <para>
+This is partly checked by Checkstyle.
+Checkstyle does currently allow "TODO " (without the colon).
+</para>
       </listitem>
       <listitem>
         <para>
