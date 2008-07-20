@@ -65,6 +65,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     private static final String STRING_SHOWPROPERTIES = "showproperties";
     private static final String STRING_SHOWTYPES = "showtypes";
     private static final String STRING_SHOWSTEREOTYPES = "showstereotypes";
+    private static final String STRING_SHOWSINGULARMULTIPLICITIES 
+        = "showsingularmultiplicities";
     private static final String STRING_DEFAULTSHADOWWIDTH
         = "defaultshadowwidth";
     private static final String STRING_FONTNAME = "fontname";
@@ -124,6 +126,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     public static final int    TOKEN_SHOWASSOCIATIONNAMES     = 24;
     /** A token for the active diagram name **/
     public static final int    TOKEN_ACTIVE_DIAGRAM     = 25;
+    /** A token for Notation Settings **/
+    public static final int    TOKEN_SHOWSINGULARMULTIPLICITIES = 26;
 
     /** The token for undefined. */
     public static final int    TOKEN_UNDEFINED               = 99;
@@ -154,6 +158,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
         addToken(STRING_SHOWPROPERTIES, Integer.valueOf(TOKEN_SHOWPROPERTIES));
         addToken(STRING_SHOWTYPES, Integer.valueOf(TOKEN_SHOWTYPES));
         addToken(STRING_SHOWSTEREOTYPES, Integer.valueOf(TOKEN_SHOWSTEREOTYPES));
+        addToken(STRING_SHOWSINGULARMULTIPLICITIES, 
+                Integer.valueOf(TOKEN_SHOWSINGULARMULTIPLICITIES));
         addToken(STRING_DEFAULTSHADOWWIDTH,
                 Integer.valueOf(TOKEN_DEFAULTSHADOWWIDTH));
         addToken(STRING_FONTNAME, Integer.valueOf(TOKEN_FONTNAME));

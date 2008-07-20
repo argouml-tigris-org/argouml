@@ -219,6 +219,9 @@ class ArgoParser extends SAXParserBase {
         case ArgoTokenTable.TOKEN_SHOWSTEREOTYPES:
             handleShowStereotypes(e);
             break;
+        case ArgoTokenTable.TOKEN_SHOWSINGULARMULTIPLICITIES:
+            handleShowSingularMultiplicities(e);
+            break;
         case ArgoTokenTable.TOKEN_DEFAULTSHADOWWIDTH:
             handleDefaultShadowWidth(e);
             break;
@@ -412,6 +415,14 @@ class ArgoParser extends SAXParserBase {
     protected void handleShowStereotypes(XMLElement e) {
         String showStereotypes = e.getText().trim();
         ps.setShowStereotypes(showStereotypes);
+    }
+
+    /**
+     * @param e the element
+     */
+    protected void handleShowSingularMultiplicities(XMLElement e) {
+        String showSingularMultiplicities = e.getText().trim();
+        ps.setShowSingularMultiplicities(showSingularMultiplicities);
     }
 
     /**
