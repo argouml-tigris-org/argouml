@@ -157,23 +157,63 @@ public class ProjectSettings {
     }
 
     /**
-     * Send all events...
+     * Send all events... <p>
+     * This code fixes the following problem when loading a project:
+     * In the ProjectBrowser, the new project is loaded, 
+     * and only when successful, the old one is removed.
+     * While loading, the Figs read the notation settings to be able
+     * to draw themselves correctly from the wrong project,
+     * since the old project is still the "current" one.
+     * Hence, after the ProjectBrowser finished loading,
+     * it sets the current project to the new one, removes the
+     * old project, and then calls this init() method, to set 
+     * all notation settings right - which refreshes the screen. <p>
+     * TODO: Find a better way, 
+     * which does not cause the diagrams to be drawn wrongly
+     * first, and then corrected.  
      */
     public void init() {
-        setNotationLanguage(getNotationLanguage());
-        setShowBoldNames(getShowBoldNamesValue());
-        setUseGuillemots(getUseGuillemotsValue());
-        setShowAssociationNames(getShowAssociationNamesValue());
-        setShowVisibility(getShowVisibilityValue());
-        setShowMultiplicity(getShowMultiplicityValue());
-        setShowInitialValue(getShowInitialValueValue());
-        setShowProperties(getShowPropertiesValue());
-        setShowTypes(getShowTypesValue());
-        setShowStereotypes(getShowStereotypesValue());
-        setShowSingularMultiplicities(getShowSingularMultiplicitiesValue());
-        setDefaultShadowWidth(getDefaultShadowWidthValue());
-        setFontName(getFontName());
-        setFontSize(getFontSize());
+        init(notationLanguage, 
+                Notation.KEY_DEFAULT_NOTATION);
+        init(showBoldNames, 
+                Notation.KEY_SHOW_BOLD_NAMES);
+        init(useGuillemots, 
+                Notation.KEY_USE_GUILLEMOTS);
+        init(showAssociationNames, 
+                Notation.KEY_SHOW_ASSOCIATION_NAMES);
+        init(showVisibility,
+                Notation.KEY_SHOW_VISIBILITY);
+        init(showMultiplicity,
+                Notation.KEY_SHOW_MULTIPLICITY);
+        init(showInitialValue, 
+                Notation.KEY_SHOW_INITIAL_VALUE);
+        init(showProperties,
+                Notation.KEY_SHOW_PROPERTIES);
+        init(showTypes, 
+                Notation.KEY_SHOW_TYPES);
+        init(showStereotypes, 
+                Notation.KEY_SHOW_STEREOTYPES);
+        init(showSingularMultiplicities, 
+                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES);
+        init(defaultShadowWidth,
+                Notation.KEY_DEFAULT_SHADOW_WIDTH);
+
+        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_NAME, 
+                fontName, fontName);
+        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_SIZE, 
+                fontSize, fontSize);
+    }
+
+    private void init(String value, ConfigurationKey key) {
+        fireNotationEvent(key, value, value);
+    }
+
+    private void init(boolean value, ConfigurationKey key) {
+        fireNotationEvent(key, value, value);
+    }
+
+    private void init(int value, ConfigurationKey key) {
+        fireNotationEvent(key, value, value);
     }
 
     /**
