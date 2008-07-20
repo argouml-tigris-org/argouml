@@ -157,6 +157,7 @@ public final class Notation implements PropertyChangeListener {
 
     /**
      * The constructor.
+     * TODO: Why does this method not handle all settings?
      */
     private Notation() {
         Configuration.addListener(KEY_SHOW_BOLD_NAMES, this);
