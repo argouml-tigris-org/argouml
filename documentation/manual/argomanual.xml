@@ -6727,7 +6727,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <para>Then double click on the interfaces name field to 
               change it&apos;s name as shown in 
-              <xref linkend="fig.tut.if"/>.</para>
+              <xref linkend="fig.tut.if"/></para>
 
               <figure float="1" id="fig.tut.if">
 
@@ -6745,7 +6745,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               could also enter the name by going to the Properties Tab 
               in the Details Pane after adding the interface.)</para>
 
-              <para>Add another interface with a different by repeating 
+              <para>Add another interface with a different name by repeating 
               the last 2 steps. Then single-click on the Generalization 
               icon in the tool bar as shown in 
               <xref linkend="fig.tut.generalize"/>.</para>
@@ -6761,10 +6761,10 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                  format="GIF"/></imageobject></mediaobject></screenshot>
               </figure>
 
-              <para>move the mouse pointer to the subinterface, press 
+              <para>Move the mouse pointer to the subinterface, press 
               the left mouse button and drag the generalization to the 
               superinterface, where you release the mouse button. 
-              Figure <xref linkend="fig.tut.ifgen"/> shows how your 
+              The screenshot of <xref linkend="fig.tut.ifgen"/> shows how your 
               diagram should look now.</para>
 
               <figure float="1" id="fig.tut.ifgen">
