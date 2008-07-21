@@ -250,6 +250,19 @@ public class Agency extends Observable { //implements java.io.Serialization
         }
     }
     
+    /**
+     * Register a compound critic in the global table of critics that have been
+     * loaded.
+     * 
+     * @param cr the critic to register
+     */
+    public static void register(CompoundCritic cr) {
+        Set<Object> metas = cr.getCriticizedMetatypes();
+        for (Object meta : metas) {
+            register(cr, meta);            
+        }
+    }    
+    
     private static Hashtable<Class, Collection<Critic>> cachedCritics = 
         new Hashtable<Class, Collection<Critic>>();
 

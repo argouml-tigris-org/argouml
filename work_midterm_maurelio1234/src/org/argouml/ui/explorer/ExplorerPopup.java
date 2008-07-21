@@ -189,9 +189,14 @@ public class ExplorerPopup extends JPopupMenu {
             initMenuCreateDiagrams();
             this.add(createDiagrams);
         }
-        
-        if (!multiSelect && selectedItem instanceof Profile) {
-            this.add(new ActionExportProfileXMI((Profile) selectedItem));
+
+        try {
+            if (!multiSelect && selectedItem instanceof Profile
+                    && !((Profile) selectedItem).getProfilePackages().isEmpty()) {
+                this.add(new ActionExportProfileXMI((Profile) selectedItem));
+            }
+        } catch (Exception e) {
+
         }
 
         if (!multiSelect && selectedItem instanceof ProfileConfiguration) {
