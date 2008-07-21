@@ -14560,7 +14560,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
         </figure>
 
-        <para>If the designer presses the space bar while using the 
+        <para>If the designer presses the <emphasis>space bar</emphasis> 
+        while using the 
         broom, objects on the face of the broom are distributed (i.e., 
         spaced evenly). ArgoUML&apos;s broom supports three 
         distribution modes: objects can be spaced evenly across the 
@@ -14571,6 +14572,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
         modes and displays a brief message indicating the operation 
         just performed: Space evenly, Pack tightly, Spread out and 
         Original.</para>
+        
+        <para>If the designer presses the <emphasis>Enter</emphasis> 
+        key while using the broom,
+        the broom turns red (instead of the normal blue), and objects are not
+        picked up by the broom when moving forward. 
+        It works like lifting up the broom. 
+        Pressing Enter again returns to the normal mode.</para>
+        
+        <para>Pressing the <emphasis>Tab</emphasis>
+        key works exactly like the Enter key.</para>
 
       </sect1>
 
