@@ -25,6 +25,8 @@
 package org.argouml.kernel;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 
@@ -88,14 +90,17 @@ public class TestProject extends TestCase {
      * 
      * @throws InterruptedException if there the project load was interrupted
      * @throws OpenException if there was an error during project load
+     * @throws URISyntaxException when the URI can not be formed
      */
-    public void testRemove() throws OpenException, InterruptedException {
+    public void testRemove() throws OpenException, InterruptedException, 
+        URISyntaxException {
         String name = "/testmodels/uml14/Alittlebitofeverything.zargo";
         URL url = TestProject.class.getResource(name);
         AbstractFilePersister persister =
             PersistenceManager.getInstance().getPersisterFromFileName(name);
-        String filename = url.getFile();
-        Project p = persister.doLoad(new File(filename));
+
+        URI uri = url.toURI();
+        Project p = persister.doLoad(new File(uri));
         
         p.remove();
         
