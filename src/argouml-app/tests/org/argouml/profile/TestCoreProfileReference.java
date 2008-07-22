@@ -35,7 +35,7 @@ import junit.framework.TestCase;
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestCoreProfileReference extends TestCase {
-    
+
     /**
      * Tests {@link CoreProfileReference#CoreProfileReference(String)}.
      * 
@@ -44,20 +44,19 @@ public class TestCoreProfileReference extends TestCase {
     public void testCtorHappyPath() throws MalformedURLException {
         String fileName = "profileName.xmi";
         ProfileReference reference = new CoreProfileReference(fileName);
-        assertEquals(CoreProfileReference.PROFILES_RESOURCE_PATH + fileName, 
-            reference.getPath());
+        assertEquals(CoreProfileReference.PROFILES_RESOURCE_PATH + fileName,
+                reference.getPath());
         assertEquals(
-            new URL(CoreProfileReference.PROFILES_BASE_URL + fileName), 
-            reference.getPublicReference());
+                new URL(CoreProfileReference.PROFILES_BASE_URL + fileName),
+                reference.getPublicReference());
     }
-    
+
     /**
      * Tests that the constructor checks for empty file name.
      * 
      * @throws MalformedURLException if the built URL is incorrect.
      */
-    public void testCtorFailsWhenFileNameIsEmpty() 
-        throws MalformedURLException {
+    public void testCtorFailsWhenFileNameIsEmpty() throws MalformedURLException {
         try {
             new CoreProfileReference("");
             // TODO: This requires that the tests be run with assertions
@@ -67,14 +66,13 @@ public class TestCoreProfileReference extends TestCase {
             // expected
         }
     }
-    
+
     /**
      * Tests that the constructor checks for null file name.
      * 
      * @throws MalformedURLException if the built URL is incorrect.
      */
-    public void testCtorFailsWhenFileNameIsNull() 
-        throws MalformedURLException {
+    public void testCtorFailsWhenFileNameIsNull() throws MalformedURLException {
         try {
             new CoreProfileReference(null);
             // TODO: This requires that the tests be run with assertions

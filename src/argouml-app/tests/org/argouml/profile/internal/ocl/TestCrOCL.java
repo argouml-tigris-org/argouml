@@ -1,5 +1,5 @@
-// $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,39 +22,45 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile;
+package org.argouml.profile.internal.ocl;
 
 import junit.framework.TestCase;
 
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.model.Model;
 
 /**
- * Test cases for the initialization of the profile subsystem.
+ * Tests for the CrOCL class.
  * 
- * @author Luis Sergio Oliveira (euluis)
+ * @author maurelio1234
  */
-public class TestSubsystemInit extends TestCase {
-
-    private InitProfileSubsystem initSubsystem;
+public class TestCrOCL extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
-        initSubsystem = new InitProfileSubsystem();
     }
 
     /**
-     * tests subsystem initialization 
+     * Test the <code>predicate2</code> operation
+     * 
+     * @throws Exception if something goes wrong
      */
-    public void testInitMakesManagerAvailableInFacade() {
-        try {
-            ProfileFacade.getManager();
-            fail("ProfileFacade shouldn't be initialized!");
-        } catch (RuntimeException e) {
-        }
-        initSubsystem.init();
-        assertNotNull(ProfileFacade.getManager());
+    public void testPredicate() throws Exception {
+        Object obj1 = Model.getUseCasesFactory().createActor();
+        Object obj2 = Model.getActivityGraphsFactory().createPartition();
+
+        String ocl = "context Actor inv: 0 > 2";
+
+        CrOCL cr = new CrOCL(ocl, null, null, null, null, null, null);
+
+        assertEquals(cr.predicate2(obj1, Designer.theDesigner()),
+                Critic.PROBLEM_FOUND);
+        assertEquals(cr.predicate2(obj2, Designer.theDesigner()),
+                Critic.NO_PROBLEM);
+
     }
 }

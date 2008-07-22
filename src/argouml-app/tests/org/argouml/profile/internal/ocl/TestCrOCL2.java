@@ -1,5 +1,5 @@
-// $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,39 +22,40 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.profile;
+package org.argouml.profile.internal.ocl;
 
 import junit.framework.TestCase;
 
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.model.Model;
 
 /**
- * Test cases for the initialization of the profile subsystem.
+ * These test cases were written according to OCL 1.4 Spec Section 8
  * 
- * @author Luis Sergio Oliveira (euluis)
+ * @author maurelio1234
  */
-public class TestSubsystemInit extends TestCase {
-
-    private InitProfileSubsystem initSubsystem;
+public class TestCrOCL2 extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
-        initSubsystem = new InitProfileSubsystem();
     }
 
     /**
-     * tests subsystem initialization 
+     * Test collections operations in objects
+     * 
+     * @throws Exception if something goes wrong
      */
-    public void testInitMakesManagerAvailableInFacade() {
-        try {
-            ProfileFacade.getManager();
-            fail("ProfileFacade shouldn't be initialized!");
-        } catch (RuntimeException e) {
-        }
-        initSubsystem.init();
-        assertNotNull(ProfileFacade.getManager());
+    public void test6_5_4_2() throws Exception {
+        Object obj = Model.getUseCasesFactory().createActor();
+
+        CrOCL ocl = new CrOCL("context Actor inv: 2->size() = 1", null, null,
+                null, null, null, null);
+
+        assertEquals(ocl.predicate2(obj, Designer.theDesigner()),
+                Critic.NO_PROBLEM);
     }
 }
