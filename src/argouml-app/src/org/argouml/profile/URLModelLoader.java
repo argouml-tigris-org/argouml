@@ -24,8 +24,12 @@
 
 package org.argouml.profile;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
@@ -35,7 +39,7 @@ import org.xml.sax.InputSource;
 /**
  * Abstract ProfileModelLoader which loads models from a URL.
  *
- * @author Tom Morris
+ * @author Tom Morris, Thomas Neustupny
  */
 public class URLModelLoader implements ProfileModelLoader {
 
@@ -53,14 +57,28 @@ public class URLModelLoader implements ProfileModelLoader {
         if (url == null) {
             throw new ProfileException("Null profile URL");
         }
+        ZipInputStream zis = null;
         try {
+            Collection elements = null;
             XmiReader xmiReader = Model.getXmiReader();
+            if (url.getPath().toLowerCase().endsWith(".zip")) {
+                zis = new ZipInputStream(url.openStream());
+                ZipEntry entry = zis.getNextEntry();
+                // TODO: check if it's OK to just get the first zip entry
+                // since the zip file should contain only one xmi file - thn
+                if (entry != null) {
+                    url = makeZipEntryUrl(url, entry.getName());
+                }
+                zis.close();
+            }
             InputSource inputSource = new InputSource(url.toExternalForm());
             inputSource.setPublicId(publicId.toString());
-            Collection elements = xmiReader.parse(inputSource, true);
+            elements = xmiReader.parse(inputSource, true);
             return elements;
         } catch (UmlException e) {
             throw new ProfileException("Invalid XMI data!", e);
+        } catch (IOException e) {
+            throw new ProfileException("Invalid zip file with XMI data!", e);
         }
     }
 
@@ -76,5 +94,11 @@ public class URLModelLoader implements ProfileModelLoader {
         throws ProfileException {
         return loadModel(reference.getPublicReference(), reference
                 .getPublicReference());
+    }
+
+    private URL makeZipEntryUrl(URL url, String entryName)
+        throws MalformedURLException {
+        String entryURL = "jar:" + url + "!/" + entryName;
+        return new URL(entryURL);
     }
 }

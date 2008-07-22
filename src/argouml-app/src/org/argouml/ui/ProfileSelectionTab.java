@@ -56,19 +56,19 @@ import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
 
 /**
- * The Tab where new profiles can be added and the registered
- * ones can be activated or deactivated on current project
- *
+ * The Tab where new profiles can be added and the registered ones can be
+ * activated or deactivated on current project
+ * 
  * @author Marcos Aurélio
  */
 public class ProfileSelectionTab extends JPanel implements
-	GUISettingsTabInterface, ActionListener {
+        GUISettingsTabInterface, ActionListener {
 
     private JButton loadFromFile = new JButton(Translator
-	    .localize("tab.profiles.userdefined.load"));
+            .localize("tab.profiles.userdefined.load"));
 
     private JButton unregisterProfile = new JButton(Translator
-	    .localize("tab.profiles.userdefined.unload"));
+            .localize("tab.profiles.userdefined.unload"));
 
     private JButton addButton = new JButton(">>");
 
@@ -79,97 +79,94 @@ public class ProfileSelectionTab extends JPanel implements
     private JList usedList = new JList(new UsedProfilesListModel());
 
     /**
-     * This List contains the registered profiles that have not been applied
-     * to the current project  
+     * This List contains the registered profiles that have not been applied to
+     * the current project
      * 
      * @author maurelio1234
      */
     private class AvailableProfilesListModel implements ListModel {
-	private ProfileManager profileManager = ProfileFacade.getManager();
+        private ProfileManager profileManager = ProfileFacade.getManager();
 
-	private List<ListDataListener> listeners = 
-	    new ArrayList<ListDataListener>();
+        private List<ListDataListener> listeners = new ArrayList<ListDataListener>();
 
-	/**
+        /**
          * @param arg0
          * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
          */
-	public void addListDataListener(ListDataListener arg0) {
-	    listeners.add(arg0);
-	}
+        public void addListDataListener(ListDataListener arg0) {
+            listeners.add(arg0);
+        }
 
-	/**
-	 * Fire listeners 
-	 */
-	public void fireListeners() {
-	    ListDataEvent evt = new ListDataEvent(this,
-		    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
-	    for (int i = 0; i < listeners.size(); ++i) {
-		listeners.get(i).contentsChanged(evt);
-	    }
-	}
+        /**
+         * Fire listeners
+         */
+        public void fireListeners() {
+            ListDataEvent evt = new ListDataEvent(this,
+                    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
+            for (int i = 0; i < listeners.size(); ++i) {
+                listeners.get(i).contentsChanged(evt);
+            }
+        }
 
-	/**
-	 * @param n the profile to be returned
-	 * @return the n-th profile at the registered profiles list
-	 */
-	public Profile getProfileAt(int n) {
-	    ProfileConfiguration config = ProjectManager.getManager()
-		    .getCurrentProject().getProfileConfiguration();
-	    List registeredProfiles = profileManager.getRegisteredProfiles();
-	    int count = 0;
-	    for (int i = 0; i < registeredProfiles.size(); ++i) {
-		if (!config.getProfiles().contains(
-			registeredProfiles.get(i))) {
+        /**
+         * @param n the profile to be returned
+         * @return the n-th profile at the registered profiles list
+         */
+        public Profile getProfileAt(int n) {
+            ProfileConfiguration config = ProjectManager.getManager()
+                    .getCurrentProject().getProfileConfiguration();
+            List registeredProfiles = profileManager.getRegisteredProfiles();
+            int count = 0;
+            for (int i = 0; i < registeredProfiles.size(); ++i) {
+                if (!config.getProfiles().contains(registeredProfiles.get(i))) {
 
-		    if (count == n) {
-			return ((Profile) registeredProfiles.get(i));
-		    }
-		    ++count;
-		}
-	    }
-	    return null;
-	}
+                    if (count == n) {
+                        return ((Profile) registeredProfiles.get(i));
+                    }
+                    ++count;
+                }
+            }
+            return null;
+        }
 
-	/**
-	 * @param arg0
-	 * @return the arg0-th element of this list
-	 * @see javax.swing.ListModel#getElementAt(int)
-	 */
-	public Object getElementAt(int arg0) {
-	    Profile p = getProfileAt(arg0);
-	    if (p != null) {
-		return p.getDisplayName();
-	    } else {
-		return null;
-	    }
-	}
+        /**
+         * @param arg0
+         * @return the arg0-th element of this list
+         * @see javax.swing.ListModel#getElementAt(int)
+         */
+        public Object getElementAt(int arg0) {
+            Profile p = getProfileAt(arg0);
+            if (p != null) {
+                return p.getDisplayName();
+            } else {
+                return null;
+            }
+        }
 
-	/**
-	 * @return the amount of registered profiles not applied to current 
-	 * 		project
-	 * @see javax.swing.ListModel#getSize()
-	 */
-	public int getSize() {
-	    ProfileConfiguration config = ProjectManager.getManager()
-		    .getCurrentProject().getProfileConfiguration();
-	    List registeredProfiles = profileManager.getRegisteredProfiles();
-	    int count = 0;
-	    for (int i = 0; i < registeredProfiles.size(); ++i) {
-		if (!config.getProfiles().contains(
-			registeredProfiles.get(i))) {
-		    ++count;
-		}
-	    }
-	    return count;
-	}
+        /**
+         * @return the amount of registered profiles not applied to current
+         *         project
+         * @see javax.swing.ListModel#getSize()
+         */
+        public int getSize() {
+            ProfileConfiguration config = ProjectManager.getManager()
+                    .getCurrentProject().getProfileConfiguration();
+            List registeredProfiles = profileManager.getRegisteredProfiles();
+            int count = 0;
+            for (int i = 0; i < registeredProfiles.size(); ++i) {
+                if (!config.getProfiles().contains(registeredProfiles.get(i))) {
+                    ++count;
+                }
+            }
+            return count;
+        }
 
-	/*
+        /*
          * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
          */
-	public void removeListDataListener(ListDataListener arg0) {
-	    listeners.remove(arg0);
-	}
+        public void removeListDataListener(ListDataListener arg0) {
+            listeners.remove(arg0);
+        }
     }
 
     /**
@@ -178,43 +175,42 @@ public class ProfileSelectionTab extends JPanel implements
      * @author maurelio1234
      */
     private class UsedProfilesListModel implements ListModel {
-	private List<ListDataListener> listeners = 
-	    new ArrayList<ListDataListener>();
+        private List<ListDataListener> listeners = new ArrayList<ListDataListener>();
 
-	/*
+        /*
          * @see javax.swing.ListModel#addListDataListener(javax.swing.event.ListDataListener)
          */
-	public void addListDataListener(ListDataListener arg0) {
-	    listeners.add(arg0);
-	}
+        public void addListDataListener(ListDataListener arg0) {
+            listeners.add(arg0);
+        }
 
-	/**
-	 * Fires listeners 
-	 */
-	public void fireListeners() {
-	    ListDataEvent evt = new ListDataEvent(this,
-		    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
-	    for (int i = 0; i < listeners.size(); ++i) {
-		listeners.get(i).contentsChanged(evt);
-	    }
-	}
+        /**
+         * Fires listeners
+         */
+        public void fireListeners() {
+            ListDataEvent evt = new ListDataEvent(this,
+                    ListDataEvent.CONTENTS_CHANGED, 0, getSize());
+            for (int i = 0; i < listeners.size(); ++i) {
+                listeners.get(i).contentsChanged(evt);
+            }
+        }
 
-	/**
-	 * @param n
-	 * @return the n-th profile on this list
-	 */
-	public Profile getProfileAt(int n) {
-	    ProfileConfiguration config = ProjectManager.getManager()
-		    .getCurrentProject().getProfileConfiguration();
-	    return config.getProfiles().get(n);
-	}
+        /**
+         * @param n
+         * @return the n-th profile on this list
+         */
+        public Profile getProfileAt(int n) {
+            ProfileConfiguration config = ProjectManager.getManager()
+                    .getCurrentProject().getProfileConfiguration();
+            return config.getProfiles().get(n);
+        }
 
-	/**
-	 * @param n
-	 * @return the n-th profile on this list
-	 * @see javax.swing.ListModel#getElementAt(int)
-	 */
-	public Object getElementAt(int n) {
+        /**
+         * @param n
+         * @return the n-th profile on this list
+         * @see javax.swing.ListModel#getElementAt(int)
+         */
+        public Object getElementAt(int n) {
             ProfileConfiguration config = ProjectManager.getManager()
                     .getCurrentProject().getProfileConfiguration();
             if (n >= 0 && n < config.getProfiles().size()) {
@@ -222,85 +218,85 @@ public class ProfileSelectionTab extends JPanel implements
             } else {
                 return null;
             }
-	}
+        }
 
-	/**
-	 * @return the amount of elements in the list
-	 * @see javax.swing.ListModel#getSize()
-	 */
-	public int getSize() {
-	    ProfileConfiguration config = ProjectManager.getManager()
-		    .getCurrentProject().getProfileConfiguration();
-	    return config.getProfiles().size();
-	}
+        /**
+         * @return the amount of elements in the list
+         * @see javax.swing.ListModel#getSize()
+         */
+        public int getSize() {
+            ProfileConfiguration config = ProjectManager.getManager()
+                    .getCurrentProject().getProfileConfiguration();
+            return config.getProfiles().size();
+        }
 
-	/*
+        /*
          * @see javax.swing.ListModel#removeListDataListener(javax.swing.event.ListDataListener)
          */
-	public void removeListDataListener(ListDataListener arg0) {
-	    listeners.remove(arg0);
-	}
+        public void removeListDataListener(ListDataListener arg0) {
+            listeners.remove(arg0);
+        }
     }
 
     /**
      * The default constructor for this class
      */
     public ProfileSelectionTab() {
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-	JPanel configPanel = new JPanel();
-	configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.X_AXIS));
+        JPanel configPanel = new JPanel();
+        configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.X_AXIS));
 
-	availableList.setPrototypeCellValue("12345678901234567890");
-	usedList.setPrototypeCellValue("12345678901234567890");
+        availableList.setPrototypeCellValue("12345678901234567890");
+        usedList.setPrototypeCellValue("12345678901234567890");
 
-	availableList.setMinimumSize(new Dimension(50, 50));
-	usedList.setMinimumSize(new Dimension(50, 50));
+        availableList.setMinimumSize(new Dimension(50, 50));
+        usedList.setMinimumSize(new Dimension(50, 50));
 
-	JPanel leftList = new JPanel();
-	leftList.setLayout(new BorderLayout());
-	leftList.add(new JLabel(Translator
-		.localize("tab.profiles.userdefined.unload")),
-		BorderLayout.NORTH);
-	leftList.add(availableList, BorderLayout.CENTER);
-	configPanel.add(leftList);
+        JPanel leftList = new JPanel();
+        leftList.setLayout(new BorderLayout());
+        leftList.add(new JLabel(Translator
+                .localize("tab.profiles.userdefined.unload")),
+                BorderLayout.NORTH);
+        leftList.add(availableList, BorderLayout.CENTER);
+        configPanel.add(leftList);
 
-	JPanel centerButtons = new JPanel();
-	centerButtons.setLayout(new BoxLayout(centerButtons, BoxLayout.Y_AXIS));
-	centerButtons.add(addButton);
-	centerButtons.add(removeButton);
-	configPanel.add(centerButtons);
+        JPanel centerButtons = new JPanel();
+        centerButtons.setLayout(new BoxLayout(centerButtons, BoxLayout.Y_AXIS));
+        centerButtons.add(addButton);
+        centerButtons.add(removeButton);
+        configPanel.add(centerButtons);
 
-	JPanel rightList = new JPanel();
-	rightList.setLayout(new BorderLayout());
-	rightList.add(new JLabel(Translator
-		.localize("tab.profiles.userdefined.active")),
-		BorderLayout.NORTH);
-	rightList.add(usedList, BorderLayout.CENTER);
-	configPanel.add(rightList);
+        JPanel rightList = new JPanel();
+        rightList.setLayout(new BorderLayout());
+        rightList.add(new JLabel(Translator
+                .localize("tab.profiles.userdefined.active")),
+                BorderLayout.NORTH);
+        rightList.add(usedList, BorderLayout.CENTER);
+        configPanel.add(rightList);
 
-	addButton.addActionListener(this);
-	removeButton.addActionListener(this);
+        addButton.addActionListener(this);
+        removeButton.addActionListener(this);
 
-	add(configPanel);
+        add(configPanel);
 
-	JPanel lffPanel = new JPanel();
-	lffPanel.setLayout(new FlowLayout());
-	lffPanel.add(loadFromFile);
-	lffPanel.add(unregisterProfile);
+        JPanel lffPanel = new JPanel();
+        lffPanel.setLayout(new FlowLayout());
+        lffPanel.add(loadFromFile);
+        lffPanel.add(unregisterProfile);
 
-	loadFromFile.addActionListener(this);
-	unregisterProfile.addActionListener(this);
+        loadFromFile.addActionListener(this);
+        unregisterProfile.addActionListener(this);
 
-	add(lffPanel);
+        add(lffPanel);
     }
 
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent arg0) {
-        AvailableProfilesListModel modelAvl = 
-            ((AvailableProfilesListModel) availableList.getModel());
+        AvailableProfilesListModel modelAvl = ((AvailableProfilesListModel) availableList
+                .getModel());
         UsedProfilesListModel modelUsd = ((UsedProfilesListModel) usedList
                 .getModel());
 
@@ -310,22 +306,22 @@ public class ProfileSelectionTab extends JPanel implements
                         .getSelectedIndex());
                 ProjectManager.getManager().getCurrentProject()
                         .getProfileConfiguration().addProfile(selected);
-                
+
                 modelAvl.fireListeners();
                 modelUsd.fireListeners();
             }
-	} else if (arg0.getSource() == removeButton) {
+        } else if (arg0.getSource() == removeButton) {
             if (usedList.getSelectedIndex() != -1) {
                 Profile selected = modelUsd.getProfileAt(usedList
                         .getSelectedIndex());
                 ProjectManager.getManager().getCurrentProject()
                         .getProfileConfiguration().removeProfile(selected);
-                
+
                 modelAvl.fireListeners();
                 modelUsd.fireListeners();
             }
-	} else if (arg0.getSource() == unregisterProfile) {
-	    if (availableList.getSelectedIndex() != -1) {
+        } else if (arg0.getSource() == unregisterProfile) {
+            if (availableList.getSelectedIndex() != -1) {
                 Profile selected = modelAvl.getProfileAt(availableList
                         .getSelectedIndex());
                 if (selected instanceof UserDefinedProfile) {
@@ -345,19 +341,22 @@ public class ProfileSelectionTab extends JPanel implements
                 public boolean accept(File file) {
                     return file.isDirectory()
                             || (file.isFile() && (file.getName().toLowerCase()
-                                    .endsWith(".xml") 
-                            || file.getName()
-                                    .toLowerCase().endsWith(".xmi")));
+                                    .endsWith(".xmi")
+                                    || file.getName().toLowerCase().endsWith(
+                                            ".xml")
+                                    || file.getName().toLowerCase().endsWith(
+                                            ".xmi.zip") || file.getName()
+                                    .toLowerCase().endsWith(".xml.zip")));
                 }
 
                 public String getDescription() {
-                    return "*.XMI";
+                    return "*.xmi *.xml *.xmi.zip *.xml.zip";
                 }
 
             });
 
-	    int ret = fileChooser.showOpenDialog(this);
-	    if (ret == JFileChooser.APPROVE_OPTION) {
+            int ret = fileChooser.showOpenDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
 
                 try {
@@ -367,19 +366,19 @@ public class ProfileSelectionTab extends JPanel implements
                     ProjectManager.getManager().getCurrentProject()
                             .getProfileConfiguration().addProfile(profile);
 
-                    UsedProfilesListModel model = 
-                        (UsedProfilesListModel) usedList.getModel();
-                    
+                    UsedProfilesListModel model = (UsedProfilesListModel) usedList
+                            .getModel();
+
                     model.fireListeners();
                 } catch (ProfileException e) {
                     JOptionPane.showMessageDialog(this, Translator
                             .localize("tab.profiles.userdefined.errorloading"));
                 }
             }
-	}
+        }
 
-	availableList.validate();
-	usedList.validate();
+        availableList.validate();
+        usedList.validate();
     }
 
     /**
@@ -387,7 +386,7 @@ public class ProfileSelectionTab extends JPanel implements
      * @see org.argouml.application.api.GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() {
-	return "tab.profiles";
+        return "tab.profiles";
     }
 
     /**
@@ -395,26 +394,26 @@ public class ProfileSelectionTab extends JPanel implements
      * @see org.argouml.application.api.GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() {
-	return this;
+        return this;
     }
 
     public void handleResetToDefault() {
-	// TODO: Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 
     public void handleSettingsTabCancel() {
-	// TODO: Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 
     public void handleSettingsTabRefresh() {
-	// TODO: Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 
     public void handleSettingsTabSave() {
-	// TODO: Auto-generated method stub
+        // TODO: Auto-generated method stub
 
     }
 

@@ -62,17 +62,17 @@ import org.argouml.uml.diagram.DiagramAppearance;
 
 /**
  * The Tab containing the global settings for profiles
- *
+ * 
  * @author Marcos Aurélio
  */
 public class SettingsTabProfile extends JPanel implements
-	GUISettingsTabInterface, ActionListener {
+        GUISettingsTabInterface, ActionListener {
 
     private JButton loadFromFile = new JButton(Translator
-	    .localize("tab.profiles.userdefined.load"));
+            .localize("tab.profiles.userdefined.load"));
 
     private JButton unregisterProfile = new JButton(Translator
-	    .localize("tab.profiles.userdefined.unload"));
+            .localize("tab.profiles.userdefined.unload"));
 
     private JButton addButton = new JButton(">>");
 
@@ -82,8 +82,8 @@ public class SettingsTabProfile extends JPanel implements
 
     private JList defaultList = new JList();
 
-    ////////
-    
+    // //////
+
     private JList directoryList = new JList();
 
     private JButton addDirectory = new JButton(Translator
@@ -93,21 +93,22 @@ public class SettingsTabProfile extends JPanel implements
             .localize("tab.profiles.directories.remove"));
 
     private JButton refreshProfiles = new JButton(Translator
-            .localize("tab.profiles.directories.refresh"));    
+            .localize("tab.profiles.directories.refresh"));
 
-    ///////
+    // /////
 
-    private JLabel stereoLabel =
-        new JLabel(Translator.localize("menu.popup.stereotype-view") + ": ");
+    private JLabel stereoLabel = new JLabel(Translator
+            .localize("menu.popup.stereotype-view")
+            + ": ");
 
     private JComboBox stereoField = new JComboBox();
-    
+
     /**
      * The default constructor for this class.
      */
     public SettingsTabProfile() {
         setLayout(new BorderLayout());
-        
+
         JPanel warning = new JPanel();
         warning.setLayout(new BoxLayout(warning, BoxLayout.PAGE_AXIS));
         JLabel warningLabel = new JLabel(Translator.localize("label.warning"));
@@ -120,17 +121,17 @@ public class SettingsTabProfile extends JPanel implements
         projectSettings.setIcon(null);
         projectSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
         warning.add(projectSettings);
-        
+
         add(warning, BorderLayout.NORTH);
- 
+
         JPanel profileSettings = new JPanel();
         profileSettings.setLayout(new BoxLayout(profileSettings,
                 BoxLayout.Y_AXIS));
 
         profileSettings.add(initDefaultStereotypeViewSelector());
 
-        directoryList.setPrototypeCellValue(
-            "123456789012345678901234567890123456789012345678901234567890");
+        directoryList
+                .setPrototypeCellValue("123456789012345678901234567890123456789012345678901234567890");
         directoryList.setMinimumSize(new Dimension(50, 50));
 
         JPanel sdirPanel = new JPanel();
@@ -236,25 +237,28 @@ public class SettingsTabProfile extends JPanel implements
 
                 if (src == stereoField) {
                     Object item = e.getItem();
-                    DefaultComboBoxModel model = (DefaultComboBoxModel) 
-                        stereoField.getModel();
+                    DefaultComboBoxModel model = (DefaultComboBoxModel) stereoField
+                            .getModel();
                     int idx = model.getIndexOf(item);
 
                     switch (idx) {
                     case 0:
-                        Configuration.setInteger(
-                            ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
-                            DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
+                        Configuration
+                                .setInteger(
+                                        ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
+                                        DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
                         break;
                     case 1:
-                        Configuration.setInteger(
-                            ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
-                            DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON);
+                        Configuration
+                                .setInteger(
+                                        ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
+                                        DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON);
                         break;
                     case 2:
-                        Configuration.setInteger(
-                            ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
-                            DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
+                        Configuration
+                                .setInteger(
+                                        ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
+                                        DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
                         break;
                     }
                 }
@@ -281,17 +285,17 @@ public class SettingsTabProfile extends JPanel implements
     private List<Profile> getAvailableProfiles() {
         List<Profile> used = getUsedProfiles();
         List<Profile> ret = new ArrayList<Profile>();
-        
+
         for (Profile profile : ProfileFacade.getManager()
                 .getRegisteredProfiles()) {
             if (!used.contains(profile)) {
                 ret.add(profile);
             }
         }
-        
+
         return ret;
     }
-    
+
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -303,22 +307,22 @@ public class SettingsTabProfile extends JPanel implements
 
         if (arg0.getSource() == addButton) {
             if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvl.getElementAt(availableList
-                        .getSelectedIndex());
+                Profile selected = (Profile) modelAvl
+                        .getElementAt(availableList.getSelectedIndex());
                 modelUsd.addElement(selected);
                 modelAvl.removeElement(selected);
             }
-	} else if (arg0.getSource() == removeButton) {
+        } else if (arg0.getSource() == removeButton) {
             if (defaultList.getSelectedIndex() != -1) {
                 Profile selected = (Profile) modelUsd.getElementAt(defaultList
                         .getSelectedIndex());
                 modelUsd.removeElement(selected);
-                modelAvl.addElement(selected);                        
+                modelAvl.addElement(selected);
             }
-	} else if (arg0.getSource() == unregisterProfile) {
-	    if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvl.getElementAt(availableList
-                        .getSelectedIndex());
+        } else if (arg0.getSource() == unregisterProfile) {
+            if (availableList.getSelectedIndex() != -1) {
+                Profile selected = (Profile) modelAvl
+                        .getElementAt(availableList.getSelectedIndex());
                 if (selected instanceof UserDefinedProfile) {
                     ProfileFacade.getManager().removeProfile(selected);
                     modelAvl.removeElement(selected);
@@ -327,26 +331,30 @@ public class SettingsTabProfile extends JPanel implements
                             .localize("tab.profiles.cannotdelete"));
                 }
             }
-	} else if (arg0.getSource() == loadFromFile) {
-	    JFileChooser fileChooser = new JFileChooser();
-	    fileChooser.setFileFilter(new FileFilter() {
+        } else if (arg0.getSource() == loadFromFile) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileFilter() {
 
-		public boolean accept(File file) {
+                public boolean accept(File file) {
                     return file.isDirectory()
                             || (file.isFile() && (file.getName().toLowerCase()
-                                    .endsWith(".xml") || file.getName()
-                                        .toLowerCase().endsWith(".xmi")));
+                                    .endsWith(".xmi")
+                                    || file.getName().toLowerCase().endsWith(
+                                            ".xml")
+                                    || file.getName().toLowerCase().endsWith(
+                                            ".xmi.zip") || file.getName()
+                                    .toLowerCase().endsWith(".xml.zip")));
                 }
 
-		public String getDescription() {
-		    return "*.XMI";
-		}
+                public String getDescription() {
+                    return "*.xmi *.xml *.xmi.zip *.xml.zip";
+                }
 
-	    });
+            });
 
-	    int ret = fileChooser.showOpenDialog(this);
-	    if (ret == JFileChooser.APPROVE_OPTION) {
-		File file = fileChooser.getSelectedFile();
+            int ret = fileChooser.showOpenDialog(this);
+            if (ret == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
 
                 try {
                     UserDefinedProfile profile = new UserDefinedProfile(file);
@@ -360,22 +368,22 @@ public class SettingsTabProfile extends JPanel implements
                 }
             }
 
-        } else if (arg0.getSource() == removeDirectory) { 
+        } else if (arg0.getSource() == removeDirectory) {
             if (directoryList.getSelectedIndex() != -1) {
                 int idx = directoryList.getSelectedIndex();
                 ((MutableComboBoxModel) directoryList.getModel())
                         .removeElementAt(idx);
             }
-        } else if (arg0.getSource() == refreshProfiles) { 
-            boolean refresh = JOptionPane.showConfirmDialog(this,
-                Translator.localize("tab.profiles.confirmrefresh"),
-                Translator.localize("tab.profiles.confirmrefresh.title"),
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+        } else if (arg0.getSource() == refreshProfiles) {
+            boolean refresh = JOptionPane.showConfirmDialog(this, Translator
+                    .localize("tab.profiles.confirmrefresh"), Translator
+                    .localize("tab.profiles.confirmrefresh.title"),
+                    JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
             if (refresh) {
                 handleSettingsTabSave();
                 ProfileFacade.getManager().refreshRegisteredProfiles();
                 refreshLists();
-            }            
+            }
         } else if (arg0.getSource() == addDirectory) {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileFilter(new FileFilter() {
@@ -391,7 +399,7 @@ public class SettingsTabProfile extends JPanel implements
             });
 
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            
+
             int ret = fileChooser.showOpenDialog(this);
             if (ret == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
@@ -401,11 +409,11 @@ public class SettingsTabProfile extends JPanel implements
                 ((MutableComboBoxModel) directoryList.getModel())
                         .addElement(path);
             }
-            
+
         }
-        
-	availableList.validate();
-	defaultList.validate();
+
+        availableList.validate();
+        defaultList.validate();
     }
 
     /**
@@ -413,7 +421,7 @@ public class SettingsTabProfile extends JPanel implements
      * @see org.argouml.application.api.GUISettingsTabInterface#getTabKey()
      */
     public String getTabKey() {
-	return "tab.profiles";
+        return "tab.profiles";
     }
 
     /**
@@ -421,7 +429,7 @@ public class SettingsTabProfile extends JPanel implements
      * @see org.argouml.application.api.GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() {
-	return this;
+        return this;
     }
 
     public void handleResetToDefault() {
@@ -434,37 +442,36 @@ public class SettingsTabProfile extends JPanel implements
 
     public void handleSettingsTabRefresh() {
         refreshLists();
- 
+
         switch (Configuration.getInteger(
                 ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
                 DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL)) {
         case DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL:
-            stereoField.setSelectedIndex(0);                
+            stereoField.setSelectedIndex(0);
             break;
         case DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON:
-            stereoField.setSelectedIndex(1);                
+            stereoField.setSelectedIndex(1);
             break;
         case DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON:
-            stereoField.setSelectedIndex(2);                
+            stereoField.setSelectedIndex(2);
             break;
-        }        
+        }
     }
 
     public void handleSettingsTabSave() {
-        List<Profile> toRemove = new ArrayList<Profile>();        
+        List<Profile> toRemove = new ArrayList<Profile>();
         List<Profile> usedItens = new ArrayList<Profile>();
 
         MutableComboBoxModel modelUsd = ((MutableComboBoxModel) defaultList
                 .getModel());
         MutableComboBoxModel modelDir = ((MutableComboBoxModel) directoryList
                 .getModel());
-        
+
         for (int i = 0; i < modelUsd.getSize(); ++i) {
             usedItens.add((Profile) modelUsd.getElementAt(i));
         }
 
-        for (Profile profile : ProfileFacade.getManager()
-                .getDefaultProfiles()) {
+        for (Profile profile : ProfileFacade.getManager().getDefaultProfiles()) {
             if (!usedItens.contains(profile)) {
                 toRemove.add(profile);
             }
@@ -475,15 +482,15 @@ public class SettingsTabProfile extends JPanel implements
         }
 
         for (Profile profile : usedItens) {
-            if (!ProfileFacade.getManager().getDefaultProfiles()
-                    .contains(profile)) {
+            if (!ProfileFacade.getManager().getDefaultProfiles().contains(
+                    profile)) {
                 ProfileFacade.getManager().addToDefaultProfiles(profile);
             }
         }
-   
-        List<String> toRemoveDir = new ArrayList<String>();        
+
+        List<String> toRemoveDir = new ArrayList<String>();
         List<String> usedItensDir = new ArrayList<String>();
-        
+
         for (int i = 0; i < modelDir.getSize(); ++i) {
             usedItensDir.add((String) modelDir.getElementAt(i));
         }
@@ -496,15 +503,13 @@ public class SettingsTabProfile extends JPanel implements
         }
 
         for (String dirEntry : toRemoveDir) {
-            ProfileFacade.getManager()
-                    .removeSearchPathDirectory(dirEntry);
+            ProfileFacade.getManager().removeSearchPathDirectory(dirEntry);
         }
 
         for (String dirEntry : usedItensDir) {
             if (!ProfileFacade.getManager().getSearchPathDirectories()
                     .contains(dirEntry)) {
-                ProfileFacade.getManager().addSearchPathDirectory(
-                        dirEntry);
+                ProfileFacade.getManager().addSearchPathDirectory(dirEntry);
             }
         }
 
