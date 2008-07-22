@@ -450,7 +450,7 @@ class ZargoFilePersister extends UmlFilePersister {
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(sub, encoding));
                 String firstLine = reader.readLine();
-                if (firstLine.contains("<?xml")) {
+                if (firstLine.startsWith("<?xml")) {
                     // Skip the 2 lines
                     //<?xml version="1.0" encoding="UTF-8" ?>
                     //<!DOCTYPE pgml SYSTEM "pgml.dtd">
@@ -479,7 +479,7 @@ class ZargoFilePersister extends UmlFilePersister {
             BufferedReader reader = new BufferedReader(isr);
             
             String firstLine = reader.readLine();
-            if (firstLine.contains("<?xml")) {
+            if (firstLine.startsWith("<?xml")) {
                 // Skip the 2 lines
                 //<?xml version="1.0" encoding="UTF-8" ?>
                 //<!DOCTYPE todo SYSTEM "todo.dtd" >
