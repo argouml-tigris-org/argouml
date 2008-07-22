@@ -37,12 +37,12 @@ import org.argouml.model.Model;
 import junit.framework.TestCase;
 
 /**
+ *
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestProfileMother extends TestCase {
-
+    
     private ProfileMother mother;
-
     private File testDir;
 
     @Override
@@ -50,57 +50,43 @@ public class TestProfileMother extends TestCase {
         InitializeModel.initializeDefault();
         mother = new ProfileMother();
     }
-
-    /**
-     * test profile model creation
-     */
+    
     public void testCreateProfileModel() {
         Object model = mother.createSimpleProfileModel();
         assertNotNull(model);
         Collection profileStereotypes = getFacade().getStereotypes(model);
         assertEquals(1, profileStereotypes.size());
-        assertEquals(ProfileMother.STEREOTYPE_NAME_PROFILE, getFacade()
-                .getName(profileStereotypes.iterator().next()));
+        assertEquals(ProfileMother.STEREOTYPE_NAME_PROFILE, 
+            getFacade().getName(profileStereotypes.iterator().next()));
     }
-
-    /**
-     * test simple profile model creation
-     * 
-     * @throws Exception is something goes wrong
-     */
+    
     public void testCreateSimpleProfileModel() throws Exception {
         final Object model = mother.createSimpleProfileModel();
-        Collection<Object> models = new ArrayList<Object>() {
-            {
+        Collection<Object> models = new ArrayList<Object>() { {
                 add(model);
             }
         };
-        Collection stereotypes = getExtensionMechanismsHelper().getStereotypes(
-                models);
+        Collection stereotypes = 
+            getExtensionMechanismsHelper().getStereotypes(models);
         Object st = null;
         for (Object stereotype : stereotypes) {
-            if (ProfileMother.STEREOTYPE_NAME_ST.equals(getFacade().getName(
-                    stereotype))) {
+            if (ProfileMother.STEREOTYPE_NAME_ST.equals(
+                    getFacade().getName(stereotype))) {
                 st = stereotype;
                 break;
             }
         }
         assertNotNull("\"st\" stereotype not found in model.", st);
-        assertTrue(Model.getExtensionMechanismsHelper().isStereotype(st,
+        assertTrue(Model.getExtensionMechanismsHelper().isStereotype(st, 
                 ProfileMother.STEREOTYPE_NAME_ST, "Class"));
     }
-
-    /**
-     * test save profile model
-     * 
-     * @throws Exception if something goes wrong
-     */
+    
     public void testSaveProfileModel() throws Exception {
         Object model = mother.createSimpleProfileModel();
         File file = new File(testDir, "testSaveProfileModel.xmi");
         mother.saveProfileModel(model, file);
-        assertTrue("The file to where the file was supposed to be saved "
+        assertTrue("The file to where the file was supposed to be saved " 
                 + "doesn't exist.", file.exists());
     }
-
+    
 }

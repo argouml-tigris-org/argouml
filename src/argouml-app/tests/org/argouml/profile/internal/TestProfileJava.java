@@ -32,11 +32,11 @@ import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Tests for the ProfileJava class.
- * 
+ *
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestProfileJava extends TestCase {
-
+    
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -44,20 +44,10 @@ public class TestProfileJava extends TestCase {
         new InitProfileSubsystem().init();
     }
 
-    /**
-     * test java profile creation
-     * 
-     * @throws ProfileException if something goes wrong
-     */
     public void testProfileJava() throws ProfileException {
         new ProfileJava(new ProfileUML());
     }
-
-    /**
-     * test java profile creation
-     * 
-     * @throws Exception if something goes wrong
-     */
+    
     public void testProfileJavaNoArgs() throws Exception {
         new ProfileJava();
     }

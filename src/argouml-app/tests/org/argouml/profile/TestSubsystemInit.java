@@ -31,11 +31,11 @@ import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Test cases for the initialization of the profile subsystem.
- * 
+ *
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestSubsystemInit extends TestCase {
-
+    
     private InitProfileSubsystem initSubsystem;
 
     @Override
@@ -45,15 +45,11 @@ public class TestSubsystemInit extends TestCase {
         initSubsystem = new InitProfileSubsystem();
     }
 
-    /**
-     * tests subsystem initialization 
-     */
     public void testInitMakesManagerAvailableInFacade() {
         try {
             ProfileFacade.getManager();
             fail("ProfileFacade shouldn't be initialized!");
-        } catch (RuntimeException e) {
-        }
+        } catch (RuntimeException e) { }
         initSubsystem.init();
         assertNotNull(ProfileFacade.getManager());
     }
