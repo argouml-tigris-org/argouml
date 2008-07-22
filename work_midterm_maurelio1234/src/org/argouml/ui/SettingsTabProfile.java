@@ -63,7 +63,7 @@ import org.argouml.uml.diagram.DiagramAppearance;
 /**
  * The Tab containing the global settings for profiles
  *
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public class SettingsTabProfile extends JPanel implements
 	GUISettingsTabInterface, ActionListener {
@@ -198,8 +198,8 @@ public class SettingsTabProfile extends JPanel implements
 
         JPanel lffPanel = new JPanel();
         lffPanel.setLayout(new FlowLayout());
-        lffPanel.add(loadFromFile);
         lffPanel.add(unregisterProfile);
+        lffPanel.add(loadFromFile);
         lffPanel.add(refreshProfiles);
 
         loadFromFile.addActionListener(this);

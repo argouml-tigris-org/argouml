@@ -268,14 +268,13 @@ public class CrUML extends Critic {
     }
 
     /**
-     *  Get the metatypes to be criticized by this critic, the UML Class
+     *  Get the metatypes to be criticized by this critic, no
      *  metatype is assumed by default.
      * 
      * @return the metatypes 
      */
     public Set<Object> getCriticizedMetatypes() {
         Set<Object> ret = new HashSet<Object>();
-        ret.add(Model.getMetaTypes().getUMLClass());
         return ret;
     }
     

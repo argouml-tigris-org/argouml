@@ -25,6 +25,8 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
@@ -75,5 +77,14 @@ public class CrInvalidFork extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedMetatypes() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getPseudostate());
+        return ret;
+    }
+    
 }
 

@@ -43,6 +43,7 @@ public interface ProfileManager {
 
     /**
      * Remove a profile from the list of registered profiles.
+     * Only User defined profiles can be removed.
      * 
      * @param profile the profile to unregister. It will no longer be available
      *            for selection by users
