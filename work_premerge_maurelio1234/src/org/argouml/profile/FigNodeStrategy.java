@@ -27,20 +27,20 @@ package org.argouml.profile;
 import java.awt.Image;
 
 /**
- * Using this strategy profiles can provide icons to replace the default 
+ * Using this strategy profiles can provide icons to replace the default
  * visualization of stereotyped node according to UML 2.0 specification.
- *
+ * 
  * @author maurelio1234
  */
 public interface FigNodeStrategy {
-    
+
     /**
-     * Returns the image of the icon that should replace the model elements 
-     * having this stereotype  
+     * Returns the image of the icon that should replace the model elements
+     * having this stereotype
      * 
      * @param stereotype the stereotype model element
-     * @return the icon or <code>null</code> if the stereotype has no icon 
+     * @return the icon or <code>null</code> if the stereotype has no icon
      */
     Image getIconForStereotype(Object stereotype);
-    
+
 }

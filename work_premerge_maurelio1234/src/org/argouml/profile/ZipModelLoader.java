@@ -44,61 +44,55 @@ public class ZipModelLoader extends StreamModelLoader {
 
     private static final Logger LOG = Logger.getLogger(ZipModelLoader.class);
 
-   
-    public Collection loadModel(ProfileReference reference) 
+    public Collection loadModel(ProfileReference reference)
         throws ProfileException {
         LOG.info("Loading profile from ZIP '" + reference.getPath() + "'");
-        
+
         if (!reference.getPath().endsWith("zip")) {
             throw new ProfileException("Profile could not be loaded!");
         }
 
         InputStream is = null;
         File modelFile = new File(reference.getPath());
-        // TODO: This is in the wrong place.  It's not profile specific.
+        // TODO: This is in the wrong place. It's not profile specific.
         // It needs to be moved to main XMI reading code. - tfm 20060326
         String filename = modelFile.getName();
-        String extension = filename.substring(filename.indexOf('.'),
-                filename.lastIndexOf('.'));
+        String extension = filename.substring(filename.indexOf('.'), filename
+                .lastIndexOf('.'));
         String path = modelFile.getParent();
         // Add the path of the model to the search path, so we can
         // read dependent models
         if (path != null) {
-            System.setProperty("org.argouml.model.modules_search_path",
-                    path);
+            System.setProperty("org.argouml.model.modules_search_path", path);
         }
         try {
             is = openZipStreamAt(modelFile.toURI().toURL(), extension);
         } catch (MalformedURLException e) {
-            LOG.error("Exception while loading profile '"
-                    + reference.getPath() + "'", e);
+            LOG.error("Exception while loading profile '" + reference.getPath()
+                    + "'", e);
             throw new ProfileException(e);
         } catch (IOException e) {
-            LOG.error("Exception while loading profile '"
-                    + reference.getPath() + "'", e);
+            LOG.error("Exception while loading profile '" + reference.getPath()
+                    + "'", e);
             throw new ProfileException(e);
         }
-        
+
         if (is == null) {
             throw new ProfileException("Profile could not be loaded!");
         }
-        
+
         return super.loadModel(is, reference.getPublicReference());
     }
 
     /**
      * Open a ZipInputStream to the first file found with a given extension.
-     *
-     * TODO: Remove since this is a duplicate of ZipFilePersister method
-     * when we have refactored the Persister subsystem.
-     *
-     * @param url
-     *            The URL of the zip file.
-     * @param ext
-     *            The required extension.
+     * TODO: Remove since this is a duplicate of ZipFilePersister method when we
+     * have refactored the Persister subsystem.
+     * 
+     * @param url The URL of the zip file.
+     * @param ext The required extension.
      * @return the zip stream positioned at the required location.
-     * @throws IOException
-     *             if there is a problem opening the file.
+     * @throws IOException if there is a problem opening the file.
      */
     private ZipInputStream openZipStreamAt(URL url, String ext)
         throws IOException {

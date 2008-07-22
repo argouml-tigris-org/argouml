@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Loads models using the default ClassLoader or a provided one.
- *
+ * 
  * @author maurelio1234
  */
 public class ResourceModelLoader extends URLModelLoader {
@@ -40,17 +40,17 @@ public class ResourceModelLoader extends URLModelLoader {
      */
     private static final Logger LOG = Logger
             .getLogger(ResourceModelLoader.class);
-    
+
     private Class clazz;
-    
+
     /**
-     * The default constructor for this class. Loads resources from the same 
+     * The default constructor for this class. Loads resources from the same
      * ClassLoader that loaded this class.
      */
     public ResourceModelLoader() {
         this.clazz = this.getClass();
     }
-    
+
     /**
      * Loads resources from the ClassLoader that loaded the given class
      * 
@@ -60,12 +60,11 @@ public class ResourceModelLoader extends URLModelLoader {
         clazz = c;
     }
 
-    
-    public Collection loadModel(ProfileReference reference) 
+    public Collection loadModel(ProfileReference reference)
         throws ProfileException {
         LOG.info("Loading profile from resource'" + reference.getPath() + "'");
-        return super.loadModel(clazz.getResource(reference.getPath()), 
-            reference.getPublicReference());
+        return super.loadModel(clazz.getResource(reference.getPath()),
+                reference.getPublicReference());
     }
 
 }

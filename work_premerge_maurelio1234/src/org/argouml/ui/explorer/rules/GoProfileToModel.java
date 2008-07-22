@@ -33,7 +33,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 
 /**
- * Rule for Project->Profile.
+ * Rule for Profile->Model.
  *
  */
 public class GoProfileToModel extends AbstractPerspectiveRule {
@@ -51,7 +51,8 @@ public class GoProfileToModel extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
 	if (parent instanceof Profile) {
             try {
-                return ((Profile) parent).getProfilePackages();
+                Collection col = ((Profile) parent).getProfilePackages();
+                return col;
             } catch (ProfileException e) {
                 return Collections.EMPTY_SET;
             }

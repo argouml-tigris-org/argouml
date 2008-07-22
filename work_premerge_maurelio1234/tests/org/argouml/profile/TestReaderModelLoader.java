@@ -38,7 +38,7 @@ import junit.framework.TestCase;
 
 /**
  * Tests for the {@link ReaderModelLoader} class.
- *
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestReaderModelLoader extends TestCase {
@@ -49,7 +49,7 @@ public class TestReaderModelLoader extends TestCase {
         Reader reader = new StringReader("dummy string");
         new ReaderModelLoader(reader);
     }
-    
+
     /**
      * Test {@link ReaderModelLoader#loadModel(ProfileReference)}.
      * 
@@ -64,10 +64,10 @@ public class TestReaderModelLoader extends TestCase {
         File file = new File(testDir, "testSaveProfileModel.xmi");
         mother.saveProfileModel(model, file);
         Reader reader = new FileReader(file);
-        ProfileReference profileReference = new UserProfileReference(
-            file.toURL().toExternalForm());
-        Collection models = new ReaderModelLoader(reader).
-            loadModel(profileReference);
+        ProfileReference profileReference = new UserProfileReference(file
+                .toURI().toURL().toExternalForm());
+        Collection models = new ReaderModelLoader(reader)
+                .loadModel(profileReference);
         assertNotNull(models);
         assertTrue(models.size() >= 1);
     }

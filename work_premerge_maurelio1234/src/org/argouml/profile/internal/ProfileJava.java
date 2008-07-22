@@ -40,20 +40,23 @@ import org.argouml.profile.ResourceModelLoader;
 
 /**
  * This class represents the Java default Profile
- *
- * @author Marcos Aurélio
+ * 
+ * @author Marcos Aurï¿½lio
  */
 public class ProfileJava extends Profile {
 
     private static final String PROFILE_FILE = "default-java.xmi";
+
     static final String NAME = "Java";
-    
+
     private ProfileModelLoader profileModelLoader;
+
     private Collection model;
-    
+
     /**
-     * The default constructor for this class 
-     * @throws ProfileException 
+     * The default constructor for this class
+     * 
+     * @throws ProfileException
      */
     @SuppressWarnings("unchecked")
     ProfileJava(Profile uml) throws ProfileException {
@@ -63,7 +66,7 @@ public class ProfileJava extends Profile {
             profileReference = new CoreProfileReference(PROFILE_FILE);
         } catch (MalformedURLException e) {
             throw new ProfileException(
-                "Exception while creating profile reference.", e);
+                    "Exception while creating profile reference.", e);
         }
         model = profileModelLoader.loadModel(profileReference);
 
@@ -73,24 +76,21 @@ public class ProfileJava extends Profile {
         }
 
         addProfileDependency(uml);
-    }    
-    
+    }
+
     ProfileJava() throws ProfileException {
         this(ProfileFacade.getManager().getProfileForClass(
                 ProfileUML.class.getName()));
     }
 
-
     public String getDisplayName() {
         return NAME;
     }
-
 
     @Override
     public Collection getProfilePackages() {
         return model;
     }
-    
 
     @Override
     public DefaultTypeStrategy getDefaultTypeStrategy() {
@@ -109,7 +109,7 @@ public class ProfileJava extends Profile {
                 return ModelUtils.findTypeInModel("void", model.iterator()
                         .next());
             }
-            
+
         };
     }
 }

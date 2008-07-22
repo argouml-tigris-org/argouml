@@ -33,7 +33,6 @@ import org.argouml.application.api.InitSubsystem;
 import org.argouml.cognitive.Agency;
 import org.argouml.cognitive.CompoundCritic;
 import org.argouml.cognitive.Critic;
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -269,114 +268,22 @@ public class InitCognitiveCritics implements InitSubsystem {
      * static initializer, register all appropriate critics.
      */
     public void init() {
-        Object modelCls = Model.getMetaTypes().getModel();
-        Object packageCls = Model.getMetaTypes().getPackage();
-        Object classCls = Model.getMetaTypes().getUMLClass();
-        Object classifierCls = Model.getMetaTypes().getClassifier();
-        Object interfaceCls = Model.getMetaTypes().getInterface();
-        Object attrCls = Model.getMetaTypes().getAttribute();
-        Object paramCls = Model.getMetaTypes().getParameter();
-        Object operCls = Model.getMetaTypes().getOperation();
-        Object assocCls = Model.getMetaTypes().getAssociation();
-        Object assocEndCls = Model.getMetaTypes().getAssociationEnd();
-        Object assocClassCls = Model.getMetaTypes().getAssociationClass();
-        Object namespaceCls = Model.getMetaTypes().getNamespace();
-        Object genElementCls = Model.getMetaTypes().getGeneralizableElement();
-        Object genCls = Model.getMetaTypes().getGeneralization();
-        Object datatypeCls = Model.getMetaTypes().getDataType();
-        Object useCaseCls = Model.getMetaTypes().getUseCase();
-        Object actorCls = Model.getMetaTypes().getActor();
-        Object stateVertexCls = Model.getMetaTypes().getStateVertex();
-        Object stateCls = Model.getMetaTypes().getState();
-        Object compositieStateCls = Model.getMetaTypes().getCompositeState();
-        Object synchStateCls = Model.getMetaTypes().getSynchState();
-	// Class stateDiagramCls   = UMLStateDiagram.class;
-	// Class useCaseDiagramCls = UMLUseCaseDiagram.class;
-        // Class classDiagramCls   = UMLClassDiagram.class;
-
 	// TODO: Agency should allow registration by interface
 	// useful for MAssociation.
-        Agency.register(crAssocNameConflict, namespaceCls);
-	Agency.register(crAttrNameConflict, classifierCls);
-	Agency.register(crOperNameConflict, classifierCls);
-	Agency.register(crCircularAssocClass, assocClassCls);
-	Agency.register(crCircularInheritance, genElementCls);
-	Agency.register(crCircularComposition, classCls);
-	Agency.register(crClassMustBeAbstract, classCls);
-	Agency.register(crCrossNamespaceAssoc, assocCls);
-	Agency.register(crDupParamName, operCls);
-	Agency.register(crDupRoleNames, assocCls);
-	Agency.register(crFinalSubclassed, classCls);
-	Agency.register(crFinalSubclassed, interfaceCls);
-	Agency.register(crIllegalGeneralization, genCls);
-	Agency.register(crAlreadyRealizes, classCls);
-	Agency.register(crInterfaceAllPublic, interfaceCls);
-	Agency.register(crInterfaceOperOnly, interfaceCls);
-	Agency.register(crMultipleAgg, assocCls);
-	Agency.register(crUnnavigableAssoc, assocCls);
-	Agency.register(crNWayAgg, assocCls);
-	Agency.register(crNavFromInterface, assocCls);
-	Agency.register(crNameConflictAC, assocClassCls);
-	Agency.register(clsNaming, classCls);
-        Agency.register(clsNaming, interfaceCls);
-	Agency.register(clsNaming, actorCls);
-	Agency.register(clsNaming, useCaseCls);
+
+	Agency.register(clsNaming);
+        Agency.register(clsNaming);
+	Agency.register(clsNaming);
+	Agency.register(clsNaming);
 
 	// TODO: should be just CrMissingName with a
 	// customized description
-	Agency.register(crMissingClassName, modelCls);
-	Agency.register(crMissingAttrName, attrCls);
-	Agency.register(crMissingOperName, operCls);
-	Agency.register(crMissingStateName, stateVertexCls);
-	Agency.register(crNoInstanceVariables, classCls);
-	Agency.register(crNoAssociations, classCls);
-	Agency.register(crNoAssociations, actorCls);
-	Agency.register(crNoAssociations, useCaseCls);
-	Agency.register(crNoOperations, classCls);
-        Agency.register(crNoOperations, interfaceCls);
-	Agency.register(crCompoundConstructorNeeded, classCls);
-	Agency.register(crEmptyPackage, packageCls);
-	Agency.register(crNonAggDataType, datatypeCls);
-	Agency.register(crUselessAbstract, classCls);
-	Agency.register(crUselessInterface, interfaceCls);
-	Agency.register(crDisambigStateName, stateCls);
-	Agency.register(crNameConfusion, classifierCls);
-	Agency.register(crNameConfusion, stateCls);
-	Agency.register(crMergeClasses, classCls);
-	Agency.register(crSubclassReference, classCls);
-	Agency.register(crIllegalName, classCls);
-	Agency.register(crIllegalName, interfaceCls);
-	Agency.register(crIllegalName, assocCls);
-	Agency.register(crIllegalName, operCls);
-	Agency.register(crIllegalName, attrCls);
-	Agency.register(crIllegalName, paramCls);
-	Agency.register(crIllegalName, stateCls);
-	Agency.register(crReservedName, classifierCls);
-	Agency.register(crReservedName, operCls);
-	Agency.register(crReservedName, attrCls);
-	Agency.register(crReservedName, stateCls);
-	Agency.register(crReservedName, assocCls);
-	Agency.register(crTooManyAssoc, classCls);
-	Agency.register(crTooManyAttr, classCls);
-	Agency.register(crTooManyOper, classCls);
-	Agency.register(crTooManyTransitions, stateVertexCls);
-	Agency.register(crTooManyStates, compositieStateCls);
-	Agency.register(crTooManyClasses, namespaceCls);
-	Object pseudostateCls = Model.getMetaTypes().getPseudostate();
-	Object transitionCls = Model.getMetaTypes().getTransition();
-	Agency.register(noTrans1, stateVertexCls);
-	Agency.register(noTrans2, stateVertexCls);
-	Agency.register(crMultipleInitialStates, pseudostateCls);
-	Agency.register(crNoInitialState, compositieStateCls);
-	Agency.register(crNoTriggerOrGuard, transitionCls);
-	Agency.register(crInvalidJoin, pseudostateCls);
-	Agency.register(crInvalidFork, pseudostateCls);
-	Agency.register(crInvalidBranch, pseudostateCls);
-	Agency.register(crNoGuard, transitionCls);
-	Agency.register(crUnconventionalOperName, operCls);
-	Agency.register(crUnconventionalAttrName, attrCls);
-	Agency.register(crUnconventionalClassName, classCls);
-	Agency.register(crUnconventionalPackName, packageCls);
+
+        Agency.register(crCompoundConstructorNeeded);
+        
+	Agency.register(noTrans1);
+	Agency.register(noTrans2);
+        
 	Class deploymentDiagramCls = UMLDeploymentDiagram.class;
 	Agency.register(crNodeInsideElement, deploymentDiagramCls);
 	Agency.register(crNodeInstanceInsideElement, deploymentDiagramCls);
@@ -387,37 +294,12 @@ public class InitCognitiveCritics implements InitSubsystem {
 	Agency.register(crObjectWithoutComponent, deploymentDiagramCls);
 	Agency.register(crWrongLinkEnds, deploymentDiagramCls);
 	Agency.register(crInstanceWithoutClassifier, deploymentDiagramCls);
-
-	Agency.register(crMultipleDeepHistoryStates, pseudostateCls);
-	Agency.register(crMultipleShallowHistoryStates, pseudostateCls);
-	Agency.register(crInvalidHistory, pseudostateCls);
-	Agency.register(crInvalidSynch, synchStateCls);
-	Agency.register(crInvalidJoinTriggerOrGuard, transitionCls);
-	Agency.register(crInvalidForkTriggerOrGuard, transitionCls);
-	Agency.register(crInvalidPseudoStateTrigger, transitionCls);
-	Agency.register(crInvalidInitial, pseudostateCls);
-	Agency.register(crForkOutgoingTransition, transitionCls);
-	Agency.register(crJoinIncomingTransition, transitionCls);
-
-	// Class sequenceDiagramCls = UMLSequenceDiagram.class;
-	// Agency.register(crCallWithoutReturn, sequenceDiagramCls);
-	// Agency.register(crReturnWithoutCall, sequenceDiagramCls);
-	// Agency.register(crLinkWithoutStimulus, sequenceDiagramCls);
-	// Agency.register(crSeqInstanceWithoutClassifier, sequenceDiagramCls);
-	// Agency.register(crStimulusWithWrongPosition, sequenceDiagramCls);
-
-	// Class nodeCls           = FigNodeModelElement.class;
+        
 	Class edgeCls           = FigEdgeModelElement.class;
 
 	Class diagramCls        = UMLDiagram.class;
 	Agency.register(crNodesOverlap, diagramCls);
 	Agency.register(crZeroLengthEdge, edgeCls);
-	Agency.register(crOppEndConflict, assocEndCls);
-	Agency.register(new CrMultiComposite(), assocEndCls);
-	Agency.register(new CrNameConflict(), namespaceCls);
-	Agency.register(crAlreadyRealizes, classCls);
-	Agency.register(new CrUtilityViolated(), classifierCls);
-	Agency.register(new CrOppEndVsAttr(), classifierCls);
     }
 
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {

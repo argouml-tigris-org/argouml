@@ -34,7 +34,7 @@ import org.xml.sax.InputSource;
 
 /**
  * Abstract ProfileModelLoader which loads models from a URL.
- *
+ * 
  * @author Tom Morris
  */
 public class URLModelLoader implements ProfileModelLoader {
@@ -48,8 +48,7 @@ public class URLModelLoader implements ProfileModelLoader {
      *         single package stereotyped <<profile>>
      * @throws ProfileException if the XMIReader couldn't read the profile
      */
-    public Collection loadModel(URL url, URL publicId) 
-        throws ProfileException {
+    public Collection loadModel(URL url, URL publicId) throws ProfileException {
         if (url == null) {
             throw new ProfileException("Null profile URL");
         }

@@ -25,9 +25,14 @@
 package org.argouml.cognitive;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
+
 import javax.swing.Icon;
+
+import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * A CompoundCritic acts like a regular critic in that it checks the
@@ -295,4 +300,17 @@ public class CompoundCritic extends Critic {
 	throw new UnsupportedOperationException();
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedMetatypes() {
+        Set<Object> ret = new HashSet<Object>();
+        for (Critic cr : this.critics) {
+            if (cr instanceof CrUML) {
+                ret.addAll(((CrUML)cr).getCriticizedMetatypes());
+            }
+        }
+        return ret;
+    }
+    
 }

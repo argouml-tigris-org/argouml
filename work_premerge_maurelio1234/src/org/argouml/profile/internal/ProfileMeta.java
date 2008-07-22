@@ -37,19 +37,21 @@ import org.argouml.profile.ProfileReference;
 import org.argouml.profile.ResourceModelLoader;
 
 /**
- * Meta Profile which defines the TaggedValues to be used in User defined Profiles
- *
+ * Meta Profile which defines the TaggedValues to be used in User defined
+ * Profiles
+ * 
  * @author maas
  */
 public class ProfileMeta extends Profile {
 
     private static final String PROFILE_FILE = "metaprofile.xmi";
+
     private Collection model;
 
     /**
      * Creates a new instance of this profile
      * 
-     * @throws ProfileException
+     * @throws ProfileException if something goes wrong
      */
     @SuppressWarnings("unchecked")
     public ProfileMeta() throws ProfileException {
@@ -59,7 +61,7 @@ public class ProfileMeta extends Profile {
             profileReference = new CoreProfileReference(PROFILE_FILE);
         } catch (MalformedURLException e) {
             throw new ProfileException(
-                "Exception while creating profile reference.", e);
+                    "Exception while creating profile reference.", e);
         }
         model = profileModelLoader.loadModel(profileReference);
 
@@ -69,7 +71,7 @@ public class ProfileMeta extends Profile {
         }
 
     }
-    
+
     @Override
     public String getDisplayName() {
         return "MetaProfile";

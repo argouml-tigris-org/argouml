@@ -36,30 +36,28 @@ import org.xml.sax.InputSource;
 
 /**
  * Abstract ProfileModelLoader which loads models from an InputStream.
- *
- * @author Marcos Aurélio
+ * 
+ * @author Marcos Aurï¿½lio
  */
 public abstract class StreamModelLoader implements ProfileModelLoader {
 
     private static final Logger LOG = Logger.getLogger(StreamModelLoader.class);
 
-
-
     /**
      * @param inputStream the stream from where the model should be loaded
      * @param publicReference the URL to be used as the public reference of the
-     *                profile that will be loaded.
+     *            profile that will be loaded.
      * @return the model
      * @throws ProfileException if the XMIReader couldn't read the input stream
      */
     public Collection loadModel(InputStream inputStream, URL publicReference)
         throws ProfileException {
-        
+
         if (inputStream == null) {
             LOG.error("Profile not found");
             throw new ProfileException("Profile not found!");
         }
-        
+
         try {
             XmiReader xmiReader = Model.getXmiReader();
             InputSource inputSource = new InputSource(inputStream);

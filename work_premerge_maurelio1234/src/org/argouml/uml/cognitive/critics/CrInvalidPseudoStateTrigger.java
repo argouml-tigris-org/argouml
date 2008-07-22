@@ -24,6 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
@@ -67,4 +70,13 @@ public class CrInvalidPseudoStateTrigger extends CrUML {
         return NO_PROBLEM;
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedMetatypes() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getTransition());
+        return ret;
+    }
+    
 }

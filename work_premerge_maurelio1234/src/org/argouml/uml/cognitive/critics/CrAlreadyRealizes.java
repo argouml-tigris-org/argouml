@@ -71,6 +71,15 @@ public class CrAlreadyRealizes extends CrUML {
     }
 
     /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedMetatypes() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        return ret;
+    }
+    
+    /**
      * The UID.
      */
     private static final long serialVersionUID = -8264991005828634274L;
