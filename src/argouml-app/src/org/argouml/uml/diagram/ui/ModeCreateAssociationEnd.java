@@ -26,10 +26,12 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.util.Collection;
+import java.util.List;
 
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -136,24 +138,52 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
         final int x = figAssociation.getEdgePort().getX();
         final int y = figAssociation.getEdgePort().getY();
         final Object association = fig.getOwner();
+        final FigNode originalEdgePort = figAssociation.getEdgePort();
+        
+        // Detach any edges (such as comment edges) already attached
+        // to the FigAssociation before the FigAssociation is removed.
+        // They'll later be re-attached to the new FigNodeAssociation
+        final Collection<FigEdge> existingEdges = originalEdgePort.getEdges();
+        for (FigEdge edge : existingEdges) {
+            originalEdgePort.removeFigEdge(edge);
+        }
         figAssociation.removeFromDiagram();
         
+        // Create the new FigNodeAssociation and locate it.
         final MutableGraphModel gm =
             (MutableGraphModel) editor.getGraphModel();
         gm.addNode(association);
-        final Layer lay = editor.getLayerManager().getActiveLayer();
-        final FigNode figNode = (FigNode) lay.presentationFor(association);
+        final LayerPerspective lay = 
+            (LayerPerspective) editor.getLayerManager().getActiveLayer();
+        final List associationFigs = lay.presentationsFor(association);
+        associationFigs.remove(figAssociation);
+        final FigNodeAssociation figNode = 
+            (FigNodeAssociation) associationFigs.get(0);
         
         figNode.setLocation(
                 x - figNode.getWidth() / 2,
                 y - figNode.getHeight() / 2);
-        //figNode.setVisible(false);
         editor.add(figNode);
         editor.getSelectionManager().deselectAll();
-        Collection<Object> associationEnds =
+        
+        // Add the association ends to the graph model
+        final Collection<Object> associationEnds =
             Model.getFacade().getConnections(association);
         for (Object associationEnd : associationEnds) {
             gm.addEdge(associationEnd);
+        }
+        // Add the edges (such as comment edges) that were on the old
+        // FigAssociation to our new FigNodeAssociation and make sure they are
+        // positioned correctly.
+        for (FigEdge edge : existingEdges) {
+            if (edge.getDestFigNode() == originalEdgePort) {
+                edge.setDestFigNode(figNode);
+                edge.setDestPortFig(figNode);
+            }
+            if (edge.getSourceFigNode() == originalEdgePort) {
+                edge.setSourceFigNode(figNode);
+                edge.setSourcePortFig(figNode);
+            }
         }
         figNode.updateEdges();
 
