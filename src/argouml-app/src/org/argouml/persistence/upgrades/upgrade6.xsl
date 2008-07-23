@@ -7,7 +7,7 @@
 
 <!-- Make sure pgml members appear immediately after xmi -->
     
-    <!-- Write member tags within members as profile, xmi, pgml, todo -->
+    <!-- Write <member> tags within <members> ordered by profile, xmi, pgml, todo -->
 	<xsl:template match='member[1]'>
 		<members>
 	        <xsl:for-each select='/uml/argo/member[./@type = "profile"]'>
@@ -53,7 +53,28 @@
  	<xsl:template match="/uml/pgml/group[contains(./private,'LAYER_NULL')]">
 	</xsl:template>
 	
-    
+	<!-- Add defaults for new settings issue 5231 -->
+ 	<xsl:template match="/uml/argo/settings">
+ 	   <settings>
+		<xsl:copy-of select="*"/>
+		<xsl:if test="count(showboldnames) = 0">
+			<showboldnames>false</showboldnames>
+		</xsl:if>
+		<xsl:if test="count(showassociationnames) = 0">
+			<showassociationnames>true</showassociationnames>
+		</xsl:if>
+		<xsl:if test="count(fontname) = 0">
+			<fontname>Dialog</fontname>
+		</xsl:if>
+		<xsl:if test="count(fontsize) = 0">
+			<fontsize>10</fontsize>
+		</xsl:if>
+		<xsl:if test="count(defaultstereotypeview) = 0">
+			<defaultstereotypeview>0</defaultstereotypeview>
+		</xsl:if>
+ 	   </settings>
+	</xsl:template>
+	
 <!-- 
 Anything not touched by the fixes above must be copied over unchanged
 -->
