@@ -30,18 +30,16 @@ import java.util.Iterator;
  * Interface for the formating strategy to be used when formating model element
  * names.
  * 
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public interface FormatingStrategy {
-    
+
     /**
      * Produce a string that represents the specific model element in the
      * context of the specified namespace.
      * 
-     * @param element
-     *                element to represent.
-     * @param namespace
-     *                context namespace (may be null).
+     * @param element element to represent.
+     * @param namespace context namespace (may be null).
      * @return a string representing the model element
      */
     public abstract String formatElement(Object element, Object namespace);
@@ -50,10 +48,8 @@ public interface FormatingStrategy {
      * Produce a string the represents the collection of model elements in the
      * context of the specified namespace.
      * 
-     * @param iter
-     *                iterator over collection
-     * @param namespace
-     *                context namespace (may be null).
+     * @param iter iterator over collection
+     * @param namespace context namespace (may be null).
      * @return a string representing the collection
      */
     public abstract String formatCollection(Iterator iter, Object namespace);

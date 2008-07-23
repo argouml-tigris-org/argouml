@@ -25,6 +25,8 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -128,4 +130,13 @@ public class CrNameConflict extends CrUML {
         return res;
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedMetatypes() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getNamespace());
+        return ret;
+    }
+    
 }

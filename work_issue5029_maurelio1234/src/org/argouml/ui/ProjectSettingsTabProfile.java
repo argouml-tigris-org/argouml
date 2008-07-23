@@ -63,7 +63,7 @@ import org.argouml.uml.diagram.DiagramAppearance;
  * The Tab where new profiles can be added and the registered ones can be
  * activated or deactivated on current project
  * 
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public class ProjectSettingsTabProfile extends JPanel implements
         GUISettingsTabInterface, ActionListener {
@@ -189,8 +189,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
         JPanel lffPanel = new JPanel();
         lffPanel.setLayout(new FlowLayout());
-        lffPanel.add(loadFromFile);
         lffPanel.add(unregisterProfile);
+        lffPanel.add(loadFromFile);
 
         loadFromFile.addActionListener(this);
         unregisterProfile.addActionListener(this);

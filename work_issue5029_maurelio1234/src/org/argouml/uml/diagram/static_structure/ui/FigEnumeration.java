@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -38,7 +37,6 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
@@ -46,7 +44,6 @@ import org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML Enumeration in a diagram.

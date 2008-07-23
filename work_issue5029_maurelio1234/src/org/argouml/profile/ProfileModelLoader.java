@@ -28,20 +28,19 @@ import java.util.Collection;
 
 /**
  * Interface to be implemented by profile model loaders.
- *
+ * 
  * @author maurelio1234
  */
 public interface ProfileModelLoader {
-    
-    
+
     /**
      * Load a model from the specified path.
      * 
      * @param reference the reference to the profile file, which contains the
-     *                path where the profile file can be found.
+     *            path where the profile file can be found.
      * @return the set of defined packages.
      * @throws ProfileException if the profile could not be loaded for some
-     *                 reason.
+     *             reason.
      */
-    Collection loadModel(ProfileReference reference) throws ProfileException;  
+    Collection loadModel(ProfileReference reference) throws ProfileException;
 }

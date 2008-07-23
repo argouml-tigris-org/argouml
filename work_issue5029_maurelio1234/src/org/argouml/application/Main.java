@@ -160,9 +160,9 @@ public class Main {
                 if (theTheme != null) {
                     LookAndFeelMgr.getInstance().setCurrentTheme(theTheme);
                 }
-                if (doSplash) {
+/*                if (doSplash) {
                     splash = initializeSplash();
-                }
+                }*/
             }
 
             // main initialization happens here

@@ -147,4 +147,14 @@ public class CrAssocNameConflict extends CrUML {
         }
         return list;
     }
+    
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedMetatypes() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getNamespace());
+        return ret;
+    }
+    
 }

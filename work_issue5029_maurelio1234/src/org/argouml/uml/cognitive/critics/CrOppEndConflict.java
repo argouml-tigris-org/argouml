@@ -26,8 +26,10 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -80,4 +82,14 @@ public class CrOppEndConflict extends CrUML {
         }
         return problem;
     }
+    
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedMetatypes() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getAssociationEnd());
+        return ret;
+    }
+    
 } /* end class CrOppEndConflict */

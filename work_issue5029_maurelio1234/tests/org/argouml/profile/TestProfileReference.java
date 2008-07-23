@@ -31,33 +31,32 @@ import junit.framework.TestCase;
 
 /**
  * Tests for the ProfileReference class.
- *
+ * 
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestProfileReference extends TestCase {
-    
+
     /**
      * Test correct call to constructor.
      * 
      * @throws MalformedURLException if the URL is incorrect.
      */
     public void testCtorHappyPath() throws MalformedURLException {
-        new ProfileReference("systemId/name.xmi", 
-                new URL("file:///publicId/name.xmi"));
+        new ProfileReference("systemId/name.xmi", new URL(
+                "file:///publicId/name.xmi"));
     }
-    
+
     /**
-     * Test call to constructor with inconsistent file names in the path and 
-     * the publicReference arguments.
-     * 
-     * NOTE: to run successfully this test you'll have to enable assertions.
+     * Test call to constructor with inconsistent file names in the path and the
+     * publicReference arguments. NOTE: to run successfully this test you'll
+     * have to enable assertions.
      * 
      * @throws MalformedURLException if the URL is incorrect.
      */
-    public void testCtorInconsistentFileNameDetected() 
+    public void testCtorInconsistentFileNameDetected()
         throws MalformedURLException {
         try {
-            new ProfileReference("/org/argouml/language/x/profile/name.xmi", 
+            new ProfileReference("/org/argouml/language/x/profile/name.xmi",
                     new URL("http://argouml-x.tigris.org/iconsistentName.xmi"));
             fail("Expected an AssertionError to be thrown!");
         } catch (MalformedURLException e) {
@@ -66,22 +65,22 @@ public class TestProfileReference extends TestCase {
             // expected
         }
     }
-    
+
     /**
-     * Checks that the path handed to the constructor is correctly returned by 
+     * Checks that the path handed to the constructor is correctly returned by
      * {@link ProfileReference#getPath()}.
      * 
      * @throws MalformedURLException if the URL is incorrect.
      */
     public void testGetPath() throws MalformedURLException {
         String path = "/org/argouml/language/x/profile/name.xmi";
-        ProfileReference profileReference = new ProfileReference(
-            path, new URL("http://x.org/name.xmi"));
+        ProfileReference profileReference = new ProfileReference(path, new URL(
+                "http://x.org/name.xmi"));
         assertEquals(path, profileReference.getPath());
     }
-    
+
     /**
-     * Checks that the publicReference handed to the constructor is correctly 
+     * Checks that the publicReference handed to the constructor is correctly
      * returned by {@link ProfileReference#getPublicReference()}.
      * 
      * @throws MalformedURLException if the URL is incorrect.
@@ -89,7 +88,7 @@ public class TestProfileReference extends TestCase {
     public void testGetPublicReference() throws MalformedURLException {
         URL publicReference = new URL("http://x.org/name.xmi");
         ProfileReference profileReference = new ProfileReference(
-            "/org/argouml/language/x/profile/name.xmi", publicReference);
+                "/org/argouml/language/x/profile/name.xmi", publicReference);
         assertEquals(publicReference, profileReference.getPublicReference());
     }
 }

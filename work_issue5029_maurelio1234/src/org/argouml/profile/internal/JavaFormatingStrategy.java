@@ -31,11 +31,10 @@ import org.argouml.profile.FormatingStrategy;
 
 /**
  * The Formating Strategy based on Java naming conventions.
- *
- * @author Marcos Aurélio
+ * 
+ * @author maurelio1234
  */
 public class JavaFormatingStrategy implements FormatingStrategy {
-    
 
     public String formatElement(Object element, Object namespace) {
         String value = null;
@@ -44,8 +43,8 @@ public class JavaFormatingStrategy implements FormatingStrategy {
         } else {
             Object elementNs = Model.getFacade().getNamespace(element);
             //
-            //   if element is an AssociationEnd use
-            //      the namespace of containing association
+            // if element is an AssociationEnd use
+            // the namespace of containing association
             //
             if (Model.getFacade().isAAssociationEnd(element)) {
                 Object assoc = Model.getFacade().getAssociation(element);
@@ -73,8 +72,7 @@ public class JavaFormatingStrategy implements FormatingStrategy {
      * @param namespace the namespace
      * @return the default name for the given associationend
      */
-    protected String defaultAssocEndName(Object assocEnd,
-                                         Object namespace) {
+    protected String defaultAssocEndName(Object assocEnd, Object namespace) {
         String name = null;
         Object type = Model.getFacade().getType(assocEnd);
         if (type != null) {
@@ -102,7 +100,7 @@ public class JavaFormatingStrategy implements FormatingStrategy {
 
     /**
      * Create a default association name from its ends.
-     *
+     * 
      * @param assoc the given association
      * @param ns the namespace
      * @return the default association name
@@ -169,8 +167,7 @@ public class JavaFormatingStrategy implements FormatingStrategy {
      * @param element the given modelelement
      * @param pathSep the path separator character(s)
      */
-    private void buildPath(StringBuffer buffer, Object element, 
-            String pathSep) {
+    private void buildPath(StringBuffer buffer, Object element, String pathSep) {
         if (element != null) {
             Object parent = Model.getFacade().getNamespace(element);
             if (parent != null && parent != element) {
@@ -198,7 +195,6 @@ public class JavaFormatingStrategy implements FormatingStrategy {
     protected String getEmptyCollection() {
         return "[empty]";
     }
-
 
     public String formatCollection(Iterator iter, Object namespace) {
         String value = null;

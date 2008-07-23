@@ -24,7 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.Icon;
 
@@ -154,5 +156,16 @@ public class CrNoOperations extends CrUML {
     public Class getWizardClass(ToDoItem item) {
         return WizAddOperation.class;
     }
+    
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedMetatypes() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        ret.add(Model.getMetaTypes().getInterface());
+        return ret;
+    }
+    
 }
 

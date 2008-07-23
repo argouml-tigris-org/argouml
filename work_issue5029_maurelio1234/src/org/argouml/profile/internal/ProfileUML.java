@@ -40,22 +40,25 @@ import org.argouml.profile.ResourceModelLoader;
 
 /**
  * This class represents the default UML profile
- *
- * @author Marcos Aurélio
+ * 
+ * @author Marcos Aurï¿½lio
  */
 public class ProfileUML extends Profile {
-    
+
     private static final String PROFILE_FILE = "default-uml14.xmi";
 
     static final String NAME = "UML 1.4";
-    
+
     private FormatingStrategy formatingStrategy;
+
     private ProfileModelLoader profileModelLoader;
+
     private Collection model;
-    
+
     /**
-     * Construct a Profile for UML modeling. 
-     * @throws ProfileException 
+     * Construct a Profile for UML modeling.
+     * 
+     * @throws ProfileException
      */
     @SuppressWarnings("unchecked")
     ProfileUML() throws ProfileException {
@@ -66,15 +69,15 @@ public class ProfileUML extends Profile {
             profileReference = new CoreProfileReference(PROFILE_FILE);
         } catch (MalformedURLException e) {
             throw new ProfileException(
-                "Exception while creating profile reference.", e);
+                    "Exception while creating profile reference.", e);
         }
         model = profileModelLoader.loadModel(profileReference);
 
         if (model == null) {
             model = new ArrayList();
             model.add(Model.getModelManagementFactory().createModel());
-        }        
-    }    
+        }
+    }
 
     @Override
     public FormatingStrategy getFormatingStrategy() {
@@ -86,12 +89,10 @@ public class ProfileUML extends Profile {
         return NAME;
     }
 
-
     @Override
     public Collection getProfilePackages() {
         return model;
     }
-    
 
     @Override
     public DefaultTypeStrategy getDefaultTypeStrategy() {

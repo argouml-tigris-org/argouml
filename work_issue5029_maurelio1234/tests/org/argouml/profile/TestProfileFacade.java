@@ -29,25 +29,24 @@ import org.easymock.MockControl;
 import junit.framework.TestCase;
 
 /**
- *
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestProfileFacade extends TestCase {
 
     private MockControl managerCtrl;
+
     private ProfileManager manager;
 
-    /* 
+    /*
      * @see junit.framework.TestCase#setUp()
      */
     @Override
     protected void setUp() throws Exception {
-        managerCtrl = MockControl.createControl(
-                ProfileManager.class);
+        managerCtrl = MockControl.createControl(ProfileManager.class);
         manager = (ProfileManager) managerCtrl.getMock();
         ProfileFacade.setManager(manager);
     }
-    
+
     @Override
     protected void tearDown() throws Exception {
         ProfileFacade.reset();
@@ -66,14 +65,14 @@ public class TestProfileFacade extends TestCase {
             // expected
         }
     }
-    
+
     /**
      * Test {@link ProfileFacade#register(Profile)}.
      */
     public void testRegister() {
         manager.registerProfile(null);
         managerCtrl.replay();
-        
+
         ProfileFacade.register(null);
         managerCtrl.verify();
     }
@@ -84,7 +83,7 @@ public class TestProfileFacade extends TestCase {
     public void testRemove() {
         manager.removeProfile(null);
         managerCtrl.replay();
-        
+
         ProfileFacade.remove((Profile) null);
         managerCtrl.verify();
     }

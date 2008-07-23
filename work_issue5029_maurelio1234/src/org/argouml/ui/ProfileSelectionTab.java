@@ -59,7 +59,7 @@ import org.argouml.profile.UserDefinedProfile;
  * The Tab where new profiles can be added and the registered ones can be
  * activated or deactivated on current project
  * 
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public class ProfileSelectionTab extends JPanel implements
         GUISettingsTabInterface, ActionListener {
@@ -282,8 +282,8 @@ public class ProfileSelectionTab extends JPanel implements
 
         JPanel lffPanel = new JPanel();
         lffPanel.setLayout(new FlowLayout());
-        lffPanel.add(loadFromFile);
         lffPanel.add(unregisterProfile);
+        lffPanel.add(loadFromFile);
 
         loadFromFile.addActionListener(this);
         unregisterProfile.addActionListener(this);
@@ -331,7 +331,7 @@ public class ProfileSelectionTab extends JPanel implements
                     modelUsd.fireListeners();
                 } else {
                     JOptionPane.showMessageDialog(this,
-                            "Only user defined profiles can be removed");
+                            "Only active user defined profiles can be removed");
                 }
             }
         } else if (arg0.getSource() == loadFromFile) {

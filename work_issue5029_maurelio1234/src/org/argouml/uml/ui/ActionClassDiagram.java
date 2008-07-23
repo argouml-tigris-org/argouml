@@ -26,8 +26,8 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
 
 /**
  * Action to trigger creation of new class diagram.
