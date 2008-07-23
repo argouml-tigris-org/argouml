@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -133,32 +134,66 @@ public class FigNodeAssociation extends FigNodeModelElement {
      */
     protected void updateLayout(UmlChangeEvent mee) {
         super.updateLayout(mee);
-        if (mee instanceof RemoveAssociationEvent
+        if (mee.getSource() == getOwner()
+                && mee instanceof RemoveAssociationEvent
                 && "connection".equals(mee.getPropertyName())
-                && Model.getFacade().getConnections(mee.getSource()).size() 
-                == 2) {
+                && Model.getFacade().getConnections(getOwner()).size() == 2) {
             reduceToBinary();
         }
     }
 
     /**
-     * When association end nr 3 is removed, 
-     * from the model (OR from the diagram?), 
-     * reduce this to a binary association.
+     * Called when deletion of an association end reduces the number of ends
+     * of an association down to only two. This Fig which represent the diamond
+     * node of a n-ary association needs to be replaced by a FigAssociation
+     * representing the binary relationship.
      */
     private void reduceToBinary() {
         final Object association = getOwner();
+        assert (Model.getFacade().getConnections(association).size() == 2);
+        
+        // Detach any non-associationend edges (such as comment edges) already
+        // attached before this association node is removed.
+        // They'll later be re-attached to the new FigAssociation
+        final Collection<FigEdge> existingEdges = getEdges();
+        for (Iterator<FigEdge> it = existingEdges.iterator(); it.hasNext(); ) {
+            FigEdge edge = it.next();
+            if (edge instanceof FigAssociationEnd) {
+                it.remove();
+            } else {
+                removeFigEdge(edge);
+            }
+        }
+        
+        // Now we can remove ourself (which will also remove the
+        // attached association ends edges)
         final LayerPerspective lay = (LayerPerspective) getLayer();
         final MutableGraphModel gm = (MutableGraphModel) lay.getGraphModel();
         gm.removeNode(association);
         removeFromDiagram();
         
+        // Create the new FigAssociation edge to replace the node
         final GraphEdgeRenderer renderer =
             lay.getGraphEdgeRenderer();
         final FigAssociation figEdge = (FigAssociation) renderer.getFigEdgeFor(
                 gm, lay, association, null);
         lay.add(figEdge);
         gm.addEdge(association);
+        
+        // Add the non-associationend edges (such as comment edges) that were
+        // originally attached to this and attach them to the new
+        // FigAssociation and make sure they are positioned correctly.
+        for (FigEdge edge : existingEdges) {
+            figEdge.makeEdgePort();
+            if (edge.getDestFigNode() == this) {
+                edge.setDestFigNode(figEdge.getEdgePort());
+                edge.setDestPortFig(figEdge.getEdgePort());
+            }
+            if (edge.getSourceFigNode() == this) {
+                edge.setSourceFigNode(figEdge.getEdgePort());
+                edge.setSourcePortFig(figEdge.getEdgePort());
+            }
+        }
         figEdge.computeRoute();
     }
     
