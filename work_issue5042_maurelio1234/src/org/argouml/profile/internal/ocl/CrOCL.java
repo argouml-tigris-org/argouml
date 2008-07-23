@@ -50,9 +50,14 @@ public class CrOCL extends CrUML {
     private OclInterpreter interpreter = null;
 
     /**
+     * the OCL string
+     */
+    private String ocl = null;
+    
+    /**
      * Creates a new OCL critic
      * 
-     * @param ocl ocl expression
+     * @param oclConstraint ocl expression
      * @param headline headline
      * @param description description
      * @param moreInfoURL the info url
@@ -61,12 +66,14 @@ public class CrOCL extends CrUML {
      * @param priority the priority
      * @throws InvalidOclException if the ocl is not valid
      */
-    public CrOCL(String ocl, String headline, String description,
+    public CrOCL(String oclConstraint, String headline, String description,
             Integer priority, Vector<Decision> supportedDecisions,
             Vector<String> knowledgeTypes, String moreInfoURL)
         throws InvalidOclException {
-        interpreter = new OclInterpreter(ocl, new Uml14ModelInterpreter());
-
+        interpreter = 
+            new OclInterpreter(oclConstraint, new Uml14ModelInterpreter());
+        this.ocl = oclConstraint;
+        
         addSupportedDecision(UMLDecision.PLANNED_EXTENSIONS);
         setPriority(ToDoItem.HIGH_PRIORITY);
 
@@ -83,7 +90,7 @@ public class CrOCL extends CrUML {
         }
 
         if (description == null) {
-            super.setDescription(ocl);
+            super.setDescription("");
         } else {
             super.setDescription(description);
         }
@@ -125,6 +132,13 @@ public class CrOCL extends CrUML {
                 return PROBLEM_FOUND;
             }
         }
+    }
+
+    /**
+     * @return the ocl constraint
+     */
+    public String getOCL() {
+        return ocl;
     }
 
 }
