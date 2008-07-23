@@ -41,14 +41,8 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.Critic;
-import org.argouml.cognitive.Decision;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
 import org.argouml.model.Model;
-import org.argouml.profile.internal.ocl.CrOCL;
-import org.argouml.profile.internal.ocl.InvalidOclException;
-import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
@@ -245,7 +239,8 @@ public class UserDefinedProfile extends Profile {
         }
 
         // load critiques
-        Vector<CrUML> allCritiques = getAllCritiquesInModel();
+        // TODO read critics in OCL from xmi
+        Vector<CrUML> allCritiques = new Vector<CrUML>();
         Set<CrUML> myCritics = this.getCritics(); 
         
         for (CrUML critique : allCritiques) {
@@ -253,149 +248,6 @@ public class UserDefinedProfile extends Profile {
         }
         
         this.setCritics(myCritics);
-    }
-
-    private CrUML generateCriticFromComment(Object critique) {
-        String ocl = "" + Model.getFacade().getBody(critique);
-        String headline = null;
-        String description = null;
-        int priority = ToDoItem.HIGH_PRIORITY;
-        Vector<Decision> supportedDecisions = new Vector<Decision>();
-        Vector<String> knowledgeTypes = new Vector<String>();
-        String moreInfoURL = null;
-
-        Collection tags = Model.getFacade().getTaggedValuesCollection(critique);
-
-        for (Object tag : tags) {
-            if (Model.getFacade().getTag(tag).toLowerCase().equals("headline")) {
-                headline = Model.getFacade().getValueOfTag(tag);
-            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
-                    "description")) {
-                description = Model.getFacade().getValueOfTag(tag);
-            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
-                    "priority")) {
-                String prioStr = Model.getFacade().getValueOfTag(tag);
-
-                if (prioStr.toLowerCase().equals("high")) {
-                    priority = ToDoItem.HIGH_PRIORITY;
-                } else if (prioStr.toLowerCase().equals("med")) {
-                    priority = ToDoItem.MED_PRIORITY;
-                } else if (prioStr.toLowerCase().equals("low")) {
-                    priority = ToDoItem.LOW_PRIORITY;
-                } else if (prioStr.toLowerCase().equals("interruptive")) {
-                    priority = ToDoItem.INTERRUPTIVE_PRIORITY;
-                }
-            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
-                    "supporteddecision")) {
-                String decStr = Model.getFacade().getValueOfTag(tag);
-
-                StringTokenizer st = new StringTokenizer(decStr, ",;:");
-
-                while (st.hasMoreTokens()) {
-                    String token = st.nextToken().trim().toLowerCase();
-
-                    if (token.equals("behavior"))
-                        supportedDecisions.add(UMLDecision.BEHAVIOR);
-                    if (token.equals("containment"))
-                        supportedDecisions.add(UMLDecision.CONTAINMENT);
-                    if (token.equals("classselection"))
-                        supportedDecisions.add(UMLDecision.CLASS_SELECTION);
-                    if (token.equals("codegen"))
-                        supportedDecisions.add(UMLDecision.CODE_GEN);
-                    if (token.equals("expectedusage"))
-                        supportedDecisions.add(UMLDecision.EXPECTED_USAGE);
-                    if (token.equals("inheritance"))
-                        supportedDecisions.add(UMLDecision.INHERITANCE);
-                    if (token.equals("instantiation"))
-                        supportedDecisions.add(UMLDecision.INSTANCIATION);
-                    if (token.equals("methods"))
-                        supportedDecisions.add(UMLDecision.METHODS);
-                    if (token.equals("modularity"))
-                        supportedDecisions.add(UMLDecision.MODULARITY);
-                    if (token.equals("naming"))
-                        supportedDecisions.add(UMLDecision.NAMING);
-                    if (token.equals("patterns"))
-                        supportedDecisions.add(UMLDecision.PATTERNS);
-                    if (token.equals("plannedextensions"))
-                        supportedDecisions.add(UMLDecision.PLANNED_EXTENSIONS);
-                    if (token.equals("relationships"))
-                        supportedDecisions.add(UMLDecision.RELATIONSHIPS);
-                    if (token.equals("statemachines"))
-                        supportedDecisions.add(UMLDecision.STATE_MACHINES);
-                    if (token.equals("stereotypes"))
-                        supportedDecisions.add(UMLDecision.STEREOTYPES);
-                    if (token.equals("storage"))
-                        supportedDecisions.add(UMLDecision.STORAGE);
-                }
-            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
-                    "knowledgetype")) {
-                String ktStr = Model.getFacade().getValueOfTag(tag);
-
-                StringTokenizer st = new StringTokenizer(ktStr, ",;:");
-
-                while (st.hasMoreTokens()) {
-                    String token = st.nextToken().trim().toLowerCase();
-
-                    if (token.equals("completeness"))
-                        knowledgeTypes.add(Critic.KT_COMPLETENESS);
-                    if (token.equals("consistency"))
-                        knowledgeTypes.add(Critic.KT_CONSISTENCY);
-                    if (token.equals("correctness"))
-                        knowledgeTypes.add(Critic.KT_CORRECTNESS);
-                    if (token.equals("designers"))
-                        knowledgeTypes.add(Critic.KT_DESIGNERS);
-                    if (token.equals("experiencial"))
-                        knowledgeTypes.add(Critic.KT_EXPERIENCIAL);
-                    if (token.equals("optimization"))
-                        knowledgeTypes.add(Critic.KT_OPTIMIZATION);
-                    if (token.equals("organizational"))
-                        knowledgeTypes.add(Critic.KT_ORGANIZATIONAL);
-                    if (token.equals("presentation"))
-                        knowledgeTypes.add(Critic.KT_PRESENTATION);
-                    if (token.equals("semantics"))
-                        knowledgeTypes.add(Critic.KT_SEMANTICS);
-                    if (token.equals("syntax"))
-                        knowledgeTypes.add(Critic.KT_SYNTAX);
-                    if (token.equals("tool"))
-                        knowledgeTypes.add(Critic.KT_TOOL);
-                }
-            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
-                    "moreinfourl")) {
-                moreInfoURL = Model.getFacade().getValueOfTag(tag);
-            }
-
-        }
-
-        LOG.debug("OCL-Critic: " + ocl);
-
-        try {
-            return new CrOCL(ocl, headline, description, priority,
-                    supportedDecisions, knowledgeTypes, moreInfoURL);
-        } catch (InvalidOclException e) {
-            LOG.error("Invalid OCL in XMI!", e);
-
-            return null;
-        }
-
-    }
-
-    @SuppressWarnings("unchecked")
-    private Vector<CrUML> getAllCritiquesInModel() {
-        Vector<CrUML> ret = new Vector();
-
-        Collection comments = getAllCommentsInModel(profilePackages);
-
-        for (Object comment : comments) {
-            if (Model.getExtensionMechanismsHelper().hasStereotype(comment,
-                    "Critic")) {
-                CrUML cr = generateCriticFromComment(comment);
-
-                if (cr != null) {
-                    ret.add(cr);
-                }
-            }
-        }
-        return ret;
     }
 
     @SuppressWarnings("unchecked")
