@@ -37,7 +37,7 @@ management of UML profiles with ArgoUML.
   </para>
   <para>
 The Profile subsystem is located in the package 
-<classname>org.argouml.profile</classname> and its subpackages.
+<classname>org.argouml.profile</classname> and its sub-packages.
 In package <classname>org.argouml.profile</classname> there are classes that 
 define almost all the subsystem API, concerning the definition and management 
 of UML profiles. 
@@ -174,7 +174,7 @@ register its UML profile would do:
 Which is a synonym for:
     </para>
     <para>
-<literal>ProfileFacade.getManager().register(profile);</literal>
+<literal>ProfileFacade.getManager().registerProfile(profile);</literal>
     </para>
     <para>
 Another possibility is for the profile manager to register its own profiles.
@@ -226,11 +226,21 @@ The deactivation of the <literal>module</literal> causes the call to the
 <literal>remove(moduleProfile)</literal>, which will unregister the 
 <literal>moduleProfile</literal> in the profile subsystem.
     </para>
+    <note>
+      <para>
+The above described scheme for registering a module defined profile is probably
+deemed for being reviewed if work in progress by Marcos Aur&eacute;lio is
+integrated into ArgoUML trunk.
+For more information see 
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5029">issue 
+#5029: Improve Plugability of Profile Subsystem</ulink>.
+      </para>
+    </note>
 
     <figure id="fig.sequence-diagram-of-the-registering-and-unregistering-of-a-profile" 
             float="1">
-      <title>Class diagram of the <classname>Profile</classname> class and 
-      some derived classes</title>
+      <title>Sequence diagram of the registering and unregistering of a
+        profile</title>
       <screenshot><mediaobject>
         <imageobject>
           <imagedata format="PNG" align="center"
@@ -240,14 +250,11 @@ The deactivation of the <literal>module</literal> causes the call to the
     </figure>
     
     <para>
-TODO: default profiles. Sprinkle GUI over here...
-    </para>
-    <para>
 After a profile is registered, it may be chosen as a default profile by the 
 user.
 A default profile is a profile which is added to new projects by default.
-For this there is the <classname>org.argouml.ui.SettingsTabProfile</classname> 
-class that is part of the ArgoUML application settings dialog and shows the 
+For this there is the class <classname>org.argouml.ui.SettingsTabProfile</classname> 
+that is part of the ArgoUML application settings dialog and shows 
 all the registered profiles, being the profiles set as default profiles shown 
 in a specific list.
     </para>
@@ -275,53 +282,258 @@ For this, it has the operations:
   </itemizedlist>
 
     <para>
-
+Besides the class <classname>org.argouml.ui.SettingsTabProfile</classname> for
+handling application wide settings of the profile subsystem, there is the class 
+<classname>org.argouml.ui.ProjectSettingsTabProfile</classname> to enable the 
+users to modify the profile subsystem project settings, which take the form of 
+an instance of the class 
+<classname>org.argouml.kernel.ProfileConfiguration</classname>.
+The class <classname>org.argouml.ui.ProjectSettingsTabProfile</classname> also 
+shows all the registered profiles, as 
+<classname>org.argouml.ui.SettingsTabProfile</classname> does, but, this time 
+it is to enable the user to add or remove profiles to an open project. 
+In its operation <literal>handleSettingsTabSave()</literal> the changes the
+user did are made in the instance of 
+<classname>org.argouml.kernel.ProfileConfiguration</classname>.
     </para>
-    <para>
-There are two GUI classes that enable the user to see the profiles which are registered is ... TODO
 
-    </para>
-
-    <para>
-TODO: configured profiles in a project. 
-How are these things saved in a project, etc.
-Sprinkle GUI over here...
-    </para>
-    <para>
-TODO: user defined profiles.
+    <para> 
+The <classname>ProfileConfiguration</classname> is a 
+<classname>ProjectMember</classname> and is part of a 
+<classname>Project</classname>.
+It is persisted and loaded to/from a project file by means of an instance of 
+the class <classname>org.argouml.persistence.ProfileConfigurationFilePersister</classname>.
+These two classes aren't part of the profile subsystem, but, are closely 
+related.
+Specifically, the <classname>ProfileConfiguration</classname> is part of the 
+kernel subsystem and the <classname>ProfileConfigurationFilePersister</classname> 
+is part of the <link linkend="subsystem-persistence">persistence subsystem</link>.
     </para>
   </sect2>
 
   <sect2 id="profile-subsys-defining-profiles">
     <title>Defining profiles</title>
     <para>
-TODO: how to programmatically define a profile and provide examples to 
-existing profiles (UML profile for C++) defined in modules.
+It all starts with a XMI file containing a model...
+User defined profiles are simply this, at least from the point of view of the 
+author of the profile.
+So, to define a profile you start by modeling the profile in an ArgoUML project 
+and then export it as XMI.
     </para>
     <para>
-TODO: go a bit into the references that models which use the defined profiles 
-use and why this is important &ndash; hint persistence and need to reopen the 
-containing projects.
+The profile subsystem provides means to add additional features to the 
+profiles, but, for this you must get your hands dirty with a bit of java coding. 
+Recall the <classname>Profile</classname> class in 
+<xref linkend="fig.profile-class-and-some-derived-classes"></xref>.
+The additional things that may be added to an ArgoUML profile, but, which 
+require coding are:
     </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+a <classname>FormatingStrategy</classname>, which provides specific formatting 
+services to profile model elements;
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+a <classname>FigNodeStrategy</classname>, which provides figures to be shown 
+instead of the textual representation of the profile stereotypes;
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+a <classname>DefaultTypeStrategy</classname>, which defines default types for 
+attributes, parameters and return values appropriate for the profile.
+      </para>
+    </listitem>
+  </itemizedlist>
     <para>
-TODO: remember readers that this might change in the medium term if the 
-proposal by Marcos Aur&eacute;lio is accepted.
+Unfortunately these extras are only possible for profiles contained in 
+extension modules, such as the UML profile for C++, or profiles contained 
+within ArgoUML, such as the UML profile of UML.
+This limitation is caused by the need to load the Java classes that would 
+implement the extended behavior.
+    </para>
+    <note>
+      <para>
+If the work in progress by Marcos Aur&eacute;lio is successful and is integrated 
+into ArgoUML it is possible that the above customizations are performed without 
+any Java coding. 
+This could make user defined profiles and module contained profiles virtually 
+equivalent in what concerns the functionality provided.
+For more information see 
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5029">issue 
+#5029: Improve Plugability of Profile Subsystem</ulink>.
+      </para>
+    </note>
+    <para>
+There is a detail that must be taken into account when defining profiles which 
+is the <classname>ProfileReference</classname> that must be associated to each 
+profile.
+See <xref linkend="fig.profile-references"></xref> for a diagram that shows how 
+these classes are associated with <classname>Profile</classname> and 
+<classname>ProfileModelLoader</classname> derived classes.
+    </para>
+
+    <figure id="fig.profile-references" 
+            float="1">
+      <title>Class diagram of the <classname>ProfileReference</classname> class
+        and associated classes</title>
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+            fileref="images/cookbook/profile-references.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+    </figure>
+
+    <para>
+When a profile model is loaded, it must be associated with a 
+<classname>ProfileReference</classname> instance which defines for the profile 
+a path and a public reference (a URL).
+The path part of a profile reference is something that enables ArgoUML to 
+locate and load the actual XMI file.
+The public reference is something that will identify the profile uni-vocally, 
+enabling references to model elements of profiles from other models. 
+Specifically it is very important to guarantee that the persisted models that 
+refer to profiles are correctly loaded in other ArgoUML installations than the 
+ones that originally created the models.
     </para>
   </sect2>
 
   <sect2 id="profile-subsys-history">
     <title>History of the Profile subsystem</title>
     <para>
-TODO: when it was created, by whom and the context.
+The profile subsystem was the result of the 
+<ulink url="http://argouml.tigris.org/gsoc2007/profiles/index.html">Google
+Summer of Code project of Marcos Aur&eacute;lio in 2007</ulink>. 
+Much of the design of 
+<ulink url="http://argouml.tigris.org/gsoc2007/profiles/proposal0/index.html">Marcos' 
+original purposal</ulink> is still present in the subsystem.
+His GSoC mentor was Linus Tolke and the work was integrated into ArgoUML trunk 
+by Tom Morris during September of 2007. 
+Previously Tom Morris was involved in adding support for cross XMI file 
+references, which are required for the profiles to work.
     </para>
     <para>
-TODO: list some of the issues of interest for persons that want to go after 
+After the bulk of the work in creating and integrating the subsystem, we list 
+some issues that might be of interest to persons that want to go after 
 the reasoning behind some of the decisions that took the subsystem to where it 
-is now.
+is now or which should be solved to raise the subsystem to a quality level above 
+average:
     </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=4885">issue #4885: 
+refactoring org.argouml.uml.profile</ulink> 
+&ndash; consisted in a refactoring effort by Lu&iacute;s S&eacute;rgio Oliveira 
+in order to make the subsystem more inline with the canonical form ArgoUML 
+subsystems have;
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=4946">issue #4946: 
+Loading project which references non-default profile doesn't work</ulink> 
+&ndash; a difficult to solve problem that caused persistency failures, which is 
+related to the cross XMI file reference support needed for profiles;
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=4991">issue #4991: 
+Profiles subsystem missing in the cookbook</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=4992">issue #4992: 
+Profiles description is missing from the manual</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=4993">issue #4993: 
+Reloading a profile does not undo edits</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=4994">issue #4994: 
+Editing loaded profile should be prevented</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=4997">issue #4997: 
+user defined profile that depends from module defined profile fails to load on 
+startup</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5040">issue #5040: 
+better error messages when loading of zargo fails due to profile 
+problems</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5043">issue #5043: 
+Profile errors at startup not reported - ProfileManagerImpl.refreshRegisteredProfiles()</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5064">issue #5064: 
+Duplicate xmi.id warning for different files</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5041">issue #5041: 
+provide core profiles via the website</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5088">issue #5088: 
+not possible to save models loaded as profiles</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5100">issue #5100: 
+Profile directory file selection dialog should default to last directory 
+selected</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5101">issue #5101: 
+All ArgoUML supported XMI file extensions should be allowed</ulink>.
+      </para>
+    </listitem>
+  </itemizedlist>
     <para>
-TODO: list some of the issues that might affect the future of the subsystem.
+ Follow some of the issues that might affect the future of the subsystem:
     </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5029">issue #5029: 
+Improve Plugability of Profile Subsystem</ulink>; 
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+<ulink url="http://argouml.tigris.org/issues/show_bug.cgi?id=5042">issue #5042: 
+Constraints defined in the Profile model should work as Critics</ulink>. 
+      </para>
+    </listitem>
+  </itemizedlist>
   </sect2>
 </sect1>
 
