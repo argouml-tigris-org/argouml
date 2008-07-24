@@ -76,6 +76,8 @@ public class ProfileManagerImpl implements ProfileManager {
     private List<String> searchDirectories = new ArrayList<String>();
 
     private Profile profileUML;
+    
+    private Profile profileJava;
 
     /**
      * Constructor - includes initialization of built-in default profiles.
@@ -83,9 +85,14 @@ public class ProfileManagerImpl implements ProfileManager {
     public ProfileManagerImpl() {
         try {
             profileUML = new ProfileUML();
-            addToDefaultProfiles(profileUML);
+            profileJava = new ProfileJava(profileUML);
+            
             registerProfile(profileUML);
-            registerProfile(new ProfileJava(profileUML));
+            addToDefaultProfiles(profileUML); 
+                // the UML Profile is always present and default
+            
+            // register the built-in profiles
+            registerProfile(profileJava);                
             registerProfile(new ProfileMeta());
         } catch (ProfileException e) {
             throw new RuntimeException(e);
@@ -101,26 +108,34 @@ public class ProfileManagerImpl implements ProfileManager {
     private void loadDefaultProfilesfromConfiguration() {    
         disableConfigurationUpdate = true;
         
-        StringTokenizer tokenizer = new StringTokenizer(Configuration
-                .getString(KEY_DEFAULT_PROFILES), DIRECTORY_SEPARATOR, false);
-
-        while (tokenizer.hasMoreTokens()) {
-            String desc = tokenizer.nextToken();
-            Profile p = null;
+        String defaultProfilesList = Configuration
+                        .getString(KEY_DEFAULT_PROFILES);
+        if (defaultProfilesList.equals("")) {
+            // if the list does not exist
+            // add the Java profile as default
             
-            if (desc.charAt(0) == 'U') {
-                String fileName = desc.substring(1);
-                p = findUserDefinedProfile(new File(fileName));                
-            } else if (desc.charAt(0) == 'C') {
-                String className = desc.substring(1);
-                p = getProfileForClass(className);
-            }
+            addToDefaultProfiles(profileJava);
+        } else {
+            StringTokenizer tokenizer = new StringTokenizer(
+                    defaultProfilesList, DIRECTORY_SEPARATOR, false);
 
-            if (p != null) {
-                addToDefaultProfiles(p);
+            while (tokenizer.hasMoreTokens()) {
+                String desc = tokenizer.nextToken();
+                Profile p = null;
+
+                if (desc.charAt(0) == 'U') {
+                    String fileName = desc.substring(1);
+                    p = findUserDefinedProfile(new File(fileName));
+                } else if (desc.charAt(0) == 'C') {
+                    String className = desc.substring(1);
+                    p = getProfileForClass(className);
+                }
+
+                if (p != null) {
+                    addToDefaultProfiles(p);
+                }
             }
         }
-
         disableConfigurationUpdate = false;
     }
 
