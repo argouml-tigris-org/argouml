@@ -2185,9 +2185,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
                     <para>
                       <emphasis>File=&gt;Project Properties.</emphasis>
-                      You can change the Notation language in the
-                      Project Properties dialog as well.
-                      Click on
+                      In the Project Properties dialog it is possible to
+                      configure the project specific settings.
+                      It contains the tabs for User, Profiles, Notations and
+                      Diagram Appearance.
+                      For instance, to change the Notation language in the
+                      Project Properties dialog, click on
                       <emphasis>File=&gt;Project Properties</emphasis> and select
                       the Notations tab.
                       Set the Notation Language to UML1.4.
@@ -9355,7 +9358,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           <title><guiicon><inlinemediaobject><imageobject>
           <imagedata align="center" fileref="images/icons/settings.gif"
            format="GIF"/></imageobject></inlinemediaobject></guiicon>
-           Properties</title>
+           Project Properties</title>
 
           <para>This menu entry brings up a dialog box, which allows 
           the user to set various options
@@ -9367,8 +9370,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           
           <figure float="1" id="fig.ref.menu_properties_user">
 
-            <title>The dialog for Properties - 
-            Notation: The User tab.</title>
+            <title>The dialog for Project Properties - the User tab.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -9411,11 +9413,38 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           </listitem>
 
           </itemizedlist>
+          
+          <figure float="1" id="fig.ref.menu_properties_profiles">
+
+            <title>The dialog for Project Properties &ndash; the Profiles tab.</title>
+
+            <screenshot><mediaobject><imageobject>
+            <imagedata align="center"
+             fileref="images/reference/properties-profiles.gif"
+             format="GIF"/></imageobject></mediaobject></screenshot>
+          </figure>
+          
+          <para>In the Profiles tab, you are able change the following settings:
+          </para>
+          
+          <itemizedlist>
+          <listitem>
+          <para>The type of &ldquo;Stereotype Visualization&rdquo; for the
+	  project, which may be textual, small or with big icons.
+          </para>
+          </listitem>
+          
+          <listitem>
+          <para>The UML profiles which are configured in the project &ndash;
+	  model elements of these UML profiles may be referenced in the project.
+          </para>
+          </listitem>
+
+          </itemizedlist>
 
           <figure float="1" id="fig.ref.menu_properties_notations">
 
-            <title>The dialog for Properties - 
-            Notation: The Notations tab.</title>
+            <title>The dialog for Project Properties - the Notations tab.</title>
 
             <screenshot><mediaobject><imageobject>
             <imagedata align="center"
@@ -9533,7 +9562,20 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               </listitem>
 
         </itemizedlist>
+          
+          <figure float="1" id="fig.ref.menu_properties_diagram_appearance">
 
+            <title>The dialog for Project Properties &ndash; the Diagram Appearance tab.</title>
+
+            <screenshot><mediaobject><imageobject>
+            <imagedata align="center"
+             fileref="images/reference/properties-diagram-appearance.gif"
+             format="GIF"/></imageobject></mediaobject></screenshot>
+          </figure>
+          
+          <para>In the Diagram Appearance tab, you are able change the diagrams
+	  font. </para>
+          
         </sect2>
 
         <sect2>
@@ -10223,6 +10265,47 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 making use of several shades of gray. This feature only 
                 works if the operating system supports it.</para>
 
+              </listitem>
+
+            </itemizedlist>
+
+          </sect3>
+
+          <sect3 id="s3.ref.menu_settings_profiles">
+
+            <title>Profiles Tab</title>
+
+            <para>In this tab the user may configure the ArgoUML application
+	    settings related to the profiles.</para>
+
+            <figure float="1">
+
+              <title>The dialog for <literal>Settings - 
+              Profiles</literal>.</title>
+
+              <screenshot><mediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/reference/menu_settings_profiles.png"
+               format="PNG"/></imageobject></mediaobject></screenshot>
+            </figure>
+
+            <itemizedlist>
+
+              <listitem>
+              <para><literal>Stereotype Visualization</literal> &ndash; select
+              to view stereotypes as text, small or big icons.</para>
+              </listitem>
+
+              <listitem>
+              <para><literal>Default XMI directories</literal> &ndash; allows
+		the user to configure directories where ArgoUML can find the
+	        user defined profiles.</para>
+              </listitem>
+
+              <listitem>
+              <para><literal>Default Profiles</literal> &ndash; select which 
+	      profiles from the available profiles are configured in new
+	      projects by default.</para>
               </listitem>
 
             </itemizedlist>
@@ -41145,8 +41228,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       overloading. To enable us to apply these constructs in our models 
       and be capable of taking advantage of it for code generation and 
       C++ notation in UML diagrams, the C++ module uses conventions in 
-      the use of the extension features of UML, tagged values and 
-      stereotypes.</para>
+      the use of the extension features of UML, such as tagged values, 
+      stereotypes and data types.</para>
 
       <para>Since UML and C++ are object oriented, there is an obvious 
       correspondence between the UML model elements and C++ structural 
@@ -41169,10 +41252,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
       </para>
       
       <para>To have these constructs available in our model, we need to 
-      copy them into the model explicitly via the 
-      <literal>C++ Generator</literal> settings tab, within the 
-      <literal>Settings</literal> dialog, and use the button 
-      <literal>Copy the C++ Profile into the Model</literal>.
+      configure the UML profile for C++ in the model explicitly via the Project
+      Properties dialog, in the Profiles tab
+      (see <xref linkend="s2.ref.menu_properties"/>).
       </para>
 
       <para>Tagged values are one of the main means by which we can 
