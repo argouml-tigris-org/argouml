@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2007 The Regents of the University of California. All
+// Copyright (c) 2004-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,12 +27,18 @@ package org.argouml.uml.ui;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JPanel;
 
 import junit.framework.TestCase;
 
+// Test classes
 import org.argouml.model.InitializeModel;
-import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.util.CheckMain;
+
+// Real classes
+import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.ui.ProjectBrowser;
 
 /**
  * @author Linus Tolke
@@ -57,6 +63,8 @@ public class GUITestActionSaveGraphics extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        ProjectBrowser.makeInstance(null, true, new JPanel());
+        new InitNotationUml().init();
     }
 
     /**
