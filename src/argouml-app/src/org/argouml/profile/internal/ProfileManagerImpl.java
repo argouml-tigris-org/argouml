@@ -81,7 +81,6 @@ public class ProfileManagerImpl implements ProfileManager {
     public ProfileManagerImpl() {
         try {
             Profile uml = new ProfileUML();
-            defaultProfiles.add(uml);
             registerProfile(uml);
             registerProfile(new ProfileJava(uml));
             registerProfile(new ProfileMeta());
