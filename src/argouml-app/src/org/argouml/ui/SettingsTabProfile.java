@@ -63,7 +63,7 @@ import org.argouml.uml.diagram.DiagramAppearance;
 /**
  * The Tab containing the global settings for profiles
  * 
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public class SettingsTabProfile extends JPanel implements
         GUISettingsTabInterface, ActionListener {
@@ -316,8 +316,14 @@ public class SettingsTabProfile extends JPanel implements
             if (defaultList.getSelectedIndex() != -1) {
                 Profile selected = (Profile) modelUsd.getElementAt(defaultList
                         .getSelectedIndex());
-                modelUsd.removeElement(selected);
-                modelAvl.addElement(selected);
+                
+                if (selected == ProfileFacade.getManager().getUMLProfile()) {
+                    JOptionPane.showMessageDialog(this, Translator
+                            .localize("tab.profiles.cantremoveuml"));
+                } else {
+                    modelUsd.removeElement(selected);
+                    modelAvl.addElement(selected);
+                }
             }
         } else if (arg0.getSource() == unregisterProfile) {
             if (availableList.getSelectedIndex() != -1) {

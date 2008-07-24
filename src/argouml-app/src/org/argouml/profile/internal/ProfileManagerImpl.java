@@ -75,14 +75,17 @@ public class ProfileManagerImpl implements ProfileManager {
 
     private List<String> searchDirectories = new ArrayList<String>();
 
+    private Profile profileUML;
+
     /**
      * Constructor - includes initialization of built-in default profiles.
      */
     public ProfileManagerImpl() {
         try {
-            Profile uml = new ProfileUML();
-            registerProfile(uml);
-            registerProfile(new ProfileJava(uml));
+            profileUML = new ProfileUML();
+            addToDefaultProfiles(profileUML);
+            registerProfile(profileUML);
+            registerProfile(new ProfileJava(profileUML));
             registerProfile(new ProfileMeta());
         } catch (ProfileException e) {
             throw new RuntimeException(e);
@@ -190,7 +193,7 @@ public class ProfileManagerImpl implements ProfileManager {
 
 
     public void removeProfile(Profile p) {
-        if (p != null) {
+        if (p != null && p != profileUML) {
             profiles.remove(p);
             defaultProfiles.remove(p);
         }
@@ -224,7 +227,7 @@ public class ProfileManagerImpl implements ProfileManager {
 
 
     public void removeFromDefaultProfiles(Profile p) {
-        if (p != null && profiles.contains(p)) {
+        if (p != null && p != profileUML && profiles.contains(p)) {
             defaultProfiles.remove(p);
             updateDefaultProfilesConfiguration();
         }
@@ -260,7 +263,6 @@ public class ProfileManagerImpl implements ProfileManager {
             }
         }
     }
-
 
     public void refreshRegisteredProfiles() {
 
@@ -308,17 +310,7 @@ public class ProfileManagerImpl implements ProfileManager {
 
 
     public Profile getUMLProfile() {
-        for (Profile p : getRegisteredProfiles())
-            if (p.getDisplayName() != null 
-                    && p.getDisplayName().contains("UML"))
-                return p;
-        Profile p = null;
-        try {
-            p = new ProfileUML();
-        } catch (ProfileException e) {
-            throw new RuntimeException(e);
-        }
-        return p;
+        return profileUML;
     }
 
 }

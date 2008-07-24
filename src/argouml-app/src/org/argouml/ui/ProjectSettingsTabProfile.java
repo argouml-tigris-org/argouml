@@ -63,7 +63,7 @@ import org.argouml.uml.diagram.DiagramAppearance;
  * The Tab where new profiles can be added and the registered ones can be
  * activated or deactivated on current project
  * 
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public class ProjectSettingsTabProfile extends JPanel implements
         GUISettingsTabInterface, ActionListener {
@@ -250,41 +250,47 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 Profile selected = (Profile) modelUsed.getElementAt(usedList
                         .getSelectedIndex());
 
-                List<Profile> dependents = getActiveDependents(selected);
-                boolean remove = true;
+                if (selected == ProfileFacade.getManager().getUMLProfile()) {
+                    JOptionPane.showMessageDialog(this, Translator
+                            .localize("tab.profiles.cantremoveuml"));
+                } else {
+                    List<Profile> dependents = getActiveDependents(selected);
+                    boolean remove = true;
 
-                if (!dependents.isEmpty()) {
-                    String message = Translator.localize(
-                            "tab.profiles.confirmdeletewithdependencies",
-                            new Object[] { dependents });
-                    String title = Translator
-                            .localize("tab.profiles.confirmdeletewithdependencies.title");
-                    remove = (JOptionPane.showConfirmDialog(this, message,
-                            title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
-                }
-
-                if (remove) {
-                    if (!ProfileFacade.getManager().getRegisteredProfiles()
-                            .contains(selected)
-                            && !ProfileFacade.getManager().getDefaultProfiles()
-                                    .contains(selected)) {
-                        remove = (JOptionPane
-                                .showConfirmDialog(
-                                        this,
-                                        Translator
-                                                .localize("tab.profiles.confirmdeleteunregistered"),
-                                        Translator
-                                                .localize("tab.profiles.confirmdeleteunregistered.title"),
-                                        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+                    if (!dependents.isEmpty()) {
+                        String message = Translator.localize(
+                                "tab.profiles.confirmdeletewithdependencies",
+                                new Object[] {dependents});
+                        String title = Translator
+                                .localize("tab.profiles.confirmdeletewithdependencies.title");
+                        remove = (JOptionPane.showConfirmDialog(this, message,
+                                title, JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
                     }
 
                     if (remove) {
-                        modelUsed.removeElement(selected);
-                        modelAvailable.addElement(selected);
+                        if (!ProfileFacade.getManager().getRegisteredProfiles()
+                                .contains(selected)
+                                && !ProfileFacade.getManager()
+                                        .getDefaultProfiles()
+                                        .contains(selected)) {
+                            remove = (JOptionPane
+                                    .showConfirmDialog(
+                                            this,
+                                            Translator
+                                                    .localize("tab.profiles.confirmdeleteunregistered"),
+                                            Translator
+                                                    .localize("tab.profiles.confirmdeleteunregistered.title"),
+                                            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION);
+                        }
 
-                        for (Profile profile : dependents) {
-                            modelUsed.removeElement(profile);
-                            modelAvailable.addElement(profile);
+                        if (remove) {
+                            modelUsed.removeElement(selected);
+                            modelAvailable.addElement(selected);
+
+                            for (Profile profile : dependents) {
+                                modelUsed.removeElement(profile);
+                                modelAvailable.addElement(profile);
+                            }
                         }
                     }
                 }
