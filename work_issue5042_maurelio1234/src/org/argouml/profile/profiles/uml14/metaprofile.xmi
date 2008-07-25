@@ -1,5 +1,5 @@
 <?xml version = '1.0' encoding = 'UTF-8' ?>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Thu Jul 17 07:16:58 CEST 2008'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Fri Jul 25 09:56:02 CEST 2008'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>PRE-0.26.beta1(6) revised on $Date: 2007-05-12 08:08:08 +0200 (sam., 12 mai 2007) $ </XMI.exporterVersion>
@@ -7,7 +7,7 @@
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
     <UML:Model xmi.id = '127-0-1-1--3790810c:11a1f2b16a5:-8000:00000000000007BD'
-      name = 'ArgoUMLProfile' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
+      name = 'metaprofile' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
       isAbstract = 'false'>
       <UML:ModelElement.stereotype>
         <UML:Stereotype href = 'http://argouml.org/profiles/uml14/default-uml14.xmi#.:0000000000000877'/>
@@ -105,6 +105,17 @@
             <UML:Multiplicity xmi.id = '127-0-1-1--690faa61:11b2f4ae818:-8000:00000000000008B8'>
               <UML:Multiplicity.range>
                 <UML:MultiplicityRange xmi.id = '127-0-1-1--690faa61:11b2f4ae818:-8000:00000000000008B9'
+                  lower = '0' upper = '1'/>
+              </UML:Multiplicity.range>
+            </UML:Multiplicity>
+          </UML:TagDefinition.multiplicity>
+        </UML:TagDefinition>
+        <UML:TagDefinition xmi.id = '127-0-1-1--4d07ba8d:11b593372d3:-8000:00000000000008D7'
+          name = 'i18n' isSpecification = 'false'>
+          <UML:TagDefinition.multiplicity>
+            <UML:Multiplicity xmi.id = '127-0-1-1--4d07ba8d:11b593372d3:-8000:00000000000008DB'>
+              <UML:Multiplicity.range>
+                <UML:MultiplicityRange xmi.id = '127-0-1-1--4d07ba8d:11b593372d3:-8000:00000000000008DA'
                   lower = '0' upper = '1'/>
               </UML:Multiplicity.range>
             </UML:Multiplicity>
