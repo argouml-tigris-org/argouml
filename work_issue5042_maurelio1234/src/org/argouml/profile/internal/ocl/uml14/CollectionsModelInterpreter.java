@@ -50,6 +50,15 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
     @SuppressWarnings("unchecked")
     public Object invokeFeature(HashMap<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters) {
+
+        if (!(subject instanceof Collection)) {
+            if (type.equals("->")) {
+                Set ns = new HashSet();
+                ns.add(subject);
+                subject = ns;
+            }
+        }
+        
         if (subject instanceof Collection) {
             if (type.equals("->")) {
                 if (feature.toString().trim().equals("select")) {
@@ -419,13 +428,6 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
             }
         }
 
-        if (!(subject instanceof Collection)) {
-            if (type.equals("->")) {
-                Set ns = new HashSet();
-                ns.add(subject);
-                return ns;
-            }
-        }
         return null;
     }
 

@@ -32,11 +32,11 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 
 /**
- * These test cases were written according to OCL 1.4 Spec Section 8
+ * Tests for the EvaluateExpression class.
  * 
  * @author maurelio1234
  */
-public class TestCrOCL2 extends TestCase {
+public class TestDefaultOclEvaluator extends TestCase {
 
     @Override
     protected void setUp() throws Exception {
@@ -45,44 +45,12 @@ public class TestCrOCL2 extends TestCase {
     }
 
     /**
-     * Test collections operations in objects (section ?)
+     * Test the basic values and types (section 8.4)
      * 
      * @throws Exception if something goes wrong
      */
-    public void testObjectAsCollection() throws Exception {
-        Object obj = Model.getUseCasesFactory().createActor();
-
-        testOclOK(obj, "context Actor inv: 2->size() = 1");
-        testOclFails(obj, "context Actor inv: 2->size() = 0");
+    public void testBasicValuesAndTypes() throws Exception {
+        assertEquals(DefaultOclEvaluator.getInstance()
+                .evaluate(null, null, "5"), 5);
     }
-
-    /**
-     * Test the self variable (section 8.3.1)
-     * 
-     * @throws Exception if something goes wrong
-     */
-    public void testSelf() throws Exception {
-        Object obj = Model.getUseCasesFactory().createActor();
-
-        Model.getCoreHelper().setName(obj, "actor1");
-        testOclOK(obj, "context Actor inv: self.name = 'actor1'");
-        testOclFails(obj, "context Actor inv: self.name.size() = 7");
-    }
-    
-    private void testOclOK(Object obj, String oclExp) throws InvalidOclException {
-        CrOCL ocl = new CrOCL(oclExp, null, null,
-                null, null, null, null);
-
-        assertEquals(ocl.predicate2(obj, Designer.theDesigner()),
-                Critic.NO_PROBLEM);
-    }
-
-    private void testOclFails(Object obj, String oclExp) throws InvalidOclException {
-        CrOCL ocl = new CrOCL(oclExp, null, null,
-                null, null, null, null);
-
-        assertEquals(ocl.predicate2(obj, Designer.theDesigner()),
-                Critic.PROBLEM_FOUND);
-    }
-
 }

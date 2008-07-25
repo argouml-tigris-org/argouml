@@ -24,10 +24,14 @@
 
 package org.argouml.profile.internal.ocl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.profile.internal.ocl.uml14.HashBag;
 
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
 import tudresden.ocl.parser.node.AActualParameterList;
@@ -39,6 +43,7 @@ import tudresden.ocl.parser.node.ADivMultiplyOperator;
 import tudresden.ocl.parser.node.AEmptyFeatureCallParameters;
 import tudresden.ocl.parser.node.AEnumLiteral;
 import tudresden.ocl.parser.node.AEqualRelationalOperator;
+import tudresden.ocl.parser.node.AExpressionListOrRange;
 import tudresden.ocl.parser.node.AFeatureCall;
 import tudresden.ocl.parser.node.AFeatureCallParameters;
 import tudresden.ocl.parser.node.AFeaturePrimaryExpression;
@@ -49,6 +54,7 @@ import tudresden.ocl.parser.node.AImpliesLogicalOperator;
 import tudresden.ocl.parser.node.AIntegerLiteral;
 import tudresden.ocl.parser.node.AIterateDeclarator;
 import tudresden.ocl.parser.node.ALetExpression;
+import tudresden.ocl.parser.node.AListExpressionListOrRangeTail;
 import tudresden.ocl.parser.node.ALiteralCollection;
 import tudresden.ocl.parser.node.ALogicalExpressionTail;
 import tudresden.ocl.parser.node.ALtRelationalOperator;
@@ -71,6 +77,7 @@ import tudresden.ocl.parser.node.AXorLogicalOperator;
 import tudresden.ocl.parser.node.PActualParameterListTail;
 import tudresden.ocl.parser.node.PDeclaratorTail;
 import tudresden.ocl.parser.node.PExpression;
+import tudresden.ocl.parser.node.PExpressionListTail;
 
 /**
  * Evaluates OCL expressions, this class should not depend on the model
@@ -106,7 +113,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
      * The model interpreter
      */
     private ModelInterpreter interp = null;
-
+    
     /**
      * Constructor
      * 
@@ -118,18 +125,37 @@ public class EvaluateExpression extends DepthFirstAdapter {
     }
 
     /**
+     * Constructor
+     * 
+     * @param vt the variable table
+     * @param mi model interpreter
+     */
+    public EvaluateExpression(HashMap<String, Object> vt, ModelInterpreter mi) {
+        reset(vt, mi);
+    }
+    
+    /**
      * Resets the internal state of this adapter
      * 
      * @param mi the model interpreter
      * @param element the model element
      */
-    public void reset(Object element, ModelInterpreter mi) {
-        this.interp = mi;
-
-        val = null;
-        fwd = null;
+    public void reset(Object element, ModelInterpreter mi) {        
         vt = new HashMap<String, Object>();
         vt.put("self", element);
+        reset(vt, mi);
+    }
+
+    /**
+     * @param newVT the variable table
+     * @param mi the model interpreter
+     */
+    public void reset(HashMap<String, Object> newVT, ModelInterpreter mi) {
+        this.interp = mi;
+
+        this.val = null;
+        this.fwd = null;
+        this.vt = newVT;
     }
 
     /**
@@ -138,7 +164,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
     public Object getValue() {
         return val;
     }
-
+    
     /** Interpreter Code * */
 
     /**
@@ -565,7 +591,8 @@ public class EvaluateExpression extends DepthFirstAdapter {
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAStringLiteral(tudresden.ocl.parser.node.AStringLiteral)
      */
     public void outAStringLiteral(AStringLiteral node) {
-        val = node.getStringLit().getText();
+        String text = node.getStringLit().getText();
+        val = text.substring(1,text.length()-1); 
         defaultOut(node);
     }
 
@@ -602,15 +629,91 @@ public class EvaluateExpression extends DepthFirstAdapter {
         val = null;
         defaultOut(node);
     }
+    
+    /**
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseALiteralCollection(tudresden.ocl.parser.node.ALiteralCollection)
+     */
+    public void caseALiteralCollection(ALiteralCollection node)
+    {
+        Collection<Object> col = null;
+        
+        inALiteralCollection(node);
+        if(node.getCollectionKind() != null)
+        {
+            node.getCollectionKind().apply(this);
+            
+            String kind = node.getCollectionKind().toString();
+            if (kind.equalsIgnoreCase("Set")) {
+                col = new HashSet<Object>();
+            } else if (kind.equals("Sequence")) {
+                col = new ArrayList<Object>();
+            } else if (kind.equals("Bag")) {
+                col = new HashBag<Object>();                
+            }
+        }        
+        if(node.getLBrace() != null)
+        {
+            node.getLBrace().apply(this);
+        }
+        if(node.getExpressionListOrRange() != null)
+        {
+            val = null;
+            node.getExpressionListOrRange().apply(this);
+            col.addAll((Collection<Object>) val);
+        }
+        if(node.getRBrace() != null)
+        {
+            node.getRBrace().apply(this);
+        }
+        val = col;
+        outALiteralCollection(node);
+    }
 
     /**
-     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outALiteralCollection(tudresden.ocl.parser.node.ALiteralCollection)
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAExpressionListOrRange(tudresden.ocl.parser.node.AExpressionListOrRange)
      */
-    public void outALiteralCollection(ALiteralCollection node) {
-        // TODO support collections
-        val = new Vector<Object>();
-        defaultOut(node);
+    public void caseAExpressionListOrRange(AExpressionListOrRange node)
+    {
+        Vector<Object> ret = new Vector<Object>();
+        inAExpressionListOrRange(node);
+        if(node.getExpression() != null)
+        {
+            val = null;
+            node.getExpression().apply(this);     
+            ret.add(val);
+        }
+        if(node.getExpressionListOrRangeTail() != null)
+        {
+            val = null;
+            node.getExpressionListOrRangeTail().apply(this);
+            ret.addAll((Collection<? extends Object>) val);
+        }
+        val = ret;
+        outAExpressionListOrRange(node);
     }
+
+    /**
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAListExpressionListOrRangeTail(tudresden.ocl.parser.node.AListExpressionListOrRangeTail)
+     */
+    public void caseAListExpressionListOrRangeTail(AListExpressionListOrRangeTail node)
+    {
+        // TODO support other kinds of tail
+        
+        inAListExpressionListOrRangeTail(node);
+        {
+            Vector<Object> ret = new Vector<Object>();
+            Object temp[] = node.getExpressionListTail().toArray();
+            for(int i = 0; i < temp.length; i++)
+            {
+                val = null;
+                ((PExpressionListTail) temp[i]).apply(this);
+                ret.add(val);
+            }
+            val = ret;
+        }
+        outAListExpressionListOrRangeTail(node);
+    }
+    
 
     /**
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeatureCall(tudresden.ocl.parser.node.AFeatureCall)
