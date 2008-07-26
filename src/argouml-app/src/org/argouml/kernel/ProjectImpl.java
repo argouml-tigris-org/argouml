@@ -1157,4 +1157,19 @@ public class ProjectImpl implements java.io.Serializable, Project {
         members.add(pc);        
     }
 
+    public boolean isEditableUMLElement(Object handle) {
+        if (!Model.getFacade().isAUMLElement(handle)) {
+            throw new IllegalArgumentException(
+                    "A UML element must be supplied");
+        }
+
+        Object elem;
+        Object container = handle;
+        do {
+            elem = container;
+            container = Model.getFacade().getModelElementContainer(elem);
+        } while (container != null);
+
+        return getUserDefinedModels().contains(elem);
+    }
 }

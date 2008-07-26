@@ -706,4 +706,14 @@ public interface Project {
      * @return the UndoManager for this project
      */
     public UndoManager getUndoManager();
+    
+    /**
+     * Returns if a given UML element is editable. Currently, an element
+     * is editable if and only if it belongs to the user model, not to a
+     * profile model.
+     * 
+     * @param handle the model element
+     * @return true if model element is editable, else false
+     */
+    public boolean isEditableUMLElement(Object handle);
 }
