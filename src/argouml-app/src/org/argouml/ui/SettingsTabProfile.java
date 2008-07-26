@@ -71,9 +71,6 @@ public class SettingsTabProfile extends JPanel implements
     private JButton loadFromFile = new JButton(Translator
             .localize("tab.profiles.userdefined.load"));
 
-    private JButton unregisterProfile = new JButton(Translator
-            .localize("tab.profiles.userdefined.unload"));
-
     private JButton addButton = new JButton(">>");
 
     private JButton removeButton = new JButton("<<");
@@ -200,11 +197,9 @@ public class SettingsTabProfile extends JPanel implements
         JPanel lffPanel = new JPanel();
         lffPanel.setLayout(new FlowLayout());
         lffPanel.add(loadFromFile);
-        lffPanel.add(unregisterProfile);
         lffPanel.add(refreshProfiles);
 
         loadFromFile.addActionListener(this);
-        unregisterProfile.addActionListener(this);
         refreshProfiles.addActionListener(this);
 
         profileSettings.add(lffPanel);
@@ -323,18 +318,6 @@ public class SettingsTabProfile extends JPanel implements
                 } else {
                     modelUsd.removeElement(selected);
                     modelAvl.addElement(selected);
-                }
-            }
-        } else if (arg0.getSource() == unregisterProfile) {
-            if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvl
-                        .getElementAt(availableList.getSelectedIndex());
-                if (selected instanceof UserDefinedProfile) {
-                    ProfileFacade.getManager().removeProfile(selected);
-                    modelAvl.removeElement(selected);
-                } else {
-                    JOptionPane.showMessageDialog(this, Translator
-                            .localize("tab.profiles.cannotdelete"));
                 }
             }
         } else if (arg0.getSource() == loadFromFile) {
