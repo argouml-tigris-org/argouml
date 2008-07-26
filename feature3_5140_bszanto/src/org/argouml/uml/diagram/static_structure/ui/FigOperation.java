@@ -25,8 +25,10 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
@@ -93,6 +95,52 @@ public class FigOperation extends FigFeature {
     protected int getFigFontStyle() {
         return Model.getFacade().isAbstract(getOwner()) 
             ? Font.ITALIC : Font.PLAIN;
+    }
+    
+    /**
+     * Cyclies the visibility of an operation when clicking in the beggining 
+     * part of the FigOperation.
+     * @param r Hit rectangle.
+     * @author bszanto
+     */
+    public void changeVisibility(Rectangle r) {
+        if (super.hit(r)) {         
+            String notation = ProjectManager.getManager().getCurrentProject()
+                    .getProjectSettings().getNotationLanguage();
+            
+            // The hit zone is different for the different notations.
+            // Java uses words (public, protected, private) while UML 1.4 uses
+            // signs (+, -, ~, #).
+            int offset = 0;
+            if (notation.equals("Java")) {
+                offset = 50;
+            } else if (notation.equals("UML 1.4")) {
+                offset = 10;
+            }
+             
+            if (r.x < (_x + offset)) {
+                Object operation = getOwner();
+                Object visibity = Model.getFacade().getVisibility(operation);
+                
+                // visibility is chandes according to prop panel order which is:
+                // public, package, protected, private
+                if (Model.getVisibilityKind().getPrivate().equals(visibity)) {
+                    Model.getCoreHelper().setVisibility(operation,
+                            Model.getVisibilityKind().getPublic());
+                } else if (Model.getVisibilityKind().getPublic().equals(
+                        visibity)) {
+                    Model.getCoreHelper().setVisibility(operation,
+                            Model.getVisibilityKind().getPackage());
+                } else if (Model.getVisibilityKind().getPackage().equals(
+                        visibity)) {
+                    Model.getCoreHelper().setVisibility(operation,
+                            Model.getVisibilityKind().getProtected());
+                } else {
+                    Model.getCoreHelper().setVisibility(operation,
+                            Model.getVisibilityKind().getPrivate());
+                }
+            }
+        }
     }
 
 }

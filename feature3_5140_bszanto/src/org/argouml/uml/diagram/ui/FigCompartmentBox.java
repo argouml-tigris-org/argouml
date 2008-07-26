@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigAttribute;
+import org.argouml.uml.diagram.static_structure.ui.FigOperation;
 import org.argouml.uml.diagram.static_structure.ui.SelectionClass;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -116,9 +117,11 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
                 2,
                 2);
         
-        if (highlightedFigText instanceof FigAttribute) {
-            // try to change visibility
+        // try to change visibility
+        if (highlightedFigText instanceof FigAttribute) { 
             ((FigAttribute) highlightedFigText).changeVisibility(r);
+        } else if (highlightedFigText instanceof FigOperation) {
+            ((FigOperation) highlightedFigText).changeVisibility(r);
         }
         
         unhighlight();
