@@ -1170,6 +1170,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
             container = Model.getFacade().getModelElementContainer(elem);
         } while (container != null);
 
-        return getUserDefinedModels().contains(elem);
+        return getUserDefinedModelList().contains(elem);
     }
 }
