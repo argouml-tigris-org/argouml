@@ -45,18 +45,6 @@ public class TestCrOCL2 extends TestCase {
     }
 
     /**
-     * Test collections operations in objects (section ?)
-     * 
-     * @throws Exception if something goes wrong
-     */
-    public void testObjectAsCollection() throws Exception {
-        Object obj = Model.getUseCasesFactory().createActor();
-
-        testOclOK(obj, "context Actor inv: 2->size() = 1");
-        testOclFails(obj, "context Actor inv: 2->size() = 0");
-    }
-
-    /**
      * Test the self variable (section 8.3.1)
      * 
      * @throws Exception if something goes wrong
@@ -69,7 +57,8 @@ public class TestCrOCL2 extends TestCase {
         testOclFails(obj, "context Actor inv: self.name.size() = 7");
     }
     
-    private void testOclOK(Object obj, String oclExp) throws InvalidOclException {
+    private void testOclOK(Object obj, String oclExp) 
+            throws InvalidOclException {
         CrOCL ocl = new CrOCL(oclExp, null, null,
                 null, null, null, null);
 
@@ -77,7 +66,8 @@ public class TestCrOCL2 extends TestCase {
                 Critic.NO_PROBLEM);
     }
 
-    private void testOclFails(Object obj, String oclExp) throws InvalidOclException {
+    private void testOclFails(Object obj, String oclExp) 
+            throws InvalidOclException {
         CrOCL ocl = new CrOCL(oclExp, null, null,
                 null, null, null, null);
 

@@ -230,7 +230,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
         Object right = val;
         val = null;
 
-        if (left != null && op != null && right != null) {
+        if (op != null) {
             if (op instanceof AAndLogicalOperator) {
                 val = asBoolean(left, node) && asBoolean(right, node);
             } else if (op instanceof AImpliesLogicalOperator) {
@@ -577,13 +577,14 @@ public class EvaluateExpression extends DepthFirstAdapter {
         }
         if (node.getExpression() != null) {
             node.getExpression().apply(this);
+            value = val;
         }
         if (node.getTIn() != null) {
             node.getTIn().apply(this);
         }
 
         vt.put(("" + name).trim(), value);
-        val = value;
+        val = null;
         outALetExpression(node);
     }
 
@@ -642,12 +643,12 @@ public class EvaluateExpression extends DepthFirstAdapter {
         {
             node.getCollectionKind().apply(this);
             
-            String kind = node.getCollectionKind().toString();
+            String kind = node.getCollectionKind().toString().trim();
             if (kind.equalsIgnoreCase("Set")) {
                 col = new HashSet<Object>();
-            } else if (kind.equals("Sequence")) {
+            } else if (kind.equalsIgnoreCase("Sequence")) {
                 col = new ArrayList<Object>();
-            } else if (kind.equals("Bag")) {
+            } else if (kind.equalsIgnoreCase("Bag")) {
                 col = new HashBag<Object>();                
             }
         }        
@@ -803,8 +804,22 @@ public class EvaluateExpression extends DepthFirstAdapter {
             parameters = new Vector<Object>();
         }
 
-        return interp.invokeFeature(vt, subject, feature.toString().trim(),
-                type.toString().trim(), parameters.toArray());
+        // XXX this should be done in CollectionsModelInterpreter
+        // but it can't trigger another invokeFeature...
+        
+        if ((subject instanceof Collection)
+                && type.toString().trim().equals(".")) {
+            Collection col = (Collection) subject;
+            HashBag<Object> res = new HashBag<Object>();
+            for (Object obj : col) {
+                res.add(interp.invokeFeature(vt, obj,
+                        feature.toString().trim(), ".", parameters.toArray()));
+            }
+            return res;
+        } else {
+            return interp.invokeFeature(vt, subject, feature.toString().trim(),
+                    type.toString().trim(), parameters.toArray());
+        }
     }
 
     /** Error Handling * */

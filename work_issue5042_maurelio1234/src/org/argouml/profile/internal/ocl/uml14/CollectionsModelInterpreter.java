@@ -58,7 +58,7 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
                 subject = ns;
             }
         }
-        
+
         if (subject instanceof Collection) {
             if (type.equals("->")) {
                 if (feature.toString().trim().equals("select")) {
@@ -142,7 +142,7 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
 
                     vt.put(varName, oldVal);
 
-                    return col;
+                    return res;
                 } else if (feature.toString().trim().equals("exists")) {
                     Vector<String> vars = (Vector<String>) parameters[0];
                     Object exp = parameters[1];
@@ -191,63 +191,63 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
                     vt.put(varName, oldVal);
 
                     return true;
-                }
-            } else if (feature.toString().trim().equals("one")) {
-                Vector<String> vars = (Vector<String>) parameters[0];
-                Object exp = parameters[1];
-                LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
+                } else if (feature.toString().trim().equals("one")) {
+                    Vector<String> vars = (Vector<String>) parameters[0];
+                    Object exp = parameters[1];
+                    LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
-                Collection col = (Collection) subject;
+                    Collection col = (Collection) subject;
 
-                // TODO is it possible to use more than one variable?
-                String varName = vars.elementAt(0);
-                Object oldVal = vt.get(varName);
-                boolean found = false;
+                    // TODO is it possible to use more than one variable?
+                    String varName = vars.elementAt(0);
+                    Object oldVal = vt.get(varName);
+                    boolean found = false;
 
-                for (Object object : col) {
-                    vt.put(varName, object);
+                    for (Object object : col) {
+                        vt.put(varName, object);
 
-                    Object val = eval.evaluate(vt, exp);
-                    if (val instanceof Boolean && (Boolean) val) {
-                        if (!found) {
-                            found = true;
-                        } else {
-                            return false;
+                        Object val = eval.evaluate(vt, exp);
+                        if (val instanceof Boolean && (Boolean) val) {
+                            if (!found) {
+                                found = true;
+                            } else {
+                                return false;
+                            }
                         }
                     }
-                }
 
-                vt.put(varName, oldVal);
+                    vt.put(varName, oldVal);
 
-                return found;
-            } else if (feature.toString().trim().equals("any")) {
-                Vector<String> vars = (Vector<String>) parameters[0];
-                Object exp = parameters[1];
-                LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
+                    return found;
+                } else if (feature.toString().trim().equals("any")) {
+                    Vector<String> vars = (Vector<String>) parameters[0];
+                    Object exp = parameters[1];
+                    LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
-                Collection col = (Collection) subject;
+                    Collection col = (Collection) subject;
 
-                // TODO is it possible to use more than one variable?
-                String varName = vars.elementAt(0);
-                Object oldVal = vt.get(varName);
+                    // TODO is it possible to use more than one variable?
+                    String varName = vars.elementAt(0);
+                    Object oldVal = vt.get(varName);
 
-                for (Object object : col) {
-                    vt.put(varName, object);
+                    for (Object object : col) {
+                        vt.put(varName, object);
 
-                    Object val = eval.evaluate(vt, exp);
-                    if (val instanceof Boolean && (Boolean) val) {
-                        return object;
+                        Object val = eval.evaluate(vt, exp);
+                        if (val instanceof Boolean && (Boolean) val) {
+                            return object;
+                        }
                     }
+
+                    vt.put(varName, oldVal);
+
+                    return null;
                 }
 
-                vt.put(varName, oldVal);
-
-                return null;
+                // TODO implement iterate()
+                // TODO implement sortedBy()
+                // TODO implement subSequence()
             }
-
-            // TODO implement iterate()
-            // TODO implement sortedBy()
-            // TODO implement subSequence()
         }
 
         // these operations are ok for lists too

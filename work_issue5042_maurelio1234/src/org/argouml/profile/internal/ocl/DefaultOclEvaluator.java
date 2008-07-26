@@ -35,7 +35,7 @@ import tudresden.ocl.parser.node.Start;
 /**
  * Evaluates ocl expressions
  *
- * @author maurelio
+ * @author maurelio1234
  */
 public class DefaultOclEvaluator implements OclExpressionEvaluator {
 

@@ -70,7 +70,7 @@ public class HashBag<E> implements Bag<E> {
      */
     public boolean add(E e) {
         if (map.get(e) == null) {
-            map.put(e, 0);
+            map.put(e, 1);
         } else {
             map.put(e, map.get(e) + 1);
         }
@@ -186,4 +186,35 @@ public class HashBag<E> implements Bag<E> {
         return map.keySet().toArray(a);
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return map.toString();
+    }
+    
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @SuppressWarnings("unchecked")
+    public boolean equals(Object obj) {
+        if (obj instanceof Bag) {
+            Bag bag = (Bag) obj;
+            for (Object object : bag) {
+                if (count(object) != bag.count(object)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+        return map.hashCode() * 35;
+    }
 }
