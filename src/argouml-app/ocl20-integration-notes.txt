@@ -35,11 +35,11 @@ tudresden.ocl20.integration (no changes from version forked? double check agains
 SourceForge SVN at https://dresden-ocl.svn.sourceforge.net/svnroot/dresden-ocl/trunk/ocl20/src/tudresden/ocl20/integration
 
 - doesn't appear to be included in jar ocl20jmiimpl.jar, so perhaps they are modified in some way that we need
-- the following diffs 
+- the following diffs:
 
-Classes.java - no changes
-ModelFacade.java - replaceRefProject & getElement methods added
-OCLChecker.java - transaction rollback supported added to SourceForge version
+  Classes.java - no changes
+  ModelFacade.java - replaceRefProject & getElement methods added
+  OCLChecker.java - transaction rollback supported added to SourceForge version
 
 
 
@@ -53,7 +53,10 @@ Changes
 Questions
 ---------
 - What is compatibility story between old OCL and new OCL constraints?
-
+- Where can we put the OCL merged metamodel?  It appears to look for 
+  "MetamodelsWithOcl" on the classpath using the resource loader and then
+  attempts to load the metamodel from the same place (as a peer, not in the
+  directory itself).
 
 Modified Files for Initial Commit (included during creation of branch)
 
