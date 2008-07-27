@@ -101,6 +101,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
 
     /**
      * Flag to indicate we are creating a new current project.
+     * TODO: This isn't a thread-safe way of doing mutual exclusion.
      */
     private boolean creatingCurrentProject;
 
