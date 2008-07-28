@@ -27,11 +27,10 @@ package org.argouml.model.mdr;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
 import javax.jmi.reflect.RefObject;
+import javax.jmi.reflect.RefPackage;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
@@ -40,7 +39,6 @@ import org.argouml.model.XmiWriter;
 import org.netbeans.api.xmi.XMIWriter;
 import org.netbeans.api.xmi.XMIWriterFactory;
 import org.netbeans.lib.jmi.xmi.OutputConfig;
-import org.omg.uml.UmlPackage;
 
 /**
  * XmiWriter implementation for MDR.
@@ -153,31 +151,14 @@ class XmiWriterMDRImpl implements XmiWriter {
         XMIWriter xmiWriter = XMIWriterFactory.getDefault().createXMIWriter(
                 config);
         try {
-            ArrayList elements = new ArrayList();
-            UmlPackage pkg = (org.omg.uml.UmlPackage) ((RefObject) model)
-                    .refOutermostPackage();
-            // Make sure user model is first
-            elements.add(model);
-            for (Iterator it = pkg.getCore().getElement().refAllOfType()
-                    .iterator(); it.hasNext();) {
-                RefObject obj = (RefObject) it.next();
-                // Find top level objects which aren't part of profile
-                if (obj.refImmediateComposite() == null) {
-                    if (!elements.contains(obj)) {
-                        elements.add(obj);
-                    }
-                }
-            }
-            LOG.info("Saving " + elements.size() + " top level model elements");
-
             OutputStream stream;
             if (oStream == null) {
                 stream = new WriterOuputStream(writer);                
             } else {
                 stream = oStream;
             }
-
-            xmiWriter.write(stream, "file:///ThisIsADummyName.xmi", elements,
+            RefPackage extent = ((RefObject) model).refOutermostPackage();
+            xmiWriter.write(stream, "file:///ThisIsADummyName.xmi", extent,
                     XMI_VERSION);
         } catch (IOException e) {
             throw new UmlException(e);
