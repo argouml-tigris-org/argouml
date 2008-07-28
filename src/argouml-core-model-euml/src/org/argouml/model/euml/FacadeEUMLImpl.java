@@ -39,6 +39,7 @@ import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.xml.type.AnyType;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.ActivityPartition;
@@ -810,7 +811,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getName(Object handle) {
-        if (!(handle instanceof Element) && !(handle instanceof String)) {
+        if (!(handle instanceof EObject) // should be Element not EObject really
+                && !(handle instanceof String)) {
             throw new IllegalArgumentException();
         }
         if (handle instanceof String) {
@@ -826,7 +828,7 @@ class FacadeEUMLImpl implements Facade {
             // no longer named.  For a transitional period we'll
             // return a String to debug can continue, but the
             // calling code should probably be fixed. - tfm 20070607
-            return ""; //$NON-NLS-1$
+            return handle.toString();
         }
 //        throw new IllegalArgumentException();
     }
