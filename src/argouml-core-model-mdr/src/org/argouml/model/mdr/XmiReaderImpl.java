@@ -151,18 +151,31 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         
         Collection<RefObject> newElements = Collections.emptyList();
 
-        RefPackage extent;
-        try {
-            extent = modelImpl.getRepository().createExtent(
-                    inputSource.getSystemId(), modelImpl.getMofPackage());
-        } catch (CreationFailedException e1) {
-            throw new UmlException("Extent creation failed", e1);
+        String extentName = inputSource.getSystemId();
+        if (extentName == null) {
+            extentName = inputSource.getPublicId();
+        }
+        if (extentName == null) {
+            extentName = modelImpl.MODEL_EXTENT_NAME;
+        }
+        RefPackage extent = modelImpl.getRepository().getExtent(extentName);
+        if (extent != null) {
+            LOG.warn("Using existing extent " + extentName);
+            // extent.refDelete();
+        } else {
+
+            try {
+                extent = modelImpl.getRepository().createExtent(
+                        inputSource.getSystemId(), modelImpl.getMofPackage());
+            } catch (CreationFailedException e1) {
+                throw new UmlException("Extent creation failed", e1);
+            }
+
+            modelImpl.addExtent((UmlPackage) extent, readOnly);
         }
         
-        modelImpl.addExtent((UmlPackage) extent, readOnly);
-        
         try {
-            LOG.info("Loading '" + inputSource.getSystemId() + "'");
+            LOG.info("Loading to extent'" + extentName + "'");
 
             InputConfig config = new InputConfig();
             config.setUnknownElementsListener(this);
