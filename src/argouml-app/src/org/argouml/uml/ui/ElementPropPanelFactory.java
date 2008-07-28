@@ -252,7 +252,12 @@ class ElementPropPanelFactory implements PropPanelFactory {
             }
         } else if (Model.getFacade().isAUseCase(element)) {
             return new PropPanelUseCase();
-        }
+        } 
+        
+        // TODO: In UML 2.x Associations will fall through here because they
+        // are Classifiers as well as Relationships, but we test for Classifier
+        // first.
+        
         throw new IllegalArgumentException("Unsupported Element type");
     }
 

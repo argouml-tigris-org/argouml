@@ -36,7 +36,9 @@ import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a Association.
- *
+ * <p>
+ * TODO: In UML 2.x an Association is both a Relationship and a Classifier, so
+ * this inheritance hierarchy needs to be changed.
  */
 public class PropPanelAssociation extends PropPanelRelationship {
 
