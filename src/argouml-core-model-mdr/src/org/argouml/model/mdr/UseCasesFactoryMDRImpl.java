@@ -245,8 +245,9 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException();
         }
         // Delete Extends which have this as their only ExtensionPoint
-        Collection xtends = modelImpl.getUmlPackage().getUseCases()
-                .getAExtensionPointExtend().getExtend((ExtensionPoint) elem);
+        ExtensionPoint ep = (ExtensionPoint) elem;
+        Collection xtends = ((org.omg.uml.UmlPackage) ep.refOutermostPackage())
+                .getUseCases().getAExtensionPointExtend().getExtend(ep);
         for (Iterator it = xtends.iterator(); it.hasNext(); ) {
             Extend extend = (Extend) it.next();
             Collection eps = extend.getExtensionPoint();
@@ -281,12 +282,13 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         modelImpl.getUmlHelper().deleteCollection(useCase.getInclude());
         // delete Extends where this is the base
         modelImpl.getUmlHelper().deleteCollection(
-                modelImpl.getUmlPackage().getUseCases().getABaseExtender()
-                        .getExtender(useCase));
+                ((org.omg.uml.UmlPackage) useCase.refOutermostPackage())
+                        .getUseCases().getABaseExtender().getExtender(useCase));
         // delete Includes where this is the addition
         modelImpl.getUmlHelper().deleteCollection(
-                modelImpl.getUmlPackage().getUseCases().getAIncluderAddition()
-                        .getIncluder(useCase));
+                ((org.omg.uml.UmlPackage) useCase.refOutermostPackage())
+                        .getUseCases().getAIncluderAddition().getIncluder(
+                                useCase));
     }
 
     /**

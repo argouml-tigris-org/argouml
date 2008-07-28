@@ -78,12 +78,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * The model implementation.
      */
     private MDRModelImplementation modelImpl;
-    
-    /**
-     * The State Machine Package proxy 
-     */
-    private StateMachinesPackage smPackage;
-    
+
     /**
      * Package-private constructor.
      *
@@ -92,19 +87,22 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     StateMachinesFactoryMDRImpl(MDRModelImplementation implementation) {
         modelImpl = implementation;
-        smPackage = modelImpl.getUmlPackage().getStateMachines();
+    }
+    
+    private StateMachinesPackage getSmPackage() {
+        return modelImpl.getUmlPackage().getStateMachines();
     }
 
 
     public CallEvent createCallEvent() {
-        CallEvent myCallEvent = smPackage.getCallEvent().createCallEvent();
+        CallEvent myCallEvent = getSmPackage().getCallEvent().createCallEvent();
         super.initialize(myCallEvent);
         return myCallEvent;
     }
 
 
     public ChangeEvent createChangeEvent() {
-        ChangeEvent myChangeEvent = smPackage.getChangeEvent()
+        ChangeEvent myChangeEvent = getSmPackage().getChangeEvent()
                 .createChangeEvent();
         super.initialize(myChangeEvent);
         return myChangeEvent;
@@ -112,7 +110,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public CompositeState createCompositeState() {
-        CompositeState myCompositeState = smPackage.getCompositeState()
+        CompositeState myCompositeState = getSmPackage().getCompositeState()
                 .createCompositeState();
         super.initialize(myCompositeState);
         return myCompositeState;
@@ -120,21 +118,21 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public FinalState createFinalState() {
-        FinalState myFinalState = smPackage.getFinalState().createFinalState();
+        FinalState myFinalState = getSmPackage().getFinalState().createFinalState();
         super.initialize(myFinalState);
         return myFinalState;
     }
 
 
     public Guard createGuard() {
-        Guard myGuard = smPackage.getGuard().createGuard();
+        Guard myGuard = getSmPackage().getGuard().createGuard();
         super.initialize(myGuard);
         return myGuard;
     }
 
 
     public Pseudostate createPseudostate() {
-        Pseudostate myPseudostate = smPackage.getPseudostate()
+        Pseudostate myPseudostate = getSmPackage().getPseudostate()
                 .createPseudostate();
         super.initialize(myPseudostate);
         return myPseudostate;
@@ -142,7 +140,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public SignalEvent createSignalEvent() {
-        SignalEvent mySignalEvent = smPackage.getSignalEvent()
+        SignalEvent mySignalEvent = getSmPackage().getSignalEvent()
                 .createSignalEvent();
         super.initialize(mySignalEvent);
         return mySignalEvent;
@@ -150,7 +148,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public SimpleState createSimpleState() {
-        SimpleState mySimpleState = smPackage.getSimpleState()
+        SimpleState mySimpleState = getSmPackage().getSimpleState()
                 .createSimpleState();
         super.initialize(mySimpleState);
         return mySimpleState;
@@ -158,7 +156,7 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public StateMachine createStateMachine() {
-        StateMachine myStateMachine = smPackage.getStateMachine()
+        StateMachine myStateMachine = getSmPackage().getStateMachine()
                 .createStateMachine();
         super.initialize(myStateMachine);
         return myStateMachine;
@@ -166,14 +164,14 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public StubState createStubState() {
-        StubState myStubState = smPackage.getStubState().createStubState();
+        StubState myStubState = getSmPackage().getStubState().createStubState();
         super.initialize(myStubState);
         return myStubState;
     }
 
 
     public SubmachineState createSubmachineState() {
-        SubmachineState mySubmachineState = smPackage.getSubmachineState()
+        SubmachineState mySubmachineState = getSmPackage().getSubmachineState()
                 .createSubmachineState();
         super.initialize(mySubmachineState);
         return mySubmachineState;
@@ -181,21 +179,21 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public SynchState createSynchState() {
-        SynchState mySynchState = smPackage.getSynchState().createSynchState();
+        SynchState mySynchState = getSmPackage().getSynchState().createSynchState();
         super.initialize(mySynchState);
         return mySynchState;
     }
 
 
     public TimeEvent createTimeEvent() {
-        TimeEvent myTimeEvent = smPackage.getTimeEvent().createTimeEvent();
+        TimeEvent myTimeEvent = getSmPackage().getTimeEvent().createTimeEvent();
         super.initialize(myTimeEvent);
         return myTimeEvent;
     }
 
 
     public Transition createTransition() {
-        Transition myTransition = smPackage.getTransition().createTransition();
+        Transition myTransition = getSmPackage().getTransition().createTransition();
         super.initialize(myTransition);
         return myTransition;
     }

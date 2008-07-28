@@ -81,12 +81,6 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * The model implementation.
      */
     private MDRModelImplementation modelImpl;
-    
-    /*
-     * JMI package for Common Behavior package from UML metamodel
-     * It contains the element factories that we'll need.
-     */
-    private CommonBehaviorPackage cbPackage;
 
     /**
      * Don't allow instantiation.
@@ -96,12 +90,11 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     CommonBehaviorFactoryMDRImpl(MDRModelImplementation implementation) {
         modelImpl = implementation;
-        cbPackage = modelImpl.getUmlPackage().getCommonBehavior();
     }
 
 
     public ActionSequence createActionSequence() {
-        ActionSequence myActionSequence = cbPackage.getActionSequence()
+        ActionSequence myActionSequence = getCbPackage().getActionSequence()
                 .createActionSequence();
         super.initialize(myActionSequence);
         return myActionSequence;
@@ -109,7 +102,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public Argument createArgument() {
-        Argument myArgument = cbPackage
+        Argument myArgument = getCbPackage()
                 .getArgument().createArgument();
         super.initialize(myArgument);
         return myArgument;
@@ -117,22 +110,25 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public AttributeLink createAttributeLink() {
-        AttributeLink myAttributeLink = cbPackage.getAttributeLink()
+        AttributeLink myAttributeLink = getCbPackage().getAttributeLink()
                 .createAttributeLink();
         super.initialize(myAttributeLink);
         return myAttributeLink;
     }
 
+    private CommonBehaviorPackage getCbPackage() {
+        return modelImpl.getUmlPackage().getCommonBehavior();
+    }
 
     public CallAction createCallAction() {
-        CallAction myCallAction = cbPackage.getCallAction().createCallAction();
+        CallAction myCallAction = getCbPackage().getCallAction().createCallAction();
         super.initialize(myCallAction);
         return myCallAction;
     }
 
 
     public ComponentInstance createComponentInstance() {
-        ComponentInstance myComponentInstance = cbPackage
+        ComponentInstance myComponentInstance = getCbPackage()
                 .getComponentInstance().createComponentInstance();
         super.initialize(myComponentInstance);
         return myComponentInstance;
@@ -140,7 +136,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public CreateAction createCreateAction() {
-        CreateAction myCreateAction = cbPackage.getCreateAction()
+        CreateAction myCreateAction = getCbPackage().getCreateAction()
                 .createCreateAction();
         super.initialize(myCreateAction);
         return myCreateAction;
@@ -148,14 +144,14 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public DataValue createDataValue() {
-        DataValue myDataValue = cbPackage.getDataValue().createDataValue();
+        DataValue myDataValue = getCbPackage().getDataValue().createDataValue();
         super.initialize(myDataValue);
         return myDataValue;
     }
 
 
     public DestroyAction createDestroyAction() {
-        DestroyAction myDestroyAction = cbPackage.getDestroyAction()
+        DestroyAction myDestroyAction = getCbPackage().getDestroyAction()
                 .createDestroyAction();
         super.initialize(myDestroyAction);
         return myDestroyAction;
@@ -163,7 +159,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public UmlException createException() {
-        UmlException myUmlException = cbPackage.getUmlException()
+        UmlException myUmlException = getCbPackage().getUmlException()
                 .createUmlException();
         super.initialize(myUmlException);
         return myUmlException;
@@ -171,28 +167,28 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public Link createLink() {
-        Link myLink = cbPackage.getLink().createLink();
+        Link myLink = getCbPackage().getLink().createLink();
         super.initialize(myLink);
         return myLink;
     }
 
 
     public LinkEnd createLinkEnd() {
-        LinkEnd myLinkEnd = cbPackage.getLinkEnd().createLinkEnd();
+        LinkEnd myLinkEnd = getCbPackage().getLinkEnd().createLinkEnd();
         super.initialize(myLinkEnd);
         return myLinkEnd;
     }
 
 
     public LinkObject createLinkObject() {
-        LinkObject myLinkObject = cbPackage.getLinkObject().createLinkObject();
+        LinkObject myLinkObject = getCbPackage().getLinkObject().createLinkObject();
         super.initialize(myLinkObject);
         return myLinkObject;
     }
 
 
     public NodeInstance createNodeInstance() {
-        NodeInstance myNodeInstance = cbPackage.getNodeInstance()
+        NodeInstance myNodeInstance = getCbPackage().getNodeInstance()
                 .createNodeInstance();
         super.initialize(myNodeInstance);
         return myNodeInstance;
@@ -201,21 +197,21 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     public org.omg.uml.behavioralelements.commonbehavior.Object createObject() {
         org.omg.uml.behavioralelements.commonbehavior.Object myObject = 
-                cbPackage.getObject().createObject();
+                getCbPackage().getObject().createObject();
         super.initialize(myObject);
         return myObject;
     }
 
 
     public Reception createReception() {
-        Reception myReception = cbPackage.getReception().createReception();
+        Reception myReception = getCbPackage().getReception().createReception();
         super.initialize(myReception);
         return myReception;
     }
 
 
     public ReturnAction createReturnAction() {
-        ReturnAction myReturnAction = cbPackage.getReturnAction()
+        ReturnAction myReturnAction = getCbPackage().getReturnAction()
                 .createReturnAction();
         super.initialize(myReturnAction);
         return myReturnAction;
@@ -223,28 +219,28 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public SendAction createSendAction() {
-        SendAction mySendAction = cbPackage.getSendAction().createSendAction();
+        SendAction mySendAction = getCbPackage().getSendAction().createSendAction();
         super.initialize(mySendAction);
         return mySendAction;
     }
 
 
     public Signal createSignal() {
-        Signal mySignal = cbPackage.getSignal().createSignal();
+        Signal mySignal = getCbPackage().getSignal().createSignal();
         super.initialize(mySignal);
         return mySignal;
     }
 
 
     public Stimulus createStimulus() {
-        Stimulus myStimulus = cbPackage.getStimulus().createStimulus();
+        Stimulus myStimulus = getCbPackage().getStimulus().createStimulus();
         super.initialize(myStimulus);
         return myStimulus;
     }
 
 
     public SubsystemInstance createSubsystemInstance() {
-        SubsystemInstance obj = cbPackage.getSubsystemInstance()
+        SubsystemInstance obj = getCbPackage().getSubsystemInstance()
                 .createSubsystemInstance();
         super.initialize(obj);
         return obj;
@@ -252,7 +248,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     
 
     public TerminateAction createTerminateAction() {
-        TerminateAction myTerminateAction = cbPackage.getTerminateAction()
+        TerminateAction myTerminateAction = getCbPackage().getTerminateAction()
                 .createTerminateAction();
         super.initialize(myTerminateAction);
         return myTerminateAction;
@@ -260,7 +256,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public UninterpretedAction createUninterpretedAction() {
-        UninterpretedAction myUninterpretedAction = cbPackage
+        UninterpretedAction myUninterpretedAction = getCbPackage()
                 .getUninterpretedAction().createUninterpretedAction();
         super.initialize(myUninterpretedAction);
         return myUninterpretedAction;
@@ -321,7 +317,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     public Signal buildSignal(Object element) {
         if ((element instanceof BehavioralFeature)) {
             Signal signal = buildSignalInt(element);
-            cbPackage.getAContextRaisedSignal().add(
+            getCbPackage().getAContextRaisedSignal().add(
                     (BehavioralFeature) element, signal);
             return signal;
         } else if (element instanceof Reception) {
@@ -390,13 +386,16 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             throw new IllegalArgumentException("elem: " + elem);
         }
         // Delete Stimulii which have this as their dispatchAction
+        Action action = (Action) elem;
         modelImpl.getUmlHelper().deleteCollection(
-                cbPackage.getADispatchActionStimulus().getStimulus(
-                        (Action) elem));
+                ((org.omg.uml.UmlPackage) action.refOutermostPackage())
+                        .getCommonBehavior().getADispatchActionStimulus()
+                        .getStimulus((Action) elem));
         // Delete Messages which have this as their action
         modelImpl.getUmlHelper().deleteCollection(
-                modelImpl.getUmlPackage().getCollaborations()
-                        .getAActionMessage().getMessage((Action) elem));
+                ((org.omg.uml.UmlPackage) action.refOutermostPackage())
+                        .getCollaborations().getAActionMessage().getMessage(
+                                (Action) elem));
     }
 
     /**
@@ -502,22 +501,24 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof Instance)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
+        Instance instance = (Instance) elem;
 
         // Delete LinkEnds
-        modelImpl.getUmlHelper().deleteCollection(
-                ((Instance) elem).getLinkEnd());
+        modelImpl.getUmlHelper().deleteCollection(instance.getLinkEnd());
 
         // Delete AttributeLinks where this is the value
         modelImpl.getUmlHelper().deleteCollection(
-                cbPackage
+                ((org.omg.uml.UmlPackage) instance
+                        .refOutermostPackage()).getCommonBehavior()
                         .getAAttributeLinkValue().getAttributeLink(
-                                (Instance) elem));
+                                instance));
 
         // Delete CollaborationInstanceSets where
         // this is the last participatingInstance
-        for (Iterator it = modelImpl.getUmlPackage().getCollaborations()
+        for (Iterator it = ((org.omg.uml.UmlPackage) instance
+                .refOutermostPackage()).getCollaborations()
                 .getACollaborationInstanceSetParticipatingInstance()
-                .getCollaborationInstanceSet((Instance) elem).iterator(); it
+                .getCollaborationInstanceSet(instance).iterator(); it
                 .hasNext();) {
             CollaborationInstanceSet cis = (CollaborationInstanceSet) it.next();
             Collection instances = cis.getParticipatingInstance();
@@ -528,9 +529,9 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
         // Delete Stimuli which have this as a Sender or Receiver
         modelImpl.getUmlHelper().deleteCollection(
-                cbPackage.getAStimulusSender().getStimulus((Instance) elem));
+                getCbPackage().getAStimulusSender().getStimulus((Instance) elem));
         modelImpl.getUmlHelper().deleteCollection(
-                cbPackage.getAReceiverStimulus().getStimulus((Instance) elem));
+                getCbPackage().getAReceiverStimulus().getStimulus((Instance) elem));
 
     }
 
@@ -631,13 +632,17 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof Signal)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
+        Signal signal = (Signal) elem;
         // Delete all SendActions which have this as signal
         modelImpl.getUmlHelper().deleteCollection(
-                cbPackage.getASignalSendAction().getSendAction((Signal) elem));
+                ((org.omg.uml.UmlPackage) signal.refOutermostPackage())
+                        .getCommonBehavior().getASignalSendAction()
+                        .getSendAction(signal));
         // Delete all SignalEvents which have this as the signal
         modelImpl.getUmlHelper().deleteCollection(
-                modelImpl.getUmlPackage().getStateMachines()
-                        .getASignalOccurrence().getOccurrence((Signal) elem));
+                ((org.omg.uml.UmlPackage) signal.refOutermostPackage())
+                        .getStateMachines().getASignalOccurrence()
+                        .getOccurrence((Signal) elem));
     }
 
     /**
@@ -648,13 +653,14 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         if (!(elem instanceof Stimulus)) {
             throw new IllegalArgumentException("elem: " + elem);
         }
+        Stimulus stimulus = (Stimulus) elem;
         
         // Delete InteractionInstanceSets where
         // this is the last participatingStimulus
-        for (Iterator it = modelImpl.getUmlPackage().getCollaborations()
+        for (Iterator it = ((org.omg.uml.UmlPackage) stimulus
+                .refOutermostPackage()).getCollaborations()
                 .getAInteractionInstanceSetParticipatingStimulus()
-                .getInteractionInstanceSet((Stimulus) elem).iterator(); it
-                .hasNext();) {
+                .getInteractionInstanceSet(stimulus).iterator(); it.hasNext();) {
             InteractionInstanceSet iis = (InteractionInstanceSet) it.next();
             Collection instances = iis.getParticipatingStimulus();
             if (instances.size() == 1 && instances.contains(elem)) {

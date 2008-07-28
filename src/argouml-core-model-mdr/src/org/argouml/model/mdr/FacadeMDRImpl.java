@@ -1379,9 +1379,10 @@ class FacadeMDRImpl implements Facade {
     public Collection getBehaviors(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                return modelImpl.getUmlPackage().getStateMachines()
-                        .getABehaviorContext().getBehavior(
-                                (ModelElement) handle);
+                ModelElement me = (ModelElement) handle;
+                return ((org.omg.uml.UmlPackage) me.refOutermostPackage())
+                        .getStateMachines().getABehaviorContext().getBehavior(
+                                me);
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -3305,7 +3306,8 @@ class FacadeMDRImpl implements Facade {
             return illegalArgumentCollection(handle);
         }
         try {
-            return modelImpl.getUmlPackage().getCore()
+            GeneralizableElement ge = (GeneralizableElement) handle;
+            return ((org.omg.uml.UmlPackage) ge.refOutermostPackage()).getCore()
                     .getAParentSpecialization().getSpecialization(
                             (GeneralizableElement) handle);
         } catch (InvalidObjectException e) {

@@ -154,7 +154,8 @@ class XmiWriterMDRImpl implements XmiWriter {
                 config);
         try {
             ArrayList elements = new ArrayList();
-            UmlPackage pkg = modelImpl.getUmlPackage();
+            UmlPackage pkg = (org.omg.uml.UmlPackage) ((RefObject) model)
+                    .refOutermostPackage();
             // Make sure user model is first
             elements.add(model);
             for (Iterator it = pkg.getCore().getElement().refAllOfType()

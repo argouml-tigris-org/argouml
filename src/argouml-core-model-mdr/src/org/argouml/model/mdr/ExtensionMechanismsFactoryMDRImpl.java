@@ -298,9 +298,10 @@ class ExtensionMechanismsFactoryMDRImpl extends
             throw new IllegalArgumentException();
         }
         // Delete all TaggedValues with this type
+        TagDefinition td = (TagDefinition) elem;
         modelImpl.getUmlHelper().deleteCollection(
-                modelImpl.getUmlPackage().getCore().getATypeTypedValue()
-                        .getTypedValue((TagDefinition) elem));
+                ((org.omg.uml.UmlPackage) td.refOutermostPackage()).getCore()
+                        .getATypeTypedValue().getTypedValue(td));
     }
 
 

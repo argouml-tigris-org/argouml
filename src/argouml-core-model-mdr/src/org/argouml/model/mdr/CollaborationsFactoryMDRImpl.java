@@ -67,11 +67,6 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     private MDRModelImplementation modelImpl;
 
     /**
-     * The Collaborations package.
-     */
-    private CollaborationsPackage collabPkg;
-
-    /**
      * Don't allow instantiation.
      *
      * @param implementation
@@ -79,21 +74,23 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      */
     CollaborationsFactoryMDRImpl(MDRModelImplementation implementation) {
         modelImpl = implementation;
-        collabPkg = modelImpl.getUmlPackage().getCollaborations();
     }
-
 
     public AssociationEndRole createAssociationEndRole() {
         AssociationEndRole myAssociationEndRole =
-            collabPkg.getAssociationEndRole().createAssociationEndRole();
+            getCollabPkg().getAssociationEndRole().createAssociationEndRole();
         super.initialize(myAssociationEndRole);
         return myAssociationEndRole;
+    }
+    
+    private CollaborationsPackage getCollabPkg() {
+        return modelImpl.getUmlPackage().getCollaborations();
     }
 
 
     public AssociationRole createAssociationRole() {
         AssociationRole myAssociationRole =
-            collabPkg.getAssociationRole().createAssociationRole();
+            getCollabPkg().getAssociationRole().createAssociationRole();
         super.initialize(myAssociationRole);
         return myAssociationRole;
     }
@@ -101,7 +98,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     public ClassifierRole createClassifierRole() {
         ClassifierRole myClassifierRole =
-            collabPkg.getClassifierRole().createClassifierRole();
+            getCollabPkg().getClassifierRole().createClassifierRole();
         super.initialize(myClassifierRole);
         return myClassifierRole;
     }
@@ -109,7 +106,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     public Collaboration createCollaboration() {
         Collaboration myCollaboration =
-            collabPkg.getCollaboration().createCollaboration();
+            getCollabPkg().getCollaboration().createCollaboration();
         super.initialize(myCollaboration);
         return myCollaboration;
     }
@@ -117,7 +114,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     public CollaborationInstanceSet createCollaborationInstanceSet() {
         CollaborationInstanceSet obj =
-            collabPkg.getCollaborationInstanceSet()
+            getCollabPkg().getCollaborationInstanceSet()
                 .createCollaborationInstanceSet();
         super.initialize(obj);
         return obj;
@@ -126,7 +123,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     public Interaction createInteraction() {
         Interaction myInteraction =
-            collabPkg.getInteraction().createInteraction();
+            getCollabPkg().getInteraction().createInteraction();
         super.initialize(myInteraction);
         return myInteraction;
     }
@@ -134,7 +131,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
     public InteractionInstanceSet createInteractionInstanceSet() {
         InteractionInstanceSet obj =
-            collabPkg.getInteractionInstanceSet()
+            getCollabPkg().getInteractionInstanceSet()
                 .createInteractionInstanceSet();
         super.initialize(obj);
         return obj;
@@ -143,7 +140,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     
     public Message createMessage() {
         Message myMessage =
-            collabPkg.getMessage().createMessage();
+            getCollabPkg().getMessage().createMessage();
         super.initialize(myMessage);
         return myMessage;
     }
@@ -476,10 +473,12 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     void deleteClassifierRole(Object elem) {
         ClassifierRole cr = (ClassifierRole) elem;
         // delete Messages which have this as sender or receiver
+        CollaborationsPackage cPkg = ((org.omg.uml.UmlPackage) cr
+                .refOutermostPackage()).getCollaborations();
         modelImpl.getUmlHelper().deleteCollection(
-                collabPkg.getAMessageSender().getMessage(cr));
+                cPkg.getAMessageSender().getMessage(cr));
         modelImpl.getUmlHelper().deleteCollection(
-                collabPkg.getAReceiverMessage().getMessage(cr));
+                cPkg.getAReceiverMessage().getMessage(cr));
         // TODO: delete Collaborations where this is the last ClassifierRole?
 //        Object owner = cr.refImmediateComposite();
 //        if (owner instanceof Collaboration) {
