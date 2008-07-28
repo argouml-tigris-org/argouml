@@ -45,6 +45,8 @@ public interface XmiReader {
     
     /**
      * Parse a given inputsource to a collection of top level model elements.
+     * All model elements will be modifiable (ie equivalent to parse(InputSource,
+     * false).
      * 
      * @param pIs the input source for parsing
      * @return a collection of top level elements
@@ -60,16 +62,15 @@ public interface XmiReader {
      * 
      * @param pIs
      *            the input source for parsing
-     * @param profile
-     *            true if the resulting model will be used as a profile.
-     *            Profiles are read-only and will not be written back out when
-     *            the model data is written.
+     * @param readOnly
+     *            true if the resulting model is to be treated as read-only.
+     *            It not be written back out when the model data is written.
      * @return a collection of top level elements
      * @throws UmlException
      *             on any error
      * @since 0.22
      */
-    Collection parse(InputSource pIs, boolean profile) throws UmlException;
+    Collection parse(InputSource pIs, boolean readOnly) throws UmlException;
 
     
     /**
