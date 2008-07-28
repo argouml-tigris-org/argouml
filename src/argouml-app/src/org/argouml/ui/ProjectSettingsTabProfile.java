@@ -46,7 +46,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.MutableComboBoxModel;
-import javax.swing.filechooser.FileFilter;
 
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.i18n.Translator;
@@ -57,6 +56,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
+import org.argouml.profile.UserDefinedProfileHelper;
 import org.argouml.uml.diagram.DiagramAppearance;
 
 /**
@@ -255,7 +255,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
                     if (!dependents.isEmpty()) {
                         String message = Translator.localize(
                                 "tab.profiles.confirmdeletewithdependencies",
-                                new Object[] {dependents});
+                                new Object[] { dependents });
                         String title = Translator
                                 .localize("tab.profiles.confirmdeletewithdependencies.title");
                         remove = (JOptionPane.showConfirmDialog(this, message,
@@ -291,37 +291,26 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 }
             }
         } else if (arg0.getSource() == loadFromFile) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileFilter() {
-
-                public boolean accept(File file) {
-                    return file.isDirectory()
-                            || (file.isFile() && (file.getName().endsWith(
-                                    ".xmi")
-                                    || file.getName().endsWith(".xml")
-                                    || file.getName().toLowerCase().endsWith(
-                                            ".xmi.zip") || file.getName()
-                                    .toLowerCase().endsWith(".xml.zip")));
-                }
-
-                public String getDescription() {
-                    return "*.xmi *.xml *.xmi.zip *.xml.zip";
-                }
-
-            });
-
+            JFileChooser fileChooser =
+                UserDefinedProfileHelper.createUserDefinedProfileFileChooser();
             int ret = fileChooser.showOpenDialog(this);
+            List<File> files = null;
             if (ret == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-
-                try {
-                    UserDefinedProfile profile = new UserDefinedProfile(file);
-                    ProfileFacade.getManager().registerProfile(profile);
-
-                    modelAvailable.addElement(profile);
-                } catch (ProfileException e) {
-                    JOptionPane.showMessageDialog(this, Translator
-                            .localize("tab.profiles.userdefined.errorloading"));
+                files = UserDefinedProfileHelper.getFileList(
+                    fileChooser.getSelectedFiles());
+            }
+            if (files != null && files.size() > 0) {
+                for (File file : files) {
+                    try {
+                        UserDefinedProfile profile =
+                            new UserDefinedProfile(file);
+                        ProfileFacade.getManager().registerProfile(profile);
+                        modelAvailable.addElement(profile);
+                    } catch (ProfileException e) {
+                        JOptionPane.showMessageDialog(this, Translator
+                            .localize("tab.profiles.userdefined.errorloading")
+                            + ": " + file.getAbsolutePath());
+                    }
                 }
             }
         }
@@ -436,5 +425,4 @@ public class ProjectSettingsTabProfile extends JPanel implements
         }
 
     }
-
 }

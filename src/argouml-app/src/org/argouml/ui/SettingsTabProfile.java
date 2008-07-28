@@ -57,6 +57,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
+import org.argouml.profile.UserDefinedProfileHelper;
 import org.argouml.swingext.JLinkButton;
 import org.argouml.uml.diagram.DiagramAppearance;
 
@@ -321,39 +322,26 @@ public class SettingsTabProfile extends JPanel implements
                 }
             }
         } else if (arg0.getSource() == loadFromFile) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileFilter() {
-
-                public boolean accept(File file) {
-                    return file.isDirectory()
-                            || (file.isFile() && (file.getName().toLowerCase()
-                                    .endsWith(".xmi")
-                                    || file.getName().toLowerCase().endsWith(
-                                            ".xml")
-                                    || file.getName().toLowerCase().endsWith(
-                                            ".xmi.zip") || file.getName()
-                                    .toLowerCase().endsWith(".xml.zip")));
-                }
-
-                public String getDescription() {
-                    return "*.xmi *.xml *.xmi.zip *.xml.zip";
-                }
-
-            });
-
+            JFileChooser fileChooser =
+                UserDefinedProfileHelper.createUserDefinedProfileFileChooser();
             int ret = fileChooser.showOpenDialog(this);
+            List<File> files = null;
             if (ret == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-
-                try {
-                    UserDefinedProfile profile = new UserDefinedProfile(file);
-
-                    ProfileFacade.getManager().registerProfile(profile);
-
-                    modelAvl.addElement(profile);
-                } catch (ProfileException e) {
-                    JOptionPane.showMessageDialog(this, Translator
-                            .localize("tab.profiles.userdefined.errorloading"));
+                files = UserDefinedProfileHelper.getFileList(
+                    fileChooser.getSelectedFiles());
+            }
+            if (files != null && files.size() > 0) {
+                for (File file : files) {
+                    try {
+                        UserDefinedProfile profile =
+                            new UserDefinedProfile(file);
+                        ProfileFacade.getManager().registerProfile(profile);
+                        modelAvl.addElement(profile);
+                    } catch (ProfileException e) {
+                        JOptionPane.showMessageDialog(this, Translator
+                            .localize("tab.profiles.userdefined.errorloading")
+                            + ": " + file.getAbsolutePath());
+                    }
                 }
             }
 
@@ -503,5 +491,4 @@ public class SettingsTabProfile extends JPanel implements
         }
 
     }
-
 }
