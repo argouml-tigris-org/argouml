@@ -414,4 +414,15 @@ public interface ModelManagementHelper {
      */
     Collection getAllContents(Object namespace);
 
+    /**
+     * Return the true if the model element is read only (ie not modifiable).
+     * Note that this differs from
+     * {@link Facade#isReadOnly(Object)) which refers to <em>instances</em> of a
+     * given model (M0 level) as opposed to the model itself (M1).
+     * 
+     * @param element a UML Element
+     * @return true if the element is readonly
+     * @since 0.26
+     */
+    boolean isReadOnly(Object element);
 }
