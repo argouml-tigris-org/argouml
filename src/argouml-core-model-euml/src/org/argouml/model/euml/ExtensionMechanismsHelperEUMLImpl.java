@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007,2008 Tom Morris and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -75,7 +75,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     public Collection getAllPossibleStereotypes(Collection models,
             Object modelElement) {
         // TODO: Auto-generated method stub
-        return Collections.EMPTY_LIST;
+        return Collections.emptySet();
     }
 
     public String getMetaModelName(Object m) {
@@ -107,12 +107,12 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     public Collection getStereotypes(Object ns) {
         // TODO: Auto-generated method stub
-        return null;
+        return Collections.emptySet();
     }
 
     public Collection getStereotypes(Collection models) {
         // TODO: Auto-generated method stub
-        return null;
+        return Collections.emptySet();
     }
 
     /**
