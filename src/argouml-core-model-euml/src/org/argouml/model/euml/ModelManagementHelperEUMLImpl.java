@@ -260,4 +260,9 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         // TODO: Auto-generated method stub
     }
 
+    public boolean isReadOnly(Object element) {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();     
+    }
+
 }
