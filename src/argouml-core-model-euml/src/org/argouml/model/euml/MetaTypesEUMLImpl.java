@@ -57,7 +57,9 @@ import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.InstanceSpecification;
 import org.eclipse.uml2.uml.Interaction;
+import org.eclipse.uml2.uml.InteractionConstraint;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.Namespace;
@@ -291,8 +293,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getGuard() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+        // TODO: Not really the same thing, but close
+        return InteractionConstraint.class;
     }
 
     public Object getInclude() {
@@ -320,8 +322,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getMessage() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+        return Message.class;
     }
 
     public Object getModel() {
