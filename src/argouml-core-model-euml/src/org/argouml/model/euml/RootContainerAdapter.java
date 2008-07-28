@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007, 2008 Bogdan Pistol and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -102,7 +102,8 @@ public class RootContainerAdapter extends EContentAdapter {
      * Removes this listener from all the notifiers' eAdapters list.
      */
     public void removeAllAdapters() {
-        for (Notifier n : notifiers) {
+        List<Notifier> notifiersToRemove = new ArrayList<Notifier>(notifiers);
+        for (Notifier n : notifiersToRemove) {
             super.removeAdapter(n);
         }
         if (rootContainer != null) {
