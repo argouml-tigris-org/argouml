@@ -41,6 +41,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Abstraction.
      * 
      * @return an initialized UML Abstraction instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     public Object createAbstraction();
     
@@ -60,6 +62,8 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized Artifact instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     public Object createArtifact();
     
@@ -67,6 +71,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Association.
      * 
      * @return an initialized UML Association instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     public Object createAssociation();
 
@@ -74,6 +80,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML AssociationClass.
      * 
      * @return an initialized UML AssociationClass instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     public Object createAssociationClass();
     
@@ -81,6 +89,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML AssociationEnd.
      *
      * @return an initialized UML AssociationEnd instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createAssociationEnd();
 
@@ -88,6 +98,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Attribute.
      *
      * @return an initialized UML Attribute instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createAttribute();
 
@@ -95,6 +107,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Binding.
      *
      * @return an initialized UML Binding instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createBinding();
 
@@ -102,6 +116,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Class.
      *
      * @return an initialized UML Class instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createClass();
 
@@ -109,6 +125,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Comment.
      *
      * @return an initialized UML Comment instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createComment();
 
@@ -116,6 +134,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Component.
      *
      * @return an initialized UML Component instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createComponent();
 
@@ -123,6 +143,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Constraint.
      *
      * @return an initialized UML Constraint instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createConstraint();
 
@@ -130,6 +152,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML DataType.
      *
      * @return an initialized UML DataType instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createDataType();
     
@@ -137,6 +161,8 @@ public interface CoreFactory extends Factory {
     * Create an empty but initialized instance of a UML Dependency.
     *
     * @return an initialized UML Dependency instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
     */
     public Object createDependency();
 
@@ -144,6 +170,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML ElementResidence.
      *
      * @return an initialized UML ElementResidence instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createElementResidence();
     
@@ -158,7 +186,8 @@ public interface CoreFactory extends Factory {
      * Create an Enumeration.
      * @return Object new Enumeration
      * @since UML 1.4
-
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createEnumeration();
 
@@ -166,6 +195,8 @@ public interface CoreFactory extends Factory {
      * Create an EnumerationLiteral.
      * @return Object new Enumeration
      * @since UML 1.4
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createEnumerationLiteral();
 
@@ -173,6 +204,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Flow.
      *
      * @return an initialized UML Flow instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createFlow();
 
@@ -180,6 +213,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Interface.
      *
      * @return an initialized UML Interface instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createInterface();
 
@@ -187,6 +222,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Method.
      *
      * @return an initialized UML Method instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createMethod();
 
@@ -194,6 +231,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Node.
      *
      * @return an initialized UML Node instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createNode();
 
@@ -201,6 +240,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Operation.
      *
      * @return an initialized UML Operation instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createOperation();
 
@@ -208,7 +249,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Parameter.
      *
      * @return an initialized UML Parameter instance.
-
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createParameter();
 
@@ -216,6 +258,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Permission.
      *
      * @return an initialized UML Permission instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createPermission();
     
@@ -238,6 +282,8 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 2.1.1
      * @return an initialized UML Primitive instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     public Object createPrimitiveType();
     
@@ -258,6 +304,8 @@ public interface CoreFactory extends Factory {
      * 
      * @since UML 1.4
      * @return an initialized TemplateArgument instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     public Object createTemplateArgument();
 
@@ -265,6 +313,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML TemplateParameter.
      *
      * @return an initialized UML TemplateParameter instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createTemplateParameter();
 
@@ -272,6 +322,8 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Usage.
      *
      * @return an initialized UML Usage instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createUsage();
 
@@ -409,6 +461,8 @@ public interface CoreFactory extends Factory {
      * any model element by default. Users should not forget to add ownership.
      *
      * @return newly created Class
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object buildClass();
 
@@ -427,6 +481,8 @@ public interface CoreFactory extends Factory {
      * @param name the given name
      * @return Class
      * @see #buildClass()
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object buildClass(String name);
 
@@ -446,6 +502,8 @@ public interface CoreFactory extends Factory {
      * forget to add ownership.
      *
      * @return Interface
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object buildInterface();
 
@@ -462,6 +520,8 @@ public interface CoreFactory extends Factory {
      *
      * @param name is the given name.
      * @return Interface
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object buildInterface(String name);
 
@@ -601,6 +661,8 @@ public interface CoreFactory extends Factory {
      *
      * @param name is the given name
      * @return method
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object buildMethod(String name);
 
@@ -815,6 +877,8 @@ public interface CoreFactory extends Factory {
      * Additional support for generalization.
      *
      * @return A generalization.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object createGeneralization();
 

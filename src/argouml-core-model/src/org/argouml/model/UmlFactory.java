@@ -65,6 +65,8 @@ public interface UmlFactory {
      *
      * @param elementType the type of model element to build
      * @return the model element
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
      */
     Object buildNode(Object elementType);
     
