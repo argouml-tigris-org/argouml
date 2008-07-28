@@ -57,11 +57,13 @@ import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiException;
 import org.argouml.model.XmiReader;
+import org.netbeans.api.mdr.CreationFailedException;
 import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.netbeans.lib.jmi.xmi.InputConfig;
 import org.netbeans.lib.jmi.xmi.UnknownElementsListener;
 import org.netbeans.lib.jmi.xmi.XMIHeaderConsumer;
+import org.omg.uml.UmlPackage;
 import org.openide.ErrorManager;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -87,7 +89,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
 
     private XmiReferenceResolverImpl resolver;
 
-    private RefPackage modelPackage;
+   private RefPackage modelPackage;
 
     /**
      * Flag indicating unknown element was found in XMI file.
@@ -122,26 +124,43 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
     /**
      * Constructor for XMIReader.
      * @param parentModelImplementation The ModelImplementation
-     * @param mp extent to read user models into
+     * @param mp extent to read user models into.  Ignored.
+     * @deprecated for 0.26 by tfmorris.  Use 
+     * {@link #XmiReaderImpl(MDRModelImplementation)}.
      */
-    public XmiReaderImpl(MDRModelImplementation parentModelImplementation,
+    XmiReaderImpl(MDRModelImplementation parentModelImplementation,
             RefPackage mp) {
-
-        modelImpl = parentModelImplementation;
-        modelPackage = mp;
+        this(parentModelImplementation);
     }
 
+    /**
+     * Constructor for XMIReader.
+     * @param parentModelImplementation The ModelImplementation
+     */
+    XmiReaderImpl(MDRModelImplementation parentModelImplementation) {
+        modelImpl = parentModelImplementation;
+    }
+    
     @Deprecated
     public Collection parse(InputSource inputSource) throws UmlException {
         return parse(inputSource, false);
     }
 
-    public Collection parse(InputSource inputSource, boolean profile)
+    public Collection parse(InputSource inputSource, boolean readOnly)
         throws UmlException {
         
         Collection<RefObject> newElements = Collections.emptyList();
-        RefPackage extent = modelPackage;
 
+        RefPackage extent;
+        try {
+            extent = modelImpl.getRepository().createExtent(
+                    inputSource.getSystemId(), modelImpl.getMofPackage());
+        } catch (CreationFailedException e1) {
+            throw new UmlException("Extent creation failed", e1);
+        }
+        
+        modelImpl.addExtent((UmlPackage) extent, readOnly);
+        
         try {
             LOG.info("Loading '" + inputSource.getSystemId() + "'");
 
@@ -152,7 +171,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
                     config, modelImpl.getObjectToId(), 
                     modelImpl.getPublic2SystemIds(), modelImpl.getSearchPath(), 
-                    profile, 
+                    readOnly, 
                     inputSource.getPublicId(), inputSource.getSystemId());
             config.setReferenceResolver(resolver);
             config.setHeaderConsumer(this);
@@ -191,12 +210,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             // Disable event delivery during model load
             modelImpl.getModelEventPump().stopPumpingEvents();
 
-            Collection<RefObject> startTopElements = 
-                modelImpl.getFacade().getRootElements();
-            int numElements = startTopElements.size();
-            LOG.debug("Number of top level elements before import: "
-                    + numElements);
-
             try {
                 String systemId = inputSource.getSystemId();
                 File file = copySource(inputSource);
@@ -212,23 +225,11 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
 
                     // Clear the associated ID maps & reset starting collection
                     resolver.clearIdMaps();
-                    startTopElements = modelImpl.getFacade().getRootElements();
 
                     newElements = convertAndLoadUml13(inputSource.getSystemId(),
                             extent, xmiReader, inputSource);
                 }
 
-                numElements = modelImpl.getFacade().getRootElements().size()
-                        - numElements;
-
-                // This indicates a malformed XMI file.  Log the error.
-                if (newElements.size() != numElements) {
-                    LOG.error("Mismatch between number of elements returned by"
-                            + " XMIReader ("
-                            + newElements.size()
-                            + ") and number of new top level elements found ("
-                            + numElements + ")");
-                }
 
 
             } finally {
@@ -264,7 +265,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             throw new XmiException(e);
         }
 
-        if (profile) {
+        if (readOnly) {
             modelImpl.setProfileElements(newElements);
         }
         return newElements;

@@ -46,6 +46,7 @@ import javax.jmi.model.NameNotFoundException;
 import javax.jmi.model.Reference;
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefAssociation;
+import javax.jmi.reflect.RefBaseObject;
 import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
@@ -65,6 +66,7 @@ import org.netbeans.api.mdr.events.InstanceEvent;
 import org.netbeans.api.mdr.events.MDRChangeEvent;
 import org.netbeans.api.mdr.events.MDRPreChangeListener;
 import org.netbeans.api.mdr.events.TransactionEvent;
+import org.netbeans.api.mdr.events.VetoChangeException;
 
 /**
  * The ModelEventPump for the MDR implementation.<p>
@@ -353,6 +355,10 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         }
     }
 
+    private boolean isReadOnly(RefBaseObject object) {
+        return modelImpl.isReadOnly(object.refOutermostPackage());
+    }
+    
     /**
      * @param e Event from MDR indicating a planned change.
      * @see org.netbeans.api.mdr.events.MDRPreChangeListener#plannedChange
@@ -362,6 +368,30 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         synchronized (eventCountMutex) {
             pendingEvents++;
         }
+        if (e instanceof InstanceEvent) {
+            if (e.isOfType(InstanceEvent.EVENT_INSTANCE_CREATE)) {
+                RefBaseObject element = (RefBaseObject) ((InstanceEvent) e).getSource();
+                if (isReadOnly(element)) {
+                    throw new VetoChangeException(e.getSource(), null);
+                }
+            } else {
+                RefObject element = ((InstanceEvent) e).getInstance();                
+                if (isReadOnly(element)) {
+                    throw new VetoChangeException(e.getSource(), element);
+                }
+            }
+        } else if (e instanceof AssociationEvent) {
+            RefObject element = ((AssociationEvent) e).getFixedElement();
+            if (isReadOnly(element)) {
+                throw new VetoChangeException(element, element);
+            }
+        } else if (e instanceof AttributeEvent) {
+            RefObject element = (RefObject) ((AttributeEvent) e).getSource();
+            if (isReadOnly(element)) {
+                throw new VetoChangeException(element, element);
+            }
+        }
+
 
         // Prototypical logging code that can be enabled and modified to
         // discover who's creating certain types of events

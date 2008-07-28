@@ -59,14 +59,9 @@ final class ModelManagementFactoryMDRImpl extends
     private Object theRootModel;
 
     /**
-     * The ModelManagement package.
-     */
-    private ModelManagementPackage modelManagementPackage;
-
-    /**
      * The model implementation.
      */
-    private ModelImplementation modelImpl;
+    private MDRModelImplementation modelImpl;
 
     /**
      * Constructor.
@@ -75,18 +70,20 @@ final class ModelManagementFactoryMDRImpl extends
      *            The MDRModelImplementation.
      */
     public ModelManagementFactoryMDRImpl(MDRModelImplementation mi) {
-        modelManagementPackage = mi.getUmlPackage().getModelManagement();
         modelImpl = mi;
     }
 
 
     public Model createModel() {
-        Model myModel = modelManagementPackage.getModel().createModel();
+        Model myModel = getModelManagementPackage().getModel().createModel();
         super.initialize(myModel);
         return myModel;
     }
 
-
+    private ModelManagementPackage getModelManagementPackage() {
+        return modelImpl.getUmlPackage().getModelManagement();
+    }
+    
     public void setRootModel(Object rootModel) {
         if (rootModel != null && !(rootModel instanceof Model)) {
             throw new IllegalArgumentException(
@@ -104,7 +101,7 @@ final class ModelManagementFactoryMDRImpl extends
 
     public ElementImport createElementImport() {
         ElementImport myElementImport =
-            modelManagementPackage.getElementImport().createElementImport();
+            getModelManagementPackage().getElementImport().createElementImport();
         super.initialize(myElementImport);
         return myElementImport;
     }
@@ -125,7 +122,7 @@ final class ModelManagementFactoryMDRImpl extends
 
     public UmlPackage createPackage() {
         UmlPackage myUmlPackage =
-            modelManagementPackage.getUmlPackage().createUmlPackage();
+            getModelManagementPackage().getUmlPackage().createUmlPackage();
         super.initialize(myUmlPackage);
         return myUmlPackage;
     }
@@ -150,7 +147,7 @@ final class ModelManagementFactoryMDRImpl extends
 
     public Object createSubsystem() {
         Subsystem mySubsystem =
-            modelManagementPackage.getSubsystem().createSubsystem();
+            getModelManagementPackage().getSubsystem().createSubsystem();
         super.initialize(mySubsystem);
         return mySubsystem;
     }
