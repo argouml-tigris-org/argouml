@@ -38,7 +38,7 @@ import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Well-formedness rule for Package. Check that the alias for an imported
- * element doesn't conflict with any existing name. Section 2.14.3.3 of UML 1.4
+ * element doesn't conflict with any existing name. Section 4.14.3.3 of UML 1.4
  * spec.
  * <p>
  * Other types of name conflicts in a Namespace are checked by

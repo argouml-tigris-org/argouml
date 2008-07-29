@@ -36,6 +36,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * UML 1.5 Well-formedness rule [2] for Pseudostates: <p>
  * History vertices can have at most one outgoing transition.
  *
+ * Well-formedness rule [2] for PseudoState. See page 137 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
  * @author pepargouml@yahoo.es
  */
 public class CrInvalidHistory extends CrUML {

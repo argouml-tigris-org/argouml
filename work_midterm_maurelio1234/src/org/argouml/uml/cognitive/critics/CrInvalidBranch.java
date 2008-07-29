@@ -48,6 +48,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * (self.kind = #choice) implies
  *     ((self.incoming->size >= 1) and (self.outgoing->size >= 1))
  *
+ * Well-formedness rule [7] and [8] for PseudoState. See page 138 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ * 
  * @author jrobbins
  */
 public class CrInvalidBranch extends CrUML {

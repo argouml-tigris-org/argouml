@@ -38,6 +38,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * Well-formedness rule [1] for Interface. See page 32 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  *
+ * Well-formedness rule [2] for GeneralizableElement. See page 60 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
  * @author jrobbins
  */
 public class CrInterfaceOperOnly extends CrUML {

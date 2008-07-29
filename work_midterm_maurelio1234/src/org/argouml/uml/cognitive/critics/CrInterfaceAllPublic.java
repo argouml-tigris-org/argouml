@@ -37,6 +37,9 @@ import org.argouml.uml.cognitive.UMLDecision;
 /**
  * Well-formedness rule [3] for Interface. See page 32 of UML 1.1
  *
+ * Well-formedness rule [3] for Interface. See page 60 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
  * @author jrobbins
  *  Semantics. OMG document ad/97-08-04.
  */

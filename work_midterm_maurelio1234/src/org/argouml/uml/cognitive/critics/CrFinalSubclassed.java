@@ -36,8 +36,12 @@ import org.argouml.uml.cognitive.UMLDecision;
 /**
  * Well-formedness rule [2] for GeneralizableElement. See page 31 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
+ * 
  * In UML 1.3 it is rule [2] in section 2.5.3.18 page 2-54.
  * Remove final keyword or remove subclasses
+ *
+ * Well-formedness rule [2] for GeneralizableElement. See page 59 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
  *
  * @author jrobbins
  */
