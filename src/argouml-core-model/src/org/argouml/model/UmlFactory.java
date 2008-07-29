@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -151,6 +151,15 @@ public interface UmlFactory {
      * @param elem The element to be deleted
      */
     void delete(Object elem);
+    
+    /**
+     * Delete the entire extent which contains the given element.  Typically
+     * this is the collection of elements which were read in from a single
+     * XMI file.
+     * 
+     * @param element an element in extent to be deleted.  
+     */
+    void deleteExtent(Object element);
 
     /**
      * Check whether a model element has been deleted.<p>
