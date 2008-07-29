@@ -57,7 +57,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiException;
 import org.argouml.model.XmiReader;
-import org.netbeans.api.mdr.CreationFailedException;
 import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.netbeans.lib.jmi.xmi.InputConfig;
@@ -163,14 +162,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             LOG.warn("Using existing extent " + extentName);
             // extent.refDelete();
         } else {
-
-            try {
-                extent = modelImpl.getRepository().createExtent(
-                        inputSource.getSystemId(), modelImpl.getMofPackage());
-            } catch (CreationFailedException e1) {
-                throw new UmlException("Extent creation failed", e1);
-            }
-
+            extent = modelImpl.createExtent(inputSource.getSystemId());
             modelImpl.addExtent((UmlPackage) extent, readOnly);
         }
         

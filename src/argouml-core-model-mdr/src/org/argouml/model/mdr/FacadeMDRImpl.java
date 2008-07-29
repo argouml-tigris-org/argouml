@@ -2174,10 +2174,12 @@ class FacadeMDRImpl implements Facade {
     public Collection getRootElements() {
         Collection elements = new ArrayList();
         org.omg.uml.UmlPackage pkg = modelImpl.getUmlPackage();
-        for (RefObject obj : (Collection<RefObject>) pkg.getCore().getElement()
-                .refAllOfType()) {
-            if (obj.refImmediateComposite() == null) {
-                elements.add(obj);
+        if (pkg != null) {
+            for (RefObject obj : (Collection<RefObject>) pkg.getCore()
+                    .getElement().refAllOfType()) {
+                if (obj.refImmediateComposite() == null) {
+                    elements.add(obj);
+                }
             }
         }
         return elements;

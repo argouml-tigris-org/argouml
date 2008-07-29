@@ -40,6 +40,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
 import javax.jmi.reflect.RefObject;
+import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
 import org.apache.log4j.Logger;
@@ -220,8 +221,10 @@ public class MDRModelImplementation implements ModelImplementation {
         // the last minute.
         
         // Delete the old extent first
-        extents.remove(umlPackage);
-        umlPackage.refDelete();
+        if (umlPackage != null) {
+            extents.remove(umlPackage);
+            umlPackage.refDelete();
+        }
         
         umlPackage = uPackage;
         extents.put(umlPackage, Boolean.FALSE);
@@ -236,6 +239,26 @@ public class MDRModelImplementation implements ModelImplementation {
         } else {
             setUmlPackage(extent);
         }
+    }
+    
+    RefPackage createExtent(String name) {
+        try {
+            return getRepository().createExtent(name, getMofPackage());
+        } catch (CreationFailedException e) {
+            LOG.error("Extent creation failed for " + name);
+            return null;
+        }
+    }
+
+    void removeExtent(UmlPackage extent) {
+        if (umlPackage.equals(extent)) {
+            umlPackage = null;
+        }
+        extents.remove(extent);
+    }
+    
+    Collection<UmlPackage> getExtents() {
+        return extents.keySet();
     }
     
     boolean isReadOnly(Object extent) {
@@ -407,7 +430,7 @@ public class MDRModelImplementation implements ModelImplementation {
     }
 
 
-    private void createDefaultExtent() throws UmlException {
+    void createDefaultExtent() {
         // Create a default extent for the user UML model.  This will get
         // replaced if a new model is read in from an XMI file.
         umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
@@ -420,13 +443,7 @@ public class MDRModelImplementation implements ModelImplementation {
             LOG.debug("MDR Init - UML extent existed - "
                     + "deleted it and all UML data");
         }
-        try {
-            umlPackage =
-                (UmlPackage) repository.createExtent(
-                        MODEL_EXTENT_NAME, mofPackage);
-        } catch (CreationFailedException e) {
-            throw new UmlException(e);
-        }
+        umlPackage = (UmlPackage) createExtent(MODEL_EXTENT_NAME);
     }
 
     /**

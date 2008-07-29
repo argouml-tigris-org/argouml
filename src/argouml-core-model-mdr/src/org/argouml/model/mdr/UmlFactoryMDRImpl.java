@@ -33,6 +33,7 @@ import java.util.Set;
 
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
+import javax.jmi.reflect.RefPackage;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.DummyModelCommand;
@@ -1249,6 +1250,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 getStateMachines().deleteFinalState(elem);
             }
         }
+    }
+
+    public void deleteExtent(Object element) {
+        RefPackage extent = ((RefObject) element).refOutermostPackage();
+        modelImpl.removeExtent((org.omg.uml.UmlPackage) extent);
+        extent.refDelete();
     }
 
 }

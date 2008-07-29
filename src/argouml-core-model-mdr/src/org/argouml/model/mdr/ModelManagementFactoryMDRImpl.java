@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.model.mdr;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.ModelImplementation;
 import org.argouml.model.ModelManagementFactory;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
@@ -75,13 +74,24 @@ final class ModelManagementFactoryMDRImpl extends
 
 
     public Model createModel() {
+        ModelManagementPackage mmp = getModelManagementPackage();
+        if (mmp == null) {
+            // Normally the extent should exist already, but in the case of
+            // making an empty project, we may not have an extent yet, so 
+            // create a default extent
+            modelImpl.createDefaultExtent();
+        }
         Model myModel = getModelManagementPackage().getModel().createModel();
         super.initialize(myModel);
         return myModel;
     }
 
     private ModelManagementPackage getModelManagementPackage() {
-        return modelImpl.getUmlPackage().getModelManagement();
+        org.omg.uml.UmlPackage umlPackage = modelImpl.getUmlPackage();
+        if (umlPackage == null) {
+            return null;
+        }
+        return umlPackage.getModelManagement();
     }
     
     public void setRootModel(Object rootModel) {
