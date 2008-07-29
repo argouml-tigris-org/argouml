@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007,2008 Tom Morris and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -455,5 +455,11 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             }
         }
     }
+
+    public void deleteExtent(Object element) {
+        // TODO: This is adequate because we only support a single editing
+        // domain right now, but it needs to be enhanced for multiple domains.
+        modelImpl.clearEditingDomain();
+   }
 
 }
