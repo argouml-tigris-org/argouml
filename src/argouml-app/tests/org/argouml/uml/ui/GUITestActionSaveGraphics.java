@@ -34,9 +34,11 @@ import junit.framework.TestCase;
 // Test classes
 import org.argouml.model.InitializeModel;
 import org.argouml.util.CheckMain;
+import org.argouml.application.InitSubSystemForTest;
 
 // Real classes
 import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.ProjectBrowser;
 
@@ -64,7 +66,8 @@ public class GUITestActionSaveGraphics extends TestCase {
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
         ProjectBrowser.makeInstance(null, true, new JPanel());
-        new InitNotationUml().init();
+	InitSubSystemForTest.initSubsystem(new InitUmlUI());
+        InitSubSystemForTest.initSubsystem(new InitNotationUml());
     }
 
     /**
