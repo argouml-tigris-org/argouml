@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007,2008 Tom Morris and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +56,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -162,8 +164,19 @@ public class EUMLModelImplementation implements ModelImplementation {
     /**
      * This keeps track of the editing domain that is used to track all changes
      * to the model.
+     * <p>
+     * TODO: This probably needs to be a set of EditingDomain so that we can
+     * manage an EditingDomain per project.
      */
     private AdapterFactoryEditingDomain editingDomain;
+    
+    /**
+     * Map of which resources are read-only.
+     * <p>
+     * TODO: This needs to be managed per EditingDomain.
+     */
+    private Map<Resource,Boolean> readOnlyMap = 
+        new HashMap<Resource, Boolean>();
 
     /**
      * Constructor.
@@ -175,6 +188,9 @@ public class EUMLModelImplementation implements ModelImplementation {
 
     /**
      * This sets up the editing domain for the model editor.
+     * 
+     * TODO: We probably need an EditingDomain per Argo project so that we can 
+     * keep the ResourceSets separate.
      */
     private void initializeEditingDomain() {
         // If the eUML.resources system property is defined then we are in a
@@ -205,7 +221,7 @@ public class EUMLModelImplementation implements ModelImplementation {
         // to our consumer (e.g. ArgoUML) if a new undo mechanism is implemented
         // for the Model subsystem - tfm
         editingDomain = new UML2AdapterFactoryEditingDomain(
-                adapterFactory, commandStack);
+                adapterFactory, commandStack, readOnlyMap);
 
         ResourceSet resourceSet = editingDomain.getResourceSet();
         Map<String, Object> extensionToFactoryMap = 
@@ -262,6 +278,13 @@ public class EUMLModelImplementation implements ModelImplementation {
      */
     public EditingDomain getEditingDomain() {
         return editingDomain;
+    }
+    
+    /**
+     * @return the read only map for resources in the EditingDomain
+     */
+    public Map<Resource, Boolean> getReadOnlyMap() {
+        return readOnlyMap;
     }
 
     public ActivityGraphsFactoryEUMLlImpl getActivityGraphsFactory() {
@@ -520,4 +543,14 @@ public class EUMLModelImplementation implements ModelImplementation {
         return theCommandStack;
     }
 
+    /**
+     * Unload all resources in the editing domain and clear the read only map.
+     */
+    void clearEditingDomain() {
+        for (Resource resource : editingDomain.getResourceSet().getResources()) {
+            resource.unload();
+        }
+        readOnlyMap.clear();
+    }
+    
 }

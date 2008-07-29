@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007,2008 Tom Morris and other contributors
 // All rights reserved.
 // 
 // Redistribution and use in source and binary forms, with or without
@@ -98,7 +98,7 @@ class XmiReaderEUMLImpl implements XmiReader {
         return parse(inputSource, false);
     }
 
-    public Collection parse(InputSource inputSource, boolean profile)
+    public Collection parse(InputSource inputSource, boolean readOnly)
             throws UmlException {
         if (inputSource == null) {
             throw new NullPointerException(
@@ -129,12 +129,13 @@ class XmiReaderEUMLImpl implements XmiReader {
             throw new UnsupportedOperationException();
         }
 
-        EditingDomain editingDomain = modelImpl.getEditingDomain();
-        for (Resource resource : editingDomain.getResourceSet().getResources()) {
-            resource.unload();
-        }
+
+        // TODO: This won't work if the user loads a profile and then 
+        // a user model or multiple user models. - tfm
+        modelImpl.clearEditingDomain();
         
-        Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI);
+        Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI,
+                readOnly);
         try {
             modelImpl.getModelEventPump().stopPumpingEvents();
             r.load(is, null);

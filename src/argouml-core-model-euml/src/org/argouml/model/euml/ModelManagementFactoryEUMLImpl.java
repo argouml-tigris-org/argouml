@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007,2008 Tom Morris and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -150,7 +150,8 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
 	}
         theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
 	if (rootModel != null) {
-            Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI);
+            Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI, 
+                    Boolean.FALSE);
             r.getContents().add(theRootModel);
 	}
         modelImpl.getModelEventPump().setRootContainer(theRootModel);

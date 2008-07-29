@@ -1,5 +1,5 @@
 // $Id: UMLUtil.java 13394 2007-08-18 12:48:34Z b00__1 $
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007,2008 Bogdan Pistol and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -174,15 +174,18 @@ public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
      *                the URI which identifies the resource
      * @return the retrieved or created resource
      */
-    public static Resource getResource(
-            EUMLModelImplementation modelImplementation, URI uri) {
-        Resource r = modelImplementation.getEditingDomain().getResourceSet().getResource(
-                uri, false);
+    static Resource getResource(
+            EUMLModelImplementation modelImplementation, URI uri,
+            boolean readOnly) {
+        Resource r = modelImplementation.getEditingDomain().getResourceSet()
+                .getResource(uri, false);
         if (r == null) {
-            r = modelImplementation.getEditingDomain().getResourceSet().createResource(
-                    uri);
+            r = modelImplementation.getEditingDomain().getResourceSet()
+                    .createResource(uri);
         }
+        modelImplementation.getReadOnlyMap().put(r, Boolean.valueOf(readOnly));
         return r;
     }
+
 
 }
