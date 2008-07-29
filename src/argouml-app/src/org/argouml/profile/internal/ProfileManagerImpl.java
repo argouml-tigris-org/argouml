@@ -26,6 +26,7 @@ package org.argouml.profile.internal;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -211,6 +212,15 @@ public class ProfileManagerImpl implements ProfileManager {
         if (p != null && p != profileUML) {
             profiles.remove(p);
             defaultProfiles.remove(p);
+        }
+        try {
+            Collection packages = p.getProfilePackages();
+            if (packages != null && !packages.isEmpty()) {
+                // We assume profile is contained in a single extent
+                Model.getUmlFactory().deleteExtent(packages.iterator().next());
+            }
+        } catch (ProfileException e) {
+            // Nothing to delete if we couldn't get the packages
         }
     }
 
