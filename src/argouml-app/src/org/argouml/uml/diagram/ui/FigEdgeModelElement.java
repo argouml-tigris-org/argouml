@@ -720,8 +720,7 @@ public abstract class FigEdgeModelElement
      * @return The model element is read only.
      */
     private boolean isReadOnly() {
-        return true;
-//        return Model.getModelManagementHelper().isReadOnly(getOwner());
+        return Model.getModelManagementHelper().isReadOnly(getOwner());
     }
 
     
