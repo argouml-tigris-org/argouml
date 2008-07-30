@@ -120,7 +120,8 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadEmptyUml13() throws Exception {
-        doLoad("/testmodels/uml13/Empty.zargo");
+        Project p = doLoad("/testmodels/uml13/Empty.zargo");
+        p.remove();
     }
 
     /**
@@ -129,7 +130,8 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadEmptyUml14() throws Exception {
-        doLoad("/testmodels/uml14/EmptyProject024.zargo");
+        Project p = doLoad("/testmodels/uml14/EmptyProject024.zargo");
+        p.remove();
     }
 
     /**
@@ -138,7 +140,8 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadUml13() throws Exception {
-        doLoad("/testmodels/uml13/Alittlebitofeverything.zargo");
+        Project p = doLoad("/testmodels/uml13/Alittlebitofeverything.zargo");
+        p.remove();
     }
 
     /**
@@ -147,8 +150,10 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadUml14() throws Exception {
-        doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
-        doLoad("/testmodels/uml14/SequenceDiagram.zargo");
+        Project p = doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
+        p.remove();
+        p = doLoad("/testmodels/uml14/SequenceDiagram.zargo");
+        p.remove();
     }
 
     /**
@@ -157,7 +162,8 @@ public class TestZargoFilePersister extends TestCase {
      * @throws Exception when e.g. the file is not found
      */
     public void testDoLoadUml14i18n() throws Exception {
-        doLoad("/testmodels/uml14/i18n.zargo");
+        Project p = doLoad("/testmodels/uml14/i18n.zargo");
+        p.remove();
     }
 
     
@@ -170,6 +176,7 @@ public class TestZargoFilePersister extends TestCase {
         Project p = doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
         ZargoFilePersister persister = new ZargoFilePersister();
         persister.save(p, new File("Alittlebitofeverything2.zargo"));
+        p.remove();
     }
 
     /**
@@ -204,11 +211,11 @@ public class TestZargoFilePersister extends TestCase {
             InterruptedException {
      
         // Load a project which contains links to it
-        doLoad("/testmodels/uml14/LinkedProfile.zargo");
+        Project p = doLoad("/testmodels/uml14/LinkedProfile.zargo");
         
         // Make sure the contents match what we expect
         final Facade f = Model.getFacade();
-        Collection topElements = f.getRootElements();
+        Collection topElements = p.getRoots();
         assertFalse("No top level elements", topElements.isEmpty());
         for (Object element : topElements) {
             if (f.isAClass(element)) {
@@ -222,6 +229,8 @@ public class TestZargoFilePersister extends TestCase {
                         f.getName(parent));
             }
         }
+        
+        p.remove();
     }
 }
 
