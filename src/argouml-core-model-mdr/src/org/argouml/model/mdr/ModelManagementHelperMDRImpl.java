@@ -207,11 +207,15 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 List names = elem.getQualifiedName();
                 // Although this only handles one level of package, it is
                 // OK for UML 1.4 because of clustering
-                RefPackage pkg = ((RefObject) nsa).refOutermostPackage()
-                        .refPackage((String) names.get(0));
-                // Get the metatype proxy and use it to find all instances
-                RefClass classProxy = pkg.refClass((String) names.get(1));
-                allOfType = classProxy.refAllOfType();
+                try {
+                    RefPackage pkg = ((RefObject) nsa).refOutermostPackage()
+                            .refPackage((String) names.get(0));
+                    // Get the metatype proxy and use it to find all instances
+                    RefClass classProxy = pkg.refClass((String) names.get(1));
+                    allOfType = classProxy.refAllOfType();
+                } catch (InvalidObjectException e) {
+                    throw new InvalidElementException(e);
+                }
                 break;
             }
         }

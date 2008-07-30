@@ -1253,9 +1253,16 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     public void deleteExtent(Object element) {
-        RefPackage extent = ((RefObject) element).refOutermostPackage();
-        modelImpl.removeExtent((org.omg.uml.UmlPackage) extent);
-        extent.refDelete();
+        try {
+            org.omg.uml.UmlPackage extent = 
+                (org.omg.uml.UmlPackage) ((RefObject) element)
+                    .refOutermostPackage();
+            LOG.debug("Removing extent " + extent);
+            modelImpl.removeExtent(extent);
+            extent.refDelete();
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
 }

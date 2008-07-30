@@ -39,7 +39,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
-import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
@@ -167,14 +166,6 @@ public class MDRModelImplementation implements ModelImplementation {
     private ModelPackage mofExtent;
 
     /**
-     * Top level model element containing profile. This state is shared between
-     * the XMI reader and writer. Elements which are read as part of a profile
-     * (as indicated by the calling application) will be treated specially and
-     * will not be written back out with the rest of the model data.
-     */
-    private Collection<RefObject> profileElements;
-
-    /**
      * Map of model elements to xmi.ids used to keep xmi.ids stable
      * across read/write cycles.
      */
@@ -206,6 +197,9 @@ public class MDRModelImplementation implements ModelImplementation {
      *             before this will be possible.
      */
     UmlPackage getUmlPackage() {
+        if (umlPackage == null) {
+            LOG.debug("umlPackage is null - no current extent");
+        }
         return umlPackage;
     }
     
@@ -434,16 +428,18 @@ public class MDRModelImplementation implements ModelImplementation {
         // Create a default extent for the user UML model.  This will get
         // replaced if a new model is read in from an XMI file.
         umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
-        LOG.debug("MDR Init - tried to get UML extent");
         if (umlPackage != null) {
             // NOTE: If we switch to a persistent repository like the b-tree
             // repository we'll want to keep the old extent(s) around
+            extents.remove(umlPackage);
             umlPackage.refDelete();
             umlPackage = null;
             LOG.debug("MDR Init - UML extent existed - "
                     + "deleted it and all UML data");
         }
         umlPackage = (UmlPackage) createExtent(MODEL_EXTENT_NAME);
+        extents.put(umlPackage, Boolean.FALSE);
+        LOG.debug("Created default extent");
     }
 
     /**
@@ -718,21 +714,6 @@ public class MDRModelImplementation implements ModelImplementation {
     public XmiWriter getXmiWriter(Object model, OutputStream stream,
             String version) throws UmlException {
         return new XmiWriterMDRImpl(this, model, stream, version);
-    }
-    
-    /**
-     * @return the collection of model elements which make up the profile.
-     */
-    protected Collection<RefObject> getProfileElements() {
-        return profileElements;
-    }
-
-    /**
-     * Save the given elements as belonging to the profile.
-     * @param elements collection of model elements.
-     */
-    protected void setProfileElements(Collection<RefObject> elements) {
-        profileElements = elements;
     }
 
     /**

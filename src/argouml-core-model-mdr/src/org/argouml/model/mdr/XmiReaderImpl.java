@@ -88,8 +88,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
 
     private XmiReferenceResolverImpl resolver;
 
-   private RefPackage modelPackage;
-
     /**
      * Flag indicating unknown element was found in XMI file.
      */
@@ -150,24 +148,32 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         
         Collection<RefObject> newElements = Collections.emptyList();
 
-        String extentName = inputSource.getSystemId();
-        if (extentName == null) {
-            extentName = inputSource.getPublicId();
+        String extentBase = inputSource.getSystemId();
+        if (extentBase == null) {
+            extentBase = inputSource.getPublicId();
         }
-        if (extentName == null) {
-            extentName = modelImpl.MODEL_EXTENT_NAME;
+        if (extentBase == null) {
+            extentBase = MDRModelImplementation.MODEL_EXTENT_NAME;
         }
-        RefPackage extent = modelImpl.getRepository().getExtent(extentName);
-        if (extent != null) {
-            LOG.warn("Using existing extent " + extentName);
-            // extent.refDelete();
-        } else {
-            extent = modelImpl.createExtent(inputSource.getSystemId());
-            modelImpl.addExtent((UmlPackage) extent, readOnly);
+        String extentName = extentBase;
+        UmlPackage extent = 
+            (UmlPackage) modelImpl.getRepository().getExtent(extentName);
+        int serial = 1;
+        while (extent != null) {
+            extentName = extentBase + " " + serial;
+            serial++;
+            extent = (UmlPackage) modelImpl.getRepository().getExtent(
+                    extentName);
         }
+
+        extent = (UmlPackage) modelImpl.createExtent(extentName);
+        if (extent == null) {
+            LOG.error("Failed to create extent " + extentName);
+        }
+        modelImpl.addExtent(extent, readOnly);
         
         try {
-            LOG.info("Loading to extent'" + extentName + "'");
+            LOG.info("Loading to extent '" + extentName + "'");
 
             InputConfig config = new InputConfig();
             config.setUnknownElementsListener(this);
@@ -220,8 +226,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 File file = copySource(inputSource);
                 systemId = file.toURI().toURL().toExternalForm();
                 inputSource = new InputSource(systemId);
-                newElements =
-                    xmiReader.read(inputSource.getByteStream(), systemId, extent);
+                newElements = xmiReader.read(inputSource.getByteStream(),
+                        systemId, extent);
                 
                 // If a UML 1.3 file, attempt to upgrade it to UML 1.4
                 if (uml13) {
@@ -242,6 +248,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             }
 
             if (unknownElement) {
+                modelImpl.removeExtent(extent);
                 throw new XmiException("Unknown element in XMI file : "
                         + unknownElementName);
             }
@@ -265,14 +272,13 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                             spe.getColumnNumber(), e);
                 }
             }
+            modelImpl.removeExtent(extent);
             throw new XmiException(e);
         } catch (IOException e) {
+            modelImpl.removeExtent(extent);
             throw new XmiException(e);
         }
 
-        if (readOnly) {
-            modelImpl.setProfileElements(newElements);
-        }
         return newElements;
     }
 
