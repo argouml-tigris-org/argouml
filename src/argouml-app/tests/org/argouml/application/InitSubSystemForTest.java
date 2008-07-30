@@ -32,15 +32,13 @@ import org.argouml.application.api.InitSubsystem;
  * @author Linus Tolke
  */
 public class InitSubSystemForTest {
-
     /**
      * This initiates the subsystem in the same way as they are initialized
      * in the production code.
      * 
-     * @param subsystem the subsystem to be initialised
+     * @param subsystem the subsystem to be initialized
      */
     public static void initSubsystem(InitSubsystem subsystem) {
 	SubsystemUtility.initSubsystem(subsystem);
     }
-
 }

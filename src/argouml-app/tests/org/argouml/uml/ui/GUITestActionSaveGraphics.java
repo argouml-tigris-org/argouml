@@ -38,7 +38,6 @@ import org.argouml.application.InitSubSystemForTest;
 
 // Real classes
 import org.argouml.notation.providers.uml.InitNotationUml;
-import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.ProjectBrowser;
 
