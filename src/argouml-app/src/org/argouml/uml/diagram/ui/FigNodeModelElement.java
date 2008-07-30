@@ -1028,8 +1028,7 @@ public abstract class FigNodeModelElement
      * @return The model element is read only.
      */
     private boolean isReadOnly() {
-        // TODO: Yet to implement
-        return false;
+        return Model.getModelManagementHelper().isReadOnly(getOwner());
     }
 
     /**
@@ -1589,7 +1588,9 @@ public abstract class FigNodeModelElement
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent event) {
-        if (getOwner() == null) return;
+        if (getOwner() == null) {
+            return;
+        }
         initNotationProviders(getOwner());
         try {
             renderingChanged();
