@@ -1573,7 +1573,7 @@ public final class ProjectBrowser
 
         PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
-        boolean success = true;
+        boolean success = false;
 
         // TODO:
         // This is actually a hack! Some diagram types
@@ -1604,7 +1604,6 @@ public final class ProjectBrowser
                 ProjectFilePersister persister =
                     pm.getPersisterFromFileName(file.getName());
                 if (persister == null) {
-                    success = false;
                     throw new IllegalStateException("Filename "
                             + file.getName()
                             + " is not of a known file type");
@@ -1647,9 +1646,8 @@ public final class ProjectBrowser
                         Translator.localize(
                                 "statusmsg.bar.open-project-status-read",
                                 new Object[] {file.getName(), }));
+                success = true;
             } catch (VersionException ex) {
-                project = oldProject;
-                success = false;
                 reportError(
                         pmw,
                         Translator.localize(
@@ -1657,20 +1655,14 @@ public final class ProjectBrowser
                                 new Object[] {ex.getMessage()}),
                         showUI);
             } catch (OutOfMemoryError ex) {
-                project = oldProject;
-                success = false;
                 LOG.error("Out of memory while loading project", ex);
                 reportError(
                         pmw,
                         Translator.localize("dialog.error.memory.limit"),
                         showUI);
             } catch (java.lang.InterruptedException ex) {
-                project = oldProject;
-                success = false;
                 LOG.error("Project loading interrupted by user");
             } catch (UmlVersionException ex) {
-                project = oldProject;
-                success = false;
                 reportError(
                         pmw,
                         Translator.localize(
@@ -1678,8 +1670,6 @@ public final class ProjectBrowser
                                 new Object[] {ex.getMessage()}),
                         showUI, ex);
             } catch (XmiFormatException ex) {
-                project = oldProject;
-                success = false;
                 reportError(
                         pmw,
                         Translator.localize(
@@ -1687,8 +1677,6 @@ public final class ProjectBrowser
                                 new Object[] {ex.getMessage()}),
                         showUI, ex);
             } catch (IOException ex) {
-                success = false;
-                project = oldProject;
                 LOG.error("Exception while loading project", ex);
                 reportError(
                         pmw,
@@ -1697,8 +1685,6 @@ public final class ProjectBrowser
                                 new Object[] {file.getName()}),
                         showUI, ex);
             } catch (OpenException ex) {
-                success = false;
-                project = oldProject;
                 LOG.error("Exception while loading project", ex);
                 reportError(
                         pmw,
@@ -1707,8 +1693,6 @@ public final class ProjectBrowser
                                 new Object[] {file.getName()}),
                         showUI, ex);
             } catch (RuntimeException ex) {
-                success = false;
-                project = oldProject;
                 LOG.error("Exception while loading project", ex);
                 reportError(
                         pmw,
@@ -1718,47 +1702,34 @@ public final class ProjectBrowser
                         showUI, ex);
             } finally {
 
-        	try {
-                    if (oldProject != null) {
-                        // if p equals oldProject there was an exception and we
-                        // do not have to gc (garbage collect) the old project
-                        if (project != null && !project.equals(oldProject)) {
-                            //prepare the old project for gc
-                            LOG.info("There are "
-                                    + oldProject.getDiagramList().size()
-                                    + " diagrams in the old project");
-                            LOG.info("There are " 
-                                    + project.getDiagramList().size()
-                                    + " diagrams in the new project");
-                            // Set new project before removing old so we always
-                            // have a valid current project
-                            ProjectManager.getManager().setCurrentProject(
-                                    project);
-                            ProjectManager.getManager().removeProject(
-                                    oldProject);
-                            project.getProjectSettings().init();
-                            Command cmd = new NonUndoableCommand() {
-                                public Object execute() {
-                                    // This is temporary. Load project
-                                    // should create a new project
-                                    // with its own UndoManager and so
-                                    // there should be no Command
-                                    return null;
-                                }
-                            };
-                            project.getUndoManager().addCommand(cmd);
-                        }
+                try {
+                    if (!success) {
+                        project = 
+                            ProjectManager.getManager().makeEmptyProject();
                     }
-
-                    if (project == null) {
-                        LOG.info("The current project is null");
-                    } else {
-                        LOG.info("There are " + project.getDiagramList().size()
-                                + " diagrams in the current project");
+                    ProjectManager.getManager().setCurrentProject(project);
+                    if (oldProject != null) {
+                        ProjectManager.getManager().removeProject(oldProject);
                     }
                     
+                    project.getProjectSettings().init();
+                    
+                    Command cmd = new NonUndoableCommand() {
+                        public Object execute() {
+                            // This is temporary. Load project
+                            // should create a new project
+                            // with its own UndoManager and so
+                            // there should be no Command
+                            return null;
+                        }
+                    };
+                    project.getUndoManager().addCommand(cmd);
+
+                    LOG.info("There are " + project.getDiagramList().size()
+                            + " diagrams in the current project");
+
                     Designer.enableCritiquing();
-        	} finally {
+                } finally {
                     // Make sure save action is always reinstated
                     this.saveAction = rememberedSaveAction;
                     ProjectManager.getManager().setSaveAction(
@@ -1766,7 +1737,7 @@ public final class ProjectBrowser
                     if (success) {
                         rememberedSaveAction.setEnabled(false);
                     }
-        	}
+                }
             }
         }
         return success;
