@@ -253,11 +253,13 @@ public abstract class FigNodeModelElement
     private Vector<Fig> enclosedFigs = new Vector<Fig>();
 
     /**
-     * The figure enclosing this figure.
+     * The figure enclosing this figure such as a package surrounding a class.
      */
     private Fig encloser;
 
+    // TODO: Bobs says - what is the purpose of this flag? Please document.
     private boolean readyToEdit = true;
+    
     private boolean suppressCalcBounds;
     private static boolean showBoldName;
 
@@ -1201,7 +1203,7 @@ public abstract class FigNodeModelElement
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
-        if (!editable) {
+        if (!editable || isReadOnly()) {
             return;
         }
         if (!readyToEdit) {
@@ -1712,8 +1714,7 @@ public abstract class FigNodeModelElement
 
                 labelFig.addPropertyChangeListener(this);
 
-                getBigPort().
-                setBounds(stereotypeFigProfileIcon.getBounds());
+                getBigPort().setBounds(stereotypeFigProfileIcon.getBounds());
 
                 for (Object fig : getFigs()) {
                     ((Fig) fig).setVisible(fig == stereotypeFigProfileIcon);
