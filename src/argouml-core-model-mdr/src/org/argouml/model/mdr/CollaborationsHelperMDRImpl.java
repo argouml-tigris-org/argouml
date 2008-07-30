@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -381,7 +381,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             return false;
         }
         for (ClassifierRole cr : roles) {
-            if (cr.getName() == null | cr.getName().equals("")) {
+            if (cr.getName() == null || cr.getName().equals("")) {
                 return false;
             }
         }
@@ -412,7 +412,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             return false;
         }
         for (AssociationRole ar : roles) {
-            if (ar.getName() == null | ar.getName().equals("")) {
+            if (ar.getName() == null || ar.getName().equals("")) {
                 return false;
             }
         }
