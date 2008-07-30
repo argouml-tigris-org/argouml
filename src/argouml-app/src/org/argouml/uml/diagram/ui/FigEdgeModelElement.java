@@ -706,15 +706,25 @@ public abstract class FigEdgeModelElement
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
-        if (me.isConsumed())
-            return;
-        if (me.getClickCount() >= 2) {
+        if (!me.isConsumed() && !isReadOnly() && me.getClickCount() >= 2) {
             Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
-            if (f instanceof MouseListener && canEdit(f))
+            if (f instanceof MouseListener && canEdit(f)) {
 		((MouseListener) f).mouseClicked(me);
+            }
         }
         me.consume();
     }
+    
+    /**
+     * Return true if the model element that this Fig represents is read only
+     * @return The model element is read only.
+     */
+    private boolean isReadOnly() {
+        return true;
+//        return Model.getModelManagementHelper().isReadOnly(getOwner());
+    }
+
+    
 
     /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
@@ -734,10 +744,12 @@ public abstract class FigEdgeModelElement
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
-        if (ke.isConsumed())
-            return;
-        if (nameFig != null && canEdit(nameFig))
+        if (!ke.isConsumed()
+                && !isReadOnly()
+                && nameFig != null
+                && canEdit(nameFig)) {
             nameFig.keyTyped(ke);
+        }
     }
 
 
