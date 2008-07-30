@@ -812,7 +812,12 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
     public boolean isReadOnly(Object element) {
-        return modelImpl.isReadOnly(element);
+        try {
+            RefPackage extent = ((RefObject) element).refOutermostPackage();
+            return modelImpl.isReadOnly(extent);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
     }
 
 }
