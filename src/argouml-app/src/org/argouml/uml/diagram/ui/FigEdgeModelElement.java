@@ -279,9 +279,7 @@ public abstract class FigEdgeModelElement
         popUpActions.add(new ActionDeleteModelElements());
         popupAddOffset++;
 
-        /* Check if multiple items are selected: */
-        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
-        if (!ms) {
+        if (TargetManager.getInstance().getTargets().size() == 1) {
             ToDoList list = Designer.theDesigner().getToDoList();
             List<ToDoItem> items = list.elementListForOffender(getOwner());
             if (items != null && items.size() > 0) {
@@ -380,11 +378,16 @@ public abstract class FigEdgeModelElement
     }
 
     /**
+     * This is used to draw a box round the edge of any editable FigText
+     * annotations of the edge when the edge is selected.
+     * TODO: This logic probably belongs in our base selection class
+     * SelectionEdgeClarifiers and could be written to discover what FigText
+     * annotations exist rather than hard code in subclasses.
      * @param f the fig to indicate the bounds of
      * @param g the graphics
      */
     protected void indicateBounds(FigText f, Graphics g) {
-        if (f == null) {
+        if (f == null || isReadOnly()) {
             return;
         }
         String text = f.getText();
