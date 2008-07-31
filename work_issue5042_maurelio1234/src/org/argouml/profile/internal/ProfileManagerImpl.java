@@ -150,7 +150,7 @@ public class ProfileManagerImpl implements ProfileManager {
         disableConfigurationUpdate = true;
 
         StringTokenizer tokenizer = new StringTokenizer(Configuration
-                .getString(KEY_DEFAULT_DIRECTORIES), DIRECTORY_SEPARATOR, false);
+               .getString(KEY_DEFAULT_DIRECTORIES), DIRECTORY_SEPARATOR, false);
 
         while (tokenizer.hasMoreTokens()) {
             searchDirectories.add(tokenizer.nextToken());
@@ -296,7 +296,7 @@ public class ProfileManagerImpl implements ProfileManager {
             if (p instanceof UserDefinedProfile) {
                 UserDefinedProfile udp = (UserDefinedProfile) p;
 
-                if (udp.getModelFile().equals(file)) {
+                if (file.equals(udp.getModelFile())) {
                     return udp;
                 }
             }
@@ -308,7 +308,7 @@ public class ProfileManagerImpl implements ProfileManager {
         return profileUML;
     }
 
-    /**
+    /*
      * @see org.argouml.profile.ProfileManager#lookForRegisteredProfile(java.lang.String)
      */
     public Profile lookForRegisteredProfile(String value) {

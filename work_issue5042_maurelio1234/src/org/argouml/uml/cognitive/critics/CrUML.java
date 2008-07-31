@@ -268,17 +268,6 @@ public class CrUML extends Critic {
     }
 
     /**
-     *  Get the metatypes to be criticized by this critic, no
-     *  metatype is assumed by default.
-     * 
-     * @return the metatypes 
-     */
-    public Set<Object> getCriticizedMetatypes() {
-        Set<Object> ret = new HashSet<Object>();
-        return ret;
-    }
-    
-    /**
      * The UID.
      */
     private static final long serialVersionUID = 1785043010468681602L;

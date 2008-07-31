@@ -152,9 +152,9 @@ public abstract class Profile {
     }
 
     /**
-     * @param critics The critics to set.
+     * @param criticsSet The critics to set.
      */
-    protected void setCritics(Set<CrUML> critics) {
-        this.critics = critics;
+    protected void setCritics(Set<CrUML> criticsSet) {
+        this.critics = criticsSet;
     }
 }
