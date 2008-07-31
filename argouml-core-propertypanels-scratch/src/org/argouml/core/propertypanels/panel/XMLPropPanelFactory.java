@@ -24,9 +24,18 @@
 
 package org.argouml.core.propertypanels.panel;
 
+import java.io.InputStream;
+import java.util.Dictionary;
+import java.util.Hashtable;
+
+import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
+import org.argouml.core.propertypanels.xml.XmlSinglePanelHandler;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelFactory;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * 
@@ -34,6 +43,23 @@ import org.argouml.uml.ui.PropPanelFactory;
  */
 public class XMLPropPanelFactory implements PropPanelFactory {
 
+    private final Dictionary<String, XMLPropertyPanelsData> cache;
+    
+    private static XMLPropPanelFactory instance;
+    
+    public static synchronized XMLPropPanelFactory getInstance() 
+        throws Exception {
+        if (instance == null) {
+            instance = new XMLPropPanelFactory();
+        }
+        return instance;
+    }
+    
+    private XMLPropPanelFactory() throws Exception {
+        cache = new Hashtable<String, XMLPropertyPanelsData>();
+        parseXML();
+    }
+    
     public PropPanel createPropPanel(Object target) {
         if (Model.getFacade().isAModelElement(target)) {
             XmlPropertyPanel panel =
@@ -44,5 +70,22 @@ public class XMLPropPanelFactory implements PropPanelFactory {
             return null;
         }
     }
-
+    
+    private void parseXML() throws Exception {
+        String file = "org/argouml/core/propertypanels/xml/panels.xml";        
+        XMLReader parser = XMLReaderFactory.createXMLReader();
+        parser.setContentHandler(new XmlSinglePanelHandler(cache));
+        InputStream stream = this.getClass().getClassLoader().
+        getResourceAsStream(file);
+        if (stream != null) {
+            InputSource source = new InputSource(stream);
+            parser.parse(source);        
+        }       
+    }
+    
+    public XMLPropertyPanelsData getPropertyPanelsData (String forType) {
+        return cache.get(forType);
+    }
+    
+    
 }

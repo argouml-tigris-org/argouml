@@ -26,6 +26,7 @@ package org.argouml.core.propertypanels.ui;
 
 import java.io.InputStream;
 
+import javax.sql.rowset.spi.XmlReader;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -37,9 +38,11 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.panel.UIFactory;
+import org.argouml.core.propertypanels.panel.XMLPropPanelFactory;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
+import org.argouml.core.propertypanels.xml.XmlSinglePanelHandler;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ScrollList;
@@ -145,9 +148,9 @@ public class SwingUIFactory implements UIFactory {
      * @see org.argouml.core.propertypanels.panel.UIFactory#createGUI(java.lang.Object)
      */
     public JPanel createGUI (Object target) throws Exception {
-        String filename = getXMLFileName(target);
-        LOG.info("[XMLPP] filename is:" + filename);
-        XMLPropertyPanelsData data = parseXML(filename);
+        XMLPropertyPanelsData data = 
+            XMLPropPanelFactory.getInstance().getPropertyPanelsData(
+                    Model.getMetaTypes().getName(target));
         JPanel p = buildPanel(data, target);
         return p;       
     }
@@ -688,29 +691,7 @@ public class SwingUIFactory implements UIFactory {
     }
 
 
-    private String getXMLFileName(Object target) {
-        return Model.getMetaTypes().getName(target);
-    }
-
-    private XMLPropertyPanelsData parseXML(String filename) 
-        throws Exception {
-        
-        XMLPropertyPanelsData data = new XMLPropertyPanelsData();
-
-        XMLReader parser = XMLReaderFactory.createXMLReader();
-        parser.setContentHandler(new XMLPropertyPanelsHandler(data));
-
-        String file = "org/argouml/core/propertypanels/xml/"
-            + filename + ".xml";
-        LOG.debug("UIFactory creates PropPanel with file " + file);
-        InputStream stream = this.getClass().getClassLoader().
-            getResourceAsStream(file);
-        if (stream != null) {
-            InputSource source = new InputSource(stream);
-            parser.parse(source);        
-        }
-        return data;
-    }
     
+
 
 }

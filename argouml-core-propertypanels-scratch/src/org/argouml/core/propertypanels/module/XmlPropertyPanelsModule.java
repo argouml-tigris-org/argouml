@@ -49,8 +49,8 @@ public class XmlPropertyPanelsModule
 
     public boolean enable() { 
         /* Set up the property panels for UML elements: */
-        PropPanelFactory elementFactory = new XMLPropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(elementFactory);
+//        PropPanelFactory elementFactory = new XMLPropPanelFactory();
+//        PropPanelFactoryManager.addPropPanelFactory(elementFactory);
         return true;
     }
 
