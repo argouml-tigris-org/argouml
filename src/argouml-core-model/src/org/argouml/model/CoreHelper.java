@@ -477,6 +477,8 @@ public interface CoreHelper {
     /**
      * Return true if the given ModelElement may be owned by the given
      * namespace.<p>
+     * Simply returns false if the parameters are not the expected 
+     * UML elements - any Object is accepted.
      *
      * @param element a ModelElement
      * @param namespace a Namespace
