@@ -484,28 +484,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         
         getGraphModel().getNodes().add(newCR.getOwner());
         
-        // Y position of the new CR should match existing CRs Y position
-        List nodes = getLayer().getContentsNoEdges();
-        int i = 0;
-        boolean figClassifierRoleFound = false;
-        Fig fig = null;
-        while (i < nodes.size() && !figClassifierRoleFound) {
-            fig = (Fig) nodes.get(i);
-            if (nodes.get(i) instanceof Fig) {
-                if (fig != newCR && fig instanceof FigClassifierRole) {
-                    newCR.setY(fig.getY());
-                    newCR.setHeight(fig.getHeight());
-                    figClassifierRoleFound = true;
-                }
-            }
-            i++;
-        }
-        if (location != null) {
-            if (newCR.getY() == 0) {
-                newCR.setY(location.y);
-            }
-            newCR.setX(location.x);
-        }
+        newCR.setY(location.y);
+        newCR.setX(location.x);
         return newCR;
     }
     
