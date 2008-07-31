@@ -37,6 +37,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * Well-formedness rule [2] for MAssociationEnd. See page 2-45 of UML
  * chapter 2: Semantics. OMG document UML V1.3 June 1999.
  *
+ * Well-formedness rule [1] for AssociationEnd. See page 53 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ * 
  * @author jrobbins
  */
 public class CrMultiComposite extends CrUML {

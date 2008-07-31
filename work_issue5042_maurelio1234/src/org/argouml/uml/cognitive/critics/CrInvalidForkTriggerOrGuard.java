@@ -35,6 +35,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * UML 1.5 Well-formedness rule [1] for Transition, to remove
  * a trigger or guard from fork outgoing transition.
  *
+ * Well-formedness rule [1] for Transition. See page 139 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
  * @author pepargouml@yahoo.es
  */
 public class CrInvalidForkTriggerOrGuard extends CrUML {

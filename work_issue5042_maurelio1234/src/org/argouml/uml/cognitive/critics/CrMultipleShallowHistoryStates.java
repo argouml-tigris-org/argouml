@@ -38,6 +38,9 @@ import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
  * UML 1.5 Well-formedness rule [3] for Composite States.
+ * 
+ * Well-formedness rule [3] for CompositeState. See page 136 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
  *
  * @author pepargouml@yahoo.es
  */

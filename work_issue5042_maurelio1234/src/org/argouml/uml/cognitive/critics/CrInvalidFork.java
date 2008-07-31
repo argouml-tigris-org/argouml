@@ -37,6 +37,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * transitions.  Implements constraint [5] on Pseudostate in the UML
  * Semantics v1.1, pp. 104.
  *
+ * Well-formedness rule [5] for PseudoState. See page 137 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
  * @author jrobbins
  */
 public class CrInvalidFork extends CrUML {

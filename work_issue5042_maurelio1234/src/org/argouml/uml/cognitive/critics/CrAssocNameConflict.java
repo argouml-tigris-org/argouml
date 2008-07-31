@@ -41,6 +41,9 @@ import org.argouml.uml.cognitive.UMLToDoItem;
  * Well-formedness rule [2] for Namespace. See section 2.5.3.26 of
  * UML 1.4 spec.  Rule [1] is checked by CrNameConfusion.
  * 
+ * Well-formedness rule [1] for Namespace. See page 62 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ * 
  * @author mkl
  */
 public class CrAssocNameConflict extends CrUML {

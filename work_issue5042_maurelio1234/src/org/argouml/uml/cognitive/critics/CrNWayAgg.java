@@ -41,6 +41,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * This is the third well-formedness rule for associations in the UML 1.3
  * standard (see section 2.5.3 of the standard).<p>
  *
+ * Well-formedness rule [3] for Association. See page 52 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
  * <em>Note</em>. This only applies to 3-way or more
  * associations. There is a separate critic (see {@link
  * org.argouml.uml.cognitive.critics.CrMultipleAgg}) which deals with
