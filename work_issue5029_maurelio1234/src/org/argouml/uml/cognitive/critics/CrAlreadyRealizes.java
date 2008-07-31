@@ -70,7 +70,7 @@ public class CrAlreadyRealizes extends CrUML {
 	return problem;
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
      */
     public Set<Object> getCriticizedMetatypes() {

@@ -256,7 +256,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 if (!dependents.isEmpty()) {
                     String message = Translator.localize(
                             "tab.profiles.confirmdeletewithdependencies",
-                            new Object[] { dependents });
+                            new Object[] {dependents});
                     String title = Translator
                             .localize("tab.profiles.confirmdeletewithdependencies.title");
                     remove = (JOptionPane.showConfirmDialog(this, message,

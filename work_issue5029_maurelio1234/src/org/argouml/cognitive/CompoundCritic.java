@@ -300,14 +300,14 @@ public class CompoundCritic extends Critic {
 	throw new UnsupportedOperationException();
     }
 
-    /**
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
      */
     public Set<Object> getCriticizedMetatypes() {
         Set<Object> ret = new HashSet<Object>();
         for (Critic cr : this.critics) {
             if (cr instanceof CrUML) {
-                ret.addAll(((CrUML)cr).getCriticizedMetatypes());
+                ret.addAll(((CrUML) cr).getCriticizedMetatypes());
             }
         }
         return ret;

@@ -35,7 +35,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * Agency manages Critics.  Since classes are not really first class
@@ -243,25 +242,12 @@ public class Agency extends Observable { //implements java.io.Serialization
      * 
      * @param cr the critic to register
      */
-    public static void register(CrUML cr) {
+    public static void register(Critic cr) {
         Set<Object> metas = cr.getCriticizedMetatypes();
         for (Object meta : metas) {
             register(cr, meta);            
         }
     }
-    
-    /**
-     * Register a compound critic in the global table of critics that have been
-     * loaded.
-     * 
-     * @param cr the critic to register
-     */
-    public static void register(CompoundCritic cr) {
-        Set<Object> metas = cr.getCriticizedMetatypes();
-        for (Object meta : metas) {
-            register(cr, meta);            
-        }
-    }    
     
     private static Hashtable<Class, Collection<Critic>> cachedCritics = 
         new Hashtable<Class, Collection<Critic>>();
