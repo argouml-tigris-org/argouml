@@ -84,6 +84,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
         
         LOG.debug("Created sequence diagram");
     }
+    
     /**
      * Creates a new UmlSequenceDiagram with a collaboration.
      * @param collaboration The collaboration
@@ -190,8 +191,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      */
     @Override
     public boolean doesAccept(Object objectToAccept) {
-        if (Model.getFacade().isAClass(objectToAccept) 
-                || Model.getFacade().isAActor(objectToAccept)) {
+        if (Model.getFacade().isAClassifier(objectToAccept)) {
             return true;
         }
         return false;
@@ -212,8 +212,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
             node =
                 Model.getCollaborationsFactory().buildClassifierRole(
                         collaboration);
-        }
-        getGraphModel().getNodes().add(node);
+          }
         Model.getCollaborationsHelper().addBase(node, base);
         
         return node;
@@ -230,6 +229,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
             Point location) {
         
         FigClassifierRole newCR = new FigClassifierRole(classifierRole);
+        
+        getGraphModel().getNodes().add(newCR.getOwner());
         
         // Y position of the new CR should match existing CRs Y position
         List nodes = getLayer().getContentsNoEdges();
@@ -261,8 +262,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
         FigClassifierRole newCR = null;
         if (Model.getFacade().isAClassifierRole(droppedObject)) {
             newCR = makeNewFigCR(droppedObject, location);           
-        } else if (Model.getFacade().isAClass(droppedObject)
-                || Model.getFacade().isAActor(droppedObject)){
+        } else if (Model.getFacade().isAClassifier(droppedObject)){
             newCR = makeNewFigCR(makeNewCR(droppedObject), location);
         }
         if (newCR != null) {
@@ -277,7 +277,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     
     @Override
     public String getInstructions(Object droppedObject) {
-        if (Model.getFacade().isAClassifierRole(droppedObject)) {
+        if (Model.getFacade().isAClassifier(droppedObject)) {
             //TODO: i18n
             return "Click on diagram to add as a new Classifier Role";
         }
