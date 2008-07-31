@@ -38,7 +38,6 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.Model;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Diagram;

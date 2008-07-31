@@ -24,8 +24,6 @@
 
 package org.argouml.uml.diagram.sequence2.ui;
 
-import java.awt.Point;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -34,19 +32,13 @@ import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.sequence2.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.Mode;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
-import org.tigris.swidgets.DropDownIcon;
 
 /**
  *
@@ -72,8 +64,8 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
             .getActiveDiagram();
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
-            // if the user tries to add a Class or an Actor, a new CR should be
-            // created with the Class or the Actor as a Base. This is done by
+            // if the user tries to add a classifier, a new CR should be created
+        	// with the classifier as a Base. This is done by
             // the diagram via the drop method.
             result = ((UMLDiagram) diag).drop(node, null);
         } else {

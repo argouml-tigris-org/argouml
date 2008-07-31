@@ -24,10 +24,13 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
+import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -42,10 +45,15 @@ import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.ToolBarUtility;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.base.ModePlace;
+import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
@@ -423,6 +431,115 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     public void encloserChanged(FigNode enclosed, 
             FigNode oldEncloser, FigNode newEncloser) {
         // Do nothing.        
+    }
+    
+    /**
+     * A sequence diagram can accept all classifiers. It will add them as a new 
+     * Classifier Role with that classifier as a base.
+     * @param objectToAccept
+     * @return
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#doesAccept(java.lang.Object)
+     */
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+        if (Model.getFacade().isAClassifier(objectToAccept)) {
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Creates a new Classifier Role with a specified base.
+     * @param base
+     * @return The new CR
+     */
+    private Object makeNewCR(Object base) {
+        Object node = null;
+        Editor ce = Globals.curEditor();
+        GraphModel gm = ce.getGraphModel();
+        if (gm instanceof CollabDiagramGraphModel) {
+            Object collaboration =
+                ((CollabDiagramGraphModel) gm).getHomeModel();
+            node =
+                Model.getCollaborationsFactory().buildClassifierRole(
+                        collaboration);
+          }
+        Model.getCollaborationsHelper().addBase(node, base);
+        
+        return node;
+    }
+    
+    /**
+     * Creates the Fig for the CR. Y position will be adjusted to match other 
+     * the other CRs.
+     * @param classifierRole
+     * @param location The position where to put the new fig.
+     * @return
+     */
+    private FigClassifierRole makeNewFigCR(Object classifierRole, 
+            Point location) {
+        
+        FigClassifierRole newCR = new FigClassifierRole(getGraphModel(),
+                getLayer(), classifierRole);
+        
+        getGraphModel().getNodes().add(newCR.getOwner());
+        
+        // Y position of the new CR should match existing CRs Y position
+        List nodes = getLayer().getContentsNoEdges();
+        int i = 0;
+        boolean figClassifierRoleFound = false;
+        Fig fig = null;
+        while (i < nodes.size() && !figClassifierRoleFound) {
+            fig = (Fig) nodes.get(i);
+            if (nodes.get(i) instanceof Fig) {
+                if (fig != newCR && fig instanceof FigClassifierRole) {
+                    newCR.setY(fig.getY());
+                    newCR.setHeight(fig.getHeight());
+                    figClassifierRoleFound = true;
+                }
+            }
+            i++;
+        }
+        if (location != null) {
+            if (newCR.getY() == 0) {
+                newCR.setY(location.y);
+            }
+            newCR.setX(location.x);
+        }
+        return newCR;
+    }
+    
+    @Override
+    public FigNode drop(Object droppedObject, Point location) {
+        FigClassifierRole newCR = null;
+        if (Model.getFacade().isAClassifierRole(droppedObject)) {
+            newCR = makeNewFigCR(droppedObject, location);           
+        } else if (Model.getFacade().isAClassifier(droppedObject)){
+            newCR = makeNewFigCR(makeNewCR(droppedObject), location);
+        }
+        if (newCR != null) {
+            add(newCR);
+            LOG.debug("Dropped object " + droppedObject + " converted to " 
+                    + newCR);
+        } else {
+            LOG.debug("Dropped object NOT added " + droppedObject);
+        }
+        return newCR;
+    }
+    
+    @Override
+    public String getInstructions(Object droppedObject) {
+        if (Model.getFacade().isAClassifier(droppedObject)) {
+            //TODO: i18n
+            return "Click on diagram to add as a new Classifier Role";
+        }
+        return super.getInstructions(droppedObject);
+    }
+    
+    
+    @Override
+    public ModePlace getModePlace(GraphFactory gf, String instructions) {
+        return new ModePlace(gf, instructions);
     }
 
     /**

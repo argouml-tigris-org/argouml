@@ -27,14 +27,17 @@ package org.argouml.uml.diagram.collaboration.ui;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigMessage;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -82,14 +85,18 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
 				 Object node, Map styleAttributes) {
 
         FigNode figNode = null;
-
+        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
+                .getActiveDiagram();
         if (Model.getFacade().isAClassifierRole(node)) {
             figNode = new FigClassifierRole(gm, lay, node);
         } else if (Model.getFacade().isAMessage(node)) {
             figNode = new FigMessage(gm, lay, node);
         } else if (Model.getFacade().isAComment(node)) {
             figNode = new FigComment(gm, node);
-        } else {
+        } else if (diag instanceof UMLDiagram
+                && ((UMLDiagram) diag).doesAccept(node)) {
+            figNode = ((UMLDiagram) diag).drop(node, null);
+        } else { 
             LOG.debug("TODO: CollabDiagramRenderer getFigNodeFor");
             return null;
         }
