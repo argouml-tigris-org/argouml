@@ -183,8 +183,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
     }
     
     /**
-     * A sequence diagram can accept Classes and Actors. It will add them as
-     * a new Classifier Role with that Class/Actor as a base.
+     * A sequence diagram can accept all classifiers. It will add them as a new 
+     * Classifier Role with that classifier as a base.
      * @param objectToAccept
      * @return
      * @see org.argouml.uml.diagram.ui.UMLDiagram#doesAccept(java.lang.Object)
