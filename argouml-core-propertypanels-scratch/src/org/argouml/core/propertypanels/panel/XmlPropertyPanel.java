@@ -101,8 +101,6 @@ public class XmlPropertyPanel extends PropPanel
         }        
     }
     
-    // TODO: Code duplication. This is the same that
-    // UIFactory.getXMLFileName
     /**
      * @return the title of the panel, according to the target 
      */
