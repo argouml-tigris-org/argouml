@@ -32,6 +32,8 @@ import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
+import org.argouml.profile.internal.ocl.DefaultOclEvaluator;
+import org.argouml.profile.internal.ocl.InvalidOclException;
 import org.argouml.profile.internal.ocl.ModelInterpreter;
 
 /**
@@ -47,6 +49,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
     private static final Logger LOG = Logger
             .getLogger(ModelAccessModelInterpreter.class);
 
+    private static Uml14ModelInterpreter uml14mi = new Uml14ModelInterpreter();
+    
     /*
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap,
      *      java.lang.Object, java.lang.String, java.lang.String,
@@ -59,15 +63,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         if (subject == null) {
             subject = vt.get("self");
         }
-
-        if (Model.getFacade().isAModelElement(subject)) {
-            if (type.equals(".")) {
-                if (feature.equals("name")) {
-                    return Model.getFacade().getName(subject);
-                }
-            }
-        }
-
+        
         /* 4.5.2.1 Abstraction */  
         // TODO investigate: Abstraction.mapping is not in the Model Sybsystem
 
@@ -79,7 +75,13 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return new ArrayList<Object>(Model.getFacade()
                             .getConnections(subject));
                 }
-            }
+                
+                // Additional Operation 4.5.3.1 [1]
+                if (feature.equals("allConnections")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getConnections(subject));
+                }                              
+            }                       
         }
 
         /* 4.5.2.5 AssociationEnd */  
@@ -118,6 +120,12 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
                 
                 // TODO investigate the "unnamed opposite end"
+                
+                // Aditional Operation 4.5.3.3 [1]
+                if (feature.equals("upperbound")) {
+                    return Model.getFacade().getUpper(subject);                    
+                }
+                
             }
         }
 
@@ -147,6 +155,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             .getParameters(subject));
                 }
             }
+            
+            // TODO implement additional operations in 4.5.3.5
         }
 
         /* 4.5.2.8 Binding */  
@@ -195,6 +205,159 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return new ArrayList<Object>(Model.getFacade()
                             .getFeatures(subject));
                 }
+                
+                // Additional Operations in 4.5.3.8
+                if (feature.equals("allFeatures")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,                         
+                        "self.feature->union("
+                      + "self.parent.oclAsType(Classifier).allFeatures)");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+
+                if (feature.equals("allOperations")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,                         
+                        "self.allFeatures->"
+                      + "select(f | f.oclIsKindOf(Operation))");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+
+                if (feature.equals("allMethods")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,                         
+                        "self.allFeatures->"
+                      + "select(f | f.oclIsKindOf(Method))");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+                
+                if (feature.equals("allAttributes")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,                         
+                        "self.allFeatures->"
+                      + "select(f | f.oclIsKindOf(Attribute))");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+
+                if (feature.equals("associations")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,                         
+                        "self.association.association->asSet()");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+                
+                if (feature.equals("allAssociations")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,                         
+                  "self.associations->union("
+                + "self.parent.oclAsType(Classifier).allAssociations)");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+                
+                if (feature.equals("oppositeAssociationEnds")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,
+                                        "self.associations->select ( a | a.connection->select ( ae |"
+                                                + "ae.participant = self ).size = 1 )->collect ( a |"
+                                                + "a.connection->"
+                                                + "select ( ae | ae.participant <> self ) )->union ("
+                                                + "self.associations->select ( a | a.connection->select ( ae |"
+                                                + "ae.participant = self ).size > 1 )->collect ( a |"
+                                                + "a.connection) )");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }                 
+
+                if (feature.equals("allOppositeAssociationEnds")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,
+                     "self.oppositeAssociationEnds->"
+                   + "union(self.parent.allOppositeAssociationEnds )");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }                 
+
+                if (feature.equals("specification")) {
+                    try {
+                        return DefaultOclEvaluator
+                                .getInstance()
+                                .evaluate(
+                                        vt,
+                                        uml14mi,
+                                        "self.clientDependency->"
+                                                + "select(d |"
+                                                + "d.oclIsKindOf(Abstraction)"
+                                                + "and d.stereotype.name = \"realization\""
+                                                + "and d.supplier.oclIsKindOf(Classifier))"
+                                                + ".supplier.oclAsType(Classifier)");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }                 
+
+                if (feature.equals("allContents")) {
+                    try {
+                        return DefaultOclEvaluator
+                                .getInstance()
+                                .evaluate(
+                                        vt,
+                                        uml14mi,
+                                        "self.contents->union("
+                                                + "self.parent.allContents->select(e |"
+                                                + "e.elementOwnership.visibility = #public or"
+                                                + "e.elementOwnership.visibility = #protected))");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }                 
+
+                if (feature.equals("allDiscriminators")) {
+                    try {
+                        return DefaultOclEvaluator
+                                .getInstance()
+                                .evaluate(
+                                        vt,
+                                        uml14mi,
+         "self.generalization.discriminator->"
+       + "union(self.parent.oclAsType(Classifier).allDiscriminators)");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }                 
+                
             }
         }        
 
@@ -227,6 +390,21 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
                 
                 // TODO implementation?
+                
+                // Additional Operation in 4.5.3.9                
+                if (feature.equals("allResidentElements")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,
+                                        "self.resident->union("
+                                                + "self.parent.oclAsType(Component).allResidentElements->select( re |"
+                                                + "re.elementResidence.visibility = #public or"
+                                                + "re.elementResidence.visibility = #protected))");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }                
             }
         }        
 
@@ -307,6 +485,371 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }                
             }
         }        
+
+        /* 4.5.2.23 Generalizable Element */          
+        
+        if (Model.getFacade().isAGeneralizableElement(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("isAbstract")) {
+                    return Model.getFacade().isAbstract(subject);
+                }
+                if (feature.equals("isLeaf")) {
+                    return Model.getFacade().isLeaf(subject);
+                }
+                if (feature.equals("isRoot")) {
+                    return Model.getFacade().isRoot(subject);
+                }
+                if (feature.equals("generalization")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getGeneralizations(subject));
+                }
+                if (feature.equals("specialization")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getSpecializations(subject));
+                }
+
+                // Additional Operation in 4.5.3.20                
+                if (feature.equals("parent")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,
+                                        "self.generalization.parent");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }                
+
+                if (feature.equals("allParents")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt,
+                                uml14mi,
+                                "self.parent->union(self.parent.allParents)");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }                
+                
+            }
+        }                
+        
+        /* 4.5.2.24 Generalization */          
+        
+        if (Model.getFacade().isAGeneralization(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("discriminator")) {
+                    return Model.getFacade().getDiscriminator(subject);
+                }
+                if (feature.equals("child")) {
+                    return Model.getFacade().getChild(subject);
+                }
+                if (feature.equals("parent")) {
+                    return Model.getFacade().getParent(subject);
+                }
+                if (feature.equals("powertype")) {
+                    return Model.getFacade().getPowertype(subject);
+                }
+                if (feature.equals("specialization")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getSpecializations(subject));
+                }                
+            }
+        }                
+                
+        /* 4.5.2.26 Method */          
+        
+        if (Model.getFacade().isAMethod(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("body")) {
+                    return Model.getFacade().getBody(subject);
+                }
+                if (feature.equals("specification")) {
+                    return Model.getFacade().getSpecification(subject);
+                }
+            }
+        }
+        
+        /* 4.5.2.27 ModelElement */          
+        
+        if (Model.getFacade().isAMethod(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("name")) {
+                    return Model.getFacade().getName(subject);
+                }
+
+                // TODO asArgument??
+                
+                if (feature.equals("clientDependency")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getClientDependencies(subject));
+                }                
+                if (feature.equals("constraint")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getConstraints(subject));
+                }
+                
+                // TODO implementationLocation??
+                
+                if (feature.equals("namespace")) {
+                    return Model.getFacade().getNamespace(subject);
+                }                
+
+                // TODO presentation??                
+                if (feature.equals("supplierDependency")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getSupplierDependencies(subject));
+                }                
+
+                if (feature.equals("templateParameter")) {
+                    return Model.getFacade().getTemplateParameters(subject);
+                }
+                
+                // Additional Operations in 4.5.3.25
+                if (feature.equals("supplier")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt,
+                                uml14mi, "self.clientDependency.supplier");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }                                
+
+                if (feature.equals("allSuppliers")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt,
+                                uml14mi, 
+                       "self.supplier->union(self.supplier.allSuppliers)");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+                
+                if (feature.equals("model")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt,
+                                uml14mi, 
+                           "self.namespace->"
+                         + "union(self.namespace.allSurroundingNamespaces)->"
+                         + "select( ns| ns.oclIsKindOf (Model))");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+                
+                if (feature.equals("isTemplate")) {
+                    return !Model.getFacade().getTemplateParameters(subject)
+                            .isEmpty();
+                }
+
+                if (feature.equals("isInstantiated")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt,
+                                uml14mi, 
+      "self.clientDependency->select(oclIsKindOf(Binding))->notEmpty");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+
+                if (feature.equals("templateArgument")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt,
+                                uml14mi, 
+      "self.clientDependency->"
+    + "select(oclIsKindOf(Binding)).oclAsType(Binding).argument");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }                    
+                }
+                
+            }
+        }
+        
+        /* 4.5.2.28 Namespace */          
+        
+        if (Model.getFacade().isANamespace(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("ownedElement")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getOwnedElements(subject));
+                }
+                // Additional Operations in 4.5.3.26
+                if (feature.equals("contents")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(
+                                vt,
+                                uml14mi,
+                                "self.ownedElement->"
+                                        + "union(self.namespace, contents)");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }
+                }
+
+                if (feature.equals("allContents")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(
+                                vt,
+                                uml14mi,
+                                "self.contents");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }
+                }
+                
+                if (feature.equals("allVisibleElements")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(
+                                vt,
+                                uml14mi,
+              "self.allContents ->"
+            + "select(e |e.elementOwnership.visibility = #public)");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }
+                }
+
+                if (feature.equals("allSurroundingNamespaces")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(
+                                vt,
+                                uml14mi,
+              "self.namespace->union(self.namespace.allSurroundingNamespaces)");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }
+                }                                               
+            }                        
+        }
+
+        
+        /* 4.5.2.29 Node */          
+        
+        if (Model.getFacade().isANode(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("deployedComponent")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getDeployedComponents(subject));
+                }                
+            }
+        }        
+
+        /* 4.5.2.30 Operation */          
+        
+        if (Model.getFacade().isAOperation(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("concurrency")) {
+                    return Model.getFacade().getConcurrency(subject);
+                }
+                if (feature.equals("isAbstract")) {
+                    return Model.getFacade().isAbstract(subject);
+                }
+                if (feature.equals("isLeaf")) {
+                    return Model.getFacade().isLeaf(subject);
+                }
+                if (feature.equals("isRoot")) {
+                    return Model.getFacade().isRoot(subject);
+                }
+            }
+        }                
+        
+        /* 4.5.2.31 Parameter */          
+        
+        if (Model.getFacade().isAParameter(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("defaultValue")) {
+                    return Model.getFacade().getDefaultValue(subject);
+                }
+                if (feature.equals("kind")) {
+                    return Model.getFacade().getKind(subject);
+                }
+            }
+        }                
+
+        /* 4.5.2.35 ProgrammingLanguageDataType */          
+        
+        if (Model.getFacade().isAProgrammingLanguageDataType(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("expression")) {
+                    return Model.getFacade().getExpression(subject);
+                }
+            }
+        }                
+
+        /* 4.5.2.37 StructuralFeature */
+
+        if (Model.getFacade().isAStructuralFeature(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("changeability")) {
+                    return Model.getFacade().getChangeability(subject);
+                }
+                if (feature.equals("multiplicity")) {
+                    return Model.getFacade().getMultiplicity(subject);
+                }
+                if (feature.equals("ordering")) {
+                    return Model.getFacade().getOrdering(subject);
+                }
+                if (feature.equals("targetScope")) {
+                    return Model.getFacade().getTargetScope(subject);
+                }
+                if (feature.equals("type")) {
+                    return Model.getFacade().getType(subject);
+                }
+            }
+        }        
+        
+        /* 4.5.2.38 TemplateArgument */
+
+        if (Model.getFacade().isATemplateArgument(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("binding")) {
+                    return Model.getFacade().getBinding(subject);
+                }
+                if (feature.equals("modelElement")) {
+                    return Model.getFacade().getModelElement(subject);
+                }
+            }
+        }        
+        
+        /* 4.5.2.39 TemplateParameter */
+
+        if (Model.getFacade().isATemplateParameter(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("defaultElement")) {
+                    return Model.getFacade().getDefaultElement(subject);
+                }
+            }
+        }                
+        
+        /* 4.5.3.2 AssociationClass */
+
+        if (Model.getFacade().isAAssociationClass(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("allConnections")) {
+                    try {
+                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
+                                uml14mi,                         
+                        "self.connection->union(self.parent->select("
+                        + "s | s.oclIsKindOf(Association))->collect(" 
+                        + "a : Association | a.allConnections))->asSet()");
+                    } catch (InvalidOclException e) {
+                        LOG.error("Exception", e);
+                        return new HashSet<Object>();
+                    }
+                }                              
+            }            
+        }
+
         return null;
     }
 
@@ -319,14 +862,18 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
      */
     public Object getBuiltInSymbol(String sym) {
         Method m;
-        try {
-            m = Facade.class.getDeclaredMethod("isA" + sym,
-                    new Class[] {Object.class});
-            if (m != null) {
-                return new OclType(sym.toString());
+        if (sym.equals("Class")) {
+            return new OclType(sym.toString());
+        } else {
+            try {
+                m = Facade.class.getDeclaredMethod("isA" + sym,
+                        new Class[] {Object.class});
+                if (m != null) {
+                    return new OclType(sym.toString());
+                }
+            } catch (Exception e) {
+                LOG.error("Exception", e);
             }
-        } catch (Exception e) {
-            LOG.error("Exception", e);
         }
         return null;
     }

@@ -31,7 +31,9 @@ import java.util.HashSet;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.profile.internal.ocl.uml14.HashBag;
+import org.argouml.profile.internal.ocl.uml14.OclEnumLiteral;
 
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
 import tudresden.ocl.parser.node.AActualParameterList;
@@ -626,8 +628,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAEnumLiteral(tudresden.ocl.parser.node.AEnumLiteral)
      */
     public void outAEnumLiteral(AEnumLiteral node) {
-        // TODO support enums!
-        val = null;
+        val = new OclEnumLiteral(node.getName().toString().trim());
         defaultOut(node);
     }
     

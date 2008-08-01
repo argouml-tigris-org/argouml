@@ -64,6 +64,10 @@ public class OclAPIModelInterpreter implements ModelInterpreter {
                 } else {
                     boolean applicable = false;
                     try {
+                        if (typeName.equals("Class")) {
+                            typeName = "UMLClass";
+                        }
+                        
                         Method m = Facade.class.getDeclaredMethod("isA"
                                 + typeName, new Class[] {Object.class});
                         if (m != null) {
@@ -75,6 +79,10 @@ public class OclAPIModelInterpreter implements ModelInterpreter {
                     }
                     return applicable;
                 }
+            }
+
+            if (feature.toString().trim().equals("oclAsType")) {
+                return subject;
             }
 
             if (subject instanceof OclType) {
