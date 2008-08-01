@@ -24,6 +24,7 @@
 
 package org.argouml.kernel;
 
+import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -35,5 +36,6 @@ import java.lang.annotation.RetentionPolicy;
  * @author Bob Tarling
  * TODO: Can we use annotations for this?
  */
+@Inherited
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UmlModelMutator {};
