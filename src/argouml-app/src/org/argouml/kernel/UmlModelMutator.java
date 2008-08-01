@@ -34,7 +34,6 @@ import java.lang.annotation.RetentionPolicy;
  * <p>Actions that implement this are filtered out or disabled in some
  * displays if the model element that would be effected is read only</p>
  * @author Bob Tarling
- * TODO: Can we use annotations for this?
  */
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
