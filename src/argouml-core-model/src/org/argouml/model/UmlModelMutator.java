@@ -24,6 +24,9 @@
 
 package org.argouml.model;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * <p>A marker interface to be implemented by Actions that will create some
  * modification to the UML model when it is executed.</p>
@@ -32,5 +35,5 @@ package org.argouml.model;
  * @author Bob Tarling
  * TODO: Can we use annotations for this?
  */
-//public @interface UmlModelMutator {};
-public interface UmlModelMutator {};
+@Retention(RetentionPolicy.RUNTIME)
+public @interface UmlModelMutator {};
