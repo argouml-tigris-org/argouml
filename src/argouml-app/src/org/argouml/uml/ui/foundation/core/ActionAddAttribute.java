@@ -45,8 +45,8 @@ import org.tigris.gef.undo.UndoableAction;
  * This class shall be the only one that knows 
  * when this tool should be downlighted or not.
  */
-public class ActionAddAttribute extends UndoableAction
-        implements UmlModelMutator {
+@UmlModelMutator
+public class ActionAddAttribute extends UndoableAction {
 
     private static ActionAddAttribute targetFollower;
 

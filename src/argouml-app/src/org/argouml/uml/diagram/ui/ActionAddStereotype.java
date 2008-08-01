@@ -41,8 +41,8 @@ import org.tigris.gef.undo.UndoableAction;
  * Action to add a stereotype to a model element.
  * @author Bob Tarling
  */
-class ActionAddStereotype extends UndoableAction
-        implements UmlModelMutator {
+@UmlModelMutator
+class ActionAddStereotype extends UndoableAction {
     private Object modelElement;
     private Object stereotype;
 

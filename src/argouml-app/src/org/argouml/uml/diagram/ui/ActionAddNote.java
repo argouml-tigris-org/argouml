@@ -55,8 +55,8 @@ import org.tigris.gef.undo.UndoableAction;
  * The modelelements that are present on the current diagram, are connected
  * graphically. All others are only annotated in the model.
  */
-public class ActionAddNote extends UndoableAction 
-        implements UmlModelMutator {
+@UmlModelMutator
+public class ActionAddNote extends UndoableAction {
 
     /**
      * The default position (x and y) of the new fig.

@@ -43,7 +43,7 @@ import org.argouml.model.UmlModelMutator;
  */
 class ActionList extends Vector {
     
-    private boolean readonly;
+    final private boolean readonly;
     
     ActionList(List list, boolean readonly) {
         super(list);
@@ -135,8 +135,6 @@ class ActionList extends Vector {
      * @return true if the given action mutates the UML model.
      */
     private boolean isUmlMutator(Object a) {
-        return a instanceof UmlModelMutator;
-        // TODO: Why doesn't this work for annotation?
-        //return a.getClass().isAnnotationPresent(UmlModelMutator.class);
+        return a.getClass().isAnnotationPresent(UmlModelMutator.class);
     }
 }

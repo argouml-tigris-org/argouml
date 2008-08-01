@@ -36,8 +36,8 @@ import org.tigris.gef.undo.UndoableAction;
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class AbstractActionNewModelElement extends UndoableAction 
-        implements UmlModelMutator {
+@UmlModelMutator
+public abstract class AbstractActionNewModelElement extends UndoableAction {
 
     private Object target;
 

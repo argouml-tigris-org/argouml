@@ -42,8 +42,8 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * Action to add an operation to a classifier.
  */
-public class ActionAddOperation extends UndoableAction
-        implements UmlModelMutator {
+@UmlModelMutator
+public class ActionAddOperation extends UndoableAction {
 
     private static ActionAddOperation targetFollower;
 

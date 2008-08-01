@@ -60,8 +60,8 @@ import org.tigris.gef.undo.UndoableAction;
  * Objects can be Modelelements, Diagrams (argodiagram and it's children),
  * Figs without owner,... 
  */
-public class ActionDeleteModelElements extends UndoableAction
-implements UmlModelMutator {
+@UmlModelMutator
+public class ActionDeleteModelElements extends UndoableAction {
 
     /**
      * Generated serial version for rev 1.4

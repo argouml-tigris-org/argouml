@@ -42,8 +42,8 @@ import org.tigris.gef.undo.UndoableAction;
  *
  * @author rastaman@tigris.org
  */
-public class ActionNewTagDefinition extends UndoableAction
-        implements UmlModelMutator {
+@UmlModelMutator
+public class ActionNewTagDefinition extends UndoableAction {
 
     /**
      * The constructor.
