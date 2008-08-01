@@ -36,6 +36,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.UmlModelMutator;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.CommentEdge;
@@ -54,7 +55,8 @@ import org.tigris.gef.undo.UndoableAction;
  * The modelelements that are present on the current diagram, are connected
  * graphically. All others are only annotated in the model.
  */
-public class ActionAddNote extends UndoableAction {
+public class ActionAddNote extends UndoableAction 
+        implements UmlModelMutator {
 
     /**
      * The default position (x and y) of the new fig.

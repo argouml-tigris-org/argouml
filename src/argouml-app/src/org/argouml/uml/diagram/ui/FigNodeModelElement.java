@@ -480,7 +480,8 @@ public abstract class FigNodeModelElement
      */
     @Override
     public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
+        ActionList popUpActions =
+            new ActionList(super.getPopUpActions(me), isReadOnly());
 
         // Show ...
         ArgoJMenu show = buildShowPopUp();

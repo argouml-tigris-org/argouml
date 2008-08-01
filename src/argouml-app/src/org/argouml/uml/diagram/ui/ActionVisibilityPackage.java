@@ -25,8 +25,10 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.model.Model;
+import org.argouml.model.UmlModelMutator;
 
-class ActionVisibilityPackage extends AbstractActionRadioMenuItem {
+class ActionVisibilityPackage extends AbstractActionRadioMenuItem
+        implements UmlModelMutator {
     /**
      * Serial version generated for rev 1.3
      */

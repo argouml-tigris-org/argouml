@@ -33,6 +33,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.UmlModelMutator;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -44,7 +45,8 @@ import org.tigris.gef.undo.UndoableAction;
  * This class shall be the only one that knows 
  * when this tool should be downlighted or not.
  */
-public class ActionAddAttribute extends UndoableAction {
+public class ActionAddAttribute extends UndoableAction
+        implements UmlModelMutator {
 
     private static ActionAddAttribute targetFollower;
 
@@ -115,7 +117,9 @@ public class ActionAddAttribute extends UndoableAction {
      */
     public boolean shouldBeEnabled() {
         Object target = TargetManager.getInstance().getSingleModelTarget();
-        if (target == null) return false;
+        if (target == null) {
+            return false;
+        }
         return Model.getFacade().isAClassifier(target)
             || Model.getFacade().isAFeature(target)
             || Model.getFacade().isAAssociationEnd(target);

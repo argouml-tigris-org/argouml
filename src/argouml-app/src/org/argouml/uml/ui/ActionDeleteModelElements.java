@@ -42,6 +42,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.model.UmlModelMutator;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -59,7 +60,8 @@ import org.tigris.gef.undo.UndoableAction;
  * Objects can be Modelelements, Diagrams (argodiagram and it's children),
  * Figs without owner,... 
  */
-public class ActionDeleteModelElements extends UndoableAction {
+public class ActionDeleteModelElements extends UndoableAction
+implements UmlModelMutator {
 
     /**
      * Generated serial version for rev 1.4

@@ -261,12 +261,13 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * This method shall return a Vector of one of these 4 types:
-     * AbstractAction, JMenu, JMenuItem, JSeparator.
+     * @return a Vector containing a combination of these 4 types:
+     * Action, JMenu, JMenuItem, JSeparator.
      */
     @Override
     public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
+        ActionList popUpActions =
+            new ActionList(super.getPopUpActions(me), isReadOnly());
         
         // popupAddOffset should be equal to the number of items added here:
         popUpActions.add(new JSeparator());
