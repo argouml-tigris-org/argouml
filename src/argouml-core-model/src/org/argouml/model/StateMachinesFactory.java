@@ -323,6 +323,7 @@ public interface StateMachinesFactory extends Factory {
 
     /**
      * Create a initialized instance of a ChangeEvent,
+     * with an new expression,
      * within a given namespace.
      *
      * @param ns the Namespace
