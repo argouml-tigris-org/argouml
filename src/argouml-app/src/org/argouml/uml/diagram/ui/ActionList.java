@@ -31,7 +31,7 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import org.argouml.model.UmlModelMutator;
+import org.argouml.kernel.UmlModelMutator;
 
 /**
  * A specialist collection used for filtering the return from getPopUpActions

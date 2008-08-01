@@ -30,8 +30,8 @@ import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
-import org.argouml.model.UmlModelMutator;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.undo.UndoableAction;
 

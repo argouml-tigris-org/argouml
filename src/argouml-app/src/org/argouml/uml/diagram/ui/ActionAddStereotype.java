@@ -32,8 +32,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
-import org.argouml.model.UmlModelMutator;
 import org.tigris.gef.undo.UndoableAction;
 
 

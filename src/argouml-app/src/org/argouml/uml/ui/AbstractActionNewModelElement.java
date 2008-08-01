@@ -29,7 +29,7 @@ import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.model.UmlModelMutator;
+import org.argouml.kernel.UmlModelMutator;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
