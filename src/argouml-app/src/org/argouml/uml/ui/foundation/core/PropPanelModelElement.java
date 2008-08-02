@@ -24,6 +24,10 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -33,6 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
@@ -169,6 +174,29 @@ public abstract class PropPanelModelElement extends PropPanel {
         addField("label.derived",
                 new UMLDerivedCheckBox());
 
+    }
+    
+    /**
+     * This overrides the behaviour of the base class to filter out any
+     * actions that could be used to attempt to modify the UML model on
+     * a readonly element.
+     * @return The list of actions to show for this panel.
+     */
+    protected final List getActions() {
+        List actions = super.getActions();
+        if (Model.getFacade().isAUMLElement(getTarget())
+                && Model.getModelManagementHelper().isReadOnly(getTarget())) {
+            final List filteredActions = new ArrayList(2);
+            for (Object o : actions) {
+                if (o instanceof Action && !o.getClass().isAnnotationPresent(
+                        UmlModelMutator.class)) {
+                    filteredActions.add(o);
+                }
+            }
+            return filteredActions;
+        } else {
+            return actions;
+        }
     }
 
     /**

@@ -57,6 +57,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.LookAndFeelMgr;
@@ -235,7 +236,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
     
     public void buildToolbar() {
-        ToolBarFactory factory = new ToolBarFactory(actions);
+        LOG.debug("Building toolbar");
+
+        ToolBarFactory factory = new ToolBarFactory(getActions());
         factory.setRollover(true);
         factory.setFloatable(false);
         JToolBar toolBar = factory.createToolBar();
@@ -246,6 +249,14 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         // Set the tooltip of the arrow to open combined tools:
         buttonPanel.putClientProperty("ToolBar.toolTipSelectTool",
                 Translator.localize("action.select"));
+    }
+
+    /**
+     * Get the actions that will make up the toolbar on this panel.
+     * @return The list of actions to show for this panel.
+     */
+    protected List getActions() {
+        return actions;
     }
 
     private static class TargettableButton extends JButton
@@ -595,6 +606,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         if (isVisible()) {
             fireTargetSet(e);
         }
+        buildToolbar();
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {
