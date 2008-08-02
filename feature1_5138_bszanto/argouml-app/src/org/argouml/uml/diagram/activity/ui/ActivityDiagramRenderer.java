@@ -27,8 +27,10 @@ package org.argouml.uml.diagram.activity.ui;
 
 import java.util.Map;
 
-import org.argouml.model.Model;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
@@ -73,15 +75,11 @@ public class ActivityDiagramRenderer extends StateDiagramRenderer {
             Map styleAttributes) {
 
         FigNode figNode = null;
-
-        if (Model.getFacade().isAPartition(node)) {
-            figNode = new FigPartition(gm, node);
-        } else if (Model.getFacade().isACallState(node)) {
-            figNode = new FigCallState(gm, node);
-        } else if (Model.getFacade().isAObjectFlowState(node)) {
-            figNode = new FigObjectFlowState(gm, node);
-        } else if (Model.getFacade().isASubactivityState(node)) {
-            figNode = new FigSubactivityState(gm, node);
+        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
+                .getActiveDiagram();
+        if (diag instanceof UMLDiagram
+            && ((UMLDiagram) diag).doesAccept(node)) {
+            figNode = ((UMLDiagram) diag).drop(node, null);
         } else {
             figNode =  super.getFigNodeFor(gm, lay, node, styleAttributes);
             if (figNode == null) return null;

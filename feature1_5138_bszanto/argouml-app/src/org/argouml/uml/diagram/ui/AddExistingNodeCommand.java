@@ -127,6 +127,7 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
                     getModePlace(this, instructions);       
                 placeMode.setAddRelatedEdges(true);
             } else {
+                // TODO: work here !
                 instructions =
                     Translator.localize(
                             "misc.message.click-on-diagram-to-add",

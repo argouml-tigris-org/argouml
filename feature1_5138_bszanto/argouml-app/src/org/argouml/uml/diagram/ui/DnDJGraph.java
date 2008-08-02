@@ -40,11 +40,15 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * This is a JGraph with Drag and Drop capabilities.
@@ -194,8 +198,19 @@ class DnDJGraph
             
             Iterator i = modelElements.iterator();
             while (i.hasNext()) {
-                ((UMLDiagram )diagram).drop(i.next(),
+                FigNode figNode = ((UMLDiagram )diagram).drop(i.next(),
                         dropTargetDropEvent.getLocation());
+                
+//                if (diagram instanceof UMLUseCaseDiagram) {
+                    GraphModel gm = diagram.getGraphModel();
+                    if (!gm.getNodes().contains(figNode.getOwner())) {
+                        gm.getNodes().add(figNode.getOwner());
+                    }
+                    
+                    Globals.curEditor().getLayerManager().getActiveLayer()
+                            .add(figNode);
+//                }
+                
             }
 
 //            ActionAddExistingNodes.addNodes(modelElements, 

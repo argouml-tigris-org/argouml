@@ -29,29 +29,24 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.deployment.ui.FigComponent;
-import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
-import org.argouml.uml.diagram.deployment.ui.FigMNode;
-import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
-import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigGeneralization;
-import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
-import org.argouml.uml.diagram.use_case.ui.FigActor;
-import org.argouml.uml.diagram.use_case.ui.FigUseCase;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -114,44 +109,13 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         if (node == null) {
             throw new IllegalArgumentException("A node must be supplied");
         }
-        if (Model.getFacade().isAClass(node)) {
-            figNode = new FigClass(gm, node);
-        } else if (Model.getFacade().isAInterface(node)) {
-            figNode = new FigInterface(gm, node);
-        } else if (Model.getFacade().isAModel(node)) {
-            figNode = new FigModel(gm, node);
-        } else if (Model.getFacade().isASubsystem(node)) {
-            figNode = new FigSubsystem(gm, node);
-        } else if (Model.getFacade().isAPackage(node)) {
-            figNode = new FigPackage(gm, node);
-        } else if (Model.getFacade().isAComment(node)) {
-            figNode = new FigComment(gm, node);
-        } else if (Model.getFacade().isAAssociation(node)) {
-            figNode = new FigNodeAssociation(gm, node);
-        } else if (Model.getFacade().isAEnumeration(node)) {
-            figNode = new FigEnumeration(gm, node);
-        } else if (Model.getFacade().isADataType(node)) {
-            figNode = new FigDataType(gm, node);
-        } else if (Model.getFacade().isAStereotype(node)) {
-            figNode = new FigStereotypeDeclaration(gm, node);
-        } else if (Model.getFacade().isAException(node)) {
-            figNode = new FigException(gm, node);
-        } else if (Model.getFacade().isASignal(node)) {
-            figNode = new FigSignal(gm, node);
-        } else if (Model.getFacade().isAActor(node)) {
-            figNode = new FigActor(gm, node);
-        } else if (Model.getFacade().isAUseCase(node)) {
-            figNode = new FigUseCase(gm, node);
-        } else if (Model.getFacade().isAObject(node)) {
-            figNode = new FigObject(gm, node);
-        } else if (Model.getFacade().isANodeInstance(node)) {
-            figNode = new FigNodeInstance(gm, node);
-        } else if (Model.getFacade().isAComponentInstance(node)) {
-            figNode = new FigComponentInstance(gm, node);
-        } else if (Model.getFacade().isANode(node)) {
-            figNode = new FigMNode(gm, node);
-        } else if (Model.getFacade().isAComponent(node)) {
-            figNode = new FigComponent(gm, node);
+        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
+                .getActiveDiagram();
+        if (diag instanceof UMLDiagram
+                && ((UMLDiagram) diag).doesAccept(node)) {
+                figNode = (FigNodeModelElement) 
+                        ((UMLDiagram) diag).drop(node, null);
+
         } else {
             LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
             throw new IllegalArgumentException(

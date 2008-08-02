@@ -32,11 +32,9 @@ import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
-import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
@@ -87,13 +85,7 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
         FigNode figNode = null;
         ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
                 .getActiveDiagram();
-        if (Model.getFacade().isAClassifierRole(node)) {
-            figNode = new FigClassifierRole(gm, lay, node);
-        } else if (Model.getFacade().isAMessage(node)) {
-            figNode = new FigMessage(gm, lay, node);
-        } else if (Model.getFacade().isAComment(node)) {
-            figNode = new FigComment(gm, node);
-        } else if (diag instanceof UMLDiagram
+        if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
             figNode = ((UMLDiagram) diag).drop(node, null);
         } else { 

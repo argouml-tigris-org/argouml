@@ -593,7 +593,8 @@ public abstract class UMLDiagram
      * @return The instructions.
      */
     public String getInstructions(Object droppedObject) {
-        return "";
+        return Translator.localize("misc.message.click-on-diagram-to-add", 
+                new Object[] {Model.getFacade().toString(droppedObject),});
     }
     
     /**

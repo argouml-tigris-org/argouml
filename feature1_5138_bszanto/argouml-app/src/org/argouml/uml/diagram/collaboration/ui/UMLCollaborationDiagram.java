@@ -25,12 +25,10 @@
 package org.argouml.uml.diagram.collaboration.ui;
 
 import java.awt.Point;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.Action;
 
@@ -38,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.diagram.ui.ActionSetMode;
@@ -51,8 +50,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.base.ModePlace;
-import org.tigris.gef.graph.GraphFactory;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
@@ -435,14 +432,23 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     
     /**
      * A sequence diagram can accept all classifiers. It will add them as a new 
-     * Classifier Role with that classifier as a base.
+     * Classifier Role with that classifier as a base. All other accepted figs 
+     * are added as is.
      * @param objectToAccept
-     * @return
+     * @return true if the diagram can accept the object, else false
      * @see org.argouml.uml.diagram.ui.UMLDiagram#doesAccept(java.lang.Object)
      */
     @Override
     public boolean doesAccept(Object objectToAccept) {
-        if (Model.getFacade().isAClassifier(objectToAccept)) {
+        if (Model.getFacade().isAClassifierRole(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAMessage(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAComment(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAClassifierRole(objectToAccept)) {
+            return true;           
+        } else if (Model.getFacade().isAClassifier(objectToAccept)) {
             return true;
         }
         return false;
@@ -491,35 +497,40 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     
     @Override
     public FigNode drop(Object droppedObject, Point location) {
-        FigClassifierRole newCR = null;
+        FigNode figNode = null;
+        GraphModel gm = getGraphModel();
+        Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
+        
         if (Model.getFacade().isAClassifierRole(droppedObject)) {
-            newCR = makeNewFigCR(droppedObject, location);           
+            figNode = new FigClassifierRole(gm, lay, droppedObject);
+        } else if (Model.getFacade().isAMessage(droppedObject)) {
+            figNode = new FigMessage(gm, lay, droppedObject);
+        } else if (Model.getFacade().isAComment(droppedObject)) {
+            figNode = new FigComment(gm, droppedObject);
+        } else if (Model.getFacade().isAClassifierRole(droppedObject)) {
+            figNode = makeNewFigCR(droppedObject, location);           
         } else if (Model.getFacade().isAClassifier(droppedObject)){
-            newCR = makeNewFigCR(makeNewCR(droppedObject), location);
+            figNode = makeNewFigCR(makeNewCR(droppedObject), location);
         }
-        if (newCR != null) {
-            add(newCR);
+        if (figNode != null) {
             LOG.debug("Dropped object " + droppedObject + " converted to " 
-                    + newCR);
+                    + figNode);
         } else {
             LOG.debug("Dropped object NOT added " + droppedObject);
         }
-        return newCR;
+        return figNode;
     }
     
     @Override
     public String getInstructions(Object droppedObject) {
-        if (Model.getFacade().isAClassifier(droppedObject)) {
-            //TODO: i18n
-            return "Click on diagram to add as a new Classifier Role";
+        if (Model.getFacade().isAClassifierRole(droppedObject)) {
+    		return super.getInstructions(droppedObject);
+    	} else if (Model.getFacade().isAClassifier(droppedObject)) {
+            return Translator.localize(
+                    "misc.message.click-on-diagram-to-add-as-cr", 
+                    new Object[] {Model.getFacade().toString(droppedObject)});
         }
         return super.getInstructions(droppedObject);
-    }
-    
-    
-    @Override
-    public ModePlace getModePlace(GraphFactory gf, String instructions) {
-        return new ModePlace(gf, instructions);
     }
 
     /**

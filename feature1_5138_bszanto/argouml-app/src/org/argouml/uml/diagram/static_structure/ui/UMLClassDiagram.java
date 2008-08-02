@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.awt.Point;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 
@@ -32,16 +33,25 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.deployment.ui.FigComponent;
+import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
+import org.argouml.uml.diagram.deployment.ui.FigMNode;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
 import org.argouml.uml.diagram.ui.ModeCreatePermission;
 import org.argouml.uml.diagram.ui.ModeCreateUsage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.use_case.ui.FigActor;
+import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -599,6 +609,110 @@ public class UMLClassDiagram extends UMLDiagram {
     public void encloserChanged(FigNode enclosed, FigNode oldEncloser, 
             FigNode newEncloser) {
         // Do nothing.
+    }
+    
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+        if (Model.getFacade().isAClass(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAInterface(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAModel(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isASubsystem(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAPackage(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAComment(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAAssociation(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAEnumeration(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isADataType(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAStereotype(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAException(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isASignal(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAActor(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAUseCase(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAObject(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isANodeInstance(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAComponentInstance(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isANode(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAComponent(objectToAccept)) {
+            return true;
+        }
+        return false;
+
+    }
+    
+    @Override
+    public FigNode drop(Object droppedObject, Point location) {        
+        FigNode figNode = null;
+        GraphModel gm = getGraphModel();
+        
+        if (Model.getFacade().isAClass(droppedObject)) {
+            figNode = new FigClass(gm, droppedObject);
+        } else if (Model.getFacade().isAInterface(droppedObject)) {
+            figNode = new FigInterface(gm, droppedObject);
+        } else if (Model.getFacade().isAModel(droppedObject)) {
+            figNode = new FigModel(gm, droppedObject);
+        } else if (Model.getFacade().isASubsystem(droppedObject)) {
+            figNode = new FigSubsystem(gm, droppedObject);
+        } else if (Model.getFacade().isAPackage(droppedObject)) {
+            figNode = new FigPackage(gm, droppedObject);
+        } else if (Model.getFacade().isAComment(droppedObject)) {
+            figNode = new FigComment(gm, droppedObject);
+        } else if (Model.getFacade().isAAssociation(droppedObject)) {
+            figNode = new FigNodeAssociation(gm, droppedObject);
+        } else if (Model.getFacade().isAEnumeration(droppedObject)) {
+            figNode = new FigEnumeration(gm, droppedObject);
+        } else if (Model.getFacade().isADataType(droppedObject)) {
+            figNode = new FigDataType(gm, droppedObject);
+        } else if (Model.getFacade().isAStereotype(droppedObject)) {
+            figNode = new FigStereotypeDeclaration(gm, droppedObject);
+        } else if (Model.getFacade().isAException(droppedObject)) {
+            figNode = new FigException(gm, droppedObject);
+        } else if (Model.getFacade().isASignal(droppedObject)) {
+            figNode = new FigSignal(gm, droppedObject);
+        } else if (Model.getFacade().isAActor(droppedObject)) {
+            figNode = new FigActor(gm, droppedObject);
+        } else if (Model.getFacade().isAUseCase(droppedObject)) {
+            figNode = new FigUseCase(gm, droppedObject);
+        } else if (Model.getFacade().isAObject(droppedObject)) {
+            figNode = new FigObject(gm, droppedObject);
+        } else if (Model.getFacade().isANodeInstance(droppedObject)) {
+            figNode = new FigNodeInstance(gm, droppedObject);
+        } else if (Model.getFacade().isAComponentInstance(droppedObject)) {
+            figNode = new FigComponentInstance(gm, droppedObject);
+        } else if (Model.getFacade().isANode(droppedObject)) {
+            figNode = new FigMNode(gm, droppedObject);
+        } else if (Model.getFacade().isAComponent(droppedObject)) {
+            figNode = new FigComponent(gm, droppedObject);
+        }
+        
+        if (figNode != null) {
+            // if location is null here the position of the new figNode is set
+            // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
+            if (location != null) {
+                figNode.setLocation(location.x, location.y);
+            }
+            LOG.debug("Dropped object " + droppedObject + " converted to " 
+                    + figNode);
+        } else {
+            LOG.debug("Dropped object NOT added " + figNode);
+        }
+        return figNode;
     }
     
 } /* end class UMLClassDiagram */

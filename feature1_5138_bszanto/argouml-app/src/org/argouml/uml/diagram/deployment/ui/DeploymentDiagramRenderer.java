@@ -28,20 +28,19 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.static_structure.ui.FigClass;
-import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
-import org.argouml.uml.diagram.ui.FigNodeAssociation;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -74,29 +73,15 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
 
         FigNode figNode = null;
 
-        if (Model.getFacade().isANode(node)) {
-            figNode = new FigMNode(gm, node);
-        } else if (Model.getFacade().isAAssociation(node)) {
-            figNode = new FigNodeAssociation(gm, node);
-        } else if (Model.getFacade().isANodeInstance(node)) {
-            figNode = new FigNodeInstance(gm, node);
-        } else if (Model.getFacade().isAComponent(node)) {
-            figNode = new FigComponent(gm, node);
-        } else if (Model.getFacade().isAComponentInstance(node)) {
-            figNode = new FigComponentInstance(gm, node);
-        } else if (Model.getFacade().isAClass(node)) {
-            figNode = new FigClass(gm, node);
-        } else if (Model.getFacade().isAInterface(node)) {
-            figNode = new FigInterface(gm, node);
-        } else if (Model.getFacade().isAObject(node)) {
-            figNode = new FigObject(gm, node);
-        } else if (Model.getFacade().isAComment(node)) {
-            figNode = new FigComment(gm, node);
+        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
+                .getActiveDiagram();
+        if (diag instanceof UMLDiagram
+                && ((UMLDiagram) diag).doesAccept(node)) {
+            figNode = ((UMLDiagram) diag).drop(node, null);
         } else {
             LOG.debug("TODO: DeploymentDiagramRenderer getFigNodeFor");
             return null;
         }
-
         lay.add(figNode);
         return figNode;
     }

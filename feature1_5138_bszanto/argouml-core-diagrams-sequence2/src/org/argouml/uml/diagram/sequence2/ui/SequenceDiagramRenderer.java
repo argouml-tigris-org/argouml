@@ -64,19 +64,11 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
             .getActiveDiagram();
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
-            // if the user tries to add a classifier, a new CR should be created
-        	// with the classifier as a Base. This is done by
-            // the diagram via the drop method.
             result = ((UMLDiagram) diag).drop(node, null);
         } else {
-            if (Model.getFacade().isAClassifierRole(node)) {
-                result = new FigClassifierRole(node);
-            } else if (Model.getFacade().isAComment(node)) {
-                result = new FigComment(gm, node);
-            }
-            LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
-            lay.add(result);
+        	return null;
         }
+        lay.add(result);
         return result;       
     }
 

@@ -35,6 +35,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.sequence2.ActionSetAddMessageMode;
 import org.argouml.uml.diagram.sequence2.SequenceDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -259,27 +260,32 @@ public class UMLSequenceDiagram extends UMLDiagram {
     
     @Override
     public FigNode drop(Object droppedObject, Point location) {
-        FigClassifierRole newCR = null;
-        if (Model.getFacade().isAClassifierRole(droppedObject)) {
-            newCR = makeNewFigCR(droppedObject, location);           
+        FigNode figNode = null;
+        
+        if (Model.getFacade().isAComment(droppedObject)) {
+        	figNode = new FigComment(getGraphModel(), droppedObject);
+        } else if (Model.getFacade().isAClassifierRole(droppedObject)) {
+        	figNode = makeNewFigCR(droppedObject, location);           
         } else if (Model.getFacade().isAClassifier(droppedObject)){
-            newCR = makeNewFigCR(makeNewCR(droppedObject), location);
+        	figNode = makeNewFigCR(makeNewCR(droppedObject), location);
         }
-        if (newCR != null) {
-            add(newCR);
+        if (figNode != null) {
             LOG.debug("Dropped object " + droppedObject + " converted to " 
-                    + newCR);
+                    + figNode);
         } else {
             LOG.debug("Dropped object NOT added " + droppedObject);
         }
-        return newCR;
+        return figNode;
     }
     
     @Override
     public String getInstructions(Object droppedObject) {
-        if (Model.getFacade().isAClassifier(droppedObject)) {
-            //TODO: i18n
-            return "Click on diagram to add as a new Classifier Role";
+    	if (Model.getFacade().isAClassifierRole(droppedObject)) {
+    		return super.getInstructions(droppedObject);
+    	} else if (Model.getFacade().isAClassifier(droppedObject)) {
+            return Translator.localize(
+            		"misc.message.click-on-diagram-to-add-as-cr", 
+            		new Object[] {Model.getFacade().toString(droppedObject)});
         }
         return super.getInstructions(droppedObject);
     }
