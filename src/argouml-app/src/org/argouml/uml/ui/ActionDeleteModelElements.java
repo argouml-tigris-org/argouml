@@ -267,6 +267,14 @@ public class ActionDeleteModelElements extends UndoableAction {
      * @return true if the tool should be enabled
      */
     public boolean shouldBeEnabled() {
+        List targets = TargetManager.getInstance().getTargets();
+        for (Object target : targets) {
+            if (Model.getFacade().isAModelElement(target)
+                    && Model.getModelManagementHelper().isReadOnly(target)) {
+                return false;
+            }
+        }
+        
         int size = 0;
         try {
             Editor ce = Globals.curEditor();
@@ -280,6 +288,8 @@ public class ActionDeleteModelElements extends UndoableAction {
         if (size > 0) {
             return true;
         }
+        // TODO: All of the following can be broken if we have multiple
+        // targets selected
         Object target = TargetManager.getInstance().getTarget();
         if (target instanceof ArgoDiagram) { 
             // we cannot delete the last diagram
