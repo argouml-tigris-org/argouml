@@ -172,4 +172,9 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
             theButton.setEnabled(false);
         }
     }
+    
+    public void setEnabled(boolean enabled) {
+        theComboBox.setEnabled(enabled);
+        theComboBox.setEditable(enabled);
+    }
 }

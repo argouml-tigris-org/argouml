@@ -665,12 +665,25 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         return titleLabel;
     }
 
-    protected JPanel createBorderPanel(String title) {
-    	JPanel panel = new JPanel(new GridLayout2());
-    	TitledBorder border = new TitledBorder(Translator.localize(title));
-    	border.setTitleFont(stdFont);
-    	panel.setBorder(border);
-    	return panel;
+    protected final JPanel createBorderPanel(String title) {
+    	return new GroupPanel(Translator.localize(title));
+    }
+    
+    private class GroupPanel extends JPanel {
+        
+        public GroupPanel(String title) {
+            super(new GridLayout2());
+            TitledBorder border = new TitledBorder(Translator.localize(title));
+            border.setTitleFont(stdFont);
+            setBorder(border);
+        }
+        
+        public void setEnabled(boolean enabled) {
+            super.setEnabled(enabled);
+            for (final Component component : getComponents()) {
+                component.setEnabled(enabled);
+            }
+        }
     }
 
     /**
