@@ -37,10 +37,14 @@ public class InitProfileSubsystem {
      * Initialize the Profiles subsystem by binding the 2 packages together.
      */
     public void init() {
-        if (!ProfileFacade.isInitiated()) {
-            ProfileFacade.setManager(
-                    new org.argouml.profile.internal.ProfileManagerImpl());
-        }
+        // TODO: There are tests which depend on being able to reinitialize
+        // the Profile subsystem multiple times.
+//        if (!ProfileFacade.isInitiated()) {
+//            ProfileFacade.setManager(
+//                    new org.argouml.profile.internal.ProfileManagerImpl());
+//        }
+        ProfileFacade.setManager(
+                new org.argouml.profile.internal.ProfileManagerImpl());
     }
 
 }
