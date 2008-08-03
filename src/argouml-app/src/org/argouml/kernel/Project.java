@@ -276,7 +276,14 @@ public interface Project {
 
     /**
      * Returns all top level Packages (e.g. Models), including the profile
-     * packages.
+     * packages. 
+     * <p>
+     * <em>WARNING:</em> The models returned by this method are <em>not</em>
+     * ordered.  Any code which makes the assumption that the user model is
+     * first (or any other ordering assumption) is broken!
+     * <p><em>NOTE:</em> Since user defined models and profiles are
+     * handled quite differently, you normally want to use
+     * {@link #getUserDefinedModelList()} instead of this method.
      * 
      * @return A Collection containing all models.
      */
@@ -288,7 +295,8 @@ public interface Project {
      * If there isn't exactly one model, <code>null</code> is returned.
      *
      * @return the model.
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getModels()}.
+     * @deprecated for 0.25.4 by tfmorris.  Use 
+     * {@link #getUserDefinedModelList()} or {@link #getModels()}.
      */
     @Deprecated
     public Object getModel();
