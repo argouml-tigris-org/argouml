@@ -33,6 +33,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
+import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
@@ -88,55 +89,46 @@ public abstract class UMLList2
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            showPopup(e);
-        }
+        showPopup(e);
     }
     
     /*
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            showPopup(e);
-        }
     }
     
     /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            showPopup(e);
-        }
     }
     
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            showPopup(e);
-        }
+        showPopup(e);
     }
     
     /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            showPopup(e);
-        }
+        showPopup(e);
     }
 
     private final void showPopup(MouseEvent event) {
-        Point point = event.getPoint();
-        int index = locationToIndex(point);
-        JPopupMenu popup = new JPopupMenu();
-        ListModel lm = getModel(); 
-        if (lm instanceof UMLModelElementListModel2) {
-            if (((UMLModelElementListModel2) lm).buildPopup(popup, index)) {
-                popup.show(this, point.x, point.y);
+        if (event.isPopupTrigger()
+                && !Model.getModelManagementHelper().isReadOnly(getTarget())) {
+            Point point = event.getPoint();
+            int index = locationToIndex(point);
+            JPopupMenu popup = new JPopupMenu();
+            ListModel lm = getModel(); 
+            if (lm instanceof UMLModelElementListModel2) {
+                if (((UMLModelElementListModel2) lm).buildPopup(popup, index)) {
+                    popup.show(this, point.x, point.y);
+                }
             }
         }
     }
