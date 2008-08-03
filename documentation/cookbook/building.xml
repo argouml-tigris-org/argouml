@@ -3526,7 +3526,7 @@ will need some adjustments.
 The scripts and tools used specifically for the build are maintained
 in the argoumlinstaller project.
 From the argouml project the files
-<filename>argouml/src_new/build.xml</filename> and
+<filename>argouml/build.xml</filename> and
 other <filename>build.xml</filename> files
 are reused.
 </para>
@@ -3536,14 +3536,16 @@ Prerequisites (what you need to be able to do this):
 <itemizedlist>
 	<listitem>
 	  <para>
-Subversion access to the argouml projects (to create the releases branch/tag).
-The projects involved are specified by
+Subversion write access to the argouml projects
+(to create the releases branch/tag).
+The projects involved are specified in the file
 <filename>argoumlinstaller/build-release.sh</filename>.
 </para>
 	</listitem>
 	<listitem>
 	  <para>
-Subversion access to the argouml-downloads project (to upload the result).
+Subversion write access to the argouml-downloads project
+(to upload the result).
 </para>
 	</listitem>
 	<listitem>
@@ -3673,16 +3675,16 @@ already present in any of the involved projects.
 </para>
       </listitem>
 
-      <listitem>
+      <listitem id="argo.core.version.change">
         <para>Set the <methodname>argo.core.version</methodname>
 to not include the "PRE-" part
 and commit the files.
 </para>
         <para>
-This is done in the <filename>default.properties</filename>-files
+This is done in the <filename>default.properties</filename>-file in
 <filename>build/VERSION_<replaceable>GIVEN_VERSION</replaceable>/argouml/src/argouml-app</filename>
-and
-<filename>build/VERSION_<replaceable>GIVEN_VERSION</replaceable>/argouml/documentation/build.xml</filename>.
+and in the <filename>build.xml</filename>-file in
+<filename>build/VERSION_<replaceable>GIVEN_VERSION</replaceable>/argouml/documentation</filename>.
 </para>
       </listitem>
  
@@ -3867,6 +3869,17 @@ svn copy \
 </para>
       </listitem>
 
+      <listitem>
+        <para>
+Prepare the trunk for commits towards the next release.
+</para>
+
+        <para>
+This is done by updating the PRE-<replaceable>VERSION</replaceable>
+in the trunk version of the files mentioned in
+<xref linkend="argo.core.version.change"/>
+</para>
+      </listitem>
     </orderedlist>
 
     <sect2 id="release_process_test_failed">
