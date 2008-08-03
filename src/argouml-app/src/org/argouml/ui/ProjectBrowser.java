@@ -88,6 +88,7 @@ import org.argouml.persistence.ProjectFileView;
 import org.argouml.persistence.UmlVersionException;
 import org.argouml.persistence.VersionException;
 import org.argouml.persistence.XmiFormatException;
+import org.argouml.persistence.XmiReferenceException;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -1669,6 +1670,16 @@ public final class ProjectBrowser
                                 "dialog.error.file.version.error",
                                 new Object[] {ex.getMessage()}),
                         showUI, ex);
+            } catch (XmiReferenceException ex) {
+                // an error that can be corrected by the user, so no stack
+                // trace, but instead an explanation and a hint how to fix it
+                reportError(
+                        pmw,
+                        Translator.localize(
+                                "dialog.error.xmi.reference.error",
+                                new Object[] {ex.getMessage()}),
+                        ex.toString(),
+                        showUI);
             } catch (XmiFormatException ex) {
                 reportError(
                         pmw,
@@ -1819,6 +1830,42 @@ public final class ProjectBrowser
             reportError(monitor, "Please report the error below to the ArgoUML"
                     + "development team at http://argouml.tigris.org.\n"
                     + message + "\n\n" + exception, showUI);
+        }
+    }
+
+    /**
+     * Open a Message Dialog with an error message and an explanation. No
+     * stack trace, since it's not an application error, but a user issue.
+     *
+     * @param message the message to display.
+     * @param explanation the explanation to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     */
+    private void reportError(ProgressMonitor monitor, final String message,
+            final String explanation, boolean showUI) {
+        if (showUI) {
+            if (monitor != null) {
+                monitor.notifyMessage(
+                        Translator.localize("dialog.error.title"),
+                        explanation,
+                        message);
+            } else {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        JDialog dialog =
+                            new ExceptionDialog(
+                                    ArgoFrame.getInstance(),
+                                    Translator.localize("dialog.error.title"),
+                                    explanation,
+                                    message);
+                        dialog.setVisible(true);
+                    }
+                });
+            }
+        } else {
+            reportError(monitor, message + "\n" + explanation + "\n\n",
+                    showUI);
         }
     }
 
