@@ -135,6 +135,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     @Deprecated
     public PropPanel(String label, ImageIcon icon, Orientation orientation) {
         super(Translator.localize(label));
+        
         setOrientation(orientation);
         
         LabelledLayout layout =
@@ -405,6 +406,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
             dispatch = new UMLChangeDispatch(this,
                     UMLChangeDispatch.TARGET_CHANGED_ADD);
 
+            buildToolbar();
         } else {
             dispatch = new UMLChangeDispatch(this,
                     UMLChangeDispatch.TARGET_REASSERTED);
@@ -606,7 +608,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         if (isVisible()) {
             fireTargetSet(e);
         }
-        buildToolbar();
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {

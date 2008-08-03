@@ -181,10 +181,10 @@ public abstract class PropPanelModelElement extends PropPanel {
     /*
      * @see TargetListener#targetSet(TargetEvent)
      */
-    public void targetSet(TargetEvent e) {
-        super.targetSet(e);
+    public void setTarget(Object target) {
+        super.setTarget(target);
         boolean enable =
-            !Model.getModelManagementHelper().isReadOnly(e.getNewTarget());
+            !Model.getModelManagementHelper().isReadOnly(target);
         for (final Component component : getComponents()) {
             if (!(component instanceof JLabel)) {
                 component.setEnabled(enable);
