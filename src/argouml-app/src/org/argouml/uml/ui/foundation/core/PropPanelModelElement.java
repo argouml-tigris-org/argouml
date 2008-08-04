@@ -41,7 +41,6 @@ import javax.swing.JTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.ScrollList;
@@ -179,7 +178,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     }
     
     /*
-     * @see TargetListener#targetSet(TargetEvent)
+     * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
     public void setTarget(Object target) {
         super.setTarget(target);
