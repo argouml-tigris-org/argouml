@@ -182,7 +182,7 @@ public class ProfileManagerImpl implements ProfileManager {
                 profiles.add(p);
 
                 for (CrUML critic : p.getCritics()) {
-                    for (Object meta : critic.getCriticizedMetatypes()) {
+                    for (Object meta : critic.getCriticizedDesignMaterials()) {
                         Agency.register(critic, meta);
                     }
 

@@ -1027,7 +1027,7 @@ public class Critic
      * 
      * @return the metatypes 
      */
-    public Set<Object> getCriticizedMetatypes() {
+    public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         return ret;
     }

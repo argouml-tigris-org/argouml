@@ -86,9 +86,9 @@ public class CrOppEndConflict extends CrUML {
     }
     
     /**
-     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
-    public Set<Object> getCriticizedMetatypes() {
+    public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getAssociationEnd());
         return ret;

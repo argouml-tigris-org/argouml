@@ -243,7 +243,7 @@ public class Agency extends Observable { //implements java.io.Serialization
      * @param cr the critic to register
      */
     public static void register(Critic cr) {
-        Set<Object> metas = cr.getCriticizedMetatypes();
+        Set<Object> metas = cr.getCriticizedDesignMaterials();
         for (Object meta : metas) {
             register(cr, meta);            
         }

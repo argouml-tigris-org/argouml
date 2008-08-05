@@ -33,7 +33,10 @@ import org.argouml.application.api.InitSubsystem;
 import org.argouml.cognitive.Agency;
 import org.argouml.cognitive.CompoundCritic;
 import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
+import org.argouml.profile.internal.ocl.CrOCL;
+import org.argouml.profile.internal.ocl.InvalidOclException;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -269,6 +272,8 @@ public class InitCognitiveCritics implements InitSubsystem {
      * static initializer, register all appropriate critics.
      */
     public void init() {
+        registerExtraWFRs();        
+        
         Object modelCls = Model.getMetaTypes().getModel();
         Object packageCls = Model.getMetaTypes().getPackage();
         Object classCls = Model.getMetaTypes().getUMLClass();
@@ -417,7 +422,129 @@ public class InitCognitiveCritics implements InitSubsystem {
 	Agency.register(new CrNameConflict(), namespaceCls);
 	Agency.register(crAlreadyRealizes, classCls);
 	Agency.register(new CrUtilityViolated(), classifierCls);
-	Agency.register(new CrOppEndVsAttr(), classifierCls);
+	Agency.register(new CrOppEndVsAttr(), classifierCls);        
+    }
+
+    private void registerExtraWFRs() {
+        // Missing WFRs
+        
+        // Association Class
+        // 4.5.3.2 [1]
+        
+        try {
+            Agency.register(new CrOCL("context AssociationClass inv:"
+                    + "self.allConnections->"
+                    + "forAll( ar | self.allFeatures->"
+                    + "forAll( f | f.oclIsKindOf(StructuralFeature) "
+                    + "implies ar.name <> f.name ))",
+                    "The names of the AssociationEnds and "
+                            + "the StructuralFeatures do not overlap.", null,
+                    ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+        
+        // 4.5.3.2 [2]
+        
+        try {
+            Agency.register(new CrOCL("context AssociationClass inv:"
+                    + "self.allConnections->"
+                    + "forAll(ar | ar.participant <> self)",
+
+            "An AssociationClass cannot be defined "
+                    + "between itself and something else.", null,
+                    ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+        
+        // Behavioral Feature
+        // 4.5.3.5 [2]
+
+        // it works, but a bug in namespace.contents prevents it from 
+        // working when the type of the parameter comes from a profile                
+//        try {
+//            Agency.register(new CrOCL("context BehavioralFeature inv:"
+//                    + "self.parameter->"
+//                    + "forAll( p | self.owner.namespace.allContents->"
+//                    + "includes (p.type) )",
+//                    "The type of the Parameters should be "
+//                            + "included in the Namespace of the Classifier.",
+//                    null, ToDoItem.HIGH_PRIORITY, null, null,
+//                    "http://www.uml.org/"));
+//        } catch (InvalidOclException e) {
+//            e.printStackTrace();
+//        }
+        
+        // Classfier
+        // 4.5.3.8 [5]
+        try {
+            Agency.register(new CrOCL("context Classifier inv:"
+                    + "self.oppositeAssociationEnds->" 
+                    + "forAll( o | not self.allAttributes->" 
+                    + "union (self.allContents)->" 
+                    + "collect ( q | q.name )->includes (o.name) )",
+            "The name of an opposite AssociationEnd may not be the same " 
+           +"as the name of an Attribute or a ModelElement contained " 
+           +"in the Classifier.", null,
+                    ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
+        // DataType
+        // 4.5.3.12 [1]
+        try {
+            Agency.register(new CrOCL("context DataType inv:"
+                    + "self.allFeatures->forAll(f | f.oclIsKindOf(Operation)"
+                    + " and f.oclAsType(Operation).isQuery)",
+                    "A DataType can only contain Operations, "
+                            + "which all must be queries.", null,
+                    ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
+        // GeneralizableElement
+        // 4.5.3.20 [1]
+        try {
+            Agency.register(new CrOCL("context GeneralizableElement inv:"
+                    + "self.isRoot implies self.generalization->isEmpty",
+                    "A root cannot have any Generalizations.", null,
+                    ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
+        // 4.5.3.20 [4]
+        try {
+            Agency.register(new CrOCL("context GeneralizableElement inv:"
+                    + "self.generalization->"
+                    + "forAll(g |self.namespace.allContents->"
+                    + "includes(g.parent) )",
+                    "The parent must be included in the Namespace of"
+                            + " the GeneralizableElement.", null,
+                    ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+ 
+        // Namespace
+        // 4.5.3.26 [2]
+        try {
+            Agency.register(new CrOCL("context Namespace inv:"
+                    + "self.allContents -> select(oclIsKindOf(Association))->"
+                    + "forAll(a1, a2 |a1.name = a2.name and "
+                    + "a1.connection.participant = a2.connection.participant"
+                    + " implies a1 = a2)",
+                    "All Associations must have a unique combination of name "
+                            + "and associated Classifiers in the Namespace.",
+                    null, ToDoItem.HIGH_PRIORITY, null, null,
+                    "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+        
     }
 
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {

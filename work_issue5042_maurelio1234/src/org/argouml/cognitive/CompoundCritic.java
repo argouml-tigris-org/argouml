@@ -303,11 +303,11 @@ public class CompoundCritic extends Critic {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
      */
-    public Set<Object> getCriticizedMetatypes() {
+    public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         for (Critic cr : this.critics) {
             if (cr instanceof CrUML) {
-                ret.addAll(((CrUML) cr).getCriticizedMetatypes());
+                ret.addAll(((CrUML) cr).getCriticizedDesignMaterials());
             }
         }
         return ret;
