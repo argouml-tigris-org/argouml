@@ -24,7 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -38,6 +40,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * This is the fourth well-formedness rule for associations in the UML 1.3
  * standard (see section 2.5.3 of the standard).<p>
  *
+ * Well-formedness rule [4] for Association. See page 52 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ * 
  * See the ArgoUML User Manual: Classifier not in Namespace of its Association
  *
  * @author Jason Robbins
@@ -100,4 +105,14 @@ public class CrCrossNamespaceAssoc extends CrUML {
         // If we drop out there is no problem
         return NO_PROBLEM;
     }
+    
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getAssociationClass());
+        return ret;
+    }
+    
 } /* end class CrCrossNamespaceAssoc */

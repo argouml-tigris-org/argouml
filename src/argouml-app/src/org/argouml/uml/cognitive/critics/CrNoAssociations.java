@@ -25,7 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -178,4 +180,15 @@ public class CrNoAssociations extends CrUML {
         return false;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        ret.add(Model.getMetaTypes().getActor());
+        ret.add(Model.getMetaTypes().getUseCase());
+        return ret;
+    }
+    
 }

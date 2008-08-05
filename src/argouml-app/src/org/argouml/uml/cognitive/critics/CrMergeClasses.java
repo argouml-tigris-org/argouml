@@ -26,7 +26,9 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
@@ -91,4 +93,13 @@ public class CrMergeClasses extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        return ret;
+    }
+    
 } /* end class CrMergeClasses */

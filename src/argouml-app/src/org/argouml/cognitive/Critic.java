@@ -26,9 +26,11 @@ package org.argouml.cognitive;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Observable;
+import java.util.Set;
 
 import javax.swing.Icon;
 
@@ -1018,6 +1020,17 @@ public class Critic
         args = h;
     }
 
+
+    /**
+     *  Get the design materials to be criticized by this critic
+     * 
+     * @return the design materials
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        return ret;
+    }
+        
     ////////////////////////////////////////////////////////////////
     // design feedback
 
@@ -1065,6 +1078,7 @@ public class Critic
     public void fixIt(ToDoItem item, Object arg) {
     }
 
+    
     /*
      * Reply a string that describes this Critic. Identical to getCriticName()
      *

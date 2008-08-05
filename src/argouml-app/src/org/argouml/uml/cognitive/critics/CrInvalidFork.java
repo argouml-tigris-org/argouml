@@ -25,6 +25,8 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
@@ -34,6 +36,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * A critic to detect when a fork state has the wrong number of
  * transitions.  Implements constraint [5] on Pseudostate in the UML
  * Semantics v1.1, pp. 104.
+ *
+ * Well-formedness rule [5] for PseudoState. See page 137 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
  *
  * @author jrobbins
  */
@@ -75,5 +80,14 @@ public class CrInvalidFork extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getPseudostate());
+        return ret;
+    }
+    
 }
 

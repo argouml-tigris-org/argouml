@@ -26,7 +26,9 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.Icon;
 
@@ -41,7 +43,8 @@ import org.argouml.uml.cognitive.UMLDecision;
  * Check the:
  * Well-formedness rule [2] for Classifier.
  * See page 29 of UML 1.1, Semantics. OMG document ad/97-08-04.
- * See page 2-49 in UML V1.3<p>
+ * See page 2-49 in UML V1.3
+ * See page 55 in UMl 1.4.2 formal/04-07-02<p> 
  *
  * In the process of modifying this to use the new Facade object
  * (Jan 2003) this was changed to no longer detect StructuralFeatures
@@ -104,5 +107,14 @@ public class CrAttrNameConflict extends CrUML {
 	return ClAttributeCompartment.getTheInstance();
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getClassifier());
+        return ret;
+    }
+    
 }
 

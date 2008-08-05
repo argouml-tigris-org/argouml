@@ -32,6 +32,7 @@ import java.awt.event.WindowListener;
 import java.util.Iterator;
 
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
@@ -46,7 +47,8 @@ import org.argouml.util.ArgoDialog;
  * 
  * @author michiel
  */
-class ProjectSettingsDialog extends ArgoDialog implements WindowListener {
+public class ProjectSettingsDialog 
+                extends ArgoDialog implements WindowListener {
 
     private JButton applyButton;
     private JButton resetToDefaultButton;
@@ -246,6 +248,20 @@ class ProjectSettingsDialog extends ArgoDialog implements WindowListener {
     public void windowClosing(WindowEvent e) {
         // Handle the same as an explicit cancel
         handleCancel();
+    }
+
+    /**
+     * Show the dialog with the tab as selected
+     * 
+     * @param tab tab to be selected
+     */
+    public void showDialog(JPanel tab) {
+        try {
+            tabs.setSelectedComponent(tab);           
+        } catch (Throwable t) {
+            
+        }
+        showDialog();
     }
 
 }

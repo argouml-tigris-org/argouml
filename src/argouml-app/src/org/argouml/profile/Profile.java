@@ -28,55 +28,76 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.argouml.cognitive.Critic;
 
 /**
- * Abstract class representing a Profile.  It contains default types and 
+ * Abstract class representing a Profile. It contains default types and
  * presentation characteristics that can be tailored to various modeling
  * environments.
  * 
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public abstract class Profile {
-    
-    private Set<Profile> importedProfiles  = new HashSet<Profile>();
-    private Set<Profile> importingProfiles = new HashSet<Profile>();
-        
+
+    private Set<String> dependencies = new HashSet<String>();
+
+    /**
+     * The critics provided by this profile
+     */
+    private Set<Critic> critics = new HashSet<Critic>();
+
     /**
      * Add a dependency on the given profile from this profile.
      * 
-     * @param p
-     *                the profile
-     * @throws IllegalArgumentException
-     *                 if there is some cycle on the dependency graph
+     * @param p the profile
+     * @throws IllegalArgumentException never thrown
      */
     protected final void addProfileDependency(Profile p)
         throws IllegalArgumentException {
-        
-        if (importingProfiles.contains(p)) {
-            throw new IllegalArgumentException("This profile causes a cycle "
-                    + "in the profile dependency graph!");
-        } else {
-            importedProfiles.add(p);
-            importedProfiles.addAll(p.importedProfiles);
+        addProfileDependency(p.getProfileIdentifier());
+    }
 
-            for (Profile importedProfile : importedProfiles) {
-                importedProfile.importingProfiles.add(this);
-            }
-        }
-    }    
+    /**
+     * Add a dependency on the given profile from this profile.
+     * 
+     * @param profileIdentifier the profile identifier
+     */
+    protected void addProfileDependency(String profileIdentifier) {
+        dependencies.add(profileIdentifier);
+    }
 
     /**
      * @return the dependencies
      */
     public final Set<Profile> getDependencies() {
-        return importedProfiles;
+        if (ProfileFacade.isInitiated()) {
+            Set<Profile> ret = new HashSet<Profile>();
+            for (String pid : dependencies) {
+                Profile p = ProfileFacade.getManager()
+                        .lookForRegisteredProfile(pid);
+                if (p != null) {
+                    ret.add(p);
+                    ret.addAll(p.getDependencies());
+                }
+            }
+            return ret;
+        } else {
+            return new HashSet<Profile>();
+        }
     }
-    
+
     /**
-     * @return the name for this profile 
+     * @return the ids of the dependencies
+     */
+    public final Set<String> getDependenciesID() {
+        return dependencies;
+    }
+
+    /**
+     * @return the name for this profile
      */
     public abstract String getDisplayName();
-    
+
     /**
      * @return the formating strategy offered by this profile, if any. Returns
      *         <code>null</code> if this profile has no formating strategy.
@@ -100,20 +121,40 @@ public abstract class Profile {
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return null;
     }
-    
+
     /**
      * @return a collection of the top level UML Packages containing the
      *         profile.
-     * @throws ProfileException
-     *                 if failed to get profile.
+     * @throws ProfileException if failed to get profile.
      */
     public abstract Collection getProfilePackages() throws ProfileException;
-    
+
     /**
      * @return the display name
      */
     @Override
     public String toString() {
         return getDisplayName();
+    }
+
+    /**
+     * @return Returns the critics defined by this profile.
+     */
+    public Set<Critic> getCritics() {
+        return critics;
+    }
+
+    /**
+     * @return a unique identifier for this profile
+     */
+    public String getProfileIdentifier() {
+        return getDisplayName();
+    }
+
+    /**
+     * @param criticsSet The critics to set.
+     */
+    protected void setCritics(Set<Critic> criticsSet) {
+        this.critics = criticsSet;
     }
 }

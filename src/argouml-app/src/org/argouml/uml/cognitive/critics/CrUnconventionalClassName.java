@@ -24,6 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.Icon;
 
 import org.argouml.cognitive.Critic;
@@ -125,6 +128,15 @@ public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
     @Override
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        return ret;
+    }
+    
     /**
      * The UID.
      */

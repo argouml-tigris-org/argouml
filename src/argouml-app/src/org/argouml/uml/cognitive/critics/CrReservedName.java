@@ -25,7 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.Icon;
 
@@ -219,6 +221,18 @@ public class CrReservedName extends CrUML {
         return WizMEName.class;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getClassifier());
+        ret.add(Model.getMetaTypes().getOperation());
+        ret.add(Model.getMetaTypes().getState());
+        ret.add(Model.getMetaTypes().getAssociation());
+        return ret;
+    }
+    
     /**
      * The UID.
      */

@@ -1,16 +1,16 @@
-// $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -30,32 +30,27 @@ import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.profile.Profile;
-import org.argouml.profile.ProfileException;
 
 /**
- * Rule for Profile->Model.
- *
+ * Show the critics exported by a Profile
+ * 
+ * @author maurelio1234
  */
-public class GoProfileToModel extends AbstractPerspectiveRule {
+public class GoProfileToCritics implements PerspectiveRule {
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize("misc.profile.model");
+        return Translator.localize("misc.profile.critic");
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (parent instanceof Profile) {
-            try {
-                Collection col = ((Profile) parent).getProfilePackages();
-                return col;
-            } catch (ProfileException e) {
-                return Collections.EMPTY_SET;
-            }
+        if (parent instanceof Profile) {
+            return ((Profile) parent).getCritics();
         }
         return Collections.EMPTY_SET;
     }
@@ -65,6 +60,6 @@ public class GoProfileToModel extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: What?
-	return Collections.EMPTY_SET;
+        return Collections.EMPTY_SET;
     }
 }

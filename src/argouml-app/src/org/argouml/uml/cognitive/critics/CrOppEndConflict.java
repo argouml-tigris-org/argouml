@@ -26,8 +26,10 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -38,6 +40,8 @@ import org.argouml.uml.cognitive.UMLDecision;
  * Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  *
+ * Well-formedness rule [3] for Classifier. See page 55 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
  * @author jrobbins
  */
 //TODO: split into an inherited attr critic and a local
@@ -80,4 +84,14 @@ public class CrOppEndConflict extends CrUML {
         }
         return problem;
     }
+    
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getAssociationEnd());
+        return ret;
+    }
+    
 } /* end class CrOppEndConflict */

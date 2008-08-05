@@ -27,7 +27,9 @@ package org.argouml.uml.cognitive.critics;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -147,4 +149,13 @@ public class CrSubclassReference extends CrUML {
 	return offs;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        return ret;
+    }
+    
 }

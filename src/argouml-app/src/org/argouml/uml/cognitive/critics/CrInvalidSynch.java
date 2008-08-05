@@ -24,7 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
@@ -32,6 +34,9 @@ import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * UML 1.5 Well-formedness rule [2] for Sync States.
+ *
+ * Well-formedness rule [2] for SynchState. See page 139 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
  *
  * @author pepargouml@yahoo.es
  */
@@ -92,5 +97,14 @@ public class CrInvalidSynch extends CrUML {
         return NO_PROBLEM;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getSynchState());
+        return ret;
+    }
+    
 } /* end class CrInvalidSynch */
 

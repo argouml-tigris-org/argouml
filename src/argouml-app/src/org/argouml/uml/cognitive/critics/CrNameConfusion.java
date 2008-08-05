@@ -25,7 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.Icon;
 
@@ -229,4 +231,14 @@ public class CrNameConfusion extends CrUML {
 	return WizManyNames.class;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getClassifier());
+        ret.add(Model.getMetaTypes().getState());
+        return ret;
+    }
+    
 }

@@ -24,6 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
@@ -31,6 +34,9 @@ import org.argouml.uml.cognitive.UMLDecision;
 /**
  * UML 1.5 Well-formedness rule [2] for Transition.
  *
+ * Well-formedness rule [2] for Transition. See page 139 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ * 
  * @author pepargouml@yahoo.es
  */
 public class CrInvalidJoinTriggerOrGuard extends CrUML {
@@ -88,6 +94,15 @@ public class CrInvalidJoinTriggerOrGuard extends CrUML {
         return NO_PROBLEM;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getTransition());
+        return ret;
+    }
+    
     /**
      * The UID.
      */

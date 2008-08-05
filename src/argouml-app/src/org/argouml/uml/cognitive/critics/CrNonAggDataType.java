@@ -24,8 +24,12 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
 
 /**
@@ -56,5 +60,14 @@ public class CrNonAggDataType extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getDataType());
+        return ret;
+    }
+    
 } /* end class CrNonAggDataType */
 

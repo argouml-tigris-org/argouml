@@ -25,6 +25,8 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -37,7 +39,10 @@ import org.argouml.uml.cognitive.UMLToDoItem;
 /**
  * Well-formedness rule [1] for Namespace. See page 33 of UML 1.1 Semantics.
  * OMG document ad/97-08-04. <p>
- * 
+ *
+ * Well-formedness rule [1] for Namespace. See page 62 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
  * Names of contained elements in a namespace (i.e. the design material) 
  * must be unique. 
  * This condition does not apply to names of Generalizations, 
@@ -128,4 +133,13 @@ public class CrNameConflict extends CrUML {
         return res;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getNamespace());
+        return ret;
+    }
+    
 }

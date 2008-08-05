@@ -70,6 +70,15 @@ public class CrAlreadyRealizes extends CrUML {
 	return problem;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        return ret;
+    }
+    
     /**
      * The UID.
      */

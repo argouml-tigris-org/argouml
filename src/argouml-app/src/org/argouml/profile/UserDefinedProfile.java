@@ -1,4 +1,4 @@
-// $Id$
+// // $Id$
 // Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,35 +24,90 @@
 
 package org.argouml.profile;
 
+import java.awt.Image;
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.Reader;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Set;
 import java.util.StringTokenizer;
 
+import javax.swing.ImageIcon;
+
+import org.apache.log4j.Logger;
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Translator;
 import org.argouml.model.Model;
 
 /**
  * Represents a profile defined by the user
- *
- * @author Marcos Aur�lio
+ * 
+ * @author maurelio1234
  */
 public class UserDefinedProfile extends Profile {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger
+            .getLogger(UserDefinedProfile.class);
+
     private String displayName;
+
     private File modelFile;
+
     private Collection profilePackages;
-    private boolean fromZargo;
+
+    private UserDefinedFigNodeStrategy figNodeStrategy = new UserDefinedFigNodeStrategy();
+
+    private class UserDefinedFigNodeStrategy implements FigNodeStrategy {
+
+        private HashMap<String, Image> images = new HashMap<String, Image>();
+
+        public Image getIconForStereotype(Object stereotype) {
+            return images.get(Model.getFacade().getName(stereotype));
+        }
+
+        /**
+         * Adds a new descriptor to this strategy
+         * 
+         * @param fnd
+         */
+        public void addDesrciptor(FigNodeDescriptor fnd) {
+            images.put(fnd.stereotype, fnd.img);
+        }
+    }
+
+    private class FigNodeDescriptor {
+        private String stereotype;
+
+        private Image img;
+
+        private String src;
+
+        private int length;
+
+        /**
+         * @return if this descriptor ir valid
+         */
+        public boolean isValid() {
+            return stereotype != null && src != null && length > 0;
+        }
+    }
 
     /**
      * The default constructor for this class
      * 
-     * @param file the file from where the model should be read  
+     * @param file the file from where the model should be read
      * @throws ProfileException if the profile could not be loaded
      */
     public UserDefinedProfile(File file) throws ProfileException {
+        LOG.info("load " + file);
         displayName = file.getName();
         modelFile = file;
         ProfileReference reference = null;
@@ -60,58 +115,65 @@ public class UserDefinedProfile extends Profile {
             reference = new UserProfileReference(file.getPath());
         } catch (MalformedURLException e) {
             throw new ProfileException(
-                "Failed to create the ProfileReference.", e);
+                    "Failed to create the ProfileReference.", e);
         }
         profilePackages = new FileModelLoader().loadModel(reference);
-        fromZargo = false;
 
-        completeLoading();
+        finishLoading();
     }
 
-    
     /**
-     * A constructor that takes a file name and a reader, being the reader the 
-     * input method to get the profile model.
+     * A constructor that reads a file from an URL
      * 
-     * @param fileName name of the profile model file.
-     * @param reader a reader opened from where the profile model will be 
-     * loaded. 
-     * @throws ProfileException if something goes wrong in initializing the 
-     * profile.
+     * @param url the URL
+     * @throws ProfileException if the profile can't be read or is not valid
      */
-    public UserDefinedProfile(String fileName, Reader reader) 
-        throws ProfileException {
-        displayName = fileName;
-        ProfileReference reference = null;
-        try {
-            reference = new UserProfileReference(fileName);
-        } catch (MalformedURLException e) {
-            throw new ProfileException(
-                "Failed to create the ProfileReference.", e);
-        }
-        profilePackages = new ReaderModelLoader(reader).loadModel(reference);
-        fromZargo = true;
-        
-        completeLoading();
-    }
-
-
-    // TODO: Add missing Javadoc
     public UserDefinedProfile(URL url) throws ProfileException {
-        ProfileReference reference = 
-            new UserProfileReference(url.getPath(), url);
-        profilePackages = new URLModelLoader().loadModel(reference);
-        fromZargo = false;
+        LOG.info("load " + url);
 
-        completeLoading();
+        ProfileReference reference = null;
+        reference = new UserProfileReference(url.getPath(), url);
+        profilePackages = new URLModelLoader().loadModel(reference);
+
+        finishLoading();
     }
 
+    /**
+     * A constructor that reads a file from an URL associated with some profiles
+     * 
+     * @param dn the display name of the profile
+     * @param url the URL of the profile mode
+     * @param critics the Critics defined by this profile
+     * @param dependencies the dependencies of this profile
+     * @throws ProfileException if the model cannot be loaded
+     */
+    public UserDefinedProfile(String dn, URL url, Set<Critic> critics,
+            Set<String> dependencies) throws ProfileException {
+        LOG.info("load " + url);
+
+        this.displayName = dn;
+        if (url != null) {
+            ProfileReference reference = null;
+            reference = new UserProfileReference(url.getPath(), url);
+            profilePackages = new URLModelLoader().loadModel(reference);
+        } else {
+            profilePackages = new ArrayList(0);
+        }
+
+        this.setCritics(critics);
+
+        for (String profileID : dependencies) {
+            addProfileDependency(profileID);
+        }
+
+        finishLoading();
+    }
 
     /**
      * Reads the informations defined as TaggedValues
      */
-    private void completeLoading() {
-        
+    private void finishLoading() {
+
         for (Object obj : profilePackages) {
             if (Model.getExtensionMechanismsHelper().hasStereotype(obj,
                     "profile")) {
@@ -120,57 +182,77 @@ public class UserDefinedProfile extends Profile {
                 String name = Model.getFacade().getName(obj);
                 if (name != null) {
                     displayName = name;
+                } else {
+                    if (displayName == null) {
+                        displayName = Translator
+                                .localize("misc.profile.unnamed");
+                    }
                 }
+                LOG.info("profile " + displayName);
 
-                // TODO: Instead of a TaggedValue, why can't this just use
-                // Dependencies with the <<appliedProfile>> stereotype?  It
-                // seems designed exactly for cases like this.
-                
                 // load profile dependencies
-                String dep = Model.getFacade().getTaggedValueValue(obj,
-                        "Dependency");
-                StringTokenizer st = new StringTokenizer(dep, " ,;:");
+                String dependencyListStr = Model.getFacade()
+                        .getTaggedValueValue(obj, "Dependency");
+                StringTokenizer st = new StringTokenizer(dependencyListStr,
+                        " ,;:");
 
-                String prof = null;
+                String profile = null;
 
                 while (st.hasMoreTokens()) {
-                    prof = st.nextToken();
-                    if (prof != null) {
-                        this.addProfileDependency(
-                                lookForRegisteredProfile(prof));
+                    profile = st.nextToken();
+                    if (profile != null) {
+                        LOG.debug("AddingDependency " + profile);
+                        this.addProfileDependency(ProfileFacade.getManager()
+                                .lookForRegisteredProfile(profile));
                     }
                 }
 
             }
         }
-                
-    }
 
-    private Profile lookForRegisteredProfile(String name) {
-        ProfileManager man = ProfileFacade.getManager();
-        List<Profile> regs = man.getRegisteredProfiles();
+        // load fig nodes
+        Collection allStereotypes = Model.getExtensionMechanismsHelper()
+                .getStereotypes(profilePackages);
+        for (Object stereotype : allStereotypes) {
+            Collection tags = Model.getFacade().getTaggedValuesCollection(
+                    stereotype);
 
-        for (Profile profile : regs) { 
-            if (profile.getDisplayName().equalsIgnoreCase(name)) {
-                return profile;
+            for (Object tag : tags) {
+                if (Model.getFacade().getTag(tag).toLowerCase()
+                        .equals("figure")) {
+                    LOG.debug("AddFigNode "
+                            + Model.getFacade().getName(stereotype));
+
+                    String value = Model.getFacade().getValueOfTag(tag);
+                    File f = new File(value);
+                    FigNodeDescriptor fnd = null;
+                    try {
+                        fnd = loadImage(Model.getFacade().getName(stereotype)
+                                .toString(), f);
+                        figNodeStrategy.addDesrciptor(fnd);
+                    } catch (IOException e) {
+                        LOG.error("Error loading FigNode", e);
+                    }
+                }
             }
         }
-        return null;
+
+        // load critiques
+        // TODO read critics in OCL from xmi
+        Set<Critic> myCritics = this.getCritics();                
+        this.setCritics(myCritics);
     }
-    
 
     /**
-     * @return the string that should represent this profile in the GUI. An
-     *         start (*) is placed on it if it comes from the currently opened
-     *         zargo file.
+     * @return the string that should represent this profile in the GUI.
      */
     public String getDisplayName() {
-        return displayName + (fromZargo ? "*" : "");
+        return displayName;
     }
 
-
     /**
-     * Returns null.  This profile has no formatting strategy.
+     * Returns null. This profile has no formatting strategy.
+     * 
      * @return null.
      */
     @Override
@@ -179,12 +261,13 @@ public class UserDefinedProfile extends Profile {
     }
 
     /**
-     * Returns null.  This profile has no figure strategy.
+     * Returns null. This profile has no figure strategy.
+     * 
      * @return null.
      */
     @Override
     public FigNodeStrategy getFigureStrategy() {
-        return null;
+        return figNodeStrategy;
     }
 
     /**
@@ -199,13 +282,34 @@ public class UserDefinedProfile extends Profile {
      */
     @Override
     public String toString() {
-        // TODO: I18N
-        return super.toString() + " [" + getModelFile() + "]";
+        File str = getModelFile();
+        return super.toString() + (str != null ? " [" + str + "]" : "");
     }
-
 
     @Override
     public Collection getProfilePackages() {
         return profilePackages;
+    }
+
+    private FigNodeDescriptor loadImage(String stereotype, File f)
+        throws IOException {
+        FigNodeDescriptor descriptor = new FigNodeDescriptor();
+        descriptor.length = (int) f.length();
+        descriptor.src = f.getPath();
+        descriptor.stereotype = stereotype;
+
+        BufferedInputStream bis = new BufferedInputStream(
+                new FileInputStream(f));
+
+        byte[] buf = new byte[descriptor.length];
+        try {
+            bis.read(buf);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        descriptor.img = new ImageIcon(buf).getImage();
+
+        return descriptor;
     }
 }

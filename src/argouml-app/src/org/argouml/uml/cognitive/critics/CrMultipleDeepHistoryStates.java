@@ -25,7 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
@@ -37,6 +39,9 @@ import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
  * UML 1.5 Well-formedness rule [2] for Composite States.
+ *
+ * Well-formedness rule [2] for CompositeState. See page 136 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
  *
  * @author pepargouml@yahoo.es
  */
@@ -142,6 +147,15 @@ public class CrMultipleDeepHistoryStates extends CrUML {
         return res;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getPseudostate());
+        return ret;
+    }
+    
     /**
      * The UID.
      */

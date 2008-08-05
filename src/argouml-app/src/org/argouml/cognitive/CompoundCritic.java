@@ -25,8 +25,11 @@
 package org.argouml.cognitive;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
+
 import javax.swing.Icon;
 
 /**
@@ -295,4 +298,15 @@ public class CompoundCritic extends Critic {
 	throw new UnsupportedOperationException();
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        for (Critic cr : this.critics) {
+            ret.addAll(cr.getCriticizedDesignMaterials());
+        }
+        return ret;
+    }
+    
 }

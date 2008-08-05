@@ -24,7 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -144,6 +146,15 @@ public class CrNavFromInterface extends CrUML {
         // If we drop out we didn't meet both criteria, and all is well.
 
         return NO_PROBLEM;
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getAssociationClass());
+        return ret;
     }
 
     /**

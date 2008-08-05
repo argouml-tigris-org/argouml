@@ -25,7 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
@@ -69,4 +71,13 @@ public class CrUnnavigableAssoc extends CrUML {
      */
     public Class getWizardClass(ToDoItem item) { return WizNavigable.class; }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getAssociationClass());
+        return ret;
+    }
+    
 } /* end class CrUnnavigableAssoc */

@@ -40,6 +40,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Critic;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
@@ -188,11 +189,20 @@ public class ExplorerPopup extends JPopupMenu {
             initMenuCreateDiagrams();
             this.add(createDiagrams);
         }
-        
-        if (!multiSelect && selectedItem instanceof Profile) {
-            this.add(new ActionExportProfileXMI((Profile) selectedItem));
+
+        try {
+            if (!multiSelect && selectedItem instanceof Profile
+                    && !((Profile) selectedItem).getProfilePackages().isEmpty()) {
+                this.add(new ActionExportProfileXMI((Profile) selectedItem));
+            }
+        } catch (Exception e) {
+
         }
-        
+
+        if (!multiSelect && selectedItem instanceof ProfileConfiguration) {
+            this.add(new ActionManageProfiles());
+        }
+
         if (modelElementsOnly) {
             initMenuCreateModelElements();
         }
@@ -763,7 +773,8 @@ public class ExplorerPopup extends JPopupMenu {
             Object selectedItem) {
         boolean found = selectedItem instanceof ProfileConfiguration
                 || selectedItem instanceof Profile
-                || selectedItem instanceof ArgoDiagram;
+                || selectedItem instanceof ArgoDiagram
+                || selectedItem instanceof Critic;
                 
         /* The next statement fixes an exception 
          * when right-clicking on e.g. an AssociationsNode 

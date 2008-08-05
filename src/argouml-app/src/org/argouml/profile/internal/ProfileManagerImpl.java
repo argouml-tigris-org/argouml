@@ -44,7 +44,7 @@ import org.argouml.profile.UserDefinedProfile;
 /**
  * Default <code>ProfileManager</code> implementation
  *
- * @author Marcos Aur�lio
+ * @author Marcos Aurelio
  */
 public class ProfileManagerImpl implements ProfileManager {
     
@@ -325,7 +325,7 @@ public class ProfileManagerImpl implements ProfileManager {
             if (p instanceof UserDefinedProfile) {
                 UserDefinedProfile udp = (UserDefinedProfile) p;
 
-                if (udp.getModelFile().equals(file)) {
+                if (file.equals(udp.getModelFile())) {
                     return udp;
                 }
             }
@@ -336,6 +336,20 @@ public class ProfileManagerImpl implements ProfileManager {
 
     public Profile getUMLProfile() {
         return profileUML;
+    }
+
+    /*
+     * @see org.argouml.profile.ProfileManager#lookForRegisteredProfile(java.lang.String)
+     */
+    public Profile lookForRegisteredProfile(String value) {
+        List<Profile> registeredProfiles = getRegisteredProfiles();
+
+        for (Profile profile : registeredProfiles) {
+            if (profile.getProfileIdentifier().equalsIgnoreCase(value)) {
+                return profile;
+            }
+        }
+        return null;
     }
 
 }

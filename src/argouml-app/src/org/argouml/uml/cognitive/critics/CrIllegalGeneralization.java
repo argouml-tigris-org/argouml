@@ -24,6 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
@@ -31,6 +34,10 @@ import org.argouml.uml.cognitive.UMLDecision;
 /**
  * Well-formedness rule [1] for Generalization. See page 32 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
+ * 
+ * Well-formedness rule [5] for GeneralizableElement. See page 59 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
  * This critic checks that the parent and child in a generalization are
  * of the same metatype.
  *
@@ -71,4 +78,13 @@ public class CrIllegalGeneralization extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getGeneralizableElement());
+        return ret;
+    }
+    
 }

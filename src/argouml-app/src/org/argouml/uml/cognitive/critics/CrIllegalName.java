@@ -24,6 +24,9 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.Icon;
 
 import org.argouml.cognitive.Designer;
@@ -81,4 +84,18 @@ public class CrIllegalName extends CrUML {
 	return ClClassName.getTheInstance();
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        ret.add(Model.getMetaTypes().getInterface());
+        ret.add(Model.getMetaTypes().getAssociationClass());
+        ret.add(Model.getMetaTypes().getOperation());
+        ret.add(Model.getMetaTypes().getParameter());
+        ret.add(Model.getMetaTypes().getState());        
+        return ret;
+    }
+    
 } /* end class CrIllegalName */

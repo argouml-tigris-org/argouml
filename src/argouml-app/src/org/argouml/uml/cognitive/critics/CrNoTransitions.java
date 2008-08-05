@@ -25,6 +25,8 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
@@ -88,6 +90,15 @@ public class CrNoTransitions extends CrUML {
 	    return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;
+    }
+
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedMetatypes()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getStateVertex());
+        return ret;
     }
 
 }

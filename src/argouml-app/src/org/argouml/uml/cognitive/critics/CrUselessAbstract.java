@@ -28,7 +28,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
@@ -78,6 +80,15 @@ public class CrUselessAbstract extends CrUML {
 	return true; // no concrete subclasses defined, this class is "useless"
     }
 
+    /*
+     * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        Set<Object> ret = new HashSet<Object>();
+        ret.add(Model.getMetaTypes().getUMLClass());
+        return ret;
+    }
+    
 } /* end class CrUselessAbstract */
 
 
