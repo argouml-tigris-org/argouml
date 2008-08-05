@@ -88,6 +88,7 @@ import org.argouml.persistence.ProjectFileView;
 import org.argouml.persistence.UmlVersionException;
 import org.argouml.persistence.VersionException;
 import org.argouml.persistence.XmiFormatException;
+import org.argouml.persistence.XmiReferenceException;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -1573,7 +1574,7 @@ public final class ProjectBrowser
 
         PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
-        boolean success = true;
+        boolean success = false;
 
         // TODO:
         // This is actually a hack! Some diagram types
@@ -1604,7 +1605,6 @@ public final class ProjectBrowser
                 ProjectFilePersister persister =
                     pm.getPersisterFromFileName(file.getName());
                 if (persister == null) {
-                    success = false;
                     throw new IllegalStateException("Filename "
                             + file.getName()
                             + " is not of a known file type");
@@ -1647,9 +1647,8 @@ public final class ProjectBrowser
                         Translator.localize(
                                 "statusmsg.bar.open-project-status-read",
                                 new Object[] {file.getName(), }));
+                success = true;
             } catch (VersionException ex) {
-                project = oldProject;
-                success = false;
                 reportError(
                         pmw,
                         Translator.localize(
@@ -1657,29 +1656,31 @@ public final class ProjectBrowser
                                 new Object[] {ex.getMessage()}),
                         showUI);
             } catch (OutOfMemoryError ex) {
-                project = oldProject;
-                success = false;
                 LOG.error("Out of memory while loading project", ex);
                 reportError(
                         pmw,
                         Translator.localize("dialog.error.memory.limit"),
                         showUI);
             } catch (java.lang.InterruptedException ex) {
-                project = oldProject;
-                success = false;
                 LOG.error("Project loading interrupted by user");
             } catch (UmlVersionException ex) {
-                project = oldProject;
-                success = false;
                 reportError(
                         pmw,
                         Translator.localize(
                                 "dialog.error.file.version.error",
                                 new Object[] {ex.getMessage()}),
                         showUI, ex);
+            } catch (XmiReferenceException ex) {
+                // an error that can be corrected by the user, so no stack
+                // trace, but instead an explanation and a hint how to fix it
+                reportError(
+                        pmw,
+                        Translator.localize(
+                                "dialog.error.xmi.reference.error",
+                                new Object[] {ex.getMessage()}),
+                        ex.toString(),
+                        showUI);
             } catch (XmiFormatException ex) {
-                project = oldProject;
-                success = false;
                 reportError(
                         pmw,
                         Translator.localize(
@@ -1687,8 +1688,6 @@ public final class ProjectBrowser
                                 new Object[] {ex.getMessage()}),
                         showUI, ex);
             } catch (IOException ex) {
-                success = false;
-                project = oldProject;
                 LOG.error("Exception while loading project", ex);
                 reportError(
                         pmw,
@@ -1697,8 +1696,6 @@ public final class ProjectBrowser
                                 new Object[] {file.getName()}),
                         showUI, ex);
             } catch (OpenException ex) {
-                success = false;
-                project = oldProject;
                 LOG.error("Exception while loading project", ex);
                 reportError(
                         pmw,
@@ -1707,8 +1704,6 @@ public final class ProjectBrowser
                                 new Object[] {file.getName()}),
                         showUI, ex);
             } catch (RuntimeException ex) {
-                success = false;
-                project = oldProject;
                 LOG.error("Exception while loading project", ex);
                 reportError(
                         pmw,
@@ -1718,47 +1713,34 @@ public final class ProjectBrowser
                         showUI, ex);
             } finally {
 
-        	try {
-                    if (oldProject != null) {
-                        // if p equals oldProject there was an exception and we
-                        // do not have to gc (garbage collect) the old project
-                        if (project != null && !project.equals(oldProject)) {
-                            //prepare the old project for gc
-                            LOG.info("There are "
-                                    + oldProject.getDiagramList().size()
-                                    + " diagrams in the old project");
-                            LOG.info("There are " 
-                                    + project.getDiagramList().size()
-                                    + " diagrams in the new project");
-                            // Set new project before removing old so we always
-                            // have a valid current project
-                            ProjectManager.getManager().setCurrentProject(
-                                    project);
-                            ProjectManager.getManager().removeProject(
-                                    oldProject);
-                            project.getProjectSettings().init();
-                            Command cmd = new NonUndoableCommand() {
-                                public Object execute() {
-                                    // This is temporary. Load project
-                                    // should create a new project
-                                    // with its own UndoManager and so
-                                    // there should be no Command
-                                    return null;
-                                }
-                            };
-                            project.getUndoManager().addCommand(cmd);
-                        }
+                try {
+                    if (!success) {
+                        project = 
+                            ProjectManager.getManager().makeEmptyProject();
                     }
-
-                    if (project == null) {
-                        LOG.info("The current project is null");
-                    } else {
-                        LOG.info("There are " + project.getDiagramList().size()
-                                + " diagrams in the current project");
+                    ProjectManager.getManager().setCurrentProject(project);
+                    if (oldProject != null) {
+                        ProjectManager.getManager().removeProject(oldProject);
                     }
                     
+                    project.getProjectSettings().init();
+                    
+                    Command cmd = new NonUndoableCommand() {
+                        public Object execute() {
+                            // This is temporary. Load project
+                            // should create a new project
+                            // with its own UndoManager and so
+                            // there should be no Command
+                            return null;
+                        }
+                    };
+                    project.getUndoManager().addCommand(cmd);
+
+                    LOG.info("There are " + project.getDiagramList().size()
+                            + " diagrams in the current project");
+
                     Designer.enableCritiquing();
-        	} finally {
+                } finally {
                     // Make sure save action is always reinstated
                     this.saveAction = rememberedSaveAction;
                     ProjectManager.getManager().setSaveAction(
@@ -1766,7 +1748,7 @@ public final class ProjectBrowser
                     if (success) {
                         rememberedSaveAction.setEnabled(false);
                     }
-        	}
+                }
             }
         }
         return success;
@@ -1848,6 +1830,42 @@ public final class ProjectBrowser
             reportError(monitor, "Please report the error below to the ArgoUML"
                     + "development team at http://argouml.tigris.org.\n"
                     + message + "\n\n" + exception, showUI);
+        }
+    }
+
+    /**
+     * Open a Message Dialog with an error message and an explanation. No
+     * stack trace, since it's not an application error, but a user issue.
+     *
+     * @param message the message to display.
+     * @param explanation the explanation to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     */
+    private void reportError(ProgressMonitor monitor, final String message,
+            final String explanation, boolean showUI) {
+        if (showUI) {
+            if (monitor != null) {
+                monitor.notifyMessage(
+                        Translator.localize("dialog.error.title"),
+                        explanation,
+                        message);
+            } else {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        JDialog dialog =
+                            new ExceptionDialog(
+                                    ArgoFrame.getInstance(),
+                                    Translator.localize("dialog.error.title"),
+                                    explanation,
+                                    message);
+                        dialog.setVisible(true);
+                    }
+                });
+            }
+        } else {
+            reportError(monitor, message + "\n" + explanation + "\n\n",
+                    showUI);
         }
     }
 

@@ -57,6 +57,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
+import org.argouml.profile.UserDefinedProfileHelper;
 import org.argouml.swingext.JLinkButton;
 import org.argouml.uml.diagram.DiagramAppearance;
 
@@ -70,9 +71,6 @@ public class SettingsTabProfile extends JPanel implements
 
     private JButton loadFromFile = new JButton(Translator
             .localize("tab.profiles.userdefined.load"));
-
-    private JButton unregisterProfile = new JButton(Translator
-            .localize("tab.profiles.userdefined.unload"));
 
     private JButton addButton = new JButton(">>");
 
@@ -200,10 +198,8 @@ public class SettingsTabProfile extends JPanel implements
         JPanel lffPanel = new JPanel();
         lffPanel.setLayout(new FlowLayout());
         lffPanel.add(loadFromFile);
-        lffPanel.add(unregisterProfile);
         lffPanel.add(refreshProfiles);
 
-        unregisterProfile.addActionListener(this);
         loadFromFile.addActionListener(this);
         refreshProfiles.addActionListener(this);
 
@@ -316,55 +312,36 @@ public class SettingsTabProfile extends JPanel implements
             if (defaultList.getSelectedIndex() != -1) {
                 Profile selected = (Profile) modelUsd.getElementAt(defaultList
                         .getSelectedIndex());
-                modelUsd.removeElement(selected);
-                modelAvl.addElement(selected);
-            }
-        } else if (arg0.getSource() == unregisterProfile) {
-            if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvl
-                        .getElementAt(availableList.getSelectedIndex());
-                if (selected instanceof UserDefinedProfile) {
-                    ProfileFacade.getManager().removeProfile(selected);
-                    modelAvl.removeElement(selected);
-                } else {
+                
+                if (selected == ProfileFacade.getManager().getUMLProfile()) {
                     JOptionPane.showMessageDialog(this, Translator
-                            .localize("tab.profiles.cannotdelete"));
+                            .localize("tab.profiles.cantremoveuml"));
+                } else {
+                    modelUsd.removeElement(selected);
+                    modelAvl.addElement(selected);
                 }
             }
         } else if (arg0.getSource() == loadFromFile) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileFilter() {
-
-                public boolean accept(File file) {
-                    return file.isDirectory()
-                            || (file.isFile() && (file.getName().toLowerCase()
-                                    .endsWith(".xmi")
-                                    || file.getName().toLowerCase().endsWith(
-                                            ".xml")
-                                    || file.getName().toLowerCase().endsWith(
-                                            ".xmi.zip") || file.getName()
-                                    .toLowerCase().endsWith(".xml.zip")));
-                }
-
-                public String getDescription() {
-                    return "*.xmi *.xml *.xmi.zip *.xml.zip";
-                }
-
-            });
-
+            JFileChooser fileChooser =
+                UserDefinedProfileHelper.createUserDefinedProfileFileChooser();
             int ret = fileChooser.showOpenDialog(this);
+            List<File> files = null;
             if (ret == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-
-                try {
-                    UserDefinedProfile profile = new UserDefinedProfile(file);
-
-                    ProfileFacade.getManager().registerProfile(profile);
-
-                    modelAvl.addElement(profile);
-                } catch (ProfileException e) {
-                    JOptionPane.showMessageDialog(this, Translator
-                            .localize("tab.profiles.userdefined.errorloading"));
+                files = UserDefinedProfileHelper.getFileList(
+                    fileChooser.getSelectedFiles());
+            }
+            if (files != null && files.size() > 0) {
+                for (File file : files) {
+                    try {
+                        UserDefinedProfile profile =
+                            new UserDefinedProfile(file);
+                        ProfileFacade.getManager().registerProfile(profile);
+                        modelAvl.addElement(profile);
+                    } catch (ProfileException e) {
+                        JOptionPane.showMessageDialog(this, Translator
+                            .localize("tab.profiles.userdefined.errorloading")
+                            + ": " + file.getAbsolutePath());
+                    }
                 }
             }
 
@@ -514,5 +491,4 @@ public class SettingsTabProfile extends JPanel implements
         }
 
     }
-
 }

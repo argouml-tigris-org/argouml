@@ -34,6 +34,7 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -44,6 +45,7 @@ import org.tigris.gef.undo.UndoableAction;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
+@UmlModelMutator
 public abstract class AbstractActionAddModelElement2 extends UndoableAction {
 
     private Object target;

@@ -35,6 +35,7 @@ import javax.swing.Action;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -54,6 +55,7 @@ import org.tigris.gef.undo.UndoableAction;
  * The modelelements that are present on the current diagram, are connected
  * graphically. All others are only annotated in the model.
  */
+@UmlModelMutator
 public class ActionAddNote extends UndoableAction {
 
     /**

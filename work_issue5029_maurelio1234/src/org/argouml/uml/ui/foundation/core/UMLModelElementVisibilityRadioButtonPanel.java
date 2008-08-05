@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +104,12 @@ public class UMLModelElementVisibilityRadioButtonPanel
             } else {
                 setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
             }
+        }
+    }
+    
+    public void setEnabled(boolean enabled) {
+        for (final Component component : getComponents()) {
+            component.setEnabled(enabled);
         }
     }
 

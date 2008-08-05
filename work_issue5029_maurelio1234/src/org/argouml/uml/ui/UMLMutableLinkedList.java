@@ -32,6 +32,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 
+import org.argouml.model.Model;
+
 /**
  * This class is the GUI front for a mutable linked list. The user can add,
  * delete or create modelelements to the model. He can do that via a popup menu.
@@ -292,7 +294,8 @@ public class UMLMutableLinkedList extends UMLLinkedList
      */
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.isPopupTrigger()) {
+        if (e.isPopupTrigger()
+                && !Model.getModelManagementHelper().isReadOnly(getTarget())) {
             Point point = e.getPoint();
             int index = locationToIndex(point);
             JPopupMenu popup = getPopupMenu();
@@ -313,7 +316,8 @@ public class UMLMutableLinkedList extends UMLLinkedList
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.isPopupTrigger()) {
+        if (e.isPopupTrigger()
+                && !Model.getModelManagementHelper().isReadOnly(getTarget())) {
             JPopupMenu popup = getPopupMenu();
             if (popup.getComponentCount() > 0) {
                 initActions();
@@ -374,7 +378,8 @@ public class UMLMutableLinkedList extends UMLLinkedList
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.isPopupTrigger()) {
+        if (e.isPopupTrigger()
+                && !Model.getModelManagementHelper().isReadOnly(getTarget())) {
             JPopupMenu popup = getPopupMenu();
             if (popup.getComponentCount() > 0) {
                 initActions();

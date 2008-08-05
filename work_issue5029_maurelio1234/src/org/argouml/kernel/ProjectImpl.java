@@ -46,6 +46,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.Profile;
@@ -1067,15 +1068,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
         }
 
         members.clear();
-
-        for (Object model : roots) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Deleting root element "
-                        + Model.getFacade().getName(model));
+        if (!roots.isEmpty()) {
+            try {
+                Model.getUmlFactory().deleteExtent(roots.iterator().next());
+            } catch (InvalidElementException e) {
+                LOG.warn("Extent deleted a second time");
             }
-            Model.getUmlFactory().delete(model);
+            roots.clear();
         }
-        roots.clear();
         models.clear();
         diagrams.clear();
         searchpath.clear();

@@ -261,12 +261,13 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * This method shall return a Vector of one of these 4 types:
-     * AbstractAction, JMenu, JMenuItem, JSeparator.
+     * @return a Vector containing a combination of these 4 types:
+     * Action, JMenu, JMenuItem, JSeparator.
      */
     @Override
     public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
+        ActionList popUpActions =
+            new ActionList(super.getPopUpActions(me), isReadOnly());
         
         // popupAddOffset should be equal to the number of items added here:
         popUpActions.add(new JSeparator());
@@ -279,9 +280,7 @@ public abstract class FigEdgeModelElement
         popUpActions.add(new ActionDeleteModelElements());
         popupAddOffset++;
 
-        /* Check if multiple items are selected: */
-        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
-        if (!ms) {
+        if (TargetManager.getInstance().getTargets().size() == 1) {
             ToDoList list = Designer.theDesigner().getToDoList();
             List<ToDoItem> items = list.elementListForOffender(getOwner());
             if (items != null && items.size() > 0) {
@@ -380,11 +379,16 @@ public abstract class FigEdgeModelElement
     }
 
     /**
+     * This is used to draw a box round the edge of any editable FigText
+     * annotations of the edge when the edge is selected.
+     * TODO: This logic probably belongs in our base selection class
+     * SelectionEdgeClarifiers and could be written to discover what FigText
+     * annotations exist rather than hard code in subclasses.
      * @param f the fig to indicate the bounds of
      * @param g the graphics
      */
     protected void indicateBounds(FigText f, Graphics g) {
-        if (f == null) {
+        if (f == null || isReadOnly()) {
             return;
         }
         String text = f.getText();
@@ -706,15 +710,24 @@ public abstract class FigEdgeModelElement
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
-        if (me.isConsumed())
-            return;
-        if (me.getClickCount() >= 2) {
+        if (!me.isConsumed() && !isReadOnly() && me.getClickCount() >= 2) {
             Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
-            if (f instanceof MouseListener && canEdit(f))
+            if (f instanceof MouseListener && canEdit(f)) {
 		((MouseListener) f).mouseClicked(me);
+            }
         }
         me.consume();
     }
+    
+    /**
+     * Return true if the model element that this Fig represents is read only
+     * @return The model element is read only.
+     */
+    private boolean isReadOnly() {
+        return Model.getModelManagementHelper().isReadOnly(getOwner());
+    }
+
+    
 
     /*
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
@@ -734,10 +747,12 @@ public abstract class FigEdgeModelElement
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
-        if (ke.isConsumed())
-            return;
-        if (nameFig != null && canEdit(nameFig))
+        if (!ke.isConsumed()
+                && !isReadOnly()
+                && nameFig != null
+                && canEdit(nameFig)) {
             nameFig.keyTyped(ke);
+        }
     }
 
 

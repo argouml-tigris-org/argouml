@@ -32,6 +32,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -40,7 +41,9 @@ import org.tigris.gef.undo.UndoableAction;
  * Action to add a sterotype to a model element.
  * @author Bob Tarling
  */
+@UmlModelMutator
 public class ActionAddStereotype extends UndoableAction {
+    
     private Object modelElement;
     private Object stereotype;
 

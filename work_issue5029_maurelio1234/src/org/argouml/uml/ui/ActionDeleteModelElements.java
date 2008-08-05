@@ -40,6 +40,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -59,6 +60,7 @@ import org.tigris.gef.undo.UndoableAction;
  * Objects can be Modelelements, Diagrams (argodiagram and it's children),
  * Figs without owner,... 
  */
+@UmlModelMutator
 public class ActionDeleteModelElements extends UndoableAction {
 
     /**
@@ -265,6 +267,14 @@ public class ActionDeleteModelElements extends UndoableAction {
      * @return true if the tool should be enabled
      */
     public boolean shouldBeEnabled() {
+        List targets = TargetManager.getInstance().getTargets();
+        for (Object target : targets) {
+            if (Model.getFacade().isAModelElement(target)
+                    && Model.getModelManagementHelper().isReadOnly(target)) {
+                return false;
+            }
+        }
+        
         int size = 0;
         try {
             Editor ce = Globals.curEditor();
@@ -278,6 +288,8 @@ public class ActionDeleteModelElements extends UndoableAction {
         if (size > 0) {
             return true;
         }
+        // TODO: All of the following can be broken if we have multiple
+        // targets selected
         Object target = TargetManager.getInstance().getTarget();
         if (target instanceof ArgoDiagram) { 
             // we cannot delete the last diagram

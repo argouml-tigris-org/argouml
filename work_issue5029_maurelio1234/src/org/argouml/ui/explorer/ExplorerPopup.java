@@ -301,7 +301,9 @@ public class ExplorerPopup extends JPopupMenu {
                 }
             }
 
-            if (selectedItem != projectModel) {
+            if (modelElementsOnly && selectedItem != projectModel) {
+                // TODO: Shouldn't be creating a new instance here. We should
+                // hold the delete action in some central place.
                 this.add(new ActionDeleteModelElements());
             }
         }
@@ -338,15 +340,16 @@ public class ExplorerPopup extends JPopupMenu {
                         classifiers);
                 this.add(action);
             }
-        }
-
-        if (selectedItem instanceof Diagram) {
+        } else if (selectedItem instanceof Diagram) {
             this.add(new ActionSaveDiagramToClipboard());
+            // TODO: Delete should be available on any combination of model
+            // elements and diagrams.
+            // TODO: Shouldn't be creating a new instance here. We should
+            // hold the delete action in some central place.
             ActionDeleteModelElements ad = new ActionDeleteModelElements();
             ad.setEnabled(ad.shouldBeEnabled());
             this.add(ad);
         }
-
     }
 
     /**
@@ -765,6 +768,7 @@ public class ExplorerPopup extends JPopupMenu {
         }
     }
 
+    // TODO: Is this needed now we have ModelManagementHelper.isReadOnly?
     private boolean isRelatedToProfiles(Project currentProject,
             Object selectedItem) {
         boolean found = selectedItem instanceof ProfileConfiguration

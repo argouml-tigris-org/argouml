@@ -248,9 +248,6 @@ public class TabProps
             LOG.debug("Factory created " + panel.getClass().getName()
                     + " for " + trgt.getClass().getName());
             panels.put(trgt.getClass(), panel);
-            if (panel instanceof PropPanel) {
-        	((PropPanel) panel).buildToolbar();
-            }
             return panel;
         }
 
@@ -284,9 +281,9 @@ public class TabProps
             ((Orientable) propPanel).setOrientation(getOrientation());
         }
         
+        // TODO: We shouldn't need this as well as the above.
         if (propPanel instanceof PropPanel) {
             ((PropPanel) propPanel).setOrientation(getOrientation());
-            ((PropPanel) propPanel).buildToolbar();
         }
 
         return propPanel;

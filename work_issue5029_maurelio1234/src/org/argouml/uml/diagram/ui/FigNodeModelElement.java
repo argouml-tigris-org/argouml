@@ -253,11 +253,13 @@ public abstract class FigNodeModelElement
     private Vector<Fig> enclosedFigs = new Vector<Fig>();
 
     /**
-     * The figure enclosing this figure.
+     * The figure enclosing this figure such as a package surrounding a class.
      */
     private Fig encloser;
 
+    // TODO: Bobs says - what is the purpose of this flag? Please document.
     private boolean readyToEdit = true;
+    
     private boolean suppressCalcBounds;
     private static boolean showBoldName;
 
@@ -478,7 +480,8 @@ public abstract class FigNodeModelElement
      */
     @Override
     public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
+        ActionList popUpActions =
+            new ActionList(super.getPopUpActions(me), isReadOnly());
 
         // Show ...
         ArgoJMenu show = buildShowPopUp();
@@ -965,7 +968,9 @@ public abstract class FigNodeModelElement
             }
         } else if (pName.equals("editing")
                 && Boolean.TRUE.equals(pve.getNewValue())) {
-            textEditStarted((FigText) src);
+            if (!isReadOnly()) {
+                textEditStarted((FigText) src);
+            }
         } else {
             super.propertyChange(pve);
         }
@@ -1019,6 +1024,14 @@ public abstract class FigNodeModelElement
             };
             SwingUtilities.invokeLater(doWorkRunnable);
         }
+    }
+    
+    /**
+     * Return true if the model element that this Fig represents is read only
+     * @return The model element is read only.
+     */
+    private boolean isReadOnly() {
+        return Model.getModelManagementHelper().isReadOnly(getOwner());
     }
 
     /**
@@ -1147,10 +1160,9 @@ public abstract class FigNodeModelElement
         }
         if (me.getClickCount() >= 2
                 && !(me.isPopupTrigger()
-                        || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
-            if (getOwner() == null) {
-                return;
-            }
+                        || me.getModifiers() == InputEvent.BUTTON3_MASK)
+                && getOwner() != null
+                && !isReadOnly()) {
             Rectangle r = new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4);
             Fig f = hitFig(r);
             if (f instanceof MouseListener && f.isVisible()) {
@@ -1192,7 +1204,7 @@ public abstract class FigNodeModelElement
      * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
      */
     public void keyTyped(KeyEvent ke) {
-        if (!editable) {
+        if (!editable || isReadOnly()) {
             return;
         }
         if (!readyToEdit) {
@@ -1579,7 +1591,9 @@ public abstract class FigNodeModelElement
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent event) {
-        if (getOwner() == null) return;
+        if (getOwner() == null) {
+            return;
+        }
         initNotationProviders(getOwner());
         try {
             renderingChanged();
@@ -1701,8 +1715,7 @@ public abstract class FigNodeModelElement
 
                 labelFig.addPropertyChangeListener(this);
 
-                getBigPort().
-                setBounds(stereotypeFigProfileIcon.getBounds());
+                getBigPort().setBounds(stereotypeFigProfileIcon.getBounds());
 
                 for (Object fig : getFigs()) {
                     ((Fig) fig).setVisible(fig == stereotypeFigProfileIcon);

@@ -24,8 +24,10 @@
 
 package org.argouml.uml.diagram.ui;
 
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 
+@UmlModelMutator
 class ActionModifierAbstract extends AbstractActionCheckBoxMenuItem {
     
     /**

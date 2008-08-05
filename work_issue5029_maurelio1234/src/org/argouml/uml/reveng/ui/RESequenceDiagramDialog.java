@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -102,7 +102,7 @@ public class RESequenceDiagramDialog
      */
     private static final Logger LOG =
         Logger.getLogger(RESequenceDiagramDialog.class);
-    
+
     /**
      * The UID.
      */
@@ -119,7 +119,6 @@ public class RESequenceDiagramDialog
     
     // TODO: Why is this not final?
     private Modeller modeller;
-    
     private final Object classifier;
     private final Object operation;
     
@@ -183,7 +182,7 @@ public class RESequenceDiagramDialog
                 true);
         setResizable(false);
         this.project = project;
-        
+
         SequenceDiagramLayer layer = (SequenceDiagramLayer) diagram.getLayer();
 
         operation = oper;
@@ -277,7 +276,7 @@ public class RESequenceDiagramDialog
             }
         }
     }
-    
+
     /*
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */

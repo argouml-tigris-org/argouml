@@ -57,6 +57,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.LookAndFeelMgr;
@@ -134,6 +135,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     @Deprecated
     public PropPanel(String label, ImageIcon icon, Orientation orientation) {
         super(Translator.localize(label));
+        
         setOrientation(orientation);
         
         LabelledLayout layout =
@@ -235,7 +237,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     }
     
     public void buildToolbar() {
-        ToolBarFactory factory = new ToolBarFactory(actions);
+        LOG.debug("Building toolbar");
+
+        ToolBarFactory factory = new ToolBarFactory(getActions());
         factory.setRollover(true);
         factory.setFloatable(false);
         JToolBar toolBar = factory.createToolBar();
@@ -246,6 +250,14 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         // Set the tooltip of the arrow to open combined tools:
         buttonPanel.putClientProperty("ToolBar.toolTipSelectTool",
                 Translator.localize("action.select"));
+    }
+
+    /**
+     * Get the actions that will make up the toolbar on this panel.
+     * @return The list of actions to show for this panel.
+     */
+    protected List getActions() {
+        return actions;
     }
 
     private static class TargettableButton extends JButton
@@ -394,6 +406,7 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
             dispatch = new UMLChangeDispatch(this,
                     UMLChangeDispatch.TARGET_CHANGED_ADD);
 
+            buildToolbar();
         } else {
             dispatch = new UMLChangeDispatch(this,
                     UMLChangeDispatch.TARGET_REASSERTED);
@@ -653,12 +666,25 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         return titleLabel;
     }
 
-    protected JPanel createBorderPanel(String title) {
-    	JPanel panel = new JPanel(new GridLayout2());
-    	TitledBorder border = new TitledBorder(Translator.localize(title));
-    	border.setTitleFont(stdFont);
-    	panel.setBorder(border);
-    	return panel;
+    protected final JPanel createBorderPanel(String title) {
+    	return new GroupPanel(Translator.localize(title));
+    }
+    
+    private class GroupPanel extends JPanel {
+        
+        public GroupPanel(String title) {
+            super(new GridLayout2());
+            TitledBorder border = new TitledBorder(Translator.localize(title));
+            border.setTitleFont(stdFont);
+            setBorder(border);
+        }
+        
+        public void setEnabled(boolean enabled) {
+            super.setEnabled(enabled);
+            for (final Component component : getComponents()) {
+                component.setEnabled(enabled);
+            }
+        }
     }
 
     /**

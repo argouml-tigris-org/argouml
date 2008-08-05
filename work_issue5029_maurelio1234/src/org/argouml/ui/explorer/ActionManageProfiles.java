@@ -34,7 +34,6 @@ import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.GUI;
-import org.argouml.ui.ProfileSelectionTab;
 import org.argouml.ui.ProjectSettingsDialog;
 import org.argouml.ui.ProjectSettingsTabProfile;
 

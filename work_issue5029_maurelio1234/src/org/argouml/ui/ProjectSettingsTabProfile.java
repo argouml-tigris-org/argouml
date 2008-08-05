@@ -63,7 +63,7 @@ import org.argouml.uml.diagram.DiagramAppearance;
  * The Tab where new profiles can be added and the registered ones can be
  * activated or deactivated on current project
  * 
- * @author Marcos Aur�lio
+ * @author Marcos Aurelio
  */
 public class ProjectSettingsTabProfile extends JPanel implements
         GUISettingsTabInterface, ActionListener {

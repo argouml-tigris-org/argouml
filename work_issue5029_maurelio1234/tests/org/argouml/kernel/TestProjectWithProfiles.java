@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.List;
 
 import junit.framework.TestCase;
 
@@ -92,16 +93,22 @@ public class TestProjectWithProfiles extends TestCase {
 
     /**
      * Basic test that a new project contains a {@link ProfileConfiguration} 
-     * and that this contains at least the UML profile.
+     * and that this contains the default profiles.
      */
     public void testCreatedProjectContainsProfileConfiguration() {
+        List<Profile> defaultProfiles 
+            = ProfileFacade.getManager().getDefaultProfiles();               
+        
         Project project = ProjectManager.getManager().makeEmptyProject();
         ProfileConfiguration profileConfiguration = 
             project.getProfileConfiguration();
+                        
         assertNotNull(profileConfiguration);
         assertNotNull(profileConfiguration.getProfiles());
-        assertTrue(profileConfiguration.getProfiles().contains(
-                ProfileFacade.getManager().getUMLProfile()));
+        
+        for (Profile profile : defaultProfiles) {
+            assertTrue(profileConfiguration.getProfiles().contains(profile));
+        }
     }
     
     /**

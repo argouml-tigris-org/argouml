@@ -24,14 +24,17 @@
 
 package org.argouml.profile.internal;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
 import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileManager;
 
 /**
@@ -89,6 +92,29 @@ public class TestProfileManagerImpl extends TestCase {
         manager.removeProfile(umlProfile);
         assertFalse(manager.getRegisteredProfiles().contains(umlProfile));
         assertFalse(manager.getDefaultProfiles().contains(umlProfile));
+        Profile testProfile = new Profile() {
+
+            @Override
+            public String getDisplayName() {
+                return "Test Profile";
+            }
+
+            @Override
+            public Collection getProfilePackages() throws ProfileException {
+                return new Vector();
+            }
+            
+        };
+        
+        manager.registerProfile(testProfile);        
+        assertTrue(manager.getRegisteredProfiles().contains(testProfile));
+        
+        manager.addToDefaultProfiles(testProfile);                
+        assertTrue(manager.getDefaultProfiles().contains(testProfile));
+        
+        manager.removeProfile(testProfile);
+        assertFalse(manager.getRegisteredProfiles().contains(testProfile));
+        assertFalse(manager.getDefaultProfiles().contains(testProfile));
     }
 
 }

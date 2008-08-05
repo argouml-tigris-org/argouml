@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2007 The Regents of the University of California. All
+// Copyright (c) 2004-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,8 @@
 package org.argouml.util;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -65,11 +67,18 @@ public final class CheckMain {
      */
     public static File getTestModel(String filename) {
         // This works when running the test from within Eclipse.
-        // Apparantly Eclipse runs the tests using a classloader that
+        // Apparently Eclipse runs the tests using a class-loader that
         // has the tests Folder among the URL:s.
         URL url = CheckMain.class.getClassLoader().getResource(filename);
         if (url != null) {
-            return new File(url.getFile());
+            URI uri;
+            try {
+                uri = url.toURI();
+                return new File(uri);
+            } catch (URISyntaxException e) {
+                Assert.fail("Could not locate the model due to "
+                        + "URI syntax problem for " + filename);
+            }
         }
 
         // We have the path provided from the build script.

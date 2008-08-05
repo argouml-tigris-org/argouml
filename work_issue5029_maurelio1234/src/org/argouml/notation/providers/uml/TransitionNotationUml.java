@@ -272,7 +272,15 @@ public class TransitionNotationUml extends TransitionNotation {
                         /* Just change the ChangeExpression */
                         Object changeExpr = 
                             Model.getFacade().getChangeExpression(evt);
-                        Model.getDataTypesHelper().setBody(changeExpr, s);
+                        if (changeExpr == null) {
+                            /* Create a new expression: */
+                            changeExpr = Model.getDataTypesFactory()
+                                .createBooleanExpression("", s);
+                            Model.getStateMachinesHelper().setExpression(evt, 
+                                    changeExpr);
+                        } else {
+                            Model.getDataTypesHelper().setBody(changeExpr, s);
+                        }
                     } else {
                         /* The parsed text describes a change-event,
                          * but the model contains another type! */
@@ -429,17 +437,18 @@ public class TransitionNotationUml extends TransitionNotation {
                 effect =
                     Model.getCommonBehaviorFactory()
                         .createCallAction();
+                /* And hook it to the transition immediately,
+                 * so that an exception can not cause it to remain dangling: */
+                Model.getStateMachinesHelper().setEffect(trans, effect);
                 Model.getCommonBehaviorHelper().setScript(effect,
                         Model.getDataTypesFactory()
                                 .createActionExpression(""/*language*/,
                                                         actions));
                 Model.getCoreHelper().setName(effect, "anon");
-                Model.getStateMachinesHelper().setEffect(trans, effect);
             } else { // case 2
                 Object script = Model.getFacade().getScript(effect);
                 String language = (script == null) ? null
-                        : Model.getDataTypesHelper().getLanguage(
-                            Model.getFacade().getScript(effect));
+                        : Model.getDataTypesHelper().getLanguage(script);
                 Model.getCommonBehaviorHelper().setScript(effect,
                         Model.getDataTypesFactory()
                                 .createActionExpression(language, actions));

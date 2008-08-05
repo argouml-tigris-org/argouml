@@ -32,6 +32,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -41,6 +42,7 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * Action to add an operation to a classifier.
  */
+@UmlModelMutator
 public class ActionAddOperation extends UndoableAction {
 
     private static ActionAddOperation targetFollower;

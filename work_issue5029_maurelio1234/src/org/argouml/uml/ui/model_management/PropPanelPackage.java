@@ -37,6 +37,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
@@ -212,6 +213,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
  * that the doIt(), getChoices(), and getSelected() methods here accept an extra
  * argument containing the target.
  */
+@UmlModelMutator
 class ActionDialogElementImport extends UndoableAction {
 
     /**

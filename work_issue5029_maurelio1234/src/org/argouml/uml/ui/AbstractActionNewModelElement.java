@@ -29,12 +29,14 @@ import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.UmlModelMutator;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
+@UmlModelMutator
 public abstract class AbstractActionNewModelElement extends UndoableAction {
 
     private Object target;

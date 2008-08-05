@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -308,9 +308,29 @@ public class DnDExplorerTree
             return false;
         }
 
+        /* We are sure "dest" is a Namespace now. */
+        if (Model.getModelManagementHelper().isReadOnly(dest)) {
+            LOG.debug("No valid Drag: "
+                    + "this is not an editable UML element (profile?).");
+            return false;
+        }
+
         /* If the destination is a DataType, then abort: */
+
         // TODO: Any Namespace can contain other elements.  Why don't we allow
         // this? - tfm
+        /* 
+         * MVW: These are the WFRs for DataType:
+         * [1] A DataType can only contain Operations, 
+         * which all must be queries.
+         * self.allFeatures->forAll(f |
+         *  f.oclIsKindOf(Operation) and f.oclAsType(Operation).isQuery) 
+         * [2] A DataType cannot contain any other ModelElements.
+         *  self.allContents->isEmpty
+         *  IMHO we should enforce these WFRs here.
+         *  ... so it is still possible to copy or move query operations,
+         *  hence we should allow this. 
+         */
         if (Model.getFacade().isADataType(dest)) {
             LOG.debug("No valid Drag: destination is a DataType.");
             return false;
@@ -326,9 +346,20 @@ public class DnDExplorerTree
                 (Collection) tf.getTransferData(
                     TransferableModelElements.UML_COLLECTION_FLAVOR);
             for (Object element : transfers) {
-                if (Model.getCoreHelper().isValidNamespace(element, dest)) {
-                    LOG.debug("Valid Drag: namespace " + dest);
-                    return true;
+                if (Model.getFacade().isAUMLElement(element)) {
+                    if (!Model.getModelManagementHelper().isReadOnly(element)) {
+                        if (Model.getFacade().isAModelElement(dest) 
+                                && Model.getFacade().isANamespace(element) 
+                                && Model.getCoreHelper().isValidNamespace(
+                                        element, dest)) {
+                            LOG.debug("Valid Drag: namespace " + dest);
+                            return true;
+                        }
+                        if (Model.getFacade().isAFeature(element) 
+                                && Model.getFacade().isAClassifier(dest)) {
+                            return true;
+                        }
+                    }
                 }
                 if (element instanceof Relocatable) {
                     Relocatable d = (Relocatable) element;
@@ -336,10 +367,6 @@ public class DnDExplorerTree
                         LOG.debug("Valid Drag: diagram " + dest);
                         return true;
                     }
-                }
-                if (Model.getFacade().isAFeature(element) 
-                        && Model.getFacade().isAClassifier(dest)) {
-                    return true;
                 }
             }
         } catch (UnsupportedFlavorException e) {
@@ -567,7 +594,8 @@ public class DnDExplorerTree
             if (pt.equals(lastMouseLocation)) {
                 return;
             }
-            LOG.debug("dragOver");
+            /* Many many of these events .. this slows things down: */
+//            LOG.debug("dragOver");
 
             lastMouseLocation = pt;
 
@@ -663,10 +691,19 @@ public class DnDExplorerTree
             if (!Model.getFacade().isANamespace(dest)) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("No valid Drag: "
-                            + Model.getFacade().getName(dest)
-                            + " not a namespace.");
+                            + (Model.getFacade().isAUMLElement(dest) 
+                                    ? Model.getFacade().getName(dest)
+                                            + " not a namespace."
+                                    :  " not a UML element."));
                 }
                 dropTargetDragEvent.rejectDrag();
+                return;
+            }
+            /* We are sure "dest" is a Namespace now. */
+
+            if (Model.getModelManagementHelper().isReadOnly(dest)) {
+                LOG.debug("No valid Drag: "
+                        + "not an editable UML element (profile?).");
                 return;
             }
 
@@ -746,12 +783,31 @@ public class DnDExplorerTree
                     dropTargetDropEvent.rejectDrop();
                     return;
                 }
+
+                if (Model.getFacade().isAUMLElement(dest)) {
+                    if (Model.getModelManagementHelper().isReadOnly(dest)) {
+                        dropTargetDropEvent.rejectDrop();
+                        return;
+                    }
+                }
+                if (Model.getFacade().isAUMLElement(src)) {
+                    if (Model.getModelManagementHelper().isReadOnly(src)) {
+                        dropTargetDropEvent.rejectDrop();
+                        return;
+                    }
+                }
+                
                 // TODO: Really should be Element/ModelElement, but we don't
                 // have a type which is portable for this
                 Collection<Object> newTargets = new ArrayList<Object>();
                 try {
                     dropTargetDropEvent.acceptDrop(action);
                     for (Object me : modelElements) {
+                        if (Model.getFacade().isAUMLElement(me)) {
+                            if (Model.getModelManagementHelper().isReadOnly(me)) {
+                                continue;
+                            }
+                        }
                         if (LOG.isDebugEnabled()) {
                             LOG.debug((moveAction ? "move " : "copy ") + me);
                         }

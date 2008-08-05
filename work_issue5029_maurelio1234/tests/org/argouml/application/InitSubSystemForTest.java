@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,39 +22,23 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.application;
 
-import org.argouml.kernel.UmlModelMutator;
-import org.argouml.model.Model;
+import org.argouml.application.api.InitSubsystem;
 
-@UmlModelMutator
-class ActionModifierActive extends AbstractActionCheckBoxMenuItem {
+/**
+ * Proxy class to access the SubsystemUtility from tests.
+ *
+ * @author Linus Tolke
+ */
+public class InitSubSystemForTest {
     /**
-     * Serial version generated for rev. 1.5
+     * This initiates the subsystem in the same way as they are initialized
+     * in the production code.
+     * 
+     * @param subsystem the subsystem to be initialized
      */
-    private static final long serialVersionUID = -4458846555966612262L;
-
-    /**
-     * The constructor.
-     *
-     * @param o the target
-     */
-    public ActionModifierActive(Object o) {
-        super("checkbox.active-uc");
-        putValue("SELECTED", Boolean.valueOf(valueOfTarget(o)));
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.AbstractActionCheckBoxMenuItem#toggleValueOfTarget(java.lang.Object)
-     */
-    void toggleValueOfTarget(Object t) {
-        Model.getCoreHelper().setActive(t, !Model.getFacade().isActive(t));
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.AbstractActionCheckBoxMenuItem#valueOfTarget(java.lang.Object)
-     */
-    boolean valueOfTarget(Object t) {
-        return Model.getFacade().isActive(t);
+    public static void initSubsystem(InitSubsystem subsystem) {
+	SubsystemUtility.initSubsystem(subsystem);
     }
 }

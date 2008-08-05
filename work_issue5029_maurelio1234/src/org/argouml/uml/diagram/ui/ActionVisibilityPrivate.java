@@ -24,9 +24,12 @@
 
 package org.argouml.uml.diagram.ui;
 
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 
+@UmlModelMutator
 class ActionVisibilityPrivate extends AbstractActionRadioMenuItem {
+    
     /**
      * Serial version generated for rev 1.5
      */
