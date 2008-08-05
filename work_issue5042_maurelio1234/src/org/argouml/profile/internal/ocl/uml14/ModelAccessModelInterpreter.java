@@ -123,7 +123,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 
                 // Aditional Operation 4.5.3.3 [1]
                 if (feature.equals("upperbound")) {
-                    return Model.getFacade().getUpper(subject);                    
+                    return Model.getFacade().getUpper(subject);
                 }
                 
             }
@@ -208,156 +208,88 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 
                 // Additional Operations in 4.5.3.8
                 if (feature.equals("allFeatures")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,                         
-                        "self.feature->union("
-                      + "self.parent.oclAsType(Classifier).allFeatures)");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt, "self.feature->union("
+                            + "self.parent.oclAsType(Classifier).allFeatures)");
                 }
 
                 if (feature.equals("allOperations")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,                         
-                        "self.allFeatures->"
-                      + "select(f | f.oclIsKindOf(Operation))");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt, "self.allFeatures->"
+                            + "select(f | f.oclIsKindOf(Operation))");
                 }
 
                 if (feature.equals("allMethods")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,                         
-                        "self.allFeatures->"
-                      + "select(f | f.oclIsKindOf(Method))");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt, "self.allFeatures->"
+                            + "select(f | f.oclIsKindOf(Method))");
                 }
                 
                 if (feature.equals("allAttributes")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,                         
-                        "self.allFeatures->"
-                      + "select(f | f.oclIsKindOf(Attribute))");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt, "self.allFeatures->"
+                            + "select(f | f.oclIsKindOf(Attribute))");
                 }
 
                 if (feature.equals("associations")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,                         
-                        "self.association.association->asSet()");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt, 
+                            "self.association.association->asSet()");
                 }
                 
                 if (feature.equals("allAssociations")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,                         
-                  "self.associations->union("
-                + "self.parent.oclAsType(Classifier).allAssociations)");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(
+                            subject,
+                            vt,
+                          "self.associations->union("
+                        + "self.parent.oclAsType(Classifier).allAssociations)");
                 }
                 
                 if (feature.equals("oppositeAssociationEnds")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,
-                                        "self.associations->select ( a | a.connection->select ( ae |"
-                                                + "ae.participant = self ).size = 1 )->collect ( a |"
-                                                + "a.connection->"
-                                                + "select ( ae | ae.participant <> self ) )->union ("
-                                                + "self.associations->select ( a | a.connection->select ( ae |"
-                                                + "ae.participant = self ).size > 1 )->collect ( a |"
-                                                + "a.connection) )");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(
+                            subject,
+                            vt,
+                  "self.associations->select ( a | a.connection->select ( ae |"
+                + "ae.participant = self ).size = 1 )->collect ( a |"
+                + "a.connection->"
+                + "select ( ae | ae.participant <> self ) )->union ("
+                + "self.associations->select ( a | a.connection->select ( ae |"
+                + "ae.participant = self ).size > 1 )->collect ( a |"
+                + "a.connection) )");
                 }                 
 
                 if (feature.equals("allOppositeAssociationEnds")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,
-                     "self.oppositeAssociationEnds->"
-                   + "union(self.parent.allOppositeAssociationEnds )");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(
+                            subject,
+                            vt,
+                            "self.oppositeAssociationEnds->"
+                          + "union(self.parent.allOppositeAssociationEnds )");
                 }                 
 
                 if (feature.equals("specification")) {
-                    try {
-                        return DefaultOclEvaluator
-                                .getInstance()
-                                .evaluate(
-                                        vt,
-                                        uml14mi,
-                                        "self.clientDependency->"
-                                                + "select(d |"
-                                                + "d.oclIsKindOf(Abstraction)"
-                                                + "and d.stereotype.name = \"realization\""
-                                                + "and d.supplier.oclIsKindOf(Classifier))"
-                                                + ".supplier.oclAsType(Classifier)");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(
+                            subject,
+                            vt,
+                            "self.clientDependency->"
+                            + "select(d |"
+                            + "d.oclIsKindOf(Abstraction)"
+                            + "and d.stereotype.name = \"realization\""
+                            + "and d.supplier.oclIsKindOf(Classifier))"
+                            + ".supplier.oclAsType(Classifier)");
                 }                 
 
                 if (feature.equals("allContents")) {
-                    try {
-                        return DefaultOclEvaluator
-                                .getInstance()
-                                .evaluate(
-                                        vt,
-                                        uml14mi,
-                                        "self.contents->union("
-                                                + "self.parent.allContents->select(e |"
-                                                + "e.elementOwnership.visibility = #public or"
-                                                + "e.elementOwnership.visibility = #protected))");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(
+                            subject,
+                            vt,
+                            "self.contents->union("
+                            + "self.parent.allContents->select(e |"
+                            + "e.elementOwnership.visibility = #public or"
+                            + "e.elementOwnership.visibility = #protected))");
                 }                 
 
                 if (feature.equals("allDiscriminators")) {
-                    try {
-                        return DefaultOclEvaluator
-                                .getInstance()
-                                .evaluate(
-                                        vt,
-                                        uml14mi,
-         "self.generalization.discriminator->"
-       + "union(self.parent.oclAsType(Classifier).allDiscriminators)");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
-                }                 
-                
+                    return internalOcl(
+                            subject,
+                            vt,
+                  "self.generalization.discriminator->"
+                + "union(self.parent.oclAsType(Classifier).allDiscriminators)");
+                }                                 
             }
         }        
 
@@ -393,17 +325,13 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 
                 // Additional Operation in 4.5.3.9                
                 if (feature.equals("allResidentElements")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,
-                                        "self.resident->union("
-                                                + "self.parent.oclAsType(Component).allResidentElements->select( re |"
-                                                + "re.elementResidence.visibility = #public or"
-                                                + "re.elementResidence.visibility = #protected))");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(
+                            subject,
+                            vt,
+                            "self.resident->union("
+                                    + "self.parent.oclAsType(Component).allResidentElements->select( re |"
+                                    + "re.elementResidence.visibility = #public or"
+                                    + "re.elementResidence.visibility = #protected))");
                 }                
             }
         }        
@@ -417,9 +345,9 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
                 if (feature.equals("constrainedElement")) {
                     // TODO check this
-                    return new HashSet<Object>(Model.getFacade()
-                            .getConstrainedElements(subject));
+                    return Model.getFacade().getConstrainedElements(subject);
                 }
+                                
             }
         }        
 
@@ -472,7 +400,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         
         /* 4.5.2.21 Feature */          
         
-        if (Model.getFacade().isAEnumeration(subject)) {
+        if (Model.getFacade().isAFeature(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("ownerScope")) {
                     return Model.getFacade().getOwnerScope(subject);
@@ -510,25 +438,13 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
 
                 // Additional Operation in 4.5.3.20                
                 if (feature.equals("parent")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,
-                                        "self.generalization.parent");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt,
+                            "self.generalization.parent");
                 }                
 
                 if (feature.equals("allParents")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt,
-                                uml14mi,
-                                "self.parent->union(self.parent.allParents)");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt,
+                            "self.parent->union(self.parent.allParents)");
                 }                
                 
             }
@@ -572,10 +488,17 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         
         /* 4.5.2.27 ModelElement */          
         
-        if (Model.getFacade().isAMethod(subject)) {
+        if (Model.getFacade().isAModelElement(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("name")) {
-                    return Model.getFacade().getName(subject);
+                    String name = Model.getFacade().getName(subject);
+                    if (name == null) {
+                        // TODO check conformancy to specification
+                        
+                        // avoiding null names
+                        name = "";
+                    }
+                    return name;
                 }
 
                 // TODO asArgument??
@@ -604,40 +527,36 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 if (feature.equals("templateParameter")) {
                     return Model.getFacade().getTemplateParameters(subject);
                 }
+
+                // As extended by 4.6.2.2
+                if (feature.equals("stereotype")) {
+                    return Model.getFacade().getStereotypes(subject);
+                }
+
+                if (feature.equals("taggedValue")) {
+                    return Model.getFacade().getTaggedValuesCollection(subject);
+                }
+                
+                if (feature.equals("constraint")) {
+                    return Model.getFacade().getConstraints(subject);
+                }
                 
                 // Additional Operations in 4.5.3.25
                 if (feature.equals("supplier")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt,
-                                uml14mi, "self.clientDependency.supplier");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt,
+                            "self.clientDependency.supplier");
                 }                                
 
                 if (feature.equals("allSuppliers")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt,
-                                uml14mi, 
-                       "self.supplier->union(self.supplier.allSuppliers)");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt,
+                            "self.supplier->union(self.supplier.allSuppliers)");
                 }
                 
                 if (feature.equals("model")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt,
-                                uml14mi, 
-                           "self.namespace->"
-                         + "union(self.namespace.allSurroundingNamespaces)->"
-                         + "select( ns| ns.oclIsKindOf (Model))");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt,
+                            "self.namespace->"
+                            + "union(self.namespace.allSurroundingNamespaces)->"
+                            + "select( ns| ns.oclIsKindOf (Model))");
                 }
                 
                 if (feature.equals("isTemplate")) {
@@ -646,26 +565,14 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
 
                 if (feature.equals("isInstantiated")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt,
-                                uml14mi, 
-      "self.clientDependency->select(oclIsKindOf(Binding))->notEmpty");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt, "self.clientDependency->"
+                            + "select(oclIsKindOf(Binding))->notEmpty");
                 }
 
                 if (feature.equals("templateArgument")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt,
-                                uml14mi, 
-      "self.clientDependency->"
-    + "select(oclIsKindOf(Binding)).oclAsType(Binding).argument");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }                    
+                    return internalOcl(subject, vt, "self.clientDependency->"
+                            + "select(oclIsKindOf(Binding))."
+                            + "oclAsType(Binding).argument");
                 }
                 
             }
@@ -681,53 +588,27 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
                 // Additional Operations in 4.5.3.26
                 if (feature.equals("contents")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(
-                                vt,
-                                uml14mi,
-                                "self.ownedElement->"
-                                        + "union(self.namespace, contents)");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }
+                        // TODO investigate typo in spec!!
+                    return internalOcl(subject, vt, "self.ownedElement->"
+                            + "union(self.ownedElement->" 
+                            + "select(x|x.oclIsKindOf(Namespace)).contents)");
                 }
 
                 if (feature.equals("allContents")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(
-                                vt,
-                                uml14mi,
-                                "self.contents");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }
+                    return internalOcl(subject, vt, "self.contents");
                 }
-                
+
                 if (feature.equals("allVisibleElements")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(
-                                vt,
-                                uml14mi,
-              "self.allContents ->"
-            + "select(e |e.elementOwnership.visibility = #public)");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }
+                    return internalOcl(
+                            subject,
+                            vt,
+                          "self.allContents ->"
+                        + "select(e |e.elementOwnership.visibility = #public)");
                 }
 
                 if (feature.equals("allSurroundingNamespaces")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(
-                                vt,
-                                uml14mi,
-              "self.namespace->union(self.namespace.allSurroundingNamespaces)");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }
+                    return internalOcl(subject, vt, "self.namespace->"
+                            + "union(self.namespace.allSurroundingNamespaces)");
                 }                                               
             }                        
         }
@@ -836,28 +717,97 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         if (Model.getFacade().isAAssociationClass(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("allConnections")) {
-                    try {
-                        return DefaultOclEvaluator.getInstance().evaluate(vt, 
-                                uml14mi,                         
-                        "self.connection->union(self.parent->select("
-                        + "s | s.oclIsKindOf(Association))->collect(" 
-                        + "a : Association | a.allConnections))->asSet()");
-                    } catch (InvalidOclException e) {
-                        LOG.error("Exception", e);
-                        return new HashSet<Object>();
-                    }
+                    return internalOcl(
+                            subject,
+                            vt,
+                            "self.connection->union(self.parent->select("
+                          + "s | s.oclIsKindOf(Association))->collect("
+                          + "a : Association | a.allConnections))->asSet()");
                 }                              
             }            
         }
 
+        /* 4.6.2.3 Stereotype */          
+       
+        if (Model.getFacade().isATagDefinition(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("baseClass")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getBaseClasses(subject));
+                }
+                if (feature.equals("extendedElement")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getExtendedElements(subject));
+                }
+                if (feature.equals("definedTag")) {
+                    // TODO check this
+                    return new HashSet<Object>(Model.getFacade()
+                            .getTagDefinitions(subject));
+                }
+                // stereotypeConstraint ?
+            }
+        }
+
+        /* 4.6.2.4 TagDefinition */          
+        
+        if (Model.getFacade().isATagDefinition(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("multiplicity")) {
+                    return Model.getFacade().getMultiplicity(subject);
+                }
+                if (feature.equals("tagType")) {
+                    return Model.getFacade().getType(subject);
+                }
+                if (feature.equals("typedValue")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getTypedValues(subject));
+                }
+                if (feature.equals("owner")) {
+                    return Model.getFacade().getOwner(subject);
+                }
+            }
+        }
+
+        /* 4.6.2.5 TaggedValue */          
+        
+        if (Model.getFacade().isATagDefinition(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("dataValue")) {
+                    return Model.getFacade().getDataValue(subject);
+                }
+                if (feature.equals("type")) {
+                    return Model.getFacade().getType(subject);
+                }
+                if (feature.equals("referenceValue")) {
+                    return new HashSet<Object>(Model.getFacade()
+                            .getReferenceValue(subject));
+                }
+            }
+        }
         return null;
+    }
+
+    private Object internalOcl(Object subject, HashMap<String, Object> vt,
+            String ocl) {
+        try {
+            Object oldSelf = vt.get("self");
+
+            vt.put("self", subject);
+            Object ret = DefaultOclEvaluator.getInstance().evaluate(vt,
+                    uml14mi, ocl);
+            vt.put("self", oldSelf);
+            return ret;
+        } catch (InvalidOclException e) {
+            LOG.error("Exception", e);
+            return null;
+        }
     }
 
     /**
      * Add the metamodel-metaclasses as built-in symbols
+     * 
      * @param sym the symbol
      * @return the value of the symbol
-     * 
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
      */
     public Object getBuiltInSymbol(String sym) {

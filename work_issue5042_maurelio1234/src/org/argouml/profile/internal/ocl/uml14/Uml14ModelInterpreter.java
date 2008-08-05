@@ -24,6 +24,11 @@
 
 package org.argouml.profile.internal.ocl.uml14;
 
+import java.util.Collection;
+import java.util.HashMap;
+
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.profile.internal.ocl.CompositeModelInterpreter;
 
 /**
@@ -34,6 +39,12 @@ import org.argouml.profile.internal.ocl.CompositeModelInterpreter;
 public class Uml14ModelInterpreter extends CompositeModelInterpreter {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger
+            .getLogger(Uml14ModelInterpreter.class);
+
+    /**
      * Default Constructor
      */
     public Uml14ModelInterpreter() {
@@ -42,4 +53,34 @@ public class Uml14ModelInterpreter extends CompositeModelInterpreter {
         addModelInterpreter(new CollectionsModelInterpreter());
     }
 
+    public Object invokeFeature(HashMap<String, Object> vt, Object subject,
+            String feature, String type, Object[] parameters) {
+        Object ret = super.invokeFeature(vt, subject, feature, type, parameters);
+        
+        if (feature.equals("union") && type.equals(".")) {
+            System.out.println("VOILA!");
+        }
+        LOG.debug(toString(subject) + type + feature + " ==> " + toString(ret));
+        
+        return ret;
+    }
+
+    private String toString(Object obj) {
+        if (Model.getFacade().isAModelElement(obj)) {
+            return Model.getFacade().getName(obj);
+        } else if (obj instanceof Collection) {
+            return colToString((Collection)obj);
+        } else {
+            return ""+obj;
+        }
+    }
+
+    private String colToString(Collection collection) {
+        String ret = "[";
+        for (Object object : collection) {
+            ret += toString(object) +",";
+        }        
+        return ret + "]";
+    }
+    
 }

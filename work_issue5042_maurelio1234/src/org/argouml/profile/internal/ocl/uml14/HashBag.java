@@ -69,12 +69,13 @@ public class HashBag<E> implements Bag<E> {
      * @see java.util.Set#add(java.lang.Object)
      */
     public boolean add(E e) {
-        if (map.get(e) == null) {
-            map.put(e, 1);
-        } else {
-            map.put(e, map.get(e) + 1);
+        if (e != null) {
+            if (map.get(e) == null) {
+                map.put(e, 1);
+            } else {
+                map.put(e, map.get(e) + 1);
+            }
         }
-
         return true;
     }
 
