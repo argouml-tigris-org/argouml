@@ -1,0 +1,12 @@
+#
+# add -Dlog4j.configuration=org/argouml/resource/full_console.lcf
+# to the command line to use this log4j configuration
+#
+log4j.rootCategory=DEBUG, FULL
+#
+log4j.category.org.argouml=INFOlog4j.category.org.tigris.gef=INFO
+# 
+log4j.appender.FULL=org.apache.log4j.ConsoleAppender
+log4j.appender.FULL.layout=org.apache.log4j.PatternLayout
+log4j.appender.FULL.layout.ConversionPattern=%5p: %m (%F:%L)%n
+log4j.appender.FULL.Threshold=DEBUG
