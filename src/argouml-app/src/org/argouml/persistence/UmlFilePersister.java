@@ -77,7 +77,7 @@ import org.xml.sax.SAXException;
 /**
  * To persist to and from argo (xml file) storage.
  *
- * @author Bob Tarling
+ * @author Bob Tarling, Thomas Neustupny
  */
 public class UmlFilePersister extends AbstractFilePersister {
 
@@ -103,6 +103,11 @@ public class UmlFilePersister extends AbstractFilePersister {
 
     private static final String ARGO_TEE =
 	"/org/argouml/persistence/argo.tee";
+
+    // TODO: either don't rely on that string or move it elsewhere, it must
+    // have the same value as used in org.argouml.model.mdr.XmiReaderImpl:
+    private static final String REFERENCE_ERROR =
+        "Error reading external document ";
 
     /**
      * The constructor.
@@ -307,7 +312,7 @@ public class UmlFilePersister extends AbstractFilePersister {
 
     protected Project doLoad(File originalFile, File file,
             ProgressMgr progressMgr) throws OpenException, 
-            InterruptedException {
+            InterruptedException, XmiReferenceException {
 
         XmlInputStream inputStream = null;
         try {
@@ -377,6 +382,12 @@ public class UmlFilePersister extends AbstractFilePersister {
                         inputStream.reopen("uml:Model");
                         persister.load(p, inputStream);
                     } else {
+                        int ix = e.getMessage().indexOf(REFERENCE_ERROR);
+                        if (ix != -1) {
+                            // detected failed external reference loading
+                            throw new XmiReferenceException(
+                                    e.getMessage(), null);
+                        }
                         throw e;
                     }
                 }
