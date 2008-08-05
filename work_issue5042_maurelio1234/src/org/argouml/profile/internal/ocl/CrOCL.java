@@ -24,6 +24,7 @@
 
 package org.argouml.profile.internal.ocl;
 
+import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.cognitive.Decision;
@@ -53,6 +54,11 @@ public class CrOCL extends CrUML {
      * the OCL string
      */
     private String ocl = null;
+
+    /**
+     * the design materials to be criticized
+     */
+    private Set<Object> designMaterials;
     
     /**
      * Creates a new OCL critic
@@ -78,7 +84,8 @@ public class CrOCL extends CrUML {
         setPriority(ToDoItem.HIGH_PRIORITY);
 
         Vector<String> triggers = interpreter.getTriggers();
-
+        designMaterials = interpreter.getCriticizedDesignMaterials();
+        
         for (String string : triggers) {
             addTrigger(string);
         }
@@ -118,7 +125,14 @@ public class CrOCL extends CrUML {
         }
     }
 
-    /**
+    /*
+     * @see org.argouml.cognitive.Critic#getCriticizedDesignMaterials()
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        return designMaterials;
+    }
+
+    /*
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */

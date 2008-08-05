@@ -26,6 +26,7 @@ package org.argouml.profile.internal.ocl;
 
 import java.io.PushbackReader;
 import java.io.StringReader;
+import java.util.Set;
 import java.util.Vector;
 
 import tudresden.ocl.parser.OclParser;
@@ -43,7 +44,8 @@ public class OclInterpreter {
     /**
      * Logger.
      */
-    // private static final Logger LOG = Logger.getLogger(OclInterpreter.class);
+    //private static final Logger LOG = Logger.getLogger(OclInterpreter.class);
+    
     /**
      * Parser OCL tree
      */
@@ -72,7 +74,8 @@ public class OclInterpreter {
         try {
             tree = parser.parse();
         } catch (Exception e) {
-            throw new InvalidOclException("Invalid OCL!");
+            e.printStackTrace();
+            throw new InvalidOclException(ocl);
         }
     }
 
@@ -105,13 +108,23 @@ public class OclInterpreter {
     /**
      * Computes and returns the set of triggers for this constraint.
      * 
-     * @see Critic#addTrigger(String)
+     * @see org.argouml.cognitive.Critic#addTrigger(String)
      * @return the set of triggers
      */
     public Vector<String> getTriggers() {
         ComputeTriggers ct = new ComputeTriggers();
         tree.apply(ct);
         return ct.getTriggers();
+    }
+
+    /**
+     * @return the design materials to be criticized by this ocl, no metatype
+     * is assumed by default.
+     */
+    public Set<Object> getCriticizedDesignMaterials() {
+        ComputeDesignMaterials cdm = new ComputeDesignMaterials();
+        tree.apply(cdm);        
+        return cdm.getCriticizedDesignMaterials();
     }
 
 }
