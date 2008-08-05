@@ -40,6 +40,7 @@ import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileManager;
 import org.argouml.profile.UserDefinedProfile;
+import org.argouml.profile.UserDefinedProfileHelper;
 
 /**
  * Default <code>ProfileManager</code> implementation
@@ -291,28 +292,35 @@ public class ProfileManagerImpl implements ProfileManager {
 
     public void refreshRegisteredProfiles() {
 
+        ArrayList<File> dirs = new ArrayList<File>();
+        
         for (String dirName : searchDirectories) {
             File dir = new File(dirName);
-
             if (dir.exists()) {
-                for (File file : dir.listFiles()) {
-                    // TODO: Allow .zargo as profile as well?
-                    if (file.getName().toLowerCase().endsWith(".xmi")) {
-
-                        boolean found = 
-                            findUserDefinedProfile(file) != null;
-
-                        if (!found) {
-                            UserDefinedProfile udp = null;
-                            try {
-                                udp = new UserDefinedProfile(file);
-                                registerProfile(udp);
-                            } catch (ProfileException e) {
-                                // if an exception is raised file is unusable
-                                LOG.warn("Failed to load user defined profile "
-                                    + file.getAbsolutePath() + ".", e);
-                            }
-                        }
+                dirs.add(dir);
+            }
+        }
+        
+        if (!dirs.isEmpty()) {
+            // TODO: Allow .zargo as profile as well?
+            File[] fileArray = new File[dirs.size()];
+            for (int i = 0; i < dirs.size(); i++) {
+                fileArray[i] = dirs.get(i);
+            }
+            List<File> dirList
+                = UserDefinedProfileHelper.getFileList(fileArray);
+            for (File file : dirList) {
+                boolean found = 
+                    findUserDefinedProfile(file) != null;
+                if (!found) {
+                    UserDefinedProfile udp = null;
+                    try {
+                        udp = new UserDefinedProfile(file);
+                        registerProfile(udp);
+                    } catch (ProfileException e) {
+                        // if an exception is raised file is unusable
+                        LOG.warn("Failed to load user defined profile "
+                            + file.getAbsolutePath() + ".", e);
                     }
                 }
             }
