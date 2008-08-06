@@ -35,7 +35,7 @@ import org.argouml.cognitive.Critic;
  * presentation characteristics that can be tailored to various modeling
  * environments.
  * 
- * @author Marcos Aur�lio
+ * @author maurelio1234
  */
 public abstract class Profile {
 
