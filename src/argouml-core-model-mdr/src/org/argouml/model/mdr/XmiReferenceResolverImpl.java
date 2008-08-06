@@ -50,7 +50,7 @@ import org.omg.uml.foundation.core.ModelElement;
  * Custom resolver to use with XMI reader.
  * <p>
  * 
- * This provides two functions:
+ * This provides three functions:
  * <nl>
  * <li>Records the mapping of <code>xmi.id</code>'s to MDR objects as they
  * are resolved so that the map can be used to lookup objects by xmi.id later
@@ -64,12 +64,15 @@ import org.omg.uml.foundation.core.ModelElement;
  * AndroMDA 3.1 implementation
  * (org.andromda.repositories.mdr.MDRXmiReferenceResolverContext) by Ludo
  * (rastaman).
+ * <li>Tracks latest failure in reading an external referenced document (href)
+ * so that later a javax.jmi.xmi.MalformedXMIException can be specifically
+ * handled in that case.
  * </nl>
  * <p>
  * NOTE: This is not a standalone implementation of the reference resolver since
  * it depends on extending the specific MDR implementation.
  * 
- * @author Tom Morris
+ * @author Tom Morris, Thomas Neustupny
  * 
  */
 class XmiReferenceResolverImpl extends XmiContext {
@@ -125,10 +128,10 @@ class XmiReferenceResolverImpl extends XmiContext {
     private String modelPublicId;
     
     /**
-     * The URL of the last document that we attempted to read.  Used for
-     * error reporting if the read fails inside MDR.
+     * The URL of the last document that we failed to read. Used for error
+     * reporting if the read fails inside MDR.
      */
-    private String lastExternalReference;
+    private String lastFailedExternalReference = null;
     
     /**
      * Constructor.
@@ -257,8 +260,17 @@ class XmiReferenceResolverImpl extends XmiContext {
         idToObjects.clear();
         objectsToId.clear();
     }
-    
-    
+
+    /**
+     * Gets the URL of the last document that we attempted to read. Used for
+     * error reporting if the read fails inside MDR.
+     * 
+     * @return URL of the last document that we attempted to read
+     */
+    public String getLastFailedExternalReference() {
+        return lastFailedExternalReference;
+    }
+
     /////////////////////////////////////////////////////
     ////////// Begin AndroMDA Code //////////////////////
     /////////////////////////////////////////////////////
@@ -532,13 +544,13 @@ class XmiReferenceResolverImpl extends XmiContext {
 
     @Override
     public void readExternalDocument(String arg0) {
-        lastExternalReference = arg0;
+        lastFailedExternalReference = null;
         try {
             super.readExternalDocument(arg0);
         } catch (DebugException e) {
+            lastFailedExternalReference = arg0;
             LOG.error("Error reading external document " + arg0);
             throw e;
         }
     }
-
 }

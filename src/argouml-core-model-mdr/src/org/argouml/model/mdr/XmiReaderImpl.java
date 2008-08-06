@@ -259,6 +259,11 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             }
 
         } catch (MalformedXMIException e) {
+            // If we failed reading an external referenced document (href)
+            if (resolver.getLastFailedExternalReference() != null) {
+                throw new XmiException("Error reading external document "
+                        + resolver.getLastFailedExternalReference());
+            }
             // If we can find a nested SAX exception, it will have information
             // on the line number, etc.
             ErrorManager.Annotation[] annotations = 
