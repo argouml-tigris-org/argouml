@@ -41,7 +41,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
@@ -51,21 +50,16 @@ import java.util.jar.Manifest;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
-import org.argouml.cognitive.Critic;
 import org.argouml.i18n.Translator;
-import org.argouml.profile.ProfileException;
-import org.argouml.profile.ProfileFacade;
-import org.argouml.profile.UserDefinedProfile;
 
 
 /**
  * This is the module loader that loads modules implementing the
- * ModuleInterface.
- * <p>
- * This is a singleton. There are convenience functions that are static to
- * access the module.
- * <p>
- * 
+ * ModuleInterface.<p>
+ *
+ * This is a singleton. There are convenience functions that are static
+ * to access the module.<p>
+ *
  * @stereotype singleton
  * @author Linus Tolke
  * @since 0.15.4
@@ -77,16 +71,16 @@ public final class ModuleLoader2 {
     private static final Logger LOG = Logger.getLogger(ModuleLoader2.class);
 
     /**
-     * This map contains the module loader information about the module.
-     * <p>
+     * This map contains the module loader information about the module.<p>
+     *
      * The keys is the list of available modules.
      */
     private Map<ModuleInterface, ModuleStatus> moduleStatus;
-
+    
     /**
-     * List of locations that we've searched and/or loaded modules from. This is
-     * for information purposes only to allow it to be displayed in the settings
-     * Environment tab.
+     * List of locations that we've searched and/or loaded modules
+     * from.  This is for information purposes only to allow it to 
+     * be displayed in the settings Environment tab.
      */
     private List<String> extensionLocations = new ArrayList<String>();
 
@@ -114,16 +108,16 @@ public final class ModuleLoader2 {
      * Constructor for this object.
      */
     private ModuleLoader2() {
-        moduleStatus = new HashMap<ModuleInterface, ModuleStatus>();
+	moduleStatus = new HashMap<ModuleInterface, ModuleStatus>();
     }
 
     /**
      * Get hold of the instance of this object.
-     * 
+     *
      * @return the instance
      */
     public static ModuleLoader2 getInstance() {
-        return INSTANCE;
+	return INSTANCE;
     }
 
     /**
@@ -138,47 +132,45 @@ public final class ModuleLoader2 {
             }
             if (status.isEnabled()) {
                 if (module instanceof DetailsTabProvider) {
-                    result.addAll(((DetailsTabProvider) module)
-                            .getDetailsTabs());
+                    result.addAll(
+                            ((DetailsTabProvider) module).getDetailsTabs());
                 }
             }
         }
         return result;
     }
-
     /**
      * Return a collection of all available modules.
-     * 
+     *
      * @return A Collection of all available modules.
      */
     private Collection<ModuleInterface> availableModules() {
-        return Collections.unmodifiableCollection(moduleStatus.keySet());
+	return Collections.unmodifiableCollection(moduleStatus.keySet());
     }
 
     // Access methods for program infrastructure.
     /**
-     * Enables all selected modules and disabling all modules not selected.
-     * <p>
-     * In short this attempts to make the modules obey their selection.
-     * <p>
-     * 
+     * Enables all selected modules and disabling all modules not selected.<p>
+     *
+     * In short this attempts to make the modules obey their selection.<p>
+     *
      * @param failingAllowed is <code>true</code> if enabling or disabling of
-     *            some of the modules is allowed to fail.
+     *                       some of the modules is allowed to fail.
      */
     public static void doLoad(boolean failingAllowed) {
-        getInstance().doInternal(failingAllowed);
+	getInstance().doInternal(failingAllowed);
     }
 
     // Access methods for modules that need to query about the status of
     // other modules.
     /**
      * Gets the loaded status for some other module.
-     * 
+     *
      * @return true if the module exists and is enabled.
      * @param name is the module name of the queried module
      */
     public static boolean isEnabled(String name) {
-        return getInstance().isEnabledInternal(name);
+	return getInstance().isEnabledInternal(name);
     }
 
     // Access methods for the GUI that the user uses to enable and disable
@@ -186,82 +178,82 @@ public final class ModuleLoader2 {
 
     /**
      * Get a Collection with all the names.
-     * 
+     *
      * @return all the names.
      */
     public static Collection<String> allModules() {
-        Collection<String> coll = new HashSet<String>();
+	Collection<String> coll = new HashSet<String>();
 
-        for (ModuleInterface mf : getInstance().availableModules()) {
-            coll.add(mf.getName());
-        }
+	for (ModuleInterface mf : getInstance().availableModules()) {
+	    coll.add(mf.getName());
+	}
 
-        return coll;
+	return coll;
     }
 
     /**
      * Get the selected.
-     * 
+     *
      * @param name The name of the module.
      * @return <code>true</code> if the module is selected.
      */
     public static boolean isSelected(String name) {
-        return getInstance().isSelectedInternal(name);
+	return getInstance().isSelectedInternal(name);
     }
 
     /**
      * Get the selected.
-     * 
+     *
      * @see #isSelected(String)
      * @param name The name of the module.
      * @return <code>true</code> if the module is selected.
      */
     private boolean isSelectedInternal(String name) {
-        Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
+	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
-        if (entry != null) {
-            ModuleStatus status = entry.getValue();
+	if (entry != null) {
+	    ModuleStatus status = entry.getValue();
 
-            if (status == null) {
-                return false;
-            }
+	    if (status == null) {
+		return false;
+	    }
 
-            return status.isSelected();
-        }
-        return false;
+	    return status.isSelected();
+	}
+	return false;
     }
 
     /**
      * Set the selected value.
-     * 
+     *
      * @param name The name of the module.
      * @param value Selected or not.
      */
     public static void setSelected(String name, boolean value) {
-        getInstance().setSelectedInternal(name, value);
+	getInstance().setSelectedInternal(name, value);
     }
 
     /**
      * Set the selected value.
-     * 
+     *
      * @see #setSelected(String, boolean)
      * @param name The name of the module.
      * @param value Selected or not.
      */
     private void setSelectedInternal(String name, boolean value) {
-        Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
+	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
-        if (entry != null) {
-            ModuleStatus status = entry.getValue();
+	if (entry != null) {
+	    ModuleStatus status = entry.getValue();
 
-            status.setSelected(value);
-        }
+	    status.setSelected(value);
+	}
     }
 
     /**
-     * Create a description of the module based on the information provided by
-     * the module itself.
-     * 
+     * Create a description of the module based on the information provided
+     * by the module itself.
+     *
      * @param name The name of the module.
      * @return The description.
      */
@@ -270,21 +262,21 @@ public final class ModuleLoader2 {
     }
 
     /**
-     * Create a description of the module based on the information provided by
-     * the module itself.
-     * 
+     * Create a description of the module based on the information provided
+     * by the module itself.
+     *
      * @see #getDescription(String)
      * @param name The name of the module.
      * @return The description.
      */
     private String getDescriptionInternal(String name) {
-        Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
+	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
-        if (entry == null) {
-            throw new IllegalArgumentException("Module does not exist.");
-        }
+	if (entry == null) {
+	    throw new IllegalArgumentException("Module does not exist.");
+	}
 
-        ModuleInterface module = entry.getKey();
+	ModuleInterface module = entry.getKey();
         StringBuffer sb = new StringBuffer();
         String desc = module.getInfo(ModuleInterface.DESCRIPTION);
         if (desc != null) {
@@ -304,27 +296,28 @@ public final class ModuleLoader2 {
         return sb.toString();
     }
 
+
     // Access methods for the program infrastructure
     /**
      * Enables all selected modules.
-     * 
-     * @param failingAllowed is true if this is not the last attempt at turning
-     *            on.
+     *
+     * @param failingAllowed is true if this is not the last attempt at
+     * turning on.
      */
     private void doInternal(boolean failingAllowed) {
-        huntForModules();
+	huntForModules();
 
-        boolean someModuleSucceeded;
-        do {
-            someModuleSucceeded = false;
+	boolean someModuleSucceeded;
+	do {
+	    someModuleSucceeded = false;
 
-            for (ModuleInterface module : getInstance().availableModules()) {
+	    for (ModuleInterface module : getInstance().availableModules()) {
 
-                ModuleStatus status = moduleStatus.get(module);
+		ModuleStatus status = moduleStatus.get(module);
 
-                if (status == null) {
-                    continue;
-                }
+		if (status == null) {
+		    continue;
+		}
 
 		if (!status.isEnabled() && status.isSelected()) {
 		    try {
@@ -354,67 +347,68 @@ public final class ModuleLoader2 {
 	    }
 	} while (someModuleSucceeded);
 
-        if (!failingAllowed) {
-            // Notify the user that the modules in the list that are selected
-            // but not enabled were not possible to enable and that are not
-            // selected that we cannot disable.
-            //
-            // Currently we just log this.
-            //
-            // TODO: We could eventually pop up some warning window.
-            //
-            for (ModuleInterface module : getInstance().availableModules()) {
+	if (!failingAllowed) {
+	    // Notify the user that the modules in the list that are selected
+	    // but not enabled were not possible to enable and that are not
+	    // selected that we cannot disable.
+	    //
+	    // Currently we just log this.
+	    //
+	    // TODO: We could eventually pop up some warning window.
+	    //
+	    for (ModuleInterface module : getInstance().availableModules()) {
 
-                ModuleStatus status = moduleStatus.get(module);
+		ModuleStatus status = moduleStatus.get(module);
 
-                if (status == null) {
-                    continue;
-                }
+		if (status == null) {
+		    continue;
+		}
 
-                if (status.isEnabled() && status.isSelected()) {
-                    continue;
-                }
+		if (status.isEnabled() && status.isSelected()) {
+		    continue;
+		}
 
-                if (!status.isEnabled() && !status.isSelected()) {
-                    continue;
-                }
+		if (!status.isEnabled() && !status.isSelected()) {
+		    continue;
+		}
 
-                if (status.isSelected()) {
-                    LOG.warn("ModuleLoader was not able to enable module "
-                            + module.getName());
-                } else {
-                    LOG.warn("ModuleLoader was not able to disable module "
-                            + module.getName());
-                }
-            }
-        }
+		if (status.isSelected()) {
+		    LOG.warn("ModuleLoader was not able to enable module "
+		             + module.getName());
+		} else {
+		    LOG.warn("ModuleLoader was not able to disable module "
+		             + module.getName());
+		}
+	    }
+	}
     }
 
     /**
      * Gets the loaded status for some other module.
-     * 
+     *
      * @return true if the module exists and is enabled.
      * @param name is the module name of the queried module
      */
     private boolean isEnabledInternal(String name) {
-        Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
+	Map.Entry<ModuleInterface, ModuleStatus> entry = findModule(name);
 
-        if (entry != null) {
-            ModuleStatus status = entry.getValue();
+	if (entry != null) {
+	    ModuleStatus status = entry.getValue();
 
-            if (status == null) {
-                return false;
-            }
+	    if (status == null) {
+		return false;
+	    }
 
-            return status.isEnabled();
-        }
-        return false;
+	    return status.isEnabled();
+	}
+	return false;
     }
 
+
     /**
-     * Return the ModuleInterface, ModuleStatus pair for the module with the
-     * given name or <code>null</code> if there isn't any.
-     * 
+     * Return the ModuleInterface, ModuleStatus pair for the module
+     * with the given name or <code>null</code> if there isn't any.
+     *
      * @param name The given name.
      * @return A pair (Map.Entry).
      */
@@ -426,14 +420,13 @@ public final class ModuleLoader2 {
                 return entry;
             }
         }
-        return null;
+	return null;
     }
 
     /**
-     * Tries to find as many available modules as possible.
-     * <p>
-     * As the modules are found they are appended to {@link #moduleStatus}.
-     * <p>
+     * Tries to find as many available modules as possible.<p>
+     *
+     * As the modules are found they are appended to {@link #moduleStatus}.<p>
      */
     private void huntForModules() {
         huntForModulesFromExtensionDir();
@@ -456,72 +449,75 @@ public final class ModuleLoader2 {
             }
         }
     }
-
+    
     /**
-     * Find and enable modules from our "ext" directory and from the directory
-     * specified in "argo.ext.dir".
-     * <p>
-     * TODO: This does a calculation of where our "ext" directory is. We should
-     * eventually make sure that this calculation is only present in one place
-     * in the code and not several.
+     * Find and enable modules from our "ext" directory and from the
+     * directory specified in "argo.ext.dir".<p>
+     *
+     * TODO: This does a calculation of where our "ext" directory is.
+     *       We should eventually make sure that this calculation is
+     *       only present in one place in the code and not several.
      */
     private void huntForModulesFromExtensionDir() {
-        // Use a little trick to find out where Argo is being loaded from.
+	// Use a little trick to find out where Argo is being loaded from.
         String extForm = getClass().getResource(Argo.ARGOINI).toExternalForm();
-        String argoRoot = extForm.substring(0, extForm.length()
-                - Argo.ARGOINI.length());
+	String argoRoot =
+	    extForm.substring(0,
+			      extForm.length() - Argo.ARGOINI.length());
 
-        // If it's a jar, clean it up and make it look like a file url
-        if (argoRoot.startsWith(JAR_PREFIX)) {
-            argoRoot = argoRoot.substring(JAR_PREFIX.length());
-            if (argoRoot.endsWith("!")) {
-                argoRoot = argoRoot.substring(0, argoRoot.length() - 1);
-            }
-        }
+	// If it's a jar, clean it up and make it look like a file url
+	if (argoRoot.startsWith(JAR_PREFIX)) {
+	    argoRoot = argoRoot.substring(JAR_PREFIX.length());
+	    if (argoRoot.endsWith("!")) {
+	        argoRoot = argoRoot.substring(0, argoRoot.length() - 1);
+	    }
+	}
 
-        String argoHome = null;
+	String argoHome = null;
 
-        if (argoRoot != null) {
-            LOG.info("argoRoot is " + argoRoot);
-            if (argoRoot.startsWith(FILE_PREFIX)) {
-                argoHome = new File(argoRoot.substring(FILE_PREFIX.length()))
-                        .getAbsoluteFile().getParent();
-            } else {
-                argoHome = new File(argoRoot).getAbsoluteFile().getParent();
-            }
+	if (argoRoot != null) {
+	    LOG.info("argoRoot is " + argoRoot);
+	    if (argoRoot.startsWith(FILE_PREFIX)) {
+	        argoHome =
+	            new File(argoRoot.substring(FILE_PREFIX.length()))
+	            	.getAbsoluteFile().getParent();
+	    } else {
+	        argoHome = new File(argoRoot).getAbsoluteFile().getParent();
+	    }
 
-            try {
-                argoHome = java.net.URLDecoder.decode(argoHome, Argo
-                        .getEncoding());
-            } catch (UnsupportedEncodingException e) {
-                LOG.warn("Encoding " + Argo.getEncoding() + " is unknown.");
-            }
+	    try {
+		argoHome = java.net.URLDecoder.decode(argoHome, 
+                        Argo.getEncoding());
+	    } catch (UnsupportedEncodingException e) {
+		LOG.warn("Encoding " 
+                        + Argo.getEncoding() 
+                        + " is unknown.");
+	    }
 
-            LOG.info("argoHome is " + argoHome);
-        }
+	    LOG.info("argoHome is " + argoHome);
+	}
 
-        if (argoHome != null) {
+	if (argoHome != null) {
             String extdir;
-            if (argoHome.startsWith(FILE_PREFIX)) {
-                extdir = argoHome.substring(FILE_PREFIX.length())
+	    if (argoHome.startsWith(FILE_PREFIX)) {
+	        extdir = argoHome.substring(FILE_PREFIX.length())
                         + File.separator + "ext";
-            } else {
-                extdir = argoHome + File.separator + "ext";
-            }
+	    } else {
+	        extdir = argoHome + File.separator + "ext";
+	    }
             extensionLocations.add(extdir);
-            huntModulesFromNamedDirectory(extdir);
-        }
+	    huntModulesFromNamedDirectory(extdir);
+	}
 
         String extdir = System.getProperty("argo.ext.dir");
-        if (extdir != null) {
+	if (extdir != null) {
             extensionLocations.add(extdir);
-            huntModulesFromNamedDirectory(extdir);
-        }
+	    huntModulesFromNamedDirectory(extdir);
+	}
     }
-
+    
     /**
      * Get the list of locations that we've loaded extension modules from.
-     * 
      * @return A list of the paths we've loaded from.
      */
     public List<String> getExtensionLocations() {
@@ -530,58 +526,62 @@ public final class ModuleLoader2 {
 
     /**
      * Find and enable a module from a given directory.
-     * 
+     *
      * @param dirname The name of the directory.
      */
     private void huntModulesFromNamedDirectory(String dirname) {
-        File extensionDir = new File(dirname);
-        if (extensionDir.isDirectory()) {
-            File[] files = extensionDir.listFiles(new JarFileFilter());
-            for (File file : files) {
-                JarFile jarfile = null;
-                // Try-catch only the JarFile instantiation so we
-                // don't accidentally mask anything in ArgoJarClassLoader
-                // or processJarFile.
-                try {
-                    jarfile = new JarFile(file);
-                    if (jarfile != null) {
-                        // TODO: Should we be delegating to a different
-                        // classloader than the default here? - - tfm
-                        ClassLoader classloader = new URLClassLoader(
-                                new URL[] {file.toURI().toURL()} );
-                        try {
-                            processJarFile(classloader, file);
-                        } catch (ClassNotFoundException e) {
-                            LOG.error("The class is not found.", e);
-                            return;
-                        }
-                    }
-                } catch (IOException ioe) {
-                    LOG.debug("Cannot open Jar file " + file, ioe);
-                }
-            }
-        }
+	File extensionDir = new File(dirname);
+	if (extensionDir.isDirectory()) {
+	    File[] files = extensionDir.listFiles(new JarFileFilter());
+	    for (File file : files) {
+		JarFile jarfile = null;
+		// Try-catch only the JarFile instantiation so we
+		// don't accidentally mask anything in ArgoJarClassLoader
+		// or processJarFile.
+		try {
+		    jarfile = new JarFile(file);
+		    if (jarfile != null) {
+		        // TODO: Should we be delegating to a different
+		        // classloader than the default here? - - tfm
+	                ClassLoader classloader =
+			    new URLClassLoader(new URL[] {
+				file.toURI().toURL(),
+			    });
+	                try {
+	                    processJarFile(classloader, file);
+	                } catch (ClassNotFoundException e) {
+	                    LOG.error("The class is not found.", e);
+	                    return;
+	                }
+		    }
+		} catch (IOException ioe) {
+		    LOG.debug("Cannot open Jar file " + file, ioe);
+		}
+	    }
+	}
     }
 
     /**
-     * Check a jar file for an ArgoUML extension/module.
-     * <p>
+     * Check a jar file for an ArgoUML extension/module.<p>
+     *
      * If there isn't a manifest or it isn't readable, we fail silently.
-     * 
-     * @throws ClassNotFoundException if the manifest file contains a class that
-     *             doesn't exist.
+     *
+     * @param classloader The classloader to use.
+     * @param file The file to process.
+     * @throws ClassNotFoundException if the manifest file contains a class
+     *         that doesn't exist.
      */
     private void processJarFile(ClassLoader classloader, File file)
         throws ClassNotFoundException {
 
-        LOG.info("Opening jar file " + file);
+	LOG.info("Opening jar file " + file);
         JarFile jarfile;
-        try {
-            jarfile = new JarFile(file);
-        } catch (IOException e) {
-            LOG.error("Unable to open " + file, e);
+	try {
+	    jarfile = new JarFile(file);
+	} catch (IOException e) {
+	    LOG.error("Unable to open " + file, e);
             return;
-        }
+	}
 
         Manifest manifest;
         try {
@@ -593,30 +593,26 @@ public final class ModuleLoader2 {
             LOG.error("Unable to read manifest of " + file, e);
             return;
         }
-
-        LOG.info("Reading profiles...");
-        try {
-            loadProfilesFromJarFile(jarfile.getManifest(), file, classloader);
-        } catch (IOException e) {
-            LOG.error("Unable to get MANIFEST from Jar of " + file, e);
-        }
-
+	
         boolean loadedClass = false;
         if (manifest == null) {
             Enumeration<JarEntry> jarEntries = jarfile.entries();
             while (jarEntries.hasMoreElements()) {
                 JarEntry entry = jarEntries.nextElement();
-                loadedClass = loadedClass
-                        | processEntry(classloader, entry.getName());
+                loadedClass =
+                        loadedClass
+                                | processEntry(classloader, entry.getName());
             }
         } else {
             Map<String, Attributes> entries = manifest.getEntries();
             for (String key : entries.keySet()) {
                 // Look for our specification
-                loadedClass = loadedClass | processEntry(classloader, key);
+                loadedClass =
+                    loadedClass
+                            | processEntry(classloader, key);
             }
         }
-
+        
         if (loadedClass) {
             // Add this to search list for I18N properties
             Translator.addClassLoader(classloader);
@@ -627,124 +623,13 @@ public final class ModuleLoader2 {
     }
 
     /**
-     * Interprets the MANIFEST file in the JAR in order to load the declared
-     * profile.
-     * 
-     * @param file the file object referencing the Jar
-     * @param manifest the manifest file of the Jar
-     * @param classloader the classloader that loads the classes referenced by
-     *            the Jar
-     */
-    private void loadProfilesFromJarFile(Manifest manifest, File file,
-            ClassLoader classloader) {
-        Map<String, Attributes> entries = manifest.getEntries();
-        boolean classLoaderAlreadyAdded = false;
-
-        for (String entryName : entries.keySet()) {
-            Attributes attr = entries.get(entryName);
-            if (new Boolean(attr.getValue("Profile") + "").booleanValue()) {
-                try {
-                    // we only need to add the classloader once
-                    // and if and only if there is at least a profile
-                    // in the JAR
-                    if (!classLoaderAlreadyAdded) {
-                        Translator.addClassLoader(classloader);
-                        classLoaderAlreadyAdded = true;
-                    }
-                    Set<Critic> critics = loadJavaCriticsForProfile(attr,
-                            classloader);
-                    String modelPath = attr.getValue("Model");
-                    URL modelURL = null;
-
-                    if (modelPath != null) {
-                        modelURL = new URL(JAR_PREFIX + FILE_PREFIX
-                                + file.getCanonicalPath() + "!" + modelPath);
-                    }
-
-                    UserDefinedProfile udp = new UserDefinedProfile(entryName,
-                            modelURL, critics,
-                            loadManifestDependenciesForProfile(attr));
-
-                    ProfileFacade.getManager().registerProfile(udp);
-                    LOG.debug("Registered Profile: " + udp.getDisplayName()
-                            + "...");
-                } catch (ProfileException e) {
-                    LOG.error("Exception", e);
-                } catch (IOException e) {
-                    LOG.error("Exception", e);
-                }
-            }
-
-        }
-    }
-
-    /**
-     * Resolves the dependencies for a Profile
-     * 
-     * TODO How do we deal with the non-determinism in the order of the loaded
-     * profiles? (Maybe the d depended profiles were not loaded yet)
-     * 
-     * @param attr a group of attributes in the MANIFEST file for this JAR
-     * 
-     * @return the set of defined profiles
-     */
-    private Set<String> loadManifestDependenciesForProfile(Attributes attr) {
-        Set<String> ret = new HashSet<String>();
-        String value = attr.getValue("Depends-on");
-        if (value != null) {
-            StringTokenizer st = new StringTokenizer(value, ",");
-
-            while (st.hasMoreElements()) {
-                String entry = st.nextToken().trim();
-                ret.add(entry);
-            }
-        }
-
-        return ret;
-    }
-
-    /**
-     * Loads the Java critics defined by a profile
-     * 
-     * @param attr the Manifest section of the profile
-     * @param classloader the classloader of the Jar
-     * 
-     * @return the set of defined critics
-     */
-    private Set<Critic> loadJavaCriticsForProfile(Attributes attr,
-            ClassLoader classloader) {
-        Set<Critic> ret = new HashSet<Critic>();
-
-        String value = attr.getValue("Java-Critics");
-        if (value != null) {
-            StringTokenizer st = new StringTokenizer(value, ",");
-
-            while (st.hasMoreElements()) {
-                String entry = st.nextToken().trim();
-
-                try {
-                    Class cl = classloader.loadClass(entry);
-                    Critic critic = (Critic) cl.newInstance();
-                    ret.add(critic);
-                } catch (ClassNotFoundException e) {
-                    LOG.error("Error loading class: " + entry, e);
-                } catch (InstantiationException e) {
-                    LOG.error("Error instantianting class: " + entry, e);
-                } catch (IllegalAccessException e) {
-                    LOG.error("Exception", e);
-                }
-            }
-        }
-
-        return ret;
-    }
-
-    /**
      * Process a JAR file entry, attempting to load anything that looks like a
      * Java class.
      * 
-     * @param classloader the classloader to use when loading the class
-     * @param cname the class name
+     * @param classloader
+     *            the classloader to use when loading the class
+     * @param cname
+     *            the class name
      * @throws ClassNotFoundException
      * @return true if class was a module class and loaded successfully
      */
@@ -761,21 +646,23 @@ public final class ModuleLoader2 {
 
     /**
      * Add a class from the current class loader.
-     * 
+     *
      * @param classname The name of the class (including package).
      * @throws ClassNotFoundException if the class classname is not found.
      */
-    public static void addClass(String classname) throws ClassNotFoundException {
+    public static void addClass(String classname)
+        throws ClassNotFoundException {
 
-        getInstance().addClass(ModuleLoader2.class.getClassLoader(), classname);
+        getInstance().addClass(ModuleLoader2.class.getClassLoader(),
+			       classname);
     }
 
     /**
-     * Try to load a module from the given ClassLoader.
-     * <p>
+     * Try to load a module from the given ClassLoader.<p>
+     *
      * Only add it as a module if it is a module (i.e. it implements the
      * {@link ModuleInterface} interface.
-     * 
+     *
      * @param classLoader The ClassLoader to load from.
      * @param classname The name.
      * @throws ClassNotFoundException if the class classname is not found.
@@ -802,7 +689,7 @@ public final class ModuleLoader2 {
             LOG.error("Unexpected error while loading " + classname, e);
             return false;
         }
-
+        
         if (!ModuleInterface.class.isAssignableFrom(moduleClass)) {
             LOG.debug("The class " + classname + " is not a module.");
             return false;
@@ -810,15 +697,16 @@ public final class ModuleLoader2 {
 
         Constructor defaultConstructor;
         try {
-            defaultConstructor = moduleClass
-                    .getDeclaredConstructor(new Class[] {});
+            defaultConstructor =
+                    moduleClass.getDeclaredConstructor(new Class[] {});
         } catch (SecurityException e) {
             LOG.error("The default constructor for class " + classname
-                    + " is not accessable.", e);
+                      + " is not accessable.",
+                      e);
             return false;
         } catch (NoSuchMethodException e) {
             LOG.error("The default constructor for class " + classname
-                    + " is not found.", e);
+                      + " is not found.", e);
             return false;
         } catch (NoClassDefFoundError e) {
             LOG.error("Unable to find required class while loading "
@@ -837,7 +725,7 @@ public final class ModuleLoader2 {
         }
         Object moduleInstance;
         try {
-            moduleInstance = defaultConstructor.newInstance(new Object[] {});
+            moduleInstance = defaultConstructor.newInstance(new Object[]{});
         } catch (IllegalArgumentException e) {
             LOG.error("The constructor for class " + classname
                     + " is called with incorrect argument.", e);
@@ -878,47 +766,50 @@ public final class ModuleLoader2 {
     }
 
     /**
-     * Add a newly found module to {@link #moduleStatus}. If we already know
-     * about it, don't add it.
-     * 
+     * Add a newly found module to {@link #moduleStatus}. If we already
+     * know about it, don't add it.
+     *
      * @param mf The module to add.
      */
     private void addModule(ModuleInterface mf) {
-        // Since there is no way to compare the objects as equal,
-        // we have to search through the list at this point.
+	// Since there is no way to compare the objects as equal,
+	// we have to search through the list at this point.
         for (ModuleInterface foundMf : moduleStatus.keySet()) {
-            if (foundMf.getName().equals(mf.getName())) {
-                return;
-            }
-        }
+	    if (foundMf.getName().equals(mf.getName())) {
+		return;
+	    }
+	}
 
-        // We havn't found it. Add it.
-        ModuleStatus ms = new ModuleStatus();
+	// We havn't found it. Add it.
+	ModuleStatus ms = new ModuleStatus();
 
-        // Enable it.
-        // TODO: This by default selects all modules that are found.
-        // Eventually we would rather obey a default either from the
-        // modules themselves, from how they are found, and also
-        // have information on what modules are selected from the
-        // configuration.
-        ms.setSelected();
+	// Enable it.
+	// TODO: This by default selects all modules that are found.
+	//       Eventually we would rather obey a default either from the
+	//       modules themselves, from how they are found, and also
+	//       have information on what modules are selected from the
+	//       configuration.
+	ms.setSelected();
 
-        moduleStatus.put(mf, ms);
+	moduleStatus.put(mf, ms);
     }
+
 
     /**
      * The file filter that selects Jar files.
      */
     static class JarFileFilter implements FileFilter {
-        /*
-         * @see java.io.FileFilter#accept(java.io.File)
-         */
-        public boolean accept(File pathname) {
-            return (pathname.canRead() && pathname.isFile() && pathname
-                    .getPath().toLowerCase().endsWith(".jar"));
-        }
+	/*
+	 * @see java.io.FileFilter#accept(java.io.File)
+	 */
+	public boolean accept(File pathname) {
+	    return (pathname.canRead()
+		    && pathname.isFile()
+		    && pathname.getPath().toLowerCase().endsWith(".jar"));
+	}
     }
 }
+
 
 /**
  * Status for each of the available modules. This is created in one copy per
@@ -937,60 +828,61 @@ class ModuleStatus {
 
     /**
      * Tells if the module is enabled or not.
-     * 
+     *
      * @return true if the module is enabled.
      */
     public boolean isEnabled() {
-        return enabled;
+	return enabled;
     }
 
     /**
      * Setter for enabled.
      */
     public void setEnabled() {
-        enabled = true;
+	enabled = true;
     }
 
     /**
      * Setter for enabled.
      */
     public void setDisabled() {
-        enabled = false;
+	enabled = false;
     }
 
     /**
      * Tells if the module is selected by the user or not.
-     * 
+     *
      * @return true if it is selected.
      */
     public boolean isSelected() {
-        return selected;
+	return selected;
     }
+
 
     /**
      * Setter for selected.
      */
     public void setSelected() {
-        selected = true;
+	selected = true;
     }
 
     /**
      * Setter for selected.
      */
     public void setUnselect() {
-        selected = false;
+	selected = false;
     }
 
     /**
      * Setter for selected.
-     * 
+     *
      * @param value The value to set.
      */
     public void setSelected(boolean value) {
-        if (value) {
-            setSelected();
-        } else {
-            setUnselect();
-        }
+	if (value) {
+	    setSelected();
+	} else {
+	    setUnselect();
+	}
     }
 }
