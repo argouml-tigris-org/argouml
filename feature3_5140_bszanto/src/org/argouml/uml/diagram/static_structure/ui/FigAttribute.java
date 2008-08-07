@@ -64,20 +64,14 @@ public class FigAttribute extends FigFeature {
      * @author bszanto
      */
     public void changeVisibility(Rectangle r) {
-        if (super.hit(r)) {
-            String notation = ProjectManager.getManager().getCurrentProject()
-                    .getProjectSettings().getNotationLanguage();
-            
+        if (super.hit(r)) {            
             // The hit zone is different for the different notations.
             // Java uses words (public, protected, private) while UML 1.4 uses
-            // signs (+, -, ~, #).
-            int offset = 0;
-            if (notation.equals("Java")) {
-                offset = 50;
-            } else if (notation.equals("UML 1.4")) {
-                offset = 10;
-            }
-             
+            // signs (+, -, ~, #), and so on...
+            int offset = ProjectManager.getManager().getCurrentProject()
+                    .getProjectSettings().getNotationName().getNotationOffset();
+            
+            
             if (r.x < (_x + offset)) {
                 Object atttribute = getOwner();
                 Object visibity = Model.getFacade().getVisibility(atttribute);

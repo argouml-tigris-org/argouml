@@ -24,6 +24,7 @@
 
 package org.argouml.notation;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,8 @@ import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.kernel.ProjectManager;
+import org.tigris.gef.base.Globals;
 
 /**
  * This class provides definition and manipulation of notation names.
@@ -57,6 +60,8 @@ class NotationNameImpl
     private String name;
     private String version;
     private Icon icon;
+
+    private int offset = 0;
 
     /** The one and only list of notations available 
      * in the running ArgoUML application. */
@@ -267,6 +272,29 @@ class NotationNameImpl
      */
     static NotationName getNotation(String k1, String k2) {
         return findNotation(getNotationNameString(k1, k2));
+    }
+    
+    public int getNotationOffset() {
+        
+        /* TODO: the folowing if else should not exist! Each notation should set 
+        the offset using the setNotationOffset(int o) method. */
+        String notation = getConfigurationValue();
+        if (notation.equals("Java")) {
+            offset = 9;
+        } else if (notation.equals("UML 1.4")) {
+            offset = 1;
+        }
+        
+        // zoom scale should be taken into account and font size also (supossing
+        // one letter has roughly the width of (font size) * 3 /4) 
+        int finalOffset = (int) (Globals.curEditor().getScale() * 
+                (offset * ProjectManager.getManager().getCurrentProject()
+                        .getProjectSettings().getFontSize()) * 3 / 4);
+        return finalOffset;
+    }
+    
+    public void setNotationOffset(int o) {
+        offset = o;
     }
 
 }

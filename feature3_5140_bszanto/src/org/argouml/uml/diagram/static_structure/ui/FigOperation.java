@@ -105,18 +105,11 @@ public class FigOperation extends FigFeature {
      */
     public void changeVisibility(Rectangle r) {
         if (super.hit(r)) {         
-            String notation = ProjectManager.getManager().getCurrentProject()
-                    .getProjectSettings().getNotationLanguage();
-            
             // The hit zone is different for the different notations.
             // Java uses words (public, protected, private) while UML 1.4 uses
-            // signs (+, -, ~, #).
-            int offset = 0;
-            if (notation.equals("Java")) {
-                offset = 50;
-            } else if (notation.equals("UML 1.4")) {
-                offset = 10;
-            }
+            // signs (+, -, ~, #), and so on...
+            int offset = ProjectManager.getManager().getCurrentProject()
+                    .getProjectSettings().getNotationName().getNotationOffset();
              
             if (r.x < (_x + offset)) {
                 Object operation = getOwner();

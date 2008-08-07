@@ -94,4 +94,19 @@ public interface NotationName {
      * @return boolean indicating equality or inequality.
      */
     boolean sameNotationAs(NotationName notationName);
+    
+    /**
+     * @return The witdh in pixels for which the visibility should be cycled.
+     */
+    public int getNotationOffset();
+    
+    /**
+     * Set the offset to the given size. This is used to set the hit zone for 
+     * the visibility cycle feature. This hit zone is different for the 
+     * different notations. Java uses words (public, protected, private) while 
+     * UML 1.4 uses signs (+, -, ~, #). Other notation might use different 
+     * words. This should be set to 0 (zero) to disable visibility cycling.
+     * @param offset The (maximum) number of letters of the visibility word/sign
+     */
+    public void setNotationOffset(int offset);
 }
