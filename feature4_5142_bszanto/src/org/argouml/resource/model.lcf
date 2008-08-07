@@ -1,0 +1,14 @@
+#
+# add -Dlog4j.configuration=org/argouml/resource/event.lcf
+# to the command line to use this log4j configuration
+#
+# $Id$
+#
+log4j.rootCategory=ERROR, MODEL
+#
+log4j.category.org.argouml.model=DEBUG
+# 
+log4j.appender.MODEL=org.apache.log4j.ConsoleAppender
+log4j.appender.MODEL.layout=org.apache.log4j.PatternLayout
+log4j.appender.MODEL.layout.ConversionPattern=%5p: %m (%F:%L)%n
+log4j.appender.MODEL.Threshold=DEBUG
