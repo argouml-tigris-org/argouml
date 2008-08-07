@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * 
  * @author Michiel
  */
-public class UMLSignalReceptionListModel extends UMLModelElementListModel2 {
+class UMLSignalReceptionListModel extends UMLModelElementListModel2 {
 
     /**
      * Construct a list model showing the receptions of a signal.

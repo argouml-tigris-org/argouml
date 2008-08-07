@@ -27,7 +27,7 @@ package org.argouml.core.propertypanels.ui;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
-public class UMLCommentBodyDocument extends UMLPlainTextDocument {
+class UMLCommentBodyDocument extends UMLPlainTextDocument {
     
     /**
      * Constructor for UMLCommentBodyDocument.

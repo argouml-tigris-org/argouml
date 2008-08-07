@@ -38,7 +38,7 @@ import org.argouml.ui.LookAndFeelMgr;
  * This text field shows the body of a UML expression.
  *
  */
-public class UMLExpressionBodyField extends JTextArea
+class UMLExpressionBodyField extends JTextArea
     implements DocumentListener, PropertyChangeListener {
 
     /**

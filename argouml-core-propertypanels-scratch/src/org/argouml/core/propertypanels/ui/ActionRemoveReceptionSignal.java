@@ -35,7 +35,7 @@ import org.argouml.uml.ui.AbstractActionRemoveElement;
  * 
  * @author Michiel
  */
-public class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
+class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
 
     /**
      * Construct an Action which removes a Reception from a Signal.

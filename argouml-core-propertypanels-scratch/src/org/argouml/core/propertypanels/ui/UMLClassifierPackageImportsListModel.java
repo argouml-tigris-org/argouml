@@ -34,7 +34,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * 
  * @author Michiel
  */
-public class UMLClassifierPackageImportsListModel extends UMLModelElementListModel2 {
+class UMLClassifierPackageImportsListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLClassifierRoleBaseListModel.

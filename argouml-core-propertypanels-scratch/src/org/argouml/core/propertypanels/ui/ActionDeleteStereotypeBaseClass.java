@@ -36,7 +36,7 @@ import org.tigris.gef.undo.UndoManager;
  *
  * @author Michiel
  */
-public class ActionDeleteStereotypeBaseClass extends AbstractActionRemoveElement {
+class ActionDeleteStereotypeBaseClass extends AbstractActionRemoveElement {
 
     public ActionDeleteStereotypeBaseClass() {
         super(Translator.localize("menu.popup.remove"));

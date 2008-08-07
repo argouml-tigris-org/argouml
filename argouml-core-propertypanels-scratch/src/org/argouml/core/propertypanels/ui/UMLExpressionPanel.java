@@ -35,7 +35,7 @@ import org.tigris.swidgets.LabelledLayout;
  *
  * @author penyaskito
  */
-public class UMLExpressionPanel extends JPanel {
+class UMLExpressionPanel extends JPanel {
 
     private final UMLExpressionModel3 model;
     private final UMLExpressionLanguageField languageField;

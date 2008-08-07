@@ -32,7 +32,7 @@ import org.argouml.ui.targetmanager.TargetManager;
  *
  * @author penyaskito
  */
-public class UMLDefaultValueExpressionModel extends UMLExpressionModel3 {
+class UMLDefaultValueExpressionModel extends UMLExpressionModel3 {
     
     /**
      * The constructor.

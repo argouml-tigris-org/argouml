@@ -41,7 +41,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement2;
  *
  * @author Michiel
  */
-public class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement2 {
+class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement2 {
 
     private List<String> metaClasses;
     

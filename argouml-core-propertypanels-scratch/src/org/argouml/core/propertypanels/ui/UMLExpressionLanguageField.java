@@ -33,7 +33,7 @@ import org.argouml.ui.LookAndFeelMgr;
 /**
  * This text field shows the language of a UML expression.
  */
-public class UMLExpressionLanguageField extends JTextField implements
+class UMLExpressionLanguageField extends JTextField implements
         DocumentListener {
 
     private UMLExpressionModel3 model;

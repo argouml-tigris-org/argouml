@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLExpressionModel2;
  * @author jaap.branderhorst
  * @author penyaskito
  */
-public class UMLInitialValueExpressionModel 
+class UMLInitialValueExpressionModel 
     extends UMLExpressionModel3 {
 
     

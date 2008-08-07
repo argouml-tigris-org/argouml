@@ -33,7 +33,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author rastaman@tigris.org
  * @since Oct 11, 2005
  */
-public class UMLStereotypeTagDefinitionListModel
+class UMLStereotypeTagDefinitionListModel
     extends UMLModelElementListModel2 {
 
     /**

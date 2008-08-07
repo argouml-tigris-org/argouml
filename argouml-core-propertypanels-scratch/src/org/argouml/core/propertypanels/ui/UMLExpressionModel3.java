@@ -31,7 +31,7 @@ import org.argouml.ui.targetmanager.TargetListener;
  * @author mkl
  * @author penyaskito
  */
-public abstract class UMLExpressionModel3 implements TargetListener {
+abstract class UMLExpressionModel3 implements TargetListener {
     private String propertyName;
     private Object/*MExpression*/ expression;
     private boolean mustRefresh;

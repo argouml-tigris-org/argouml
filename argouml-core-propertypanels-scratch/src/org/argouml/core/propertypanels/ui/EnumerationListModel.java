@@ -36,7 +36,7 @@ import org.argouml.ui.targetmanager.TargetManager;
  *
  * @author mvw@tigris.org
  */
-public class EnumerationListModel extends DefaultListModel implements TargetListener {
+class EnumerationListModel extends DefaultListModel implements TargetListener {
 
     /**
      * Constructor for EnumerationListModel.

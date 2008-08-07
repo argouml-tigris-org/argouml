@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * 
  * @author michiel
  */
-public class UMLExtendedElementsListModel
+class UMLExtendedElementsListModel
     extends UMLModelElementListModel2 {
     
     /**

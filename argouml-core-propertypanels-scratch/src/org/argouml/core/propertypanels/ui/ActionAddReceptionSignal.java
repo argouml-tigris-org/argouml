@@ -38,7 +38,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement2;
  * 
  * @author Michiel
  */
-public class ActionAddReceptionSignal extends AbstractActionAddModelElement2 {
+class ActionAddReceptionSignal extends AbstractActionAddModelElement2 {
 
     /**
      * Construct an Action which adds a Reception to a Signal.

@@ -48,7 +48,7 @@ import org.argouml.uml.ui.behavior.collaborations.ActionSetClassifierRoleMultipl
  * @author Bob Tarling
  * @since 0.23 alpha2
  */
-public class UMLMultiplicityPanel extends JPanel implements ItemListener {
+class UMLMultiplicityPanel extends JPanel implements ItemListener {
 
     private MultiplicityComboBox multiplicityComboBox;
     private MultiplicityCheckBox checkBox;

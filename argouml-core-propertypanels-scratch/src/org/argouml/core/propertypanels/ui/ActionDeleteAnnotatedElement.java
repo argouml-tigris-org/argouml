@@ -30,7 +30,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 
-public class ActionDeleteAnnotatedElement extends AbstractActionRemoveElement {
+class ActionDeleteAnnotatedElement extends AbstractActionRemoveElement {
     /**
      * Constructor.
      */

@@ -35,7 +35,7 @@ import org.argouml.uml.ui.AbstractActionRemoveElement;
  * 
  * @author Michiel
  */
-public class ActionRemoveContextSignal extends AbstractActionRemoveElement {
+class ActionRemoveContextSignal extends AbstractActionRemoveElement {
 
     /**
      * The serial version.
