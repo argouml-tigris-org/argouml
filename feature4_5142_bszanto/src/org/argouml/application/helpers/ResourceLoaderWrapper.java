@@ -366,6 +366,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-callstate", "CallState");
         images.put("button.new-choice", "Choice");
         images.put("button.new-class", "Class");
+        images.put("button.new-class-wizard", "ClassWizard");
         images.put("button.new-classifierrole", "ClassifierRole");
         images.put("button.new-commentlink", "CommentLink");
         images.put("button.new-component", "Component");

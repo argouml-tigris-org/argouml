@@ -420,6 +420,21 @@ public abstract class UMLDiagram
     protected Action makeCreateNodeAction(Object modelElement, String descr) {
         return new RadioAction(new CmdCreateNode(modelElement, descr));
     }
+    
+    /**
+     * Factory method to build an Action for creating a node in the
+     * diagram using a CreateWizard.
+     *
+     * @param modelElement identifies the model element type to make
+     * @param descr the description to give this action.
+     * @param wizard the wizard to be used
+     * @return The action to create a new node.
+     */
+    protected Action makeCreateNodeActionWizard(Object modelElement, 
+            String descr, CreateWizard wizard) {
+        return new RadioAction(new CmdCreateNodeWizard(modelElement, descr, 
+                wizard));
+    }
 
     /**
      * Factory method to build an Action for creating an edge in the

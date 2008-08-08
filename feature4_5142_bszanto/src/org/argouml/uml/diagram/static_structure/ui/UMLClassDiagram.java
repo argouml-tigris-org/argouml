@@ -65,6 +65,7 @@ public class UMLClassDiagram extends UMLDiagram {
     // actions for toolbar
     private Action actionAssociationClass;
     private Action actionClass;
+    private Action actionClassWizard;
     private Action actionInterface;
     private Action actionDependency;
     private Action actionPermission;
@@ -165,6 +166,7 @@ public class UMLClassDiagram extends UMLDiagram {
         Object[] actions = {
             getActionPackage(),
             getActionClass(),
+            getActionClassWizard(),
             null,
             getAssociationActions(),
             getAggregationActions(),
@@ -320,6 +322,19 @@ public class UMLClassDiagram extends UMLDiagram {
         }
 
         return actionClass;
+    }
+    
+    /**
+     * @return Returns the actionClassWizard.
+     */
+    protected Action getActionClassWizard() {
+        if (actionClassWizard == null) {
+            actionClassWizard = 
+                makeCreateNodeActionWizard(Model.getMetaTypes().getUMLClass(),
+                    "button.new-class-wizard", new ClassCreateWizard());
+        }
+
+        return actionClassWizard;
     }
 
     /**
