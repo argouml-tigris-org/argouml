@@ -564,19 +564,19 @@ public class SwingUIFactory implements UIFactory {
             XMLPropertyPanelsDataRecord p) {
         UMLCheckBox2 checkbox = null;
         
-        if ("abstract".equals(p.getName())) {
+        if ("isAbstract".equals(p.getName())) {
             checkbox = new UMLGeneralizableElementAbstractCheckBox();
         }
-        else if ("leaf".equals(p.getName())) {
+        else if ("isLeaf".equals(p.getName())) {
             checkbox = new UMLGeneralizableElementLeafCheckBox();
         }
-        else if ("root".equals(p.getName())) {
+        else if ("isRoot".equals(p.getName())) {
             checkbox = new UMLGeneralizableElementRootCheckBox(); 
         }
         else if ("derived".equals(p.getName())) {
             checkbox = new UMLDerivedCheckBox();
         }
-        else if ("active".equals(p.getName())) {
+        else if ("isActive".equals(p.getName())) {
             checkbox = new UMLClassActiveCheckBox();    
         }        
         else if ("static".equals(p.getName())) {
@@ -590,7 +590,7 @@ public class SwingUIFactory implements UIFactory {
         else if ("query".equals(p.getName())) {
             checkbox = new UMLBehavioralFeatureQueryCheckBox();
         }
-        else if ("navigable".equals(p.getName())) {
+        else if ("isNavigable".equals(p.getName())) {
             checkbox = new UMLAssociationEndNavigableCheckBox();
         }
         else if ("ordered".equals(p.getName())) {

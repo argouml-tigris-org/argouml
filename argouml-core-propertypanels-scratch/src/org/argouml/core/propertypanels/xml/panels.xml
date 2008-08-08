@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panels>
   <panel name="Usage">
     <text name="name" />
@@ -12,9 +12,9 @@
     <combo name="namespace" />
     <optionbox name="visibility" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
     </checkgroup>
     <separator />
     <list name="client_dependency" />
@@ -29,9 +29,9 @@
     <combo name="namespace" />
     <optionbox name="visibility" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
       <checkbox name="derived" />
     </checkgroup>
     <separator />
@@ -54,9 +54,9 @@
     <combo name="namespace" />
     <optionbox name="visibility" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
       <checkbox name="derived" />
     </checkgroup>
     <separator />
@@ -73,9 +73,9 @@
     <separator />
     <optionbox name="visibility" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
       <checkbox name="query" />
       <checkbox name="static" />
     </checkgroup>
@@ -91,9 +91,9 @@
     <optionbox name="visibility" />
     <!-- TODO: NESTED ELEMENTS! WE NEED A TREE STRUCTURE -->
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
       <checkbox name="derived" />
     </checkgroup>
     <separator />
@@ -117,9 +117,9 @@
     <combo name="namespace" />
     <optionbox name="visibility" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
       <checkbox name="derived" />
     </checkgroup>
     <separator />
@@ -138,9 +138,9 @@
     <combo name="namespace" />
     <optionbox name="visibility" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
       <checkbox name="derived" />
     </checkgroup>
     <separator />
@@ -157,9 +157,9 @@
     <combo name="namespace" />
     <optionbox name="visibility" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
       <checkbox name="derived" />
     </checkgroup>
     <separator />
@@ -181,11 +181,11 @@
     <combo name="namespace" />
     <optionbox name="visibility" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
       <checkbox name="derived" />
-      <checkbox name="active" />
+      <checkbox name="isActive" />
     </checkgroup>
     <separator />
     <list name="client_dependency" />
@@ -218,7 +218,7 @@
     <combo name="multiplicity" />
     <separator />
     <checkgroup name="modifiers">
-      <checkbox name="navigable" />
+      <checkbox name="isNavigable" />
       <checkbox name="ordered" />
       <checkbox name="static" />
     </checkgroup>
@@ -234,11 +234,11 @@
     <combo name="namespace" />
     <optionbox name="visibility" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
       <checkbox name="derived" />
-      <checkbox name="active" />
+      <checkbox name="isActive" />
     </checkgroup>
     <separator />
     <list name="client_dependency" />
@@ -256,9 +256,9 @@
     <text name="name" />
     <combo name="namespace" />
     <checkgroup name="modifiers">
-      <checkbox name="abstract" />
-      <checkbox name="leaf" />
-      <checkbox name="root" />
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
     </checkgroup>
     <separator />
     <list name="connections" />
