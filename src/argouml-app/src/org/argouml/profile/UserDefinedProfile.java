@@ -218,8 +218,12 @@ public class UserDefinedProfile extends Profile {
                     stereotype);
 
             for (Object tag : tags) {
-                if (Model.getFacade().getTag(tag).toLowerCase()
-                        .equals("figure")) {
+                String tagName = Model.getFacade().getTag(tag);
+                if (tagName == null) {
+                    LOG.debug("profile package with stereotype "
+                            + Model.getFacade().getName(stereotype)
+                            + " contains a null tag definition");
+                } else if (tagName.toLowerCase().equals("figure")) {
                     LOG.debug("AddFigNode "
                             + Model.getFacade().getName(stereotype));
 
