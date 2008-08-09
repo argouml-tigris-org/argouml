@@ -447,17 +447,37 @@ public class DetailsPane
      */
     public void stateChanged(ChangeEvent e) {
         LOG.debug("DetailsPane state changed");
+        Component sel = topLevelTabbedPane.getSelectedComponent();
         
         // update the previously selected tab
         if (lastNonNullTab >= 0) {
 	    JPanel tab = tabPanelList.get(lastNonNullTab);
 	    if (tab instanceof TargetListener) {
                 // not visible any more - so remove as listener
-	        removeTargetListener((TargetListener) tab);
+                removeTargetListener((TargetListener) tab);
 	    }
-	}
+        }
         Object target = TargetManager.getInstance().getSingleTarget();
-
+        
+        // If sel is the ToDo Tab (i.e. is an instance of TabToDoTarget), we 
+        // don't need to do anything, because the ToDo Tab is already dealt 
+        // with by it's own listener. 
+        if (!(sel instanceof TabToDoTarget)) {
+            // The other tabs need to be updated depending on the selection.
+            if (sel instanceof TabTarget) {
+                ((TabTarget) sel).setTarget(target);
+            }
+            else if (sel instanceof TargetListener) {
+                removeTargetListener((TargetListener) sel);
+                addTargetListener((TargetListener) sel);
+                // Newly selected tab may have stale target info, so generate
+                // a new set target event for it to refresh it
+                ((TargetListener) sel).targetSet(new TargetEvent(this,
+                        TargetEvent.TARGET_SET, new Object[] {},
+                        new Object[] { target }));
+            }
+        }
+        
         if (target != null
             && Model.getFacade().isAUMLElement(target)
             && topLevelTabbedPane.getSelectedIndex() > 0) {
