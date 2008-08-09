@@ -1695,6 +1695,15 @@ class CoreHelperMDRImpl implements CoreHelper {
                 && VisibilityKindEnum.VK_PUBLIC.equals(me.getVisibility());
     }
     
+    /**
+     * This code enforces WFR [4] of a GeneralizableElement, 
+     * according OMG UML 1.4.2 standard page 59:
+     * 
+     * [4]The parent must be included in the Namespace 
+     * of the GeneralizableElement.
+     * self.generalization->forAll(g |
+     *   self.namespace.allContents->includes(g.parent) )
+     */
     private boolean isValidNamespace(
             GeneralizableElement generalizableElement,
             Namespace namespace) {
