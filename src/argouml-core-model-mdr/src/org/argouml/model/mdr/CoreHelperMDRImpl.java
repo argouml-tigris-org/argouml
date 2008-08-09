@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.jmi.reflect.InvalidObjectException;
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
@@ -414,12 +415,76 @@ class CoreHelperMDRImpl implements CoreHelper {
     static Collection<GeneralizableElement> getAllParents(
             GeneralizableElement ge) {
         Collection<GeneralizableElement> result = 
-            new HashSet<GeneralizableElement>();
-        for (GeneralizableElement parent : getParents(ge)) {
-            result.add(parent);
-            result.addAll(getAllParents(parent));
-        }
+            new HashSet<GeneralizableElement>(2000);
+        getAllParents(result, ge);
         return result;
+    }
+    
+    private static void getAllParents(
+            final Collection<GeneralizableElement> result,
+            final GeneralizableElement ge) {
+        for (Generalization g : ge.getGeneralization()) {
+            GeneralizableElement parent = g.getParent();
+            result.add(parent);
+            getAllParents(result, parent);
+        }
+    }
+    
+    /**
+     * A recursive method that iterates through generalizable elements to find
+     * if the model element is visible from any super namespace.
+     * 
+     * @param element the model element to test
+     * @param ge the namespace which is a generalizable element
+     * @param dupCheck Used to prevent recursion continuing endlessly due to
+     * cyclic generalizations in the model. This should be an empty Set
+     * except when this method calls itself recursively.
+     * @return true if the model element is visible from any part of the
+     * generalization hierarchy.
+     */
+    private boolean isVisiblyOwned(
+            final ModelElement element,
+            final GeneralizableElement ge,
+            final Set<ModelElement> dupCheck) {
+        
+        assert dupCheck != null;
+        assert ge != null;
+        assert element != null;
+        
+        final boolean alreadyChecked = !dupCheck.add(ge);
+        if (alreadyChecked) {
+            if (LOG.isInfoEnabled()) {
+                LOG.info(
+                        "Cyclic generalization found "
+                        + getFullName(ge));
+            }
+            return false;
+        }
+        
+        for (final Generalization g : ge.getGeneralization()) {
+            final GeneralizableElement parent = g.getParent();
+            if (parent instanceof Namespace
+                    && isVisiblyOwned(element, (Namespace) parent)) {
+                return true;
+            }
+        }
+        
+        for (final Generalization g : ge.getGeneralization()) {
+            // Recurse into ourself for each parent
+            if (isVisiblyOwned(element, g.getParent(), dupCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    private String getFullName(ModelElement elem) {
+        String name = elem.getName();
+        while (elem.getNamespace() != null) {
+            elem = elem.getNamespace();
+            name = elem.getName() + "." + name;
+        }
+        return name;
     }
     
     public List<Parameter> getReturnParameters(Object operation) {
@@ -1498,7 +1563,9 @@ class CoreHelperMDRImpl implements CoreHelper {
         return false;
     }
 
-    private boolean isValidNamespace(UmlAssociation assoc, Namespace ns) {
+    private boolean isValidNamespace(
+            final UmlAssociation assoc,
+            final Namespace ns) {
         for (AssociationEnd end : assoc.getConnection()) {
             if (!isVisible(end.getParticipant(), ns)) {
                 return false;
@@ -1565,9 +1632,9 @@ class CoreHelperMDRImpl implements CoreHelper {
         // of both <<access>> and <<import>> when the spec calls for
         // only the former, but that seems to give different semantics
         // to the way package imports work.  Review to see which is wrong.
-        Collection<Permission> permissions = getPackageImports(ns);
+        final Collection<Permission> permissions = getPackageImports(ns);
         for (Permission imp : permissions) {
-            Collection<ModelElement> suppliers = imp.getSupplier();
+            final Collection<ModelElement> suppliers = imp.getSupplier();
             for (ModelElement me : suppliers) {
                 //  d.supplier.oclAsType(Namespace).ownedElement->select (e |
                 //  e.elementOwnership.visibility =
@@ -1581,21 +1648,25 @@ class CoreHelperMDRImpl implements CoreHelper {
                 //              e. elementOwnership.visibility =
                 //                      #public)->includes (r.participant) or
                 if (me instanceof GeneralizableElement) {
-                    Collection<GeneralizableElement> allParents = 
-                        getAllParents((GeneralizableElement) me);
-                    for (GeneralizableElement parent : allParents) {
-                        if (parent instanceof Namespace
-                                && isVisiblyOwned(element, 
-                                        (Namespace) parent)) {
-                            return true;
-                        }
+                    
+                    // TODO: Performance. Consider instantiating this just
+                    // once outside the for loops and clear at this point
+                    // instead.
+                    final Set<ModelElement> dupCheck =
+                        new HashSet<ModelElement>(10);
+                    
+                    if (isVisiblyOwned(
+                                element, 
+                                (GeneralizableElement) me,
+                                dupCheck)) {
+                        return true;
                     }
                 }
                 //  d.supplier.oclAsType(Package).allImportedElements->select (
                 //                  e | e. elementImport.visibility =
                 //                      #public) ->includes (r.participant) ) )
                 if (me instanceof UmlPackage) {
-                    Collection<ElementImport> imports =
+                    final Collection<ElementImport> imports =
                             ((UmlPackage) me).getElementImport();
                     for (ElementImport ei : imports) {
                         if (element.equals(ei.getImportedElement())
@@ -1631,10 +1702,15 @@ class CoreHelperMDRImpl implements CoreHelper {
         Collection<Generalization> generalizations = 
             generalizableElement.getGeneralization();
         
+        ModelManagementHelperMDRImpl modelManagementHelper = 
+            (ModelManagementHelperMDRImpl) modelImpl.getModelManagementHelper();
+        
         for (Generalization generalization : generalizations) {
-            GeneralizableElement parent = generalization.getParent();
-            if (!modelImpl.getModelManagementHelper().getAllContents(namespace)
-                    .contains(parent)) {
+            final GeneralizableElement parent = generalization.getParent();
+            final Set<ModelElement> results = new HashSet<ModelElement>(2000);
+            final Set<ModelElement> dupCheck = new HashSet<ModelElement>(2000);
+            modelManagementHelper.getAllContents(results, namespace, dupCheck);
+            if (!results.contains(parent)) {
                 return false;
             }
         }
@@ -1699,9 +1775,11 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public Collection<Namespace> getAllPossibleNamespaces(Object modelElement,
             Object model) {
+        LOG.info("getAllPossibleNamespaces start");
         ModelElement m = (ModelElement) modelElement;
         Collection<Namespace>  ret = new HashSet<Namespace> ();
         if (m == null) {
+            LOG.info("getAllPossibleNamespaces end");
             return ret;
         }
         
@@ -1721,6 +1799,13 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new InvalidElementException(e);
         }
         
+        if (LOG.isInfoEnabled()) {
+            // This is an expensive method that we should ensure is called
+            // rarely. Hence info level to track easily.
+            LOG.info(
+                    "getAllPossibleNamespaces returns "
+                    + ret.size() + " items");
+        }
         return ret;
     }
 

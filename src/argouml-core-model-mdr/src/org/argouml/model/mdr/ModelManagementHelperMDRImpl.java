@@ -572,6 +572,34 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
     /**
+     * <p>A helper method to make {@link #getContents(Object)} as
+     * efficient as possible.</p>
+     * <p>This is called passing in a collection to place the result
+     * rather than creating a new instance of a collection to return</p>
+     * @param results a collection of model elements to which the contents
+     * are to be added
+     * @param modelelement the model element to get the contents from
+     */
+    private void getContents(
+            final Collection<ModelElement> results,
+            final Object modelelement) {
+        if (modelelement instanceof UmlPackage) {
+            getContents(results, (UmlPackage) modelelement);
+            return;
+        } else if (modelelement instanceof Namespace) {
+            getContents(results, (Namespace) modelelement);
+            return;
+        } else if (modelelement instanceof Instance) {
+            getContents(results, (Instance) modelelement);
+            return;
+        } else if (modelelement == null) {
+            return;
+        }
+        throw new IllegalArgumentException("Unsupported element type " 
+                + modelelement);
+    }
+
+    /**
      * Get the contents of a Package.
      * <p>
      * For a Package: <pre>
@@ -600,6 +628,21 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
 
     /**
+     * Adds the contents of a package to the given collection.
+     * Same as {@link #getContents(UmlPackage)} but adding to results to an
+     * existing collection instead of returning a new collection.
+     */
+    private static void getContents(
+            final Collection<ModelElement> results,
+            final UmlPackage pkg) {
+        Collection<ElementImport> c = pkg.getElementImport();
+        for (ElementImport ei : c) {
+            results.add(ei.getImportedElement());
+        }
+        getContents(results, (Namespace) pkg);
+    }
+
+    /**
      * Get the contents of a Namespace (which includes the contents of
      * all owning namespaces).
      * <p>
@@ -622,6 +665,22 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         // TODO: Should we handle <<access>> and <<import>> here?
         return results;
     }
+
+    /**
+     * Adds the contents of a namespace to the given collection.
+     * Same as {@link #getContents(Namespace)} but adding to results to an
+     * existing collection instead of returning a new collection.
+     */
+    private static void getContents(
+            final Collection<ModelElement> results,
+            final Namespace namespace) {
+        results.addAll(namespace.getOwnedElement());
+        Namespace owner = namespace.getNamespace();
+        if (owner != null) {
+            getContents(results, owner);
+        }
+        // TODO: Should we handle <<access>> and <<import>>?
+    }
     
     /**
      * Return the contents of an Instance.
@@ -641,12 +700,43 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return results;
     }
     
+    /**
+     * Adds the contents of an instance to the given collection.
+     * Same as {@link #getContents(Instance)} but adding to results to an
+     * existing collection instead of returning a new collection.
+     */
+    private static void getContents(
+            final Collection<ModelElement> results,
+            final Instance instance) {
+        results.addAll(instance.getOwnedInstance());
+        results.addAll(instance.getOwnedLink());
+    }
+    
     public Collection<ModelElement> getAllImportedElements(Object pack) {
         if (!(pack instanceof Namespace)) {
             return Collections.emptyList();
         }
-        Namespace ns = ((Namespace) pack);
         Collection<ModelElement> ret = new ArrayList<ModelElement>();
+        getAllImportedElements(ret, pack);
+        return ret;
+    }
+
+    /**
+     * <p>A helper method to make {@link #getAllImportedElements(Object)} as
+     * efficient as possible.</p>
+     * <p>This is called passing in a collection to place the result
+     * rather than creating a new instance of a collection to return</p>
+     * @param results a collection of modelelements to which the imported
+     * elements are to be added
+     * @param pack the package to get the imported elements from
+     */
+    private void getAllImportedElements(
+            final Collection<ModelElement> results,
+            final Object pack) {
+        if (!(pack instanceof Namespace)) {
+            return;
+        }
+        Namespace ns = ((Namespace) pack);
         try {
             /* TODO: This is not according the contract for this function, but
              * it is used in several places, and I (MVW) presume that 
@@ -661,7 +751,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                             .hasStereotype(dep, FRIEND_STEREOTYPE)) {
                         for (ModelElement o : dep.getSupplier()) {
                             if (o instanceof Namespace) {
-                                ret.addAll(((Namespace) o).getOwnedElement());
+                                results.addAll(((Namespace) o).getOwnedElement());
                             }
                         }
                     } else if (modelImpl.getExtensionMechanismsHelper()
@@ -670,7 +760,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                                     .hasStereotype(dep, ACCESS_STEREOTYPE)) {
                         for (ModelElement o : dep.getSupplier()) {
                             if (o instanceof Namespace) {
-                                ret.addAll(CoreHelperMDRImpl
+                                results.addAll(CoreHelperMDRImpl
                                         .getAllVisibleElements((Namespace) o));
                             }
                         }
@@ -679,19 +769,40 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             }
             /* TODO: This is the 2nd part of this method: */
             Collection imports = modelImpl.getFacade().getImportedElements(ns);
-            ret.addAll(imports);
+            results.addAll(imports);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return ret;
     }
 
 
     public Collection<ModelElement> getAllContents(Object pack) {
-        Set<ModelElement> results = new HashSet<ModelElement>();
-        if (pack == null) {
-            return results;
+        // TODO: Is there anyway we can determine this size at runtime?
+        Set<ModelElement> results = new HashSet<ModelElement>(2000);
+        Set<ModelElement> dupCheck = new HashSet<ModelElement>(2000);
+        getAllContents(results, (ModelElement) pack, dupCheck);
+        return results;
+    }
+
+    /**
+     * <p>A helper method to make {@link #getAllContents(Object)} as efficient
+     * as possible. This is called recursively.</p>
+     * <p>
+     * @param results a collection that will be populated with model elements
+     * @param pack the namespace to get the contents from
+     * @param dupCheck a collection of model elements that have already been
+     * checked on a previous recursive call. Checking this saves duplicating
+     * effort on already processed elements.
+     */
+    void getAllContents(
+            final Collection<ModelElement> results,
+            final ModelElement pack,
+            final Collection<ModelElement> dupCheck) {
+        if (pack == null || dupCheck.contains(pack)) {
+            return;
         }
+        
+        dupCheck.add(pack);
 
         try {
             /*
@@ -706,7 +817,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
              * </pre><p>
              */
             if (pack instanceof Namespace) {
-                results.addAll(getContents(pack));
+                getContents(results, pack);
             }
 
             /*
@@ -759,18 +870,19 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             if (pack instanceof Classifier || pack instanceof UmlPackage) {
                 Collection<GeneralizableElement> parents = 
                     CoreHelperMDRImpl.getParents((GeneralizableElement) pack);
-                Set<ModelElement> allContents = new HashSet<ModelElement>();
+                // TODO: Try reusing the same set on every recursion
+                Set<ModelElement> allContents = new HashSet<ModelElement>(2000);
                 for (GeneralizableElement parent : parents) {
-                    allContents.addAll(getAllContents(parent));
+                    getAllContents(allContents, parent, dupCheck);
                 }
                 
                 if (pack instanceof UmlPackage) {
-                    allContents.addAll(getAllImportedElements(pack));
+                    getAllImportedElements(allContents, pack);
                     for (GeneralizableElement parent : parents) {
-                        allContents.addAll(getAllImportedElements(parent));
+                        getAllImportedElements(allContents, parent);
                     }
                 }
-
+                
                 for (ModelElement element : allContents) {
                     if (VisibilityKindEnum.VK_PUBLIC.equals(element
                             .getVisibility())
@@ -807,8 +919,6 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
-        return results;
-
     }
 
     public boolean isReadOnly(Object element) {

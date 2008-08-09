@@ -34,6 +34,7 @@ import java.util.Set;
 
 import javax.jmi.reflect.InvalidObjectException;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.CollaborationsHelper;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.InvalidElementException;
@@ -73,6 +74,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      */
     private MDRModelImplementation modelImpl;
 
+    private static final Logger LOG = Logger.getLogger(CollaborationsHelperMDRImpl.class);
+    
     /**
      * Constructor.
      * 
@@ -429,6 +432,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
 
     public Collection<Feature> allAvailableFeatures(Object arole) {
+        LOG.info("allAvailableFeatures start");
         
         if (arole instanceof ClassifierRole) {
             try {
@@ -443,6 +447,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 for (Classifier classifier : role.getBase()) {
                     returnList.addAll(classifier.getFeature());
                 }
+                LOG.info("allAvailableFeatures " + returnList.size());
                 return returnList;
             } catch (InvalidObjectException e) {
                 throw new InvalidElementException(e);
@@ -454,6 +459,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
 
     public Collection allAvailableContents(Object arole) {
+        LOG.info("allAvailableContents start");
         try {
             if (arole instanceof ClassifierRole) {
                 List returnList = new ArrayList();
@@ -467,6 +473,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 for (Classifier baseClassifier : role.getBase()) {
                     returnList.addAll(baseClassifier.getOwnedElement());
                 }
+                LOG.info("allAvailableContents " + returnList.size());
                 return returnList;
             }
         } catch (InvalidObjectException e) {
