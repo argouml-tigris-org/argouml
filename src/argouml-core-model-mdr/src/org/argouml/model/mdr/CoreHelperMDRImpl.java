@@ -1696,7 +1696,7 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
     
     /**
-     * This code enforces WFR [4] of a GeneralizableElement, 
+     * This code tests WFR [4] of a GeneralizableElement, 
      * according OMG UML 1.4.2 standard page 59:
      * 
      * [4]The parent must be included in the Namespace 
