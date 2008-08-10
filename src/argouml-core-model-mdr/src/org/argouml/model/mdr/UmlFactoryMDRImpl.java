@@ -612,6 +612,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     public boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement, boolean checkWFR) {
+        if (Model.getModelManagementHelper().isReadOnly(fromElement)) {
+            // Don't allow connections to be created from a read only
+            // model element to any other
+            // TODO: Maybe we should allow association so long as both ends
+            // are not read only. We would then have to reverse the ends in
+            // buildConnection and force to unidirectional.
+            return false;
+        }
         // Get the list of valid model item pairs for the given connection type
         List<Class<?>[]> validItems = validConnectionMap.get(connectionType);
         if (validItems == null) {
