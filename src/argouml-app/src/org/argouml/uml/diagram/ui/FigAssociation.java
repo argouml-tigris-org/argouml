@@ -78,7 +78,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * <p> 
      * TODO: See issue 535: make this a user setting.
      */
-    private static final boolean SUPPRESS_BIDIRECTIONAL_ARROWS = false;
+    private static final boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
 
     private static final Logger LOG = Logger.getLogger(FigAssociation.class);
 
