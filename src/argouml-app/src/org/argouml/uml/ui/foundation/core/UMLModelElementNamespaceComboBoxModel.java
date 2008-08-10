@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
@@ -47,6 +48,11 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         Logger.getLogger(UMLModelElementNamespaceComboBoxModel.class);
 
     /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -775116993155949065L;
+    
+    /**
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      */
     public UMLModelElementNamespaceComboBoxModel() {
@@ -61,6 +67,22 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     protected boolean isValidElement(Object o) {
         return Model.getFacade().isANamespace(o)
                 && Model.getCoreHelper().isValidNamespace(getTarget(), o);
+    }
+
+    /*
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     */
+    protected void buildMinimalModelList() {
+        Object target = getTarget();
+        Collection c = new ArrayList(1);
+
+        if (target != null) {
+            Object namespace = Model.getFacade().getNamespace(target);
+            if (namespace != null && !c.contains(namespace)) {
+                c.add(namespace);
+            }
+        }
+        setElements(c);
     }
 
     /*
@@ -115,12 +137,12 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
              * the selected item differs. Without the next step,
              * the combo would not be refreshed.
              */
+            buildMinimalModelList();
             setSelectedItem(getSelectedModelElement());
         }
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -775116993155949065L;
+    
+    boolean isLazy() {
+        return true;
+    }
 }

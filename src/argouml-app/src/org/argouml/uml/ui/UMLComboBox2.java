@@ -28,7 +28,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.JComboBox;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
+import org.apache.log4j.Logger;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -44,35 +47,40 @@ import org.argouml.ui.targetmanager.TargettableModelView;
  * replaced with this implementation to improve performance.
  */
 public class UMLComboBox2
-    extends JComboBox implements TargettableModelView, TargetListener {
+    extends JComboBox
+    implements TargettableModelView, TargetListener {
 
+    private static final Logger LOG = Logger.getLogger(UMLComboBox2.class);
+    
     /**
      * Constructor for UMLComboBox2.
      * @deprecated As of ArgoUml version unknown (before 0.13.5),
      * replaced by {@link #UMLComboBox2(UMLComboBoxModel2, Action, boolean)}
-     * @param arg0 the ComboBoxModel
+     * @param model the ComboBoxModel
      */
     @Deprecated
-    protected UMLComboBox2(UMLComboBoxModel2 arg0) {
-        super(arg0);
+    protected UMLComboBox2(UMLComboBoxModel2 model) {
+        super(model);
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addActionListener(this);
+        addPopupMenuListener(model);
     }
 
     /**
      * Constructor for UMLComboBox2. Via the given action, the
      * action for this combobox is done.
-     * @param arg0 the ComboBoxModel
+     * @param model the ComboBoxModel
      * @param action the action
      * @param showIcon true if an icon should be shown in front of the items
      */
-    public UMLComboBox2(UMLComboBoxModel2 arg0, Action action,
+    public UMLComboBox2(UMLComboBoxModel2 model, Action action,
 			boolean showIcon) {
-        super(arg0);
+        super(model);
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addActionListener(action);
         // setDoubleBuffered(true);
         setRenderer(new UMLListCellRenderer2(showIcon));
+        addPopupMenuListener(model);
     }
 
     /**

@@ -32,6 +32,9 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
@@ -53,7 +56,8 @@ import org.tigris.gef.presentation.Fig;
  * at construction time of this class. I.e. it is "clearable".
  */
 public abstract class UMLComboBoxModel2 extends AbstractListModel
-        implements PropertyChangeListener, ComboBoxModel, TargetListener {
+        implements PropertyChangeListener, 
+        ComboBoxModel, TargetListener, PopupMenuListener {
     /**
      * Logger.
      */
@@ -99,6 +103,12 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * Flag to indicate whether the model is being build.
      */
     protected boolean buildingModel = false;
+    
+    /**
+     * Flag needed to prevent a loop
+     */
+    private boolean willBecomeVisible = false;
+
 
     /**
      * Constructs a model for a combobox. The container given is used
@@ -207,7 +217,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * selected item if there is one. Called from targetChanged every time the
      * target of the proppanel is changed.
      */
-    protected abstract void buildModelList();
+    abstract protected void buildModelList();
 
     /**
      * @param obj an UML object
@@ -374,7 +384,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 
                 buildingModel = true;
                 try {
-                    buildModelList();
+                    LOG.info("Building the combo box model for " + this);
+                    buildMinimalModelList();
                     // Do not set buildingModel = false here, 
                     // otherwise the action for selection is performed.
                     setSelectedItem(getSelectedModelElement());
@@ -394,6 +405,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 diagram.addPropertyChangeListener(
                         ArgoDiagram.NAMESPACE_KEY, this);
                 buildingModel = true;
+                LOG.info("Building the combo box model for " + this);
                 buildModelList();
                 setSelectedItem(getSelectedModelElement());
                 buildingModel = false;
@@ -408,6 +420,16 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 addElement(""); // makes sure we can select 'none'
             }
         }
+    }
+    
+    /**
+     * Build the minimal number of items in the model for the edit box
+     * to be populated. By default this calls buildModelList but it
+     * can be overridden in subclasses to delay population of the list
+     * till the list is displayed.
+     */
+    protected void buildMinimalModelList() {
+        buildModelList();
     }
 
     /**
@@ -686,5 +708,31 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     protected void setFireListEvents(boolean events) {
         this.fireListEvents = events;
     }
+    
+    boolean isLazy() {
+        return false;
+    }
+    
+    public void popupMenuCanceled(PopupMenuEvent e) {
+        LOG.info("popupMenuCanceled");
+    }
 
+    public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        LOG.info("popupMenuWillBecomeInvisible");
+    }
+
+    public void popupMenuWillBecomeVisible(PopupMenuEvent ev) {
+        if (isLazy() && !willBecomeVisible) {
+            JComboBox list = (JComboBox) ev.getSource();
+
+            buildModelList();
+
+            willBecomeVisible = true; // the flag is needed to prevent a loop
+            try {
+                list.getUI().setPopupVisible( list, true );
+            } finally {
+                willBecomeVisible = false;
+            }
+        }
+    }
 }
