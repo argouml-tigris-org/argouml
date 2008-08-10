@@ -185,7 +185,8 @@ public abstract class PropPanelModelElement extends PropPanel {
         boolean enable =
             !Model.getModelManagementHelper().isReadOnly(target);
         for (final Component component : getComponents()) {
-            if (!(component instanceof JLabel)) {
+            if (!(component instanceof JLabel)
+                    && component.isEnabled() != enable) {
                 component.setEnabled(enable);
             }
         }
