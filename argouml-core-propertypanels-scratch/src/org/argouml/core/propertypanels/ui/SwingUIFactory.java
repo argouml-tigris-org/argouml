@@ -291,7 +291,7 @@ public class SwingUIFactory implements UIFactory {
         
         ScrollList list = null;
         UMLModelElementListModel2 model = null;
-        if ("client_dependency".equals(prop.getName())) {
+        if ("clientDependency".equals(prop.getName())) {
             model = new UMLModelElementClientDependencyListModel();
             model.setTarget(target); 
             list = new ScrollList(new UMLMutableLinkedList(
@@ -301,7 +301,7 @@ public class SwingUIFactory implements UIFactory {
                     null,
                     true));
         }
-        else if ("supplier_dependency".equals(prop.getName())) {
+        else if ("supplierDependency".equals(prop.getName())) {
             model = new UMLModelElementSupplierDependencyListModel();
             model.setTarget(target);
             list = new ScrollList(new UMLMutableLinkedList(
@@ -311,12 +311,12 @@ public class SwingUIFactory implements UIFactory {
                     null,
                     true));
         }
-        else if ("generalizations".equals(prop.getName())) {
+        else if ("generalization".equals(prop.getName())) {
             model = new UMLGeneralizableElementGeneralizationListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("specializations".equals(prop.getName())) {
+        else if ("specialization".equals(prop.getName())) {
             model = new UMLGeneralizableElementSpecializationListModel();
             model.setTarget(target);
             list = new ScrollList(model);
@@ -331,12 +331,12 @@ public class SwingUIFactory implements UIFactory {
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("features".equals(prop.getName())) {
+        else if ("feature".equals(prop.getName())) {
             model = new UMLClassifierFeatureListModel();
             model.setTarget(target);
             list = new ScrollList(model, true, false);
         }
-        else if ("operations".equals(prop.getName())) {
+        else if ("operation".equals(prop.getName())) {
             model = new UMLClassOperationListModel();
             model.setTarget(target);
             list = new ScrollList(model);

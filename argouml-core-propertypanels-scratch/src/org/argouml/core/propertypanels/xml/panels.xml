@@ -17,8 +17,8 @@
       <checkbox name="isRoot" />
     </checkgroup>
     <separator />
-    <list name="client_dependency" />
-    <list name="supplier_dependency" />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
     <list name="tag_definitions" />
     <separator />
     <list name="base_class" />
@@ -35,8 +35,8 @@
       <checkbox name="derived" />
     </checkgroup>
     <separator />
-    <list name="generalizations" />
-    <list name="specializations" />
+    <list name="generalization" />
+    <list name="specialization" />
     <separator />
     <list name="contexts" />
     <list name="receptions" />
@@ -60,8 +60,8 @@
       <checkbox name="derived" />
     </checkgroup>
     <separator />
-    <list name="generalizations" />
-    <list name="specializations" />
+    <list name="generalization" />
+    <list name="specialization" />
     <separator />
     <list name="owned" />
     <list name="imported_elements" />
@@ -123,8 +123,8 @@
       <checkbox name="derived" />
     </checkgroup>
     <separator />
-    <list name="generalizations" />
-    <list name="specializations" />
+    <list name="generalization" />
+    <list name="specialization" />
     <separator />
     <list name="contexts" />
     <list name="receptions" />
@@ -144,10 +144,10 @@
       <checkbox name="derived" />
     </checkgroup>
     <separator />
-    <list name="client_dependency" />
-    <list name="supplier_dependency" />
-    <list name="generalizations" />
-    <list name="specializations" />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
+    <list name="generalization" />
+    <list name="specialization" />
     <separator />
     <list name="operations" />
     <list name="literals" />
@@ -163,10 +163,10 @@
       <checkbox name="derived" />
     </checkgroup>
     <separator />
-    <list name="client_dependency" />
-    <list name="supplier_dependency" />
-    <list name="generalizations" />
-    <list name="specializations" />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
+    <list name="generalization" />
+    <list name="specialization" />
     <separator />
     <list name="operations" />
   </panel>
@@ -188,10 +188,10 @@
       <checkbox name="isActive" />
     </checkgroup>
     <separator />
-    <list name="client_dependency" />
-    <list name="supplier_dependency" />
-    <list name="generalizations" />
-    <list name="specializations" />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
+    <list name="generalization" />
+    <list name="specialization" />
     <separator />
     <list name="attributes" />
     <list name="association_ends" />
@@ -241,10 +241,10 @@
       <checkbox name="isActive" />
     </checkgroup>
     <separator />
-    <list name="client_dependency" />
-    <list name="supplier_dependency" />
-    <list name="generalizations" />
-    <list name="specializations" />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
+    <list name="generalization" />
+    <list name="specialization" />
     <list name="connections" />
     <separator />
     <list name="attributes" />
