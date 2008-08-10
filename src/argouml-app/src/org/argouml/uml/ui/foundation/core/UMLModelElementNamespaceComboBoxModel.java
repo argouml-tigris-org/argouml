@@ -111,8 +111,6 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         if (t != null
                 && evt.getSource() == t
                 && evt.getNewValue() != null) {
-//            setTarget(t); // this fixes issue 3780, but causes issue 3832.
-            buildModelList();
             /* In some cases (see issue 3780) the list remains the same, but
              * the selected item differs. Without the next step,
              * the combo would not be refreshed.
