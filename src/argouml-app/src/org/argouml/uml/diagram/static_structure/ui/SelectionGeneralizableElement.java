@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -86,9 +86,12 @@ public abstract class SelectionGeneralizableElement extends
         // No generalizations in Deployment Diagrams
         if (gm instanceof DeploymentDiagramGraphModel) {
             return null;
-        } else {
-            return icons;
         }
+        if (Model.getModelManagementHelper().isReadOnly(
+                getContent().getOwner())) {
+            return new Icon[] { null, inherit, null, null, null };
+        }
+        return icons;
     }
 
     @Override
