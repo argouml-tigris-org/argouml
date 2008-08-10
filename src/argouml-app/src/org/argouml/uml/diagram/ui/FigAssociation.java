@@ -70,15 +70,15 @@ import org.tigris.gef.presentation.FigText;
 public class FigAssociation extends FigEdgeModelElement {
 
     /**
-     * The serial version id.
-     */
-    static final long serialVersionUID = 9100125695919853919L;
-
-    /**
      * We suppress the arrow heads if both ends of an association
-     * are navigable.
+     * are navigable. This means that we support presentation option 3 
+     * for Association Ends from the UML standard. <p>
+     * 
+     * If this member is set to false, then we have presentation option 1.
+     * <p> 
+     * TODO: See issue 535: make this a user setting.
      */
-    private static final boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
+    private static final boolean SUPPRESS_BIDIRECTIONAL_ARROWS = false;
 
     private static final Logger LOG = Logger.getLogger(FigAssociation.class);
 
