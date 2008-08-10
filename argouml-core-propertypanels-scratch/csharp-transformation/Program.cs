@@ -16,6 +16,8 @@ namespace ArgoUML_XMLTransformation
         private static string TargetFile =
             @"test-net.xml";
 
+        private static Dictionary<String, List<MyAttribute>> AttributesCache = new Dictionary<string, List<MyAttribute>>();
+
 
         private static XDocument doc;
 
@@ -164,6 +166,12 @@ namespace ArgoUML_XMLTransformation
 
         private static List<MyAttribute> GetAttributes(XElement element, XElement core_package)
         {
+            if (AttributesCache.ContainsKey(element.Attribute("name").Value))
+            {
+                return AttributesCache[element.Attribute("name").Value];
+            }
+
+
             List<MyAttribute> attrs = new List<MyAttribute>();
 
             var supertypes = element.Attribute("supertypes");
@@ -178,9 +186,25 @@ namespace ArgoUML_XMLTransformation
             }
 
             // TODO: Look at the Associations
+            string id = element.Attribute(XName.Get("xmi.id")).Value;
+            var associations = from a in core_package.Descendants()
+                               where a.Name.LocalName.Equals("Association")
+                               select a;
+            var associationEnd = (from x in associations.DescendantsAndSelf()
+                                  where x.Name != null
+                                    && x.Name.LocalName.Equals("AssociationEnd")
+                                    && x.Attribute(XName.Get("type")).Value.Equals(id)
+                                  select new MyAttribute
+                                   {
+                                       Name = GetNameOfAssociation(x),
+                                       Type = GetTypeByXmiId(x.Attribute("type").Value, core_package).Attribute("name").Value,
+                                       Multiplicity = GetMultiplicity(x)
+                                   }
+                                 ).Distinct();
+
             var ats = (from a in element.Descendants()
                        where a.Name != null
-                       where a.Name.Equals(XName.Get("{omg.org/mof.Model/1.3}Attribute"))
+                         && a.Name.Equals(XName.Get("{omg.org/mof.Model/1.3}Attribute"))
                          || a.Name.Equals(XName.Get("{omg.org/mof.Model/1.3}Reference"))
                        select new MyAttribute
                        {
@@ -189,10 +213,24 @@ namespace ArgoUML_XMLTransformation
                            Multiplicity = GetMultiplicity(a)
                        }).Distinct();
             AddElement(attrs, ats);
+            AddElement(attrs, associationEnd);
+
+            AttributesCache.Add(element.Attribute("name").Value, attrs);
 
 
             return attrs;
         }
+
+        private static string GetNameOfAssociation(XElement x)
+        {
+            var name = (from t in x.Parent.Descendants()
+                        where t != x
+                         && t.Attribute("name") != null
+                        select t.Attribute("name").Value).Single();
+            return name;
+        }
+
+
 
         private static Multiplicity GetMultiplicity(XElement a)
         {
