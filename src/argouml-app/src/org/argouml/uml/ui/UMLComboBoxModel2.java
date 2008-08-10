@@ -105,7 +105,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     protected boolean buildingModel = false;
     
     /**
-     * Flag needed to prevent a loop
+     * Flag needed to prevent a loop during popup notification
      */
     private boolean willBecomeVisible = false;
 
@@ -714,11 +714,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
     
     public void popupMenuCanceled(PopupMenuEvent e) {
-        LOG.info("popupMenuCanceled");
     }
 
     public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-        LOG.info("popupMenuWillBecomeInvisible");
     }
 
     public void popupMenuWillBecomeVisible(PopupMenuEvent ev) {
