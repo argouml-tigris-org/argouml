@@ -14,7 +14,7 @@ namespace ArgoUML_XMLTransformation
             @"D:\workspaces\Argo\argouml-core-propertypanels-scratch\xslt\01-02-15.xml";
 
         private static string TargetFile =
-            @"test-net.xml";
+            @"D:\workspaces\Argo\argouml-core-propertypanels-scratch\src\org\argouml\core\propertypanels\xml\panels.xml";
 
         private static Dictionary<String, List<MyAttribute>> AttributesCache = new Dictionary<string, List<MyAttribute>>();
 
@@ -30,18 +30,18 @@ namespace ArgoUML_XMLTransformation
 
             doc = XDocument.Load(SourceFile);
 
-            var core_package = (from p in doc.Descendants("XMI.content").Descendants()
-                                where p.Name.Equals(XName.Get("{omg.org/mof.Model/1.3}Package"))
-                                where p.Attribute("name") != null
-                                where p.Attribute("name").Value == "Core"
-                                select p).First();
+            //var core_package = (from p in doc.Descendants("XMI.content").Descendants()
+            //                    where p.Name.Equals(XName.Get("{omg.org/mof.Model/1.3}Package"))
+            //                    where p.Attribute("name") != null
+            //                    where p.Attribute("name").Value == "Core"
+            //                    select p).First();
 
-            var model_elements = from element in core_package.Descendants()
+            var model_elements = from element in doc.Descendants("XMI.content").Descendants()
                                  where element.Name.Equals(XName.Get("{omg.org/mof.Model/1.3}Class"))
                                  select new PropPanel
                                  {
                                      Name = element.Attribute("name").Value,
-                                     Attributes = GetAttributes(element, core_package)
+                                     Attributes = GetAttributes(element)
                                  };
 
             DumpObject(model_elements);
@@ -62,8 +62,14 @@ namespace ArgoUML_XMLTransformation
                 XElement panel = new XElement("panel");
                 panel.Add(new XAttribute("name", p.Name));
 
+                int nelements = 0;
                 foreach (MyAttribute a in p.Attributes)
                 {
+                    nelements++;
+                    if (nelements % 10 == 0)
+                    {
+                        panel.Add(new XElement(XName.Get("separator")));
+                    }
                     if (!ShouldBeIgnored(a))
                     {
                         if (!IsGrouped(a))
@@ -164,7 +170,7 @@ namespace ArgoUML_XMLTransformation
             }
         }
 
-        private static List<MyAttribute> GetAttributes(XElement element, XElement core_package)
+        private static List<MyAttribute> GetAttributes(XElement element)
         {
             if (AttributesCache.ContainsKey(element.Attribute("name").Value))
             {
@@ -180,14 +186,14 @@ namespace ArgoUML_XMLTransformation
                 string[] types = supertypes.Value.Split();
                 foreach (string type in types)
                 {
-                    XElement x = GetTypeByXmiId(type, core_package);
-                    AddElement(attrs, (GetAttributes(x, core_package)));
+                    XElement x = GetTypeByXmiId(type);
+                    AddElement(attrs, (GetAttributes(x)));
                 }
             }
 
             // TODO: Look at the Associations
             string id = element.Attribute(XName.Get("xmi.id")).Value;
-            var associations = from a in core_package.Descendants()
+            var associations = from a in doc.Descendants("XMI.content").Descendants()
                                where a.Name.LocalName.Equals("Association")
                                select a;
             var associationEnd = (from x in associations.DescendantsAndSelf()
@@ -197,8 +203,8 @@ namespace ArgoUML_XMLTransformation
                                   select new MyAttribute
                                    {
                                        Name = GetNameOfAssociation(x),
-                                       Type = GetTypeByXmiId(x.Attribute("type").Value, core_package).Attribute("name").Value,
-                                       Multiplicity = GetMultiplicity(x)
+                                       Type = GetTypeByXmiId(x.Attribute("type").Value).Attribute("name").Value,
+                                       Multiplicity = GetMultiplicityOfAssociation(x)
                                    }
                                  ).Distinct();
 
@@ -209,7 +215,7 @@ namespace ArgoUML_XMLTransformation
                        select new MyAttribute
                        {
                            Name = a.Attribute("name").Value,
-                           Type = GetTypeByXmiId(a.Attribute("type").Value, core_package).Attribute("name").Value,
+                           Type = GetTypeByXmiId(a.Attribute("type").Value).Attribute("name").Value,
                            Multiplicity = GetMultiplicity(a)
                        }).Distinct();
             AddElement(attrs, ats);
@@ -219,6 +225,15 @@ namespace ArgoUML_XMLTransformation
 
 
             return attrs;
+        }
+
+        private static Multiplicity GetMultiplicityOfAssociation(XElement x)
+        {
+            var node = (from t in x.Parent.Descendants()
+                        where t != x
+                           && t.Name.LocalName.Equals("AssociationEnd")
+                        select t).Single();
+            return GetMultiplicity(node);
         }
 
         private static string GetNameOfAssociation(XElement x)
@@ -263,7 +278,7 @@ namespace ArgoUML_XMLTransformation
 
         }
 
-        private static XElement GetTypeByXmiId(String type, XElement core_package)
+        private static XElement GetTypeByXmiId(String type)
         {
             var model_elements = from element in doc.Descendants()
                                  where element.Name.Equals(XName.Get("{omg.org/mof.Model/1.3}Class"))

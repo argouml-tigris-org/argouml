@@ -62,6 +62,10 @@ import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.behavior.common_behavior.ActionAddContextSignal;
 import org.argouml.uml.ui.behavior.common_behavior.UMLSignalContextListModel;
+import org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint;
+import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtendListModel;
+import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtensionPointListModel;
+import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseIncludeListModel;
 import org.argouml.uml.ui.foundation.core.ActionAddAssociationSpecification;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
@@ -465,6 +469,29 @@ public class SwingUIFactory implements UIFactory {
                     model,
                     new ActionAddReceptionSignal(), null, 
                     new ActionRemoveReceptionSignal(), true);
+            list = new ScrollList(l);
+        }
+        else if ("extend".equals(prop.getName())) {
+            model = new UMLUseCaseExtendListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("include".equals(prop.getName())) {
+            model = new UMLUseCaseIncludeListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("extend".equals(prop.getName())) {
+            model = new UMLUseCaseExtendListModel();
+            model.setTarget(target);
+            list = new ScrollList(model);
+        }
+        else if ("extensionPoint".equals(prop.getName())) {
+            model = new UMLUseCaseIncludeListModel();
+            model.setTarget(target);
+            UMLMutableLinkedList l = new UMLMutableLinkedList(
+                    model, null,
+                    ActionNewUseCaseExtensionPoint.SINGLETON);
             list = new ScrollList(l);
         }
         if (list != null) {
