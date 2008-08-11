@@ -182,12 +182,15 @@ public abstract class PropPanelModelElement extends PropPanel {
      */
     public void setTarget(Object target) {
         super.setTarget(target);
-        boolean enable =
-            !Model.getModelManagementHelper().isReadOnly(target);
-        for (final Component component : getComponents()) {
-            if (!(component instanceof JLabel)
-                    && component.isEnabled() != enable) {
-                component.setEnabled(enable);
+        /* This for e.g. a CommentEdge: */
+        if (Model.getFacade().isAUMLElement(target)) {
+            boolean enable =
+                !Model.getModelManagementHelper().isReadOnly(target);
+            for (final Component component : getComponents()) {
+                if (!(component instanceof JLabel)
+                        && component.isEnabled() != enable) {
+                    component.setEnabled(enable);
+                }
             }
         }
     }

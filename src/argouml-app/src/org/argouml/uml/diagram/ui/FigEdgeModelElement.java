@@ -724,7 +724,11 @@ public abstract class FigEdgeModelElement
      * @return The model element is read only.
      */
     private boolean isReadOnly() {
-        return Model.getModelManagementHelper().isReadOnly(getOwner());
+        Object owner = getOwner();
+        if (Model.getFacade().isAUMLElement(owner)) {
+            return Model.getModelManagementHelper().isReadOnly(owner);
+        }
+        return false;
     }
 
     
