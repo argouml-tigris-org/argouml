@@ -372,7 +372,8 @@ class Operation extends JPanel {
             }
             
             // the in param
-            if (inType.getSelectedIndex() != -1) {
+            if (inType.getSelectedIndex() != -1 
+                    && paramName.getText().length() > 0) {
                 help.setType(inParam, inType.getSelectedObjects()[0]);
                 help.setKind(inParam, Model.getDirectionKind().getInParameter());
                 help.setName(inParam, paramName.getText());
