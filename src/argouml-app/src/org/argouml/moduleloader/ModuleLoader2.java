@@ -109,6 +109,7 @@ public final class ModuleLoader2 {
      */
     private ModuleLoader2() {
 	moduleStatus = new HashMap<ModuleInterface, ModuleStatus>();
+        computeExtensionLocations();
     }
 
     /**
@@ -453,67 +454,72 @@ public final class ModuleLoader2 {
     /**
      * Find and enable modules from our "ext" directory and from the
      * directory specified in "argo.ext.dir".<p>
-     *
-     * TODO: This does a calculation of where our "ext" directory is.
-     *       We should eventually make sure that this calculation is
-     *       only present in one place in the code and not several.
      */
     private void huntForModulesFromExtensionDir() {
-	// Use a little trick to find out where Argo is being loaded from.
+        for (String location : extensionLocations) {
+            huntModulesFromNamedDirectory(location);            
+        }
+    }
+
+    /**
+     * This does a calculation of where our "ext" directory is.
+     * TODO: We should eventually make sure that this calculation is
+     *       only present in one place in the code and not several.
+     */
+    private void computeExtensionLocations() {
+        // Use a little trick to find out where Argo is being loaded from.
         String extForm = getClass().getResource(Argo.ARGOINI).toExternalForm();
-	String argoRoot =
-	    extForm.substring(0,
-			      extForm.length() - Argo.ARGOINI.length());
+        String argoRoot =
+            extForm.substring(0,
+                              extForm.length() - Argo.ARGOINI.length());
 
-	// If it's a jar, clean it up and make it look like a file url
-	if (argoRoot.startsWith(JAR_PREFIX)) {
-	    argoRoot = argoRoot.substring(JAR_PREFIX.length());
-	    if (argoRoot.endsWith("!")) {
-	        argoRoot = argoRoot.substring(0, argoRoot.length() - 1);
-	    }
-	}
+        // If it's a jar, clean it up and make it look like a file url
+        if (argoRoot.startsWith(JAR_PREFIX)) {
+            argoRoot = argoRoot.substring(JAR_PREFIX.length());
+            if (argoRoot.endsWith("!")) {
+                argoRoot = argoRoot.substring(0, argoRoot.length() - 1);
+            }
+        }
 
-	String argoHome = null;
+        String argoHome = null;
 
-	if (argoRoot != null) {
-	    LOG.info("argoRoot is " + argoRoot);
-	    if (argoRoot.startsWith(FILE_PREFIX)) {
-	        argoHome =
-	            new File(argoRoot.substring(FILE_PREFIX.length()))
-	            	.getAbsoluteFile().getParent();
-	    } else {
-	        argoHome = new File(argoRoot).getAbsoluteFile().getParent();
-	    }
+        if (argoRoot != null) {
+            LOG.info("argoRoot is " + argoRoot);
+            if (argoRoot.startsWith(FILE_PREFIX)) {
+                argoHome =
+                    new File(argoRoot.substring(FILE_PREFIX.length()))
+                        .getAbsoluteFile().getParent();
+            } else {
+                argoHome = new File(argoRoot).getAbsoluteFile().getParent();
+            }
 
-	    try {
-		argoHome = java.net.URLDecoder.decode(argoHome, 
+            try {
+                argoHome = java.net.URLDecoder.decode(argoHome, 
                         Argo.getEncoding());
-	    } catch (UnsupportedEncodingException e) {
-		LOG.warn("Encoding " 
+            } catch (UnsupportedEncodingException e) {
+                LOG.warn("Encoding " 
                         + Argo.getEncoding() 
                         + " is unknown.");
-	    }
+            }
 
-	    LOG.info("argoHome is " + argoHome);
-	}
+            LOG.info("argoHome is " + argoHome);
+        }
 
-	if (argoHome != null) {
+        if (argoHome != null) {
             String extdir;
-	    if (argoHome.startsWith(FILE_PREFIX)) {
-	        extdir = argoHome.substring(FILE_PREFIX.length())
+            if (argoHome.startsWith(FILE_PREFIX)) {
+                extdir = argoHome.substring(FILE_PREFIX.length())
                         + File.separator + "ext";
-	    } else {
-	        extdir = argoHome + File.separator + "ext";
-	    }
+            } else {
+                extdir = argoHome + File.separator + "ext";
+            }
             extensionLocations.add(extdir);
-	    huntModulesFromNamedDirectory(extdir);
-	}
+        }
 
         String extdir = System.getProperty("argo.ext.dir");
-	if (extdir != null) {
+        if (extdir != null) {
             extensionLocations.add(extdir);
-	    huntModulesFromNamedDirectory(extdir);
-	}
+        }
     }
     
     /**

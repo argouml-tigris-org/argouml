@@ -52,6 +52,9 @@ public class InitProfileSubsystem {
         /* Set up the property panels for critics: */
         PropPanelFactory factory = new ProfilePropPanelFactory();
         PropPanelFactoryManager.addPropPanelFactory(factory);    
+        
+        /* init profiles defined in jar files */
+        new ProfileLoader().doLoad();
     }
 
 }
