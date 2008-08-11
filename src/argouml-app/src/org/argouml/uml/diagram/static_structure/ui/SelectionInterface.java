@@ -106,7 +106,7 @@ public class SelectionInterface extends SelectionNodeClarifiers2 {
     protected Icon[] getIcons() {
         if (Model.getModelManagementHelper().isReadOnly(
                 getContent().getOwner())) {
-            return new Icon[] { null, realiz, null, null, null };
+            return new Icon[] {null, realiz, null, null, null };
         }
         return icons;
     }

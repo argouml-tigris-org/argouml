@@ -107,7 +107,7 @@ public class SelectionClass extends SelectionNodeClarifiers2 {
         // Readonly class: no generalization, no association to self
         if (Model.getModelManagementHelper().isReadOnly(
                 getContent().getOwner())) {
-            return new Icon[] { null, inherit, null, null, null };
+            return new Icon[] {null, inherit, null, null, null };
         }
         return workingIcons;
     }

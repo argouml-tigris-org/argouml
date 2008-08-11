@@ -84,7 +84,7 @@ public class SelectionActor extends SelectionNodeClarifiers2 {
     protected Icon[] getIcons() {
         if (Model.getModelManagementHelper().isReadOnly(
                 getContent().getOwner())) {
-            return new Icon[] { null, generalizationIcon, null, null, null };
+            return new Icon[] {null, generalizationIcon, null, null, null };
         }
         return icons;
     }

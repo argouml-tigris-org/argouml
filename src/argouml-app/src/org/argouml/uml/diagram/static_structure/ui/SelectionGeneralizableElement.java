@@ -89,7 +89,7 @@ public abstract class SelectionGeneralizableElement extends
         }
         if (Model.getModelManagementHelper().isReadOnly(
                 getContent().getOwner())) {
-            return new Icon[] { null, inherit, null, null, null };
+            return new Icon[] {null, inherit, null, null, null };
         }
         return icons;
     }

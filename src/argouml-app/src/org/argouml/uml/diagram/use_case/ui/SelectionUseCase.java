@@ -81,7 +81,7 @@ public class SelectionUseCase extends SelectionNodeClarifiers2 {
     protected Icon[] getIcons() {
         if (Model.getModelManagementHelper().isReadOnly(
                 getContent().getOwner())) {
-            return new Icon[] { null, inherit, null, null, null };
+            return new Icon[] {null, inherit, null, null, null };
         }
         return icons;
     }
