@@ -38,6 +38,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * Critic to check that an association class does not take part in further
  * association class relations. Circular is to be read in "quotes".
  *
+ * Well-formedness rule [2] for AssociationClass. See page 52 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ * 
  * @author Markus Klink
  */
 public class CrCircularAssocClass extends CrUML {

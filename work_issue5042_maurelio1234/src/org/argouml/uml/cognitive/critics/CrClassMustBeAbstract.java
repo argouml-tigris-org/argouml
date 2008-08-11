@@ -37,6 +37,9 @@ import org.argouml.uml.cognitive.UMLDecision;
  * A critic to detect whether a non abstract class
  * contains abstract operations.
  *
+ * Well-formedness rule [1] for Class. See page 55 of UML 1.4
+ * Semantics. OMG document UML 1.4.2 formal/04-07-02.
+ *
  * @author jrobbins
  */
 public class CrClassMustBeAbstract extends CrUML {
