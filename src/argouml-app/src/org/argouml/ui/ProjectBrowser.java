@@ -1417,8 +1417,8 @@ public final class ProjectBrowser
             project.postSave();
 
             ArgoEventPump.fireEvent(new ArgoStatusEvent(
-                    ArgoEventTypes.STATUS_PROJECT_SAVED, this, project.getURI()
-                            .toString()));
+                    ArgoEventTypes.STATUS_PROJECT_SAVED, this, 
+                    file.getAbsolutePath()));
             LOG.debug ("setting most recent project file to "
                    + file.getCanonicalPath());
 
