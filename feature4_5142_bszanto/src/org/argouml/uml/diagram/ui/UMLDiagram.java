@@ -44,6 +44,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.ui.CmdCreateNodeWizard;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ArgoDiagramImpl;
 import org.argouml.uml.diagram.Relocatable;

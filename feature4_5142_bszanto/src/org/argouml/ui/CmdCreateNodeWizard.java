@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
 
@@ -30,6 +30,7 @@ import javax.swing.Action;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.uml.diagram.ui.CreateWizard;
 import org.tigris.gef.base.CreateNodeAction;
 
 /**
@@ -39,14 +40,10 @@ import org.tigris.gef.base.CreateNodeAction;
  */
 public class CmdCreateNodeWizard extends CreateNodeAction {
     
-    /**
-     * Wizard to use
-     */
+    /** Wizard to use */
     private CreateWizard wizard = null;
     
-    /**
-     * Object to be created.
-     */
+    /** Object to be created. */
     private Object node;
 
     /**
@@ -67,10 +64,15 @@ public class CmdCreateNodeWizard extends CreateNodeAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        
         // displays the wizard that returns the node to be created
         node = wizard.display();
+        
+        // if the node is null, the acion was canceled
+        if (node != null) {
+            super.actionPerformed(e);
+        } else {
+            return;
+        }
     }
     
     @Override
