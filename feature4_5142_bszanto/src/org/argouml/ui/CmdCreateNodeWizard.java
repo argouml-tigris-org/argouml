@@ -64,6 +64,7 @@ public class CmdCreateNodeWizard extends CreateNodeAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        wizard.init();
         // displays the wizard that returns the node to be created
         node = wizard.display();
         

@@ -71,15 +71,22 @@ public class ClassCreateWizard implements CreateWizard {
     private Object classNode = null;
 
     /** Attributes */
-    private Vector<Attribute> attributes = new Vector<Attribute>();
+    private Vector<Attribute> attributes;
 
     /** Operations */
-    private Vector<Operation> operations = new Vector<Operation>();
+    private Vector<Operation> operations;
 
     /**
      * Constructor
      */
     public ClassCreateWizard() {
+    }
+    
+    public void init() {
+        classNode = null;
+        attributes = new Vector<Attribute>();
+        operations = new Vector<Operation>();
+        
         dialog = new JDialog();
         dialog.setTitle(Translator.localize("dialog.title.wizard-class"));
         dialog.setSize(WIDTH, HEIGHT);
@@ -87,8 +94,7 @@ public class ClassCreateWizard implements CreateWizard {
         dialog.setLocation((screenSize.width - WIDTH) / 2,
                 (screenSize.height - HEIGHT) / 2);
         dialog.setResizable(false);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);   
         
         dialog.getContentPane().setLayout(new BorderLayout());
 
@@ -107,7 +113,8 @@ public class ClassCreateWizard implements CreateWizard {
         pnlAtt.setLayout(new BoxLayout(pnlAtt, BoxLayout.PAGE_AXIS));
         JPanel pnlOp = new JPanel();
         pnlOp.setBorder(BorderFactory.createTitledBorder(Translator
-                .localize("label.operations")));
+                .localize("label.operations") 
+                + "   [  visibility returnType opName (inType paramName)  ]"));
         pnlOp.setLayout(new BoxLayout(pnlOp, BoxLayout.PAGE_AXIS));
         for (int i = 0; i < 4; i++) {
             attributes.add(new Attribute());
@@ -236,13 +243,13 @@ class Attribute extends JPanel {
             Object vis = null;
             int index = visibility.getSelectedIndex();
             switch (index) {
-            case 1:
+            case 0:
                 vis = vk.getPublic();
                 break;
-            case 2:
+            case 1:
                 vis = vk.getPackage();
                 break;
-            case 3:
+            case 2:
                 vis = vk.getProtected();
                 break;
             default:
@@ -261,14 +268,17 @@ class Attribute extends JPanel {
 }
 
 class Operation extends JPanel {
-    /** Name field */
-    private JTextField name;
     /** Visibility field */
     private JComboBox visibility;
-    /** In type field */
-    private UMLComboBox2 inType;
     /** Return type field */
     private UMLComboBox2 outType;
+    /** Name field */
+    private JTextField name;
+    /** In type field */
+    private UMLComboBox2 inType;
+    /** Name field */
+    private JTextField paramName;
+    
     /** In parameter */
     private Object inParam = null;
     /** Return parameter */
@@ -288,34 +298,41 @@ class Operation extends JPanel {
                 "protected(#)", "private(-)" };
         visibility = new JComboBox(vis);
         visibility.setPreferredSize(
-                new Dimension((int) (1.5 * ClassCreateWizard.WIDTH / 10), 25));
-        
+                new Dimension((int) (1.3 * ClassCreateWizard.WIDTH / 10), 25));
+
         UMLComboBoxModel2 model = new UMLStructuralFeatureTypeComboBoxModel();
-        inParam = Model.getCoreFactory().createParameter();
-        model.setTarget(inParam);
-        inType = new UMLComboBox2(model,
-                ActionSetStructuralFeatureType.getInstance());
-        inType.setSelectedIndex(0);
-        inType.setPreferredSize(
-                new Dimension((int) (2.7 * ClassCreateWizard.WIDTH / 10), 25));
-        
-        name = new JTextField();
-        name.setPreferredSize(
-                new Dimension(2 * ClassCreateWizard.WIDTH / 10, 25));
-        
-        model = new UMLStructuralFeatureTypeComboBoxModel();
         returnParam = Model.getCoreFactory().createParameter();
         model.setTarget(returnParam);
         outType = new UMLComboBox2(model,
                 ActionSetStructuralFeatureType.getInstance());
-        outType.setSelectedIndex(0);
+//        outType.setSelectedIndex(0);
         outType.setPreferredSize(
-                new Dimension((int) (2.7 * ClassCreateWizard.WIDTH / 10), 25));
+                new Dimension((2 * ClassCreateWizard.WIDTH / 10), 25));      
+
+        name = new JTextField();
+        name.setPreferredSize(
+                new Dimension((int) (1.7 * ClassCreateWizard.WIDTH / 10), 25));
+        
+        model = new UMLStructuralFeatureTypeComboBoxModel();
+        inParam = Model.getCoreFactory().createParameter();
+        model.setTarget(inParam);
+        inType = new UMLComboBox2(model,
+                ActionSetStructuralFeatureType.getInstance());
+//        inType.setSelectedIndex(0);
+        inType.setPreferredSize(
+                new Dimension((2 * ClassCreateWizard.WIDTH / 10), 25));
+        
+        paramName = new JTextField();
+        paramName.setPreferredSize(
+                new Dimension((int) (1.7 * ClassCreateWizard.WIDTH / 10), 25));      
 
         this.add(visibility);
-        this.add(inType);
-        this.add(name);
         this.add(outType);
+        this.add(name);
+        this.add(new JLabel("("));
+        this.add(inType);
+        this.add(paramName);
+        this.add(new JLabel(")"));
     }
     
     /**
@@ -332,13 +349,13 @@ class Operation extends JPanel {
             Object vis = null;
             int index = visibility.getSelectedIndex();
             switch (index) {
-            case 1:
+            case 0:
                 vis = vk.getPublic();
                 break;
-            case 2:
+            case 1:
                 vis = vk.getPackage();
                 break;
-            case 3:
+            case 2:
                 vis = vk.getProtected();
                 break;
             default:
@@ -347,15 +364,20 @@ class Operation extends JPanel {
             help.setVisibility(operation, vis);
             
             // the return param
-            help.setType(returnParam, outType.getSelectedObjects()[0]);
-            help.setKind(returnParam, 
-                    Model.getDirectionKind().getReturnParameter());
-            help.addParameter(operation, returnParam);
+            if (outType.getSelectedIndex() != -1) {
+                help.setType(returnParam, outType.getSelectedObjects()[0]);
+                help.setKind(returnParam, 
+                        Model.getDirectionKind().getReturnParameter());
+                help.addParameter(operation, returnParam);
+            }
             
             // the in param
-            help.setType(inParam, inType.getSelectedObjects()[0]);
-            help.setKind(inParam, Model.getDirectionKind().getInParameter());
-            help.addParameter(operation, inParam);       
+            if (inType.getSelectedIndex() != -1) {
+                help.setType(inParam, inType.getSelectedObjects()[0]);
+                help.setKind(inParam, Model.getDirectionKind().getInParameter());
+                help.setName(inParam, paramName.getText());
+                help.addParameter(operation, inParam); 
+            }
         } else {
             operation = null;
         }

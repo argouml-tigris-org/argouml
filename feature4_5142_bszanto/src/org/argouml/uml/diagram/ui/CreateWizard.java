@@ -33,6 +33,11 @@ package org.argouml.uml.diagram.ui;
 public interface CreateWizard {
     
     /**
+     * Initializes the wizard.
+     */
+    public void init();
+    
+    /**
      * Displays the wizard.
      * @return the object to be created, null otherwise (if the object should 
      * not be created) 
