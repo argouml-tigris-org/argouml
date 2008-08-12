@@ -33,7 +33,6 @@ import java.util.Set;
 
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
-import javax.jmi.reflect.RefPackage;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.DummyModelCommand;
@@ -615,9 +614,11 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         if (Model.getModelManagementHelper().isReadOnly(fromElement)) {
             // Don't allow connections to be created from a read only
             // model element to any other
-            // TODO: Maybe we should allow association so long as both ends
-            // are not read only. We would then have to reverse the ends in
-            // buildConnection and force to unidirectional.
+            // TODO: This should be considered a workaround.  It only works
+            // because, by default, we place newly created relationships in
+            // the namespace of the fromElement.  The correct behavior in
+            // the presence of read-only elements really depends on the type of
+            // connection as well as the writeability of both ends.
             return false;
         }
         // Get the list of valid model item pairs for the given connection type
