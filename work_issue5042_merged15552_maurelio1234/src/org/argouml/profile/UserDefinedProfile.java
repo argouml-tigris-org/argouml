@@ -36,13 +36,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
 import org.argouml.model.Model;
+import org.argouml.profile.internal.ocl.CrOCL;
+import org.argouml.profile.internal.ocl.InvalidOclException;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Represents a profile defined by the user
@@ -63,7 +69,8 @@ public class UserDefinedProfile extends Profile {
 
     private Collection profilePackages;
 
-    private UserDefinedFigNodeStrategy figNodeStrategy = new UserDefinedFigNodeStrategy();
+    private UserDefinedFigNodeStrategy figNodeStrategy 
+                                = new UserDefinedFigNodeStrategy();
 
     private class UserDefinedFigNodeStrategy implements FigNodeStrategy {
 
@@ -242,9 +249,231 @@ public class UserDefinedProfile extends Profile {
         }
 
         // load critiques
-        // TODO read critics in OCL from xmi
-        Set<Critic> myCritics = this.getCritics();                
+        Set<Critic> myCritics = this.getCritics();         
+        myCritics.addAll(getAllCritiquesInModel());
         this.setCritics(myCritics);
+    }
+
+    private CrOCL generateCriticFromComment(Object critique) {
+        String ocl = "" + Model.getFacade().getBody(critique);
+        String headline = null;
+        String description = null;
+        int priority = ToDoItem.HIGH_PRIORITY;
+        Vector<Decision> supportedDecisions = new Vector<Decision>();
+        Vector<String> knowledgeTypes = new Vector<String>();
+        String moreInfoURL = null;
+
+        Collection tags = Model.getFacade().getTaggedValuesCollection(critique);
+        boolean i18nFound = false;
+        
+        for (Object tag : tags) {
+            if (Model.getFacade().getTag(tag).toLowerCase().equals("i18n")) {
+                i18nFound = true;
+                String i18nSource = Model.getFacade().getValueOfTag(tag);
+                headline = Translator.localize(i18nSource + "-head");
+                description = Translator.localize(i18nSource + "-desc");
+                moreInfoURL = Translator.localize(i18nSource + "-moreInfoURL");
+            } else if (!i18nFound
+                    && Model.getFacade().getTag(tag).toLowerCase().equals(
+                            "headline")) {
+                headline = Model.getFacade().getValueOfTag(tag);
+            } else if (!i18nFound
+                    && Model.getFacade().getTag(tag).toLowerCase().equals(
+                            "description")) {
+                description = Model.getFacade().getValueOfTag(tag);
+            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
+                    "priority")) {
+                priority = str2Priority(Model.getFacade().getValueOfTag(tag));
+            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
+                    "supporteddecision")) {
+                String decStr = Model.getFacade().getValueOfTag(tag);
+
+                StringTokenizer st = new StringTokenizer(decStr, ",;:");
+
+                while (st.hasMoreTokens()) {
+                    Decision decision = str2Decision(st.nextToken().trim()
+                            .toLowerCase());
+                    
+                    if (decision != null) {
+                        supportedDecisions.add(decision);
+                    }
+                }
+            } else if (Model.getFacade().getTag(tag).toLowerCase().equals(
+                    "knowledgetype")) {
+                String ktStr = Model.getFacade().getValueOfTag(tag);
+
+                StringTokenizer st = new StringTokenizer(ktStr, ",;:");
+
+                while (st.hasMoreTokens()) {
+                    String knowledge = str2KnowledgeType(st.nextToken().trim()
+                            .toLowerCase());
+                    
+                    if (knowledge != null) {
+                        knowledgeTypes.add(knowledge);
+                    }
+                }
+            } else if (!i18nFound
+                    && Model.getFacade().getTag(tag).toLowerCase().equals(
+                            "moreinfourl")) {
+                moreInfoURL = Model.getFacade().getValueOfTag(tag);
+            }
+
+        }
+
+        LOG.debug("OCL-Critic: " + ocl);
+
+        try {
+            return new CrOCL(ocl, headline, description, priority,
+                    supportedDecisions, knowledgeTypes, moreInfoURL);
+        } catch (InvalidOclException e) {
+            LOG.error("Invalid OCL in XMI!", e);
+
+            return null;
+        }
+
+    }
+
+    private String str2KnowledgeType(String token) {
+        String knowledge = null;
+        
+        if (token.equals("completeness")) {
+            knowledge = Critic.KT_COMPLETENESS;
+        }
+        if (token.equals("consistency")) {
+            knowledge = Critic.KT_CONSISTENCY;
+        }
+        if (token.equals("correctness")) {
+            knowledge = Critic.KT_CORRECTNESS;
+        }
+        if (token.equals("designers")) {
+            knowledge = Critic.KT_DESIGNERS;
+        }
+        if (token.equals("experiencial")) {
+            knowledge = Critic.KT_EXPERIENCIAL;
+        }
+        if (token.equals("optimization")) {
+            knowledge = Critic.KT_OPTIMIZATION;
+        }
+        if (token.equals("organizational")) {
+            knowledge = Critic.KT_ORGANIZATIONAL;
+        }
+        if (token.equals("presentation")) {
+            knowledge = Critic.KT_PRESENTATION;
+        }
+        if (token.equals("semantics")) {
+            knowledge = Critic.KT_SEMANTICS;
+        }
+        if (token.equals("syntax")) {
+            knowledge = Critic.KT_SYNTAX;
+        }
+        if (token.equals("tool")) {
+            knowledge = Critic.KT_TOOL;
+        }
+        return knowledge;
+    }
+
+    private int str2Priority(String prioStr) {
+        int prio = ToDoItem.MED_PRIORITY;
+        
+        if (prioStr.toLowerCase().equals("high")) {
+            prio = ToDoItem.HIGH_PRIORITY;
+        } else if (prioStr.toLowerCase().equals("med")) {
+            prio = ToDoItem.MED_PRIORITY;
+        } else if (prioStr.toLowerCase().equals("low")) {
+            prio = ToDoItem.LOW_PRIORITY;
+        } else if (prioStr.toLowerCase().equals("interruptive")) {
+            prio = ToDoItem.INTERRUPTIVE_PRIORITY;
+        }
+        return prio;
+    }
+
+    private Decision str2Decision(String token) {
+        Decision decision = null;
+        
+        if (token.equals("behavior")) {
+            decision = UMLDecision.BEHAVIOR;
+        }
+        if (token.equals("containment")) {                        
+            decision = UMLDecision.CONTAINMENT;
+        }
+        if (token.equals("classselection")) {
+            decision = UMLDecision.CLASS_SELECTION;
+        }
+        if (token.equals("codegen")) {
+            decision = UMLDecision.CODE_GEN;
+        }
+        if (token.equals("expectedusage")) {
+            decision = UMLDecision.EXPECTED_USAGE;
+        }
+        if (token.equals("inheritance")) {
+            decision = UMLDecision.INHERITANCE;
+        }
+        if (token.equals("instantiation")) {
+            decision = UMLDecision.INSTANCIATION;
+        }
+        if (token.equals("methods")) {
+            decision = UMLDecision.METHODS;
+        }
+        if (token.equals("modularity")) {
+            decision = UMLDecision.MODULARITY;
+        }
+        if (token.equals("naming")) {                       
+            decision = UMLDecision.NAMING;
+        }
+        if (token.equals("patterns")) {
+            decision = UMLDecision.PATTERNS;
+        }
+        if (token.equals("plannedextensions")) {
+            decision = UMLDecision.PLANNED_EXTENSIONS;
+        }
+        if (token.equals("relationships")) {
+            decision = UMLDecision.RELATIONSHIPS;
+        }
+        if (token.equals("statemachines")) {
+            decision = UMLDecision.STATE_MACHINES;
+        }
+        if (token.equals("stereotypes")) {
+            decision = UMLDecision.STEREOTYPES;
+        }
+        if (token.equals("storage")) {
+            decision = UMLDecision.STORAGE;
+        }
+        return decision;
+    }
+
+    private Vector<CrOCL> getAllCritiquesInModel() {
+        Vector<CrOCL> ret = new Vector<CrOCL>();
+
+        Collection<Object> comments = getAllCommentsInModel(profilePackages);
+
+        for (Object comment : comments) {
+            if (Model.getExtensionMechanismsHelper().hasStereotype(comment,
+                    "Critic")) {
+                CrOCL cr = generateCriticFromComment(comment);
+
+                if (cr != null) {
+                    ret.add(cr);
+                }
+            }
+        }
+        return ret;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Collection<Object> getAllCommentsInModel(Collection objs) {
+        Collection<Object> col = new Vector<Object>();
+        for (Object obj : objs) {
+            if (Model.getFacade().isAComment(obj)) {
+                col.add(obj);
+            } else if (Model.getFacade().isANamespace(obj)) {
+                Collection contents = Model
+                        .getModelManagementHelper().getAllContents(obj);
+                if (contents != null) {
+                    col.addAll(contents);
+                }
+            }
+        }
+        return col;
     }
 
     /**
