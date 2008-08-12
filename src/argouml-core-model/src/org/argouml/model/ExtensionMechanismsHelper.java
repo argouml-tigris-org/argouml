@@ -277,7 +277,7 @@ public interface ExtensionMechanismsHelper {
      * Returns <code>true</code> if the given ModelElement has a Stereotype
      * with the given name.
      * 
-     * @param element the given element
+     * @param element the given ModelElement
      * @param name the given name
      * @return true if there is such a stereotype
      */
