@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -116,7 +116,7 @@ public class NotationUtilityJava {
      */
     static String generateChangeability(Object obj) {
         if (Model.getFacade().isAAttribute(obj)) {
-            if (!Model.getFacade().isReadOnly(obj)) {
+            if (Model.getFacade().isReadOnly(obj)) {
                 return "final ";
             }
         } else {
@@ -130,23 +130,26 @@ public class NotationUtilityJava {
     }
     
     static String generateClassifierRef(Object cls) {
-        if (cls == null)
+        if (cls == null) {
             return "";
+        }
         return Model.getFacade().getName(cls);
     }
     
     static String generateExpression(Object expr) {
-        if (Model.getFacade().isAExpression(expr))
+        if (Model.getFacade().isAExpression(expr)) {
             return generateUninterpreted(
                     (String) Model.getFacade().getBody(expr));
-        else if (Model.getFacade().isAConstraint(expr))
+        } else if (Model.getFacade().isAConstraint(expr)) {
             return generateExpression(Model.getFacade().getBody(expr));
+        }
         return "";
     }
     
     static String generateUninterpreted(String un) {
-        if (un == null)
+        if (un == null) {
             return "";
+        }
         return un;
     }
     
