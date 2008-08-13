@@ -1086,7 +1086,8 @@ public class Critic
      */
     @Override
     public String toString() {
-	return getCriticName();
+	//return getCriticName();
+        return getHeadline();
     }
 
 }

@@ -26,6 +26,8 @@ package org.argouml.profile;
 
 import java.util.List;
 
+import org.argouml.kernel.ProfileConfiguration;
+
 /**
  * Interface to the manager for the global set of registered profiles.
  * 
@@ -122,4 +124,11 @@ public interface ProfileManager {
      * @return profile
      */
     Profile lookForRegisteredProfile(String profile);
+
+    /**
+     * Apply the given ProfileConfiguration to ArgoUML
+     * 
+     * @param pc the profile configuration
+     */
+    void applyConfiguration(ProfileConfiguration pc);
 }

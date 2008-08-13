@@ -61,6 +61,12 @@ public class CompoundCritic extends Critic {
      */
     private List<Critic> critics = new ArrayList<Critic>();
 
+    /**
+     * The extra design materials to be returned along with 
+     * {@link #getCriticizedDesignMaterials()}
+     */
+    private Set<Object> extraDesignMaterials = new HashSet<Object>();
+    
     ////////////////////////////////////////////////////////////////
     // constructor
 
@@ -306,7 +312,25 @@ public class CompoundCritic extends Critic {
         for (Critic cr : this.critics) {
             ret.addAll(cr.getCriticizedDesignMaterials());
         }
+        ret.addAll(extraDesignMaterials);
         return ret;
+    }
+
+    /**
+     * Extra criticized design material to be added to the list returned by 
+     * {@link #getCriticizedDesignMaterials()}
+     * 
+     * @param dm extra design material
+     */
+    public void addExtraCriticizedDesignMaterial(Object dm) {
+        this.extraDesignMaterials.add(dm);
+    }
+    
+    /*
+     * @see org.argouml.cognitive.Critic#toString()
+     */
+    public String toString() {
+        return critics.toString(); 
     }
     
 }

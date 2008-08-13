@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.Vector;
 
+import org.argouml.cognitive.CompoundCritic;
 import org.argouml.cognitive.Critic;
 import org.argouml.i18n.Translator;
 import org.argouml.profile.Profile;
@@ -38,36 +39,55 @@ import org.argouml.profile.Profile;
  * 
  * @author maurelio1234
  */
-public class GoProfileToCritics implements PerspectiveRule {
+public class GoCriticsToCritic implements PerspectiveRule {
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize("misc.profile.critics");
+        return Translator.localize("misc.profile.critic");
     }
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(final Object parent) {
-        if (parent instanceof Profile) {
-            Object critics = new Vector<Critic>() {
-                {
-                    addAll(((Profile) parent).getCritics());
-                }
+        if (parent instanceof Vector) {
+            Vector v = (Vector) parent;
+            if (!v.isEmpty()) {
+                if (v.firstElement() instanceof Critic) {
+                    Vector<Object> ret = new Vector<Object>();
+                    for (Object critic : v) {
+                        final Critic fc = (Critic) critic;
+                        if (critic instanceof CompoundCritic) {
 
-                /*
-                 * @see java.util.Vector#toString()
-                 */
-                public String toString() {
-                    return Translator.localize("misc.profile.explorer.critic");
+                            Object compound = new Vector<Critic>() {
+                                {
+                                    addAll(((CompoundCritic) fc)
+                                            .getCriticList());
+                                }
+
+                                /*
+                                 * @see java.util.Vector#toString()
+                                 */
+                                public String toString() {
+                                    return Translator
+                                            .localize("misc.profile.explorer.compound");
+                                }
+                            };
+
+                            ret.add(compound);
+                        } else {
+                            ret.add(critic);
+                        }
+                    }
+                    return ret;
+                } else {
+                    return (Collection) parent;
                 }
-            };
-            
-            Vector<Object> ret = new Vector<Object>();
-            ret.add(critics);
-            return ret;
+            } else {
+                return Collections.EMPTY_SET;
+            }
         }
         return Collections.EMPTY_SET;
     }
