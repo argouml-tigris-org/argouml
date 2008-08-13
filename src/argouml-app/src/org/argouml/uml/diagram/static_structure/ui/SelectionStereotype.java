@@ -55,8 +55,8 @@ public class SelectionStereotype extends SelectionNodeClarifiers2 {
     private boolean useComposite;
     
     private static Icon icons[] = 
-    {inheritIcon,
-     dependIcon,
+    {dependIcon,
+     inheritIcon,
      null,
      null,
      null,
@@ -134,7 +134,7 @@ public class SelectionStereotype extends SelectionNodeClarifiers2 {
         }
         if (Model.getModelManagementHelper().isReadOnly(
                 getContent().getOwner())) {
-            return new Icon[] {null, dependIcon, null, null, null };
+            return new Icon[] {null, inheritIcon, null, null, null };
         }
         return icons;
     }
