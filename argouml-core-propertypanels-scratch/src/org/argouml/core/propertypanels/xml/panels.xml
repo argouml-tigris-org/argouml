@@ -2382,98 +2382,100 @@
   </panel>
   <panel name="UseCase">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
+    <combo name="namespace" type="Namespace" />   
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isRoot" type="Boolean" />
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
-    <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" />
+    <list name="supplierDependency" type="ModelElement" />
+    <separator />
+    <list name="generalization" type="Generalization" />
+    <list name="specialization" type="GeneralizableElement" />
+    <list name="extend" type="Extend" />
+    <list name="include" type="Include" />
+    <separator />
+    <!-- 
+    <list name="feature" type="Feature" />
+    -->
+	<list name="attribute" type="Feature" />
+    <list name="operation" type="Feature" />
+    <list name="association" type="Classifier" />
+    <list name="extensionPoint" type="ExtensionPoint" />
+            
+	<attribute name="visibility" type="VisibilityKind" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <list name="generalization" type="Generalization" />
-    <separator />
-    <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
-    <list name="feature" type="Feature" />
-    <list name="powertypeRange" type="Generalization" />
+    <attribute name="elementImport" type="ModelElement" />   
+    <attribute name="ownedElement" type="ModelElement" />    
+    <attribute name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
-    <separator />
     <list name="classifierInState" type="Classifier" />
     <list name="objectFlowState" type="Classifier" />
-    <list name="extend" type="Extend" />
-    <list name="include" type="Include" />
-    <list name="extensionPoint" type="ExtensionPoint" />
     <list name="extender" type="UseCase" />
     <list name="includer" type="UseCase" />
   </panel>
   <panel name="Actor">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
+    <combo name="namespace" type="Namespace" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isRoot" type="Boolean" />
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <separator />
+    <list name="generalization" type="Generalization" />
+    <list name="specialization" type="GeneralizableElement" />
+    <separator />
+    <list name="association" type="Classifier" />
+
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute  name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <list name="generalization" type="Generalization" />
-    <separator />
-    <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
-    <list name="feature" type="Feature" />
-    <list name="powertypeRange" type="Generalization" />
+    <attribute  name="elementImport" type="ModelElement" />
+    <attribute name="ownedElement" type="ModelElement" />
+    <attribute name="feature" type="Feature" />
+    <attribute name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
-    <separator />
     <list name="classifierInState" type="Classifier" />
     <list name="objectFlowState" type="Classifier" />
   </panel>
@@ -2518,96 +2520,98 @@
   </panel>
   <panel name="Extend">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-    </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <separator /> 
+    <singlerow name="base" type="UseCase" />
+    <singlerow name="extension" type="UseCase" />
+    <list name="extensionPoint" type="ExtensionPoint" />    
+    <separator />
+    <textarea name="condition" type="BooleanExpression" />
+    
+    
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="modifiers">
+      <attribute name="isSpecification" type="Boolean" />
+    </attribute>
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <attribute name="condition" type="BooleanExpression" />
-    <attribute name="base" type="UseCase" />
-    <attribute name="extension" type="UseCase" />
-    <list name="extensionPoint" type="ExtensionPoint" />
+    <attribute name="elementImport" type="ModelElement" />
   </panel>
   <panel name="Include">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-    </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+	<separator />
+	<singlerow name="base" type="UseCase" />
+	<singlerow name="addition" type="UseCase" />
+	
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="modifiers">
+      <attribute name="isSpecification" type="Boolean" />
+    </attribute>
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <attribute name="addition" type="UseCase" />
-    <attribute name="base" type="UseCase" />
+    <attribute name="elementImport" type="ModelElement" />    
   </panel>
   <panel name="ExtensionPoint">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-    </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <text name="location" type="LocationReference" />
+    <separator />
+    <singlerow name="useCase" type="UseCase" />
+    <list name="extend" type="ExtensionPoint" />
+    
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="modifiers">
+      <attribute name="isSpecification" type="Boolean" />
+    </attribute>
+    <attribute name="namespace" type="Namespace" />
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <attribute name="location" type="LocationReference" />
-    <attribute name="useCase" type="UseCase" />
-    <list name="extend" type="ExtensionPoint" />
+    <attribute name="elementImport" type="ModelElement" />
   </panel>
   <panel name="StateMachine">
     <text name="name" type="Name" />

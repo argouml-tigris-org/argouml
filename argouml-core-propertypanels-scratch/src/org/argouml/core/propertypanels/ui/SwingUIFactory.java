@@ -24,15 +24,14 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.io.InputStream;
-
-import javax.sql.rowset.spi.XmlReader;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
@@ -41,8 +40,6 @@ import org.argouml.core.propertypanels.panel.UIFactory;
 import org.argouml.core.propertypanels.panel.XMLPropPanelFactory;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
-import org.argouml.core.propertypanels.xml.XMLPropertyPanelsHandler;
-import org.argouml.core.propertypanels.xml.XmlSinglePanelHandler;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ScrollList;
@@ -62,9 +59,16 @@ import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.behavior.common_behavior.ActionAddContextSignal;
 import org.argouml.uml.ui.behavior.common_behavior.UMLSignalContextListModel;
+import org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint;
+import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint;
+import org.argouml.uml.ui.behavior.use_cases.UMLExtendBaseListModel;
+import org.argouml.uml.ui.behavior.use_cases.UMLExtendExtensionListModel;
+import org.argouml.uml.ui.behavior.use_cases.UMLExtendExtensionPointListModel;
+import org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointLocationDocument;
+import org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointUseCaseListModel;
+import org.argouml.uml.ui.behavior.use_cases.UMLIncludeAdditionListModel;
 import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtendListModel;
-import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtensionPointListModel;
 import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseIncludeListModel;
 import org.argouml.uml.ui.foundation.core.ActionAddAssociationSpecification;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
@@ -121,9 +125,6 @@ import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadio
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.LabelledLayout;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Creates the XML Property panels
@@ -230,6 +231,14 @@ public class SwingUIFactory implements UIFactory {
             text.setRows(5);
             control = new JScrollPane(text);
         }
+        else if ("condition".equals(prop.getName())) {
+            UMLExpressionModel3 conditionModel =
+                new UMLConditionExpressionModel();
+            JTextArea conditionArea =
+                new UMLExpressionBodyField(conditionModel, true);
+            conditionArea.setRows(5);
+            control = new JScrollPane(conditionArea);
+        }
         if (control != null) {
             // if the control is a panel, add it
             if (control == p) {
@@ -287,6 +296,27 @@ public class SwingUIFactory implements UIFactory {
             model.setTarget(target);
             pane = new UMLSingleRowSelector(model);
         }
+        else if ("base".equals(prop.getName())) {
+            model = new UMLExtendBaseListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);            
+        }
+        else if ("extension".equals(prop.getName())) {
+            model = new UMLExtendExtensionListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);            
+        }
+        else if ("addition".equals(prop.getName())) {
+            model = new UMLIncludeAdditionListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("useCase".equals(prop.getName())) {
+            model = new UMLExtensionPointUseCaseListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);            
+        }
+        
         if (pane != null) {           
             JLabel label = new JLabel(prop.getName());
             label.setLabelFor(pane);
@@ -492,12 +522,23 @@ public class SwingUIFactory implements UIFactory {
             list = new ScrollList(model);
         }
         else if ("extensionPoint".equals(prop.getName())) {
-            model = new UMLUseCaseIncludeListModel();
-            model.setTarget(target);
-            UMLMutableLinkedList l = new UMLMutableLinkedList(
-                    model, null,
-                    ActionNewUseCaseExtensionPoint.SINGLETON);
-            list = new ScrollList(l);
+            if (Model.getFacade().isAUseCase(target)) {
+                model = new UMLUseCaseIncludeListModel();
+                model.setTarget(target);
+                UMLMutableLinkedList l = new UMLMutableLinkedList(
+                        model, null,
+                        ActionNewUseCaseExtensionPoint.SINGLETON);
+                list = new ScrollList(l);
+            }
+            else {
+                model = new UMLExtendExtensionPointListModel();
+                model.setTarget(target);
+                JList l =
+                    new UMLMutableLinkedList(model, 
+                        ActionAddExtendExtensionPoint.getInstance(),
+                        ActionNewExtendExtensionPoint.SINGLETON);
+                list = new ScrollList(l);
+            }
         }
         if (list != null) {
             String name = prop.getName();
@@ -706,7 +747,9 @@ public class SwingUIFactory implements UIFactory {
         else if ("discriminator".equals(prop.getName())) {
             document = new UMLDiscriminatorNameDocument();            
         }
-        
+        else if ("location".equals(prop.getName())) {
+            document = new UMLExtensionPointLocationDocument();
+        }
         if (document != null) {
             document.setTarget(target);
             tfield = new UMLTextField2(document);
