@@ -200,14 +200,14 @@ public class SwingUIFactory implements UIFactory {
 
         JComponent control = null;
         
-        if ("initial_value".equals(prop.getName())) {        
+        if ("initialValue".equals(prop.getName())) {        
             UMLExpressionModel3 model = new UMLInitialValueExpressionModel();
             // model.setTarget(target);
 
             p  = new UMLExpressionPanel(model, prop.getName());
             control = p;
         }
-        if ("default_value".equals(prop.getName())) {        
+        if ("defaultValue".equals(prop.getName())) {        
             UMLExpressionModel3 model = new UMLDefaultValueExpressionModel();
             // model.setTarget(target);
 
@@ -254,6 +254,11 @@ public class SwingUIFactory implements UIFactory {
         
         if ("owner".equals(prop.getName())) {
             model = new UMLFeatureOwnerListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("behavioralFeature".equals(prop.getName())) {
+            model = new UMLParameterBehavioralFeatListModel();
             model.setTarget(target);
             pane = new UMLSingleRowSelector(model);
         }
@@ -325,12 +330,12 @@ public class SwingUIFactory implements UIFactory {
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("attributes".equals(prop.getName())) {
+        else if ("attribute".equals(prop.getName())) {
             model = new UMLClassAttributeListModel();
             model.setTarget(target);
             list = new ScrollList(model, true, false);
         }
-        else if ("association_ends".equals(prop.getName())) {
+        else if ("association".equals(prop.getName())) {
             model = new UMLClassifierAssociationEndListModel();
             model.setTarget(target);
             list = new ScrollList(model);
@@ -345,12 +350,12 @@ public class SwingUIFactory implements UIFactory {
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("owned".equals(prop.getName())) {
+        else if ("ownedElement".equals(prop.getName())) {
             model = new UMLNamespaceOwnedElementListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("imported_elements".equals(prop.getName())) {
+        else if ("elementImport".equals(prop.getName())) {
             model = new UMLClassifierPackageImportsListModel();
             model.setTarget(target);
             list = new ScrollList(new UMLMutableLinkedList(model,
@@ -360,31 +365,31 @@ public class SwingUIFactory implements UIFactory {
                     null, //new ActionRemovePackageImport(),
                     true));
         }
-        else if ("parameters".equals(prop.getName())) {
+        else if ("parameter".equals(prop.getName())) {
             model = new UMLClassifierParameterListModel();
             model.setTarget(target);
             list = new ScrollList(new UMLLinkedList(model, 
                     true, false));
         }
-        else if ("raised_signals".equals(prop.getName())) {
+        else if ("raisedSignal".equals(prop.getName())) {
             model = new UMLOperationRaisedSignalsListModel();
             model.setTarget(target);
             list = new ScrollList(new UMLLinkedList(model, 
                     true, false));
         }
-        else if ("methods".equals(prop.getName())) {
+        else if ("method".equals(prop.getName())) {
             model = new UMLOperationMethodsListModel();
             model.setTarget(target);
             list = new ScrollList(new UMLLinkedList(model, 
                     true, false));
         }
-        else if ("tag_definitions".equals(prop.getName())) {
+        else if ("definedTag".equals(prop.getName())) {
             model = new UMLStereotypeTagDefinitionListModel();
             model.setTarget(target);
             list = new ScrollList(new UMLLinkedList(model,
                     true, false));
         }
-        else if ("base_class".equals(prop.getName())) {
+        else if ("baseClass".equals(prop.getName())) {
             model = new UMLStereotypeBaseClassListModel();
             model.setTarget(target);
             UMLMutableLinkedList l = new UMLMutableLinkedList(
@@ -402,32 +407,32 @@ public class SwingUIFactory implements UIFactory {
             list = new ScrollList( new UMLLinkedList(model, 
                     true, true));
         }
-        else if ("literals".equals(prop.getName())) {
+        else if ("literal".equals(prop.getName())) {
             model = new UMLEnumerationLiteralsListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("suppliers".equals(prop.getName())) {
+        else if ("supplier".equals(prop.getName())) {
             model = new UMLDependencySupplierListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("clients".equals(prop.getName())) {
+        else if ("client".equals(prop.getName())) {
             model = new UMLDependencyClientListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("connections".equals(prop.getName())) {
+        else if ("connection".equals(prop.getName())) {
             model = new UMLAssociationConnectionListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("association_roles".equals(prop.getName())) {
+        else if ("associationRole".equals(prop.getName())) {
             model = new UMLAssociationAssociationRoleListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("links".equals(prop.getName())) {
+        else if ("link".equals(prop.getName())) {
             model = new UMLAssociationLinkListModel();
             model.setTarget(target);
             list = new ScrollList(model);
@@ -440,12 +445,12 @@ public class SwingUIFactory implements UIFactory {
                     ActionAddAssociationSpecification.getInstance(),
                     null, null, true));
         }
-        else if ("qualifiers".equals(prop.getName())) {
+        else if ("qualifier".equals(prop.getName())) {
             model = new UMLAssociationEndQualifiersListModel();
             model.setTarget(target);
             list = new ScrollList(model);
         }
-        else if ("annotated_elements".equals(prop.getName())) {
+        else if ("annotatedElement".equals(prop.getName())) {
             model = new UMLCommentAnnotatedElementListModel();
             model.setTarget(target);
             UMLMutableLinkedList l = new UMLMutableLinkedList(
@@ -453,7 +458,7 @@ public class SwingUIFactory implements UIFactory {
             l.setDeleteAction(new ActionDeleteAnnotatedElement());
             list = new ScrollList(l);
         }
-        else if ("contexts".equals(prop.getName())) {
+        else if ("context".equals(prop.getName())) {
             model = new UMLSignalContextListModel();
             model.setTarget(target);
             UMLMutableLinkedList l = new UMLMutableLinkedList(
@@ -462,7 +467,7 @@ public class SwingUIFactory implements UIFactory {
                     new ActionRemoveContextSignal(), true);
             list = new ScrollList(l);
         }
-        else if ("receptions".equals(prop.getName())) {
+        else if ("reception".equals(prop.getName())) {
             model = new UMLSignalReceptionListModel();
             model.setTarget(target);
             UMLMutableLinkedList l = new UMLMutableLinkedList(
@@ -548,7 +553,7 @@ public class SwingUIFactory implements UIFactory {
             control = cPanel;
             
         }
-        else if ("direction_kind".equals(prop.getName())) {
+        else if ("kind".equals(prop.getName())) {
             UMLRadioButtonPanel cPanel = 
                 new UMLParameterDirectionKindRadioButtonPanel(
                     Translator.localize("label.parameter.kind"), true);
@@ -606,21 +611,19 @@ public class SwingUIFactory implements UIFactory {
         else if ("isActive".equals(p.getName())) {
             checkbox = new UMLClassActiveCheckBox();    
         }        
-        else if ("static".equals(p.getName())) {
-            if (Model.getFacade().isAAssociationEnd(target)) {
-                checkbox = new UMLAssociationEndTargetScopeCheckbox();
-            }
-            else {
-                checkbox = new UMLFeatureOwnerScopeCheckBox();
-            }
+        else if ("ownerScope".equals(p.getName())) {   
+            checkbox = new UMLFeatureOwnerScopeCheckBox();
         }
-        else if ("query".equals(p.getName())) {
+        else if ("targetScope".equals(p.getName())) {
+            checkbox = new UMLAssociationEndTargetScopeCheckbox();
+        }
+        else if ("isQuery".equals(p.getName())) {
             checkbox = new UMLBehavioralFeatureQueryCheckBox();
         }
         else if ("isNavigable".equals(p.getName())) {
             checkbox = new UMLAssociationEndNavigableCheckBox();
         }
-        else if ("ordered".equals(p.getName())) {
+        else if ("ordering".equals(p.getName())) {
             checkbox = new UMLAssociationEndOrderingCheckBox();
         }
         if (checkbox != null) {
