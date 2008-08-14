@@ -83,7 +83,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * Flag to indicate if the user may select the empty string ("") as value in
      * the combobox. If true the attribute that is shown by this combobox may be
      * set to null. Makes sure that there is always a "" in the list with
-     * objects so the user has the oportunity to select this to clear the
+     * objects so the user has the opportunity to select this to clear the
      * attribute.
      */
     private boolean isClearable = false;
@@ -105,9 +105,10 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     protected boolean buildingModel = false;
     
     /**
-     * Flag needed to prevent a loop during popup notification
+     * Flag needed to prevent infinite recursion during processing of
+     * popup visibility notification event.
      */
-    private boolean willBecomeVisible = false;
+    private boolean processingWillBecomeVisible = false;
 
 
     /**
@@ -143,7 +144,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * model, this method will make sure that the changes will be 
      * done in the combobox-model equally. <p>
      * TODO: This function is not yet completely written!
-     *
+     * 
+     * {@inheritDoc}
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
@@ -217,7 +219,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * selected item if there is one. Called from targetChanged every time the
      * target of the proppanel is changed.
      */
-    abstract protected void buildModelList();
+    protected abstract void buildModelList();
 
     /**
      * @param obj an UML object
@@ -320,7 +322,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         }
         fireListEvents = true;
         if (objects.size() != oldSize) {
-            fireIntervalAdded(this, oldSize - 1, objects.size() - 1);
+            fireIntervalAdded(this, oldSize == 0 ? 0 : oldSize - 1, 
+                    objects.size() - 1);
         }
     }
 
@@ -384,7 +387,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 
                 buildingModel = true;
                 try {
-                    LOG.info("Building the combo box model for " + this);
+                    LOG.debug("Building the combo box model for " + this);
                     buildMinimalModelList();
                     // Do not set buildingModel = false here, 
                     // otherwise the action for selection is performed.
@@ -405,7 +408,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 diagram.addPropertyChangeListener(
                         ArgoDiagram.NAMESPACE_KEY, this);
                 buildingModel = true;
-                LOG.info("Building the combo box model for " + this);
+                LOG.debug("Building the combo box model for " + this);
                 buildModelList();
                 setSelectedItem(getSelectedModelElement());
                 buildingModel = false;
@@ -653,7 +656,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        LOG.info("targetRemoved targetevent :  " + e);
+        LOG.debug("targetRemoved targetevent :  " + e);
         Object currentTarget = comboBoxTarget;
         Object oldTarget =
 	    e.getOldTargets().length > 0
@@ -709,7 +712,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         this.fireListEvents = events;
     }
     
-    boolean isLazy() {
+    protected boolean isLazy() {
         return false;
     }
     
@@ -720,16 +723,18 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
 
     public void popupMenuWillBecomeVisible(PopupMenuEvent ev) {
-        if (isLazy() && !willBecomeVisible) {
-            JComboBox list = (JComboBox) ev.getSource();
-
+        if (isLazy() && !processingWillBecomeVisible) {
             buildModelList();
-
-            willBecomeVisible = true; // the flag is needed to prevent a loop
+            // We should be able to just do the above, but Swing has already
+            // computed the size of the popup menu.  The rest of this is
+            // a workaround for Swing bug 
+            // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4743225
+            JComboBox list = (JComboBox) ev.getSource();
+            processingWillBecomeVisible = true;
             try {
                 list.getUI().setPopupVisible( list, true );
             } finally {
-                willBecomeVisible = false;
+                processingWillBecomeVisible = false;
             }
         }
     }

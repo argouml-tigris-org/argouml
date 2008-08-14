@@ -27,11 +27,15 @@ package org.argouml.uml.ui.foundation.core;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.util.PathComparator;
 
 /**
  * A model for a namespace combo box.
@@ -72,6 +76,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
+    @Override
     protected void buildMinimalModelList() {
         Object target = getTarget();
         Collection c = new ArrayList(1);
@@ -89,11 +94,13 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
+        Set<Object> elements = new TreeSet<Object>(new PathComparator());
+        
         Object model =
             ProjectManager.getManager().getCurrentProject().getRoot();
         Object target = getTarget();
-        Collection c = 
-            Model.getCoreHelper().getAllPossibleNamespaces(target, model);
+        elements.addAll(
+            Model.getCoreHelper().getAllPossibleNamespaces(target, model));
 
         /* These next lines for the case that the current namespace
          * is not a valid one... Which of course should not happen,
@@ -104,12 +111,17 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
          */
         if (target != null) {
             Object namespace = Model.getFacade().getNamespace(target);
-            if (namespace != null && !c.contains(namespace)) {
-                c.add(namespace);
+            if (namespace != null && !elements.contains(namespace)) {
+                elements.add(namespace);
                 LOG.warn("The current namespace is not a valid one!");
             }
         }
-        setElements(c);
+
+        // Our comparator will throw an InvalidElementException if the old
+        // list contains deleted elements (eg after a new project is loaded)
+        // so remove all the old contents first
+        removeAllElements();
+        addAll(elements);
     }
 
     /*
@@ -125,6 +137,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     /*
     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
     */
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         /*
          * Rebuild the list from scratch to be sure it's correct.
@@ -142,7 +155,8 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         }
     }
     
-    boolean isLazy() {
+    @Override
+    protected boolean isLazy() {
         return true;
     }
 }
