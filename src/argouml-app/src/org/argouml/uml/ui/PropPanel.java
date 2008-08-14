@@ -57,7 +57,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.LookAndFeelMgr;
