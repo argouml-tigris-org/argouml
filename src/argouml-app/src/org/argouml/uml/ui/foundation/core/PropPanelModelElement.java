@@ -78,9 +78,6 @@ public abstract class PropPanelModelElement extends PropPanel {
     private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel =
 	new UMLModelElementNamespaceComboBoxModel();
 
-    private static UMLModelElementNamespaceListModel namespaceListModel =
-	new UMLModelElementNamespaceListModel();
-
     private static UMLModelElementClientDependencyListModel
     clientDependencyListModel =
 	new UMLModelElementClientDependencyListModel();
@@ -201,6 +198,7 @@ public abstract class PropPanelModelElement extends PropPanel {
      * a readonly element.
      * @return The list of actions to show for this panel.
      */
+    @Override
     protected final List getActions() {
         List actions = super.getActions();
         if (Model.getFacade().isAUMLElement(getTarget())

@@ -28,8 +28,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.JComboBox;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.ui.LookAndFeelMgr;
@@ -49,9 +47,7 @@ import org.argouml.ui.targetmanager.TargettableModelView;
 public class UMLComboBox2
     extends JComboBox
     implements TargettableModelView, TargetListener {
-
-    private static final Logger LOG = Logger.getLogger(UMLComboBox2.class);
-    
+   
     /**
      * Constructor for UMLComboBox2.
      * @deprecated As of ArgoUml version unknown (before 0.13.5),
