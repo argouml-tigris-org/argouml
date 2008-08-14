@@ -180,10 +180,15 @@ public class UserDefinedProfile extends Profile {
      * Reads the informations defined as TaggedValues
      */
     private void finishLoading() {
-
-        for (Object obj : profilePackages) {
-            if (Model.getExtensionMechanismsHelper().hasStereotype(obj,
-                    "profile")) {
+        Collection packagesInProfile = filterPackages();
+        
+        for (Object obj : packagesInProfile) {
+            // if there is only one package in the model, we should suppose it's
+            // the profile model, if there is more than one, we take the ones
+            // marked as <<profile>>
+            if (Model.getFacade().isAModelElement(obj)
+                    && (Model.getExtensionMechanismsHelper().hasStereotype(obj,
+                            "profile") || (packagesInProfile.size() == 1))) {
 
                 // load profile name
                 String name = Model.getFacade().getName(obj);
@@ -219,7 +224,7 @@ public class UserDefinedProfile extends Profile {
 
         // load fig nodes
         Collection allStereotypes = Model.getExtensionMechanismsHelper()
-                .getStereotypes(profilePackages);
+                .getStereotypes(packagesInProfile);
         for (Object stereotype : allStereotypes) {
             Collection tags = Model.getFacade().getTaggedValuesCollection(
                     stereotype);
@@ -252,6 +257,19 @@ public class UserDefinedProfile extends Profile {
         Set<Critic> myCritics = this.getCritics();         
         myCritics.addAll(getAllCritiquesInModel());
         this.setCritics(myCritics);
+    }
+
+    /**
+     * @return the packages in the <code>profilePackages</code>
+     */
+    private Collection filterPackages() {
+        Vector<Object> ret = new Vector<Object>();
+        for (Object object : profilePackages) {
+            if (Model.getFacade().isAPackage(object)) {
+                ret.add(object);
+            }
+        }
+        return ret;
     }
 
     private CrOCL generateCriticFromComment(Object critique) {
