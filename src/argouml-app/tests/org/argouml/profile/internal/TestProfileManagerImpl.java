@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -82,7 +82,7 @@ public class TestProfileManagerImpl extends TestCase {
     }
 
     /**
-     * test remove profile
+     * Test remove the base UML profile. 
      */
     public void testRemoveDefaultProfile() {
         Profile umlProfile = manager.getProfileForClass(ProfileUML.class
@@ -91,8 +91,14 @@ public class TestProfileManagerImpl extends TestCase {
         assertTrue(manager.getRegisteredProfiles().contains(umlProfile));
         assertTrue(manager.getDefaultProfiles().contains(umlProfile));
         manager.removeProfile(umlProfile);
-        assertFalse(manager.getRegisteredProfiles().contains(umlProfile));
-        assertFalse(manager.getDefaultProfiles().contains(umlProfile));
+        assertTrue(manager.getRegisteredProfiles().contains(umlProfile));
+        assertTrue(manager.getDefaultProfiles().contains(umlProfile));
+    }
+    
+    /**
+     * Test register and remove a dummy profile.
+     */
+    public void testRegisterAndRemoveDummyProfile() {
         Profile testProfile = new Profile() {
 
             @Override
