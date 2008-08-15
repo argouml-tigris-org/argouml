@@ -52,6 +52,15 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 //        Model.getPump().addClassModelEventListener(this,
 //                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
+    
+    /**
+     * Constructor for UMLStructuralFeatureTypeComboBoxModel.
+     * @param clearable if the box should have a " " attribute.
+     * 
+     */
+    public UMLStructuralFeatureTypeComboBoxModel(boolean clearable) {
+        super("type", clearable);
+    }
 
     /*
      * This is explained by WFR 2 of a StructuralFeature: 
@@ -95,6 +104,11 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 	// list contains deleted elements (eg after a new project is loaded)
 	// so remove all the old contents first
         removeAllElements();
+        
+        // if the comboBox is clearable an "empty" object should also exist
+        if (isClearable()) {
+            addElement(" ");
+        }
         addAll(elements);
     }
     

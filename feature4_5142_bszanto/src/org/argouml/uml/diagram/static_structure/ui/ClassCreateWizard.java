@@ -165,22 +165,22 @@ public class ClassCreateWizard implements CreateWizard {
         Model.getCoreHelper().setName(classNode, txtName.getText());
         
         // adding attributes
-        Vector<Object> attList = new Vector<Object>();
-        for (Object temp : attributes) {
-            if (temp != null) {
-                attList.add(temp);
+        Vector<Object> attList = new Vector<Object>(); 
+        for (Attribute temp : attributes) {
+            if (temp.getAttribute() != null) {
+                attList.add(temp.getAttribute());
             }
         }
-
         Model.getCoreHelper().setAttributes(classNode, attList);
         
         // adding operations
         Vector<Object> opList = new Vector<Object>();
-        for (Object temp : attributes) {
-            if (temp != null) {
-                opList.add(temp);
+        for (Operation temp : operations) {
+            if (temp.getOperation() != null) {
+                opList.add(temp.getOperation());
             }
         }
+
         Model.getCoreHelper().setOperations(classNode, opList);
         
         dialog.setVisible(false);
@@ -304,11 +304,13 @@ class Operation extends JPanel {
         visibility.setPreferredSize(
                 new Dimension((int) (1.3 * ClassCreateWizard.WIDTH / 10), 25));
 
-        UMLComboBoxModel2 model = new UMLStructuralFeatureTypeComboBoxModel();
+        UMLComboBoxModel2 model = 
+            new UMLStructuralFeatureTypeComboBoxModel(true);
         returnParam = Model.getCoreFactory().createParameter();
         model.setTarget(returnParam);
         outType = new UMLComboBox2(model,
                 ActionSetStructuralFeatureType.getInstance());
+        outType.setSelectedIndex(0);
         outType.setPreferredSize(
                 new Dimension((2 * ClassCreateWizard.WIDTH / 10), 25));      
 
@@ -316,11 +318,12 @@ class Operation extends JPanel {
         name.setPreferredSize(
                 new Dimension((int) (1.7 * ClassCreateWizard.WIDTH / 10), 25));
         
-        model = new UMLStructuralFeatureTypeComboBoxModel();
+        model = new UMLStructuralFeatureTypeComboBoxModel(true);
         inParam = Model.getCoreFactory().createParameter();
         model.setTarget(inParam);
         inType = new UMLComboBox2(model,
                 ActionSetStructuralFeatureType.getInstance());
+        inType.setSelectedIndex(0);
         inType.setPreferredSize(
                 new Dimension((2 * ClassCreateWizard.WIDTH / 10), 25));
         
@@ -352,7 +355,8 @@ class Operation extends JPanel {
             helper.setVisibility(operation, vis);
             
             // the return param
-            if (outType.getSelectedIndex() != -1) {
+            if (outType.getSelectedIndex() != -1 
+                    && !outType.getSelectedItem().equals(" ")) {
                 helper.setType(returnParam, outType.getSelectedObjects()[0]);
                 helper.setKind(returnParam, 
                         Model.getDirectionKind().getReturnParameter());
@@ -361,6 +365,7 @@ class Operation extends JPanel {
             
             // the in param
             if (inType.getSelectedIndex() != -1 
+                    && !inType.getSelectedItem().equals(" ")
                     && paramName.getText().length() > 0) {
                 helper.setType(inParam, inType.getSelectedObjects()[0]);
                 helper.setKind(inParam, 
