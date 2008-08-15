@@ -1571,86 +1571,84 @@
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
-    <list name="message" type="Action" />
+    <attribute name="message" type="Action" />
   </panel>
   <panel name="CreateAction">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isAsynchronous" type="Boolean" />
-    </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    </checkgroup>    
+    <textarea name="script" type="ActionExpression" />
+    <textarea name="recurrence" type="IterationExpression" />
+    <separator />
+    <list name="instantiation" type="Classifier" />
+    <list name="actualArgument" type="Argument" />
+    
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="namespace" type="Namespace" />
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <attribute name="recurrence" type="IterationExpression" />
+    <attribute name="elementImport" type="ModelElement" />
     <attribute name="target" type="ObjectSetExpression" />
-    <attribute name="script" type="ActionExpression" />
-    <separator />
-    <list name="actualArgument" type="Argument" />
     <attribute name="actionSequence" type="ActionSequence" />
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
-    <list name="message" type="Action" />
-    <attribute name="instantiation" type="Classifier" />
+    <attribute name="message" type="Action" />
   </panel>
   <panel name="DestroyAction">
-    <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
+    <text name="name" type="Name" />    
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isAsynchronous" type="Boolean" />
     </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <textarea name="script" type="ActionExpression" />
+    <textarea name="recurrence" type="IterationExpression" />
+    <separator />
+    <list name="actualArgument" type="Argument" />
+    
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="namespace" type="Namespace" />
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <attribute name="recurrence" type="IterationExpression" />
+    <attribute name="elementImport" type="ModelElement" />
     <attribute name="target" type="ObjectSetExpression" />
-    <attribute name="script" type="ActionExpression" />
-    <separator />
-    <list name="actualArgument" type="Argument" />
     <attribute name="actionSequence" type="ActionSequence" />
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
-    <list name="message" type="Action" />
+    <attribute name="message" type="Action" />
   </panel>
   <panel name="UninterpretedAction">
     <text name="name" type="Name" />
@@ -1689,7 +1687,7 @@
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
-    <list name="message" type="Action" />
+    <attribute name="message" type="Action" />
   </panel>
   <panel name="AttributeLink">
     <text name="name" type="Name" />
@@ -1877,44 +1875,43 @@
     <list name="playedRole" type="Instance" />
   </panel>
   <panel name="CallAction">
-    <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
+    <text name="name" type="Name" />    
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isAsynchronous" type="Boolean" />
     </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <textarea name="script" type="ActionExpression" />    
+    <textarea name="recurrence" type="IterationExpression" />
+    <separator />
+	<combo name="operation" type="Operation" />    
+    <list name="actualArgument" type="Argument" />
+    
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="namespace" type="Namespace" />
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <attribute name="recurrence" type="IterationExpression" />
-    <attribute name="target" type="ObjectSetExpression" />
-    <attribute name="script" type="ActionExpression" />
-    <separator />
-    <list name="actualArgument" type="Argument" />
+    <attribute name="elementImport" type="ModelElement" />
+    <attribute name="target" type="ObjectSetExpression" />    
     <attribute name="actionSequence" type="ActionSequence" />
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
-    <list name="message" type="Action" />
-    <attribute name="operation" type="Operation" />
+    <attribute name="message" type="Action" />    
   </panel>
   <panel name="SendAction">
     <text name="name" type="Name" />
@@ -1953,7 +1950,7 @@
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
-    <list name="message" type="Action" />
+    <attribute name="message" type="Action" />
     <attribute name="signal" type="Signal" />
   </panel>
   <panel name="ActionSequence">
@@ -1993,7 +1990,7 @@
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
-    <list name="message" type="Action" />
+    <attribute name="message" type="Action" />
     <list name="action" type="Action" />
   </panel>
   <panel name="Argument">
@@ -2098,43 +2095,42 @@
     <list name="qualifiedValue" type="AttributeLink" />
   </panel>
   <panel name="ReturnAction">
-    <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
+    <text name="name" type="Name" />    
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isAsynchronous" type="Boolean" />
     </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <textarea name="script" type="ActionExpression" />
+	<textarea name="recurrence" type="IterationExpression" />    
+    <separator />
+    <list name="actualArgument" type="Argument" />    
+       
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="namespace" type="Namespace" />
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <attribute name="recurrence" type="IterationExpression" />
+    <attribute name="elementImport" type="ModelElement" />    
     <attribute name="target" type="ObjectSetExpression" />
-    <attribute name="script" type="ActionExpression" />
-    <separator />
-    <list name="actualArgument" type="Argument" />
     <attribute name="actionSequence" type="ActionSequence" />
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
-    <list name="message" type="Action" />
+    <attribute name="message" type="Action" />
   </panel>
   <panel name="TerminateAction">
     <text name="name" type="Name" />
@@ -2173,7 +2169,7 @@
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
-    <list name="message" type="Action" />
+    <attribute name="message" type="Action" />
   </panel>
   <panel name="Stimulus">
     <text name="name" type="Name" />
@@ -2615,35 +2611,35 @@
   </panel>
   <panel name="StateMachine">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-    </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+	<combo name="context" type="ModelElement" />
+    <list name="top" type="State" />
+    <separator />
+    <list name="transitions" type="Transition" />
+    <list name="submachineState" type="SubmachineState" />
+            
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="modifiers">
+      <attribute name="isSpecification" type="Boolean" />
+    </attribute>
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <attribute name="context" type="ModelElement" />
-    <attribute name="top" type="State" />
-    <list name="transitions" type="Transition" />
-    <list name="submachineState" type="SubmachineState" />
+    <attribute name="elementImport" type="ModelElement" />   
   </panel>
   <panel name="Event">
     <text name="name" type="Name" />
@@ -3199,95 +3195,94 @@
   </panel>
   <panel name="Collaboration">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-      <checkbox name="isRoot" type="Boolean" />
-      <checkbox name="isLeaf" type="Boolean" />
-      <checkbox name="isAbstract" type="Boolean" />
-    </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <combo name="representedClassifier" type="Classifier" />
+    <combo name="representedOperation" type="Operation" />
+    <separator />
+    <singlerow name="interaction" type="Interaction" />
+    <list name="constrainingElement" type="ModelElement" />    
+    <separator />        
+    <list name="ownedElement" type="ModelElement" />
+        
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="modifiers">
+      <attribute name="isSpecification" type="Boolean" />
+      <attribute name="isRoot" type="Boolean" />
+      <attribute name="isLeaf" type="Boolean" />
+      <attribute name="isAbstract" type="Boolean" />
+    </attribute>
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <list name="generalization" type="Generalization" />
-    <separator />
-    <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
-    <list name="interaction" type="Interaction" />
-    <attribute name="representedClassifier" type="Classifier" />
-    <attribute name="representedOperation" type="Operation" />
-    <list name="constrainingElement" type="ModelElement" />
+    <attribute name="elementImport" type="ModelElement" />
+    <attribute name="generalization" type="Generalization" />
+    <attribute name="specialization" type="GeneralizableElement" />
     <list name="usedCollaboration" type="Collaboration" />
   </panel>
   <panel name="ClassifierRole">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-      <checkbox name="isRoot" type="Boolean" />
-      <checkbox name="isLeaf" type="Boolean" />
-      <checkbox name="isAbstract" type="Boolean" />
-    </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <combo name="namespace" type="Namespace" />    
+    <combo name="multiplicity" type="Multiplicity" />
+    <list name="base" type="Classifier" />
+    <separator />
+    <list name="generalization" type="Generalization" />
+    <list name="specialization" type="GeneralizableElement" />
+    <list name="association" type="Classifier" />
+    <separator />
+    <list name="availableFeature" type="Feature" />
+    <list name="availableContents" type="ModelElement" />
+    
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="modifiers">
+      <attribute name="isSpecification" type="Boolean" />
+      <attribute name="isRoot" type="Boolean" />
+      <attribute name="isLeaf" type="Boolean" />
+      <attribute name="isAbstract" type="Boolean" />
+    </attribute>
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <list name="generalization" type="Generalization" />
-    <separator />
-    <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
-    <list name="feature" type="Feature" />
+    <attribute name="elementImport" type="ModelElement" />
+    <attribute name="ownedElement" type="ModelElement" />
+    <attribute name="feature" type="Feature" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="typedParameter" type="Classifier" />    
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
-    <separator />
     <list name="classifierInState" type="Classifier" />
     <list name="objectFlowState" type="Classifier" />
-    <attribute name="multiplicity" type="Multiplicity" />
-    <list name="base" type="Classifier" />
-    <list name="availableFeature" type="Feature" />
-    <list name="availableContents" type="ModelElement" />
     <list name="conformingInstance" type="Instance" />
-    <list name="message" type="ClassifierRole" />
+    <attribute name="message" type="ClassifierRole" />
   </panel>
   <panel name="AssociationRole">
     <text name="name" type="Name" />
@@ -3327,7 +3322,7 @@
     <list name="associationRole" type="Association" />
     <attribute name="multiplicity" type="Multiplicity" />
     <attribute name="base" type="Association" />
-    <list name="message" type="Message" />
+    <attribute name="message" type="Message" />
     <list name="conformingLink" type="Link" />
   </panel>
   <panel name="AssociationEndRole">
@@ -3377,72 +3372,71 @@
   </panel>
   <panel name="Message">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-    </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <singlerow name="interaction" type="Interaction" />    
+    <singlerow name="sender" type="ClassifierRole" />
+    <singlerow name="receiver" type="ClassifierRole" />
+    <separator />
+    <combo name="activator" type="Message" />
+    <singlerow name="action" type="Action" />
+    <list name="predecessor" type="Message" />    
+    <list name="successor" type="Message" />
+    
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="modifiers">
+      <attribute name="isSpecification" type="Boolean" />
+    </attribute>
+    <attribute name="namespace" type="Namespace" />
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <attribute name="interaction" type="Interaction" />
-    <attribute name="activator" type="Message" />
-    <attribute name="sender" type="ClassifierRole" />
-    <attribute name="receiver" type="ClassifierRole" />
-    <separator />
-    <list name="predecessor" type="Message" />
+    <attribute name="elementImport" type="ModelElement" />
     <attribute name="communicationConnection" type="AssociationRole" />
-    <attribute name="action" type="Action" />
     <list name="conformingStimulus" type="Stimulus" />
-    <list name="message" type="Message" />
-    <list name="successor" type="Message" />
+    <attribute name="message" type="Message" />
   </panel>
   <panel name="Interaction">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-    </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <singlerow name="context" type="Collaboration" />
+    <separator />
+    <list name="message" type="Message" />
+    
+    <attribute name="visibility" type="VisibilityKind" />
+    <attribute name="modifiers">
+      <attribute name="isSpecification" type="Boolean" />
+    </attribute>
+    <attribute name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <list name="message" type="Message" />
-    <attribute name="context" type="Collaboration" />
+    <attribute name="elementImport" type="ModelElement" />
     <list name="interactionInstanceSet" type="Interaction" />
   </panel>
   <panel name="InteractionInstanceSet">
