@@ -156,7 +156,8 @@ public final class ProjectBrowser
         assert Position.Center.toString().equals(BorderSplitPane.CENTER);
         assert Position.North.toString().equals(BorderSplitPane.NORTH); 
         assert Position.NorthEast.toString().equals(BorderSplitPane.NORTHEAST); 
-        assert Position.South.toString().equals(BorderSplitPane.SOUTH); 
+        assert Position.South.toString().equals(BorderSplitPane.SOUTH);
+        assert Position.SouthEast.toString().equals(BorderSplitPane.SOUTHEAST);
     }
     
     /**
@@ -239,6 +240,11 @@ public final class ProjectBrowser
     private final ActionRemoveFromDiagram removeFromDiagram =
         new ActionRemoveFromDiagram(
                 Translator.localize("action.remove-from-diagram"));
+    
+    /**
+     * The Bird's eye view Panel.
+     */
+    private BirdsEyePane birdsEyePane;
 
     /**
      * For testing purposes. In tests this constructor can be called so
@@ -450,6 +456,8 @@ public final class ProjectBrowser
         // BorderSplitPane where the various components that make up
         // the argo application can be positioned.
         workAreaPane = new BorderSplitPane();
+        
+        birdsEyePane = new BirdsEyePane(editorPane);
 
         // create the todopane
         if (splash != null) {
@@ -464,6 +472,7 @@ public final class ProjectBrowser
 
     private Component assemblePanels() {
         addPanel(editorPane, Position.Center);
+        addPanel(birdsEyePane, Position.SouthEast);
         addPanel(explorerPane, Position.West);
         addPanel(todoPane, Position.SouthWest);
 
