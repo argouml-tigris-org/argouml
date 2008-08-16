@@ -51,6 +51,7 @@ import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.foundation.core.UMLContainerResidentListModel;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
@@ -74,9 +75,13 @@ import org.argouml.uml.ui.behavior.collaborations.UMLMessageReceiverListModel;
 import org.argouml.uml.ui.behavior.collaborations.UMLMessageSenderListModel;
 import org.argouml.uml.ui.behavior.common_behavior.ActionAddContextSignal;
 import org.argouml.uml.ui.behavior.common_behavior.ActionAddCreateActionInstantiation;
+import org.argouml.uml.ui.behavior.common_behavior.ActionAddInstanceClassifier;
 import org.argouml.uml.ui.behavior.common_behavior.UMLActionArgumentListModel;
 import org.argouml.uml.ui.behavior.common_behavior.UMLActionAsynchronousCheckBox;
 import org.argouml.uml.ui.behavior.common_behavior.UMLCreateActionClassifierListModel;
+import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceClassifierListModel;
+import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceReceiverStimulusListModel;
+import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceSenderStimulusListModel;
 import org.argouml.uml.ui.behavior.common_behavior.UMLSignalContextListModel;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineContextComboBoxModel;
@@ -119,6 +124,7 @@ import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierParameterListModel;
 import org.argouml.uml.ui.foundation.core.UMLCommentAnnotatedElementListModel;
+import org.argouml.uml.ui.foundation.core.UMLComponentResidentListModel;
 import org.argouml.uml.ui.foundation.core.UMLDependencyClientListModel;
 import org.argouml.uml.ui.foundation.core.UMLDependencySupplierListModel;
 import org.argouml.uml.ui.foundation.core.UMLDiscriminatorNameDocument;
@@ -379,6 +385,23 @@ public class SwingUIFactory implements UIFactory {
         }
         else if ("context".equals(prop.getName())) {
             model = new UMLInteractionContextListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        /*
+         * The XML generated is "stimulus", because the A_receiver_stimulus
+         * association has "stimulus" and "receiver" as association ends.
+         * The A_stimulus_sender has "sender" and "stimulus", so it is generated
+         * once. So we have created them by hand with a more explicit name and
+         * removed "stimulus".
+         */ 
+        else if ("sentStimulus".equals(prop.getName())) {
+            model = new UMLInstanceSenderStimulusListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("receivedStimulus".equals(prop.getName())) {
+            model = new UMLInstanceReceiverStimulusListModel();
             model.setTarget(target);
             pane = new UMLSingleRowSelector(model);
         }
@@ -675,6 +698,33 @@ public class SwingUIFactory implements UIFactory {
             JList l = new UMLLinkedList(model);
             list = new ScrollList(l);
         }
+        else if ("deployedComponent".equals(prop.getName())) {
+            model = new UMLNodeDeployedComponentListModel();
+            model.setTarget(target);
+            JList l = new UMLLinkedList(model);
+            list = new ScrollList(l);
+        }
+        else if ("residentElement".equals(prop.getName())) {
+            model = new UMLComponentResidentListModel();
+            model.setTarget(target);
+            JList l = new UMLLinkedList(model);
+            list = new ScrollList(l);
+        }
+        else if ("classifier".equals(prop.getName())) {
+            model = new UMLInstanceClassifierListModel();
+            model.setTarget(target);
+            JList l = new UMLMutableLinkedList(model,
+                             new ActionAddInstanceClassifier(
+                                     Model.getMetaTypes().getClassifier()), 
+                                     null, null, true);
+            list = new ScrollList(l);
+        }
+        else if ("resident".equals(prop.getName())) {
+            model = new UMLContainerResidentListModel();
+            model.setTarget(target);
+            JList l = new UMLLinkedList(model);
+            list = new ScrollList(l);
+        }
         if (list != null) {
             String name = prop.getName();
 
@@ -859,13 +909,15 @@ public class SwingUIFactory implements UIFactory {
             comp = mPanel;
         }
         else if ("activator".equals(prop.getName())) {
-            final UMLComboBoxModel3 model = new UMLMessageActivatorComboBoxModel();
+            final UMLComboBoxModel3 model = 
+                new UMLMessageActivatorComboBoxModel();
             model.setTarget(target); 
             final JComboBox combo = new UMLMessageActivatorComboBox(model);
             comp = combo;
         }
         else if ("operation".equals(prop.getName())) {
-            final UMLComboBoxModel3 model = new UMLCallActionOperationComboBoxModel();
+            final UMLComboBoxModel3 model = 
+                new UMLCallActionOperationComboBoxModel();
             model.setTarget(target); 
             UMLComboBox3 operationComboBox =
                 new UMLCallActionOperationComboBox2(model);
@@ -895,7 +947,8 @@ public class SwingUIFactory implements UIFactory {
                     combo);
         }
         else if ("context".equals(prop.getName())) {
-            final UMLComboBoxModel2 model = new UMLStateMachineContextComboBoxModel();
+            final UMLComboBoxModel2 model = 
+                new UMLStateMachineContextComboBoxModel();
             model.setTarget(target);
             UMLComboBox2 combo = new UMLComboBox2(model,
                     ActionSetContextStateMachine.getInstance());
@@ -903,6 +956,15 @@ public class SwingUIFactory implements UIFactory {
                             "label.context.navigate.tooltip"),
                     combo);
 
+        }
+        else if ("association".equals(prop.getName())) {
+            final UMLComboBoxModel2 model = 
+                new UMLLinkAssociationComboBoxModel();
+            model.setTarget(target);
+            comp =  new UMLComboBoxNavigator(Translator.localize(
+                        "label.association.navigate.tooltip"),                
+                    new UMLSearchableComboBox(model,
+                            new ActionSetLinkAssociation(), true));
         }
         if (comp != null) {
             String name = prop.getName();
