@@ -60,8 +60,6 @@ public class CmdCreateNodeWizard extends CreateNodeAction {
                         ResourceLoaderWrapper.getImageBinding(tooltip)));
         wizard = wiz;
         putValue(Action.SHORT_DESCRIPTION, Translator.localize(tooltip));
-        
-        System.out.println("done");
     }
     
     @Override
@@ -70,7 +68,7 @@ public class CmdCreateNodeWizard extends CreateNodeAction {
         // displays the wizard that returns the node to be created
         node = wizard.display();
         
-        // if the node is null, the acion was canceled
+        // if the node is null, the action was canceled
         if (node != null) {
             super.actionPerformed(e);
         } else {

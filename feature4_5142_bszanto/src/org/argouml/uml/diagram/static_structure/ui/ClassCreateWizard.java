@@ -156,7 +156,7 @@ public class ClassCreateWizard implements CreateWizard {
     
     /**
      * When the OK button is pressed the new class is created, and the 
-     * attribtutes and operations are added.
+     * attributes and operations are added.
      */
     public void okPressed() {
         classNode = Model.getCoreFactory().createClass();
@@ -197,7 +197,7 @@ class Attribute extends JPanel {
     /** Type field */
     private UMLComboBox2 type;
     
-    /** The newly created attribue */
+    /** The newly created attribute */
     private Object attribute = null;
 
     /**
@@ -251,9 +251,18 @@ class Attribute extends JPanel {
         return attribute;
     }
     
+    /**
+     * Determines the VisibilityKind corresponding to the index parameter.
+     * If the index is out of the valid range, a default VisibilityKind is 
+     * used.
+     * 
+     * @param index the selected index, with 0 <= index <= 3.
+     * @return the VisibilityKind corresponding to the index. The default 
+     * VisibilityKind is Private.
+     */
     public static Object getVisibilityKind(int index) {
         VisibilityKind vk = Model.getVisibilityKind();
-        Object vis;
+        Object vis = vk.getPrivate();
         switch (index) {
         case 0:
             vis = vk.getPublic();
@@ -264,8 +273,10 @@ class Attribute extends JPanel {
         case 2:
             vis = vk.getProtected();
             break;
-        default:
+        case 3:
             vis = vk.getPrivate();
+        default:
+            assert false : "Invalid value of index: " + index + ".";
         }
         return vis;
     }
