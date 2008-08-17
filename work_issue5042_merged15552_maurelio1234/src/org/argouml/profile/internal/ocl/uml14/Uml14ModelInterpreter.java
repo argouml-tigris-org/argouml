@@ -57,9 +57,6 @@ public class Uml14ModelInterpreter extends CompositeModelInterpreter {
             String feature, String type, Object[] parameters) {
         Object ret = super.invokeFeature(vt, subject, feature, type, parameters);
         
-        if (feature.equals("union") && type.equals(".")) {
-            System.out.println("VOILA!");
-        }
         LOG.debug(toString(subject) + type + feature + " ==> " + toString(ret));
         
         return ret;

@@ -264,7 +264,7 @@ public class ProfileUML extends Profile {
         // 4.5.3.26 [2]
         try {
             critics.add(new CrOCL("context Namespace inv:"
-                    + "self.allContents -> select(oclIsKindOf(Association))->"
+                    + "self.allContents -> select(x|x.oclIsKindOf(Association))->"
                     + "forAll(a1, a2 |a1.name = a2.name and "
                     + "a1.connection.participant = a2.connection.participant"
                     + " implies a1 = a2)",

@@ -268,7 +268,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             "self.clientDependency->"
                             + "select(d |"
                             + "d.oclIsKindOf(Abstraction)"
-                            + "and d.stereotype.name = \"realization\""
+                            + "and d.stereotype.name = \"realization\" "
                             + "and d.supplier.oclIsKindOf(Classifier))"
                             + ".supplier.oclAsType(Classifier)");
                 }                 
@@ -279,8 +279,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             vt,
                             "self.contents->union("
                             + "self.parent.allContents->select(e |"
-                            + "e.elementOwnership.visibility = #public or"
-                            + "e.elementOwnership.visibility = #protected))");
+                            + "e.elementOwnership.visibility = #public or true or "
+                            + " e.elementOwnership.visibility = #protected))");
                 }                 
 
                 if (feature.equals("allDiscriminators")) {
@@ -330,7 +330,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             vt,
                             "self.resident->union("
                                     + "self.parent.oclAsType(Component).allResidentElements->select( re |"
-                                    + "re.elementResidence.visibility = #public or"
+                                    + "re.elementResidence.visibility = #public or "
                                     + "re.elementResidence.visibility = #protected))");
                 }                
             }
@@ -729,7 +729,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
 
         /* 4.6.2.3 Stereotype */          
        
-        if (Model.getFacade().isATagDefinition(subject)) {
+        if (Model.getFacade().isAStereotype(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("baseClass")) {
                     return new HashSet<Object>(Model.getFacade()
@@ -770,7 +770,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
 
         /* 4.6.2.5 TaggedValue */          
         
-        if (Model.getFacade().isATagDefinition(subject)) {
+        if (Model.getFacade().isATaggedValue(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("dataValue")) {
                     return Model.getFacade().getDataValue(subject);

@@ -51,10 +51,14 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
     public Object invokeFeature(HashMap<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters) {
 
+        if (subject == null) {
+            return null;
+        }
+        
         if (!(subject instanceof Collection)) {
             if (type.equals("->")) {
                 Set ns = new HashSet();
-                ns.add(subject);
+                ns.add(subject);                    
                 subject = ns;
             }
         }

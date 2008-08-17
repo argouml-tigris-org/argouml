@@ -28,6 +28,9 @@ import java.io.PushbackReader;
 import java.io.StringReader;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+import org.argouml.profile.internal.ocl.uml14.Uml14ModelInterpreter;
+
 import tudresden.ocl.parser.OclParser;
 import tudresden.ocl.parser.lexer.Lexer;
 import tudresden.ocl.parser.node.Start;
@@ -39,6 +42,12 @@ import tudresden.ocl.parser.node.Start;
  */
 public class DefaultOclEvaluator implements OclExpressionEvaluator {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger
+            .getLogger(DefaultOclEvaluator.class);
+    
     private static OclExpressionEvaluator instance = null;
     
     /**
@@ -58,6 +67,11 @@ public class DefaultOclEvaluator implements OclExpressionEvaluator {
             String ocl) throws InvalidOclException {
         // XXX this seems to be a bug of the parser, 
         // it always requires a context
+        
+        LOG.debug("OCL: "+ocl);
+        if (ocl.contains("ore")) {
+            System.out.println("VOILA!");
+        }
         Lexer lexer = new Lexer(new PushbackReader(new StringReader("context X inv: " + ocl), 2));
         OclParser parser = new OclParser(lexer);
         Start tree = null;
@@ -65,7 +79,7 @@ public class DefaultOclEvaluator implements OclExpressionEvaluator {
         try {
             tree = parser.parse();
         } catch (Exception e) {
-            throw new InvalidOclException("Invalid OCL!");
+            throw new InvalidOclException(ocl);
         }
         
         EvaluateExpression ee = new EvaluateExpression(vt,mi);
