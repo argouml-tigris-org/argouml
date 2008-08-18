@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2000-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,83 +25,76 @@
 package org.argouml.uml;
 
 import org.argouml.model.Model;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.util.Predicate;
-import org.tigris.gef.util.PredicateTrue;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.util.Predicate;
+import org.argouml.util.PredicateTrue;
 
 /**
- * Class to find out if a given object fulfills certain given predicates.
- *
- * @deprecated for 0.26 by tfmorris.  Use {@link PredicateSearch} which has an
- * API that doesn't depend on GEF.
+ * Class to find out if a given object fulfills certain given predicates. This
+ * replaces {@link PredicateFind} by 1sturm with an implementation using the
+ * new GEF-free interfaces.
+ * 
+ * @author 1sturm
+ * @author Tom Morris
  */
-public class PredicateFind implements Predicate {
+public class PredicateSearch implements Predicate {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
     private Predicate elementName;
     private Predicate packageName;
     private Predicate diagramName;
     private Predicate theType;
 
-    private Predicate specific = PredicateTrue.theInstance();
+    private Predicate specific = PredicateTrue.getInstance();
 
     /**
      * The constructor.
      *
-     * @param e Predicate for the element name
-     * @param p Predicate for the package name
-     * @param d Predicate for the diagram name
-     * @param t Predicate for the type
+     * @param elementNamePredicate Predicate for the element name
+     * @param packageNamePredicate Predicate for the package name
+     * @param diagramNamePredicate Predicate for the diagram name
+     * @param typePredicate Predicate for the type
      */
-    public PredicateFind(Predicate e, Predicate p, Predicate d,
-			 Predicate t) {
-	elementName = e;
-	packageName = p;
-	diagramName = d;
-	theType = t;
+    public PredicateSearch(Predicate elementNamePredicate,
+            Predicate packageNamePredicate, Predicate diagramNamePredicate,
+            Predicate typePredicate) {
+        elementName = elementNamePredicate;
+        packageName = packageNamePredicate;
+        diagramName = diagramNamePredicate;
+        theType = typePredicate;
     }
-
 
     /**
-     * @param d the given diagram
+     * @param diagram the given diagram
      * @return true if the name of the given diagram equals
      */
-    public boolean matchDiagram(Diagram d) {
-        return matchDiagram(d.getName());
+    public boolean matchDiagram(ArgoDiagram diagram) {
+        return matchDiagram(diagram.getName());
     }
 
+    
     /**
      * @param name the name to match
      * @return true if the name of the given diagram equals
      */
     public boolean matchDiagram(String name) {
-        return diagramName.predicate(name);
+        return diagramName.evaluate(name);
     }
 
     /**
-     * @param m the given package
+     * @param pkg the given package
      * @return true if the name of the given package is equal
      */
-    public boolean matchPackage(Object m) {
-	boolean res = packageName.predicate(Model.getFacade().getName(m));
+    public boolean matchPackage(Object pkg) {
+	boolean res = packageName.evaluate(Model.getFacade().getName(pkg));
 	return res;
     }
 
-    /*
-     * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
-     */
-    public boolean predicate(Object o) {
-	if (!(Model.getFacade().isAUMLElement(o))) {
+    public boolean evaluate(Object element) {
+	if (!(Model.getFacade().isAUMLElement(element))) {
             return false;
         }
-	Object me = o;
-	return theType.predicate(me) && specific.predicate(me)
-	    && elementName.predicate(Model.getFacade().getName(me));
+	Object me = element;
+	return theType.evaluate(me) && specific.evaluate(me)
+	    && elementName.evaluate(Model.getFacade().getName(me));
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 9149816242647422438L;
-} /* end class PredicateFind */
+}

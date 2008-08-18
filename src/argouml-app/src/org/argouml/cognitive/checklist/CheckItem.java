@@ -25,14 +25,16 @@
 package org.argouml.cognitive.checklist;
 
 import java.io.Serializable;
-import org.tigris.gef.util.Predicate;
-import org.tigris.gef.util.PredicateTrue;
+
+import org.argouml.util.Predicate;
+import org.argouml.util.PredicateGefWrapper;
+import org.argouml.util.PredicateTrue;
 
 
 /**
  * This class defines an item that can be placed on a Checklist.
  * This is a short piece of text to prompt the designer to think of a
- * specific design issue.  CheckItems are similiar to critics in that
+ * specific design issue.  CheckItems are similar to critics in that
  * they are categorized to be relevant to issues the designer is
  * interested in, they have a guarding condition that returns true if
  * the CheckItem should be presented, and they have a piece of text
@@ -52,8 +54,6 @@ import org.tigris.gef.util.PredicateTrue;
  * @author jrobbins
  */
 public class CheckItem implements Serializable {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private String category;
 
@@ -72,10 +72,8 @@ public class CheckItem implements Serializable {
      * The predicate is the condition under which
      * the checkitem should be listed.
      */
-    private Predicate pred = PredicateTrue.theInstance();
+    private Predicate predicate = PredicateTrue.getInstance();
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
@@ -95,15 +93,32 @@ public class CheckItem implements Serializable {
      * @param d the description
      * @param m the more-info-url
      * @param p the predicate
+     * 
+     * @deprecated for 0.26 by tfmorris.  Use 
+     * {@link #CheckItem(String, String, String, Predicate)}.
      */
-    public CheckItem(String c, String d, String m, Predicate p) {
+    public CheckItem(String c, String d, String m, 
+            org.tigris.gef.util.Predicate p) {
 	this(c, d);
 	setMoreInfoURL(m);
-	pred = p;
+	predicate = new PredicateGefWrapper(p);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
+
+    /**
+     * The constructor.
+     *
+     * @param c the category
+     * @param d the description
+     * @param m the more-info-url
+     * @param p the predicate
+     */
+    public CheckItem(String c, String d, String m, 
+            Predicate p) {
+        this(c, d);
+        setMoreInfoURL(m);
+        predicate = p;
+    }
 
     /**
      * @return the category
@@ -143,18 +158,43 @@ public class CheckItem implements Serializable {
     public void setMoreInfoURL(String m) { moreInfoURL = m; }
 
     /**
+     * @return the GEF predicate
+     * @deprecated for 0.26 by tfmorris.  Use {@link #getPredicate2()}.
+     */
+    @Deprecated
+    public org.tigris.gef.util.Predicate getPredicate() {
+        if (predicate instanceof PredicateGefWrapper) {
+            return ((PredicateGefWrapper) predicate).getGefPredicate();
+        }
+        throw new IllegalStateException("Mixing legacy API and new API is not"
+                + "supported.  Please update your code.");
+    }
+
+    /**
      * @return the predicate
      */
-    public Predicate getPredicate() { return pred; }
+    public Predicate getPredicate2() {
+        return predicate;
+    }
 
     /**
      * @param p the predicate
      */
-    public void setPredicate(Predicate p) { pred = p; }
+    public void setPredicate(org.tigris.gef.util.Predicate p) { 
+        predicate = new PredicateGefWrapper(p); 
+    }
 
+    /**
+     * @param p the predicate
+     */
+    public void setPredicate(Predicate p) {
+        predicate = p;
+    }
+    
     /*
      * @see java.lang.Object#hashCode()
      */
+    @Override
     public int hashCode() {
         return getDescription().hashCode();
     }
@@ -162,6 +202,7 @@ public class CheckItem implements Serializable {
     /*
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object o) {
 	if (!(o instanceof CheckItem)) {
 	    return false;
@@ -173,6 +214,7 @@ public class CheckItem implements Serializable {
     /*
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() { return getDescription(); }
 
     /**
@@ -186,4 +228,4 @@ public class CheckItem implements Serializable {
      */
     public String expand(String desc, Object dm) { return desc; }
 
-} /* end class CheckItem */
+}

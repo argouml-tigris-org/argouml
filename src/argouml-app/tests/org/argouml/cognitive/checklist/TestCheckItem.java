@@ -25,7 +25,6 @@
 package org.argouml.cognitive.checklist;
 
 import junit.framework.TestCase;
-import org.tigris.gef.util.PredicateTrue;
 
 /**
  * Tests initialization of CheckItem.
@@ -54,9 +53,9 @@ public class TestCheckItem extends TestCase {
         String description = "TestCheckItem Description";
         String moreInfo = "http://argouml.tigris.org/test";
 
-        // Construct a CheckItem
+        // Construct a CheckItem using the old API
         CheckItem item = new CheckItem(category, description,
-                moreInfo, PredicateTrue.theInstance());
+                moreInfo, org.tigris.gef.util.PredicateTrue.theInstance());
 
         // (1) test that the properties were correctly initialized
         assertTrue("CheckItem.getDescription() incorrect "
@@ -70,7 +69,8 @@ public class TestCheckItem extends TestCase {
                 item.getCategory() == category);
         assertTrue("CheckItem.getPredicate() incorrect after "
                 + "initialization (1)",
-                item.getPredicate() == PredicateTrue.theInstance());
+                item.getPredicate() == 
+                    org.tigris.gef.util.PredicateTrue.theInstance());
 
         // reset the values to something different
         category += "- Set Test";
@@ -81,16 +81,16 @@ public class TestCheckItem extends TestCase {
         item.setCategory(category);
         item.setDescription(description);
         item.setMoreInfoURL(moreInfo);
-        item.setPredicate(null);
+        item.setPredicate((org.tigris.gef.util.Predicate) null);
 
-        assertTrue("CheckItem.getDescription() incorrect after set",
-                item.getDescription() == description);
-        assertTrue("CheckItem.getMoreInfoURL() incorrect after set",
-                item.getMoreInfoURL() == moreInfo);
-        assertTrue("CheckItem.getCategory() incorrect after set",
-                item.getCategory() == category);
-        assertTrue("CheckItem.getPredicate() incorrect after set",
-                item.getPredicate() == null);
+        assertEquals("CheckItem.getDescription() incorrect after set",
+                item.getDescription(), description);
+        assertEquals("CheckItem.getMoreInfoURL() incorrect after set",
+                item.getMoreInfoURL(), moreInfo);
+        assertEquals("CheckItem.getCategory() incorrect after set",
+                item.getCategory(), category);
+        assertNull("CheckItem.getPredicate() incorrect after set",
+                item.getPredicate());
 
         // (2) Construct another CheckItem
         CheckItem item2 = new CheckItem(category, description);
@@ -107,7 +107,50 @@ public class TestCheckItem extends TestCase {
                 item.getCategory() == category);
 
         // verify that the equivalence test works
-        assertTrue("CheckItem.equals(o) incorrect", item2.equals(item));
+        assertEquals("CheckItem.equals(o) incorrect", item, item2);
+        
+        // Test again with the new API
+        item = new CheckItem(category, description,
+                moreInfo, org.argouml.util.PredicateTrue.getInstance());
 
+        // test that the properties were correctly initialized
+        assertEquals("CheckItem.getDescription() incorrect "
+                       + "after initialization (1a)",
+                item.getDescription(),description);
+        assertEquals("CheckItem.getMoreInfoURL() incorrect "
+                       + "after initialization (1a)",
+                item.getMoreInfoURL(), moreInfo);
+        assertEquals("CheckItem.getCategory() incorrect after "
+                       + "initialization (1a)",
+                item.getCategory(), category);
+        assertEquals("CheckItem.getPredicate2() incorrect after "
+                + "initialization (1a)",
+                item.getPredicate2(), 
+                org.argouml.util.PredicateTrue.getInstance());
+
+        // reset the values to something different
+        category += "- Set Test";
+        description += "- Set Test";
+        moreInfo += "- Set Test";
+
+        // update the values
+        item.setCategory(category);
+        item.setDescription(description);
+        item.setMoreInfoURL(moreInfo);
+        item.setPredicate((org.argouml.util.Predicate) null);
+
+        assertEquals("CheckItem.getDescription() incorrect after set",
+                item.getDescription(), description);
+        assertEquals("CheckItem.getMoreInfoURL() incorrect after set",
+                item.getMoreInfoURL(), moreInfo);
+        assertEquals("CheckItem.getCategory() incorrect after set",
+                item.getCategory(), category);
+        assertNull("CheckItem.getPredicate() incorrect after set",
+                item.getPredicate2());
+
+        // verify that the equivalence test works again
+        item2 = new CheckItem(category, description);
+        assertEquals("CheckItem.equals(o) incorrect", item, item2);
+        
     }
 }
