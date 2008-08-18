@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.jmi.reflect.InvalidObjectException;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
@@ -90,7 +89,6 @@ import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Comment;
 import org.omg.uml.foundation.core.Component;
 import org.omg.uml.foundation.core.Constraint;
-import org.omg.uml.foundation.core.CorePackage;
 import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
 import org.omg.uml.foundation.core.ElementResidence;
@@ -453,11 +451,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         
         final boolean alreadyChecked = !dupCheck.add(ge);
         if (alreadyChecked) {
-            if (LOG.isInfoEnabled()) {
-                LOG.info(
-                        "Cyclic generalization found "
-                        + getFullName(ge));
-            }
+            LOG.warn("Cyclic generalization found " + getFullName(ge));
             return false;
         }
         
@@ -1784,11 +1778,11 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public Collection<Namespace> getAllPossibleNamespaces(Object modelElement,
             Object model) {
-        LOG.info("getAllPossibleNamespaces start");
+        LOG.debug("getAllPossibleNamespaces start");
         ModelElement m = (ModelElement) modelElement;
         Collection<Namespace>  ret = new HashSet<Namespace> ();
         if (m == null) {
-            LOG.info("getAllPossibleNamespaces end");
+            LOG.debug("getAllPossibleNamespaces end");
             return ret;
         }
         
@@ -1808,10 +1802,10 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new InvalidElementException(e);
         }
         
-        if (LOG.isInfoEnabled()) {
+        if (LOG.isDebugEnabled()) {
             // This is an expensive method that we should ensure is called
             // rarely. Hence info level to track easily.
-            LOG.info(
+            LOG.debug(
                     "getAllPossibleNamespaces returns "
                     + ret.size() + " items");
         }
