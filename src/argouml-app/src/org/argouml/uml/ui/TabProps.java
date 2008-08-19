@@ -175,7 +175,7 @@ public class TabProps
                 || target instanceof ArgoDiagram
                 // TODO Improve extensibility of this!
                 || target instanceof Critic)) {
-            return;
+            target = null;
         }
         
         if (lastPanel != null) {
