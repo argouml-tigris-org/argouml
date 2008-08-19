@@ -293,7 +293,7 @@ public class FigSingleLineText extends ArgoFigText
         return npArguments;
     }
 
-    private void initNotationArguments() {
+    protected void initNotationArguments() {
         Project p = getProject();
         if (p != null) {
             npArguments.put("rightGuillemot", 

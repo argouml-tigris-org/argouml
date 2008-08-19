@@ -629,8 +629,6 @@ class FigRole extends FigSingleLineText
                 new String[] {"name", "visibility", "stereotype"}*/);
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
-        ArgoEventPump.addListener(
-                ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
     @Override
@@ -649,13 +647,7 @@ class FigRole extends FigSingleLineText
                         NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
                         getOwner(),
                         this);
-            Project p = getProject();
-            if (p != null) {
-                npArguments.put("rightGuillemot", 
-                        p.getProjectSettings().getRightGuillemot());
-                npArguments.put("leftGuillemot", 
-                        p.getProjectSettings().getLeftGuillemot());
-            }
+            initNotationArguments();
         }
     }
     
