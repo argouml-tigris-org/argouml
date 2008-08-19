@@ -1055,10 +1055,15 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return UMLFactory.eINSTANCE.createArtifact();
     }
 
+    @Deprecated
     public Association createAssociation() {
-        return UMLFactory.eINSTANCE.createAssociation();
+        return createAssociation(null);
     }
 
+    public Association createAssociation(Object extent) {
+        return UMLFactory.eINSTANCE.createAssociation();
+    }
+    
     public AssociationClass createAssociationClass() {
         return UMLFactory.eINSTANCE.createAssociationClass();
     }

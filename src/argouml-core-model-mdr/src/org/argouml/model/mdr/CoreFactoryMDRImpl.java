@@ -174,13 +174,19 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public UmlAssociation createAssociation() {
-        UmlAssociation assoc = getCorePackage().getUmlAssociation()
-                .createUmlAssociation();
+        return createAssociation(modelImpl.getUmlPackage());
+    }
+
+
+    public UmlAssociation createAssociation(Object extent) {
+        UmlAssociation assoc = ((org.omg.uml.UmlPackage) extent).getCore()
+                .getUmlAssociation().createUmlAssociation();
         super.initialize(assoc);
         return assoc;
     }
-
 
     public AssociationClass createAssociationClass() {
         AssociationClass assoc = getCorePackage().getAssociationClass()
@@ -310,7 +316,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myFlow;
     }
 
-
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Generalization createGeneralization() {
         return createGeneralization(modelImpl.getUmlPackage());
     }
@@ -429,7 +436,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      *            The navigability of the second Associaton end
      * @param agg2
      *            The aggregation type of the second Associaton end
-     * @return MAssociation
+     * @return a newly created Association
      * @throws IllegalArgumentException
      *             if either Classifier is null
      */
@@ -448,17 +455,19 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         
         // We'll put the association in the namespace of whichever end
-        // is not navigable.  If they both are, we'll use the namepace of c1.
+        // is not navigable and is writeable.  If they both are, we'll use the
+        // namepace of c1.
         Namespace ns = null;
-        if (nav2) {
+        if (nav2 && !modelImpl.getModelManagementHelper().isReadOnly(ns1)) {
             ns = ns1;
-        } else if (nav1) {
+        } else if (nav1
+                && !modelImpl.getModelManagementHelper().isReadOnly(ns2)) {
             ns = ns2;
         } else {
             throw new IllegalArgumentException(
                     "At least one end must be navigable");
         }
-        UmlAssociation assoc = createAssociation();
+        UmlAssociation assoc = createAssociation(ns.refOutermostPackage());
         assoc.setName("");
         assoc.setNamespace(ns);
         buildAssociationEnd(assoc, null, c1, null, null,
@@ -481,14 +490,19 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         AggregationKind agg1 = (AggregationKind) aggregationKind1;
         AggregationKind agg2 = (AggregationKind) aggregationKind2;
 
-        Namespace ns1 = from.getNamespace();
-        if (ns1 == null) {
-            throw new IllegalArgumentException("The from "
-                    + "classifiers does not " + "belong to a namespace");
+        Namespace ns = from.getNamespace();
+        if (ns == null || modelImpl.getModelManagementHelper().isReadOnly(ns)) {
+            ns = to.getNamespace();
+            if (ns == null
+                    || modelImpl.getModelManagementHelper().isReadOnly(ns)) {
+                throw new IllegalArgumentException(
+                        "At least one namespace must be non-null and writeable");
+            }
         }
-        UmlAssociation assoc = createAssociation();
+
+        UmlAssociation assoc = createAssociation(ns.refOutermostPackage());
         assoc.setName("");
-        assoc.setNamespace(ns1);
+        assoc.setNamespace(ns);
 
         boolean nav1 = true;
         boolean nav2 = true;

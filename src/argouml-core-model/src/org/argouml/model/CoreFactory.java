@@ -71,11 +71,18 @@ public interface CoreFactory extends Factory {
      * Create an empty but initialized instance of a UML Association.
      * 
      * @return an initialized UML Association instance.
-     * TODO: This needs an extra parameter to specify the model/extent where
-     * the new element should be created.
+     * @deprecated for 0.26 by tfmorris. Use {@link #createAssociation(Object)}.
      */
     public Object createAssociation();
-
+    
+    /**
+     * Create an empty but initialized instance of a UML Association.
+     * 
+     * @param extent outer package (extent) in which to create new Association.
+     * @return an initialized UML Association instance.
+     */
+    public Object createAssociation(Object extent);
+    
     /**
      * Create an empty but initialized instance of a UML AssociationClass.
      * 
