@@ -110,7 +110,6 @@ public class CompartmentFigText extends FigSingleLineText {
 		     + ": Cannot create with null compartment fig");
         }
 
-        setTextFilled(false);
         setJustification(FigText.JUSTIFY_LEFT);
         setRightMargin(3);
         setLeftMargin(3);

@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -90,13 +89,12 @@ public class FigSingleLineText extends ArgoFigText
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
 
-        setTextColor(Color.black);
         setFilled(false);
         setTabAction(FigText.END_EDITING);
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
 
-        initNotationArguments();
+//        initNotationArguments(); /* There is no NotationProvider yet! */
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
