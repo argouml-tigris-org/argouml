@@ -312,12 +312,15 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     public Generalization createGeneralization() {
-        Generalization myGeneralization = getCorePackage().getGeneralization()
-                .createGeneralization();
+        return createGeneralization(modelImpl.getUmlPackage());
+    }
+
+    public Generalization createGeneralization(Object extent) {
+        Generalization myGeneralization = ((org.omg.uml.UmlPackage) extent)
+                .getCore().getGeneralization().createGeneralization();
         super.initialize(myGeneralization);
         return myGeneralization;
     }
-
 
     public Interface createInterface() {
         Interface myInterface = getCorePackage()
@@ -1038,14 +1041,18 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("child is root");
         }
 
-        Generalization gen = createGeneralization();
+        Namespace ns = child.getNamespace();
+        if ((ns == null || modelImpl.getModelManagementHelper().isReadOnly(ns))
+                && child instanceof Namespace) {
+            ns = (Namespace) child;
+        }
+        if (ns == null || modelImpl.getModelManagementHelper().isReadOnly(ns)) {
+            throw new IllegalArgumentException("No valid writeable namespace");
+        }
+        Generalization gen = createGeneralization(ns.refOutermostPackage());
         gen.setParent(parent);
         gen.setChild(child);
-        if (child.getNamespace() != null) {
-            gen.setNamespace(child.getNamespace());
-        } else if (child instanceof Namespace) {
-            gen.setNamespace((Namespace) child);
-        }
+        gen.setNamespace(ns);
         return gen;
     }
 

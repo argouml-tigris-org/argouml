@@ -651,7 +651,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             
             if (containerType.isInstance(container)) {
                 // determine if metaType is a valid element for container
-                Class<?>[] validElements = validContainmentMap.get(containerType);
+                Class<?>[] validElements = 
+                    validContainmentMap.get(containerType);
                 
                 for (int eIter = 0; eIter < validElements.length; ++eIter) {
                     

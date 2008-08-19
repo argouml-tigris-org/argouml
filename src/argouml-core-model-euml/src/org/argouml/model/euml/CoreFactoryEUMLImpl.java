@@ -1126,9 +1126,14 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Generalization createGeneralization() {
-        return UMLFactory.eINSTANCE.createGeneralization();
+        return createGeneralization(null);
     }
 
+    public Generalization createGeneralization(Object extent) {
+        // Extent ignored for eUML2 implementation (required for NetBeans MDR)
+        return UMLFactory.eINSTANCE.createGeneralization();
+    }
+    
     public Interface createInterface() {
         return UMLFactory.eINSTANCE.createInterface();
     }

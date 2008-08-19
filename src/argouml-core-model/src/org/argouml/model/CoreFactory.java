@@ -877,9 +877,15 @@ public interface CoreFactory extends Factory {
      * Additional support for generalization.
      *
      * @return A generalization.
-     * TODO: This needs an extra parameter to specify the model/extent where
-     * the new element should be created.
+     * @deprecated for 0.26 by tfmorris.  Use 
+     * {@link #createGeneralization(Object)}.
      */
     Object createGeneralization();
 
+    /**
+     * Create a generalization in the given extent.
+     *
+     * @return A generalization.
+     */
+    Object createGeneralization(Object extent);
 }
