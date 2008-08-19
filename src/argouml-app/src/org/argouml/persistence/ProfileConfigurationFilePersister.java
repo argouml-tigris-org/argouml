@@ -122,20 +122,20 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
     }
 
     private static Profile handlePluginProfile(BufferedReader br)
-        throws IOException, XmiReferenceException {
+        throws IOException, OpenException {
         Profile profile;
         String className = br.readLine().trim();
         profile = ProfileFacade.getManager().getProfileForClass(
                 className);
         if (profile == null) 
-            throw new XmiReferenceException(
+            throw new OpenException(
                 "Plugin profile \"" + className 
                 + "\" is not available in installation.", null);
         return profile;
     }
 
     private static Profile handleUserDefinedProfile(BufferedReader br)
-        throws IOException, XmiReferenceException {
+        throws IOException, OpenException {
         String line;
         Profile profile;
         line = br.readLine().trim();
@@ -158,7 +158,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         profile = getMatchingUserDefinedProfile(fileName, 
             profileManager);
         if (profile == null) {
-            throw new XmiReferenceException(
+            throw new OpenException(
                 "User defined profile \"" + fileName 
                 + "\" isn't available in the current configuration.",
                     null);

@@ -70,7 +70,7 @@ public class XmiException extends UmlException {
     }
     
     /**
-     * Create a new SAXParseException.
+     * Create a new XmiException.
      *
      * @param message The error or warning message.
      * @param publicId The public identifier of the entity that generated
@@ -90,7 +90,7 @@ public class XmiException extends UmlException {
     
     
     /**
-     * Create a new SAXParseException with an embedded exception.
+     * Create a new XmiException with an embedded exception.
      * 
      * @param message The error or warning message, or null to use the message
      *                from the embedded exception.

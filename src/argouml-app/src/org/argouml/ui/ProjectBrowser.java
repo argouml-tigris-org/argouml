@@ -80,6 +80,7 @@ import org.argouml.kernel.NonUndoableCommand;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.XmiReferenceException;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
@@ -88,7 +89,6 @@ import org.argouml.persistence.ProjectFileView;
 import org.argouml.persistence.UmlVersionException;
 import org.argouml.persistence.VersionException;
 import org.argouml.persistence.XmiFormatException;
-import org.argouml.persistence.XmiReferenceException;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -1670,23 +1670,27 @@ public final class ProjectBrowser
                                 "dialog.error.file.version.error",
                                 new Object[] {ex.getMessage()}),
                         showUI, ex);
-            } catch (XmiReferenceException ex) {
-                // an error that can be corrected by the user, so no stack
-                // trace, but instead an explanation and a hint how to fix it
-                reportError(
-                        pmw,
-                        Translator.localize(
-                                "dialog.error.xmi.reference.error",
-                                new Object[] {ex.getMessage()}),
-                        ex.toString(),
-                        showUI);
             } catch (XmiFormatException ex) {
-                reportError(
-                        pmw,
-                        Translator.localize(
-                                "dialog.error.xmi.format.error",
-                                new Object[] {ex.getMessage()}),
-                        showUI, ex);
+                if (ex.getCause() instanceof XmiReferenceException) {
+                    // an error that can be corrected by the user, so no stack
+                    // trace, but instead an explanation and a hint how to fix
+                    String reference = 
+                        ((XmiReferenceException) ex.getCause()).getReference();
+                    reportError(
+                            pmw,
+                            Translator.localize(
+                                    "dialog.error.xmi.reference.error",
+                                    new Object[] {reference, ex.getMessage()}),
+                            ex.toString(),
+                            showUI);
+                } else {
+                    reportError(
+                            pmw,
+                            Translator.localize(
+                                    "dialog.error.xmi.format.error",
+                                    new Object[] {ex.getMessage()}),
+                                    showUI, ex);
+                }
             } catch (IOException ex) {
                 LOG.error("Exception while loading project", ex);
                 reportError(

@@ -28,12 +28,13 @@ import java.io.File;
 import java.net.URL;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
-import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.model.XmiReferenceException;
+import org.argouml.profile.ProfileFacade;
 
 /**
  * Testclass for the XMIReader. Placeholder for all saving/loading tests
@@ -57,8 +58,14 @@ public class TestXmiFilePersister extends TestCase {
      */
     public void setUp() throws Exception {
         super.setUp();
-        InitializeModel.initializeMDR();
-        new InitProfileSubsystem().init();
+        if (!Model.isInitiated()) {
+            InitializeModel.initializeMDR();
+        }
+//        new InitProfileSubsystem().init();
+        // TODO: Why is this necessary? - tfm
+        // Always force reinitialization of Profile subsystem
+        ProfileFacade.setManager(
+                new org.argouml.profile.internal.ProfileManagerImpl());
     }
 
     /**
@@ -100,6 +107,7 @@ public class TestXmiFilePersister extends TestCase {
      */
     public void testCreateSaveAndLoadYieldsCorrectModel() throws Exception {
         Project project = ProjectManager.getManager().makeEmptyProject();
+        ProjectManager.getManager().setCurrentProject(project);
         Object model = Model.getModelManagementFactory().getRootModel();
         assertNotNull(model);
         Object classifier = Model.getCoreFactory().buildClass("Foo", model);
@@ -124,15 +132,20 @@ public class TestXmiFilePersister extends TestCase {
         
         Model.getUmlFactory().delete(classifier);
 
-        ProjectManager.getManager().makeEmptyProject();
+        ProjectManager.getManager().removeProject(project);
+        project = ProjectManager.getManager().makeEmptyProject();
+        ProjectManager.getManager().setCurrentProject(project);
         
         persister = new XmiFilePersister();
         project = persister.doLoad(file);
+        ProjectManager.getManager().setCurrentProject(project);
+        
         Object attType = checkFoo(project.findType("Foo", false));
 
         assertEquals("Integer", Model.getFacade().getName(attType));
 
         file.delete();
+        ProjectManager.getManager().removeProject(project);
     }
 
     private Object checkFoo(Object theClass) {
@@ -155,9 +168,12 @@ public class TestXmiFilePersister extends TestCase {
 
         XmiFilePersister persister = new XmiFilePersister();
 
-        ProjectManager.getManager().makeEmptyProject();
+        Project project = ProjectManager.getManager().makeEmptyProject();
+        ProjectManager.getManager().setCurrentProject(project);
 
         persister.doLoad(file);
+        
+        ProjectManager.getManager().removeProject(project);
     }
 
     /**
@@ -174,8 +190,45 @@ public class TestXmiFilePersister extends TestCase {
 
         XmiFilePersister persister = new XmiFilePersister();
 
-        ProjectManager.getManager().makeEmptyProject();
+        Project project = ProjectManager.getManager().makeEmptyProject();
+        ProjectManager.getManager().setCurrentProject(project);
 
         persister.doLoad(new File(name));
+
+        ProjectManager.getManager().removeProject(project);
+    }
+    
+    /**
+     * Test loading an XMI file with a bad external reference (HREF).
+     * 
+     * @throws Exception if loading project fails
+     */
+    public void testLoadBadHref() throws Exception {
+        String filename = "/testmodels/uml14/href-test.xmi";
+        URL url = TestZargoFilePersister.class.getResource(filename);
+        assertTrue("Unintended failure: resource to be tested is not found: "
+                + filename + ", converted to URL: " + url, url != null);
+        String name = url.getFile();
+
+        XmiFilePersister persister = new XmiFilePersister();
+
+        Project project = ProjectManager.getManager().makeEmptyProject();
+        ProjectManager.getManager().setCurrentProject(project);
+
+        try {
+            persister.doLoad(new File(name));
+            fail("Expected exception not thrown");
+        } catch (OpenException e) {
+            // Success - expected exception
+            if (e.getCause() instanceof XmiReferenceException) {
+                XmiReferenceException xre = 
+                    (XmiReferenceException) e.getCause();
+                assertTrue(xre.getReference().contains("bad-reference"));
+            } else {
+                fail("Unexpected exception cause");
+            }
+        } finally {
+            ProjectManager.getManager().removeProject(project);
+        }
     }
 }

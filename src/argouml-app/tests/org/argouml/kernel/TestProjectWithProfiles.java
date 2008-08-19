@@ -27,7 +27,6 @@ package org.argouml.kernel;
 import static org.argouml.model.Model.getCoreFactory;
 import static org.argouml.model.Model.getExtensionMechanismsHelper;
 import static org.argouml.model.Model.getFacade;
-import static org.argouml.model.Model.getModelManagementFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,11 +40,12 @@ import org.argouml.FileHelper;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.model.XmiReferenceException;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.SaveException;
-import org.argouml.persistence.XmiReferenceException;
+import org.argouml.persistence.XmiFormatException;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.ProfileManager;
@@ -152,7 +152,7 @@ public class TestProjectWithProfiles extends TestCase {
                 javaProfile));
         // create a dependency from the project's model to the UML profile for 
         // Java
-        Object model = getModelManagementFactory().getRootModel();
+        Object model = project.getUserDefinedModelList().get(0);
         assertNotNull(model);
         Object fooClass = Model.getCoreFactory().buildClass("Foo", model);
         Object javaListType = project.findType("List", false);
@@ -180,6 +180,8 @@ public class TestProjectWithProfiles extends TestCase {
         AbstractFilePersister persister = getProjectPersister(file);
         project.setVersion(ApplicationVersion.getVersion());
         persister.save(project, file);
+        project.remove();
+        
         // reopen the project and assert that the Java profile isn't part of 
         // the profile configuration, including the fact that the type 
         // java.util.List isn't found
@@ -250,7 +252,7 @@ public class TestProjectWithProfiles extends TestCase {
         project.getProfileConfiguration().addProfile(userDefinedProfile);
         // create a dependency between the project's model and the user defined 
         // profile
-        Object model = getModelManagementFactory().getRootModel();
+        Object model = project.getUserDefinedModelList().get(0);
         Model.getCoreHelper().setName(model, 
                 "testProjectWithUserDefinedProfilePersistency-model");
         Object fooClass = getCoreFactory().buildClass(
@@ -275,6 +277,8 @@ public class TestProjectWithProfiles extends TestCase {
         AbstractFilePersister persister = getProjectPersister(file);
         project.setVersion(ApplicationVersion.getVersion());
         persister.save(project, file);
+        project.remove();
+        
         // load the project
         project = persister.doLoad(file);
         project.postLoad();
@@ -328,7 +332,7 @@ public class TestProjectWithProfiles extends TestCase {
         project.getProfileConfiguration().addProfile(userDefinedProfile);
         // create a dependency between the project's model and the user defined 
         // profile
-        Object model = getModelManagementFactory().getRootModel();
+        Object model = project.getUserDefinedModelList().get(0);
         final String className = "Foo4" + testName;
         Object fooClass = getCoreFactory().buildClass(className, model);
         Collection stereotypes = getExtensionMechanismsHelper().getStereotypes(
@@ -357,8 +361,8 @@ public class TestProjectWithProfiles extends TestCase {
         try {
             project = persister.doLoad(file);
             fail("Failed to throw exception for missing user defined profile");
-        } catch (XmiReferenceException e) {
-            // success
+        } catch (OpenException e) {
+            // Success - expected exception
         }
     }
 

@@ -126,13 +126,7 @@ class XmiReferenceResolverImpl extends XmiContext {
     private Map<String, String> public2SystemIds;
 
     private String modelPublicId;
-    
-    /**
-     * The URL of the last document that we failed to read. Used for error
-     * reporting if the read fails inside MDR.
-     */
-    private String lastFailedExternalReference = null;
-    
+
     /**
      * Constructor.
      * @param systemId 
@@ -260,17 +254,8 @@ class XmiReferenceResolverImpl extends XmiContext {
         idToObjects.clear();
         objectsToId.clear();
     }
-
-    /**
-     * Gets the URL of the last document that we attempted to read. Used for
-     * error reporting if the read fails inside MDR.
-     * 
-     * @return URL of the last document that we attempted to read
-     */
-    public String getLastFailedExternalReference() {
-        return lastFailedExternalReference;
-    }
-
+    
+    
     /////////////////////////////////////////////////////
     ////////// Begin AndroMDA Code //////////////////////
     /////////////////////////////////////////////////////
@@ -349,6 +334,8 @@ class XmiReferenceResolverImpl extends XmiContext {
                 // composition error problem - tfm
                 reverseUrlMap.put(modelUrl.toString(), relativeUri);
                 reverseUrlMap.put(systemId, relativeUri);
+            } else {
+                // TODO: We failed to resolve URL - signal error
             }
         }
         return modelUrl;
@@ -376,9 +363,10 @@ class XmiReferenceResolverImpl extends XmiContext {
         }
         for (String moduleDirectory : modulesPath) {
             File candidate = new File(moduleDirectory, moduleName);
-            if (LOG.isDebugEnabled())
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("candidate '" + candidate.toString() + "' exists="
                         + candidate.exists());
+            }
             if (candidate.exists()) {
                 String urlString;
                 try {
@@ -391,10 +379,11 @@ class XmiReferenceResolverImpl extends XmiContext {
             }
         }
         if (public2SystemIds.containsKey(moduleName)) {
-            if (LOG.isDebugEnabled())
+            if (LOG.isDebugEnabled()) {
                 LOG.debug("Couldn't find user model (\"" + moduleName 
                     + "\") in modulesPath, attempt " 
                     + "to use a model stored within the zargo file.");
+            }
             return moduleName;
         }
         return null;
@@ -476,9 +465,10 @@ class XmiReferenceResolverImpl extends XmiContext {
             if (CLASSPATH_MODEL_SUFFIXES != null
                     && CLASSPATH_MODEL_SUFFIXES.length > 0) {
                 for (String suffix : CLASSPATH_MODEL_SUFFIXES) {
-                    if (LOG.isDebugEnabled())
+                    if (LOG.isDebugEnabled()) {
                         LOG.debug("searching for model reference --> '"
                                 + modelUrl + "'");
+                    }
                     modelUrl = Thread.currentThread().getContextClassLoader()
                             .getResource(modelName + dot + suffix);
                     if (modelUrl != null) {
@@ -544,13 +534,15 @@ class XmiReferenceResolverImpl extends XmiContext {
 
     @Override
     public void readExternalDocument(String arg0) {
-        lastFailedExternalReference = null;
         try {
             super.readExternalDocument(arg0);
         } catch (DebugException e) {
-            lastFailedExternalReference = arg0;
+            // Unfortunately the MDR super implementation throws
+            // DebugException with just the message from the causing
+            // exception rather than nesting the exception itself, so
+            // we don't have all the information we'd like
             LOG.error("Error reading external document " + arg0);
-            throw e;
+            throw new XmiReferenceException(arg0, e);
         }
     }
 }

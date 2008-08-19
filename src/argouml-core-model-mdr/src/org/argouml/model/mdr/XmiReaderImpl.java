@@ -57,6 +57,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiException;
 import org.argouml.model.XmiReader;
+import org.argouml.model.XmiReferenceException;
 import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.netbeans.lib.jmi.xmi.InputConfig;
@@ -259,11 +260,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             }
 
         } catch (MalformedXMIException e) {
-            // If we failed reading an external referenced document (href)
-            if (resolver.getLastFailedExternalReference() != null) {
-                throw new XmiException("Error reading external document "
-                        + resolver.getLastFailedExternalReference());
-            }
             // If we can find a nested SAX exception, it will have information
             // on the line number, etc.
             ErrorManager.Annotation[] annotations = 
@@ -275,6 +271,16 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                     throw new XmiException(spe.getMessage(), spe.getPublicId(),
                             spe.getSystemId(), spe.getLineNumber(), 
                             spe.getColumnNumber(), e);
+                } else if (throwable instanceof SAXException) {
+                    SAXException se = (SAXException) throwable;
+                    Exception e1 = se.getException();
+                    if (e1 instanceof org.argouml.model.mdr.XmiReferenceException) {
+                        String href = ((org.argouml.model.mdr.XmiReferenceException) e1)
+                                .getReference();
+                        throw new org.argouml.model.XmiReferenceException(href,
+                                e);
+                    }
+                    throw new XmiException(se.getMessage(), se);
                 }
             }
             modelImpl.removeExtent(extent);
