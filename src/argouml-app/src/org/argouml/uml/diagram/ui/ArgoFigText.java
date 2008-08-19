@@ -75,7 +75,7 @@ public class ArgoFigText extends FigText
      */
     public ArgoFigText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
-        setFontFamily("dialog");
+        setFontFamily("dialog"); /* TODO: Is this needed?*/
     }
     
     /*
