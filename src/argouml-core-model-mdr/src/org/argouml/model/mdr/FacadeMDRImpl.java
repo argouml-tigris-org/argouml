@@ -1294,7 +1294,7 @@ class FacadeMDRImpl implements Facade {
     public Collection getAssociationEnds(Object handle) {
         try {
             if (handle instanceof Classifier) {
-                return modelImpl.getUmlPackage().getCore()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCore()
                         .getAParticipantAssociation().getAssociation(
                                 (Classifier) handle);
             }
@@ -1308,7 +1308,7 @@ class FacadeMDRImpl implements Facade {
     public Collection getAssociationRoles(Object handle) {
         try {
             if (handle instanceof UmlAssociation) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCollaborations()
                         .getABaseAssociationRole().getAssociationRole(
                                 (UmlAssociation) handle);
             }
@@ -1500,12 +1500,12 @@ class FacadeMDRImpl implements Facade {
     public Collection getClassifierRoles(Object handle) {
         try {
             if (handle instanceof Feature) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCollaborations()
                         .getAClassifierRoleAvailableFeature()
                         .getClassifierRole((Feature) handle);
             }
             if (handle instanceof Classifier) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCollaborations()
                         .getAClassifierRoleBase().getClassifierRole(
                                 (Classifier) handle);
             }
@@ -1543,12 +1543,12 @@ class FacadeMDRImpl implements Facade {
     public Collection getClassifiersInState(Object handle) {
         try {
             if (handle instanceof Classifier) {
-                return modelImpl.getUmlPackage().getActivityGraphs()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getActivityGraphs()
                         .getATypeClassifierInState().getClassifierInState(
                                 (Classifier) handle);
             }
             if (handle instanceof State) {
-                return modelImpl.getUmlPackage().getActivityGraphs()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getActivityGraphs()
                         .getAClassifierInStateInState().getClassifierInState(
                                 (State) handle);
             }
@@ -1574,9 +1574,10 @@ class FacadeMDRImpl implements Facade {
     public Collection getClientDependencies(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                return modelImpl.getUmlPackage().getCore()
-                        .getAClientClientDependency().getClientDependency(
-                                (ModelElement) handle);
+                ModelElement me = (ModelElement) handle;
+                return ((org.omg.uml.UmlPackage) me.refOutermostPackage())
+                        .getCore().getAClientClientDependency()
+                        .getClientDependency((ModelElement) handle);
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -1641,9 +1642,10 @@ class FacadeMDRImpl implements Facade {
     public Collection getElementResidences(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                return modelImpl.getUmlPackage().getCore()
-                    .getAResidentElementResidence().getElementResidence(
-                        (ModelElement) handle);
+                ModelElement me = (ModelElement) handle;
+                return ((org.omg.uml.UmlPackage) me.refOutermostPackage())
+                        .getCore().getAResidentElementResidence()
+                        .getElementResidence((ModelElement) handle);
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
@@ -1655,9 +1657,11 @@ class FacadeMDRImpl implements Facade {
     public Collection getElementImports2(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                return modelImpl.getUmlPackage().getModelManagement()
-                    .getAImportedElementElementImport().getElementImport(
-                        (ModelElement) handle);
+                ModelElement me = (ModelElement) handle;
+                return ((org.omg.uml.UmlPackage) me.refOutermostPackage())
+                        .getModelManagement()
+                        .getAImportedElementElementImport().getElementImport(
+                                (ModelElement) handle);
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
@@ -1742,9 +1746,10 @@ class FacadeMDRImpl implements Facade {
             if (!(handle instanceof Stereotype)) {
                 return illegalArgumentCollection(handle);
             }
-            return modelImpl.getUmlPackage().getCore()
-                    .getAStereotypeExtendedElement()
-                        .getExtendedElement((Stereotype) handle);
+            Stereotype stereotype = (Stereotype) handle;
+            return ((org.omg.uml.UmlPackage) stereotype.refOutermostPackage())
+                    .getCore().getAStereotypeExtendedElement()
+                    .getExtendedElement(stereotype);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
@@ -1757,9 +1762,9 @@ class FacadeMDRImpl implements Facade {
                 return ((UseCase) handle).getExtend();
             }
             if (handle instanceof ExtensionPoint) {
-                return modelImpl.getUmlPackage().getUseCases()
-                        .getAExtensionPointExtend().getExtend(
-                                (ExtensionPoint) handle);
+                ExtensionPoint ep = (ExtensionPoint) handle;
+                return ((org.omg.uml.UmlPackage) ep.refOutermostPackage())
+                        .getUseCases().getAExtensionPointExtend().getExtend(ep);
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -1771,8 +1776,9 @@ class FacadeMDRImpl implements Facade {
     public Collection getExtenders(Object handle) {
         try {
             if (handle instanceof UseCase) {
-                return modelImpl.getUmlPackage().getUseCases()
-                    .getABaseExtender().getExtender((UseCase) handle);
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle)
+                        .refOutermostPackage()).getUseCases()
+                        .getABaseExtender().getExtender((UseCase) handle);
             }
             return illegalArgumentCollection(handle);
         } catch (InvalidObjectException e) {
@@ -1938,7 +1944,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getIncluders(Object handle) {
         try {
             if (handle instanceof UseCase) {
-                return modelImpl.getUmlPackage().getUseCases()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle)
+                        .refOutermostPackage()).getUseCases()
                         .getAIncluderAddition().getIncluder((UseCase) handle);
             }
         } catch (InvalidObjectException e) {
@@ -2005,7 +2012,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getInstances(Object handle) {
         try {
             if (handle instanceof Classifier) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle)
+                        .refOutermostPackage()).getCommonBehavior()
                         .getAInstanceClassifier().getInstance(
                                 (Classifier) handle);
             }
@@ -2073,7 +2081,8 @@ class FacadeMDRImpl implements Facade {
                 return ((AssociationRole) handle).getMessage();
             }
             if (handle instanceof Action) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((Action) handle)
+                        .refOutermostPackage()).getCollaborations()
                         .getAActionMessage().getMessage(((Action) handle));
             }
         } catch (InvalidObjectException e) {
@@ -2085,7 +2094,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getSuccessors(Object handle) {
         try {
             if (handle instanceof Message) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((Message) handle)
+                        .refOutermostPackage()).getCollaborations()
                         .getAPredecessorSuccessor().getSuccessor(
                                 (Message) handle);
             }
@@ -2098,7 +2108,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getActivatedMessages(Object handle) {
         try {
             if (handle instanceof Message) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((Message) handle)
+                        .refOutermostPackage()).getCollaborations()
                         .getAMessageActivator().getMessage((Message) handle);
             }
         } catch (InvalidObjectException e) {
@@ -2110,7 +2121,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getReceivedMessages(Object handle) {
         try {
             if (handle instanceof ClassifierRole) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((ClassifierRole) handle)
+                        .refOutermostPackage()).getCollaborations()
                         .getAReceiverMessage().getMessage(
                                 (ClassifierRole) handle);
             }
@@ -2123,7 +2135,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getSentMessages(Object handle) {
         try {
             if (handle instanceof ClassifierRole) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((ClassifierRole) handle)
+                        .refOutermostPackage()).getCollaborations()
                         .getAMessageSender()
                         .getMessage((ClassifierRole) handle);
             }
@@ -2181,6 +2194,8 @@ class FacadeMDRImpl implements Facade {
                     elements.add(obj);
                 }
             }
+        } else {
+            LOG.warn("No default extent in getRootElements");
         }
         return elements;
     }
@@ -2295,12 +2310,14 @@ class FacadeMDRImpl implements Facade {
     public Collection getCollaborations(Object handle) {
         try {
             if (handle instanceof Operation) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((Operation) handle)
+                        .refOutermostPackage()).getCollaborations()
                         .getARepresentedOperationCollaboration()
                         .getCollaboration((Operation) handle);
             }
             if (handle instanceof Classifier) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((Classifier) handle)
+                        .refOutermostPackage()).getCollaborations()
                         .getARepresentedClassifierCollaboration()
                         .getCollaboration((Classifier) handle);
             }
@@ -2545,7 +2562,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getContexts(Object handle) {
         try {
             if (handle instanceof Signal) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((Signal) handle)
+                        .refOutermostPackage()).getCommonBehavior()
                         .getAContextRaisedSignal().getContext((Signal) handle);
             }
         } catch (InvalidObjectException e) {
@@ -2558,7 +2576,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getCreateActions(Object handle) {
         try {
             if (handle instanceof Classifier) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((Classifier) handle)
+                        .refOutermostPackage()).getCommonBehavior()
                         .getACreateActionInstantiation().getCreateAction(
                                 (Classifier) handle);
             }
@@ -2657,7 +2676,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getLinks(Object handle) {
         try {
             if (handle instanceof UmlAssociation) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((UmlAssociation) handle)
+                        .refOutermostPackage()).getCommonBehavior()
                         .getAAssociationLink().getLink((UmlAssociation) handle);
             }
         } catch (InvalidObjectException e) {
@@ -2670,7 +2690,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getLinkEnds(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((AssociationEnd) handle)
+                        .refOutermostPackage()).getCommonBehavior()
                         .getAAssociationEndLinkEnd().getLinkEnd(
                                 (AssociationEnd) handle);
             }
@@ -2699,7 +2720,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getMethods(Object handle) {
         try {
             if (handle instanceof Operation) {
-                return modelImpl.getUmlPackage().getCore()
+                return ((org.omg.uml.UmlPackage) ((Operation) handle)
+                        .refOutermostPackage()).getCore()
                         .getASpecificationMethod()
                         .getMethod((Operation) handle);
             }
@@ -2737,7 +2759,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getObjectFlowStates(Object handle) {
         try {
             if (handle instanceof Classifier) {
-                return modelImpl.getUmlPackage().getActivityGraphs()
+                return ((org.omg.uml.UmlPackage) ((Classifier) handle)
+                        .refOutermostPackage()).getActivityGraphs()
                         .getATypeObjectFlowState().getObjectFlowState(
                                 (Classifier) handle);
             }
@@ -2766,7 +2789,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getOccurrences(Object handle) {
         try {
             if (handle instanceof Operation) {
-                return modelImpl.getUmlPackage().getStateMachines()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle)
+                        .refOutermostPackage()).getStateMachines()
                         .getAOccurrenceOperation().getOccurrence(
                                 (Operation) handle);
             }
@@ -3067,7 +3091,8 @@ class FacadeMDRImpl implements Facade {
                 return ((ObjectFlowState) handle).getParameter();
             }
             if (handle instanceof Classifier) {
-                return modelImpl.getUmlPackage().getCore()
+                return ((org.omg.uml.UmlPackage) ((Classifier) handle)
+                        .refOutermostPackage()).getCore()
                         .getATypedParameterType().getTypedParameter(
                                 (Classifier) handle);
             }
@@ -3113,7 +3138,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getRaisedSignals(Object handle) {
         try {
             if (handle instanceof BehavioralFeature) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((BehavioralFeature) handle)
+                        .refOutermostPackage()).getCommonBehavior()
                         .getAContextRaisedSignal().getRaisedSignal(
                                 (BehavioralFeature) handle);
             }
@@ -3127,7 +3153,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getReceptions(Object handle) {
         try {
             if (handle instanceof Signal) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((Signal) handle)
+                        .refOutermostPackage()).getCommonBehavior()
                         .getASignalReception().getReception((Signal) handle);
             }
         } catch (InvalidObjectException e) {
@@ -3336,7 +3363,8 @@ class FacadeMDRImpl implements Facade {
     public Object getState(Object handle) {
         try {
             if (handle instanceof Transition) {
-                return modelImpl.getUmlPackage().getStateMachines()
+                return ((org.omg.uml.UmlPackage) ((Transition) handle)
+                        .refOutermostPackage()).getStateMachines()
                         .getAStateInternalTransition().getState(
                                 (Transition) handle);
             }
@@ -3350,7 +3378,8 @@ class FacadeMDRImpl implements Facade {
     public Collection getStates(Object handle) {
         try {
             if (handle instanceof Event) {
-                return modelImpl.getUmlPackage().getStateMachines()
+                return ((org.omg.uml.UmlPackage) ((Event) handle)
+                        .refOutermostPackage()).getStateMachines()
                         .getAStateDeferrableEvent().getState((Event) handle);
             }
             return illegalArgumentCollection(handle);
@@ -3375,12 +3404,12 @@ class FacadeMDRImpl implements Facade {
     public Collection getStimuli(Object handle) {
         try {
             if (isALink(handle)) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCommonBehavior()
                         .getAStimulusCommunicationLink().getStimulus(
                                 (Link) handle);
             }
             if (isAAction(handle)) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCommonBehavior()
                         .getADispatchActionStimulus().getStimulus(
                                 (Action) handle);
             }
@@ -3393,7 +3422,7 @@ class FacadeMDRImpl implements Facade {
     public Collection getReceivedStimuli(Object handle) {
         try {
             if (handle instanceof Instance) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCommonBehavior()
                         .getAReceiverStimulus().getStimulus((Instance) handle);
             }
             return illegalArgumentCollection(handle);
@@ -3406,7 +3435,7 @@ class FacadeMDRImpl implements Facade {
     public Collection getSentStimuli(Object handle) {
         try {
             if (handle instanceof Instance) {
-                return modelImpl.getUmlPackage().getCommonBehavior()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCommonBehavior()
                         .getAStimulusSender().getStimulus((Instance) handle);
             }
             return illegalArgumentCollection(handle);
@@ -3455,8 +3484,9 @@ class FacadeMDRImpl implements Facade {
     public Collection getSupplierDependencies(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                return modelImpl.getUmlPackage().getCore()
-                        .getASupplierSupplierDependency()
+                ModelElement me = (ModelElement) handle;                
+                return ((org.omg.uml.UmlPackage) me.refOutermostPackage())
+                        .getCore().getASupplierSupplierDependency()
                         .getSupplierDependency((ModelElement) handle);
             }
         } catch (InvalidObjectException e) {
@@ -3484,7 +3514,7 @@ class FacadeMDRImpl implements Facade {
                 return ((Guard) handle).getTransition();
             }
             if (handle instanceof Action) {
-                return modelImpl.getUmlPackage().getStateMachines()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getStateMachines()
                         .getATransitionEffect().getTransition((Action) handle);
             }
         } catch (InvalidObjectException e) {
@@ -3540,7 +3570,7 @@ class FacadeMDRImpl implements Facade {
     public Collection getTypedValues(Object handle) {
         try {
             if (handle instanceof TagDefinition) {
-                return modelImpl.getUmlPackage().getCore()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCore()
                         .getATypeTypedValue().getTypedValue(
                                 (TagDefinition) handle);
             }
@@ -3666,7 +3696,7 @@ class FacadeMDRImpl implements Facade {
             } else if (isACompositeState(handle)) {
                 return ((CompositeState) handle).getInternalTransition();
             } else if (isAEvent(handle)) {
-                return modelImpl.getUmlPackage().getStateMachines()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getStateMachines()
                         .getATransitionTrigger().getTransition((Event) handle);
             }
             return illegalArgumentCollection(handle);
@@ -3754,7 +3784,7 @@ class FacadeMDRImpl implements Facade {
     public Object getAction(Object handle) {
         try {
             if (handle instanceof Message) {
-                return modelImpl.getUmlPackage().getCollaborations()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle).refOutermostPackage()).getCollaborations()
                         .getAActionMessage().getAction((Message) handle);
             }
             if (handle instanceof Argument) {

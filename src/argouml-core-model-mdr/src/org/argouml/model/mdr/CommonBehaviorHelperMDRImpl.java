@@ -160,7 +160,8 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
         try {
             if (handle instanceof Signal
                     && context instanceof BehavioralFeature) {
-                modelImpl.getUmlPackage().getCommonBehavior()
+                ((org.omg.uml.UmlPackage) ((Signal) handle)
+                        .refOutermostPackage()).getCommonBehavior()
                         .getAContextRaisedSignal().remove(
                                 (BehavioralFeature) context, (Signal) handle);
                 return;
@@ -232,8 +233,8 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     private void addContext(Object handle, Object behavorialFeature) {
         if (handle instanceof Signal
                 && behavorialFeature instanceof BehavioralFeature) {
-            modelImpl.getUmlPackage().getCommonBehavior().
-                    getAContextRaisedSignal().add(
+            ((org.omg.uml.UmlPackage) ((Signal) handle).refOutermostPackage())
+                    .getCommonBehavior().getAContextRaisedSignal().add(
                             (BehavioralFeature) behavorialFeature,
                             (Signal) handle);
             return;

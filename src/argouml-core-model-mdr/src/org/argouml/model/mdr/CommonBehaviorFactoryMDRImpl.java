@@ -29,6 +29,7 @@ import java.util.Iterator;
 
 import org.argouml.model.CommonBehaviorFactory;
 import org.argouml.model.Model;
+import org.omg.uml.UmlPackage;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
 import org.omg.uml.behavioralelements.collaborations.CollaborationInstanceSet;
 import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
@@ -317,8 +318,10 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     public Signal buildSignal(Object element) {
         if ((element instanceof BehavioralFeature)) {
             Signal signal = buildSignalInt(element);
-            getCbPackage().getAContextRaisedSignal().add(
-                    (BehavioralFeature) element, signal);
+            BehavioralFeature bf = (BehavioralFeature) element;
+            ((UmlPackage) bf.refOutermostPackage()).getCommonBehavior()
+                    .getAContextRaisedSignal().add((BehavioralFeature) element,
+                            signal);
             return signal;
         } else if (element instanceof Reception) {
             Signal signal = buildSignalInt(element);
@@ -529,9 +532,13 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
         // Delete Stimuli which have this as a Sender or Receiver
         modelImpl.getUmlHelper().deleteCollection(
-                getCbPackage().getAStimulusSender().getStimulus((Instance) elem));
+                ((UmlPackage) ((Instance) elem).refOutermostPackage())
+                        .getCommonBehavior().getAStimulusSender().getStimulus(
+                                (Instance) elem));
         modelImpl.getUmlHelper().deleteCollection(
-                getCbPackage().getAReceiverStimulus().getStimulus((Instance) elem));
+                ((UmlPackage) ((Instance) elem).refOutermostPackage())
+                        .getCommonBehavior().getAReceiverStimulus()
+                        .getStimulus((Instance) elem));
 
     }
 

@@ -374,9 +374,9 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     //    [see below for AssociationRole]
     //    )
     private boolean isNamedOrUnique(ClassifierRole role, Classifier base) {
-        Collection<ClassifierRole> roles =
-                modelImpl.getUmlPackage().getCollaborations()
-                        .getAClassifierRoleBase().getClassifierRole(base);
+        Collection<ClassifierRole> roles = ((org.omg.uml.UmlPackage) (base)
+                .refOutermostPackage()).getCollaborations()
+                .getAClassifierRoleBase().getClassifierRole(base);
         if (roles.isEmpty()) {
             return true;
         }
@@ -405,9 +405,9 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     //                  p = q) ) )
     //    )
     private boolean isNamedOrUnique(AssociationRole role, UmlAssociation base) {
-        Collection<AssociationRole> roles =
-                modelImpl.getUmlPackage().getCollaborations()
-                        .getABaseAssociationRole().getAssociationRole(base);
+        Collection<AssociationRole> roles = ((org.omg.uml.UmlPackage) (base)
+                .refOutermostPackage()).getCollaborations()
+                .getABaseAssociationRole().getAssociationRole(base);
         if (roles.isEmpty()) {
             return true;
         }
@@ -551,10 +551,10 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         // An Association can only have a single unnamed ClassifierRole, so
         Collection<UmlAssociation> listToRemove = new ArrayList<UmlAssociation>();
         for (UmlAssociation association : ret) {
-            Collection<AssociationRole> associationRoles =
-                    modelImpl.getUmlPackage().getCollaborations()
-                            .getABaseAssociationRole().getAssociationRole(
-                                    association);
+            Collection<AssociationRole> associationRoles = 
+                ((org.omg.uml.UmlPackage) (association)
+                    .refOutermostPackage()).getCollaborations()
+                    .getABaseAssociationRole().getAssociationRole(association);
             if (associationRoles.isEmpty()) {
                 continue;
             }
@@ -602,10 +602,10 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         // TODO: This probably belongs in a critic instead of here
         Collection<Classifier> listToRemove = new ArrayList<Classifier>();
         for (Classifier classifier : returnList) {
-            Collection<ClassifierRole> classifierRoles =
-                    modelImpl.getUmlPackage().getCollaborations()
-                            .getAClassifierRoleBase().getClassifierRole(
-                                    classifier);
+            Collection<ClassifierRole> classifierRoles = 
+                ((org.omg.uml.UmlPackage) (classifier)
+                    .refOutermostPackage()).getCollaborations()
+                    .getAClassifierRoleBase().getClassifierRole(classifier);
             if (classifierRoles.isEmpty()) {
                 continue;
             }
@@ -783,7 +783,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
     public void removeSuccessor(Object handle, Object mess) {
         try {
             if (handle instanceof Message && mess instanceof Message) {
-                modelImpl.getUmlPackage().getCollaborations()
+                ((org.omg.uml.UmlPackage) ((Message) handle)
+                        .refOutermostPackage()).getCollaborations()
                         .getAPredecessorSuccessor().remove((Message) handle,
                                 (Message) mess);
                 return;

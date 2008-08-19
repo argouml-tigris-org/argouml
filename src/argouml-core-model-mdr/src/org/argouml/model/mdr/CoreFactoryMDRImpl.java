@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.jmi.reflect.InvalidObjectException;
+import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
@@ -212,11 +213,14 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     public UmlClass createClass() {
-        UmlClass myClass = getCorePackage().getUmlClass().createUmlClass();
+        return createClass(modelImpl.getUmlPackage());
+    }
+
+    public UmlClass createClass(org.omg.uml.UmlPackage extent) {
+        UmlClass myClass = extent.getCore().getUmlClass().createUmlClass();
         super.initialize(myClass);
         return myClass;
     }
-
 
     public Comment createComment() {
         Comment myComment = getCorePackage().getComment().createComment();
@@ -264,8 +268,10 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     public ElementResidence buildElementResidence(Object me, Object component) {
-        ElementResidence myElementResidence = getCorePackage().
-        getElementResidence().createElementResidence();
+        ElementResidence myElementResidence = 
+            ((org.omg.uml.UmlPackage) ((ModelElement) me)
+                .refOutermostPackage()).getCore().getElementResidence()
+                .createElementResidence();
         super.initialize(myElementResidence);
         myElementResidence.setContainer((Component) component);
         myElementResidence.setResident((ModelElement) me);
@@ -754,17 +760,30 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     
 
     public UmlClass buildClass() {
+        return buildClass((Object) null);
+    }
+
+
+    private static void initClass(UmlClass cl) {
+        cl.setName("");
+        cl.setAbstract(false);
+        cl.setActive(false);
+        cl.setRoot(false);
+        cl.setLeaf(false);
+        cl.setSpecification(false);
+        cl.setVisibility(VisibilityKindEnum.VK_PUBLIC);
+    }
+    
+    public UmlClass buildClass(final Object owner) {
         ModelCommand command = new ModelCommand() {
             private UmlClass cl;
             public UmlClass execute() {
-                cl = createClass();
-                cl.setName("");
-                cl.setAbstract(false);
-                cl.setActive(false);
-                cl.setRoot(false);
-                cl.setLeaf(false);
-                cl.setSpecification(false);
-                cl.setVisibility(VisibilityKindEnum.VK_PUBLIC);
+                if (owner == null) {
+                    cl = createClass();
+                } else {
+                    cl = createClass(getExtent(owner));
+                }
+                initClass(cl);
                 return cl;
             }
             
@@ -784,12 +803,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 return false;
             }
         };
-        return (UmlClass) org.argouml.model.Model.execute(command);
-    }
-
-
-    public UmlClass buildClass(Object owner) {
-        UmlClass clazz = buildClass();
+        UmlClass clazz = (UmlClass) org.argouml.model.Model.execute(command);
         if (owner instanceof Namespace) {
             modelImpl.getCoreHelper().setNamespace(clazz, owner);
         }
@@ -797,6 +811,11 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
+    private org.omg.uml.UmlPackage getExtent(Object element) {
+        return (org.omg.uml.UmlPackage) ((RefObject) element)
+                .refOutermostPackage();
+    }
+    
     public UmlClass buildClass(String name) {
         UmlClass clazz = buildClass();
         clazz.setName(name);

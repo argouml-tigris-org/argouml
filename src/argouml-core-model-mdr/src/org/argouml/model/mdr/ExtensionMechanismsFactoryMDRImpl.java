@@ -196,15 +196,21 @@ class ExtensionMechanismsFactoryMDRImpl extends
     }
 
 
-    public Stereotype buildStereotype(String text, Object ns) {
-        if (!(ns instanceof Namespace)) {
+    public Stereotype buildStereotype(String text, Object namespace) {
+        if (!(namespace instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "Namespace is wrong type - text:" + text + ",ns:"
-                            + ns);
+                            + namespace);
         }
-        Stereotype stereo = buildStereotype(text);
-        stereo.setNamespace((Namespace) ns);
-        return stereo;
+        Namespace ns = (Namespace) namespace;
+        org.omg.uml.UmlPackage umlPkg = ((org.omg.uml.UmlPackage) ns
+                .refOutermostPackage());
+        Stereotype stereotype = umlPkg.getCore().getStereotype()
+                .createStereotype();
+        super.initialize(stereotype);
+        stereotype.setName(text);
+        stereotype.setNamespace(ns);
+        return stereotype;
     }
 
 
@@ -313,8 +319,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
             throw new IllegalArgumentException("namespace");
         }
 
-        Stereotype st = buildStereotype(null);
-        ((Namespace) ns).getOwnedElement().add(st);
+        Stereotype st = buildStereotype(null, ns);
         doCopyStereotype((Stereotype) source, st);
         return st;
     }

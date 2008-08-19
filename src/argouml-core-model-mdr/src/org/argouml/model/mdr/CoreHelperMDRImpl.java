@@ -2310,7 +2310,8 @@ class CoreHelperMDRImpl implements CoreHelper {
     public Collection<ElementResidence> getElementResidence(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                return modelImpl.getUmlPackage().getCore()
+                return ((org.omg.uml.UmlPackage) ((ModelElement) handle)
+                        .refOutermostPackage()).getCore()
                         .getAResidentElementResidence().getElementResidence(
                                 (ModelElement) handle);
             }
@@ -2445,14 +2446,15 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void addRaisedSignal(Object handle, Object sig) {
         if (sig instanceof Signal) {
             if (handle instanceof Message) {
-                modelImpl.getUmlPackage().getCommonBehavior().
-                        getAContextRaisedSignal().add(
+                ((org.omg.uml.UmlPackage) ((Signal) sig)
+                        .refOutermostPackage()).getCommonBehavior()
+                        .getAContextRaisedSignal().add(
                                 (BehavioralFeature) handle, (Signal) sig);
                 return;
             }
             if (handle instanceof Operation) {
-                modelImpl.getUmlPackage().getCommonBehavior().
-                        getAContextRaisedSignal().add(
+                ((org.omg.uml.UmlPackage) ((Signal) sig).refOutermostPackage())
+                        .getCommonBehavior().getAContextRaisedSignal().add(
                                 (BehavioralFeature) handle, (Signal) sig);
                 return;
             }
