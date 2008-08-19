@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.tigris.gef.base.Layer;
@@ -56,11 +55,6 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
      */
     private Fig sourceFig;
     
-    /**
-     * The port where the edge was dropped.
-     */
-    private Fig endPort;
-
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
@@ -167,7 +161,6 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
                 return;
             }
             if (foundPort != null) {
-                Fig destPortFig = destFigNode.getPortFig(foundPort);
                 FigPoly p = (FigPoly) _newItem;
                 if (foundPort == getStartPort() && _npoints >= 4) {
                     p.setSelfLoop(true);
@@ -232,18 +225,20 @@ public abstract class ModeCreateGraphEdge extends ModeCreatePolyEdge {
     protected boolean isConnectionValid(Fig source, Fig dest) {
 	return Model.getUmlFactory().isConnectionValid(
 		getMetaType(), 
-		source.getOwner(), 
-		dest.getOwner(),
+		source == null ? null : source.getOwner(), 
+		dest == null ? null : dest.getOwner(),
                 true);
     }
     
     /**
      * Create an edge of the given type and connect it to the
      * given nodes.
-     *
+     * 
+     * @param graphModel the GraphModel containing the objects
      * @param edgeType       the UML object type of the connection
-     * @param fromElement    the UML object for the "from" element
-     * @param toElement      the UML object for the "to" element
+     * @param fromElement    the Fig for the "from" element
+     * @param destFigNode    the Fig for the "to" element
+     * @return a newly created FigEdge
      */
     protected FigEdge buildConnection(
             MutableGraphModel graphModel,
