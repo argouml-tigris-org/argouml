@@ -352,7 +352,7 @@
   </panel>
   <panel name="AssociationEnd">
     <text name="name" type="Name" />
-    
+    <combo name="participant" type="Classifier" />
     <combo name="multiplicity" type="Multiplicity" />
 	<singlerow name="association" type="Association" />
 	<separator />
@@ -387,8 +387,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <attribute name="elementImport" type="ModelElement" />
-    <attribute name="participant" type="Classifier" />
+    <attribute name="elementImport" type="ModelElement" />    
     <list name="linkEnd" type="AssociationEnd" />
     <list name="associationEndRole" type="AssociationEnd" />
   </panel>

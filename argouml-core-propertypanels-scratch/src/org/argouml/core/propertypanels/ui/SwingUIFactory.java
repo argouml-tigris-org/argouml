@@ -102,6 +102,7 @@ import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseIncludeListModel;
 import org.argouml.uml.ui.foundation.core.ActionAddAssociationSpecification;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
+import org.argouml.uml.ui.foundation.core.ActionSetAssociationEndType;
 import org.argouml.uml.ui.foundation.core.ActionSetGeneralizationPowertype;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
 import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
@@ -115,6 +116,7 @@ import org.argouml.uml.ui.foundation.core.UMLAssociationEndOrderingCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndQualifiersListModel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndSpecificationListModel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndTargetScopeCheckbox;
+import org.argouml.uml.ui.foundation.core.UMLAssociationEndTypeComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationLinkListModel;
 import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
@@ -965,6 +967,13 @@ public class SwingUIFactory implements UIFactory {
                         "label.association.navigate.tooltip"),                
                     new UMLSearchableComboBox(model,
                             new ActionSetLinkAssociation(), true));
+        }
+        else if ("participant".equals(prop.getName())) {
+            final UMLComboBoxModel2 model = 
+                new UMLAssociationEndTypeComboBoxModel();
+            model.setTarget(target);
+            comp = new UMLComboBox2(model,
+                    ActionSetAssociationEndType.getInstance(), true);
         }
         if (comp != null) {
             String name = prop.getName();
