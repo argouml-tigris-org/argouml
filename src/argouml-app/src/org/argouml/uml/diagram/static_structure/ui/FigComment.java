@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -247,7 +247,9 @@ public class FigComment
     @Override
     public void mouseClicked(MouseEvent me) {
         if (!readyToEdit) {
-            if (Model.getFacade().isAModelElement(getOwner())) {
+            Object owner = getOwner();
+            if (Model.getFacade().isAModelElement(owner) 
+                    && !Model.getModelManagementHelper().isReadOnly(owner)) {
                 readyToEdit = true;
             } else {
                 LOG.debug("not ready to edit note");
@@ -346,7 +348,9 @@ public class FigComment
             return;
         }
         if (!readyToEdit) {
-            if (Model.getFacade().isAModelElement(getOwner())) {
+            Object owner = getOwner();
+            if (Model.getFacade().isAModelElement(owner)
+                    && !Model.getModelManagementHelper().isReadOnly(owner)) {
                 storeBody("");
                 readyToEdit = true;
             } else {

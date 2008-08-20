@@ -29,6 +29,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JTextArea;
 
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
@@ -38,6 +39,7 @@ import org.argouml.ui.targetmanager.TargettableModelView;
  * @author jaap.branderhorst@xs4all.nl
  * @since Dec 28, 2002
  */
+@UmlModelMutator
 public class UMLTextArea2 extends JTextArea
     implements PropertyChangeListener, TargettableModelView {
 

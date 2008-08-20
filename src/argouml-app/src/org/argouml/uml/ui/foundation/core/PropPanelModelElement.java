@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,6 +178,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     /*
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
+    @Override
     public void setTarget(Object target) {
         super.setTarget(target);
         /* This for e.g. a CommentEdge: */
@@ -184,7 +186,14 @@ public abstract class PropPanelModelElement extends PropPanel {
             boolean enable =
                 !Model.getModelManagementHelper().isReadOnly(target);
             for (final Component component : getComponents()) {
-                if (!(component instanceof JLabel)
+                if (component instanceof JScrollPane) {
+                    Component c = 
+                        ((JScrollPane) component).getViewport().getView();
+                    if (c.getClass().isAnnotationPresent(
+                            UmlModelMutator.class)) {
+                        c.setEnabled(enable);
+                    }
+                } else if (!(component instanceof JLabel)
                         && component.isEnabled() != enable) {
                     component.setEnabled(enable);
                 }

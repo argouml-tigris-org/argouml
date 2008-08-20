@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -79,7 +80,7 @@ public class PropPanelComment extends PropPanelModelElement {
         addAction(getDeleteAction());
     }
 }
-
+@UmlModelMutator
 class UMLCommentBodyDocument extends UMLPlainTextDocument {
     
     /**
@@ -115,6 +116,7 @@ class UMLCommentBodyDocument extends UMLPlainTextDocument {
     
 }
 
+@UmlModelMutator
 class ActionDeleteAnnotatedElement extends AbstractActionRemoveElement {
     /**
      * Constructor.

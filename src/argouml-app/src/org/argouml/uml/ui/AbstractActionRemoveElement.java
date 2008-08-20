@@ -27,6 +27,8 @@ package org.argouml.uml.ui;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.UmlModelMutator;
+import org.argouml.model.Model;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -38,6 +40,7 @@ import org.tigris.gef.undo.UndoableAction;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 25, 2003
  */
+@UmlModelMutator
 public class AbstractActionRemoveElement extends UndoableAction {
 
     /**
@@ -110,7 +113,10 @@ public class AbstractActionRemoveElement extends UndoableAction {
      */
     @Override
     public boolean isEnabled() {
-        return getObjectToRemove() != null && getTarget() != null;
+        return getObjectToRemove() != null
+                && !Model.getModelManagementHelper().isReadOnly(
+                        getObjectToRemove()) && getTarget() != null
+                && !Model.getModelManagementHelper().isReadOnly(getTarget());
     }
 
 }

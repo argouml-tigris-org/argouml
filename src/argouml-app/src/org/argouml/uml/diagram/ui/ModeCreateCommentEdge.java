@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,9 +39,21 @@ public final class ModeCreateCommentEdge extends ModeCreateGraphEdge {
      * If we're drawing to an edge then only allow if the start is a comment
      * @see org.argouml.uml.diagram.ui.ModeCreateGraphEdge#isConnectionValid(org.tigris.gef.presentation.Fig, org.tigris.gef.presentation.Fig)
      */
+    @Override
     protected final boolean isConnectionValid(Fig source, Fig dest) {
 	if (dest instanceof FigNodeModelElement) {
-            return Model.getFacade().isAComment(source.getOwner());
+	    Object srcOwner = source.getOwner();
+	    Object dstOwner = dest.getOwner();
+	    if (!Model.getFacade().isAModelElement(srcOwner)
+                    || !Model.getFacade().isAModelElement(dstOwner)) {
+                return false;
+            }
+	    if (Model.getModelManagementHelper().isReadOnly(srcOwner)
+	            || Model.getModelManagementHelper().isReadOnly(dstOwner)) {
+	        return false;
+	    }
+            return Model.getFacade().isAComment(srcOwner)
+                    || Model.getFacade().isAComment(dstOwner);
 	} else {
 	    return true;
 	}
