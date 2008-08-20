@@ -31,7 +31,6 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.Handle;
 
@@ -54,7 +53,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
     }
 
     /**
-     * Makes sure that draging on the CR keeps them all aligned and resizing
+     * Makes sure that dragging on the CR keeps them all aligned and resizing
      * doesn't force FigMessages overlaying.
      * 
      * @param mX
@@ -68,6 +67,7 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
      * @param hand
      *                The handle being dragged
      */
+    @Override
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
 
         if (!getContent().isResizable()) {
