@@ -50,7 +50,7 @@ import org.omg.uml.foundation.core.ModelElement;
  * Custom resolver to use with XMI reader.
  * <p>
  * 
- * This provides three functions:
+ * This provides two functions:
  * <nl>
  * <li>Records the mapping of <code>xmi.id</code>'s to MDR objects as they
  * are resolved so that the map can be used to lookup objects by xmi.id later
@@ -64,15 +64,12 @@ import org.omg.uml.foundation.core.ModelElement;
  * AndroMDA 3.1 implementation
  * (org.andromda.repositories.mdr.MDRXmiReferenceResolverContext) by Ludo
  * (rastaman).
- * <li>Tracks latest failure in reading an external referenced document (href)
- * so that later a javax.jmi.xmi.MalformedXMIException can be specifically
- * handled in that case.
  * </nl>
  * <p>
  * NOTE: This is not a standalone implementation of the reference resolver since
  * it depends on extending the specific MDR implementation.
  * 
- * @author Tom Morris, Thomas Neustupny
+ * @author Tom Morris
  * 
  */
 class XmiReferenceResolverImpl extends XmiContext {
@@ -133,10 +130,12 @@ class XmiReferenceResolverImpl extends XmiContext {
      * @see org.netbeans.lib.jmi.xmi.XmiContext#XmiContext(javax.jmi.reflect.RefPackage[], org.netbeans.api.xmi.XMIInputConfig)
      * (see also {link org.netbeans.api.xmi.XMIReferenceResolver})
      */
+    // CHECKSTYLE:OFF - ignore too many parameters since API is fixed by MDR
     XmiReferenceResolverImpl(RefPackage[] extents, XMIInputConfig config,
             Map<String, XmiReference> objectToIdMap, 
             Map<String, String> publicIds, List<String> searchDirs, 
             boolean isProfile, String publicId, String systemId) {
+    // CHECKSTYLE:ON
         super(extents, config);
         objectsToId = objectToIdMap;
         modulesPath = searchDirs;
