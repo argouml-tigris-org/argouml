@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,21 +41,30 @@ import org.argouml.kernel.UmlModelMutator;
  *
  * @author Bob Tarling
  */
-class ActionList extends Vector {
+class ActionList<E> extends Vector<E> {
     
-    final private boolean readonly;
+    private final boolean readonly;
     
-    ActionList(List list, boolean readonly) {
-        super(list);
-        this.readonly = readonly;
+    /**
+     * Construct an ActionList which filters modifying actions when
+     * the readonly flag is set using initialList as the initial
+     * content.
+     * 
+     * @param initialList initial contents to use for list.
+     * @param readOnly true if mutating actions should be filtered
+     */
+    ActionList(List<? extends E> initialList, boolean readOnly) {
+        super(initialList);
+        this.readonly = readOnly;
     }
     
-    public boolean add(Object o) {
+    @Override
+    public boolean add(E o) {
         if (readonly) {
-            if (o instanceof UmlModelMutator) {
+            if (isUmlMutator(o) ) {
                 return false;
             } else if (o instanceof JMenu) {
-                o = trimMenu(o);
+                o = (E) trimMenu((JMenu) o);
             }
         }
         if (o != null) {
@@ -65,12 +74,13 @@ class ActionList extends Vector {
         }
     }
     
-    public void addElement(Object o) {
+    @Override
+    public void addElement(E o) {
         if (readonly) {
-            if (o instanceof UmlModelMutator) {
+            if (isUmlMutator(o)) {
                 return;
             } else if (o instanceof JMenu) {
-                o = trimMenu(o);
+                o = (E) trimMenu((JMenu) o);
             }
         }
         if (o != null) {
@@ -78,12 +88,13 @@ class ActionList extends Vector {
         }
     }
     
-    public void add(int index, Object o) {
+    @Override
+    public void add(int index, E o) {
         if (readonly) {
-            if (o instanceof UmlModelMutator) {
+            if (isUmlMutator(o)) {
                 return;
             } else if (o instanceof JMenu) {
-                o = trimMenu(o);
+                o = (E) trimMenu((JMenu) o);
             }
         }
         if (o != null) {
@@ -91,12 +102,13 @@ class ActionList extends Vector {
         }
     }
     
-    public void insertElementAt(Object o, int index) {
+    @Override
+    public void insertElementAt(E o, int index) {
         if (readonly) {
-            if (o instanceof UmlModelMutator) {
+            if (isUmlMutator(o)) {
                 return;
             } else if (o instanceof JMenu) {
-                o = trimMenu(o);
+                o = (E) trimMenu((JMenu) o);
             }
         }
         if (o != null) {
@@ -106,11 +118,10 @@ class ActionList extends Vector {
     
     /**
      * Trim out any menu items that have a UML model mutating action
-     * @param o
+     * @param menu the menu to be filtered
      * @return The trimmed menu or null if all contents trimmed out.
      */
-    private JMenu trimMenu(Object o) {
-        JMenu menu = (JMenu) o;
+    private JMenu trimMenu(JMenu menu) {
         for (int i = menu.getItemCount() - 1; i >= 0; --i) {
             JMenuItem menuItem = menu.getItem(i);
             Action action = menuItem.getAction();
@@ -135,6 +146,7 @@ class ActionList extends Vector {
      * @return true if the given action mutates the UML model.
      */
     private boolean isUmlMutator(Object a) {
-        return a.getClass().isAnnotationPresent(UmlModelMutator.class);
+        return a instanceof UmlModelMutator 
+            || a.getClass().isAnnotationPresent(UmlModelMutator.class);
     }
 }

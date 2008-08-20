@@ -166,7 +166,7 @@ public abstract class FigNodeModelElement
     /**
      * Offset from the end of the set of popup actions at which new items
      * should be inserted by concrete figures.
-     * See #getPopUpActions()
+     * @See {@link #getPopUpActions(MouseEvent)}
      */
     private static int popupAddOffset;
 
@@ -475,8 +475,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * This method shall return a Vector of one of these 4 types:
+     * This method returns a Vector of one of these 4 types:
      * AbstractAction, JMenu, JMenuItem, JSeparator.
+     * {@inheritDoc}
      */
     @Override
     public Vector getPopUpActions(MouseEvent me) {
@@ -497,8 +498,11 @@ public abstract class FigNodeModelElement
                     ProjectActions.getInstance().getRemoveFromDiagramAction());
             popupAddOffset++;
         }
-        popUpActions.add(new ActionDeleteModelElements());
-        popupAddOffset++;
+        
+        if (!isReadOnly()) {
+            popUpActions.add(new ActionDeleteModelElements());
+            popupAddOffset++;
+        }
 
         /* Check if multiple items are selected: */
         if (TargetManager.getInstance().getTargets().size() == 1) {
@@ -550,7 +554,8 @@ public abstract class FigNodeModelElement
             // we don't what they are. - tfm
             stereotypesView.addRadioItem(new ActionStereotypeViewTextual(this));
             stereotypesView.addRadioItem(new ActionStereotypeViewBigIcon(this));
-            stereotypesView.addRadioItem(new ActionStereotypeViewSmallIcon(this));
+            stereotypesView.addRadioItem(
+                    new ActionStereotypeViewSmallIcon(this));
             
             popUpActions.add(0, stereotypesView);
         }
@@ -758,6 +763,7 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionNodeClarifiers(this);
     }
@@ -1227,7 +1233,8 @@ public abstract class FigNodeModelElement
      * of a change to a model element. Do not call this method directly
      * yourself.
      * <p>Override this in any subclasses in order to change what model
-     * elements the FigNode is listening to as a result of change to the model.</p>
+     * elements the FigNode is listening to as a result of change to the model.
+     * </p>
      * <p>This method is guaranteed by the framework to be running on the same
      * thread as the model subsystem.</p>
      * TODO: Lets refactor this at some time to take UmlChangeEvent argument
@@ -1536,6 +1543,8 @@ public abstract class FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#classNameAndBounds()
      */
+    @Deprecated
+    @Override
     public String classNameAndBounds() {
         return getClass().getName()
             + "[" + getX() + ", " + getY() + ", "
