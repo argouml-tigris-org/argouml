@@ -103,7 +103,11 @@ public class Tools {
             
             // TODO: The following is MDR specific.  We need something generic
             // to all Model subsystems - tfm 20070716
-            cls = Class.forName("org.netbeans.api.mdr.MDRManager");
+            try {
+                cls = Class.forName("org.netbeans.api.mdr.MDRManager");
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
 
             StringBuffer sb = new StringBuffer();
 
