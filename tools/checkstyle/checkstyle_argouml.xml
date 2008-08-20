@@ -22,6 +22,7 @@
     </module>
 
     <module name="EqualsHashCode"/>
+    <module name="FileContentsHolder"/>
     <module name="FileLength"/>
     <module name="GenericIllegalRegexp">
       <property name="format" value="@todo"/>
@@ -171,4 +172,7 @@
     <module name="TodoComment"/>
     -->
   </module>
+  
+  <module name="SuppressionCommentFilter"/>
+
 </module>
