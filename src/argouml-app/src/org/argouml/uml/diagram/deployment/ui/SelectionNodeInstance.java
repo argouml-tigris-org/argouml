@@ -67,6 +67,10 @@ public class SelectionNodeInstance extends SelectionNodeClarifiers2 {
 
     @Override
     protected Icon[] getIcons() {
+        if (Model.getModelManagementHelper().isReadOnly(
+                getContent().getOwner())) {
+            return new Icon[6];
+        }
         return icons;
     }
 
