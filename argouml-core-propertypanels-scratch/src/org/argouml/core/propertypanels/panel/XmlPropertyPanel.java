@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.ui.SwingUIFactory;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.TabFigTarget;
 import org.argouml.uml.ui.PropPanel;
@@ -105,7 +106,43 @@ public class XmlPropertyPanel extends PropPanel
      * @return the title of the panel, according to the target 
      */
     private String getPanelTitle(Object target) {
-        return Model.getMetaTypes().getName(target);
+        String title = null;
+        // if is a pseudostate, we have to look for the pseudostate kind.
+        if (Model.getFacade().isAPseudostate(target)) {
+            Object kind = Model.getFacade().getKind(target);
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getFork())) {
+                title = Translator.localize("label.pseudostate.fork");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getJoin())) {
+                title = Translator.localize("label.pseudostate.join");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getChoice())) {
+                title = Translator.localize("label.pseudostate.choice");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getDeepHistory())) {
+                title = Translator.localize("label.pseudostate.deephistory");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getShallowHistory())) {
+                title = Translator.localize("label.pseudostate.shallowhistory");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getInitial())) {
+                title = Translator.localize("label.pseudostate.initial");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getJunction())) {
+                title = Translator.localize("label.pseudostate.junction");
+            }
+        }
+        else {
+            title = Model.getMetaTypes().getName(target); 
+        }            
+        return title; 
     }
    
 }

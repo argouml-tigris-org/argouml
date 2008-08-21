@@ -24,6 +24,8 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import org.argouml.uml.ui.behavior.state_machines.*;
+
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -51,13 +53,15 @@ import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.foundation.core.UMLContainerResidentListModel;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.behavior.activity_graphs.ActionSetObjectFlowStateClassifier;
+import org.argouml.uml.ui.behavior.activity_graphs.UMLActionSynchCheckBox;
+import org.argouml.uml.ui.behavior.activity_graphs.UMLObjectFlowStateClassifierComboBoxModel;
 import org.argouml.uml.ui.behavior.collaborations.ActionAddClassifierRoleBase;
 import org.argouml.uml.ui.behavior.collaborations.ActionAddMessagePredecessor;
 import org.argouml.uml.ui.behavior.collaborations.ActionRemoveClassifierRoleBase;
@@ -83,11 +87,34 @@ import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceClassifierListMode
 import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceReceiverStimulusListModel;
 import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceSenderStimulusListModel;
 import org.argouml.uml.ui.behavior.common_behavior.UMLSignalContextListModel;
+import org.argouml.uml.ui.behavior.state_machines.ActionNewTransition;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine;
+import org.argouml.uml.ui.behavior.state_machines.UMLCompositeStateSubvertexList;
+import org.argouml.uml.ui.behavior.state_machines.UMLCompositeStateSubvertexListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLGuardTransitionListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateDeferrableEventList;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateDeferrableEventListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateDoActivityList;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateDoActivityListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateEntryList;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateEntryListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateExitList;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateExitListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateInternalTransition;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineContextComboBoxModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineSubmachineStateListModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineTopListModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineTransitionListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateVertexContainerListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateVertexIncomingListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLStateVertexOutgoingListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLTransitionEffectListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLTransitionGuardListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLTransitionSourceListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLTransitionStateListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLTransitionStatemachineListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLTransitionTargetListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLTransitionTriggerListModel;
 import org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint;
@@ -127,6 +154,7 @@ import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.uml.ui.foundation.core.UMLClassifierParameterListModel;
 import org.argouml.uml.ui.foundation.core.UMLCommentAnnotatedElementListModel;
 import org.argouml.uml.ui.foundation.core.UMLComponentResidentListModel;
+import org.argouml.uml.ui.foundation.core.UMLContainerResidentListModel;
 import org.argouml.uml.ui.foundation.core.UMLDependencyClientListModel;
 import org.argouml.uml.ui.foundation.core.UMLDependencySupplierListModel;
 import org.argouml.uml.ui.foundation.core.UMLDiscriminatorNameDocument;
@@ -283,6 +311,21 @@ public class SwingUIFactory implements UIFactory {
             p  = new UMLExpressionPanel(recurrenceModel, prop.getName());
             control = p;
         }
+        else if ("expression".equals(prop.getName())) {
+            UMLExpressionModel3 model = new UMLExpressionExpressionModel();
+            p = new UMLExpressionPanel(model, prop.getName());
+            control = p;
+        }
+        else if ("changeExpression".equals(prop.getName())) {
+            UMLExpressionModel3 model = new UMLChangeExpressionModel();
+            p = new UMLExpressionPanel(model, prop.getName());
+            control = p;
+        }
+        else if ("when".equals(prop.getName())) {
+            UMLExpressionModel3 model = new UMLTimeExpressionModel();
+            p = new UMLExpressionPanel(model, prop.getName());
+            control = p;
+        }
         if (control != null) {
             // if the control is a panel, add it
             if (control == p) {
@@ -407,6 +450,56 @@ public class SwingUIFactory implements UIFactory {
             model.setTarget(target);
             pane = new UMLSingleRowSelector(model);
         }
+        else if ("stateMachine".equals(prop.getName())) {
+            model = new UMLTransitionStatemachineListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("state".equals(prop.getName())) {
+            model = new UMLTransitionStateListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("source".equals(prop.getName())) {
+            model = new UMLTransitionSourceListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("target".equals(prop.getName())) {
+            model = new UMLTransitionTargetListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("guard".equals(prop.getName())) {
+            model = new UMLTransitionGuardListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("effect".equals(prop.getName())) {
+            model = new UMLTransitionEffectListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("trigger".equals(prop.getName())) {
+            model = new UMLTransitionTriggerListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("transition".equals(prop.getName())) {
+            model = new UMLGuardTransitionListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("container".equals(prop.getName())) {
+            model = new UMLStateVertexContainerListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
+        else if ("activityGraph".equals(prop.getName())) {
+            model = new UMLPartitionActivityGraphListModel();
+            model.setTarget(target);
+            pane = new UMLSingleRowSelector(model);
+        }
         if (pane != null) {           
             JLabel label = new JLabel(prop.getName());
             label.setLabelFor(pane);
@@ -486,10 +579,23 @@ public class SwingUIFactory implements UIFactory {
                     true));
         }
         else if ("parameter".equals(prop.getName())) {
-            model = new UMLClassifierParameterListModel();
-            model.setTarget(target);
-            list = new ScrollList(new UMLLinkedList(model, 
-                    true, false));
+            if (Model.getFacade().isAObjectFlowState(target)) {
+                model = new UMLObjectFlowStateParameterListModel();
+                model.setTarget(target);
+                JList l = new UMLMutableLinkedList(model,
+                        new ActionAddOFSParameter(),
+                        new ActionNewOFSParameter(),
+                        new ActionRemoveOFSParameter(),
+                        true); 
+                list = new ScrollList(l);
+                        
+            }
+            else {
+                model = new UMLClassifierParameterListModel();
+                model.setTarget(target);
+                list = new ScrollList(new UMLLinkedList(model, 
+                        true, false));
+            }
         }
         else if ("raisedSignal".equals(prop.getName())) {
             model = new UMLOperationRaisedSignalsListModel();
@@ -688,6 +794,12 @@ public class SwingUIFactory implements UIFactory {
             JList l = new UMLLinkedList(model);
             list = new ScrollList(l);
         }
+        else if ("transition".equals(prop.getName())) {
+            model = new UMLEventTransitionListModel();
+            model.setTarget(target);
+            JList l = new UMLLinkedList(model);
+            list = new ScrollList(l);
+        }
         else if ("submachineState".equals(prop.getName())) {
             model = new UMLStateMachineSubmachineStateListModel();
             model.setTarget(target);
@@ -726,6 +838,88 @@ public class SwingUIFactory implements UIFactory {
             model.setTarget(target);
             JList l = new UMLLinkedList(model);
             list = new ScrollList(l);
+        }
+        else if ("entry".equals(prop.getName())) {
+            model = new UMLStateEntryListModel();
+            model.setTarget(target);
+            JList l = new UMLStateEntryList(model);
+            list = new ScrollList(l);
+        }
+        else if ("exit".equals(prop.getName())) {
+            model = new UMLStateExitListModel();
+            model.setTarget(target);
+            JList l = new UMLStateExitList(model);
+            list = new ScrollList(l);
+        }
+        else if ("deferrableEvent".equals(prop.getName())) {
+            model = new UMLStateDeferrableEventListModel();
+            model.setTarget(target);
+            JList l = new UMLStateDeferrableEventList(model);
+            list = new ScrollList(l);                    
+        }
+        else if ("doActivity".equals(prop.getName())) {
+            model = new UMLStateDoActivityListModel();
+            model.setTarget(target);
+            JList l = new UMLStateDoActivityList(model);
+            list = new ScrollList(l);
+        }
+        else if ("outgoing".equals(prop.getName())) {
+            model = new UMLStateVertexOutgoingListModel();
+            model.setTarget(target);
+            JList l = new UMLLinkedList(model);
+            list = new ScrollList(l);                    
+        }
+        else if ("incoming".equals(prop.getName())) {
+            model = new UMLStateVertexIncomingListModel();
+            model.setTarget(target);
+            JList l = new UMLLinkedList(model);
+            list = new ScrollList(l);                    
+        }
+        else if ("classifierInState".equals(prop.getName())) {
+            model = new UMLOFSStateListModel();
+            model.setTarget(target);
+            JList l = new UMLMutableLinkedList(model,
+                    new ActionAddOFSState(),
+                    null,
+                    new ActionRemoveOFSState(),
+                    true);
+            list = new ScrollList(l);
+        }
+        else if ("internalTransition".equals(prop.getName())) {
+            model = new UMLStateInternalTransition();
+            model.setTarget(target);
+            JList l = new UMLMutableLinkedList(model, null, 
+                    new ActionNewTransition());
+            list = new ScrollList(l);
+        }
+        else if ("subvertex".equals(prop.getName())) {
+            model = new UMLCompositeStateSubvertexListModel();
+            model.setTarget(target);
+            JList l = new UMLCompositeStateSubvertexList(model);
+            list = new ScrollList(l);
+        }
+        else if ("contents".equals(prop.getName())) {
+            model = new UMLPartitionContentListModel();
+            model.setTarget(target);
+            JList l = new UMLMutableLinkedList(model,
+                    new ActionAddPartitionContent(),
+                    null);
+            list = new ScrollList(l);
+        }
+        else if ("partition".equals(prop.getName())) {
+            model = new UMLActivityGraphPartitionListModel();
+            model.setTarget(target);
+            list = new ScrollList(new UMLLinkedList(model));
+        }
+        else if ("signal".equals(prop.getName())) {
+            model = new UMLSignalEventSignalListModel();
+            model.setTarget(target);
+            list = new ScrollList(new UMLSignalEventSignalList(model));                    
+        }
+        else if ("action".equals(prop.getName())) {
+            // TODO: we need to set up the target. 
+            // This creates a model without it.
+            list = new ScrollList(new UMLActionSequenceActionList());
         }
         if (list != null) {
             String name = prop.getName();
@@ -857,6 +1051,9 @@ public class SwingUIFactory implements UIFactory {
         else if ("isAsynchronous".equals(p.getName())) {
             checkbox = new UMLActionAsynchronousCheckBox();
         }
+        else if ("isSynch".equals(p.getName())) {
+            checkbox = new UMLActionSynchCheckBox();
+        }
         if (checkbox != null) {
             checkbox.setTarget(target);
             panel.add(checkbox);
@@ -886,15 +1083,28 @@ public class SwingUIFactory implements UIFactory {
                     combo);
         }
         else if ("type".equals(prop.getName())) {
-            final UMLComboBoxModel2 model =
-                new UMLStructuralFeatureTypeComboBoxModel();
-            model.setTarget(target);           
-            final JComboBox combo = new UMLComboBox2(
-                    model,
-                    // TODO: The action is different for
-                    // attributes and parameters. Issue #5222
-                    ActionSetStructuralFeatureType.getInstance());
-            comp = combo;
+            if (Model.getFacade().isAObjectFlowState(target)) {
+                final UMLComboBoxModel2 model = 
+                    new UMLObjectFlowStateClassifierComboBoxModel();
+                model.setTarget(target);
+                final JComboBox combo = new UMLSearchableComboBox(
+                        model,
+                        new ActionSetObjectFlowStateClassifier(), true);
+                comp = new UMLComboBoxNavigator(Translator.localize(
+                        "label.classifierinstate.navigate.tooltip"),
+                        combo);
+            }
+            else {
+                final UMLComboBoxModel2 model =
+                    new UMLStructuralFeatureTypeComboBoxModel();
+                model.setTarget(target);           
+                final JComboBox combo = new UMLComboBox2(
+                        model,
+                        // TODO: The action is different for
+                        // attributes and parameters. Issue #5222
+                        ActionSetStructuralFeatureType.getInstance());
+                comp = combo;
+            }
         }
         else if ("powertype".equals(prop.getName())) {
             final UMLComboBoxModel2 model = 
@@ -918,14 +1128,25 @@ public class SwingUIFactory implements UIFactory {
             comp = combo;
         }
         else if ("operation".equals(prop.getName())) {
-            final UMLComboBoxModel3 model = 
-                new UMLCallActionOperationComboBoxModel();
-            model.setTarget(target); 
-            UMLComboBox3 operationComboBox =
-                new UMLCallActionOperationComboBox2(model);
-            comp = new UMLComboBoxNavigator(
-                    Translator.localize("label.operation.navigate.tooltip"),
-                    operationComboBox);
+            if (Model.getFacade().isACallEvent(target)) {
+                UMLComboBoxModel2 model = 
+                    new UMLCallEventOperationComboBoxModel();
+                model.setTarget(target);
+                JComboBox combo = new UMLCallEventOperationComboBox2(model);
+                comp = new UMLComboBoxNavigator(Translator.localize(
+                        "label.operation.navigate.tooltip"),
+                        combo);
+            }
+            else {
+                final UMLComboBoxModel3 model = 
+                    new UMLCallActionOperationComboBoxModel();
+                model.setTarget(target); 
+                UMLComboBox3 operationComboBox =
+                    new UMLCallActionOperationComboBox2(model);
+                comp = new UMLComboBoxNavigator(
+                        Translator.localize("label.operation.navigate.tooltip"),
+                        operationComboBox);
+            }
         }
         else if ("representedClassifier".equals(prop.getName())) {
             final UMLComboBoxModel2 model = 
