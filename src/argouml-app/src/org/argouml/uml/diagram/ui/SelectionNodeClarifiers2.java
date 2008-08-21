@@ -32,9 +32,15 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerDiagram;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeCreate;
 import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.ModeModify;
+import org.tigris.gef.base.ModePlace;
+import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.base.SelectionButtons;
 import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -94,39 +100,51 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      */
     @Override
     public void paint(Graphics g) {
-        ((Clarifiable) getContent()).paintClarifiers(g);
+        final Mode topMode = Globals.curEditor().getModeManager().top();
+        if (!(topMode instanceof ModePlace)) {
+            // If the user has selected ModePlace either by a diagram
+            // tool or AddToDiagram then we don't want to show the
+            // clarifiers.
+            ((Clarifiable) getContent()).paintClarifiers(g);
+        }
         super.paint(g);
     }
 
     /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
-    public void paintButtons(Graphics g) {
-        Icon[] icons = getIcons();
-        if (icons == null) {
-            return;
-        }
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-        
-        if (icons[0] != null) {
-            paintButtonAbove(icons[0], g, cx + cw / 2, cy - OFFSET, TOP);
-        }
-        if (icons[1] != null) {
-            paintButtonBelow(icons[1], g, cx + cw / 2, cy + ch + OFFSET, 
-                    BOTTOM);
-        }
-        if (icons[2] != null) {
-            paintButtonLeft(icons[2], g, cx - OFFSET, cy + ch / 2, LEFT);
-        }
-        if (icons[3] != null) {
-            paintButtonRight(icons[3], g, cx + cw + OFFSET, cy + ch / 2,
-                    RIGHT);
-        }
-        if (icons[4] != null) {
-            paintButtonLeft(icons[4], g, cx - OFFSET, cy + ch, LOWER_LEFT);
+    public final void paintButtons(Graphics g) {
+        final Mode topMode = Globals.curEditor().getModeManager().top();
+        if (!(topMode instanceof ModePlace)) {
+            // If the user has selected ModePlace either by a diagram
+            // tool or AddToDiagram then we don't want to show the
+            // toolbelt items.
+            Icon[] icons = getIcons();
+            if (icons == null) {
+                return;
+            }
+            int cx = getContent().getX();
+            int cy = getContent().getY();
+            int cw = getContent().getWidth();
+            int ch = getContent().getHeight();
+            
+            if (icons[0] != null) {
+                paintButtonAbove(icons[0], g, cx + cw / 2, cy - OFFSET, TOP);
+            }
+            if (icons[1] != null) {
+                paintButtonBelow(icons[1], g, cx + cw / 2, cy + ch + OFFSET, 
+                        BOTTOM);
+            }
+            if (icons[2] != null) {
+                paintButtonLeft(icons[2], g, cx - OFFSET, cy + ch / 2, LEFT);
+            }
+            if (icons[3] != null) {
+                paintButtonRight(icons[3], g, cx + cw + OFFSET, cy + ch / 2,
+                        RIGHT);
+            }
+            if (icons[4] != null) {
+                paintButtonLeft(icons[4], g, cx - OFFSET, cy + ch, LOWER_LEFT);
+            }
         }
     }
 
