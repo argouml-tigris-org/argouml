@@ -100,9 +100,10 @@ public abstract class FigStateVertex extends FigNodeModelElement {
         }
         if (compositeState != null) {
             /* Do not change the model unless needed - avoids issue 4446: */
-            if (Model.getFacade().getContainer(stateVertex) != compositeState)
+            if (Model.getFacade().getContainer(stateVertex) != compositeState) {
                 Model.getStateMachinesHelper().setContainer(stateVertex,
                         compositeState);
+            }
         }
     }
 
@@ -163,7 +164,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
      * and FigFinalState.
      * TODO: As this method is not required by all sub classes then should we
      * it would seem sensible to extend FigStateVertex with FigCircleVertex
-     * and only have the relevant concrete Figs extand that and gain this
+     * and only have the relevant concrete Figs extend that and gain this
      * functionality.
      * @return a List of Points
      */
