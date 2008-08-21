@@ -210,31 +210,32 @@
     <list name="operation" type="Feature" />
     <list name="association" type="Classifier" />    
     <list name="ownedElement" type="ModelElement" />
-        
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+	
+	<debug />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="DataType">
     <text name="name" type="Name" />
@@ -254,35 +255,33 @@
     <separator />
     <list name="feature" type="Feature" />    
     
-    
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    
-    <list name="templateParameter" type="TemplateParameter" />
-    
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <debug />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />    
+    <attribute name="templateParameter" type="TemplateParameter" />    
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="ownedElement" type="ModelElement" />    
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
     <attribute name="association" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="Feature">
     <text name="name" type="Name" />
@@ -369,27 +368,28 @@
     <optionbox name="changeability" type="ChangeableKind" />    
     <optionbox name="visibility" type="VisibilityKind" />
     
+    <debug />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />    
-    <list name="linkEnd" type="AssociationEnd" />
-    <list name="associationEndRole" type="AssociationEnd" />
+    <attribute name="linkEnd" type="AssociationEnd" />
+    <attribute name="associationEndRole" type="AssociationEnd" />
   </panel>
   <panel name="Interface">
     <text name="name" type="Name" />
@@ -408,33 +408,34 @@
 	<list name="association" type="Classifier" />
 	<list name="feature" type="Feature" />
 	
+	<debug />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="ownedElement" type="ModelElement" />    
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />    
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />    
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="Constraint">
     <text name="name" type="Name" />
@@ -510,23 +511,24 @@
     <list name="associationRole" type="Association" />
     <list name="link" type="Association" />
     
+    <debug />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="generalization" type="Generalization" />
     <attribute name="specialization" type="GeneralizableElement" />    
@@ -623,27 +625,28 @@
     <list name="method" type="Operation" />
     <textarea name="specification" type="String" />
     
+    <debug />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
-    <list name="callAction" type="Operation" />
-    <list name="occurrence" type="Operation" />
+    <attribute name="callAction" type="Operation" />
+    <attribute name="occurrence" type="Operation" />
   </panel>
   <panel name="Parameter">
     <text name="name" type="Name" />
@@ -653,32 +656,32 @@
     <textarea name="defaultValue" type="Expression" />
     <optionbox name="kind" type="ParameterDirectionKind" />
      
-    
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />        
     <attribute name="event" type="Parameter" />
-    <list name="state" type="Parameter" />
+    <attribute name="state" type="Parameter" />
   </panel>
   <panel name="Method">
     <text name="name" type="Name" />
@@ -725,30 +728,28 @@
     <singlerow name="parent" type="GeneralizableElement" />
     <combo name="powertype" type="Classifier" />
     
-    
-    
-    
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>    
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
   </panel>
   <panel name="AssociationClass">
@@ -777,33 +778,33 @@
     <list name="association" type="Classifier" />
     <list name="ownedElement" type="ModelElement" />
     
-        
+    <debug />
     <attribute name="link" type="Association" />    
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />   
-    <list name="associationRole" type="Association" />        
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
+    <attribute name="associationRole" type="Association" />        
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="Dependency">
     <text name="name" type="Name" />
@@ -812,27 +813,28 @@
     <list name="client" type="ModelElement" />
     <list name="supplier" type="ModelElement" />
     
+    <debug />
 	<attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />    
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />    
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
   </panel>
   <panel name="Abstraction">
@@ -846,23 +848,24 @@
     <list name="client" type="ModelElement" />
     <list name="supplier" type="ModelElement" />
     
+    <debug />
     <attribute name="supplierDependency" type="ModelElement" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="mapping" type="MappingExpression" />
   </panel>
@@ -876,27 +879,28 @@
     <list name="client" type="ModelElement" />
     <list name="supplier" type="ModelElement" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>    
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />    
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />    
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />  
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />  
     <attribute name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
   </panel>
   <panel name="Binding">
@@ -947,36 +951,37 @@
     <list name="supplierDependency" type="ModelElement" />
     <list name="residentElement" type="ElementResidence" />
         
+	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="ownedElement" type="ModelElement" />
     <attribute name="feature" type="Feature" />
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
     <attribute name="association" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
-    <list name="deploymentLocation" type="Node" />
-    <list name="implementation" type="Artifact" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
+    <attribute name="deploymentLocation" type="Node" />
+    <attribute name="implementation" type="Artifact" />
   </panel>
   <panel name="Node">
     <text name="name" type="Name" />
@@ -993,36 +998,37 @@
     <separator />
     <list name="deployedComponent" type="Component" />
 	
+	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />   
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />   
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="ownedElement" type="ModelElement" />
     <attribute name="feature" type="Feature" />
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
     <attribute name="association" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="Permission">
     <text name="name" type="Name" />
@@ -1188,32 +1194,33 @@
 	<list name="feature" type="Feature" />
 	<list name="literal" type="EnumerationLiteral" />
 
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+	<debug />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="ownedElement" type="ModelElement" />
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
     <attribute name="association" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />   
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />   
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="EnumerationLiteral">
     <text name="name" type="Name" />
@@ -1259,28 +1266,26 @@
     <separator />
 	<list name="baseClass" type="Name" />
 
-
+	<debug />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="icon" type="Geometry" />
-    
-    
   </panel>
   <panel name="TagDefinition">
     <text name="name" type="Name" />
@@ -1499,37 +1504,38 @@
     <list name="reception" type="Signal" />
     <list name="context" type="Signal" />    
     
+    <debug />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="ownedElement" type="ModelElement" />
     <attribute name="feature" type="Feature" />
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
     <attribute name="association" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
-    <list name="sendAction" type="Signal" />
-    <list name="occurrence" type="Signal" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
+    <attribute name="sendAction" type="Signal" />
+    <attribute name="occurrence" type="Signal" />
   </panel>
   <panel name="Action">
     <text name="name" type="Name" />
@@ -1582,29 +1588,30 @@
     <list name="instantiation" type="Classifier" />
     <list name="actualArgument" type="Argument" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="target" type="ObjectSetExpression" />
     <attribute name="actionSequence" type="ActionSequence" />
-    <list name="stimulus" type="Action" />
+    <attribute name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
     <attribute name="message" type="Action" />
@@ -1620,29 +1627,30 @@
     <separator />
     <list name="actualArgument" type="Argument" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="target" type="ObjectSetExpression" />
     <attribute name="actionSequence" type="ActionSequence" />
-    <list name="stimulus" type="Action" />
+    <attribute name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
     <attribute name="message" type="Action" />
@@ -1658,6 +1666,7 @@
     <separator />
     <list name="actualArgument" type="Argument" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
@@ -1726,36 +1735,37 @@
     <separator />
     <list name="classifier" type="Classifier" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>    
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
-    <list name="linkEnd" type="LinkEnd" />
-    <list name="slot" type="AttributeLink" />
+    <attribute name="linkEnd" type="LinkEnd" />
+    <attribute name="slot" type="AttributeLink" />
     <attribute name="componentInstance" type="ComponentInstance" />
-    <list name="ownedInstance" type="Instance" />
-    <list name="ownedLink" type="Link" />
-    <list name="attributeLink" type="Instance" />
+    <attribute name="ownedInstance" type="Instance" />
+    <attribute name="ownedLink" type="Link" />
+    <attribute name="attributeLink" type="Instance" />
     <attribute name="owner" type="Instance" />
-    <list name="playedRole" type="Instance" />
+    <attribute name="playedRole" type="Instance" />
   </panel>
   <panel name="Link">
     <text name="name" type="Name" />
@@ -1763,32 +1773,33 @@
     <combo name="association" type="Association" />    
     <separator />
     <list name="connection" type="LinkEnd" />
-        
+	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="stimulus" type="Link" />
     <attribute name="owner" type="Link" />
-    <list name="playedRole" type="Link" />
+    <attribute name="playedRole" type="Link" />
   </panel>
   <panel name="LinkObject">
     <text name="name" type="Name" />
@@ -1882,29 +1893,30 @@
 	<combo name="operation" type="Operation" />    
     <list name="actualArgument" type="Argument" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="target" type="ObjectSetExpression" />    
     <attribute name="actionSequence" type="ActionSequence" />
-    <list name="stimulus" type="Action" />
+    <attribute name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
     <attribute name="message" type="Action" />    
@@ -1920,7 +1932,8 @@
     <separator />
 	<list name="signal" type="Signal" />
     <list name="actualArgument" type="Argument" />
-        
+	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
@@ -1951,7 +1964,8 @@
   <panel name="ActionSequence">
     <text name="name" type="Name" />
     <list name="action" type="Action" />
-        
+    
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -2095,30 +2109,31 @@
 	<textarea name="recurrence" type="IterationExpression" />    
     <separator />
     <list name="actualArgument" type="Argument" />    
-       
+	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />    
     <attribute name="target" type="ObjectSetExpression" />
     <attribute name="actionSequence" type="ActionSequence" />
-    <list name="stimulus" type="Action" />
+    <attribute name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
     <attribute name="message" type="Action" />
@@ -2134,6 +2149,7 @@
     <separator />
     <list name="actualArgument" type="Argument" />
         
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
@@ -2214,37 +2230,38 @@
     <list name="reception" type="Signal" />
     <list name="context" type="Signal" />	
 	
+	<debug />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="ownedElement" type="ModelElement" />
     <attribute name="feature" type="Feature" />
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
     <attribute name="association" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
-    <list name="sendAction" type="Signal" />
-    <list name="occurrence" type="Signal" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
+    <attribute name="sendAction" type="Signal" />
+    <attribute name="occurrence" type="Signal" />
   </panel>
   <panel name="ComponentInstance">
     <text name="name" type="Name" />
@@ -2297,37 +2314,37 @@
     <separator />
     <list name="classifier" type="Classifier" />
     
-    
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
-    <list name="linkEnd" type="LinkEnd" />
-    <list name="slot" type="AttributeLink" />
+    <attribute name="linkEnd" type="LinkEnd" />
+    <attribute name="slot" type="AttributeLink" />
     <attribute name="componentInstance" type="ComponentInstance" />
-    <list name="ownedInstance" type="Instance" />
-    <list name="ownedLink" type="Link" />
-    <list name="attributeLink" type="Instance" />
+    <attribute name="ownedInstance" type="Instance" />
+    <attribute name="ownedLink" type="Link" />
+    <attribute name="attributeLink" type="Instance" />
     <attribute name="owner" type="Instance" />
-    <list name="playedRole" type="Instance" />    
+    <attribute name="playedRole" type="Instance" />    
   </panel>
   <panel name="SubsystemInstance">
     <text name="name" type="Name" />
@@ -2392,35 +2409,36 @@
     <list name="operation" type="Feature" />
     <list name="association" type="Classifier" />
     <list name="extensionPoint" type="ExtensionPoint" />
-            
+	
+	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />   
     <attribute name="ownedElement" type="ModelElement" />    
     <attribute name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
-    <list name="extender" type="UseCase" />
-    <list name="includer" type="UseCase" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
+    <attribute name="extender" type="UseCase" />
+    <attribute name="includer" type="UseCase" />
   </panel>
   <panel name="Actor">
     <text name="name" type="Name" />
@@ -2437,35 +2455,36 @@
     <separator />
     <list name="association" type="Classifier" />
 
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute  name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute  name="elementImport" type="ModelElement" />
     <attribute name="ownedElement" type="ModelElement" />
     <attribute name="feature" type="Feature" />
     <attribute name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="UseCaseInstance">
     <text name="name" type="Name" />
@@ -2516,28 +2535,28 @@
     <separator />
     <textarea name="condition" type="BooleanExpression" />
     
-    
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
   </panel>
   <panel name="Include">
@@ -2547,27 +2566,28 @@
 	<singlerow name="base" type="UseCase" />
 	<singlerow name="addition" type="UseCase" />
 	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />    
   </panel>
   <panel name="ExtensionPoint">
@@ -2577,28 +2597,29 @@
     <singlerow name="useCase" type="UseCase" />
     <list name="extend" type="ExtensionPoint" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
   </panel>
   <panel name="StateMachine">
@@ -2609,28 +2630,29 @@
     <separator />
     <list name="transitions" type="Transition" />
     <list name="submachineState" type="SubmachineState" />
-            
+    
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />   
   </panel>
   <panel name="Event">
@@ -2742,7 +2764,8 @@
     <list name="transition" type="Event" />    
     <separator />
     <textarea name="when" type="TimeExpression" />
-        
+	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -2776,6 +2799,7 @@
 	<separator />
 	<combo name="operation" type="Operation" />    
 
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -2808,7 +2832,8 @@
     <list name="transition" type="Event" />    
     <separator />
     <list name="signal" type="Signal" />
-        
+	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -2844,6 +2869,7 @@
     <singlerow name="effect" type="Action" />
     <singlerow name="trigger" type="Event" />
         
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -2881,6 +2907,7 @@
 	<separator />
     <list name="subvertex" type="StateVertex" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -2918,6 +2945,7 @@
     <separator />    
     <textarea name="changeExpression" type="BooleanExpression" />    
         
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -2948,6 +2976,7 @@
     <separator />
     <textarea name="expression" type="BooleanExpression" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -2980,6 +3009,7 @@
     <list name="incoming" type="Transition" />
     <attribute name="kind" type="PseudostateKind" />
        
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -3158,6 +3188,7 @@
     <list name="incoming" type="Transition" />
     <list name="internalTransition" type="Transition" />
   
+  	<debug />
     <attribute name="outgoing" type="Transition" />    
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
@@ -3197,7 +3228,8 @@
     <list name="constrainingElement" type="ModelElement" />    
     <separator />        
     <list name="ownedElement" type="ModelElement" />
-        
+	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -3206,26 +3238,26 @@
       <attribute name="isAbstract" type="Boolean" />
     </attribute>
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="generalization" type="Generalization" />
     <attribute name="specialization" type="GeneralizableElement" />
-    <list name="usedCollaboration" type="Collaboration" />
+    <attribute name="usedCollaboration" type="Collaboration" />
   </panel>
   <panel name="ClassifierRole">
     <text name="name" type="Name" />
@@ -3240,6 +3272,7 @@
     <list name="availableFeature" type="Feature" />
     <list name="availableContents" type="ModelElement" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -3248,34 +3281,34 @@
       <attribute name="isAbstract" type="Boolean" />
     </attribute>
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="ownedElement" type="ModelElement" />
     <attribute name="feature" type="Feature" />
-    <list name="powertypeRange" type="Generalization" />
-    <list name="typedFeature" type="Classifier" />
-    <list name="typedParameter" type="Classifier" />    
-    <list name="specifiedEnd" type="Classifier" />
-    <list name="instance" type="Classifier" />
-    <list name="createAction" type="Classifier" />
-    <list name="classifierInState" type="Classifier" />
-    <list name="objectFlowState" type="Classifier" />
-    <list name="conformingInstance" type="Instance" />
+    <attribute name="powertypeRange" type="Generalization" />
+    <attribute name="typedFeature" type="Classifier" />
+    <attribute name="typedParameter" type="Classifier" />    
+    <attribute name="specifiedEnd" type="Classifier" />
+    <attribute name="instance" type="Classifier" />
+    <attribute name="createAction" type="Classifier" />
+    <attribute name="classifierInState" type="Classifier" />
+    <attribute name="objectFlowState" type="Classifier" />
+    <attribute name="conformingInstance" type="Instance" />
     <attribute name="message" type="ClassifierRole" />
   </panel>
   <panel name="AssociationRole">
@@ -3375,31 +3408,32 @@
     <list name="predecessor" type="Message" />    
     <list name="successor" type="Message" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="communicationConnection" type="AssociationRole" />
-    <list name="conformingStimulus" type="Stimulus" />
+    <attribute name="conformingStimulus" type="Stimulus" />
     <attribute name="message" type="Message" />
   </panel>
   <panel name="Interaction">
@@ -3409,29 +3443,30 @@
     <separator />
     <list name="message" type="Message" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
-    <list name="interactionInstanceSet" type="Interaction" />
+    <attribute name="interactionInstanceSet" type="Interaction" />
   </panel>
   <panel name="InteractionInstanceSet">
     <text name="name" type="Name" />
@@ -3506,7 +3541,8 @@
     <list name="submachineState" type="SubmachineState" />
     <separator />
     <list name="partition" type="ModelElement" />
-        
+	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -3535,6 +3571,7 @@
     <separator />
     <list name="contents" type="ModelElement" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -3614,6 +3651,7 @@
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
     
+    <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -3654,7 +3692,8 @@
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-        
+	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
@@ -3700,7 +3739,8 @@
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
     <list name="parameter" type="Parameter" />
-
+	
+	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
