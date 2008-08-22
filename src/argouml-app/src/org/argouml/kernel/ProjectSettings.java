@@ -173,37 +173,66 @@ public class ProjectSettings {
      * first, and then corrected.  
      */
     public void init() {
-        init(notationLanguage, 
-                Notation.KEY_DEFAULT_NOTATION);
-        init(showBoldNames, 
-                Notation.KEY_SHOW_BOLD_NAMES);
-        init(useGuillemots, 
-                Notation.KEY_USE_GUILLEMOTS);
-        init(showAssociationNames, 
-                Notation.KEY_SHOW_ASSOCIATION_NAMES);
-        init(showVisibility,
-                Notation.KEY_SHOW_VISIBILITY);
-        init(showMultiplicity,
-                Notation.KEY_SHOW_MULTIPLICITY);
-        init(showInitialValue, 
-                Notation.KEY_SHOW_INITIAL_VALUE);
-        init(showProperties,
-                Notation.KEY_SHOW_PROPERTIES);
-        init(showTypes, 
-                Notation.KEY_SHOW_TYPES);
-        init(showStereotypes, 
-                Notation.KEY_SHOW_STEREOTYPES);
-        init(showSingularMultiplicities, 
-                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES);
-        init(defaultShadowWidth,
-                Notation.KEY_DEFAULT_SHADOW_WIDTH);
+        /* Since this is (hopefully) a temporary solution,
+         * and nobody ever looks at the type of notation event,
+         * we can simplify from sending every existing event
+         * to one event only. But since there is no 
+         * catch-all event defined, we just make one up.
+         * Rationale: reduce the number of total 
+         * refreshes of the drawing. */
+        init(true, Configuration.makeKey("notation", "all"));
 
-        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_NAME, 
-                fontName, fontName);
-        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_SIZE, 
-                fontSize, fontSize);
+        /* The above hence replaces the following statements. 
+         * If ever someone needs to dissect notation events, 
+         * we may need to add these again. */
+//        init(notationLanguage, 
+//                Notation.KEY_DEFAULT_NOTATION);
+//        init(showBoldNames, 
+//                Notation.KEY_SHOW_BOLD_NAMES);
+//        init(useGuillemots, 
+//                Notation.KEY_USE_GUILLEMOTS);
+//        init(showAssociationNames, 
+//                Notation.KEY_SHOW_ASSOCIATION_NAMES);
+//        init(showVisibility,
+//                Notation.KEY_SHOW_VISIBILITY);
+//        init(showMultiplicity,
+//                Notation.KEY_SHOW_MULTIPLICITY);
+//        init(showInitialValue, 
+//                Notation.KEY_SHOW_INITIAL_VALUE);
+//        init(showProperties,
+//                Notation.KEY_SHOW_PROPERTIES);
+//        init(showTypes, 
+//                Notation.KEY_SHOW_TYPES);
+//        init(showStereotypes, 
+//                Notation.KEY_SHOW_STEREOTYPES);
+//        init(showSingularMultiplicities, 
+//                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES);
+//        init(defaultShadowWidth,
+//                Notation.KEY_DEFAULT_SHADOW_WIDTH);
+
+        /* Since this is (hopefully) a temporary solution,
+         * and nobody ever looks at the type of the
+         * diagram appearance event,
+         * we can simplify from sending every existing event
+         * to one event only. But since there is no 
+         * catch-all event defined, we just use one.
+         * Rationale: reduce the number of total 
+         * refreshes of the drawing. */
+        fireDiagramAppearanceEvent(
+                Configuration.makeKey("diagramappearance", "all"), 
+                0, 0);
+
+        /* The above hence replaces the following statements. 
+         * If ever someone needs to dissect 
+         * diagram-appearance events, 
+         * we may need to add these again. */
+//        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_NAME, 
+//                fontName, fontName);
+//        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_SIZE, 
+//                fontSize, fontSize);
     }
 
+    @SuppressWarnings("unused")
     private void init(String value, ConfigurationKey key) {
         fireNotationEvent(key, value, value);
     }
@@ -212,6 +241,7 @@ public class ProjectSettings {
         fireNotationEvent(key, value, value);
     }
 
+    @SuppressWarnings("unused")
     private void init(int value, ConfigurationKey key) {
         fireNotationEvent(key, value, value);
     }

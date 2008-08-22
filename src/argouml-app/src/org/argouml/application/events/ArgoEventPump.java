@@ -154,6 +154,9 @@ public final class ArgoEventPump {
         switch (event.getEventType()) {
 	case ArgoEventTypes.NOTATION_CHANGED :
 	    listener.notationChanged(event);
+	    /* Remark: The code in 
+	     * ProjectSettings.init() currently presumes
+	     * that nobody is using this event. */
 	    break;
 
 	case ArgoEventTypes.NOTATION_ADDED :
