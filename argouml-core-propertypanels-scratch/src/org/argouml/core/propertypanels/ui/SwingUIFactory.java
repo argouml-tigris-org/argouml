@@ -89,6 +89,8 @@ import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceSenderStimulusList
 import org.argouml.uml.ui.behavior.common_behavior.UMLSignalContextListModel;
 import org.argouml.uml.ui.behavior.state_machines.ActionNewTransition;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine;
+import org.argouml.uml.ui.behavior.state_machines.ActionSetStubStateReferenceState;
+import org.argouml.uml.ui.behavior.state_machines.ActionSetSubmachineStateSubmachine;
 import org.argouml.uml.ui.behavior.state_machines.UMLCompositeStateSubvertexList;
 import org.argouml.uml.ui.behavior.state_machines.UMLCompositeStateSubvertexListModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLGuardTransitionListModel;
@@ -108,6 +110,9 @@ import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineTransitionListM
 import org.argouml.uml.ui.behavior.state_machines.UMLStateVertexContainerListModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateVertexIncomingListModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateVertexOutgoingListModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLStubStateComboBoxModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLSubmachineStateComboBoxModel;
+import org.argouml.uml.ui.behavior.state_machines.UMLSynchStateBoundDocument;
 import org.argouml.uml.ui.behavior.state_machines.UMLTransitionEffectListModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLTransitionGuardListModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLTransitionSourceListModel;
@@ -1196,6 +1201,25 @@ public class SwingUIFactory implements UIFactory {
             comp = new UMLComboBox2(model,
                     ActionSetAssociationEndType.getInstance(), true);
         }
+        else if ("submachine".equals(prop.getName())) {
+            final UMLComboBoxModel2 model = 
+                new UMLSubmachineStateComboBoxModel();
+            model.setTarget(target);            
+            final JComboBox submachineBox = new UMLComboBox2(model,
+                    ActionSetSubmachineStateSubmachine.getInstance());
+            comp = new UMLComboBoxNavigator(Translator.localize(
+                            "tooltip.nav-submachine"), submachineBox);
+        }
+        else if ("referenceState".equals(prop.getName())) {
+            final UMLComboBoxModel2 model = 
+                new UMLStubStateComboBoxModel();
+            model.setTarget(target);            
+            final JComboBox referencestateBox =
+                new UMLComboBox2(model,
+                        ActionSetStubStateReferenceState.getInstance());
+            comp = new UMLComboBoxNavigator(Translator.localize(
+                    "tooltip.nav-stubstate"), referencestateBox);            
+        }
         if (comp != null) {
             String name = prop.getName();
 
@@ -1225,6 +1249,9 @@ public class SwingUIFactory implements UIFactory {
         }
         else if ("location".equals(prop.getName())) {
             document = new UMLExtensionPointLocationDocument();
+        }
+        else if ("bound".equals(prop.getName())) {
+            document = new UMLSynchStateBoundDocument();
         }
         if (document != null) {
             document.setTarget(target);
