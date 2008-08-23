@@ -130,6 +130,7 @@ import org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointLocationDocument;
 import org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointUseCaseListModel;
 import org.argouml.uml.ui.behavior.use_cases.UMLIncludeAdditionListModel;
 import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtendListModel;
+import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtensionPointListModel;
 import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseIncludeListModel;
 import org.argouml.uml.ui.foundation.core.ActionAddAssociationSpecification;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
@@ -717,11 +718,11 @@ public class SwingUIFactory implements UIFactory {
         }
         else if ("extensionPoint".equals(prop.getName())) {
             if (Model.getFacade().isAUseCase(target)) {
-                model = new UMLUseCaseIncludeListModel();
+                model = new UMLUseCaseExtensionPointListModel();
                 model.setTarget(target);
-                UMLMutableLinkedList l = new UMLMutableLinkedList(
-                        model, null,
-                        ActionNewUseCaseExtensionPoint.SINGLETON);
+                JList l = new UMLMutableLinkedList(
+                            model, null,
+                            ActionNewUseCaseExtensionPoint.SINGLETON);
                 list = new ScrollList(l);
             }
             else {
