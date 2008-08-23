@@ -34,9 +34,9 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
 /**
  * The model for the boolean expression of a ChangeEvent.
  * 
- * @author michiel
+ * @author michiel, penyaskito
  */
-class UMLChangeExpressionModel extends UMLExpressionModel3 {
+class UMLChangeExpressionModel extends UMLExpressionModel {
 
     private static final Logger LOG =
         Logger.getLogger(UMLChangeExpressionModel.class);
@@ -47,8 +47,8 @@ class UMLChangeExpressionModel extends UMLExpressionModel3 {
      * @param container the container of UML user interface components
      * @param propertyName the name of the property
      */
-    public UMLChangeExpressionModel() {
-        super("changeExpression");
+    public UMLChangeExpressionModel(Object target) {
+        super(target, "changeExpression");
     }
 
     /*
@@ -78,20 +78,4 @@ class UMLChangeExpressionModel extends UMLExpressionModel3 {
         LOG.debug("new boolean expression");
         return Model.getDataTypesFactory().createBooleanExpression("", "");
     }
-
-    public void targetAdded(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetRemoved(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetSet(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
 }

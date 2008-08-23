@@ -37,11 +37,11 @@ import org.tigris.swidgets.LabelledLayout;
  */
 class UMLExpressionPanel extends JPanel {
 
-    private final UMLExpressionModel3 model;
+    private final UMLExpressionModel model;
     private final UMLExpressionLanguageField languageField;
     private final UMLExpressionBodyField bodyField;
     
-    public UMLExpressionPanel(UMLExpressionModel3 model, String title) {
+    public UMLExpressionPanel(UMLExpressionModel model, String title) {
         
         super(new LabelledLayout());
         TitledBorder border = new TitledBorder(title);

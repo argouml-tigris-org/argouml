@@ -36,7 +36,7 @@ import org.argouml.ui.LookAndFeelMgr;
 class UMLExpressionLanguageField extends JTextField implements
         DocumentListener {
 
-    private UMLExpressionModel3 model;
+    private UMLExpressionModel model;
     private boolean notifyModel;
 
     /**
@@ -47,26 +47,13 @@ class UMLExpressionLanguageField extends JTextField implements
      * @param n Only one of Language and Body fields should
      * forward events to model
      */
-    public UMLExpressionLanguageField(UMLExpressionModel3 m, boolean n) {
+    public UMLExpressionLanguageField(UMLExpressionModel m, boolean n) {
         model = m;
         notifyModel = n;
         getDocument().addDocumentListener(this);
         setToolTipText(Translator.localize("label.language.tooltip"));
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
-    }
-
-    /*
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-        if (notifyModel) model.targetChanged();
         update();
-    }
-
-    /*
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
     }
 
     private void update() {

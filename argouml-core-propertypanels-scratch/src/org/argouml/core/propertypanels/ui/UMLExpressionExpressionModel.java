@@ -32,16 +32,16 @@ import org.argouml.ui.targetmanager.TargetManager;
  * The model for a UML Expression that is obtained from its "parent"
  * by getExpression - hence: Guard, ChangeEvent, TimeEvent.
  *
- * @author Michiel
+ * @author Michiel, Penyaskito
  */
-public class UMLExpressionExpressionModel extends UMLExpressionModel3 {
+public class UMLExpressionExpressionModel extends UMLExpressionModel {
 
     /**
      * The constructor.
      *
      */
-    public UMLExpressionExpressionModel() {
-        super("expression");
+    public UMLExpressionExpressionModel(Object target) {
+        super(target, "expression");
     }
 
     /*
@@ -66,20 +66,4 @@ public class UMLExpressionExpressionModel extends UMLExpressionModel3 {
     public Object newExpression() {
         return Model.getDataTypesFactory().createBooleanExpression("", "");
     }
-
-    public void targetAdded(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetRemoved(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetSet(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
 }

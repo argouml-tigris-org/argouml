@@ -30,10 +30,10 @@ import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  *
- * @author mkl
+ * @author mkl, penyaskito
  *
  */
-public class UMLScriptExpressionModel extends UMLExpressionModel3 {
+public class UMLScriptExpressionModel extends UMLExpressionModel {
 
     /**
      * The constructor.
@@ -41,16 +41,15 @@ public class UMLScriptExpressionModel extends UMLExpressionModel3 {
      * @param container the container of UML user interface components
      * @param propertyName the name of the property
      */
-    public UMLScriptExpressionModel() {
-        super("script");
+    public UMLScriptExpressionModel(Object target) {
+        super(target, "script");
     }
 
     /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        return Model.getFacade().getScript(
-                TargetManager.getInstance().getTarget());
+        return Model.getFacade().getScript(getTarget());
     }
 
     /*
@@ -58,7 +57,7 @@ public class UMLScriptExpressionModel extends UMLExpressionModel3 {
      */
     public void setExpression(Object expression) {
         Model.getCommonBehaviorHelper()
-        	.setScript(TargetManager.getInstance().getTarget(), expression);
+        	.setScript(getTarget(), expression);
     }
 
     /*
@@ -67,20 +66,4 @@ public class UMLScriptExpressionModel extends UMLExpressionModel3 {
     public Object newExpression() {
         return Model.getDataTypesFactory().createActionExpression("", "");
     }
-
-    public void targetAdded(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetRemoved(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetSet(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
 }

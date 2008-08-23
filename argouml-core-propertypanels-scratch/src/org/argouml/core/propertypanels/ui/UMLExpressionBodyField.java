@@ -39,7 +39,7 @@ import org.argouml.ui.LookAndFeelMgr;
  *
  */
 class UMLExpressionBodyField extends JTextArea
-    implements DocumentListener, PropertyChangeListener {
+    implements DocumentListener {
 
     /**
      * Logger.
@@ -47,7 +47,7 @@ class UMLExpressionBodyField extends JTextArea
     private static final Logger LOG =
         Logger.getLogger(UMLExpressionBodyField.class);
 
-    private UMLExpressionModel3 model;
+    private UMLExpressionModel model;
     private boolean notifyModel;
 
     /**
@@ -60,7 +60,7 @@ class UMLExpressionBodyField extends JTextArea
      *            Set to true to forward events to model. Only one of Language
      *            and Body fields should have this set to true.
      */
-    public UMLExpressionBodyField(UMLExpressionModel3 expressionModel,
+    public UMLExpressionBodyField(UMLExpressionModel expressionModel,
 				  boolean notify) {
         model = expressionModel;
         notifyModel = notify;
@@ -68,28 +68,7 @@ class UMLExpressionBodyField extends JTextArea
         setToolTipText(Translator.localize("label.body.tooltip"));
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         setRows(2); // make it stretch vertically
-    }
-
-    /*
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-	LOG.debug("UMLExpressionBodyField: targetChanged");
-	if (notifyModel) {
-	    model.targetChanged();
-	}
-        update();
-    }
-
-    /*
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
-    }
-
-    /* TODO: This does not work - no event arrives. */
-    public void propertyChange(PropertyChangeEvent event) {
-        LOG.debug("UMLExpressionBodyField: propertySet" + event);
+        
         update();
     }
 

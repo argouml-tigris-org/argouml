@@ -38,16 +38,12 @@ import org.argouml.uml.ui.UMLExpressionModel2;
  * @author penyaskito
  */
 class UMLInitialValueExpressionModel 
-    extends UMLExpressionModel3 {
+    extends UMLExpressionModel {
 
     
     
-    public UMLInitialValueExpressionModel() {
-        super("initial value");
-    }
-    
-    public UMLInitialValueExpressionModel(String name) {
-        super(name);
+    public UMLInitialValueExpressionModel(Object target) {
+        super(target, "initial value");
     }
 
     /**
@@ -81,25 +77,4 @@ class UMLInitialValueExpressionModel
         Object target = null; // TODO  getTarget();
         Model.getCoreHelper().setInitialValue(target, expression);
     }
-
-    public void targetAdded(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetRemoved(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetSet(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: Auto-generated method stub
-        
-    }
-
 }

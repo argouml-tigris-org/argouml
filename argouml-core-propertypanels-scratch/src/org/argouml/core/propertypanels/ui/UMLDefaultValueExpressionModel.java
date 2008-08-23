@@ -32,24 +32,15 @@ import org.argouml.ui.targetmanager.TargetManager;
  *
  * @author penyaskito
  */
-class UMLDefaultValueExpressionModel extends UMLExpressionModel3 {
+class UMLDefaultValueExpressionModel extends UMLExpressionModel {
     
     /**
      * The constructor.
      *
      * @param propertyName the name of the property
      */
-    public UMLDefaultValueExpressionModel() {
-        super("default value");
-    }
-    
-    /**
-     * The constructor.
-     *
-     * @param propertyName the name of the property
-     */
-    public UMLDefaultValueExpressionModel(String propertyName) {
-        super(propertyName);
+    public UMLDefaultValueExpressionModel(Object target) {
+        super(target, "default value");
     }
 
     /*

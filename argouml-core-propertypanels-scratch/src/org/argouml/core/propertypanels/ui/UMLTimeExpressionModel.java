@@ -34,7 +34,7 @@ import org.argouml.ui.targetmanager.TargetManager;
  * @author mkl
  *
  */
-public class UMLTimeExpressionModel extends UMLExpressionModel3 {
+public class UMLTimeExpressionModel extends UMLExpressionModel {
 
     private static final Logger LOG =
         Logger.getLogger(UMLTimeExpressionModel.class);
@@ -43,8 +43,8 @@ public class UMLTimeExpressionModel extends UMLExpressionModel3 {
      * The constructor.
      *
      */
-    public UMLTimeExpressionModel() {
-        super("when");
+    public UMLTimeExpressionModel(Object target) {
+        super(target, "when");
     }
 
     /*

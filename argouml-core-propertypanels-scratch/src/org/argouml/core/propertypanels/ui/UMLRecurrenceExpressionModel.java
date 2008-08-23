@@ -31,10 +31,10 @@ import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  *
- * @author mkl
+ * @author mkl, penyaskito
  *
  */
-public class UMLRecurrenceExpressionModel extends UMLExpressionModel3 {
+public class UMLRecurrenceExpressionModel extends UMLExpressionModel {
 
     private static final Logger LOG =
         Logger.getLogger(UMLRecurrenceExpressionModel.class);
@@ -45,8 +45,8 @@ public class UMLRecurrenceExpressionModel extends UMLExpressionModel3 {
      * @param container the container of UML user interface components
      * @param propertyName the name of the property
      */
-    public UMLRecurrenceExpressionModel() {
-        super("recurrence");
+    public UMLRecurrenceExpressionModel(Object target) {
+        super(target, "recurrence");
     }
 
     /*
@@ -76,20 +76,4 @@ public class UMLRecurrenceExpressionModel extends UMLExpressionModel3 {
         LOG.debug("new boolean expression");
         return Model.getDataTypesFactory().createIterationExpression("", "");
     }
-
-    public void targetAdded(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetRemoved(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetSet(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
 }

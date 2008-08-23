@@ -25,13 +25,13 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetListener;
 
 /**
- * @author mkl
- * @author penyaskito
+ * @author mkl, penyaskito
  */
-abstract class UMLExpressionModel3 implements TargetListener {
+abstract class UMLExpressionModel {
+    
+    private Object target;
     private String propertyName;
     private Object/*MExpression*/ expression;
     private boolean mustRefresh;
@@ -40,23 +40,19 @@ abstract class UMLExpressionModel3 implements TargetListener {
     /**
      * The constructor.
      *
-     * @param c the container of UML user interface components
+     * @param target the UML element
      * @param name the name of the property
      */
-    public UMLExpressionModel3(String name) {
+    public UMLExpressionModel(Object target, String name) {
+        this.target = target;
         propertyName = name;
         mustRefresh = true;
     }
 
-    /**
-     * When the target is changed, we must refresh.
-     */
-    public void targetChanged() {
-        mustRefresh = true;
-        expression = null;
+    protected Object getTarget() {
+        return target;
     }
-
-
+    
     /**
      * @return the expression
      */

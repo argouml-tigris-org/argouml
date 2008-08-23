@@ -33,10 +33,10 @@ import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  *
- * @author mkl
+ * @author mkl, penyaskito
  *
  */
-public class UMLConditionExpressionModel extends UMLExpressionModel3 {
+public class UMLConditionExpressionModel extends UMLExpressionModel {
 
     private static final Logger LOG =
         Logger.getLogger(UMLConditionExpressionModel.class);
@@ -44,8 +44,8 @@ public class UMLConditionExpressionModel extends UMLExpressionModel3 {
     /**
      * The constructor.    
      */
-    public UMLConditionExpressionModel() {
-        super("condition");
+    public UMLConditionExpressionModel(Object target) {
+        super(target, "condition");
     }
 
     /*
@@ -75,26 +75,4 @@ public class UMLConditionExpressionModel extends UMLExpressionModel3 {
         LOG.debug("new boolean expression");
         return Model.getDataTypesFactory().createBooleanExpression("", "");
     }
-
-
-    public void targetAdded(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetRemoved(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetSet(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: Auto-generated method stub
-        
-    }
-    
 }

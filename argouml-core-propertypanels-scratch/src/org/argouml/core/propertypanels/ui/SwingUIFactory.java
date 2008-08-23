@@ -267,16 +267,14 @@ public class SwingUIFactory implements UIFactory {
         JComponent control = null;
         
         if ("initialValue".equals(prop.getName())) {        
-            UMLExpressionModel3 model = new UMLInitialValueExpressionModel();
-            // model.setTarget(target);
-
+            UMLExpressionModel model = 
+                new UMLInitialValueExpressionModel(target);
             p  = new UMLExpressionPanel(model, prop.getName());
             control = p;
         }
         if ("defaultValue".equals(prop.getName())) {        
-            UMLExpressionModel3 model = new UMLDefaultValueExpressionModel();
-            // model.setTarget(target);
-
+            UMLExpressionModel model = 
+                new UMLDefaultValueExpressionModel(target);
             p  = new UMLExpressionPanel(model, prop.getName());
             control = p;
         }
@@ -297,37 +295,37 @@ public class SwingUIFactory implements UIFactory {
             control = new JScrollPane(text);
         }
         else if ("condition".equals(prop.getName())) {
-            UMLExpressionModel3 conditionModel =
-                new UMLConditionExpressionModel();
+            UMLExpressionModel conditionModel =
+                new UMLConditionExpressionModel(target);
             JTextArea conditionArea =
                 new UMLExpressionBodyField(conditionModel, true);
             conditionArea.setRows(5);
             control = new JScrollPane(conditionArea);
         }
         else if ("script".equals(prop.getName())) {
-            UMLExpressionModel3 scriptModel =
-                new UMLScriptExpressionModel();            
+            UMLExpressionModel scriptModel =
+                new UMLScriptExpressionModel(target);            
             p  = new UMLExpressionPanel(scriptModel, prop.getName());
             control = p;
         }
         else if ("recurrence".equals(prop.getName())) {
-            UMLExpressionModel3 recurrenceModel =
-                new UMLRecurrenceExpressionModel();            
+            UMLExpressionModel recurrenceModel =
+                new UMLRecurrenceExpressionModel(target);            
             p  = new UMLExpressionPanel(recurrenceModel, prop.getName());
             control = p;
         }
         else if ("expression".equals(prop.getName())) {
-            UMLExpressionModel3 model = new UMLExpressionExpressionModel();
+            UMLExpressionModel model = new UMLExpressionExpressionModel(target);
             p = new UMLExpressionPanel(model, prop.getName());
             control = p;
         }
         else if ("changeExpression".equals(prop.getName())) {
-            UMLExpressionModel3 model = new UMLChangeExpressionModel();
+            UMLExpressionModel model = new UMLChangeExpressionModel(target);
             p = new UMLExpressionPanel(model, prop.getName());
             control = p;
         }
         else if ("when".equals(prop.getName())) {
-            UMLExpressionModel3 model = new UMLTimeExpressionModel();
+            UMLExpressionModel model = new UMLTimeExpressionModel(target);
             p = new UMLExpressionPanel(model, prop.getName());
             control = p;
         }
