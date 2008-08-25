@@ -25,6 +25,8 @@
 package org.argouml.profile.internal;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -107,34 +109,57 @@ public class ProfileManagerImpl implements ProfileManager {
         loadDefaultProfilesfromConfiguration();
     }
 
-    private void loadDefaultProfilesfromConfiguration() {    
-        disableConfigurationUpdate = true;
-        
-        String defaultProfilesList = Configuration
-                        .getString(KEY_DEFAULT_PROFILES);
-        if (defaultProfilesList.equals("")) {
-            // if the list does not exist
-            // add the Java profile as default
-            
-            addToDefaultProfiles(profileJava);
-        } else {
-            StringTokenizer tokenizer = new StringTokenizer(
-                    defaultProfilesList, DIRECTORY_SEPARATOR, false);
+    private void loadDefaultProfilesfromConfiguration() {
+        if (!disableConfigurationUpdate) {
+            disableConfigurationUpdate = true;
 
-            while (tokenizer.hasMoreTokens()) {
-                String desc = tokenizer.nextToken();
-                Profile p = null;
+            String defaultProfilesList = Configuration
+                    .getString(KEY_DEFAULT_PROFILES);
+            if (defaultProfilesList.equals("")) {
+                // if the list does not exist
+                // add the Java profile as default
 
-                if (desc.charAt(0) == 'U') {
-                    String fileName = desc.substring(1);
-                    p = findUserDefinedProfile(new File(fileName));
-                } else if (desc.charAt(0) == 'C') {
-                    String className = desc.substring(1);
-                    p = getProfileForClass(className);
-                }
+                addToDefaultProfiles(profileJava);
+            } else {
+                StringTokenizer tokenizer = new StringTokenizer(
+                        defaultProfilesList, DIRECTORY_SEPARATOR, false);
 
-                if (p != null) {
-                    addToDefaultProfiles(p);
+                while (tokenizer.hasMoreTokens()) {
+                    String desc = tokenizer.nextToken();
+                    Profile p = null;
+
+                    if (desc.charAt(0) == 'U') {
+                        String fileName = desc.substring(1);
+                        File file;
+                        try {
+                            file = new File(new URI(fileName));
+
+                            p = findUserDefinedProfile(file);
+
+                            if (p == null) {
+                                try {
+                                    p = new UserDefinedProfile(file);
+                                    registerProfile(p);
+                                } catch (ProfileException e) {
+                                    LOG.error("Error loading profile: " + file,
+                                            e);
+                                }
+                            }
+                        } catch (URISyntaxException e1) {
+                            LOG.error("Invalid path for Profile: " + fileName,
+                                    e1);
+                        } catch (Throwable e2) {
+                            LOG.error("Error loading profile: " + fileName,
+                                    e2);                            
+                        }
+                    } else if (desc.charAt(0) == 'C') {
+                        String className = desc.substring(1);
+                        p = getProfileForClass(className);
+                    }
+
+                    if (p != null) {
+                        addToDefaultProfiles(p);
+                    }
                 }
             }
         }
@@ -149,7 +174,7 @@ public class ProfileManagerImpl implements ProfileManager {
                 if (p instanceof UserDefinedProfile) {
                     buf.append("U"
                             + ((UserDefinedProfile) p).getModelFile()
-                                    .getAbsolutePath());
+                                    .toURI().toASCIIString());
                 } else {
                     buf.append("C" + p.getClass().getName());
                 }
