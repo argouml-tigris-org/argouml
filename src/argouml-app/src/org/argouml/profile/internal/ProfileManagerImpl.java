@@ -251,8 +251,23 @@ public class ProfileManagerImpl implements ProfileManager {
     }
 
 
+    private static final String OLD_PROFILE_PACKAGE = "org.argouml.uml.profile";
+
+    private static final String NEW_PROFILE_PACKAGE = 
+        "org.argouml.profile.internal";
+    
     public Profile getProfileForClass(String profileClass) {
         Profile found = null;
+        
+        // If we found an old-style name, update it to the new package name
+        if (profileClass.startsWith(OLD_PROFILE_PACKAGE)) {
+            profileClass = profileClass.replace(OLD_PROFILE_PACKAGE,
+                    NEW_PROFILE_PACKAGE);
+        }
+        
+        // Make sure the names didn't change again
+        assert profileUML.getClass().getName().startsWith(NEW_PROFILE_PACKAGE);
+        
         for (Profile p : profiles) {
             if (p.getClass().getName().equals(profileClass)) {
                 found = p;

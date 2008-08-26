@@ -127,10 +127,11 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         String className = br.readLine().trim();
         profile = ProfileFacade.getManager().getProfileForClass(
                 className);
-        if (profile == null) 
+        if (profile == null) {
             throw new OpenException(
                 "Plugin profile \"" + className 
                 + "\" is not available in installation.", null);
+        }
         return profile;
     }
 
@@ -197,11 +198,12 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         writer.close();
         LOG.info("Wrote user defined profile \"" + profileFile 
             + "\", with size " + xmi.length() + ".");
-        if (isSomeProfileDirectoryConfigured(profileManager))
+        if (isSomeProfileDirectoryConfigured(profileManager)) {
             profileManager.refreshRegisteredProfiles();
-        else 
+        } else {
             profileManager.addSearchPathDirectory(
                 profilesDirectory.getAbsolutePath());
+        }
     }
 
     private static Profile getMatchingUserDefinedProfile(String fileName, 
@@ -290,6 +292,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                         w.println("\t\t</userDefined>");
                     } else {
                         w.println("\t\t<plugin>");
+                        // TODO: Don't persist our internal implementation names
                         w.println("\t\t\t" + profile.getClass().getName());
                         w.println("\t\t</plugin>");
                     }
