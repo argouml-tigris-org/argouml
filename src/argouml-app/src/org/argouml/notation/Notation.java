@@ -150,6 +150,13 @@ public final class Notation implements PropertyChangeListener {
         Configuration.makeKey("notation", "default", "shadow-width");
 
     /**
+     * Indicates if the user wants to see the arrows when both
+     * association ends in an association are navigable.
+     */    
+    public static final ConfigurationKey KEY_HIDE_BIDIRECTIONAL_ARROWS =
+        Configuration.makeKey("notation", "hide", "bidirectional-arrows");
+    
+    /**
      * The instance.
      */
     private static final Notation SINGLETON = new Notation();
@@ -169,6 +176,7 @@ public final class Notation implements PropertyChangeListener {
         Configuration.addListener(KEY_SHOW_ASSOCIATION_NAMES, this);
         Configuration.addListener(KEY_SHOW_VISIBILITY, this);
         Configuration.addListener(KEY_SHOW_INITIAL_VALUE, this);
+        Configuration.addListener(KEY_HIDE_BIDIRECTIONAL_ARROWS, this);
     }
 
     /**

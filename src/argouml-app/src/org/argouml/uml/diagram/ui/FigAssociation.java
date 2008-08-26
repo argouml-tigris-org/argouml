@@ -44,6 +44,7 @@ import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
@@ -68,17 +69,6 @@ import org.tigris.gef.presentation.FigText;
  *
  */
 public class FigAssociation extends FigEdgeModelElement {
-
-    /**
-     * We suppress the arrow heads if both ends of an association
-     * are navigable. This means that we support presentation option 3 
-     * for Association Ends from the UML standard. <p>
-     * 
-     * If this member is set to false, then we have presentation option 1.
-     * <p> 
-     * TODO: See issue 535: make this a user setting.
-     */
-    private static final boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
 
     private static final Logger LOG = Logger.getLogger(FigAssociation.class);
 
@@ -275,7 +265,10 @@ public class FigAssociation extends FigEdgeModelElement {
         int sourceArrowType = srcGroup.getArrowType();
         int destArrowType = destGroup.getArrowType();
         
-        if (SUPPRESS_BIDIRECTIONAL_ARROWS
+        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = p.getProjectSettings();
+        
+        if (ps.getHideBidirectionalArrowsValue()
                 && sourceArrowType > 2
                 && destArrowType > 2) {
             sourceArrowType -= 3;

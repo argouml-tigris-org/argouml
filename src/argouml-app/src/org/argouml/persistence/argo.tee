@@ -65,6 +65,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
     <showstereotypes><ocl>self.projectSettings.showStereotypes</ocl></showstereotypes>
     <showsingularmultiplicities><ocl>self.projectSettings.showSingularMultiplicities</ocl></showsingularmultiplicities>
     <defaultshadowwidth><ocl>self.projectSettings.defaultShadowWidth</ocl></defaultshadowwidth>
+    <hidebidirectionalarrows><ocl>self.projectSettings.hideBidirectionalArrows</ocl></hidebidirectionalarrows>    
     <fontname><ocl>self.projectSettings.fontName</ocl></fontname>
     <fontsize><ocl>self.projectSettings.fontSize</ocl></fontsize>
     <defaultstereotypeview><ocl>self.projectSettings.defaultStereotypeView</ocl></defaultstereotypeview>

@@ -79,6 +79,7 @@ public class SettingsTabNotation
     private JCheckBox showTypes;
     private JCheckBox showStereotypes;
     private JCheckBox showSingularMultiplicities;
+    private JCheckBox hideBidirectionalArrows;
     private ShadowComboBox defaultShadowWidth;
 
     private int scope;
@@ -176,6 +177,10 @@ public class SettingsTabNotation
         showSingularMultiplicities = 
             createCheckBox("label.show-singular-multiplicities");
         settings.add(showSingularMultiplicities, constraints);
+        
+        hideBidirectionalArrows = 
+            createCheckBox("label.hide-bidirectional-arrows");
+        settings.add(hideBidirectionalArrows, constraints);        
 
         constraints.insets = new Insets(5, 30, 0, 4);
         JPanel defaultShadowWidthPanel = new JPanel(new FlowLayout(
@@ -229,6 +234,14 @@ public class SettingsTabNotation
              */
             showSingularMultiplicities.setSelected(Configuration.getBoolean(
                     Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true));
+            /*
+             * The next one defaults to TRUE, despite that this is
+             * NOT compatible with older ArgoUML versions
+             * (before 0.28?) that did
+             * not have this setting - see issue 535
+             */
+            hideBidirectionalArrows.setSelected(Configuration.getBoolean(
+                    Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
             defaultShadowWidth.setSelectedIndex(Configuration.getInteger(
                     Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
         }
@@ -249,6 +262,8 @@ public class SettingsTabNotation
             showStereotypes.setSelected(ps.getShowStereotypesValue());
             showSingularMultiplicities.setSelected(
                     ps.getShowSingularMultiplicitiesValue());
+            hideBidirectionalArrows.setSelected(
+                    ps.getHideBidirectionalArrowsValue());
             defaultShadowWidth.setSelectedIndex(
                     ps.getDefaultShadowWidthValue());
         }
@@ -291,6 +306,8 @@ public class SettingsTabNotation
                     showStereotypes.isSelected());
             Configuration.setBoolean(Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES,
                     showSingularMultiplicities.isSelected());
+            Configuration.setBoolean(Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS,
+                    hideBidirectionalArrows.isSelected());            
             Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,
                     defaultShadowWidth.getSelectedIndex());
         }
@@ -311,6 +328,7 @@ public class SettingsTabNotation
             ps.setShowSingularMultiplicities(
                     showSingularMultiplicities.isSelected());
             ps.setDefaultShadowWidth(defaultShadowWidth.getSelectedIndex());
+            ps.setHideBidirectionalArrows(hideBidirectionalArrows.isSelected());
         }
     }
 
@@ -347,6 +365,8 @@ public class SettingsTabNotation
                     Notation.KEY_SHOW_STEREOTYPES));
             showSingularMultiplicities.setSelected(Configuration.getBoolean(
                     Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES));
+            hideBidirectionalArrows.setSelected(Configuration.getBoolean(
+                    Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
             defaultShadowWidth.setSelectedIndex(Configuration.getInteger(
                     Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
         }

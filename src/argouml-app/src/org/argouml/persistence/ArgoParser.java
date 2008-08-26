@@ -237,6 +237,9 @@ class ArgoParser extends SAXParserBase {
         case ArgoTokenTable.TOKEN_SHOWASSOCIATIONNAMES:
             handleShowAssociationNames(e);
             break;
+        case ArgoTokenTable.TOKEN_HIDEBIDIRECTIONALARROWS:
+            handleHideBidirectionalArrows(e);
+            break;
         case ArgoTokenTable.TOKEN_ACTIVE_DIAGRAM:
             handleActiveDiagram(e);
             break;
@@ -469,6 +472,15 @@ class ArgoParser extends SAXParserBase {
         ps.setShowAssociationNames(showAssociationNames);
     }
 
+    /**
+     * @param e the element
+     */
+    protected void handleHideBidirectionalArrows(XMLElement e) {
+        String hideBidirectionalArrows = e.getText().trim();
+        ps.setHideBidirectionalArrows(hideBidirectionalArrows);
+    }
+    
+    
     protected void handleActiveDiagram(XMLElement e) {
         /* At this stage during loading, the diagrams are 
          * not created yet - so we have to store this name for later use. */

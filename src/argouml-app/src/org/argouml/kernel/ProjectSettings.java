@@ -74,6 +74,7 @@ public class ProjectSettings {
     /* Diagram appearance settings with project scope: */
     private String fontName;
     private int fontSize;
+    private boolean hideBidirectionalArrows;
     /* Keep some fonts around depending on the above settings: */
     private Font fontPlain;
     private Font fontItalic;
@@ -118,10 +119,13 @@ public class ProjectSettings {
         showProperties = Configuration.getBoolean(
                 Notation.KEY_SHOW_PROPERTIES);
         /*
-         * The next one defaults to TRUE, to stay compatible with older
+         * The next ones defaults to TRUE, to stay compatible with older
          * ArgoUML versions that did not have this setting:
          */
         showTypes = Configuration.getBoolean(Notation.KEY_SHOW_TYPES, true);
+        hideBidirectionalArrows = Configuration.getBoolean(
+                Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS, true);
+        
         showStereotypes = Configuration.getBoolean(
                 Notation.KEY_SHOW_STEREOTYPES);
         /*
@@ -369,6 +373,7 @@ public class ProjectSettings {
     public boolean getUseGuillemotsValue() {
         return useGuillemots;
     }
+    
 
     /**
      * @param showem <code>true</code> if guillemots are to be shown.
@@ -815,6 +820,62 @@ public class ProjectSettings {
         ProjectManager.getManager().setSaveEnabled(true);
     }
 
+    /**
+     * Used by "argo.tee".
+     *
+     * @return Returns "true" if we show the arrows when
+     * both association ends of an association are navigable.
+     */
+    public String getHideBidirectionalArrows() {
+        return Boolean.toString(hideBidirectionalArrows);
+    }
+
+    /**
+     * @return Returns <code>true</code> if we show the arrows when
+     * both association ends of an association are navigable.
+
+     */
+    public boolean getHideBidirectionalArrowsValue() {
+        return hideBidirectionalArrows;
+    }
+
+    /**
+     * @param hideem <code>true</code> if both arrows are to be shown when
+     * both association ends of an association are navigable.
+     */
+    public void setHideBidirectionalArrows(String hideem) {
+        setHideBidirectionalArrows(Boolean.valueOf(hideem).booleanValue());
+    }
+
+    /**
+     * @param hideem <code>true</code> if both arrows are to be shown when
+     * both association ends of an association are navigable.
+
+     */
+    public void setHideBidirectionalArrows(final boolean hideem) {
+        if (hideBidirectionalArrows == hideem) return;
+
+        Memento memento = new Memento() {
+            private final ConfigurationKey key =
+                Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS;
+
+            public void redo() {
+                hideBidirectionalArrows = hideem;
+                fireNotationEvent(key, !hideem, hideem);
+            }
+
+            public void undo() {
+                hideBidirectionalArrows = !hideem;
+                fireNotationEvent(key, hideem, !hideem);
+            }
+        };
+        if (UndoManager.getInstance().isGenerateMementos()) {
+            UndoManager.getInstance().addMemento(memento);
+        }
+        memento.redo();
+        ProjectManager.getManager().setSaveEnabled(true);
+    }
+    
     /**
      * Used by "argo.tee".
      *

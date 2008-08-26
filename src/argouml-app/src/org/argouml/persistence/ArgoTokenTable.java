@@ -67,6 +67,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     private static final String STRING_SHOWSTEREOTYPES = "showstereotypes";
     private static final String STRING_SHOWSINGULARMULTIPLICITIES 
         = "showsingularmultiplicities";
+    private static final String STRING_HIDEBIDIRECTIONALARROWS
+        = "hidebidirectionalarrows";
     private static final String STRING_DEFAULTSHADOWWIDTH
         = "defaultshadowwidth";
     private static final String STRING_FONTNAME = "fontname";
@@ -129,6 +131,8 @@ class ArgoTokenTable extends XMLTokenTableBase {
     /** A token for Notation Settings **/
     public static final int    TOKEN_SHOWSINGULARMULTIPLICITIES = 26;
 
+    public static final int TOKEN_HIDEBIDIRECTIONALARROWS = 27;
+    
     /** The token for undefined. */
     public static final int    TOKEN_UNDEFINED               = 99;
 
@@ -154,6 +158,7 @@ class ArgoTokenTable extends XMLTokenTableBase {
         addToken(STRING_USEGUILLEMOTS, Integer.valueOf(TOKEN_USEGUILLEMOTS));
         addToken(STRING_SHOWVISIBILITY, Integer.valueOf(TOKEN_SHOWVISIBILITY));
         addToken(STRING_SHOWMULTIPLICITY, Integer.valueOf(TOKEN_SHOWMULTIPLICITY));
+        addToken(STRING_HIDEBIDIRECTIONALARROWS, Integer.valueOf(TOKEN_HIDEBIDIRECTIONALARROWS));
         addToken(STRING_SHOWINITIALVALUE, Integer.valueOf(TOKEN_SHOWINITIALVALUE));
         addToken(STRING_SHOWPROPERTIES, Integer.valueOf(TOKEN_SHOWPROPERTIES));
         addToken(STRING_SHOWTYPES, Integer.valueOf(TOKEN_SHOWTYPES));
