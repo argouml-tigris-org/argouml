@@ -146,6 +146,8 @@ public abstract class Profile {
 
     /**
      * @return a unique identifier for this profile
+     * 
+     * For technical reasons this identifier should not contain stars '*'
      */
     public String getProfileIdentifier() {
         return getDisplayName();

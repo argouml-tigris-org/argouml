@@ -153,8 +153,8 @@ public class ProfileManagerImpl implements ProfileManager {
                                     e2);                            
                         }
                     } else if (desc.charAt(0) == 'C') {
-                        String className = desc.substring(1);
-                        p = getProfileForClass(className);
+                        String profileIdentifier = desc.substring(1);
+                        p = lookForRegisteredProfile(profileIdentifier);
                     }
 
                     if (p != null) {
@@ -176,7 +176,7 @@ public class ProfileManagerImpl implements ProfileManager {
                             + ((UserDefinedProfile) p).getModelFile()
                                     .toURI().toASCIIString());
                 } else {
-                    buf.append("C" + p.getClass().getName());
+                    buf.append("C" + p.getProfileIdentifier());
                 }
 
                 buf.append(DIRECTORY_SEPARATOR);

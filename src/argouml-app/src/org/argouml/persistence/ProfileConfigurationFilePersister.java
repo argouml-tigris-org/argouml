@@ -124,13 +124,19 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
     private static Profile handlePluginProfile(BufferedReader br)
         throws IOException, OpenException {
         Profile profile;
-        String className = br.readLine().trim();
-        profile = ProfileFacade.getManager().getProfileForClass(
-                className);
+        String profileIdentifier = br.readLine().trim();
+        profile = ProfileFacade.getManager().lookForRegisteredProfile(
+                profileIdentifier);
         if (profile == null) {
-            throw new OpenException(
-                "Plugin profile \"" + className 
-                + "\" is not available in installation.", null);
+            
+            // for compatibility with older format
+            profile = ProfileFacade.getManager().getProfileForClass(
+                    profileIdentifier);
+            
+            if (profile == null) {
+                throw new OpenException("Plugin profile \"" + profileIdentifier
+                        + "\" is not available in installation.", null);
+            }
         }
         return profile;
     }
@@ -292,8 +298,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
                         w.println("\t\t</userDefined>");
                     } else {
                         w.println("\t\t<plugin>");
-                        // TODO: Don't persist our internal implementation names
-                        w.println("\t\t\t" + profile.getClass().getName());
+                        w.println("\t\t\t" + profile.getProfileIdentifier());
                         w.println("\t\t</plugin>");
                     }
                 }
