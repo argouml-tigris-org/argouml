@@ -34,9 +34,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
@@ -64,7 +64,8 @@ public class UserDefinedProfile extends Profile {
 
     private Collection profilePackages;
 
-    private UserDefinedFigNodeStrategy figNodeStrategy = new UserDefinedFigNodeStrategy();
+    private UserDefinedFigNodeStrategy figNodeStrategy = 
+        new UserDefinedFigNodeStrategy();
 
     private class UserDefinedFigNodeStrategy implements FigNodeStrategy {
 
@@ -256,14 +257,15 @@ public class UserDefinedProfile extends Profile {
     /**
      * @return the packages in the <code>profilePackages</code>
      */
+    @SuppressWarnings("unchecked")
     private Collection filterPackages() {
-        Vector<Object> ret = new Vector<Object>();
+        List result = new ArrayList();
         for (Object object : profilePackages) {
             if (Model.getFacade().isAPackage(object)) {
-                ret.add(object);
+                result.add(object);
             }
         }
-        return ret;
+        return result;
     }
 
     /**
