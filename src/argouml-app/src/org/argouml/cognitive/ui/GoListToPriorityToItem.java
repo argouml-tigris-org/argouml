@@ -70,14 +70,8 @@ public class GoListToPriorityToItem extends AbstractGoList {
 	    return PriorityNode.getPriorityList().size();
 	}
 	if (parent instanceof PriorityNode) {
-	    int res = 0;
 	    PriorityNode pn = (PriorityNode) parent;
-            for (ToDoItem item :  Designer.theDesigner().getToDoList()) {
-		if (item.getPriority() == pn.getPriority()) {
-                    res++;
-                }
-	    }
-	    return res;
+	    return Designer.theDesigner().getToDoListCount(pn.getPriority());
 	}
 	return 0;
     }

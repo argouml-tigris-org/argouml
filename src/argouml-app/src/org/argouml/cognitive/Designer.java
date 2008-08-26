@@ -962,4 +962,21 @@ public final class Designer
      * The UID.
      */
     private static final long serialVersionUID = -3647853023882216454L;
+
+    /**
+     * Gets the number of ToDo items with the given priority.
+     * @param priority The priority filter
+     * @return The number of ToDo items with that priority
+     */
+    public int getToDoListCount(final int priority) {
+        int count = 0;
+        synchronized (toDoList) {
+            for (ToDoItem item :  toDoList) {
+                if (item.getPriority() == priority) {
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
 }
