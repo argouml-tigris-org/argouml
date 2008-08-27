@@ -53,7 +53,7 @@
  	<xsl:template match="/uml/pgml/group[contains(./private,'LAYER_NULL')]">
 	</xsl:template>
 	
-	<!-- Add defaults for new settings issue 5231 -->
+	<!-- Add defaults for new settings issue 5231 and 535-->
  	<xsl:template match="/uml/argo/settings">
  	   <settings>
 		<xsl:copy-of select="*"/>
@@ -71,6 +71,9 @@
 		</xsl:if>
 		<xsl:if test="count(defaultstereotypeview) = 0">
 			<defaultstereotypeview>0</defaultstereotypeview>
+		</xsl:if>
+		<xsl:if test="count(hidebidirectionalarrows) = 0">
+			<hidebidirectionalarrows>true</hidebidirectionalarrows>
 		</xsl:if>
  	   </settings>
 	</xsl:template>
