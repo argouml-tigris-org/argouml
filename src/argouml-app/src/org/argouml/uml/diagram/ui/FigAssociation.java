@@ -265,7 +265,7 @@ public class FigAssociation extends FigEdgeModelElement {
         int sourceArrowType = srcGroup.getArrowType();
         int destArrowType = destGroup.getArrowType();
         
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = getProject();
         ProjectSettings ps = p.getProjectSettings();
         
         if (ps.getHideBidirectionalArrowsValue()
