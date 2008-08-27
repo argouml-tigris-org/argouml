@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,7 +52,7 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
     private JCheckBox checkBox;
     private MultiplicityComboBoxModel multiplicityComboBoxModel;
     
-    private static List multiplicityList = new ArrayList();
+    private static List<String> multiplicityList = new ArrayList<String>();
     
     static {
         multiplicityList.add("1");
@@ -93,6 +93,7 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
      * method can be removed once JRE5 is no longer supported.
      * @return the preferred dimension
      */
+    @Override
     public Dimension getPreferredSize() {
         return new Dimension(
                 super.getPreferredSize().width,
@@ -105,8 +106,11 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
             Object target = multiplicityComboBoxModel.getTarget();
             Object multiplicity = Model.getFacade().getMultiplicity(target);
             if (Model.getFacade().isAMultiplicity(item)) {
-                if (!multiplicity.equals(item)) {
+                if (!item.equals(multiplicity)) {
                     Model.getCoreHelper().setMultiplicity(target, item);
+                    if (multiplicity != null) {
+                        Model.getUmlFactory().delete(multiplicity);
+                    }
                 }
             } else if (item instanceof String) {
                 if (!item.equals(Model.getFacade().toString(multiplicity))) {
@@ -114,9 +118,15 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
                             target,
                             Model.getDataTypesFactory().createMultiplicity(
                                     (String) item));
+                    if (multiplicity != null) {
+                        Model.getUmlFactory().delete(multiplicity);
+                    }
                 }
             } else {
-                Model.getCoreHelper().setMultiplicity(target, null);
+                if (multiplicity != null) {
+                    Model.getCoreHelper().setMultiplicity(target, null);
+                    Model.getUmlFactory().delete(multiplicity);
+                }
             }
         }
     }
@@ -154,30 +164,34 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
          * 
          * {@inheritDoc}
          */
+        @Override
         protected void doOnEdit(Object item) {
             String text = (String) item;
-            Object multi = null;
             try {
-                multi = Model.getDataTypesFactory().createMultiplicity(text);
+                Object multi = 
+                    Model.getDataTypesFactory().createMultiplicity(text);
+                if (multi != null) {
+                    setSelectedItem(text);
+                    Model.getUmlFactory().delete(multi);
+                    return;
+                }
             } catch (IllegalArgumentException e) {
                 Object o = search(text);
-                if (search(text) != null ) {
-                    multi = o;
+                if (o != null ) {
+                    setSelectedItem(o);
+                    return;
                 }
             }
-            if (multi != null) {
-                setSelectedItem(multi);
-            } else {
-                getEditor().setItem(getSelectedItem());
-            }
+            getEditor().setItem(getSelectedItem());
         }
 
         /**
          * When we change target make sure that the check box is only selected
-         * if the multiplicty exists
+         * if the multiplicity exists
          * @param e
          * @see org.argouml.uml.ui.UMLComboBox2#targetSet(org.argouml.ui.targetmanager.TargetEvent)
          */
+        @Override
 	public void targetSet(TargetEvent e) {
 	    super.targetSet(e);
 	    Object target = getTarget();
@@ -185,6 +199,9 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
                 && Model.getFacade().getMultiplicity(target) != null;
 	    multiplicityComboBox.setEnabled(exists);
 	    multiplicityComboBox.setEditable(exists);
+	    // This will cause itemStateChanged to be called because of
+	    // us rather than a user action, but we don't care because we're
+	    // going to check if the value is the same
 	    checkBox.setSelected(exists);
 	}
     }
@@ -226,25 +243,32 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
         /*
          * @see org.argouml.uml.ui.UMLComboBoxModel2#addElement(java.lang.Object)
          */
+        @Override
         public void addElement(Object o) {
             if (o == null) {
                 return;
             }
+            String text;
             if (Model.getFacade().isAMultiplicity(o)) {
-                o = Model.getFacade().toString(o);
-                if ("".equals(o)) {
-                    o = "1";
+                text = Model.getFacade().toString(o);
+                if ("".equals(text)) {
+                    text = "1";
                 }
+            } else if (o instanceof String) {
+                text = (String) o;
+            } else {
+                return;
             }
-            if (!multiplicityList.contains(o) && isValidElement(o)) {
-                multiplicityList.add(o);
+            if (!multiplicityList.contains(text) && isValidElement(text)) {
+                multiplicityList.add(text);
             }
-            super.addElement(o);
+            super.addElement(text);
         }
     
         /*
          * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
          */
+        @Override
         public void setSelectedItem(Object anItem) {
             addElement(anItem);
             super.setSelectedItem((anItem == null) ? null 
@@ -268,22 +292,30 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
 	}
 
 	public void itemStateChanged(ItemEvent e) {
+	    Object target = getTarget();
+	    Object oldValue = Model.getFacade().getMultiplicity(target);
 	    if (e.getStateChange() == ItemEvent.SELECTED) {
 		String comboText =
 		    (String) multiplicityComboBox.getSelectedItem();
+		if (comboText.equals(Model.getFacade().toString(oldValue))) {
+		    return;
+		}
                 Object multi =
                     Model.getDataTypesFactory().createMultiplicity(comboText);
 		if (multi == null) {
-                    Model.getCoreHelper().setMultiplicity(getTarget(), "1");
+                    Model.getCoreHelper().setMultiplicity(target, "1");
 		} else {
-                    Model.getCoreHelper().setMultiplicity(getTarget(), multi);
+                    Model.getCoreHelper().setMultiplicity(target, multi);
 		}
 		multiplicityComboBox.setEnabled(true);
 		multiplicityComboBox.setEditable(true);
 	    } else {
 		multiplicityComboBox.setEnabled(false);
 		multiplicityComboBox.setEditable(false);
-                Model.getCoreHelper().setMultiplicity(getTarget(), null);
+                Model.getCoreHelper().setMultiplicity(target, null);
+	    }
+	    if (oldValue != null) {
+	        Model.getUmlFactory().delete(oldValue);
 	    }
 	}
     }
