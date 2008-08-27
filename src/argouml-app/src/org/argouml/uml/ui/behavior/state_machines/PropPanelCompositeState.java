@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -146,7 +146,8 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
         } else if (Model.getFacade().isConcurrent(target)) {
             getTitleLabel().setText(
                     Translator.localize("label.concurrent.composite.state"));
-        } else {
+        } else if (!Model.getFacade().isASubmachineState(target)) {
+            // PropPanelSubmachine is a subclass that handles its own title
             getTitleLabel().setText(
                     Translator.localize("label.composite-state"));
         }
