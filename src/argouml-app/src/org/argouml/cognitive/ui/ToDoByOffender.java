@@ -65,26 +65,39 @@ public class ToDoByOffender extends ToDoPerspective
 
         ListSet allOffenders = Designer.theDesigner().getToDoList()
                 .getOffenders();
-        for (Object off : allOffenders) {
-            path[1] = off;
-            int nMatchingItems = 0;
-            for (ToDoItem item : items) {
-                ListSet offenders = item.getOffenders();
-                if (!offenders.contains(off)) continue;
-                nMatchingItems++;
+        synchronized (allOffenders) {
+            for (Object off : allOffenders) {
+                path[1] = off;
+                int nMatchingItems = 0;
+                synchronized (items) {
+                    for (ToDoItem item : items) {
+                        ListSet offenders = item.getOffenders();
+                        if (!offenders.contains(off)) {
+                            continue;
+                        }
+                        nMatchingItems++;
+                    }
+                }
+                if (nMatchingItems == 0) {
+                    continue;
+                }
+                int[] childIndices = new int[nMatchingItems];
+                Object[] children = new Object[nMatchingItems];
+                nMatchingItems = 0;
+                synchronized (items) {
+                    for (ToDoItem item : items) {
+                        ListSet offenders = item.getOffenders();
+                        if (!offenders.contains(off)) {
+                            continue;
+                        }
+                        childIndices[nMatchingItems] = getIndexOfChild(off,
+                                item);
+                        children[nMatchingItems] = item;
+                        nMatchingItems++;
+                    }
+                }
+                fireTreeNodesChanged(this, path, childIndices, children);
             }
-            if (nMatchingItems == 0) continue;
-            int[] childIndices = new int[nMatchingItems];
-            Object[] children = new Object[nMatchingItems];
-            nMatchingItems = 0;
-            for (ToDoItem item : items) {
-                ListSet offenders = item.getOffenders();
-                if (!offenders.contains(off)) continue;
-                childIndices[nMatchingItems] = getIndexOfChild(off, item);
-                children[nMatchingItems] = item;
-                nMatchingItems++;
-            }
-            fireTreeNodesChanged(this, path, childIndices, children);
         }
     }
 
@@ -97,34 +110,43 @@ public class ToDoByOffender extends ToDoPerspective
         Object[] path = new Object[2];
         path[0] = Designer.theDesigner().getToDoList();
 
-        for (Object off : Designer.theDesigner().getToDoList().getOffenders()) {
-            path[1] = off;
-            int nMatchingItems = 0;
-            // TODO: This first loop just to count the items appears 
-            // redundant to me - tfm 20070630
-            for (ToDoItem item : items) {
-                ListSet offenders = item.getOffenders();
-                if (!offenders.contains(off)) {
+        ListSet allOffenders = Designer.theDesigner().getToDoList()
+                .getOffenders();
+        synchronized (allOffenders) {
+            for (Object off : allOffenders) {
+                path[1] = off;
+                int nMatchingItems = 0;
+                // TODO: This first loop just to count the items appears
+                // redundant to me - tfm 20070630
+                synchronized (items) {
+                    for (ToDoItem item : items) {
+                        ListSet offenders = item.getOffenders();
+                        if (!offenders.contains(off)) {
+                            continue;
+                        }
+                        nMatchingItems++;
+                    }
+                }
+                if (nMatchingItems == 0) {
                     continue;
                 }
-                nMatchingItems++;
-            }
-            if (nMatchingItems == 0) {
-                continue;
-            }
-            int[] childIndices = new int[nMatchingItems];
-            Object[] children = new Object[nMatchingItems];
-            nMatchingItems = 0;
-            for (ToDoItem item : items) {
-                ListSet offenders = item.getOffenders();
-                if (!offenders.contains(off)) {
-                    continue;
+                int[] childIndices = new int[nMatchingItems];
+                Object[] children = new Object[nMatchingItems];
+                nMatchingItems = 0;
+                synchronized (items) {
+                    for (ToDoItem item : items) {
+                        ListSet offenders = item.getOffenders();
+                        if (!offenders.contains(off)) {
+                            continue;
+                        }
+                        childIndices[nMatchingItems] = getIndexOfChild(off,
+                                item);
+                        children[nMatchingItems] = item;
+                        nMatchingItems++;
+                    }
                 }
-                childIndices[nMatchingItems] = getIndexOfChild(off, item);
-                children[nMatchingItems] = item;
-                nMatchingItems++;
+                fireTreeNodesInserted(this, path, childIndices, children);
             }
-            fireTreeNodesInserted(this, path, childIndices, children);
         }
     }
 
@@ -137,23 +159,30 @@ public class ToDoByOffender extends ToDoPerspective
         Object[] path = new Object[2];
         path[0] = Designer.theDesigner().getToDoList();
 
-        for (Object off : Designer.theDesigner().getToDoList().getOffenders()) {
-            boolean anyInOff = false;
-            for (ToDoItem item : items) {
-                ListSet offenders = item.getOffenders();
-                if (offenders.contains(off)) { 
-                    anyInOff = true;
-                    break;
+        ListSet allOffenders = Designer.theDesigner().getToDoList()
+                .getOffenders();
+        synchronized (allOffenders) {
+            for (Object off : allOffenders) {
+                boolean anyInOff = false;
+                synchronized (items) {
+                    for (ToDoItem item : items) {
+                        ListSet offenders = item.getOffenders();
+                        // TODO: This looks O(n^2)
+                        if (offenders.contains(off)) {
+                            anyInOff = true;
+                            break;
+                        }
+                    }
                 }
-            }
-            if (!anyInOff) { 
-                continue;
-            }
+                if (!anyInOff) {
+                    continue;
+                }
 
-            LOG.debug("toDoItemRemoved updating PriorityNode");
-            path[1] = off;
-            //fireTreeNodesChanged(this, path, childIndices, children);
-            fireTreeStructureChanged(path);
+                LOG.debug("toDoItemRemoved updating PriorityNode");
+                path[1] = off;
+                // fireTreeNodesChanged(this, path, childIndices, children);
+                fireTreeStructureChanged(path);
+            }
         }
     }
 

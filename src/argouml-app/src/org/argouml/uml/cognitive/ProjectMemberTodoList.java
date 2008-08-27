@@ -24,6 +24,8 @@
 
 package org.argouml.uml.cognitive;
 
+import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
@@ -76,28 +78,34 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
      */
     public Vector<ToDoItemXMLHelper> getToDoList() {
         Vector<ToDoItemXMLHelper> out = new Vector<ToDoItemXMLHelper>();
-        Designer dsgr = Designer.theDesigner();
-        for (ToDoItem tdi : dsgr.getToDoList().getToDoItemList()) {
-            if (tdi != null && tdi.getPoster() instanceof Designer) {
-                out.addElement(new ToDoItemXMLHelper(tdi));
+        List<ToDoItem> tdiList = 
+            Designer.theDesigner().getToDoList().getToDoItemList();
+        synchronized (tdiList) {
+            for (ToDoItem tdi : tdiList) {
+                if (tdi != null && tdi.getPoster() instanceof Designer) {
+                    out.addElement(new ToDoItemXMLHelper(tdi));
+                }
             }
         }
         return out;
     }
 
     /**
-     * @return Vector conaining the resolved critics list
+     * @return Vector containing the resolved critics list
      * Used by todo.tee
      */
     public Vector<ResolvedCriticXMLHelper> getResolvedCriticsList() {
         Vector<ResolvedCriticXMLHelper> out = 
             new Vector<ResolvedCriticXMLHelper>();
-    	Designer dsgr = Designer.theDesigner();
-    	for (ResolvedCritic rci : dsgr.getToDoList().getResolvedItems()) {
-    	    if (rci != null) {
-                out.addElement(new ResolvedCriticXMLHelper(rci));
+    	Set<ResolvedCritic> resolvedSet = 
+    	    Designer.theDesigner().getToDoList().getResolvedItems();
+    	synchronized (resolvedSet) {
+            for (ResolvedCritic rci : resolvedSet) {
+                if (rci != null) {
+                    out.addElement(new ResolvedCriticXMLHelper(rci));
+                }
             }
-    	}
+        }
     	return out;
     }
 

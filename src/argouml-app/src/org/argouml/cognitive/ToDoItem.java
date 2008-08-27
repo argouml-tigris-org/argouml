@@ -402,10 +402,6 @@ public class ToDoItem implements Serializable, WizardItem {
         if (getPoster() != null) {
             code += getPoster().hashCode();
         }
-        // The VectorSet.hashCode() doesn't exist so this will not work.
-        // if (getOffenders() != null) {
-        //     code += getOffenders().hashCode();
-        // }
         return code;
     }
 
@@ -435,6 +431,8 @@ public class ToDoItem implements Serializable, WizardItem {
 	}
 	return true;
     }
+    
+    
 
     ////////////////////////////////////////////////////////////////
     // user interface

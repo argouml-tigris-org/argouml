@@ -754,15 +754,6 @@ public final class Designer
         return toDoList;
     }
 
-//    /**
-//     * Add all the items in the given list to my list.
-//     *
-//     * @param list the items to be added
-//     */
-//    public void addToDoItems(ToDoList list) {
-//        toDoList.addAll(list);
-//    }
-//
     /**
      * Remove all the items in the given list from my list.
      *
@@ -963,20 +954,4 @@ public final class Designer
      */
     private static final long serialVersionUID = -3647853023882216454L;
 
-    /**
-     * Gets the number of ToDo items with the given priority.
-     * @param priority The priority filter
-     * @return The number of ToDo items with that priority
-     */
-    public int getToDoListCount(final int priority) {
-        int count = 0;
-        synchronized (toDoList) {
-            for (ToDoItem item :  toDoList) {
-                if (item.getPriority() == priority) {
-                    ++count;
-                }
-            }
-        }
-        return count;
-    }
 }

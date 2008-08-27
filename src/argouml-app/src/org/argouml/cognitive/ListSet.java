@@ -27,7 +27,9 @@ package org.argouml.cognitive;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -46,12 +48,26 @@ public class ListSet<T extends Object>
     private static final int TC_LIMIT = 50;
 
     private List<T> list;
+    
+    /**
+     * A hash set containing the same items as the list so that we can
+     * use it for fast lookups.  
+     */
+    private Set<T> set;
+    
+    /**
+     * The mutex/lock which is used for operations that need to check/modify
+     * both the set and list.  Get operations which only access the list can
+     * rely on the fact that it is a synchronized list.
+     */
+    private final Object mutex = new Object(); 
 
     /**
      * The constructor.
      */
     public ListSet() {
-        list = new ArrayList<T>();
+        list =  Collections.synchronizedList(new ArrayList<T>());
+        set = new HashSet<T>();
     }
 
     /**
@@ -60,7 +76,8 @@ public class ListSet<T extends Object>
      * @param n the initial capacity of the ListSet
      */
     public ListSet(int n) {
-        list = new ArrayList<T>(n);
+        list = Collections.synchronizedList(new ArrayList<T>(n));
+        set = new HashSet<T>(n);
     }
 
     /**
@@ -69,7 +86,8 @@ public class ListSet<T extends Object>
      * @param o1 the first object to add
      */
     public ListSet(T o1) {
-        list = new ArrayList<T>();
+        list = Collections.synchronizedList(new ArrayList<T>());
+        set = new HashSet<T>();
         add(o1);
     }
 
@@ -81,9 +99,7 @@ public class ListSet<T extends Object>
      */
     @Deprecated
     public void addElement(T o) {
-        if (!contains(o)) {
-            list.add(o);
-        }
+        add(o);
     }
     
     /**
@@ -174,7 +190,9 @@ public class ListSet<T extends Object>
     @Deprecated
     public void addAllElementsSuchThat(ListSet<T> s, 
     		org.tigris.gef.util.Predicate p) {
-        addAllElementsSuchThat(s.iterator(), p);
+        synchronized (s.mutex()) {
+            addAllElementsSuchThat(s.iterator(), p);
+        }
     }
 
     /**
@@ -183,18 +201,23 @@ public class ListSet<T extends Object>
      */
     public void addAllElementsSuchThat(ListSet<T> s, 
     		org.argouml.util.Predicate p) {
-        addAllElementsSuchThat(s.iterator(), p);
+        synchronized (s.mutex()) {
+            addAllElementsSuchThat(s.iterator(), p);
+        }
     }
     
     /*
      * @see java.util.Collection#remove(java.lang.Object)
      */
     public boolean remove(Object o) {
-        boolean result = contains(o);
-        if (o != null) {
-            list.remove(o);
+        synchronized (mutex) {
+            boolean result = contains(o);
+            if (o != null) {
+                list.remove(o);
+                set.remove(o);
+            }
+            return result;
         }
-        return result;
     }
 
     /**
@@ -210,15 +233,17 @@ public class ListSet<T extends Object>
      * Remove all objects.
      */
     public void removeAllElements() {
-        list.clear();
+        clear();
     }
 
     /*
      * @see java.util.Collection#contains(java.lang.Object)
      */
     public boolean contains(Object o) {
-        if (o != null) {
-            return list.contains(o);
+        synchronized (mutex) {
+            if (o != null) {
+                return set.contains(o);
+            }
         }
         return false;
     }
@@ -254,9 +279,11 @@ public class ListSet<T extends Object>
      */
     @Deprecated
     public Object findSuchThat(org.tigris.gef.util.Predicate p) {
-        for (Object o : list) {
-            if (p.predicate(o)) {
-                return o;
+        synchronized (list) {
+            for (Object o : list) {
+                if (p.predicate(o)) {
+                    return o;
+                }
             }
         }
         return null;
@@ -271,9 +298,11 @@ public class ListSet<T extends Object>
      * @return the found object or null
      */
     public Object findSuchThat(org.argouml.util.Predicate p) {
-        for (Object o : list) {
-            if (p.evaluate(o)) {
-                return o;
+        synchronized (list) {
+            for (Object o : list) {
+                if (p.evaluate(o)) {
+                    return o;
+                }
             }
         }
         return null;
@@ -343,9 +372,8 @@ public class ListSet<T extends Object>
         return 0;
     }
 
-    /*
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
+
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof ListSet)) {
             return false;
@@ -354,9 +382,11 @@ public class ListSet<T extends Object>
         if (set.size() != size()) {
             return false;
         }
-        for (Object obj : list) {
-            if (!(set.contains(obj))) {
-                return false;
+        synchronized (list) {
+            for (Object obj : list) {
+                if (!(set.contains(obj))) {
+                    return false;
+                }
             }
         }
         return true;
@@ -379,15 +409,16 @@ public class ListSet<T extends Object>
         return list.size();
     }
 
-    /*
-     * @see java.lang.Object#toString()
-     */
+
+    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Set{");        
-        for (Iterator it = iterator(); it.hasNext(); ) {
-            sb.append(it.next());
-            if (it.hasNext()) {
-                sb.append(", ");
+        StringBuilder sb = new StringBuilder("Set{");  
+        synchronized (list) {
+            for (Iterator it = iterator(); it.hasNext();) {
+                sb.append(it.next());
+                if (it.hasNext()) {
+                    sb.append(", ");
+                }
             }
         }
         sb.append("}");
@@ -489,8 +520,10 @@ public class ListSet<T extends Object>
     public ListSet<T> reachable(org.tigris.gef.util.ChildGenerator cg, int max, 
     		org.tigris.gef.util.Predicate p) {
         ListSet<T> kids = new ListSet<T>();
-        for (Object r : list) {
-            kids.addAllElementsSuchThat(cg.gen(r), p);
+        synchronized (list) {
+            for (Object r : list) {
+                kids.addAllElementsSuchThat(cg.gen(r), p);
+            }
         }
         return kids.transitiveClosure(cg, max, p);
     }
@@ -512,8 +545,10 @@ public class ListSet<T extends Object>
     public ListSet<T> reachable(org.argouml.util.ChildGenerator cg, int max, 
     		org.argouml.util.Predicate predicate) {
         ListSet<T> kids = new ListSet<T>();
-        for (Object r : list) {
-            kids.addAllElementsSuchThat(cg.childIterator(r), predicate);
+        synchronized (list) {
+            for (Object r : list) {
+                kids.addAllElementsSuchThat(cg.childIterator(r), predicate);
+            }
         }
         return kids.transitiveClosure(cg, max, predicate);
     }
@@ -590,9 +625,12 @@ public class ListSet<T extends Object>
             iterCount++;
             lastSize = touched.size();
             frontier = new ListSet<T>();
-            for (T recentElement : recent) {
-                Iterator frontierChildren = cg.childIterator(recentElement);
-                frontier.addAllElementsSuchThat(frontierChildren, predicate);
+            synchronized (recent) {
+                for (T recentElement : recent) {
+                    Iterator frontierChildren = cg.childIterator(recentElement);
+                    frontier.addAllElementsSuchThat(frontierChildren, 
+                            predicate);
+                }
             }
             touched.addAll(frontier);
             recent = frontier;
@@ -612,6 +650,13 @@ public class ListSet<T extends Object>
      */
     public Iterator<T> iterator() {
         return list.iterator();
+    }
+    
+    /**
+     * @return mutex object to synchronize on for iteration
+     */
+    public Object mutex() {
+        return list;
     }
 
     /*
@@ -633,18 +678,23 @@ public class ListSet<T extends Object>
      * @see java.util.Collection#add(java.lang.Object)
      */
     public boolean add(T arg0) {
-        boolean result = list.contains(arg0);
-        if (!result) {
-            list.add(arg0);
+        synchronized (mutex) {
+            boolean result = set.contains(arg0);
+            if (!result) {
+                set.add(arg0);
+                list.add(arg0);
+            }
+            return !result;
         }
-        return !result;
     }
 
     /*
      * @see java.util.Collection#containsAll(java.util.Collection)
      */
     public boolean containsAll(Collection arg0) {
-        return list.containsAll(arg0);
+        synchronized (mutex) {
+            return set.containsAll(arg0);
+        }
     }
 
 
@@ -678,7 +728,10 @@ public class ListSet<T extends Object>
      * @see java.util.Collection#clear()
      */
     public void clear() {
-        list.clear();
+        synchronized (mutex) {
+            list.clear();
+            set.clear();
+        }
     }
 
     /*
@@ -699,18 +752,17 @@ public class ListSet<T extends Object>
      * @see java.util.List#set(int, java.lang.Object)
      */
     public T set(int arg0, T o) {
-        if (contains(o)) {
-            list.remove(o);
-        }
-        return list.set(arg0, o);
+        throw new UnsupportedOperationException("set() method not supported");
     }
 
     /*
      * @see java.util.List#add(int, java.lang.Object)
      */
     public void add(int arg0, T arg1) {
-        if (!list.contains(arg1)) {
-            list.add(arg0, arg1);
+        synchronized (mutex) {
+            if (!set.contains(arg1)) {
+                list.add(arg0, arg1);
+            }
         }
     }
 
@@ -718,7 +770,11 @@ public class ListSet<T extends Object>
      * @see java.util.List#remove(int)
      */
     public T remove(int index) {
-        return list.remove(index);
+        synchronized (mutex) {
+            T removedElement = list.remove(index);
+            set.remove(removedElement);
+            return removedElement;
+        }
     }
 
     /*

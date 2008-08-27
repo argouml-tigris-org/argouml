@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,13 +55,19 @@ public class GoListToGoalsToItems extends AbstractGoList {
 	    return getGoalList().get(index);
 	}
 	if (parent instanceof Goal) {
-	    Goal g = (Goal) parent;
-            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
-		if (item.getPoster().supports(g)) {
-		    if (index == 0) return item;
-		    index--;
-		}
-	    }
+            Goal g = (Goal) parent;
+            List<ToDoItem> itemList = 
+                Designer.theDesigner().getToDoList().getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.getPoster().supports(g)) {
+                        if (index == 0) {
+                            return item;
+                        }
+                        index--;
+                    }
+                }
+            }
 	}
 	throw new IndexOutOfBoundsException("getChild shouldnt get here "
 					    + "GoListToGoalsToItems");
@@ -77,9 +83,15 @@ public class GoListToGoalsToItems extends AbstractGoList {
 	if (parent instanceof Goal) {
 	    Goal g = (Goal) parent;
 	    int count = 0;
-            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
-		if (item.getPoster().supports(g)) count++;
-	    }
+            List<ToDoItem> itemList = 
+                Designer.theDesigner().getToDoList().getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.getPoster().supports(g)) {
+                        count++;
+                    }
+                }
+            }
 	    return count;
 	}
 	return 0;
@@ -98,11 +110,15 @@ public class GoListToGoalsToItems extends AbstractGoList {
 	    // found and index == 0
 	    List<ToDoItem> candidates = new ArrayList<ToDoItem>();
 	    Goal g = (Goal) parent;
-            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
-		if (item.getPoster().supports(g)) {
-                    candidates.add(item);
+            List<ToDoItem> itemList = 
+                Designer.theDesigner().getToDoList().getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.getPoster().supports(g)) {
+                        candidates.add(item);
+                    }
                 }
-	    }
+            }
 	    return candidates.indexOf(child);
 	}
 	return -1;
@@ -112,8 +128,12 @@ public class GoListToGoalsToItems extends AbstractGoList {
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object node) {
-	if (node instanceof ToDoList) return false;
-	if (node instanceof Goal && getChildCount(node) > 0) return false;
+	if (node instanceof ToDoList) {
+	    return false;
+	}
+	if (node instanceof Goal && getChildCount(node) > 0) {
+	    return false;
+	}
 	return true;
     }
 

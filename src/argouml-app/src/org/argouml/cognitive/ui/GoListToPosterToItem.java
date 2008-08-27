@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -75,8 +75,12 @@ public class GoListToPosterToItem extends AbstractGoList {
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object node) {
-	if (node instanceof ToDoList) return false;
-	if (getChildCount(node) > 0) return false;
+	if (node instanceof ToDoList) {
+	    return false;
+	}
+	if (getChildCount(node) > 0) {
+	    return false;
+	}
 	return true;
     }
 
@@ -112,15 +116,19 @@ public class GoListToPosterToItem extends AbstractGoList {
         //otherwise parent must be an offending design material
         if (allPosters.contains(parent)) {
             List<ToDoItem> result = new ArrayList<ToDoItem>();
-            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
-                Poster post = item.getPoster();
-                if (post == parent) {
-                    result.add(item);
+            List<ToDoItem> itemList = 
+                Designer.theDesigner().getToDoList().getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    Poster post = item.getPoster();
+                    if (post == parent) {
+                        result.add(item);
+                    }
                 }
             }
             return result;
         }
-        return Collections.EMPTY_LIST;
+        return Collections.emptyList();
     }
 
     /*

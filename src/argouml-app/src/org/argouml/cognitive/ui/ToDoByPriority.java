@@ -65,26 +65,30 @@ public class ToDoByPriority extends ToDoPerspective
         for (PriorityNode pn : PriorityNode.getPriorityList()) {
 	    path[1] = pn;
 	    int nMatchingItems = 0;
-            for (ToDoItem item : items) {
-		if (item.getPriority() != pn.getPriority()) {
-                    continue;
+	    synchronized (items) {
+                for (ToDoItem item : items) {
+                    if (item.getPriority() != pn.getPriority()) {
+                        continue;
+                    }
+                    nMatchingItems++;
                 }
-		nMatchingItems++;
-	    }
+            }
 	    if (nMatchingItems == 0) {
                 continue;
             }
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-            for (ToDoItem item : items) {
-		if (item.getPriority() != pn.getPriority()) {
-                    continue;
+            synchronized (items) {
+                for (ToDoItem item : items) {
+                    if (item.getPriority() != pn.getPriority()) {
+                        continue;
+                    }
+                    childIndices[nMatchingItems] = getIndexOfChild(pn, item);
+                    children[nMatchingItems] = item;
+                    nMatchingItems++;
                 }
-		childIndices[nMatchingItems] = getIndexOfChild(pn, item);
-		children[nMatchingItems] = item;
-		nMatchingItems++;
-	    }
+            }
 	    fireTreeNodesChanged(this, path, childIndices, children);
 	}
     }
@@ -101,26 +105,30 @@ public class ToDoByPriority extends ToDoPerspective
         for (PriorityNode pn : PriorityNode.getPriorityList()) {
 	    path[1] = pn;
 	    int nMatchingItems = 0;
-            for (ToDoItem item : items) {
-		if (item.getPriority() != pn.getPriority()) {
-                    continue;
+	    synchronized (items) {
+                for (ToDoItem item : items) {
+                    if (item.getPriority() != pn.getPriority()) {
+                        continue;
+                    }
+                    nMatchingItems++;
                 }
-		nMatchingItems++;
-	    }
+            }
 	    if (nMatchingItems == 0) {
                 continue;
             }
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
-            for (ToDoItem item : items) {
-		if (item.getPriority() != pn.getPriority()) {
-                    continue;
+	    synchronized (items) {
+                for (ToDoItem item : items) {
+                    if (item.getPriority() != pn.getPriority()) {
+                        continue;
+                    }
+                    childIndices[nMatchingItems] = getIndexOfChild(pn, item);
+                    children[nMatchingItems] = item;
+                    nMatchingItems++;
                 }
-		childIndices[nMatchingItems] = getIndexOfChild(pn, item);
-		children[nMatchingItems] = item;
-		nMatchingItems++;
-	    }
+            }
 	    fireTreeNodesInserted(this, path, childIndices, children);
 	}
     }
@@ -137,12 +145,14 @@ public class ToDoByPriority extends ToDoPerspective
         for (PriorityNode pn : PriorityNode.getPriorityList()) {
 	    int nodePriority = pn.getPriority();
 	    boolean anyInPri = false;
-            for (ToDoItem item : items) {
-		int pri = item.getPriority();
-		if (pri == nodePriority) {
-                    anyInPri = true;
+	    synchronized (items) {
+                for (ToDoItem item : items) {
+                    int pri = item.getPriority();
+                    if (pri == nodePriority) {
+                        anyInPri = true;
+                    }
                 }
-	    }
+            }
 	    if (!anyInPri) {
                 continue;
             }

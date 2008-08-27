@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,12 +54,18 @@ public class GoListToTypeToItem extends AbstractGoList {
 	}
 	if (parent instanceof KnowledgeTypeNode) {
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
-            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
-		if (item.containsKnowledgeType(ktn.getName())) {
-		    if (index == 0) return item;
-		    index--;
-		}
-	    }
+            List<ToDoItem> itemList = 
+                Designer.theDesigner().getToDoList().getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.containsKnowledgeType(ktn.getName())) {
+                        if (index == 0) {
+                            return item;
+                        }
+                        index--;
+                    }
+                }
+            }
 	}
 	throw new IndexOutOfBoundsException("getChild shouldnt get here "
 					    + "GoListToTypeToItem");
@@ -75,12 +81,16 @@ public class GoListToTypeToItem extends AbstractGoList {
 	if (parent instanceof KnowledgeTypeNode) {
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
 	    int count = 0;
-            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
-		if (item.containsKnowledgeType(ktn.getName())) {
-		    count++;
+            List<ToDoItem> itemList = 
+                Designer.theDesigner().getToDoList().getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.containsKnowledgeType(ktn.getName())) {
+                        count++;
+                    }
                 }
-	    }
-	    return count;
+            }
+            return count;
 	}
 	return 0;
     }
@@ -98,11 +108,15 @@ public class GoListToTypeToItem extends AbstractGoList {
 	    // found and index == 0
 	    List<ToDoItem> candidates = new ArrayList<ToDoItem>();
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
-            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
-		if (item.containsKnowledgeType(ktn.getName())) {
-		    candidates.add(item);
+            List<ToDoItem> itemList = 
+                Designer.theDesigner().getToDoList().getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.containsKnowledgeType(ktn.getName())) {
+                        candidates.add(item);
+                    }
                 }
-	    }
+            }
 	    return candidates.indexOf(child);
 	}
 	return -1;
@@ -112,10 +126,22 @@ public class GoListToTypeToItem extends AbstractGoList {
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object node) {
-	if (node instanceof ToDoList) return false;
-	if (node instanceof KnowledgeTypeNode && getChildCount(node) > 0)
+	if (node instanceof ToDoList) {
 	    return false;
-	return true;
+	}
+	if (node instanceof KnowledgeTypeNode) {
+            KnowledgeTypeNode ktn = (KnowledgeTypeNode) node;
+            List<ToDoItem> itemList = Designer.theDesigner().getToDoList()
+                    .getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.containsKnowledgeType(ktn.getName())) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /*

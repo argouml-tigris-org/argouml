@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoListEvent;
@@ -63,27 +64,37 @@ public class ToDoByPoster extends ToDoPerspective
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-        for (Poster p : Designer.theDesigner().getToDoList().getPosters()) {
-	    path[1] = p;
-	    int nMatchingItems = 0;
-            for (ToDoItem item : items) {
-		Poster post = item.getPoster();
-		if (post != p) continue;
-		nMatchingItems++;
-	    }
-	    if (nMatchingItems == 0) continue;
-	    int[] childIndices = new int[nMatchingItems];
-	    Object[] children = new Object[nMatchingItems];
-	    nMatchingItems = 0;
-            for (ToDoItem item : items) {
-		Poster post = item.getPoster();
-		if (post != p) continue;
-		childIndices[nMatchingItems] = getIndexOfChild(p, item);
-		children[nMatchingItems] = item;
-		nMatchingItems++;
-	    }
-	    fireTreeNodesChanged(this, path, childIndices, children);
-	}
+	ListSet<Poster> allPosters = 
+	    Designer.theDesigner().getToDoList().getPosters();
+        synchronized (allPosters) {
+            for (Poster p : allPosters) {
+                path[1] = p;
+                int nMatchingItems = 0;
+                for (ToDoItem item : items) {
+                    Poster post = item.getPoster();
+                    if (post != p) {
+                        continue;
+                    }
+                    nMatchingItems++;
+                }
+                if (nMatchingItems == 0) {
+                    continue;
+                }
+                int[] childIndices = new int[nMatchingItems];
+                Object[] children = new Object[nMatchingItems];
+                nMatchingItems = 0;
+                for (ToDoItem item : items) {
+                    Poster post = item.getPoster();
+                    if (post != p) {
+                        continue;
+                    }
+                    childIndices[nMatchingItems] = getIndexOfChild(p, item);
+                    children[nMatchingItems] = item;
+                    nMatchingItems++;
+                }
+                fireTreeNodesChanged(this, path, childIndices, children);
+            }
+        }
     }
 
     /*
@@ -95,27 +106,37 @@ public class ToDoByPoster extends ToDoPerspective
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-        for (Poster p : Designer.theDesigner().getToDoList().getPosters()) {
-	    path[1] = p;
-	    int nMatchingItems = 0;
-            for (ToDoItem item : items) {
-		Poster post = item.getPoster();
-		if (post != p) continue;
-		nMatchingItems++;
-	    }
-	    if (nMatchingItems == 0) continue;
-	    int[] childIndices = new int[nMatchingItems];
-	    Object[] children = new Object[nMatchingItems];
-	    nMatchingItems = 0;
-            for (ToDoItem item : items) {
-		Poster post = item.getPoster();
-		if (post != p) continue;
-		childIndices[nMatchingItems] = getIndexOfChild(p, item);
-		children[nMatchingItems] = item;
-		nMatchingItems++;
-	    }
-	    fireTreeNodesInserted(this, path, childIndices, children);
-	}
+	ListSet<Poster> allPosters = 
+	    Designer.theDesigner().getToDoList().getPosters();
+	synchronized (allPosters) {
+            for (Poster p : allPosters) {
+                path[1] = p;
+                int nMatchingItems = 0;
+                for (ToDoItem item : items) {
+                    Poster post = item.getPoster();
+                    if (post != p) {
+                        continue;
+                    }
+                    nMatchingItems++;
+                }
+                if (nMatchingItems == 0) {
+                    continue;
+                }
+                int[] childIndices = new int[nMatchingItems];
+                Object[] children = new Object[nMatchingItems];
+                nMatchingItems = 0;
+                for (ToDoItem item : items) {
+                    Poster post = item.getPoster();
+                    if (post != p) {
+                        continue;
+                    }
+                    childIndices[nMatchingItems] = getIndexOfChild(p, item);
+                    children[nMatchingItems] = item;
+                    nMatchingItems++;
+                }
+                fireTreeNodesInserted(this, path, childIndices, children);
+            }
+        }
     }
 
     /*
@@ -128,21 +149,25 @@ public class ToDoByPoster extends ToDoPerspective
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
-        for (Poster p : Designer.theDesigner().getToDoList().getPosters()) {
-            boolean anyInPoster = false;
-            for (ToDoItem item : items) {
-                Poster post = item.getPoster();
-                if (post == p) { 
-                    anyInPoster = true;
-                    break;
+	ListSet<Poster> allPosters = Designer.theDesigner().getToDoList()
+                .getPosters();
+        synchronized (allPosters) {
+            for (Poster p : allPosters) {
+                boolean anyInPoster = false;
+                for (ToDoItem item : items) {
+                    Poster post = item.getPoster();
+                    if (post == p) {
+                        anyInPoster = true;
+                        break;
+                    }
                 }
+                if (!anyInPoster) {
+                    continue;
+                }
+                path[1] = p;
+                fireTreeStructureChanged(path);
             }
-            if (!anyInPoster) { 
-                continue;
-            }
-	    path[1] = p;
-	    fireTreeStructureChanged(path);
-	}
+        }
     }
 
     /*

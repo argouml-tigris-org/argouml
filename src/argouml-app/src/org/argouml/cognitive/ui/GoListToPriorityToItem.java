@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,11 @@
 
 package org.argouml.cognitive.ui;
 
+import java.util.List;
+
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
@@ -48,16 +51,20 @@ public class GoListToPriorityToItem extends AbstractGoList {
 	    return PriorityNode.getPriorityList().get(index);
 	}
 	if (parent instanceof PriorityNode) {
-	    PriorityNode pn = (PriorityNode) parent;
-            for (ToDoItem item :  Designer.theDesigner().getToDoList()) {
-		if (item.getPriority() == pn.getPriority()) {
-		    if (index == 0) {
-                        return item;
+            PriorityNode pn = (PriorityNode) parent;
+            List<ToDoItem> itemList = 
+                Designer.theDesigner().getToDoList().getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.getPriority() == pn.getPriority()) {
+                        if (index == 0) {
+                            return item;
+                        }
+                        index--;
                     }
-		    index--;
-		}
-	    }
-	}
+                }
+            }
+        }
 	throw new IndexOutOfBoundsException("getChild shouldnt get here "
 					    + "GoListToPriorityToItem");
     }
@@ -71,41 +78,58 @@ public class GoListToPriorityToItem extends AbstractGoList {
 	}
 	if (parent instanceof PriorityNode) {
 	    PriorityNode pn = (PriorityNode) parent;
-	    return Designer.theDesigner().getToDoListCount(pn.getPriority());
-	}
+            int count = 0;
+            List<ToDoItem> itemList = Designer.theDesigner().getToDoList()
+                    .getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.getPriority() == pn.getPriority()) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
 	return 0;
     }
-
+   
+    
     /*
-     * @see javax.swing.tree.TreeModel#getIndexOfChild(
-     * java.lang.Object, java.lang.Object)
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, java.lang.Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
 	if (parent instanceof ToDoList) {
 	    return PriorityNode.getPriorityList().indexOf(child);
 	}
 	if (parent instanceof PriorityNode) {
-	    int index = 0;
-	    PriorityNode pn = (PriorityNode) parent;
-            for (ToDoItem item :  Designer.theDesigner().getToDoList()) {
-		if (item.getPriority() == pn.getPriority()) {
-		    if (item == child) {
-                        return index;
+            int index = 0;
+            PriorityNode pn = (PriorityNode) parent;
+            List<ToDoItem> itemList = Designer.theDesigner().getToDoList()
+                    .getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    if (item.getPriority() == pn.getPriority()) {
+                        if (item == child) {
+                            return index;
+                        }
+                        index++;
                     }
-		    index++;
-		}
-	    }
-	}
-	return -1;
+                }
+            }
+        }
+        return -1;
     }
 
     /*
      * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
      */
     public boolean isLeaf(Object node) {
-	if (node instanceof ToDoList) return false;
-	if (node instanceof PriorityNode && getChildCount(node) > 0)
+	if (node instanceof ToDoList) {
 	    return false;
+	}
+	if (node instanceof PriorityNode && getChildCount(node) > 0) {
+	    return false;
+	}
 	return true;
     }
 

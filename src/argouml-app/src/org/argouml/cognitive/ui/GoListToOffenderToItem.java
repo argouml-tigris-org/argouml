@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,12 +39,17 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.uml.PredicateNotInTrash;
 
 
+
 /**
  * Rule for sorting the ToDo list: Offender -> Item.
  *
  */
 public class GoListToOffenderToItem extends AbstractGoList {
 
+    private Object lastParent;
+    
+    private List<ToDoItem> cachedChildrenList;
+    
     /**
      * The constructor.
      */
@@ -59,6 +64,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
      */
     public Object getChild(Object parent, int index) {
+        // TODO: This should only be building list up to 'index'
 	return getChildrenList(parent).get(index);
     }
 
@@ -84,9 +90,21 @@ public class GoListToOffenderToItem extends AbstractGoList {
         if (node instanceof ToDoList) {
             return false;
         }
-        if (getChildCount(node) > 0) {
-            return false;
+        // TODO: This is a very expensive way to do this
+//        if (getChildCount(node) > 0) {
+//            return false;
+//        }
+        
+        List<ToDoItem> itemList = 
+            Designer.theDesigner().getToDoList().getToDoItemList();
+        synchronized (itemList) {
+            for (ToDoItem item : itemList) {
+                if (item.getOffenders().contains(node)) {
+                    return false;
+                }
+            }
         }
+        
         return true;
     }
 
@@ -114,29 +132,43 @@ public class GoListToOffenderToItem extends AbstractGoList {
      * @return a list of children for the given object
      */
     public List<ToDoItem> getChildrenList(Object parent) {
+        if (parent.equals(lastParent)) {
+            return cachedChildrenList;
+        }
+        lastParent = parent;
         ListSet<ToDoItem> allOffenders = new ListSet<ToDoItem>();
-        allOffenders.addAllElementsSuchThat(
-                Designer.theDesigner().getToDoList().getOffenders(), 
-                getListPredicate());
+        ListSet designerOffenders = 
+            Designer.theDesigner().getToDoList().getOffenders();
+        synchronized (designerOffenders) {
+            allOffenders.addAllElementsSuchThat(designerOffenders,
+                    getListPredicate());
+        }
 
         if (parent instanceof ToDoList) {
-            return allOffenders;
+            cachedChildrenList = allOffenders;
+            return cachedChildrenList;
         }
         
         //otherwise parent must be an offending design material
         if (allOffenders.contains(parent)) {
             List<ToDoItem> result = new ArrayList<ToDoItem>();
-            for (ToDoItem item : Designer.theDesigner().getToDoList()) {
-                ListSet offs = new ListSet();
-                offs.addAllElementsSuchThat(item.getOffenders(),
-                    getListPredicate());
-                if (offs.contains(parent)) {
-                    result.add(item);
+            List<ToDoItem> itemList = 
+                Designer.theDesigner().getToDoList().getToDoItemList();
+            synchronized (itemList) {
+                for (ToDoItem item : itemList) {
+                    ListSet offs = new ListSet();
+                    offs.addAllElementsSuchThat(item.getOffenders(),
+                            getListPredicate());
+                    if (offs.contains(parent)) {
+                        result.add(item);
+                    }
                 }
             }
-            return result;
+            cachedChildrenList = result;
+            return cachedChildrenList;
         }
-        return Collections.EMPTY_LIST;
+        cachedChildrenList = Collections.emptyList();
+        return cachedChildrenList;
     }
     
     /*

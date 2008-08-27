@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.DataTypesFactory;
 import org.omg.uml.foundation.datatypes.ActionExpression;
 import org.omg.uml.foundation.datatypes.ArgListsExpression;
@@ -55,6 +56,8 @@ import org.omg.uml.foundation.datatypes.TypeExpression;
 class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         implements DataTypesFactory {
 
+    private static final Logger LOG = 
+        Logger.getLogger(DataTypesFactoryMDRImpl.class);
     /**
      * The model implementation.
      */
@@ -163,6 +166,9 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     public Multiplicity createMultiplicity(int lower, int upper) {
         Multiplicity multiplicity = modelImpl.getUmlPackage().getDataTypes()
                 .getMultiplicity().createMultiplicity();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Multiplicity created for range " + lower + ".." + upper);
+        }
         multiplicity.getRange().add(createMultiplicityRange(lower, upper));
         super.initialize(multiplicity);
         return multiplicity;
@@ -178,6 +184,9 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     public Multiplicity createMultiplicity(List range) {
         Multiplicity multiplicity = modelImpl.getUmlPackage().getDataTypes()
                 .getMultiplicity().createMultiplicity();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Multiplicity created for list " + range);
+        }
         multiplicity.getRange().addAll(range);
         super.initialize(multiplicity);
         return multiplicity;
