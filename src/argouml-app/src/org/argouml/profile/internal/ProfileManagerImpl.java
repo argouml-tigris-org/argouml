@@ -260,7 +260,8 @@ public class ProfileManagerImpl implements ProfileManager {
         Profile found = null;
         
         // If we found an old-style name, update it to the new package name
-        if (profileClass.startsWith(OLD_PROFILE_PACKAGE)) {
+        if (profileClass != null 
+                && profileClass.startsWith(OLD_PROFILE_PACKAGE)) {
             profileClass = profileClass.replace(OLD_PROFILE_PACKAGE,
                     NEW_PROFILE_PACKAGE);
         }
