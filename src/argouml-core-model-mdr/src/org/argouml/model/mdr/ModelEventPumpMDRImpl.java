@@ -89,6 +89,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      */
     private static final Logger LOG =
         Logger.getLogger(ModelEventPumpMDRImpl.class);
+    
+    private static final boolean VETO_READONLY_CHANGES = true;
 
     private MDRModelImplementation modelImpl;
 
@@ -365,34 +367,38 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      */
     public void plannedChange(MDRChangeEvent e) {
         
+        if (VETO_READONLY_CHANGES) {
+            if (e instanceof InstanceEvent) {
+                if (e.isOfType(InstanceEvent.EVENT_INSTANCE_CREATE)) {
+                    RefBaseObject element = (RefBaseObject) ((InstanceEvent) e)
+                            .getSource();
+                    if (isReadOnly(element)) {
+                        throw new VetoChangeException(e.getSource(), null);
+                    }
+                } else {
+                    RefObject element = ((InstanceEvent) e).getInstance();
+                    if (isReadOnly(element)) {
+                        throw new VetoChangeException(e.getSource(), element);
+                    }
+                }
+            } else if (e instanceof AssociationEvent) {
+                RefObject element = ((AssociationEvent) e).getFixedElement();
+                if (isReadOnly(element)) {
+                    throw new VetoChangeException(element, element);
+                }
+            } else if (e instanceof AttributeEvent) {
+                RefObject element = (RefObject) ((AttributeEvent) e)
+                        .getSource();
+                if (isReadOnly(element)) {
+                    throw new VetoChangeException(element, element);
+                }
+            }
+        }
+
         synchronized (eventCountMutex) {
             pendingEvents++;
         }
-//        if (e instanceof InstanceEvent) {
-//            if (e.isOfType(InstanceEvent.EVENT_INSTANCE_CREATE)) {
-//                RefBaseObject element = (RefBaseObject) ((InstanceEvent) e).getSource();
-//                if (isReadOnly(element)) {
-//                    throw new VetoChangeException(e.getSource(), null);
-//                }
-//            } else {
-//                RefObject element = ((InstanceEvent) e).getInstance();                
-//                if (isReadOnly(element)) {
-//                    throw new VetoChangeException(e.getSource(), element);
-//                }
-//            }
-//        } else if (e instanceof AssociationEvent) {
-//            RefObject element = ((AssociationEvent) e).getFixedElement();
-//            if (isReadOnly(element)) {
-//                throw new VetoChangeException(element, element);
-//            }
-//        } else if (e instanceof AttributeEvent) {
-//            RefObject element = (RefObject) ((AttributeEvent) e).getSource();
-//            if (isReadOnly(element)) {
-//                throw new VetoChangeException(element, element);
-//            }
-//        }
-
-
+        
         // Prototypical logging code that can be enabled and modified to
         // discover who's creating certain types of events
 //        if (/* LOG.isDebugEnabled() && */ e instanceof AssociationEvent) {
@@ -744,7 +750,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * 
      * TODO: Does this have a scalability problem?
      */
-    private Collection<String> getSubtypes(ModelPackage extent, ModelElement me) {
+    private Collection<String> getSubtypes(ModelPackage extent, 
+            ModelElement me) {
         Collection<String> allSubtypes = new HashSet<String>();
         if (me instanceof GeneralizableElement) {
             GeneralizableElement ge = (GeneralizableElement) me;
@@ -852,7 +859,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             MofClass metaclass = (MofClass) metaobject;
             Collection<String> names = propertyNameMap.get(metaclass.getName());
             if (names == null) {
-                names = Collections.EMPTY_SET;
+                names = Collections.emptySet();
             }
 
             for (String attribute : attributes) {
@@ -906,8 +913,8 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         return info;
     }
 
-    private List newDebugNode(String name) {
-        List list = new ArrayList();
+    private List<String> newDebugNode(String name) {
+        List<String> list = new ArrayList<String>();
         list.add(name);
         return list;
     }
