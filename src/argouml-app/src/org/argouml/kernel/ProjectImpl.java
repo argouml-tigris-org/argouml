@@ -794,9 +794,13 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
 
     public void postLoad() {
+        long startTime = System.currentTimeMillis();
         for (ArgoDiagram diagram : diagrams) {
             diagram.postLoad();
         }
+        long endTime = System.currentTimeMillis();
+        LOG.debug("Diagram post load took " + (endTime - startTime) + " msec.");
+        
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
         Object model = getModel();

@@ -1845,14 +1845,12 @@ public abstract class FigNodeModelElement
      */
     @Override
     public void postLoad() {
-        ArgoEventPump.removeListener(this);
         ArgoEventPump.addListener(this);
         for (Object fig : getFigs()) {
             if (fig instanceof ArgoEventListener) {
                 // cannot do the adding of listeners recursive since
                 // some are not children of FigNodeModelELement or
                 // FigEdgeModelElement
-                ArgoEventPump.removeListener((ArgoEventListener) fig);
                 ArgoEventPump.addListener((ArgoEventListener) fig);
             }
         }

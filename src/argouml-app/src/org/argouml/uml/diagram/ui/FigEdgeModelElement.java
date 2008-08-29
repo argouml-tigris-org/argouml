@@ -1258,7 +1258,6 @@ public abstract class FigEdgeModelElement
      */
     @Override
     public void postLoad() {
-        ArgoEventPump.removeListener(this);
         ArgoEventPump.addListener(this);
     }
 
