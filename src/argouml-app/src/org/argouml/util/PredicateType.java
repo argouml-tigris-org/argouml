@@ -24,6 +24,9 @@
 
 package org.argouml.util;
 
+/**
+ * A predicate which matches UML element types.
+ */
 public class PredicateType implements Predicate {
 
     private Class patterns[];
@@ -72,15 +75,6 @@ public class PredicateType implements Predicate {
         }
         for (int i = 0; i < patternCount; i++) {
             if (patterns[i].isInstance(o)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean isPredicateFor(Object o) {
-        for (int i = 0; i < patternCount; i++) {
-            if (patterns[i].equals(o)) {
                 return true;
             }
         }
