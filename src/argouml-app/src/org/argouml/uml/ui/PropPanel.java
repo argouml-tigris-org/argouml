@@ -285,11 +285,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * @return the label added
      */
     public JLabel addField(String label, Component component) {
-        JLabel jlabel = new JLabel(Translator.localize(label));
-        jlabel.setToolTipText(label);
-        jlabel.setFont(stdFont);
+        JLabel jlabel = createLabelFor(label, component);
         component.setFont(stdFont);
-        jlabel.setLabelFor(component);
         add(jlabel);
         add(component);
         if (component instanceof UMLLinkedList) {
@@ -301,6 +298,19 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
                         list.getTarget(),
                         "New..."); // TODO: i18n
         }
+        return jlabel;
+    }
+
+    /** 
+     * @param label The text of the label (the method cares about i18n)
+     * @param comp The component that this label is for
+     * @return a new JLabel
+     */
+    private JLabel createLabelFor(String label, Component comp) {
+        JLabel jlabel = new JLabel(Translator.localize(label));
+        jlabel.setToolTipText(Translator.localize(label));
+        jlabel.setFont(stdFont);
+        jlabel.setLabelFor(comp);
         return jlabel;
     }
 
@@ -321,10 +331,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         int nComponent = getComponentCount();
         for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == afterComponent) {
-                JLabel jlabel = new JLabel(Translator.localize(label));
-                jlabel.setFont(stdFont);
+                JLabel jlabel = createLabelFor(label, component);
                 component.setFont(stdFont);
-                jlabel.setLabelFor(component);
                 add(jlabel, ++i);
                 add(component, ++i);
                 return jlabel;
@@ -350,10 +358,8 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         int nComponent = getComponentCount();
         for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == beforeComponent) {
-                JLabel jlabel = new JLabel(Translator.localize(label));
-                jlabel.setFont(stdFont);
+                JLabel jlabel = createLabelFor(label, component);
                 component.setFont(stdFont);
-                jlabel.setLabelFor(component);
                 add(jlabel, i - 1);
                 add(component, i++);
                 return jlabel;
