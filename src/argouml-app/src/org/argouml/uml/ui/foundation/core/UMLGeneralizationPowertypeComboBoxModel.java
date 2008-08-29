@@ -25,13 +25,16 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.util.PathComparator;
 
 /**
  * @since Nov 3, 2002
@@ -63,7 +66,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Set elements = new HashSet();
+        Set<Object> elements = new TreeSet<Object>(new PathComparator());
         Project p = ProjectManager.getManager().getCurrentProject();
         for (Object model : p.getUserDefinedModelList()) {
 	    elements.addAll(Model.getModelManagementHelper()
@@ -73,7 +76,24 @@ public class UMLGeneralizationPowertypeComboBoxModel
 
         elements.addAll(p.getProfileConfiguration().findByMetaType(
                 Model.getMetaTypes().getClassifier()));
-        setElements(elements);
+        removeAllElements();
+        addAll(elements);
+    }
+    
+    @Override
+    protected void buildMinimalModelList() {
+        Collection list = new ArrayList(1);
+        Object element = getSelectedModelElement();
+        if (element == null) {
+            element = " ";
+        }
+        list.add(element);
+        setElements(list);
+    }
+    
+    @Override
+    protected boolean isLazy() {
+        return true;
     }
 
     /*

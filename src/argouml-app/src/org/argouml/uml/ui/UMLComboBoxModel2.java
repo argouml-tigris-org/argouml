@@ -28,6 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -71,8 +72,10 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 
     /**
      * The list with objects that should be shown in the combobox.
+     * TODO: Using a list here forces a linear search when we're trying to add
+     * a new element to the model which can be very slow for large models.
      */
-    private List objects = new ArrayList();
+    private List objects = new LinkedList();
 
     /**
      * The selected object.
@@ -109,6 +112,8 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * popup visibility notification event.
      */
     private boolean processingWillBecomeVisible = false;
+
+    private boolean modelValid;
 
 
     /**
@@ -245,8 +250,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     protected void setElements(Collection elements) {
         if (elements != null) {
             ArrayList toBeRemoved = new ArrayList();
-            for (int i = 0; i < objects.size(); i++) {
-                Object o = objects.get(i);
+            for (Object o : objects) {
                 if (!elements.contains(o) && !(isClearable && "".equals(o))) {
                     toBeRemoved.add(o);
                 }
@@ -360,6 +364,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
             LOG.debug("Ignoring duplicate setTarget request " + theNewTarget);
             return;
         }
+        modelValid = false;
         LOG.debug("setTarget target :  " + theNewTarget);
         theNewTarget = theNewTarget instanceof Fig 
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
@@ -386,19 +391,12 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 addOtherModelEventListeners(comboBoxTarget);
                 
                 buildingModel = true;
-                try {
-                    LOG.debug("Building the combo box model for " + this);
-                    buildMinimalModelList();
-                    // Do not set buildingModel = false here, 
-                    // otherwise the action for selection is performed.
-                    setSelectedItem(getSelectedModelElement());
-                } catch (InvalidElementException e) {
-                    LOG.warn("buildModelList attempted to operate on " 
-                            + "deleted element");
-                } finally {
-                    buildingModel = false;
-                }
-                
+                buildMinimalModelList();
+                // Do not set buildingModel = false here, 
+                // otherwise the action for selection is performed.
+                setSelectedItem(getSelectedModelElement());
+                buildingModel = false;
+
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
@@ -408,8 +406,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 diagram.addPropertyChangeListener(
                         ArgoDiagram.NAMESPACE_KEY, this);
                 buildingModel = true;
-                LOG.debug("Building the combo box model for " + this);
-                buildModelList();
+                buildMinimalModelList();
                 setSelectedItem(getSelectedModelElement());
                 buildingModel = false;
                 if (getSize() > 0) {
@@ -432,7 +429,20 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * till the list is displayed.
      */
     protected void buildMinimalModelList() {
-        buildModelList();
+        buildModelListTimed();
+    }
+
+    private void buildModelListTimed() {
+        long startTime = System.currentTimeMillis();
+        try {
+            buildModelList();
+            long endTime = System.currentTimeMillis();
+            LOG.debug("buildModelList took " + (endTime - startTime)
+                    + " msec. for " + this.getClass().getName());
+        } catch (InvalidElementException e) {
+            LOG.warn("buildModelList attempted to operate on "
+                    + "deleted element");
+        }
     }
 
     /**
@@ -723,8 +733,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
 
     public void popupMenuWillBecomeVisible(PopupMenuEvent ev) {
-        if (isLazy() && !processingWillBecomeVisible) {
-            buildModelList();
+        if (isLazy() && !modelValid && !processingWillBecomeVisible) {
+            buildModelListTimed();
+            modelValid = true;
             // We should be able to just do the above, but Swing has already
             // computed the size of the popup menu.  The rest of this is
             // a workaround for Swing bug 

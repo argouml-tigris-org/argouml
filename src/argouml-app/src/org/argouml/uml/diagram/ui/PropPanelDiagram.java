@@ -28,6 +28,10 @@ import static org.argouml.model.Model.getModelManagementFactory;
 
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -46,6 +50,7 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLSearchableComboBox;
+import org.argouml.uml.util.PathComparator;
 
 /**
  * This class represents the properties panel for a Diagram.
@@ -112,20 +117,34 @@ class UMLDiagramHomeModelComboBoxModel extends UMLComboBoxModel2 {
 
     @Override
     protected void buildModelList() {
-        Object t = getTarget();
-        removeAllElements();
-        if (t instanceof Relocatable) {
-            Relocatable diagram = (Relocatable) t;
+        Object target = getTarget();
+        List list = new ArrayList();
+        if (target instanceof Relocatable) {
+            Relocatable diagram = (Relocatable) target;
             for (Object obj : diagram.getRelocationCandidates(
                     getModelManagementFactory().getRootModel())) {
                 if (diagram.isRelocationAllowed(obj)) {
-                    addElement(obj);
+                    list.add(obj);
                 }
             }
         }
         /* This should not be needed if the above is correct, 
          * but let's be sure: */
-        addElement(getSelectedModelElement());
+        list.add(getSelectedModelElement());
+        Collections.sort(list, new PathComparator());
+        setElements(list);
+    }
+    
+    @Override
+    protected void buildMinimalModelList() {
+        Collection list = new ArrayList(1);
+        list.add(getSelectedModelElement());
+        setElements(list);
+    }
+    
+    @Override
+    protected boolean isLazy() {
+        return true;
     }
 
     @Override

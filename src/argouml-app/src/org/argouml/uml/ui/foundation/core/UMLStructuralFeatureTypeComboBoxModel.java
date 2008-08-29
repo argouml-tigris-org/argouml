@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,8 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -91,11 +93,22 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         elements.addAll(p.getProfileConfiguration().findByMetaType(
                         Model.getMetaTypes().getClassifier()));
 
-	// Our comparator will throw an InvalidElementException if the old
-	// list contains deleted elements (eg after a new project is loaded)
-	// so remove all the old contents first
-        removeAllElements();
-        addAll(elements);
+        setElements(elements);
+    }
+    
+    @Override
+    protected void buildMinimalModelList() {
+        Collection list = new ArrayList(1);
+        Object element = getSelectedModelElement();
+        if (element != null) {
+            list.add(element);
+        }
+        setElements(list);
+    }
+    
+    @Override
+    protected boolean isLazy() {
+        return true;
     }
     
     /*
