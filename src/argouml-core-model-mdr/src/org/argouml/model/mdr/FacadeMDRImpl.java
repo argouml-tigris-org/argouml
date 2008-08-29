@@ -2423,6 +2423,7 @@ class FacadeMDRImpl implements Facade {
         }
 
         try {
+            modelImpl.getRepository().beginTrans(false);
             RefFeatured rf = (RefFeatured) handle;
             RefObject metaobject = rf.refMetaObject();
             if (!(metaobject instanceof MofClass)) {
@@ -2443,6 +2444,8 @@ class FacadeMDRImpl implements Facade {
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
+        } finally {
+            modelImpl.getRepository().endTrans();
         }
         return results;
     }

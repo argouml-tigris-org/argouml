@@ -57,6 +57,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiException;
 import org.argouml.model.XmiReader;
+import org.netbeans.api.mdr.MDRepository;
 import org.netbeans.api.xmi.XMIReader;
 import org.netbeans.api.xmi.XMIReaderFactory;
 import org.netbeans.lib.jmi.xmi.InputConfig;
@@ -226,13 +227,20 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 File file = copySource(inputSource);
                 systemId = file.toURI().toURL().toExternalForm();
                 inputSource = new InputSource(systemId);
+                MDRepository repository = modelImpl.getRepository();
+                
+                // Use a transaction to avoid the performance penalty (3x) of 
+                // MDR's autocommit mode
+                repository.beginTrans(true);
+
                 newElements = xmiReader.read(inputSource.getByteStream(),
                         systemId, extent);
                 
                 // If a UML 1.3 file, attempt to upgrade it to UML 1.4
                 if (uml13) {
-                    // First delete model data from our first attempt
-                    deleteElements(newElements);
+                    // Roll back transaction from first attempt & start new one
+                    repository.endTrans(true);
+                    repository.beginTrans(true);
 
                     // Clear the associated ID maps & reset starting collection
                     resolver.clearIdMaps();
@@ -241,8 +249,22 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                             extent, xmiReader, inputSource);
                 }
 
-
-
+                // Commit our transaction
+                repository.endTrans();
+            } catch (Throwable e) {
+                // Roll back transaction to remove any partial results read
+                modelImpl.getRepository().endTrans(true);
+                if (e instanceof MalformedXMIException) {
+                    throw (MalformedXMIException) e;
+                } else if (e instanceof IOException) {
+                    throw (IOException) e;
+                } else {
+                    // We shouldn't get here, but just in case...
+                    // We want a wide exception catcher to make sure our
+                    // transaction always gets ended
+                    e.printStackTrace();
+                    throw new MalformedXMIException();
+                }
             } finally {
                 modelImpl.getModelEventPump().startPumpingEvents();
             }
@@ -274,7 +296,8 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                     SAXException se = (SAXException) throwable;
                     Exception e1 = se.getException();
                     if (e1 instanceof org.argouml.model.mdr.XmiReferenceException) {
-                        String href = ((org.argouml.model.mdr.XmiReferenceException) e1)
+                        String href = 
+                            ((org.argouml.model.mdr.XmiReferenceException) e1)
                                 .getReference();
                         throw new org.argouml.model.XmiReferenceException(href,
                                 e);
