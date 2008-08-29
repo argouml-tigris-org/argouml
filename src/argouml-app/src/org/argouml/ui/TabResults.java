@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -51,14 +52,18 @@ import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ChildGenRelated;
-import org.argouml.uml.PredicateFind;
+import org.argouml.uml.PredicateSearch;
 import org.argouml.uml.TMResults;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.util.ChildGenerator;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.util.ChildGenerator;
+
 
 /**
  * The results tab for the find dialog.
- *
+ * <p>
+ * NOTE: An incompatible change was made to the public API for this class
+ * before the release of ArgoUML 0.26 to remove exposed internal implementation
+ * details (GEF).
  */
 public class TabResults
         extends AbstractArgoJPanel
@@ -80,14 +85,13 @@ public class TabResults
      */
     private static final int INSET_PX = 3;
 
-    private PredicateFind pred;
+    private PredicateSearch pred;
     private ChildGenerator cg;
     private Object root;
     private JSplitPane mainPane;
     private List results = new ArrayList();
     private List related = new ArrayList();
-    // TODO: This should be some non-GEF type such as ArgoDiagram.
-    private List<Diagram> diagrams = new ArrayList<Diagram>();
+    private List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
     private boolean relatedShown;
 
     private JLabel resultsLabel = new JLabel();
@@ -162,9 +166,13 @@ public class TabResults
 
     /**
      * @param p the predicate for the search
+     *            <p>
+     *            NOTE: The type of this parameter was changed incompatibly
+     *            before 0.26 from org.argouml.uml.PredicateFind to
+     *            org.argouml.uml.PredicateSearch.
      */
-    public void setPredicate(PredicateFind p) {
-	pred = p;
+    public void setPredicate(PredicateSearch p) {
+        pred = p;
     }
 
     /**
@@ -175,10 +183,14 @@ public class TabResults
     }
 
     /**
-     * @param gen the generator
+     * @param gen the generator.
+     *            <p>
+     *            NOTE: The type of this parameter was changed incompatibly
+     *            before 0.26 from org.tigris.gef.util.ChildGenerator to
+     *            org.argouml.util.ChildGenerator.
      */
     public void setGenerator(ChildGenerator gen) {
-	cg = gen;
+        cg = gen;
     }
 
     /**
@@ -279,7 +291,7 @@ public class TabResults
 
     private void myDoubleClick(Object src) {
 	Object sel = null;
-	Diagram d = null;
+	ArgoDiagram d = null;
 	if (src == resultsTable) {
 	    int row = resultsTable.getSelectionModel().getMinSelectionIndex();
 	    if (row < 0) {
@@ -384,23 +396,23 @@ public class TabResults
      * appear in any other diagram, but we're not going to do the bookkeeping
      * for now.  - tfm 20060214
      */
-    private void depthFirst(Object node, Diagram lastDiagram) {
-	if (node instanceof Diagram) {
-	    lastDiagram = (Diagram) node;
+    private void depthFirst(Object node, ArgoDiagram lastDiagram) {
+	if (node instanceof ArgoDiagram) {
+	    lastDiagram = (ArgoDiagram) node;
 	    if (!pred.matchDiagram(lastDiagram)) {
                 return;
             }
 	    // diagrams are not placed in search results
 	}
-	Enumeration elems = cg.gen(node);
-	while (elems.hasMoreElements()) {
-	    Object c = elems.nextElement();
-	    if (pred.predicate(c)
+	Iterator iterator = cg.childIterator(node);
+	while (iterator.hasNext()) {
+	    Object child = iterator.next();
+	    if (pred.evaluate(child)
                     && (lastDiagram != null || pred.matchDiagram(""))) {
-		results.add(c);
+		results.add(child);
 		diagrams.add(lastDiagram);
 	    }
-	    depthFirst(c, lastDiagram);
+	    depthFirst(child, lastDiagram);
 	}
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,62 +22,49 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.cognitive;
+package org.argouml.ui;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.util.ChildGenerator;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.util.ChildGenerator;
 
 /**
- * Convenience class gives critics access to parts of the project.
+ * ChildGenerator that returns the "children" of any given part of the project.
+ * It traverses a Project to Diagrams and Models, then uses
+ * getModelElementContents to traverse the Models.
  * 
- * It defines a gen() function that returns the "children" of any given part of
- * the UML model. It traverses a Project to Diagrams and Models, then uses
- * getModelElementContents to traverse the Models. <p>
- * 
- * Argo's critic Agency uses this to apply critics where appropriate.
- * 
- * @see org.argouml.cognitive.Agency
- * @stereotype singleton
  * @author jrobbins
- * @deprecated for 0.26 by tfmorris.  Use {@link org.argouml.ui.ChildGenSearch}.
+ * @author Tom Morris <tfmorris@gmail.com>
  */
-@Deprecated
-public class ChildGenFind implements ChildGenerator {
-    private static final ChildGenFind SINGLETON = new ChildGenFind();
-
+public class ChildGenSearch implements ChildGenerator {
+    
     /**
      * Reply a Collection of the children of the given Object
-     *
-     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
+     * {@inheritDoc}
      */
-    public Enumeration gen(Object o) {
+    public Iterator childIterator(Object o) {
+        // TODO: This could be made more efficient by working with iterators
+        // directly and creating a composite iterator made up of all the 
+        // various sub iterators.
         List res = new ArrayList();
         if (o instanceof Project) {
             Project p = (Project) o;
             res.addAll(p.getUserDefinedModelList());
             res.addAll(p.getDiagramList());
-        } else if (o instanceof Diagram) {
-            Diagram d = (Diagram) o;
+        } else if (o instanceof ArgoDiagram) {
+            ArgoDiagram d = (ArgoDiagram) o;
             res.addAll(d.getGraphModel().getNodes());
             res.addAll(d.getGraphModel().getEdges());
         } else if (Model.getFacade().isAModelElement(o)) {
             res.addAll(Model.getFacade().getModelElementContents(o));
         }
         
-	return Collections.enumeration(res);
+	return res.iterator();
     }
 
-    /**
-     * @return Returns the SINGLETON.
-     */
-    public static ChildGenFind getSingleton() {
-        return SINGLETON;
-    }
 }

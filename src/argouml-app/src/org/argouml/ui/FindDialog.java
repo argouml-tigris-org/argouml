@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,12 +53,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.swingext.SpacerPanel;
-import org.argouml.uml.PredicateFind;
-import org.argouml.uml.cognitive.ChildGenFind;
+import org.argouml.uml.PredicateSearch;
 import org.argouml.util.ArgoDialog;
-import org.tigris.gef.util.Predicate;
-import org.tigris.gef.util.PredicateStringMatch;
-import org.tigris.gef.util.PredicateType;
+import org.argouml.util.Predicate;
+import org.argouml.util.PredicateStringMatch;
+import org.argouml.util.PredicateType;
 
 
 /**
@@ -69,6 +68,11 @@ import org.tigris.gef.util.PredicateType;
  * the screen while they work with them).<p>
  *
  * The search is buggy and needs work.
+ * <p>
+ * NOTE: An incompatible change was made to the public API for this class
+ * before the release of ArgoUML 0.26 to remove exposed internal implementation
+ * details (GEF).
+
  */
 public class FindDialog extends ArgoDialog
     implements ActionListener, MouseListener {
@@ -519,10 +523,10 @@ public class FindDialog extends ArgoDialog
         Predicate pNamePred = PredicateStringMatch.create(pName);
         Predicate dNamePred = PredicateStringMatch.create(dName);
         Predicate typePred = (Predicate) type.getSelectedItem();
-        PredicateFind pred =
-            new PredicateFind(eNamePred, pNamePred, dNamePred, typePred);
+        PredicateSearch pred =
+            new PredicateSearch(eNamePred, pNamePred, dNamePred, typePred);
 
-        ChildGenFind gen = ChildGenFind.getSingleton();
+        ChildGenSearch gen = new ChildGenSearch();
         Object root = ProjectManager.getManager().getCurrentProject();
 
         TabResults newResults = new TabResults();
