@@ -124,14 +124,17 @@ public final class ArgoEventPump {
         synchronized (listeners) {
             List<Pair> removeList = new ArrayList<Pair>();
             if (event == ArgoEventTypes.ANY_EVENT) {
+                // TODO: This is a linear search of a list that contain many
+                // thousands of items (one for every Fig in the entire project)
                 for (Pair p : listeners) {
                     if (p.listener == listener) {
                         removeList.add(p);
                     }
                 }
-
             } else {
                 Pair test = new Pair(event, listener);
+                // TODO: This is a linear search of a list that contain many
+                // thousands of items (one for every Fig in the entire project)
                 for (Pair p : listeners) {
                     if (p.equals(test)) {
                         removeList.add(p);
