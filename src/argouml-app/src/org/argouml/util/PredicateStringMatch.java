@@ -26,6 +26,10 @@ package org.argouml.util;
 
 import java.util.StringTokenizer;
 
+/**
+ * Predicate to match strings/substrings.  It only supports simple
+ * wildcard processing, not full regex style matching.
+ */
 public class PredicateStringMatch implements Predicate {
 
     public static int MAX_PATS = 10;
@@ -41,6 +45,9 @@ public class PredicateStringMatch implements Predicate {
 
     public static Predicate create(String pattern) {
         pattern = pattern.trim();
+        if ("*".equals(pattern) || "".equals(pattern)) {
+            return PredicateTrue.getInstance();
+        }
         String pats[] = new String[MAX_PATS];
         int count = 0;
         if (pattern.startsWith("*")) {
