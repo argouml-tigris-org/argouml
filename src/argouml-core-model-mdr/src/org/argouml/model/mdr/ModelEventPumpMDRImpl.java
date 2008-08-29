@@ -382,10 +382,13 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     }
                 }
             } else if (e instanceof AssociationEvent) {
-                RefObject element = ((AssociationEvent) e).getFixedElement();
-                if (isReadOnly(element)) {
-                    throw new VetoChangeException(element, element);
-                }
+                // TODO: association changes are too hard to check easily
+                // we don't know which end of the association is significant
+                // without checking the metamodel for navigability of the ends
+//                RefObject element = ((AssociationEvent) e).getFixedElement();
+//                if (isReadOnly(element)) {
+//                    throw new VetoChangeException(element, element);
+//                }
             } else if (e instanceof AttributeEvent) {
                 RefObject element = (RefObject) ((AttributeEvent) e)
                         .getSource();
@@ -813,11 +816,14 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             names.put(typeName, new HashSet<String>());
         }
         boolean added = names.get(typeName).add(propertyName);
-        if (!added) {
-            LOG.debug("Duplicate property name found - " + typeName + ":"
-                    + propertyName);
-        } else {
-            LOG.debug("Added property name - " + typeName + ":" + propertyName);
+        if (LOG.isDebugEnabled()) {
+            if (!added) {
+                LOG.debug("Duplicate property name found - " + typeName + ":"
+                        + propertyName);
+            } else {
+                LOG.debug("Added property name - " + typeName + ":"
+                        + propertyName);
+            }
         }
         return added;
     }
@@ -993,8 +999,10 @@ class Registry<T> {
             if (!list.contains(item)) {
                 list.add(item);
             } else {
-                LOG.debug("Duplicate registration attempt for " + key + ":"
-                        + subkeys + " Listener: " + item);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Duplicate registration attempt for " + key + ":"
+                            + subkeys + " Listener: " + item);
+                }
             }
         }
     }
@@ -1037,9 +1045,11 @@ class Registry<T> {
             map.remove(key);
             return;
         }
-        if (!list.contains(item)) {
-            LOG.debug("Attempt to unregister non-existant registration" + key
-                    + " Listener: " + item);
+        if (LOG.isDebugEnabled()) {
+            if (!list.contains(item)) {
+                LOG.debug("Attempt to unregister non-existant registration"
+                        + key + " Listener: " + item);
+            }
         }
         while (list.contains(item)) {
             list.remove(item);
