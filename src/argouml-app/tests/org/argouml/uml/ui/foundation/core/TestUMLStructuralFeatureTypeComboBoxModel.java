@@ -24,10 +24,13 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -78,21 +81,21 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         Object mmodel =
             Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(mmodel, "untitledModel");
-        Model.getModelManagementFactory().setRootModel(mmodel);
         elem = Model.getCoreFactory().createAttribute();
         dummy = Model.getCoreFactory().createAttribute();
         model = new UMLStructuralFeatureTypeComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
         types = new Object[NO_OF_ELEMENTS];
-        Object m = Model.getModelManagementFactory().createModel();
-        ProjectManager.getManager().getCurrentProject().setRoot(m);
-        Model.getCoreHelper().setNamespace(elem, m);
+        Collection roots = new ArrayList();
+        roots.add(mmodel);
+        ProjectManager.getManager().getCurrentProject().setRoots(roots);
+        Model.getCoreHelper().setNamespace(elem, mmodel);
         for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             types[i] = Model.getCoreFactory().createClass();
             // give them unique names so they don't get merged
             Model.getCoreHelper().setName(types[i], "type" + i);
-            Model.getCoreHelper().addOwnedElement(m, types[i]);
+            Model.getCoreHelper().addOwnedElement(mmodel, types[i]);
         }
         Model.getCoreHelper().setType(elem, types[0]);
         Model.getPump().flushModelEvents();
@@ -101,6 +104,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
@@ -118,6 +122,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         // One can only do this by changing target,
         // so let's simulate that:
         changeTarget();
+        model.buildModelList();
         assertTrue(model.contains(types[NO_OF_ELEMENTS / 2]));
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[NO_OF_ELEMENTS - 1]));
