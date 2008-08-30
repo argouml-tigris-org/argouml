@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -48,7 +49,6 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.SaveGraphicsAction;
-import org.tigris.gef.undo.UndoableAction;
 import org.tigris.gef.util.Util;
 
 /**
@@ -58,14 +58,15 @@ import org.tigris.gef.util.Util;
  * <p>
  * 
  * TODO: Add a user choice for other formats (PNG, SVG,...) <p>
- * TODO: Why is this an UndoableAction? (and how?) - tfm
  * 
  * @author Leonardo Souza Mario Bueno (lsbueno@tigris.org)
  */
 
-public class ActionSaveAllGraphics extends UndoableAction {
+public class ActionSaveAllGraphics extends AbstractAction {
     private static final Logger LOG =
         Logger.getLogger(ActionSaveAllGraphics.class);
+    
+    private boolean overwrite;
 
     /**
      * The constructor.
@@ -79,29 +80,28 @@ public class ActionSaveAllGraphics extends UndoableAction {
                 Translator.localize("action.save-all-graphics"));
     }
 
-    @Override
     public void actionPerformed( ActionEvent ae ) {
-        super.actionPerformed(ae);
         trySave( false );
     }
 
     /**
-     * @param overwrite true if we can overwrite without asking
+     * @param canOverwrite true if we can overwrite without asking
      * @return success
      */
-    public boolean trySave(boolean overwrite) {
-        return trySave(overwrite, null);
+    public boolean trySave(boolean canOverwrite) {
+        return trySave(canOverwrite, null);
     }
     
     /**
-     * @param overwrite
+     * @param canOverwrite
      *            true if we can overwrite without asking
      * @param directory
      *            directory to save to. If null, user will be prompted to
      *            choose.
      * @return success save status
      */
-    public boolean trySave(boolean overwrite, File directory) {
+    public boolean trySave(boolean canOverwrite, File directory) {
+        overwrite = canOverwrite;
         Project p =  ProjectManager.getManager().getCurrentProject();
         TargetManager tm = TargetManager.getInstance();
         File saveDir = (directory != null) ? directory : getSaveDir(p);
@@ -113,7 +113,7 @@ public class ActionSaveAllGraphics extends UndoableAction {
         ArgoDiagram activeDiagram = p.getActiveDiagram();
         for (ArgoDiagram d : p.getDiagramList()) {
             tm.setTarget(d);
-            okSoFar = trySaveDiagram(overwrite, d, saveDir);
+            okSoFar = trySaveDiagram(d, saveDir);
             if (!okSoFar) {
                 break;
             }
@@ -123,12 +123,11 @@ public class ActionSaveAllGraphics extends UndoableAction {
     }
 
     /**
-     * @param overwrite true if we can overwrite without asking
      * @param target the diagram
      * @param saveDir the directory to save to
-     * @return success
+     * @return continue exporting diagrams if true
      */
-    protected boolean trySaveDiagram(boolean overwrite, Object target,
+    protected boolean trySaveDiagram(Object target,
             File saveDir) {
         if ( target instanceof Diagram ) {
             String defaultName = ((Diagram) target).getName();
@@ -151,9 +150,9 @@ public class ActionSaveAllGraphics extends UndoableAction {
                     return false;
                 }
                 showStatus( "Writing " + path + name + "..." );
-                saveGraphicsToFile(theFile, cmd, overwrite);
+                boolean result = saveGraphicsToFile(theFile, cmd);
                 showStatus( "Wrote " + path + name );
-                return true;
+                return result;
             }
             catch ( FileNotFoundException ignore ) {
                 LOG.error("got a FileNotFoundException", ignore);
@@ -192,16 +191,46 @@ public class ActionSaveAllGraphics extends UndoableAction {
         return null;
     }
 
-    private boolean saveGraphicsToFile(File theFile, SaveGraphicsAction cmd,
-            boolean overwrite) throws IOException {
+    /**
+     * @param theFile the file to write
+     * @param cmd the action to execute to save the graphics
+     * @return continue exporting diagrams if true
+     * @throws IOException
+     */
+    private boolean saveGraphicsToFile(File theFile, SaveGraphicsAction cmd) 
+        throws IOException {
         if ( theFile.exists() && !overwrite ) {
-            int response =
-		JOptionPane.showConfirmDialog(ArgoFrame.getInstance(),
-                    Translator.messageFormat("optionpane.confirm-overwrite",
-                            new Object[] {theFile}),
-                    Translator.localize("optionpane.confirm-overwrite-title"),
-                    JOptionPane.YES_NO_OPTION);
-            if (response == JOptionPane.NO_OPTION) return false;
+            String message = Translator.messageFormat("optionpane.confirm-overwrite",
+                    new Object[] {theFile});
+            String title = Translator.localize("optionpane.confirm-overwrite-title"); 
+            //Custom button text:
+            Object[] options = {"optionpane.confirm-overwrite.overwrite", // 0
+                                "optionpane.confirm-overwrite.overwrite-all", // 1
+                                "optionpane.confirm-overwrite.skip-this-one", // 2
+                                "optionpane.confirm-overwrite.cancel"}; // 3
+
+            int response = 
+		JOptionPane.showOptionDialog(ArgoFrame.getInstance(),
+                    message,
+                    title,
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,     //do not use a custom Icon
+                    options,  //the titles of buttons
+                    options[0]); //default button title
+
+            if (response == 1) {
+                overwrite = true;
+            }
+            if (response == 2) {
+                return true;
+            }
+            if (response == 3) {
+                return false;
+            }
+            if (response == JOptionPane.CLOSED_OPTION) {
+                return false;
+            }
         }
         FileOutputStream fo = null;
         try {
