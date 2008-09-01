@@ -52,6 +52,11 @@ public class FigMessage extends FigEdgeModelElement {
     private ArrowHead arrowHead;
     
     /**
+     * The action owned by the message
+     */
+    private Object action = null;
+    
+    /**
      * Contructs a new figlink and sets the owner of the figlink.
      *
      * @param owner is the owner.
@@ -68,6 +73,7 @@ public class FigMessage extends FigEdgeModelElement {
     @Override
     public void setOwner(Object owner) {       
         super.setOwner(owner);
+        action = Model.getFacade().getAction(owner);
         updateArrow();
     }
     
@@ -126,11 +132,6 @@ public class FigMessage extends FigEdgeModelElement {
      * @return the action
      */
     public Object getAction() {
-        Object owner = getOwner();
-        Object action = null;
-        if (Model.getFacade().isAMessage(owner)) {          
-            action = Model.getFacade().getAction(owner);
-        }
         return action;
     }
  
