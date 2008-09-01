@@ -200,14 +200,21 @@ public class ActionSaveAllGraphics extends AbstractAction {
     private boolean saveGraphicsToFile(File theFile, SaveGraphicsAction cmd) 
         throws IOException {
         if ( theFile.exists() && !overwrite ) {
-            String message = Translator.messageFormat("optionpane.confirm-overwrite",
+            String message = Translator.messageFormat(
+                    "optionpane.confirm-overwrite",
                     new Object[] {theFile});
-            String title = Translator.localize("optionpane.confirm-overwrite-title"); 
+            String title = Translator.localize(
+                    "optionpane.confirm-overwrite-title"); 
             //Custom button text:
-            Object[] options = {"optionpane.confirm-overwrite.overwrite", // 0
-                                "optionpane.confirm-overwrite.overwrite-all", // 1
-                                "optionpane.confirm-overwrite.skip-this-one", // 2
-                                "optionpane.confirm-overwrite.cancel"}; // 3
+            Object[] options = 
+            {Translator.localize(
+                    "optionpane.confirm-overwrite.overwrite"), // 0
+             Translator.localize(
+                    "optionpane.confirm-overwrite.overwrite-all"), // 1
+             Translator.localize(
+                    "optionpane.confirm-overwrite.skip-this-one"), // 2
+             Translator.localize(
+                    "optionpane.confirm-overwrite.cancel")}; // 3
 
             int response = 
 		JOptionPane.showOptionDialog(ArgoFrame.getInstance(),
