@@ -986,7 +986,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     elementsInDeletionOrder.add((RefObject) elem);
                 }
             } catch (InvalidObjectException e) {
-                LOG.warn("Object already deleted " + elem);
+                LOG.debug("Object already deleted " + elem);
             }
 
             if (elem == top) {
@@ -1015,13 +1015,13 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                                 containingCompositeState.setConcurrent(false);
                             }
                         } catch (InvalidObjectException e) {
-                            LOG.warn("Object already deleted " + o);
+                            LOG.debug("Object already deleted " + o);
                         }
                     }
                     try {
                         o.refDelete();
                     } catch (InvalidObjectException e) {
-                        LOG.warn("Object already deleted " + o);
+                        LOG.debug("Object already deleted " + o);
                     }
                     elementsToBeDeleted.remove(o);
                 }
