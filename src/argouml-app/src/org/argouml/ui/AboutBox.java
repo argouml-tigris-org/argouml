@@ -236,7 +236,7 @@ public class AboutBox extends ArgoDialog {
         buf.append("+ SQL: Kai Drahmann\n");
         buf.append("+ Code Generation/Reverse Engineering: Thomas Neustupny\n");
         buf.append("+ Cognitive support: Markus Klink\n");
-        buf.append("+ User Manual: Michiel van der Wulp (mvw@tigris.org)\n");
+        buf.append("+ Notation, User Manual: Michiel van der Wulp\n");
         buf.append("+ Localization French: Jean-Hugues de Raigniac\n");
         buf.append("+ Localization Russian: Alexey Aphanasyev\n");
         buf.append("+ Localization German: Harald Braun\n");
