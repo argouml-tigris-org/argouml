@@ -960,7 +960,7 @@ public abstract class FigEdgeModelElement
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner == newOwner) {
-            LOG.warn("Listeners being added and removed from the same owner");
+            LOG.debug("Listeners being added and removed from the same owner");
         }
         if (oldOwner != null) {
             removeElementListener(oldOwner);
