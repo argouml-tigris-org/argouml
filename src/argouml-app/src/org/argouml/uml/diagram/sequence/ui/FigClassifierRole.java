@@ -113,7 +113,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /**
      * The list where the nodes to which links can be attached are stored.
      */
-    private List linkPositions = new ArrayList();
+    private List<MessageNode> linkPositions = new ArrayList<MessageNode>();
 
     /**
      * The comma seperated list of base names of the classifierRole(s)
@@ -161,12 +161,26 @@ public class FigClassifierRole extends FigNodeModelElement
 //        addFig(getNameFig());
     }
 
+    /**
+     * Construct a ClassifierRole figure for the given model element.
+     * 
+     * @param node the ClassifierRole to own the Fig
+     * @param x x position
+     * @param y y position
+     * @param w width
+     * @param h height
+     */
     public FigClassifierRole(Object node, int x, int y, int w, int h) {
         this();
         setBounds(x, y, w, h);
         setOwner(node);
     }
 
+    /**
+     * Construct a ClassifierRole figure for the given model element.
+     * 
+     * @param node the ClassifierRole to own the Fig
+     */
     public FigClassifierRole(Object node) {
         this();
         setOwner(node);
@@ -178,6 +192,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @see MouseListener#mouseReleased(MouseEvent)
      */
+    @Override
     public void mouseReleased(MouseEvent me) {
         super.mouseReleased(me);
         Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
@@ -191,6 +206,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * accordingly. The contents of the name text box itself are NOT updated.
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
+    @Override
     protected void updateNameText() {
         String nameText =
             (classifierRoleName + ":" + baseNames).trim();
@@ -199,6 +215,9 @@ public class FigClassifierRole extends FigNodeModelElement
         damage();
     }
 
+    /**
+     * @return node of MessageNodes/
+     */
     public int getNodeCount() {
         return linkPositions.size();
     }
@@ -265,6 +284,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     public void setStandardBounds(int x, int y, int w, int h) {
         y = 50;
         Rectangle oldBounds = getBounds();
@@ -292,6 +312,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
      */
+    @Override
     public void superTranslate(int dx, int dy) {
         setBounds(getX() + dx, getY(), getWidth(), getHeight());
     }
@@ -310,21 +331,25 @@ public class FigClassifierRole extends FigNodeModelElement
         return name;
     }
 
+    // TODO: This helper should be private
     public static boolean isCallMessage(Object message) {
         return Model.getFacade()
 	    .isACallAction(Model.getFacade().getAction(message));
     }
 
+    // TODO: This helper should be private
     public static boolean isReturnMessage(Object message) {
         return Model.getFacade()
 	    .isAReturnAction(Model.getFacade().getAction(message));
     }
 
+    // TODO: This helper should be private
     public static boolean isCreateMessage(Object message) {
         return Model.getFacade()
 	    .isACreateAction(Model.getFacade().getAction(message));
     }
 
+    // TODO: This helper should be private
     public static boolean isDestroyMessage(Object message) {
         return Model.getFacade()
 	    .isADestroyAction(Model.getFacade().getAction(message));
@@ -332,7 +357,7 @@ public class FigClassifierRole extends FigNodeModelElement
 
     private void setPreviousState(int start, int newState) {
         for (int i = start - 1; i >= 0; --i) {
-            MessageNode node = (MessageNode) linkPositions.get(i);
+            MessageNode node = linkPositions.get(i);
             if (node.getFigMessagePort() != null) {
                 break;
             }
@@ -397,7 +422,7 @@ public class FigClassifierRole extends FigNodeModelElement
         int nodeCount = linkPositions.size();
 
         for (int i = 0; i < nodeCount; ++i) {
-            MessageNode node = (MessageNode) linkPositions.get(i);
+            MessageNode node = linkPositions.get(i);
             FigMessagePort figMessagePort = node.getFigMessagePort();
             // If the node has a FigMessagePort
             if (figMessagePort != null) {
@@ -414,7 +439,7 @@ public class FigClassifierRole extends FigNodeModelElement
                 boolean selfReceiving = false;
                 if (selfMessage) {
                     for (int j = i - 1; j >= 0; --j) {
-                        MessageNode prev = (MessageNode) linkPositions.get(j);
+                        MessageNode prev = linkPositions.get(j);
                         FigMessagePort prevmp = prev.getFigMessagePort();
                         if (prevmp != null && prevmp.getOwner() == message) {
                             selfReceiving = true;
@@ -462,8 +487,8 @@ public class FigClassifierRole extends FigNodeModelElement
                         if (callerIndex != -1) {
                             for (int backNodeIndex = i - 1;
                                   backNodeIndex > 0
-                                    && ((MessageNode) linkPositions
-                                            .get(backNodeIndex))
+                                    && linkPositions
+                                            .get(backNodeIndex)
                                             .matchingCallerList(caller,
                                                     callerIndex);
                                   --backNodeIndex) {
@@ -529,7 +554,7 @@ public class FigClassifierRole extends FigNodeModelElement
         int nodeCount = linkPositions.size();
         int x = lifeLineFig.getX();
         for (int i = 0; i < nodeCount; ++i) {
-            MessageNode node = (MessageNode) linkPositions.get(i);
+            MessageNode node = linkPositions.get(i);
             int nextState = node.getState();
             if (lastState != nextState && nextState == MessageNode.CREATED) {
                 lifeLineFig.addActivationFig(
@@ -577,13 +602,13 @@ public class FigClassifierRole extends FigNodeModelElement
                     break;
                 case MessageNode.IMPLICIT_RETURNED :
                 case MessageNode.IMPLICIT_CREATED :
-                    endActivationNode = (MessageNode) linkPositions.get(i - 1);
+                    endActivationNode = linkPositions.get(i - 1);
                     endFull = true;
                     break;
                 case MessageNode.CALLED :
                     if (lastState == MessageNode.CREATED) {
                 	endActivationNode =
-                	    (MessageNode) linkPositions.get(i - 1);
+                	    linkPositions.get(i - 1);
                 	endFull = false;
                 	--i;
                 	nextState = lastState;
@@ -614,7 +639,7 @@ public class FigClassifierRole extends FigNodeModelElement
             }
         }
         if (startActivationNode != null) {
-            endActivationNode = (MessageNode) linkPositions.get(nodeCount - 1);
+            endActivationNode = linkPositions.get(nodeCount - 1);
             endFull = true;
             int y1 = getYCoordinate(startActivationNode);
             if (startFull) {
@@ -694,6 +719,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
      */
+    @Override
     protected void updateBounds() {
         Rectangle bounds = getBounds();
         bounds.width =
@@ -719,6 +745,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         if (col != null && col != headFig.getFillColor()) {
             headFig.setFillColor(col);
@@ -755,6 +782,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return headFig.getLineColor();
     }
@@ -762,6 +790,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return headFig.getLineWidth();
     }
@@ -773,6 +802,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see FigNodeModelElement#updateListeners(java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         removeAllElementListeners();
         super.updateListeners(oldOwner, newOwner);
@@ -815,6 +845,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         if (mee.getPropertyName().equals("name")) {
             if (mee.getSource() == getOwner()) {
@@ -857,7 +888,7 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     void updateEmptyNodeArray(int start, boolean[] emptyNodes) {
         for (int i = 0; i < emptyNodes.length; ++i) {
-            if (((MessageNode) linkPositions.get(i + start)).getFigMessagePort()
+            if (linkPositions.get(i + start).getFigMessagePort()
                     != null) {
                 emptyNodes[i] = false;
             }
@@ -876,7 +907,7 @@ public class FigClassifierRole extends FigNodeModelElement
         int contracted = 0;
         for (int i = 0; i < emptyNodes.length; ++i) {
             if (emptyNodes[i]) {
-                if (((MessageNode) linkPositions.get(i + start - contracted))
+                if (linkPositions.get(i + start - contracted)
 		        .getFigMessagePort()
 		    != null) {
                     throw new IllegalArgumentException(
@@ -914,6 +945,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
+    @Override
     public void renderingChanged() {
         updateBaseNames();
         updateClassifierRoleName();
@@ -929,12 +961,13 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * {@inheritDoc}
      */
+    @Override
     public Object deepHitPort(int x, int y) {
         Rectangle rect = new Rectangle(getX(), y - 16, getWidth(), 32);
         MessageNode foundNode = null;
         if (lifeLineFig.intersects(rect)) {
             for (int i = 0; i < linkPositions.size(); i++) {
-                MessageNode node = (MessageNode) linkPositions.get(i);
+                MessageNode node = linkPositions.get(i);
                 int position = lifeLineFig.getYCoordinate(i);
                 if (i < linkPositions.size() - 1) {
                     int nextPosition =
@@ -943,14 +976,13 @@ public class FigClassifierRole extends FigNodeModelElement
                         if ((y - position) <= (nextPosition - y)) {
                             foundNode = node;
                         } else {
-                            foundNode = (MessageNode) linkPositions.get(i + 1);
+                            foundNode = linkPositions.get(i + 1);
                         }
                         break;
                     }
                 } else {
                     foundNode =
-                        (MessageNode)
-                            linkPositions.get(linkPositions.size() - 1);
+                        linkPositions.get(linkPositions.size() - 1);
                     MessageNode nextNode;
                     nextNode = new MessageNode(this);
                     linkPositions.add(nextNode);
@@ -970,6 +1002,10 @@ public class FigClassifierRole extends FigNodeModelElement
         return foundNode;
     }
 
+    /**
+     * @param node MessageNode to get Y position of
+     * @return Y position of given node
+     */
     public int getYCoordinate(MessageNode node) {
         return lifeLineFig.getYCoordinate(linkPositions.indexOf(node));
     }
@@ -1001,7 +1037,7 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     public MessageNode nextNode(MessageNode node) {
         if (getIndexOf(node) < linkPositions.size()) {
-            return (MessageNode) linkPositions.get(getIndexOf(node) + 1);
+            return linkPositions.get(getIndexOf(node) + 1);
         }
 	return null;
     }
@@ -1014,7 +1050,7 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     public MessageNode previousNode(MessageNode node) {
         if (getIndexOf(node) > 0) {
-            return (MessageNode) linkPositions.get(getIndexOf(node) - 1);
+            return linkPositions.get(getIndexOf(node) - 1);
         }
 	return null;
     }
@@ -1022,9 +1058,13 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.tigris.gef.presentation.FigNode#getPortFig(java.lang.Object)
      */
+    @Override
     public Fig getPortFig(Object messageNode) {
         if (Model.getFacade().isAClassifierRole(messageNode)) {
-            LOG.warn("Got a ClassifierRole - only legal on load");
+            // TODO: Not sure of the meaning of the following message.  We
+            // will end up here any time a new FigClassifierRole is constructed
+            // during the setOwner() call - tfm 20080905
+            LOG.debug("Got a ClassifierRole - only legal on load");
             return null;
         }
 
@@ -1052,7 +1092,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * @return the ClassifierRoleNode.
      */
     private MessageNode getClassifierRoleNode() {
-        return (MessageNode) linkPositions.get(0);
+        return linkPositions.get(0);
     }
 
     /**
@@ -1091,7 +1131,7 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     public MessageNode getNode(int position) {
         if (position < linkPositions.size()) {
-            return (MessageNode) linkPositions.get(position);
+            return linkPositions.get(position);
         }
         MessageNode node = null;
         for (int cnt = position - linkPositions.size(); cnt >= 0; cnt--) {
@@ -1108,6 +1148,7 @@ public class FigClassifierRole extends FigNodeModelElement
      *
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionClassifierRole(this);
     }
@@ -1151,6 +1192,7 @@ public class FigClassifierRole extends FigNodeModelElement
          *      java.lang.String, java.lang.String, java.lang.String,
          *      org.xml.sax.Attributes)
          */
+        @Override
         protected DefaultHandler getElementHandler(
                 HandlerStack stack,
                 Object container,
@@ -1203,6 +1245,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
      */
+    @Override
     protected void updateStereotypeText() {
 
         Rectangle rect = headFig.getBounds();
