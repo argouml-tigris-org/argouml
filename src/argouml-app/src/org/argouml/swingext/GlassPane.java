@@ -26,6 +26,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.JComponent;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
@@ -75,7 +76,9 @@ public class GlassPane extends JComponent implements AWTEventListener {
         // discard the event if its source is not from the correct type
         boolean sourceIsComponent = (event.getSource() instanceof Component);
 
-        if ((event instanceof KeyEvent) && sourceIsComponent) {
+        if ((event instanceof KeyEvent) 
+                && event.getID() != KeyEvent.KEY_RELEASED 
+                && sourceIsComponent) {
             // If the event originated from the window w/glass pane, consume 
         	// the event
             if ((SwingUtilities.windowForComponent((Component) source) 

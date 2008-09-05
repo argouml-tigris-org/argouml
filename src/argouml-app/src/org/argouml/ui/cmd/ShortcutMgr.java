@@ -73,7 +73,6 @@ import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.argouml.util.KeyEventUtils;
-import org.tigris.gef.base.AdjustPageBreaksAction;
 import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.DistributeAction;
 import org.tigris.gef.base.ReorderAction;
@@ -382,6 +381,7 @@ public class ShortcutMgr {
         if (shortcut != null) {
             KeyStroke keyStroke = shortcut.getCurrentShortcut();
             if (keyStroke != null) {
+                // TODO: This method is obsolete.  Use getInputMap etc as below
                 panel.registerKeyboardAction(shortcut.getActionInstance(), 
                         keyStroke, JComponent.WHEN_FOCUSED);
             }
