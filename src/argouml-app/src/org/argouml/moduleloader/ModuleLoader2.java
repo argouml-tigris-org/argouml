@@ -468,6 +468,7 @@ public final class ModuleLoader2 {
      */
     private void computeExtensionLocations() {
         // Use a little trick to find out where Argo is being loaded from.
+        // TODO: Use a different resource here. ARGOINI is unused and deprecated
         String extForm = getClass().getResource(Argo.ARGOINI).toExternalForm();
         String argoRoot =
             extForm.substring(0,
@@ -570,7 +571,8 @@ public final class ModuleLoader2 {
     /**
      * Check a jar file for an ArgoUML extension/module.<p>
      *
-     * If there isn't a manifest or it isn't readable, we fail silently.
+     * If there isn't a manifest or it isn't readable, we fall back to using
+     * the raw JAR entries.
      *
      * @param classloader The classloader to use.
      * @param file The file to process.
@@ -593,12 +595,20 @@ public final class ModuleLoader2 {
         try {
             manifest = jarfile.getManifest();
             if (manifest == null) {
-                LOG.debug(file + " does not have a manifest");
+                // We expect all extensions to have a manifest even though we
+                // can operate without one if necessary.
+                LOG.warn(file + " does not have a manifest");
             }
         } catch (IOException e) {
             LOG.error("Unable to read manifest of " + file, e);
             return;
         }
+        
+        // TODO: It is a performance drain to load all classes at startup time.
+        // They should be lazy loaded when needed.  Instead of scanning all
+        // classes for ones which implement our loadable module interface, we 
+        // should use a manifest entry or a special name/name pattern that we
+        // look for to find the single main module class to load here.  - tfm
 	
         boolean loadedClass = false;
         if (manifest == null) {
@@ -618,11 +628,15 @@ public final class ModuleLoader2 {
                             | processEntry(classloader, key);
             }
         }
+
+        // Add this to search list for I18N properties
+        // (Done for both modules & localized property file sets)
+        Translator.addClassLoader(classloader);
         
-        if (loadedClass) {
-            // Add this to search list for I18N properties
-            Translator.addClassLoader(classloader);
-        } else {
+        // If it didn't have a loadable module class and it doesn't look like
+        // a localized property set, warn the user that something funny is in
+        // their extension directory
+        if (!loadedClass && !file.getName().contains("argouml-i18n-")) {
             LOG.error("Failed to find any loadable ArgoUML modules in jar "
                     + file);
         }
