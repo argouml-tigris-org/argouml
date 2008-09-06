@@ -215,12 +215,21 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     }
 
     /**
-     * Returns the current project.<p>
-     *
-     * If there is no project, a new one is created
-     * (unless we are busy creating one).
-     *
-     * @return Project the current project
+     * Returns the current project (ie the project which must recently had the
+     * user focus) or null if there is no current project.
+     * <p>
+     * This should only be used by callers who need to know the global state.
+     * Most things which need a project want the project that contains them,
+     * which they can discover by traversing their containing elements (e.g.
+     * Fig->Diagram->Project).
+     * <p>
+     * <em>NOTE:</em>Callers of this method must be prepared to receive a null
+     * return value. Currently, if there is no project, a new one is created
+     * (unless we are busy creating one), but this behavior is not guaranteed
+     * and will change ArgoUML allows multiple open projects (or no open
+     * projects).
+     * 
+     * @return Project the current project or null if none
      */
     public Project getCurrentProject() {
         if (currentProject == null && !creatingCurrentProject) {
@@ -315,6 +324,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     
     /**
      * @return true is the save action is currently enabled
+     * <p>
+     * TODO: This needs to get the save-enabled status for the current project.
      */
     public boolean isSaveActionEnabled() {
         return this.saveAction.isEnabled();
@@ -324,7 +335,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * Notify the gui that the
      * current project's save state has changed. There are 2 receivers:
      * the SaveProject tool icon and the title bar (for showing a *).
-     *
+     * <p>
+     * TODO: This needs to be managed on a per-project basis.
      * @param newValue The new state.
      */
     public void setSaveEnabled(boolean newValue) {
@@ -353,6 +365,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * We must add this to the UndoManager.
      *
      * @param command the command.
+     * @return result of the command, if any
      * @see org.argouml.model.ModelCommandCreationObserver#execute(ModelCommand)
      */
     public Object execute(final ModelCommand command) {

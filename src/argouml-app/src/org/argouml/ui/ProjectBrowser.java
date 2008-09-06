@@ -333,7 +333,9 @@ public final class ProjectBrowser
                     // rid of this.
                     Project p = 
                         ProjectManager.getManager().getCurrentProject();
-                    p.getUndoManager().startInteraction("Focus");
+                    if (p != null) {
+                        p.getUndoManager().startInteraction("Focus");
+                    }
                     /* This next line is ideal for debugging the taborder
                      * (focus traversal), see e.g. issue 1849.
                      */
@@ -739,7 +741,7 @@ public final class ProjectBrowser
     }
     /**
      * Set the save indicator (the * after the title) to appear depending on
-     * the curreny save action enabled status.
+     * the current save action enabled status.
      */
     public void showSaveIndicator() {
         titleHandler.buildTitle(null, null);
@@ -1574,6 +1576,16 @@ public final class ProjectBrowser
 
         PersistenceManager pm = PersistenceManager.getInstance();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
+        if (oldProject != null) {
+            // Remove the old project first.  It's wasteful to create a temp
+            // empty project, but too much of ArgoUML depends on having a
+            // current project
+            Project p = ProjectManager.getManager().makeEmptyProject();
+            ProjectManager.getManager().setCurrentProject(p);
+            ProjectManager.getManager().removeProject(oldProject);
+            oldProject = p;
+        }
+        
         boolean success = false;
 
         // TODO:
@@ -1598,7 +1610,7 @@ public final class ProjectBrowser
             // * appearing in title bar and the save enabling as models are
             // updated
             // TODO: Do we still need this now the save enablement is improved?
-            AbstractAction rememberedSaveAction = this.saveAction;
+            final AbstractAction rememberedSaveAction = this.saveAction;
             this.saveAction = null;
             ProjectManager.getManager().setSaveAction(null);
             try {
@@ -1747,11 +1759,17 @@ public final class ProjectBrowser
                 } finally {
                     // Make sure save action is always reinstated
                     this.saveAction = rememberedSaveAction;
-                    ProjectManager.getManager().setSaveAction(
-                            rememberedSaveAction);
-                    if (success) {
-                        rememberedSaveAction.setEnabled(false);
-                    }
+                    
+                    // We clear the save-required flag on the Swing event thread
+                    // in the hopes that it gets done after any other background
+                    // work (listener updates) that is being done there
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            ProjectManager.getManager().setSaveAction(
+                                    rememberedSaveAction);
+                            rememberedSaveAction.setEnabled(false);
+                        }
+                    });
                 }
             }
         }

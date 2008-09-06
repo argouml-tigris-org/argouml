@@ -82,15 +82,27 @@ public class ActionSaveProject extends AbstractAction {
     }
 
     /**
-     * Set the enabled state of the save action.
-     * When we become enabled inform the user by highlighting the title bar
-     * with an asterisk.
-     * This method is undoable.
+     * Set the enabled state of the save action. When we become enabled inform
+     * the user by highlighting the title bar with an asterisk. This method is
+     * undoable.  This method is synchronized so that it can be used from any
+     * thread without external synchronization.
+     * 
      * @param isEnabled new state for save command
      */
-    public void setEnabled(final boolean isEnabled) {
+    @Override
+    public synchronized void setEnabled(final boolean isEnabled) {
         if (isEnabled == this.enabled) {
             return;
+        }
+        if (LOG.isDebugEnabled()) {
+            if (!enabled && isEnabled) {
+                Throwable throwable = new Throwable();
+                throwable.fillInStackTrace();
+                LOG.debug("Save action enabled by  ", throwable);
+            } else {
+                LOG.debug("Save state changed from " + enabled + " to "
+                        + isEnabled);
+            }
         }
         internalSetEnabled(isEnabled);
     }
@@ -104,4 +116,4 @@ public class ActionSaveProject extends AbstractAction {
         ProjectBrowser.getInstance().showSaveIndicator();
     }
 
-} /* end class ActionSaveProject */
+}

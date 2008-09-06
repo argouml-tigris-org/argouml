@@ -27,12 +27,18 @@ package org.argouml.application.events;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 import org.argouml.application.api.ArgoEventListener;
 
 /**
- * ArgoEventPump is an eventhandler which handles events regarding
- * the loading and unloading of modules.
+ * ArgoEventPump is an event dispatcher which handles events that are global
+ * in nature for the entire application.
+ * <p>
+ * TODO: DiagramAppearance and Notation events are not application-wide and will
+ * be moved from here to someplace more specific in the future so that they can
+ * be managed on a per-project or per-diagram basis.
  */
 public final class ArgoEventPump {
     /**
@@ -147,13 +153,32 @@ public final class ArgoEventPump {
 
     /**
      * Handle firing a notation event.
+     * <p>
+     * TODO: This needs to be managed on a per-diagram or per-project basis.
      *
      * @param event The event to be fired.
      * @param listener The listener.
      */
     private void handleFireNotationEvent(
-        ArgoNotationEvent event,
-        ArgoNotationEventListener listener) {
+        final ArgoNotationEvent event,
+        final ArgoNotationEventListener listener) {
+       
+        // Notation events are likely to cause GEF/Swing operations, so we
+        // dispatch them on the Swing event thread as a convenience so that 
+        // the receiving notationChanged() methods don't need to deal with it
+        if (SwingUtilities.isEventDispatchThread()) {
+            fireNotationEventInternal(event, listener);
+        } else {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    fireNotationEventInternal(event, listener);
+                }
+            });
+        }
+    }
+
+    private void fireNotationEventInternal(ArgoNotationEvent event,
+            ArgoNotationEventListener listener) {
         switch (event.getEventType()) {
 	case ArgoEventTypes.NOTATION_CHANGED :
 	    listener.notationChanged(event);
@@ -186,13 +211,29 @@ public final class ArgoEventPump {
 
     /**
      * Handle firing a diagram appearance event.
-     *
+     * <p>
+     * TODO: This needs to be managed on a per-diagram or per-project basis.
+     * 
      * @param event The event to be fired.
      * @param listener The listener.
      */
     private void handleFireDiagramAppearanceEvent(
-        ArgoDiagramAppearanceEvent event,
-        ArgoDiagramAppearanceEventListener listener) {
+        final ArgoDiagramAppearanceEvent event,
+        final ArgoDiagramAppearanceEventListener listener) {
+        if (SwingUtilities.isEventDispatchThread()) {
+            fireDiagramAppearanceEventInternal(event, listener);
+        } else {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    fireDiagramAppearanceEventInternal(event, listener);
+                }
+            });
+        }        
+    }
+
+    private void fireDiagramAppearanceEventInternal(
+            final ArgoDiagramAppearanceEvent event,
+            final ArgoDiagramAppearanceEventListener listener) {
         switch (event.getEventType()) {
         case ArgoEventTypes.DIAGRAM_FONT_CHANGED :
             listener.diagramFontChanged(event);
