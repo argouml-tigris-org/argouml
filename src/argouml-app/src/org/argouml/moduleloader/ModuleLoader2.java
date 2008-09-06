@@ -329,7 +329,7 @@ public final class ModuleLoader2 {
 		    }
 		    // Catch all exceptions and errors, however severe
 		    catch (Throwable e) {                       
-		        LOG.info("Exception or error while trying to "
+		        LOG.error("Exception or error while trying to "
                                 + "enable module " + module.getName(), e);
 		    }
 		} else if (status.isEnabled() && !status.isSelected()) {
@@ -341,7 +341,7 @@ public final class ModuleLoader2 {
 		    }
                     // Catch all exceptions and errors, however severe
 		    catch (Throwable e) {
-		        LOG.info("Exception or error while trying to "
+		        LOG.error("Exception or error while trying to "
                                 + "disable module " + module.getName(), e);
 		    }
 		}
@@ -562,7 +562,7 @@ public final class ModuleLoader2 {
 	                }
 		    }
 		} catch (IOException ioe) {
-		    LOG.debug("Cannot open Jar file " + file, ioe);
+		    LOG.error("Cannot open Jar file " + file, ioe);
 		}
 	    }
 	}
