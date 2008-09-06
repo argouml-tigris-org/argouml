@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,7 +36,7 @@ import org.argouml.profile.Profile;
  * 
  * @author maurelio1234
  */
-public class GoProfileToCritics implements PerspectiveRule {
+public class GoProfileToCritics extends AbstractPerspectiveRule{
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
@@ -52,7 +52,7 @@ public class GoProfileToCritics implements PerspectiveRule {
         if (parent instanceof Profile) {
             return ((Profile) parent).getCritics();
         }
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     /*
@@ -60,6 +60,6 @@ public class GoProfileToCritics implements PerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: What?
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 }
