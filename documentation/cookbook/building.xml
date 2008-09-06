@@ -949,7 +949,8 @@ enable-auto-props = yes
 ### is typically done by setting the 'enable-auto-props' option.
 *.java = svn:eol-style=native; svn:keywords=Id Author Date Revision
 *.properties = svn:eol-style=native
-*.sh = svn:eol-style=native;svn:executable; svn:keywords=Id Author Date Revision
+*.sh = svn:eol-style=LF;svn:executable; svn:keywords=Id Author Date Revision
+*.bat = svn:eol-style=CRLF; svn:keywords=Id Author Date Revision
 *.txt = svn:eol-style=native; svn:keywords=Id Author Date Revision
 *.xml = svn:eol-style=native
 *.zargo = svn:needs-lock=*
