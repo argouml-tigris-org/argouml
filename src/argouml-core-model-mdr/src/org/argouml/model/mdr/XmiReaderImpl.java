@@ -167,11 +167,10 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                     extentName);
         }
 
-        extent = (UmlPackage) modelImpl.createExtent(extentName);
+        extent = (UmlPackage) modelImpl.createExtent(extentName, readOnly);
         if (extent == null) {
             LOG.error("Failed to create extent " + extentName);
         }
-        modelImpl.addExtent(extent, readOnly);
         
         try {
             LOG.info("Loading to extent '" + extentName + "'");
@@ -270,7 +269,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             }
 
             if (unknownElement) {
-                modelImpl.removeExtent(extent);
+                modelImpl.deleteExtent(extent);
                 throw new XmiException("Unknown element in XMI file : "
                         + unknownElementName);
             }
@@ -305,10 +304,10 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                     throw new XmiException(se.getMessage(), se);
                 }
             }
-            modelImpl.removeExtent(extent);
+            modelImpl.deleteExtent(extent);
             throw new XmiException(e);
         } catch (IOException e) {
-            modelImpl.removeExtent(extent);
+            modelImpl.deleteExtent(extent);
             throw new XmiException(e);
         }
 
