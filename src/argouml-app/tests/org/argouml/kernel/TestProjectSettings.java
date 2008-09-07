@@ -25,6 +25,9 @@
 package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
 
 import junit.framework.TestCase;
 
@@ -194,28 +197,43 @@ public class TestProjectSettings extends TestCase {
      */
     public void testVisibilityEvents() {
         Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY, false);
-        Project p = ProjectManager.getManager().makeEmptyProject();
+        final Project p = ProjectManager.getManager().makeEmptyProject();
 
         ArgoEventPump.addListener(new EventCatcher());
 
         rxdEvent = null;
-        p.getProjectSettings().setShowVisibility(Boolean.toString(true));
-        /* This assumes events are dispatched on the same thread. */
-        assertTrue("Got no notation event", rxdEvent != null);
+        try {
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    p.getProjectSettings().setShowVisibility(
+                            Boolean.toString(true));
+                }
+            });
+            assertTrue("Got no notation event", rxdEvent != null);
 
-        rxdEvent = null;
-        p.getProjectSettings().setShowVisibility(Boolean.toString(false));
-        /* This assumes events are dispatched on the same thread. */
-        assertTrue("Got no notation event", rxdEvent != null);
+            rxdEvent = null;
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    p.getProjectSettings().setShowVisibility(
+                            Boolean.toString(false));
+                }
+            });
+            assertTrue("Got no notation event", rxdEvent != null);
 
-        PropertyChangeEvent pce = (PropertyChangeEvent) rxdEvent.getSource();
-        assertTrue("Wrong event name",
-                pce.getPropertyName().equals(
-                        Notation.KEY_SHOW_VISIBILITY.getKey()));
-        assertTrue("Wrong old event value", Boolean.valueOf(
-                (String) pce.getOldValue()).booleanValue());
-        assertTrue("Wrong new event value", !Boolean.valueOf(
-                (String) pce.getNewValue()).booleanValue());
+            PropertyChangeEvent pce = (PropertyChangeEvent) rxdEvent
+                    .getSource();
+            assertTrue("Wrong event name",
+                    pce.getPropertyName().equals(
+                            Notation.KEY_SHOW_VISIBILITY.getKey()));
+            assertTrue("Wrong old event value", Boolean.valueOf(
+                    (String) pce.getOldValue()).booleanValue());
+            assertTrue("Wrong new event value", !Boolean.valueOf(
+                    (String) pce.getNewValue()).booleanValue());
+        } catch (InterruptedException e) {
+            fail();
+        } catch (InvocationTargetException e) {
+            fail();
+        }
     }
 
     /**
@@ -231,88 +249,118 @@ public class TestProjectSettings extends TestCase {
         Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 4);
         Configuration.setString(Notation.KEY_DEFAULT_NOTATION, "UML 1.4");
 
-        Project p = ProjectManager.getManager().makeEmptyProject();
+        final Project p = ProjectManager.getManager().makeEmptyProject();
+
         ArgoEventPump.addListener(new EventCatcher());
 
-        rxdEvent = null;
-        p.getProjectSettings().setShowInitialValue(true);
-        /* This assumes events are dispatched on the same thread. */
-        assertTrue("Got no notation event", rxdEvent != null);
-        pce = (PropertyChangeEvent) rxdEvent.getSource();
-        assertTrue("Wrong event name",
-                pce.getPropertyName().equals(
-                        Notation.KEY_SHOW_INITIAL_VALUE.getKey()));
-        assertTrue("Wrong old event value", !Boolean.valueOf(
-                (String) pce.getOldValue()).booleanValue());
-        assertTrue("Wrong new event value", Boolean.valueOf(
-                (String) pce.getNewValue()).booleanValue());
+        rxdEvent = null; 
+        try {
 
-        rxdEvent = null;
-        p.getProjectSettings().setShowProperties(true);
-        /* This assumes events are dispatched on the same thread. */
-        assertTrue("Got no notation event", rxdEvent != null);
-        pce = (PropertyChangeEvent) rxdEvent.getSource();
-        assertTrue("Wrong event name",
-                pce.getPropertyName().equals(
-                        Notation.KEY_SHOW_PROPERTIES.getKey()));
-        assertTrue("Wrong old event value", !Boolean.valueOf(
-                (String) pce.getOldValue()).booleanValue());
-        assertTrue("Wrong new event value", Boolean.valueOf(
-                (String) pce.getNewValue()).booleanValue());
+            // Because the notation events get dispatched on the Swing
+            // event thread, we need to use invokeAndWait to make sure that we
+            // don't return until they've been delivered
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    p.getProjectSettings().setShowInitialValue(true);
+                }
+            });
+            assertTrue("Got no notation event", rxdEvent != null);
+            pce = (PropertyChangeEvent) rxdEvent.getSource();
+            assertTrue("Wrong event name",
+                    pce.getPropertyName().equals(
+                            Notation.KEY_SHOW_INITIAL_VALUE.getKey()));
+            assertTrue("Wrong old event value", !Boolean.valueOf(
+                    (String) pce.getOldValue()).booleanValue());
+            assertTrue("Wrong new event value", Boolean.valueOf(
+                    (String) pce.getNewValue()).booleanValue());
 
-        rxdEvent = null;
-        p.getProjectSettings().setShowTypes(true);
-        /* This assumes events are dispatched on the same thread. */
-        assertTrue("Got no notation event", rxdEvent != null);
-        pce = (PropertyChangeEvent) rxdEvent.getSource();
-        assertTrue("Wrong event name",
-                pce.getPropertyName().equals(
-                        Notation.KEY_SHOW_TYPES.getKey()));
-        assertTrue("Wrong old event value", !Boolean.valueOf(
-                (String) pce.getOldValue()).booleanValue());
-        assertTrue("Wrong new event value", Boolean.valueOf(
-                (String) pce.getNewValue()).booleanValue());
+            rxdEvent = null;
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    p.getProjectSettings().setShowProperties(true);
+                }
+            });
+            assertTrue("Got no notation event", rxdEvent != null);
+            pce = (PropertyChangeEvent) rxdEvent.getSource();
+            assertTrue("Wrong event name",
+                    pce.getPropertyName().equals(
+                            Notation.KEY_SHOW_PROPERTIES.getKey()));
+            assertTrue("Wrong old event value", !Boolean.valueOf(
+                    (String) pce.getOldValue()).booleanValue());
+            assertTrue("Wrong new event value", Boolean.valueOf(
+                    (String) pce.getNewValue()).booleanValue());
 
-        rxdEvent = null;
-        p.getProjectSettings().setShowStereotypes(true);
-        /* This assumes events are dispatched on the same thread. */
-        assertTrue("Got no notation event", rxdEvent != null);
-        pce = (PropertyChangeEvent) rxdEvent.getSource();
-        assertTrue("Wrong event name",
-                pce.getPropertyName().equals(
-                        Notation.KEY_SHOW_STEREOTYPES.getKey()));
-        assertTrue("Wrong old event value", !Boolean.valueOf(
-                (String) pce.getOldValue()).booleanValue());
-        assertTrue("Wrong new event value", Boolean.valueOf(
-                (String) pce.getNewValue()).booleanValue());
+            rxdEvent = null;
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    p.getProjectSettings().setShowTypes(true);
+                }
+            });
+            assertTrue("Got no notation event", rxdEvent != null);
+            pce = (PropertyChangeEvent) rxdEvent.getSource();
+            assertTrue("Wrong event name",
+                    pce.getPropertyName().equals(
+                            Notation.KEY_SHOW_TYPES.getKey()));
+            assertTrue("Wrong old event value", !Boolean.valueOf(
+                    (String) pce.getOldValue()).booleanValue());
+            assertTrue("Wrong new event value", Boolean.valueOf(
+                    (String) pce.getNewValue()).booleanValue());
 
-        rxdEvent = null;
-        p.getProjectSettings().setDefaultShadowWidth(2);
-        /* This assumes events are dispatched on the same thread. */
-        assertTrue("Got no notation event", rxdEvent != null);
-        pce = (PropertyChangeEvent) rxdEvent.getSource();
-        assertTrue("Wrong event name",
-                pce.getPropertyName().equals(
-                        Notation.KEY_DEFAULT_SHADOW_WIDTH.getKey()));
-        String value = (String) pce.getOldValue();
-        int i = Integer.parseInt(value);
-        assertTrue("Wrong old event value", i == 4);
-        assertTrue("Wrong new event value",
-                ((String) pce.getNewValue()).equals("2"));
+            rxdEvent = null;
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    p.getProjectSettings().setShowStereotypes(true);
+                }
+            });
+            assertTrue("Got no notation event", rxdEvent != null);
+            pce = (PropertyChangeEvent) rxdEvent.getSource();
+            assertTrue("Wrong event name",
+                    pce.getPropertyName().equals(
+                            Notation.KEY_SHOW_STEREOTYPES.getKey()));
+            assertTrue("Wrong old event value", !Boolean.valueOf(
+                    (String) pce.getOldValue()).booleanValue());
+            assertTrue("Wrong new event value", Boolean.valueOf(
+                    (String) pce.getNewValue()).booleanValue());
 
-        rxdEvent = null;
-        /* We initialised Java Notation, so let's activate it: */
-        assertTrue(p.getProjectSettings().setNotationLanguage("Java"));
-        /* This assumes events are dispatched on the same thread. */
-        assertTrue("Got no notation event", rxdEvent != null);
-        pce = (PropertyChangeEvent) rxdEvent.getSource();
-        assertTrue("Wrong event name",
-                pce.getPropertyName().equals(
-                        Notation.KEY_DEFAULT_NOTATION.getKey()));
-        value = (String) pce.getOldValue();
-        assertTrue("Wrong old event value", "UML 1.4".equals(value));
-        value = (String) pce.getNewValue();
-        assertTrue("Wrong new event value", "Java".equals(value));
+            rxdEvent = null;
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    p.getProjectSettings().setDefaultShadowWidth(2);
+                }
+            });
+            assertTrue("Got no notation event", rxdEvent != null);
+            pce = (PropertyChangeEvent) rxdEvent.getSource();
+            assertTrue("Wrong event name",
+                    pce.getPropertyName().equals(
+                            Notation.KEY_DEFAULT_SHADOW_WIDTH.getKey()));
+            String value = (String) pce.getOldValue();
+            int i = Integer.parseInt(value);
+            assertTrue("Wrong old event value", i == 4);
+            assertTrue("Wrong new event value",
+                    ((String) pce.getNewValue()).equals("2"));
+
+            rxdEvent = null;
+            /* We initialised Java Notation, so let's activate it: */
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    assertTrue(p.getProjectSettings().setNotationLanguage(
+                            "Java"));
+                }
+            });
+            assertTrue("Got no notation event", rxdEvent != null);
+            pce = (PropertyChangeEvent) rxdEvent.getSource();
+            assertTrue("Wrong event name",
+                    pce.getPropertyName().equals(
+                            Notation.KEY_DEFAULT_NOTATION.getKey()));
+            value = (String) pce.getOldValue();
+            assertTrue("Wrong old event value", "UML 1.4".equals(value));
+            value = (String) pce.getNewValue();
+            assertTrue("Wrong new event value", "Java".equals(value));
+        } catch (InterruptedException e) {
+            fail();
+        } catch (InvocationTargetException e) {
+            fail();
+        }    
     }
 
     /*
