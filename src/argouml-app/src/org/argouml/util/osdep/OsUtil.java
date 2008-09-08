@@ -58,6 +58,16 @@ public class OsUtil {
     }
 
     /**
+     * Check whether this is a Mac running OS X.
+     *
+     * @return true if this is a Mac running OS X
+     */
+    public static boolean isMacOSX() {
+        return (System.getProperty("os.name").toLowerCase()
+                .startsWith("mac os x"));
+    }
+    
+    /**
      * Check whether we deal with a Sun Java.
      *
      * @return true if this is a Sun Java

@@ -39,6 +39,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.critics.ui.ActionOpenCritics;
 import org.argouml.cognitive.ui.ActionAutoCritique;
@@ -77,7 +78,8 @@ import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
-import org.tigris.gef.base.AdjustPageBreaksAction;
+import org.argouml.util.osdep.OSXAdapter;
+import org.argouml.util.osdep.OsUtil;
 import org.tigris.gef.base.AlignAction;
 import org.tigris.gef.base.DistributeAction;
 import org.tigris.gef.base.ReorderAction;
@@ -113,6 +115,9 @@ import org.tigris.toolbar.ToolBarFactory;
  */
 public class GenericArgoMenuBar extends JMenuBar implements
         TargetListener {
+    
+    private static final Logger LOG = 
+        Logger.getLogger(GenericArgoMenuBar.class);
 
     private static List<JMenu> moduleMenus = new ArrayList<JMenu>();
 
@@ -202,6 +207,12 @@ public class GenericArgoMenuBar extends JMenuBar implements
     private Action navigateTargetForwardAction;
 
     private Action navigateTargetBackAction;
+    
+    // References to actions that we need for Mac hack
+    private ActionSettings settingsAction;
+    private ActionAboutArgoUML aboutAction;
+    private ActionExit exitAction;
+    private ActionOpenProject openAction;
 
     /**
      * The constructor.
@@ -210,6 +221,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         initActions();
         initMenus();
         initModulesUI();
+        registerForMacEvents();
     }
 
     private void initActions() {
@@ -293,7 +305,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(newItem, "New");
         ShortcutMgr.assignAccelerator(newItem, ShortcutMgr.ACTION_NEW_PROJECT);
         toolbarTools.add((new ActionNew()));
-        JMenuItem openProjectItem = file.add(new ActionOpenProject());
+        openAction = new ActionOpenProject();
+        JMenuItem openProjectItem = file.add(openAction);
         setMnemonic(openProjectItem, "Open");
         ShortcutMgr.assignAccelerator(openProjectItem,
                 ShortcutMgr.ACTION_OPEN_PROJECT);
@@ -364,14 +377,17 @@ public class GenericArgoMenuBar extends JMenuBar implements
         mruList = new LastRecentlyUsedMenuList(file);
 
         // and exit menu entry starting with separator. 
-        file.addSeparator();
-        JMenuItem exitItem = file.add(new ActionExit());
-        setMnemonic(exitItem, "Exit");
-        /* The "Close window" shortcut (ALT+F4) actually can't 
-         * be registered as a shortcut, 
-         * because it closes the configuration dialog! */
-        exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
-              InputEvent.ALT_MASK));
+        exitAction = new ActionExit();
+        if (!OsUtil.isMacOSX()) {
+            file.addSeparator();
+            JMenuItem exitItem = file.add(exitAction);
+            setMnemonic(exitItem, "Exit");
+            /* The "Close window" shortcut (ALT+F4) actually can't 
+             * be registered as a shortcut, 
+             * because it closes the configuration dialog! */
+            exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
+                    InputEvent.ALT_MASK));
+        }
 
         fileToolbar = (new ToolBarFactory(toolbarTools)).createToolBar();
         fileToolbar.setName(Translator.localize("misc.toolbar.file"));
@@ -458,10 +474,13 @@ public class GenericArgoMenuBar extends JMenuBar implements
         ShortcutMgr.assignAccelerator(edit.add(new ActionPerspectiveConfig()),
                 ShortcutMgr.ACTION_PERSPECTIVE_CONFIG);
 
-        JMenuItem settingsItem = edit.add(new ActionSettings());
-        setMnemonic(settingsItem, "Settings");
-        ShortcutMgr
-                .assignAccelerator(settingsItem, ShortcutMgr.ACTION_SETTINGS);
+        settingsAction = new ActionSettings();
+        if (!OsUtil.isMacOSX()) {
+            JMenuItem settingsItem = edit.add(settingsAction);
+            setMnemonic(settingsItem, "Settings");
+            ShortcutMgr.assignAccelerator(settingsItem,
+                    ShortcutMgr.ACTION_SETTINGS);
+        }
     }
 
 
@@ -904,12 +923,16 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(systemInfo, "System Information");
         ShortcutMgr.assignAccelerator(systemInfo,
                 ShortcutMgr.ACTION_SYSTEM_INFORMATION);
-        help.addSeparator();
-        JMenuItem aboutArgoUML = help.add(new ActionAboutArgoUML());
-        setMnemonic(aboutArgoUML, "About ArgoUML");
-        ShortcutMgr.assignAccelerator(aboutArgoUML,
-                ShortcutMgr.ACTION_ABOUT_ARGOUML);
-
+        
+        aboutAction = new ActionAboutArgoUML();
+        if (!OsUtil.isMacOSX()) {
+            help.addSeparator();
+            JMenuItem aboutArgoUML = help.add(aboutAction);
+            setMnemonic(aboutArgoUML, "About ArgoUML");
+            ShortcutMgr.assignAccelerator(aboutArgoUML,
+                    ShortcutMgr.ACTION_ABOUT_ARGOUML);
+        }
+        
         // setHelpMenu(help);
         add(help);
     }
@@ -1080,5 +1103,54 @@ public class GenericArgoMenuBar extends JMenuBar implements
      */
     public static void registerCreateDiagramAction(Action action) {
         moduleCreateDiagramActions.add(action);
+    }
+    
+    private void registerForMacEvents() {
+        if (OsUtil.isMacOSX()) {
+            try {
+                // Generate and register the OSXAdapter, passing the methods 
+                // we wish to use as delegates for various
+                // com.apple.eawt.ApplicationListener methods
+                OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod(
+                        "macQuit", (Class[]) null));
+                OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod(
+                        "macAbout", (Class[]) null));
+                OSXAdapter.setPreferencesHandler(this, getClass()
+                        .getDeclaredMethod("macPreferences", (Class[]) null));
+                OSXAdapter.setFileHandler(this, getClass().getDeclaredMethod(
+                        "macOpenFile", new Class[] {String.class}));
+            } catch (Exception e) {
+                LOG.error("Error while loading the OSXAdapter:", e);
+            }
+        }
+    }
+    
+    /**
+     * Internal use only.  Do not use.
+     */
+    public void macQuit() {
+        exitAction.actionPerformed(null);
+    }
+    
+    /**
+     * Internal use only.  Do not use.
+     */
+    public void macAbout() {
+        aboutAction.actionPerformed(null);
+    }
+    
+    /**
+     * Internal use only.  Do not use.
+     */
+    public void macPreferences() {
+        settingsAction.actionPerformed(null);
+    }
+    
+    /**
+     * Internal use only.  Do not use.
+     * @param filename name of file to be opened
+     */
+    public void macOpenFile(String filename) {
+        openAction.doCommand(filename);
     }
 }
