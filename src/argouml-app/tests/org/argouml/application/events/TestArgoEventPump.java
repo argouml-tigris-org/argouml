@@ -24,6 +24,10 @@
 
 package org.argouml.application.events;
 
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
+
 import junit.framework.TestCase;
 
 /**
@@ -174,9 +178,24 @@ public class TestArgoEventPump extends TestCase {
         ArgoEventPump.fireEvent(evt);
 
         // fire all of the diagram events
-        evt = new ArgoDiagramAppearanceEvent(
+        final ArgoDiagramAppearanceEvent displayEvent = 
+            new ArgoDiagramAppearanceEvent(
                 ArgoEventTypes.DIAGRAM_FONT_CHANGED, this);
-        ArgoEventPump.fireEvent(evt);
+        try {
+            // Display events are fired on the Swing event thread.
+            // We need to wait for them to be dispatched
+            // NOTE: if more display events are added to this test, this one
+            // needs to be last
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    ArgoEventPump.fireEvent(displayEvent);                
+                }
+            });
+        } catch (InterruptedException e) {
+            fail();
+        } catch (InvocationTargetException e) {
+            fail();
+        }
 
         // fire all of the generator events
         evt = new ArgoGeneratorEvent(ArgoEventTypes.GENERATOR_CHANGED, this);
@@ -204,9 +223,21 @@ public class TestArgoEventPump extends TestCase {
         evt = new ArgoNotationEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED,
                 this);
         ArgoEventPump.fireEvent(evt);
-        evt = new ArgoNotationEvent(ArgoEventTypes.NOTATION_PROVIDER_REMOVED,
-                this);
-        ArgoEventPump.fireEvent(evt);
+        final ArgoNotationEvent event = new ArgoNotationEvent(
+                ArgoEventTypes.NOTATION_PROVIDER_REMOVED, this);
+        try {
+            // Notation events are fired on the Swing event thread.
+            // We assume that serializing on the final call is sufficient
+            SwingUtilities.invokeAndWait(new Runnable() {
+                public void run() {
+                    ArgoEventPump.fireEvent(event);                
+                }
+            });
+        } catch (InterruptedException e) {
+            fail();
+        } catch (InvocationTargetException e) {
+            fail();
+        }
 
         // fire all of the profile events
         evt = new ArgoProfileEvent(ArgoEventTypes.PROFILE_ADDED, this);
@@ -321,8 +352,9 @@ public class TestArgoEventPump extends TestCase {
             int eventsFired = 0;
 
             // counts each bit that has been fired
-            for (int events = eventStatus; events > 0; ++eventsFired)
+            for (int events = eventStatus; events > 0; ++eventsFired) {
                 events &= events - 1;
+            }
 
             return eventsFired;
         }
