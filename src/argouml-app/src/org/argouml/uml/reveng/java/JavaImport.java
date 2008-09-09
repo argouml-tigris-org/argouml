@@ -219,8 +219,7 @@ public class JavaImport implements ImportInterface {
      * @param settings
      *            the user provided import settings
      * @param pass
-     *            current import pass - 0 = single pass, 1 = pass 1 of 2, 2 =
-     *            pass 2 of 2
+     *            current import pass - 0 = pass 1, 1 = pass 2
      */
     private void parseFile(Project p, File f, ImportSettings settings, int pass)
         throws ImportException {
@@ -265,8 +264,17 @@ public class JavaImport implements ImportInterface {
             // exceptions to the file.
             LOG.info("Parsing " + f.getAbsolutePath());
 
+            // Calculate the import level
+            int level = 0;
+            int importlevel = settings.getImportLevel();
+            if (importlevel == ImportSettings.DETAIL_CLASSIFIER_FEATURE) {
+                level = 1;
+            } else if (importlevel == ImportSettings.DETAIL_FULL) {
+                // full level only needed for the second pass
+                level = (pass == 0) ? 0 : 2;
+            }
             modeller.setAttribute("level", 
-                    Integer.valueOf(pass));
+                    Integer.valueOf(level));
 
             try {
                 // start parsing at the compilationUnit rule
