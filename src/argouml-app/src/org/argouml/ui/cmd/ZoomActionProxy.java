@@ -40,7 +40,7 @@ import org.tigris.gef.base.ZoomAction;
 public class ZoomActionProxy extends ZoomAction {
 
     /**
-     * Local instance of the magnitude that alows computation of zoom factor
+     * Local instance of the magnitude that allows computation of zoom factor
      * before zooming.
      */
     private double zoomFactor;
@@ -61,15 +61,18 @@ public class ZoomActionProxy extends ZoomAction {
      * @param arg0 The action event to be transmitted.
      * @see org.tigris.gef.base.ZoomAction#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent arg0) {
         Editor ed = Globals.curEditor();
-        if (ed == null) return;
+        if (ed == null) {
+            return;
+        }
 
         if ((zoomFactor == 0)
                 || ((ed.getScale() * zoomFactor 
-                    < ZoomSliderButton.MINIMUM_ZOOM / 100) 
+                    > ZoomSliderButton.MINIMUM_ZOOM / 100.0) 
                 && ed.getScale() * zoomFactor 
-                    < ZoomSliderButton.MAXIMUM_ZOOM / 100)) {
+                    < ZoomSliderButton.MAXIMUM_ZOOM / 100.0)) {
             super.actionPerformed(arg0);
         }
     }
