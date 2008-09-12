@@ -11552,8 +11552,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           layout algorithm.</para>
 
           <para>This function currently only works for classdiagrams. 
-          For all other types of diagrams, the menu-item is 
-          downlighted.</para>
+          For all other types of diagrams, the menu-item
+          does not do anything 
+          <!--(it should be downlighted)-->.</para>
 
         </sect2>
 
@@ -11860,7 +11861,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
           to-do items associated with that critic will be removed from 
           the to-do pane.</para>
 
-          <para>The V0.20 version of ArgoUML has a total of 90 critics, 
+          <para>The V0.26 version of ArgoUML has a total of 90 critics, 
           a few of which are incompletely implemented. They are 
           described in detail by design issue category in the chapter 
           on critics (see <xref linkend="ch.ref.critics"/>).</para>
@@ -11906,7 +11907,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <warning>
 
-            <para>In the V0.20 release of ArgoUML there is no further 
+            <para>In the V0.26 release of ArgoUML there is no further 
             information available, and the <literal>Go</literal> button 
             is always grayed out and disabled.</para>
 
@@ -11946,12 +11947,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <caution>
 
-            <para>In the V0.20 release of ArgoUML this selector has no 
+            <para>In the V0.26 release of ArgoUML this selector has no 
             function whatsoever. It is for future development.</para>
 
           </caution>
 
-          <para>Underneath the fields are three buttons in a horizontal 
+          <para>Underneath the fields are two buttons in a horizontal 
           row.</para>
 
           <itemizedlist>
@@ -11977,53 +11978,11 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <listitem>
 
-              <para><literal>Configure</literal>. This button is for 
-              configuring the critic.</para>
-
-              <caution>
-
-                <para>In the V0.20 version of ArgoUML this function is 
-                not implemented, and this button is always grayed out. 
-                It is for future development.</para>
-
-              </caution>
-
-            </listitem>
-
-            <listitem>
-
-              <para><literal>Edit Network</literal>. Right now critics 
-              are implemented in java code. That means end-users cannot 
-              add new critics.</para>
-
-              <para>The idea of a critic network is that they would be 
-              a state machine like diagram with several steps. Each 
-              step would express a condition which, collectively with 
-              the other steps associated with that critic, articulates 
-              the <quote>rule</quote> that the critic is providing. If 
-              the rule fires, then remaining steps would define the 
-              steps of the wizard to help the user fix the 
-              problem.</para>
-
-              <para>The ideas behind this are discussed in Chapter 4 of 
-              Jason Robbins PhD disseration (
-              <ulink url="http://argouml.tigris.org/docs/robbins_dissertation/diss4.html">http://argouml.tigris.org/docs/robbins_dissertation/diss4.html</ulink>. 
-              In particular look at Figure 1-6 in this chapter and the 
-              related discussion.</para>
-
-              <para>A suggested implementation is that the conditions 
-              could be written in OCL against the UML meta-model. A 
-              library of predefined conditions and steps would allow 
-              end-users to build new critics by combining those in 
-              novel ways.</para>
-
-              <caution>
-
-                <para>In the V0.20 version of ArgoUML this function is 
-                not implemented, and this button is always grayed out. 
-                It is for future development.</para>
-
-              </caution>
+              <para><literal>Advanced</literal>. This button 
+              causes ArgoUML to show a few columns extra
+              in the table of critics. 
+              It allows more detailed inspection 
+              of critic properties.</para>
 
             </listitem>
 
