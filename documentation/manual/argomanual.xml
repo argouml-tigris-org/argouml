@@ -9277,7 +9277,9 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
               in the notation tab of the settings dialog,
               which defines the default notation language for new projects.
               This choice is stored in the 
-              <filename>argouml.properties</filename> file.
+              <filename>argo.user.properties</filename> file in the 
+              <filename>.argouml</filename> directory under the 
+              user&apos;s home directory.
               </para>
 
             </listitem>
@@ -10116,22 +10118,6 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
-                <para><literal>${argo.root}</literal>. The full path to 
-                the ArgoUML program, i.e. the <literal>
-                argouml.jar</literal> file.</para>
-
-              </listitem>
-
-              <listitem>
-
-                <para><literal>${argo.home}</literal>. The ArgoUML home 
-                directory which contains the &quot;jar&quot; files 
-                needed by ArgoUML.</para>
-
-              </listitem>
-
-              <listitem>
-
                 <para><literal>${argo.ext.dir}</literal>. The directory 
                 holding ArgoUML extensions&mdash;by default the <literal>
                 ext</literal> sub-directory of the ArgoUML build 
@@ -10312,6 +10298,22 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           </sect3>
 
+          <sect3 id="s3.ref.menu_settings_configure_shortcuts">
+            <title>Configure Shortcuts Tab</title>
+            <para>(To Be Written)</para>
+            <figure float="1">
+
+              <title>The dialog for <literal>Settings - 
+              Configure Shortcuts</literal>.</title>
+
+              <screenshot><mediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/reference/menu_settings_configure_shortcuts.png"
+               format="PNG"/></imageobject></mediaobject></screenshot>
+            </figure>
+
+          </sect3>
+
           <sect3 id="s3.ref.menu_settings_notations">
 
             <title>Notation Tab</title>
@@ -10360,6 +10362,16 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
+                <para><literal>Show name of nodes in bold font</literal>.</para>
+
+                <para>This feature causes the names of every node (i.e. something drawn with a closed polygon) to be bold.</para>
+                
+                <para>There is no semantics to showing bold names, but it may make your diagrams look nicer.</para>
+
+              </listitem>
+
+              <listitem>
+
                 <para><literal>Use guillemots</literal> (&laquo;&nbsp;&raquo;) for 
                 stereotypes (clear by default). By default ArgoUML uses 
                 pairs of <emphasis>less than</emphasis> and 
@@ -10377,6 +10389,15 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
                 when entering stereotypes, you can always type
                 real guillemots (if your keyboard supports it)
                 or their &lt;&lt; &gt;&gt; equivalents.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><literal>Show association names</literal>.</para>
+
+                <para>This feature causes the names of every association to be hidden 
+                if not marked.</para>
 
               </listitem>
 
@@ -10458,6 +10479,44 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
               <listitem>
 
+                <para><literal>Show "1" multiplicities</literal>.</para>
+
+                <para>This feature allows the user to select if he wants 
+                to show all multiplicities that are "1" to be shown or not..</para>
+                
+                <para>Some people consider not showing 
+                the multiplicity as "undefined".
+                So, the only way to differentiate between 
+                a multiplicity of 1 and an undefined multiplicity, 
+                is to mark this checkbox.</para>
+
+              </listitem>
+
+              <listitem>
+
+                <para><literal>Hide arrowheads for bi-directional associations.</literal>.</para>
+
+                <para>The UML standard defines different ways 
+                to indicate navigability of an association on diagrams. 
+                Presentation option 1 is to show all arrows 
+                (i.e. you can only navigate in a certain direction if an arrow is drawn), 
+                presentation option 2 is to show no arrows at all, 
+                and presentation option 3 is to show only an arrow
+                if the association is unidirectional.</para>
+                
+                <para>Before the release of version 0.26, 
+                ArgoUML could only use presentation option 3. 
+                Currently, the user can choose between option 1 and 3. 
+                <!-- This is introduced thanks to issue 535. -->
+                Option 2 is not supported.</para>
+
+                <para>In the past, option 3 was used most often in other UML tools, 
+                but nowadays option 1 is more common.</para>
+
+              </listitem>
+
+              <listitem>
+
                 <para><literal>Default shadow width</literal> (set to 1 
                 by default). ArgoUML is able to draw all elements 
                 on a diagram with a shadow. Use this setting to adjust the 
@@ -10471,6 +10530,24 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             </itemizedlist>
 
           </sect3>
+
+
+          <sect3 id="s3.ref.menu_settings_diagram_appearance">
+            <title>Diagram Appearance Tab</title>
+            <para>(To Be Written)</para>
+            <figure float="1">
+
+              <title>The dialog for <literal>Settings - 
+              Diagram Appearance</literal>.</title>
+
+              <screenshot><mediaobject><imageobject>
+              <imagedata align="center"
+               fileref="images/reference/menu_settings_diagram_appearance.png"
+               format="PNG"/></imageobject></mediaobject></screenshot>
+            </figure>
+
+          </sect3>
+
 
           <sect3 id="s3.ref.menu_settings_modules">
 
