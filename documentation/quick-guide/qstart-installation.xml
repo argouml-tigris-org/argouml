@@ -278,8 +278,19 @@ You can also set java settings which influence the behaviour of ArgoUML:
   </sect1>
   
   <sect1>
+    <title>Making .zargo-file clickable (on any Windows)</title>
+    <para>The Windows installer for ArgoUML 
+    assigns the ".zargo" extension to the ArgoUML application, 
+    so that double or single clicking on a ArgoUML project file 
+    automatically starts ArgoUML. </para>
+    <para>However, if the installer is not used, 
+    but one of the other installation methods is used, 
+    then you may want to configure Windows manually for this.
+    In this case, follow the explanation below.</para>
+  
+  <sect2>
     <title>Making .zargo-file clickable (on Windows XP)</title>
-    <sect1info>
+    <sect2info>
       <authorgroup>
         <author>
           <firstname>Ewan</firstname>
@@ -287,7 +298,7 @@ You can also set java settings which influence the behaviour of ArgoUML:
           <surname>Grantham</surname>
         </author>
       </authorgroup>
-    </sect1info>
+    </sect2info>
     <warning>
       <para>
 <!-- This is issue 4733 -->
@@ -335,18 +346,18 @@ three different levels of the dialog).
 because that is the way to
 support filename extensions of more than 3 characters.
 </para>
-  </sect1>
+  </sect2>
 
-  <sect1>
+  <sect2>
     <title>Making .zargo-file clickable (on Windows Vista)</title>
-    <sect1info>
+    <sect2info>
       <authorgroup>
         <author>
           <firstname>Allan</firstname>
           <surname>Todd</surname>
         </author>
       </authorgroup>
-    </sect1info>
+    </sect2info>
 
     <para>1) Create a batch file "runargo.bat" 
       in your ArgoUML directory which looks
@@ -363,7 +374,10 @@ support filename extensions of more than 3 characters.
     <para>2) Associate your .zargo files with this batch file 
       (just double-click a .zargo
       file and follow the instructions).</para>
+  </sect2>
+
   </sect1>
+
 </chapter>
 
 <!-- Local stuff for Emacs - please do not delete
