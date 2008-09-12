@@ -10655,8 +10655,8 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
           <warning>
 
-            <para>The V0.22 implementation of ArgoUML does not 
-            inmediately update the dialog box with changes made to 
+            <para>The V0.26 implementation of ArgoUML does not 
+            immediately update the dialog box with changes made to 
             diagrams: change of name, addition of diagrams, deletion of 
             diagrams.<!-- This is issue 2475. -->
             </para>
@@ -10685,14 +10685,14 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
              format="PNG"/></imageobject></mediaobject></screenshot>
           </figure>
 
-          <para>At the top, the dialog box has four tabs labeled 
+          <!--para>At the top, the dialog box has four tabs labelled 
           <literal>Name and Location</literal>, <literal>
           Last Modified</literal>, <literal>Tagged Values</literal> and 
           <literal>Constraints</literal>. Of these all but the first 
-          are grayed out in the V0.22 version of ArgoUML (because they 
+          are grayed out in the V0.22 version of ArgoUML (because they
+          are not implemented yet), so the first tab is always 
+          selected.</para-->
           <!-- This is issue 2501 -->
-          are not imlemented yet), so the first tab is always 
-          selected.</para>
 
           <para>The <literal>Name and Location</literal> specifies the 
           search to be made. It contains the following:</para>
@@ -10842,7 +10842,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
             <para>This dialog box is not modal, which allows it to 
             remain open while editing the model for easy navigation. 
-            But the V0.22 implementation of ArgoUML does not inmediately 
+            But the V0.26 implementation of ArgoUML does not immediately 
             update the dialog box with changes made to the found 
             model elements: change of model element name, change of diagram name. 
             Deletion of a diagram does not stop the possibility to 
@@ -11017,6 +11017,12 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
             -->
           </warning>
 
+        </sect2>
+        
+        <sect2>
+          <title>Toolbars</title>
+          <para>This menu allows the user to hide or show any of the bars at will. 
+            By default, all of them are shown.</para>
         </sect2>
 
         <sect2>
