@@ -193,8 +193,8 @@ Choose the ones you are interested in.
 From this point on you can comment on bugs yourself directly in Issuezilla.
 </para>
 
-                <para> You can also verify issues according to the verification
-                  process (see <xref linkend="verify_resolved_fixed"/>).
+                <para> You can also close issues according to the verification
+                  process (see <xref linkend="close_verified_issues"/>).
 </para>
                 <para> This will help you understand the terminology used in the
                   project and also gives you an idea of the current quality of

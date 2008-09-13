@@ -187,16 +187,13 @@ Not used.
 </para>
             <sidebar>
               <para>
-Rationale: Each issue have basically four states:
+Rationale: Each issue have basically three states:
 <orderedlist>
                   <listitem>
                     <para>NEW/STARTED/REOPENED - To be resolved</para>
                   </listitem>
                   <listitem>
-                    <para>RESOLVED - To be verified</para>
-                  </listitem>
-                  <listitem>
-                    <para>VERIFIED - To be closed</para>
+                    <para>RESOLVED/VERIFIED - To be closed</para>
                   </listitem>
                   <listitem>
                     <para>CLOSED - Finished.</para>
@@ -214,18 +211,13 @@ Looking at it from a single persons perspective an issue is either a
 "I am now done with my work on this issue".
 For a resolver this is corresponds to NEW/REOPEN for the first group,
 STARTED for the second and
-RESOLVED for the third.
-For a verifier this corresponds to 
-RESOLVED for the first group and
-VERIFIED for the third group.
+RESOLVED/VERIFIED/CLOSED for the third.
 </para>
               <para>
 The RESOLVED/REMIND does not fit this.
-They risk to be verified because the rest of our process urges
-people to resolve issues that are RESOLVED
-in which case they are probably lost.
 
-They risk to be hanging in the RESOLVED state because nobody understands 
+They risk to be hanging in the RESOLVED/VERIFIED
+state because nobody understands 
 where they should go from there.
 
 It is not clear who is responsible to move them forward.
@@ -315,9 +307,8 @@ is at least a reporter and a resolver.
 Hence, each person involved in issues for the ArgoUML project can -
 at the same time - have different roles, and consequently, has 
 issues to report, 
-issues to close, 
-issues to resolve, and 
-issues to verify.
+issues to close, and
+issues to resolve.
 </para>
 
     <sect2 id="rolereporter">
@@ -357,21 +348,6 @@ the Reporter more information, to be able to solve the issue correctly.
 Another way of putting it is to say that 
 if the issue was reported without some vital information
 the Reporter has some more work to do.
-</para>
-          </listitem>
-          <listitem>
-            <para>
-Close the issue
-</para>
-            <para>
-This applies to an issue that is in the resolved or verified state.
-At the end of processing the issue,
-the reporter has the final word:
-he can check the result,
-and if he agrees with the solution,
-close the issue himself.
-Closing an issue requires at least "observer" role
-in the ArgoUML project.
 </para>
           </listitem>
           <listitem>
@@ -468,64 +444,6 @@ Skills:
 The resolver needs to know a lot of the insides of the ArgoUML code, Java,
 coding standards, and also the current status of the project with goals,
 requirements and release plans.
-</para>
-    </sect2>
-    <sect2 id="roleverifier">
-      <title>The Verifier</title>
-      <para>
-The Verifier may be neither the Reporter, nor the Resolver of the issue.
-The task of the Verifier is to check the quality of the solution by
-confirming that the solution is complete, to the point, bug-free, etc.
-This is an important part of the quality assurance work we do
-in the ArgoUML project and the objective is to make sure that a resolved
-issue is in fact resolved.
-</para>
-      <para>
-The test must be done on the "Target Milestone" version of the issue,
-or any later version released to the public.
-</para>
-      <para>
-Responsibilities:
-        <itemizedlist>
-          <listitem>
-            <para>
-Check that the issue is solved in the stated version of ArgoUML
-</para>
-          </listitem>
-          <listitem>
-            <para>
-Verify the issue.
-</para>
-            <para>
-If the Verifier can conclude that the problem does not exist or
-the feature/enhancement is now present.
-</para>
-          </listitem>
-          <listitem>
-            <para>
-Close the issue.
-</para>
-            <para>
-If someone else has already verified the issue then 
-the issue can be closed.
-</para>
-          </listitem>
-          <listitem>
-            <para>
-Reopen the issue if the solution is not fully correct
-</para>
-            <para>
-If the solution is not correct or the feature/enhancement does not work,
-it is the duty of the Verifier to reopen the issue.
-</para>
-          </listitem>
-        </itemizedlist>
-</para>
-      <para>
-Skills:
-The verifier needs only to focus on that issue, how the problem in it
-is formulated.
-He doesn't need to know how it is actually solved.
 </para>
     </sect2>
   </sect1>
@@ -665,182 +583,6 @@ according to the rule for creating Issues.
     </orderedlist>
   </sect1>
 
-  <sect1 id="verify_resolved_fixed">
-    <title>How to verify an Issue that is FIXED</title>
-    <indexterm>
-      <primary>Issues</primary>
-      <secondary>Verifying Fixed</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Issues</primary>
-      <secondary>Verifying WORKSFORME</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Verifying</primary>
-      <secondary>Works for me Issues</secondary>
-    </indexterm>
-    <para>
-This can be performed by any member of the project (any role).
-There might be special skills involved but it differs widely depending
-on the nature of the Issue.
-</para>
-    <para>
-If you are the Reporter of the issue, you Close the issue instead.
-</para>
-    <para>
-Do the following:
-</para>
-    <orderedlist>
-      <listitem id="verify_resolved_fixed_start">
-        <para>
-Pick any Issue that is RESOLVED/FIXED or WORKSFORME and that you have
-not raised, nor solved and that is included in a release
-(Target milestone set to a release available on the site).
-<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=FIXED&amp;resolution=WORKSFORME">The list of all RESOLVED/FIXED and RESOLVED/WORKSFORME issues</ulink>.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Run the specified release of ArgoUML.
-You can also use any later release.
-Use ArgoUML provided for downloads or 
-through Java Web Start.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Test the problem in the issue and verify that the problem is no longer
-there or the feature is provided.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Do one of the following:
-</para>
-        <itemizedlist>
-          <listitem>
-            <para>
-If the problem is gone or the feature is present, set the Issue
-Status to VERIFIED and
-add the version of the ArgoUML used for the test in in the comment.
-            </para>
-            <para> Remark: As an additional activity, the 
-                verifier may check if the manual needs to be adapted, and if 
-                so, may REOPEN the issue with an explanation text, and setting 
-                the correct subcomponent (Documentation &amp; Help). </para>
-          </listitem>
-          <listitem>
-            <para>
-If the problem is still there, the feature does not work, put the
-Issue in Status REOPENED with a description of what is still there, is
-still missing.
-Also state what version of ArgoUML was used for the test in the comment.
-</para>
-          </listitem>
-        </itemizedlist>
-      </listitem>
-      <listitem>
-        <para>
-If you during this, have discovered other problems than the one
-stated in the Issue, create new Issues for those new problems
-according to the rule for creating Issues.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Do this as many times as you like until there are no Issues left.
-</para>
-      </listitem>
-    </orderedlist>
-  </sect1>
-
-  <sect1 id="verify_resolved_invalid">
-    <title>How to verify an Issue that is rejected</title>
-    <indexterm>
-      <primary>Issues</primary>
-      <secondary>Resolving Rejected</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Issues</primary>
-      <secondary>Resolving INVALID</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Issues</primary>
-      <secondary>Resolving WONTFIX</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Issues</primary>
-      <secondary>Resolving DUPLICATE</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Resolving</primary>
-      <secondary>Rejected Issues</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Resolving</primary>
-      <secondary>Invalid Issues</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Resolving</primary>
-      <secondary>WONTFIX Issues</secondary>
-    </indexterm>
-    <indexterm>
-      <primary>Resolving</primary>
-      <secondary>DUPLICATE Issues</secondary>
-    </indexterm>
-    <para>
-This can be performed by any member of the project (any role).
-There might be special skills involved but it differs widely depending
-on the nature of the Issue.
-</para>
-    <para>
-If you are the Reporter of the issue, you Close the issue instead.
-</para>
-    <para>
-Do the following:
-</para>
-    <orderedlist>
-      <listitem id="verify_resolved_invalid_start">
-        <para>
-Pick any issue that is RESOLVED/(INVALID, WONTFIX, or DUPLICATE) that
-you have not raised nor solved.
-The chosen issue need not be connected to an available release.
-<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=INVALID&amp;resolution=WONTFIX&amp;resolution=DUPLICATE">The list of all RESOLVED/INVALID, RESOLVED/WONTFIX and RESOLVED/DUPLICATED issues</ulink>.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Read through the description provided.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Do one of the following:
-</para>
-        <itemizedlist>
-          <listitem>
-            <para>
-If you agree with the statement and feel that the rejection 
-is done for correct reasons,
-put the Issue in Status VERIFIED.
-</para>
-          </listitem>
-          <listitem>
-            <para>
-If you don't agree, put the Issue in status REOPENED and give a
-description as to why you don't agree.
-</para>
-          </listitem>
-        </itemizedlist>
-      </listitem>
-      <listitem>
-        <para>
-Do this as many times as you like until there are no Issues left.
-</para>
-      </listitem>
-    </orderedlist>
-  </sect1>
-
   <sect1 id="close_verified_issue">
     <title>How to Close an Issue</title>
     <indexterm>
@@ -848,56 +590,47 @@ Do this as many times as you like until there are no Issues left.
       <secondary>Closing</secondary>
     </indexterm>
     <para>
-This is performed by the person that originally raised the Issue,
-by the QA responsible for that area,
-or by anyone for issues that are verified.
+This is an optional step performed by 
+anyone that has personal interest in the issue.
 You need to be a member of the project (any role).
-This can also be done by someone who would have raised the issue but
-did not because it was already present in Issuezilla.
+</para>
+    <para>
+If this is not done, all issues will be summarily closed
+by the release responsible a while after the release.
 </para>
     <orderedlist>
       <listitem>
         <para>
-Pick any Issue that is Verified
-(<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=VERIFIED">
-all VERIFIED issues
-</ulink>)
-or that you have raised or refrained from raising because
-somebody else already had written it. 
+Pick any Issue that is RESOLVED or VERIFIED
+(<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;issue_status=VERIFIED">
+all RESOLVED or VERIFIED issues
+</ulink>). 
 </para>
       </listitem>
       <listitem>
         <para>
-See that you are satisfied with the solution.
-This could involve reading through the resolution and 
-starting the tool to verify it.
-</para>
-      </listitem>
-      <listitem>
-        <para>
-Do one of the following:
-</para>
-        <itemizedlist>
-          <listitem>
-            <para>
 If you are satisfied, Close the issue.
 </para>
-          </listitem>
-          <listitem>
-            <para>
+      </listitem>
+      <listitem>
+        <para>
+If you are satisfied and want to support the closing but not confident
+enough to close the issue, verify the issue with your comments.
+</para>
+      </listitem>
+      <listitem>
+        <para>
 If you are not satisfied but the problem is solved as it is written in
 the Issue, Close the issue and open a new Issue with
 the rest of the problem.
 </para>
-          </listitem>
-          <listitem>
-            <para>
+      </listitem>
+      <listitem>
+        <para>
 If you are not satisfied and the problem is not solved, put the Issue
 in status REOPENED with a description on what you are not satisfied
 with.
 </para>
-          </listitem>
-        </itemizedlist>
       </listitem>
     </orderedlist>
   </sect1>
@@ -1121,10 +854,6 @@ The releases are used:
           </listitem>
 
           <listitem>
-            <para>As reference points when verifying issues.</para>
-          </listitem>
-
-          <listitem>
             <para>
 As reference points and convenient downloads for persons working with modules.
 </para>
@@ -1258,7 +987,7 @@ Especially the areas that are new or changed since the last release.
           </listitem>
           <listitem>
             <para>
-Verify issues that are resolved.
+Test and close issues that are resolved to make sure the problem is gone.
 </para>
           </listitem>
           <listitem>
@@ -1349,8 +1078,7 @@ where
 
         <para>
 Each release is a release candidate.
-When we have reached the point where no more issues are verified
-and we are confident that there are no more problems in this release
+When we are confident that there are no more problems in this release
 we make the stable release without code changes compared to the last beta.
 </para>
       </listitem>

@@ -67,6 +67,23 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2008-09-13</entry>
+          <entry>
+The verification of issues is removed from the processes.
+(See <xref linkend="processes"/>).
+            <note>
+              <title>Design decision - Linus Tolke 2008-09-13</title>
+              <para>
+Verification is no longer encouraged.
+</para>
+            </note>
+          </entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2008-01-20</entry>
           <entry>
 Added a quick Eclipse instruction.
@@ -122,9 +139,7 @@ Added instructions on how to configure Subversion.
           <entry>
 Change to the process of verifying issues to allow the reporter to
 more freedom.
-(See <xref linkend="rolesofworkers"/>,
-<xref linkend="verify_resolved_fixed"/>,
-<xref linkend="verify_resolved_invalid"/>, and
+(See <xref linkend="rolesofworkers"/>, and
 <xref linkend="close_verified_issue"/>).
           </entry>
           <entry>Linus Tolke</entry>

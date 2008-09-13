@@ -3788,6 +3788,14 @@ the upcoming release, Reopen them with a comment that they are now
 active.
 </para>
           </listitem>
+          <listitem id="prepare_for_closing">
+            <para>Decide on when RESOLVED or VERIFIED issues are closed</para>
+            <para>
+Add a message of all RESOLVED or VERIFIED issues stating
+when they will be closed.
+After that period, close them unless they have been reopened.
+</para>
+          </listitem>
         </orderedlist>
       </listitem>
 	  
