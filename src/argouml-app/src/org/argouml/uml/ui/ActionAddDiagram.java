@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 
 import javax.swing.Action;
 
@@ -43,7 +44,11 @@ import org.tigris.gef.undo.UndoableAction;
  * Abstract class that is the parent of all actions adding diagrams to ArgoUML.
  * The children of this class should implement createDiagram to do any specific
  * actions for creating a diagram and isValidNamespace that checks if some
- * namespace is valid to add the diagram to.
+ * namespace is valid to add the diagram to. <p>
+ * 
+ * ArgoUML shall never create a diagram for a read-only modelelement.<p>
+ * 
+ * TODO: This class should be merged with ActionNewDiagram.
  *
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -71,7 +76,6 @@ public abstract class ActionAddDiagram extends UndoableAction {
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-    	super.actionPerformed(e);
         Project p = ProjectManager.getManager().getCurrentProject();
         Object ns = findNamespace();
 
@@ -98,8 +102,12 @@ public abstract class ActionAddDiagram extends UndoableAction {
         Project p = ProjectManager.getManager().getCurrentProject();
         Object target = TargetManager.getInstance().getModelTarget();
         Object ns = null;
-        if (target == null || !Model.getFacade().isAModelElement(target)) {
-            target = p.getRoot();
+        if (target == null || !Model.getFacade().isAModelElement(target)
+                || Model.getModelManagementHelper().isReadOnly(target)) {
+            Collection c = p.getRoots();
+            if ((c != null) && !c.isEmpty()) {
+                target = c.iterator().next();
+            } // else what?
         }
         if (Model.getFacade().isANamespace(target)) {
             ns = target;

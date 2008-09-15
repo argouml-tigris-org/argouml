@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -39,12 +40,21 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
- * Abstract action to trigger creation of a new diagram.
+ * Abstract action to trigger creation of a new diagram. <p>
+ * 
+ * ArgoUML shall never create a diagram for a read-only modelelement.
+ * <p>
  * TODO: Bobs says, can we merge ActionAddDiagram with this class?
  * 
  * @author michiel
  */
 public abstract class ActionNewDiagram extends UndoableAction {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(ActionNewDiagram.class);
 
     /**
      * The constructor.
@@ -69,23 +79,52 @@ public abstract class ActionNewDiagram extends UndoableAction {
         // a project, this should be using the default Namespace (currently
         // undefined) or something similar 
         Project p = ProjectManager.getManager().getCurrentProject();
-        ArgoDiagram diagram = createDiagram(p.getRoot());
-        assert (diagram != null)
-        	: "No diagram was returned by the concrete class";
+        Object ns = findNamespace();
+        
+        if (ns != null && isValidNamespace(ns)) {
+            ArgoDiagram diagram = createDiagram(ns);
+            assert (diagram != null)
+            : "No diagram was returned by the concrete class";
 
-        p.addMember(diagram);
-        //TODO: make the explorer listen to project member property
-        //changes...  to eliminate coupling on gui.
-        ExplorerEventAdaptor.getInstance().modelElementAdded(
-                diagram.getNamespace());
-        TargetManager.getInstance().setTarget(diagram);
+            p.addMember(diagram);
+            //TODO: make the explorer listen to project member property
+            //changes...  to eliminate coupling on gui.
+            ExplorerEventAdaptor.getInstance().modelElementAdded(
+                    diagram.getNamespace());
+            TargetManager.getInstance().setTarget(diagram);
+        } else {
+            LOG.error("No valid namespace found");
+            throw new IllegalStateException("No valid namespace found");
+        }
     }
-    
+
+    /**
+     * Find the right namespace for the diagram.
+     *
+     * @return the namespace or null
+     */
+    protected Object findNamespace() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        return p.getRoot();
+    }
+
     /**
      * @param namespace the namespace in which to create the diagram
      * @return the new diagram
      */
     protected abstract ArgoDiagram createDiagram(Object namespace);
+
+    /**
+     * Test if the given namespace is a valid namespace to add the diagram to.
+     * TODO: This method was created to facilitate the merge 
+     * of this class with ActionAddDiagram.
+     *
+     * @param ns the namespace to check
+     * @return Returns <code>true</code> if valid.
+     */
+    public boolean isValidNamespace(Object ns) {
+        return true;
+    }
 
     /**
      * Utility function to create a collaboration.
@@ -109,6 +148,9 @@ public abstract class ActionNewDiagram extends UndoableAction {
      */
     protected static Object createCollaboration(Object namespace) {
         Object target = TargetManager.getInstance().getModelTarget();
+        if (Model.getModelManagementHelper().isReadOnly(target)) {
+            target = namespace;
+        }
         Object collaboration = null;
         if (Model.getFacade().isAOperation(target)) {
             Object ns = Model.getFacade().getNamespace(

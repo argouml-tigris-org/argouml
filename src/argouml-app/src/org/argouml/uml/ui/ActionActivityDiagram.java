@@ -58,7 +58,7 @@ public class ActionActivityDiagram extends ActionNewDiagram {
         Object context = TargetManager.getInstance().getModelTarget();
         
         if (!Model.getActivityGraphsHelper().isAddingActivityGraphAllowed(
-                context)) {
+                context) || Model.getModelManagementHelper().isReadOnly(context)) {
             context = namespace;
         } 
         Object graph = 
