@@ -139,8 +139,7 @@ Added instructions on how to configure Subversion.
           <entry>
 Change to the process of verifying issues to allow the reporter to
 more freedom.
-(See <xref linkend="rolesofworkers"/>, and
-<xref linkend="close_verified_issue"/>).
+(See <xref linkend="rolesofworkers"/>).
           </entry>
           <entry>Linus Tolke</entry>
         </row>
@@ -478,7 +477,6 @@ Added a diagram explaining Explorer.
 Change to process for verifying issues.
 Any release after the one where the issue is fixed
 can be used for verifications.
-(See <xref linkend="verify_resolved_fixed"/>).
 </entry>
           <entry>Linus Tolke</entry>
         </row>
