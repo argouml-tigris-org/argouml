@@ -663,7 +663,7 @@ public class FigClassifierRole extends FigNodeModelElement
      * to the figobject depending on the state of the nodes.
      */
     public void updateActivations() {
-        LOG.info("Updating activations");
+        LOG.debug("Updating activations");
         lifeLineFig.removeActivations();
         addActivations();
     }
