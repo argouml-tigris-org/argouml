@@ -104,6 +104,8 @@ public abstract class ActionAddDiagram extends UndoableAction {
         Object ns = null;
         if (target == null || !Model.getFacade().isAModelElement(target)
                 || Model.getModelManagementHelper().isReadOnly(target)) {
+            // TODO: When read-only projects are supported (instead of just
+            // profiles), this could be a read-only extent as well
             Collection c = p.getRoots();
             if ((c != null) && !c.isEmpty()) {
                 target = c.iterator().next();
