@@ -49,7 +49,8 @@ public class ActionStateDiagram extends ActionNewDiagram {
      */
     protected ArgoDiagram createDiagram(Object namespace) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (Model.getModelManagementHelper().isReadOnly(target)) {
+        if (Model.getFacade().isAUMLElement(target) 
+                && Model.getModelManagementHelper().isReadOnly(target)) {
             target = namespace;
         }
         Object machine = null;

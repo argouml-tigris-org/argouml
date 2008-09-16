@@ -148,7 +148,8 @@ public abstract class ActionNewDiagram extends UndoableAction {
      */
     protected static Object createCollaboration(Object namespace) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (Model.getModelManagementHelper().isReadOnly(target)) {
+            if (Model.getFacade().isAUMLElement(target) 
+                    && Model.getModelManagementHelper().isReadOnly(target)) {
             target = namespace;
         }
         Object collaboration = null;
