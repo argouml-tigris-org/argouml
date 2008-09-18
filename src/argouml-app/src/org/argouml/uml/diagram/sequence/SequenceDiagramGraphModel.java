@@ -46,7 +46,7 @@ import org.tigris.gef.base.ModeManager;
 /**
  * This class defines a bridge between the UML meta-model
  * representation of the design and the GraphModel interface used by
- * GEF.  This class handles only UML Sequence Digrams.
+ * GEF.  This class handles only UML Sequence Diagrams.
  *
  * @author 5eichler@informatik.uni-hamburg.de
  */
@@ -73,15 +73,6 @@ public class SequenceDiagramGraphModel
      */
     private Object interaction;
 
-    /**
-     * State for actions in sequence diagram.
-     */
-    private Object defaultState;
-
-    /**
-     * State machine for default state.
-     */
-    private Object defaultStateMachine;
 
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
@@ -370,10 +361,7 @@ public class SequenceDiagramGraphModel
                     associationRole);
             if (action != null) {
                 Model.getCollaborationsHelper().setAction(message, action);
-                Model.getStateMachinesHelper().setDoActivity(
-                    Model.getStateMachinesFactory().buildSimpleState(
-                            getDefaultState()),
-                    action);
+                Model.getCoreHelper().setNamespace(action, getCollaboration());
             }
             Model.getCollaborationsHelper()
                 .setSender(message, fromObject);
@@ -453,45 +441,6 @@ public class SequenceDiagramGraphModel
             Model.getPump().addModelEventListener(this, interaction);
         }
         return interaction;
-    }
-
-    private Object getDefaultStateMachine() {
-        if (defaultStateMachine == null) {
-            Object clsfr =
-                Model.getFacade().getRepresentedClassifier(getCollaboration());
-            if (clsfr == null) {
-                Object oper = Model.getFacade().getRepresentedOperation(
-                        getCollaboration());
-                if (oper != null) clsfr = Model.getFacade().getOwner(oper);
-            }
-            if (clsfr == null) {
-                Object ns = Model.getFacade().getNamespace(getCollaboration());
-                clsfr = Model.getCoreFactory().buildClass(ns);
-            }
-            if (clsfr == null) {
-                throw new IllegalStateException("Can not create a Classifier");
-            }
-            for (Object child : Model.getFacade().getOwnedElements(clsfr)) {
-                if (Model.getFacade().isAStateMachine(child)) {
-                    defaultStateMachine = child;
-                    break;
-                }
-            }
-            if (defaultStateMachine == null) {
-                defaultStateMachine =
-                    Model.getStateMachinesFactory().buildStateMachine(clsfr);
-            }
-        }
-        return defaultStateMachine;
-    }
-
-    private Object getDefaultState() {
-        if (defaultState == null) {
-            defaultState =
-                Model.getStateMachinesHelper()
-                    .getTop(getDefaultStateMachine());
-        }
-        return defaultState;
     }
 
     /*
