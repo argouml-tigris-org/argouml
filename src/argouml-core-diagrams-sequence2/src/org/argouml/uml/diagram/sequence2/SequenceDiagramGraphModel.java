@@ -68,17 +68,6 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
      * The interaction that is shown on the sequence diagram.
      */
     private Object interaction;
-
-    /**
-     * State for actions in sequence diagram.
-     */
-    private Object defaultState;
-
-    /**
-     * State machine for default state.
-     */
-    private Object defaultStateMachine;
-
     
     
     /**
@@ -351,10 +340,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
                     associationRole);
             if (action != null) {
                 Model.getCollaborationsHelper().setAction(message, action);
-                Model.getStateMachinesHelper().setDoActivity(
-                    Model.getStateMachinesFactory().buildSimpleState(
-                            getDefaultState()),
-                    action);
+                Model.getCoreHelper().setNamespace(action, getCollaboration());
             }
             Model.getCollaborationsHelper()
                 .setSender(message, fromPort);
@@ -379,47 +365,6 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
             getEdges().add(edge);
             fireEdgeAdded(edge);
         }
-    }
-
-    
-    
-    private Object getDefaultStateMachine() {
-        if (defaultStateMachine == null) {
-            Object clsfr =
-                Model.getFacade().getRepresentedClassifier(getCollaboration());
-            if (clsfr == null) {
-                Object oper = Model.getFacade().getRepresentedOperation(
-                        getCollaboration());
-                if (oper != null) clsfr = Model.getFacade().getOwner(oper);
-            }
-            if (clsfr == null) {
-                Object ns = Model.getFacade().getNamespace(getCollaboration());
-                clsfr = Model.getCoreFactory().buildClass(ns);
-            }
-            if (clsfr == null) {
-                throw new IllegalStateException("Can not create a Classifier");
-            }
-            for (Object child : Model.getFacade().getOwnedElements(clsfr)) {
-                if (Model.getFacade().isAStateMachine(child)) {
-                    defaultStateMachine = child;
-                    break;
-                }
-            }
-            if (defaultStateMachine == null) {
-                defaultStateMachine =
-                    Model.getStateMachinesFactory().buildStateMachine(clsfr);
-            }
-        }
-        return defaultStateMachine;
-    }
-
-    private Object getDefaultState() {
-        if (defaultState == null) {
-            defaultState =
-                Model.getStateMachinesHelper()
-                    .getTop(getDefaultStateMachine());
-        }
-        return defaultState;
     }
 
 }
