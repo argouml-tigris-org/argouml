@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -87,8 +88,11 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
                 this, "initialValue");
         JPanel initialPanel = createBorderPanel(Translator
                 .localize("label.initial-value"));
-        initialPanel.add(new JScrollPane(new UMLExpressionBodyField(
-                initialModel, true)));
+        JScrollPane jsp = new JScrollPane(new UMLExpressionBodyField(
+                initialModel, true));
+        jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        initialPanel.add(jsp);
         initialPanel.add(new UMLExpressionLanguageField(initialModel,
                 false));
         add(initialPanel);
