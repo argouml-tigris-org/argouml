@@ -1238,6 +1238,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elem instanceof StubState) {
             getStateMachines().deleteStubState(elem);
         } else if (elem instanceof State) {
+            getStateMachines().deleteState(elem);
             if (elem instanceof CompositeState) {
                 getStateMachines().deleteCompositeState(elem);
                 if (elem instanceof SubmachineState) {

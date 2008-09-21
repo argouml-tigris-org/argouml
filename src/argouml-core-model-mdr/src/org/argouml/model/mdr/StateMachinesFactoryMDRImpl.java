@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -580,6 +580,29 @@ class StateMachinesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         }
     }
 
+    /**
+     * @param elem
+     *            the UML element to be deleted
+     */
+    void deleteState(Object elem) {
+        if (!(elem instanceof State)) {
+            throw new IllegalArgumentException();
+        }
+        State state = (State) elem;
+        deleteNonNull(state.getDoActivity());
+        deleteNonNull(state.getEntry());
+        deleteNonNull(state.getExit());
+        modelImpl.getUmlHelper().deleteCollection(
+                state.getInternalTransition());
+
+    }
+
+    private void deleteNonNull(ModelElement action) {
+        if (action != null) {
+            modelImpl.getUmlFactory().delete(action);
+        }
+    }
+    
     /**
      * @param elem
      *            the UML element to be deleted
