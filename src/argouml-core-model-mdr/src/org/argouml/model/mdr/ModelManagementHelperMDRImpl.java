@@ -913,7 +913,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
              */
             if (pack instanceof Collaboration) {
                 // TODO: Not implemented
-                throw new RuntimeException(
+                LOG.debug(
                         "Not implemented - getAllContents for: " + pack);
             }
         } catch (InvalidObjectException e) {
