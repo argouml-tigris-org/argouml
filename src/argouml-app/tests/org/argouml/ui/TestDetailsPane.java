@@ -117,6 +117,7 @@ public class TestDetailsPane extends TestCase {
 		});
         pane.targetSet(e);
         assertEquals("1:", todoPane, pane.getTabs().getSelectedComponent());
+        
         UMLClassDiagram diagram = new UMLClassDiagram();
         e =
             new TargetEvent(
@@ -131,7 +132,9 @@ public class TestDetailsPane extends TestCase {
         pane.getTabs().setSelectedComponent(todoPane);
         TargetManager.getInstance().setTarget(diagram);
         pane.targetSet(e);
-        assertEquals("2:", propertyPane, pane.getTabs().getSelectedComponent());
+        assertEquals("2:", todoPane, pane.getTabs().getSelectedComponent());
+        
+        
         Object clazz = Model.getCoreFactory().createClass();
         e =
             new TargetEvent(this,
@@ -144,10 +147,10 @@ public class TestDetailsPane extends TestCase {
 			    });
         TargetManager.getInstance().setTarget(clazz);
         pane.targetSet(e);
-        assertEquals("3:", propertyPane, pane.getTabs().getSelectedComponent());
+        assertEquals("3:", todoPane, pane.getTabs().getSelectedComponent());
         pane.getTabs().setSelectedComponent(todoPane);
         pane.targetSet(e);
-        assertEquals("4:", propertyPane, pane.getTabs().getSelectedComponent());
+        assertEquals("4:", todoPane, pane.getTabs().getSelectedComponent());
         // TODO: at the moment setSelectedComponent doesn't take into account
         // the rather complex tab selection mechanism of DetailsPane. The tab
         // selection mechanism must be refactored.
