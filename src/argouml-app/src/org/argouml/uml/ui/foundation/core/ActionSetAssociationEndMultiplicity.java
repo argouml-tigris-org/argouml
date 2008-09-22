@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,7 +51,7 @@ public class ActionSetAssociationEndMultiplicity extends ActionSetMultiplicity {
     public void setSelectedItem(Object item, Object target) {
         if (target != null && Model.getFacade().isAAssociationEnd(target)) {
             if (Model.getFacade().isAMultiplicity(item)) {
-                if (!Model.getFacade().getMultiplicity(target).equals(item)) {
+                if (!item.equals(Model.getFacade().getMultiplicity(target))) {
                     Model.getCoreHelper().setMultiplicity(target, item);
                 }
             } else if (item instanceof String) {
