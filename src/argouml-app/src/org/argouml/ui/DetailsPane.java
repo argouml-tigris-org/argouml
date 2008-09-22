@@ -258,7 +258,7 @@ public class DetailsPane
 
             // Always select properties panel if defaultToProperties is true,
             // and if properties panel is appropriate for selected perspective
-            if (defaultToProperties) {
+            if (defaultToProperties || lastNonNullTab < 0) {
                 tabSelected = selectPropsTab(target);
             } else {
                 // Select prop panel if current panel is not appropriate
@@ -607,7 +607,7 @@ public class DetailsPane
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget(), true);
+        setTarget(e.getNewTarget(), false);
         fireTargetSet(e);
     }
 

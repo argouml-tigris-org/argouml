@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -284,7 +284,8 @@ public class TabDiagram
                 }
             }
             if (addedTargets.size() == 1
-                    && removedTargets.size() == currentSelection.size()) {
+                    && removedTargets.size() == currentSelection.size()
+                    && removedTargets.size() != 0) {
                 // Optimize for the normal case to minimize target changes
                 TargetManager.getInstance().setTarget(addedTargets.get(0));
             } else {
