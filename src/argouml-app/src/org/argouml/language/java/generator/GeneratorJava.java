@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -1167,8 +1167,7 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
     private String generateConstraintEnrichedDocComment(Object me, Object ae) {
         String s = generateConstraintEnrichedDocComment(me, true, INDENT);
 
-        Object m = Model.getFacade().getMultiplicity(ae);
-        if (Model.getFacade().getUpper(m) != 1) {
+        if (isCollection(ae)) {
             // Multiplicity greater 1, that means we will generate some sort of
             // collection, so we need to specify the element type tag
             StringBuffer sDocComment = new StringBuffer(80);
@@ -1202,6 +1201,23 @@ public class GeneratorJava implements CodeGenerator, ModuleInterface {
         return (s != null) ? s : "";
     }
 
+    /**
+     * @param element ModelElement which has the Multiplicity
+     * @return true if multiplicity is non-null and upper bound is greater
+     * than 1
+     */
+    private boolean isCollection(Object element) {
+        Object multiplicity = Model.getFacade().getMultiplicity(element);
+        if (multiplicity != null) {
+            int upper = Model.getFacade().getUpper(multiplicity);
+            // -1 is UML's special 'unlimited integer'
+            if (upper > 1 || upper == -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     /**
      * Enhance/Create the doccomment for the given model element,
      * including tags for any OCL constraints connected to the model
