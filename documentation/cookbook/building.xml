@@ -1699,10 +1699,10 @@ that subproject discusses the subproject.
 Join both of these mailing list to see what is going on in the subproject!
 </para>
 	<para>
-The sub-projects could use their own Issuezilla database but could also be
-subcomponents in the ArgoUML Issuezilla.
-If it is a subcomponent you need to acquire an Observer role in the argouml
-project to work in a subproject.
+The sub-projects could use their own Issuezilla database but 
+should preferably instead have issues registered in the ArgoUML Issuezilla.
+Every developer of a subproject needs to acquire
+an Observer role in the argouml project.
 </para>
       </sect3>
 
@@ -3791,9 +3791,39 @@ active.
           <listitem id="prepare_for_closing">
             <para>Decide on when RESOLVED or VERIFIED issues are closed</para>
             <para>
-Add a message of all RESOLVED or VERIFIED issues stating
-when they will be closed.
-After that period, close them unless they have been reopened.
+Add a message to all VERIFIED issues and
+verify all RESOLVED issues stating when they will be closed.
+Suggested message:
+</para>
+            <para>
+"The solution to this issue is included in the stable release
+<replaceable>X.XX</replaceable>
+that can be downloaded from
+http://argouml-downloads.tigris.org/argouml-<replaceable>X.XX</replaceable>.
+</para>
+            <para>
+If you, when you test this, find that the issue is not solved,
+please reopen the issue. If you don't it will be closed on
+<replaceable>34th of Sebruary</replaceable>.
+</para>
+            <para>
+If you find other problems when testing this,
+please create a new issue."
+</para>
+            <para>
+After that period, close all the issues unless they have been reopened.
+Suggested message:
+</para>
+            <para>
+"The solution to this issue is included in the stable release
+<replaceable>X.XX</replaceable>
+that can be downloaded from
+http://argouml-downloads.tigris.org/argouml-<replaceable>X.XX</replaceable>.
+</para>
+            <para>
+If you, when you test this, find that the issue is not solved,
+create a new issue and mention this issue in the description
+or as a reference."
 </para>
           </listitem>
         </orderedlist>
