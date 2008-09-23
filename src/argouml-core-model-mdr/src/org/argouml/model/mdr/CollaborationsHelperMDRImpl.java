@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -505,13 +504,13 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * TODO: Beware: this function does not return the actual base! 
      * Is that by design or a bug?
      * 
-     * @param role
+     * @param aRole
      *            the given associationrole
      * @return Collection all possible bases
      */
-    private Collection getAllPossibleBases(AssociationRole role) {
+    private Collection getAllPossibleBases(AssociationRole aRole) {
         Set<UmlAssociation> ret = new HashSet<UmlAssociation>();
-        if (role == null || role.getNamespace() == null) {
+        if (aRole == null || aRole.getNamespace() == null) {
             return ret;
         }
 
@@ -520,10 +519,9 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         // associations between those bases form the possible bases. Otherwise
         // the bases are formed by all associations in the namespace of the
         // collaboration
-        Iterator it = role.getConnection().iterator();
-        Set bases = new HashSet();
-        while (it.hasNext()) {
-            AssociationEndRole end = (AssociationEndRole) it.next();
+        Set<Classifier> bases = new HashSet<Classifier>();
+                for (AssociationEnd end : aRole.getConnection()) {
+                    assert end instanceof AssociationEndRole;
             ClassifierRole type = (ClassifierRole) end.getParticipant();
             if (type != null) {
                 bases.addAll(type.getBase());
@@ -531,20 +529,24 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         }
         if (bases.isEmpty()) {
             ModelManagementHelper mmh = modelImpl.getModelManagementHelper();
-            Namespace ns = ((Collaboration) role.getNamespace()).getNamespace();
+            Namespace ns = 
+                ((Collaboration) aRole.getNamespace()).getNamespace();
             ret.addAll(
                     mmh.getAllModelElementsOfKind(ns, UmlAssociation.class));
             ret.removeAll(mmh.getAllModelElementsOfKind(ns,
                     AssociationRole.class));
         } else {
-            it = bases.iterator();
-            while (it.hasNext()) {
-                Classifier base1 = (Classifier) it.next();
-                if (it.hasNext()) {
-                    Classifier base2 = (Classifier) it.next();
-                    CoreHelper ch = modelImpl.getCoreHelper();
-                    Collection assocs = ch.getAssociations(base1, base2);
-                    ret.addAll(assocs);
+            CoreHelper ch = modelImpl.getCoreHelper();
+            /* This double 'for' loop may be optimised as follows:
+             * - Use arrays in stead of a Set for bases
+             * - Have the second loop start from the element after base1 
+             * ... but I chose not to do this, since the gain is small,
+             * and this is only used for a lazily filled combo.*/
+            for (Classifier base1 : bases)  {
+                for (Classifier base2 : bases) {
+                    if (base1 != base2) {
+                        ret.addAll(ch.getAssociations(base1, base2));
+                    }
                 }
             }
         }
@@ -560,7 +562,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             }
             // if we are unnamed eliminate all classifiers which are already 
             // the base of some role
-            if (role.getName() == null || role.getName().equals("")) {
+            if (aRole.getName() == null || aRole.getName().equals("")) {
                 listToRemove.add(association);
             } else {
                 // eliminate Classifiers which already have an unnamed role
