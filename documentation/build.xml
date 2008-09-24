@@ -32,7 +32,7 @@ What tools do I need to use this build file?
 
 <project name="ArgoDocs" default="defaulthtml" basedir=".">
 
-  <property name="argo.core.version" value="PRE-0.26.beta5"/>
+  <property name="argo.core.version" value="0.26.beta5"/>
 
   <!-- we really need an absolute path for argo.root.dir -->
   <property name="argo.root.dir" value="${basedir}/.."/>
