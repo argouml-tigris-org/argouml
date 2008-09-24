@@ -294,28 +294,35 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
 	public void itemStateChanged(ItemEvent e) {
 	    Object target = getTarget();
 	    Object oldValue = Model.getFacade().getMultiplicity(target);
+	    // Note: MultiplicityComboBox.targetSet() can cause this event
+	    // as well as user actions, so be sure to consider this in 
+	    // changing the following logic 
 	    if (e.getStateChange() == ItemEvent.SELECTED) {
-		String comboText =
-		    (String) multiplicityComboBox.getSelectedItem();
-		if (comboText.equals(Model.getFacade().toString(oldValue))) {
-		    return;
-		}
-                Object multi =
-                    Model.getDataTypesFactory().createMultiplicity(comboText);
-		if (multi == null) {
-                    Model.getCoreHelper().setMultiplicity(target, "1");
-		} else {
-                    Model.getCoreHelper().setMultiplicity(target, multi);
-		}
+                String comboText = 
+                    (String) multiplicityComboBox.getSelectedItem();
+                if (oldValue == null
+                        || !comboText.equals(Model.getFacade().toString(
+                                oldValue))) {
+                    Object multi = Model.getDataTypesFactory()
+                            .createMultiplicity(comboText);
+                    if (multi == null) {
+                        Model.getCoreHelper().setMultiplicity(target, "1");
+                    } else {
+                        Model.getCoreHelper().setMultiplicity(target, multi);
+                    }
+                    if (oldValue != null) {
+                        Model.getUmlFactory().delete(oldValue);
+                    }
+                }
 		multiplicityComboBox.setEnabled(true);
 		multiplicityComboBox.setEditable(true);
 	    } else {
 		multiplicityComboBox.setEnabled(false);
 		multiplicityComboBox.setEditable(false);
                 Model.getCoreHelper().setMultiplicity(target, null);
-	    }
-	    if (oldValue != null) {
-	        Model.getUmlFactory().delete(oldValue);
+                if (oldValue != null) {
+                    Model.getUmlFactory().delete(oldValue);
+                }
 	    }
 	}
     }
