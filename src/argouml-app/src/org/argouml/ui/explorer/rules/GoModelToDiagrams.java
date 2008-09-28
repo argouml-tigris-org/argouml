@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,14 +24,18 @@
 
 package org.argouml.ui.explorer.rules;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
  * Rule for Model->Diagram.
@@ -50,14 +54,32 @@ public class GoModelToDiagrams extends AbstractPerspectiveRule {
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
-    public Collection getChildren(Object parent) {
-        // TODO: This is assuming a single model per project which isn't
-        // true of models received from other UML tools - tfm 20070724
-	if (Model.getFacade().isAModel(parent)) {
-	    return ProjectManager.getManager()
-                        .getCurrentProject().getDiagramList();
+    public Collection getChildren(Object model) {
+	if (Model.getFacade().isAModel(model)) {
+	    List returnList = new ArrayList();
+	    Project proj = ProjectManager.getManager().getCurrentProject();
+            for (ArgoDiagram diagram : proj.getDiagramList()) {
+                if (isInPath(diagram.getNamespace(), model)) {
+                        returnList.add(diagram);
+                }
+            }
+            return returnList;
 	}
 	return Collections.EMPTY_SET;
+    }
+
+    private boolean isInPath(Object namespace, Object model) {
+        if (namespace == model) {
+            return true;
+        }
+        Object ns = Model.getFacade().getNamespace(namespace);
+        while (ns != null) {
+            if (model == ns) {
+                return true;
+            }
+            ns = Model.getFacade().getNamespace(ns);
+        }
+        return false;
     }
 
     /*
