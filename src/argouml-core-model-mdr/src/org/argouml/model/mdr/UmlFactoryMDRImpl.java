@@ -321,7 +321,6 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         validContainmentMap.put(ModelElement.class,
                 new Class<?>[] {
-                    Stereotype.class
                 });
         
         // specifies valid elements for a Model to contain 
@@ -336,7 +335,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 UmlPackage.class, Actor.class,
                 UseCase.class, UmlClass.class,
                 Interface.class, Component.class,
-                Node.class,
+                Node.class, Stereotype.class,
                 Enumeration.class, DataType.class,
                 UmlException.class, Signal.class
             });
