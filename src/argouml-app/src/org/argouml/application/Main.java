@@ -61,7 +61,6 @@ import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.language.java.generator.GeneratorJava;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.InitModuleLoader;
 import org.argouml.moduleloader.ModuleLoader2;
@@ -85,7 +84,6 @@ import org.argouml.uml.diagram.state.ui.InitStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
-import org.argouml.uml.reveng.java.JavaImport;
 import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.util.ArgoFrame;
 import org.argouml.util.JavaRuntimeUtility;
@@ -391,9 +389,6 @@ public class Main {
 
         st.mark("initialize the profile subsystem");
         new InitProfileSubsystem().init();
-
-        // Initialize the Java code generator. (why so early? - tfm)
-        GeneratorJava.getInstance();
 
         // The reason the gui is initialized before the commands are run
         // is that some of the commands will use the projectbrowser.
@@ -976,8 +971,6 @@ class LoadModules implements Runnable {
      * @see java.lang.Runnable#run()
      */
     public void run() {
-        // Why is this done separately? - tfm?
-	new JavaImport().enable();
 	huntForInternalModules();
         LOG.info("Module loading done");
     }

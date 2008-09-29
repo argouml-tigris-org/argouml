@@ -31,7 +31,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.configuration.Configuration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.language.java.cognitive.critics.InitJavaCritics;
 import org.argouml.model.Model;
 import org.argouml.pattern.cognitive.critics.InitPatternCritics;
 import org.argouml.uml.cognitive.UMLDecision;
@@ -53,7 +52,6 @@ public class StartCritics implements Runnable {
     public void run() {
         Designer dsgr = Designer.theDesigner();
         SubsystemUtility.initSubsystem(new InitCognitiveCritics());
-        SubsystemUtility.initSubsystem(new InitJavaCritics());
         SubsystemUtility.initSubsystem(new InitPatternCritics());
         org.argouml.uml.cognitive.checklist.Init.init();
         // set the icon for this poster

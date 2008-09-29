@@ -31,7 +31,6 @@ import junit.framework.TestCase;
 
 import org.argouml.cognitive.checklist.ui.InitCheckListUI;
 import org.argouml.cognitive.ui.InitCognitiveUI;
-import org.argouml.language.java.cognitive.critics.InitJavaCritics;
 import org.argouml.model.InitializeModel;
 import org.argouml.moduleloader.InitModuleLoader;
 import org.argouml.notation.InitNotation;
@@ -78,7 +77,6 @@ public class GUITestInitSubsystem extends TestCase {
         initialisers.add(new InitCollaborationDiagram());
         initialisers.add(new InitDeploymentDiagram());
         initialisers.add(new InitDiagramAppearanceUI());
-        initialisers.add(new InitJavaCritics());
         initialisers.add(new InitModuleLoader());
         initialisers.add(new InitNotation());
         initialisers.add(new InitNotationJava());
