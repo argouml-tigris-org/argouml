@@ -35,6 +35,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -260,9 +261,17 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         
     }
 
-    public void propertyChange(PropertyChangeEvent pce) {
-        // TODO: Auto-generated method stub
-        
+    /**
+     * Look for delete events of the interaction that this diagram
+     * represents. Null our interaction reference if detected.
+     * @param evt the property change event
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt instanceof DeleteInstanceEvent
+                && evt.getSource() == interaction) {
+            Model.getPump().removeModelEventListener(this, interaction);
+            interaction = null;
+        }
     }
 
     /**
@@ -366,5 +375,4 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
             fireEdgeAdded(edge);
         }
     }
-
 }
