@@ -60,10 +60,6 @@ Building this requires:
       <pathelement path="${JAVA_HOME}/lib/tools.jar"/>
     </path>
 
-    <path id="antlr.run.classpath">
-      <pathelement location="lib/antlr-2.7.7.jar"/>
-    </path>
-
     <path id="src.compile.classpath">
       <fileset dir="lib">
         <include name="*.jar"/>
@@ -216,86 +212,6 @@ Building this requires:
   </target>
 
   <!-- =================================================================== -->
-  <!-- Generates the parsers from the grammars by using Antlr              -->
-  <!-- =================================================================== -->
-
-  <target name="generateparser" depends="init"
-          description="Generate the antlr parsers.">
-    <echo message="Generate parsers in argouml-app"/>
-
-    <uptodate property="parser.re.is.current"
-              targetfile="src/org/argouml/uml/reveng/java/JavaTokenTypes.txt">
-      <srcfiles dir="src/org/argouml/uml/reveng/java">
-        <include name="java.g"/>
-      </srcfiles>
-    </uptodate>
-    <antcall target="generate-parser-re"/>
-
-    <uptodate property="parser.cg.is.current"
-              targetfile="src/org/argouml/language/java/generator/JavaTokenTypes.txt">
-      <srcfiles dir="src/org/argouml/language/java/generator">
-        <include name="java.g"/>
-      </srcfiles>
-    </uptodate>
-    <antcall target="generate-parser-cg"/>
-
-  </target>
-
-  <target name="generate-parser-re" unless="parser.re.is.current" depends="init">
-    <delete>
-      <fileset dir="src/org/argouml/uml/reveng/java">
-        <include name="JavaTokenTypes.txt"/>
-      </fileset>
-    </delete>
-    <java classname="antlr.Tool"
-          fork="yes"
-          maxmemory="32M">
-      <classpath>
-        <path refid="antlr.run.classpath"/>
-      </classpath>
-      <arg value="-o"/>
-      <arg file="src/org/argouml/uml/reveng/java"/>
-      <arg file="src/org/argouml/uml/reveng/java/java.g"/>
-    </java>
-  </target>
-
-  <target name="generate-parser-cg" unless="parser.cg.is.current" depends="init">
-    <delete>
-      <fileset dir="src/org/argouml/language/java/generator">
-        <include name="JavaTokenTypes.txt"/>
-      </fileset>
-    </delete>
-    <java classname="antlr.Tool" 
-          fork="yes"
-          maxmemory="32M">
-      <classpath>
-        <path refid="antlr.run.classpath"/>
-      </classpath>
-      <arg value="-o"/>
-      <arg file="src/org/argouml/language/java/generator"/>
-      <arg file="src/org/argouml/language/java/generator/java.g"/>
-    </java>
-  </target>
-
-  <target name="cleanparser"
-          description="Clean up the antlr parsers.">
-    <delete>
-      <fileset dir="src/org/argouml/uml/reveng/java">
-        <include name="JavaLexer.java"/>
-        <include name="JavaRecognizer.java"/>
-        <include name="JavaTokenTypes.java"/>
-        <include name="JavaTokenTypes.txt"/>
-      </fileset>
-      <fileset dir="src/org/argouml/language/java/generator">
-        <include name="JavaLexer.java"/>
-        <include name="JavaRecognizer.java"/>
-        <include name="JavaTokenTypes.java"/>
-        <include name="JavaTokenTypes.txt"/>
-      </fileset>
-    </delete>
-  </target>
-
-  <!-- =================================================================== -->
   <!-- Updates the version source file if necessary                        -->
   <!-- =================================================================== -->
   <target name="check-version" depends="init">
@@ -325,7 +241,7 @@ Building this requires:
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
   <target name="compile"
-      depends="prepare,update-version,generateparser"
+      depends="prepare,update-version"
       description="Compile the sources.">
 
     <echo message="Compiling the sources in argouml-app"/>
@@ -383,7 +299,6 @@ Building this requires:
     <delete dir="${build.dir}"/>
     <delete file="src/${version.package}/ArgoVersion.java"/>
 
-    <antcall target="cleanparser"/>
     <antcall target="coverage-clean"/>
   </target>
 
