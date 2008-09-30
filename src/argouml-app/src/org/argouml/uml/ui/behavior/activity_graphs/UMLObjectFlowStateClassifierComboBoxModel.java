@@ -30,6 +30,7 @@ import java.util.Collection;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -96,9 +97,8 @@ public class UMLObjectFlowStateClassifierComboBoxModel
      * @param evt
      *            A PropertyChangeEvent object describing the event source and
      *            the property that has changed.
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void modelChanged(UmlChangeEvent evt) {
         buildingModel = true;
         buildModelList();
         buildingModel = false;

@@ -24,8 +24,11 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -34,6 +37,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -45,10 +49,12 @@ import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * ComboBox Model for UML modelelements. <p>
@@ -144,6 +150,34 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         propertySetName = name;
     }
 
+    final public void propertyChange(final PropertyChangeEvent pve) {
+        if (pve instanceof UmlChangeEvent) {
+            final UmlChangeEvent event = (UmlChangeEvent) pve;
+
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    try {
+                        modelChanged(event);
+                    } catch (InvalidElementException e) {
+                        LOG.error("", e);
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("event = "
+                                    + event.getClass().getName());
+                            LOG.debug("source = " + event.getSource());
+                            LOG.debug("old = " + event.getOldValue());
+                            LOG.debug("name = " + event.getPropertyName());
+                            LOG.debug("updateLayout method accessed "
+                                    + "deleted element ", e);
+                        }
+                    }
+                }  
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
+        }
+    }
+    
+    
+    
     /**
      * If the property that this comboboxmodel depicts is changed in the UML
      * model, this method will make sure that the changes will be 
@@ -153,7 +187,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * {@inheritDoc}
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void modelChanged(UmlChangeEvent evt) {
         buildingModel = true;
         if (evt instanceof AttributeChangeEvent) {
             if (evt.getPropertyName().equals(propertySetName)) {

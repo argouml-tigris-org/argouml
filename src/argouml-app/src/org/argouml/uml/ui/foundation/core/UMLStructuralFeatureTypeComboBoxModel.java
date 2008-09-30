@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
@@ -33,6 +32,7 @@ import java.util.TreeSet;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.util.PathComparator;
 
@@ -125,11 +125,8 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         return o;
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
-     */
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void modelChanged(UmlChangeEvent evt) {
         /*
          * The default behavior for super implementation is
          * to add/remove elements from the list, but it isn't
