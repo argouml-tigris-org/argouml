@@ -30,6 +30,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -104,10 +105,10 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
     }
 
     /*
-    * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-    */
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#modelChanged(org.argouml.model.UmlChangeEvent)
+     */
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void modelChanged(UmlChangeEvent evt) {
         /*
          * Rebuild the list from scratch to be sure it's correct.
          */

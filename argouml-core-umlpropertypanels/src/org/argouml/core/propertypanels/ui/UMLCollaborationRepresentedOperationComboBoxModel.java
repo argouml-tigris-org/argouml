@@ -31,6 +31,7 @@ import java.util.Collection;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -83,10 +84,10 @@ class UMLCollaborationRepresentedOperationComboBoxModel
     }
     
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#modelChanged(org.argouml.model.UmlChangeEvent)
      */
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void modelChanged(UmlChangeEvent evt) {
         /* Do nothing by design. */
     }
 }
