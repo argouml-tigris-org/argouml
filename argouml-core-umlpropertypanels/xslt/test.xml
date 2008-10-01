@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<panels xmlns:Model="omg.org/mof.Model/1.3">
+  <panel name="Element"/>
+  <panel name="ModelElement">
+    <item name="name" type="Name"/>
+    <item name="visibility" type="VisibilityKind"/>
+    <item name="isSpecification" type="Boolean"/>
+  </panel>
+  <panel name="GeneralizableElement">
+    <item name="isRoot" type="Boolean"/>
+    <item name="isLeaf" type="Boolean"/>
+    <item name="isAbstract" type="Boolean"/>
+  </panel>
+  <panel name="Namespace"/>
+  <panel name="Classifier"/>
+  <panel name="Class">
+    <item name="isActive" type="Boolean"/>
+  </panel>
+  <panel name="DataType"/>
+  <panel name="Feature">
+    <item name="ownerScope" type="ScopeKind"/>
+  </panel>
+  <panel name="StructuralFeature">
+    <item name="multiplicity" type=""/>
+    <item name="changeability" type="ChangeableKind"/>
+    <item name="targetScope" type="ScopeKind"/>
+    <item name="ordering" type="OrderingKind"/>
+  </panel>
+  <panel name="AssociationEnd">
+    <item name="isNavigable" type="Boolean"/>
+    <item name="ordering" type="OrderingKind"/>
+    <item name="aggregation" type="AggregationKind"/>
+    <item name="targetScope" type="ScopeKind"/>
+    <item name="multiplicity" type=""/>
+    <item name="changeability" type="ChangeableKind"/>
+  </panel>
+  <panel name="Interface"/>
+  <panel name="Constraint">
+    <item name="body" type=""/>
+  </panel>
+  <panel name="Relationship"/>
+  <panel name="Association"/>
+  <panel name="Attribute">
+    <item name="initialValue" type=""/>
+  </panel>
+  <panel name="BehavioralFeature">
+    <item name="isQuery" type="Boolean"/>
+  </panel>
+  <panel name="Operation">
+    <item name="concurrency" type="CallConcurrencyKind"/>
+    <item name="isRoot" type="Boolean"/>
+    <item name="isLeaf" type="Boolean"/>
+    <item name="isAbstract" type="Boolean"/>
+    <item name="specification" type="String"/>
+  </panel>
+  <panel name="Parameter">
+    <item name="defaultValue" type=""/>
+    <item name="kind" type="ParameterDirectionKind"/>
+  </panel>
+  <panel name="Method">
+    <item name="body" type=""/>
+  </panel>
+  <panel name="Generalization">
+    <item name="discriminator" type="Name"/>
+  </panel>
+  <panel name="AssociationClass"/>
+  <panel name="Dependency"/>
+  <panel name="Abstraction">
+    <item name="mapping" type=""/>
+  </panel>
+  <panel name="PresentationElement"/>
+  <panel name="Usage"/>
+  <panel name="Binding"/>
+  <panel name="Component"/>
+  <panel name="Node"/>
+  <panel name="Permission"/>
+  <panel name="Comment">
+    <item name="body" type="String"/>
+  </panel>
+  <panel name="Flow"/>
+  <panel name="ElementResidence">
+    <item name="visibility" type="VisibilityKind"/>
+  </panel>
+  <panel name="TemplateParameter"/>
+  <panel name="Primitive"/>
+  <panel name="Enumeration"/>
+  <panel name="EnumerationLiteral"/>
+  <panel name="Stereotype">
+    <item name="icon" type="Geometry"/>
+    <item name="baseClass" type="Name"/>
+  </panel>
+  <panel name="TagDefinition">
+    <item name="tagType" type="Name"/>
+    <item name="multiplicity" type=""/>
+  </panel>
+  <panel name="TaggedValue">
+    <item name="dataValue" type="String"/>
+  </panel>
+  <panel name="ProgrammingLanguageDataType">
+    <item name="expression" type=""/>
+  </panel>
+  <panel name="Artifact"/>
+  <panel name="TemplateArgument"/>
+</panels>

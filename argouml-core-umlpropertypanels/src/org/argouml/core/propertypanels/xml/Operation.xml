@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<panel>
+	<text name='name' />
+	<singlerow name='owner' />
+	<list name='parameters' />
+	<separator />
+	<optionbox name='visibility' />
+	<checkgroup name='modifiers'>
+		<checkbox name='abstract' />
+		<checkbox name='leaf' />
+		<checkbox name='root' />
+		<checkbox name='query' />
+		<checkbox name='static' />
+	</checkgroup>
+	<optionbox name='concurrency' />
+	<separator />	
+	<list name='raised_signals' />
+	<list name='methods' />
+	<textarea name='specification' />
+</panel>

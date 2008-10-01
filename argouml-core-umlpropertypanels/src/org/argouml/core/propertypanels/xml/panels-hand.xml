@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<panels>
+  <panel name="Usage">
+    <text name="name" />
+    <combo name="namespace" />
+    <separator />
+    <list name="suppliers" />
+    <list name="clients" />
+  </panel>
+  <panel name="Stereotype">
+    <text name="name" />
+    <combo name="namespace" />
+    <optionbox name="visibility" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+    </checkgroup>
+    <separator />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
+    <list name="tag_definitions" />
+    <separator />
+    <list name="base_class" />
+    <list name="extended_elements" />
+  </panel>
+  <panel name="Signal">
+    <text name="name" />
+    <combo name="namespace" />
+    <optionbox name="visibility" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+      <checkbox name="derived" />
+    </checkgroup>
+    <separator />
+    <list name="generalization" />
+    <list name="specialization" />
+    <separator />
+    <list name="contexts" />
+    <list name="receptions" />
+  </panel>
+  <panel name="Parameter">
+    <text name="name" />
+    <singlerow name="feature" />
+    <separator />
+    <combo name="type" />
+    <textarea name="default_value" />
+    <optionbox name="direction_kind" />
+  </panel>
+  <panel name="Package">
+    <text name="name" />
+    <combo name="namespace" />
+    <optionbox name="visibility" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+      <checkbox name="derived" />
+    </checkgroup>
+    <separator />
+    <list name="generalization" />
+    <list name="specialization" />
+    <separator />
+    <list name="owned" />
+    <list name="imported_elements" />
+  </panel>
+  <panel name="Operation">
+    <text name="name" />
+    <singlerow name="owner" />
+    <list name="parameters" />
+    <separator />
+    <optionbox name="visibility" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+      <checkbox name="query" />
+      <checkbox name="static" />
+    </checkgroup>
+    <optionbox name="concurrency" />
+    <separator />
+    <list name="raised_signals" />
+    <list name="methods" />
+    <textarea name="specification" />
+  </panel>
+  <panel name="Interface">
+    <text name="name" />
+    <combo name="namespace" />
+    <optionbox name="visibility" />
+    <!-- TODO: NESTED ELEMENTS! WE NEED A TREE STRUCTURE -->
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+      <checkbox name="derived" />
+    </checkgroup>
+    <separator />
+    <list name="generalizations" />
+    <list name="specializations" />
+    <separator />
+    <list name="association_ends" />
+    <list name="features" />
+  </panel>
+  <panel name="Generalization">
+    <text name="name" />
+    <text name="discriminator" />
+    <combo name="namespace" />
+    <separator />
+    <singlerow name="parent" />
+    <singlerow name="child" />
+    <combo name="powertype" />
+  </panel>
+  <panel name="Exception">
+    <text name="name" />
+    <combo name="namespace" />
+    <optionbox name="visibility" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+      <checkbox name="derived" />
+    </checkgroup>
+    <separator />
+    <list name="generalization" />
+    <list name="specialization" />
+    <separator />
+    <list name="contexts" />
+    <list name="receptions" />
+  </panel>
+  <panel name="EnumerationLiteral">
+    <text name="name" />
+    <singlerow name="enumeration" />
+  </panel>
+  <panel name="Enumeration">
+    <text name="name" />
+    <combo name="namespace" />
+    <optionbox name="visibility" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+      <checkbox name="derived" />
+    </checkgroup>
+    <separator />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
+    <list name="generalization" />
+    <list name="specialization" />
+    <separator />
+    <list name="operations" />
+    <list name="literals" />
+  </panel>
+  <panel name="Datatype">
+    <text name="name" />
+    <combo name="namespace" />
+    <optionbox name="visibility" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+      <checkbox name="derived" />
+    </checkgroup>
+    <separator />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
+    <list name="generalization" />
+    <list name="specialization" />
+    <separator />
+    <list name="operations" />
+  </panel>
+  <panel name="Comment">
+    <text name="name" />
+    <list name="annotated_elements" />
+    <separator />
+    <textarea name="body" />
+  </panel>
+  <panel name="Class">
+    <text name="name" />
+    <combo name="namespace" />
+    <optionbox name="visibility" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+      <checkbox name="derived" />
+      <checkbox name="isActive" />
+    </checkgroup>
+    <separator />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
+    <list name="generalization" />
+    <list name="specialization" />
+    <separator />
+    <list name="attributes" />
+    <list name="association_ends" />
+    <list name="operations" />
+    <list name="owned" />
+  </panel>
+  <panel name="Attribute">
+    <text name="name" />
+    <combo name="type" />
+    <combo name="multiplicity" />
+    <singlerow name="owner" />
+    <separator />
+    <optionbox name="visibility" />
+    <optionbox name="changeability" />
+    <checkgroup name="modifiers">
+      <checkbox name="static" />
+    </checkgroup>
+    <textarea name="initial_value" />
+  </panel>
+  <panel name="AssociationEnd">
+    <text name="name" />
+    <singlerow name="association" />
+    <combo name="type" />
+    <combo name="multiplicity" />
+    <separator />
+    <checkgroup name="modifiers">
+      <checkbox name="isNavigable" />
+      <checkbox name="ordered" />
+      <checkbox name="static" />
+    </checkgroup>
+    <list name="specification" />
+    <list name="qualifiers" />
+    <separator />
+    <optionbox name="aggregation" />
+    <optionbox name="changeability" />
+    <optionbox name="visibility" />
+  </panel>
+  <panel name="AssociationClass">
+    <text name="name" />
+    <combo name="namespace" />
+    <optionbox name="visibility" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+      <checkbox name="derived" />
+      <checkbox name="isActive" />
+    </checkgroup>
+    <separator />
+    <list name="clientDependency" />
+    <list name="supplierDependency" />
+    <list name="generalization" />
+    <list name="specialization" />
+    <list name="connections" />
+    <separator />
+    <list name="attributes" />
+    <list name="association_ends" />
+    <list name="operations" />
+    <list name="owned" />
+  </panel>
+  <panel name="Association">
+    <text name="name" />
+    <combo name="namespace" />
+    <checkgroup name="modifiers">
+      <checkbox name="isAbstract" />
+      <checkbox name="isLeaf" />
+      <checkbox name="isRoot" />
+    </checkgroup>
+    <separator />
+    <list name="connections" />
+    <separator />
+    <list name="association_roles" />
+    <list name="links" />
+  </panel>
+  <panel name="Abstraction">
+    <text name="name" />
+    <combo name="namespace" />
+    <separator />
+    <list name="clients" />
+    <list name="suppliers" />
+  </panel>
+</panels>
