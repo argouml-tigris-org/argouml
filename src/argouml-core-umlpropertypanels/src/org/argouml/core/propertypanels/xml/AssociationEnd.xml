@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<panel>
+	<text name='name' />
+	<singlerow name='association' />
+	<combo name='type' />
+	<combo name='multiplicity' />
+	<separator />
+	<checkgroup name='modifiers'>
+		<checkbox name='navigable' />
+		<checkbox name='ordered' />
+		<checkbox name='static' />
+	</checkgroup>
+	<list name='specification' />
+	<list name='qualifiers' />
+	<separator />
+	<optionbox name='aggregation' />
+	<optionbox name='changeability' />
+	<optionbox name='visibility' />
+</panel>
