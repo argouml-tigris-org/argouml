@@ -4,6 +4,8 @@ rem
 rem build.bat always calls the version of ant distributed with ArgoUML
 rem
 
+java -version 
+
 setlocal
 echo Searching for tools dir...
 
@@ -26,7 +28,7 @@ pushd %ANT_HOME%
 set ANT_HOME=%CD%
 popd
 
-call %ANT_HOME%\bin\ant %1 %2 %3 %4 %5 %6 %7 %8 %9
+call "%ANT_HOME%\bin\ant" %1 %2 %3 %4 %5 %6 %7 %8 %9
 
 if ERRORLEVEL 1 goto endfail
 endlocal
