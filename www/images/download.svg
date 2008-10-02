@@ -14,7 +14,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.45.1"
-   sodipodi:docbase="C:\Documents and Settings\penyaskito\Desktop"
+   sodipodi:docbase="D:\workspaces\Argo\argouml-www\images"
    sodipodi:docname="download.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    inkscape:export-filename="C:\Documents and Settings\penyaskito\Desktop\download.png"
@@ -279,9 +279,12 @@
        height="128.21011"
        x="157.72353"
        y="492.14285"
-       ry="16.210476" />
+       ry="16.210476"
+       inkscape:export-filename="D:\workspaces\Argo\argouml-www\images\download.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
-       transform="matrix(1.926672,0,0,0.9446557,187.175,550.51657)"
+       transform="matrix(1.842252,0,0,0.9032642,203.59248,542.95818)"
        d="M 40.481863 36.421127 A 15.644737 8.3968935 0 1 1  9.1923885,36.421127 A 15.644737 8.3968935 0 1 1  40.481863 36.421127 z"
        sodipodi:ry="8.3968935"
        sodipodi:rx="15.644737"
@@ -289,11 +292,17 @@
        sodipodi:cx="24.837126"
        id="path8660"
        style="opacity:0.20454544;color:#000000;fill:url(#radialGradient5990);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible"
-       sodipodi:type="arc" />
+       sodipodi:type="arc"
+       inkscape:export-filename="D:\workspaces\Argo\argouml-www\images\download.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <g
        inkscape:label="Layer 1"
        id="g4877"
-       transform="matrix(2.1422229,0,0,2.2579291,147.73312,485.27199)">
+       transform="matrix(2.0483582,0,0,2.1589945,165.87881,480.57239)"
+       inkscape:export-filename="D:\workspaces\Argo\argouml-www\images\download.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <g
          id="g6707"
          transform="matrix(2.29904e-2,0,0,2.345443e-2,45.3408,39.64914)">
@@ -336,7 +345,10 @@
     </g>
     <g
        id="g1464"
-       transform="matrix(-1.5864356,0,0,-1.5864354,271.56133,594.43935)">
+       transform="matrix(-1.5169235,0,0,-1.5169233,284.2813,584.95642)"
+       inkscape:export-filename="D:\workspaces\Argo\argouml-www\images\download.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <path
          style="opacity:1;color:#000000;fill:url(#radialGradient5986);fill-opacity:1;fill-rule:evenodd;stroke:#3a7304;stroke-width:1.00000036;stroke-linecap:round;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible"
          d="M 14.519136,38.5 L 32.524165,38.496094 L 32.524165,25.504468 L 40.519531,25.496656 L 23.374809,5.4992135 L 6.5285585,25.497284 L 14.52444,25.501074 L 14.519136,38.5 z "
