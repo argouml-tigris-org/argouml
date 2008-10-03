@@ -270,14 +270,16 @@ public class SequenceDiagramGraphModel
 
     /**
      * Creates a link based on the given from and toPort. The fromPort
-     * should allways point to a MessageCoordinates instance. The toPort
+     * should always point to a MessageCoordinates instance. The toPort
      * can point to a MessageCoordinates instance or to a Object
      * instance. On a sequence diagram you can only draw Messages. So
      * other edgeClasses then links are not supported.
-     *
+     * 
+     * {@inheritDoc}
      * @see org.tigris.gef.graph.MutableGraphModel#connect(
      *          Object, Object, Class)
      */
+    @Override
     public Object connect(Object fromPort, Object toPort, Object edgeType) {
         if (!canConnect(fromPort, toPort, edgeType)) {
             return null;
