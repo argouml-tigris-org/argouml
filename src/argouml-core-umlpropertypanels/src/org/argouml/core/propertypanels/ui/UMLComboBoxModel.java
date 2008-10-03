@@ -55,14 +55,14 @@ import org.tigris.gef.presentation.Fig;
  * This combobox allows selecting no value, if so indicated
  * at construction time of this class. I.e. it is "clearable".
  */
-public abstract class UMLComboBoxModel3 extends AbstractListModel
+abstract class UMLComboBoxModel extends AbstractListModel
         implements PropertyChangeListener, 
         ComboBoxModel, TargetListener, PopupMenuListener {
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(UMLComboBoxModel3.class);
+        Logger.getLogger(UMLComboBoxModel.class);
 
     /**
      * The target of the comboboxmodel. This is some UML modelelement
@@ -126,7 +126,7 @@ public abstract class UMLComboBoxModel3 extends AbstractListModel
      * user has the opportunity to select this to clear the attribute.
      * @throws IllegalArgumentException if one of the arguments is null
      */
-    public UMLComboBoxModel3(String name, boolean clearable) {
+    public UMLComboBoxModel(String name, boolean clearable) {
         super();
         if (name == null || name.equals("")) {
             throw new IllegalArgumentException("one of the arguments is null");

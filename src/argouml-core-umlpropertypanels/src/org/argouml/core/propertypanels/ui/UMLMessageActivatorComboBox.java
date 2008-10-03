@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
  * combobox serves as a proxy for the
  * model (UMLMessageActivatorComboBoxModel). Kind of strange...
  */
-public class UMLMessageActivatorComboBox extends UMLComboBox3 {
+public class UMLMessageActivatorComboBox extends UMLComboBox {
 
     /**
      * Constructor for UMLMessageActivatorComboBox.
@@ -45,7 +45,7 @@ public class UMLMessageActivatorComboBox extends UMLComboBox3 {
      * @param arg0 the model
      */
     public UMLMessageActivatorComboBox(
-        UMLComboBoxModel3 arg0) {
+        UMLComboBoxModel arg0) {
         // TODO: This super constructor has been deprecated
         super(arg0);
         setRenderer(new UMLListCellRenderer2(true));

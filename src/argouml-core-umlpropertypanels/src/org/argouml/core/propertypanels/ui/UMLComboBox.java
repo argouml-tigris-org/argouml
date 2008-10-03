@@ -28,8 +28,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.JComboBox;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.ui.LookAndFeelMgr;
@@ -47,12 +45,10 @@ import org.argouml.uml.ui.UMLListCellRenderer2;
  * UMLComboBox. The ancient UMLComboBoxModel and UMLComboBox are
  * replaced with this implementation to improve performance.
  */
-public class UMLComboBox3
+class UMLComboBox
     extends JComboBox
     implements TargettableModelView, TargetListener {
 
-    private static final Logger LOG = Logger.getLogger(UMLComboBox3.class);
-    
     /**
      * Constructor for UMLComboBox2.
      * @deprecated As of ArgoUml version unknown (before 0.13.5),
@@ -60,7 +56,7 @@ public class UMLComboBox3
      * @param model the ComboBoxModel
      */
     @Deprecated
-    protected UMLComboBox3(UMLComboBoxModel3 model) {
+    protected UMLComboBox(UMLComboBoxModel model) {
         super(model);
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addActionListener(this);
@@ -74,7 +70,7 @@ public class UMLComboBox3
      * @param action the action
      * @param showIcon true if an icon should be shown in front of the items
      */
-    public UMLComboBox3(UMLComboBoxModel3 model, Action action,
+    public UMLComboBox(UMLComboBoxModel model, Action action,
 			boolean showIcon) {
         super(model);
         //setFont(LookAndFeelMgr.getInstance().getStandardFont());
@@ -90,13 +86,11 @@ public class UMLComboBox3
      * @param arg0 the ComboBoxModel
      * @param action the action
      */
-    public UMLComboBox3(UMLComboBoxModel3 arg0, Action action) {
+    public UMLComboBox(UMLComboBoxModel arg0, Action action) {
         this(arg0, action, true);
     }
 
-    /*
-     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
-     */
+    @Override
     public void actionPerformed(ActionEvent arg0) {
         int i = getSelectedIndex();
         if (i >= 0) {
@@ -118,7 +112,7 @@ public class UMLComboBox3
      * @return Object
      */
     public Object getTarget() {
-        return ((UMLComboBoxModel3) getModel()).getTarget();
+        return ((UMLComboBoxModel) getModel()).getTarget();
     }
 
 

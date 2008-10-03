@@ -33,7 +33,7 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 
-class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel3 {
+class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
     /**
      * The constructor.
      */

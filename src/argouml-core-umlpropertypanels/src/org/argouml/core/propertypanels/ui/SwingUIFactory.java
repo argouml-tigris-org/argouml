@@ -1125,7 +1125,7 @@ public class SwingUIFactory implements UIFactory {
             comp = mPanel;
         }
         else if ("activator".equals(prop.getName())) {
-            final UMLComboBoxModel3 model = 
+            final UMLComboBoxModel model = 
                 new UMLMessageActivatorComboBoxModel();
             model.setTarget(target); 
             final JComboBox combo = new UMLMessageActivatorComboBox(model);
@@ -1142,10 +1142,10 @@ public class SwingUIFactory implements UIFactory {
                         combo);
             }
             else {
-                final UMLComboBoxModel3 model = 
+                final UMLComboBoxModel model = 
                     new UMLCallActionOperationComboBoxModel();
                 model.setTarget(target); 
-                UMLComboBox3 operationComboBox =
+                UMLComboBox operationComboBox =
                     new UMLCallActionOperationComboBox2(model);
                 comp = new UMLComboBoxNavigator(
                         Translator.localize("label.operation.navigate.tooltip"),
