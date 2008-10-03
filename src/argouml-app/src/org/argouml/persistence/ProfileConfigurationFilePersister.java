@@ -219,7 +219,8 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
             if (candidateProfile instanceof UserDefinedProfile) {
                 UserDefinedProfile userProfile = 
                     (UserDefinedProfile) candidateProfile;
-                if (userProfile.getModelFile().getName().equals(fileName)) {
+                if (userProfile.getModelFile() != null
+                    && fileName.equals(userProfile.getModelFile().getName())) {
                     return userProfile;
                 }
             }
