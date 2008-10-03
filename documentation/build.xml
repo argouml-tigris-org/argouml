@@ -18,14 +18,14 @@ What tools do I need to use this build file?
   Documentation:
   - The Java 2 SDK.
   - The ArgoUML manual's source files. This are available in the ArgoUML
-    source repository in CVS.
-  - Tool "Ant". This is available in the ArgoUML source repository in CVS.
+    source repository in SVN.
+  - Tool "Ant". This is available in the ArgoUML source repository in SVN.
   - The DocBook system (http://www.docbook.org/). Downloaded from this
     ant script using the target docbook-xsl-get.
 
   If you are going to build pdf versions you also need:
   - Tool "FOP". This is available in the ArgoUML source repository
-    in CVS.
+    in SVN.
   - JIMI (see the fop readme file).
 
  -->
