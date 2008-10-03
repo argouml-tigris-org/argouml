@@ -159,7 +159,6 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                     try {
                         modelChanged(event);
                     } catch (InvalidElementException e) {
-                        LOG.error("", e);
                         if (LOG.isDebugEnabled()) {
                             LOG.debug("event = "
                                     + event.getClass().getName());
