@@ -309,8 +309,13 @@ public class FigSingleLineText extends ArgoFigText
 
     public void notationChanged(ArgoNotationEvent e) {
         initNotationArguments();
-//        if (getOwner() == null) return;
-//        setText();
+        if (getOwner() == null) {
+            return;
+        }
+        /* This is needed for e.g. 
+         * guillemet notation change on a class name, 
+         * see issue 5419. */
+        setText();
     }
 
     public void notationProviderAdded(ArgoNotationEvent e) {
