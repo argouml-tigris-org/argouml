@@ -168,7 +168,7 @@ public class OperationNotationJava extends OperationNotation {
                     sb.append(", ");
                 }
 
-                sb.append(Model.getFacade().getName(it.next()));
+                sb.append(Model.getFacade().getName(signal));
                 first = false;
             }
         }
