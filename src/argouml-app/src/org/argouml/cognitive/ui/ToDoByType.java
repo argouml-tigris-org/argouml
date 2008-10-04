@@ -87,7 +87,7 @@ public class ToDoByType extends ToDoPerspective
 		children[nMatchingItems] = item;
 		nMatchingItems++;
 	    }
-	    fireTreeNodesChanged(this, path, childIndices, children);
+	    fireNodesChanged(path, childIndices, children);
 	}
     }
 
@@ -124,7 +124,7 @@ public class ToDoByType extends ToDoPerspective
 		children[nMatchingItems] = item;
 		nMatchingItems++;
 	    }
-	    fireTreeNodesInserted(this, path, childIndices, children);
+	    fireNodesInserted(path, childIndices, children);
 	}
     }
 
@@ -151,7 +151,7 @@ public class ToDoByType extends ToDoPerspective
 	    LOG.debug("toDoItemRemoved updating PriorityNode");
 	    path[1] = ktn;
 	    //fireTreeNodesChanged(this, path, childIndices, children);
-	    fireTreeStructureChanged(path);
+	    fireStructureChanged(path);
 	}
     }
 

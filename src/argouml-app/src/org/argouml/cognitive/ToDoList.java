@@ -765,6 +765,9 @@ public class ToDoList extends Observable implements Runnable {
      * @param theItems the todo items
      */
     protected void fireToDoItemsAdded(List<ToDoItem> theItems) {
+        if (theItems.isEmpty()) {
+            return;
+        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
@@ -794,6 +797,9 @@ public class ToDoList extends Observable implements Runnable {
      * @param theItems the todo items
      */
     protected void fireToDoItemsRemoved(List<ToDoItem> theItems) {
+        if (theItems.isEmpty()) {
+            return;
+        }
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;

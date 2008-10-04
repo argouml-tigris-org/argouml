@@ -383,13 +383,13 @@ public class ToDoPane extends JPanel
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsChanged(final ToDoListEvent tde) {
-        swingInvoke(new Runnable() {
-            public void run() {
+//        swingInvoke(new Runnable() {
+//            public void run() {
                 if (curPerspective instanceof ToDoListListener) {
                     ((ToDoListListener) curPerspective).toDoItemsChanged(tde);
                 }
-            }
-        });
+//            }
+//        });
     }
 
 
@@ -397,8 +397,8 @@ public class ToDoPane extends JPanel
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsAdded(final ToDoListEvent tde) {
-        swingInvoke(new Runnable() {
-            public void run() {
+//        swingInvoke(new Runnable() {
+//            public void run() {
                 if (curPerspective instanceof ToDoListListener) {
                     ((ToDoListListener) curPerspective).toDoItemsAdded(tde);
                 }
@@ -413,36 +413,37 @@ public class ToDoPane extends JPanel
                     }
                 }
                 updateCountLabel();
-            }
-        });
+//            }
+//        });
     }
     
     /*
      * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoItemsRemoved(final ToDoListEvent tde) {
-        swingInvoke(new Runnable() {
-            public void run() {
+//        swingInvoke(new Runnable() {
+//            public void run() {
                 if (curPerspective instanceof ToDoListListener) {
+                    LOG.warn("todo removed " + tde.getToDoItemList().size());
                     ((ToDoListListener) curPerspective).toDoItemsRemoved(tde);
                 }
                 updateCountLabel();
-            }
-        });
+//            }
+//        });
     }
 
     /*
      * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
      */
     public void toDoListChanged(final ToDoListEvent tde) {
-        swingInvoke(new Runnable() {
-            public void run() {
+//        swingInvoke(new Runnable() {
+//            public void run() {
                 if (curPerspective instanceof ToDoListListener) {
                     ((ToDoListListener) curPerspective).toDoListChanged(tde);
                 }
                 updateCountLabel();
-            }
-        });
+//            }
+//        });
     }
 
     /* TODO: Indicate the direction! */

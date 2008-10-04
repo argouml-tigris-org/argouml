@@ -27,6 +27,8 @@ package org.argouml.cognitive.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.TreeModelComposite;
@@ -161,5 +163,55 @@ public abstract class ToDoPerspective extends TreeModelComposite {
             addFlatChildren(getChild(node, i));
         }
     }
-
+    
+    /**
+     * Invoke a task on the Swing thread. If we are running on the Swing thread,
+     * this happens immediately. Otherwise the task is queued for later
+     * execution using SwingUtilities.invokeLater.
+     * <p>
+     * This is necessary because event notification of ToDoListener events is
+     * likely to be coming from the ToDo Validity Checker thread running in the
+     * background.
+     * 
+     * @param task a Runnable task who's run() method will be invoked
+     */
+    protected void swingInvoke(Runnable task) {
+        if (SwingUtilities.isEventDispatchThread()) {
+            task.run();
+        } else {
+            SwingUtilities.invokeLater(task);
+        }
+    }
+    
+    protected void fireNodesInserted(
+            final Object[] path, 
+            final int[] childIndices, 
+            final Object[] children) {
+        swingInvoke(new Runnable() {
+            public void run() {
+                fireTreeNodesInserted(this, path, childIndices, children);
+            }
+        });
+    }
+    
+    protected void fireStructureChanged(
+            final Object[] path) {
+        swingInvoke(new Runnable() {
+            public void run() {
+    
+                fireTreeStructureChanged(path);
+            }
+        });
+    }
+    
+    protected void fireNodesChanged(
+            final Object[] path, 
+            final int[] childIndices, 
+            final Object[] children) {
+        swingInvoke(new Runnable() {
+            public void run() {
+                fireTreeNodesChanged(this, path, childIndices, children);
+            }
+        });
+    }
 }

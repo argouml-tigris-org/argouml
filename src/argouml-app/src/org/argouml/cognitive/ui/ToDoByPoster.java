@@ -92,7 +92,7 @@ public class ToDoByPoster extends ToDoPerspective
                     children[nMatchingItems] = item;
                     nMatchingItems++;
                 }
-                fireTreeNodesChanged(this, path, childIndices, children);
+                fireNodesChanged(path, childIndices, children);
             }
         }
     }
@@ -134,7 +134,7 @@ public class ToDoByPoster extends ToDoPerspective
                     children[nMatchingItems] = item;
                     nMatchingItems++;
                 }
-                fireTreeNodesInserted(this, path, childIndices, children);
+                fireNodesInserted(path, childIndices, children);
             }
         }
     }
@@ -165,7 +165,7 @@ public class ToDoByPoster extends ToDoPerspective
                     continue;
                 }
                 path[1] = p;
-                fireTreeStructureChanged(path);
+                fireStructureChanged(path);
             }
         }
     }
