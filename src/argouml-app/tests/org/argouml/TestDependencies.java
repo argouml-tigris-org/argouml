@@ -144,7 +144,6 @@ public class TestDependencies extends TestCase {
             // There shall not be a dependency from ... to ...
             {"org.argouml.persistence", "org.argouml.ui"},
             {"org.argouml.moduleloader", "org.argouml.persistence"},
-            {"org.argouml.language.java.generator", "org.argouml.notation"},
             {"org.argouml.notation", "org.argouml.notation.ui"},
             {"org.argouml.ui.targetmanager", "org.argouml.ui"},
             {"org.argouml.ui", "org.argouml.moduleloader"},
@@ -157,8 +156,6 @@ public class TestDependencies extends TestCase {
             {"org.argouml.ui", "org.argouml.notation.ui"},
             {"org.argouml.util", "org.argouml.ui.cmd"},
             {"org.argouml.moduleloader", "org.argouml.ui"},
-            //{"org.argouml.uml.reveng", "org.argouml.ui"},
-            //{"org.argouml.language.java.generator", "org.argouml.kernel"},
             //{"org.argouml.kernel", "org.argouml.uml.diagram.ui"},//why does this fail?
         };
         for (int i = 0; i < dep.length; i++) {
