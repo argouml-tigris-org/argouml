@@ -70,9 +70,7 @@ public class ToDoByGoal extends ToDoPerspective
                 }
 		nMatchingItems++;
 	    }
-	    if (nMatchingItems == 0) {
-	        continue;
-	    }
+	    if (nMatchingItems == 0) continue;
 	    int[] childIndices = new int[nMatchingItems];
 	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
@@ -84,7 +82,7 @@ public class ToDoByGoal extends ToDoPerspective
 		children[nMatchingItems] = item;
 		nMatchingItems++;
 	    }
-	    fireNodesChanged(path, childIndices, children);
+	    fireTreeNodesChanged(this, path, childIndices, children);
 	}
     }
 
@@ -120,7 +118,7 @@ public class ToDoByGoal extends ToDoPerspective
 		children[nMatchingItems] = item;
 		nMatchingItems++;
 	    }
-	    fireNodesInserted(path, childIndices, children);
+	    fireTreeNodesInserted(this, path, childIndices, children);
 	}
     }
 
@@ -136,16 +134,12 @@ public class ToDoByGoal extends ToDoPerspective
 	    LOG.debug("toDoItemRemoved updating decision node!");
 	    boolean anyInGoal = false;
             for (ToDoItem item : tde.getToDoItemList()) {
-		if (item.supports(g)) {
-		    anyInGoal = true;
-		}
+		if (item.supports(g)) anyInGoal = true;
 	    }
-	    if (!anyInGoal) {
-	        continue;
-	    }
+	    if (!anyInGoal) continue;
 	    path[1] = g;
 	    //fireTreeNodesChanged(this, path, childIndices, children);
-	    fireStructureChanged(path);
+	    fireTreeStructureChanged(path);
 	}
     }
 

@@ -59,7 +59,7 @@ public class ToDoByPriority extends ToDoPerspective
     public void toDoItemsChanged(ToDoListEvent tde) {
 	LOG.debug("toDoItemChanged");
         List<ToDoItem> items = tde.getToDoItemList();
-	final Object[] path = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
         for (PriorityNode pn : PriorityNode.getPriorityList()) {
@@ -76,8 +76,8 @@ public class ToDoByPriority extends ToDoPerspective
 	    if (nMatchingItems == 0) {
                 continue;
             }
-	    final int[] childIndices = new int[nMatchingItems];
-	    final Object[] children = new Object[nMatchingItems];
+	    int[] childIndices = new int[nMatchingItems];
+	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
             synchronized (items) {
                 for (ToDoItem item : items) {
@@ -89,7 +89,7 @@ public class ToDoByPriority extends ToDoPerspective
                     nMatchingItems++;
                 }
             }
-            fireTreeNodesChanged(this, path, childIndices, children);
+	    fireTreeNodesChanged(this, path, childIndices, children);
 	}
     }
 
@@ -99,7 +99,7 @@ public class ToDoByPriority extends ToDoPerspective
     public void toDoItemsAdded(ToDoListEvent tde) {
 	LOG.debug("toDoItemAdded");
 	List<ToDoItem> items = tde.getToDoItemList();
-	final Object[] path = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
         for (PriorityNode pn : PriorityNode.getPriorityList()) {
@@ -116,8 +116,8 @@ public class ToDoByPriority extends ToDoPerspective
 	    if (nMatchingItems == 0) {
                 continue;
             }
-	    final int[] childIndices = new int[nMatchingItems];
-	    final Object[] children = new Object[nMatchingItems];
+	    int[] childIndices = new int[nMatchingItems];
+	    Object[] children = new Object[nMatchingItems];
 	    nMatchingItems = 0;
 	    synchronized (items) {
                 for (ToDoItem item : items) {
@@ -129,7 +129,7 @@ public class ToDoByPriority extends ToDoPerspective
                     nMatchingItems++;
                 }
             }
-            fireNodesInserted(path, childIndices, children);
+	    fireTreeNodesInserted(this, path, childIndices, children);
 	}
     }
 
@@ -139,7 +139,7 @@ public class ToDoByPriority extends ToDoPerspective
     public void toDoItemsRemoved(ToDoListEvent tde) {
 	LOG.debug("toDoItemRemoved");
         List<ToDoItem> items = tde.getToDoItemList();
-	final Object[] path = new Object[2];
+	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 
         for (PriorityNode pn : PriorityNode.getPriorityList()) {
@@ -159,7 +159,7 @@ public class ToDoByPriority extends ToDoPerspective
 	    LOG.debug("toDoItemRemoved updating PriorityNode");
 	    path[1] = pn;
 	    //fireTreeNodesChanged(this, path, childIndices, children);
-            fireStructureChanged(path);
+	    fireTreeStructureChanged(path);
 	}
     }
 

@@ -87,7 +87,7 @@ public class ToDoByDecision extends ToDoPerspective
 		children[nMatchingItems] = item;
 		nMatchingItems++;
 	    }
-	    fireNodesChanged(path, childIndices, children);
+	    fireTreeNodesChanged(this, path, childIndices, children);
 	}
     }
 
@@ -124,7 +124,7 @@ public class ToDoByDecision extends ToDoPerspective
 		children[nMatchingItems] = item;
 		nMatchingItems++;
 	    }
-	    fireNodesInserted(path, childIndices, children);
+	    fireTreeNodesInserted(this, path, childIndices, children);
 	}
     }
 
@@ -151,7 +151,7 @@ public class ToDoByDecision extends ToDoPerspective
             }
 	    path[1] = dec;
 	    //fireTreeNodesChanged(this, path, childIndices, children);
-	    fireStructureChanged(path);
+	    fireTreeStructureChanged(path);
 	}
     }
 
