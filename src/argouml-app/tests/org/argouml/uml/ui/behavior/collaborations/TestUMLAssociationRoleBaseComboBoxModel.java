@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,14 +24,19 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Oct 30, 2002
@@ -83,7 +88,9 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         Object class1 = Model.getCoreFactory().createClass();
         Object class2 = Model.getCoreFactory().createClass();
         Object m = Model.getModelManagementFactory().createModel();
-        p.setRoot(m);
+        Collection roots = new ArrayList();
+        roots.add(m);
+        p.setRoots(roots);
         Model.getCoreHelper().setNamespace(class1, m);
         Model.getCoreHelper().setNamespace(class2, m);
         bases = new Object[NO_ELEMENTS_IN_TEST];
@@ -111,12 +118,13 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
 					new Object[] {
 					    elem,
 					}));
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
@@ -140,55 +148,83 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
 
     /**
      * Test setting the Base.
+     * 
+     * @throws InterruptedException if interrupted while synchronizing
+     * @throws InvocationTargetException should never happen indicates a problem
+     *             with the test itself
      */
-    public void testSetBase() {
+    public void testSetBase() throws InterruptedException, 
+    InvocationTargetException {
+        
         Model.getCollaborationsHelper().setBase(elem, bases[0]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertTrue(model.getSelectedItem() == bases[0]);
     }
 
     /**
      * Test setting the Base.
+     * 
+     * @throws InterruptedException if interrupted while synchronizing
+     * @throws InvocationTargetException should never happen indicates a problem
+     *             with the test itself
      */
-    public void testChangeBase() {
+    public void testChangeBase() throws InterruptedException, 
+    InvocationTargetException {
+        
         Model.getCollaborationsHelper().setBase(elem, bases[0]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         Model.getCollaborationsHelper().setBase(elem, bases[1]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertTrue(model.getSelectedItem() == bases[1]);
     }
 
     /**
      * Test deleting selected Base.
+     * 
+     * @throws InterruptedException if interrupted while synchronizing
+     * @throws InvocationTargetException should never happen indicates a problem
+     *             with the test itself
      */
-    public void testDeleteBase() {
+    public void testDeleteBase() throws InterruptedException, 
+    InvocationTargetException {
+        
         Model.getCollaborationsHelper().setBase(elem, bases[1]);
         Model.getUmlFactory().delete(bases[1]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertNull(model.getSelectedItem());
     }
 
     /**
      * Test setting the Base to null.
+     * 
+     * @throws InterruptedException if interrupted while synchronizing
+     * @throws InvocationTargetException should never happen indicates a problem
+     *             with the test itself
      */
-    public void testSetBaseToNull() {
+    public void testSetBaseToNull() throws InterruptedException, 
+    InvocationTargetException {
+        
         Model.getCollaborationsHelper().setBase(elem, bases[0]);
         Model.getCollaborationsHelper().setBase(elem, null);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertNull(model.getSelectedItem());
     }
 
     /**
      * Test removing the Base.
+     * 
+     * @throws InterruptedException if interrupted while synchronizing
+     * @throws InvocationTargetException should never happen indicates a problem
+     *             with the test itself
      */
-    public void testRemoveBase() {
+    public void testRemoveBase() throws InterruptedException, 
+    InvocationTargetException {
         Model.getUmlFactory().delete(bases[NO_ELEMENTS_IN_TEST - 1]);
         // One can only delete a assoc by changing target,
         // so let's simulate that:
         /* TODO: Get rid of this! */
         changeTarget();
-        // there is one extra element since removal of the base is allowed.
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(NO_ELEMENTS_IN_TEST + 1 - 1, model.getSize());
         assertTrue(!model.contains(bases[NO_ELEMENTS_IN_TEST - 1]));
     }
@@ -199,5 +235,6 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         model.targetSet(new TargetEvent(this, TargetEvent.TARGET_SET,
                 new Object[] {dummy}, new Object[] {elem}));
     }
+    
 
 }

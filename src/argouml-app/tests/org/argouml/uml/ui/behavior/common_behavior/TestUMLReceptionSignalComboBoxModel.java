@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,14 +24,19 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Nov 2, 2002
@@ -72,6 +77,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
@@ -80,7 +86,9 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         elem = Model.getCommonBehaviorFactory().createReception();
         signals = new Object[NO_OF_ELEMENTS];
         Object m = Model.getModelManagementFactory().createModel();
-        p.setRoot(m);
+        Collection roots = new ArrayList();
+        roots.add(m);
+        p.setRoots(roots);
         Model.getCoreHelper().setNamespace(elem, m);
         for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             signals[i] = Model.getCommonBehaviorFactory().createSignal();
@@ -89,12 +97,13 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         model = new UMLReceptionSignalComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
@@ -116,27 +125,42 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
 
     /**
      * Test setSignal().
+     * 
+     * @throws InvocationTargetException test failure
+     * @throws InterruptedException test failure
      */
-    public void testSetSignal() {
+    public void testSetSignal() throws InterruptedException, 
+    InvocationTargetException {
+
         Model.getCommonBehaviorHelper().setSignal(elem, signals[0]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         // One can only do this by changing target,
         // so let's simulate that:
+        Object dummy = Model.getCommonBehaviorFactory().createReception();
         model.targetSet(new TargetEvent(this,
                 TargetEvent.TARGET_SET,
-                new Object[0],
-                new Object[] {
-                    elem,
-                }));
+                new Object[] {elem},
+                new Object[] {dummy})
+        );
+        model.targetSet(new TargetEvent(this,
+                TargetEvent.TARGET_SET,
+                new Object[] {dummy},
+                new Object[] {elem}));
+        ThreadHelper.synchronize();
         assertTrue(model.getSelectedItem() == signals[0]);
     }
 
     /**
      * Test removing signals.
+     * 
+     * @throws InvocationTargetException test failure
+     * @throws InterruptedException test failure
      */
-    public void testRemoveSignal() {
+    public void testRemoveSignal() throws InterruptedException, 
+    InvocationTargetException {
+        
         Model.getUmlFactory().delete(signals[NO_OF_ELEMENTS - 1]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(NO_OF_ELEMENTS - 1, model.getSize());
         assertTrue(!model.contains(signals[NO_OF_ELEMENTS - 1]));
     }
