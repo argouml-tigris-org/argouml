@@ -27,8 +27,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
@@ -40,7 +38,6 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML Interface in a diagram.
@@ -143,22 +140,22 @@ public class FigInterface extends FigClassifierBox {
                 * Math.max(1, getOperationsFig().getFigs().size() - 1) + 2)
                 * rect.height / getMinimumSize().height) : 0;
         if (isOperationsVisible()) {
+            // TODO: Can these two legs be collapsed?  They differ only in the
+            // order the damage() method is invoked in
             if (!isVisible) {
                 damage();
-                Iterator it = getOperationsFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(false);
+                for (Object f : getOperationsFig().getFigs()) {
+                    ((Fig) f).setVisible(isVisible);
                 }
-                getOperationsFig().setVisible(false);
+                getOperationsFig().setVisible(isVisible);
                 setBounds(rect.x, rect.y, rect.width, rect.height - h);
             }
         } else {
             if (isVisible) {
-                Iterator it = getOperationsFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(true);
+                for (Object f : getOperationsFig().getFigs()) {
+                    ((Fig) f).setVisible(isVisible);
                 }
-                getOperationsFig().setVisible(true);
+                getOperationsFig().setVisible(isVisible);
                 setBounds(rect.x, rect.y, rect.width, rect.height + h);
                 damage();
             }
@@ -173,6 +170,7 @@ public class FigInterface extends FigClassifierBox {
      *
      * @return  the size of the minimum bounding box.
      */
+    @Override
     public Dimension getMinimumSize() {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
@@ -291,60 +289,6 @@ public class FigInterface extends FigClassifierBox {
             moveIntoComponent(encloser);
             super.setEnclosingFig(encloser);
         }
-    }
-
-    /**
-     * @param ft the figtext holding the feature
-     * @param i the index (?)
-     * @return the figtext
-     */
-    protected FigText getPreviousVisibleFeature(FigText ft, int i) {
-        FigText ft2 = null;
-        List figs = getOperationsFig().getFigs();
-        if (i < 1 || i >= figs.size()
-                || !((FigText) figs.get(i)).isVisible()) {
-            return null;
-        }
-
-        do {
-            i--;
-            if (i < 1) {
-                i = figs.size() - 1;
-            }
-            ft2 = (FigText) figs.get(i);
-            if (!ft2.isVisible()) {
-                ft2 = null;
-            }
-        } while (ft2 == null);
-
-        return ft2;
-    }
-
-    /**
-     * @param ft the figtext holding the feature
-     * @param i the index (?)
-     * @return the figtext
-     */
-    protected FigText getNextVisibleFeature(FigText ft, int i) {
-        FigText ft2 = null;
-        List operations = getOperationsFig().getFigs();
-        if (i < 1 || i >= operations.size()
-                || !((FigText) operations.get(i)).isVisible()) {
-            return null;
-        }
-
-        do {
-            i++;
-            if (i >= operations.size()) {
-                i = 1;
-            }
-            ft2 = (FigText) operations.get(i);
-            if (!ft2.isVisible()) {
-                ft2 = null;
-            }
-        } while (ft2 == null);
-
-        return ft2;
     }
 
     /**
