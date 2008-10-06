@@ -42,8 +42,10 @@ import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -283,7 +285,7 @@ public abstract class FigNodeModelElement
     private boolean editable = true;
 
     // TODO: A more strongly typed data structure could be used here.
-    private Collection<Object[]> listeners = new ArrayList<Object[]>();
+    private Set<Object[]> listeners = new HashSet<Object[]>();
 
 
     /**
@@ -997,11 +999,8 @@ public abstract class FigNodeModelElement
                 modelChanged(event);
             } catch (InvalidElementException e) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("event = " + event.getClass().getName());
-                    LOG.debug("source = " + event.getSource());
-                    LOG.debug("old = " + event.getOldValue());
-                    LOG.debug("name = " + event.getPropertyName());
-                    LOG.debug("modelChanged method accessed deleted element ",
+                    LOG.debug("modelChanged method accessed deleted element"
+                            + formatEvent(event),
                             e);
                 }
             }
@@ -1017,19 +1016,22 @@ public abstract class FigNodeModelElement
                         updateLayout(event);
                     } catch (InvalidElementException e) {
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug("event = "
-                                    + event.getClass().getName());
-                            LOG.debug("source = " + event.getSource());
-                            LOG.debug("old = " + event.getOldValue());
-                            LOG.debug("name = " + event.getPropertyName());
                             LOG.debug("updateLayout method accessed "
-                                    + "deleted element ", e);
+                                    + "deleted element " 
+                                    + formatEvent(event), e);
                         }
                     }
                 }  
             };
             SwingUtilities.invokeLater(doWorkRunnable);
         }
+    }
+    
+    private String formatEvent(PropertyChangeEvent event) {
+        return "\n\t event = " + event.getClass().getName() 
+                + "\n\t source = " + event.getSource() 
+                + "\n\t old = " + event.getOldValue()
+                + "\n\t name = " + event.getPropertyName();
     }
     
     /**
@@ -1447,8 +1449,8 @@ public abstract class FigNodeModelElement
      */
     protected void updateStereotypeText() {
         if (getOwner() == null) {
-            LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
-                    + "] is null.");
+            LOG.warn("Null owner for [" + this.toString() + "/"
+                    + this.getClass());
             return;
         }
 
@@ -2075,7 +2077,7 @@ public abstract class FigNodeModelElement
     }
     
     /**
-     * Remove an element listener and remember the registration.
+     * Remove an element listener and remembered registration.
      * 
      * @param element
      *            element to listen for changes on
@@ -2091,7 +2093,11 @@ public abstract class FigNodeModelElement
      * @see #addElementListener(Object, String)
      */
     protected void removeAllElementListeners() {
-        for (Object[] listener : listeners) {
+        removeElementListeners(listeners);
+    }
+
+    private void removeElementListeners(Set<Object[]> listenerSet) {
+        for (Object[] listener : listenerSet) {
             Object property = listener[1];
             if (property == null) {
                 Model.getPump().removeModelEventListener(this, listener[0]);
@@ -2106,9 +2112,43 @@ public abstract class FigNodeModelElement
                         "Internal error in removeAllElementListeners");
             }
         }
-        listeners.clear();
+        listeners.removeAll(listenerSet);
     }
 
+    private void addElementListeners(Set<Object[]> listenerSet) {
+        for (Object[] listener : listenerSet) {
+            Object property = listener[1];
+            if (property == null) {
+                addElementListener(listener[0]);
+            } else if (property instanceof String[]) {
+                addElementListener(listener[0], (String[]) property);
+            } else if (property instanceof String) {
+                addElementListener(listener[0], (String) property);
+            } else {
+                throw new RuntimeException(
+                        "Internal error in addElementListeners");
+            }
+        }
+    }
+
+    /**
+     * Update the set of registered listeners to match the given set using 
+     * a minimal update strategy to remove unneeded listeners and add new 
+     * listeners.
+     * 
+     * @param listenerSet a set of arrays containing a tuple of a UML element
+     * to be listened to and a set of property to be listened for.  
+     */
+    protected void updateElementListeners(Set<Object[]> listenerSet) {
+        Set<Object[]> removes = new HashSet<Object[]>(listeners);
+        removes.removeAll(listenerSet);
+        removeElementListeners(removes);
+        
+        Set<Object[]> adds = new HashSet<Object[]>(listenerSet);
+        adds.removeAll(listeners);
+        addElementListeners(adds);
+    }
+    
     protected HashMap<String, Object> getNotationArguments() {
         return npArguments;
     }
