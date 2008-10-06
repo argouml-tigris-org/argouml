@@ -39,6 +39,7 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.InvalidElementException;
 
 /**
  * Implements a list of ToDoItem's.
@@ -217,6 +218,9 @@ public class ToDoList extends Observable implements Runnable {
                 boolean valid;
                 try {
                     valid = item.stillValid(designer);
+                } catch (InvalidElementException ex) {
+                    // If element has been deleted, it's no longer valid
+                    valid = false;
                 } catch (Exception ex) {
                     valid = false;
                     StringBuffer buf = new StringBuffer(
