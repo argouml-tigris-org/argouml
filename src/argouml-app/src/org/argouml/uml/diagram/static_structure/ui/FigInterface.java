@@ -27,8 +27,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -126,6 +124,7 @@ public class FigInterface extends FigClassifierBox {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionInterface(this);
     }
@@ -212,6 +211,7 @@ public class FigInterface extends FigClassifierBox {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
     }
@@ -219,6 +219,7 @@ public class FigInterface extends FigClassifierBox {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return borderFig.getLineWidth();
     }
@@ -226,6 +227,7 @@ public class FigInterface extends FigClassifierBox {
     /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
+    @Override
     public void translate(int dx, int dy) {
         super.translate(dx, dy);
         Editor ce = Globals.curEditor();
@@ -238,6 +240,7 @@ public class FigInterface extends FigClassifierBox {
     /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setEnclosingFig(Fig encloser) {
         Fig oldEncloser = getEnclosingFig();
 
@@ -349,38 +352,10 @@ public class FigInterface extends FigClassifierBox {
      * @return the class name and bounds together with compartment
      * visibility.
      */
+    @Override
     public String classNameAndBounds() {
         return super.classNameAndBounds()
                 + "operationsVisible=" + isOperationsVisible();
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
-     */
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        if (newOwner != null) {
-            // add the listeners to the newOwner
-            addElementListener(newOwner);
-            // and its stereotypes
-            Collection c = new ArrayList(
-                    Model.getFacade().getStereotypes(newOwner));
-            // and its features
-            for (Object feat : Model.getFacade().getFeatures(newOwner)) {
-                c.add(feat);
-                // and the stereotypes of its features
-                c.addAll(new ArrayList(Model.getFacade().getStereotypes(feat)));
-                // and the parameter of its operations
-                if (Model.getFacade().isAOperation(feat)) {
-                    c.addAll(Model.getFacade().getParameters(feat));
-                }
-            }
-            for (Object obj : c) {
-                addElementListener(obj);
-            }
-        }
     }
 
     /**
@@ -403,6 +378,7 @@ public class FigInterface extends FigClassifierBox {
      *
      * @param h  Desired height of the FigInterface
      */
+    @Override
     protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
 
@@ -457,4 +433,4 @@ public class FigInterface extends FigClassifierBox {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-} /* end class FigInterface */
+}
