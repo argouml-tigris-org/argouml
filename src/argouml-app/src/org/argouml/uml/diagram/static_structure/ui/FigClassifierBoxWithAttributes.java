@@ -27,9 +27,9 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.Action;
 
@@ -86,6 +86,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
      * 
      * @see org.argouml.uml.diagram.static_structure.ui.FigClassifierBox#buildAddMenu()
      */
+    @Override
     protected ArgoJMenu buildAddMenu() {
         ArgoJMenu addMenu = super.buildAddMenu();
         Action addAttribute = new ActionAddAttribute();
@@ -99,39 +100,58 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
      * @return the class name and bounds together with compartment
      * visibility.
      */
+    @Override
     public String classNameAndBounds() {
         return super.classNameAndBounds()
             + "attributesVisible=" + isAttributesVisible() + ";";
     }
 
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+        Set<Object[]> listeners = new HashSet<Object[]>();
+
+        // Collect the set of model elements that we want to listen to
         if (newOwner != null) {
+            // TODO: Because we get called on each and every change event, when
+            // the model is in a state of flux, we'll often get an
+            // InvalidElementException before we finish this collection. The
+            // only saving grace is that we're called SO many times that on the
+            // last time, things should be stable again and we'll get a good set
+            // of elements for the final update.  We need a better mechanism.
+            
             // add the listeners to the newOwner
-            addElementListener(newOwner);
+            listeners.add(new Object[] {newOwner, null});
+            
             // and its stereotypes
             // TODO: Aren't stereotypes handled elsewhere?
-            Collection c = new ArrayList(
-                    Model.getFacade().getStereotypes(newOwner));
+            for (Object stereotype 
+                    : Model.getFacade().getStereotypes(newOwner)) {
+                listeners.add(new Object[] {stereotype, null});
+            }
+
             // and its features
             for (Object feat : Model.getFacade().getFeatures(newOwner)) {
-                c.add(feat);
+                listeners.add(new Object[] {feat, null});
                 // and the stereotypes of its features
-                c.addAll(new ArrayList(Model.getFacade().getStereotypes(feat)));
+                for (Object stereotype 
+                        : Model.getFacade().getStereotypes(feat)) {
+                    listeners.add(new Object[] {stereotype, null});
+                }
                 // and the parameter of its operations
                 if (Model.getFacade().isAOperation(feat)) {
-                    c.addAll(Model.getFacade().getParameters(feat));
+                    for (Object param : Model.getFacade().getParameters(feat)) {
+                        listeners.add(new Object[] {param, null});
+                    }
                 }
             }
-            // And now add listeners to them all:
-            for (Object obj : c) {
-                addElementListener(obj);
-            }
         }
+        
+        // Update the listeners to match the desired set using the minimal
+        // update facility
+        updateElementListeners(listeners);
     }
     
+    @Override
     public void renderingChanged() {
         if (getOwner() != null) {
             updateAttributes();
@@ -143,6 +163,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
      * TODO: Based on my comments below, with that work done,
      * this method can be removed - Bob.
      */
+    @Override
     protected void updateLayout(UmlChangeEvent event) {
         super.updateLayout(event);
 
@@ -174,6 +195,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         }
     }
 
+    @Override
     protected void updateStereotypeText() {
 
         Rectangle rect = getBounds();
@@ -256,7 +278,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
             }
         }
     }
-
+    @Override
     public Dimension getMinimumSize() {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
@@ -314,6 +336,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
      * 
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
 

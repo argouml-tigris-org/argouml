@@ -1249,6 +1249,11 @@ public abstract class FigNodeModelElement
             if (notationProviderName != null) {
                 notationProviderName.updateListener(this, getOwner(), event);
             }
+            // TODO: This brute force approach of updating listeners on each
+            // and every event, without checking the event type or any other
+            // information is going to cause lots of InvalidElementExceptions
+            // in subclasses implementations of updateListeners (and they 
+            // won't have the event information to make their own decisions)
             updateListeners(getOwner(), getOwner());
         }
     }    
