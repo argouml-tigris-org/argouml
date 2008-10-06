@@ -41,6 +41,13 @@ import org.tigris.gef.presentation.Fig;
  */
 public class ArgoFigUtil {
     
+    /**
+     * Find the Project that contains a given figure.  Because we don't have
+     * a single reliable way to do this, we try a bunch of different approachs.
+     * 
+     * @param fig the Fig to return the project of
+     * @return the project containing the given fig
+     */
     public static Project getProject(ArgoFig fig) {
         if (fig instanceof Fig) {
             Fig f = (Fig) fig;
@@ -51,8 +58,8 @@ public class ArgoFigUtil {
                  * Why is the Layer not set in the constructor? */
                 Editor editor = Globals.curEditor();
                 if (editor == null) {
-                    // TODO: The above doesn't work reliably in a constructor.  We
-                    // need a better way of getting default fig settings 
+                    // TODO: The above doesn't work reliably in a constructor.
+                    // We need a better way of getting default fig settings 
                     // for the owning project rather than using the 
                     // project manager singleton. - tfm
                     return ProjectManager.getManager().getCurrentProject();
@@ -67,10 +74,12 @@ public class ArgoFigUtil {
             }
             GraphModel gm = layer.getGraphModel();
             if (gm instanceof UMLMutableGraphSupport) {
-                return ((UMLMutableGraphSupport) gm).getProject();
-            } else {
-                return ProjectManager.getManager().getCurrentProject();
+                Project project = ((UMLMutableGraphSupport) gm).getProject();
+                if (project != null) {
+                    return project;
+                }
             }
+            return ProjectManager.getManager().getCurrentProject();
         }
         return null;
     }
