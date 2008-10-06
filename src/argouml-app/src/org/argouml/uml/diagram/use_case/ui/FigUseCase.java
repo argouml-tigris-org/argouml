@@ -39,7 +39,6 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
@@ -113,17 +112,6 @@ public class FigUseCase extends FigNodeModelElement
     implements ExtensionsCompartmentContainer {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(FigUseCase.class);
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Constants
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
      * The minimum padding allowed above and below the rectangle for
      * the use case name and extension points to the top of the use
      * case oval itself.<p>
@@ -139,12 +127,6 @@ public class FigUseCase extends FigNodeModelElement
      * points. The line takes a further 1 pixel.<p>
      */
     private static final int SPACER = 2;
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Instance variables
-    //
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * UML use cases do not really have ports, so just define one big
@@ -890,7 +872,6 @@ public class FigUseCase extends FigNodeModelElement
             Point res =
 		new Point((int) (mu * dx + _x + rx),
 			  (int) (mu * dy + _y + ry));
-            LOG.debug("    returns " + res.x + ',' + res.y + ')');
             return res;
         }
 
@@ -1235,9 +1216,9 @@ public class FigUseCase extends FigNodeModelElement
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
     @Override
-    public List getGravityPoints() {
+    public List<Point> getGravityPoints() {
         final int maxPoints = 30;
-        List ret = new ArrayList(maxPoints);
+        List<Point> ret = new ArrayList<Point>(maxPoints);
         int cx = bigPort.getCenter().x;
         int cy = bigPort.getCenter().y;
         int radiusx = Math.round(bigPort.getWidth() / 2) + 1;
