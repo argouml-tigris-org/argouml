@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -61,6 +61,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
      *      javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int,
      *      boolean)
      */
+    @Override
     public Component getTreeCellRendererComponent(
         JTree tree,
         Object value,
@@ -84,7 +85,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 row,
                 hasFocusParam);
 
-        if (r instanceof JLabel) {
+        if (value != null && r instanceof JLabel) {
             JLabel lab = (JLabel) r;
 
             // setting the icon
@@ -119,4 +120,4 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
         return r;
     }
 
-} /* end class UMLTreeCellRenderer */
+}
