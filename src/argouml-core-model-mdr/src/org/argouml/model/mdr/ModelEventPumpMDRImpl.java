@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,6 +54,7 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
@@ -511,8 +512,12 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
         // Fetch the key before going in synchronized mode
         String mofId = ((MDRObject) modelElement).refMofId();
-        verifyAttributeNames(((MDRObject) modelElement).refMetaObject(),
-                propertyNames);
+        try {
+            verifyAttributeNames(((MDRObject) modelElement).refMetaObject(),
+                    propertyNames);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Register ["
                     + " element:" + formatElement(modelElement)
