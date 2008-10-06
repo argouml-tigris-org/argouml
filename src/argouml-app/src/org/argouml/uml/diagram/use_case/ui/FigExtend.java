@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,8 @@ package org.argouml.uml.diagram.use_case.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -72,11 +74,6 @@ public class FigExtend extends FigEdgeModelElement {
 
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Constructors
-    //
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * The default constructor, but should never be called directly
@@ -154,12 +151,6 @@ public class FigExtend extends FigEdgeModelElement {
     }
 
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Accessors
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * Set a new fig to represent this edge.<p>
      *
@@ -169,6 +160,7 @@ public class FigExtend extends FigEdgeModelElement {
      *
      * @param f  The fig to use.
      */
+    @Override
     public void setFig(Fig f) {
         super.setFig(f);
 
@@ -185,6 +177,7 @@ public class FigExtend extends FigEdgeModelElement {
      *
      * @return   <code>false</code> under all circumstances.
      */
+    @Override
     protected boolean canEdit(Fig f) {
         return false;
     }
@@ -192,6 +185,7 @@ public class FigExtend extends FigEdgeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
+    @Override
     public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
@@ -200,11 +194,16 @@ public class FigExtend extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        removeAllElementListeners();
+        Set<Object[]> listeners = new HashSet<Object[]>();
         if (newOwner != null) {
-            addElementListener(newOwner, new String[] {"condition", "remove"});
+            listeners.add(
+                    new Object[] {newOwner,
+                                  new String[] {"condition", "remove"}
+                    });
         }
+        updateElementListeners(listeners);
     }
 
 
@@ -213,6 +212,7 @@ public class FigExtend extends FigEdgeModelElement {
      * 
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent e) {
         Object extend = getOwner();
         if (extend == null) {
@@ -228,6 +228,7 @@ public class FigExtend extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
+    @Override
     protected void renderingChanged() {
         if (getOwner() != null) {
             updateConditionText();
@@ -242,7 +243,9 @@ public class FigExtend extends FigEdgeModelElement {
      * so we show the "body" of it, and ignore the "language".
      */
     protected void updateConditionText() {
-        if (getOwner() == null) return;
+        if (getOwner() == null) {
+            return;
+        }
 
         Object c = Model.getFacade().getCondition(getOwner());
         if (c == null) {
@@ -270,4 +273,4 @@ public class FigExtend extends FigEdgeModelElement {
                 + ps.getRightGuillemot());
     }
 
-} /* end class FigExtend */
+}

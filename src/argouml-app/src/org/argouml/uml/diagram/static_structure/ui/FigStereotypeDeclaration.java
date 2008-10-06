@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,9 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -105,6 +107,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionStereotype(this);
     }
@@ -114,6 +117,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      * popup menu on a Stereotype.
      * {@inheritDoc}
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
 
@@ -155,6 +159,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      *
      * @return  the size of the minimum bounding box.
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension aSize = getNameFig().getMinimumSize();
         if (getStereotypeFig().isVisible()) {
@@ -193,6 +198,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(final int x, final int y,
             final int w, final int h) {
         Rectangle oldBounds = getBounds();
@@ -240,6 +246,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigCompartmentBox#unhighlight()
      */
+    @Override
     protected CompartmentFigText unhighlight() {
         CompartmentFigText fc = super.unhighlight();
         if (fc == null) {
@@ -253,9 +260,10 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      * Handles changes to the model. Takes into account the event that
      * occurred. If you need to update the whole fig, consider using
      * renderingChanged.
-     *
+     * {@inheritDoc}
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee instanceof AssociationChangeEvent 
@@ -269,21 +277,19 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+        
+        Set<Object[]> listeners = new HashSet<Object[]>();
         if (newOwner != null) {
-            addElementListener(newOwner);
+            listeners.add(new Object[] {newOwner, null});
             // register for tagdefinitions:
-            Iterator it =
-                Model.getFacade().getTagDefinitions(newOwner).iterator();
-            while (it.hasNext()) {
-                Object td = it.next();
-                addElementListener(td, 
-                        new String[] {"name", "tagType", "multiplicity"});
+            for (Object td : Model.getFacade().getTagDefinitions(newOwner)) {
+                listeners.add(new Object[] {td,
+                    new String[] {"name", "tagType", "multiplicity"}});
             }
             /* TODO: constraints, ... */
         }
+        updateElementListeners(listeners);
     }
-} /* end class FigClass */
+}

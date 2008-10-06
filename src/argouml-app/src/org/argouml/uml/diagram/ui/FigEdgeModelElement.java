@@ -36,11 +36,11 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -65,6 +65,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -156,7 +157,7 @@ public abstract class FigEdgeModelElement
     /*
      * List of model element listeners we've registered.
      */
-    private Collection listeners = new ArrayList();
+    private Set<Object[]> listeners = new HashSet<Object[]>();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -261,8 +262,9 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * @return a Vector containing a combination of these 4 types:
-     * Action, JMenu, JMenuItem, JSeparator.
+     * @param me the MouseEvent that triggered the popup menu request
+     * @return a Vector containing a combination of these 4 types: Action,
+     *         JMenu, JMenuItem, JSeparator.
      */
     @Override
     public Vector getPopUpActions(MouseEvent me) {
@@ -421,8 +423,9 @@ public abstract class FigEdgeModelElement
             if (y >= p.y + yOff
                 && y <= p.y + height + yOff
                 && x >= p.x + xOff
-                && x <= p.x + width + xOff)
+                && x <= p.x + width + xOff) {
                 return item;
+            }
             iconPos += width;
         }
         for (ToDoItem item : items) {
@@ -430,8 +433,9 @@ public abstract class FigEdgeModelElement
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
                 ((Clarifier) icon).setToDoItem(item);
-                if (((Clarifier) icon).hit(x, y))
+                if (((Clarifier) icon).hit(x, y)) {
                     return item;
+                }
             }
         }
         items = tdList.elementListForOffender(this);
@@ -443,8 +447,9 @@ public abstract class FigEdgeModelElement
             if (y >= p.y + yOff
                 && y <= p.y + height + yOff
                 && x >= p.x + xOff
-                && x <= p.x + width + xOff)
+                && x <= p.x + width + xOff) {
                 return item;
+            }
             iconPos += width;
         }
         for (ToDoItem item : items) {
@@ -452,8 +457,9 @@ public abstract class FigEdgeModelElement
             if (icon instanceof Clarifier) {
                 ((Clarifier) icon).setFig(this);
                 ((Clarifier) icon).setToDoItem(item);
-                if (((Clarifier) icon).hit(x, y))
+                if (((Clarifier) icon).hit(x, y)) {
                     return item;
+                }
             }
         }
         return null;
@@ -656,8 +662,9 @@ public abstract class FigEdgeModelElement
      */
     protected void textEdited(FigText ft) {
         if (ft == nameFig) {
-            if (getOwner() == null)
+            if (getOwner() == null) {
                 return;
+            }
             notationProviderName.parse(getOwner(), ft.getText());
             ft.setText(notationProviderName.toString(getOwner(), npArguments));
         }
@@ -959,15 +966,11 @@ public abstract class FigEdgeModelElement
      *          or null if there was none, and all listeners have to be set
      */
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner == newOwner) {
-            LOG.debug("Listeners being added and removed from the same owner");
-        }
-        if (oldOwner != null) {
-            removeElementListener(oldOwner);
-        }
+        Set<Object[]> l = new HashSet<Object[]>();
         if (newOwner != null) {
-            addElementListener(newOwner, "remove");
+            l.add(new Object[] {newOwner, "remove"});
         }
+        updateElementListeners(l);
     }
 
     /*
@@ -1001,7 +1004,9 @@ public abstract class FigEdgeModelElement
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent event) {
-        if (getOwner() == null) return;
+        if (getOwner() == null) {
+            return;
+        }
         initNotationProviders(getOwner());
         renderingChanged();
     }
@@ -1045,8 +1050,9 @@ public abstract class FigEdgeModelElement
 	Iterator it = getPathItemFigs().iterator();
 	while (it.hasNext()) {
 	    Fig f = (Fig) it.next();
-	    if (f.hit(r))
+	    if (f.hit(r)) {
 		return true;
+	    }
 	}
 	return super.hit(r);
     }
@@ -1054,6 +1060,7 @@ public abstract class FigEdgeModelElement
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
+    @Override
     public final void removeFromDiagram() {
         Fig delegate = getRemoveDelegate();
         if (delegate instanceof FigNodeModelElement) {
@@ -1364,28 +1371,66 @@ public abstract class FigEdgeModelElement
         Model.getPump().removeModelEventListener(this, element);
     }
    
+    
     /**
      * Unregister all listeners registered through addElementListener
      * @see #addElementListener(Object, String)
      */
     protected void removeAllElementListeners() {
-        for (Iterator iter = listeners.iterator(); iter.hasNext();) {
-            Object[] l = (Object[]) iter.next();
-            Object property = l[1];
+        removeElementListeners(listeners);
+    }
+
+    private void removeElementListeners(Set<Object[]> listenerSet) {
+        for (Object[] listener : listenerSet) {
+            Object property = listener[1];
             if (property == null) {
-                Model.getPump().removeModelEventListener(this, l[0]);
+                Model.getPump().removeModelEventListener(this, listener[0]);
             } else if (property instanceof String[]) {
-                Model.getPump().removeModelEventListener(this, l[0],
+                Model.getPump().removeModelEventListener(this, listener[0],
                         (String[]) property);
             } else if (property instanceof String) {
-                Model.getPump().removeModelEventListener(this, l[0],
+                Model.getPump().removeModelEventListener(this, listener[0],
                         (String) property);
             } else {
                 throw new RuntimeException(
                         "Internal error in removeAllElementListeners");
             }
         }
-        listeners.clear();
+        listeners.removeAll(listenerSet);
+    }
+
+    private void addElementListeners(Set<Object[]> listenerSet) {
+        for (Object[] listener : listenerSet) {
+            Object property = listener[1];
+            if (property == null) {
+                addElementListener(listener[0]);
+            } else if (property instanceof String[]) {
+                addElementListener(listener[0], (String[]) property);
+            } else if (property instanceof String) {
+                addElementListener(listener[0], (String) property);
+            } else {
+                throw new RuntimeException(
+                        "Internal error in addElementListeners");
+            }
+        }
+    }
+
+    /**
+     * Update the set of registered listeners to match the given set using 
+     * a minimal update strategy to remove unneeded listeners and add new 
+     * listeners.
+     * 
+     * @param listenerSet a set of arrays containing a tuple of a UML element
+     * to be listened to and a set of property to be listened for.  
+     */
+    protected void updateElementListeners(Set<Object[]> listenerSet) {
+        Set<Object[]> removes = new HashSet<Object[]>(listeners);
+        removes.removeAll(listenerSet);
+        removeElementListeners(removes);
+        
+        Set<Object[]> adds = new HashSet<Object[]>(listenerSet);
+        adds.removeAll(listeners);
+        addElementListeners(adds);
     }
 
     protected HashMap<String, Object> getNotationArguments() {

@@ -32,7 +32,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -194,10 +196,14 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     @Override
     public void updateListeners(Object oldOwner, Object newOwner) {
-        removeAllElementListeners();
+        Set<Object[]> listeners = new HashSet<Object[]>();
         if (newOwner != null) {
-            addElementListener(newOwner, new String[] {"isAbstract", "remove"});
+            listeners.add(
+                    new Object[] {newOwner,
+                                  new String[] {"isAbstract", "remove"}
+                    });
         }
+        updateElementListeners(listeners);
         /* No further listeners required in this case - the rest is handled 
          * by the notationProvider and sub-Figs. */
     }

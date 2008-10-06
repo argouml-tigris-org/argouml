@@ -27,6 +27,8 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
@@ -159,20 +161,11 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      */
     @Override
     public void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner == newOwner) {
-            LOG.warn("Listeners being added and removed from the same owner");
-        }
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        /* Now, let's register for events from all modelelements
-         * that change the association-end representation: 
-         */
+        Set<Object[]> l = new HashSet<Object[]>();
         if (newOwner != null) {
-            /* Many different event types are needed, 
-             * so let's register for them all: */
-            addElementListener(newOwner);
+            l.add(new Object[] {newOwner, null});
         }
+        updateElementListeners(l);
     }
 
     /** Returns the name of the OrderingKind.
