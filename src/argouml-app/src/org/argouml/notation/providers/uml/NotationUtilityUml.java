@@ -114,10 +114,15 @@ public final class NotationUtilityUml {
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         if (Model.getFacade().isAStructuralFeature(element)) {
-                            if ("false".equalsIgnoreCase(value)) {
+                            if (value == null) { 
+                                /* the text was: {frozen} */
                                 Model.getCoreHelper().setReadOnly(element, true);
-                            } else {
+                            } else if ("false".equalsIgnoreCase(value)) {
+                                /* the text was: {frozen = false} */
                                 Model.getCoreHelper().setReadOnly(element, false);
+                            } else if ("true".equalsIgnoreCase(value)) {
+                                /* the text was: {frozen = true} */
+                                Model.getCoreHelper().setReadOnly(element, true);
                             }
                         }
                     }
@@ -728,6 +733,8 @@ public final class NotationUtilityUml {
                 value = value.trim();
             }
 
+            /* If the current property occurs a second time
+             * in the given list of properties, then skip it: */
             for (j = i + 2; j < prop.size(); j += 2) {
                 String s = prop.get(j);
                 if (s != null && name.equalsIgnoreCase(s.trim())) {
