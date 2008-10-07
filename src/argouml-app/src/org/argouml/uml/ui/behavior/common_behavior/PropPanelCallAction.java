@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -33,6 +32,7 @@ import java.util.Iterator;
 import org.argouml.i18n.Translator;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -212,11 +212,9 @@ public class PropPanelCallAction extends PropPanelAction {
          *  It is e.g. not usefull to update the combo for removed operations,
          *  since you can only remove operations by changing the target,
          *  and selecting the action again re-generates the complete list.
-         *
-         * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
          */
         @Override
-        public void propertyChange(PropertyChangeEvent evt) {
+        public void modelChanged(UmlChangeEvent evt) {
             if (evt instanceof AttributeChangeEvent) {
                 if (evt.getPropertyName().equals("operation")) {
                     if (evt.getSource() == getTarget()

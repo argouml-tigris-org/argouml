@@ -43,6 +43,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -237,11 +238,8 @@ class UMLTagDefinitionNamespaceComboBoxModel
         setElements(c);
     }
 
-    /*
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
-     */
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void modelChanged(UmlChangeEvent evt) {
         /*
          * Rebuild the list from scratch to be sure it's correct.
          */

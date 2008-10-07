@@ -164,17 +164,7 @@ class UMLDiagramHomeModelComboBoxModel extends UMLComboBoxModel2 {
         }
         return false;
     }
-
-    /**
-     * @param evt
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#propertyChange(java.beans.PropertyChangeEvent)
-     */
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        // TODO: Auto-generated method stub
-        super.propertyChange(evt);
-    }
-    
+   
 }
 
 class ActionSetDiagramHomeModel extends UndoableAction {
