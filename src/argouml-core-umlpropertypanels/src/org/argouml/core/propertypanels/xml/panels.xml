@@ -548,28 +548,28 @@
     <textarea name="initialValue" type="Expression" />    
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />    
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />    
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />    
     <attribute name="targetScope" type="ScopeKind" />
     <attribute name="ordering" type="OrderingKind" />
     <attribute name="associationEnd" type="AssociationEnd" />
-    <list name="attributeLink" type="Attribute" />
-    <list name="associationEndRole" type="Attribute" />
+    <attribute name="attributeLink" type="Attribute" />
+    <attribute name="associationEndRole" type="Attribute" />
   </panel>
   <panel name="BehavioralFeature">
     <text name="name" type="Name" />
