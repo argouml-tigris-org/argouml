@@ -195,6 +195,7 @@ public abstract class PropPanelModelElement extends PropPanel {
                     }
                 } else if (!(component instanceof JLabel)
                         && component.isEnabled() != enable) {
+                    /* See issue 5289. */
                     component.setEnabled(enable);
                 }
             }
