@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,12 +50,6 @@ import org.argouml.gefext.DeferredBufferedImage;
 import org.argouml.i18n.Translator;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
-import org.tigris.gef.base.CmdSaveEPS;
-import org.tigris.gef.base.CmdSaveGIF;
-import org.tigris.gef.base.CmdSaveGraphics;
-import org.tigris.gef.base.CmdSavePNG;
-import org.tigris.gef.base.CmdSavePS;
-import org.tigris.gef.base.CmdSaveSVG;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SaveEPSAction;
@@ -64,7 +58,7 @@ import org.tigris.gef.base.SaveGraphicsAction;
 import org.tigris.gef.base.SavePNGAction;
 import org.tigris.gef.base.SavePSAction;
 import org.tigris.gef.base.SaveSVGAction;
-import org.tigris.gef.persistence.PostscriptWriter;
+import org.tigris.gef.persistence.export.PostscriptWriter;
 
 
 /**
@@ -301,32 +295,6 @@ public final class SaveGraphicsManager {
         return in;
     }
 
-    /**
-     * @param suffix
-     *            the suffix (extension) of the filename, which corresponds to
-     *            the graphics format to be used
-     * @return the command that will do the save
-     * @deprecated for 0.25.3 by tfmorris - use
-     *             {@link #getSaveActionBySuffix(String)}
-     */
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public CmdSaveGraphics getSaveCommandBySuffix(String suffix) {
-        CmdSaveGraphics cmd = null;
-        if (FileFilters.PS_FILTER.getSuffix().equals(suffix)) {
-            cmd = new CmdSavePS();
-        } else if (FileFilters.EPS_FILTER.getSuffix().equals(suffix)) {
-            cmd = new ActionSaveGraphicsCmdSaveEPS();
-        } else if (FileFilters.PNG_FILTER.getSuffix().equals(suffix)) {
-            cmd = new CmdSavePNG();
-        } else if (FileFilters.GIF_FILTER.getSuffix().equals(suffix)) {
-            cmd = new CmdSaveGIF();
-        } else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
-            cmd = new CmdSaveSVG();
-        }
-        return cmd;
-    }
-
 
     /**
      * @param suffix the suffix (extension) of the filename,
@@ -344,6 +312,9 @@ public final class SaveGraphicsManager {
             cmd = new SavePNGAction2(Translator.localize("action.save-png"));
         } else if (FileFilters.GIF_FILTER.getSuffix().equals(suffix)) {
             cmd = new SaveGIFAction(Translator.localize("action.save-gif"));
+            // TODO: The following can be used when we drop Java 5 support or
+            // when an ImageIO GIF writer plugin is bundled
+//            cmd = new SaveGIFAction2(Translator.localize("action.save-gif"));
         } else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
             cmd = new SaveSVGAction(Translator.localize("action.save-svg"));
         }
@@ -367,7 +338,7 @@ public final class SaveGraphicsManager {
      * includes the canvas origin and some space around the lower and right
      * sides so that the elements will be roughly centered. Elements which are
      * off the top or left side of the canvas may still be clipped (ie if the
-     * original drawing area had a negative x or y coordinated).
+     * original drawing area had a negative x or y coordinate).
      * 
      * @param area rectangle representing original drawing area
      * @return an expanded rectangle
@@ -391,47 +362,6 @@ public final class SaveGraphicsManager {
     }
 }
 
-/**
- * Class to adjust {@link org.tigris.gef.base.CmdSaveEPS} for our purposes.<p>
- *
- * TODO: While doing this refactoring (February 2004) it is unclear to me (Linus
- * Tolke) why this modification in the {@link org.tigris.gef.base.CmdSaveEPS}
- * behavior is needed. Is it a bug in GEF? Is it an added feature?
- * The old comment was: override gef default to cope with scaling.
- * 
- * TODO: Does this behavior need to be replicated for {@link SaveEPSAction} 
- * as well? - tfm - 20070511
- * <p>
- * @deprecated for 0.25.5 by tfmorris use {@link SaveScaledEPSAction}
- */
-@SuppressWarnings("deprecation")
-@Deprecated
-class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
-
-    protected void saveGraphics(OutputStream s, Editor ce,
-                                Rectangle drawingArea)
-        throws IOException {
-
-        double editorScale = ce.getScale();
-        int x = (int) (drawingArea.x * editorScale);
-        int y = (int) (drawingArea.y * editorScale);
-        int h = (int) (drawingArea.height * editorScale);
-        int w = (int) (drawingArea.width * editorScale);
-        drawingArea = new Rectangle(x, y, w, h);
-
-        PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
-
-        ps.scale(editorScale, editorScale);
-
-        ce.print(ps);
-        ps.dispose();
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 2859279843998315644L;
-}
 
 class SaveScaledEPSAction extends SaveEPSAction {
     
@@ -475,6 +405,7 @@ class SavePNGAction2 extends SavePNGAction {
         super(name);
     }
 
+    @Override
     public void actionPerformed(ActionEvent ae) {
         Editor ce = Globals.curEditor();
         Rectangle drawingArea = 
@@ -523,3 +454,52 @@ class SavePNGAction2 extends SavePNGAction {
 
 }
 
+/**
+ * Action to save a diagram as a GIF image in a supplied OutputStream. 
+ * 
+ * TODO: This requires Java 6 in its current state, so don't use.
+ * 
+ * @author Tom Morris <tfmorris@gmail.com>
+ */
+class SaveGIFAction2 extends SaveGIFAction {
+
+    /**
+     * Creates a new SaveGIFAction
+     * 
+     * @param name The name of the action
+     */
+    SaveGIFAction2(String name) {
+        super(name);
+    }
+
+
+    /**
+     * Write the diagram contained by the current editor into an OutputStream as
+     * a GIF image.
+     */
+    @Override
+    protected void saveGraphics(OutputStream s, Editor ce, 
+            Rectangle drawingArea) throws IOException {
+
+        Rectangle canvasArea = 
+            SaveGraphicsManager.adjustDrawingArea(drawingArea);
+        
+        RenderedImage i = new DeferredBufferedImage(canvasArea,
+                BufferedImage.TYPE_INT_ARGB, ce, scale);
+
+        // NOTE: GEF's GIF writer uses Jeff Poskanzer's GIF encoder, but that
+        // saves a copy of the entire image in an internal buffer before
+        // starting work, defeating the whole purpose of our incremental 
+        // rendering.
+        
+        // Java SE 6 has a native GIF writer, but it's not in Java 5.  One
+        // is available in the JAI-ImageIO library, but we don't currently
+        // bundle that and at 6+ MB it seems like a heavyweight solution, but
+        // I don't have time to produce a stripped down version right now - tfm
+        // https://jai-imageio.dev.java.net/
+
+        ImageIO.write(i, "gif", s);
+
+    }
+
+}
