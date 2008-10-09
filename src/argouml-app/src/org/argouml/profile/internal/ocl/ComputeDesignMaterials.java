@@ -1,4 +1,4 @@
-// $Id$
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,61 +22,60 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer.rules;
+package org.argouml.profile.internal.ocl;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.lang.reflect.Method;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
-import org.argouml.cognitive.Critic;
-import org.argouml.i18n.Translator;
-import org.argouml.profile.Profile;
+import org.apache.log4j.Logger;
+import org.argouml.model.MetaTypes;
+import org.argouml.model.Model;
+
+import tudresden.ocl.parser.analysis.DepthFirstAdapter;
+import tudresden.ocl.parser.node.AClassifierContext;
 
 /**
- * Show the critics exported by a Profile
+ * Check the design materials related to this OCL
  * 
  * @author maurelio1234
  */
-public class GoProfileToCritics extends AbstractPerspectiveRule{
+public class ComputeDesignMaterials extends DepthFirstAdapter {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = 
+        Logger.getLogger(ComputeDesignMaterials.class);
+
+    private Set<Object> dms = new HashSet<Object>();
 
     /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAClassifierContext(tudresden.ocl.parser.node.AClassifierContext)
      */
-    public String getRuleName() {
-        return Translator.localize("misc.profile.critics");
-    }
-
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
-     */
-    public Collection getChildren(final Object parent) {
-        if (parent instanceof Profile) {
-            Object critics = new Vector<Critic>() {
-                {
-                    addAll(((Profile) parent).getCritics());
+    public void caseAClassifierContext(AClassifierContext node) {
+        String str = ("" + node.getPathTypeName()).trim();
+        
+        if (str.equals("Class")) {
+            dms.add(Model.getMetaTypes().getUMLClass());            
+        } else {
+            try {
+                Method m = MetaTypes.class.getDeclaredMethod("get" + str,
+                        new Class[0]);
+                if (m != null) {
+                    dms.add(m.invoke(Model.getMetaTypes(), new Object[0]));
                 }
-
-                /*
-                 * @see java.util.Vector#toString()
-                 */
-                public String toString() {
-                    return Translator.localize("misc.profile.explorer.critic");
-                }
-            };
-            
-            Vector<Object> ret = new Vector<Object>();
-            ret.add(critics);
-            return ret;
+            } catch (Exception e) {
+                LOG.error("Metaclass not found: " + str, e);
+            }
         }
-        return Collections.emptySet();
     }
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+    /**
+     * @return the criticized design materials
      */
-    public Set getDependencies(Object parent) {
-        // TODO: What?
-        return Collections.emptySet();
+    public Set<Object> getCriticizedDesignMaterials() {
+        return dms;
     }
+
 }

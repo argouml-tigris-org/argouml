@@ -24,6 +24,8 @@
 
 package org.argouml.profile;
 
+import org.argouml.kernel.ProfileConfiguration;
+
 /**
  * The <a href="http://en.wikipedia.org/wiki/Facade_pattern">Facade</a> of the 
  * profile subsystem. 
@@ -83,6 +85,15 @@ public class ProfileFacade {
      */
     public static boolean isInitiated() {
         return manager != null;
+    }
+
+    /**
+     * Applies the given ProfileConfiguration to ArgoUML
+     * 
+     * @param pc the profile configuration
+     */
+    public static void applyConfiguration(ProfileConfiguration pc) {
+        getManager().applyConfiguration(pc);
     }
     
 }

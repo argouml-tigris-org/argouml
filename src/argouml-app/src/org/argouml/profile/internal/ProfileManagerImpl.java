@@ -34,8 +34,11 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Agency;
+import org.argouml.cognitive.Critic;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.profile.Profile;
@@ -224,7 +227,15 @@ public class ProfileManagerImpl implements ProfileManager {
             if (p instanceof UserDefinedProfile
                     || getProfileForClass(p.getClass().getName()) == null) {
                 profiles.add(p);
-                
+
+                for (Critic critic : p.getCritics()) {
+                    for (Object meta : critic.getCriticizedDesignMaterials()) {
+                        Agency.register(critic, meta);
+                    }
+
+                    critic.setEnabled(false);
+                }
+                                                
                 // this profile could have not been loaded when 
                 // the default profile configuration 
                 // was loaded at first, so we need to do it again
@@ -399,6 +410,24 @@ public class ProfileManagerImpl implements ProfileManager {
             }
         }
         return null;
+    }
+
+    /*
+     * @param pc
+     * @see org.argouml.profile.ProfileManager#applyConfiguration(org.argouml.kernel.ProfileConfiguration)
+     */
+    public void applyConfiguration(ProfileConfiguration pc) {
+        for (Profile p : this.profiles) {
+            for (Critic c : p.getCritics()) {
+                c.setEnabled(false);
+            }
+        }
+        
+        for (Profile p : pc.getProfiles()) {
+            for (Critic c : p.getCritics()) {
+                c.setEnabled(true);
+            }
+        }        
     }
 
 }

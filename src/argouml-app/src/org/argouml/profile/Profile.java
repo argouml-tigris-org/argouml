@@ -24,11 +24,13 @@
 
 package org.argouml.profile;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.cognitive.Critic;
+import org.argouml.model.Model;
 
 /**
  * Abstract class representing a Profile. It contains default types and
@@ -127,7 +129,9 @@ public abstract class Profile {
      *         profile.
      * @throws ProfileException if failed to get profile.
      */
-    public abstract Collection getProfilePackages() throws ProfileException;
+    public Collection getProfilePackages() throws ProfileException {
+        return new ArrayList();
+    }
 
     /**
      * @return the display name

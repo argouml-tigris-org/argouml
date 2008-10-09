@@ -1,4 +1,4 @@
-// $Id$
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,61 +22,62 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer.rules;
+package org.argouml.profile.internal.ocl.uml14;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-import java.util.Vector;
+import java.util.HashMap;
 
-import org.argouml.cognitive.Critic;
-import org.argouml.i18n.Translator;
-import org.argouml.profile.Profile;
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.profile.internal.ocl.CompositeModelInterpreter;
 
 /**
- * Show the critics exported by a Profile
+ * Interpreter for UML 1.4 / OCL 1.4
  * 
  * @author maurelio1234
  */
-public class GoProfileToCritics extends AbstractPerspectiveRule{
+public class Uml14ModelInterpreter extends CompositeModelInterpreter {
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+    /**
+     * Logger.
      */
-    public String getRuleName() {
-        return Translator.localize("misc.profile.critics");
+    private static final Logger LOG = Logger
+            .getLogger(Uml14ModelInterpreter.class);
+
+    /**
+     * Default Constructor
+     */
+    public Uml14ModelInterpreter() {
+        addModelInterpreter(new ModelAccessModelInterpreter());
+        addModelInterpreter(new OclAPIModelInterpreter());
+        addModelInterpreter(new CollectionsModelInterpreter());
     }
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
-     */
-    public Collection getChildren(final Object parent) {
-        if (parent instanceof Profile) {
-            Object critics = new Vector<Critic>() {
-                {
-                    addAll(((Profile) parent).getCritics());
-                }
+    public Object invokeFeature(HashMap<String, Object> vt, Object subject,
+            String feature, String type, Object[] parameters) {
+        Object ret = super.invokeFeature(vt, subject, feature, type, parameters);
+        
+        LOG.debug(toString(subject) + type + feature + " ==> " + toString(ret));
+        
+        return ret;
+    }
 
-                /*
-                 * @see java.util.Vector#toString()
-                 */
-                public String toString() {
-                    return Translator.localize("misc.profile.explorer.critic");
-                }
-            };
-            
-            Vector<Object> ret = new Vector<Object>();
-            ret.add(critics);
-            return ret;
+    private String toString(Object obj) {
+        if (Model.getFacade().isAModelElement(obj)) {
+            return Model.getFacade().getName(obj);
+        } else if (obj instanceof Collection) {
+            return colToString((Collection)obj);
+        } else {
+            return ""+obj;
         }
-        return Collections.emptySet();
     }
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
-     */
-    public Set getDependencies(Object parent) {
-        // TODO: What?
-        return Collections.emptySet();
+    private String colToString(Collection collection) {
+        String ret = "[";
+        for (Object object : collection) {
+            ret += toString(object) +",";
+        }        
+        return ret + "]";
     }
+    
 }

@@ -1,4 +1,4 @@
-// $Id$
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,61 +22,61 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer.rules;
+package org.argouml.uml.cognitive.critics;
 
-import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.cognitive.Critic;
-import org.argouml.i18n.Translator;
 import org.argouml.profile.Profile;
 
 /**
- * Show the critics exported by a Profile
+ * Profile which contains the critics that define optional good practices for
+ * general UML models
  * 
  * @author maurelio1234
  */
-public class GoProfileToCritics extends AbstractPerspectiveRule{
+public class ProfileGoodPractices extends Profile {
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+    private Set<Critic>  critics = new HashSet<Critic>();
+    
+    /**
+     * Default Constructor 
      */
-    public String getRuleName() {
-        return Translator.localize("misc.profile.critics");
+    public ProfileGoodPractices() {
+        
+        // general
+        critics.add(new CrEmptyPackage());
+        critics.add(new CrNodesOverlap());
+        critics.add(new CrZeroLengthEdge());
+        critics.add(new CrCircularComposition());
+        critics.add(new CrMissingAttrName());
+        critics.add(new CrMissingClassName());
+        critics.add(new CrMissingStateName());
+        critics.add(new CrMissingOperName());
+        critics.add(new CrNonAggDataType());
+        critics.add(new CrSubclassReference());
+        critics.add(new CrTooManyAssoc());
+        critics.add(new CrTooManyAttr());
+        critics.add(new CrTooManyOper());
+        critics.add(new CrTooManyTransitions());
+        critics.add(new CrTooManyStates());
+        critics.add(new CrTooManyClasses());
+        critics.add(new CrWrongLinkEnds());
+        critics.add(new CrUtilityViolated());
+
+        this.setCritics(critics);
+    }
+    
+    @Override
+    public String getDisplayName() {
+        return "Critics for Good Practices";
     }
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
-     */
-    public Collection getChildren(final Object parent) {
-        if (parent instanceof Profile) {
-            Object critics = new Vector<Critic>() {
-                {
-                    addAll(((Profile) parent).getCritics());
-                }
-
-                /*
-                 * @see java.util.Vector#toString()
-                 */
-                public String toString() {
-                    return Translator.localize("misc.profile.explorer.critic");
-                }
-            };
-            
-            Vector<Object> ret = new Vector<Object>();
-            ret.add(critics);
-            return ret;
-        }
-        return Collections.emptySet();
-    }
-
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
-     */
-    public Set getDependencies(Object parent) {
-        // TODO: What?
-        return Collections.emptySet();
+   /*
+    * @see org.argouml.profile.Profile#getProfileIdentifier()
+    */
+    public String getProfileIdentifier() {
+        return "GoodPractices";
     }
 }

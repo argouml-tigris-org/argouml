@@ -51,6 +51,7 @@ import javax.swing.filechooser.FileFilter;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.profile.Profile;
@@ -420,8 +421,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
     public void handleSettingsTabSave() {
         List<Profile> toRemove = new ArrayList<Profile>();
-        ProfileConfiguration pc = ProjectManager.getManager()
-                .getCurrentProject().getProfileConfiguration();
+        Project proj = ProjectManager.getManager().getCurrentProject();
+        ProfileConfiguration pc = proj.getProfileConfiguration();
 
         List<Profile> usedItens = new ArrayList<Profile>();
 
@@ -448,6 +449,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
             }
         }
 
+        proj.setProfileConfiguration(pc);
     }
 
 }

@@ -1,4 +1,4 @@
-// $Id$
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,61 +22,44 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer.rules;
+package org.argouml.profile.internal.ocl;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-import java.util.Vector;
-
-import org.argouml.cognitive.Critic;
-import org.argouml.i18n.Translator;
-import org.argouml.profile.Profile;
+import java.util.HashMap;
 
 /**
- * Show the critics exported by a Profile
+ * Actually interprets the feature and operations in the model, in the sense
+ * that the OclInterpreter is only responsible for interpreting the OCL
+ * constructors
  * 
  * @author maurelio1234
  */
-public class GoProfileToCritics extends AbstractPerspectiveRule{
+public interface ModelInterpreter {
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+    /**
+     * Actually interprets the feature and operations in the model
+     * 
+     * @param vt the variable table
+     * @param subject the subject (the object from which the feature is
+     *            accessed)
+     * @param feature the feature name (operation, attribute or collection
+     *            operation)
+     * @param type the type of feature ("." for operations and attributes and
+     *            "->" for collection operations)
+     * @param parameters the parameters for this invokation
+     * @return the return value
      */
-    public String getRuleName() {
-        return Translator.localize("misc.profile.critics");
-    }
+    Object invokeFeature(HashMap<String, Object> vt, Object subject,
+            String feature, String type, Object[] parameters);
 
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+    /**
+     * Looks for a built-in symbol. In the case that not all possible built-in
+     * symbols are not in the variable table, the remaining ones should be
+     * resolved using this method. This should be the case, e.g., for the names
+     * of the UML metaclasses.
+     * 
+     * @param sym the symbol name
+     * @return the symbol value, or null if the passed symbol is not built-in
      */
-    public Collection getChildren(final Object parent) {
-        if (parent instanceof Profile) {
-            Object critics = new Vector<Critic>() {
-                {
-                    addAll(((Profile) parent).getCritics());
-                }
+    Object getBuiltInSymbol(String sym);
 
-                /*
-                 * @see java.util.Vector#toString()
-                 */
-                public String toString() {
-                    return Translator.localize("misc.profile.explorer.critic");
-                }
-            };
-            
-            Vector<Object> ret = new Vector<Object>();
-            ret.add(critics);
-            return ret;
-        }
-        return Collections.emptySet();
-    }
-
-    /*
-     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
-     */
-    public Set getDependencies(Object parent) {
-        // TODO: What?
-        return Collections.emptySet();
-    }
 }

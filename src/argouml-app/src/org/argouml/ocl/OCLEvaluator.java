@@ -24,11 +24,17 @@
 
 package org.argouml.ocl;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.tigris.gef.base.Diagram;
+import org.argouml.profile.internal.ocl.DefaultOclEvaluator;
+import org.argouml.profile.internal.ocl.InvalidOclException;
+import org.argouml.profile.internal.ocl.ModelInterpreter;
+import org.argouml.profile.internal.ocl.OclExpressionEvaluator;
+import org.argouml.profile.internal.ocl.uml14.Uml14ModelInterpreter;
 import org.tigris.gef.ocl.ExpansionException;
 
 
@@ -37,9 +43,15 @@ import org.tigris.gef.ocl.ExpansionException;
  * Such expressions are for example used in the critiques.<p>
  *
  * @stereotype singleton
+ * @deprecated use {@link DefaultOclEvaluator} instead - maurelio1234
  */
+@Deprecated
 public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
 
+    private OclExpressionEvaluator evaluator = new DefaultOclEvaluator();
+    private HashMap<String, Object> vt = new HashMap<String, Object>();
+    private ModelInterpreter modelInterpreter = new Uml14ModelInterpreter();
+    
     /**
      * The constructor.
      *
@@ -53,54 +65,17 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
      */
     protected synchronized String evalToString(Object self, String expr)
         throws ExpansionException {
-        String res = null;
-        if (GET_NAME_EXPR_1.equals(expr)
-                && Model.getFacade().isAModelElement(self)) {
-            res = Model.getFacade().getName(self);
-            if (res == null || "".equals(res)) {
-                res = Translator.localize("misc.name.anon");
-            }
+        if ("self".equals(expr)) {
+            expr = "self.name";
         }
-        if (GET_NAME_EXPR_2.equals(expr)
-                && Model.getFacade().isAModelElement(self)) {
-            res = Model.getFacade().getName(self);
-            if (res == null || "".equals(res)) {
-                res = Translator.localize("misc.name.anon");
-            }
+               
+        vt.clear();
+        vt.put("self", self);
+        try {
+            return value2String(evaluator.evaluate(vt, modelInterpreter, expr));
+        } catch (InvalidOclException e) {
+            return "<ocl>invalid expression</ocl>";
         }
-        if (GET_OWNER_EXPR.equals(expr) && Model.getFacade().isAFeature(self)) {
-            Object owner = Model.getFacade().getOwner(self);
-            if (owner != null) {
-                res = Model.getFacade().getName(owner);
-                if (res == null || "".equals(res)) {
-                    res = Translator.localize("misc.name.anon");
-                }
-            }
-        }
-        if (GET_NAME_EXPR_1.equals(expr) && self instanceof Diagram) {
-            res = ((Diagram) self).getName();
-            if (res == null || "".equals(res)) {
-                res = Translator.localize("misc.name.anon");
-            }
-        }
-        if (GET_NAME_EXPR_2.equals(expr) && self instanceof Diagram) {
-            res = ((Diagram) self).getName();
-            if (res == null || "".equals(res)) {
-                res = Translator.localize("misc.name.anon");
-            }
-        }
-    /*
-        if (GET_OWNER_EXPR.equals(expr) && self instanceof Diagram) {
-            res = ((Diagram)self).getOwner().getName();
-            if (res == null || "".equals(res)) {
-                res = Translator.localize("misc.name.anon");
-            }
-        }
-    */
-        if (res == null) {
-            res = evalToString(self, expr, ", ");
-        }
-        return res;
     }
 
     /*
@@ -118,19 +93,8 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         _strBuf.setLength(0);
         Iterator iter = values.iterator();
         while (iter.hasNext()) {
-            Object v = iter.next();
-            if (Model.getFacade().isAModelElement(v)) {
-                v = Model.getFacade().getName(v);
-                if ("".equals(v)) {
-                    v = Translator.localize("misc.name.anon");
-                }
-            }
-            if (Model.getFacade().isAExpression(v)) {
-                v = Model.getFacade().getBody(v);
-                if ("".equals(v)) {
-                    v = "(unspecified)";
-                }
-            }
+            Object v = value2String(iter.next());
+
             if (!"".equals(v)) {
                 _strBuf.append(v);
                 if (iter.hasNext()) {
@@ -141,4 +105,29 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         return _strBuf.toString();
     }
 
+    private String value2String(Object v) {
+        if (Model.getFacade().isAModelElement(v)) {
+            v = Model.getFacade().getName(v);
+            if ("".equals(v)) {
+                v = Translator.localize("misc.name.anon");
+            }
+        }
+        if (Model.getFacade().isAExpression(v)) {
+            v = Model.getFacade().getBody(v);
+            if ("".equals(v)) {
+                v = "(unspecified)";
+            }
+        }
+        if (v instanceof Collection) {
+            String acc = "[";
+            Collection collection = (Collection) v;
+
+            for (Object object : collection) {
+                acc += value2String(object) + ",";
+            }        
+            acc += "]";
+            v = acc;
+        }
+        return ""+v;
+    }
 }  // end of OCLEvaluator

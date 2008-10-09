@@ -51,6 +51,7 @@ import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
@@ -1158,7 +1159,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
         // there's just one ProfileConfiguration in a project
         // and there's no other way to add another one
-        members.add(pc);        
+        members.add(pc);
+        
+        ProfileFacade.applyConfiguration(pc);
     }
 
 }

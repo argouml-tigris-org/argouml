@@ -49,6 +49,7 @@ import org.argouml.ui.explorer.rules.GoCollaborationToDiagram;
 import org.argouml.ui.explorer.rules.GoCollaborationToInteraction;
 import org.argouml.ui.explorer.rules.GoComponentToResidentModelElement;
 import org.argouml.ui.explorer.rules.GoCompositeStateToSubvertex;
+import org.argouml.ui.explorer.rules.GoCriticsToCritic;
 import org.argouml.ui.explorer.rules.GoDiagramToEdge;
 import org.argouml.ui.explorer.rules.GoDiagramToNode;
 import org.argouml.ui.explorer.rules.GoElementToMachine;
@@ -334,6 +335,7 @@ public final class PerspectiveManager {
         classPerspective.addRule(new GoProfileConfigurationToProfile());
         classPerspective.addRule(new GoProfileToModel());
         classPerspective.addRule(new GoProfileToCritics());
+        classPerspective.addRule(new GoCriticsToCritic());
         classPerspective.addRule(new GoProjectToRoots());
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
         classPerspective.addRule(new GoNamespaceToDiagram());
@@ -353,6 +355,7 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoProfileConfigurationToProfile());
         packagePerspective.addRule(new GoProfileToModel());
         packagePerspective.addRule(new GoProfileToCritics());
+        packagePerspective.addRule(new GoCriticsToCritic());
         packagePerspective.addRule(new GoProjectToRoots());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
         packagePerspective.addRule(new GoPackageToElementImport());
@@ -402,6 +405,7 @@ public final class PerspectiveManager {
         diagramPerspective.addRule(new GoProfileConfigurationToProfile());
         diagramPerspective.addRule(new GoProfileToModel());
         diagramPerspective.addRule(new GoProfileToCritics());
+        diagramPerspective.addRule(new GoCriticsToCritic());
         diagramPerspective.addRule(new GoModelToDiagrams());
         diagramPerspective.addRule(new GoDiagramToNode());
         diagramPerspective.addRule(new GoDiagramToEdge());
@@ -417,6 +421,7 @@ public final class PerspectiveManager {
         classPerspective.addRule(new GoProfileConfigurationToProfile());
         classPerspective.addRule(new GoProfileToModel());
         classPerspective.addRule(new GoProfileToCritics());
+        classPerspective.addRule(new GoCriticsToCritic());
         inheritancePerspective.addRule(new GoModelToBaseElements());
         inheritancePerspective
                 .addRule(new GoGeneralizableElementToSpecialized());
@@ -429,6 +434,7 @@ public final class PerspectiveManager {
         associationsPerspective.addRule(new GoProfileConfigurationToProfile());
         associationsPerspective.addRule(new GoProfileToModel());
         associationsPerspective.addRule(new GoProfileToCritics());
+        associationsPerspective.addRule(new GoCriticsToCritic());
         associationsPerspective.addRule(new GoNamespaceToDiagram());
         associationsPerspective.addRule(new GoPackageToClass());
         associationsPerspective.addRule(new GoClassToAssociatedClass());
@@ -441,6 +447,7 @@ public final class PerspectiveManager {
         residencePerspective.addRule(new GoProfileConfigurationToProfile());
         residencePerspective.addRule(new GoProfileToModel());
         residencePerspective.addRule(new GoProfileToCritics());
+        residencePerspective.addRule(new GoCriticsToCritic());
         residencePerspective.addRule(new GoModelToNode());
         residencePerspective.addRule(new GoNodeToResidentComponent());
         residencePerspective.addRule(new GoComponentToResidentModelElement());
@@ -476,6 +483,7 @@ public final class PerspectiveManager {
         compositionPerspective.addRule(new GoProfileConfigurationToProfile());
         compositionPerspective.addRule(new GoProfileToModel());
         compositionPerspective.addRule(new GoProfileToCritics());
+        compositionPerspective.addRule(new GoCriticsToCritic());
         compositionPerspective.addRule(new GoProjectToRoots());
         compositionPerspective.addRule(new GoModelElementToContents());
         compositionPerspective.addRule(new GoModelElementToContainedDiagrams());
@@ -542,6 +550,7 @@ public final class PerspectiveManager {
             new GoProfileConfigurationToProfile(),
             new GoProfileToModel(),
             new GoProfileToCritics(),
+            new GoCriticsToCritic(),
             new GoProjectToRoots(),
             new GoSignalToReception(), new GoStateMachineToTop(),
             new GoStatemachineToDiagram(), new GoStateMachineToState(),
