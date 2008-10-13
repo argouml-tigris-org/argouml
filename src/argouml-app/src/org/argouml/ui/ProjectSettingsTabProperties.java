@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,10 @@ import java.awt.Insets;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.GUISettingsTabInterface;
@@ -45,7 +48,7 @@ import org.argouml.kernel.ProjectManager;
  * author name and email, project description. 
  * These are stored in the project file.
  *
- * @author michiel
+ * @author Michiel
  */
 public class ProjectSettingsTabProperties extends JPanel implements
         GUISettingsTabInterface {
@@ -66,7 +69,7 @@ public class ProjectSettingsTabProperties extends JPanel implements
      * in the settings tab.
      * This information is stored in the zargo file.
      */
-    private JTextField description;
+    private JTextArea description;
 
     /**
      * This is where the ArgoUML version that last saved this project
@@ -84,16 +87,20 @@ public class ProjectSettingsTabProperties extends JPanel implements
         top.setLayout(new GridBagLayout());
 
         GridBagConstraints labelConstraints = new GridBagConstraints();
-        labelConstraints.anchor = GridBagConstraints.WEST;
+        /* Labels at the left ... */
+        labelConstraints.anchor = GridBagConstraints.LINE_START;
         labelConstraints.gridy = 0;
         labelConstraints.gridx = 0;
         labelConstraints.gridwidth = 1;
         labelConstraints.gridheight = 1;
         labelConstraints.insets = new Insets(2, 20, 2, 4);
-
+        labelConstraints.anchor = 
+            GridBagConstraints.FIRST_LINE_START;
+        
         GridBagConstraints fieldConstraints = new GridBagConstraints();
-        fieldConstraints.anchor = GridBagConstraints.EAST;
-        fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+        /* ... and fields at the right. */
+        fieldConstraints.anchor = GridBagConstraints.LINE_END;
+        fieldConstraints.fill = GridBagConstraints.BOTH;
         fieldConstraints.gridy = 0;
         fieldConstraints.gridx = 1;
         fieldConstraints.gridwidth = 3;
@@ -101,6 +108,7 @@ public class ProjectSettingsTabProperties extends JPanel implements
         fieldConstraints.weightx = 1.0;
         fieldConstraints.insets = new Insets(2, 4, 2, 20);
 
+        /* The user's full name: */
         labelConstraints.gridy = 0;
         fieldConstraints.gridy = 0;
         top.add(new JLabel(Translator.localize("label.user")),
@@ -108,6 +116,7 @@ public class ProjectSettingsTabProperties extends JPanel implements
         userFullname = new JTextField();
         top.add(userFullname, fieldConstraints);
 
+        /* The user's email: */
         labelConstraints.gridy = 1;
         fieldConstraints.gridy = 1;
         top.add(new JLabel(Translator.localize("label.email")),
@@ -115,22 +124,42 @@ public class ProjectSettingsTabProperties extends JPanel implements
         userEmail = new JTextField();
         top.add(userEmail, fieldConstraints);
 
+        /* The project description: */
         labelConstraints.gridy = 2;
         fieldConstraints.gridy = 2;
-        top.add(new JLabel(Translator.localize("label.project.description")),
+        fieldConstraints.weighty = 1.0;
+        labelConstraints.weighty = 1.0;
+        JLabel lblDescription = new JLabel(
+                Translator.localize("label.project.description"));
+        lblDescription.setVerticalAlignment(SwingConstants.TOP);
+        top.add(lblDescription,
                 labelConstraints);
-        description = new JTextField();
-        top.add(description, fieldConstraints);
+        description = new JTextArea();
+        JScrollPane area = new JScrollPane(description);
+        area.setVerticalScrollBarPolicy(
+                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        description.setMargin(new Insets(3, 3, 3, 3));
+        description.setLineWrap(true);
+        description.setWrapStyleWord(true);
+        top.add(area, fieldConstraints);
 
+        /* This non-editable field shows 
+         * the version of the ArgoUML 
+         * that last saved this project: */
         labelConstraints.gridy = 3;
         fieldConstraints.gridy = 3;
+        fieldConstraints.weighty = 0.0;
+        labelConstraints.weighty = 0.0;
         top.add(new JLabel(Translator.localize("label.argouml.version")),
                 labelConstraints);
         version = new JTextField();
         version.setEditable(false);
         top.add(version, fieldConstraints);
 
-        add(top, BorderLayout.NORTH);
+        /* We need to fill the whole pane, 
+         * so that the description field can 
+         * take all available space: */
+        add(top, BorderLayout.CENTER);
     }
 
     /*
@@ -141,6 +170,7 @@ public class ProjectSettingsTabProperties extends JPanel implements
         userFullname.setText(p.getAuthorname());
         userEmail.setText(p.getAuthoremail());
         description.setText(p.getDescription());
+        description.setCaretPosition(0);
         version.setText(p.getVersion());
     }
 
