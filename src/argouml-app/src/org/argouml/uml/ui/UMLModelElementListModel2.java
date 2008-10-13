@@ -293,7 +293,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
      * via the method setTarget().
      * @return MModelElement
      */
-    protected Object getTarget() {
+    public Object getTarget() {
         return listTarget;
     }
 

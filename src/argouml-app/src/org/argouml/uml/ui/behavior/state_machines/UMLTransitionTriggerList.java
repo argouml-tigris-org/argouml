@@ -25,15 +25,16 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
-import javax.swing.JPopupMenu;
-
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 
 /**
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated in 0.27.2 use UMLMutableLinkedList in
+ * combination with UMLTransitionTriggerListModel 
  */
+@Deprecated
 public class UMLTransitionTriggerList extends UMLMutableLinkedList {
 
     /**
@@ -44,13 +45,4 @@ public class UMLTransitionTriggerList extends UMLMutableLinkedList {
         UMLModelElementListModel2 dataModel) {
         super(dataModel);
     }
-
-    /*
-     * @see org.argouml.uml.ui.UMLMutableLinkedList#getPopupMenu()
-     */
-    public JPopupMenu getPopupMenu() {
-        return new PopupMenuNewEvent(ActionNewEvent.Roles.TRIGGER, this);
-    }
-
-
 }

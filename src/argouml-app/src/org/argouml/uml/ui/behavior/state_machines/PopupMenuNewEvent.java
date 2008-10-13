@@ -25,11 +25,11 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionRemoveModelElement;
-import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.behavior.activity_graphs.ActionAddEventAsTrigger;
 
 /**
@@ -47,50 +47,57 @@ public class PopupMenuNewEvent extends JPopupMenu {
      * defined on ActionNewEvent.
      *
      * @param role the role
-     * @param list the list
+     * @param target the target
      */
-    public PopupMenuNewEvent(String role, UMLMutableLinkedList list) {
+    public PopupMenuNewEvent(String role, Object target) {
         super();
 
+        buildMenu(this, role, target);
+    }
+    
+    static void buildMenu(JPopupMenu pmenu, String role, Object target) {
+        
         assert role != null;
+        assert target != null;
 
         if (role.equals(ActionNewEvent.Roles.DEFERRABLE_EVENT)
                 || role.equals(ActionNewEvent.Roles.TRIGGER)) {
-            JMenu select = new JMenu();
-            select.setText(Translator.localize("action.select"));
+            JMenu select = new JMenu(Translator.localize("action.select"));
+//            select.setText(Translator.localize("action.select"));
             if (role.equals(ActionNewEvent.Roles.DEFERRABLE_EVENT)) {
-                ActionAddEventAsDeferrableEvent.SINGLETON.setTarget(
-                        list.getTarget());
-                select.add(ActionAddEventAsDeferrableEvent.SINGLETON);
+                ActionAddEventAsDeferrableEvent.SINGLETON.setTarget(target);
+                JMenuItem menuItem = new JMenuItem(
+                        ActionAddEventAsDeferrableEvent.SINGLETON);
+//                select.add(ActionAddEventAsDeferrableEvent.SINGLETON);
+                select.add(menuItem);
             } else if (role.equals(ActionNewEvent.Roles.TRIGGER)) {
-                ActionAddEventAsTrigger.SINGLETON.setTarget(list.getTarget());
+                ActionAddEventAsTrigger.SINGLETON.setTarget(target);
                 select.add(ActionAddEventAsTrigger.SINGLETON);
             }
-            add(select);
+            pmenu.add(select);
         }
 
-        JMenu newMenu = new JMenu();
-        newMenu.setText(Translator.localize("action.new"));
+        JMenu newMenu = new JMenu(Translator.localize("action.new"));
+//        newMenu.setText(Translator.localize("action.new"));
         newMenu.add(ActionNewCallEvent.getSingleton());
-        ActionNewCallEvent.getSingleton().setTarget(list.getTarget());
+        ActionNewCallEvent.getSingleton().setTarget(target);
         ActionNewCallEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);
         newMenu.add(ActionNewChangeEvent.getSingleton());
-        ActionNewChangeEvent.getSingleton().setTarget(list.getTarget());
+        ActionNewChangeEvent.getSingleton().setTarget(target);
         ActionNewChangeEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);
         newMenu.add(ActionNewSignalEvent.getSingleton());
-        ActionNewSignalEvent.getSingleton().setTarget(list.getTarget());
+        ActionNewSignalEvent.getSingleton().setTarget(target);
         ActionNewSignalEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);
         newMenu.add(ActionNewTimeEvent.getSingleton());
-        ActionNewTimeEvent.getSingleton().setTarget(list.getTarget());
+        ActionNewTimeEvent.getSingleton().setTarget(target);
         ActionNewTimeEvent.getSingleton().putValue(ActionNewEvent.ROLE, role);
-        add(newMenu);
+        pmenu.add(newMenu);
 
-        addSeparator();
+        pmenu.addSeparator();
 
         ActionRemoveModelElement.SINGLETON.setObjectToRemove(
-                ActionNewEvent.getAction(role, list.getTarget()));
-        add(ActionRemoveModelElement.SINGLETON);
-
+                ActionNewEvent.getAction(role, target));
+        pmenu.add(ActionRemoveModelElement.SINGLETON);
     }
 
     /**

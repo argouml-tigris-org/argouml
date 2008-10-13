@@ -32,6 +32,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 /**
@@ -58,6 +59,9 @@ import org.argouml.model.Model;
  */
 public class UMLMutableLinkedList extends UMLLinkedList
     implements MouseListener {
+    
+    private static final Logger LOG =
+        Logger.getLogger(UMLMutableLinkedList.class);
 
     private boolean deletePossible = true;
 
@@ -305,6 +309,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
             }
             if (popup.getComponentCount() > 0) {
                 initActions();
+                LOG.info("Showing popup at " + e.getX() + "," + e.getY());
                 popup.show(this, e.getX(), e.getY());
             }
             e.consume();
@@ -321,6 +326,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
             JPopupMenu popup = getPopupMenu();
             if (popup.getComponentCount() > 0) {
                 initActions();
+                LOG.debug("Showing popup at " + e.getX() + "," + e.getY());
                 getPopupMenu().show(this, e.getX(), e.getY());
             }
             e.consume();
@@ -383,6 +389,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
             JPopupMenu popup = getPopupMenu();
             if (popup.getComponentCount() > 0) {
                 initActions();
+                LOG.info("Showing popup at " + e.getX() + "," + e.getY());
                 getPopupMenu().show(this, e.getX(), e.getY());
             }
             e.consume();

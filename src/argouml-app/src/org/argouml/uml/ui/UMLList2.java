@@ -33,6 +33,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -54,6 +55,7 @@ public abstract class UMLList2
     extends JList
     implements TargettableModelView, MouseListener {
 
+    private static final Logger LOG = Logger.getLogger(UMLList2.class);
     /**
      * Constructor for UMLList2. Used by subclasses that want to add their own
      * renderer to the list.
@@ -124,9 +126,10 @@ public abstract class UMLList2
             Point point = event.getPoint();
             int index = locationToIndex(point);
             JPopupMenu popup = new JPopupMenu();
-            ListModel lm = getModel(); 
+            ListModel lm = getModel();
             if (lm instanceof UMLModelElementListModel2) {
                 if (((UMLModelElementListModel2) lm).buildPopup(popup, index)) {
+                    LOG.debug("Showing popup");
                     popup.show(this, point.x, point.y);
                 }
             }

@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -50,7 +49,7 @@ public class ScrollList extends JScrollPane implements KeyListener {
     /**
      * The Component that this scroll is wrapping.
      */
-    private JList list;
+    private UMLLinkedList list;
     
     /**
      * Builds a JList from a given list model and wraps
@@ -91,16 +90,16 @@ public class ScrollList extends JScrollPane implements KeyListener {
     }
     
     /**
-     * Builds a JList from a given list model and wraps
+     * Builds a ScrollList from a given list model and wraps
      * in a scrollable view.
-     * @param listModel The model from which to build the list
-     * @param showIcon show an icon with elements in the list
-     * @param showPath show containment path for elements in list
+     * @param list The JList to wrap in a scroll
+     * @deprecated in 0.27.2 use any other ScrollList constructor
      */
-    public ScrollList(JList list) {
+    @Deprecated
+    public ScrollList(JList alist) {
         setHorizontalScrollBarPolicy(
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        this.list = list;
+        this.list = (UMLLinkedList) alist;
         setViewportView(list);
     }
     
