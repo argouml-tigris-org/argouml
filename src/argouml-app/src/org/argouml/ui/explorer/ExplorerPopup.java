@@ -62,6 +62,7 @@ import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
+import org.argouml.uml.diagram.ui.ModeAddToDiagram;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -72,7 +73,11 @@ import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * PopUp for extra functionality for the Explorer.
@@ -591,7 +596,7 @@ public class ExplorerPopup extends JPopupMenu {
     private static final long serialVersionUID = -5663884871599931780L;
 
     
-    private class ActionAddExistingRelatedNode extends ActionAddExistingNode {
+    private class ActionAddExistingRelatedNode extends UndoableAction {
 
         /**
          * The UML object to be added to the diagram.
@@ -605,7 +610,7 @@ public class ExplorerPopup extends JPopupMenu {
          * @param o the node UML object to be added
          */
         public ActionAddExistingRelatedNode(String name, Object o) {
-            super(name, o);
+            super(name);
             object = o;
         }
 
@@ -618,6 +623,33 @@ public class ExplorerPopup extends JPopupMenu {
             if (dia == null) return false;
             MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
             return gm.canAddNode(object);
+        }
+        
+        public void actionPerformed(ActionEvent ae) {
+            super.actionPerformed(ae);
+            Editor ce = Globals.curEditor();
+            GraphModel gm = ce.getGraphModel();
+            if (!(gm instanceof MutableGraphModel)) {
+                return;
+            }
+
+            String instructions = null;
+            if (object != null) {
+                instructions =
+                    Translator.localize(
+                        "misc.message.click-on-diagram-to-add",
+                        new Object[] {
+                                Model.getFacade().toString(object),
+                        });
+                Globals.showStatus(instructions);
+            }
+            
+            ArrayList<Object> elementsToAdd = new ArrayList<Object>(1);
+            elementsToAdd.add(object);
+            final ModeAddToDiagram placeMode =
+                new ModeAddToDiagram(elementsToAdd, instructions);
+
+            Globals.mode(placeMode, false);
         }
     } /* end class ActionAddExistingRelatedNode */
     
