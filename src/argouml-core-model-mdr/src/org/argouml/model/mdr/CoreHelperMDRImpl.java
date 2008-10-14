@@ -3083,6 +3083,12 @@ class CoreHelperMDRImpl implements CoreHelper {
                             : ScopeKindEnum.SK_INSTANCE);
             return;
         }
+        if (handle instanceof AssociationEnd) {
+            ((AssociationEnd) handle)
+                    .setTargetScope(isStatic ? ScopeKindEnum.SK_CLASSIFIER
+                            : ScopeKindEnum.SK_INSTANCE);
+            return;
+        }
         throw new IllegalArgumentException("handle: " + handle);
     }
     
