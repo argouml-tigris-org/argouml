@@ -182,7 +182,7 @@ public class ProfileUML extends Profile {
                     + "self.allConnections->"
                     + "forAll(ar | ar.participant <> self)",
 
-            "An AssociationClass cannot be defined "
+                    "An AssociationClass cannot be defined "
                     + "between itself and something else.", null,
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {

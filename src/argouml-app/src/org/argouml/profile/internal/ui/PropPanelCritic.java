@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -25,7 +25,6 @@
 package org.argouml.profile.internal.ui;
 
 import java.util.Collection;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;

@@ -30,7 +30,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.cognitive.Critic;
-import org.argouml.model.Model;
 
 /**
  * Abstract class representing a Profile. It contains default types and

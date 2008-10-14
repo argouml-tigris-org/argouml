@@ -57,8 +57,9 @@ public class ProfileFacade {
      * @return the profile manager
      */
     public static ProfileManager getManager() {
-        if (manager == null)
+        if (manager == null) {
             notInitialized("manager");
+        }
         return manager;
     }
 
