@@ -1178,16 +1178,16 @@ public interface CoreHelper {
 
     /**
      * Set the isStatic (UML 2.x) or ownerScope (UML 1.x) attribute of a
-     * Feature.
+     * feature or association end.
      * 
-     * @param feature
-     *            Feature
+     * @param element
+     *            feature or association end
      * @param isStatic
      *            true if static (Classifier scope in UML 1.x). False is
      *            equivalent to the UML 1.x ScopeKind of 'Instance'.
      * @since 0.25.4
      */
-    void setStatic(Object feature, boolean isStatic);
+    void setStatic(Object element, boolean isStatic);
 
     /**
      * Set the parameter of a TemplateParameter.
