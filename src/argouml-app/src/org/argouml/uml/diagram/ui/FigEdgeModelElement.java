@@ -980,6 +980,12 @@ public abstract class FigEdgeModelElement
     public void setLayer(Layer lay) {
         super.setLayer(lay);
         getFig().setLayer(lay);
+        
+        // TODO: Workaround for GEF redraw problem
+        // Force all child figs into the same layer
+        for (Fig f : (List<Fig>) getPathItemFigs()) {
+            f.setLayer(lay);
+        }
     }
 
     /*
