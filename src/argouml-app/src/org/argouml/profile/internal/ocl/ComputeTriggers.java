@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,7 +24,8 @@
 
 package org.argouml.profile.internal.ocl;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
 import tudresden.ocl.parser.node.AClassifierContext;
@@ -36,11 +37,10 @@ import tudresden.ocl.parser.node.AClassifierContext;
  */
 public class ComputeTriggers extends DepthFirstAdapter {
 
-    private Vector<String> triggs = new Vector<String>();
+    private List<String> triggs = new ArrayList<String>();
 
-    /**
-     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAClassifierContext(tudresden.ocl.parser.node.AClassifierContext)
-     */
+
+    @Override
     public void caseAClassifierContext(AClassifierContext node) {
         String str = "" + node.getPathTypeName();
         triggs.add(str.trim().toLowerCase());
@@ -49,7 +49,7 @@ public class ComputeTriggers extends DepthFirstAdapter {
     /**
      * @return the triggers
      */
-    public Vector<String> getTriggers() {
+    public List<String> getTriggers() {
         return triggs;
     }
 

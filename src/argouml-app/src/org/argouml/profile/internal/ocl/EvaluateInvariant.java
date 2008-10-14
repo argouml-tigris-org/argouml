@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -37,11 +37,6 @@ import tudresden.ocl.parser.node.PConstraintBody;
 public class EvaluateInvariant extends DepthFirstAdapter {
 
     /**
-     * Logger.
-     */
-    // private static final Logger LOG =
-    // Logger.getLogger(EvaluateInvariant.class);
-    /**
      * Is this invariant satified?
      */
     private boolean ok = true;
@@ -59,12 +54,12 @@ public class EvaluateInvariant extends DepthFirstAdapter {
      * Constructor
      * 
      * @param element self
-     * @param mi model interpreter
+     * @param interpreter model interpreter
      */
-    public EvaluateInvariant(Object element, ModelInterpreter mi) {
+    public EvaluateInvariant(Object element, ModelInterpreter interpreter) {
         this.modelElement = element;
-        this.mi = mi;
-        this.expEvaluator = new EvaluateExpression(element, mi);
+        this.mi = interpreter;
+        this.expEvaluator = new EvaluateExpression(element, interpreter);
     }
 
     /**
@@ -76,9 +71,10 @@ public class EvaluateInvariant extends DepthFirstAdapter {
 
     /** Interpreter Code * */
 
-    /**
+    /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAConstraint(tudresden.ocl.parser.node.AConstraint)
      */
+    @Override
     public void caseAConstraint(AConstraint node) {
         inAConstraint(node);
         if (node.getContextDeclaration() != null) {

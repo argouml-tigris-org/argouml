@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,8 +24,8 @@
 
 package org.argouml.profile.internal.ocl;
 
+import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
@@ -41,10 +41,6 @@ import org.argouml.uml.cognitive.critics.CrUML;
  */
 public class CrOCL extends CrUML {
 
-    /**
-     * Logger.
-     */
-    // private static final Logger LOG = Logger.getLogger(CrOCL.class);
     /**
      * the OCL Interpreter
      */
@@ -71,10 +67,12 @@ public class CrOCL extends CrUML {
      * @param supportedDecisions the decisions
      * @param priority the priority
      * @throws InvalidOclException if the ocl is not valid
+     * 
+     * TODO: Do these need to be Lists or can they be simple Collections?
      */
     public CrOCL(String oclConstraint, String headline, String description,
-            Integer priority, Vector<Decision> supportedDecisions,
-            Vector<String> knowledgeTypes, String moreInfoURL)
+            Integer priority, List<Decision> supportedDecisions,
+            List<String> knowledgeTypes, String moreInfoURL)
         throws InvalidOclException {
         interpreter = 
             new OclInterpreter(oclConstraint, new Uml14ModelInterpreter());
@@ -83,7 +81,7 @@ public class CrOCL extends CrUML {
         addSupportedDecision(UMLDecision.PLANNED_EXTENSIONS);
         setPriority(ToDoItem.HIGH_PRIORITY);
 
-        Vector<String> triggers = interpreter.getTriggers();
+        List<String> triggers = interpreter.getTriggers();
         designMaterials = interpreter.getCriticizedDesignMaterials();
         
         for (String string : triggers) {
@@ -124,10 +122,12 @@ public class CrOCL extends CrUML {
             setMoreInfoURL(moreInfoURL);
         }
     }
+    
 
     /*
      * @see org.argouml.cognitive.Critic#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         return designMaterials;
     }
@@ -136,6 +136,7 @@ public class CrOCL extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!interpreter.applicable(dm)) {
             return NO_PROBLEM;

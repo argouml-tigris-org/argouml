@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -25,7 +25,7 @@
 package org.argouml.profile.internal.ocl.uml14;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
@@ -53,12 +53,14 @@ public class Uml14ModelInterpreter extends CompositeModelInterpreter {
         addModelInterpreter(new CollectionsModelInterpreter());
     }
 
-    public Object invokeFeature(HashMap<String, Object> vt, Object subject,
+    @Override
+    public Object invokeFeature(Map<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters) {
-        Object ret = super.invokeFeature(vt, subject, feature, type, parameters);
-        
+        Object ret = super
+                .invokeFeature(vt, subject, feature, type, parameters);
+
         LOG.debug(toString(subject) + type + feature + " ==> " + toString(ret));
-        
+
         return ret;
     }
 
@@ -66,16 +68,16 @@ public class Uml14ModelInterpreter extends CompositeModelInterpreter {
         if (Model.getFacade().isAModelElement(obj)) {
             return Model.getFacade().getName(obj);
         } else if (obj instanceof Collection) {
-            return colToString((Collection)obj);
+            return colToString((Collection) obj);
         } else {
-            return ""+obj;
+            return "" + obj;
         }
     }
 
     private String colToString(Collection collection) {
         String ret = "[";
         for (Object object : collection) {
-            ret += toString(object) +",";
+            ret += toString(object) + ",";
         }        
         return ret + "]";
     }

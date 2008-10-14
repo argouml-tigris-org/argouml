@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,8 +26,8 @@ package org.argouml.profile.internal.ocl.uml14;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
@@ -52,12 +52,12 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
     private static Uml14ModelInterpreter uml14mi = new Uml14ModelInterpreter();
     
     /*
-     * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap,
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.Map,
      *      java.lang.Object, java.lang.String, java.lang.String,
      *      java.lang.Object[])
      */
     @SuppressWarnings("unchecked")
-    public Object invokeFeature(HashMap<String, Object> vt, Object subject,
+    public Object invokeFeature(Map<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters) {
 
         if (subject == null) {
@@ -103,6 +103,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 if (feature.equals("multiplicity")) {
                     return Model.getFacade().getMultiplicity(subject);
                 }
+                // TODO: isStatic in UML 2.x
                 if (feature.equals("targetScope")) {
                     return Model.getFacade().getTargetScope(subject);
                 }
@@ -680,6 +681,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 if (feature.equals("ordering")) {
                     return Model.getFacade().getOrdering(subject);
                 }
+                // TODO: Removed from UML 2.x
                 if (feature.equals("targetScope")) {
                     return Model.getFacade().getTargetScope(subject);
                 }
@@ -787,7 +789,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         return null;
     }
 
-    private Object internalOcl(Object subject, HashMap<String, Object> vt,
+    private Object internalOcl(Object subject, Map<String, Object> vt,
             String ocl) {
         try {
             Object oldSelf = vt.get("self");

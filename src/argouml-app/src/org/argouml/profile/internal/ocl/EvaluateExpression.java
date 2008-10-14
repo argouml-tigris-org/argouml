@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -28,9 +28,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Vector;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.profile.internal.ocl.uml14.Bag;
 import org.argouml.profile.internal.ocl.uml14.HashBag;
 import org.argouml.profile.internal.ocl.uml14.OclEnumLiteral;
 
@@ -98,7 +100,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /**
      * The Variable Table
      */
-    private HashMap<String, Object> vt = null;
+    private Map<String, Object> vt = null;
 
     /**
      * Keeps the return value of the visitor
@@ -131,7 +133,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
      * @param variableTable the variable table
      * @param modelInterpreter model interpreter
      */
-    public EvaluateExpression(HashMap<String, Object> variableTable, 
+    public EvaluateExpression(Map<String, Object> variableTable, 
             ModelInterpreter modelInterpreter) {
         reset(variableTable, modelInterpreter);
     }
@@ -152,7 +154,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
      * @param newVT the variable table
      * @param mi the model interpreter
      */
-    public void reset(HashMap<String, Object> newVT, ModelInterpreter mi) {
+    public void reset(Map<String, Object> newVT, ModelInterpreter mi) {
         this.interp = mi;
 
         this.val = null;
@@ -286,7 +288,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
                 error(node);
             }
         } else {
-            // if one side is null we can only compare with the equality operator 
+            // if one side is null, compare with the equality operator 
             if (op instanceof AEqualRelationalOperator) {
                 val = (left == right);
             } else if (op instanceof ANEqualRelationalOperator) {
@@ -302,6 +304,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAAdditiveExpressionTail(tudresden.ocl.parser.node.AAdditiveExpressionTail)
      */
+    @Override
     public void caseAAdditiveExpressionTail(AAdditiveExpressionTail node) {
         Object left = val;
         val = null;
@@ -411,11 +414,11 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeaturePrimaryExpression(tudresden.ocl.parser.node.AFeaturePrimaryExpression)
      */
-    @SuppressWarnings("unchecked")
+    @Override
     public void caseAFeaturePrimaryExpression(AFeaturePrimaryExpression node) {
         Object subject = val;
         Object feature = null;
-        Vector<Object> parameters = null;
+        List parameters = null;
 
         inAFeaturePrimaryExpression(node);
         if (node.getPathName() != null) {
@@ -434,7 +437,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
         if (node.getFeatureCallParameters() != null) {
             val = null;
             node.getFeatureCallParameters().apply(this);
-            parameters = (Vector<Object>) val;
+            parameters = (List) val;
         }
 
         if (subject == null) {
@@ -451,9 +454,10 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#outAEmptyFeatureCallParameters(tudresden.ocl.parser.node.AEmptyFeatureCallParameters)
      */
+    @Override
     public void outAEmptyFeatureCallParameters(AEmptyFeatureCallParameters node)
     {
-        val = new Vector<Object>();
+        val = new ArrayList();
         defaultOut(node);
     }
 
@@ -461,6 +465,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeatureCallParameters(tudresden.ocl.parser.node.AFeatureCallParameters)
      */
     @SuppressWarnings("unchecked")
+    @Override
     public void caseAFeatureCallParameters(AFeatureCallParameters node) {
         inAFeatureCallParameters(node);
         if (node.getLPar() != null) {
@@ -473,10 +478,10 @@ public class EvaluateExpression extends DepthFirstAdapter {
             hasDeclarator = true;
         }
         if (node.getActualParameterList() != null) {
-            Vector<String> vars = null;
+            List<String> vars = null;
             if (hasDeclarator) {
-                Vector<Object> ret = new Vector<Object>();
-                vars = (Vector<String>) val;
+                List ret = new ArrayList();
+                vars = (List) val;
                 final PExpression exp = ((AActualParameterList) node
                         .getActualParameterList()).getExpression();
 
@@ -491,10 +496,10 @@ public class EvaluateExpression extends DepthFirstAdapter {
                 ret.add(new LambdaEvaluator() {
 
                     /**
-                     * @see org.argouml.profile.internal.ocl.LambdaEvaluator#evaluate(java.util.HashMap,
+                     * @see org.argouml.profile.internal.ocl.LambdaEvaluator#evaluate(java.util.Map,
                      *      java.lang.Object)
                      */
-                    public Object evaluate(HashMap<String, Object> vti,
+                    public Object evaluate(Map<String, Object> vti,
                             Object expi) {
                         
                         Object state = EvaluateExpression.this.saveState();
@@ -527,7 +532,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
     @SuppressWarnings("unchecked")
     private void loadState(Object state) {
         Object[] stateArr = (Object[]) state;
-        this.vt = (HashMap<String, Object>) stateArr[0];
+        this.vt = (Map<String, Object>) stateArr[0];
         this.val = stateArr[1];
         this.fwd = stateArr[2];
     }
@@ -540,10 +545,11 @@ public class EvaluateExpression extends DepthFirstAdapter {
      * @param node
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAStandardDeclarator(tudresden.ocl.parser.node.AStandardDeclarator)
      */
+    @Override
     public void caseAStandardDeclarator(AStandardDeclarator node) {
         inAStandardDeclarator(node);
 
-        Vector<String> vars = new Vector<String>();
+        List<String> vars = new ArrayList<String>();
 
         if (node.getName() != null) {
             node.getName().apply(this);
@@ -571,15 +577,17 @@ public class EvaluateExpression extends DepthFirstAdapter {
         outAStandardDeclarator(node);
     }
 
+    @Override
     public void outAIterateDeclarator(AIterateDeclarator node) {
         // TODO support iterate declarator
-        val = new Vector<String>();
+        val = new ArrayList<String>();
         defaultOut(node);
     }
 
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseALetExpression(tudresden.ocl.parser.node.ALetExpression)
      */
+    @Override
     public void caseALetExpression(ALetExpression node) {
         // TODO support nested let expressions !
 
@@ -696,9 +704,10 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAExpressionListOrRange(tudresden.ocl.parser.node.AExpressionListOrRange)
      */
+    @Override
     public void caseAExpressionListOrRange(AExpressionListOrRange node)
     {
-        Vector<Object> ret = new Vector<Object>();
+        List ret = new ArrayList();
         inAExpressionListOrRange(node);
         if (node.getExpression() != null) {
             val = null;
@@ -708,7 +717,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
         if (node.getExpressionListOrRangeTail() != null) {
             val = null;
             node.getExpressionListOrRangeTail().apply(this);
-            ret.addAll((Collection<? extends Object>) val);
+            ret.addAll((Collection) val);
         }
         val = ret;
         outAExpressionListOrRange(node);
@@ -717,6 +726,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAListExpressionListOrRangeTail(tudresden.ocl.parser.node.AListExpressionListOrRangeTail)
      */
+    @Override
     public void caseAListExpressionListOrRangeTail(
             AListExpressionListOrRangeTail node)
     {
@@ -724,7 +734,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
         
         inAListExpressionListOrRangeTail(node);
         {
-            Vector<Object> ret = new Vector<Object>();
+            List ret = new ArrayList();
             Object temp[] = node.getExpressionListTail().toArray();
             for (int i = 0; i < temp.length; i++) {
                 val = null;
@@ -740,12 +750,12 @@ public class EvaluateExpression extends DepthFirstAdapter {
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeatureCall(tudresden.ocl.parser.node.AFeatureCall)
      */
-    @SuppressWarnings("unchecked")
+    @Override
     public void caseAFeatureCall(AFeatureCall node) {
         Object subject = val;
         Object feature = null;
         Object type = fwd;
-        Vector<Object> parameters = null;
+        List parameters = null;
 
         inAFeatureCall(node);
         if (node.getPathName() != null) {
@@ -766,17 +776,18 @@ public class EvaluateExpression extends DepthFirstAdapter {
             val = null;
             node.getFeatureCallParameters().apply(this);
 
-            parameters = (Vector<Object>) val;
+            parameters = (List) val;
         } else {
-            parameters = new Vector<Object>();
+            parameters = new ArrayList();
         }
 
         val = runFeatureCall(subject, feature, type, parameters);
         outAFeatureCall(node);
     }
 
+    @Override
     public void caseAActualParameterList(AActualParameterList node) {
-        Vector<Object> list = new Vector<Object>();
+        List list = new ArrayList();
         inAActualParameterList(node);
         if (node.getExpression() != null) {
             val = null;
@@ -816,14 +827,13 @@ public class EvaluateExpression extends DepthFirstAdapter {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private Object runFeatureCall(Object subject, Object feature, Object type,
-            Vector<Object> parameters) {
+            List parameters) {
         // LOG.debug("OCL FEATURE CALL: " + subject + ""+ type +""+ feature + ""
         // + parameters);
 
         if (parameters == null) {
-            parameters = new Vector<Object>();
+            parameters = new ArrayList<Object>();
         }
 
         // XXX this should be done in CollectionsModelInterpreter
@@ -832,7 +842,7 @@ public class EvaluateExpression extends DepthFirstAdapter {
         if ((subject instanceof Collection)
                 && type.toString().trim().equals(".")) {
             Collection col = (Collection) subject;
-            HashBag<Object> res = new HashBag<Object>();
+            Bag res = new HashBag();
             for (Object obj : col) {
                 res.add(interp.invokeFeature(vt, obj,
                         feature.toString().trim(), ".", parameters.toArray()));

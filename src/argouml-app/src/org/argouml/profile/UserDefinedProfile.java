@@ -34,9 +34,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
@@ -70,11 +71,11 @@ public class UserDefinedProfile extends Profile {
     private Collection profilePackages;
 
     private UserDefinedFigNodeStrategy figNodeStrategy 
-                                = new UserDefinedFigNodeStrategy();
+        = new UserDefinedFigNodeStrategy();
 
     private class UserDefinedFigNodeStrategy implements FigNodeStrategy {
 
-        private HashMap<String, Image> images = new HashMap<String, Image>();
+        private Map<String, Image> images = new HashMap<String, Image>();
 
         public Image getIconForStereotype(Object stereotype) {
             return images.get(Model.getFacade().getName(stereotype));
@@ -263,7 +264,7 @@ public class UserDefinedProfile extends Profile {
      * @return the packages in the <code>profilePackages</code>
      */
     private Collection filterPackages() {
-        Vector<Object> ret = new Vector<Object>();
+        Collection ret = new ArrayList();
         for (Object object : profilePackages) {
             if (Model.getFacade().isAPackage(object)) {
                 ret.add(object);
@@ -277,8 +278,8 @@ public class UserDefinedProfile extends Profile {
         String headline = null;
         String description = null;
         int priority = ToDoItem.HIGH_PRIORITY;
-        Vector<Decision> supportedDecisions = new Vector<Decision>();
-        Vector<String> knowledgeTypes = new Vector<String>();
+        List<Decision> supportedDecisions = new ArrayList<Decision>();
+        List<String> knowledgeTypes = new ArrayList<String>();
         String moreInfoURL = null;
 
         Collection tags = Model.getFacade().getTaggedValuesCollection(critique);
@@ -459,8 +460,8 @@ public class UserDefinedProfile extends Profile {
         return decision;
     }
 
-    private Vector<CrOCL> getAllCritiquesInModel() {
-        Vector<CrOCL> ret = new Vector<CrOCL>();
+    private List<CrOCL> getAllCritiquesInModel() {
+        List<CrOCL> ret = new ArrayList<CrOCL>();
 
         Collection<Object> comments = getAllCommentsInModel(profilePackages);
 
@@ -479,7 +480,7 @@ public class UserDefinedProfile extends Profile {
 
     @SuppressWarnings("unchecked")
     private Collection<Object> getAllCommentsInModel(Collection objs) {
-        Collection<Object> col = new Vector<Object>();
+        Collection<Object> col = new ArrayList<Object>();
         for (Object obj : objs) {
             if (Model.getFacade().isAComment(obj)) {
                 col.add(obj);

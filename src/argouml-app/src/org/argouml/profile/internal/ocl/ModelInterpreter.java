@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,7 +24,7 @@
 
 package org.argouml.profile.internal.ocl;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Actually interprets the feature and operations in the model, in the sense
@@ -48,7 +48,7 @@ public interface ModelInterpreter {
      * @param parameters the parameters for this invokation
      * @return the return value
      */
-    Object invokeFeature(HashMap<String, Object> vt, Object subject,
+    Object invokeFeature(Map<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters);
 
     /**

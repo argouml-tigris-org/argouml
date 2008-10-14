@@ -24,10 +24,10 @@
 
 package org.argouml.ui.explorer.rules;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.i18n.Translator;
@@ -38,7 +38,7 @@ import org.argouml.profile.Profile;
  * 
  * @author maurelio1234
  */
-public class GoProfileToCritics extends AbstractPerspectiveRule{
+public class GoProfileToCritics extends AbstractPerspectiveRule {
 
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
@@ -52,20 +52,18 @@ public class GoProfileToCritics extends AbstractPerspectiveRule{
      */
     public Collection getChildren(final Object parent) {
         if (parent instanceof Profile) {
-            Object critics = new Vector<Critic>() {
+            Object critics = new ArrayList<Critic>() {
                 {
                     addAll(((Profile) parent).getCritics());
                 }
 
-                /*
-                 * @see java.util.Vector#toString()
-                 */
+                @Override
                 public String toString() {
                     return Translator.localize("misc.profile.explorer.critic");
                 }
             };
             
-            Vector<Object> ret = new Vector<Object>();
+            Collection ret = new ArrayList<Object>();
             ret.add(critics);
             return ret;
         }

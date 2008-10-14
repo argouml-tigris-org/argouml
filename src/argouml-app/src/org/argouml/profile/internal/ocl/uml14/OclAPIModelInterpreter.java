@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -25,7 +25,7 @@
 package org.argouml.profile.internal.ocl.uml14;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
@@ -45,12 +45,12 @@ public class OclAPIModelInterpreter implements ModelInterpreter {
     private static final Logger LOG = Logger
             .getLogger(OclAPIModelInterpreter.class);
 
-    /**
-     * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap,
+    /*
+     * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.Map,
      *      java.lang.Object, java.lang.String, java.lang.String,
      *      java.lang.Object[])
      */
-    public Object invokeFeature(HashMap<String, Object> vt, Object subject,
+    public Object invokeFeature(Map<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters) {
         if (type.equals(".")) {
             // TODO implement the difference between oclIsKindOf and oclIsTypeOf
@@ -119,7 +119,7 @@ public class OclAPIModelInterpreter implements ModelInterpreter {
         return null;
     }
 
-    /**
+    /*
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
      */
     public Object getBuiltInSymbol(String sym) {        

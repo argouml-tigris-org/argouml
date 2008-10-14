@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,10 +26,9 @@ package org.argouml.profile.internal.ocl;
 
 import java.io.PushbackReader;
 import java.io.StringReader;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.profile.internal.ocl.uml14.Uml14ModelInterpreter;
 
 import tudresden.ocl.parser.OclParser;
 import tudresden.ocl.parser.lexer.Lexer;
@@ -59,20 +58,21 @@ public class DefaultOclEvaluator implements OclExpressionEvaluator {
         }
         return instance;
     }
-    /**
-     * @throws InvalidOclException 
+    
+    /*
      * @see org.argouml.profile.internal.ocl.OclExpressionEvaluator#evaluate(java.util.HashMap, org.argouml.profile.internal.ocl.ModelInterpreter, java.lang.String)
      */
-    public Object evaluate(HashMap<String, Object> vt, ModelInterpreter mi,
+    public Object evaluate(Map<String, Object> vt, ModelInterpreter mi,
             String ocl) throws InvalidOclException {
         // XXX this seems to be a bug of the parser, 
         // it always requires a context
         
-        LOG.debug("OCL: "+ocl);
+        LOG.debug("OCL: " + ocl);
         if (ocl.contains("ore")) {
             System.out.println("VOILA!");
         }
-        Lexer lexer = new Lexer(new PushbackReader(new StringReader("context X inv: " + ocl), 2));
+        Lexer lexer = new Lexer(new PushbackReader(new StringReader(
+                "context X inv: " + ocl), 2));
         OclParser parser = new OclParser(lexer);
         Start tree = null;
         
@@ -82,7 +82,7 @@ public class DefaultOclEvaluator implements OclExpressionEvaluator {
             throw new InvalidOclException(ocl);
         }
         
-        EvaluateExpression ee = new EvaluateExpression(vt,mi);
+        EvaluateExpression ee = new EvaluateExpression(vt, mi);
         tree.apply(ee);
         return ee.getValue();
     }

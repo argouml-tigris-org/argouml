@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,7 +24,7 @@
 
 package org.argouml.profile.internal.ocl;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a generic Ocl Expression Evaluator
@@ -42,6 +42,6 @@ public interface OclExpressionEvaluator {
      * @return the return value
      * @throws InvalidOclException if the ocl expression is not valid
      */
-    Object evaluate(HashMap<String, Object> vt, ModelInterpreter mi, String ocl)
+    Object evaluate(Map<String, Object> vt, ModelInterpreter mi, String ocl)
         throws InvalidOclException;
 }

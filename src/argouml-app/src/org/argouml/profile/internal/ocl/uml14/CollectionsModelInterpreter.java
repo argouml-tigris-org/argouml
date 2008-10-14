@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,11 +26,10 @@ package org.argouml.profile.internal.ocl.uml14;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import org.argouml.profile.internal.ocl.LambdaEvaluator;
 import org.argouml.profile.internal.ocl.ModelInterpreter;
@@ -42,13 +41,13 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
  */
 public class CollectionsModelInterpreter implements ModelInterpreter {
 
-    /**
+    /*
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.HashMap,
      *      java.lang.Object, java.lang.String, java.lang.String,
      *      java.lang.Object[])
      */
     @SuppressWarnings("unchecked")
-    public Object invokeFeature(HashMap<String, Object> vt, Object subject,
+    public Object invokeFeature(Map<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters) {
 
         if (subject == null) {
@@ -66,15 +65,15 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
         if (subject instanceof Collection) {
             if (type.equals("->")) {
                 if (feature.toString().trim().equals("select")) {
-                    Vector<String> vars = (Vector<String>) parameters[0];
+                    List<String> vars = (List<String>) parameters[0];
                     Object exp = parameters[1];
                     LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
                     Collection col = cloneCollection((Collection) subject);
-                    Vector<Object> remove = new Vector<Object>();
+                    List remove = new ArrayList();
 
                     // TODO is it possible to use more than one variable?
-                    String varName = vars.elementAt(0);
+                    String varName = vars.get(0);
                     Object oldVal = vt.get(varName);
 
                     for (Object object : col) {
@@ -94,15 +93,15 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
 
                     return col;
                 } else if (feature.toString().trim().equals("reject")) {
-                    Vector<String> vars = (Vector<String>) parameters[0];
+                    List<String> vars = (ArrayList<String>) parameters[0];
                     Object exp = parameters[1];
                     LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
                     Collection col = cloneCollection((Collection) subject);
-                    Vector<Object> remove = new Vector<Object>();
+                    List remove = new ArrayList();
 
                     // TODO is it possible to use more than one variable?
-                    String varName = vars.elementAt(0);
+                    String varName = vars.get(0);
                     Object oldVal = vt.get(varName);
 
                     for (Object object : col) {
@@ -120,21 +119,21 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
 
                     return col;
                 } else if (feature.toString().trim().equals("forAll")) {
-                    Vector<String> vars = (Vector<String>) parameters[0];
+                    List<String> vars = (ArrayList<String>) parameters[0];
                     Object exp = parameters[1];
                     LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
                     return doForAll(vt, (Collection) subject, vars, exp, eval);
                 } else if (feature.toString().trim().equals("collect")) {
-                    Vector<String> vars = (Vector<String>) parameters[0];
+                    List<String> vars = (ArrayList<String>) parameters[0];
                     Object exp = parameters[1];
                     LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
                     Collection col = (Collection) subject;
-                    Bag<Object> res = new HashBag<Object>();
+                    Bag res = new HashBag();
 
                     // TODO is it possible to use more than one variable?
-                    String varName = vars.elementAt(0);
+                    String varName = vars.get(0);
                     Object oldVal = vt.get(varName);
 
                     for (Object object : col) {
@@ -148,14 +147,14 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
 
                     return res;
                 } else if (feature.toString().trim().equals("exists")) {
-                    Vector<String> vars = (Vector<String>) parameters[0];
+                    List<String> vars = (ArrayList<String>) parameters[0];
                     Object exp = parameters[1];
                     LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
                     Collection col = (Collection) subject;
 
                     // TODO is it possible to use more than one variable?
-                    String varName = vars.elementAt(0);
+                    String varName = vars.get(0);
                     Object oldVal = vt.get(varName);
 
                     for (Object object : col) {
@@ -171,7 +170,7 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
 
                     return false;
                 } else if (feature.toString().trim().equals("isUnique")) {
-                    Vector<String> vars = (Vector<String>) parameters[0];
+                    List<String> vars = (ArrayList<String>) parameters[0];
                     Object exp = parameters[1];
                     LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
@@ -179,7 +178,7 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
                     Bag<Object> res = new HashBag<Object>();
 
                     // TODO is it possible to use more than one variable?
-                    String varName = vars.elementAt(0);
+                    String varName = vars.get(0);
                     Object oldVal = vt.get(varName);
 
                     for (Object object : col) {
@@ -196,14 +195,15 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
 
                     return true;
                 } else if (feature.toString().trim().equals("one")) {
-                    Vector<String> vars = (Vector<String>) parameters[0];
+                    // TODO: This code is cloned over and over again! - tfm
+                    List<String> vars = (ArrayList<String>) parameters[0];
                     Object exp = parameters[1];
                     LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
                     Collection col = (Collection) subject;
 
                     // TODO is it possible to use more than one variable?
-                    String varName = vars.elementAt(0);
+                    String varName = vars.get(0);
                     Object oldVal = vt.get(varName);
                     boolean found = false;
 
@@ -224,14 +224,14 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
 
                     return found;
                 } else if (feature.toString().trim().equals("any")) {
-                    Vector<String> vars = (Vector<String>) parameters[0];
+                    List<String> vars = (ArrayList<String>) parameters[0];
                     Object exp = parameters[1];
                     LambdaEvaluator eval = (LambdaEvaluator) parameters[2];
 
                     Collection col = (Collection) subject;
 
                     // TODO is it possible to use more than one variable?
-                    String varName = vars.elementAt(0);
+                    String varName = vars.get(0);
                     Object oldVal = vt.get(varName);
 
                     for (Object object : col) {
@@ -342,7 +342,7 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
                 if (feature.equals("prepend")) {
                     Collection copy = cloneCollection((Collection) subject);
                     if (copy instanceof List) {
-                        ((List)copy).add(0, parameters[0]);
+                        ((List) copy).add(0, parameters[0]);
                     } else {
                         copy.add(parameters[0]);
                     }
@@ -435,13 +435,13 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
         return null;
     }
 
-    private boolean doForAll(HashMap<String, Object> vt, Collection collection,
-            Vector<String> vars, Object exp, LambdaEvaluator eval) {
+    private boolean doForAll(Map<String, Object> vt, Collection collection,
+            List<String> vars, Object exp, LambdaEvaluator eval) {
         if (vars.isEmpty()) {
             return (Boolean) eval.evaluate(vt, exp);
         } else {
-            String var = vars.firstElement();
-            vars.removeElement(var);
+            String var = vars.get(0);
+            vars.remove(var);
             Object oldval = vt.get(var);
 
             for (Object element : collection) {
@@ -472,7 +472,7 @@ public class CollectionsModelInterpreter implements ModelInterpreter {
         }
     }
 
-    /**
+    /*
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
      */
     public Object getBuiltInSymbol(String sym) {
