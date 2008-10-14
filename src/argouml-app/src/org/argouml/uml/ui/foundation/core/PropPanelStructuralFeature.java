@@ -122,6 +122,7 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
      *             targetScope in UML 2.x. No replacement. This appears unused,
      *             so it can be scheduled for a speedy removal.
      */
+    @Deprecated
     public UMLCheckBox2 getTargetScopeCheckBox() {
         if (targetScopeCheckBox == null) {
 	    targetScopeCheckBox = new UMLStructuralFeatureTargetScopeCheckBox();

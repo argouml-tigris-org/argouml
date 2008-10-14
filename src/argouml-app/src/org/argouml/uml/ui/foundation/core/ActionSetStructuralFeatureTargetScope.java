@@ -39,6 +39,7 @@ import org.tigris.gef.undo.UndoableAction;
  * @deprecated for 0.27.2 by tfmorris. The targetScope attribute is no longer
  *             available for StructuralFeatures in UML 2.x.  No replacement.
  */
+@Deprecated
 public class ActionSetStructuralFeatureTargetScope extends UndoableAction {
 
     private static final ActionSetStructuralFeatureTargetScope SINGLETON =

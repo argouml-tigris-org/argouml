@@ -35,6 +35,7 @@ import org.argouml.uml.ui.UMLCheckBox2;
  *             available for StructuralFeatures in UML 2.x. No replacement. This
  *             appears unused, so it can be scheduled for a speedy removal.
  */
+@Deprecated
 public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
 
 
