@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -97,6 +98,8 @@ public class PopupMenuNewEvent extends JPopupMenu {
 
         ActionRemoveModelElement.SINGLETON.setObjectToRemove(
                 ActionNewEvent.getAction(role, target));
+        ActionRemoveModelElement.SINGLETON.putValue(Action.NAME, 
+                Translator.localize("action.delete-from-model"));
         pmenu.add(ActionRemoveModelElement.SINGLETON);
     }
 
