@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,8 +39,11 @@ public class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox2 {
      * Constructor for UMLAssociationEndTargetScopeCheckbox.
      */
     public UMLAssociationEndTargetScopeCheckbox() {
-        super(Translator.localize("label.targetscope-classifier"),
-                ActionSetAssociationEndTargetScope.getInstance(), "ordering");
+        // TODO: property name will need to be updated for UML 2.x
+        // Unfortunately we can specify two property names here
+        super(Translator.localize("label.static"),
+                ActionSetAssociationEndTargetScope.getInstance(), 
+                "targetScope");
     }
 
     /*
@@ -49,8 +52,7 @@ public class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox2 {
     public void buildModel() {
         if (getTarget() != null) {
             Object associationEnd = getTarget();
-            setSelected(Model.getScopeKind().getClassifier().equals(
-                    Model.getFacade().getTargetScope(associationEnd)));
+            setSelected(Model.getFacade().isStatic(associationEnd));
         }
     }
 }

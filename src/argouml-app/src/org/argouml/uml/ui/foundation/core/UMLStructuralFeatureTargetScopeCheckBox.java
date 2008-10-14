@@ -31,6 +31,9 @@ import org.argouml.uml.ui.UMLCheckBox2;
 /**
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 29, 2003
+ * @deprecated for 0.27.2 by tfmorris. The targetScope attribute is no longer
+ *             available for StructuralFeatures in UML 2.x. No replacement. This
+ *             appears unused, so it can be scheduled for a speedy removal.
  */
 public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
 

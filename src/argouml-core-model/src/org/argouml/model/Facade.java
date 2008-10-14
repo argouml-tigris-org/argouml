@@ -2931,12 +2931,13 @@ public interface Facade {
     Object getTarget(Object handle);
 
     /**
-     * Return the target scope of a ModelElement.
+     * Return the target scope of a StructuralFeature or AssociationEnd.
      * 
-     * @param handle
-     *            the model element
+     * @param handle the model element
      * @return Object
-     * @deprecated for 0.25.4 by tmorris. This has been removed from UML 2.x and
+     * @deprecated for 0.25.4 by tmorris. If being used with an AssociationEnd
+     *             as an argument, {@link #isStatic(Object)} can be used. For
+     *             StructuralFeatures, this has been removed from UML 2.x and
      *             should no longer be used.
      */
     @Deprecated
@@ -3388,13 +3389,16 @@ public interface Facade {
      * @return true if this ObjectFlowState is a synch state.
      */
     boolean isSynch(Object handle);
-    
+
     /**
      * Return the value of the isStatic attribute. This replaces the ScopeKind
      * enumeration of UML 1.x and is equivalent to a ScopeKind of CLASSIFIER.
+     * <p>
+     * For UML 1.4 it fetches the ownerScope for StructuralFeatures and the
+     * targetScope for AssociationEnds. It returns <code>true</code> if the
+     * value is <code>ScopeKind.SK_CLASSIFIER</code>.
      * 
-     * @param handle
-     *            the Feature
+     * @param handle the Feature or AssociationEnd
      * @return true if the element is static
      * @since 0.25.4
      */

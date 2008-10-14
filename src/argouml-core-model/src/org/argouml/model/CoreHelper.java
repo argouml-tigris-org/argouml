@@ -1178,7 +1178,9 @@ public interface CoreHelper {
 
     /**
      * Set the isStatic (UML 2.x) or ownerScope (UML 1.x) attribute of a
-     * feature or association end.
+     * feature.  As a special backward compatibility bridge, if passed
+     * a UML 1.4 AssociationEnd, it will set the targetScope instead of 
+     * the ownerScope (since AssociationEnds don't have an ownerScope).
      * 
      * @param element
      *            feature or association end

@@ -36,6 +36,8 @@ import org.tigris.gef.undo.UndoableAction;
 /**
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 29, 2003
+ * @deprecated for 0.27.2 by tfmorris. The targetScope attribute is no longer
+ *             available for StructuralFeatures in UML 2.x.  No replacement.
  */
 public class ActionSetStructuralFeatureTargetScope extends UndoableAction {
 
@@ -55,6 +57,7 @@ public class ActionSetStructuralFeatureTargetScope extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
 	super.actionPerformed(e);
 	if (e.getSource() instanceof UMLCheckBox2) {

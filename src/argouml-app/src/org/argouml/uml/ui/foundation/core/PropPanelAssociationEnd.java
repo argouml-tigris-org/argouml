@@ -80,8 +80,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     /**
      * The checkbox that shows the scope of the associationend. Selected means
-     * that the scope is the classifier. Unselected means that the scope is the
-     * instance (the default).
+     * that the scope is the classifier (static). Unselected means that the 
+     * scope is the instance (the default).
      */
     private JCheckBox targetScopeCheckBox;
 

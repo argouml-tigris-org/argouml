@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -63,13 +63,7 @@ public class ActionSetAssociationEndTargetScope extends UndoableAction {
             Object target = source.getTarget();
             if (Model.getFacade().isAAssociationEnd(target)) {
                 Object m = target;
-                if (source.isSelected()) {
-                    Model.getCoreHelper().setTargetScope(m,
-                            Model.getScopeKind().getClassifier());
-                } else {
-                    Model.getCoreHelper().setTargetScope(m,
-                            Model.getScopeKind().getInstance());
-                }
+                Model.getCoreHelper().setStatic(m, source.isSelected());
             }
         }
     }

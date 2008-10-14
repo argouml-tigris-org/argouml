@@ -2983,10 +2983,15 @@ class FacadeMDRImpl implements Facade {
     
     public boolean isStatic(Object handle) {
         try {
-            return ScopeKindEnum.SK_CLASSIFIER.equals(((Feature) handle)
-                    .getOwnerScope());
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException(e);
+            if (handle instanceof Feature) {
+                return ScopeKindEnum.SK_CLASSIFIER.equals(((Feature) handle)
+                        .getOwnerScope());
+            }
+            if (handle instanceof AssociationEnd) {
+                return ScopeKindEnum.SK_CLASSIFIER
+                        .equals(((AssociationEnd) handle).getTargetScope());
+            }
+            throw new IllegalArgumentException();
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
