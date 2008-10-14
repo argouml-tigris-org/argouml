@@ -34,6 +34,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Nov 2, 2002
@@ -74,6 +75,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
@@ -98,7 +100,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
             Model.getCoreHelper().addOwnedElement(mmodel, types[i]);
         }
         Model.getCoreHelper().setType(elem, types[0]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
@@ -117,8 +119,8 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     /**
      * Test the test set up.
      */
-    public void testSetUp() {
-        Model.getPump().flushModelEvents();
+    public void testSetUp() throws Exception {
+        ThreadHelper.synchronize();
         // One can only do this by changing target,
         // so let's simulate that:
         changeTarget();
@@ -139,9 +141,9 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     /**
      * Test the setType function.
      */
-    public void testSetType() {
+    public void testSetType() throws Exception {
         Model.getCoreHelper().setType(elem, types[0]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         changeTarget();
         assertTrue(model.getSelectedItem() == types[0]);
     }
@@ -152,19 +154,19 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      * the combobox model is changed itself, we test for
      * a not null value.
      */
-    public void testSetTypeToNull() {
+    public void testSetTypeToNull() throws Exception {
         Model.getCoreHelper().setType(elem, types[0]);
         Model.getCoreHelper().setType(elem, null);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertNotNull(model.getSelectedItem());
     }
 
     /**
      * The test for removing types.
      */
-    public void testRemoveType() {
+    public void testRemoveType() throws Exception {
         Model.getUmlFactory().delete(types[NO_OF_ELEMENTS - 1]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertTrue(!model.contains(types[NO_OF_ELEMENTS - 1]));
     }
 

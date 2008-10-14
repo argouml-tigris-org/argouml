@@ -29,6 +29,7 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Oct 30, 2002
@@ -50,6 +51,7 @@ public class TestUMLMessageReceiverListModel extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
@@ -60,12 +62,13 @@ public class TestUMLMessageReceiverListModel extends TestCase {
         cont.setTarget(elem);
         model = new UMLMessageReceiverListModel();
         model.setTarget(elem);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
@@ -75,11 +78,11 @@ public class TestUMLMessageReceiverListModel extends TestCase {
     /**
      * Test setReceiver().
      */
-    public void testSetReceiver() {
+    public void testSetReceiver() throws Exception {
         Object role =
             Model.getCollaborationsFactory().createClassifierRole();
         Model.getCommonBehaviorHelper().setReceiver(elem, role);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(1, model.getSize());
         assertEquals(role, model.getElementAt(0));
     }
@@ -87,12 +90,12 @@ public class TestUMLMessageReceiverListModel extends TestCase {
     /**
      * Test setReceiver() with null argument.
      */
-    public void testRemoveReceiver() {
+    public void testRemoveReceiver() throws Exception {
         Object role =
             Model.getCollaborationsFactory().createClassifierRole();
         Model.getCommonBehaviorHelper().setReceiver(elem, role);
         Model.getCommonBehaviorHelper().setReceiver(elem, null);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

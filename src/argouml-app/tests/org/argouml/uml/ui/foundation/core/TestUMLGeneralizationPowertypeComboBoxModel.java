@@ -32,6 +32,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Nov 3, 2002
@@ -91,6 +92,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
@@ -116,12 +118,13 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
             types[i] = Model.getCoreFactory().createClass();
             Model.getCoreHelper().addOwnedElement(m, types[i]);
         }
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
@@ -137,8 +140,8 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     /**
      * Test setup.
      */
-    public void testSetUp() {
-        Model.getPump().flushModelEvents();
+    public void testSetUp() throws Exception {
+        ThreadHelper.synchronize();
         assertTrue(model.contains(types[NO_OF_ELEMENTS / 2]));
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[NO_OF_ELEMENTS - 1]));
@@ -147,10 +150,10 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     /**
      * Test setPowertype().
      */
-    public void testSetPowertype() {
+    public void testSetPowertype() throws Exception {
         LOG.info("Setting powertype");
         Model.getCoreHelper().setPowertype(elem, types[0]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         // One can only do this by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
@@ -159,6 +162,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
                 new Object[] {
                     elem,
                 }));
+        ThreadHelper.synchronize();
         assertTrue(model.getSelectedItem() == types[0]);
         LOG.info("Powertype set");
     }
@@ -166,10 +170,10 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     /**
      * Test setPowertype() with null argument.
      */
-    public void testSetPowertypeToNull() {
+    public void testSetPowertypeToNull() throws Exception {
         Model.getCoreHelper().setPowertype(elem, types[0]);
         Model.getCoreHelper().setPowertype(elem, null);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         // One can only do this by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
@@ -178,15 +182,16 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
                 new Object[] {
                     elem,
                 }));
+        ThreadHelper.synchronize();
         assertNull(model.getSelectedItem());
     }
 
     /**
      * Test deletion.
      */
-    public void testRemovePowertype() {
+    public void testRemovePowertype() throws Exception {
         Model.getUmlFactory().delete(types[NO_OF_ELEMENTS - 1]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertTrue(!model.contains(types[NO_OF_ELEMENTS - 1]));
     }
 

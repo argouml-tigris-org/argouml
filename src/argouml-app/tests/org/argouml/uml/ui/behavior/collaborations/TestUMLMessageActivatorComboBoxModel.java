@@ -29,6 +29,7 @@ import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Nov 2, 2002
@@ -67,6 +68,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
      /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
@@ -87,7 +89,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         model = new UMLMessageActivatorComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
@@ -115,9 +117,9 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
     /**
      * Test setActivator().
      */
-    public void testSetActivator() {
+    public void testSetActivator() throws Exception {
         Model.getCollaborationsHelper().setActivator(elem, activators[0]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         // One can only do this by changing target,
         // so let's simulate that:
         model.targetSet(new TargetEvent(this,
@@ -126,15 +128,16 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
                 new Object[] {
                     elem,
                 }));
+        ThreadHelper.synchronize();
         assertTrue(model.getSelectedItem() == activators[0]);
     }
 
     /**
      * Test removing.
      */
-    public void testRemoveBase() {
+    public void testRemoveBase() throws Exception {
         Model.getUmlFactory().delete(activators[NO_OF_ELEMENTS - 1]);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals("The element count should have reduced",
                 NO_OF_ELEMENTS - 1, model.getSize());
         assertTrue("The model should no longer contain the delete element",

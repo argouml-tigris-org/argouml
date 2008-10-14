@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Oct 27, 2002
@@ -96,7 +97,7 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
 
         model = new UMLAssociationEndRoleBaseListModel();
         model.setTarget(elem);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
@@ -122,9 +123,9 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
     /**
      * Test setting the Base.
      */
-    public void testAdd() {
+    public void testAdd() throws Exception {
         Model.getCollaborationsHelper().setBase(elem, baseEnd);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(1, model.getSize());
         assertEquals(baseEnd, model.get(0));
     }
@@ -145,10 +146,10 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
     /**
      * Test removing.
      */
-    public void testRemove() {
+    public void testRemove() throws Exception {
         Model.getCollaborationsHelper().setBase(elem, baseEnd);
         Model.getCollaborationsHelper().setBase(elem, null);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(0, model.getSize());
     }
 

@@ -24,6 +24,8 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import java.lang.reflect.InvocationTargetException;
+
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
@@ -33,6 +35,7 @@ import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Oct 29, 2002
@@ -65,7 +68,7 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
         elem = Model.getCollaborationsFactory().createCollaboration();
         model = new UMLCollaborationRepresentedOperationComboBoxModel();
         TargetManager.getInstance().setTarget(elem);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         
         Project p = ProjectManager.getManager().getCurrentProject();
         Object m = p.getRoot();
@@ -73,9 +76,10 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
         oper = Model.getCoreFactory().createOperation();
         Model.getCoreHelper().setOwner(oper, clazz);
         Model.getCollaborationsHelper().setRepresentedOperation(elem, oper);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         /* Simulate a target change. */
         model.targetSet(new TargetEvent(this, null, null, new Object[] {elem}));
+        ThreadHelper.synchronize();
     }
 
     /*
@@ -102,12 +106,12 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
     /**
      * Test removing the represented operation.
      */
-    public void testExtraRepresentedOperation() {
+    public void testExtraRepresentedOperation() throws Exception {
         Object op = Model.getCoreFactory().createOperation();
         Model.getCollaborationsHelper().setRepresentedOperation(elem, op);
         /* Simulate a target change. */
         model.targetSet(new TargetEvent(this, null, null, new Object[] {elem}));
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(3, model.getSize());
     }
 

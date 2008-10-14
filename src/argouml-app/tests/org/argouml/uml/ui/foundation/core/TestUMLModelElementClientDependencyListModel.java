@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Oct 26, 2002
@@ -66,6 +67,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
@@ -73,12 +75,13 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
         elem = Model.getCoreFactory().buildClass(ns);
         model = new UMLModelElementClientDependencyListModel();
         model.setTarget(elem);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
@@ -89,7 +92,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
     /**
      * Tests the programmatically adding of multiple elements to the list.
      */
-    public void testAddMultiple() {
+    public void testAddMultiple() throws Exception {
         Object[] suppliers = new Object[NO_OF_ELEMENTS];
         Object[] dependencies = new Object[NO_OF_ELEMENTS];
         for (int i = 0; i < NO_OF_ELEMENTS; i++) {
@@ -97,7 +100,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
             dependencies[i] =
                 Model.getCoreFactory().buildDependency(elem, suppliers[i]);
         }
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(NO_OF_ELEMENTS, model.getSize());
         assertEquals(
                 model.getElementAt(NO_OF_ELEMENTS / 2),
@@ -111,7 +114,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
     /**
      * Test the removal of several elements from the list.
      */
-    public void testRemoveMultiple() {
+    public void testRemoveMultiple() throws Exception {
         Object[] suppliers = new Object[NO_OF_ELEMENTS];
         Object[] dependencies = new Object[NO_OF_ELEMENTS];
         for (int i = 0; i < NO_OF_ELEMENTS; i++) {
@@ -122,7 +125,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
         for (int i = 0; i < NO_OF_ELEMENTS / 2; i++) {
             Model.getCoreHelper().removeClientDependency(elem, dependencies[i]);
         }
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(NO_OF_ELEMENTS - (NO_OF_ELEMENTS / 2), model.getSize());
         assertEquals(dependencies[NO_OF_ELEMENTS / 2], model.getElementAt(0));
     }

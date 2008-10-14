@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Oct 30, 2002
@@ -50,6 +51,7 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
@@ -57,12 +59,13 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
         elem = Model.getCollaborationsFactory().createInteraction();
         model = new UMLInteractionContextListModel();
         model.setTarget(elem);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
@@ -72,11 +75,11 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
     /**
      * Test setContext().
      */
-    public void testSetContext() {
+    public void testSetContext() throws Exception {
         Object col =
 	    Model.getCollaborationsFactory().createCollaboration();
         Model.getCollaborationsHelper().setContext(elem, col);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(1, model.getSize());
         assertEquals(col, model.getElementAt(0));
     }
@@ -84,12 +87,12 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
     /**
      * Test setContext(null).
      */
-    public void testRemoveContext() {
+    public void testRemoveContext() throws Exception {
         Object col =
 	    Model.getCollaborationsFactory().createCollaboration();
         Model.getCollaborationsHelper().setContext(elem, col);
         Model.getCollaborationsHelper().setContext(elem, null);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

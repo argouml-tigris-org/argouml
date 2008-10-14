@@ -33,6 +33,7 @@ import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Oct 28, 2002
@@ -42,7 +43,6 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
     extends TestCase {
 
     private Object elem;
-//    private Object oper;
     private Object clazz;
     private UMLCollaborationRepresentedClassifierComboBoxModel model;
 
@@ -60,21 +60,23 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
 
         elem = Model.getCollaborationsFactory().createCollaboration();
         model = new UMLCollaborationRepresentedClassifierComboBoxModel();
         TargetManager.getInstance().setTarget(elem);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         
         Project p = ProjectManager.getManager().getCurrentProject();
         Object m = p.getRoot();
         clazz = Model.getCoreFactory().buildClass(m);
         Model.getCollaborationsHelper().setRepresentedClassifier(elem, clazz);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         /* Simulate a target change. */
         model.targetSet(new TargetEvent(this, null, null, new Object[] {elem}));
+        ThreadHelper.synchronize();
     }
 
     /*
@@ -99,12 +101,12 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
     /**
      * Test removing the represented operation.
      */
-    public void testExtraRepresentedOperation() {
+    public void testExtraRepresentedOperation() throws Exception {
 	Object cl2 = Model.getCoreFactory().createClass();
         Model.getCollaborationsHelper().setRepresentedClassifier(elem, cl2); 
         /* Simulate a target change. */
         model.targetSet(new TargetEvent(this, null, null, new Object[] {elem}));
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(3, model.getSize());
     }
 

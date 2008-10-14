@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
+import org.argouml.util.ThreadHelper;
 
 /**
  * @since Oct 30, 2002
@@ -51,6 +52,7 @@ public class TestUMLMessageActionListModel
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
@@ -58,12 +60,13 @@ public class TestUMLMessageActionListModel
         elem = Model.getCollaborationsFactory().createMessage();
         model = new UMLMessageActionListModel();
         model.setTarget(elem);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
@@ -73,11 +76,11 @@ public class TestUMLMessageActionListModel
     /**
      * Test setAction().
      */
-    public void testSetAction() {
+    public void testSetAction() throws Exception {
         Object action =
 	    Model.getCommonBehaviorFactory().createUninterpretedAction();
         Model.getCollaborationsHelper().setAction(elem, action);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(1, model.getSize());
         assertEquals(action, model.getElementAt(0));
     }
@@ -85,12 +88,12 @@ public class TestUMLMessageActionListModel
     /**
      * Test setAction() for removing.
      */
-    public void testRemoveAction() {
+    public void testRemoveAction() throws Exception {
         Object action =
 	    Model.getCommonBehaviorFactory().createUninterpretedAction();
         Model.getCollaborationsHelper().setAction(elem, action);
         Model.getCollaborationsHelper().setAction(elem, null);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }
