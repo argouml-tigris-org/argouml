@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,16 +27,17 @@ package org.argouml.profile.internal.ocl.uml14;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
- * An implementation for the Bag interface
+ * An implementation for the Bag interface which is backed by a HashMap.
  * 
  * @param <E>
  * @author maas
  */
 public class HashBag<E> implements Bag<E> {
 
-    private HashMap<E, Integer> map = new HashMap<E, Integer>();
+    private Map<E, Integer> map = new HashMap<E, Integer>();
 
     /**
      * Default Constructor
@@ -50,13 +51,12 @@ public class HashBag<E> implements Bag<E> {
      * 
      * @param col the collection
      */
-    @SuppressWarnings("unchecked")
     public HashBag(Collection col) {
         this();
         addAll(col);
     }
 
-    /**
+    /*
      * @see org.argouml.profile.internal.ocl.uml14.Bag#count(java.lang.Object)
      */
     public int count(Object element) {
@@ -64,10 +64,7 @@ public class HashBag<E> implements Bag<E> {
         return c == null ? 0 : c;
     }
 
-    /**
-     * @param e
-     * @see java.util.Set#add(java.lang.Object)
-     */
+
     public boolean add(E e) {
         if (e != null) {
             if (map.get(e) == null) {
@@ -79,9 +76,7 @@ public class HashBag<E> implements Bag<E> {
         return true;
     }
 
-    /**
-     * @see java.util.Set#addAll(java.util.Collection)
-     */
+
     @SuppressWarnings("unchecked")
     public boolean addAll(Collection c) {
         for (Object object : c) {
@@ -90,59 +85,33 @@ public class HashBag<E> implements Bag<E> {
         return true;
     }
 
-    /**
-     * @see java.util.Set#clear()
-     */
+
     public void clear() {
         map.clear();
     }
 
-    /**
-     * @see java.util.Set#contains(java.lang.Object)
-     */
+
     public boolean contains(Object o) {
-        return count(o) > 0;
+        return map.containsKey(o);
     }
 
-    /**
-     * @see java.util.Set#containsAll(java.util.Collection)
-     */
     public boolean containsAll(Collection c) {
-        for (Object object : c) {
-            if (!contains(object)) return false;
-        }
-        return true;
+        return map.keySet().containsAll(c);
     }
 
-    /**
-     * @see java.util.Set#isEmpty()
-     */
     public boolean isEmpty() {
-        return size() == 0;
+        return map.isEmpty();
     }
 
-    /**
-     * @see java.util.Set#iterator()
-     */
     public Iterator<E> iterator() {
         return map.keySet().iterator();
     }
 
-    /**
-     * @see java.util.Set#remove(java.lang.Object)
-     */
-    @SuppressWarnings("unchecked")
     public boolean remove(Object o) {
-        boolean c = contains(o);
-        map.put((E) o, null);
-        return c;
+        return (map.remove(o) == null);
     }
 
-    /**
-     * @param c
-     * @return if the bag changed
-     * @see java.util.Set#removeAll(java.util.Collection)
-     */
+
     public boolean removeAll(Collection c) {
         boolean changed = false;
         for (Object object : c) {
@@ -151,9 +120,6 @@ public class HashBag<E> implements Bag<E> {
         return changed;
     }
 
-    /**
-     * @see java.util.Set#retainAll(java.util.Collection)
-     */
     public boolean retainAll(Collection c) {
         throw new UnsupportedOperationException();
     }
@@ -165,39 +131,30 @@ public class HashBag<E> implements Bag<E> {
     public int size() {
         int sum = 0;
 
-        Iterator<E> it = iterator();
-        while (it.hasNext()) {
-            E next = it.next();
-            sum += count(next);
+        for (E e : map.keySet()) {
+            sum += count(e);
         }
+
         return sum;
     }
 
-    /**
-     * @see java.util.Set#toArray()
-     */
+
     public Object[] toArray() {
         return map.keySet().toArray();
     }
 
-    /**
-     * @see java.util.Set#toArray(T[])
-     */
+
     public <T> T[] toArray(T[] a) {
         return map.keySet().toArray(a);
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
+    @Override
     public String toString() {
         return map.toString();
     }
     
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @SuppressWarnings("unchecked")
+
+    @Override
     public boolean equals(Object obj) {
         if (obj instanceof Bag) {
             Bag bag = (Bag) obj;
@@ -212,9 +169,7 @@ public class HashBag<E> implements Bag<E> {
         }
     }
     
-    /**
-     * @see java.lang.Object#hashCode()
-     */
+    @Override
     public int hashCode() {
         return map.hashCode() * 35;
     }
