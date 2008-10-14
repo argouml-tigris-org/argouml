@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,22 +24,22 @@
 
 package org.argouml.profile.internal.ocl.uml14;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
- * Represent OCL bags (sets which allow repeated elements
+ * Represent OCL bags (sets which allow repeated elements).
  * 
  * @author maurelio1234
  * @param <E> the type
  */
-public interface Bag<E> extends Set<E> {
+public interface Bag<E> extends Collection<E> {
 
     /**
-     * Counts the number of repetitons of E in this Bag, if E is not present
+     * Counts the number of repetitions of E in this Bag, if E is not present
      * return 0
      * 
      * @param element the element
-     * @return the number of occourrences of E in this bag
+     * @return the number of occurrences of E in this bag
      */
     int count(E element);
 }
