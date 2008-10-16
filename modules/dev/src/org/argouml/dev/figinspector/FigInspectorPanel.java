@@ -155,27 +155,43 @@ public final class FigInspectorPanel
             return null;
         }
         String className = f.getClass().getName();
-        String descr = className.substring(className.lastIndexOf(".") + 1);
-        descr +=
+        StringBuffer descr = new StringBuffer(
+                className.substring(className.lastIndexOf(".") + 1));
+//        descr.append(" paints=").append(f.getPaintCount());
+//        descr.append(" damages=").append(f.getDamageCount());
+        descr.append(
                 " bounds=[" + f.getX() + "," + f.getY() + "," + f.getWidth()
-                        + "," + f.getHeight() + "]";
-        descr +=
+                        + "," + f.getHeight() + "]");
+        descr.append(
                 " fill=[" + f.getFillColor().getRed() + ","
                         + f.getFillColor().getGreen() + ","
-                        + f.getFillColor().getBlue() + "]";
+                        + f.getFillColor().getBlue() + "]");
         if (f.getOwner() != null) {
-            descr += " - owner=" + f.getOwner();
+            descr.append(" - owner=").append(f.getOwner());
         }
         if (f instanceof FigText) {
-            descr += " \"" + ((FigText) f).getText() + "\"";
+            descr.append(" \"").append(((FigText) f).getText()).append("\"");
         }
         if (!f.isVisible()) {
-            descr += " - INVISIBLE";
+            descr.append(" - INVISIBLE");
         }
         if (f.isFilled()) {
-            descr += " - FILLED";
+            descr.append(" - FILLED");
         }
-        descr += " - lay=" + f.getLayer() + " - grp=" + f.getGroup();
-        return descr;
+        
+        descr.append(" - lay=").append(toString(f.getLayer()));
+        descr.append(" - grp=").append(toString(f.getGroup()));
+        return descr.toString();
+    }
+    
+    private static String toString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        try {
+            return o.toString();
+        } catch (Throwable e) {
+            return "???";
+        }
     }
 }
