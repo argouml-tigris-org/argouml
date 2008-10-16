@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -60,11 +61,16 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object m) {
-        return ((Model.getFacade().isAMessage(m))
-                && m != getTarget()
-                && !Model.getFacade().getPredecessors((getTarget())).contains(m)
-                && Model.getFacade().getInteraction(m)
-                    == Model.getFacade().getInteraction((getTarget())));
+        try {
+            return ((Model.getFacade().isAMessage(m))
+                    && m != getTarget()
+                    && !Model.getFacade().getPredecessors(getTarget())
+                            .contains(m) 
+                            && Model.getFacade().getInteraction(m) == Model
+                    .getFacade().getInteraction(getTarget()));
+        } catch (InvalidElementException e) {
+            return false;
+        }
     }
 
     /*
