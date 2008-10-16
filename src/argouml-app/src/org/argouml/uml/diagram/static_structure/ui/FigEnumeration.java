@@ -27,10 +27,9 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.Action;
 
@@ -38,7 +37,6 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
@@ -46,7 +44,6 @@ import org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML Enumeration in a diagram.
@@ -131,6 +128,7 @@ public class FigEnumeration extends FigDataType
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee instanceof AssociationChangeEvent 
@@ -156,28 +154,31 @@ public class FigEnumeration extends FigDataType
      */
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+        Set<Object[]> l = new HashSet<Object[]>();
         if (newOwner != null) {
             // add the listeners to the newOwner
-            addElementListener(newOwner);
+            l.add(new Object[] {newOwner, null});
             // and its stereotypes
-            Collection c = new ArrayList(
-                    Model.getFacade().getStereotypes(newOwner));
+            for (Object stereo : Model.getFacade().getStereotypes(newOwner)) {
+                l.add(new Object[] {stereo, null});                
+            }
             // and its features
             for (Object feat : Model.getFacade().getFeatures(newOwner)) {
-                c.add(feat);
+                l.add(new Object[] {feat, null});
                 // and the stereotypes of its features
-                c.addAll(new ArrayList(Model.getFacade().getStereotypes(feat)));
+                for (Object stereo : Model.getFacade().getStereotypes(feat)) {
+                    l.add(new Object[] {stereo, null});
+                }
             }
             // and its enumerationLiterals
-            c.addAll(Model.getFacade().getEnumerationLiterals(newOwner));
-            // And now add listeners to them all:
-            for (Object obj : c) {
-                addElementListener(obj);
+            for (Object literal : Model.getFacade().getEnumerationLiterals(
+                    newOwner)) {
+                l.add(new Object[] {literal, null});
             }
         }
+        // And now add listeners to them all:
+        updateElementListeners(l);
+
     }
 
     /**

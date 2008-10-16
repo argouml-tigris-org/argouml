@@ -32,7 +32,9 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -248,19 +250,19 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
 
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+        Set<Object[]> l = new HashSet<Object[]>();
         if (newOwner != null) {
             // add the listeners to the newOwner
-            addElementListener(newOwner);
+            l.add(new Object[] {newOwner, null});
+            
             Collection c = Model.getFacade().getStereotypes(newOwner);
             Iterator i = c.iterator();
             while (i.hasNext()) {
                 Object st = i.next();
-                addElementListener(st, "name");
+                l.add(new Object[] {st, "name"});
             }
         }
+        updateElementListeners(l);
     }
 
     @Override

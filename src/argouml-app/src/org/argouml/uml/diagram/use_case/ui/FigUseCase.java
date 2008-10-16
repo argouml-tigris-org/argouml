@@ -33,8 +33,10 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -1049,32 +1051,34 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
-        /* Now, let's register for events from all modelelements
+        Set<Object[]> l = new HashSet<Object[]>();
+        /* Let's register for events from all modelelements
          * that change the name or body text: 
          */
         if (newOwner != null) {
             /* Register for name changes, added extensionpoints
              * and abstract makes the text italic.
              * All Figs need to listen to "remove", too: */
-            addElementListener(newOwner, 
+            l.add(new Object[] {newOwner, 
                     new String[] {"remove", "name", "isAbstract", 
-                        "extensionPoint", "stereotype"});
+                        "extensionPoint", "stereotype"}});
+            
             // register for extension points:
             Iterator it =
                 Model.getFacade().getExtensionPoints(newOwner).iterator();
             while (it.hasNext()) {
-                addElementListener(it.next(),
-                        new String[] {"location", "name"});
+                l.add(new Object[] {it.next(),
+                        new String[] {"location", "name"}});
             }
-            it = Model.getFacade().getStereotypes(newOwner).iterator();
+            
+            Collection c = Model.getFacade().getStereotypes(newOwner);
+            it = c.iterator();
             while (it.hasNext()) {
-                addElementListener(it.next(),
-                        new String[] {"name"});
+                Object st = it.next();
+                l.add(new Object[] {st, "name"});
             }
         }
+        updateElementListeners(l);
     }
 
     /*

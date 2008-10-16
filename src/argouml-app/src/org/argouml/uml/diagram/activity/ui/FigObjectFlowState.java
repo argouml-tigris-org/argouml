@@ -31,7 +31,9 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
@@ -164,31 +166,31 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+        Set<Object[]> l = new HashSet<Object[]>();
+
         if (newOwner != null) {
-            /* Let's NOT do this: addElementListener(newOwner);
+            /* Don't listen to all property names
              * We only need to listen to its "type", and "remove". */
-            addElementListener(newOwner, new String[] {"type", "remove"});
+            l.add(new Object[] {newOwner, new String[] {"type", "remove"}});
             // register for events from the type
             Object type = Model.getFacade().getType(newOwner);
             if (Model.getFacade().isAClassifier(type)) {
                 if (Model.getFacade().isAClassifierInState(type)) {
                     Object classifier = Model.getFacade().getType(type);
-                    addElementListener(classifier, "name");
-                    addElementListener(type, "inState");
+                    l.add(new Object[] {classifier, "name"});
+                    l.add(new Object[] {type, "inState"});
                     Collection states = Model.getFacade().getInStates(type);
                     Iterator i = states.iterator();
                     while (i.hasNext()) {
-                        addElementListener(i.next(),
-                                "name");
+                        l.add(new Object[] {i.next(), "name"});
                     }
                 } else {
-                    addElementListener(type, "name");
+                    l.add(new Object[] {type, "name"});
                 }
             }
         }
+
+        updateElementListeners(l);
     }
 
 

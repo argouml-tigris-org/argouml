@@ -30,7 +30,6 @@ import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
@@ -66,9 +65,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     private FigTextGroup srcGroup = new FigTextGroup();
     private FigText srcMult; 
     private FigText srcOrdering;
-    
-    private Logger LOG = Logger.getLogger(FigAssociationEnd.class);
-    
+
     /**
      * The notation provider for the multiplicity.
      */

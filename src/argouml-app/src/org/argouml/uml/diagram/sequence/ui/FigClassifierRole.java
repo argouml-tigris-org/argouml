@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,8 +30,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
@@ -804,21 +806,27 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        removeAllElementListeners();
-        super.updateListeners(oldOwner, newOwner);
+        Set<Object[]> l = new HashSet<Object[]>();
         if (newOwner != null) {
-            addElementListener(newOwner);
+            l.add(new Object[] {newOwner, null});
             Iterator it = Model.getFacade().getBases(newOwner).iterator();
             while (it.hasNext()) {
                 Object base = it.next();
-                addElementListener(base, "name");
+                l.add(new Object[] {base, "name"});
             }
             it = Model.getFacade().getStereotypes(newOwner).iterator();
             while (it.hasNext()) {
                 Object stereo = it.next();
-                addElementListener(stereo, "name");
-            }
+                l.add(new Object[] {stereo, "name"});
+            }        
         }
+        
+        updateElementListeners(l);
+        
+        // TODO: The old implementation called the superclasses method.
+        // Do we really want to do that?
+//        super.updateListeners(oldOwner, newOwner);
+
     }
 
     void growToSize(int nodeCount) {
