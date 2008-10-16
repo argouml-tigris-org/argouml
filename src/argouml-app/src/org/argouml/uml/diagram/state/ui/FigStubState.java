@@ -122,6 +122,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @Override
     public void setOwner(Object node) {
         super.setOwner(node);
         renderingChanged();
@@ -130,6 +131,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigStubState figClone = (FigStubState) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -146,6 +148,7 @@ public class FigStubState extends FigStateVertex {
      * Synch states are fixed size.
      * @return false
      */
+    @Override
     public boolean isResizable() {
         return false;
     }
@@ -153,6 +156,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionMoveClarifiers(this);
     }
@@ -160,6 +164,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         stubline.setLineColor(col);
     }
@@ -167,6 +172,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return stubline.getLineColor();
     }
@@ -174,6 +180,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         referenceFig.setFillColor(col);
     }
@@ -181,6 +188,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return referenceFig.getFillColor();
     }
@@ -188,6 +196,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         referenceFig.setFilled(f);
     }
@@ -200,6 +209,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         stubline.setLineWidth(w);
     }
@@ -207,6 +217,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return stubline.getLineWidth();
     }
@@ -214,6 +225,7 @@ public class FigStubState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(int theX, int theY, int theW, int theH) {
         Rectangle oldBounds = getBounds();
         theW = 60;
@@ -238,6 +250,7 @@ public class FigStubState extends FigStateVertex {
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (getOwner() == null) {
@@ -257,7 +270,7 @@ public class FigStubState extends FigStateVertex {
                     oldRef = stateMHelper.getStatebyName(
                             (String) mee.getOldValue(), top);
                 }
-                updateListenersX(getOwner(), oldRef);
+                updateListeners(oldRef, getOwner());
             } else if ((mee.getPropertyName().equals("container")
                     && facade.isASubmachineState(container))) {
                 removeListeners();
@@ -284,7 +297,7 @@ public class FigStubState extends FigStateVertex {
                                 .getReferenceState(getOwner()), top);
                     }
                     stateMHelper.setReferenceState(getOwner(), null);
-                    updateListenersX(getOwner(), oldRef);
+                    updateListeners(oldRef, getOwner());
                     updateReferenceText();
                 }
 
@@ -318,6 +331,7 @@ public class FigStubState extends FigStateVertex {
      * Rerender the whole figure.
      * Call superclass then add reference text
      */
+    @Override
     public void renderingChanged() {
         updateReferenceText();
         super.renderingChanged();
@@ -413,12 +427,21 @@ public class FigStubState extends FigStateVertex {
     }
 
     /**
-     * @param newOwner
-     *            the new owner UML object
-     * @param oldV
-     *            the old owner UML object
+     * @param newOwner the new owner UML object
+     * @param oldV the old owner UML object
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #updateListeners(Object, Object)} with the argument
+     *             order swapper. There are no internal users of this method, so
+     *             the only potential users are people who've subclassed this
+     *             Fig.
      */
     protected void updateListenersX(Object newOwner, Object oldV) {
+        // Just swap order of arguments to get to new form
+        updateListeners(oldV, newOwner);
+    }
+
+    @Override
+    protected void updateListeners(Object oldV, Object newOwner) {
         Object container = null;
         if (oldV != null) {
             removeElementListener(oldV);
@@ -428,12 +451,9 @@ public class FigStubState extends FigStateVertex {
                 container = facade.getContainer(container);
             }
         }
-        updateListeners(getOwner(), newOwner);
+        super.updateListeners(getOwner(), newOwner);
     }
-
-    /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateFont()
-     */
+    
     @Override
     protected void updateFont() {
         super.updateFont();
@@ -441,4 +461,4 @@ public class FigStubState extends FigStateVertex {
         referenceFig.setFont(f);
     }
 
-} /* end class FigStubState */
+}
