@@ -24,7 +24,11 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import javax.swing.ListModel;
+
 import junit.framework.TestCase;
+
+import org.apache.log4j.Logger;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
@@ -42,6 +46,10 @@ import org.argouml.util.ThreadHelper;
 public class TestUMLCollaborationRepresentedClassifierComboBoxModel
     extends TestCase {
 
+    private Logger LOG = 
+        Logger.getLogger(
+                TestUMLCollaborationRepresentedClassifierComboBoxModel.class);
+    
     private Object elem;
     private Object clazz;
     private UMLCollaborationRepresentedClassifierComboBoxModel model;
@@ -65,6 +73,7 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
         super.setUp();
 
         elem = Model.getCollaborationsFactory().createCollaboration();
+        Model.getCoreHelper().setName(elem, "collaboration elem");
         model = new UMLCollaborationRepresentedClassifierComboBoxModel();
         TargetManager.getInstance().setTarget(elem);
         ThreadHelper.synchronize();
@@ -72,6 +81,7 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
         Project p = ProjectManager.getManager().getCurrentProject();
         Object m = p.getRoot();
         clazz = Model.getCoreFactory().buildClass(m);
+        Model.getCoreHelper().setName(clazz, "clazz");
         Model.getCollaborationsHelper().setRepresentedClassifier(elem, clazz);
         ThreadHelper.synchronize();
         /* Simulate a target change. */
@@ -82,9 +92,11 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
     /*
      * @see junit.framework.TestCase#tearDown()
      */
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
+        Model.getUmlFactory().delete(clazz);
         model = null;
     }
 
@@ -103,11 +115,25 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
      */
     public void testExtraRepresentedOperation() throws Exception {
 	Object cl2 = Model.getCoreFactory().createClass();
+	Model.getCoreHelper().setName(cl2, "class2");
         Model.getCollaborationsHelper().setRepresentedClassifier(elem, cl2); 
         /* Simulate a target change. */
         model.targetSet(new TargetEvent(this, null, null, new Object[] {elem}));
         ThreadHelper.synchronize();
-        assertEquals(3, model.getSize());
+        if (model.getSize() != 3) {
+            dump(model);
+            fail("wrong model size");
+        }
+        Model.getUmlFactory().delete(cl2);
+    }
+    
+    private void dump(ListModel m) {
+        LOG.debug(" Model size = " + m.getSize());
+        for (int i = 0; i < m.getSize(); i++) {
+            Object element = m.getElementAt(i);
+            LOG.debug(i + " " + Model.getFacade().toString(element) 
+                    + " " + element.toString());
+        }
     }
 
 }
