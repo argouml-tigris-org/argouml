@@ -64,8 +64,8 @@ What tools do I need to use this build file?
 
   <!-- Define in build.properties to skip production of individual manuals -->
   <!-- <property name="skip-cookbook" value="true"/> -->
-  <!-- <property name="skip-quickguide" value="true"/> -->
-  <!-- <property name="skip-argomanual" value="true"/> -->
+  <property name="skip-quickguide" value="true"/>
+  <property name="skip-argomanual" value="true"/>
 
   <property name="documentation.dir" value="${basedir}"/>
 
@@ -361,24 +361,6 @@ To get it, call ant with target - docbook-xsl-get
       <param name="doc.subdir"  value="cookbook"/>
       <!-- DocBook filename without xml extension   -->
       <param name="doc.prefix"  value="cookbook"/>
-    </antcall>
-
-    <!-- The quick guide -->
-
-    <antcall target="internal-dispatcher">
-      <!-- sub-dir of 'documentation' with xml file -->
-      <param name="doc.subdir"  value="quick-guide"/>
-      <!-- DocBook filename without xml extension   -->
-      <param name="doc.prefix"  value="quickguide"/>
-    </antcall>
-
-    <!-- The user manual -->
-
-    <antcall target="internal-dispatcher">
-      <!-- sub-dir of 'documentation' with xml file -->
-      <param name="doc.subdir"  value="manual"/>
-      <!-- DocBook filename without xml extension   -->
-      <param name="doc.prefix"  value="argomanual"/>
     </antcall>
 
     <delete file="${documentation.dir}/${titlepage-html.xsl}"/>

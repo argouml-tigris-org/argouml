@@ -1,6 +1,13 @@
 Welcome to ArgoUML!
 -------------------
 
+-----------------------------------------------------------------------------
+NOTE: The only documentation now maintained in this section of argouml
+is the cookbook.  For the user manual and quick guide, please see
+http://argouml-documentation.tigris.org/
+
+It is expected that the cookbook will be moved into a wiki soon.
+-----------------------------------------------------------------------------
 
 This is the ArgoUML Documentation README file. In it you will find basic 
 information on how to build and use the ArgoUML documentation.
@@ -36,8 +43,6 @@ documentation sub-directory is shown diagramatically below:
   ARGODOCS_HOME
     cookbook            <<-- DocBook XML source for developers' cookbook
     docbook-setup       <<-- DTD, XSL stylesheets and customisation XSL
-    manual              <<-- DocBook XML source for the User Manual
-    quick-guide         <<-- DocBook XML source for the Quick Guide
 
 
 In addition to this README file, ARGODOCS_HOME contains the
