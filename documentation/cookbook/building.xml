@@ -2284,6 +2284,10 @@ This describes how to generate the documentation for ArgoUML.
 </para>
     <para>
 If you are in a hurry, here's the quick version:
+</para>
+
+    <para>
+Cookbook only (probably will soon be moved to a Wiki):
 <programlisting>
 C:\Work&gt;svn checkout -N http://argouml.tigris.org/svn/argouml/trunk/src/argouml-build argouml/src/argouml-app
 C:\Work&gt;svn checkout http://argouml.tigris.org/svn/argouml/trunk/documentation argouml/documentation
@@ -2293,16 +2297,47 @@ C:\Work&gt;cd argouml\documentation
 C:\Work\argouml\documentation&gt;build docbook-xsl-get   (first time only)
 C:\Work\argouml\documentation&gt;build defaulthtml
 </programlisting>
-The chunked HTML versions of the Cookbook, Quick Guide, and User Manual are
-built and the results are placed in:
-<filename class="directory">C:\Work\argouml\build\documentation\defaulthtml\cookbook</filename>,
-<filename class="directory">C:\Work\argouml\build\documentation\defaulthtml\quick-guide</filename>,
-and
-<filename class="directory">C:\Work\argouml\build\documentation\defaulthtml\manual</filename>
-respectively.
+The chunked HTML version of the Cookbook is placed in:
+<filename class="directory">C:\Work\argouml\build\documentation\defaulthtml\cookbook</filename>
 </para>
 
-
+    <para>
+User Manual and Quick Guide - Command line:
+<programlisting>
+C:\Work&gt;svn checkout http://argouml-documentation.tigris.org/svn/argouml-documentation/trunk argouml-documentation 
+C:\Work&gt;set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
+C:\Work&gt;cd argouml-documentation
+C:\Work\argouml-documentation&gt;build htmlchunked-en
+</programlisting>
+    </para>
+    
+    <para>
+User Manual and Quick Guide - Eclipse:
+      <orderedlist>
+        <listitem>
+          <para>
+            Download <ulink url="http://argouml.tigris.org/nonav/psf/argouml-doc-projectset.psf">http://argouml.tigris.org/nonav/psf/argouml-doc-projectset.psf</ulink>.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            File > Import > Team > Team Project Set.
+          </para>
+        </listitem>  
+        <listitem>
+          <para>
+            Navigate to file and click finish.
+          </para>
+        </listitem>  
+        <listitem>
+          <para>
+Run > External Tools > Open External Tools Dialog... > Documentation 
+manual-htmlchunked-en > Run
+          </para>
+        </listitem>  
+      </orderedlist>
+    </para>
+    
     <sect2>
       <title>Building documentation</title>
       <indexterm>
@@ -2310,25 +2345,20 @@ respectively.
 	<secondary>work with</secondary>
       </indexterm>
       <para>
-To build the documentation, you will need to check out the whole
-<filename class="directory">trunk/documentation</filename> directory.
-as well as the 
-<filename class="directory">trunk/tools</filename> directory
-which contains the tools needed (Ant, FOP, Saxon, etc) and the file 
-<filename>trunk/src/argouml-app/default.properties</filename>
-which contains the current version and other project-wide settings.
+To build the documentation, you will need to check out the trunk of the
+argouml-documentation project.  This contains most of the tools you will
+need as well as the source code of the manuals.
 None of the other ArgoUML source directories are needed if you are just
 building the documentation.
 </para>
 
       <para>
 The subdirectories 
-<filename class="directory">trunk/documentation/cookbook</filename>,
-<filename class="directory">trunk/documentation/manual</filename>, and
-<filename class="directory">trunk/documentation/quick-guide</filename>
-each contain one of the three books.
+<filename class="directory">trunk/src/manual</filename>, and
+<filename class="directory">trunk/src/quickguide</filename>
+contain the source code for each book.
 The subdirectory
-<filename class="directory">trunk/documentation/docbook-setup</filename>
+<filename class="directory">trunk/src/docbook-setup</filename>
 contains two things. 
 It contains the configuration files that control how the generation is done.
 It contains the XSL rules for all the generation.
@@ -2338,82 +2368,106 @@ contains the required pictures for each book.
 </para>
       <para>
 There are separate build targets available for each output format,
-as well as a target that builds all possible output formats.
+as well as a target ('docs') that builds all possible output formats.
 Use the command <command>build -p</command> to get a complete list
 of targets.
 </para>
       <para>
-For testing purposes while editing a manual, you probably want to
-build just a single output format for the one manual that you are
-working with.  To suppress the building of the other manuals,
-you can define the following properties in your 
-<filename>build.properties</filename> file:
-<programlisting>
-skip-cookbook=true
-skip-quickguide=true
-skip-argomanual=true
-</programlisting>
-
+For testing purposes while editing a manual, you can use a specific
+target for the document, format, and translation that you are working with.
 </para>
       <para>
-When, in the <filename class="directory">trunk/documentation</filename> directory,
-you run <command>./build.sh defaulthtml</command> or one of the other targets
-that builds the documentation,
-all books are built.
+The manual and quickguide contain multiple translations into different
+spoken languages.  All of the text for all translations is in the same
+source code file, and a DocBook process called 'profiling' separates the
+text into the different languages when the documentation is generated.
 </para>
       <para>
-What happens is (the target internal-dispatcher):
+The build.xml file makes use of the Ant 'macrodef' task.  This is used to
+create parameterised targets for building different documents in different 
+translations.  It is very helpful when there are many similar targets.
+If you are working with the the build file, it suggested that
+you make yourself familiar with the <ulink url="http://ant.apache.org/manual/CoreTasks/macrodef.html">macrodef task</ulink> 
+before going further.
+</para>
+      <para>
+The build process for a given target does the following:
 </para>
       <itemizedlist>
-	<listitem>
-	  <para>
-The 
-<filename><replaceable>manual</replaceable>/<replaceable>argomanual.xml</replaceable></filename>
-is copied by ant to
-<filename><replaceable>manual</replaceable>/<replaceable>argomanual-generated.xml</replaceable></filename>
-while doing substitution of tokens:
-(@VERSION@ to become the version as specified in 
-<filename>default.properties</filename>)
-</para>
-	</listitem>
-
-	<listitem>
-	  <para>
-The file 
-<filename><replaceable>manual</replaceable>/<replaceable>argomanual-generated.xml</replaceable></filename>
-is processed by the special 
-<filename>docbook-setup/create-imglist.xsl</filename>
-XSL script that generates a list of included images.
-</para>
-	</listitem>
-
-	<listitem>
-	  <para>
-All included images are copied.
-</para>
-	  <para>
-The purpose of this is to avoid copying images not actually
-used in the document.
-</para>
-	</listitem>
-
-	<listitem>
+        <listitem>
           <para>
-The HTML is generated by processing the file
-<filename><replaceable>manual</replaceable>/<replaceable>argomanual-generated.xml</replaceable></filename>.
-</para>
-	</listitem>
+            The 'init' target always runs first, this checks that all of the
+            necessary tools are available.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Next, the 'prepare' target runs.  This sets up some common 
+            properties to make things a bit easier later on, and also
+            generates the custom stylesheets that are used to place the 
+            ArgoUML branding on the documents.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Next, the language-specific 'xxxxx-profile-yy' target runs, where 
+            xxxxx is the document, and yy is the language code.  The work of the
+            target is done by a macrodef called 'profile'.   The profiling 
+            process does a replacement to update the version information in 
+            the source files, then filters the source file into only one 
+            language based on the lang="yy" attributes of the xml tags.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Next the specific target for the output format runs.  In the case
+            of the two html outputs (create-htmlchunked and create-htmlsingl),
+            this involves using passing the source code through one stylesheet
+            which creates the html formatted output, then copying the images
+            into the output directory.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            In the case of the PDF output, two stylesheets are run, followed by
+            FOP (Formatting Objects Processor), which does some special 
+            manipulations for images in pdf files using the jimi library.
+            Licensing forbids us from supplying Jimi in the repository, 
+            so you have to download it yourself
+            (<ulink url="http://java.sun.com/products/jimi/"/>), and copy it
+            to 
+            <filename>argouml-documentation\tools\lib\JimiProClasses.zip</filename>.
+            Failing to provide the Jimi library will result in warnings during 
+            the build and poor or missing graphics in the pdf output.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Finally, (and only in the case of the overall targets) the 'tidy'
+            target is run which deletes intermediate files created during the
+            build process.
+          </para>
+        </listitem>
       </itemizedlist>
       <para>
-The file
-<filename><replaceable>manual</replaceable>/<replaceable>argomanual-generated.xml</replaceable></filename> is
-a temporary file that only exists while processing the XML.
+The files
+<filename><replaceable>manual</replaceable>/<replaceable>manual-generated.xml</replaceable></filename> and
+<filename><replaceable>manual</replaceable>/<replaceable>manual-generated-yy.xml</replaceable></filename>
+are temporary files that only exists while processing the XML.
 If you are editing the XML be sure to edit
 the file
-<filename><replaceable>manual</replaceable>/<replaceable>argomanual.xml</replaceable></filename>
-and not the temporary file.
+<filename><replaceable>manual</replaceable>/<replaceable>manual.xml</replaceable></filename>
+and not the temporary files.  If in doubt, run
+<programlisting> 
+C:\Work\argouml-documentation&gt;build tidy
+</programlisting>
+to explicitly delete the intermediate files before starting.
 </para>
 
+      <para>
+        The 'clean' target deletes all generated files, including the output 
+        files.
+      </para>
     </sect2>
   </sect1>
 
