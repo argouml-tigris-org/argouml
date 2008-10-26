@@ -463,7 +463,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * Build the minimal number of items in the model for the edit box
      * to be populated. By default this calls buildModelList but it
      * can be overridden in subclasses to delay population of the list
-     * till the list is displayed.
+     * till the list is displayed. <p>
+     * 
+     * If this lazy list building is used, do call setModelInvalid() here!
      */
     protected void buildMinimalModelList() {
         buildModelListTimed();
@@ -763,6 +765,15 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         return false;
     }
     
+    /**
+     * Indicate that the model has to be rebuild. 
+     * For a lazy model, this suffices to get the model rebuild 
+     * the next time the user opens the combo.
+     */
+    protected void setModelInvalid() {
+        modelValid = false;
+    }
+
     public void popupMenuCanceled(PopupMenuEvent e) {
     }
 

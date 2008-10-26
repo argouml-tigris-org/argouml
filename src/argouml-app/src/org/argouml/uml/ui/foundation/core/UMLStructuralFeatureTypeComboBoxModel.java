@@ -49,10 +49,6 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLStructuralFeatureTypeComboBoxModel() {
         super("type", false);
-        /* TODO: Investigate if the following is needed, and if so, adapt the
-         * propertyChange() below.  */
-//        Model.getPump().addClassModelEventListener(this,
-//                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /*
@@ -70,6 +66,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
+    @SuppressWarnings("unchecked")
     protected void buildModelList() {
         Set<Object> elements = new TreeSet<Object>(new PathComparator());
 
@@ -96,6 +93,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         setElements(elements);
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     protected void buildMinimalModelList() {
         Collection list = new ArrayList(1);
@@ -104,6 +102,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
             list.add(element);
         }
         setElements(list);
+        setModelInvalid();
     }
     
     @Override
@@ -126,6 +125,34 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
     }
 
     @Override
+    protected void addOtherModelEventListeners(Object newTarget) {
+        super.addOtherModelEventListeners(newTarget);
+        
+        Model.getPump().addClassModelEventListener(this,
+              Model.getMetaTypes().getNamespace(), "ownedElement");
+        Model.getPump().addClassModelEventListener(this,
+                Model.getMetaTypes().getUMLClass(), "name");
+        Model.getPump().addClassModelEventListener(this,
+                Model.getMetaTypes().getInterface(), "name");
+        Model.getPump().addClassModelEventListener(this,
+                Model.getMetaTypes().getDataType(), "name");
+    }
+
+    @Override
+    protected void removeOtherModelEventListeners(Object oldTarget) {
+        super.removeOtherModelEventListeners(oldTarget);
+
+        Model.getPump().removeClassModelEventListener(this,
+                Model.getMetaTypes().getNamespace(), "ownedElement");
+        Model.getPump().removeClassModelEventListener(this,
+                Model.getMetaTypes().getUMLClass(), "name");
+        Model.getPump().removeClassModelEventListener(this,
+                Model.getMetaTypes().getInterface(), "name");
+        Model.getPump().removeClassModelEventListener(this,
+                Model.getMetaTypes().getDataType(), "name");
+    }
+
+    @Override
     public void modelChanged(UmlChangeEvent evt) {
         /*
          * The default behavior for super implementation is
@@ -133,6 +160,22 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
          * that complex here, because there is no need to
          * change the list on a simple type change.
          */
+        Object newSelection = getSelectedModelElement();
+        if (getSelectedItem() != newSelection) {
+            /* The combo is not showing the correct UML element
+             * as the selected item. 
+             * So, let's empty the combo model, 
+             * and set the right selected UML element: */
+            buildMinimalModelList();
+            setSelectedItem(newSelection);
+        }
+        if (evt.getSource() != getTarget()) {
+            /* The target model element is not changed, 
+             * but something else that may be shown in the list.
+             * Since this is a "lazy" model, we can simply reset the flag to
+             * indicate that the model has to be built again: */
+            setModelInvalid();
+        }
     }
 
 }

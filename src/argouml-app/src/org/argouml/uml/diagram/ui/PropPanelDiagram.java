@@ -139,6 +139,7 @@ class UMLDiagramHomeModelComboBoxModel extends UMLComboBoxModel2 {
         Collection list = new ArrayList(1);
         list.add(getSelectedModelElement());
         setElements(list);
+        setModelInvalid();
     }
     
     @Override
