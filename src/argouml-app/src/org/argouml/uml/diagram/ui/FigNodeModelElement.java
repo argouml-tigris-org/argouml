@@ -42,8 +42,10 @@ import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -2108,6 +2110,59 @@ public abstract class FigNodeModelElement
         }
         listeners.clear();
     }
+    
+    private void removeElementListeners(Set<Object[]> listenerSet) {
+        for (Object[] listener : listenerSet) {
+            Object property = listener[1];
+            if (property == null) {
+                Model.getPump().removeModelEventListener(this, listener[0]);
+            } else if (property instanceof String[]) {
+                Model.getPump().removeModelEventListener(this, listener[0],
+                        (String[]) property);
+            } else if (property instanceof String) {
+                Model.getPump().removeModelEventListener(this, listener[0],
+                        (String) property);
+            } else {
+                throw new RuntimeException(
+                        "Internal error in removeAllElementListeners");
+            }
+        }
+        listeners.removeAll(listenerSet);
+    }
+
+    private void addElementListeners(Set<Object[]> listenerSet) {
+        for (Object[] listener : listenerSet) {
+            Object property = listener[1];
+            if (property == null) {
+                addElementListener(listener[0]);
+            } else if (property instanceof String[]) {
+                addElementListener(listener[0], (String[]) property);
+            } else if (property instanceof String) {
+                addElementListener(listener[0], (String) property);
+            } else {
+                throw new RuntimeException(
+                        "Internal error in addElementListeners");
+            }
+        }
+    }
+    
+    /**
+     * Update the set of registered listeners to match the given set using 
+     * a minimal update strategy to remove unneeded listeners and add new 
+     * listeners.
+     * 
+     * @param listenerSet a set of arrays containing a tuple of a UML element
+     * to be listened to and a set of property to be listened for.  
+     */
+    protected void updateElementListeners(Set<Object[]> listenerSet) {
+        Set<Object[]> removes = new HashSet<Object[]>(listeners);
+        removes.removeAll(listenerSet);
+        removeElementListeners(removes);
+        
+        Set<Object[]> adds = new HashSet<Object[]>(listenerSet);
+        adds.removeAll(listeners);
+        addElementListeners(adds);
+    }    
 
     protected HashMap<String, Object> getNotationArguments() {
         return npArguments;

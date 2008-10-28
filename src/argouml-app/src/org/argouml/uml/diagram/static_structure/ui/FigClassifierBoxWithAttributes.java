@@ -29,7 +29,9 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.Action;
 
@@ -104,32 +106,49 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
             + "attributesVisible=" + isAttributesVisible() + ";";
     }
 
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        if (oldOwner != null) {
-            removeAllElementListeners();
-        }
+        Set<Object[]> listeners = new HashSet<Object[]>();
+
+        // Collect the set of model elements that we want to listen to
         if (newOwner != null) {
+            // TODO: Because we get called on each and every change event, when
+            // the model is in a state of flux, we'll often get an
+            // InvalidElementException before we finish this collection. The
+            // only saving grace is that we're called SO many times that on the
+            // last time, things should be stable again and we'll get a good set
+            // of elements for the final update.  We need a better mechanism.
+            
             // add the listeners to the newOwner
-            addElementListener(newOwner);
+            listeners.add(new Object[] {newOwner, null});
+            
             // and its stereotypes
             // TODO: Aren't stereotypes handled elsewhere?
-            Collection c = new ArrayList(
-                    Model.getFacade().getStereotypes(newOwner));
+            for (Object stereotype 
+                    : Model.getFacade().getStereotypes(newOwner)) {
+                listeners.add(new Object[] {stereotype, null});
+            }
+
             // and its features
             for (Object feat : Model.getFacade().getFeatures(newOwner)) {
-                c.add(feat);
+                listeners.add(new Object[] {feat, null});
                 // and the stereotypes of its features
-                c.addAll(new ArrayList(Model.getFacade().getStereotypes(feat)));
+                for (Object stereotype 
+                        : Model.getFacade().getStereotypes(feat)) {
+                    listeners.add(new Object[] {stereotype, null});
+                }
                 // and the parameter of its operations
                 if (Model.getFacade().isAOperation(feat)) {
-                    c.addAll(Model.getFacade().getParameters(feat));
+                    for (Object param : Model.getFacade().getParameters(feat)) {
+                        listeners.add(new Object[] {param, null});
+                    }
                 }
             }
-            // And now add listeners to them all:
-            for (Object obj : c) {
-                addElementListener(obj);
-            }
         }
+        
+        // Update the listeners to match the desired set using the minimal
+        // update facility
+        updateElementListeners(listeners);
     }
     
     public void renderingChanged() {
