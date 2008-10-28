@@ -67,10 +67,12 @@ public class ArgoFigUtil {
             }
             GraphModel gm = layer.getGraphModel();
             if (gm instanceof UMLMutableGraphSupport) {
-                return ((UMLMutableGraphSupport) gm).getProject();
-            } else {
-                return ProjectManager.getManager().getCurrentProject();
+                Project project = ((UMLMutableGraphSupport) gm).getProject();
+                if (project != null) {
+                    return project;
+                }
             }
+            return ProjectManager.getManager().getCurrentProject();
         }
         return null;
     }

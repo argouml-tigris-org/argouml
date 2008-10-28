@@ -977,6 +977,10 @@ public abstract class FigEdgeModelElement
     public void setLayer(Layer lay) {
         super.setLayer(lay);
         getFig().setLayer(lay);
+        
+        for (Fig f : (List<Fig>) getPathItemFigs()) {
+            f.setLayer(lay);
+        }        
     }
 
     /*
