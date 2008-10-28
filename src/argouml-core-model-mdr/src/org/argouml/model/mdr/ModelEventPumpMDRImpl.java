@@ -54,6 +54,7 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
@@ -511,8 +512,12 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
         // Fetch the key before going in synchronized mode
         String mofId = ((MDRObject) modelElement).refMofId();
-        verifyAttributeNames(((MDRObject) modelElement).refMetaObject(),
-                propertyNames);
+        try {
+            verifyAttributeNames(((MDRObject) modelElement).refMetaObject(),
+                    propertyNames);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Register ["
                     + " element:" + formatElement(modelElement)
