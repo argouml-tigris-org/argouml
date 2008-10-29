@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
+import java.awt.Point;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,14 +37,19 @@ import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.ActionSetMode;
+import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -518,6 +524,70 @@ public class UMLDeploymentDiagram extends UMLDiagram {
                 Model.getUmlFactory().delete(elementResidence);
             }
         }
+    }
+    
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+        if (Model.getFacade().isANode(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAAssociation(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isANodeInstance(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAComponent(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAComponentInstance(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAClass(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAInterface(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAObject(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAComment(objectToAccept)) {
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public FigNode drop(Object droppedObject, Point location) {
+        FigNode figNode = null;
+        GraphModel gm = getGraphModel();
+        
+        if (Model.getFacade().isANode(droppedObject)) {
+            figNode = new FigMNode(gm, droppedObject);
+        } else if (Model.getFacade().isAAssociation(droppedObject)) {
+            figNode = new FigNodeAssociation(gm, droppedObject);
+        } else if (Model.getFacade().isANodeInstance(droppedObject)) {
+            figNode = new FigNodeInstance(gm, droppedObject);
+        } else if (Model.getFacade().isAComponent(droppedObject)) {
+            figNode = new FigComponent(gm, droppedObject);
+        } else if (Model.getFacade().isAComponentInstance(droppedObject)) {
+            figNode = new FigComponentInstance(gm, droppedObject);
+        } else if (Model.getFacade().isAClass(droppedObject)) {
+            figNode = new FigClass(gm, droppedObject);
+        } else if (Model.getFacade().isAInterface(droppedObject)) {
+            figNode = new FigInterface(gm, droppedObject);
+        } else if (Model.getFacade().isAObject(droppedObject)) {
+            figNode = new FigObject(gm, droppedObject);
+        } else if (Model.getFacade().isAComment(droppedObject)) {
+            figNode = new FigComment(gm, droppedObject);
+        }
+        
+        if (figNode != null) {
+            // if location is null here the position of the new figNode is set
+            // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
+            if (location != null) {
+                figNode.setLocation(location.x, location.y);
+            }
+            LOG.debug("Dropped object " + droppedObject + " converted to " 
+                    + figNode);
+        } else {
+            LOG.debug("Dropped object NOT added " + figNode);
+        }
+        
+        return figNode;
     }
 
 }

@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
@@ -51,7 +52,10 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.base.ModeSelect;
+import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.ToolBarManager;
 import org.tigris.toolbar.toolbutton.ToolButton;
@@ -561,7 +565,53 @@ public abstract class UMLDiagram
     }
 
     /**
-     * The UID.
+     * Method to test it the diagram can accept a certain object.
+     * This should be overriden by any diagram that wants to accept a certain
+     * type of object. All other diagrams should not bother since the default
+     * answer is false, ie. don't accept the object.
+     * @param objectToAccept The object which acceptability will be checked.
+     * @return True if it can accept it, false otherwise.
      */
-    static final long serialVersionUID = -401219134410459387L;
+    public boolean doesAccept(
+            @SuppressWarnings("unused") Object objectToAccept) {
+        return false;
+    }
+
+    /**
+     * Handles elements dropped over.
+     * @param droppedObject The dropped object.
+     * @param location The location in the diagram where the object is dropped.
+     * @return The object that has been added to the diagram.
+     */
+    @SuppressWarnings("unused")
+    public FigNode drop(Object droppedObject, Point location) {
+        return null;
+    }
+    
+    /**
+     * Gets the instructions to be displayed on the status bar.
+     * @param droppedObject The object for which instructions will be given.
+     * @return The instructions.
+     */
+    public String getInstructions(Object droppedObject) {
+        return Translator.localize("misc.message.click-on-diagram-to-add", 
+                new Object[] {Model.getFacade().toString(droppedObject), });
+    }
+    
+    /**
+     * Creates a diagram specific @see org.tigris.gef.base.ModePlace that 
+     * allows the diagram to place an accepted type of object 
+     * [ @see #doesAccept(Object) ] as it should. This is required 1. since a 
+     * diagram may receive an object that can't be placed as is, but needs some
+     * transformation and 2. diagrams in modules should be independent from the
+     * main app, and should use their own implementation of ModePlace if it's
+     * required.
+     * @param gf TODO
+     * @param instructions
+     * @return The created ModePlace.
+     */
+    public ModePlace getModePlace(GraphFactory gf, String instructions) {
+        return new ModePlace(gf, instructions);
+    }
+    
 }

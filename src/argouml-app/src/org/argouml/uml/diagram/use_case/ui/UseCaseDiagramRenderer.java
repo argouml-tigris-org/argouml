@@ -27,18 +27,19 @@ package org.argouml.uml.diagram.use_case.ui;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -100,21 +101,19 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
 
         // Create a new version of the relevant fig
 
-        if (Model.getFacade().isAActor(node)) {
-            figNode = new FigActor(gm, node);
-        } else if (Model.getFacade().isAUseCase(node)) {
-            figNode = new FigUseCase(gm, node);
-        } else if (Model.getFacade().isAComment(node)) {
-            figNode = new FigComment(gm, node);
-        } else if (Model.getFacade().isAPackage(node)) {
-            figNode = new FigPackage(gm, node);
+        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
+                .getActiveDiagram();
+        if (diag instanceof UMLDiagram
+            && ((UMLDiagram) diag).doesAccept(node)) {
+            figNode = (FigNodeModelElement) ((UMLDiagram) diag).drop(node, null);
+
         } else {
             LOG.debug(this.getClass().toString()
                   + ": getFigNodeFor(" + gm.toString() + ", "
                   + lay.toString() + ", " + node.toString()
                   + ") - cannot create this sort of node.");
             return null;
-            // TODO: Shouldn't we throw an excdeption here?!?!
+            // TODO: Shouldn't we throw an exception here?!?!
         }
 
         lay.add(figNode);

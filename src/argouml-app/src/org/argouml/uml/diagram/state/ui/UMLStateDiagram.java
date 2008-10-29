@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
@@ -37,7 +38,9 @@ import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -54,6 +57,7 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 
@@ -727,4 +731,95 @@ public class UMLStateDiagram extends UMLDiagram {
         // Do nothing.        
     }
 
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+        if (Model.getFacade().isAActionState(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAFinalState(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAStubState(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isASubmachineState(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isACompositeState(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isASynchState(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAState(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAComment(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAPseudostate(objectToAccept)) {
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public FigNode drop(Object droppedObject, Point location) {
+        FigNode figNode = null;
+        GraphModel gm = getGraphModel();
+        
+        if (Model.getFacade().isAActionState(droppedObject)) {
+            figNode = new FigActionState(gm, droppedObject);
+        } else if (Model.getFacade().isAFinalState(droppedObject)) {
+            figNode = new FigFinalState(gm, droppedObject);
+        } else if (Model.getFacade().isAStubState(droppedObject)) {
+            figNode = new FigStubState(gm, droppedObject);
+        } else if (Model.getFacade().isASubmachineState(droppedObject)) {
+            figNode = new FigSubmachineState(gm, droppedObject);
+        } else if (Model.getFacade().isACompositeState(droppedObject)) {
+            figNode = new FigCompositeState(gm, droppedObject);
+        } else if (Model.getFacade().isASynchState(droppedObject)) {
+            figNode = new FigSynchState(gm, droppedObject);
+        } else if (Model.getFacade().isAState(droppedObject)) {
+            figNode = new FigSimpleState(gm, droppedObject);
+        } else if (Model.getFacade().isAComment(droppedObject)) {
+            figNode = new FigComment(gm, droppedObject);
+        } else if (Model.getFacade().isAPseudostate(droppedObject)) {
+            Object pState = droppedObject;
+            Object kind = Model.getFacade().getKind(pState);
+            if (kind == null) {
+                LOG.warn("found a null type pseudostate");
+                return null;
+            }
+            if (kind.equals(Model.getPseudostateKind().getInitial())) {
+                figNode = new FigInitialState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getChoice())) {
+                figNode = new FigBranchState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getJunction())) {
+                figNode = new FigJunctionState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getFork())) {
+                figNode = new FigForkState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getJoin())) {
+                figNode = new FigJoinState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getShallowHistory())) {
+                figNode = new FigShallowHistoryState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getDeepHistory())) {
+                figNode = new FigDeepHistoryState(gm, droppedObject);
+            } else {
+                LOG.warn("found a type not known");
+            }
+        }
+        
+        if (figNode != null) {
+            // if location is null here the position of the new figNode is set
+            // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
+            if (location != null) {
+                figNode.setLocation(location.x, location.y);
+            }
+            LOG.debug("Dropped object " + droppedObject + " converted to " 
+                    + figNode);
+        } else {
+            LOG.debug("Dropped object NOT added " + figNode);
+        }
+        
+        return figNode;
+    }
 }

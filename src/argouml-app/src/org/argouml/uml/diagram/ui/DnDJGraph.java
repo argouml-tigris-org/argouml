@@ -34,16 +34,21 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * This is a JGraph with Drag and Drop capabilities.
@@ -134,6 +139,13 @@ class DnDJGraph
      */
     public void dragOver(DropTargetDragEvent dtde) {
     	try {
+    	    ArgoDiagram dia = ProjectManager.getManager().
+    	        getCurrentProject().getActiveDiagram();
+    	    if (dia instanceof UMLDiagram 
+                /*&& ((UMLDiagram) dia).doesAccept(dtde.getSource())*/) {
+    	        dtde.acceptDrag(dtde.getDropAction());
+    	        return;
+    	    }
     	    if (dtde.isDataFlavorSupported(
     	            TransferableModelElements.UML_COLLECTION_FLAVOR)) {
     	        dtde.acceptDrag(dtde.getDropAction());
@@ -176,16 +188,33 @@ class DnDJGraph
 
         dropTargetDropEvent.acceptDrop(dropTargetDropEvent.getDropAction());
         //get the model elements that are being transfered.
-        Collection modelElements;
+        Collection modelElements; 
         try {
             ArgoDiagram diagram = ProjectManager.getManager()
                 .getCurrentProject().getActiveDiagram();
             modelElements =
                 (Collection) tr.getTransferData(
                     TransferableModelElements.UML_COLLECTION_FLAVOR);
+            
+            Iterator i = modelElements.iterator();
+            while (i.hasNext()) {
+                FigNode figNode = ((UMLDiagram )diagram).drop(i.next(),
+                        dropTargetDropEvent.getLocation());
+                
+//                if (diagram instanceof UMLUseCaseDiagram) {
+                    GraphModel gm = diagram.getGraphModel();
+                    if (!gm.getNodes().contains(figNode.getOwner())) {
+                        gm.getNodes().add(figNode.getOwner());
+                    }
+                    
+                    Globals.curEditor().getLayerManager().getActiveLayer()
+                            .add(figNode);
+//                }
+                
+            }
 
-            ActionAddExistingNodes.addNodes(modelElements, 
-                    dropTargetDropEvent.getLocation(), diagram);
+//            ActionAddExistingNodes.addNodes(modelElements, 
+//                    dropTargetDropEvent.getLocation(), diagram);
 
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {

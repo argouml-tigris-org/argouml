@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.activity.ui;
 
+import java.awt.Point;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import javax.swing.Action;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ActivityGraphsHelper;
 import org.argouml.model.DeleteInstanceEvent;
@@ -76,6 +78,12 @@ import org.tigris.gef.presentation.FigNode;
  * TODO: Finish the work on subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram {
+    
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(UMLActivityDiagram.class);
     
     /**
      * The UID.
@@ -172,9 +180,9 @@ public class UMLActivityDiagram extends UMLDiagram {
                 setup(context, o);
             }
         } else {
-            Object namespace = Model.getFacade().getNamespace(o);
-            if (namespace != null) {
-                setup(namespace, o);
+            Object namespace4Diagram = Model.getFacade().getNamespace(o);
+            if (namespace4Diagram != null) {
+                setup(namespace4Diagram, o);
             } else {
                 throw new IllegalStateException("Cannot find context "
                         + "nor namespace while initializing activity diagram");
@@ -743,6 +751,50 @@ public class UMLActivityDiagram extends UMLDiagram {
 
     private boolean isStateInPartition(Object state, Object partition) {
 	return Model.getFacade().getContents(partition).contains(state);
+    }
+    
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+        if (Model.getFacade().isAPartition(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isACallState(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAObjectFlowState(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isASubactivityState(objectToAccept)) {
+            return true;
+        }
+        return false;
+    }
+    
+    @Override
+    public FigNode drop(Object droppedObject, Point location) {
+        FigNode figNode = null;
+        GraphModel gm = getGraphModel();
+        
+        if (Model.getFacade().isAPartition(droppedObject)) {
+            figNode = new FigPartition(gm, droppedObject);
+        } else if (Model.getFacade().isACallState(droppedObject)) {
+            figNode = new FigCallState(gm, droppedObject);
+        } else if (Model.getFacade().isAObjectFlowState(droppedObject)) {
+            figNode = new FigObjectFlowState(gm, droppedObject);
+        } else if (Model.getFacade().isASubactivityState(droppedObject)) {
+            figNode = new FigSubactivityState(gm, droppedObject);
+        }
+        
+        if (figNode != null) {
+            // if location is null here the position of the new figNode is set
+            // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
+            if (location != null) {
+                figNode.setLocation(location.x, location.y);
+            }
+            LOG.debug("Dropped object " + droppedObject + " converted to " 
+                    + figNode);
+        } else {
+            LOG.debug("Dropped object NOT added " + figNode);
+        }
+        
+        return figNode;
     }
 
 }

@@ -73,6 +73,12 @@ public class ActionAddExistingNode extends UndoableAction {
         if (dia == null) {
             return false;
         }
+        
+        if (dia instanceof UMLDiagram 
+                && ((UMLDiagram) dia).doesAccept(object)) {
+            return true;
+        }
+        
         MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
         return gm.canAddNode(target);
     }

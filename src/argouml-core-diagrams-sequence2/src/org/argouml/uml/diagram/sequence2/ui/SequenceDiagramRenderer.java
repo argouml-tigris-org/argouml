@@ -27,11 +27,14 @@ package org.argouml.uml.diagram.sequence2.ui;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -57,17 +60,17 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
                                  Map styleAttributes) {
         FigNode result = null;
-        if (Model.getFacade().isAClassifierRole(node)) {
-            result = new FigClassifierRole(node);
-        } else if (Model.getFacade().isAComment(node)) {
-            result = new FigComment(gm, node);
+        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
+            .getActiveDiagram();
+        if (diag instanceof UMLDiagram
+                && ((UMLDiagram) diag).doesAccept(node)) {
+            result = ((UMLDiagram) diag).drop(node, null);
+        } else {
+        	return null;
         }
-        LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
         lay.add(result);
-        return result;
+        return result;       
     }
-
-
 
     /*
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(

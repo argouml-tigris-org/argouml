@@ -27,12 +27,13 @@ package org.argouml.uml.diagram.state.ui;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.activity.ui.FigActionState;
-import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -80,55 +81,12 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
                                  Map styleAttributes) {
 
         FigNode figNode = null;
-
-        if (Model.getFacade().isAActionState(node)) {
-            figNode = new FigActionState(gm, node);
-        } else if (Model.getFacade().isAFinalState(node)) {
-            figNode = new FigFinalState(gm, node);
-        } else if (Model.getFacade().isAStubState(node)) {
-            figNode = new FigStubState(gm, node);
-        } else if (Model.getFacade().isASubmachineState(node)) {
-            figNode = new FigSubmachineState(gm, node);
-        } else if (Model.getFacade().isACompositeState(node)) {
-            figNode = new FigCompositeState(gm, node);
-        } else if (Model.getFacade().isASynchState(node)) {
-            figNode = new FigSynchState(gm, node);
-        } else if (Model.getFacade().isAState(node)) {
-            figNode = new FigSimpleState(gm, node);
-        } else if (Model.getFacade().isAComment(node)) {
-            figNode = new FigComment(gm, node);
-        } else if (Model.getFacade().isAPseudostate(node)) {
-            Object pState = node;
-            Object kind = Model.getFacade().getKind(pState);
-            if (kind == null) {
-                LOG.warn("found a null type pseudostate");
-                return null;
-            }
-            if (kind.equals(Model.getPseudostateKind().getInitial())) {
-                figNode = new FigInitialState(gm, node);
-            } else if (kind.equals(
-                    Model.getPseudostateKind().getChoice())) {
-                figNode = new FigBranchState(gm, node);
-            } else if (kind.equals(
-                    Model.getPseudostateKind().getJunction())) {
-                figNode = new FigJunctionState(gm, node);
-            } else if (kind.equals(
-                    Model.getPseudostateKind().getFork())) {
-                figNode = new FigForkState(gm, node);
-            } else if (kind.equals(
-                    Model.getPseudostateKind().getJoin())) {
-                figNode = new FigJoinState(gm, node);
-            } else if (kind.equals(
-                    Model.getPseudostateKind().getShallowHistory())) {
-                figNode = new FigShallowHistoryState(gm, node);
-            } else if (kind.equals(
-                    Model.getPseudostateKind().getDeepHistory())) {
-                figNode = new FigDeepHistoryState(gm, node);
-            } else {
-                LOG.warn("found a type not known");
-            }
-        }
-        if (figNode == null) {
+        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
+            .getActiveDiagram();
+        if (diag instanceof UMLDiagram
+                && ((UMLDiagram) diag).doesAccept(node)) {
+            figNode = ((UMLDiagram) diag).drop(node, null);
+        } else {
             LOG.debug("TODO: StateDiagramRenderer getFigNodeFor");
             return null;
         }

@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
+import java.awt.Point;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -34,6 +35,8 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.ActionSetMode;
@@ -44,6 +47,7 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -463,5 +467,47 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             FigNode oldEncloser, FigNode newEncloser) {
         // Do nothing.        
     }
+    
+    @Override
+    public boolean doesAccept(Object objectToAccept) {
+        if (Model.getFacade().isAActor(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAUseCase(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAComment(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAPackage(objectToAccept)) {
+            return true;
+        }
+        return false;
 
+    }
+    
+    @Override
+    public FigNode drop(Object droppedObject, Point location) {
+        FigNode figNode = null;
+        GraphModel gm = getGraphModel();
+        
+        if (Model.getFacade().isAActor(droppedObject)) {
+            figNode = new FigActor(gm, droppedObject);
+        } else if (Model.getFacade().isAUseCase(droppedObject)) {
+            figNode = new FigUseCase(gm, droppedObject);
+        } else if (Model.getFacade().isAComment(droppedObject)) {
+            figNode = new FigComment(gm, droppedObject);
+        } else if (Model.getFacade().isAPackage(droppedObject)) {
+            figNode = new FigPackage(gm, droppedObject);
+        }
+        if (figNode != null) {
+            // if location is null here the position of the new figNode is set
+            // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
+            if (location != null) {
+                figNode.setLocation(location.x, location.y);
+            }
+            LOG.debug("Dropped object " + droppedObject + " converted to " 
+                    + figNode);
+        } else {
+            LOG.debug("Dropped object NOT added " + figNode);
+        }
+        return figNode;
+    }
 }
