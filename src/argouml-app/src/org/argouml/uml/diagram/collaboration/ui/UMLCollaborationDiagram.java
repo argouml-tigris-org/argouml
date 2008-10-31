@@ -446,8 +446,6 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             return true;
         } else if (Model.getFacade().isAComment(objectToAccept)) {
             return true;
-        } else if (Model.getFacade().isAClassifierRole(objectToAccept)) {
-            return true;           
         } else if (Model.getFacade().isAClassifier(objectToAccept)) {
             return true;
         }
@@ -484,15 +482,18 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     private FigClassifierRole makeNewFigCR(Object classifierRole, 
             Point location) {
+        if (classifierRole != null) {
+            FigClassifierRole newCR = new FigClassifierRole(getGraphModel(),
+                    getLayer(), classifierRole);
+            
+            getGraphModel().getNodes().add(newCR.getOwner());
+            
+            newCR.setY(location.y);
+            newCR.setX(location.x);
+            return newCR;
+        }
         
-        FigClassifierRole newCR = new FigClassifierRole(getGraphModel(),
-                getLayer(), classifierRole);
-        
-        getGraphModel().getNodes().add(newCR.getOwner());
-        
-        newCR.setY(location.y);
-        newCR.setX(location.x);
-        return newCR;
+        return null;
     }
     
     @Override

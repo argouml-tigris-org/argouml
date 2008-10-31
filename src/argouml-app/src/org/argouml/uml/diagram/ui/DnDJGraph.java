@@ -40,11 +40,9 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
@@ -201,7 +199,7 @@ class DnDJGraph
                 FigNode figNode = ((UMLDiagram )diagram).drop(i.next(),
                         dropTargetDropEvent.getLocation());
                 
-//                if (diagram instanceof UMLUseCaseDiagram) {
+                if (figNode != null) {
                     GraphModel gm = diagram.getGraphModel();
                     if (!gm.getNodes().contains(figNode.getOwner())) {
                         gm.getNodes().add(figNode.getOwner());
@@ -209,12 +207,9 @@ class DnDJGraph
                     
                     Globals.curEditor().getLayerManager().getActiveLayer()
                             .add(figNode);
-//                }
+                }
                 
             }
-
-//            ActionAddExistingNodes.addNodes(modelElements, 
-//                    dropTargetDropEvent.getLocation(), diagram);
 
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {

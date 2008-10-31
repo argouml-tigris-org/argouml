@@ -32,7 +32,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
@@ -61,13 +60,14 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
                                  Map styleAttributes) {
         FigNode result = null;
         ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
-            .getActiveDiagram();
+            	.getActiveDiagram();
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
             result = ((UMLDiagram) diag).drop(node, null);
         } else {
         	return null;
         }
+        LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
         lay.add(result);
         return result;       
     }

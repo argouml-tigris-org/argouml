@@ -51,7 +51,14 @@ import org.argouml.uml.diagram.state.ui.ButtonActionNewCallEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewChangeEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewSignalEvent;
 import org.argouml.uml.diagram.state.ui.ButtonActionNewTimeEvent;
+import org.argouml.uml.diagram.state.ui.FigBranchState;
+import org.argouml.uml.diagram.state.ui.FigFinalState;
+import org.argouml.uml.diagram.state.ui.FigForkState;
+import org.argouml.uml.diagram.state.ui.FigInitialState;
+import org.argouml.uml.diagram.state.ui.FigJoinState;
+import org.argouml.uml.diagram.state.ui.FigJunctionState;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -757,11 +764,23 @@ public class UMLActivityDiagram extends UMLDiagram {
     public boolean doesAccept(Object objectToAccept) {
         if (Model.getFacade().isAPartition(objectToAccept)) {
             return true;
-        } else if (Model.getFacade().isACallState(objectToAccept)) {
+        } else if (Model.getFacade().isAState(objectToAccept)) {
             return true;
-        } else if (Model.getFacade().isAObjectFlowState(objectToAccept)) {
+        } else if (Model.getFacade().isAPseudostate(objectToAccept)) {
+            Object kind = Model.getFacade().getKind(objectToAccept);
+            if (kind == null) {
+                LOG.warn("found a null type pseudostate");
+                return false;
+            }
+            if (kind.equals(
+                    Model.getPseudostateKind().getShallowHistory())) {
+                return false;
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getDeepHistory())) {
+                return false;
+            }
             return true;
-        } else if (Model.getFacade().isASubactivityState(objectToAccept)) {
+        } else if (Model.getFacade().isAComment(objectToAccept)) {
             return true;
         }
         return false;
@@ -774,12 +793,41 @@ public class UMLActivityDiagram extends UMLDiagram {
         
         if (Model.getFacade().isAPartition(droppedObject)) {
             figNode = new FigPartition(gm, droppedObject);
+        } else if (Model.getFacade().isAActionState(droppedObject)) {
+            figNode = new FigActionState(gm, droppedObject);
         } else if (Model.getFacade().isACallState(droppedObject)) {
             figNode = new FigCallState(gm, droppedObject);
         } else if (Model.getFacade().isAObjectFlowState(droppedObject)) {
             figNode = new FigObjectFlowState(gm, droppedObject);
         } else if (Model.getFacade().isASubactivityState(droppedObject)) {
             figNode = new FigSubactivityState(gm, droppedObject);
+        } else if (Model.getFacade().isAFinalState(droppedObject)) {
+            figNode = new FigFinalState(gm, droppedObject);
+        } else if (Model.getFacade().isAPseudostate(droppedObject)) {
+            Object kind = Model.getFacade().getKind(droppedObject);
+            if (kind == null) {
+                LOG.warn("found a null type pseudostate");
+                return null;
+            }
+            if (kind.equals(Model.getPseudostateKind().getInitial())) {
+                figNode = new FigInitialState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getChoice())) {
+                figNode = new FigBranchState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getJunction())) {
+                figNode = new FigJunctionState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getFork())) {
+                figNode = new FigForkState(gm, droppedObject);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getJoin())) {
+                figNode = new FigJoinState(gm, droppedObject);
+            } else {
+                LOG.warn("found a type not known");
+            }
+        } else if (Model.getFacade().isAComment(droppedObject)) {
+            figNode = new FigComment(gm, droppedObject);
         }
         
         if (figNode != null) {
@@ -791,7 +839,8 @@ public class UMLActivityDiagram extends UMLDiagram {
             LOG.debug("Dropped object " + droppedObject + " converted to " 
                     + figNode);
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.debug("Dropped object NOT added. This usualy means that this " 
+                    + "type of object is not accepted!");
         }
         
         return figNode;

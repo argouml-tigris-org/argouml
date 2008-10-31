@@ -34,6 +34,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.FigModifyingModeImpl;
 import org.tigris.gef.base.Layer;
@@ -129,50 +131,54 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
         final List<FigNode> placedFigs =
             new ArrayList<FigNode>(modelElements.size());
         
-        for (final Object node : modelElements) {
-            if (gm.canAddNode(node)) {
-                final FigNode pers =
-                    renderer.getFigNodeFor(gm, lay, node, null);
-                pers.setLocation(snapPt.x + (count++ * 100), snapPt.y);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("mouseMoved: Location set ("
-                            + pers.getX() + "," + pers.getY() + ")");
+        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
+        	.getActiveDiagram();
+        if (diag instanceof UMLDiagram) {
+            for (final Object node : modelElements) {
+                if (((UMLDiagram) diag).doesAccept(node)) {
+                    final FigNode pers =
+                        renderer.getFigNodeFor(gm, lay, node, null);
+                    pers.setLocation(snapPt.x + (count++ * 100), snapPt.y);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("mouseMoved: Location set ("
+                                + pers.getX() + "," + pers.getY() + ")");
+                    }
+                    UndoManager.getInstance().startChain();
+                    editor.add(pers);
+                    gm.addNode(node);
+                    if (addRelatedEdges) {
+                        gm.addNodeRelatedEdges(node);
+                    }
+    
+                    Fig encloser = null;
+                    final Rectangle bbox = pers.getBounds();
+                    final List<Fig> otherFigs = lay.getContents();
+                    for (final Fig otherFig : otherFigs) {
+                        if (!(otherFig.getUseTrapRect())) {
+                            continue;
+                        }
+                        if (!(otherFig instanceof FigNode)) {
+                            continue;
+                        }
+                        if (!otherFig.isVisible()) {
+                            continue;
+                        }
+                        if (otherFig.equals(pers)) {
+                            continue;
+                        }
+                        final Rectangle trap = otherFig.getTrapRect();
+                        if (trap != null
+                                && trap.contains(bbox.x, bbox.y)
+                                && trap.contains(
+                                        bbox.x + bbox.width, 
+                                        bbox.y + bbox.height)) {
+                            encloser = otherFig;
+                        }
+                    }
+                    pers.setEnclosingFig(encloser);
+                    
+                    placedFigs.add(pers);
                 }
-                UndoManager.getInstance().startChain();
-                editor.add(pers);
-                gm.addNode(node);
-                if (addRelatedEdges) {
-                    gm.addNodeRelatedEdges(node);
-                }
-
-                Fig encloser = null;
-                final Rectangle bbox = pers.getBounds();
-                final List<Fig> otherFigs = lay.getContents();
-                for (final Fig otherFig : otherFigs) {
-                    if (!(otherFig.getUseTrapRect())) {
-                        continue;
-                    }
-                    if (!(otherFig instanceof FigNode)) {
-                        continue;
-                    }
-                    if (!otherFig.isVisible()) {
-                        continue;
-                    }
-                    if (otherFig.equals(pers)) {
-                        continue;
-                    }
-                    final Rectangle trap = otherFig.getTrapRect();
-                    if (trap != null
-                            && trap.contains(bbox.x, bbox.y)
-                            && trap.contains(
-                                    bbox.x + bbox.width, 
-                                    bbox.y + bbox.height)) {
-                        encloser = otherFig;
-                    }
-                }
-                pers.setEnclosingFig(encloser);
-                
-                placedFigs.add(pers);
             }
         }
         

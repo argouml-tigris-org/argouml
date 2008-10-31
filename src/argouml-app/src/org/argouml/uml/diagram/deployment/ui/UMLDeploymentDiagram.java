@@ -45,6 +45,7 @@ import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
@@ -546,6 +547,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             return true;
         } else if (Model.getFacade().isAComment(objectToAccept)) {
             return true;
+        } else if (Model.getFacade().isAActor(objectToAccept)) {
+            return true;
         }
         return false;
     }
@@ -571,6 +574,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             figNode = new FigInterface(gm, droppedObject);
         } else if (Model.getFacade().isAObject(droppedObject)) {
             figNode = new FigObject(gm, droppedObject);
+        } else if (Model.getFacade().isAActor(droppedObject)) {
+            figNode = new FigActor(gm, droppedObject);
         } else if (Model.getFacade().isAComment(droppedObject)) {
             figNode = new FigComment(gm, droppedObject);
         }

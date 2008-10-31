@@ -733,25 +733,17 @@ public class UMLStateDiagram extends UMLDiagram {
 
     @Override
     public boolean doesAccept(Object objectToAccept) {
-        if (Model.getFacade().isAActionState(objectToAccept)) {
-            return true;
-        } else if (Model.getFacade().isAFinalState(objectToAccept)) {
-            return true;
-        } else if (Model.getFacade().isAStubState(objectToAccept)) {
-            return true;
-        } else if (Model.getFacade().isASubmachineState(objectToAccept)) {
-            return true;
-        } else if (Model.getFacade().isACompositeState(objectToAccept)) {
+        if (Model.getFacade().isAState(objectToAccept)) {
             return true;
         } else if (Model.getFacade().isASynchState(objectToAccept)) {
             return true;
-        } else if (Model.getFacade().isAState(objectToAccept)) {
-            return true;
-        } else if (Model.getFacade().isAComment(objectToAccept)) {
+        } else if (Model.getFacade().isAStubState(objectToAccept)) {
             return true;
         } else if (Model.getFacade().isAPseudostate(objectToAccept)) {
             return true;
-        }
+        } else if (Model.getFacade().isAComment(objectToAccept)) {
+            return true;
+        } 
         return false;
     }
     
@@ -777,8 +769,7 @@ public class UMLStateDiagram extends UMLDiagram {
         } else if (Model.getFacade().isAComment(droppedObject)) {
             figNode = new FigComment(gm, droppedObject);
         } else if (Model.getFacade().isAPseudostate(droppedObject)) {
-            Object pState = droppedObject;
-            Object kind = Model.getFacade().getKind(pState);
+            Object kind = Model.getFacade().getKind(droppedObject);
             if (kind == null) {
                 LOG.warn("found a null type pseudostate");
                 return null;
