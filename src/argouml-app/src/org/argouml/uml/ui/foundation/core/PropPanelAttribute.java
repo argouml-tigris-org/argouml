@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -73,9 +74,10 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addField(Translator.localize("label.owner"),
                 getOwnerScroll());
 
+        add(getVisibilityPanel());
+
         addSeparator();
         
-        add(getVisibilityPanel());
         add(getChangeabilityRadioButtonPanel());
 
         JPanel modifiersPanel = createBorderPanel(
@@ -87,8 +89,11 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
                 this, "initialValue");
         JPanel initialPanel = createBorderPanel(Translator
                 .localize("label.initial-value"));
-        initialPanel.add(new JScrollPane(new UMLExpressionBodyField(
-                initialModel, true)));
+        JScrollPane jsp = new JScrollPane(new UMLExpressionBodyField(
+                initialModel, true));
+        jsp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jsp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        initialPanel.add(jsp);
         initialPanel.add(new UMLExpressionLanguageField(initialModel,
                 false));
         add(initialPanel);
