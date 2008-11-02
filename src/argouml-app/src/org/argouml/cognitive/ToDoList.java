@@ -246,7 +246,7 @@ public class ToDoList extends Observable implements Runnable {
             }
             recomputeAllOffenders();
             recomputeAllPosters();
-            fireToDoItemsRemoved(removes);
+            fireToDoItemsRemoved(Collections.unmodifiableList(removes));
         }
     }
 
@@ -798,6 +798,7 @@ public class ToDoList extends Observable implements Runnable {
      * @param theItems the todo items
      */
     protected void fireToDoItemsRemoved(List<ToDoItem> theItems) {
+        List<ToDoItem> toDoItems = null;
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
@@ -807,7 +808,8 @@ public class ToDoList extends Observable implements Runnable {
             if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) {
-                    e = new ToDoListEvent(theItems);
+                    toDoItems = Collections.unmodifiableList(theItems);
+                    e = new ToDoListEvent(toDoItems);
                 }
                 ((ToDoListListener) listeners[i + 1]).toDoItemsRemoved(e);
             }
