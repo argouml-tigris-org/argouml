@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -98,12 +99,18 @@ public abstract class UMLList2
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent e) {
+        if (hasPopup()) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        }
     }
     
     /*
      * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent e) {
+        if (hasPopup()) {
+            setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
     }
     
     /*
@@ -134,5 +141,12 @@ public abstract class UMLList2
                 }
             }
         }
+    }
+    
+    protected boolean hasPopup() {
+        if (getModel() instanceof UMLModelElementListModel2) {
+            return ((UMLModelElementListModel2) getModel()).hasPopup();
+        }
+        return false;
     }
 }

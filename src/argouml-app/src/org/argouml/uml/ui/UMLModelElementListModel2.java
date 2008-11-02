@@ -535,5 +535,9 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel
     public boolean buildPopup(JPopupMenu popup, int index) {
         return false;
     }
+    
+    protected boolean hasPopup() {
+        return false;
+    }
 
 }

@@ -64,4 +64,11 @@ public class UMLTransitionTriggerListModel extends UMLModelElementListModel2 {
                 ActionNewEvent.Roles.TRIGGER, getTarget());
         return true;
     }
+
+    @Override
+    protected boolean hasPopup() {
+        return true;
+    }
+    
+    
 }
