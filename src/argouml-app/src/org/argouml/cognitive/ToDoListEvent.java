@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 
 package org.argouml.cognitive;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -34,7 +35,7 @@ import java.util.Vector;
  */
 public class ToDoListEvent {
 
-    private List<ToDoItem> items;
+    private List<ToDoItem> items = new ArrayList<ToDoItem>();
 
     /**
      * The constructor.
@@ -45,12 +46,14 @@ public class ToDoListEvent {
     }
 
     /**
-     * The constructor.
+     * The constructor. 
+     * Make a copy of the list to guarantee that it remains
+     * stable throughout the lifetime of this event.
      *
      * @param i the List of ToDoItems that were changed/added/removed 
      */
     public ToDoListEvent(List<ToDoItem> i) {
-        items = i;
+        items.addAll(i);
     }
     
     /**
