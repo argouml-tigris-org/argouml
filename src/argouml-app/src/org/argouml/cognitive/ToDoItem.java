@@ -115,7 +115,7 @@ public class ToDoItem implements Serializable, WizardItem {
      */
     private ListSet theOffenders;
 
-    private Wizard theWizard;
+    private final Wizard theWizard;
 
     /**
      * The constructor.
@@ -137,6 +137,7 @@ public class ToDoItem implements Serializable, WizardItem {
         thePriority = p;
         theDescription = d;
         theMoreInfoURL = m;
+        theWizard = null;
     }
 
     /**
@@ -155,6 +156,7 @@ public class ToDoItem implements Serializable, WizardItem {
 	thePriority = p;
 	theDescription = d;
 	theMoreInfoURL = m;
+        theWizard = null;
     }
 
     /**
@@ -174,13 +176,6 @@ public class ToDoItem implements Serializable, WizardItem {
         theDescription = c.getDescription(theOffenders, dsgr);
         theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
         theWizard = c.makeWizard(this);
-    }
-
-    /**
-     * Override in subclass to validate the offender is an expected type.
-     * @param dm the offender (why dm?)
-     */
-    protected void checkArgument(Object dm) {
     }
 
     /**
@@ -215,6 +210,13 @@ public class ToDoItem implements Serializable, WizardItem {
 	theDescription = c.getDescription(null, null);
 	theMoreInfoURL = c.getMoreInfoURL(null, null);
 	theWizard = c.makeWizard(this);
+    }
+
+    /**
+     * Override in subclass to validate the offender is an expected type.
+     * @param dm the offender (why dm?)
+     */
+    protected void checkArgument(Object dm) {
     }
 
 
@@ -261,8 +263,12 @@ public class ToDoItem implements Serializable, WizardItem {
     }
 
     /**
+     * @deprecated A ToDoItem should be immutable to guarantee it can be
+     * passed safely between threads. Only use the constructor to set this
+     * value.
      * @param h the headline
      */
+    @Deprecated
     public void setHeadline(String h) {
 	theHeadline = h;
 	cachedExpandedHeadline = null;
@@ -280,6 +286,9 @@ public class ToDoItem implements Serializable, WizardItem {
     }
 
     /**
+     * @deprecated A ToDoItem should be immutable to guarantee it can be
+     * passed safely between threads. Only use the constructor to set this
+     * value.
      * @param d the description
      */
     public void setDescription(String d) {
@@ -293,9 +302,14 @@ public class ToDoItem implements Serializable, WizardItem {
     public String getMoreInfoURL() { return theMoreInfoURL; }
 
     /**
+     * @deprecated A ToDoItem should be immutable to guarantee it can be
+     * passed safely between threads. Only use the constructor to set this
+     * value.
      * @param m the more-info-url
      */
-    public void setMoreInfoURL(String m) { theMoreInfoURL = m; }
+    public void setMoreInfoURL(String m) {
+        theMoreInfoURL = m;
+    }
 
     /**
      * @return the priority
@@ -303,9 +317,14 @@ public class ToDoItem implements Serializable, WizardItem {
     public int getPriority() { return thePriority; }
 
     /**
+     * @deprecated A ToDoItem should be immutable to guarantee it can be
+     * passed safely between threads. Only use the constructor to set this
+     * value.
      * @param p the priority
      */
-    public void setPriority(int p) { thePriority = p; }
+    public void setPriority(int p) {
+        thePriority = p;
+    }
 
     /**
      * @return the wizard progress. An integer between 0 and 100,
@@ -337,6 +356,8 @@ public class ToDoItem implements Serializable, WizardItem {
      *
      * @param offenders the offenders
      * TODO: Offenders need to be more strongly typed. - tfm 20070630
+     * TODO: Provide a constructor argument for this so that the class can
+     * become immutable
      */
     public void setOffenders(ListSet offenders) {
         theOffenders = offenders;
