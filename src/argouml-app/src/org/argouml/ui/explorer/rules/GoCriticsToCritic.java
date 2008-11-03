@@ -52,10 +52,10 @@ public class GoCriticsToCritic implements PerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(final Object parent) {
-        if (parent instanceof Vector) {
-            Vector v = (Vector) parent;
+        if (parent instanceof Collection) {
+            Collection v = (Collection) parent;
             if (!v.isEmpty()) {
-                if (v.firstElement() instanceof Critic) {
+                if (v.iterator().next() instanceof Critic) {
                     Vector<Object> ret = new Vector<Object>();
                     for (Object critic : v) {
                         final Critic fc = (Critic) critic;

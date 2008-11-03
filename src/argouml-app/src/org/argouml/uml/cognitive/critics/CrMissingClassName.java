@@ -106,7 +106,7 @@ public class CrMissingClassName extends CrUML {
      */
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
-        ret.add(Model.getMetaTypes().getModel());
+        ret.add(Model.getMetaTypes().getUMLClass());
         return ret;
     }
     
