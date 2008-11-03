@@ -37,10 +37,10 @@ with other users?</a></li>
 <li><a href="#osx_link">OS X: How can I access the context sensitive menus?</a>
 <li><a href="#osx_java">OS X 10.2: How can I get ArgoUML to work?</a>
 <li><a href="#win_link">Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
-<li><a href="#unknownhostexception">Unix/Linux: 
+<li><a href="#unknownhostexception">Unix/Linux:
       I cannot start because of an java.net.UnknownHostException
     </a>
-<li><a href="#linux_gcj">Linux: Why does ArgoUML fail to start with an 
+<li><a href="#linux_gcj">Linux: Why does ArgoUML fail to start with an
 exception in the GUI components?</a>
 <li><a href="#gcj">Linux: Does ArgoUML work with GCJ, GIJ, or GNU Classpath?</a>
 
@@ -100,9 +100,9 @@ exception in the GUI components?</a>
 <li><a href="#sanity_link">Is there a mechanism to do a sanity check in ArgoUML and enforce that sanity check?</a>
 <li><a href="#empty_zargo">I saved a project from ArgoUML, and then when I opened it later ArgoUML said it was empty. What can I do?</a>
 <li><a href="#strange_language">I started ArgoUML and it is in a foreign
-language.  How can I configure it so it will be in my language?</a> 
+language.  How can I configure it so it will be in my language?</a>
 <li><a href="#lc_ctype">Why does ArgoUML use the environment variable
-LC_CTYPE instead of LANG to determine the language when both are set?</a> 
+LC_CTYPE instead of LANG to determine the language when both are set?</a>
 <li><a href="#ati_bug">Why are the links not displayed correctly?</a>
 </ul>
 
@@ -150,7 +150,7 @@ further down under development releases.
 <DT><a name="link1">What is ArgoUML?</a>
 <DD>
 ArgoUML is a Java based Universal Modeling Language tool. It is able to create and save
-all 
+all
 standard UML diagrams. More information on UML can be found <a href="http://www.omg.org/technology/documents/formal/uml.htm">here</a>.
 ArgoUML also has the ability to reverse engineer compiling Java code and generate UML diagrams for it.
 
@@ -159,7 +159,7 @@ ArgoUML is made available under the <a href="http://www.freebsd.org/copyright/li
 
 <p>
 ArgoUML is not production ready!
-This means that the things you can't do will distract you, you will have problems that you won't 
+This means that the things you can't do will distract you, you will have problems that you won't
 have in commercial UML tools, and there is no one to blame for this. On the other hand, this also means that
 you have the opportunity to fix your problems yourself.
 
@@ -217,17 +217,17 @@ Jason!
 Welcome, welcome, welcome, you are most welcome!
 
 <p>
-Level 1: 
+Level 1:
 <ul>
-<li>Use it!</li> 
+<li>Use it!</li>
 <li>Talk about it!</li>
-<li>Test it!</li> 
-<li>Find bugs!</li> 
+<li>Test it!</li>
+<li>Find bugs!</li>
 <li>Report bugs!</li>
 </ul>
 
 <p>
-Level 2: 
+Level 2:
 <ul>
 <li>Help in pin-pointing and fixing bugs!</li>
 <li>Discuss what you want to work on on the developers mailing list.</li>
@@ -240,7 +240,7 @@ Level 2:
 <DT><a name="manual_link">Is there a manual?</a>
 <DD>Yes.
 Look
-<A HREF="http://argouml-stats.tigris.org/documentation/manual-0.24/">here 
+<A HREF="http://argouml-stats.tigris.org/documentation/manual-0.24/">here
 for the 0.24 version</A>.
 
 
@@ -252,7 +252,7 @@ application from.
 There is an archive with all the source so you can look at it.
 If you are aiming to build ArgoUML, download from the repository instead.
 You will then get the complete set of development tools and libraries
-needed to build it. 
+needed to build it.
 (The build scripts included in the archive does not really fit
 the way the libraries are packaged so building ArgoUML from the archive
 is really complicated and not recommended.)
@@ -266,10 +266,10 @@ and have separate code bases.
 
 <DT><a name="uml_versions">What versions of UML are supported?</a>
 <DD>
-ArgoUML versions through version 0.18.1 support UML 1.3.  Beginning with version 
+ArgoUML versions through version 0.18.1 support UML 1.3.  Beginning with version
 0.20 in early 2006, ArgoUML began supporting UML 1.4.
 <p>
-We don't have plans for the support of UML 2.0 in the immediate future, 
+We don't have plans for the support of UML 2.0 in the immediate future,
 but it is a goal as the standard is completed and software components
 that support it (model repository, OCL, etc) become available.
 
@@ -289,26 +289,31 @@ find more information in
 
 <DT><a name="community_link">Where can I discuss ArgoUML usage
 with other users?</a>
-<DD>A Users' mailing list is available on the ArgoUML site.
-See <a href="http://argouml.tigris.org/servlets/SummarizeList?listName=users">
-  the list home page
-</a>.
+<DD>The users' <a href="http://argouml.tigris.org/servlets/SummarizeList?listName=users">
+mailing list</a>, <a href="http://www.argouml-users.net/forum" target="forum">
+forum</a> and <a href="irc://irc.freenode.net/argouml">#argouml</a>
+<a href="http://www.mibbit.com/?server=irc.freenode.net&channel=%23argouml" target="chat">IRC channel</a>
+is available for questions and discussions. Furthermore, there is a
+<a href="http://www.argouml-users.net/" target="wiki">wiki</a> about UML and
+the usage of ArgoUML for knowledge sharing and discussion.
+See the <a href="/support.html">support page</a> for more information about
+these possibilities.
 
 <DT><a name="xmx">Can I use ArgoUML for "large" projects?</a></DT>
-<DD>Yes. But be sure to use a large heap space 
+<DD>Yes. But be sure to use a large heap space
   when you have more than about 50 modelelements.
   The heap space for any java application can be defined on the command line,
-  the supplied launch scripts for ArgoUML (.bat, .sh, .jnlp, .lnk), all 
+  the supplied launch scripts for ArgoUML (.bat, .sh, .jnlp, .lnk), all
   use:<br>
 <PRE>
     java -Xmx512m -jar argouml.jar
 </PRE>
   If you have problems with large models, you may need to set this higher.
 <br></DD>
-  
+
 </DL>
 
-  
+
 
 <H3>OS Specific</H3>
 <DL>
@@ -326,15 +331,15 @@ There is a workaround, though: Apple leaves the 1.3.1 java engine installed, but
 
 <DT><a name="win_link">Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
 <DD>
-<b>Easy Option:</b> 
+<b>Easy Option:</b>
 For ArgoUML 0.25.5 and above, use the windows installer which associates
-.zargo files with ArgoUML automatically.  
+.zargo files with ArgoUML automatically.
 <p>
 <b>Hard Option:</b>
-On <b>Windows XP</b>, (don't try this on Vista!) 
+On <b>Windows XP</b>, (don't try this on Vista!)
 the trick is to do things in two steps. First, open Windows Explorer and find a .zargo
-file, and then right-click on it. You should get the normal Windows menu, including an Open or Open With 
-option. At this point, give a description for the file like "ArgoUML Model", and tell Windows to use 
+file, and then right-click on it. You should get the normal Windows menu, including an Open or Open With
+option. At this point, give a description for the file like "ArgoUML Model", and tell Windows to use
 Notepad to open the file. That's not what you want to do ultimately, but it does get Windows to
 accept the .zargo extension as representing a valid file type.
 <p>
@@ -371,19 +376,19 @@ replacing "C:\ArgoUML" as appropriate.</p>
 file and follow the instructions).</p>
 
 
-<DT><a name="unknownhostexception">Unix/Linux: 
+<DT><a name="unknownhostexception">Unix/Linux:
       I cannot start because of an java.net.UnknownHostException
     </a>
 <DD>
-ArgoUML uses the Java method 
+ArgoUML uses the Java method
 InetAddress.getLocalHost()
 to get the IP address of the local machine to use in constructing a
-unique identifier on all elements that are to be created 
+unique identifier on all elements that are to be created
 in that instance of ArgoUML.
 This works for networked machines and for stand alone-machines.
 However there are cases when the TCP/IP configuration is wrong
 where this does not work.  Make sure that 'hostname' returns
-a valid name on your machine and that there is an IP address 
+a valid name on your machine and that there is an IP address
 for this name in your /etc/hosts file or DNS.
 <p>
 
@@ -391,18 +396,18 @@ The solution is, fix your network configuration.
 <p>
 
 If you want to suggest a better explanation or a fix within ArgoUML for this,
-go through the java.net.InetAddress and find out 
+go through the java.net.InetAddress and find out
 what really happens in this case.
 
-<DT><a name="linux_gcj">Linux: Why does ArgoUML fail to start with an 
+<DT><a name="linux_gcj">Linux: Why does ArgoUML fail to start with an
 exception in the GUI components?</a>
 
 <DD>
-Many Linux distributions bundle GCJ 
+Many Linux distributions bundle GCJ
 (The GNU Compiler for the Java&trade; Programming Language)
-which, as of April 2006, doesn't provide sufficient functionality to run 
+which, as of April 2006, doesn't provide sufficient functionality to run
 Java Swing applications such as ArgoUML.
-You can check on the current status of GCJ at 
+You can check on the current status of GCJ at
 <a href="http://gcc.gnu.org/java/status.html">
 http://gcc.gnu.org/java/status.html</a>
 
@@ -434,19 +439,19 @@ page</a>.
 
 <DT><a name="jwshowtoinstall" />How do I install Java Web Start?</a>
 <DD>
-If you have a recent JRE (Java 1.4 or later), you probably don't need to, 
-but if you do, see the installation instructions on the Sun web site: 
+If you have a recent JRE (Java 1.4 or later), you probably don't need to,
+but if you do, see the installation instructions on the Sun web site:
 <a href="http://java.sun.com/products/javawebstart/">Java Web Start</a>.
 <P>
-In particular, note that Mozilla and Netscape 6.x 
+In particular, note that Mozilla and Netscape 6.x
 users must take an additional step
 to register the helper application in your browser preferences.
 
 
 <DT><a name="jwsbadmime" />Web Start returns a Bad MIME Type error. What's wrong?</a>
 <DD>
-This is from 
-<a href="http://lopica.sourceforge.net/faq.html#badmimetype">the Lopica 
+This is from
+<a href="http://lopica.sourceforge.net/faq.html#badmimetype">the Lopica
 Unofficial JWS FAQ</a>.
 
 <P>This is a very common problem and most likely caused by Web Start's
@@ -507,9 +512,9 @@ keytool -import -alias linus@tigris.org -file argouml-linus-2.cer -keystore cace
 <h5>If you are somewhat "security aware" and would like to understand
 what you are doing</h5>
 <ol>
-<li>Be sure you are linked to the tigris.org ArgoUml-server, e.g. by putting 
+<li>Be sure you are linked to the tigris.org ArgoUml-server, e.g. by putting
    "http://argouml.tigris.org/servlets/ProjectDocumentList"
-   into the adressline of your browser. 
+   into the adressline of your browser.
    ( To be honest you can't be sure that it is not a fake what you are seeing
      unless tigris.org will supply a https://argouml.tigris.org )
 
@@ -521,7 +526,7 @@ what you are doing</h5>
      while moving it from the tigris server to your computer. )
     Before the release 0.23.3 the certificate was called
     "argouml-linus-1.cer".
-     
+
 <li>Note one of the hashcodes:
    <pre>
    MD5:  88:B9:BB:BE:B8:53:F8:97:FC:B4:AE:9F:E2:2F:21:50
@@ -554,7 +559,7 @@ keytool -import -alias linus@tigris.org -file argouml-linus-2.cer -keystore cace
        the appropriate one that you have assigned
        to your local JKS-keystore of Java Web Start named "cacerts".
    <li>You will be asked wether you trust this certificate or not.
-       Compare the locally generated hashcodes (fingerprints) shown 
+       Compare the locally generated hashcodes (fingerprints) shown
        to that read from tigris.org (see step 3).
        If the fingerprints match and you decide to trust the whole chain
        of Linus Tolke, Tigris, your internet connection, and your computer
@@ -562,7 +567,7 @@ keytool -import -alias linus@tigris.org -file argouml-linus-2.cer -keystore cace
    </ol>
 </ol>
 That's it!
-Now you should not see a message like 
+Now you should not see a message like
 "Failed to verify the authenticity of this certificate. No
 assertions can be made of the origin or validity of the code. It
 is highly recommended not to install and run this code."
@@ -653,8 +658,8 @@ nudge (move a little bit) elements.
 <DT><a name="sequence_diagrams_not_working">
       Why don't the sequence diagrams work?
     </a>
-<DD>You are probably using an old version of ArgoUML.  Upgrade to 
-ArgoUML 0.20 or later. 
+<DD>You are probably using an old version of ArgoUML.  Upgrade to
+ArgoUML 0.20 or later.
 
 <DT><a name="ord_link">I'm trying to change the ordering of the links in the sequence
 diagram. How do I do that?</a>
@@ -686,7 +691,7 @@ navigation pane (the left pane tree view).
 
 
 <DT><a name="easy_link">What is the easiest way to enter data into attributes and methods window for classes?</a>
-<DD>Click direct class properties pane and start typing. 
+<DD>Click direct class properties pane and start typing.
 
 
 <DT><a name="model_link">Where can I find some sample ArgoUML models?</a>
@@ -705,14 +710,14 @@ or create additional examples, the contribution would be welcome.
 <H3>XMI and other formats</H3>
 <DL>
 <DT><a name="xmiload_link">Why won't my XMI file load?</a>
-<DD>There are several possible reasons for ArgoUML to be unable to load 
+<DD>There are several possible reasons for ArgoUML to be unable to load
 your file.  Some of them include:
   <ul>
     <li><em>Wrong UML/XMI version</em> - ArgoUML supports UML 1.3 or 1.4 stored
     in XMI 1.0, 1.1, or 1.2 files. It's native format is UML 1.4, so
     that's the best version to choose if you have a choice. Similarly
     XMI 1.1 or 1.2 will provide the best information transfer. Versions
-    of UML greater than 1.4 and versions of XMI greater than 1.2 are 
+    of UML greater than 1.4 and versions of XMI greater than 1.2 are
     <b>not</b> supported.</li>
 
     <li><em>Proprietary vendor format</em> - Some tools write non-standard XMI
@@ -733,8 +738,8 @@ your file.  Some of them include:
     </ul>
     </li>
   </ul>
-    If the ArgoUML error message complains about an unknown element 
-    named 'UML:Diagram' (generated while loading non-standard Poseidon files 
+    If the ArgoUML error message complains about an unknown element
+    named 'UML:Diagram' (generated while loading non-standard Poseidon files
     and perhaps others), you may be able to get the file to load by
     turning on the ArgoUML user preference to ignore Diagram elements on
     user preference Settings dialog (ArgoUML 0.21.1 or later).
@@ -761,7 +766,7 @@ supported?</a>
     still continues to be problematic in some cases.  XSLT can be used to
     correct some problems and you can find examples included in the
     ArgoUML source.  There are also commercial solutions available
-    from companies such as 
+    from companies such as
     <a href="http://www.metaintegration.net">MetaIntegrations</a>.
 
 <DT><a name="xmi_newer">Currently ArgoUML exports to XMI version 1.0 only, why?</a>
@@ -784,14 +789,14 @@ You are much better off getting Rose to export an XMI file.
 Rose has an XMI Add-in that can create XMI format from an MDL file.  It may
     move as the IBM site is reorganized, but you may be able to find
      <a href="ftp://www6.software.ibm.com/software/developer/library/rational/2834/Rose/RoseXMLTools1.3.6.01.zip">version 1.3.6 here</a>.
-    If that doesn't work     
+    If that doesn't work
      <a href="http://www-128.ibm.com/developerworks/rational/library/content/03July/2500/2834/Rose/rational_rose.html">this</a>
      might take you to a page of Rose add-ins that you can search.
      There's also a
      <a href="http://www-1.ibm.com/support/docview.wss?uid=swg21131368">technote</a>
      describing the various versions of this add-in.
 
- 
+
 
 <DT><a name="addtag_link">I have a project where I need to add tags to attributes. How do I do that?</a>
 <DD>Open the zargo file with any zip application and you'll find the XMI inside. If you want to convert it to XSD then go to <a href="http://www.xmlmodeling.com/">http://xmlmodeling.com/</a> (Dave Carlson's site) and convert the XMI there.
@@ -813,8 +818,8 @@ generate gif, postscript, eps or .svg format.
 
 
 <DT><a name="svg_link">What does SVG stand for?</a>
-<DD>Scalable Vector Graphics.  It's a standard of the 
-World Wide Web Consortium (W3C).  Find out more at the 
+<DD>Scalable Vector Graphics.  It's a standard of the
+World Wide Web Consortium (W3C).  Find out more at the
     <a href="http://www.w3.org/Graphics/SVG/">www.w3.org</a>.
 
 
@@ -844,7 +849,7 @@ unpacked with the Java jar utility or a Zip utility.
 
 <H3>Other Topics</H3>
 <DL>
-<DT><a name="bunch_link">I've got a bunch of people working on the same diagrams. 
+<DT><a name="bunch_link">I've got a bunch of people working on the same diagrams.
 How do I track who is doing what on the diagram?
 How do I use ArgoUML with CVS?</a>
 <DD>You can't.
@@ -852,14 +857,14 @@ ArgoUML works as if the .zargo files is a single binary file.
 If several users open it at once to do work some work will be lost.
 
 
-<DT><a name="sanity_link">Is there a mechanism to do a sanity check in 
-ArgoUML and enforce that sanity check?</a> 
+<DT><a name="sanity_link">Is there a mechanism to do a sanity check in
+ArgoUML and enforce that sanity check?</a>
 <DD>Yes, by paying attention to the to do items
 generated by the critics.
 They will give you ideas on what the problems are with your model
 and sometimes help you in fixing them.
 <P>
-ArgoUML follows the policy that the user in the end knows more than 
+ArgoUML follows the policy that the user in the end knows more than
 the developers of ArgoUML do.
 A level of sanity enough to be able to draw and save the model is maintained
 by ArgoUML but beyond that the user can do what he pleases
@@ -867,15 +872,15 @@ as long as he ignores (or turns of) the critics with suggestions.
 
 
 <DT><a name="empty_zargo">I saved a project from ArgoUML,
-and then when I opened it later ArgoUML said it was empty. 
-What can I do?</a> 
+and then when I opened it later ArgoUML said it was empty.
+What can I do?</a>
 <DD>Many types of corruption can be repaired by hand by
 a member of the development team.  These problems have
 become less and less common, but if you do encounter one
 the best thing to due is create a bug report in Issuezilla
 and attach your project.  If your project contains information that
 you don't want posted in an attachment, you may be able to
-email it privately to one of the developers.  
+email it privately to one of the developers.
 <p>
 When you
 report the problem, try to include as much information as
@@ -886,7 +891,7 @@ the root cause (in addition to repairing your file).
 
 <DT><a name="strange_language">I started ArgoUML and it is in
 the wrong language.
-Why? How can I configure it so it will be in my desired language?</a> 
+Why? How can I configure it so it will be in my desired language?</a>
 <DD>ArgoUML attempts to detect the language settings from your
 operating system environment and start with the language you prefer.
 <p>
@@ -905,12 +910,12 @@ and restart ArgoUML.</li>
 <p>Since version 0.19.3 you can set the language in the menu:</p>
 <pre>Edit -&gt; Settings... -&gt; Appearance -&gt;Language
 </pre>
-<p>The combobox contains the supported languages. 
+<p>The combobox contains the supported languages.
 To see the effect of your change, you have to restart ArgoUML.</p>
 
 <DT><a name="lc_ctype">Why does ArgoUML use the environment variable
-LC_CTYPE instead of LANG to determine the language when both are set?</a> 
-<DD>This is a Java bug.  Please see 
+LC_CTYPE instead of LANG to determine the language when both are set?</a>
+<DD>This is a Java bug.  Please see
 <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5033780">
 bug #5033780</a> in Sun's bug database for more information on when it will
 be fixed.  It is present in Java 1.4, 5, and 6.
@@ -920,7 +925,7 @@ be fixed.  It is present in Java 1.4, 5, and 6.
 <DD>
 This may be a result of a bug in the ATI graphics card drivers.
 <p>
-See this report 
+See this report
 <a href="http://developer.java.sun.com/developer/bugParade/bugs/4756347.html">
   in Sun's bug database</a>
 for possible workarounds such as disabling Java's use of DirectDraw.
@@ -943,7 +948,7 @@ How you do this is explained on the
 page.
 
 <P>
-You don't need to ask on any mailing list 
+You don't need to ask on any mailing list
 if it is a problem,
 if it is already known, or
 if it is has a solution.
@@ -951,7 +956,7 @@ If you are having problems, assume that there really is a problem!
 If you are wrong and it is not really a problem, you will get notified by
 someone that resolves the issue (as INVALID, WORKSFORME, or FIXED).
 If you can't find it in Issuezilla, assume that no-one else has reported it!
-If the bug was already known and reported but you didn't find it, 
+If the bug was already known and reported but you didn't find it,
 you will get notified by someone that resolves the issue (as DUPLICATE).
 It might be that it is filed under a completely different problem
 description since the same problem might manifest itself in different ways.
@@ -964,16 +969,16 @@ Also include what version of ArgoUML you are running and on what platform.
 Useful information includes:
 <ul>
 <li>OS - Which OS, which version, and which patches
-<li>Java-version - 
-      Including whether you are running a development version or 
+<li>Java-version -
+      Including whether you are running a development version or
       runtime version
-<li>Hardware - 
-      Processor and processor speed, 
-      Memory, 
-      Hard Drive space, and 
+<li>Hardware -
+      Processor and processor speed,
+      Memory,
+      Hard Drive space, and
       free hard drive space
 </ul>
-It is also helpful if you can upload the zargo project file for the project 
+It is also helpful if you can upload the zargo project file for the project
 that is having problems.
 <p>
 
@@ -989,7 +994,7 @@ How you do this is explained on the
 </a>
 page.
 
-<DT><a name="attach_file">Something is happening when I run ArgoUML that's 
+<DT><a name="attach_file">Something is happening when I run ArgoUML that's
 hard to describe. How should I send a picture or document describing it?</a>
 <DD>
 It is probably a bug.
@@ -997,12 +1002,12 @@ Write a defect report and attach your picture or document
 as part of a defect report.
 Reporting bugs is described <a href="#bug_link">earlier in the FAQ</a>.
 <p>
-If you have successfully reported the problem in Issuezilla 
+If you have successfully reported the problem in Issuezilla
 there is no need to send an email about it.
 The discussion and investigation will take place in that issue in Issuezilla.
 
 
-<DT><a name="vote_link">How do I indicate that I think an enhancement or fix 
+<DT><a name="vote_link">How do I indicate that I think an enhancement or fix
 is important?</a>
 <DD>
 You vote for the issue.
@@ -1013,7 +1018,7 @@ You vote for the issue.
 <li>Get the role granted.
 <li>Login to the Tigris site
 <li>Find the issue that you are interested in
-<li>Click on the Vote for this issue link 
+<li>Click on the Vote for this issue link
 directly above the Additional Comments field
 </ul>
 After having voted for an issue you will receive mails when something
@@ -1025,10 +1030,10 @@ most important to solve and what features are the most important to add.
 
 <DT><a name="vtcount_link">How do I see how many votes have been cast for
 an enhancement or fix?</a>
-<DD>You can query for all issues that have at least one vote 
-by entering "1" in the At least ____ votes field and 
+<DD>You can query for all issues that have at least one vote
+by entering "1" in the At least ____ votes field and
 clicking on the Submit query button.
-You will get a list of all issues that have 
+You will get a list of all issues that have
 at least one vote cast for them.
 By following the link to the issue, you can adjust your votes as you see fit.
 
@@ -1041,7 +1046,7 @@ Votes column.
 <center>
   <small>
 This FAQ maintained by Tom Morris.
-Questions about the FAQ should be addressed to 
+Questions about the FAQ should be addressed to
 <a href="mailto:tfmorris&#064;tigris.org">tfmorris&#064;tigris.org</a>.
 <br>
 This FAQ was last updated $Date$.
