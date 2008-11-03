@@ -306,9 +306,9 @@ these possibilities.
   the supplied launch scripts for ArgoUML (.bat, .sh, .jnlp, .lnk), all
   use:<br>
 <PRE>
-    java -Xmx512m -jar argouml.jar
+    java -Xms64m -Xmx512m -jar argouml.jar
 </PRE>
-  If you have problems with large models, you may need to set this higher.
+  If you have problems with large models, you may need to set -Xmx512m to a higher number.
 <br></DD>
 
 </DL>
