@@ -46,6 +46,8 @@ import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileManager;
 import org.argouml.profile.UserDefinedProfile;
 import org.argouml.profile.UserDefinedProfileHelper;
+import org.argouml.uml.cognitive.critics.ProfileCodeGeneration;
+import org.argouml.uml.cognitive.critics.ProfileGoodPractices;
 
 /**
  * Default <code>ProfileManager</code> implementation
@@ -85,14 +87,23 @@ public class ProfileManagerImpl implements ProfileManager {
     private Profile profileUML;
     
     private Profile profileJava;
+    
+    private Profile profileGoodPractices;
+    
+    private Profile profileCodeGeneration;
+
 
     /**
      * Constructor - includes initialization of built-in default profiles.
      */
     public ProfileManagerImpl() {
         try {
+            disableConfigurationUpdate = true;
+            
             profileUML = new ProfileUML();
             profileJava = new ProfileJava(profileUML);
+            profileGoodPractices = new ProfileGoodPractices();
+            profileCodeGeneration = new ProfileCodeGeneration();
             
             registerProfile(profileUML);
             addToDefaultProfiles(profileUML); 
@@ -100,9 +111,14 @@ public class ProfileManagerImpl implements ProfileManager {
             
             // register the built-in profiles
             registerProfile(profileJava);                
+            registerProfile(profileGoodPractices);                
+            registerProfile(profileCodeGeneration);                
             registerProfile(new ProfileMeta());
+
         } catch (ProfileException e) {
             throw new RuntimeException(e);
+        } finally {
+            disableConfigurationUpdate = false;
         }
 
         loadDirectoriesFromConfiguration();
@@ -120,9 +136,13 @@ public class ProfileManagerImpl implements ProfileManager {
                     .getString(KEY_DEFAULT_PROFILES);
             if (defaultProfilesList.equals("")) {
                 // if the list does not exist
-                // add the Java profile as default
+                // add the Java profile and the code generation and good practices
+                // profiles as default
 
                 addToDefaultProfiles(profileJava);
+                addToDefaultProfiles(profileGoodPractices);
+                addToDefaultProfiles(profileCodeGeneration);
+                
             } else {
                 StringTokenizer tokenizer = new StringTokenizer(
                         defaultProfilesList, DIRECTORY_SEPARATOR, false);
@@ -165,8 +185,8 @@ public class ProfileManagerImpl implements ProfileManager {
                     }
                 }
             }
+            disableConfigurationUpdate = false;
         }
-        disableConfigurationUpdate = false;
     }
 
     private void updateDefaultProfilesConfiguration() {
@@ -420,12 +440,14 @@ public class ProfileManagerImpl implements ProfileManager {
         for (Profile p : this.profiles) {
             for (Critic c : p.getCritics()) {
                 c.setEnabled(false);
+                Configuration.setBoolean(c.getCriticKey(), false);                
             }
         }
         
         for (Profile p : pc.getProfiles()) {
             for (Critic c : p.getCritics()) {
                 c.setEnabled(true);
+                Configuration.setBoolean(c.getCriticKey(), true);                
             }
         }        
     }

@@ -46,8 +46,6 @@ public class InitCognitiveCritics implements InitSubsystem {
      * static initializer, register all appropriate critics.
      */
     public void init() {
-        ProfileFacade.register(new ProfileGoodPractices());
-        ProfileFacade.register(new ProfileCodeGeneration());
     }
 
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {
