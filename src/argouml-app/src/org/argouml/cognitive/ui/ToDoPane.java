@@ -31,7 +31,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -377,20 +376,7 @@ public class ToDoPane extends JPanel
         if (SwingUtilities.isEventDispatchThread()) {
             task.run();
         } else {
-            // TODO: We really want to use invokeLater here but there is some
-            // threading problem with doing so. I assume we have some problem
-            // with the GUI querying the todo list as a reaction to a todo
-            // event instead of only using the information contained within
-            // that event.
-            // With the current invokeAndWait solution we are blocking the GUI
-            // in the todo thread - Bob.
-            try {
-                SwingUtilities.invokeAndWait(task);
-            } catch (InterruptedException e) {
-                LOG.error("Exception", e);
-            } catch (InvocationTargetException e) {
-                LOG.error("Exception", e);
-            }
+            SwingUtilities.invokeLater(task);
         }
     }
     

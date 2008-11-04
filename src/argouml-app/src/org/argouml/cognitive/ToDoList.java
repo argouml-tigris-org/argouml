@@ -163,8 +163,8 @@ public class ToDoList extends Observable implements Runnable {
      * items on the list are still valid.
      */
     public void run() {
-        List<ToDoItem> removes = 
-            Collections.synchronizedList(new ArrayList<ToDoItem>());
+        final List<ToDoItem> removes = new ArrayList<ToDoItem>();
+        
         while (true) {
 
             // the validity checking thread should wait if disabled.
@@ -195,8 +195,7 @@ public class ToDoList extends Observable implements Runnable {
      * button via forceValidityCheck().
      */
     public void forceValidityCheck() {
-        List<ToDoItem> removes = 
-            Collections.synchronizedList(new ArrayList<ToDoItem>());
+        final List<ToDoItem> removes = new ArrayList<ToDoItem>();
         forceValidityCheck(removes);
     }
 
@@ -210,9 +209,10 @@ public class ToDoList extends Observable implements Runnable {
      * <em>Warning: Fragile code!</em> No method that this method calls can
      * synchronized the Designer, otherwise there will be deadlock.
      * 
-     * @param removes a synchronized list containing the items to be removed
+     * @param removes a list containing the items to be removed
      */
-    protected synchronized void forceValidityCheck(List<ToDoItem> removes) {
+    protected synchronized void forceValidityCheck(
+            final List<ToDoItem> removes) {
         synchronized (items) {
             for (ToDoItem item : items) {
                 boolean valid;
@@ -236,18 +236,16 @@ public class ToDoList extends Observable implements Runnable {
             }
         }
 
-        synchronized (removes) {
-            for (ToDoItem item : removes) {
-                removeE(item);
-                // History.TheHistory.addItemResolution(item,
-                // "no longer valid");
-                // ((ToDoItem)item).resolve("no longer valid");
-                // notifyObservers("removeElement", item);
-            }
-            recomputeAllOffenders();
-            recomputeAllPosters();
-            fireToDoItemsRemoved(removes);
+        for (ToDoItem item : removes) {
+            removeE(item);
+            // History.TheHistory.addItemResolution(item,
+            // "no longer valid");
+            // ((ToDoItem)item).resolve("no longer valid");
+            // notifyObservers("removeElement", item);
         }
+        recomputeAllOffenders();
+        recomputeAllPosters();
+        fireToDoItemsRemoved(removes);
     }
 
     /**

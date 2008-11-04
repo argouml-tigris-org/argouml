@@ -25,6 +25,7 @@
 
 package org.argouml.cognitive;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -53,7 +54,8 @@ public class ToDoListEvent {
      * @param toDoItems the List of ToDoItems that were changed/added/removed 
      */
     public ToDoListEvent(final List<ToDoItem> toDoItems) {
-        items = Collections.unmodifiableList(toDoItems);
+        items =
+            Collections.unmodifiableList(new ArrayList<ToDoItem>(toDoItems));
     }
     
     /**
