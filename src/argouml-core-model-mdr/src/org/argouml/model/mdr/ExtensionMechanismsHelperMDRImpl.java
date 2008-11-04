@@ -114,7 +114,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         return l;
     }
 
-
+    /* TODO: Make this work when the given stereotype
+     * has more than one baseclass. */
     public Object getStereotype(Object ns, Object stereo) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException("namespace");
