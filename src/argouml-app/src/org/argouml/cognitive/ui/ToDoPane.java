@@ -31,6 +31,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -154,7 +155,7 @@ public class ToDoPane extends JPanel
 
         if (splash != null) {
             splash.getStatusBar().showStatus(
-	            Translator.localize("statusmsg.bar.making-todopane"));
+                    Translator.localize("statusmsg.bar.making-todopane"));
             splash.getStatusBar().showProgress(25);
         }
 
@@ -236,8 +237,8 @@ public class ToDoPane extends JPanel
      */
     public void setCurPerspective(TreeModel per) {
         if (perspectives == null || !perspectives.contains(per)) {
-	    return;
-	}
+            return;
+        }
         combo.setSelectedItem(per);
         toDoPerspectivesChanged++;
     }
@@ -262,11 +263,11 @@ public class ToDoPane extends JPanel
             category = curPerspective.getChild(root, i);
             if (curPerspective.getIndexOfChild(category, item) != -1) {
                 break;
-	    }
+            }
         }
         if (category == null) {
-	    return;
-	}
+            return;
+        }
         path[0] = root;
         path[1] = category;
         path[2] = item;
@@ -285,8 +286,8 @@ public class ToDoPane extends JPanel
      */
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == combo) {
-	    updateTree();
-	}
+            updateTree();
+        }
     }
 
     // -------------TreeSelectionListener implementation -----------
@@ -301,13 +302,13 @@ public class ToDoPane extends JPanel
         Object sel = getSelectedObject();
         ProjectBrowser.getInstance().setToDoItem(sel);
         LOG.debug("lastselection: " + lastSel);
-	LOG.debug("sel: " + sel);
+        LOG.debug("sel: " + sel);
         if (lastSel instanceof ToDoItem) {
-	    ((ToDoItem) lastSel).deselect();
-	}
+            ((ToDoItem) lastSel).deselect();
+        }
         if (sel instanceof ToDoItem) {
-	    ((ToDoItem) sel).select();
-	}
+            ((ToDoItem) sel).select();
+        }
         lastSel = sel;
     }
 
@@ -361,9 +362,10 @@ public class ToDoPane extends JPanel
     // ToDoListListener implementation
 
     /**
-     * Invoke a task on the Swing thread. If we are running on the Swing thread,
-     * this happens immediately. Otherwise the task is queued for later
-     * execution using SwingUtilities.invokeLater.
+     * Invoke a task on the Swing thread. If we are running on the Swing
+     * thread, this happens immediately. Otherwise the task is queued for later
+     * execution using SwingUtilities.invokeLater (actually for the moment
+     * invokeAndWait but this should be resolved in future).
      * <p>
      * This is necessary because event notification of ToDoListener events is
      * likely to be coming from the ToDo Validity Checker thread running in the
@@ -375,7 +377,20 @@ public class ToDoPane extends JPanel
         if (SwingUtilities.isEventDispatchThread()) {
             task.run();
         } else {
-            SwingUtilities.invokeLater(task);
+            // TODO: We really want to use invokeLater here but there is some
+            // threading problem with doing so. I assume we have some problem
+            // with the GUI querying the todo list as a reaction to a todo
+            // event instead of only using the information contained within
+            // that event.
+            // With the current invokeAndWait solution we are blocking the GUI
+            // in the todo thread - Bob.
+            try {
+                SwingUtilities.invokeAndWait(task);
+            } catch (InterruptedException e) {
+                LOG.error("Exception", e);
+            } catch (InvocationTargetException e) {
+                LOG.error("Exception", e);
+            }
         }
     }
     
@@ -448,20 +463,20 @@ public class ToDoPane extends JPanel
     /* TODO: Indicate the direction! */
     private static String formatCountLabel(int size) {
         switch (size) {
-	case 0:
-	    return Translator.localize("label.todopane.no-items");
-	case 1:
-	    return MessageFormat.
-		format(Translator.localize("label.todopane.item"),
-		       new Object[] {
-			   Integer.valueOf(size),
-		       });
-	default:
-	    return MessageFormat.
-		format(Translator.localize("label.todopane.items"),
-		       new Object[] {
-			   Integer.valueOf(size),
-		       });
+        case 0:
+            return Translator.localize("label.todopane.no-items");
+        case 1:
+            return MessageFormat.
+                format(Translator.localize("label.todopane.item"),
+                       new Object[] {
+                           Integer.valueOf(size),
+                       });
+        default:
+            return MessageFormat.
+                format(Translator.localize("label.todopane.items"),
+                       new Object[] {
+                           Integer.valueOf(size),
+                       });
         }
     }
 
@@ -473,7 +488,7 @@ public class ToDoPane extends JPanel
         countLabel.setText(formatCountLabel(size));
         countLabel.setOpaque(size > WARN_THRESHOLD);
         countLabel.setBackground((size >= ALARM_THRESHOLD) ? ALARM_COLOR
-				  : WARN_COLOR);
+                                  : WARN_COLOR);
     }
 
     /**
@@ -484,7 +499,7 @@ public class ToDoPane extends JPanel
         curPerspective = tm;
         if (curPerspective == null) {
             tree.setVisible(false);
-	} else {
+        } else {
             LOG.debug("ToDoPane setting tree model");
             curPerspective.setRoot(root);
             tree.setShowsRootHandles(true);
@@ -528,8 +543,8 @@ public class ToDoPane extends JPanel
             @SuppressWarnings("unused") TreePath path) {
         dblClicksInToDoPane++;
         if (getSelectedObject() == null) {
-	    return;
-	}
+            return;
+        }
         Object sel = getSelectedObject();
         if (sel instanceof ToDoItem) {
             ((ToDoItem) sel).action();

@@ -39,6 +39,7 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.InvalidElementException;
 
 /**
  * Implements a list of ToDoItem's.
@@ -217,6 +218,9 @@ public class ToDoList extends Observable implements Runnable {
                 boolean valid;
                 try {
                     valid = item.stillValid(designer);
+                } catch (InvalidElementException ex) {
+                    // If element has been deleted, it's no longer valid
+                    valid = false;
                 } catch (Exception ex) {
                     valid = false;
                     StringBuffer buf = new StringBuffer(
@@ -765,18 +769,20 @@ public class ToDoList extends Observable implements Runnable {
      * @param theItems the todo items
      */
     protected void fireToDoItemsAdded(List<ToDoItem> theItems) {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        ToDoListEvent e = null;
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == ToDoListListener.class) {
-                // Lazily create the event:
-                if (e == null) {
-                    e = new ToDoListEvent(theItems);
+        if (theItems.size() > 0) {
+            // Guaranteed to return a non-null array
+            final Object[] listeners = listenerList.getListenerList();
+            ToDoListEvent e = null;
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+            for (int i = listeners.length - 2; i >= 0; i -= 2) {
+                if (listeners[i] == ToDoListListener.class) {
+                    // Lazily create the event:
+                    if (e == null) {
+                        e = new ToDoListEvent(theItems);
+                    }
+                    ((ToDoListListener) listeners[i + 1]).toDoItemsAdded(e);
                 }
-                ((ToDoListListener) listeners[i + 1]).toDoItemsAdded(e);
             }
         }
     }
@@ -793,19 +799,21 @@ public class ToDoList extends Observable implements Runnable {
     /**
      * @param theItems the todo items
      */
-    protected void fireToDoItemsRemoved(List<ToDoItem> theItems) {
-        // Guaranteed to return a non-null array
-        Object[] listeners = listenerList.getListenerList();
-        ToDoListEvent e = null;
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
-        for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == ToDoListListener.class) {
-                // Lazily create the event:
-                if (e == null) {
-                    e = new ToDoListEvent(theItems);
+    protected void fireToDoItemsRemoved(final List<ToDoItem> theItems) {
+        if (theItems.size() > 0) {
+            // Guaranteed to return a non-null array
+            final Object[] listeners = listenerList.getListenerList();
+            ToDoListEvent e = null;
+            // Process the listeners last to first, notifying
+            // those that are interested in this event
+            for (int i = listeners.length - 2; i >= 0; i -= 2) {
+                if (listeners[i] == ToDoListListener.class) {
+                    // Lazily create the event:
+                    if (e == null) {
+                        e = new ToDoListEvent(theItems);
+                    }
+                    ((ToDoListListener) listeners[i + 1]).toDoItemsRemoved(e);
                 }
-                ((ToDoListListener) listeners[i + 1]).toDoItemsRemoved(e);
             }
         }
     }

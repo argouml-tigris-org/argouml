@@ -25,6 +25,7 @@
 
 package org.argouml.cognitive;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
@@ -34,7 +35,7 @@ import java.util.Vector;
  */
 public class ToDoListEvent {
 
-    private List<ToDoItem> items;
+    private final List<ToDoItem> items;
 
     /**
      * The constructor.
@@ -45,12 +46,14 @@ public class ToDoListEvent {
     }
 
     /**
-     * The constructor.
+     * The constructor. 
+     * Make a copy of the list to guarantee that it remains
+     * stable throughout the lifetime of this event.
      *
-     * @param i the List of ToDoItems that were changed/added/removed 
+     * @param toDoItems the List of ToDoItems that were changed/added/removed 
      */
-    public ToDoListEvent(List<ToDoItem> i) {
-        items = i;
+    public ToDoListEvent(final List<ToDoItem> toDoItems) {
+        items = Collections.unmodifiableList(toDoItems);
     }
     
     /**
@@ -68,5 +71,4 @@ public class ToDoListEvent {
     public List<ToDoItem> getToDoItemList() {
         return items;
     }
-    
 }
