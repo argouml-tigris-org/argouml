@@ -24,6 +24,7 @@
 
 package org.argouml.persistence;
 
+import java.io.File;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -461,7 +462,10 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleGenerationOutputDir(XMLElement e) {
         String dsw = e.getText().trim();
-        ps.setGenerationOutputDir(dsw);
+        File f = new File(dsw);
+        if (f.exists() && f.isDirectory()) {
+            ps.setGenerationOutputDir(dsw);
+        }
     }
 
     /**
