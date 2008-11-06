@@ -82,10 +82,6 @@ public class FigClassifierRole extends FigNodeModelElement {
      * rectangle.<p>
      */
     public FigClassifierRole() {
-	// TODO: I (Linus Tolke) don't understand why I get a warning
-	// on the 'cover' link in the javadoc (jdk1.4.2). I think everything
-	// is correct. I hope that we can eventually solve it.
-
         // The big port and cover. Color of the big port is irrelevant
 
         setBigPort(new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan));
@@ -301,7 +297,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         Dimension newMin    = new Dimension(nameMin.width, nameMin.height);
 
-        if (getStereotypeFig().isVisible()) {
+        if (!(stereoMin.height == 0 && stereoMin.width == 0)) {
             newMin.width   = Math.max(newMin.width, stereoMin.width);
             newMin.height += stereoMin.height;
         }
@@ -356,17 +352,13 @@ public class FigClassifierRole extends FigNodeModelElement {
         // Work out the padding each side, depending on whether the stereotype
         // is displayed and set bounds accordingly
 
-        if (getStereotypeFig().isVisible()) {
-            int extraEach = (h - nameMin.height - stereoMin.height) / 2;
-
-            getStereotypeFig().setBounds(x, y + extraEach, w, stereoMin.height);
-            getNameFig().setBounds(x, y + stereoMin.height + extraEach, w,
-				   nameMin.height);
-        } else {
-            int extraEach = (h - nameMin.height) / 2;
-
-            getNameFig().setBounds(x, y + extraEach, w, nameMin.height);
+        int extraEach = (newH - nameMin.height - stereoMin.height) / 2;
+        if (!(stereoMin.height == 0 && stereoMin.width == 0)) {
+            /* At least one stereotype is visible */
+            getStereotypeFig().setBounds(x, y + extraEach, newW, getStereotypeFig().getHeight());
         }
+        getNameFig().setBounds(x, y + stereoMin.height + extraEach, newW,
+                nameMin.height);
 
         // Set the bounds of the bigPort and cover
 
