@@ -305,17 +305,18 @@ public abstract class FigEdgeModelElement
                 popUpActions.add(0, new JSeparator());
                 popUpActions.add(0, critiques);
             }
-        }
-        // Add stereotypes submenu
-        Action[] stereoActions = getApplyStereotypeActions();
-        if (stereoActions != null && stereoActions.length > 0) {
-            popUpActions.add(0, new JSeparator());
-            ArgoJMenu stereotypes = new ArgoJMenu(
-                    "menu.popup.apply-stereotypes");
-            for (int i = 0; i < stereoActions.length; ++i) {
-                stereotypes.addCheckItem(stereoActions[i]);
+
+            // Add stereotypes submenu
+            Action[] stereoActions = getApplyStereotypeActions();
+            if (stereoActions != null && stereoActions.length > 0) {
+                popUpActions.add(0, new JSeparator());
+                ArgoJMenu stereotypes = new ArgoJMenu(
+                "menu.popup.apply-stereotypes");
+                for (int i = 0; i < stereoActions.length; ++i) {
+                    stereotypes.addCheckItem(stereoActions[i]);
+                }
+                popUpActions.add(0, stereotypes);
             }
-            popUpActions.add(0, stereotypes);
         }
         return popUpActions;
     }
