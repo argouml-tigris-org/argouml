@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,11 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import javax.swing.JPopupMenu;
+
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -53,6 +57,14 @@ public class UMLTransitionGuardListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(Object element) {
         return element == Model.getFacade().getGuard(getTarget());
+    }
+
+    @Override
+    public boolean buildPopup(JPopupMenu popup, int index) {
+        AbstractActionNewModelElement a = ActionNewGuard.getSingleton();
+        a.setTarget(TargetManager.getInstance().getTarget());
+        popup.add(a);
+        return true;
     }
 
 }
