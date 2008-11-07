@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.tigris.swidgets.Orientation;
 
@@ -45,7 +46,7 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
     private JScrollPane exitScroll;
     private JScrollPane doScroll;
     private JScrollPane internalTransitionsScroll;
-    private JScrollPane deferrableEventsScroll;
+    private ScrollList deferrableEventsScroll;
 
 
     /**
@@ -75,10 +76,8 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
     public AbstractPropPanelState(String name, ImageIcon icon) {
         super(name, icon);
 
-        JList deferrableList = new UMLStateDeferrableEventList(
-                new UMLStateDeferrableEventListModel());
-
-        deferrableEventsScroll = new JScrollPane(deferrableList);
+        deferrableEventsScroll =
+            new ScrollList(new UMLStateDeferrableEventListModel());
 
         JList entryList = new UMLStateEntryList(new UMLStateEntryListModel());
         entryList.setVisibleRowCount(2);

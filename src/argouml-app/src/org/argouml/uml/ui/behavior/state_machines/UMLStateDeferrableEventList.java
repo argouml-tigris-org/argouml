@@ -25,8 +25,6 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
-import javax.swing.JPopupMenu;
-
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 
@@ -44,15 +42,4 @@ public class UMLStateDeferrableEventList extends UMLMutableLinkedList {
         UMLModelElementListModel2 dataModel) {
         super(dataModel);
     }
-
-    /*
-     * @see org.argouml.uml.ui.UMLMutableLinkedList#getPopupMenu()
-     */
-    public JPopupMenu getPopupMenu() {
-        JPopupMenu menu = new PopupMenuNewEvent(
-                ActionNewEvent.Roles.DEFERRABLE_EVENT, this); 
-        return menu;
-    }
-
-
 }
