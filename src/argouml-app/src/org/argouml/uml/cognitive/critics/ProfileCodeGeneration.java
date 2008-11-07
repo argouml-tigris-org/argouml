@@ -41,8 +41,8 @@ public class ProfileCodeGeneration extends Profile {
 
     private Set<Critic>  critics = new HashSet<Critic>();
 
-    private static Critic crMissingClassName = new CrMissingClassName();
-
+    private static Critic crMissingClassName;
+    
     private static Critic crDisambigClassName = new CrDisambigClassName();
 
     private static Critic crNoTransitions = new CrNoTransitions();
@@ -56,23 +56,31 @@ public class ProfileCodeGeneration extends Profile {
     // Compound critics
 
     // only classes with name need a constructor
-    private static CompoundCritic crCompoundConstructorNeeded =
-        new CompoundCritic(crMissingClassName, new CrConstructorNeeded());
+    private static CompoundCritic crCompoundConstructorNeeded;
 
-    private static CompoundCritic clsNaming =
-        new CompoundCritic(crMissingClassName, crDisambigClassName);
-        
+    private static CompoundCritic clsNaming;
+    
     private static CompoundCritic noTrans1 =
         new CompoundCritic(crNoTransitions, crNoIncomingTransitions);
 
     private static CompoundCritic noTrans2 =
         new CompoundCritic(crNoTransitions, crNoOutgoingTransitions);
-    
+        
     /**
      * Default Constructor 
+     * 
+     * @param profileGoodPractices the instance of the required profile 
      */
-    public ProfileCodeGeneration() {
+    public ProfileCodeGeneration(ProfileGoodPractices profileGoodPractices) {
         
+        crMissingClassName = profileGoodPractices.getCrMissingClassName();
+
+        crCompoundConstructorNeeded = new CompoundCritic(
+                crMissingClassName, new CrConstructorNeeded());
+
+        clsNaming = new CompoundCritic(crMissingClassName,
+                crDisambigClassName);
+            
         critics.add(crCompoundConstructorNeeded);
         
         // code generation

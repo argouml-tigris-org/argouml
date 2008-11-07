@@ -84,13 +84,13 @@ public class ProfileManagerImpl implements ProfileManager {
 
     private List<String> searchDirectories = new ArrayList<String>();
 
-    private Profile profileUML;
+    private ProfileUML profileUML;
     
-    private Profile profileJava;
+    private ProfileJava profileJava;
     
-    private Profile profileGoodPractices;
+    private ProfileGoodPractices profileGoodPractices;
     
-    private Profile profileCodeGeneration;
+    private ProfileCodeGeneration profileCodeGeneration;
 
 
     /**
@@ -103,7 +103,8 @@ public class ProfileManagerImpl implements ProfileManager {
             profileUML = new ProfileUML();
             profileJava = new ProfileJava(profileUML);
             profileGoodPractices = new ProfileGoodPractices();
-            profileCodeGeneration = new ProfileCodeGeneration();
+            profileCodeGeneration = new ProfileCodeGeneration(
+                    profileGoodPractices);
             
             registerProfile(profileUML);
             addToDefaultProfiles(profileUML); 

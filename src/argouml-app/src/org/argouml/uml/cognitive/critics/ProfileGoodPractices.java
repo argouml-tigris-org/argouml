@@ -39,6 +39,8 @@ import org.argouml.profile.Profile;
 public class ProfileGoodPractices extends Profile {
 
     private Set<Critic>  critics = new HashSet<Critic>();
+
+    private CrMissingClassName crMissingClassName = new CrMissingClassName();
     
     /**
      * Default Constructor 
@@ -51,7 +53,7 @@ public class ProfileGoodPractices extends Profile {
         critics.add(new CrZeroLengthEdge());
         critics.add(new CrCircularComposition());
         critics.add(new CrMissingAttrName());
-        critics.add(new CrMissingClassName());
+        critics.add(crMissingClassName);
         critics.add(new CrMissingStateName());
         critics.add(new CrMissingOperName());
         critics.add(new CrNonAggDataType());
@@ -78,5 +80,12 @@ public class ProfileGoodPractices extends Profile {
     */
     public String getProfileIdentifier() {
         return "GoodPractices";
+    }
+
+    /**
+     * @return the missing class name critic
+     */
+    public Critic getCrMissingClassName() {
+        return crMissingClassName;
     }
 }

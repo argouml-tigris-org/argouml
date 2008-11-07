@@ -220,11 +220,13 @@ public class Agency extends Observable { //implements java.io.Serialization
             theCritics = new ArrayList<Critic>();
             criticRegistry.put(clazz, theCritics);
         }
-        theCritics.add(cr);
-        notifyStaticObservers(cr);
-        LOG.debug("Registered: " + theCritics.toString());
-        cachedCritics.remove(clazz);
-        addCritic(cr);
+        if (!theCritics.contains(cr)) {
+            theCritics.add(cr);
+            notifyStaticObservers(cr);
+            LOG.debug("Registered: " + theCritics.toString());
+            cachedCritics.remove(clazz);
+            addCritic(cr);
+        }
     }
 
     /**
