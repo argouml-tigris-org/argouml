@@ -152,7 +152,7 @@ public class DeferredBufferedImage implements RenderedImage {
             throw new IndexOutOfBoundsException(
                     "clip rectangle must fit in band buffer");
         }
-        return (clip.y >= y1 && (clip.y + clip.height) < y2);
+        return (clip.y >= y1 && (clip.y + clip.height - 1) < y2);
     }
 
     /**
