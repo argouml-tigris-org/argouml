@@ -66,4 +66,8 @@ public class UMLTransitionEffectListModel extends UMLModelElementListModel2 {
         return true;
     }
 
+    @Override
+    protected boolean hasPopup() {
+        return true;
+    }
 }

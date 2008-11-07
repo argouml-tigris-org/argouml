@@ -67,4 +67,8 @@ public class UMLTransitionGuardListModel extends UMLModelElementListModel2 {
         return true;
     }
 
+    @Override
+    protected boolean hasPopup() {
+        return true;
+    }
 }
